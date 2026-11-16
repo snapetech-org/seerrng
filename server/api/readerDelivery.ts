@@ -1,6 +1,7 @@
 import ExternalAPI, {
   DEFAULT_EXTERNAL_API_TIMEOUT_MS,
 } from '@server/api/externalapi';
+import { isLocalOrPrivateAddress } from '@server/utils/security';
 
 export type ReaderGroupingProvider = 'grimmory' | 'bookorbit';
 export type ReaderGroupingTargetType =
@@ -210,6 +211,9 @@ export class ReaderDeliveryApi extends ExternalAPI {
       {},
       {
         allowPrivateAddresses: true,
+        requireDirectConnection: isLocalOrPrivateAddress(
+          new URL(baseUrl).hostname
+        ),
         timeout: DEFAULT_EXTERNAL_API_TIMEOUT_MS,
         maxContentLength: 4 * 1024 * 1024,
         maxBodyLength: 256 * 1024,

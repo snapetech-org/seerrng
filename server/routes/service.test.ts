@@ -1701,7 +1701,7 @@ describe('Bookshelf settings routes', () => {
       async () => ({ version: '3.8.0', userId: 4 })
     );
     const app = createOpenApiApp();
-    const { id: _id, ...settings } = makeReadarr({
+    const settings = makeReadarr({
       backend: 'bookorbit',
       bookorbitUsername: 'requester',
       serviceType: 'both',
@@ -1728,7 +1728,7 @@ describe('Bookshelf settings routes', () => {
 
     const saved = await request(app)
       .post('/api/v1/settings/readarr')
-      .send(settings);
+      .send({ ...settings, id: undefined });
     assert.strictEqual(saved.status, 201, JSON.stringify(saved.body));
     assert.strictEqual(saved.body.backend, 'bookorbit');
     assert.strictEqual(saved.body.bookorbitUsername, 'requester');
@@ -2104,6 +2104,8 @@ describe('Bookshelf settings routes', () => {
     const blocked = await request(app).delete('/api/v1/settings/readarr/7');
     assert.strictEqual(blocked.status, 409, JSON.stringify(blocked.body));
     assert.match(blocked.body.message, /1 active request/);
+    assert.ok(blocked.body.message.includes('#' + activeRequest.id));
+    assert.match(blocked.body.message, /does not delete its library files/);
     assert.strictEqual(getSettings().readarr.length, 1);
 
     await getRepository(MediaRequest).update(activeRequest.id, {

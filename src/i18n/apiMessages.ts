@@ -310,6 +310,8 @@ export const apiMessages: Record<
   m154b53f332cd930152cc: 'Stored notification outbox intent kind is invalid.',
   m1556fc882fc0970c184d:
     'Waiting for BookOrbit to approve this request. Configure approval and download automation in BookOrbit to continue automatically.',
+  m1571cc70727835cd5186:
+    'Service is still referenced by {value0}. Remove or reassign the linked override rules before removing this server.',
   m15790caff9fbe0b66be9: 'IMDb did not return a public watchlist page.',
   m15864fb9623e8f9d2794: 'Unable to save settings after migration.',
   m15a64eb99b30e09dfc75: 'You do not have permission to delete this comment.',
@@ -387,7 +389,6 @@ export const apiMessages: Record<
   m1a8ee2f3bdd0a05b657d: 'monitorNewItems is invalid.',
   m1a9c669d13c7c05336dd:
     'ROMarrNG could not be reached to confirm the selected catalog capability.',
-  m1ade0e5e15dcc862769c: 'Service is still referenced by {value0}.',
   m1af9e2d33ce6ebb42f1b:
     'A playback session and at least one media item are required.',
   m1b3acca5f5ba5b1b94a5: 'The setup file is larger than 256 KB.',
@@ -628,6 +629,8 @@ export const apiMessages: Record<
   m2ccfbbd572d8fd0732da: 'Could not load Episode Queue access.',
   m2d172f5d5d4ad20e985a: 'This league is already monitored in Sportarr.',
   m2d43198e24baad05654f: 'OIDC authorization redirect must be a URL string.',
+  m2d5a07cc05df685d978c:
+    'Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}. Deleting a request does not delete its library files.',
   m2d5e1d6724f7d3cfa2a0: 'Unable to retrieve similar series.',
   m2d6cfe296977fb3e198b: 'Invalid swipe.',
   m2d943e19fb0ccd19067c: 'format must be ebook or audiobook.',
@@ -656,6 +659,8 @@ export const apiMessages: Record<
   m2f7ea268bfd10067fe9b: '{value0} contains an invalid ID.',
   m2fa2dcc2175850a42045:
     'Select the collection items and destination libraries.',
+  m2fa46fe5a68c39040537:
+    'Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}, …. Deleting a request does not delete its library files.',
   m2fbacfa222802998d376:
     'The selected Radarr server does not match the requested quality tier.',
   m2fed7b1ffd4626d82cdc: 'Could not leave the watch session.',

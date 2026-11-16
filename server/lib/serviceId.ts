@@ -128,12 +128,17 @@ export const assertServarrServiceCanBeRemoved = async (
   serviceId: number
 ): Promise<void> => {
   const overrideColumn = overrideColumnByService[serviceType];
-  const activeRequestCount = await getRepository(MediaRequest).count({
+  const [activeRequests, activeRequestCount] = await getRepository(
+    MediaRequest
+  ).findAndCount({
     where: {
       type: mediaTypeByService[serviceType],
       serverId: serviceId,
       status: In(activeRequestStatuses),
     },
+    select: { id: true },
+    order: { id: 'ASC' },
+    take: 10,
   });
   const overrideRuleCount = overrideColumn
     ? await getRepository(OverrideRule).count({
@@ -151,7 +156,10 @@ export const assertServarrServiceCanBeRemoved = async (
         : '',
     ].filter(Boolean);
     throw new ServarrServiceInUseError(
-      `Service is still referenced by ${references.join(' and ')}.`
+      `Service is still referenced by ${references.join(' and ')}.` +
+        (activeRequestCount > 0
+          ? ` Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ${activeRequests.map(({ id }) => '#' + id).join(', ')}${activeRequestCount > activeRequests.length ? ', …' : ''}. Deleting a request does not delete its library files.`
+          : ' Remove or reassign the linked override rules before removing this server.')
     );
   }
 };

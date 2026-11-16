@@ -1,5 +1,7 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { createServer } from 'node:http';
 import { describe, it } from 'node:test';
 
 import {
@@ -116,6 +118,48 @@ describe('reader grouping rule construction', () => {
 });
 
 describe('ReaderDeliveryApi', () => {
+  it('connects directly to a LAN reader even when environment proxies are configured', async (t) => {
+    const password = '  synthetic-reader-password  ';
+    const server = createServer(async (request, response) => {
+      assert.equal(request.url, '/reader/api/v1/auth/login');
+      const chunks: Buffer[] = [];
+      for await (const chunk of request) chunks.push(chunk);
+      assert.deepEqual(JSON.parse(Buffer.concat(chunks).toString()), {
+        username: 'admin',
+        password,
+        clientKind: 'native',
+        deviceLabel: 'SeerrNG',
+      });
+      response.writeHead(200, { 'content-type': 'application/json' });
+      response.end(JSON.stringify({ accessToken: 'reader-token' }));
+    });
+    server.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    t.after(() => server.close());
+    const address = server.address();
+    assert.ok(address && typeof address !== 'string');
+    for (const [name, value] of Object.entries({
+      http_proxy: 'http://127.0.0.1:1',
+      HTTP_PROXY: 'http://127.0.0.1:1',
+      no_proxy: '',
+      NO_PROXY: '',
+    })) {
+      const previous = process.env[name];
+      process.env[name] = value;
+      t.after(() => {
+        if (previous === undefined) delete process.env[name];
+        else process.env[name] = previous;
+      });
+    }
+    const api = new ReaderDeliveryApi(
+      `http://127.0.0.1:${address.port}/reader`
+    );
+    assert.equal(
+      await api.login('bookorbit', { username: 'admin', password }),
+      'reader-token'
+    );
+  });
+
   it('uses provider login payloads and accepts a nested access token', async () => {
     const api = new InspectReaderDeliveryApi([
       { data: { accessToken: 'reader-token' } },

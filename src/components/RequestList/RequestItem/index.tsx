@@ -633,9 +633,11 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
   useEffect(() => {
     void revalidate(request, { revalidate: false });
   }, [request, revalidate]);
-  const activeSeasonRequests = (requestData?.seasons ?? request.seasons).filter(
-    isActiveSeasonRequest
-  );
+  const activeSeasonRequests = (
+    requestData?.seasons ??
+    request.seasons ??
+    []
+  ).filter(isActiveSeasonRequest);
   const failureInfo = getRequestFailureInfo(requestData?.failureReason);
   const retryUnavailable = failureInfo?.retryUnavailable ?? false;
   const canRetry = Boolean(

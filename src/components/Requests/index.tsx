@@ -11,6 +11,7 @@ import MediaTypeBadge, {
   type MediaTypeBadgeType,
 } from '@app/components/Common/MediaTypeBadge';
 import Modal from '@app/components/Common/Modal';
+import OpaqueApiMessageText from '@app/components/Common/OpaqueApiMessageText';
 import PageTitle from '@app/components/Common/PageTitle';
 import PaginationFooter from '@app/components/Common/PaginationFooter';
 import Tooltip from '@app/components/Common/Tooltip';
@@ -34,6 +35,7 @@ import {
   RequestStatusMessageText,
 } from '@app/components/RequestStatus/messages';
 import BookOrbitRequestActions from '@app/components/Requests/BookOrbitRequestActions';
+import RequestCardBoundary from '@app/components/Requests/RequestCardBoundary';
 import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import useRequestStatusScrollRestoration from '@app/hooks/useRequestStatusScrollRestoration';
@@ -158,6 +160,8 @@ const messages = defineMessages('components.Requests', {
   ebookAndAudiobook: 'Book + Audiobook',
   ebook: 'Book',
   minutes: '{count} minutes',
+  requestDetailsFailed:
+    'Request details could not be displayed. Status tracking is still active.',
   notAvailable: 'Not available',
   releaseDate: 'Release Date',
   latestIssue: 'Latest Issue',
@@ -1314,7 +1318,7 @@ interface RequestStatusCardProps {
   onToggleHistory: (requestId: number) => void;
 }
 
-const RequestStatusCard = ({
+export const RequestStatusCard = ({
   item,
   isAdminView,
   onRetry,
@@ -3298,23 +3302,47 @@ const Requests = () => {
       {softwareCategory === undefined && (
         <div className={persius ? 'persius-request-grid' : 'card-stack'}>
           {data.results.map((item) => (
-            <RequestStatusCard
+            <RequestCardBoundary
               key={item.request.id}
-              item={item}
-              isAdminView={isAdminView}
-              onRetry={retryRequest}
-              isRetrying={retryingRequestId === item.request.id}
-              onDelete={setDeleteRequestId}
-              isDeleting={deletingRequestId === item.request.id}
-              onRemove={openRemoveRequest}
-              isRemoving={removingRequestId === item.request.id}
-              isHistoryOpen={expandedRequestId === item.request.id}
-              onToggleHistory={(requestId) =>
-                setExpandedRequestId((currentId) =>
-                  currentId === requestId ? null : requestId
-                )
+              fallback={
+                <article className="media-detail-card app-card-main refreshed-card-surface">
+                  <h3 className="card-title">#{item.request.id}</h3>
+                  <p className="refreshed-detail-text-muted" role="alert">
+                    {intl.formatMessage(messages.requestDetailsFailed)}
+                  </p>
+                  <p className="refreshed-detail-text">
+                    <OpaqueApiMessageText>
+                      {item.status.message}
+                    </OpaqueApiMessageText>
+                  </p>
+                  {isAdminView && (
+                    <RequestActionButton
+                      action="delete"
+                      busy={deletingRequestId === item.request.id}
+                      disabled={deletingRequestId === item.request.id}
+                      onClick={() => setDeleteRequestId(item.request.id)}
+                    />
+                  )}
+                </article>
               }
-            />
+            >
+              <RequestStatusCard
+                item={item}
+                isAdminView={isAdminView}
+                onRetry={retryRequest}
+                isRetrying={retryingRequestId === item.request.id}
+                onDelete={setDeleteRequestId}
+                isDeleting={deletingRequestId === item.request.id}
+                onRemove={openRemoveRequest}
+                isRemoving={removingRequestId === item.request.id}
+                isHistoryOpen={expandedRequestId === item.request.id}
+                onToggleHistory={(requestId) =>
+                  setExpandedRequestId((currentId) =>
+                    currentId === requestId ? null : requestId
+                  )
+                }
+              />
+            </RequestCardBoundary>
           ))}
         </div>
       )}

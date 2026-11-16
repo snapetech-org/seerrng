@@ -5888,7 +5888,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 506,
+          "line": 510,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid paginated book list.'",
@@ -5958,6 +5958,34 @@
           "field": "message",
           "expression": "options.bookorbitRequestPending\n      ? 'Waiting for BookOrbit to approve this request. Configure approval and download automation in BookOrbit to continue automatically.'\n      : options.binderyRequestPending\n        ? 'Waiting for Bindery to approve this request. Enable Auto-approve requests for this account in Bindery if acquisition should start immediately.'\n        : pendingFormat\n          ? `ChaptarrNG is preparing the requested ${pendingFormat === 'audiobook' ? 'audiobook' : 'ebook'} while it imports the author.`\n          : 'Waiting for Bookshelf to prepare the requested book.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m1571cc70727835cd5186",
+      "id": "utils.ApiMessage.m1571cc70727835cd5186",
+      "source": "Service is still referenced by {value0}. Remove or reassign the linked override rules before removing this server.",
+      "defaultMessage": "Service is still referenced by {value0}. Remove or reassign the linked override rules before removing this server.",
+      "sourceHash": "1571cc70727835cd518677ed8c0f43e00adc9843b987a3b0a9b26b750e1121d7",
+      "parts": [
+        "Service is still referenced by ",
+        ". Remove or reassign the linked override rules before removing this server."
+      ],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/serviceId.ts",
+          "line": 159,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "`Service is still referenced by ${references.join(' and ')}.` +\n        (activeRequestCount > 0\n          ? ` Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ${activeRequests.map(({ id }) => '#' + id).join(', ')}${activeRequestCount > activeRequests.length ? ', …' : ''}. Deleting a request does not delete its library files.`\n          : ' Remove or reassign the linked override rules before removing this server.')",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "references.join(' and ')",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -7378,31 +7406,6 @@
           "field": "error",
           "expression": "'ROMarrNG could not be reached to confirm the selected catalog capability.'",
           "captured": []
-        }
-      ]
-    },
-    {
-      "key": "m1ade0e5e15dcc862769c",
-      "id": "utils.ApiMessage.m1ade0e5e15dcc862769c",
-      "source": "Service is still referenced by {value0}.",
-      "defaultMessage": "Service is still referenced by {value0}.",
-      "sourceHash": "1ade0e5e15dcc862769c4d008289e987a4763fe5aaeb5408080b753c5714695c",
-      "parts": ["Service is still referenced by ", "."],
-      "parameterCount": 1,
-      "callsites": [
-        {
-          "path": "server/lib/serviceId.ts",
-          "line": 154,
-          "kind": "app-error-candidate",
-          "field": "message",
-          "expression": "`Service is still referenced by ${references.join(' and ')}.`",
-          "captured": [
-            {
-              "name": "value0",
-              "expression": "references.join(' and ')",
-              "disposition": "opaque captured value; preserve verbatim"
-            }
-          ]
         }
       ]
     },
@@ -12939,6 +12942,40 @@
       ]
     },
     {
+      "key": "m2d5a07cc05df685d978c",
+      "id": "utils.ApiMessage.m2d5a07cc05df685d978c",
+      "source": "Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}. Deleting a request does not delete its library files.",
+      "defaultMessage": "Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}. Deleting a request does not delete its library files.",
+      "sourceHash": "2d5a07cc05df685d978c70410f2e66681faeca588e75ca624a4bc49d36a185f2",
+      "parts": [
+        "Service is still referenced by ",
+        ". Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ",
+        ". Deleting a request does not delete its library files."
+      ],
+      "parameterCount": 2,
+      "callsites": [
+        {
+          "path": "server/lib/serviceId.ts",
+          "line": 159,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "`Service is still referenced by ${references.join(' and ')}.` +\n        (activeRequestCount > 0\n          ? ` Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ${activeRequests.map(({ id }) => '#' + id).join(', ')}${activeRequestCount > activeRequests.length ? ', …' : ''}. Deleting a request does not delete its library files.`\n          : ' Remove or reassign the linked override rules before removing this server.')",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "references.join(' and ')",
+              "disposition": "opaque captured value; preserve verbatim"
+            },
+            {
+              "name": "value1",
+              "expression": "activeRequests.map(({ id }) => '#' + id).join(', ')",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m2d5e1d6724f7d3cfa2a0",
       "id": "utils.ApiMessage.m2d5e1d6724f7d3cfa2a0",
       "source": "Unable to retrieve similar series.",
@@ -13382,6 +13419,40 @@
           "field": "message",
           "expression": "'Select the collection items and destination libraries.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m2fa46fe5a68c39040537",
+      "id": "utils.ApiMessage.m2fa46fe5a68c39040537",
+      "source": "Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}, …. Deleting a request does not delete its library files.",
+      "defaultMessage": "Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}, …. Deleting a request does not delete its library files.",
+      "sourceHash": "2fa46fe5a68c39040537eaad52f9bf85adfb6f57abd4cde2f3c87c21e89129c9",
+      "parts": [
+        "Service is still referenced by ",
+        ". Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ",
+        ", …. Deleting a request does not delete its library files."
+      ],
+      "parameterCount": 2,
+      "callsites": [
+        {
+          "path": "server/lib/serviceId.ts",
+          "line": 159,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "`Service is still referenced by ${references.join(' and ')}.` +\n        (activeRequestCount > 0\n          ? ` Open Requests and delete or reassign the linked requests before removing this server. Request IDs: ${activeRequests.map(({ id }) => '#' + id).join(', ')}${activeRequestCount > activeRequests.length ? ', …' : ''}. Deleting a request does not delete its library files.`\n          : ' Remove or reassign the linked override rules before removing this server.')",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "references.join(' and ')",
+              "disposition": "opaque captured value; preserve verbatim"
+            },
+            {
+              "name": "value1",
+              "expression": "activeRequests.map(({ id }) => '#' + id).join(', ')",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -14282,7 +14353,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 468,
+          "line": 472,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit did not return a Kobo collection ID.'",
@@ -18160,7 +18231,7 @@
       "callsites": [
         {
           "path": "server/lib/serviceId.ts",
-          "line": 172,
+          "line": 180,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Service routing cannot change while referenced by ${activeRequestCount} active request${activeRequestCount === 1 ? '' : 's'}.`",
@@ -20841,7 +20912,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 260,
+          "line": 264,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reader service did not return an access token.'",
@@ -24984,7 +25055,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 395,
+          "line": 399,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reader service did not return a grouping count.'",
@@ -26085,7 +26156,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 203,
+          "line": 204,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Book series: ' + target.name",
@@ -30724,7 +30795,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 516,
+          "line": 520,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
@@ -30732,7 +30803,7 @@
         },
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 523,
+          "line": 527,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
@@ -30740,7 +30811,7 @@
         },
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 542,
+          "line": 546,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
@@ -33262,7 +33333,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 199,
+          "line": 200,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Books by author: ' + target.name",
@@ -34218,7 +34289,7 @@
       "callsites": [
         {
           "path": "server/lib/serviceId.ts",
-          "line": 172,
+          "line": 180,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Service routing cannot change while referenced by ${activeRequestCount} active request${activeRequestCount === 1 ? '' : 's'}.`",
@@ -34327,7 +34398,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 201,
+          "line": 202,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'Comic series: ' + target.name + ' (CBR, CBZ, or CB7 files)'",
@@ -35587,7 +35658,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 361,
+          "line": 365,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reader service did not return a grouping ID.'",
@@ -43338,7 +43409,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 274,
+          "line": 278,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reader service returned an invalid grouping list.'",
@@ -47881,7 +47952,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 302,
+          "line": 306,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Grimmory returned an invalid match count.'",
@@ -48519,7 +48590,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 120,
+          "line": 121,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned a book without a valid ID.'",
@@ -48961,7 +49032,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 112,
+          "line": 113,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid book list.'",
@@ -49613,7 +49684,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 533,
+          "line": 537,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an incomplete paginated book list.'",
@@ -65268,7 +65339,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 435,
+          "line": 439,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A BookOrbit Collection already uses the managed Kobo collection name.'",
@@ -66017,7 +66088,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 316,
+          "line": 320,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid match count.'",
