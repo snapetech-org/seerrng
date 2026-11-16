@@ -1,7 +1,7 @@
 ---
 category: fixed
 audience: users, operators
-area: book acquisition
+area: book-acquisition
 action: none
 breaking: false
 ---

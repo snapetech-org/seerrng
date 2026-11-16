@@ -3305,7 +3305,10 @@ const Requests = () => {
             <RequestCardBoundary
               key={item.request.id}
               fallback={
-                <article className="media-detail-card app-card-main refreshed-card-surface">
+                <article
+                  className="media-detail-card app-card-main refreshed-card-surface"
+                  data-testid={`request-status-${item.request.id}`}
+                >
                   <h3 className="card-title">#{item.request.id}</h3>
                   <p className="refreshed-detail-text-muted" role="alert">
                     {intl.formatMessage(messages.requestDetailsFailed)}

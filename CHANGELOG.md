@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.72.37](https://github.com/snapetech-org/seerrng/compare/v3.72.36..v3.72.37) - 2026-11-16
+
+### User-facing changes
+
+#### Fixed
+
+- **Book Acquisition:** BookOrbit accepts an IP address with its port or a full BookOrbit URL in the hostname field. Connection tests and saved settings use the same normalized address, and local addresses connect directly. Connection errors distinguish refused or timed-out connections from sign-in failures.
+- **Books:** LAN reader apps now bypass environment proxies. Book request summaries tolerate missing TV seasons, and a broken request card keeps its tracked status and delete action instead of crashing Requests. Server deletion identifies blocking request IDs and explains how to clear them without deleting library files.
+- **Requests:** Episode Queue waits for Sonarr to finish importing the selected episodes before applying monitoring and searching. Request managers can retry an approved Episode Queue request stuck in Searching. Request notifications show the configured episode buffer and link to the Episode Queue guide.
+
+### 🐛 Bug Fixes
+- *(books)* Recover request summaries and LAN reader connections - ([08e458d](https://github.com/snapetech-org/seerrng/commit/08e458dbf4822bd0fc402c4c563e079d848a88e3))
+- *(requests)* Recover Sonarr episode monitoring and BookOrbit LAN connections - ([c3cd82a](https://github.com/snapetech-org/seerrng/commit/c3cd82a26464b22d3804676e99589ca595d5d086))
+
 ## [3.72.36](https://github.com/snapetech-org/seerrng/compare/v3.72.35..v3.72.36) - 2026-11-14
 
 ### User-facing changes
