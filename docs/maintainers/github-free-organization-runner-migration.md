@@ -37,6 +37,10 @@ gh workflow run ci.yml --repo snapetech-org/seerrng --ref main \
   -f action=contracts -f runner_pool=public
 ```
 
+For the focused BookOrbit production-build, request, and reader regressions, run
+`action=book-recovery` with `runner_pool=public` from trusted `main`. This lane
+uses no repository secrets and retains its browser report and screenshots.
+
 CodeQL is disabled across `snapetech-org` by the owner directive of
 2026-10-30. Do not restore CodeQL workflows or invocations unless that
 directive is explicitly reversed.

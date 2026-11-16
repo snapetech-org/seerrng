@@ -420,6 +420,7 @@ test('unit-test shards use GitHub-hosted runners', () => {
     'ci',
     'contracts',
     'browser',
+    'book-recovery',
     'publish-image',
   ]);
   assert.equal(ciWorkflow.jobs['unit-test']?.strategy?.['max-parallel'], 4);
@@ -721,4 +722,30 @@ test('credentialed chart publication uses a GitHub-hosted runner', () => {
   const publisher = helmWorkflow.jobs.publish;
   assertHostedRunner(publisher?.['runs-on'], 'ubuntu-24.04', 'Helm publisher');
   assert.equal(publisher.permissions.packages, 'write');
+});
+
+test('focused book recovery stays secret-free on trusted main and public runners', () => {
+  const workflow = yaml.load(
+    fs.readFileSync(
+      path.join(rootDirectory, '.github/workflows/ci.yml'),
+      'utf8'
+    )
+  );
+  const job = workflow.jobs['book-recovery'];
+  assert.equal(job['runs-on'], 'ubuntu-24.04');
+  for (const condition of [
+    "github.event_name == 'workflow_dispatch'",
+    "github.ref == 'refs/heads/main'",
+    "inputs.pr_number == ''",
+    "inputs.action == 'book-recovery'",
+    "inputs.runner_pool == 'public'",
+  ])
+    assert.ok(job.if.includes(condition));
+  const checkout = job.steps.find((step) =>
+    step.uses?.startsWith('actions/checkout@')
+  );
+  assert.equal(checkout.with.ref, '${{ github.sha }}');
+  assert.equal(checkout.with['persist-credentials'], false);
+  assert.equal(workflow.permissions.contents, 'read');
+  assert.ok(!JSON.stringify(job).includes('secrets.'));
 });
