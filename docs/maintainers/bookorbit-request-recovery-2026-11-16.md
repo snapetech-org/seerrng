@@ -54,3 +54,15 @@ Local evidence is retained under
 Release preparation also corrects the invalid area slug in the previously
 unshipped BookOrbit pasted-address fragment; shipped release fragments remain
 unchanged.
+
+## Focused hosted acceptance
+
+The full CI run exposed pre-existing formatting, fixture, and unrelated browser
+failures. Its six BookOrbit connection cases passed. The new request-recovery
+case initially expected normal-state approval text to be visible instead of
+checking its established accessible status label; that assertion is corrected.
+Use the secret-free `book-recovery` CI action on trusted main for the complete
+production build, 103 focused regressions, and all eight native BookOrbit
+connection/recovery browser cases. It uses `ubuntu-24.04` and preserves its JSON
+report and screenshots. Unrelated baseline-CI remediation remains a separate
+retained patch and is not silently included in this release.

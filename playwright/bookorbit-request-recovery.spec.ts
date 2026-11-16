@@ -111,8 +111,11 @@ for (const width of [390, 1440]) {
     const card = page.getByTestId('request-status-9142');
     await expect(card.getByText('BookOrbit recovery fixture')).toBeVisible();
     await expect(
-      card.getByText(current.message, { exact: true })
-    ).toBeVisible();
+      card.locator('.request-status-control[aria-label]')
+    ).toHaveAttribute(
+      'aria-label',
+      /Waiting for BookOrbit to approve this request/
+    );
     await page.screenshot({
       path: info.outputPath('bookorbit-request-normal.png'),
       fullPage: true,
