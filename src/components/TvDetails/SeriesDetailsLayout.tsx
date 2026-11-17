@@ -1208,6 +1208,7 @@ const SeriesDetailsLayout = ({
                       {reportIssueAction}
                       {secondaryActions}
                       <VideoRatings
+                        hideUnavailable
                         mediaType="tv"
                         id={data.id}
                         voteAverage={data.voteAverage}
@@ -1279,6 +1280,7 @@ const SeriesDetailsLayout = ({
         }
         ratings={
           <VideoRatings
+            hideUnavailable
             mediaType="tv"
             id={data.id}
             voteAverage={data.voteAverage}

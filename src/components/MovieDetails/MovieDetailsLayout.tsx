@@ -449,6 +449,7 @@ const MovieDetailsLayout = ({
           trailerAction={trailerAction}
           ratings={
             <VideoRatings
+              hideUnavailable
               mediaType="movie"
               id={data.id}
               voteAverage={data.voteAverage}
@@ -530,6 +531,7 @@ const MovieDetailsLayout = ({
           }
           ratings={
             <VideoRatings
+              hideUnavailable
               mediaType="movie"
               id={data.id}
               voteAverage={data.voteAverage}
@@ -655,6 +657,7 @@ const MovieDetailsLayout = ({
                     label={intl.formatMessage(messages.quality)}
                   />
                   <VideoRatings
+                    hideUnavailable
                     mediaType="movie"
                     id={data.id}
                     voteAverage={data.voteAverage}

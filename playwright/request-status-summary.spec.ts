@@ -14,7 +14,7 @@ test.use({
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 
 for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
-  for (const width of [390, 1440]) {
+  for (const width of [390, 620, 1440]) {
     test(`${theme} request status keeps compact geometry and calendar dates at ${width}px`, async ({
       page,
     }, info) => {
@@ -119,7 +119,30 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
       );
       await page.route('**/api/v1/request/status/9102', (route) =>
         route.fulfill({
-          json: { request, current, history: { results: [], total: 0 } },
+          json: {
+            request,
+            current,
+            history: {
+              results: [
+                {
+                  id: 1,
+                  stage: 'approved',
+                  createdAt: '2026-01-01T12:00:00Z',
+                  percent: null,
+                  message:
+                    'Your request was approved and is waiting to be dispatched.',
+                },
+                {
+                  id: 2,
+                  stage: 'available',
+                  createdAt: '2026-01-01T12:02:00Z',
+                  percent: null,
+                  message: 'The requested media is available in your library.',
+                },
+              ],
+              total: 2,
+            },
+          },
         })
       );
       await page.route('**/api/v1/request/status/9102/downloads', (route) =>
@@ -156,7 +179,9 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
         await expect(
           page.getByRole('button', { name: /^All/ }).first()
         ).toHaveAttribute('aria-pressed', 'true');
-        return;
+        await page
+          .getByRole('button', { name: 'Details and actions', exact: true })
+          .click();
       }
       const card = page.getByTestId('request-status-9102');
       await expect(card).toBeVisible();
@@ -168,7 +193,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
           .querySelector('.detail-card-poster')!
           .getBoundingClientRect();
         const title = node
-          .querySelector('.detail-summary-title')!
+          .querySelector('.detail-summary-title, .card-title')!
           .getBoundingClientRect();
         return {
           posterWidth: poster.width,
@@ -176,9 +201,26 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
           overflow: node.scrollWidth - node.clientWidth,
         };
       });
+      await page.screenshot({
+        path: info.outputPath('request-status-before-history.png'),
+        fullPage: true,
+        animations: 'disabled',
+      });
       expect(geometry.posterWidth).toBe(width < 640 ? 64 : 80);
       expect(geometry.topDifference).toBeLessThanOrEqual(2);
       expect(geometry.overflow).toBeLessThanOrEqual(1);
+      if (theme === 'persiusNG' && !process.env.SEERR_DIALOG_BASELINE) {
+        const timeline = card.locator('.app-timeline-scroll');
+        const next = card.getByRole('button', {
+          name: 'Scroll progress right',
+          exact: true,
+        });
+        await expect(next).toBeVisible();
+        await next.click();
+        await expect
+          .poll(() => timeline.evaluate((node) => node.scrollLeft))
+          .toBeGreaterThan(0);
+      }
       await page.getByRole('button', { name: 'History', exact: true }).click();
       await expect(
         card.getByRole('heading', { name: 'History', exact: true })

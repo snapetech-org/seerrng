@@ -12,6 +12,7 @@ import type {
   SoftwareProviderStatus,
 } from '@server/api/software/types';
 import { getRepository } from '@server/datasource';
+import { runWithRequestAdmission } from '@server/entity/MediaRequest';
 import SoftwareRequest, {
   type SoftwareRequestProvider,
   type SoftwareRequestStatus,
@@ -26,6 +27,7 @@ import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import type { AvailableLocale } from '@server/types/languages';
 import { mapWithConcurrency } from '@server/utils/concurrency';
+import { AsyncLocalStorage } from 'node:async_hooks';
 
 export type PcGameVariant = {
   operatingSystem: PcOperatingSystem;
@@ -67,6 +69,79 @@ export const sanitizeRomPlacement = (
 export class SoftwareProviderNotConfiguredError extends Error {}
 export class SoftwareRequestConfirmationRequiredError extends Error {}
 export class SoftwareRequestStateError extends Error {}
+
+const softwareAdmission = new AsyncLocalStorage<boolean>();
+export const withSoftwareRequestAdmission = <T>(
+  callback: () => Promise<T>
+): Promise<T> =>
+  softwareAdmission.getStore()
+    ? callback()
+    : runWithRequestAdmission(['software-requests'], () =>
+        softwareAdmission.run(true, callback)
+      );
+
+export const assertSoftwareTargetMissing = async (
+  request: SoftwareRequest
+): Promise<void> => {
+  const query = getRepository(SoftwareRequest)
+    .createQueryBuilder('request')
+    .where('request.catalogProvider = :provider', {
+      provider: request.catalogProvider,
+    })
+    .andWhere('request.catalogKey = :key', { key: request.catalogKey })
+    .andWhere('request.category = :category', { category: request.category })
+    .andWhere('request.status IN (:...statuses)', {
+      statuses: [
+        'pending',
+        'approved',
+        'searching',
+        'downloading',
+        'importing',
+        'available',
+      ],
+    });
+  if (request.id) query.andWhere('request.id != :id', { id: request.id });
+  for (const column of [
+    'platformSlug',
+    'operatingSystem',
+    'architecture',
+    'selectionKey',
+  ] as const) {
+    if (request[column] != null)
+      query.andWhere(`request.${column} = :${column}`, {
+        [column]: request[column],
+      });
+    else query.andWhere(`request.${column} IS NULL`);
+  }
+  const duplicate = await query.getOne();
+  if (duplicate)
+    throw new SoftwareRequestStateError(
+      duplicate.requestedById === request.requestedById
+        ? 'You already have this title requested for the selected target.'
+        : 'This title is already requested or available for the selected target.'
+    );
+  // A patch/add-on is not satisfied by ownership of the unmodified base game.
+  if (
+    request.provider === 'romarr' &&
+    request.platformSlug &&
+    !request.selection
+  ) {
+    const lookup = await getRomarr().lookupLibrary([
+      { title: request.title, platform: request.platformSlug },
+    ]);
+    if (
+      lookup.matches.some(
+        (match) =>
+          match.platform === request.platformSlug &&
+          match.title === request.title
+      )
+    ) {
+      throw new SoftwareRequestStateError(
+        'This title is already in the library for the selected target.'
+      );
+    }
+  }
+};
 
 const getProviderSettings = (provider: SoftwareRequestProvider) => {
   const settings = getSettings().softwareAcquisition[provider];
@@ -561,43 +636,45 @@ export const refreshSoftwareRequest = async (
 export const approveSoftwareRequest = async (
   request: SoftwareRequest,
   approvedById: number
-): Promise<SoftwareRequestView> => {
-  if (request.status !== 'pending') {
-    throw new SoftwareRequestStateError(
-      'Only pending requests can be approved.'
-    );
-  }
-  getProviderSettings(request.provider);
-  const attempt = request.attempt + 1;
-  const repository = getRepository(SoftwareRequest);
-  const result = await repository.update(
-    { id: request.id, status: 'pending' },
-    {
-      status: 'approved',
-      approvedById,
-      attempt,
-      errorMessage: null,
-      failureCode: null,
-      providerStage: 'approved',
-      percent: null,
+): Promise<SoftwareRequestView> =>
+  withSoftwareRequestAdmission(async () => {
+    if (request.status !== 'pending') {
+      throw new SoftwareRequestStateError(
+        'Only pending requests can be approved.'
+      );
     }
-  );
-  if (!result.affected) {
-    throw new SoftwareRequestStateError(
-      'Only pending requests can be approved.'
+    getProviderSettings(request.provider);
+    await assertSoftwareTargetMissing(request);
+    const attempt = request.attempt + 1;
+    const repository = getRepository(SoftwareRequest);
+    const result = await repository.update(
+      { id: request.id, status: 'pending' },
+      {
+        status: 'approved',
+        approvedById,
+        attempt,
+        errorMessage: null,
+        failureCode: null,
+        providerStage: 'approved',
+        percent: null,
+      }
     );
-  }
-  request.status = 'approved';
-  request.approvedById = approvedById;
-  request.attempt = attempt;
-  request.errorMessage = null;
-  request.failureCode = null;
-  request.providerStage = 'approved';
-  request.percent = null;
-  await recordStatusEvent(request, 'Request approved.');
-  await notifySoftwareRequestStatus(request, 'approved');
-  return refreshSoftwareRequest(request);
-};
+    if (!result.affected) {
+      throw new SoftwareRequestStateError(
+        'Only pending requests can be approved.'
+      );
+    }
+    request.status = 'approved';
+    request.approvedById = approvedById;
+    request.attempt = attempt;
+    request.errorMessage = null;
+    request.failureCode = null;
+    request.providerStage = 'approved';
+    request.percent = null;
+    await recordStatusEvent(request, 'Request approved.');
+    await notifySoftwareRequestStatus(request, 'approved');
+    return refreshSoftwareRequest(request);
+  });
 
 export const declineSoftwareRequest = async (
   request: SoftwareRequest,

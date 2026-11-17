@@ -1,3 +1,5 @@
+include ../http-url.pug
+
 doctype html
 html(lang=locale || 'en' dir=direction || 'ltr')
   head
@@ -23,11 +25,11 @@ html(lang=locale || 'en' dir=direction || 'ltr')
           td(style="text-align: center;")
             if logoUrl
               if applicationUrl
-                //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- the link target is the administrator-configured application URL
-                a(href=applicationUrl style='margin: 0 1rem;')
-                  img(src=logoUrl style='width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
+                //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+                a(href=safeEmailUrl(applicationUrl) style='margin: 0 1rem;')
+                  img(src=safeEmailUrl(logoUrl) style='width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
               else
-                img(src=logoUrl style='margin: 0 1rem; width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
+                img(src=safeEmailUrl(logoUrl) style='margin: 0 1rem; width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
             else
               div(style='margin: 0 1rem 2.5rem; font-size: 3em; font-weight: 700;')
                 | #{applicationTitle}
@@ -44,15 +46,16 @@ html(lang=locale || 'en' dir=direction || 'ltr')
           tr
             td(style='text-align: center;')
               p= episodeQueue.summary
-              //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- the target is the bundled Episode Queue documentation URL
-              a(href=episodeQueue.helpUrl style='color: #c7d2fe;')= episodeQueue.helpLabel
+              //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+              a(href=safeEmailUrl(episodeQueue.helpUrl) style='color: #c7d2fe;')= episodeQueue.helpLabel
         tr
           td
-            div(style='box-sizing: border-box; margin: 1.5rem 0 0; width: 100%; color: #fff; border-radius: .75rem; padding: 1rem; border: 1px solid rgb(100,100,100); background: linear-gradient(135deg, rgba(17,24,39,0.47) 0%, rgb(17,24,39) 75%), url(' + imageUrl + ') center 25%/cover')
+            div(style='box-sizing: border-box; margin: 1.5rem 0 0; width: 100%; color: #fff; border-radius: .75rem; padding: 1rem; border: 1px solid rgb(100,100,100); background: linear-gradient(135deg, rgba(17,24,39,0.47) 0%, rgb(17,24,39) 75%), url(' + (safeEmailUrl(imageUrl) || '') + ') center 25%/cover')
               table(style='color: #fff; width: 100%;')
                 tr
                   td(style='vertical-align: top;')
-                    a(href=actionUrl style='display: block; max-width: 20rem; color: #fff; font-weight: 700; text-decoration: none; margin: 0 1rem 0.25rem 0; font-size: 1.3em; line-height: 1.25em; margin-bottom: 5px;' class='title')
+                    //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+                    a(href=safeEmailUrl(actionUrl) style='display: block; max-width: 20rem; color: #fff; font-weight: 700; text-decoration: none; margin: 0 1rem 0.25rem 0; font-size: 1.3em; line-height: 1.25em; margin-bottom: 5px;' class='title')
                       bdi(dir='auto')= mediaName
                     div(style='overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #d1d5db; font-size: .975em; line-height: 1.45em; padding-top: .25rem; padding-bottom: .25rem;')
                       if requestedBy
@@ -68,9 +71,10 @@ html(lang=locale || 'en' dir=direction || 'ltr')
                           bdi(dir='auto')= extra.value
                   if imageUrl
                     td(rowspan='2' style='width: 7rem;')
-                      a(style='display: block; width: 7rem; overflow: hidden; border-radius: .375rem;' href=actionUrl)
+                      //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+                      a(style='display: block; width: 7rem; overflow: hidden; border-radius: .375rem;' href=safeEmailUrl(actionUrl))
                         div(style='overflow: hidden; box-sizing: border-box; margin: 0px;')
-                          img(alt='' src=imageUrl style='box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;')
+                          img(alt='' src=safeEmailUrl(imageUrl) style='box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;')
                 tr
                   td(style='font-size: .85em; color: #9ca3af; line-height: 1em; vertical-align: bottom; margin-right: 1rem')
                     span
@@ -78,6 +82,7 @@ html(lang=locale || 'en' dir=direction || 'ltr')
         if actionUrl
           tr
             td
-              a(href=actionUrl style='display: block; margin: 1.5rem 3rem 0; text-decoration: none; font-size: 1.0em; line-height: 2.25em;')
+              //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+              a(href=safeEmailUrl(actionUrl) style='display: block; margin: 1.5rem 3rem 0; text-decoration: none; font-size: 1.0em; line-height: 2.25em;')
                 span(style='padding: 0.2rem; font-weight: 500; text-align: center; border-radius: 10px; background-color: rgb(99,102,241); color: #fff; display: block; border: 1px solid rgba(255,255,255,0.2);')
                   | #{actionLabel}

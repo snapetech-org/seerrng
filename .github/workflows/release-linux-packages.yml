@@ -279,6 +279,9 @@ jobs:
             16.4.3)
               swc_wasm_integrity='sha512-vJl7V950RQTY8OqK6/0pD3F5NbyeefYVxpa/6u/Y98eZ6lK7/eUK8b4g+EzIUBytWic8fL4MkDuK4DYDf9Wh0A=='
               ;;
+            16.4.5)
+              swc_wasm_integrity='sha512-Ip/z0VUrPAJmKtRH16GTI5YWoRFetP7pY6semXj0pMS9dGi43fURRfIu8LVzcStB5R8ovX681QAdqDOSXMb4nQ=='
+              ;;
             *)
               echo "No pinned Next.js WASM compiler checksum for version ${swc_wasm_version}." >&2
               exit 1

@@ -3819,7 +3819,8 @@
   }
 
   .app-history-grid {
-    --card-table-columns: 7rem 6rem 7.5rem minmax(0, 1fr);
+    --card-table-columns: max-content max-content fit-content(7.5rem)
+      minmax(0, 1fr);
   }
 
   .app-history-row {
@@ -3986,6 +3987,14 @@
   /* Request metadata follows the dialog's available width, including a narrow
      native theme on a wide desktop. Reuse the stacked metadata arrangement. */
   @container request-dialog (width < 720px) {
+    .app-history-grid {
+      --card-table-columns: max-content max-content minmax(0, 1fr);
+    }
+
+    .app-history-description {
+      grid-column: 1 / -1;
+    }
+
     .request-modal-site-surface
       .detail-summary-card
       .media-detail-column-divider::before {
@@ -5840,6 +5849,13 @@
     border-radius: 9999px;
     font-weight: 600;
     line-height: 1;
+  }
+
+  :is(.media-type-badge-card, .poster-control-book-format) {
+    height: var(--poster-control-height);
+    min-height: var(--poster-control-height);
+    max-height: var(--poster-control-height);
+    line-height: var(--poster-control-content-height);
   }
 
   .media-type-badge-card {

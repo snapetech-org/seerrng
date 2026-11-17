@@ -1,0 +1,12 @@
+//- One allowlist for links, remote images and CSS image URLs in every email.
+-
+  const safeEmailUrl = (value) => {
+    if (typeof value !== 'string' || /[\u0000-\u0020\u007f]/.test(value)) return undefined;
+    try {
+      const url = new URL(value);
+      if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return undefined;
+      return url.href.replace(/[()'\\]/g, (character) => '%' + character.charCodeAt(0).toString(16).toUpperCase());
+    } catch {
+      return undefined;
+    }
+  };

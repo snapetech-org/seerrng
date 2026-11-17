@@ -27,42 +27,6 @@
     "reason": "The filename is restricted to a fixed logo/icon UUID.png allowlist before sendFile; uploads are decoded and re-encoded as bounded PNG raster data."
   },
   {
-    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
-    "path": "server/templates/email/media-issue/html.pug",
-    "sha256": "f599baad689c240243341f101e4b252bd88169e6b508a6240d0a5edc59eec7fa",
-    "count": 1,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
-  },
-  {
-    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
-    "path": "server/templates/email/media-request/html.pug",
-    "sha256": "7d4b32a0e209cb54dc24e9a09914aa6a6a4437f759dd1297225e57394a74ab96",
-    "count": 3,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
-  },
-  {
-    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
-    "path": "server/templates/email/resetpassword/html.pug",
-    "sha256": "1c6cc02059fa9fa9eb3e0c69b8269641e5610108a7fc8ffe8191c0d0ababb669",
-    "count": 1,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
-  },
-  {
-    "rule": "javascript.express.security.audit.xss.pug.var-in-href.var-in-href",
-    "path": "server/templates/email/test-email/html.pug",
-    "sha256": "e45d2f0229a146eab831dd2c8115158b74a0eb48f89fdec416c31842b8b42ccd",
-    "count": 1,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Links are assembled from the administrator-configured HTTP(S) application URL plus internal identifiers. Template escaping remains enabled; ordinary users cannot supply the link scheme."
-  },
-  {
     "rule": "javascript.express.security.express-data-exfiltration.express-data-exfiltration",
     "path": "server/routes/overrideRule.ts",
     "sha256": "08c986000071206caf7d9c1a608daef0534982aec405d4d8883cff0c2068a474",

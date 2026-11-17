@@ -160,8 +160,8 @@ This map identifies owners, not a whitelist of every valid class. Follow the exi
 
 ## 9. Ratings and truthful data
 
-1. Video ratings keep six persistent slots: Rotten Tomatoes critics and audience, IMDb, Metacritic, Trakt and TMDB. Shared `VideoRatings`/`CollectionRatings` owns their layout and presentation in detail and hover contexts.
-2. Unknown, unavailable or still-missing scores display exactly `--`; retain the logo and reserved value geometry. Preserve valid zero, reject nonfinite/out-of-range values, and retain known cached scores during revalidation. Never invent review ratings or translate a source failure into zero.
+1. Video hover ratings keep six persistent slots: Rotten Tomatoes critics and audience, IMDb, Metacritic, Trakt and TMDB. Shared `VideoRatings`/`CollectionRatings` owns their layout and presentation in detail and hover contexts.
+2. Full movie and series detail views hide unavailable provider scores after loading, as requested in #700; hover cards retain their provider slots. Unknown or still-loading scores in retained slots display exactly `--`; retain the logo and reserved value geometry. Preserve valid zero, reject nonfinite/out-of-range values, and retain known cached scores during revalidation. Never invent review ratings or translate a source failure into zero.
 3. Only a known score with a verified safe destination is a link. Use media-correct provider URLs. Music/book ratings and aggregate collection scores preserve their own truthful source semantics; the video six-slot rule is not copied into them.
 4. UI actions and count/status displays must reflect real eligibility and permissions. Preserve meaningful zero IDs, source identities, group membership and selected-quality context; do not guess data to satisfy a layout.
 5. Timeline/request progress uses the shared green presentation with a visible checkmark; overflow controls appear only for actual measured clipping. Preserve status meaning and recovery/action permissions rather than treating progress as a decorative bar.

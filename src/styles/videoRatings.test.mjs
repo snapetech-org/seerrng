@@ -275,3 +275,22 @@ test('collection defaults remain distinct from reserved video placeholder behavi
     unknown.slots.every((slot) => !slot.hasAttribute('data-rating-layout'))
   );
 });
+
+test('detail ratings hide missing providers while retaining valid zero and cached known values', () => {
+  const rendered = render(VideoRatings, {
+    ...base,
+    hideUnavailable: true,
+    ratings: { imdb: { criticsScore: 0 } },
+  });
+  assert.equal(rendered.slots.length, 1);
+  assert.equal(rendered.values[0], '0.0');
+  assert.equal(
+    render(VideoRatings, { ...base, hideUnavailable: true }).slots.length,
+    0
+  );
+  assert.equal(
+    render(VideoRatings, { ...full, hideUnavailable: true, loading: true })
+      .slots.length,
+    6
+  );
+});

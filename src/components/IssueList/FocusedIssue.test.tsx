@@ -5,7 +5,10 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import FocusedIssue from './FocusedIssue';
 const state = vi.hoisted(() => ({ error: false }));
 vi.mock('swr', () => ({
-  default: () => ({ data: { id: 6 }, error: state.error }),
+  default: () => ({
+    data: { id: 6, media: { mediaType: 'comic' } },
+    error: state.error,
+  }),
 }));
 vi.mock('next/router', () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock('@app/components/Common/LoadingSpinner', () => ({

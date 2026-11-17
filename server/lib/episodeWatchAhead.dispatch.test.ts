@@ -13,6 +13,7 @@ import Media from '@server/entity/Media';
 import MediaRequest from '@server/entity/MediaRequest';
 import SeasonRequest from '@server/entity/SeasonRequest';
 import { User } from '@server/entity/User';
+import requestDispatchManager from '@server/lib/requestDispatch';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import assert from 'node:assert/strict';
@@ -27,6 +28,7 @@ describe('Episode Queue playback reconciliation', () => {
   let restoreSettings: (() => void) | undefined;
 
   beforeEach(() => {
+    mock.method(requestDispatchManager, 'enqueue', async () => {});
     const settings = getSettings();
     const originalMain = { ...settings.main };
     const originalJellyfin = { ...settings.jellyfin };
@@ -315,4 +317,113 @@ describe('Episode Queue playback reconciliation', () => {
       }
     }
   }
+  it('fills three episodes after import and advances a manual Plex watched mark without an active session', async () => {
+    getSettings().main.mediaServerType = MediaServerType.PLEX;
+    const users = getRepository(User);
+    const owner = await users.findOneByOrFail({ id: 1 });
+    owner.plexToken = 'owner-fixture';
+    await users.save(owner);
+    const requestedBy = await users.findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    requestedBy.plexToken = 'requester-fixture';
+    requestedBy.plexId = 2;
+    await users.save(requestedBy);
+    const media = await getRepository(Media).save(
+      new Media({
+        mediaType: MediaType.TV,
+        tmdbId: 765433,
+        tvdbId: 123457,
+        ratingKey: 'verified-series',
+        status: MediaStatus.PROCESSING,
+      })
+    );
+    const parent = await getRepository(MediaRequest).save(
+      new MediaRequest({
+        type: MediaType.TV,
+        status: MediaRequestStatus.PENDING,
+        media,
+        requestedBy,
+        serverId: 7,
+        watchAheadEpisodeCount: 3,
+        watchAheadUsesUserDefault: false,
+        seasons: [
+          new SeasonRequest({
+            seasonNumber: 1,
+            episodeNumbers: [1],
+            status: MediaRequestStatus.APPROVED,
+          }),
+        ],
+      })
+    );
+    await getRepository(MediaRequest).update(parent.id, {
+      status: MediaRequestStatus.APPROVED,
+    });
+    let imported = false;
+    let watched = false;
+    mock.method(PlexAPI.prototype, 'getPlaybackSessions', async () => {
+      if (watched) throw new Error('Session endpoint unavailable');
+      return [];
+    });
+    mock.method(PlexAPI.prototype, 'getAllLeavesMetadata', async () =>
+      imported
+        ? ([
+            {
+              type: 'episode',
+              parentIndex: 1,
+              index: 1,
+              viewCount: watched ? 1 : 0,
+            },
+          ] as never)
+        : []
+    );
+    mock.method(
+      SonarrAPI.prototype,
+      'getLibrarySeriesByTvdbId',
+      async () => [{ id: 56, tvdbId: 123457 }] as never
+    );
+    mock.method(
+      SonarrAPI.prototype,
+      'getEpisodes',
+      async () =>
+        [1, 2, 3, 4, 5].map((episodeNumber) => ({
+          seasonNumber: 1,
+          episodeNumber,
+          hasFile: imported && episodeNumber === 1,
+          monitored: false,
+        })) as never
+    );
+    const children = () =>
+      getRepository(MediaRequest).find({
+        where: { watchAheadParent: { id: parent.id } },
+        relations: { seasons: true },
+        order: { id: 'ASC' },
+      });
+    await episodeWatchAhead.run();
+    assert.equal((await children()).length, 0);
+    imported = true;
+    await episodeWatchAhead.run();
+    assert.deepEqual(
+      (await children()).map((child) => child.seasons[0].episodeNumbers),
+      [[2, 3]]
+    );
+    watched = true;
+    await getRepository(MediaRequest).update(parent.id, {
+      watchAheadLastReconciledAt: null,
+    });
+    await episodeWatchAhead.run();
+    assert.deepEqual(
+      (await children()).map((child) => child.seasons[0].episodeNumbers),
+      [[2, 3], [4]]
+    );
+    await getRepository(MediaRequest).update(parent.id, {
+      watchAheadLastReconciledAt: null,
+    });
+    await episodeWatchAhead.run();
+    assert.equal((await children()).length, 2);
+    const saved = await getRepository(MediaRequest).findOneByOrFail({
+      id: parent.id,
+    });
+    assert.equal(saved.watchAheadLastEpisode, 1);
+  });
 });

@@ -1200,36 +1200,6 @@ const validateCurrentBatchContract = (files) => {
       );
     }
   };
-  const requireDistinctSectionHeadings = (
-    fileName,
-    sectionStart,
-    sectionEnd,
-    headingTokens,
-    reason
-  ) => {
-    const source = requireFile(fileName);
-    const sections = [];
-    let offset = 0;
-    while (true) {
-      const start = source.indexOf(sectionStart, offset);
-      if (start < 0) break;
-      const contentStart = start + sectionStart.length;
-      const end = source.indexOf(sectionEnd, contentStart);
-      if (end < 0) break;
-      sections.push(source.slice(contentStart, end));
-      offset = end + sectionEnd.length;
-    }
-
-    const headingSections = headingTokens.map((heading) =>
-      sections.findIndex((section) => section.includes(heading))
-    );
-    if (
-      headingSections.some((section) => section < 0) ||
-      new Set(headingSections).size !== headingTokens.length
-    ) {
-      errors.push(`${fileName}: ${reason}`);
-    }
-  };
   const requireHeadingScopedText = (
     fileName,
     headingTokens,
@@ -7161,7 +7131,9 @@ const validateCurrentBatchContract = (files) => {
   );
   requireCssRule(
     '.app-history-grid',
-    ['--card-table-columns: 7rem 6rem 7.5rem minmax(0, 1fr);'],
+    [
+      '--card-table-columns: max-content max-content fit-content(7.5rem) minmax(0, 1fr);',
+    ],
     'request history must preserve its four shared table tracks'
   );
 

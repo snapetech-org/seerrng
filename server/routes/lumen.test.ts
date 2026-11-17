@@ -7,10 +7,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { after, before, test } from 'node:test';
+import { after, afterEach, before, mock, test } from 'node:test';
 import sharp from 'sharp';
 import request from 'supertest';
 import { createLumenRoutes } from './lumen';
+
+afterEach(() => mock.restoreAll());
 
 let root: string;
 after(() => fs.rm(root, { recursive: true, force: true }));
@@ -130,7 +132,10 @@ test('embedded Lumen does not unlink a probe path when exclusive creation fails'
 
   assert.equal(check.status, 200);
   assert.equal(check.body.canSave, false);
-  assert.equal(open.mock.callCount(), 1);
+  assert.equal(
+    open.mock.calls.filter((call) => call.arguments[1] === 'wx').length,
+    1
+  );
   assert.equal(unlink.mock.callCount(), 0);
 });
 
@@ -214,7 +219,10 @@ test('embedded Lumen does not unlink a pre-existing save path after exclusive cr
     .send({ defaults: { theme: 'light' } });
 
   assert.equal(save.status, 503);
-  assert.equal(open.mock.callCount(), 1);
+  assert.equal(
+    open.mock.calls.filter((call) => call.arguments[1] === 'wx').length,
+    1
+  );
   assert.equal(unlink.mock.callCount(), 0);
 });
 

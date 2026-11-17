@@ -421,7 +421,8 @@ const getSeasonMetadataProvider = async (tvId: number, user?: User) => {
 
 const requestSeasonBatchRateLimit = rateLimit({
   windowMs: 60_000,
-  limit: 6,
+  // Small client batches avoid proxy timeouts on long-running series.
+  limit: 24,
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) =>

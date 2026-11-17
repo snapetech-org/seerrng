@@ -123,7 +123,7 @@ export interface ExternalAPIOptions {
    */
   sharedRateLimit?: {
     key: string;
-    limits: Array<{ maxRequests: number; perMilliseconds: number }>;
+    limits: { maxRequests: number; perMilliseconds: number }[];
     maxPendingRequests?: number;
     maxWaitMs?: number;
   };
@@ -354,7 +354,7 @@ class ExternalAPI {
   private onRequestFailure?: ExternalAPIOptions['onRequestFailure'];
   private sharedRateLimit?: {
     keyDigest: string;
-    limits: Array<{ maxRequests: number; perMilliseconds: number }>;
+    limits: { maxRequests: number; perMilliseconds: number }[];
     maxPendingRequests: number;
     maxWaitMs: number;
   };
@@ -367,11 +367,11 @@ class ExternalAPI {
       lastUsedAt: number;
       maxPendingRequests: number;
       maxWaitMs: number;
-      limits: Array<{
+      limits: {
         maxRequests: number;
         perMilliseconds: number;
         timestamps: number[];
-      }>;
+      }[];
     }
   >();
   private static explicitCacheKeys = new WeakMap<
@@ -567,8 +567,7 @@ class ExternalAPI {
           `${maxRequests}/${perMilliseconds}`
       )
       .join(',');
-    const queueConfigKey =
-      `${requested.maxPendingRequests}/${requested.maxWaitMs}`;
+    const queueConfigKey = `${requested.maxPendingRequests}/${requested.maxWaitMs}`;
     let state = ExternalAPI.sharedRateLimitStates.get(requested.keyDigest);
     if (state) {
       const currentConfig = state.limits
@@ -582,9 +581,7 @@ class ExternalAPI {
           'External API shared rate limit configuration changed.'
         );
       }
-      if (
-        `${state.maxPendingRequests}/${state.maxWaitMs}` !== queueConfigKey
-      ) {
+      if (`${state.maxPendingRequests}/${state.maxWaitMs}` !== queueConfigKey) {
         throw new Error(
           'External API shared rate limit configuration changed.'
         );
@@ -595,16 +592,12 @@ class ExternalAPI {
         const windowMs = Math.max(
           ...candidate.limits.map((limit) => limit.perMilliseconds)
         );
-        if (
-          candidate.pending === 0 &&
-          now - candidate.lastUsedAt >= windowMs
-        ) {
+        if (candidate.pending === 0 && now - candidate.lastUsedAt >= windowMs) {
           ExternalAPI.sharedRateLimitStates.delete(key);
         }
       }
       if (
-        ExternalAPI.sharedRateLimitStates.size >=
-        MAX_SHARED_RATE_LIMIT_STATES
+        ExternalAPI.sharedRateLimitStates.size >= MAX_SHARED_RATE_LIMIT_STATES
       ) {
         throw new Error('External API rate limit capacity exceeded.');
       }
@@ -637,11 +630,7 @@ class ExternalAPI {
     state.tail = previous.then(() => turn);
 
     try {
-      await ExternalAPI.waitForRateLimitTurn(
-        previous,
-        signal,
-        deadline
-      );
+      await ExternalAPI.waitForRateLimitTurn(previous, signal, deadline);
       while (true) {
         if (signal?.aborted) {
           throw new axios.CanceledError('External API request canceled');
@@ -696,9 +685,12 @@ class ExternalAPI {
       await Promise.race([
         turn,
         new Promise<never>((_resolve, reject) => {
-          timer = setTimeout(() => {
-            reject(new ExternalAPIQuotaError());
-          }, Math.max(1, deadline - Date.now()));
+          timer = setTimeout(
+            () => {
+              reject(new ExternalAPIQuotaError());
+            },
+            Math.max(1, deadline - Date.now())
+          );
           if (signal?.addEventListener) {
             abort = () =>
               reject(new axios.CanceledError('External API request canceled'));

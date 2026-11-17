@@ -1533,7 +1533,7 @@ export const RequestStatusCard = ({
     }
 
     return () => resizeObserver.disconnect();
-  }, []);
+  }, [showDetails]);
   const actionControls = (
     <>
       {item.request.type === 'tv' &&
@@ -1736,14 +1736,12 @@ export const RequestStatusCard = ({
           {detailHref ? (
             <Link
               href={detailHref}
-              className="detail-summary-title app-detail-title-link"
+              className="card-title app-detail-title-link"
             >
               {displayTitle}
             </Link>
           ) : (
-            <h3 className="detail-summary-title app-detail-title">
-              {displayTitle}
-            </h3>
+            <h3 className="card-title">{displayTitle}</h3>
           )}
 
           <div className="detail-card-heading-spacing detail-three-column-grid">
@@ -2217,6 +2215,7 @@ export const RequestStatusCard = ({
       {persius && showDetails && (
         <Modal
           title={title}
+          dialogClass="request-modal-site-surface"
           onCancel={() => setShowDetails(false)}
           cancelText={intl.formatMessage(globalMessages.close)}
         >

@@ -713,7 +713,11 @@
   color: var(--interface-muted);
   font-size: 13px;
 }
-[data-interface-theme='persiusNG'] :is(.app-button, .poster-control) {
+[data-interface-theme='persiusNG']
+  :is(
+    .app-button,
+    .poster-control:not(.media-type-badge-card):not(.poster-control-book-format)
+  ) {
   min-height: 36px;
   border-radius: 999px;
   padding-inline: 14px;
@@ -2320,10 +2324,11 @@
   }
 }
 
-
 /* Alternative user palettes recolor Persius' existing color roles without
    changing its separate layout, typography or semantic success/warning/error colors. */
-:root[data-interface-theme='persiusNG'][data-theme-palette]:not([data-theme-palette='seerr']) {
+:root[data-interface-theme='persiusNG'][data-theme-palette]:not(
+    [data-theme-palette='seerr']
+  ) {
   --interface-page: rgb(var(--theme-page-bg));
   --interface-panel: rgb(var(--theme-control-surface));
   --interface-panel-raised: rgb(var(--theme-control-surface-hover));

@@ -217,6 +217,109 @@ afterEach(() => {
 });
 
 describe('software request routes', () => {
+  const stubNesTitle = () => {
+    mock.method(QuestarrNGAPI.prototype, 'getCatalogGame', async () => ({
+      ...pcGame,
+      platformOptions: [{ id: 130, name: 'Nintendo Entertainment System' }],
+    }));
+    mock.method(
+      ROMarrNGAPI.prototype,
+      'getPlatforms',
+      async () =>
+        [
+          {
+            slug: 'nes',
+            name: 'Nintendo Entertainment System',
+            aliases: [],
+            media: 'cartridge',
+            extensions: ['.nes'],
+            max_size_mb: 128,
+          },
+        ] as never
+    );
+  };
+  for (const status of ['pending', 'available'] as const) {
+    it(`rejects another user's ${status} request for the same target without disclosing the owner`, async () => {
+      stubNesTitle();
+      await createSoftwareRequest({ requestedById: 1, status });
+      const response = await request(createApp())
+        .post('/request/software')
+        .send({
+          category: 'retro',
+          catalogId: 42,
+          platformSlug: 'nes',
+        });
+      assert.equal(response.status, 409);
+      assert.match(response.body.error, /already requested or available/);
+      assert.equal(response.body.request, undefined);
+      assert.equal(await getRepository(SoftwareRequest).count(), 1);
+    });
+  }
+  it('serializes simultaneous requests for one target and permits a different selection', async () => {
+    stubNesTitle();
+    const app = createApp();
+    const payload = { category: 'retro', catalogId: 42, platformSlug: 'nes' };
+    const responses = await Promise.all([
+      request(app).post('/request/software').send(payload),
+      request(app).post('/request/software').send(payload),
+    ]);
+    assert.deepEqual(
+      responses.map((response) => response.status).sort(),
+      [201, 409]
+    );
+    assert.equal(await getRepository(SoftwareRequest).count(), 1);
+    const different = await request(app)
+      .post('/request/software')
+      .send({
+        ...payload,
+        selection: {
+          kind: 'patch',
+          projectId: 'fixture-patch',
+          keepOriginal: true,
+        },
+      });
+    assert.equal(different.status, 201);
+  });
+
+  it('rejects provider library ownership at creation and rechecks it before approval', async () => {
+    stubNesTitle();
+    const lookup = mock.method(
+      ROMarrNGAPI.prototype,
+      'lookupLibrary',
+      async () => ({
+        ready: true,
+        partial: false,
+        matches: [{ title: 'Test Game', platform: 'nes' }],
+      })
+    );
+    const response = await request(createApp()).post('/request/software').send({
+      category: 'retro',
+      catalogId: 42,
+      platformSlug: 'nes',
+    });
+    assert.equal(response.status, 409);
+    assert.equal(await getRepository(SoftwareRequest).count(), 0);
+    const pending = await createSoftwareRequest({ status: 'pending' });
+    const dispatch = mock.method(
+      ROMarrNGAPI.prototype,
+      'createRequest',
+      async () => {
+        throw new Error('must not dispatch');
+      }
+    );
+    const approval = await request(
+      createApp(1, Permission.MANAGE_REQUESTS)
+    ).post(`/request/software/status/${pending.id}/approve`);
+    assert.equal(approval.status, 409);
+    assert.equal(dispatch.mock.calls.length, 0);
+    assert.equal(lookup.mock.calls.length, 2);
+    assert.equal(
+      (await getRepository(SoftwareRequest).findOneByOrFail({ id: pending.id }))
+        .status,
+      'pending'
+    );
+  });
+
   it('filters software requests by category before pagination', async () => {
     await createSoftwareRequest({
       category: 'retro',

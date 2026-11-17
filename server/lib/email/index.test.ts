@@ -63,3 +63,48 @@ describe('password setup email rendering', () => {
     assert.match(html, /Choose a password/);
   });
 });
+
+for (const template of [
+  'resetpassword',
+  'media-request',
+  'media-issue',
+  'test-email',
+]) {
+  it(`${template} allows HTTP(S) links and rejects executable, credentialed and control-character URLs`, async () => {
+    const settings = getSettings();
+    settings.main.applicationUrl = 'https://seerr.example';
+    const email = new PreparedEmail(settings.notifications.agents.email);
+    const render = (url: string) =>
+      email.render(join(__dirname, `../../templates/email/${template}/html`), {
+        locale: 'en',
+        direction: 'ltr',
+        applicationTitle: 'SeerrNG',
+        applicationUrl: url,
+        actionUrl: url,
+        resetPasswordLink: url,
+        logoUrl: url,
+        imageUrl: url,
+        episodeQueue: { helpUrl: url, summary: 'Queue', helpLabel: 'Help' },
+        mediaExtra: [],
+        mediaName: 'Fixture',
+        body: 'Fixture',
+        actionLabel: 'Open',
+      });
+    for (const unsafe of [
+      'javascript:alert(1)',
+      'data:text/html,<script>alert(1)</script>',
+      'https://user:secret@example.com/',
+      'https://example.com/\nunsafe',
+    ]) {
+      const html = await render(unsafe);
+      assert.doesNotMatch(html, /\b(?:href|src)="/);
+    }
+    const html = await render('https://seerr.example/path?q=one&next=two');
+    assert.match(
+      html,
+      /href="https:\/\/seerr\.example\/path\?q=one(?:&amp;|&)next=two"/
+    );
+    const css = await render("https://seerr.example/image');color:red;('");
+    assert.doesNotMatch(css, /image'\)/);
+  });
+}

@@ -160,6 +160,7 @@ interface CatalogGame {
   availability?:
     'available' | 'owned' | 'tracked' | 'downloading' | 'missing' | 'unknown';
   availableSystems?: string[];
+  trackedSystems?: string[];
   rating?: number | null;
   publishers?: string[];
   developers?: string[];
@@ -598,6 +599,14 @@ const SoftwareCatalog = ({
               ? intl.formatMessage(messages.availabilityUnknown)
               : '';
 
+  const selectedTargetTracked =
+    !selection &&
+    selectedCategory !== 'game' &&
+    selectedGame?.trackedSystems?.includes(selectedSystem) === true;
+  const selectedTargetAvailable =
+    !selection &&
+    selectedCategory !== 'game' &&
+    selectedGame?.availableSystems?.includes(selectedSystem) === true;
   return (
     <>
       {!embedded && <PageTitle title={intl.formatMessage(messages.title)} />}
@@ -943,7 +952,13 @@ const SoftwareCatalog = ({
             }
             onCancel={closeRequest}
             onOk={canRequest ? submitRequest : undefined}
-            okText={intl.formatMessage(messages.request)}
+            okText={intl.formatMessage(
+              selectedTargetAvailable
+                ? messages.available
+                : selectedTargetTracked
+                  ? messages.tracked
+                  : messages.request
+            )}
             cancelText={intl.formatMessage(
               canRequest ? globalMessages.cancel : globalMessages.close
             )}
@@ -951,6 +966,8 @@ const SoftwareCatalog = ({
               requesting ||
               (quota?.software?.restricted && !canManageRequests) ||
               (selectedCategory !== 'game' && !selectedSystem) ||
+              selectedTargetAvailable ||
+              selectedTargetTracked ||
               (selectedCategory === 'game' &&
                 (!variant.operatingSystem || !variant.architecture))
             }

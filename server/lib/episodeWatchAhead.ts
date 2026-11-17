@@ -23,6 +23,7 @@ import MediaRequest, {
 import SeasonRequest, {
   isActiveSeasonRequest,
 } from '@server/entity/SeasonRequest';
+import { User } from '@server/entity/User';
 import type { SeasonEpisodeSelection } from '@server/interfaces/api/seasonInterfaces';
 import { hasEpisodeQueueGrant } from '@server/lib/episodeQueueGrant';
 import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
@@ -30,6 +31,7 @@ import {
   captureMediaServerUserAuthority,
   runWithMediaServerUserAuthority,
 } from '@server/lib/mediaServerUserAuthority';
+import { getMediaServerWatchStatus } from '@server/lib/mediaServerWatchStatus';
 import { runWithCurrentServarrService } from '@server/lib/serviceAdmission';
 import type { SonarrSettings } from '@server/lib/settings';
 import { runUserSecurityMutation } from '@server/lib/userSecurityMutation';
@@ -41,7 +43,7 @@ import { In, MoreThan } from 'typeorm';
 
 export const MAX_WATCH_AHEAD_EPISODES = 5;
 export const MAX_WATCH_AHEAD_ENROLLMENTS_PER_RUN = 1_000;
-export const WATCH_AHEAD_RECONCILE_INTERVAL_SECONDS = 15 * 60;
+export const WATCH_AHEAD_RECONCILE_INTERVAL_SECONDS = 60;
 
 export interface WatchAheadEpisode {
   seasonNumber: number;
@@ -222,6 +224,20 @@ const getProgressFromRequest = (
     : undefined;
 };
 
+const getStartingProgress = (
+  request: MediaRequest
+): WatchAheadProgress | undefined => {
+  const seasons = request.seasons?.filter(isActiveSeasonRequest) ?? [];
+  if (seasons.length !== 1 || seasons[0].episodeNumbers?.length !== 1)
+    return undefined;
+  const episodeNumber = seasons[0].episodeNumbers[0];
+  const progress = {
+    seasonNumber: seasons[0].seasonNumber,
+    episodeNumber: episodeNumber - 1,
+  };
+  return isValidProgress(progress) ? progress : undefined;
+};
+
 const getLaterProgress = (
   existing: WatchAheadProgress | undefined,
   observed: WatchAheadProgress | undefined
@@ -305,18 +321,29 @@ class EpisodeWatchAhead {
       const enrollments = await this.getEnrollments();
       if (enrollments.length === 0) return;
 
-      const advancedParents =
-        settings.main.mediaServerType === MediaServerType.PLEX
-          ? await this.reconcilePlexPlayback(enrollments, settings)
-          : settings.jellyfin.apiKey
-            ? await this.reconcileJellyfinPlayback(enrollments, settings)
-            : new Set<number>();
+      let advancedParents = new Set<number>();
+      try {
+        advancedParents =
+          settings.main.mediaServerType === MediaServerType.PLEX
+            ? await this.reconcilePlexPlayback(enrollments, settings)
+            : settings.jellyfin.apiKey
+              ? await this.reconcileJellyfinPlayback(enrollments, settings)
+              : new Set<number>();
+      } catch (error) {
+        logger.warn(
+          'Active playback unavailable; reconciling saved episode state',
+          {
+            label: 'Episode Queue',
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          }
+        );
+      }
 
       const now = Math.floor(Date.now() / 1_000);
       for (const enrollment of enrollments) {
         if (advancedParents.has(enrollment.id)) continue;
         if (
-          !getProgressFromRequest(enrollment) ||
           enrollment.status === MediaRequestStatus.PENDING ||
           (enrollment.status !== MediaRequestStatus.APPROVED &&
             enrollment.status !== MediaRequestStatus.COMPLETED) ||
@@ -522,7 +549,7 @@ class EpisodeWatchAhead {
         async () => {
           const snapshot = await repository.findOne({
             where: { id: requestId },
-            relations: { media: true, requestedBy: true },
+            relations: { media: true, requestedBy: true, seasons: true },
           });
           if (
             !snapshot ||
@@ -539,11 +566,48 @@ class EpisodeWatchAhead {
             return;
           }
 
+          // Read persisted watched state too: marking an item watched, or stopping
+          // playback between job ticks, does not leave an active session.
+          try {
+            // The enclosing user-security lease keeps this fresh credential
+            // read and provider call under the same revocation boundary.
+            const viewer = await getRepository(User).findOneOrFail({
+              where: { id: snapshot.requestedBy.id },
+              select: {
+                id: true,
+                plexToken: true,
+                jellyfinAuthToken: true,
+                jellyfinUserId: true,
+                jellyfinDeviceId: true,
+              },
+            });
+            const watched = await getMediaServerWatchStatus(
+              snapshot.media,
+              viewer,
+              true
+            );
+            for (const season of watched.seasons ?? []) {
+              for (const episode of season.episodes) {
+                if (episode.watched && isValidProgress(episode)) {
+                  observedProgress = getLaterProgress(
+                    observedProgress,
+                    episode
+                  );
+                }
+              }
+            }
+          } catch (error) {
+            logger.debug('Saved episode watch state unavailable', {
+              label: 'Episode Queue',
+              requestId,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            });
+          }
           const currentProgress = getProgressFromRequest(snapshot);
-          const nextProgress = getLaterProgress(
-            currentProgress,
-            observedProgress
-          );
+          const nextProgress =
+            getLaterProgress(currentProgress, observedProgress) ??
+            getStartingProgress(snapshot);
           const hasNewProgress =
             !!observedProgress &&
             (!currentProgress ||
@@ -574,11 +638,12 @@ class EpisodeWatchAhead {
             Number(tvdbId) <= 0 ||
             !sonarrSettings
           ) {
-            await this.saveProgressAndReconcileTime(
-              requestId,
-              nextProgress,
-              now
-            );
+            if (currentProgress || observedProgress)
+              await this.saveProgressAndReconcileTime(
+                requestId,
+                nextProgress,
+                now
+              );
             return;
           }
 
@@ -598,18 +663,20 @@ class EpisodeWatchAhead {
                 )
             );
             if (!reconciled) {
+              if (currentProgress || observedProgress)
+                await this.saveProgressAndReconcileTime(
+                  requestId,
+                  nextProgress,
+                  now
+                );
+            }
+          } catch (error) {
+            if (currentProgress || observedProgress)
               await this.saveProgressAndReconcileTime(
                 requestId,
                 nextProgress,
                 now
               );
-            }
-          } catch (error) {
-            await this.saveProgressAndReconcileTime(
-              requestId,
-              nextProgress,
-              now
-            );
             logger.warn('Sonarr watch-ahead reconciliation failed', {
               label: 'Episode Queue',
               requestId,
@@ -659,7 +726,7 @@ class EpisodeWatchAhead {
       const requestRepository = manager.getRepository(MediaRequest);
       const current = await requestRepository.findOne({
         where: { id: requestId },
-        relations: { media: true, requestedBy: true },
+        relations: { media: true, requestedBy: true, seasons: true },
       });
       if (
         !current ||
@@ -677,11 +744,23 @@ class EpisodeWatchAhead {
         return;
       }
 
-      const latestProgress = getLaterProgress(
-        getProgressFromRequest(current),
-        observedProgress
-      );
+      const latestProgress =
+        getLaterProgress(getProgressFromRequest(current), observedProgress) ??
+        getStartingProgress(current);
       if (!latestProgress) return;
+      // Fill the initial buffer only after Sonarr confirms that the selected
+      // starting episode has imported. Approval alone is not file evidence.
+      if (
+        !getProgressFromRequest(current) &&
+        !observedProgress &&
+        !sonarrEpisodes.some(
+          (episode) =>
+            episode.hasFile &&
+            episode.seasonNumber === latestProgress.seasonNumber &&
+            episode.episodeNumber === latestProgress.episodeNumber + 1
+        )
+      )
+        return;
       const transactionNow = Math.floor(Date.now() / 1_000);
       const transactionIsDue =
         current.watchAheadLastReconciledAt == null ||

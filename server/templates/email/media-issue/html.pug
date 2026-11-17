@@ -1,3 +1,5 @@
+include ../http-url.pug
+
 doctype html
 html(lang=locale || 'en' dir=direction || 'ltr')
   head
@@ -23,11 +25,11 @@ html(lang=locale || 'en' dir=direction || 'ltr')
           td(style="text-align: center;")
             if logoUrl
               if applicationUrl
-                //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- the link target is the administrator-configured application URL
-                a(href=applicationUrl style='margin: 0 1rem;')
-                  img(src=logoUrl style='width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
+                //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+                a(href=safeEmailUrl(applicationUrl) style='margin: 0 1rem;')
+                  img(src=safeEmailUrl(logoUrl) style='width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
               else
-                img(src=logoUrl style='margin: 0 1rem; width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
+                img(src=safeEmailUrl(logoUrl) style='margin: 0 1rem; width: 26rem; image-rendering: crisp-edges; image-rendering: -webkit-optimize-contrast;')
             else
               div(style='margin: 0 1rem 2.5rem; font-size: 3em; font-weight: 700;')
                 | #{applicationTitle}
@@ -53,6 +55,7 @@ html(lang=locale || 'en' dir=direction || 'ltr')
         if actionUrl
           tr
             td
-              a(href=actionUrl style='display: block; margin: 1.5rem 3rem 0; text-decoration: none; font-size: 1.0em; line-height: 2.25em;')
+              //- nosemgrep: javascript.express.security.audit.xss.pug.var-in-href.var-in-href -- shared safeEmailUrl enforces HTTP(S), no credentials/control bytes; all templates have rendered security regressions
+              a(href=safeEmailUrl(actionUrl) style='display: block; margin: 1.5rem 3rem 0; text-decoration: none; font-size: 1.0em; line-height: 2.25em;')
                 span(style='padding: 0.2rem; font-weight: 500; text-align: center; border-radius: 10px; background-color: rgb(99,102,241); color: #fff; display: block; border: 1px solid rgba(255,255,255,0.2);')
                   | #{viewIssueLabel}

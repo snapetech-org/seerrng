@@ -1249,6 +1249,8 @@ export const apiMessages: Record<
   m58242dec1b62df378494: 'Bulk requests are limited to {value0} items.',
   m58264e63a787fc484d30: '{value0} worked on the sound',
   m583d91a9827afc4815f1: 'OIDC request destination is not allowed.',
+  m5840c2a6d0d263505ea7:
+    'This title is already in the library for the selected target.',
   m5859e8807b54c4c52ee5: 'Magazine not found.',
   m586707088a5142c6e28e: 'Unable to retrieve movie genres.',
   m586cfbca501537152c1f:
@@ -1257,6 +1259,8 @@ export const apiMessages: Record<
   m587d81c44e1334a9ae48: 'Metron returned an invalid series response.',
   m589b33ff42d3a48d58e0: 'The IMDb export has no titles.',
   m58a0f9abef577d07001e: 'Media server returned an invalid user identity.',
+  m58b8f995cf24b42aeffb:
+    'This title is already requested or available for the selected target.',
   m58ba5c083248bb6e2397: 'Failed to update series in Sonarr',
   m58bd81064f71ae3d232b: 'User mutation authority changed before admission.',
   m58c2da0843b04b36b032: '{value0} must be between 1 and 65535.',
@@ -1340,7 +1344,6 @@ export const apiMessages: Record<
   m5e8ab4b2c7e090545787: 'download had no seeds for 2 hours',
   m5e9f9877cb0aa02c7045: 'You do not have permission to retry this request.',
   m5ebafc4c13de2b6c4cb9: '{value0} must contain positive integer ids.',
-  m5ee515b18d694b909176: 'Book metadata lookup timed out. Please retry.',
   m5eea0138b3b0b1a7fa24: 'You do not have permission to view this issue.',
   m5f2db4725c05ddb2e2a2: 'Linked account changed.',
   m5f513a3099516336a695:

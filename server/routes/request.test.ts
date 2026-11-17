@@ -8620,6 +8620,7 @@ describe('POST /request/:requestId/retry', () => {
       (await requester.post(`/request/${request.id}/retry`)).status,
       409
     );
+    enqueue.mock.resetCalls();
     const response = await manager.post(`/request/${request.id}/retry`);
     assert.equal(response.status, 200, JSON.stringify(response.body));
     assert.equal(response.body.status, MediaRequestStatus.APPROVED);

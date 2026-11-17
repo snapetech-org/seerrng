@@ -27,6 +27,7 @@ import {
 } from '@server/lib/softwareCatalogPlatformMapping';
 import {
   approveSoftwareRequest,
+  assertSoftwareTargetMissing,
   cancelSoftwareRequest,
   declineSoftwareRequest,
   hasSoftwareRequestAccess,
@@ -42,6 +43,7 @@ import {
   streamSoftwareRequestAsset,
   streamSoftwareRequestBundle,
   withdrawPendingSoftwareRequest,
+  withSoftwareRequestAdmission,
   type PcGameVariant,
 } from '@server/lib/softwareRequests';
 import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
@@ -761,6 +763,7 @@ const addTrackedRequestAvailability = async (
     return results.map((game) => {
       const tracked = requests.filter(
         (request) =>
+          !request.selection &&
           request.catalogProvider === (game.catalogProvider ?? 'igdb') &&
           request.catalogKey === game.catalogId
       );
@@ -792,7 +795,20 @@ const addTrackedRequestAvailability = async (
       return {
         ...game,
         availability,
-        ...(category === 'game' ? {} : { availableSystems }),
+        ...(category === 'game'
+          ? {}
+          : {
+              availableSystems,
+              trackedSystems: [
+                ...new Set(
+                  tracked
+                    .filter((request) => request.status !== 'available')
+                    .flatMap((request) =>
+                      request.platformSlug ? [request.platformSlug] : []
+                    )
+                ),
+              ],
+            }),
       };
     });
   } catch (error) {
@@ -1428,230 +1444,202 @@ const parseSoftwareSelection = (
   return { error: 'Unknown selection.' };
 };
 
-softwareRoutes.post('/', async (req, res) => {
-  const body = isRecord(req.body) ? req.body : {};
-  const category = body.category;
-  const settings = getSettings().softwareAcquisition;
-  const expectedCatalogProvider =
-    category !== 'game' && getEmulationCatalogProvider() === 'romarr-dat'
-      ? 'dat'
-      : 'igdb';
-  const catalogProvider =
-    body.catalogProvider === undefined
-      ? expectedCatalogProvider
-      : body.catalogProvider;
-  const catalogKey =
-    typeof body.catalogKey === 'string'
-      ? body.catalogKey
-      : typeof body.catalogId === 'string'
-        ? body.catalogId
-        : '';
-  const catalogId =
-    catalogProvider === 'igdb' ? Number(body.catalogId ?? catalogKey) : null;
-  if (
-    (category !== 'retro' && category !== 'modern' && category !== 'game') ||
-    (catalogProvider !== 'igdb' && catalogProvider !== 'dat') ||
-    catalogProvider !== expectedCatalogProvider ||
-    (catalogProvider === 'igdb' &&
-      (!Number.isSafeInteger(catalogId) || (catalogId ?? 0) <= 0)) ||
-    (catalogProvider === 'dat' &&
-      (category === 'game' || !/^dat-[0-9a-f]{64}$/.test(catalogKey)))
-  ) {
-    return res.status(400).json({
-      error: 'A valid software category and catalog title are required.',
-    });
-  }
-  if (!isSoftwareCategoryEnabled(category, req.user)) {
-    return disabledCategoryResponse(res, category);
-  }
-  if (!req.user?.hasPermission(Permission.REQUEST)) {
-    return res
-      .status(403)
-      .json({ error: 'You do not have permission to request software.' });
-  }
-  const softwareQuota = (await req.user.getQuota()).software;
-  if (
-    softwareQuota.restricted &&
-    !req.user.hasPermission(Permission.MANAGE_REQUESTS)
-  ) {
-    return res.status(403).json({ error: 'SOFTWARE_QUOTA_EXCEEDED' });
-  }
-
-  const parsedSelection = parseSoftwareSelection(body.selection, category);
-  if ('error' in parsedSelection) {
-    return res.status(400).json({ error: parsedSelection.error });
-  }
-  const { selection, selectionKey } = parsedSelection;
-
-  const repository = getRepository(SoftwareRequest);
-  try {
-    const selectedGame = sanitizeGame(
-      catalogProvider === 'dat'
-        ? await getRomarrApi().getDatCatalogGame(catalogKey)
-        : await getCatalogApi(category).getCatalogGame(catalogId as number)
-    );
-    const selectedCatalogKey =
-      catalogProvider === 'dat' ? catalogKey : String(catalogId);
-    let provider: SoftwareRequestProvider;
-    let platformSlug: string | null = null;
-    let platformName: string | null = null;
-    let platformId: number | null = null;
-    let variant: PcGameVariant | null = null;
-
-    if (category === 'game') {
-      if (!isValidPcVariant(body.variant)) {
-        return res.status(400).json({
-          error:
-            'Choose an operating system and architecture for this PC game.',
-        });
-      }
-      if (
-        !selectedGame.platformOptions.some(({ name }) => isPcPlatformName(name))
-      ) {
-        return res
-          .status(400)
-          .json({ error: 'The selected title has no supported PC release.' });
-      }
-      provider = 'questarr';
-      variant = body.variant;
-    } else {
-      const requestedSlug =
-        typeof body.platformSlug === 'string' ? body.platformSlug : '';
-      const systems = await getEmulationPlatforms();
-      const system = systems.find(
-        (item) => item.slug === requestedSlug && item.group === category
-      );
-      if (!system) {
-        return res.status(400).json({
-          error: 'Choose a system assigned to this emulation category.',
-        });
-      }
-      const catalogPlatform = systemMatchesGame(
-        system,
-        selectedGame,
-        settings.emulationPlatformMappings ?? {}
-      );
-      if (!catalogPlatform) {
-        return res
-          .status(400)
-          .json({ error: 'The selected title is not listed for this system.' });
-      }
-      provider = 'romarr';
-      platformSlug = system.slug;
-      platformName = system.name;
-      platformId = catalogPlatform.id ?? null;
-    }
-
-    const query = repository
-      .createQueryBuilder('request')
-      .where('request.requestedById = :userId', { userId: req.user.id })
-      .andWhere('request.catalogProvider = :catalogProvider', {
-        catalogProvider,
-      })
-      .andWhere('request.catalogKey = :catalogKey', {
-        catalogKey: selectedCatalogKey,
-      })
-      .andWhere('request.category = :category', { category })
-      .andWhere('request.status IN (:...statuses)', {
-        statuses: [...ACTIVE_STATUSES, 'available'],
-      });
-    if (selectionKey) {
-      query.andWhere('request.selectionKey = :selectionKey', { selectionKey });
-    } else {
-      query.andWhere('request.selectionKey IS NULL');
-    }
-    if (platformSlug)
-      query.andWhere('request.platformSlug = :platformSlug', { platformSlug });
-    if (variant) {
-      query
-        .andWhere('request.operatingSystem = :operatingSystem', {
-          operatingSystem: variant.operatingSystem,
-        })
-        .andWhere('request.architecture = :architecture', {
-          architecture: variant.architecture,
-        });
-    }
-    if (await query.getOne()) {
-      return res.status(409).json({
-        error: 'You already have this title requested for the selected target.',
-      });
-    }
-
-    const request = repository.create({
-      requestedById: req.user.id,
-      category,
-      provider,
-      status: 'pending',
-      externalRequestId: `seerrng:software:${randomUUID()}`,
-      catalogId: catalogId ?? null,
-      catalogProvider,
-      catalogKey: selectedCatalogKey,
-      title: selectedGame.title,
-      summary: selectedGame.summary,
-      coverUrl: selectedGame.coverUrl,
-      platformSlug,
-      platformName,
-      platformId,
-      operatingSystem: variant?.operatingSystem ?? null,
-      architecture: variant?.architecture ?? null,
-      selection,
-      selectionKey,
-      attempt: 0,
-      providerStage: 'pending',
-      failureCode: null,
-      errorMessage: null,
-    });
-    await repository.save(request);
-    const eventRepository = getRepository(SoftwareRequestStatusEvent);
-    await eventRepository.save(
-      eventRepository.create({
-        requestId: request.id,
-        requestedById: request.requestedById,
-        status: request.status,
-        message: 'Request submitted.',
-        providerStage: request.providerStage,
-        failureCode: null,
-        percent: null,
-        fingerprint: `${request.status}:0:${request.providerStage}:na:na`,
-      })
-    );
-
-    const actor = await getRepository(User).findOneBy({ id: req.user.id });
+softwareRoutes.post('/', (req, res) =>
+  withSoftwareRequestAdmission(async () => {
+    const body = isRecord(req.body) ? req.body : {};
+    const category = body.category;
+    const settings = getSettings().softwareAcquisition;
+    const expectedCatalogProvider =
+      category !== 'game' && getEmulationCatalogProvider() === 'romarr-dat'
+        ? 'dat'
+        : 'igdb';
+    const catalogProvider =
+      body.catalogProvider === undefined
+        ? expectedCatalogProvider
+        : body.catalogProvider;
+    const catalogKey =
+      typeof body.catalogKey === 'string'
+        ? body.catalogKey
+        : typeof body.catalogId === 'string'
+          ? body.catalogId
+          : '';
+    const catalogId =
+      catalogProvider === 'igdb' ? Number(body.catalogId ?? catalogKey) : null;
     if (
-      actor?.hasPermission(
-        [Permission.MANAGE_REQUESTS, Permission.AUTO_APPROVE],
-        { type: 'or' }
-      )
+      (category !== 'retro' && category !== 'modern' && category !== 'game') ||
+      (catalogProvider !== 'igdb' && catalogProvider !== 'dat') ||
+      catalogProvider !== expectedCatalogProvider ||
+      (catalogProvider === 'igdb' &&
+        (!Number.isSafeInteger(catalogId) || (catalogId ?? 0) <= 0)) ||
+      (catalogProvider === 'dat' &&
+        (category === 'game' || !/^dat-[0-9a-f]{64}$/.test(catalogKey)))
     ) {
-      const approved = await approveSoftwareRequest(request, actor.id);
-      return res.status(201).json({
-        request: serializeRequest(approved.request),
-        status: approved.status,
-        assets: approved.assets,
+      return res.status(400).json({
+        error: 'A valid software category and catalog title are required.',
       });
     }
-
-    const hydrated = await repository.findOne({
-      where: { id: request.id },
-      relations: { requestedBy: true },
-    });
-    await notifySoftwareRequestStatus(hydrated ?? request, 'pending');
-    return res
-      .status(201)
-      .json({ request: serializeRequest(hydrated ?? request) });
-  } catch (error) {
-    if (error instanceof SoftwareProviderNotConfiguredError) {
-      return res.status(503).json({ error: error.message });
+    if (!isSoftwareCategoryEnabled(category, req.user)) {
+      return disabledCategoryResponse(res, category);
     }
-    logger.error('Failed to create software request', {
-      userId: req.user.id,
-      ...getHttpErrorDetails(error),
-    });
-    return res
-      .status(502)
-      .json({ error: 'Software request could not be created.' });
-  }
-});
+    if (!req.user?.hasPermission(Permission.REQUEST)) {
+      return res
+        .status(403)
+        .json({ error: 'You do not have permission to request software.' });
+    }
+    const softwareQuota = (await req.user.getQuota()).software;
+    if (
+      softwareQuota.restricted &&
+      !req.user.hasPermission(Permission.MANAGE_REQUESTS)
+    ) {
+      return res.status(403).json({ error: 'SOFTWARE_QUOTA_EXCEEDED' });
+    }
+
+    const parsedSelection = parseSoftwareSelection(body.selection, category);
+    if ('error' in parsedSelection) {
+      return res.status(400).json({ error: parsedSelection.error });
+    }
+    const { selection, selectionKey } = parsedSelection;
+
+    const repository = getRepository(SoftwareRequest);
+    try {
+      const selectedGame = sanitizeGame(
+        catalogProvider === 'dat'
+          ? await getRomarrApi().getDatCatalogGame(catalogKey)
+          : await getCatalogApi(category).getCatalogGame(catalogId as number)
+      );
+      const selectedCatalogKey =
+        catalogProvider === 'dat' ? catalogKey : String(catalogId);
+      let provider: SoftwareRequestProvider;
+      let platformSlug: string | null = null;
+      let platformName: string | null = null;
+      let platformId: number | null = null;
+      let variant: PcGameVariant | null = null;
+
+      if (category === 'game') {
+        if (!isValidPcVariant(body.variant)) {
+          return res.status(400).json({
+            error:
+              'Choose an operating system and architecture for this PC game.',
+          });
+        }
+        if (
+          !selectedGame.platformOptions.some(({ name }) =>
+            isPcPlatformName(name)
+          )
+        ) {
+          return res
+            .status(400)
+            .json({ error: 'The selected title has no supported PC release.' });
+        }
+        provider = 'questarr';
+        variant = body.variant;
+      } else {
+        const requestedSlug =
+          typeof body.platformSlug === 'string' ? body.platformSlug : '';
+        const systems = await getEmulationPlatforms();
+        const system = systems.find(
+          (item) => item.slug === requestedSlug && item.group === category
+        );
+        if (!system) {
+          return res.status(400).json({
+            error: 'Choose a system assigned to this emulation category.',
+          });
+        }
+        const catalogPlatform = systemMatchesGame(
+          system,
+          selectedGame,
+          settings.emulationPlatformMappings ?? {}
+        );
+        if (!catalogPlatform) {
+          return res.status(400).json({
+            error: 'The selected title is not listed for this system.',
+          });
+        }
+        provider = 'romarr';
+        platformSlug = system.slug;
+        platformName = system.name;
+        platformId = catalogPlatform.id ?? null;
+      }
+
+      const request = repository.create({
+        requestedById: req.user.id,
+        category,
+        provider,
+        status: 'pending',
+        externalRequestId: `seerrng:software:${randomUUID()}`,
+        catalogId: catalogId ?? null,
+        catalogProvider,
+        catalogKey: selectedCatalogKey,
+        title: selectedGame.title,
+        summary: selectedGame.summary,
+        coverUrl: selectedGame.coverUrl,
+        platformSlug,
+        platformName,
+        platformId,
+        operatingSystem: variant?.operatingSystem ?? null,
+        architecture: variant?.architecture ?? null,
+        selection,
+        selectionKey,
+        attempt: 0,
+        providerStage: 'pending',
+        failureCode: null,
+        errorMessage: null,
+      });
+      await assertSoftwareTargetMissing(request);
+      await repository.save(request);
+      const eventRepository = getRepository(SoftwareRequestStatusEvent);
+      await eventRepository.save(
+        eventRepository.create({
+          requestId: request.id,
+          requestedById: request.requestedById,
+          status: request.status,
+          message: 'Request submitted.',
+          providerStage: request.providerStage,
+          failureCode: null,
+          percent: null,
+          fingerprint: `${request.status}:0:${request.providerStage}:na:na`,
+        })
+      );
+
+      const actor = await getRepository(User).findOneBy({ id: req.user.id });
+      if (
+        actor?.hasPermission(
+          [Permission.MANAGE_REQUESTS, Permission.AUTO_APPROVE],
+          { type: 'or' }
+        )
+      ) {
+        const approved = await approveSoftwareRequest(request, actor.id);
+        return res.status(201).json({
+          request: serializeRequest(approved.request),
+          status: approved.status,
+          assets: approved.assets,
+        });
+      }
+
+      const hydrated = await repository.findOne({
+        where: { id: request.id },
+        relations: { requestedBy: true },
+      });
+      await notifySoftwareRequestStatus(hydrated ?? request, 'pending');
+      return res
+        .status(201)
+        .json({ request: serializeRequest(hydrated ?? request) });
+    } catch (error) {
+      if (error instanceof SoftwareRequestStateError)
+        return res.status(409).json({ error: error.message });
+      if (error instanceof SoftwareProviderNotConfiguredError) {
+        return res.status(503).json({ error: error.message });
+      }
+      logger.error('Failed to create software request', {
+        userId: req.user.id,
+        ...getHttpErrorDetails(error),
+      });
+      return res
+        .status(502)
+        .json({ error: 'Software request could not be created.' });
+    }
+  })
+);
 
 softwareRoutes.get('/status', async (req, res) => {
   const { pageSize, skip } = parsePageParams(req.query, {

@@ -1623,7 +1623,7 @@ test('card tables retain their explicit shared header and value typography', () 
   assert.match(requests, /<ol className="card-table app-history-grid">/);
   assert.match(
     rule('.app-history-grid'),
-    /--card-table-columns: 7rem 6rem 7\.5rem minmax\(0, 1fr\)/
+    /--card-table-columns: max-content max-content fit-content\(7\.5rem\)\s+minmax\(0, 1fr\)/
   );
   assert.match(
     rules('.app-action-row'),

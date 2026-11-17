@@ -13,6 +13,7 @@ interface VideoRatingsProps {
   voteCount?: number;
   ratings?: RatingResponse;
   loading?: boolean;
+  hideUnavailable?: boolean;
 }
 
 const messages = defineMessages('components.VideoRatings', {
@@ -68,7 +69,10 @@ const VideoRatings = (props: VideoRatingsProps) => {
   return (
     <CollectionRatings
       ratings={getVideoRatingItems(props).filter(
-        (item) => !upstream || item.value !== undefined
+        (item) =>
+          !(upstream || props.hideUnavailable) ||
+          props.loading ||
+          item.value !== undefined
       )}
       loading={props.loading}
       unknownValue="--"

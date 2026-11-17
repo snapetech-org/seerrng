@@ -9,6 +9,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { beforeEach, expect, it, vi } from 'vitest';
 import UpstreamVideoDetails from './UpstreamVideoDetails';
+vi.mock('@app/hooks/useUser', () => ({
+  useUser: () => ({ user: { id: 1 }, hasPermission: () => true }),
+}));
 vi.mock('@app/assets/services/letterboxd.svg', () => ({
   default: () => <svg />,
 }));
@@ -44,6 +47,9 @@ const render = (mode = OtherUserAvailabilityMode.SHOW) =>
               externalIds: {},
               genres: [{ id: 18, name: 'Drama' }],
               productionCompanies: [],
+              productionCountries: [],
+              keywords: [],
+              spokenLanguages: [],
               credits: { cast: [], crew: [] },
               mediaInfo: {
                 status: MediaStatus.AVAILABLE,

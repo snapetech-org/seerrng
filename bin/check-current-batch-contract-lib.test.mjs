@@ -1155,7 +1155,7 @@ test('reports shared Settings shell and group regressions', () => {
     'every Settings route must use the shared shell, navigation, actions, and unsaved-change workflow',
     'Settings content must not restore the uncontained legacy layout',
     'Settings route navigation must reuse the shared filter-button component styling',
-    'General Settings and Playlist Integrations must be separate standard subcards',
+    'General Settings must retain its shared native card and upstream main group; Playlist Integrations and Comics Metadata must remain distinct shared groups',
     'Settings layout, groups, actions, and change state must resolve through shared global classes',
     'the style standard must govern shared page-shell ownership',
   ]) {
@@ -2058,7 +2058,7 @@ test('music and legacy request filters retain rendered control order and current
     'untruthful active direction variant fails'
   );
   const withoutDirectionCallback = direction.replace(
-    /setCurrentSortDirection\(\s*((?:current|effective)SortDirection ===)/,
+    /setCurrentSortDirection\(\s*((?:current|effective)SortDirection ===)/g,
     'retiredSortDirection($1'
   );
   assert.notEqual(

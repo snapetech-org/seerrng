@@ -262,7 +262,7 @@ it('retries metadata GETs only, preserves cached selected rows on failure and re
   }
 });
 
-it('loads all 13 seasons in one request and permits an explicit queue start after a partial response', async () => {
+it('loads 13 seasons in bounded batches and permits an explicit queue start after a partial response', async () => {
   const visibleSeasons = Array.from({ length: 13 }, (_, i) => ({
     ...seasons[1],
     seasonNumber: i + 1,
@@ -279,13 +279,9 @@ it('loads all 13 seasons in one request and permits an explicit queue start afte
   );
   try {
     swr.data = await swr.fetcher!();
-    expect(swr.get).toHaveBeenCalledExactlyOnceWith('/api/v1/tv/24/seasons', {
-      params: {
-        seasonNumbers: visibleSeasons
-          .map((season) => season.seasonNumber)
-          .join(','),
-      },
-    });
+    expect(
+      swr.get.mock.calls.map((call) => call[1].params.seasonNumbers)
+    ).toEqual(['1,2,3,4,5', '6,7,8,9,10']);
     await ui.render();
     expect(ui.ready).toHaveBeenLastCalledWith(false);
     expect(ui.changed).not.toHaveBeenCalled();
@@ -297,5 +293,51 @@ it('loads all 13 seasons in one request and permits an explicit queue start afte
     expect(ui.ready).toHaveBeenLastCalledWith(true);
   } finally {
     await ui.close();
+  }
+});
+
+it('loads a 29-season series in six bounded requests without changing the starting selection', async () => {
+  const visibleSeasons = Array.from({ length: 29 }, (_, seasonNumber) => ({
+    ...seasons[1],
+    seasonNumber,
+    episodeCount: 1,
+  }));
+  swr.get.mockReset();
+  swr.get.mockImplementation(async (_url, options) => ({
+    data: options.params.seasonNumbers.split(',').map((number: string) => ({
+      seasonNumber: Number(number),
+      episodes: [
+        {
+          id: Number(number) + 1000,
+          episodeNumber: 1,
+          name: 'Episode',
+          airDate: null,
+        },
+      ],
+    })),
+  }));
+  const ui = await setup(
+    [{ seasonNumber: 1, episodeNumbers: [1] }],
+    {},
+    {
+      selectionMode: 'single-episode',
+      visibleSeasons,
+    }
+  );
+  try {
+    swr.data = await swr.fetcher!();
+    await ui.render();
+    expect(swr.data).toHaveLength(29);
+    expect(swr.get).toHaveBeenCalledTimes(6);
+    expect(
+      swr.get.mock.calls.every(
+        (call) => call[1].params.seasonNumbers.split(',').length <= 5
+      )
+    ).toBe(true);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
+    expect(ui.changed).not.toHaveBeenCalled();
+  } finally {
+    await ui.close();
+    swr.get.mockReset();
   }
 });

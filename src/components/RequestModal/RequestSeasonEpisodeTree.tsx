@@ -101,9 +101,12 @@ const RequestSeasonEpisodeTree = ({
       for (
         let start = 0;
         start < missing.length;
-        start += REQUEST_SEASON_BATCH_SIZE
+        start += Math.min(5, REQUEST_SEASON_BATCH_SIZE)
       ) {
-        const batch = missing.slice(start, start + REQUEST_SEASON_BATCH_SIZE);
+        const batch = missing.slice(
+          start,
+          start + Math.min(5, REQUEST_SEASON_BATCH_SIZE)
+        );
         try {
           const response = await axios.get<SeasonWithEpisodes[]>(
             `/api/v1/tv/${tvId}/seasons`,
