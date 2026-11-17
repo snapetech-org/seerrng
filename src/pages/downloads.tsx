@@ -257,7 +257,7 @@ export default function DownloadsPage() {
     'rejection-outcome-unknown': messages.unknownReject,
   };
   return (
-    <div className="text-gray-100 upstream-extension-page upstream-downloads-page">
+    <div className="upstream-extension-page upstream-downloads-page text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
       <p className="description mb-6">
@@ -304,7 +304,10 @@ export default function DownloadsPage() {
           {data?.results.length === 0 && (
             <p>{intl.formatMessage(messages.empty)}</p>
           )}
-          <div className="upstream-download-list space-y-4" aria-busy={isLoading || busy}>
+          <div
+            className="upstream-download-list space-y-4"
+            aria-busy={isLoading || busy}
+          >
             {data?.results.map((warning) => (
               <article
                 key={warning.id}
@@ -342,7 +345,10 @@ export default function DownloadsPage() {
                     </summary>
                     <ol className="mt-3 space-y-3">
                       {warning.actions.map((action, index) => (
-                        <li key={index} className="upstream-download-action p-3">
+                        <li
+                          key={index}
+                          className="upstream-download-action p-3"
+                        >
                           <p>
                             {intl.formatDate(new Date(action.at), {
                               dateStyle: 'medium',

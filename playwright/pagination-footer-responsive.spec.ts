@@ -108,7 +108,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
             exact: true,
           });
           await expect(footer).toBeVisible();
-          await footer.scrollIntoViewIfNeeded();
+          await expect(async () => {
+            await footer.scrollIntoViewIfNeeded({ timeout: 2000 });
+            await expect(footer).toBeInViewport();
+          }).toPass();
           await page.evaluate(() => document.fonts.ready);
           const geometry = await footer.evaluate((node) => {
             const rect = (el: Element) => {

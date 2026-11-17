@@ -577,7 +577,7 @@ test('Series Watchlist visual prototype is isolated from production actions and 
   assert.equal(scope.length, 1);
   assert.match(
     scope[0].initializer.getText(),
-    /^process\.env\.NODE_ENV === 'development' &&\s*router\.pathname === '\/discover\/tv'$/
+    /^!upstream &&\s*process\.env\.NODE_ENV === 'development' &&\s*router\.pathname === '\/discover\/tv'$/
   );
   const forwarded = nodes(
     list,

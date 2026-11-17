@@ -210,8 +210,16 @@
   .sidebar-link-idle:hover,
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .sidebar-link-idle:focus-visible {
-  border-color: color-mix(in srgb, var(--interface-accent-a-focus) 30%, transparent);
-  background: color-mix(in srgb, var(--interface-accent-surface) 75%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--interface-accent-a-focus) 30%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--interface-accent-surface) 75%,
+    transparent
+  );
   color: var(--interface-text);
 }
 
@@ -248,7 +256,8 @@
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .slider-title {
   color: var(--interface-text);
-  text-shadow: 0 2px 18px color-mix(in srgb, var(--interface-accent-a-hover) 18%, transparent);
+  text-shadow: 0 2px 18px
+    color-mix(in srgb, var(--interface-accent-a-hover) 18%, transparent);
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -506,7 +515,13 @@
   border-radius: var(--interface-poster-radius);
   background:
     linear-gradient(var(--interface-panel), var(--interface-panel)) padding-box,
-    linear-gradient(145deg, var(--interface-accent-a-bright), var(--interface-border) 55%, var(--interface-accent-b)) border-box;
+    linear-gradient(
+        145deg,
+        var(--interface-accent-a-bright),
+        var(--interface-border) 55%,
+        var(--interface-accent-b)
+      )
+      border-box;
   box-shadow: 0 5px 18px rgb(0 0 0 / 0.25);
 }
 
@@ -565,7 +580,12 @@
   .app-card-sub::after,
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .app-card-inset::after {
-  background: linear-gradient(140deg, var(--interface-accent-a-bright), var(--interface-border) 55%, var(--interface-accent-b-strong));
+  background: linear-gradient(
+    140deg,
+    var(--interface-accent-a-bright),
+    var(--interface-border) 55%,
+    var(--interface-accent-b-strong)
+  );
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -575,7 +595,8 @@
   background: var(--interface-panel);
   box-shadow:
     0 18px 60px rgb(0 0 0 / 0.55),
-    0 0 24px color-mix(in srgb, var(--interface-accent-a-hover) 12%, transparent);
+    0 0 24px
+      color-mix(in srgb, var(--interface-accent-a-hover) 12%, transparent);
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -595,7 +616,8 @@
   border-radius: 0.875rem;
   box-shadow:
     0 10px 30px rgb(0 0 0 / 0.45),
-    0 0 18px color-mix(in srgb, var(--interface-accent-a-hover) 12%, transparent);
+    0 0 18px
+      color-mix(in srgb, var(--interface-accent-a-hover) 12%, transparent);
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -702,11 +724,16 @@
   width: 1.125rem;
   height: 1.125rem;
   margin-inline-end: 0.625rem;
-  border: 1px solid color-mix(in srgb, var(--interface-accent-a-soft) 45%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--interface-accent-a-soft) 45%, transparent);
   border-radius: 0.375rem;
   padding: 0.125rem;
   color: var(--interface-accent-a-soft);
-  background: color-mix(in srgb, var(--interface-accent-a-hover) 12%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--interface-accent-a-hover) 12%,
+    transparent
+  );
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -833,7 +860,8 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .settings-group-content {
-  border-top: 1px solid color-mix(in srgb, var(--interface-border) 72%, transparent);
+  border-top: 1px solid
+    color-mix(in srgb, var(--interface-border) 72%, transparent);
   padding-top: 1rem;
 }
 
@@ -849,7 +877,11 @@
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
   .app-data-table-row:nth-child(even) {
-  background: color-mix(in srgb, var(--interface-accent-a-ring) 4.5%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--interface-accent-a-ring) 4.5%,
+    transparent
+  );
 }
 
 :is(:root[data-interface-theme='seerrNGJ'], [data-interface-theme='seerrNGJ'])
@@ -924,12 +956,15 @@
   }
 }
 
-
 /* Alternative user palettes recolor the John package through its existing
    visual roles while preserving its independent layout and geometry. */
 :is(
-  :root[data-interface-theme='seerrNGJ'][data-theme-palette]:not([data-theme-palette='seerr']),
-  [data-interface-theme='seerrNGJ'][data-theme-palette]:not([data-theme-palette='seerr'])
+  :root[data-interface-theme='seerrNGJ'][data-theme-palette]:not(
+      [data-theme-palette='seerr']
+    ),
+  [data-interface-theme='seerrNGJ'][data-theme-palette]:not(
+      [data-theme-palette='seerr']
+    )
 ) {
   --interface-page: rgb(var(--theme-page-bg));
   --interface-panel: rgb(var(--theme-control-surface));

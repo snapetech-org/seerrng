@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { THEME_PALETTE_IDS } from '../server/utils/themePreference';
+import { THEME_PALETTE_IDS } from '@server/utils/themePreference';
 import { restoreAdminPresentation } from './helpers/presentation';
 import { getSelectOptionContrast } from './helpers/selectContrast';
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
@@ -82,7 +82,10 @@ for (const { theme, mode, width, palette } of scenarios)
       })
     );
     await page.goto('/settings', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('html')).toHaveAttribute('data-theme-mode', mode);
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-theme-mode',
+      theme === 'seerrOrig' ? 'dark' : mode
+    );
     await page.locator('#originalLanguage').click();
     const options = page.locator('.react-select__menu [role="option"]');
     await expect(options.first()).toBeVisible();

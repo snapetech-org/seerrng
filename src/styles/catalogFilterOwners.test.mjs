@@ -185,7 +185,10 @@ test('compact provider fetching reports page activity and actions retain source 
   const page = component('Discover/DiscoverTv/index.tsx');
   assert.match(page, /<PageErrorMessage/);
   assert.match(page, /onClick: \(\) => discover.mutate\?\.\(\)/);
-  assert.doesNotMatch(page, /@app\/pages\/_error/);
+  assert.match(
+    page,
+    /if \(upstream && discover.error\)\s*\{\s*return <ErrorPage statusCode=\{500\} \/>/
+  );
 });
 
 const parseConsumer = (source) =>

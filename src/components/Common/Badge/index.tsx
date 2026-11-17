@@ -1,5 +1,5 @@
-import { getSafeHref, isExternalHref } from '@app/utils/safeUrl';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
+import { getSafeHref, isExternalHref } from '@app/utils/safeUrl';
 import Link from 'next/link';
 import React from 'react';
 
@@ -35,7 +35,9 @@ const Badge = (
 ) => {
   const upstream = useUpstreamTheme();
   const badgeStyle = upstream
-    ? ['px-2 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap']
+    ? [
+        'px-2 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap',
+      ]
     : [
         'compact-control inline-flex items-center px-2 text-xs leading-none font-semibold whitespace-nowrap',
       ];

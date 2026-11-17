@@ -1,6 +1,11 @@
 describe('primary navigation', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
   });
 
   afterEach(() => {

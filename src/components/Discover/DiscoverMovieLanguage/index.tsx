@@ -76,7 +76,7 @@ const DiscoverMovieLanguage = () => {
   return (
     <>
       <PageTitle title={title} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
+      <div className={upstream ? 'mt-1 mb-5' : undefined}>
         <Header>{title}</Header>
       </div>
       <ListView

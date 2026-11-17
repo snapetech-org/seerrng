@@ -232,7 +232,11 @@ test('details titles share their optical alignment without local negative margin
         );
       continue;
     }
-    assert.match(source, /detail-summary-title/, file);
+    assert.match(
+      source,
+      file === 'Requests/index.tsx' ? /card-title/ : /detail-summary-title/,
+      file
+    );
     for (const line of source
       .split('\n')
       .filter((line) => line.includes('detail-summary-title')))

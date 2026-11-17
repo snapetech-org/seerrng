@@ -144,6 +144,22 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             },
           })
         );
+        await page.route(`**/api/v1/tv/${id}/seasons?*`, (route) =>
+          route.fulfill({
+            json: [
+              {
+                seasonNumber: 1,
+                episodes: [1, 2].map((number) => ({
+                  id: number,
+                  seasonNumber: 1,
+                  episodeNumber: number,
+                  name: `Episode ${number}`,
+                  airDate: '1971-09-15',
+                })),
+              },
+            ],
+          })
+        );
         await page.route(`**/api/v1/${mediaType}/${id}`, (route) =>
           route.fulfill({ json: details })
         );

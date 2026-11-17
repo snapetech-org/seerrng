@@ -165,6 +165,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
               }),
             })
             .scrollIntoViewIfNeeded();
+        if (path.startsWith('/users/1/requests'))
+          await expect(async () => {
+            await page
+              .locator('[data-interface-role="request-card"]')
+              .first()
+              .scrollIntoViewIfNeeded({ timeout: 2000 });
+          }).toPass();
         await expect(
           path === '/issues'
             ? page.getByRole('link', {

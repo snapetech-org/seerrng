@@ -32,7 +32,6 @@ import {
 import { isBookDestinationFileAvailable } from '@server/lib/bookRequestDestination';
 import { expandBookshelfBookIds } from '@server/lib/bookshelfIdentity';
 import { compareBookEditions } from '@server/lib/editionCompare';
-import { getVerifiedMangaVolumeIdentity } from '@server/lib/mangaVolume';
 import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryAuthorId,
@@ -45,6 +44,7 @@ import {
   cleanMagazineTitle,
   normalizeMagazineTitle,
 } from '@server/lib/magazineIdentity';
+import { getVerifiedMangaVolumeIdentity } from '@server/lib/mangaVolume';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import {
   MediaServerUserAuthorityChangedError,

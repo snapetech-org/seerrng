@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 /** Restore the seeded account after tests deliberately change global preferences. */
 export const restoreAdminPresentation = async (page: Page): Promise<void> => {
@@ -46,4 +46,25 @@ export const openAdminNativeRoute = async (
     path
   );
   await page.waitForURL((url) => `${url.pathname}${url.search}` === path);
+};
+
+/** Native settings hide their clean save footer; the other themes keep it disabled. */
+export const expectSettingsClean = async (page: Page, save: Locator) => {
+  if (
+    (await page.locator('html').getAttribute('data-interface-theme')) ===
+    'seerrOrig'
+  ) {
+    await expect(save).toBeHidden();
+  } else {
+    await expect(save).toBeDisabled();
+  }
+};
+
+/** Open the native shell's explicit extension tools before using them. */
+export const openSettingsTools = async (page: Page) => {
+  const tools = page.locator('.upstream-extra-tools').first();
+  if (await tools.count()) {
+    if ((await tools.getAttribute('open')) === null)
+      await tools.locator(':scope > summary').click();
+  }
 };

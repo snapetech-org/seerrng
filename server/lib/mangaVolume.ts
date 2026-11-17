@@ -4,10 +4,7 @@ import { getRepository } from '@server/datasource';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
-import {
-  getWorkForEdition,
-  resolveMangaWork,
-} from '@server/lib/comicWorks';
+import { getWorkForEdition, resolveMangaWork } from '@server/lib/comicWorks';
 import { isMangaPublisher } from '@server/lib/mangaPublishers';
 import {
   getMangaVolumeHint,
@@ -43,8 +40,7 @@ export async function getVerifiedMangaVolumeIdentity(
 
   const cachedWork = getWorkForEdition(comicVineId);
   const hint = getMangaVolumeHint(comicVineId);
-  const persistedAnilistId =
-    await getPersistedMangaAnilistId(comicVineId);
+  const persistedAnilistId = await getPersistedMangaAnilistId(comicVineId);
   if (persistedAnilistId !== undefined) {
     return persistedAnilistId === anilistId
       ? {
@@ -54,7 +50,10 @@ export async function getVerifiedMangaVolumeIdentity(
         }
       : undefined;
   }
-  if (cachedWork?.anilistId !== undefined && cachedWork.anilistId !== anilistId) {
+  if (
+    cachedWork?.anilistId !== undefined &&
+    cachedWork.anilistId !== anilistId
+  ) {
     return undefined;
   }
   if (
@@ -152,14 +151,11 @@ export async function isMangaComicVineVolume(
     }
     return false;
   } catch (error) {
-    logger.warn(
-      'Could not classify a ComicVine volume for BackIssue',
-      {
-        label: 'Media Request',
-        comicVineId,
-        errorMessage: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.warn('Could not classify a ComicVine volume for BackIssue', {
+      label: 'Media Request',
+      comicVineId,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
     throw error;
   }
 }

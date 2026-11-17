@@ -45,9 +45,7 @@ const IssuePage: NextPage = () => {
     Boolean(selectedTheme);
   const upstream = selectedTheme?.layout === 'upstream';
   const { data: issue, error } = useSWR<Issue>(
-    themeReady && upstream && issueId
-      ? `/api/v1/issue/${issueId}`
-      : null
+    themeReady && upstream && issueId ? `/api/v1/issue/${issueId}` : null
   );
   const supportsUpstreamDetails =
     issue?.media.mediaType === MediaType.MOVIE ||

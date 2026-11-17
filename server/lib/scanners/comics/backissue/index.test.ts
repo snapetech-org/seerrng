@@ -8,11 +8,11 @@ import Media from '@server/entity/Media';
 import MediaIdentifier, {
   MediaIdentifierProvider,
 } from '@server/entity/MediaIdentifier';
-import * as kavitaReader from '@server/lib/kavitaReader';
 import {
   clearComicLibraryProgress,
   getComicLibraryProgress,
 } from '@server/lib/comicLibraryProgress';
+import * as kavitaReader from '@server/lib/kavitaReader';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import { backissueScanner } from './index';

@@ -1037,6 +1037,7 @@
   main.page-layout {
     /* Offset the fixed search bar once, including the device safe area. */
     top: calc(4rem + env(safe-area-inset-top));
+    padding-block-end: calc(4rem + env(safe-area-inset-top));
     z-index: 0;
     outline: none;
   }

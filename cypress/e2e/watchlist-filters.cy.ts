@@ -91,6 +91,11 @@ const interceptCombinedWatchlist = () => {
 describe('Local Watchlist filters', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
   });
 
   it('applies a title search and clears it without losing the local list', () => {

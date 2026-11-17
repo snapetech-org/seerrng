@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { restoreAdminPresentation } from './helpers/presentation';
+import {
+  expectSettingsClean,
+  restoreAdminPresentation,
+} from './helpers/presentation';
 test.use({ serviceWorkers: 'block' });
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
 for (const theme of ['seerrOrig', 'seerrNGJ'])
@@ -68,7 +71,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         await expect(save).toBeEnabled();
         await expect(input).toHaveValue('eng, fre');
         await save.click();
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         expect(
           (
             await (
@@ -80,7 +83,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         await expect(input).toHaveValue('eng, fre');
         await input.fill('eng');
         await save.click();
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         await page.reload();
         await expect(input).toHaveValue('eng');
         if (theme === 'seerrOrig' && width === 390) {
@@ -106,7 +109,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         });
         await input.fill('');
         await save.click();
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         expect(
           (
             await (

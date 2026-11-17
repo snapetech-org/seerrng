@@ -18,9 +18,9 @@ import {
 } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
-import { friendlyError } from '../errors';
 
 const MONTHS = [
   'January',

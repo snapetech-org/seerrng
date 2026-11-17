@@ -15,6 +15,7 @@ import {
 import { BookCard, Section, TitleCard } from '../components/cards';
 import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useExtras, type ComicWork } from '../extras';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
@@ -24,7 +25,6 @@ import {
   saveRecentSearches,
 } from '../recentSearches';
 import { usePrefs } from '../settings';
-import { friendlyError } from '../errors';
 import { PersonCard } from './People';
 
 const SCOPES = {
@@ -159,8 +159,8 @@ export default function Search() {
           : f === 'tv'
             ? r.mediaType === 'tv'
             : r.mediaType === 'movie' ||
-                r.mediaType === 'tv' ||
-                r.mediaType === 'person'
+              r.mediaType === 'tv' ||
+              r.mediaType === 'person'
       );
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
@@ -253,6 +253,8 @@ export default function Search() {
           <input
             id="sq"
             type="search"
+            // This user-invoked search route focuses its visible phone search field; desktop uses the shared header.
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={!window.matchMedia('(min-width: 1040px)').matches}
             placeholder={ph}
             value={q}
@@ -434,7 +436,7 @@ export default function Search() {
         )}
         {!!comicCards.length && (
           <Section title="Comics & manga">
-            <div className="grid comic-grid">
+            <div className="comic-grid grid">
               {comicCards.map((w) => (
                 <ComicCard key={w.id} w={w} />
               ))}

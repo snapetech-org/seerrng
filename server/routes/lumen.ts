@@ -118,8 +118,7 @@ export const createLumenRoutes = (
         temporaryCreated = false;
         return res.json({ saved: true });
       } catch (error) {
-        if (temporaryCreated)
-          await fs.unlink(temporary).catch(() => undefined);
+        if (temporaryCreated) await fs.unlink(temporary).catch(() => undefined);
         const message = lumenStorageError(error);
         if (message) {
           logger.warn('Unable to save Lumen shared settings', {
@@ -185,7 +184,9 @@ export const createLumenRoutes = (
           label: 'Lumen',
           errorCode: (error as NodeJS.ErrnoException).code ?? 'unknown',
         });
-        return res.status(lumenStorageError(error) ? 503 : 500).json({ message });
+        return res
+          .status(lumenStorageError(error) ? 503 : 500)
+          .json({ message });
       }
     }
   );

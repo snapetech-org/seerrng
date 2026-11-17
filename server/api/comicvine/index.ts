@@ -1,8 +1,8 @@
 import ExternalAPI from '@server/api/externalapi';
 import cacheManager from '@server/lib/cache';
-import { createHash } from 'node:crypto';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
+import { createHash } from 'node:crypto';
 
 const MAX_COMICVINE_TEXT_LENGTH = 512;
 const MAX_COMICVINE_DESCRIPTION_LENGTH = 20_000;

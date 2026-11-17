@@ -25,11 +25,11 @@ import useDebouncedState from '@app/hooks/useDebouncedState';
 import useMediaFilterPin from '@app/hooks/useMediaFilterPin';
 import { useSearchActivityReporter } from '@app/hooks/useSearchActivity';
 import useToasts from '@app/hooks/useToasts';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   getPositiveQueryParamNumber,
   useUpdateQueryParams,
 } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';

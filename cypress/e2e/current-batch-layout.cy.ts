@@ -126,6 +126,7 @@ describe('Current batch layout standards', () => {
       );
     });
 
+    cy.get('#applicationTitle').type(' draft');
     cy.get('.settings-page-actions .app-button').each(($button) =>
       expectHeight($button, 24)
     );

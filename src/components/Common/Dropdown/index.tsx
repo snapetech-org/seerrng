@@ -1,3 +1,4 @@
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { withProperties } from '@app/utils/typeHelpers';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
@@ -7,7 +8,6 @@ import {
   type ButtonHTMLAttributes,
   type HTMLAttributes,
 } from 'react';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 
 type DropdownButtonType =
   'primary' | 'ghost' | 'success' | 'detailRequest' | 'playback';
@@ -27,7 +27,7 @@ const DropdownItem = ({
   return (
     <MenuItem>
       <a
-        className={`app-dropdown-item${upstream ? ' button-md' : ''}`}
+        className={`app-dropdown-item${upstream ? 'button-md' : ''}`}
         data-dropdown-presentation={upstream ? 'upstream' : undefined}
         data-dropdown-type={upstream ? upstreamButtonType : buttonType}
         {...props}
@@ -126,7 +126,7 @@ const Dropdown = ({
         title={
           upstream
             ? !children || props.disabled
-              ? disabledReason ?? title
+              ? (disabledReason ?? title)
               : title
             : undefined
         }

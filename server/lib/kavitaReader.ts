@@ -13,12 +13,12 @@
 // restart. Kavita being down keeps the last good copy and is retried later;
 // the media pages never wait on Kavita.
 
-import { createHash } from 'node:crypto';
 import type { KavitaLibrary, KavitaSeries } from '@server/api/kavita';
 import KavitaAPI, { KavitaLibraryType } from '@server/api/kavita';
 import type { KavitaSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
+import { createHash } from 'node:crypto';
 
 export interface ComicSeriesRef {
   title: string;

@@ -9,11 +9,11 @@ import {
 } from '@app/components/Discover/FilterPanel/CompactFilterSelect';
 import useDiscover from '@app/hooks/useDiscover';
 import useSettings from '@app/hooks/useSettings';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   getPositiveQueryParamNumber,
   useBatchUpdateQueryParams,
 } from '@app/hooks/useUpdateQueryParams';
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
@@ -21,6 +21,7 @@ import {
   getUserServiceAvailability,
   isDiscoverWatchlistTypeEnabled,
 } from '@app/utils/serviceAvailability';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { MediaType } from '@server/constants/media';
 import {
   WATCHLIST_SORT_OPTIONS,
@@ -29,7 +30,6 @@ import {
   type WatchlistResponse,
   type WatchlistSort,
 } from '@server/interfaces/api/discoverInterfaces';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -408,7 +408,7 @@ const DiscoverWatchlist = () => {
   return (
     <>
       <PageTitle title={[title, userId ? user?.displayName : '']} />
-      <div className={upstream ? 'mb-5 mt-1' : 'app-filter-section-gap'}>
+      <div className={upstream ? 'mt-1 mb-5' : 'app-filter-section-gap'}>
         <Header
           subtext={
             userId ? (
@@ -424,15 +424,16 @@ const DiscoverWatchlist = () => {
         </Header>
         {!upstream && filterControls}
       </div>
-      {upstream && (filtersSupported === true || filtersSupported === false) && (
-        <details className="upstream-search-more">
-          <summary>
-            <span>{intl.formatMessage(messages.moreOptions)}</span>
-            <ChevronDownIcon aria-hidden="true" />
-          </summary>
-          <div className="app-filter-section-gap mt-2">{filterControls}</div>
-        </details>
-      )}
+      {upstream &&
+        (filtersSupported === true || filtersSupported === false) && (
+          <details className="upstream-search-more">
+            <summary>
+              <span>{intl.formatMessage(messages.moreOptions)}</span>
+              <ChevronDownIcon aria-hidden="true" />
+            </summary>
+            <div className="app-filter-section-gap mt-2">{filterControls}</div>
+          </details>
+        )}
       <ListView
         enableDiscoverNavigation
         plexItems={visibleTitles}

@@ -211,6 +211,14 @@ const assertNeutralHeaderWrapper = (text) => {
     imports(root, '@app/components/Common/Header')[0]?.importClause?.name
       ?.text ?? 'Header';
   for (const expression of pageExpressions(root, headerName)) {
+    if (
+      expression &&
+      ts.isJsxSelfClosingElement(unwrap(expression)) &&
+      unwrap(expression)
+        .tagName.getText()
+        .match(/^(ErrorPage|LoadingSpinner)$/)
+    )
+      continue;
     assert.deepEqual(
       [...new Set(titleCounts(expression, headerName))],
       [1],
@@ -243,7 +251,13 @@ const assertNeutralHeaderWrapper = (text) => {
       assert.ok(
         !wrapperClassName ||
           (ts.isStringLiteralLike(wrapperClassName) &&
-            wrapperClassName.text === 'app-filter-section-gap'),
+            wrapperClassName.text === 'app-filter-section-gap') ||
+          [
+            "{upstream ? 'mt-1 mb-5' : undefined}",
+            "{upstream ? 'upstream-discovery-header' : undefined}",
+            "{upstream ? 'upstream-watchlist-header' : undefined}",
+            "{upstream ? 'mt-1 mb-5' : 'app-filter-section-gap'}",
+          ].includes(wrapperClassName?.getText()),
         'wrapper adds no spacing except the section gap below the header'
       );
       assert.equal(

@@ -1,6 +1,11 @@
 describe('Discover TMDB lists', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
     cy.intercept('GET', '/api/v1/settings/discover').as('getDiscoverSliders');
   });
 

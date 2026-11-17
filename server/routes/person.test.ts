@@ -162,8 +162,7 @@ describe('GET /person/:id/combined_credits', () => {
     const user = await getRepository(User).findOneByOrFail({
       email: 'friend@seerr.dev',
     });
-    const settings =
-      user.settings ?? new UserSettings({ user });
+    const settings = user.settings ?? new UserSettings({ user });
     const originalCategories = settings.enabledMediaCategories;
     settings.enabledMediaCategories = {
       ...originalCategories,

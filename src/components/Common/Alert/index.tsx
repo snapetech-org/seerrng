@@ -1,9 +1,9 @@
+import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import {
   ExclamationTriangleIcon,
   InformationCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/24/solid';
-import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { memo } from 'react';
 
 interface AlertProps {
@@ -68,11 +68,7 @@ const Alert = memo(
           <div className={`flex-shrink-0 ${design.titleColor}`}>
             {design.svg}
           </div>
-          <div
-            className={
-              upstream ? 'ml-3' : 'ms-3 min-w-0 break-words'
-            }
-          >
+          <div className={upstream ? 'ml-3' : 'ms-3 min-w-0 break-words'}>
             {title && (
               <div className={`text-sm font-medium ${design.titleColor}`}>
                 {title}

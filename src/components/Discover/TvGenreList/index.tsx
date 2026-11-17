@@ -50,7 +50,7 @@ const TvGenreList = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.seriesgenres)} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
+      <div className={upstream ? 'mt-1 mb-5' : undefined}>
         <Header>{intl.formatMessage(messages.seriesgenres)}</Header>
       </div>
       <ul className="cards-horizontal">

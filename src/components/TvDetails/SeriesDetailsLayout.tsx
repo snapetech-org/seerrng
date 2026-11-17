@@ -1259,8 +1259,8 @@ const SeriesDetailsLayout = ({
   );
   return upstream && !embedded ? (
     <>
-      {statusMessage}
       <UpstreamVideoDetails
+        statusMessage={statusMessage}
         data={data}
         mediaType="tv"
         sortedCrew={sortedCrew}

@@ -8418,7 +8418,7 @@
       "callsites": [
         {
           "path": "server/routes/comic.ts",
-          "line": 194,
+          "line": 196,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve comic issues.'",
@@ -8872,7 +8872,7 @@
       "callsites": [
         {
           "path": "server/routes/lumen.ts",
-          "line": 167,
+          "line": 166,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The image could not be decoded as PNG, JPEG, or WebP.'",
@@ -14334,7 +14334,7 @@
       "callsites": [
         {
           "path": "server/lib/mangaVolume.ts",
-          "line": 147,
+          "line": 146,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine did not return publisher metadata.'",
@@ -15182,7 +15182,7 @@
       "callsites": [
         {
           "path": "server/lib/mangaVolume.ts",
-          "line": 86,
+          "line": 85,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine could not verify this manga edition.'",
@@ -32448,7 +32448,7 @@
       "callsites": [
         {
           "path": "server/routes/lumen.ts",
-          "line": 182,
+          "line": 181,
           "kind": "authored-message-variable",
           "field": "message",
           "expression": "lumenStorageError(error) ??\n          'Could not store the image. Check SeerrNG application storage.'",
@@ -32665,7 +32665,7 @@
       "callsites": [
         {
           "path": "server/lib/mangaVolume.ts",
-          "line": 140,
+          "line": 139,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine must be configured to classify a BackIssue request.'",
@@ -37393,7 +37393,7 @@
       "callsites": [
         {
           "path": "server/routes/comic.ts",
-          "line": 310,
+          "line": 311,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve comic details.'",
@@ -37640,7 +37640,7 @@
       "callsites": [
         {
           "path": "server/routes/comic.ts",
-          "line": 152,
+          "line": 154,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve this comic.'",
@@ -52434,7 +52434,7 @@
       "callsites": [
         {
           "path": "server/routes/lumen.ts",
-          "line": 155,
+          "line": 154,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Upload a PNG, JPEG, or WebP image.'",
@@ -53592,7 +53592,7 @@
       "callsites": [
         {
           "path": "server/lib/mangaVolume.ts",
-          "line": 75,
+          "line": 74,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine must be configured to verify manga editions.'",
@@ -58878,7 +58878,7 @@
       "callsites": [
         {
           "path": "server/routes/comic.ts",
-          "line": 165,
+          "line": 167,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'ComicVine is not configured.'",
@@ -61450,7 +61450,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 99,
+          "line": 101,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61458,7 +61458,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 135,
+          "line": 137,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61466,7 +61466,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 159,
+          "line": 161,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61474,7 +61474,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 171,
+          "line": 173,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61482,7 +61482,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 201,
+          "line": 203,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61490,7 +61490,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 231,
+          "line": 230,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61498,7 +61498,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 245,
+          "line": 246,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61506,7 +61506,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 251,
+          "line": 252,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -61514,7 +61514,7 @@
         },
         {
           "path": "server/routes/comic.ts",
-          "line": 266,
+          "line": 267,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Comic not found'",
@@ -72888,7 +72888,7 @@
     },
     {
       "path": "server/lib/mangaVolume.ts",
-      "line": 160,
+      "line": 157,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -72897,7 +72897,7 @@
     },
     {
       "path": "server/lib/mangaVolume.ts",
-      "line": 160,
+      "line": 157,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75327,7 +75327,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 167,
+      "line": 163,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75336,7 +75336,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 167,
+      "line": 163,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75345,7 +75345,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 211,
+      "line": 207,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -75354,7 +75354,7 @@
     },
     {
       "path": "server/lib/scanners/comics/backissue/index.ts",
-      "line": 211,
+      "line": 207,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -80187,7 +80187,7 @@
     },
     {
       "path": "server/routes/lumen.ts",
-      "line": 123,
+      "line": 122,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "lumenStorageError(error)",
@@ -80196,7 +80196,7 @@
     },
     {
       "path": "server/routes/lumen.ts",
-      "line": 182,
+      "line": 181,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "lumenStorageError(error) ??\n          'Could not store the image. Check SeerrNG application storage.'",

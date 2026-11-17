@@ -1,0 +1,1 @@
+Fixed native movie, series, and collection pages growing underneath phone navigation, kept metadata retry feedback clickable, wrapped user-list controls at narrow desktop widths, and deferred association-list resize measurements to prevent ResizeObserver loops.

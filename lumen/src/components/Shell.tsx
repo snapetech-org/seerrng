@@ -11,10 +11,10 @@ import { isAdministrator, useAuth } from '../auth';
 import { useExtras } from '../extras';
 import { useBack, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { scrollBehavior } from '../motion';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
 import { canChooseRequestOptions } from './detail';
-import { scrollBehavior } from '../motion';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();

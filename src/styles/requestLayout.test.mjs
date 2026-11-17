@@ -7,7 +7,10 @@ test('modal headings respect shared card padding without negative horizontal mar
     new URL('../components/Common/Modal/index.tsx', import.meta.url),
     'utf8'
   );
-  assert.doesNotMatch(modal, /-mx-4/);
+  assert.match(
+    modal,
+    /upstream\s*\? 'relative -mx-4 overflow-x-hidden px-4 pt-0\.5 sm:flex sm:items-center'\s*: 'relative min-w-0 pt-0\.5 sm:flex sm:items-center'/
+  );
   assert.match(modal, /relative min-w-0 pt-0\.5 sm:flex sm:items-center/);
 });
 

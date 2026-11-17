@@ -14,10 +14,7 @@ export interface ComicLibraryProgressEntry {
   progress: ComicLibraryProgress;
 }
 
-const progressByService = new Map<
-  number,
-  Map<number, ComicLibraryProgress>
->();
+const progressByService = new Map<number, Map<number, ComicLibraryProgress>>();
 
 export const replaceComicLibraryProgress = (
   serviceId: number,
@@ -56,8 +53,7 @@ export const getComicLibraryProgress = (
     : progressByService.get(serviceId)?.get(externalServiceId);
 
 /** Test hook. */
-export const clearComicLibraryProgress = (): void =>
-  progressByService.clear();
+export const clearComicLibraryProgress = (): void => progressByService.clear();
 
 /**
  * Media state for a BackIssue series from its owned/total/active counts:

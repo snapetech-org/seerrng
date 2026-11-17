@@ -407,12 +407,20 @@ describe('ExternalAPI shared request budgets', () => {
         { maxRequests: 1, perMilliseconds: 20 },
       ],
     };
-    const first = new TestExternalAPI('https://service.example', {}, {
-      sharedRateLimit,
-    });
-    const second = new TestExternalAPI('https://service.example', {}, {
-      sharedRateLimit,
-    });
+    const first = new TestExternalAPI(
+      'https://service.example',
+      {},
+      {
+        sharedRateLimit,
+      }
+    );
+    const second = new TestExternalAPI(
+      'https://service.example',
+      {},
+      {
+        sharedRateLimit,
+      }
+    );
     const started: number[] = [];
     const adapter: AxiosAdapter = async (config) => {
       started.push(Date.now());
@@ -445,15 +453,23 @@ describe('ExternalAPI shared request budgets', () => {
       maxPendingRequests: 1,
       maxWaitMs: 1000,
     };
-    const first = new TestExternalAPI('https://service.example', {}, {
-      sharedRateLimit,
-    });
-    const other = new TestExternalAPI('https://other.example', {}, {
-      sharedRateLimit: {
-        ...sharedRateLimit,
-        key: `other-provider:${randomBytes(16).toString('hex')}`,
-      },
-    });
+    const first = new TestExternalAPI(
+      'https://service.example',
+      {},
+      {
+        sharedRateLimit,
+      }
+    );
+    const other = new TestExternalAPI(
+      'https://other.example',
+      {},
+      {
+        sharedRateLimit: {
+          ...sharedRateLimit,
+          key: `other-provider:${randomBytes(16).toString('hex')}`,
+        },
+      }
+    );
     const started: string[] = [];
     const adapter: AxiosAdapter = async (config) => {
       started.push(new URL(config.url!).pathname);
@@ -474,8 +490,7 @@ describe('ExternalAPI shared request budgets', () => {
     const excess = first.getForTest('/excess', undefined, 0);
     await assert.rejects(
       excess,
-      (error) =>
-        error instanceof ExternalAPIQuotaError && error.status === 503
+      (error) => error instanceof ExternalAPIQuotaError && error.status === 503
     );
 
     await other.getForTest('/other', undefined, 0);
@@ -514,8 +529,7 @@ describe('ExternalAPI shared request budgets', () => {
     const start = Date.now();
     await assert.rejects(
       api.getForTest('/limited', undefined, 0),
-      (error) =>
-        error instanceof ExternalAPIQuotaError && error.status === 503
+      (error) => error instanceof ExternalAPIQuotaError && error.status === 503
     );
 
     assert.equal(started.length, 1);

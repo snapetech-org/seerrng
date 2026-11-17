@@ -58,6 +58,7 @@ export default function UpstreamVideoDetails({
   mediaType,
   actions,
   ratings,
+  statusMessage,
   seasons,
   sortedCrew,
   filteredReleases = [],
@@ -67,6 +68,7 @@ export default function UpstreamVideoDetails({
   mediaType: 'movie' | 'tv';
   actions: ReactNode;
   ratings: ReactNode;
+  statusMessage?: ReactNode;
   seasons?: ReactNode;
   sortedCrew?: MovieDetails['credits']['crew'] | TvDetails['credits']['crew'];
   filteredReleases?: Release[];
@@ -340,11 +342,8 @@ export default function UpstreamVideoDetails({
   ];
 
   return (
-    <div
-      className="upstream-media-page"
-      data-native-composition="upstream"
-      style={{ height: 493 }}
-    >
+    <div className="upstream-media-page" data-native-composition="upstream">
+      {statusMessage}
       {data.backdropPath && (
         <div className="upstream-media-backdrop">
           <CachedImage

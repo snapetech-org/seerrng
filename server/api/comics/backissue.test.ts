@@ -267,9 +267,7 @@ describe('BackIssueAPI', () => {
     );
 
     await api().cancelQueueItem(77);
-    assert.deepEqual(calls, [
-      { endpoint: '/api/queue/cancel/77', data: {} },
-    ]);
+    assert.deepEqual(calls, [{ endpoint: '/api/queue/cancel/77', data: {} }]);
   });
 });
 

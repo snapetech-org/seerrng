@@ -361,8 +361,10 @@ test.describe('Episode Queue season loading', () => {
         dialog.getByRole('button', { name: 'Deselect episode 1: Pilot' })
       ).toBeVisible();
       expect(batches).toEqual([
-        '1,2,3,4,5,6,7,8,9,10,11,12,13',
-        '2,3,4,5,6,7,8,9,10,11,12,13',
+        '1,2,3,4,5',
+        '6,7,8,9,10',
+        '11,12,13',
+        '2,3,4,5',
       ]);
       await page.screenshot({
         path: info.outputPath('episode-queue.png'),

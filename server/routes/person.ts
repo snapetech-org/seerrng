@@ -2,11 +2,11 @@ import TheMovieDb from '@server/api/themoviedb';
 import { MediaType } from '@server/constants/media';
 import Media from '@server/entity/Media';
 import { rankTmdbPersonCredits } from '@server/lib/tmdbRank';
+import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import {
   filterVideoItemsByMaturityPolicy,
   getUserVideoMaturityPolicy,
 } from '@server/lib/videoMaturityPolicy';
-import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
 import {
   mapCastCredits,

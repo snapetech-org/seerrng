@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openSettingsTools } from './helpers/presentation';
 
 test('Settings Search opens the matching setting when Enter is pressed', async ({
   page,
@@ -35,6 +36,7 @@ test('Settings Search opens the matching setting when Enter is pressed', async (
   ]);
 
   await page.goto('/settings/metadata');
+  await openSettingsTools(page);
   const search = page.getByRole('searchbox', { name: 'Search Settings' });
   await search.fill('API');
   await search.press('Enter');

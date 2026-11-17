@@ -40,6 +40,18 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
       let listId: number | undefined;
       try {
         await page.goto('/profile/settings/main');
+        if (theme === 'seerrOrig')
+          await page
+            .locator('details')
+            .filter({
+              has: page.getByRole('heading', {
+                name: 'External request lists',
+                exact: true,
+                includeHidden: true,
+              }),
+            })
+            .locator(':scope > summary')
+            .click();
         await expect(
           page.getByRole('heading', {
             name: 'External request lists',
@@ -70,6 +82,18 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         expect(response.status()).toBe(201);
         listId = (await response.json()).id;
         await page.reload();
+        if (theme === 'seerrOrig')
+          await page
+            .locator('details')
+            .filter({
+              has: page.getByRole('heading', {
+                name: 'External request lists',
+                exact: true,
+                includeHidden: true,
+              }),
+            })
+            .locator(':scope > summary')
+            .click();
         const row = page.getByRole('listitem').filter({
           has: page.getByRole('link', { name: listUrl, exact: true }),
         });

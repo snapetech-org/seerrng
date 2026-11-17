@@ -5,10 +5,10 @@ import FollowButton from '@app/components/Following/FollowButton';
 import useDiscover from '@app/hooks/useDiscover';
 import useUpstreamTheme from '@app/hooks/useUpstreamTheme';
 import { Permission, useUser } from '@app/hooks/useUser';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import globalMessages from '@app/i18n/globalMessages';
 import ErrorPage from '@app/pages/_error';
 import defineMessages from '@app/utils/defineMessages';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { TvResult } from '@server/models/Search';
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
@@ -85,7 +85,7 @@ const DiscoverTvGenre = () => {
   return (
     <>
       <PageTitle title={title} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
+      <div className={upstream ? 'mt-1 mb-5' : undefined}>
         <Header>{title}</Header>
         {followAction &&
           (upstream ? (

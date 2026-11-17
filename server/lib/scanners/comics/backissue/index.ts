@@ -73,9 +73,7 @@ class BackIssueScanner
 
     try {
       this.servers = structuredClone(settings.backissue);
-      pruneComicSeriesRefServices(
-        this.servers.map((server) => server.id)
-      );
+      pruneComicSeriesRefServices(this.servers.map((server) => server.id));
       pruneComicLibraryProgressServices(
         this.servers.map((server) => server.id)
       );
@@ -104,9 +102,7 @@ class BackIssueScanner
         );
         const comicSeries = this.items.filter(
           (series) =>
-            !series.type ||
-            series.type === 'comic' ||
-            series.type === 'manga'
+            !series.type || series.type === 'comic' || series.type === 'manga'
         );
         pruneComicSeriesRefs(
           server.id,

@@ -43,6 +43,8 @@ const buttonJavascript = ts.transpileModule(
 ).outputText;
 new Function('require', 'module', 'exports', buttonJavascript)(
   (id) => {
+    if (id === '@app/hooks/useUpstreamTheme')
+      return { __esModule: true, default: () => false };
     // The shared Button's CSS module only supplies a class name.
     if (id === './Button.module.css') return { default: { button: 'button' } };
     assert.ok(

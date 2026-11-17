@@ -50,7 +50,7 @@ const MovieGenreList = () => {
   return (
     <>
       <PageTitle title={intl.formatMessage(messages.moviegenres)} />
-      <div className={upstream ? 'mb-5 mt-1' : undefined}>
+      <div className={upstream ? 'mt-1 mb-5' : undefined}>
         <Header>{intl.formatMessage(messages.moviegenres)}</Header>
       </div>
       <ul className="cards-horizontal">

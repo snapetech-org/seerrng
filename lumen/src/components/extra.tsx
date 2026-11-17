@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { MediaStatus, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import { friendlyError } from '../errors';
 import { useExtras, type Extra } from '../extras';
 import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
@@ -10,7 +11,6 @@ import { Glyph, statusOf, type Stat } from './cards';
 import { Pill } from './detail';
 import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
-import { friendlyError } from '../errors';
 
 // The pieces the extra categories share: a poster card, the page header, the status-aware
 // request button and the "this category is off" notice.
@@ -43,7 +43,10 @@ export function comicState(mi?: MediaInfo): {
       pcts.length === dls.length
         ? Math.max(
             0,
-            Math.min(100, Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length))
+            Math.min(
+              100,
+              Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length)
+            )
           )
         : undefined;
     return {

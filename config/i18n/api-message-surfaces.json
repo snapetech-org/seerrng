@@ -4,7 +4,7 @@
   "entries": [
     {
       "file": "src/components/Blocklist/index.tsx",
-      "line": 827,
+      "line": 834,
       "expression": "message",
       "context": [
         "strong",
@@ -137,7 +137,7 @@
     },
     {
       "file": "src/components/ComicDetails/index.tsx",
-      "line": 293,
+      "line": 303,
       "expression": "message",
       "context": [
         "strong",
@@ -669,6 +669,16 @@
       "classification": "already-localized"
     },
     {
+      "file": "src/components/MediaDetails/UpstreamVideoDetails.tsx",
+      "line": 346,
+      "expression": "statusMessage",
+      "context": [
+        "div"
+      ],
+      "classification": "localized-child-boundary",
+      "reason": "Movie and TV callers supply their existing localized PageErrorMessage React node, including Retry; this shared frame positions that node without interpreting provider text."
+    },
+    {
       "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
       "line": 445,
       "expression": "statusMessage",
@@ -678,15 +688,18 @@
     },
     {
       "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
-      "line": 505,
+      "line": 507,
       "expression": "statusMessage",
-      "context": [],
+      "context": [
+        "UpstreamVideoDetails"
+      ],
+      "attribute": "statusMessage",
       "classification": "localized-child-boundary",
       "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
     },
     {
       "file": "src/components/MovieDetails/MovieDetailsLayout.tsx",
-      "line": 556,
+      "line": 558,
       "expression": "statusMessage",
       "context": [
         "div"
@@ -870,7 +883,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2050,
+      "line": 2065,
       "expression": "current.message",
       "context": [
         "RequestStatusMessageText",
@@ -883,7 +896,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2057,
+      "line": 2072,
       "expression": "`${getStageLabel(intl, currentStage)}: ${currentMessage}`",
       "context": [
         "span",
@@ -897,7 +910,7 @@
     },
     {
       "file": "src/components/Requests/index.tsx",
-      "line": 2129,
+      "line": 2144,
       "expression": "event.message",
       "context": [
         "RequestStatusMessageText",
@@ -1481,7 +1494,7 @@
     },
     {
       "file": "src/components/SoftwareCatalog/index.tsx",
-      "line": 919,
+      "line": 934,
       "expression": "intl.formatMessage(\n                  error ? messages.retryLoad : messages.loadMore\n                )",
       "context": [
         "Button",
@@ -1492,7 +1505,7 @@
     },
     {
       "file": "src/components/SoftwareCatalog/index.tsx",
-      "line": 1259,
+      "line": 1282,
       "expression": "requestError",
       "context": [
         "ApiMessageText",
@@ -1586,9 +1599,12 @@
     },
     {
       "file": "src/components/TvDetails/SeriesDetailsLayout.tsx",
-      "line": 1261,
+      "line": 1263,
       "expression": "statusMessage",
-      "context": [],
+      "context": [
+        "UpstreamVideoDetails"
+      ],
+      "attribute": "statusMessage",
       "classification": "localized-child-boundary",
       "reason": "The detail page supplies its existing PageErrorMessage React node; that component localizes the error and Retry action before this layout renders it."
     },
@@ -1712,7 +1728,7 @@
     },
     {
       "file": "src/components/UserProfile/UserSettings/UserLinkedAccountsSettings/index.tsx",
-      "line": 340,
+      "line": 428,
       "expression": "error",
       "context": [
         "Alert"
@@ -1777,7 +1793,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 316,
+      "line": 319,
       "expression": "warning.title",
       "context": [
         "h2",
@@ -1792,7 +1808,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 319,
+      "line": 322,
       "expression": "warning.serviceName",
       "context": [
         "p",
@@ -1807,7 +1823,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 319,
+      "line": 322,
       "expression": "warning.serviceType",
       "context": [
         "p",
@@ -1822,7 +1838,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 323,
+      "line": 326,
       "expression": "intl.formatMessage(stateMessages[warning.state])",
       "context": [
         "span",
@@ -1835,7 +1851,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 335,
+      "line": 338,
       "expression": "intl.formatMessage(resolutions[warning.resolution])",
       "context": [
         "p",
@@ -1847,7 +1863,7 @@
     },
     {
       "file": "src/pages/downloads.tsx",
-      "line": 577,
+      "line": 583,
       "expression": "reason",
       "context": [
         "OpaqueApiMessageText",

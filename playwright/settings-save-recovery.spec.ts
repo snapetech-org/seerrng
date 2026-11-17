@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectSettingsClean } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 const cases = [
@@ -151,7 +152,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         );
         await save.click();
         expect((await retry).status()).toBe(200);
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         await page.reload();
         await assertValue(replacement);
         await edit(original);
@@ -163,7 +164,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         );
         await save.click();
         expect((await restore).status()).toBe(200);
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         await page.reload();
         await assertValue(original);
         await page.screenshot({

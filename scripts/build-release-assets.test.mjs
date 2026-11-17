@@ -176,10 +176,12 @@ describe('release asset construction', () => {
 
     assert.equal(result.code, 0, result.output);
     assert.equal(
-      await fs.readFile(
-        path.join(distribution, 'seerrng-v1.2.3-macos-arm64.sha256'),
-        'utf8'
-      ).then((value) => value.includes('seerrng-v1.2.3-macos-arm64.tar.gz')),
+      await fs
+        .readFile(
+          path.join(distribution, 'seerrng-v1.2.3-macos-arm64.sha256'),
+          'utf8'
+        )
+        .then((value) => value.includes('seerrng-v1.2.3-macos-arm64.tar.gz')),
       true
     );
   });

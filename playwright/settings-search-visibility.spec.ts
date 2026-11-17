@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { restoreAdminPresentation } from './helpers/presentation';
+import {
+  openSettingsTools,
+  restoreAdminPresentation,
+} from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
@@ -45,6 +48,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
       'data-interface-theme',
       theme
     );
+    await openSettingsTools(page);
     const search = page.getByRole('searchbox', { name: 'Search Settings' });
     await search.fill('NZBHydra2');
     await search.press('Enter');

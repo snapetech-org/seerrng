@@ -196,8 +196,7 @@ for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
         expect(card.cardLeft).toBeGreaterThanOrEqual(card.slotLeft - 1);
         if (isBaseline && theme === 'persiusNG') {
           expect(card.cardRight).toBeGreaterThan(card.slotRight + 1);
-          if (i)
-            expect(card.cardLeft).toBeLessThan(geometry[i - 1].cardRight);
+          if (i) expect(card.cardLeft).toBeLessThan(geometry[i - 1].cardRight);
         } else {
           expect(card.cardRight).toBeLessThanOrEqual(card.slotRight + 1);
           if (i)

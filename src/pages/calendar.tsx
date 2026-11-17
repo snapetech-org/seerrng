@@ -103,7 +103,7 @@ export default function CalendarPage() {
     setLimit(25);
   };
   return (
-    <div className="text-gray-100 upstream-extension-page upstream-calendar-page">
+    <div className="upstream-extension-page upstream-calendar-page text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <Header>{intl.formatMessage(messages.title)}</Header>
       <p className="description mb-6">

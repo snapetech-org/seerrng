@@ -838,7 +838,7 @@ test('native catalog filters, poster captions and keyboard request entry', async
   await fixtures(page);
   await navigate(page, '/discover/movies');
   await expect(page.locator('.persius-poster-caption').first()).toContainText(
-    '1h 57m'
+    '2026'
   );
   await page
     .locator('.persius-segments')
@@ -926,6 +926,10 @@ test('native season dialog selects all, latest and none and retains future-seaso
   await card.getByRole('button', { name: /Request/ }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog.locator('.persius-season')).toHaveCount(10);
+  await dialog
+    .locator('summary')
+    .filter({ hasText: 'Choose individual episodes' })
+    .click();
   await dialog.getByRole('button', { name: 'Clear', exact: true }).click();
   await expect(dialog.locator('.persius-season input:checked')).toHaveCount(0);
   await dialog
@@ -1122,7 +1126,12 @@ test('native request tabs keep owner scope and expose the existing management fl
     .locator('.persius-request-tabs')
     .getByRole('button', { name: 'All 10', exact: true })
     .click();
-  await expect(page).toHaveURL(/filter=all/);
+  await expect(page).toHaveURL(/\/requests$/);
+  await expect(
+    page
+      .locator('.persius-request-tabs')
+      .getByRole('button', { name: 'All 10', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
   expect(queries.length).toBeGreaterThan(0);
   expect(
     queries.every((url) => new URL(url).searchParams.get('requestedBy') === '1')

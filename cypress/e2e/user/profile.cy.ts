@@ -20,7 +20,8 @@ describe('User Profile', () => {
   it('opens Advanced Theme from self user settings', () => {
     cy.visit('/users/1/settings/main');
 
-    cy.get('[data-testid=settings-nav-desktop]')
+    cy.contains('summary', 'More settings').click();
+    cy.get('.upstream-settings-more')
       .contains('Advanced Theme')
       .should('have.attr', 'href', '/profile/advanced-theme')
       .click();

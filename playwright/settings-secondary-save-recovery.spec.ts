@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectSettingsClean } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 for (const theme of ['seerrOrig', 'seerrNGJ'])
@@ -94,14 +95,14 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         });
         await save.click();
         await expect.poll(() => writes).toBe(2);
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         await page.reload();
         await verify(true);
         await edit(false);
         await expect(save).toBeEnabled();
         await save.click();
         await expect.poll(() => writes).toBe(3);
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         await page.reload();
         await verify(false);
         await page.screenshot({

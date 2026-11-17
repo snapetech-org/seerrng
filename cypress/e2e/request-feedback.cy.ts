@@ -155,7 +155,7 @@ describe('request feedback discoverability', () => {
       cy.get(
         'nav[data-navigation-device="desktop"] a[data-navigation-link-id="requests"]'
       )
-        .should('have.attr', 'href', '/requests?filter=pending')
+        .should('have.attr', 'href', '/requests')
         .and('contain.text', '1');
       cy.contains(
         '[data-interface-role="request-card"] .persius-request-actions button',
@@ -167,10 +167,12 @@ describe('request feedback discoverability', () => {
         cy.get('button[aria-label="Close menu"]').should('exist');
         cy.get('.mobile-menu-navigation a[data-navigation-link-id="requests"]')
           .should('exist')
-          .and('have.attr', 'href', '/requests?filter=pending')
+          .and('have.attr', 'href', '/requests')
           .and('contain.text', '1');
       }
 
+      if (viewport.name === 'phone')
+        cy.get('button[aria-label="Close menu"]').click();
       cy.contains(
         '[data-interface-role="request-card"] .persius-request-actions button',
         'Episode Queue'

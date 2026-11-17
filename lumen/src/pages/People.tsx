@@ -77,9 +77,7 @@ export default function PersonDetail() {
         what="person details"
         retry={person.reload}
       />
-      {!person.data && !person.error && (
-        <p className="note">Loading person…</p>
-      )}
+      {!person.data && !person.error && <p className="note">Loading person…</p>}
       {person.data && (
         <div className="person-overview">
           <div className="portrait">
@@ -108,7 +106,11 @@ export default function PersonDetail() {
           </div>
         </div>
       )}
-      <ServiceNote error={credits.error} what="credits" retry={credits.reload} />
+      <ServiceNote
+        error={credits.error}
+        what="credits"
+        retry={credits.reload}
+      />
       {!credits.data && !credits.error && (
         <p className="note">Loading credits…</p>
       )}

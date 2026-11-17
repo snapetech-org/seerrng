@@ -78,125 +78,121 @@ test.afterEach(async ({ page }) => {
 });
 
 for (const { theme, mode, expectedMode } of themeCases) {
-  test(
-    `sticky Settings navigation stays reachable at responsive widths in ${theme} (${mode})`,
-    async ({ page }, info) => {
-      const login = await page.request.post('/api/v1/auth/local', {
-        data: { email: 'admin@seerr.dev', password: 'test1234' },
-      });
-      expect(login.status()).toBe(200);
-      const user = await login.json();
+  test(`sticky Settings navigation stays reachable at responsive widths in ${theme} (${mode})`, async ({
+    page,
+  }, info) => {
+    const login = await page.request.post('/api/v1/auth/local', {
+      data: { email: 'admin@seerr.dev', password: 'test1234' },
+    });
+    expect(login.status()).toBe(200);
+    const user = await login.json();
 
-      const themeResponse = await page.request.post(
-        `/api/v1/user/${user.id}/settings/interface-theme`,
-        { data: { theme } }
+    const themeResponse = await page.request.post(
+      `/api/v1/user/${user.id}/settings/interface-theme`,
+      { data: { theme } }
+    );
+    expect(themeResponse.status()).toBe(200);
+    await page.addInitScript((selectedMode) => {
+      localStorage.setItem('seerr-theme-mode', selectedMode);
+    }, mode);
+
+    await page.goto('/settings/services');
+    const root = page.locator('html');
+    await expect(root).toHaveAttribute('data-interface-theme', theme);
+    await expect(root).toHaveAttribute('data-theme-mode', expectedMode);
+
+    for (const width of widths) {
+      // CSS widths cover layouts also reached through zoom; this does not emulate browser zoom.
+      const height = width < 768 ? 640 : 900;
+      await page.setViewportSize({ width, height });
+
+      const maxScroll = await page.evaluate(
+        () => document.documentElement.scrollHeight - window.innerHeight
       );
-      expect(themeResponse.status()).toBe(200);
-      await page.addInitScript((selectedMode) => {
-        localStorage.setItem('seerr-theme-mode', selectedMode);
-      }, mode);
+      expect(maxScroll, `page scroll range at ${width}px`).toBeGreaterThan(400);
+      await page.evaluate(() => window.scrollTo(0, 400));
+      await expect
+        .poll(() => page.evaluate(() => window.scrollY))
+        .toBeGreaterThan(300);
 
-      await page.goto('/settings/services');
-      const root = page.locator('html');
-      await expect(root).toHaveAttribute('data-interface-theme', theme);
-      await expect(root).toHaveAttribute('data-theme-mode', expectedMode);
+      const header = page.locator('.searchbar');
+      const navigation = page.locator('.settings-page-navigation-row');
+      await expect(header).toBeVisible();
+      await expect(navigation).toBeVisible();
 
-      for (const width of widths) {
-        // CSS widths cover layouts also reached through zoom; this does not emulate browser zoom.
-        const height = width < 768 ? 640 : 900;
-        await page.setViewportSize({ width, height });
+      const headerBottom = await header.evaluate(
+        (element) => element.getBoundingClientRect().bottom
+      );
+      const navigationGeometry = await navigation.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        const styles =
+          element.ownerDocument.defaultView!.getComputedStyle(element);
+        return {
+          top: rect.top,
+          height: rect.height,
+          maxHeight: Number.parseFloat(styles.maxHeight),
+          documentWidth: element.ownerDocument.documentElement.scrollWidth,
+        };
+      });
 
-        const maxScroll = await page.evaluate(
-          () => document.documentElement.scrollHeight - window.innerHeight
+      expect(
+        Math.abs(navigationGeometry.top - headerBottom),
+        `sticky navigation clears the header at ${width}px`
+      ).toBeLessThanOrEqual(2);
+      expect(
+        navigationGeometry.height,
+        `sticky navigation respects its viewport limit at ${width}px`
+      ).toBeLessThanOrEqual(navigationGeometry.maxHeight + 1);
+      expect(
+        navigationGeometry.documentWidth,
+        `document has no horizontal overflow at ${width}px`
+      ).toBeLessThanOrEqual(width + 1);
+
+      const mobileSelector = navigation.locator('select#tabs');
+      const desktopNavigation = navigation.locator('nav');
+      const usesMobileSelector =
+        theme === 'seerrOrig' ? width < 640 : width < 1024;
+      if (usesMobileSelector) {
+        await expect(mobileSelector).toBeVisible();
+        await expect(mobileSelector).toHaveAttribute(
+          'aria-label',
+          'Selected tab'
         );
-        expect(maxScroll, `page scroll range at ${width}px`).toBeGreaterThan(
-          400
-        );
-        await page.evaluate(() => window.scrollTo(0, 400));
-        await expect
-          .poll(() => page.evaluate(() => window.scrollY))
-          .toBeGreaterThan(300);
+        await expect(desktopNavigation).toBeHidden();
+      } else {
+        await expect(mobileSelector).toBeHidden();
+        await expect(desktopNavigation).toBeVisible();
+      }
 
-        const header = page.locator('.searchbar');
-        const navigation = page.locator('.settings-page-navigation-row');
-        await expect(header).toBeVisible();
+      if (width === 390) {
+        await captureStickyComparison(page, info, theme, mode, width);
+        await page.evaluate(() =>
+          window.scrollTo(0, document.documentElement.scrollHeight)
+        );
         await expect(navigation).toBeVisible();
-
-        const headerBottom = await header.evaluate(
-          (element) => element.getBoundingClientRect().bottom
+        await expect(mobileSelector).toBeVisible();
+        await mobileSelector.selectOption({ label: 'Jobs & Cache' });
+        await expect(page).toHaveURL(/\/settings\/jobs$/);
+        await expect(mobileSelector.locator('option:checked')).toHaveText(
+          'Jobs & Cache'
         );
-        const navigationGeometry = await navigation.evaluate((element) => {
-          const rect = element.getBoundingClientRect();
-          const styles = element.ownerDocument.defaultView!.getComputedStyle(
-            element
-          );
-          return {
-            top: rect.top,
-            height: rect.height,
-            maxHeight: Number.parseFloat(styles.maxHeight),
-            documentWidth: element.ownerDocument.documentElement.scrollWidth,
-          };
+        await page.goto('/settings/services');
+      }
+
+      if (width === 1280) {
+        await captureStickyComparison(page, info, theme, mode, width);
+        await page.evaluate(() =>
+          window.scrollTo(0, document.documentElement.scrollHeight)
+        );
+        const jobsLink = navigation.getByRole('link', {
+          name: 'Jobs & Cache',
+          exact: true,
         });
-
-        expect(
-          Math.abs(navigationGeometry.top - headerBottom),
-          `sticky navigation clears the header at ${width}px`
-        ).toBeLessThanOrEqual(2);
-        expect(
-          navigationGeometry.height,
-          `sticky navigation respects its viewport limit at ${width}px`
-        ).toBeLessThanOrEqual(navigationGeometry.maxHeight + 1);
-        expect(
-          navigationGeometry.documentWidth,
-          `document has no horizontal overflow at ${width}px`
-        ).toBeLessThanOrEqual(width + 1);
-
-        const mobileSelector = navigation.locator('select#tabs');
-        const desktopNavigation = navigation.locator('nav');
-        const usesMobileSelector =
-          theme === 'seerrOrig' ? width < 640 : width < 1024;
-        if (usesMobileSelector) {
-          await expect(mobileSelector).toBeVisible();
-          await expect(mobileSelector).toHaveAttribute(
-            'aria-label',
-            'Selected tab'
-          );
-          await expect(desktopNavigation).toBeHidden();
-        } else {
-          await expect(mobileSelector).toBeHidden();
-          await expect(desktopNavigation).toBeVisible();
-        }
-
-        if (width === 390) {
-          await captureStickyComparison(page, info, theme, mode, width);
-          await page.evaluate(() =>
-            window.scrollTo(0, document.documentElement.scrollHeight)
-          );
-          await expect(navigation).toBeVisible();
-          await expect(mobileSelector).toBeVisible();
-          await mobileSelector.selectOption({ label: 'Jobs & Cache' });
-          await expect(page).toHaveURL(/\/settings\/jobs$/);
-          await expect(mobileSelector.locator('option:checked')).toHaveText(
-            'Jobs & Cache'
-          );
-          await page.goto('/settings/services');
-        }
-
-        if (width === 1280) {
-          await captureStickyComparison(page, info, theme, mode, width);
-          await page.evaluate(() =>
-            window.scrollTo(0, document.documentElement.scrollHeight)
-          );
-          const jobsLink = navigation.getByRole('link', {
-            name: 'Jobs & Cache',
-            exact: true,
-          });
-          await expect(jobsLink).toBeVisible();
-          await jobsLink.click();
-          await expect(page).toHaveURL(/\/settings\/jobs$/);
-          await expect(jobsLink).toHaveAttribute('aria-current', 'page');
-        }
+        await expect(jobsLink).toBeVisible();
+        await jobsLink.click();
+        await expect(page).toHaveURL(/\/settings\/jobs$/);
+        await expect(jobsLink).toHaveAttribute('aria-current', 'page');
       }
     }
-  );
+  });
 }

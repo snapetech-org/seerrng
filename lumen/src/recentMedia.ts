@@ -20,7 +20,8 @@ export function recentMediaTitles(rows: MediaRow[]): RecentMediaTitle[] {
     .map((row) => ({
       id: row.tmdbId,
       mediaType: row.mediaType as 'movie' | 'tv',
-      title: row.mediaType === 'movie' ? row.title || 'Untitled movie' : undefined,
+      title:
+        row.mediaType === 'movie' ? row.title || 'Untitled movie' : undefined,
       name: row.mediaType === 'tv' ? row.title || 'Untitled series' : undefined,
       posterPath: row.posterPath,
       releaseDate: row.mediaType === 'movie' ? row.releaseDate : undefined,
@@ -52,8 +53,12 @@ export async function enrichRecentMediaTitles(
         const resolvedTitle = detail.title || detail.name;
         return {
           ...card,
-          title: card.mediaType === 'movie' ? resolvedTitle || card.title : undefined,
-          name: card.mediaType === 'tv' ? resolvedTitle || card.name : undefined,
+          title:
+            card.mediaType === 'movie'
+              ? resolvedTitle || card.title
+              : undefined,
+          name:
+            card.mediaType === 'tv' ? resolvedTitle || card.name : undefined,
           posterPath: card.posterPath || detail.posterPath,
           releaseDate: card.releaseDate || detail.releaseDate,
           firstAirDate: card.firstAirDate || detail.firstAirDate,

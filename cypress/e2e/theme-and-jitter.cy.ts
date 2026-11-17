@@ -37,6 +37,11 @@ const makeBook = (title: string, id: string) => ({
 describe('Theme picker and seeded discovery refresh', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
     cy.mockConfiguredMediaAvailability({
       booksEnabled: true,
       musicEnabled: true,

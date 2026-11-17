@@ -14,7 +14,16 @@ const emptyPage = { page: 1, totalPages: 1, totalResults: 0, results: [] };
 describe('Narrow-window media audit', () => {
   beforeEach(() => {
     cy.loginAsAdmin();
+    cy.request('/api/v1/auth/me').then(({ body }) =>
+      cy.request('POST', `/api/v1/user/${body.id}/settings/interface-theme`, {
+        theme: 'seerrNGJ',
+      })
+    );
     cy.viewport(390, 844);
+    cy.mockConfiguredMediaAvailability({
+      booksEnabled: true,
+      musicEnabled: true,
+    });
   });
 
   it('keeps search filters and results within a phone viewport', () => {

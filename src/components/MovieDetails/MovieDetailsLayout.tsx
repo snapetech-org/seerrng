@@ -503,8 +503,8 @@ const MovieDetailsLayout = ({
   if (upstream)
     return (
       <>
-        {statusMessage}
         <UpstreamVideoDetails
+          statusMessage={statusMessage}
           data={data}
           mediaType="movie"
           sortedCrew={sortedCrew}

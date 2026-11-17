@@ -83,17 +83,14 @@ describe('BackIssue manga classification', () => {
     const previousApiKey = settings.main.comicVineApiKey;
     settings.main.comicVineApiKey = 'test-key';
     mock.method(ComicVineAPI.prototype, 'getVolume', async () => {
-      throw Object.assign(
-        new Error('Request failed with status code 503'),
-        { isAxiosError: true, response: { status: 503 } }
-      );
+      throw Object.assign(new Error('Request failed with status code 503'), {
+        isAxiosError: true,
+        response: { status: 503 },
+      });
     });
 
     try {
-      await assert.rejects(
-        isMangaComicVineVolume(990002),
-        /status code 503/
-      );
+      await assert.rejects(isMangaComicVineVolume(990002), /status code 503/);
     } finally {
       settings.main.comicVineApiKey = previousApiKey;
     }

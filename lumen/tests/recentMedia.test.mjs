@@ -13,8 +13,12 @@ const compiled = ts.transpileModule(source, {
     module: ts.ModuleKind.ESNext,
   },
 }).outputText;
-const { RECENT_MEDIA_QUERY, RECENT_ROW_CACHE_KEY, recentMediaTitles, enrichRecentMediaTitles } =
-  await import(`data:text/javascript,${encodeURIComponent(compiled)}`);
+const {
+  RECENT_MEDIA_QUERY,
+  RECENT_ROW_CACHE_KEY,
+  recentMediaTitles,
+  enrichRecentMediaTitles,
+} = await import(`data:text/javascript,${encodeURIComponent(compiled)}`);
 
 test('recent videos are filtered before pagination, not dropped from a mixed page', () => {
   assert.equal(
@@ -51,7 +55,10 @@ test('missing optional catalog metadata does not silently remove a valid item', 
     { id: 3, tmdbId: 0, mediaType: 'tv', status: 5 },
     { id: 4, tmdbId: 23, mediaType: 'tv', status: 5 },
   ]);
-  assert.deepEqual(cards.map((x) => x.id), [21, 23]);
+  assert.deepEqual(
+    cards.map((x) => x.id),
+    [21, 23]
+  );
   assert.equal(cards[0].title, 'Untitled movie');
   assert.equal(cards[1].name, 'Untitled series');
 });
@@ -64,10 +71,13 @@ test('complete catalog rows need no extra detail requests', async () => {
     title: `Title ${i}`,
   }));
   let lookups = 0;
-  const titles = await enrichRecentMediaTitles(recentMediaTitles(rows), async () => {
-    lookups += 1;
-    throw Error('Not needed');
-  });
+  const titles = await enrichRecentMediaTitles(
+    recentMediaTitles(rows),
+    async () => {
+      lookups += 1;
+      throw Error('Not needed');
+    }
+  );
   assert.equal(titles.length, 19);
   assert.equal(lookups, 0);
 });
@@ -81,7 +91,13 @@ test('missing restricted-view titles are enriched where permitted, not discarded
   const calls = [];
   const result = await enrichRecentMediaTitles(cards, async (item) => {
     calls.push(item.id);
-    if (item.id === 51) return { id: 51, mediaType: 'movie', title: 'Retrieved title', posterPath: '/a.jpg' };
+    if (item.id === 51)
+      return {
+        id: 51,
+        mediaType: 'movie',
+        title: 'Retrieved title',
+        posterPath: '/a.jpg',
+      };
     throw Error('Detail endpoint unavailable');
   });
   assert.deepEqual(calls, [51, 52]);

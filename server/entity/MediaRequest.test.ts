@@ -784,6 +784,13 @@ describe('ChaptarrNG catalog book requests', () => {
       {
         id: 61,
         name: 'ChaptarrNG',
+        overrideRule: [],
+        tags: [],
+        is4k: false,
+        syncEnabled: false,
+        preventSearch: false,
+        tagRequests: false,
+        externalUrl: '',
         hostname: 'chaptarr.test',
         port: 8789,
         apiKey: 'test-key',

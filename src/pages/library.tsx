@@ -207,7 +207,7 @@ export default function LibraryPage() {
     dropped: messages.dropped,
   };
   return (
-    <div className="text-gray-100 upstream-extension-page upstream-library-page">
+    <div className="upstream-extension-page upstream-library-page text-gray-100">
       <PageTitle title={intl.formatMessage(messages.title)} />
       <h1 className="page-title">{intl.formatMessage(messages.title)}</h1>
       <p className="description mb-6">

@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { restoreAdminPresentation } from './helpers/presentation';
+import {
+  openSettingsTools,
+  restoreAdminPresentation,
+} from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block', reducedMotion: 'reduce' });
 test.afterEach(async ({ page }) => restoreAdminPresentation(page));
@@ -47,6 +50,7 @@ for (const theme of ['seerrNGJ', 'seerrOrig', 'persiusNG']) {
           path: info.outputPath('before-search.png'),
           fullPage: true,
         });
+        await openSettingsTools(page);
         const input = page.locator('input[aria-label="Search Settings"]');
         await input.fill(query);
         await input.press('Enter');

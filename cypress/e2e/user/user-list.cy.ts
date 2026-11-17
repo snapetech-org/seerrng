@@ -79,7 +79,7 @@ describe('User List', () => {
     cy.visit('/users');
     cy.wait('@userListFetch');
 
-    cy.contains('button', 'User Name').click();
+    cy.get('[data-testid=column-header-displayname]').click();
     cy.wait('@userListFetch').then((interception) => {
       const url = interception.request.url;
       expect(url).to.include('sort=displayname');

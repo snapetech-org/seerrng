@@ -8,9 +8,7 @@ const hasIndex = async (
     (index) => index.name === name
   ) ?? false;
 
-export class AddBookServiceLinkIndexes1794500000000
-  implements MigrationInterface
-{
+export class AddBookServiceLinkIndexes1794500000000 implements MigrationInterface {
   name = 'AddBookServiceLinkIndexes1794500000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {

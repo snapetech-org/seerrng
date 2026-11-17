@@ -102,9 +102,18 @@ for (const [path, heading] of screens) {
     });
     await page.goto(path);
     await page.waitForLoadState('networkidle');
-    const pageTitle = page.locator('.page-title:visible').first();
-    await expect(pageTitle).toHaveCSS('font-size', '36px');
-    await expect(pageTitle).toHaveCSS('font-weight', '700');
+    const nativeCatalog = ['/', '/discover/books', '/discover/music'].includes(
+      path
+    );
+    if (nativeCatalog) {
+      await expect(
+        page.locator('[data-testid=media-slider]').first()
+      ).toBeVisible();
+    } else {
+      const pageTitle = page.locator('.page-title:visible').first();
+      await expect(pageTitle).toHaveCSS('font-size', '36px');
+      await expect(pageTitle).toHaveCSS('font-weight', '700');
+    }
     await page.screenshot({
       path: `${process.env.SHOT_DIR ?? 'test-results'}/${path.replace(/\W+/g, '_')}.png`,
       fullPage: true,

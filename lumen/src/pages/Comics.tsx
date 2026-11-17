@@ -532,8 +532,7 @@ export function ComicDetail() {
   // in the library: complete opens it in Kavita; part of it keeps its state and offers
   // the reader as well. No Kavita link: no button
   const readHref = kavitaLink(shown?.readerUrl, kavitaUrl);
-  const complete =
-    s?.k === 'ok' && shown?.status === MediaStatus.AVAILABLE;
+  const complete = s?.k === 'ok' && shown?.status === MediaStatus.AVAILABLE;
   const read = readHref ? (
     <a
       className={`btn ${complete ? 'btn-primary' : 'btn-quiet'}`}

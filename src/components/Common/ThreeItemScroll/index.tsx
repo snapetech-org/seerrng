@@ -24,7 +24,11 @@ export default function ThreeItemScroll({
         cards.map((card) => card.getBoundingClientRect().height),
         parseFloat(getComputedStyle(list).rowGap) || 0
       );
-      if (height > 0)
+      if (
+        height > 0 &&
+        list.parentElement?.style.getPropertyValue('--three-item-height') !==
+          `${height}px`
+      )
         list.parentElement?.style.setProperty(
           '--three-item-height',
           `${height}px`
@@ -32,12 +36,19 @@ export default function ThreeItemScroll({
     };
     update();
     if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(update);
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    });
     observer.observe(list);
     Array.from(list.children)
       .slice(0, 3)
       .forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, [count]);
   return (
     <div

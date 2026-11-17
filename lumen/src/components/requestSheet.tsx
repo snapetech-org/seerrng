@@ -9,6 +9,7 @@ import {
   type TitleResult,
 } from '../api';
 import { useAuth } from '../auth';
+import { friendlyError } from '../errors';
 import { usePublicSettings } from '../hooks';
 import { usePrefs } from '../settings';
 import {
@@ -17,7 +18,6 @@ import {
   canRequest4k,
 } from './detail';
 import { useDialog } from './useDialog';
-import { friendlyError } from '../errors';
 
 // Poster quick requests are one click for most people. People who may choose the
 // Radarr/Sonarr server, quality and folder get this sheet first (unless the
@@ -115,7 +115,7 @@ export function RequestSheet({
   };
   return createPortal(
     <div className="sheet-wrap open">
-      <div className="sheet-scrim" onClick={onClose} />
+      <div className="sheet-scrim" aria-hidden="true" onClick={onClose} />
       <div
         ref={box}
         className="sheet"

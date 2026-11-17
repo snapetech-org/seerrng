@@ -6,11 +6,11 @@ import {
   type RequestOptions,
   type TvDetails,
 } from '../api';
+import { friendlyError } from '../errors';
 import { Icon } from '../icons';
 import { AdvancedOptions } from './detail';
 import { useBackCloses } from './requestSheet';
 import { useDialog } from './useDialog';
-import { friendlyError } from '../errors';
 
 // What SeerrNG says about a request's destination (not in Lumen's RequestItem shape).
 type Destination = {
@@ -119,7 +119,7 @@ export function RequestEditSheet({
 
   return createPortal(
     <div className="sheet-wrap open">
-      <div className="sheet-scrim" onClick={onClose} />
+      <div className="sheet-scrim" aria-hidden="true" onClick={onClose} />
       <div
         ref={box}
         className="sheet"

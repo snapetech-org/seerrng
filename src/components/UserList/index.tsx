@@ -714,9 +714,9 @@ const UserList = () => {
       </Transition>
 
       {upstream ? (
-        <div className="flex flex-col justify-between lg:flex-row lg:items-end">
+        <div className="app-action-row" data-action-placement="distributed">
           <Header>{intl.formatMessage(messages.userlist)}</Header>
-          <div className="mt-2 flex flex-grow flex-col lg:flex-grow-0 lg:flex-row">
+          <div className="app-action-row" data-action-placement="leading">
             <div className="mb-2 flex flex-grow flex-col justify-between sm:flex-row lg:mb-0 lg:flex-grow-0">
               <Button
                 className="mb-2 flex-grow sm:mr-2 sm:mb-0"

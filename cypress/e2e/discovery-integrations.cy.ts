@@ -250,6 +250,7 @@ describe('Discovery provider integrations', () => {
       statusCode: 204,
     }).as('cancelConnection');
     cy.visit('/profile/settings/linked-accounts');
+    cy.contains('summary', 'More integrations').click();
     cy.get('section[aria-labelledby="discovery-accounts-title"]').within(() => {
       cy.contains('h4', 'Trakt')
         .parent()
@@ -277,6 +278,7 @@ describe('Discovery provider integrations', () => {
     ).as('startTraktConnection');
 
     cy.visit('/profile/settings/linked-accounts');
+    cy.contains('summary', 'More integrations').click();
     cy.contains(
       'To connect Trakt, an administrator must set a public HTTPS Application URL'
     ).should('be.visible');

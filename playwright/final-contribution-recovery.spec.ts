@@ -459,6 +459,24 @@ for (const width of [390, 1440]) {
             },
           })
         );
+        await page.route(`**/api/v1/tv/${id}/seasons?*`, (route) =>
+          route.fulfill({
+            json: [
+              {
+                seasonNumber: 1,
+                episodes: [
+                  {
+                    id: 1,
+                    seasonNumber: 1,
+                    episodeNumber: 1,
+                    airDate: '2020-01-01',
+                    name: 'Pilot',
+                  },
+                ],
+              },
+            ],
+          })
+        );
         await page.route(`**/api/v1/blocklist/${id}*`, (route) =>
           route.fulfill({ status: 404, json: { message: 'Not found' } })
         );
@@ -504,7 +522,8 @@ for (const width of [390, 1440]) {
         );
         const card = page.getByTestId('title-card').first();
         await card.hover();
-        await card.locator('[data-poster-region="detail-link"]').click();
+        await card.locator('[data-poster-region="detail-link"]').focus();
+        await page.keyboard.press('Enter');
         await expect(page).toHaveURL(new RegExp(`/${mediaType}/${id}`));
         await expect(page.locator('html')).toHaveAttribute(
           'data-interface-theme',

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectSettingsClean, openSettingsTools } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 for (const theme of ['seerrOrig', 'seerrNGJ'])
@@ -27,13 +28,14 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         theme
       );
       await expect(page.locator('#applicationTitle')).toBeVisible();
+      await openSettingsTools(page);
       const compact = page.getByRole('button', {
         name: 'Compact settings',
         exact: true,
       });
       await expect(compact).toHaveAttribute('aria-pressed', 'false');
       const save = page.getByTestId('settings-save-button');
-      await expect(save).toBeDisabled();
+      await expectSettingsClean(page, save);
       const fullHeight = await page
         .locator('.settings-page-content')
         .evaluate((el) => el.getBoundingClientRect().height);
@@ -43,7 +45,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       });
       await compact.click();
       await expect(compact).toHaveAttribute('aria-pressed', 'true');
-      await expect(save).toBeDisabled();
+      await expectSettingsClean(page, save);
       const regional = page.getByRole('button', {
         name: 'Regional Content',
         exact: true,
@@ -84,7 +86,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         name: 'Request and Episode Rules',
         exact: true,
       });
-      await requestRules.click();
+      if ((await requestRules.getAttribute('aria-expanded')) !== 'true')
+        await requestRules.click();
+      if (theme === 'seerrOrig')
+        await page.getByText('More request rules', { exact: true }).click();
       const fourKRow = page
         .locator('.settings-form-row')
         .filter({ has: page.locator('#enable4k') });
@@ -99,15 +104,20 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         fourKRow.getByText(/This global switch controls 4K/)
       ).toBeVisible();
       const mapping = page.locator('#downloadPathMappingsJson');
-      await mapping.fill('[');
       const copies = page.getByRole('button', {
         name: 'Download Copies',
         exact: true,
       });
+      if ((await copies.getAttribute('aria-expanded')) !== 'true')
+        await copies.click();
+      await mapping.fill('[');
       await expect(copies).toHaveAttribute('aria-expanded', 'true');
       await copies.click();
       await expect(mapping).toBeHidden();
       await save.click();
+      if ((await copies.getAttribute('aria-expanded')) !== 'true')
+        await copies.click();
+      await mapping.fill('[');
       await expect(copies).toHaveAttribute('aria-expanded', 'true');
       await expect(mapping).toBeVisible();
       await expect(
@@ -116,8 +126,9 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         })
       ).toBeVisible();
       await mapping.fill('[]');
-      await expect(save).toBeDisabled();
+      await expectSettingsClean(page, save);
       await page.reload();
+      await openSettingsTools(page);
       await expect(compact).toHaveAttribute('aria-pressed', 'true');
       await expect(regional).toHaveAttribute('aria-expanded', 'false');
       const title = page.locator('#applicationTitle');
@@ -142,7 +153,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       await expect(title).toHaveValue('Unsuccessful compact draft');
       await expect(save).toBeEnabled();
       await title.fill(original);
-      await expect(save).toBeDisabled();
+      await expectSettingsClean(page, save);
       await page.unrouteAll({ behavior: 'wait' });
       await page.screenshot({
         path: info.outputPath(`${theme}-${width}-restored.png`),

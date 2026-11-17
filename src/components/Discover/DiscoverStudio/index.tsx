@@ -27,11 +27,12 @@ const DiscoverMovieStudio = () => {
   const studioId =
     typeof router.query.studioId === 'string' ? router.query.studioId : '';
   const isWaitingForRoute = upstream && !studioId;
-  const upstreamDiscover = useDiscover<MovieResult, { studio: ProductionCompany }>(
-    `/api/v1/discover/movies/studio/${studioId}`,
-    undefined,
-    { enabled: upstream && !!studioId }
-  );
+  const upstreamDiscover = useDiscover<
+    MovieResult,
+    { studio: ProductionCompany }
+  >(`/api/v1/discover/movies/studio/${studioId}`, undefined, {
+    enabled: upstream && !!studioId,
+  });
   const { data: studio, error } = useSWR<ProductionCompany>(
     !upstream && studioId ? `/api/v1/studio/${studioId}` : null
   );
@@ -51,7 +52,7 @@ const DiscoverMovieStudio = () => {
     return (
       <>
         <PageTitle title={upstreamTitle} />
-        <div className="mb-5 mt-1">
+        <div className="mt-1 mb-5">
           <Header>
             {upstreamDiscover.firstResultData?.studio.logoPath ? (
               <div className="relative mb-6 flex h-24 justify-center sm:h-32">

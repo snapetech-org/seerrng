@@ -80,7 +80,6 @@ export default function UpstreamCollectionDetails({
       className="upstream-media-page"
       data-native-composition="upstream"
       data-media-type="collection"
-      style={{ height: 493 }}
     >
       {data.backdropPath && (
         <div className="upstream-media-backdrop">
@@ -114,7 +113,8 @@ export default function UpstreamCollectionDetails({
               downloadItem={downloadStatus}
               title={data.parts.map((part) => part.title)}
               statusLabelOverride={
-                blockedParts.length > 0 && blockedParts.length < data.parts.length
+                blockedParts.length > 0 &&
+                blockedParts.length < data.parts.length
                   ? intl.formatMessage(globalMessages.partiallyblocklisted)
                   : undefined
               }

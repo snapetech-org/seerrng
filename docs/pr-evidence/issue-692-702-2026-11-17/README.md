@@ -85,3 +85,12 @@ no missing translation was invented, and plural/review warnings remain explicit.
 Task scratch and baseline worktree: `/tmp/seerrng-all-fixes-20261117` on `kspld0`.
 Logs and security reports are retained separately before scratch cleanup. Existing
 unrelated browser/profile state and the pre-existing Git stash are preserved.
+
+
+## Full release-gate follow-up
+
+The first complete hosted CI run (44116176293) exposed stale native-theme browser/source expectations, global formatting failures, and additional interaction defects. The follow-up preserves native disclosures and clean-save footer behavior while testing failed drafts, successful persistence, and repeated saves explicitly. Bounded season API fixtures now model the production array response and five-season batching.
+
+The native detail and collection frames used a fixed 493 px height despite longer content. They now retain a 493 px minimum and grow with content; the shared page owner reserves its search-bar offset. Metadata retry feedback renders inside the frame. User-list controls reuse the shared wrapping action-row owner. Association-list ResizeObserver callbacks schedule measurement for the next animation frame and skip unchanged CSS values.
+
+Matching `/users` screenshots at 1024 × 900 are retained as `users-baseline-1024.png` and `users-candidate-1024.png` in the external validation bundle. The measured document overflow fell from 132 px to 0 px. Follow-up collection tests cover three themes, English/Arabic, and 390/1440 px. Logs and browser traces are retained in the external validation bundle; final gate results are recorded after completion.

@@ -17,9 +17,7 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { normalizeValidIsbn } from '@server/lib/isbn';
-import {
-  restrictMediaOperationalIdentifiersForUser,
-} from '@server/lib/mediaResponse';
+import { restrictMediaOperationalIdentifiersForUser } from '@server/lib/mediaResponse';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { Brackets, In } from 'typeorm';

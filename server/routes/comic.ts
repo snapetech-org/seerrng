@@ -96,7 +96,9 @@ comicRoutes.get('/work/:key', async (req, res) => {
       }
     } else if (comicVineId !== undefined) {
       if (!(await isMangaVolumeAllowed(comicVineId))) {
-        return res.status(404).json({ status: 404, message: 'Comic not found' });
+        return res
+          .status(404)
+          .json({ status: 404, message: 'Comic not found' });
       }
       work = getWorkForEdition(comicVineId);
       const hint = getMangaVolumeHint(comicVineId);
@@ -202,9 +204,7 @@ comicRoutes.get('/:id', async (req, res, next) => {
   }
   const rawAnilistId = req.query.anilistId;
   const requestedAnilistId =
-    rawAnilistId === undefined
-      ? undefined
-      : parsePositiveRouteId(rawAnilistId);
+    rawAnilistId === undefined ? undefined : parsePositiveRouteId(rawAnilistId);
   if (rawAnilistId !== undefined && requestedAnilistId === undefined) {
     return res.status(400).json({
       status: 400,
@@ -221,8 +221,7 @@ comicRoutes.get('/:id', async (req, res, next) => {
   }
 
   try {
-    const persistedAnilistId =
-      await getPersistedMangaAnilistId(comicVineId);
+    const persistedAnilistId = await getPersistedMangaAnilistId(comicVineId);
     if (
       requestedAnilistId !== undefined &&
       persistedAnilistId !== undefined &&
@@ -242,7 +241,9 @@ comicRoutes.get('/:id', async (req, res, next) => {
         comicVine
       );
       if (!mangaIdentity) {
-        return res.status(404).json({ status: 404, message: 'Comic not found' });
+        return res
+          .status(404)
+          .json({ status: 404, message: 'Comic not found' });
       }
       rememberMangaVolume(comicVineId, mangaIdentity);
     }

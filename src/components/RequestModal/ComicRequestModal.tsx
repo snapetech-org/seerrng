@@ -92,10 +92,9 @@ const ComicRequestModal = ({
   }`;
   const [selectedRootFolder, setSelectedRootFolder] = useState('');
   const rootFolderManuallySelected = useRef(false);
-  const { data, error } = useSWR<ComicDetails>(
-    comicDetailsUrl,
-    { revalidateOnMount: true }
-  );
+  const { data, error } = useSWR<ComicDetails>(comicDetailsUrl, {
+    revalidateOnMount: true,
+  });
   const { data: quota } = useSWR<QuotaResponse>(
     user ? `/api/v1/user/${user.id}/quota` : null
   );

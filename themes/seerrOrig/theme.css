@@ -97,13 +97,21 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .app-backdrop {
-  background: linear-gradient(180deg, var(--interface-panel), var(--interface-page) 320px);
+  background: linear-gradient(
+    180deg,
+    var(--interface-panel),
+    var(--interface-page) 320px
+  );
   opacity: 1;
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .sidebar {
-  background: linear-gradient(180deg, var(--interface-panel), var(--interface-sidebar-bottom));
+  background: linear-gradient(
+    180deg,
+    var(--interface-panel),
+    var(--interface-sidebar-bottom)
+  );
   border-color: var(--interface-border);
 }
 
@@ -216,7 +224,11 @@
   .sidebar-link-selected,
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .sidebar-link-selected:hover {
-  background: linear-gradient(135deg, var(--interface-accent-a), var(--interface-accent-b));
+  background: linear-gradient(
+    135deg,
+    var(--interface-accent-a),
+    var(--interface-accent-b)
+  );
   color: var(--interface-accent-contrast);
 }
 
@@ -636,7 +648,8 @@
   ):focus {
   border-color: var(--interface-accent-a-hover);
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interface-accent-a-focus) 50%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--interface-accent-a-focus) 50%, transparent);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -658,7 +671,8 @@
   ):focus {
   border-color: var(--interface-accent-a-bright);
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interface-accent-a-focus) 50%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--interface-accent-a-focus) 50%, transparent);
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -872,7 +886,11 @@
     [data-focus]
   ) {
   border-color: rgb(var(--color-gray-500));
-  background: linear-gradient(to bottom right, var(--interface-accent-a), var(--interface-accent-b));
+  background: linear-gradient(
+    to bottom right,
+    var(--interface-accent-a),
+    var(--interface-accent-b)
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -918,6 +936,7 @@
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-media-page {
+  min-height: 493px;
   position: relative;
   isolation: isolate;
   margin-inline: -16px;
@@ -946,13 +965,21 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--interface-page) 47%, transparent), var(--interface-page));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--interface-page) 47%, transparent),
+    var(--interface-page)
+  );
 }
 
 [data-interface-theme='seerrOrig'] .upstream-backdrop-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--interface-panel) 47%, transparent) 0%, var(--interface-panel) 100%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--interface-panel) 47%, transparent) 0%,
+    var(--interface-panel) 100%
+  );
 }
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-media-header {
@@ -1179,7 +1206,11 @@
   padding: 24px 8px;
   border: 1px solid var(--interface-border);
   border-radius: 12px;
-  background: linear-gradient(180deg, var(--interface-panel), var(--interface-sidebar-bottom));
+  background: linear-gradient(
+    180deg,
+    var(--interface-panel),
+    var(--interface-sidebar-bottom)
+  );
   text-align: center;
   color: rgb(var(--color-gray-300));
 }
@@ -2181,7 +2212,11 @@
   .poster-layout
   [data-poster-region='status-slot']
   .poster-control-icon[data-media-status='processing'] {
-  background-color: color-mix(in srgb, var(--interface-accent-a-bright) 80%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--interface-accent-a-bright) 80%,
+    transparent
+  );
 }
 
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
@@ -3058,7 +3093,7 @@
 :is(:root[data-interface-theme='seerrOrig'], [data-interface-theme='seerrOrig'])
   .upstream-media-backdrop {
   inset: 0;
-  height: 100%;
+  height: 493px;
   z-index: -1;
 }
 
@@ -3515,13 +3550,16 @@
   }
 }
 
-
 /* Alternative user palettes keep SeerrOrig geometry while recoloring its
    existing upstream surface and accent roles. The default palette remains the
    exact upstream v3.5.1 presentation. */
 :is(
-  :root[data-interface-theme='seerrOrig'][data-theme-palette]:not([data-theme-palette='seerr']),
-  [data-interface-theme='seerrOrig'][data-theme-palette]:not([data-theme-palette='seerr'])
+  :root[data-interface-theme='seerrOrig'][data-theme-palette]:not(
+      [data-theme-palette='seerr']
+    ),
+  [data-interface-theme='seerrOrig'][data-theme-palette]:not(
+      [data-theme-palette='seerr']
+    )
 ) {
   --interface-page: rgb(var(--color-gray-900));
   --interface-panel: rgb(var(--color-gray-800));

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
@@ -15,7 +16,6 @@ import {
   type DiscoverRow,
 } from '../settings';
 import { canSeeRecent } from './Discover';
-import { ConfirmSheet } from '../components/ConfirmSheet';
 
 type Quota = Record<
   string,

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectSettingsClean } from './helpers/presentation';
 
 test.use({ serviceWorkers: 'block' });
 test.afterEach(async ({ page }) => {
@@ -112,7 +113,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
           await save.click();
           expect((await retry).status()).toBe(200);
         }
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         expect(plex.analyzeOnPlayback).toBe(true);
         expect(tautulliWrites).toBe(0);
         await analysis.click();
@@ -124,7 +125,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         );
         await save.click();
         expect((await second).status()).toBe(200);
-        await expect(save).toBeDisabled();
+        await expectSettingsClean(page, save);
         expect(plex.analyzeOnPlayback).toBe(false);
         expect(tautulliWrites).toBe(0);
         await page.reload();

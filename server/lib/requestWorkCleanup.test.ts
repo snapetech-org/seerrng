@@ -776,9 +776,13 @@ describe('RequestWorkCleanupManager', () => {
       queueRead++ === 0 ? [pack] : []
     );
     const canceled: number[] = [];
-    mock.method(BackIssueAPI.prototype, 'cancelQueueItem', async (id: number) => {
-      canceled.push(id);
-    });
+    mock.method(
+      BackIssueAPI.prototype,
+      'cancelQueueItem',
+      async (id: number) => {
+        canceled.push(id);
+      }
+    );
 
     await requestWorkCleanupManager.cleanup(request, true);
 

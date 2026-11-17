@@ -237,9 +237,7 @@ describe('Authenticated metadata resource boundaries', () => {
     try {
       const agent = await loginAs('friend@seerr.dev');
       const person = await agent.get('/api/v1/person/123');
-      const credits = await agent.get(
-        '/api/v1/person/123/combined_credits'
-      );
+      const credits = await agent.get('/api/v1/person/123/combined_credits');
 
       assert.strictEqual(person.status, 404);
       assert.strictEqual(credits.status, 404);
@@ -272,9 +270,7 @@ describe('Authenticated metadata resource boundaries', () => {
     try {
       const agent = await loginAs('friend@seerr.dev');
       const person = await agent.get('/api/v1/person/123');
-      const credits = await agent.get(
-        '/api/v1/person/123/combined_credits'
-      );
+      const credits = await agent.get('/api/v1/person/123/combined_credits');
 
       assert.strictEqual(person.status, 404);
       assert.strictEqual(credits.status, 404);
