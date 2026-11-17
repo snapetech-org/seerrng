@@ -41,9 +41,9 @@ For the focused BookOrbit production-build, request, and reader regressions, run
 `action=book-recovery` with `runner_pool=public` from trusted `main`. This lane
 uses no repository secrets and retains its browser report and screenshots.
 
-CodeQL is disabled across `snapetech-org` by the owner directive of
-2026-10-30. Do not restore CodeQL workflows or invocations unless that
-directive is explicitly reversed.
+The 2026-10-30 directive disabled CodeQL across `snapetech-org`. The owner
+subsequently authorized free CodeQL scanning for SeerrNG. GitHub manages it
+through default setup on standard GitHub-hosted runners.
 
 Live deployment still requires a separate configured deployment path.
 `scripts/verify-live-deployment.sh` remains available for checking a live

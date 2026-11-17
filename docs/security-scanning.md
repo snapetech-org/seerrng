@@ -12,9 +12,11 @@ The `Trivy filesystem scan` workflow is dispatched explicitly. It uses the curre
 
 Scans report findings without failing by default so existing findings can be triaged. Set `SEMGREP_FAIL_ON_FINDINGS=1` or `TRIVY_EXIT_CODE=1` to make a local scan fail on findings. Trivy downloads its vulnerability and check databases automatically; use `TRIVY_OFFLINE=1` only after those databases are cached. The default timeout is 20 minutes for slow first downloads; set `TRIVY_TIMEOUT` to change it.
 
-Run `./scripts/update-security-tools.sh` to refresh the local Semgrep package cache, pull the current Semgrep fallback image, and refresh Trivy's database. All three pnpm workspaces and Dependabot version updates use a seven-day release cooldown; Dependabot security updates remain unaffected. Dispatch each scanner against the revision being reviewed; these workflows do not currently run automatically on pushes, pull requests or schedules. Standard supported jobs use public hosted runners; private resources follow the project runner policy. CodeQL remains disabled under the owner directive.
+Run `./scripts/update-security-tools.sh` to refresh the local Semgrep package cache, pull the current Semgrep fallback image, and refresh Trivy's database. All three pnpm workspaces and Dependabot version updates use a seven-day release cooldown; Dependabot security updates remain unaffected. Dispatch each scanner against the revision being reviewed; these workflows do not currently run automatically on pushes, pull requests or schedules. Standard supported jobs use public hosted runners; private resources follow the project runner policy.
 
 Semgrep uses the POSIX I/O backend by default for compatibility with restricted Linux runners. Set `SEMGREP_EIO_BACKEND` only if your runner needs a different backend.
+
+GitHub manages CodeQL through default setup on standard GitHub-hosted runners. This setup is free while SeerrNG is public. Review its results in the [repository code scanning dashboard](https://github.com/snapetech-org/seerrng/security/code-scanning).
 
 ## Sources and attribution
 
