@@ -5,4 +5,4 @@ area: dependencies
 action: upgrade
 breaking: false
 ---
-The app and documentation builds locally patch Picomatch to treat repeated extglobs containing wildcard stars as literal text, mitigating [CVE-2026-112366](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) while an upstream release is pending. The guard adapts the parser-token approach proposed upstream by [@jscraik](https://github.com/jscraik) in [Picomatch #262](https://github.com/micromatch/picomatch/pull/262) and [#263](https://github.com/micromatch/picomatch/pull/263).
+The app and documentation builds locally patch Picomatch to treat repeated extglobs containing wildcard stars as literal text, mitigating [CVE-2026-112366](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) while an upstream release is pending.
