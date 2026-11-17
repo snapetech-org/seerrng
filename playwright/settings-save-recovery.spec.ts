@@ -135,6 +135,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
               ? expect(field).toBeChecked({ checked: value === 'true' })
               : expect(field).toHaveValue(value);
         await edit(replacement);
+        await expect(field.locator('xpath=ancestor::form')).toHaveAttribute(
+          'data-settings-dirty',
+          'true'
+        );
         const save = page.getByTestId('settings-save-button');
         await expect(save).toBeEnabled();
         await save.click();
@@ -156,6 +160,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         await page.reload();
         await assertValue(replacement);
         await edit(original);
+        await expect(field.locator('xpath=ancestor::form')).toHaveAttribute(
+          'data-settings-dirty',
+          'true'
+        );
         await expect(save).toBeEnabled();
         const restore = page.waitForResponse(
           (r) =>

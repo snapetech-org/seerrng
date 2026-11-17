@@ -374,7 +374,16 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
       return;
     }
 
-    const markDirtyFromCustomControl = () => setDirty(true);
+    const markDirtyFromCustomControl = () => {
+      const forms = [...(contentRef.current?.querySelectorAll('form') ?? [])];
+      // Formik reports committed dirty/submitting state through its attributes.
+      if (
+        forms.length &&
+        forms.every((form) => form.hasAttribute('data-settings-dirty'))
+      )
+        return;
+      setDirty(true);
+    };
     window.addEventListener(
       SETTINGS_USER_CHANGE_EVENT,
       markDirtyFromCustomControl
@@ -708,7 +717,16 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
             hasSaveActions ? 'settings-page-has-actions' : ''
           }`}
           onChangeCapture={(event) => {
-            if (hasSaveActions && event.nativeEvent.isTrusted) setDirty(true);
+            const form =
+              event.target instanceof HTMLElement
+                ? event.target.closest('form')
+                : null;
+            if (
+              hasSaveActions &&
+              event.nativeEvent.isTrusted &&
+              !form?.hasAttribute('data-settings-dirty')
+            )
+              setDirty(true);
           }}
           onSubmitCapture={(event) => {
             if (

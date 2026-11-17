@@ -90,3 +90,44 @@ test('Tab wraps within the dialog and a handled Escape stays with its child cont
   document.dispatchEvent(handled);
   expect(close).not.toHaveBeenCalled();
 });
+
+test('waits for a transitioning dialog to mount before moving focus, and cancels pending work on close', async () => {
+  const frames = new Map<number, FrameRequestCallback>();
+  let nextFrame = 0;
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    frames.set(++nextFrame, callback);
+    return nextFrame;
+  });
+  vi.stubGlobal('cancelAnimationFrame', (frame: number) =>
+    frames.delete(frame)
+  );
+  const DelayedDialog = ({ visible }: { visible: boolean }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useDialogFocus(ref, true);
+    return visible ? (
+      <div ref={ref} role="dialog" aria-modal="true">
+        <button>Ready</button>
+      </div>
+    ) : null;
+  };
+  const advance = async () => {
+    const callbacks = [...frames.values()];
+    frames.clear();
+    await act(async () => callbacks.forEach((callback) => callback(0)));
+  };
+  document.getElementById('trigger')!.focus();
+  await act(async () => root.render(<DelayedDialog visible={false} />));
+  await advance();
+  expect(document.activeElement?.id).toBe('trigger');
+  expect(frames.size).toBe(1);
+  await act(async () => root.render(<DelayedDialog visible />));
+  await advance();
+  expect(document.activeElement?.textContent).toBe('Ready');
+  await act(async () =>
+    root.render(<DelayedDialog visible={false} key="pending" />)
+  );
+  expect(frames.size).toBe(1);
+  await act(async () => root.render(null));
+  expect(frames.size).toBe(0);
+  expect(document.activeElement?.id).toBe('trigger');
+});

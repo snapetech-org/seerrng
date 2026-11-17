@@ -180,6 +180,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
               })
             : page.getByText(identities[0][1], { exact: true }).first()
         ).toBeVisible();
+        if (path.startsWith('/users/1/requests'))
+          await expect(async () => {
+            await page
+              .locator('[data-interface-role="request-card"]')
+              .nth(1)
+              .scrollIntoViewIfNeeded({ timeout: 2000 });
+          }).toPass();
         if (path !== '/issues')
           await expect(
             page.getByText(identities[1][1], { exact: true }).first()

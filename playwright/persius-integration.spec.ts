@@ -874,11 +874,16 @@ test('native catalog filters, poster captions and keyboard request entry', async
   await card.getByRole('button', { name: /Request/ }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  // The HD-only dialog initially focuses its pin control. Escape dismisses
-  // that control's focus tooltip before dismissing the containing dialog.
-  await expect(
-    dialog.getByRole('button', { name: /^(?:Unpin|Pin) Advanced Options/ })
-  ).toBeFocused();
+  // Async service settings can change the first enabled control. Focus must
+  // enter the dialog; explicitly focus the pin to exercise its Escape tooltip.
+  await expect
+    .poll(() =>
+      dialog.evaluate((node) => node.contains(document.activeElement))
+    )
+    .toBe(true);
+  await dialog
+    .getByRole('button', { name: /^(?:Unpin|Pin) Advanced Options/ })
+    .focus();
   await expect(page.getByRole('tooltip')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('tooltip')).toHaveCount(0);

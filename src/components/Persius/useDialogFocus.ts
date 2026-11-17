@@ -24,7 +24,20 @@ export default function useDialogFocus(
           !element.matches(':disabled, [tabindex="-1"]') &&
           element.getClientRects().length > 0
       );
-    const frame = requestAnimationFrame(() => focusable()[0]?.focus());
+    let disposed = false;
+    let frame = 0;
+    const focusWhenMounted = () => {
+      if (disposed) return;
+      const dialog = ref.current;
+      const dialogs = document.querySelectorAll('[aria-modal="true"]');
+      if (dialog && dialogs[dialogs.length - 1] !== dialog) return;
+      if (dialog?.contains(document.activeElement)) return;
+      focusable()[0]?.focus();
+      if (!dialog?.contains(document.activeElement)) {
+        frame = requestAnimationFrame(focusWhenMounted);
+      }
+    };
+    frame = requestAnimationFrame(focusWhenMounted);
     const onKey = (event: KeyboardEvent) => {
       if (event.defaultPrevented) return;
       const dialogs = document.querySelectorAll('[aria-modal="true"]');
@@ -52,6 +65,7 @@ export default function useDialogFocus(
     };
     document.addEventListener('keydown', onKey);
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame);
       document.removeEventListener('keydown', onKey);
       if (previous?.isConnected) previous.focus();
