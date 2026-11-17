@@ -62,6 +62,7 @@ import {
   allowedBookLanguages,
   bookLanguageAllowed,
 } from '@server/lib/bookLanguagePolicy';
+import { isBookLookupTimeout } from '@server/lib/bookLookupBudget';
 import {
   getComicRequestTarget,
   hasDeliveredComicTarget,
@@ -466,6 +467,7 @@ const lookupReadarrWithRetry = async <T>(
     } catch (error) {
       if (
         !isTransientExternalError(error) ||
+        isBookLookupTimeout(error) ||
         attempt >= READARR_LOOKUP_RETRY_DELAYS_MS.length
       ) {
         const errorMessage =
@@ -3827,7 +3829,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         bookFormat: requestedBookFormat,
       });
     } catch (e) {
-      if (isTransientExternalError(e)) {
+      // A lookup that ran out of time is a slow provider, not a bad request:
+      // keep it approved and retry on the normal short backoff, without a
+      // failure notification.
+      if (isTransientExternalError(e) || isBookLookupTimeout(e)) {
         return this.getReadarrDispatchRetryDelay(entity, e);
       }
 
