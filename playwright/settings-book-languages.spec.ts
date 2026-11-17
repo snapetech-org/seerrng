@@ -72,13 +72,16 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         await expect(input).toHaveValue('eng, fre');
         await save.click();
         await expectSettingsClean(page, save);
-        expect(
-          (
-            await (
-              await page.request.get('/api/v1/settings/metadatas/books')
-            ).json()
-          ).allowedLanguages
-        ).toEqual(['eng', 'fre']);
+        await expect
+          .poll(
+            async () =>
+              (
+                await (
+                  await page.request.get('/api/v1/settings/metadatas/books')
+                ).json()
+              ).allowedLanguages
+          )
+          .toEqual(['eng', 'fre']);
         await page.reload();
         await expect(input).toHaveValue('eng, fre');
         await input.fill('eng');
@@ -110,13 +113,16 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
         await input.fill('');
         await save.click();
         await expectSettingsClean(page, save);
-        expect(
-          (
-            await (
-              await page.request.get('/api/v1/settings/metadatas/books')
-            ).json()
-          ).allowedLanguages
-        ).toEqual([]);
+        await expect
+          .poll(
+            async () =>
+              (
+                await (
+                  await page.request.get('/api/v1/settings/metadatas/books')
+                ).json()
+              ).allowedLanguages
+          )
+          .toEqual([]);
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth)
         ).toBeLessThanOrEqual(width + 1);

@@ -1115,7 +1115,7 @@ test('native request tabs keep owner scope and expose the existing management fl
   page.on('request', (request) => {
     if (request.url().includes('/request/status?')) queries.push(request.url());
   });
-  await navigate(page, '/requests');
+  await navigate(page, '/requests?userId=1');
   await expect(page.locator('.persius-request')).toHaveCount(7);
   await page
     .locator('.persius-request-tabs')
@@ -1126,7 +1126,7 @@ test('native request tabs keep owner scope and expose the existing management fl
     .locator('.persius-request-tabs')
     .getByRole('button', { name: 'All 10', exact: true })
     .click();
-  await expect(page).toHaveURL(/\/requests$/);
+  await expect(page).toHaveURL(/\/requests\?userId=1$/);
   await expect(
     page
       .locator('.persius-request-tabs')

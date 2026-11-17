@@ -598,6 +598,7 @@ describe('Discovery provider integrations', () => {
       }
     ).as('limitedFeed');
 
+    cy.clock(Date.now(), ['Date']);
     cy.visit('/discover/providers');
     cy.wait('@limitedFeed');
     cy.get('[role="alert"]').should(
@@ -605,7 +606,7 @@ describe('Discovery provider integrations', () => {
       'The provider request limit was reached.'
     );
     cy.contains('[role="alert"] button', 'Retry').should('be.disabled');
-    cy.wait(2100);
+    cy.tick(2100);
     cy.contains('[role="alert"] button', 'Retry').should('be.enabled');
     cy.contains('[role="alert"] button', 'Retry').click();
     cy.wait('@limitedFeed');
