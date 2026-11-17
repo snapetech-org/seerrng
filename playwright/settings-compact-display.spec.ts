@@ -103,6 +103,10 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       await expect(
         fourKRow.getByText(/This global switch controls 4K/)
       ).toBeVisible();
+      if (theme === 'seerrOrig')
+        await page
+          .getByText('More integrations and library settings', { exact: true })
+          .click();
       const mapping = page.locator('#downloadPathMappingsJson');
       const copies = page.getByRole('button', {
         name: 'Download Copies',
@@ -115,9 +119,6 @@ for (const theme of ['seerrOrig', 'seerrNGJ'])
       await copies.click();
       await expect(mapping).toBeHidden();
       await save.click();
-      if ((await copies.getAttribute('aria-expanded')) !== 'true')
-        await copies.click();
-      await mapping.fill('[');
       await expect(copies).toHaveAttribute('aria-expanded', 'true');
       await expect(mapping).toBeVisible();
       await expect(
