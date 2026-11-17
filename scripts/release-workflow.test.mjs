@@ -501,8 +501,13 @@ test('Chocolatey packages only verified Windows release archives', () => {
   assert.match(submitStep.run, /--api-key \$apiKey/u);
   assert.match(
     steps,
-    /merge-base --is-ancestor HEAD refs\/remotes\/origin\/main/u
+    /merge-base --is-ancestor \$tagCommit refs\/remotes\/origin\/main/u
   );
+  const checkout = job.steps.find((step) =>
+    step.uses?.startsWith('actions/checkout@')
+  );
+  assert.equal(checkout.with.ref, '${{ github.workflow_sha }}');
+  assert.match(steps, /git rev-parse --verify "\$\(\$env:TAG\)\^\{commit\}"/u);
   assert.match(steps, /Get-FileHash[\s\S]*SHA-256 mismatch/u);
   assert.match(steps, /CHOCOLATEY_API_KEY/u);
   assert.match(steps, /choco push/u);

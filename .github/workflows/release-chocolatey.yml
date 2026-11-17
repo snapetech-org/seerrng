@@ -82,7 +82,8 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ steps.version.outputs.tag }}
+          # Publisher fixes must apply when resubmitting an older immutable release.
+          ref: ${{ github.workflow_sha }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -94,7 +95,9 @@ jobs:
           $ErrorActionPreference = 'Stop'
           git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
           if ($LASTEXITCODE -ne 0) { throw 'Could not fetch main for release-tag verification.' }
-          git merge-base --is-ancestor HEAD refs/remotes/origin/main
+          $tagCommit = git rev-parse --verify "$($env:TAG)^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw "Could not resolve release tag $env:TAG." }
+          git merge-base --is-ancestor $tagCommit refs/remotes/origin/main
           if ($LASTEXITCODE -ne 0) { throw "Release tag $env:TAG is not reachable from main." }
 
       - name: Download and verify the Windows release archive

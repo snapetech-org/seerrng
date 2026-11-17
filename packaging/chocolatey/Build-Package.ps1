@@ -24,6 +24,19 @@ try {
   $nuspecPath = Join-Path $stagingDirectory 'seerrng.nuspec'
   $nuspec = [System.IO.File]::ReadAllText($nuspecPath)
   $nuspec = $nuspec.Replace('__VERSION__', $Version)
+  [xml]$manifest = $nuspec
+  $licensePath = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'LICENSE'
+  $licenseCopyright = Get-Content -LiteralPath $licensePath | Where-Object { $_ -match '^Copyright ' } | Select-Object -First 1
+  if (-not $licenseCopyright -or $manifest.package.metadata.copyright -cne $licenseCopyright) {
+    throw 'Chocolatey copyright must match the repository LICENSE.'
+  }
+  $authors = @($manifest.package.metadata.authors.Split(',') | ForEach-Object { $_.Trim() })
+  if ($authors -notcontains 'sct' -or $authors -notcontains 'Seerr contributors') {
+    throw 'Chocolatey authors must credit sct and the Seerr contributors.'
+  }
+  if ($manifest.package.metadata.description -notmatch '\bfork of Seerr\b') {
+    throw 'Chocolatey description must identify SeerrNG as a fork of Seerr.'
+  }
   [System.IO.File]::WriteAllText($nuspecPath, $nuspec)
 
   $installPath = Join-Path $stagingDirectory 'tools\chocolateyInstall.ps1'
