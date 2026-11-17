@@ -302,6 +302,40 @@ describe('BinderyAPI', () => {
     }
   });
 
+  it('scans a 30,000-book catalog with distinct rows across all pages', async () => {
+    const page = (await fixture('library-page-first.json')) as {
+      items: Record<string, unknown>[];
+    };
+    const offsets: number[] = [];
+    await withBinderyServer(
+      (request, response) => {
+        const url = new URL(request.url ?? '/', 'http://localhost');
+        const offset = Number(url.searchParams.get('offset'));
+        offsets.push(offset);
+        writeJson(response, 200, {
+          items: Array.from({ length: 100 }, (_, index) => ({
+            ...page.items[0],
+            id: offset + index + 1,
+          })),
+          total: 30_000,
+          limit: 100,
+          offset,
+        });
+      },
+      async (port) => {
+        const books = await new BinderyAPI(makeSettings(port)).getImportedBooks(
+          'ebook'
+        );
+        assert.equal(books.length, 30_000);
+        assert.equal(new Set(books.map(({ id }) => id)).size, 30_000);
+        assert.deepEqual(
+          offsets,
+          Array.from({ length: 300 }, (_, index) => index * 100)
+        );
+      }
+    );
+  });
+
   it('sends per-user request fields only through the dedicated capability path', async () => {
     const created = await fixture('request-created.json');
     let receivedBody: unknown;

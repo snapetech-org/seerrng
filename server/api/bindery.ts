@@ -96,7 +96,7 @@ export interface BinderyAddBookOptions {
 }
 
 const MAX_BINDERY_RESPONSE_BYTES = 16 * 1024 * 1024;
-export const MAX_BINDERY_LIBRARY_RESULTS = 5_000;
+export const MAX_BINDERY_LIBRARY_RESULTS = 100_000;
 export const BINDERY_LIBRARY_PAGE_SIZE = 100;
 export const BINDERY_REQUEST_PAGE_SIZE = 200;
 export const MAX_BINDERY_REQUEST_SCAN = 5_000;

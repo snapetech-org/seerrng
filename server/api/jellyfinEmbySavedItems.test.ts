@@ -66,10 +66,17 @@ describe.each([MediaServerType.JELLYFIN, MediaServerType.EMBY])(
       const api = client(type);
       state.request.mockResolvedValue({ data: profile() });
       await api.verifyAccount();
-      expect(state.construction.mock.calls[0][2].headers).toEqual({
-        'X-Emby-Token': 'own-user-token',
-        Accept: 'application/json',
-      });
+      const headers = state.construction.mock.calls[0][2].headers;
+      expect(headers.Accept).toBe('application/json');
+      if (type === MediaServerType.JELLYFIN) {
+        expect(headers.Authorization).toMatch(
+          /^MediaBrowser .*Token="own-user-token"/
+        );
+        expect(headers['X-Emby-Token']).toBeUndefined();
+      } else {
+        expect(headers['X-Emby-Token']).toBe('own-user-token');
+        expect(headers.Authorization).toBeUndefined();
+      }
       expect(state.request.mock.calls[0][1]).toBe(
         type === MediaServerType.JELLYFIN ? '/Users/Me' : `/Users/${userId}`
       );

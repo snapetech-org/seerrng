@@ -7,6 +7,7 @@ import type {
   MediaServerCollectionsStatus,
 } from '@server/models/MediaServerCollections';
 import { getHostname } from '@server/utils/getHostname';
+import { getMediaBrowserAuthorizationHeaders } from '@server/utils/mediaServerAuthorization';
 
 const record = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
@@ -54,7 +55,17 @@ export class FavoriteSeriesAPI extends ExternalAPI {
         allowPrivateAddresses: true,
         timeout: 8000,
         maxContentLength: 2 * 1024 * 1024,
-        headers: { 'X-Emby-Token': token, Accept: 'application/json' },
+        headers: {
+          ...((options.serverType ?? getSettings().main.mediaServerType) ===
+          MediaServerType.EMBY
+            ? { 'X-Emby-Token': token }
+            : getMediaBrowserAuthorizationHeaders({
+                mediaServerType: MediaServerType.JELLYFIN,
+                deviceId: Buffer.from('BOT_seerr').toString('base64'),
+                token,
+              })),
+          Accept: 'application/json',
+        },
       }
     );
     this.serverType = options.serverType ?? getSettings().main.mediaServerType;
