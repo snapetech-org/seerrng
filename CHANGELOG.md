@@ -1,5 +1,49 @@
 # Changelog
 
+## [3.72.38](https://github.com/snapetech-org/seerrng/compare/v3.72.37..v3.72.38) - 2026-11-17
+
+### User-facing changes
+
+#### Fixed
+
+- **Books:** Audiobook narrations and editions that Chaptarr lists without a Hardcover id can now be requested. They no longer show "Can't be requested yet"; the request names the edition by its Chaptarr id and pins that exact edition.
+- **Books:** Book lookups by a plain ISBN now ask Chaptarr for that ISBN. Before, the edition picker and request checks could wait about 30 seconds and find nothing for a book that a prefixed ISBN lookup finds at once.
+- **Books:** Book requests whose metadata lookup times out now stay approved and retry within minutes. They are no longer marked failed, no failure notification is sent, and the next attempt is not delayed by six hours.
+- **Books:** Book requests for one specific edition, such as a single audiobook narration, now pin that edition in Chaptarr even when Chaptarr already monitors it, so another edition or narration is no longer grabbed or imported instead.
+- **Books:** Bindery library scans now support up to 100,000 books, including 30,000-book libraries previously blocked by the 5,000-book limit. Pagination consistency and duplicate-row safeguards remain enforced.
+- **Requests:** Episode Queue fills the chosen buffer after the starting episode imports and advances from saved watched state, including manual Plex marks without active playback. Reconciliation runs every minute. Long series load episodes in smaller batches while preserving the selected start.
+- **Authentication:** Jellyfin favorites and saved collections now use the current MediaBrowser Authorization header with the linked user's token. Emby retains its existing authentication header.
+- **Localization:** Locale catalogs no longer supply empty, invalid ICU, or incompatible-placeholder translations to the interface. Missing values use the existing locale/English fallback path. Retired and invalid nonempty entries are retained in a review archive; translation review status is unchanged.
+- **Interface:** Persius request dialogs now fit their metadata and title to the dialog width, show usable timeline scrolling controls, and give history descriptions room to wrap. Full movie and series detail views hide unavailable ratings. Discover movie and TV cards use list metadata instead of fetching full details for every visible card, preserving the metadata request budget.
+- **Software:** Software requests reject matching active or available targets across users, serialize simultaneous submissions, and recheck ROMarrNG library ownership before creation and approval. Available or tracked emulation targets are disabled in the request dialog; other systems and distinct patch selections remain requestable.
+
+#### Security
+
+- **Dependencies:** Next.js now resolves to patched version 16.4.5 throughout the workspace. This also updates the dependency override that previously kept installations on 16.4.3 despite the direct dependency update.
+  - **Action required:** upgrade
+- **Notifications:** Email templates validate links and remote images at rendering time, allowing HTTP(S) URLs while rejecting executable schemes, embedded credentials and control characters. CSS image URLs also escape delimiter characters. AppImage packaging now pins and verifies the Next.js 16.4.5 WASM compiler required by the security update.
+  - **Action required:** upgrade
+
+### 🛡️ Security
+- *(security)* Install patched Next.js and validate book integrations - ([2d0964b](https://github.com/snapetech-org/seerrng/commit/2d0964b1ca893b3b81b406562562bab36b6cfb9d))
+
+### 🐛 Bug Fixes
+- *(books)* Integrate bare ISBN lookup (#695) - ([86efba8](https://github.com/snapetech-org/seerrng/commit/86efba8a334b848dca80ac35986bf3696400254f))
+- *(books)* Look up a bare ISBN as an isbn: term - ([75f61f2](https://github.com/snapetech-org/seerrng/commit/75f61f23c10df715803f4e81088130be983daadb))
+- *(books)* Integrate local edition requests (#694) - ([7777850](https://github.com/snapetech-org/seerrng/commit/7777850b86a4fb0847fcc87ae952fca0b3a000a5))
+- *(books)* Request Chaptarr editions that have no provider id - ([a65f81e](https://github.com/snapetech-org/seerrng/commit/a65f81eceb881ded4ead45d71d646dba00f32a5b))
+- *(books)* Integrate exact edition pinning (#693) - ([ed3e5a9](https://github.com/snapetech-org/seerrng/commit/ed3e5a9a775d7cfada34120574d9ae7f430b67cf))
+- *(books)* Pin the requested edition for single-edition Chaptarr requests - ([673f101](https://github.com/snapetech-org/seerrng/commit/673f1010d6a820c877df42cbca50436b3044b46c))
+- *(books)* Integrate metadata lookup timeout recovery (#691) - ([cdb5594](https://github.com/snapetech-org/seerrng/commit/cdb5594ccc7d33b05a49c314e8879e85dc95a0f7))
+- *(books)* Retry book requests soon when the metadata lookup times out - ([a7ae4b2](https://github.com/snapetech-org/seerrng/commit/a7ae4b2170faf6516d54512360555100768e8790))
+- *(deps)* Merge Next.js security update to 16.4.5 - ([888f27c](https://github.com/snapetech-org/seerrng/commit/888f27ce3819b0cbf8c81d3e7882881fd04d7014))
+- *(deps)* Bump next from 16.4.3 to 16.4.5 - ([269ea1a](https://github.com/snapetech-org/seerrng/commit/269ea1ab267e62a91a77d73dd0c09328c6f95d37))
+- *(integrations)* Restore Jellyfin saved actions and large Bindery scans - ([436972d](https://github.com/snapetech-org/seerrng/commit/436972db790168befc702075e183c48c33a43d5a))
+- *(requests)* Reconcile episode queues and resolve reported request failures - ([1191409](https://github.com/snapetech-org/seerrng/commit/11914098ce7eb3fe1ca944bb0341ff1dae3260a8))
+
+### 📖 Documentation
+- *(release-notes)* Note pinned single-edition book requests - ([f89f8bf](https://github.com/snapetech-org/seerrng/commit/f89f8bfc5f7d188e79bb13faf81aa0c950fac4ce))
+
 ## [3.72.37](https://github.com/snapetech-org/seerrng/compare/v3.72.36..v3.72.37) - 2026-11-16
 
 ### User-facing changes

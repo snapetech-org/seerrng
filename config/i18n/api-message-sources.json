@@ -24297,7 +24297,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 946,
+          "line": 938,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Provider read cancelled'",
@@ -46327,7 +46327,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 582,
+          "line": 581,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API shared rate limit configuration changed.'",
@@ -46335,7 +46335,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 589,
+          "line": 586,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API shared rate limit configuration changed.'",
@@ -53001,7 +53001,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 623,
+          "line": 616,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -53009,7 +53009,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 647,
+          "line": 636,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -53017,7 +53017,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 691,
+          "line": 680,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -53025,7 +53025,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 704,
+          "line": 696,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -53033,7 +53033,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 725,
+          "line": 717,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -53041,7 +53041,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 740,
+          "line": 732,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request canceled'",
@@ -54393,7 +54393,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 1095,
+          "line": 1087,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown cache error'",
@@ -58629,7 +58629,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 609,
+          "line": 602,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API rate limit capacity exceeded.'",
@@ -59260,7 +59260,7 @@
       "callsites": [
         {
           "path": "server/api/externalapi.ts",
-          "line": 1073,
+          "line": 1065,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request capacity exceeded.'",
@@ -62881,7 +62881,7 @@
         },
         {
           "path": "server/api/externalapi.ts",
-          "line": 771,
+          "line": 763,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'External API request target is not allowed.'",
@@ -67794,7 +67794,7 @@
     },
     {
       "path": "server/api/externalapi.ts",
-      "line": 1095,
+      "line": 1087,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown cache error'",
