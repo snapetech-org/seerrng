@@ -112,6 +112,7 @@ import { isTvSeasonWatchGateEnabledForUser } from '@server/lib/tvSeasonWatchGate
 import logger from '@server/logger';
 import {
   isProviderBookEdition,
+  localEditionIdFrom,
   sameEditionId,
 } from '@server/utils/bookEdition';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
@@ -3290,6 +3291,62 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           url: ReadarrAPI.buildUrl(readarrSettings, '/api/v1'),
           mediaType: serviceType,
         });
+        const localEditionId = localEditionIdFrom(preferredEditionId);
+        const savedTarget = entity.serviceTargets?.find(
+          (target) =>
+            target.serviceType === 'readarr' && target.format === serviceType
+        );
+        const findPreferredEdition = (
+          editions?: ReadarrEdition[]
+        ): ReadarrEdition | undefined =>
+          (preferredEditionId
+            ? editions?.find((edition) =>
+                localEditionId !== undefined
+                  ? edition.id === localEditionId
+                  : // Chaptarr lookups qualify edition ids (hc:31923605) while the
+                    // library catalog and narrator lists offer them bare (31923605).
+                    sameEditionId(edition.foreignEditionId, preferredEditionId)
+              )
+            : undefined) ??
+          (localEditionId === undefined && preferredIsbn
+            ? editions?.find(
+                (edition) =>
+                  normalizeValidIsbn(edition.isbn13) === preferredIsbn
+              )
+            : undefined);
+        const resolveLocalBookById = async (
+          bookId: number
+        ): Promise<ReadarrBookLookupResult | undefined> => {
+          const localBook = await readarr.getBookIfExists(bookId);
+          if (!localBook) return undefined;
+          if (!findPreferredEdition(localBook.editions)) {
+            localBook.editions = await readarr.getEditions(bookId);
+          }
+          return findPreferredEdition(localBook.editions)
+            ? localBook
+            : undefined;
+        };
+        const hydrateLocalEditions = async (
+          results: ReadarrBookLookupResult[]
+        ): Promise<ReadarrBookLookupResult[]> => {
+          if (localEditionId === undefined) return results;
+          return Promise.all(
+            results.map(async (result) => {
+              if (findPreferredEdition(result.editions)) return result;
+              const bookId = (result as { id?: unknown }).id;
+              if (
+                typeof bookId === 'number' &&
+                Number.isSafeInteger(bookId) &&
+                bookId > 0
+              ) {
+                const localBook = await resolveLocalBookById(bookId);
+                if (localBook) return localBook;
+              }
+              return result;
+            })
+          );
+        };
+
         let searchResults: ReadarrBookLookupResult[] = [];
         let lookupTerm: string | undefined;
 
@@ -3299,12 +3356,39 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         let expandedLookupTermsAdded = false;
         let sawIncompleteLookupResult = false;
 
-        if (bookshelfLookupId) {
+        if (localEditionId !== undefined) {
+          const mediaServiceId =
+            serviceType === 'audiobook'
+              ? media.audiobookServiceId
+              : media.serviceId;
+          const mediaExternalId =
+            serviceType === 'audiobook'
+              ? media.audiobookExternalServiceId
+              : media.externalServiceId;
+          const linkedBookId =
+            savedTarget?.serverId === readarrSettings.id
+              ? savedTarget.externalServiceId
+              : mediaServiceId === readarrSettings.id || mediaServiceId == null
+                ? mediaExternalId
+                : undefined;
+          if (
+            typeof linkedBookId === 'number' &&
+            Number.isSafeInteger(linkedBookId) &&
+            linkedBookId > 0
+          ) {
+            const localBook = await resolveLocalBookById(linkedBookId);
+            if (localBook) {
+              searchResults = [localBook];
+            }
+          }
+        }
+
+        if (!searchResults.length && bookshelfLookupId) {
           lookupTerm = bookshelfLookupId;
           searchResults = await lookupReadarrBookByProviderIdentityWithRetry(
             readarr,
             bookshelfLookupId,
-            preferredEditionId,
+            localEditionId !== undefined ? undefined : preferredEditionId,
             {
               mediaId: media.id,
               requestId: entity.id,
@@ -3316,25 +3400,32 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             searchResults,
             normalizedIsbn
           );
-          const addableSearchResults = searchResults.filter(
-            isAddableBookshelfLookupResult
-          );
-          if (addableSearchResults.length) {
-            searchResults = addableSearchResults;
-          } else if (searchResults.length) {
-            sawIncompleteLookupResult = true;
-            logger.warn(
-              'Bookshelf provider-ID lookup returned incomplete metadata; continuing fallback lookup.',
-              {
-                label: 'Readarr',
-                mediaId: media.id,
-                requestId: entity.id,
-                serviceType,
-                lookupTerm: bookshelfLookupId,
-                resultCount: searchResults.length,
-              }
+          if (localEditionId !== undefined) {
+            searchResults = await hydrateLocalEditions(searchResults);
+            searchResults = searchResults.filter(
+              (result) => findPreferredEdition(result.editions) !== undefined
             );
-            searchResults = [];
+          } else {
+            const addableSearchResults = searchResults.filter(
+              isAddableBookshelfLookupResult
+            );
+            if (addableSearchResults.length) {
+              searchResults = addableSearchResults;
+            } else if (searchResults.length) {
+              sawIncompleteLookupResult = true;
+              logger.warn(
+                'Bookshelf provider-ID lookup returned incomplete metadata; continuing fallback lookup.',
+                {
+                  label: 'Readarr',
+                  mediaId: media.id,
+                  requestId: entity.id,
+                  serviceType,
+                  lookupTerm: bookshelfLookupId,
+                  resultCount: searchResults.length,
+                }
+              );
+              searchResults = [];
+            }
           }
         }
 
@@ -3384,29 +3475,41 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             normalizedIsbn
           );
 
-          const addableSearchResults = searchResults.filter(
-            isAddableBookshelfLookupResult
-          );
-
-          if (addableSearchResults.length) {
-            searchResults = addableSearchResults;
-            break;
-          }
-
-          if (searchResults.length) {
-            sawIncompleteLookupResult = true;
-            logger.warn(
-              'Bookshelf lookup returned incomplete metadata; continuing fallback lookup.',
-              {
-                label: 'Readarr',
-                mediaId: media.id,
-                requestId: entity.id,
-                serviceType,
-                lookupTerm: term,
-                resultCount: searchResults.length,
-              }
+          if (localEditionId !== undefined) {
+            searchResults = await hydrateLocalEditions(searchResults);
+            const localMatches = searchResults.filter(
+              (result) => findPreferredEdition(result.editions) !== undefined
             );
+            if (localMatches.length) {
+              searchResults = localMatches;
+              break;
+            }
             searchResults = [];
+          } else {
+            const addableSearchResults = searchResults.filter(
+              isAddableBookshelfLookupResult
+            );
+
+            if (addableSearchResults.length) {
+              searchResults = addableSearchResults;
+              break;
+            }
+
+            if (searchResults.length) {
+              sawIncompleteLookupResult = true;
+              logger.warn(
+                'Bookshelf lookup returned incomplete metadata; continuing fallback lookup.',
+                {
+                  label: 'Readarr',
+                  mediaId: media.id,
+                  requestId: entity.id,
+                  serviceType,
+                  lookupTerm: term,
+                  resultCount: searchResults.length,
+                }
+              );
+              searchResults = [];
+            }
           }
 
           if (index === termsToTry.length - 1 && !expandedLookupTermsAdded) {
@@ -3444,22 +3547,6 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
           );
         }
 
-        const findPreferredEdition = (
-          editions?: ReadarrEdition[]
-        ): ReadarrEdition | undefined =>
-          (preferredEditionId
-            ? editions?.find((edition) =>
-                // Chaptarr lookups qualify edition ids (hc:31923605) while the
-                // library catalog and narrator lists offer them bare (31923605).
-                sameEditionId(edition.foreignEditionId, preferredEditionId)
-              )
-            : undefined) ??
-          (preferredIsbn
-            ? editions?.find(
-                (edition) =>
-                  normalizeValidIsbn(edition.isbn13) === preferredIsbn
-              )
-            : undefined);
         const bookInfo =
           searchResults.find(
             (result) => findPreferredEdition(result.editions) !== undefined
@@ -3494,15 +3581,9 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         const bookEditions = matchedPreferredEdition
           ? (bookInfo.editions ?? []).map((edition) => ({
               ...edition,
-              monitored:
-                edition.foreignEditionId ===
-                matchedPreferredEdition.foreignEditionId,
+              monitored: edition === matchedPreferredEdition,
             }))
           : (bookInfo.editions ?? []);
-        const savedTarget = entity.serviceTargets?.find(
-          (target) =>
-            target.serviceType === 'readarr' && target.format === serviceType
-        );
         const rootFolder =
           savedTarget?.rootFolder ||
           (allowServerOverride && entity.rootFolder
@@ -3606,9 +3687,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
 
         const providerBookId =
           result.foreignBookId?.trim() || bookInfo.foreignBookId;
-        const providerEditionId = bookEditions.find(
-          (edition) => edition.monitored
-        )?.foreignEditionId;
+        const providerEditionId =
+          bookEditions
+            .find((edition) => edition.monitored)
+            ?.foreignEditionId?.trim() || undefined;
         const hasLocalBookId =
           typeof result.id === 'number' &&
           Number.isSafeInteger(result.id) &&

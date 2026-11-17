@@ -2,6 +2,7 @@ import type {
   ChaptarrEditionCard,
   ReadarrBookLookupResult,
 } from '@server/api/servarr/readarr';
+import { localEditionRef } from '@server/utils/bookEdition';
 
 /** Samples are public HTTPS media; never interpret executable or credential URLs. */
 export const normalizeSampleUrl = (value: unknown): string | undefined => {
@@ -108,11 +109,18 @@ const withUnknown = (
 export const cardFromCatalog = (
   edition: ChaptarrEditionCard,
   format: BookFormat
-): EditionCard =>
-  withUnknown({
-    id: edition.foreignEditionId ?? String(edition.editionId),
+): EditionCard => {
+  const foreignEditionId = edition.foreignEditionId?.trim();
+  const hasLocalEditionId =
+    !foreignEditionId &&
+    Number.isSafeInteger(edition.editionId) &&
+    edition.editionId > 0;
+  return withUnknown({
+    id: hasLocalEditionId
+      ? localEditionRef(edition.editionId)
+      : (edition.foreignEditionId ?? String(edition.editionId)),
     localEditionId: edition.editionId,
-    requestable: Boolean(edition.foreignEditionId?.trim()),
+    requestable: hasLocalEditionId || Boolean(foreignEditionId),
     title: edition.title,
     format,
     language: edition.language,
@@ -128,6 +136,7 @@ export const cardFromCatalog = (
     selected: edition.monitored,
     owned: edition.owned,
   });
+};
 
 export type LookupEdition = NonNullable<
   ReadarrBookLookupResult['editions']

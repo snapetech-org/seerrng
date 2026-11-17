@@ -39,9 +39,20 @@ import type { ReadarrSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import {
   isProviderBookEdition,
+  localEditionIdFrom,
   sameEditionId,
 } from '@server/utils/bookEdition';
 import type { EntityManager } from 'typeorm';
+
+const providerEditionIdFor = (
+  operation: BookRequestSearch
+): string | undefined => {
+  if (operation.providerEditionId) return operation.providerEditionId;
+  const preferred = operation.request.preferredEditionId;
+  return preferred && localEditionIdFrom(preferred) === undefined
+    ? preferred
+    : undefined;
+};
 
 const terminalCommandStates = new Set([
   'completed',
@@ -466,10 +477,7 @@ export class BookRequestSearchManager {
     }
 
     const providerBookId = await this.getProviderBookId(operation);
-    const providerEditionId =
-      operation.providerEditionId ??
-      operation.request.preferredEditionId ??
-      undefined;
+    const providerEditionId = providerEditionIdFor(operation);
     const book = await this.getBookAfterSearch(
       operation,
       readarr,
@@ -611,10 +619,7 @@ export class BookRequestSearchManager {
     if (known.finalized) return;
 
     const providerBookId = await this.getProviderBookId(operation);
-    const providerEditionId =
-      operation.providerEditionId ??
-      operation.request.preferredEditionId ??
-      undefined;
+    const providerEditionId = providerEditionIdFor(operation);
     const book = await this.getBookAfterSearch(
       operation,
       readarr,
@@ -672,10 +677,7 @@ export class BookRequestSearchManager {
     if (known.finalized) return;
 
     const providerBookId = await this.getProviderBookId(operation);
-    const providerEditionId =
-      operation.providerEditionId ??
-      operation.request.preferredEditionId ??
-      undefined;
+    const providerEditionId = providerEditionIdFor(operation);
     const book = await this.getBookAfterSearch(
       operation,
       readarr,
@@ -756,10 +758,7 @@ export class BookRequestSearchManager {
       }
     }
 
-    const providerEditionId =
-      operation.providerEditionId ??
-      operation.request.preferredEditionId ??
-      undefined;
+    const providerEditionId = providerEditionIdFor(operation);
     const metadata = operation.request.media.searchMetadata;
     const allowedLanguages = [...allowedBookLanguages()];
     if (
@@ -796,7 +795,10 @@ export class BookRequestSearchManager {
           pendingId: null,
           commandId: null,
           providerBookId: local.foreignBookId,
-          providerEditionId: currentEditionId ?? null,
+          providerEditionId:
+            localEditionIdFrom(currentEditionId) === undefined
+              ? (currentEditionId ?? null)
+              : null,
           authorId: local.authorId ?? local.author?.id ?? null,
           createdBook: false,
           createdAuthor: false,
@@ -877,6 +879,20 @@ export class BookRequestSearchManager {
     if (!lookup) {
       await this.setState(operation, 'pending');
       return;
+    }
+
+    const localEditionId = localEditionIdFrom(
+      operation.request.preferredEditionId
+    );
+    const lookupBookId = (lookup as { id?: unknown }).id;
+    if (
+      localEditionId !== undefined &&
+      !lookup.editions?.some((edition) => edition.id === localEditionId) &&
+      typeof lookupBookId === 'number' &&
+      Number.isSafeInteger(lookupBookId) &&
+      lookupBookId > 0
+    ) {
+      lookup.editions = await readarr.getEditions(lookupBookId);
     }
 
     const addOptions = this.buildPendingAddOptions(
@@ -996,17 +1012,22 @@ export class BookRequestSearchManager {
     const preferredIsbn = normalizeValidIsbn(
       operation.request.preferredIsbn13 ?? undefined
     );
+    const targetEditionId =
+      providerEditionId ?? operation.request.preferredEditionId ?? undefined;
+    const localEditionId = localEditionIdFrom(targetEditionId);
     const editions = book.editions ?? [];
-    const requestedEdition = editions.find(
-      (edition) =>
-        (providerEditionId &&
-          (normalize(edition.foreignEditionId) ===
-            normalize(providerEditionId) ||
-            sameEditionId(edition.foreignEditionId, providerEditionId))) ||
-        (preferredIsbn && normalizeValidIsbn(edition.isbn13) === preferredIsbn)
+    const requestedEdition = editions.find((edition) =>
+      localEditionId !== undefined
+        ? edition.id === localEditionId
+        : (targetEditionId &&
+            (normalize(edition.foreignEditionId) ===
+              normalize(targetEditionId) ||
+              sameEditionId(edition.foreignEditionId, targetEditionId))) ||
+          (preferredIsbn &&
+            normalizeValidIsbn(edition.isbn13) === preferredIsbn)
     );
 
-    if ((providerEditionId || preferredIsbn) && !requestedEdition) {
+    if ((targetEditionId || preferredIsbn) && !requestedEdition) {
       return undefined;
     }
 
@@ -1037,7 +1058,7 @@ export class BookRequestSearchManager {
       editions: editions.map((edition) => ({
         ...edition,
         monitored: requestedEdition
-          ? edition.foreignEditionId === requestedEdition.foreignEditionId
+          ? edition === requestedEdition
           : edition.monitored,
       })),
       useRequestedEdition: !!requestedEdition,
