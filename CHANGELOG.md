@@ -14,7 +14,7 @@
 - **Requests:** Episode Queue fills the chosen buffer after the starting episode imports and advances from saved watched state, including manual Plex marks without active playback. Reconciliation runs every minute. Long series load episodes in smaller batches while preserving the selected start.
 - **Authentication:** Jellyfin favorites and saved collections now use the current MediaBrowser Authorization header with the linked user's token. Emby retains its existing authentication header.
 - **Localization:** Locale catalogs no longer supply empty, invalid ICU, or incompatible-placeholder translations to the interface. Missing values use the existing locale/English fallback path. Retired and invalid nonempty entries are retained in a review archive; translation review status is unchanged.
-- **Interface:** Fixed native movie, series, and collection pages growing underneath phone navigation, kept metadata retry feedback clickable, wrapped user-list controls at narrow desktop widths, and deferred association-list resize measurements to prevent ResizeObserver loops.
+- **Interface:** Fixed native movie, series, and collection pages growing underneath phone navigation, kept metadata retry feedback clickable, wrapped user-list controls at narrow desktop widths, and deferred association-list resize measurements to prevent ResizeObserver loops. Trakt callback feedback now survives theme restoration and opens the native integrations panel.
 - **Interface:** Persius request dialogs now fit their metadata and title to the dialog width, show usable timeline scrolling controls, and give history descriptions room to wrap. Full movie and series detail views hide unavailable ratings. Discover movie and TV cards use list metadata instead of fetching full details for every visible card, preserving the metadata request budget.
 - **Software:** Software requests reject matching active or available targets across users, serialize simultaneous submissions, and recheck ROMarrNG library ownership before creation and approval. Available or tracked emulation targets are disabled in the request dialog; other systems and distinct patch selections remain requestable.
 
@@ -39,6 +39,7 @@
 - *(books)* Retry book requests soon when the metadata lookup times out - ([a7ae4b2](https://github.com/snapetech-org/seerrng/commit/a7ae4b2170faf6516d54512360555100768e8790))
 - *(deps)* Merge Next.js security update to 16.4.5 - ([888f27c](https://github.com/snapetech-org/seerrng/commit/888f27ce3819b0cbf8c81d3e7882881fd04d7014))
 - *(deps)* Bump next from 16.4.3 to 16.4.5 - ([269ea1a](https://github.com/snapetech-org/seerrng/commit/269ea1ab267e62a91a77d73dd0c09328c6f95d37))
+- *(integrations)* Preserve callback feedback during theme restoration - ([c7da24d](https://github.com/snapetech-org/seerrng/commit/c7da24dd1b97717f442c8fba21052ff8b6d77bfe))
 - *(integrations)* Restore Jellyfin saved actions and large Bindery scans - ([436972d](https://github.com/snapetech-org/seerrng/commit/436972db790168befc702075e183c48c33a43d5a))
 - *(requests)* Reconcile episode queues and resolve reported request failures - ([1191409](https://github.com/snapetech-org/seerrng/commit/11914098ce7eb3fe1ca944bb0341ff1dae3260a8))
 - *(ui)* Repair native detail interactions and release validation regressions - ([3719f9f](https://github.com/snapetech-org/seerrng/commit/3719f9f4015f7d131f2798584ca00fdb2d20739c))
@@ -47,6 +48,7 @@
 - *(release-notes)* Note pinned single-edition book requests - ([f89f8bf](https://github.com/snapetech-org/seerrng/commit/f89f8bfc5f7d188e79bb13faf81aa0c950fac4ce))
 
 ### 🧪 Testing
+- *(browser)* Verify explicit owner scope and completed settings writes - ([d76cf55](https://github.com/snapetech-org/seerrng/commit/d76cf554468d2d37cecf6493c4b313566edeb1e2))
 - *(ui)* Follow native library settings disclosures - ([9bdbb54](https://github.com/snapetech-org/seerrng/commit/9bdbb54dc09c08323507a03dbb1392d257b9dcbc))
 
 ## [3.72.37](https://github.com/snapetech-org/seerrng/compare/v3.72.36..v3.72.37) - 2026-11-16
