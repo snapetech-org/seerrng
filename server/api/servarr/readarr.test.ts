@@ -3108,7 +3108,12 @@ describe('legacy selected facade identity context', () => {
       });
       const stored = `${dialect}:260468`;
       const book = { id: 46503, title: 'Wool', foreignBookId: '260468' };
-      assert.deepEqual(api.getKnownBookIdentityAliases(stored), [stored]);
+      assert.deepEqual(
+        api.getKnownBookIdentityAliases(stored),
+        dialect === 'hc'
+          ? [stored, '260468', 'hardcover:260468', 'metadata-api:260468']
+          : [stored, '260468', 'goodreads:260468']
+      );
       assert.equal(
         matchesReadarrBookProviderIdentity(
           book,

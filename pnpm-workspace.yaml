@@ -1,6 +1,7 @@
 minimumReleaseAge: 10080
 # Security fixes younger than the configured release age; remove after one week.
 minimumReleaseAgeExclude:
+  - next@16.4.5
   - '@isaacs/nonrecursive-glob-match@1.0.3'
   - body-parser@2.4.0
   - fast-uri@3.1.9
@@ -52,7 +53,7 @@ overrides:
   moment: 2.31.0
   multer: 2.5.0
   nanoid@3: 3.3.18
-  next: 16.4.3
+  next: 16.4.5
   nodemailer: 10.3.1
   picomatch: 2.3.2
   postcss: 8.5.28

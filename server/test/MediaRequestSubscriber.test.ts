@@ -293,6 +293,7 @@ describe('MediaRequestSubscriber service dispatch', () => {
   beforeEach(async () => {
     await resetTestDb();
     enqueuedRequestIds = [];
+    mock.method(SonarrAPI.prototype, 'getProfiles', async () => []);
     startedBookSearches = 0;
     localBookTitleResolver = async () => undefined;
     mock.method(
