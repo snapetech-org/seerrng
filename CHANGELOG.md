@@ -42,9 +42,11 @@
 - *(integrations)* Preserve callback feedback during theme restoration - ([c7da24d](https://github.com/snapetech-org/seerrng/commit/c7da24dd1b97717f442c8fba21052ff8b6d77bfe))
 - *(integrations)* Restore Jellyfin saved actions and large Bindery scans - ([436972d](https://github.com/snapetech-org/seerrng/commit/436972db790168befc702075e183c48c33a43d5a))
 - *(requests)* Reconcile episode queues and resolve reported request failures - ([1191409](https://github.com/snapetech-org/seerrng/commit/11914098ce7eb3fe1ca944bb0341ff1dae3260a8))
+- *(ui)* Retain native account geometry with callback evidence - ([d4532af](https://github.com/snapetech-org/seerrng/commit/d4532af3724f56414f3209fbc62c3dd41bd80975))
 - *(ui)* Repair native detail interactions and release validation regressions - ([3719f9f](https://github.com/snapetech-org/seerrng/commit/3719f9f4015f7d131f2798584ca00fdb2d20739c))
 
 ### 📖 Documentation
+- *(release)* Finalize verified v3.72.38 fixes - ([dcf5407](https://github.com/snapetech-org/seerrng/commit/dcf540730d8c990e0db12bc77a78f23072395841))
 - *(release-notes)* Note pinned single-edition book requests - ([f89f8bf](https://github.com/snapetech-org/seerrng/commit/f89f8bfc5f7d188e79bb13faf81aa0c950fac4ce))
 
 ### 🧪 Testing
