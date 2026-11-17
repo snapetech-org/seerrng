@@ -470,9 +470,9 @@ const UserLinkedAccountsSettings = () => {
               : undefined
           }
         >
-          {upstream && (
-            <summary>{intl.formatMessage(messages.moreIntegrations)}</summary>
-          )}
+          <summary hidden={!upstream}>
+            {intl.formatMessage(messages.moreIntegrations)}
+          </summary>
           {upstream && oidcAccounts.length > 0 && (
             <ul className="mt-4 space-y-4">
               {oidcAccounts.map((account) =>
