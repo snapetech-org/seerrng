@@ -378,7 +378,21 @@ async function fixtures(page: Page) {
       json = movieDetails(Number(p.split('/')[2]));
     else if (/^\/tv\/\d+$/.test(p))
       json = { ...tv, id: Number(p.split('/')[2]) };
-    else if (/^\/tv\/1396\/season\/\d+$/.test(p)) {
+    else if (p === '/tv/1396/seasons') {
+      json = (url.searchParams.get('seasonNumbers') ?? '')
+        .split(',')
+        .map(Number)
+        .map((seasonNumber) => ({
+          seasonNumber,
+          episodes: Array.from({ length: 24 }, (_, i) => ({
+            id: seasonNumber * 100 + i,
+            episodeNumber: i + 1,
+            seasonNumber,
+            name: `Episode ${i + 1}`,
+            airDate: '2000-01-01',
+          })),
+        }));
+    } else if (/^\/tv\/1396\/season\/\d+$/.test(p)) {
       const seasonNumber = Number(p.split('/').pop());
       json = {
         seasonNumber,

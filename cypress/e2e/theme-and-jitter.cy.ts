@@ -305,7 +305,15 @@ describe('Theme picker and seeded discovery refresh', () => {
       });
     }).as('books');
 
-    cy.visit('/discover/books');
+    cy.visit('/settings/main');
+    cy.get('html').should('have.attr', 'data-interface-theme', 'seerrNGJ');
+    cy.window().then((win) =>
+      (
+        win as unknown as {
+          next: { router: { push: (path: string) => Promise<boolean> } };
+        }
+      ).next.router.push('/discover/books')
+    );
     cy.wait('@books');
     cy.get('[data-testid=title-card]')
       .should('have.length', 20)

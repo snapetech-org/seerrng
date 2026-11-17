@@ -80,6 +80,14 @@ const UserLinkedAccountsSettings = () => {
   const settings = useSettings();
   const router = useRouter();
   const { user: currentUser } = useUser();
+  const [showIntegrationFeedback, setShowIntegrationFeedback] = useState(false);
+  useEffect(() => {
+    if (
+      typeof router.query.traktError === 'string' ||
+      router.query.traktComplete === '1'
+    )
+      setShowIntegrationFeedback(true);
+  }, [router.query.traktError, router.query.traktComplete]);
   const userId = getPositiveQueryParamNumber(router.query.userId);
   const {
     user,
@@ -453,39 +461,48 @@ const UserLinkedAccountsSettings = () => {
         }}
       />
 
-      {showMoreIntegrations && (
-        <details className="settings-extension-disclosure settings-extension-disclosure-spaced">
-          <summary>{intl.formatMessage(messages.moreIntegrations)}</summary>
-          {oidcAccounts.length > 0 && (
+      {(showMoreIntegrations || currentUser?.id === user?.id) && (
+        <details
+          open={!upstream || showIntegrationFeedback}
+          className={
+            upstream
+              ? 'settings-extension-disclosure settings-extension-disclosure-spaced'
+              : undefined
+          }
+        >
+          {upstream && (
+            <summary>{intl.formatMessage(messages.moreIntegrations)}</summary>
+          )}
+          {upstream && oidcAccounts.length > 0 && (
             <ul className="mt-4 space-y-4">
               {oidcAccounts.map((account) =>
                 renderLinkedAccount(account, `oidc-${account.id}`)
               )}
             </ul>
           )}
-          {currentUser?.id === user?.id && extendedLinkable.length > 0 && (
-            <div className="mt-4">
-              <Dropdown
-                text={intl.formatMessage(messages.linkIdentityProvider)}
-                buttonType={upstream ? undefined : 'ghost'}
-              >
-                {extendedLinkable.map(({ name, action }) => (
-                  <Dropdown.Item
-                    key={name}
-                    onClick={action}
-                    buttonType={upstream ? undefined : 'ghost'}
-                  >
-                    {name}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown>
-            </div>
-          )}
+          {upstream &&
+            currentUser?.id === user?.id &&
+            extendedLinkable.length > 0 && (
+              <div className="mt-4">
+                <Dropdown
+                  text={intl.formatMessage(messages.linkIdentityProvider)}
+                  buttonType={upstream ? undefined : 'ghost'}
+                >
+                  {extendedLinkable.map(({ name, action }) => (
+                    <Dropdown.Item
+                      key={name}
+                      onClick={action}
+                      buttonType={upstream ? undefined : 'ghost'}
+                    >
+                      {name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              </div>
+            )}
           {currentUser?.id === user?.id && <DiscoveryAccounts />}
         </details>
       )}
-
-      {!upstream && currentUser?.id === user?.id && <DiscoveryAccounts />}
 
       <LinkJellyfinQuickConnectModal
         show={showJellyfinQuickConnectModal}

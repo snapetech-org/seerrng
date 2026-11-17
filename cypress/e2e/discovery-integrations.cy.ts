@@ -588,6 +588,11 @@ describe('Discovery provider integrations', () => {
     );
   });
   it('holds provider retries until the reported quota cooldown ends', () => {
+    cy.intercept('GET', '/api/v1/integrations/discovery/feeds/**', {
+      items: [],
+      page: 1,
+      hasMore: false,
+    });
     cy.intercept(
       'GET',
       '/api/v1/integrations/discovery/feeds/anilist/trending*',

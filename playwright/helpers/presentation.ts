@@ -62,8 +62,21 @@ export const expectSettingsClean = async (page: Page, save: Locator) => {
 
 /** Open the native shell's explicit extension tools before using them. */
 export const openSettingsTools = async (page: Page) => {
+  const me = await (await page.request.get('/api/v1/auth/me')).json();
+  const theme = me.settings?.interfaceTheme ?? 'seerrOrig';
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-interface-theme',
+    theme
+  );
+  await expect(
+    page.getByRole('searchbox', {
+      name: 'Search Settings',
+      includeHidden: true,
+    })
+  ).toBeAttached();
   const tools = page.locator('.upstream-extra-tools').first();
-  if (await tools.count()) {
+  if (theme === 'seerrOrig') {
+    await expect(tools).toBeAttached();
     if ((await tools.getAttribute('open')) === null)
       await tools.locator(':scope > summary').click();
   }

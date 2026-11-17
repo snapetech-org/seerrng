@@ -96,7 +96,7 @@ describe('User List', () => {
       expect(displayNames).to.deep.equal(sortedAsc);
     });
 
-    cy.contains('button', 'Joined').click();
+    cy.get('[data-testid=column-header-created]').click();
 
     cy.window().then((win) => {
       const rawSettings = win.localStorage.getItem('ul-filter-settings');
