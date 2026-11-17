@@ -79,3 +79,4 @@ patchedDependencies:
   deepmerge@4.3.1: patches/deepmerge@4.3.1.patch
   eslint-plugin-jsx-a11y@6.10.2: patches/eslint-plugin-jsx-a11y@6.10.2.patch
   eslint-plugin-no-relative-import-paths@1.6.1: patches/eslint-plugin-no-relative-import-paths@1.6.1.patch
+  picomatch@2.3.2: patches/picomatch@2.3.2.patch

@@ -1,0 +1,19 @@
+diff --git a/lib/parse.js b/lib/parse.js
+--- a/lib/parse.js
++++ b/lib/parse.js
+@@ -509,7 +509,14 @@
+   const extglobClose = token => {
+     const literal = input.slice(token.startIndex, state.index + 1);
+     const body = input.slice(token.startIndex + 2, state.index);
+-    const analysis = analyzeRepeatedExtglob(body, opts);
++    // Treat wildcard-bearing repetitions as literals to avoid nested
++    // backtracking quantifiers (CVE-2026-112366).
++    const hasWildcard = (token.type === 'plus' || token.type === 'star') &&
++      tokens.slice(token.tokensIndex + 2).some((part, index, parts) =>
++        (part.type === 'star' || part.type === 'globstar') && part.value !== '' &&
++        !(parts[index + 1]?.extglob && parts[index + 1].value === '(')
++      );
++    const analysis = hasWildcard ? { risky: true } : analyzeRepeatedExtglob(body, opts);
+
+     if ((token.type === 'plus' || token.type === 'star') && analysis.risky) {
+       const safeOutput = analysis.safeOutput

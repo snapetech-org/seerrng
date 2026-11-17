@@ -89,6 +89,12 @@ patchedDependencies:
   http-proxy-middleware@2.0.10:
     hash: c431793753a9ca8b49a686eae3c500e0fa29d90e9ebfb06cd216f7f3e2c2b4fc
     path: patches/http-proxy-middleware@2.0.10.patch
+  picomatch@2.3.2:
+    hash: 36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22
+    path: patches/picomatch@2.3.2.patch
+  picomatch@4.0.4:
+    hash: 8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc
+    path: patches/picomatch@4.0.4.patch
   postman-collection@5.3.0:
     hash: 74086cf54439efcd1d6d3616c24fea663da2786f1d366a45794ecee29306bf54
     path: patches/postman-collection@5.3.0.patch
@@ -8904,7 +8910,7 @@ snapshots:
       js-yaml: 4.3.2
       lodash: 4.18.1
       p-queue: 6.6.2
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
       prompts: 2.4.2
       resolve-pathname: 3.0.0
       tinyglobby: 0.2.15
@@ -8949,7 +8955,7 @@ snapshots:
       js-yaml: 4.3.2
       lodash: 4.18.1
       p-queue: 6.6.2
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
       prompts: 2.4.2
       resolve-pathname: 3.0.0
       tinyglobby: 0.2.15
@@ -9339,7 +9345,7 @@ snapshots:
       detect-libc: 2.1.2
       is-glob: 4.0.3
       node-addon-api: 7.1.1
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.5.6
       '@parcel/watcher-darwin-arm64': 2.5.6
@@ -9472,7 +9478,7 @@ snapshots:
       colorette: 1.4.0
       js-levenshtein: 1.1.6
       js-yaml: 4.3.2
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
       pluralize: 8.0.0
       yaml-ast-parser: 0.0.43
 
@@ -11176,9 +11182,9 @@ snapshots:
     dependencies:
       websocket-driver: 0.7.5
 
-  fdir@6.5.0(picomatch@4.0.4):
+  fdir@6.5.0(picomatch@4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)):
     optionalDependencies:
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
 
   feed@4.2.2:
     dependencies:
@@ -11535,7 +11541,7 @@ snapshots:
       http-proxy: 1.18.1(debug@4.4.3)
       is-glob: 4.0.3
       is-plain-obj: 3.0.0
-      picomatch: 4.0.4
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
     optionalDependencies:
       '@types/express': 4.17.25
     transitivePeerDependencies:
@@ -11681,7 +11687,7 @@ snapshots:
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
-      picomatch: 2.3.2
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
 
   jest-worker@27.5.1:
     dependencies:
@@ -12740,9 +12746,9 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@2.3.2: {}
+  picomatch@2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22): {}
 
-  picomatch@4.0.4: {}
+  picomatch@4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc): {}
 
   pirates@4.0.7: {}
 
@@ -14034,13 +14040,13 @@ snapshots:
 
   tinyglobby@0.2.15:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc))
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
 
   tinyglobby@0.2.16:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc))
+      picomatch: 4.0.4(patch_hash=8215e1a13dc356188edbe1e20a613126aa2c0c776880a699d66a66785d3f1fbc)
 
   tinypool@2.1.2: {}
 

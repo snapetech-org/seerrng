@@ -68,6 +68,9 @@ patchedDependencies:
   eslint-plugin-no-relative-import-paths@1.6.1:
     hash: 91746fdfd7db86dadca60b94388a156e37e2710ae0521fd8686c94343db1ff23
     path: patches/eslint-plugin-no-relative-import-paths@1.6.1.patch
+  picomatch@2.3.2:
+    hash: 36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22
+    path: patches/picomatch@2.3.2.patch
 
 importers:
 
@@ -11351,9 +11354,9 @@ snapshots:
 
   fast-uri@3.1.9: {}
 
-  fdir@6.5.0(picomatch@2.3.2):
+  fdir@6.5.0(picomatch@2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)):
     optionalDependencies:
-      picomatch: 2.3.2
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
 
   fecha@4.2.3: {}
 
@@ -12313,7 +12316,7 @@ snapshots:
 
   lint-staged@17.5.1:
     dependencies:
-      picomatch: 2.3.2
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
       string-argv: 0.3.2
       tinyexec: 1.3.1
     optionalDependencies:
@@ -13109,7 +13112,7 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@2.3.2: {}
+  picomatch@2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22): {}
 
   pidtree@0.3.1: {}
 
@@ -14111,8 +14114,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@2.3.2)
-      picomatch: 2.3.2
+      fdir: 6.5.0(picomatch@2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22))
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
 
   tinyrainbow@3.1.1: {}
 
@@ -14445,7 +14448,7 @@ snapshots:
   vite@8.3.4(@types/node@24.19.0)(jiti@2.7.0)(yaml@1.10.3):
     dependencies:
       lightningcss: 1.33.0
-      picomatch: 2.3.2
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
       postcss: 8.5.28
       rolldown: 1.2.13
       tinyglobby: 0.2.17
@@ -14469,7 +14472,7 @@ snapshots:
       magic-string: 0.30.21
       obug: 2.2.1
       pathe: 2.0.3
-      picomatch: 2.3.2
+      picomatch: 2.3.2(patch_hash=36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22)
       std-env: 4.2.0
       tinybench: 2.9.0
       tinyexec: 1.3.1

@@ -82,3 +82,5 @@ patchedDependencies:
   gray-matter@4.0.3: patches/gray-matter@4.0.3.patch
   http-proxy-middleware@2.0.10: patches/http-proxy-middleware@2.0.10.patch
   postman-collection@5.3.0: patches/postman-collection@5.3.0.patch
+  picomatch@2.3.2: patches/picomatch@2.3.2.patch
+  picomatch@4.0.4: patches/picomatch@4.0.4.patch
