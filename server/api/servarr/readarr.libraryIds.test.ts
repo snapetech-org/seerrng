@@ -20,6 +20,8 @@ type Backend = {
   pagedLibrary?: boolean;
   /** Book 7 exists but is not monitored yet. */
   unmonitored?: boolean;
+  /** Book 7 is already pinned to its monitored edition (anyEditionOk false). */
+  pinned?: boolean;
 };
 
 type RecordedRequest = {
@@ -128,7 +130,10 @@ const withBackend = async (
         });
       }
       const book7 = () =>
-        facadeBook(backend.unmonitored ? { monitored: false } : {});
+        facadeBook({
+          ...(backend.unmonitored ? { monitored: false } : {}),
+          ...(backend.pinned ? { anyEditionOk: false } : {}),
+        });
       if (path === '/api/v1/book' && request.method === 'GET') {
         return writeJson(
           response,
@@ -383,6 +388,79 @@ describe('qualified ids on the way back to the ChaptarrNG facade', () => {
         );
         assert.equal(result.createdBook, false);
         assert.equal(result.foreignBookId, 'hc:459744');
+      }
+    );
+  });
+});
+
+describe('pinning the requested edition on a ChaptarrNG destination', () => {
+  const addRequestedEdition = async (
+    api: ReadarrAPI,
+    editionPolicy?: 'only' | 'either'
+  ) => {
+    const lookup = (await api.lookupBook('hc:459744'))[0];
+    return api.addBook({
+      ...lookup,
+      id: undefined,
+      monitored: true,
+      qualityProfileId: 1,
+      metadataProfileId: 1,
+      rootFolderPath: '/audiobooks',
+      editions: (lookup.editions ?? []).map((edition) => ({
+        ...edition,
+        monitored: true,
+      })),
+      useRequestedEdition: true,
+      ...(editionPolicy ? { editionPolicy } : {}),
+      addOptions: { searchForNewBook: false },
+    });
+  };
+  const updates = (requests: RecordedRequest[]) =>
+    requests.filter((request) => request.method === 'PUT');
+
+  it('pins an "only this version" request on an existing book', async () => {
+    await withBackend(
+      { appName: 'Chaptarr', dialect: 'hc', unmonitored: true },
+      async (url, requests) => {
+        await addRequestedEdition(newApi(url));
+        const [update] = updates(requests);
+        assert.equal(update?.body?.anyEditionOk, false);
+      }
+    );
+  });
+
+  it('pins the requested edition even when it is already the monitored one', async () => {
+    // Book 7 is monitored on the requested edition but not pinned: ChaptarrNG
+    // only pins on save when the edition changes, so SeerrNG must ask.
+    await withBackend(
+      { appName: 'Chaptarr', dialect: 'hc' },
+      async (url, requests) => {
+        await addRequestedEdition(newApi(url));
+        const [update] = updates(requests);
+        assert.equal(update?.path, '/readarr/hc/audiobook/api/v1/book/7');
+        assert.equal(update?.body?.anyEditionOk, false);
+      }
+    );
+  });
+
+  it('does not rewrite a book that is already pinned to the requested edition', async () => {
+    await withBackend(
+      { appName: 'Chaptarr', dialect: 'hc', pinned: true },
+      async (url, requests) => {
+        await addRequestedEdition(newApi(url));
+        assert.equal(updates(requests).length, 0);
+      }
+    );
+  });
+
+  it('leaves the edition choice open for "either" requests', async () => {
+    await withBackend(
+      { appName: 'Chaptarr', dialect: 'hc', unmonitored: true },
+      async (url, requests) => {
+        await addRequestedEdition(newApi(url), 'either');
+        const [update] = updates(requests);
+        assert.ok(update);
+        assert.notEqual(update.body?.anyEditionOk, false);
       }
     );
   });
