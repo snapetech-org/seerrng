@@ -6741,6 +6741,10 @@ test('movie and series details use separate account regions for providers and ra
     route.fulfill({
       json: {
         ...movie,
+        originalLanguage: 'fr',
+        status: 'Released',
+        budget: 1_000_000,
+        revenue: 4_500_000,
         genres: [],
         watchProviders,
         releases: {
@@ -6785,6 +6789,7 @@ test('movie and series details use separate account regions for providers and ra
       json: {
         id: 202,
         name: 'Series Fixture',
+        originalLanguage: 'fr',
         genres: [],
         seasons: [],
         watchProviders,
@@ -6810,7 +6815,15 @@ test('movie and series details use separate account regions for providers and ra
     ).toBeVisible();
     await expect(page.getByText('US Stream', { exact: true })).toHaveCount(0);
     await expect(page.locator('.cert')).toHaveText(rating);
+    await expect(
+      page.getByRole('link', { name: 'French', exact: true })
+    ).toHaveAttribute(
+      'href',
+      capture === 'movie' ? '/movies?language=fr' : '/series?language=fr'
+    );
     if (capture === 'movie') {
+      await expect(page.getByText('$1,000,000', { exact: true })).toBeVisible();
+      await expect(page.getByText('$4,500,000', { exact: true })).toBeVisible();
       await expect(page.getByText('Theatrical · May 8, 2020')).toBeVisible();
       await expect(page.getByText('Digital · Jun 1, 2020')).toBeVisible();
       await expect(page.getByText('Theatrical · May 1, 2020')).toHaveCount(0);

@@ -786,6 +786,9 @@ export interface WatchProviderRegion {
 export interface MovieDetails extends TitleResult {
   watchProviders?: WatchProviderRegion[];
   originalTitle?: string;
+  status?: string;
+  budget?: number;
+  revenue?: number;
   onUserWatchlist?: boolean;
   runtime?: number;
   tagline?: string;

@@ -31,6 +31,7 @@ import {
   DetailTop,
   Facts,
   fmtRun,
+  originalLanguageLink,
   Pill,
   productionCountryLinks,
   SubjectTagsDisclosure,
@@ -57,6 +58,18 @@ const releaseKinds = new Map([
   [4, 'Digital'],
   [5, 'Physical'],
 ]);
+
+const usd = new Intl.NumberFormat(undefined, {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+});
+
+function movieCurrency(value?: number) {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0
+    ? usd.format(value)
+    : '';
+}
 
 export default function MovieDetail() {
   const serverName = useMediaServerName();
@@ -358,6 +371,10 @@ export default function MovieDetail() {
               rows={[
                 ['Streaming Providers', streamingProviders],
                 [
+                  'Original Language',
+                  originalLanguageLink(m.originalLanguage, '/movies'),
+                ],
+                [
                   'Production Countries',
                   productionCountryLinks(m.productionCountries, '/movies'),
                 ],
@@ -378,7 +395,10 @@ export default function MovieDetail() {
                       ))
                     : null,
                 ],
+                ['Status', m.status],
                 ['Runtime', fmtRun(m.runtime)],
+                ['Budget', movieCurrency(m.budget)],
+                ['Revenue', movieCurrency(m.revenue)],
                 [
                   releaseDates.size > 1 ? 'Release Dates' : 'Released',
                   releaseDates.size

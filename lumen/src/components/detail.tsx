@@ -317,6 +317,20 @@ function VideoDisclosure({
   );
 }
 
+const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+
+export function originalLanguageLink(
+  language: string | undefined,
+  path: '/movies' | '/series'
+) {
+  if (!language || !/^[a-z]{2}$/.test(language)) return null;
+  return (
+    <Link to={path + '?language=' + language}>
+      {languageNames.of(language) ?? language}
+    </Link>
+  );
+}
+
 export function productionCountryLinks(
   countries: ProductionCountry[] | undefined,
   browse: '/movies' | '/series'

@@ -31,6 +31,7 @@ import {
   DetailTop,
   Facts,
   fmtRun,
+  originalLanguageLink,
   Pill,
   productionCountryLinks,
   SubjectTagsDisclosure,
@@ -829,6 +830,10 @@ export default function TvDetail() {
             <Facts
               rows={[
                 ['Streaming Providers', streamingProviders],
+                [
+                  'Original Language',
+                  originalLanguageLink(t.originalLanguage, '/series'),
+                ],
                 [
                   'Production Countries',
                   productionCountryLinks(t.productionCountries, '/series'),
