@@ -2641,7 +2641,7 @@ behavior checks.
 | Native entry point | Behavior still to cover |
 | --- | --- |
 | `/users/[userId]` | Household profile with visible request activity and permitted watchlist previews. The managed-user editor and delegated request and watchlist links cover separate actions. |
-| `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. Cover artwork and matched visual acceptance remain open. |
+| `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
 | `/setup` | First-run setup and initial configuration. The bundled server redirects uninitialized requests to native setup, and the companion delegates setup to the configured SeerrNG URL. |
@@ -2749,3 +2749,8 @@ with validated TMDB artwork. The production build and 16 profile browser
 fixtures passed. The administrator case verifies both the proxied
 image address and the linked watched series. Live artwork and matched
 visual comparison remain unverified.
+
+Collector Picks now uses Lumen's shared square cover when a matched
+album supplies artwork. The production build and all four collector
+browser checks passed, including a proxied artwork fixture. Live
+federation and matched visual acceptance remain unverified.

@@ -8,6 +8,12 @@ test('music discovery opens trusted collector picks and follows the matched arti
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
+  await page.route('**/imageproxy/coverartarchive/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>',
+    })
+  );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(
       '/api/v1'.length
@@ -32,7 +38,10 @@ test('music discovery opens trusted collector picks and follows the matched arti
                 year: 2000,
                 trustedSourceCount: 2,
                 reasons: ['Shared by a followed collector'],
-                album: { id: albumId },
+                album: {
+                  id: albumId,
+                  imageUrl: '/imageproxy/coverartarchive/release/fixture.jpg',
+                },
                 artistId,
               },
             ],
@@ -62,6 +71,10 @@ test('music discovery opens trusted collector picks and follows the matched arti
   await expect(page.getByRole('link', { name: 'Open Album' })).toHaveAttribute(
     'href',
     `/music/${albumId}`
+  );
+  await expect(page.locator('.poster.sq img')).toHaveAttribute(
+    'src',
+    '/imageproxy/coverartarchive/release/fixture.jpg'
   );
   await page.getByRole('button', { name: 'Follow Artist Releases' }).click();
   await expect(

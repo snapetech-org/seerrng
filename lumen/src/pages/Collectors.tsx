@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import { Cover } from '../components/cards';
 import { ExtraGate, ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
@@ -12,7 +13,7 @@ type Pick = {
   year: number | null;
   trustedSourceCount: number;
   reasons: string[];
-  album: { id: string } | null;
+  album: { id: string; imageUrl?: string } | null;
   artistId: string | null;
 };
 
@@ -74,6 +75,17 @@ function CollectorPicks() {
                     albumId,
                   ])}
                 >
+                  {pick.album?.imageUrl && (
+                    <div className="poster sq" aria-hidden="true">
+                      <div className="art">
+                        <Cover
+                          src={pick.album.imageUrl}
+                          title={pick.title}
+                          icon="music"
+                        />
+                      </div>
+                    </div>
+                  )}
                   <span>
                     <b>{pick.title}</b>
                     <small>
