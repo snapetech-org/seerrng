@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   ApiError,
@@ -80,7 +80,23 @@ export default function MovieDetail() {
     error,
     reload,
     refresh,
-  } = useApi<MovieDetails>(`/movie/${id}`);
+  } = useApi<MovieDetails>(`/movie/${id}`, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
+  const selected4k = quality.get('quality') === '4k';
+  const status4k = m?.mediaInfo?.status4k;
+  useEffect(() => {
+    if (
+      !selected4k ||
+      (status4k !== MediaStatus.PENDING && status4k !== MediaStatus.PROCESSING)
+    )
+      return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') reload();
+    }, 30_000);
+    return () => window.clearInterval(timer);
+  }, [reload, selected4k, status4k]);
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
@@ -108,7 +124,7 @@ export default function MovieDetail() {
   }>();
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
 
-  if (error)
+  if (error && !m)
     return <ServiceNote error={error} what="this movie" retry={reload} />;
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
@@ -207,7 +223,6 @@ export default function MovieDetail() {
   };
 
   const playback = videoPlaybackMedia(m.mediaInfo, mode);
-  const selected4k = quality.get('quality') === '4k';
   const fourKPlayback =
     selected4k && visible4k && !shared4k
       ? mediaLink(
@@ -287,6 +302,7 @@ export default function MovieDetail() {
         ]}
       />
       <div className="dbody">
+        <ServiceNote error={error} what="this movie" retry={reload} />
         {selected4k && !fourKPlayback?.href && (
           <p className="note" role="status">
             4K playback is unavailable.

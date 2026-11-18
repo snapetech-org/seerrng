@@ -216,6 +216,37 @@ test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
   ).toHaveAttribute('href', hd);
 });
 
+test('an open 4K movie bookmark refreshes when the requested copy arrives', async ({
+  page,
+}) => {
+  const uhd = 'https://app.plex.tv/desktop/#!/server/s/details?key=uhd';
+  let available = false;
+  await page.clock.install();
+  await fixtures(page, (path) => {
+    if (path === '/movie/62')
+      return {
+        json: {
+          id: 62,
+          title: 'Pending Copy',
+          genres: [],
+          mediaInfo: {
+            id: 3,
+            status: 1,
+            status4k: available ? 5 : 3,
+            mediaUrl4k: available ? uhd : undefined,
+          },
+        },
+      };
+  });
+  await page.goto('/movie/62?quality=4k');
+  await expect(page.getByText('4K playback is unavailable.')).toBeVisible();
+  available = true;
+  await page.clock.fastForward(30_100);
+  await expect(
+    page.getByRole('link', { name: 'Watch 4K on Plex' }).first()
+  ).toHaveAttribute('href', uhd);
+});
+
 test('the audiobooks page is titled Audiobooks', async ({ page }) => {
   await fixtures(page, (path) => {
     if (path === '/settings/public') return undefined;
