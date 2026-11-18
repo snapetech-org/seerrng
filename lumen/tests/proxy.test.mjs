@@ -207,7 +207,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/admin/general#enable4k',
       ],
       ['/settings/main', '/admin/general'],
-      ['/settings/users/', '/admin/general'],
+      ['/settings/users/', '/admin/general#default-request-quotas'],
       ['/settings/categories', '/admin/categories'],
       ['/settings/network/', '/admin/network'],
       ['/settings/discovery', '/admin/discovery'],

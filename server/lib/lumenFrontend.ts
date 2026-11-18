@@ -860,7 +860,9 @@ export const mountLumenFrontend = (
           ? targets.find(([pattern]) => pattern.test(target))?.[1]
           : undefined;
       destination = service ? `/admin/${service}` : '/admin';
-    } else if (!section || section === 'main' || section === 'users') {
+    } else if (section === 'users') {
+      destination = '/admin/general#default-request-quotas';
+    } else if (!section || section === 'main') {
       const target = req.query.settingsSearchTarget;
       destination =
         section === 'main' &&

@@ -275,7 +275,10 @@ server {
     if ($arg_settingsSearchTarget = spotifyClientId) { return 302 "/admin/general#spotifyClientId"; }
     return 302 /admin/general;
   }
-  location ~ ^/settings(/users)?/?$ {
+  location ~ ^/settings/users/?$ {
+    return 302 "/admin/general#default-request-quotas";
+  }
+  location ~ ^/settings/?$ {
     return 302 /admin/general;
   }
 

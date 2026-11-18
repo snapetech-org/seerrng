@@ -114,7 +114,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       }
     }
     const userDefaults = await request(app).get('/lumen/settings/users/');
-    assert.equal(userDefaults.headers.location, '/lumen/admin/general');
+    assert.equal(
+      userDefaults.headers.location,
+      '/lumen/admin/general#default-request-quotas'
+    );
     const services = await request(app).get('/lumen/settings/services/');
     assert.equal(services.status, 302);
     assert.equal(services.headers.location, '/lumen/admin');

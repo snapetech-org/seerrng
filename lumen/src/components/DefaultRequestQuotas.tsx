@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { quotaCategories } from '../quotaCategories';
@@ -21,6 +22,13 @@ export default function DefaultRequestQuotas({
 }: {
   initial: DefaultQuotas;
 }) {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash === '#default-request-quotas')
+      document
+        .getElementById('default-request-quotas')
+        ?.scrollIntoView({ block: 'start' });
+  }, [hash]);
   const [saved, setSaved] = useState(initial);
   const [drafts, setDrafts] = useState<Partial<Record<Category, Draft>>>({});
   const available = (Object.keys(categories) as Category[]).filter(
@@ -89,7 +97,7 @@ export default function DefaultRequestQuotas({
 
   if (!quota) return null;
   return (
-    <Section title="Default Request Quotas">
+    <Section title="Default Request Quotas" id="default-request-quotas">
       <p className="note">
         Default limits apply to accounts without a quota override. Use 0 for an
         unlimited request limit.

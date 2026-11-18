@@ -5381,7 +5381,10 @@ test('General Settings saves default request quotas without changing other media
       json: { applicationTitle: 'SeerrNG', defaultQuotas },
     });
   });
-  await page.goto('/admin/general');
+  await page.goto('/admin/general#default-request-quotas');
+  await expect(
+    page.getByRole('heading', { name: 'Default Request Quotas' })
+  ).toBeInViewport();
   const category = page.getByLabel('Quota Media Type');
   const limit = page.getByLabel('Request Limit', { exact: true });
   const days = page.getByLabel('Quota Days');
