@@ -258,3 +258,37 @@ test('issue details link to exact non-video catalog titles', async ({
     );
   }
 });
+
+test('issue filters read from bookmarks and reset pagination when changed', async ({
+  page,
+}) => {
+  const queries: URLSearchParams[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 2, permissions: 2097152 } });
+    if (url.pathname.endsWith('/issue')) {
+      queries.push(url.searchParams);
+      return route.fulfill({
+        json: { results: [], pageInfo: { page: 1, pages: 3 } },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2');
+  await expect(page.getByLabel('Media Type')).toHaveValue('book');
+  await expect.poll(() => queries.at(-1)?.get('skip')).toBe('10');
+  expect(queries.at(-1)?.get('issueType')).toBe('audio');
+  expect(queries.at(-1)?.get('timeFrame')).toBe('7d');
+  await page.getByLabel('Issue Type').selectOption('subtitle');
+  await expect.poll(() => queries.at(-1)?.get('issueType')).toBe('subtitle');
+  expect(queries.at(-1)?.get('skip')).toBe('0');
+  expect(new URL(page.url()).searchParams.has('page')).toBe(false);
+  await page.getByLabel('Search Issues').fill('missing & audio');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect
+    .poll(() => queries.at(-1)?.get('search'))
+    .toBe('missing & audio');
+  await expect(page.getByLabel('Media Type')).toHaveValue('book');
+});

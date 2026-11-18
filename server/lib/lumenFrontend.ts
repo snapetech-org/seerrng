@@ -291,7 +291,15 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/audiobooks': ['subject'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
   '/indexer-search': ['query', 'category'],
-  '/issues': ['issue'],
+  '/issues': [
+    'issue',
+    'filter',
+    'mediaType',
+    'issueType',
+    'timeFrame',
+    'search',
+    'page',
+  ],
 };
 
 function managedUserSettingsPath(path: string): string | undefined {

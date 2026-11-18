@@ -1800,3 +1800,9 @@ Issue details now link to books, albums, comics, and magazines through
 the affected media's catalog identifier. The 24 standalone issue browser
 checks passed, including encoded Bookshelf and magazine identifiers.
 Matched native visual acceptance remains open.
+
+Issue list filters now include media type, issue type, and reporting period.
+Status, filters, search, and page are bookmarkable, and changing a filter
+resets pagination. All 28 standalone issue cases and both server routing
+tests passed. Advanced native metadata filters and matched visual
+acceptance remain open.

@@ -109,19 +109,78 @@ function IssueStatus({ status }: { status: number }) {
   );
 }
 
+const issueFilters = [
+  {
+    key: 'filter',
+    label: 'Issue Status',
+    options: { all: 'All Statuses', open: 'Open', resolved: 'Resolved' },
+  },
+  {
+    key: 'mediaType',
+    label: 'Media Type',
+    options: {
+      all: 'All Media',
+      movie: 'Movies',
+      tv: 'Series',
+      music: 'Music',
+      book: 'Books',
+      comic: 'Comics',
+      magazine: 'Magazines',
+    },
+  },
+  {
+    key: 'issueType',
+    label: 'Issue Type',
+    options: {
+      all: 'All Issue Types',
+      video: 'Video',
+      audio: 'Audio',
+      subtitle: 'Subtitles',
+      other: 'Other',
+    },
+  },
+  {
+    key: 'timeFrame',
+    label: 'Reported Within',
+    options: {
+      all: 'Any Time',
+      '7d': '7 Days',
+      '14d': '14 Days',
+      '30d': '30 Days',
+      '6m': '6 Months',
+    },
+  },
+];
+
 function IssueList() {
-  const [filter, setFilter] = useState('all');
-  const [query, setQuery] = useState('');
-  const [submitted, setSubmitted] = useState('');
-  const [page, setPage] = useState(1);
+  const [bookmark, setBookmark] = useSearchParams();
+  const submitted = (bookmark.get('search') ?? '').trim().slice(0, 512);
+  const parsedPage = Number(bookmark.get('page'));
+  const page =
+    Number.isSafeInteger(parsedPage) && parsedPage >= 1
+      ? Math.min(parsedPage, 1000)
+      : 1;
   const params = new URLSearchParams({
     take: String(PAGE_SIZE),
     skip: String((page - 1) * PAGE_SIZE),
-    filter,
+    filter: 'all',
     search: submitted,
   });
+  for (const { key, options } of issueFilters) {
+    const value = bookmark.get(key);
+    if (value && value !== 'all' && Object.hasOwn(options, value))
+      params.set(key, value);
+  }
+  function update(key: string, value: string) {
+    const next = new URLSearchParams(bookmark);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    if (key !== 'page') next.delete('page');
+    setBookmark(next);
+  }
   const { data, error, reload } = useApi<IssuePage>(
-    '/issue?' + params.toString()
+    '/issue?' + params.toString(),
+    { currentPathOnly: true }
   );
   return (
     <>
@@ -129,32 +188,39 @@ function IssueList() {
         className="toolbar"
         onSubmit={(event) => {
           event.preventDefault();
-          setPage(1);
-          setSubmitted(query.trim());
+          const search = new FormData(event.currentTarget).get('search');
+          update('search', typeof search === 'string' ? search.trim() : '');
         }}
       >
-        <label className="sel">
-          <select
-            aria-label="Issue Status"
-            value={filter}
-            onChange={(event) => {
-              setFilter(event.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="all">All Statuses</option>
-            <option value="open">Open</option>
-            <option value="resolved">Resolved</option>
-          </select>
-        </label>
+        {issueFilters.map(({ key, label, options }) => (
+          <label className="sel" key={key}>
+            <select
+              aria-label={label}
+              value={params.get(key) ?? 'all'}
+              onChange={(event) =>
+                update(
+                  key,
+                  event.target.value === 'all' ? '' : event.target.value
+                )
+              }
+            >
+              {Object.entries(options).map(([value, name]) => (
+                <option key={value} value={value}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        ))}
         <label className="search">
           <input
             type="search"
             aria-label="Search Issues"
             placeholder="Search issues"
             maxLength={512}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            key={submitted}
+            name="search"
+            defaultValue={submitted}
           />
         </label>
         <button className="btn btn-tonal btn-sm">Search</button>
@@ -196,7 +262,7 @@ function IssueList() {
           <button
             className="btn btn-quiet btn-sm"
             disabled={page <= 1}
-            onClick={() => setPage(page - 1)}
+            onClick={() => update('page', page > 2 ? String(page - 1) : '')}
           >
             Previous Page
           </button>
@@ -204,7 +270,7 @@ function IssueList() {
           <button
             className="btn btn-quiet btn-sm"
             disabled={page >= data.pageInfo.pages}
-            onClick={() => setPage(page + 1)}
+            onClick={() => update('page', String(page + 1))}
           >
             Next Page
           </button>

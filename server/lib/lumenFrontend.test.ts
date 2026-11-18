@@ -276,6 +276,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/requests', '/lumen/requests'],
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
+      [
+        '/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2',
+        '/lumen/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2',
+      ],
       ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
       [
         '/book/bookshelf%3A1%3AaGM6MTIz?format=audiobook&lookupTitle=Fixture+Book',
