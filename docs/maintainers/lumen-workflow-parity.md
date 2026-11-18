@@ -1951,3 +1951,13 @@ Guest departure and host closure still need direct interaction tests.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-members-20261118/`.
+
+Watch-session hosts can choose up to five movie genres on creation and edit
+the title, ranking, genres, release years, and rating while the room is a
+draft. The shared form preserves previously selected genres. Compared
+creation and editing at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes.
+The production build and 12 fixture browser checks passed, including editing
+and saving the genre selection.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-genres-20261118/`.

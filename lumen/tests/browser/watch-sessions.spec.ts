@@ -8,6 +8,7 @@ test('a household can create a watch session and opt in to watchlist contributio
     id: 9,
     title: '',
     status: 'draft',
+    filters: {},
     ownerId: 1,
     memberCount: 1,
     members: [{ id: 1, displayName: 'Host User', isOwner: true }],
@@ -26,6 +27,13 @@ test('a household can create a watch session and opt in to watchlist contributio
     const url = new URL(request.url()).pathname;
     if (url.endsWith('/auth/me'))
       return route.fulfill({ json: { id: userId, permissions: 2 } });
+    if (url.endsWith('/genres/movie'))
+      return route.fulfill({
+        json: [
+          { id: 35, name: 'Comedy' },
+          { id: 18, name: 'Drama' },
+        ],
+      });
     if (url === path && request.method() === 'GET')
       return route.fulfill({
         json: { sessions: session.title ? [session] : [] },
@@ -46,11 +54,19 @@ test('a household can create a watch session and opt in to watchlist contributio
       expect(request.postDataJSON()).toEqual({ token });
       return route.fulfill({ json: { sessionId: 9 } });
     }
-    if (url === path + '/9') return route.fulfill({ json: { session } });
+    if (url === path + '/9') {
+      if (request.method() === 'PUT') {
+        const body = request.postDataJSON();
+        writes.push(body);
+        session = { ...session, title: body.title, filters: body.filters };
+      }
+      return route.fulfill({ json: { session } });
+    }
     if (url === path || url === path + '/9/preferences') {
       const body = request.postDataJSON();
       writes.push(body);
-      if (url === path) session = { ...session, title: body.title };
+      if (url === path)
+        session = { ...session, title: body.title, filters: body.filters };
       else session = { ...session, ownPreferences: body };
       return route.fulfill({ json: url === path ? { session } : body });
     }
@@ -63,6 +79,8 @@ test('a household can create a watch session and opt in to watchlist contributio
     .getByRole('combobox', { name: 'Movie Ranking' })
     .selectOption('vote_average.desc');
   await page.getByLabel('From Year').fill('1990');
+  await page.getByText('Genres (0 of 5)').click();
+  await page.getByRole('checkbox', { name: 'Comedy' }).check();
   await page.screenshot({
     path: info.outputPath('watch-sessions.png'),
     fullPage: true,
@@ -83,10 +101,30 @@ test('a household can create a watch session and opt in to watchlist contributio
   expect(writes).toEqual([
     {
       title: 'Movie Night',
-      filters: { ranking: 'vote_average.desc', releaseYearFrom: 1990 },
+      filters: {
+        ranking: 'vote_average.desc',
+        releaseYearFrom: 1990,
+        genreIds: [35],
+      },
     },
     { includeWatchlistContributions: true },
   ]);
+  await page.getByRole('button', { name: 'Edit Session Settings' }).click();
+  await page.getByText('Genres (1 of 5)').click();
+  await expect(page.getByRole('checkbox', { name: 'Comedy' })).toBeChecked();
+  await page.getByRole('checkbox', { name: 'Drama' }).check();
+  await page.screenshot({
+    path: info.outputPath('watch-genres.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Save Session Settings' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Edit Session Settings' })
+  ).toBeVisible();
+  expect(writes[2]).toMatchObject({
+    title: 'Movie Night',
+    filters: { genreIds: [35, 18] },
+  });
   await page.getByRole('button', { name: 'Create Invite Link' }).click();
   await expect(page.getByLabel('Invite Link', { exact: true })).toHaveValue(
     new RegExp(`/watch-sessions/join#token=${token}$`)

@@ -17,55 +17,85 @@ interface Summary {
   ownerId: number;
   memberCount: number;
 }
+interface Filters {
+  genreIds?: number[];
+  ranking?: string;
+  releaseYearFrom?: number;
+  releaseYearTo?: number;
+  minimumRating?: number;
+}
 interface Detail extends Summary {
+  filters?: Filters;
   members: { id: number; displayName: string; isOwner: boolean }[];
   ownPreferences: { includeWatchlistContributions: boolean };
 }
 
-function SessionList() {
-  const list = useApi<{ sessions: Summary[] }>(path);
-  const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [ranking, setRanking] = useState('popularity.desc');
+function SessionForm({
+  initial,
+  onSave,
+}: {
+  initial?: Detail;
+  onSave: (session: Detail) => void;
+}) {
+  const [title, setTitle] = useState(initial?.title ?? '');
+  const [ranking, setRanking] = useState(
+    initial?.filters?.ranking ?? 'popularity.desc'
+  );
   const [years, setYears] = useState({
-    releaseYearFrom: '',
-    releaseYearTo: '',
+    releaseYearFrom: initial?.filters?.releaseYearFrom?.toString() ?? '',
+    releaseYearTo: initial?.filters?.releaseYearTo?.toString() ?? '',
   });
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(
+    initial?.filters?.minimumRating?.toString() ?? ''
+  );
+  const [genreIds, setGenreIds] = useState(initial?.filters?.genreIds ?? []);
+  const genres = useApi<{ id: number; name: string }[]>('/genres/movie');
+  const availableGenres = Array.isArray(genres.data) ? genres.data : [];
+  const valid =
+    !!title.trim() &&
+    !(
+      years.releaseYearFrom &&
+      years.releaseYearTo &&
+      Number(years.releaseYearFrom) > Number(years.releaseYearTo)
+    );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
 
-  async function create() {
-    if (pending.current || !title.trim()) return;
+  async function save() {
+    if (pending.current || !valid) return;
     pending.current = true;
     setBusy(true);
     setError('');
     const generation = sessionGeneration();
     try {
-      const { session } = await api<{ session: Summary }>(path, {
-        method: 'POST',
-        body: JSON.stringify({
-          title: title.trim(),
-          filters: {
-            ranking,
-            ...(years.releaseYearFrom
-              ? { releaseYearFrom: Number(years.releaseYearFrom) }
-              : {}),
-            ...(years.releaseYearTo
-              ? { releaseYearTo: Number(years.releaseYearTo) }
-              : {}),
-            ...(rating ? { minimumRating: Number(rating) } : {}),
-          },
-        }),
-      });
-      if (generation === sessionGeneration()) navigate(`${path}/${session.id}`);
+      const { session } = await api<{ session: Detail }>(
+        initial ? `${path}/${initial.id}` : path,
+        {
+          method: initial ? 'PUT' : 'POST',
+          body: JSON.stringify({
+            title: title.trim(),
+            filters: {
+              ranking,
+              genreIds,
+              ...(years.releaseYearFrom
+                ? { releaseYearFrom: Number(years.releaseYearFrom) }
+                : {}),
+              ...(years.releaseYearTo
+                ? { releaseYearTo: Number(years.releaseYearTo) }
+                : {}),
+              ...(rating ? { minimumRating: Number(rating) } : {}),
+            },
+          }),
+        }
+      );
+      if (generation === sessionGeneration()) onSave(session);
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not create the watch session.'
+            : 'Could not save the watch session.'
         );
     } finally {
       pending.current = false;
@@ -73,6 +103,133 @@ function SessionList() {
     }
   }
 
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <div className="setlist">
+        <label className="set cfg-row">
+          <span>Session Title</span>
+          <input
+            className="cfg-input"
+            required
+            maxLength={80}
+            disabled={busy}
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+        </label>
+        <label className="set cfg-row">
+          <span>Movie Ranking</span>
+          <select
+            className="cfg-select"
+            disabled={busy}
+            value={ranking}
+            onChange={(event) => setRanking(event.target.value)}
+          >
+            <option value="popularity.desc">Most Popular</option>
+            <option value="vote_average.desc">Highest Rated</option>
+            <option value="primary_release_date.desc">Newest Releases</option>
+          </select>
+        </label>
+        {(
+          [
+            ['releaseYearFrom', 'From Year'],
+            ['releaseYearTo', 'To Year'],
+          ] as const
+        ).map(([key, label]) => (
+          <label className="set cfg-row" key={key}>
+            <span>{label}</span>
+            <input
+              className="cfg-input"
+              type="number"
+              min={1870}
+              max={2100}
+              disabled={busy}
+              value={years[key]}
+              onChange={(event) =>
+                setYears({ ...years, [key]: event.target.value })
+              }
+            />
+          </label>
+        ))}
+        <label className="set cfg-row">
+          <span>Minimum Rating</span>
+          <input
+            className="cfg-input"
+            type="number"
+            min={0}
+            max={9.9}
+            step={0.1}
+            disabled={busy}
+            value={rating}
+            onChange={(event) => setRating(event.target.value)}
+          />
+        </label>
+      </div>
+      <details className="adv">
+        <summary>Genres ({genreIds.length} of 5)</summary>
+        <ServiceNote
+          what="movie genres"
+          error={genres.error}
+          retry={genres.reload}
+        />
+        {!genres.data && !genres.error && (
+          <p className="note" role="status">
+            Loading movie genres…
+          </p>
+        )}
+        <div className="setlist">
+          {[
+            ...availableGenres,
+            ...genreIds
+              .filter((id) => !availableGenres.some((genre) => genre.id === id))
+              .map((id) => ({ id, name: `Genre ${id}` })),
+          ].map(({ id, name }) => (
+            <label className="set cfg-row" key={id}>
+              <span>{name}</span>
+              <input
+                type="checkbox"
+                checked={genreIds.includes(id)}
+                disabled={
+                  busy || (genreIds.length >= 5 && !genreIds.includes(id))
+                }
+                onChange={(event) =>
+                  setGenreIds((current) =>
+                    event.target.checked
+                      ? [...current, id]
+                      : current.filter((item) => item !== id)
+                  )
+                }
+              />
+            </label>
+          ))}
+        </div>
+      </details>
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="toolbar">
+        <button
+          type="submit"
+          className="btn btn-primary btn-sm"
+          disabled={busy || !valid}
+        >
+          {initial ? 'Save Session Settings' : 'Create Session'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function SessionList() {
+  const list = useApi<{ sessions: Summary[] }>(path);
+  const navigate = useNavigate();
   return (
     <>
       <h1>Watch Sessions</h1>
@@ -115,89 +272,9 @@ function SessionList() {
             </div>
           </Section>
           <Section title="Create a Session">
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                void create();
-              }}
-            >
-              <div className="setlist">
-                <label className="set cfg-row">
-                  <span>Session Title</span>
-                  <input
-                    className="cfg-input"
-                    required
-                    maxLength={80}
-                    disabled={busy}
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                  />
-                </label>
-                <label className="set cfg-row">
-                  <span>Movie Ranking</span>
-                  <select
-                    className="cfg-select"
-                    disabled={busy}
-                    value={ranking}
-                    onChange={(event) => setRanking(event.target.value)}
-                  >
-                    <option value="popularity.desc">Most Popular</option>
-                    <option value="vote_average.desc">Highest Rated</option>
-                    <option value="primary_release_date.desc">
-                      Newest Releases
-                    </option>
-                  </select>
-                </label>
-                {(
-                  [
-                    ['releaseYearFrom', 'From Year'],
-                    ['releaseYearTo', 'To Year'],
-                  ] as const
-                ).map(([key, label]) => (
-                  <label className="set cfg-row" key={key}>
-                    <span>{label}</span>
-                    <input
-                      className="cfg-input"
-                      type="number"
-                      min={1870}
-                      max={2100}
-                      disabled={busy}
-                      value={years[key]}
-                      onChange={(event) =>
-                        setYears({ ...years, [key]: event.target.value })
-                      }
-                    />
-                  </label>
-                ))}
-                <label className="set cfg-row">
-                  <span>Minimum Rating</span>
-                  <input
-                    className="cfg-input"
-                    type="number"
-                    min={0}
-                    max={9.9}
-                    step={0.1}
-                    disabled={busy}
-                    value={rating}
-                    onChange={(event) => setRating(event.target.value)}
-                  />
-                </label>
-              </div>
-              {error && (
-                <p className="note" role="alert">
-                  {error}
-                </p>
-              )}
-              <div className="toolbar">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-sm"
-                  disabled={busy || !title.trim()}
-                >
-                  Create Session
-                </button>
-              </div>
-            </form>
+            <SessionForm
+              onSave={(session) => navigate(`${path}/${session.id}`)}
+            />
           </Section>
         </>
       )}
@@ -213,6 +290,7 @@ function SessionRoom({ id }: { id: string }) {
     keepDuringRefresh: true,
   });
   const session = room.data?.session;
+  const [editing, setEditing] = useState(false);
   const owner = session?.ownerId === user?.id;
   const [confirmation, setConfirmation] = useState<{
     suffix: string;
@@ -407,6 +485,40 @@ function SessionRoom({ id }: { id: string }) {
                 </button>
               </div>
             </>
+          )}
+        </Section>
+      )}
+      {session?.status === 'draft' && owner && (
+        <Section title="Session Settings">
+          {editing ? (
+            <>
+              <SessionForm
+                initial={session}
+                onSave={() => {
+                  setEditing(false);
+                  room.refresh();
+                }}
+              />
+              <div className="toolbar">
+                <button
+                  type="button"
+                  className="btn btn-quiet btn-sm"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel Editing
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="toolbar">
+              <button
+                type="button"
+                className="btn btn-quiet btn-sm"
+                onClick={() => setEditing(true)}
+              >
+                Edit Session Settings
+              </button>
+            </div>
           )}
         </Section>
       )}
