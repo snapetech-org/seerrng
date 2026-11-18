@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import type { RequestItem } from '../api';
+import { bookRequestLabel, type RequestItem } from '../api';
 import { useApi } from '../hooks';
 import { Pill } from './detail';
 import { ServiceNote } from './extra';
@@ -190,6 +190,9 @@ export default function RequestHistorySheet({
           <header>
             <h2>Request History</h2>
             <p className="note">{displayTitle}</p>
+            {request?.type === 'book' && (
+              <p className="note">{bookRequestLabel(request.bookFormat)}</p>
+            )}
           </header>
           <ServiceNote error={error} what="request history" retry={reload} />
           {!data && !error && (

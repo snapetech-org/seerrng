@@ -2055,6 +2055,29 @@ for (const format of ['audiobook', 'both'] as const) {
         json: { id: 'bookshelf:1:fixture', title: 'Requested Audiobook' },
       })
     );
+    await page.route('**/api/v1/request/status/615', (route) =>
+      route.fulfill({
+        json: {
+          request: {
+            id: 615,
+            type: 'book',
+            status: 1,
+            bookFormat: format,
+            seasons: [],
+            requestedBy: { id: 1, displayName: 'Owner' },
+            media: {
+              mediaType: 'book',
+              status: 1,
+              identifiers: [
+                { provider: 'bookshelf', value: 'bookshelf:1:fixture' },
+              ],
+            },
+          },
+          current: { stage: 'requested', attempt: 1 },
+          history: { results: [], total: 0 },
+        },
+      })
+    );
     await page.goto('/requests?tab=active');
     await expect(
       page.getByText(
@@ -2067,6 +2090,14 @@ for (const format of ['audiobook', 'both'] as const) {
       'href',
       `/book/bookshelf%3A1%3Afixture?${format === 'audiobook' ? 'f=audio&' : ''}lookupTitle=Requested+Audiobook`
     );
+    await page.goto('/requests?requestId=615');
+    const history = page.getByRole('dialog', { name: 'Request history' });
+    await expect(
+      history.getByText(
+        format === 'both' ? 'Ebook and Audiobook' : 'Audiobook',
+        { exact: true }
+      )
+    ).toBeVisible();
   });
 }
 

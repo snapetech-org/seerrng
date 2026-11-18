@@ -7,6 +7,7 @@ import {
   bookArt,
   bookDetailPath,
   bookMediaForFormat,
+  bookRequestLabel,
   cancelRequest,
   mediaLink,
   MediaStatus,
@@ -764,11 +765,6 @@ function titlePlaceholder(r: RequestItem): Row {
       .join(' · '),
   };
 }
-function bookRequestLabel(format?: string) {
-  if (format === 'both') return 'Ebook and Audiobook';
-  return format === 'audiobook' ? 'Audiobook' : 'Ebook';
-}
-
 function bookPlaceholder(r: RequestItem): Row {
   return {
     r,

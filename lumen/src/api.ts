@@ -578,6 +578,11 @@ export const narratorKey = (names?: (string | null | undefined)[] | null) =>
 export const isBookshelf = (id: string) => id.startsWith('bookshelf:');
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const bookIdFor = (id: string, _format: 'ebook' | 'audiobook') => id;
+export function bookRequestLabel(format?: string) {
+  if (format === 'both') return 'Ebook and Audiobook';
+  return format === 'audiobook' ? 'Audiobook' : 'Ebook';
+}
+
 export function bookDetailPath(
   id: string,
   format: 'ebook' | 'audiobook',
