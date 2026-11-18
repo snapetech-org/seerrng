@@ -26,6 +26,15 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname.slice(7);
+    if (request.method() === 'GET' && path.endsWith('/notifications/webhook'))
+      return route.fulfill({
+        json: {
+          enabled: false,
+          embedPoster: false,
+          types: 0,
+          options: { jsonPayload: '{}' },
+        },
+      });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!path.startsWith(prefix)) return route.fulfill({ json: {} });
@@ -243,6 +252,15 @@ test('server notification channels save and test with their own options', async 
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname.slice(7);
+    if (request.method() === 'GET' && path.endsWith('/notifications/webhook'))
+      return route.fulfill({
+        json: {
+          enabled: false,
+          embedPoster: false,
+          types: 0,
+          options: { jsonPayload: '{}' },
+        },
+      });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     const prefix = '/settings/notifications/';
@@ -335,6 +353,15 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname.slice(7);
+    if (request.method() === 'GET' && path.endsWith('/notifications/webhook'))
+      return route.fulfill({
+        json: {
+          enabled: false,
+          embedPoster: false,
+          types: 0,
+          options: { jsonPayload: '{}' },
+        },
+      });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     const prefix = '/settings/notifications/';
@@ -411,4 +438,91 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await slack.screenshot({ path: info.outputPath('slack.png') });
+});
+
+test('webhook edits validate JSON and preserve redacted header values', async ({
+  page,
+}, info) => {
+  const calls: { path: string; body: Record<string, unknown> }[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (request.method() === 'GET')
+      return route.fulfill({
+        json: {
+          enabled: false,
+          embedPoster: false,
+          types: 0,
+          options: path.endsWith('/notifications/webhook')
+            ? {
+                webhookUrl: '[REDACTED]',
+                jsonPayload: '{"message":"{{message}}"}',
+                customHeaders: [{ key: 'X-Example', value: '[REDACTED]' }],
+              }
+            : {},
+        },
+      });
+    const body = request.postDataJSON();
+    calls.push({ path: path.split('/').at(-1)!, body });
+    return path.endsWith('/test')
+      ? route.fulfill({ status: 204 })
+      : route.fulfill({
+          json: {
+            ...body,
+            options: {
+              ...body.options,
+              jsonPayload: 'encoded',
+              customHeaders: body.options.customHeaders.map(
+                ({ key }: { key: string }) => ({ key, value: '[REDACTED]' })
+              ),
+            },
+          },
+        });
+  });
+  await page.goto('/admin/notifications');
+  const section = page.locator('#webhook');
+  const payload = section.getByLabel('JSON Payload');
+  const save = section.getByRole('button', { name: 'Save Webhook' });
+  const send = section.getByRole('button', { name: 'Send Webhook Test' });
+  await expect(section.getByLabel('Header 1 Value')).toHaveValue('');
+  await payload.fill('{');
+  await expect(send).toBeDisabled();
+  await expect(section.getByText('Enter a valid JSON payload.')).toBeVisible();
+  await payload.fill('{"message":"{{message}}","title":"Québec"}');
+  await section.getByRole('button', { name: 'Add Header' }).click();
+  await section.getByLabel('Header 2 Name').fill('X-Other');
+  await expect(save).toBeDisabled();
+  await section.getByLabel('Header 2 Value').fill('fixture-value');
+  await section.getByLabel('Support URL Variables').check();
+  await send.click();
+  await expect(section.getByText('Test notification sent.')).toBeVisible();
+  await save.click();
+  await expect(section.getByText('Notification settings saved.')).toBeVisible();
+  await expect(payload).toHaveValue(
+    '{"message":"{{message}}","title":"Québec"}'
+  );
+  await expect(section.getByLabel('Header 2 Value')).toHaveValue('');
+  await section.getByLabel('Header 1 Name').fill('X-Renamed');
+  await expect(save).toBeDisabled();
+  expect(calls.map(({ path }) => path)).toEqual(['test', 'webhook']);
+  expect(calls[1].body.options).toEqual({
+    webhookUrl: '[REDACTED]',
+    jsonPayload: '{"message":"{{message}}","title":"Québec"}',
+    supportVariables: true,
+    customHeaders: [
+      { key: 'X-Example', value: '[REDACTED]' },
+      { key: 'X-Other', value: 'fixture-value' },
+    ],
+  });
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
+    await section.screenshot({ path: info.outputPath('webhook.png') });
 });

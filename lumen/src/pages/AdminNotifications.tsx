@@ -19,12 +19,14 @@ type Channel =
   | 'ntfy'
   | 'apprise'
   | 'discord'
-  | 'slack';
+  | 'slack'
+  | 'webhook';
+type Header = { key: string; value: string };
 type Configuration = {
   enabled: boolean;
   embedPoster: boolean;
   types?: number;
-  options: Record<string, string | number | boolean>;
+  options: Record<string, string | number | boolean | Header[]>;
 };
 const titles = {
   email: 'Email',
@@ -37,6 +39,7 @@ const titles = {
   apprise: 'Apprise',
   discord: 'Discord',
   slack: 'Slack',
+  webhook: 'Webhook',
 };
 const redacted = '[REDACTED]';
 const emailFields = [
@@ -130,6 +133,11 @@ const fields = {
     localeField,
   ],
   slack: [webhookField, localeField],
+  webhook: [
+    webhookField,
+    { key: 'authHeader', label: 'Authorization Header', kind: 'password' },
+    { key: 'jsonPayload', label: 'JSON Payload', kind: 'multiline' },
+  ],
 } as const;
 const required = {
   telegram: ['botAPI', 'chatId'],
@@ -140,7 +148,24 @@ const required = {
   apprise: ['url', 'configKey'],
   discord: ['webhookUrl'],
   slack: ['webhookUrl'],
+  webhook: ['webhookUrl'],
 } as const;
+
+function webhookError(options: Configuration['options'], headers: Header[]) {
+  try {
+    JSON.parse(String(options.jsonPayload ?? ''));
+  } catch {
+    return 'Enter a valid JSON payload.';
+  }
+  if (headers.some(({ key, value }) => !key.trim() !== !value.trim()))
+    return 'Enter both a name and value for each custom header.';
+  if (
+    options.authHeader &&
+    headers.some(({ key }) => key.trim().toLowerCase() === 'authorization')
+  )
+    return 'Use either the Authorization field or a custom Authorization header.';
+  return '';
+}
 
 function AgentForm({
   channel,
@@ -159,6 +184,11 @@ function AgentForm({
   const pending = useRef(false);
   const changed = JSON.stringify(draft) !== JSON.stringify(saved);
   const options = draft.options;
+  const headers = Array.isArray(options.customHeaders)
+    ? options.customHeaders
+    : [];
+  const headerError =
+    channel === 'webhook' ? webhookError(options, headers) : '';
   const eventChannel = channel !== 'email' && channel !== 'webpush';
   const sounds = useApi<{ name: string; description: string }[]>(
     channel === 'pushover' && saved.options.accessToken
@@ -231,6 +261,7 @@ function AgentForm({
     if (
       pending.current ||
       (!test && (!changed || !slackActionsValid)) ||
+      headerError ||
       (!valid && (test || draft.enabled)) ||
       (!test && draft.enabled && eventChannel && !draft.types)
     )
@@ -245,6 +276,19 @@ function AgentForm({
         method: 'POST',
         body: JSON.stringify({
           ...draft,
+          ...(channel === 'webhook'
+            ? {
+                options: {
+                  ...options,
+                  customHeaders: headers
+                    .map(({ key, value }) => ({
+                      key: key.trim(),
+                      value: value.trim(),
+                    }))
+                    .filter(({ key }) => key),
+                },
+              }
+            : {}),
           ...(test ? { enabled: true } : {}),
           ...(eventChannel ? { types: draft.types ?? 0 } : {}),
         }),
@@ -256,8 +300,18 @@ function AgentForm({
       } else {
         const updated = await api<Configuration>(endpoint, request);
         if (generation !== sessionGeneration()) return;
-        setSaved(updated);
-        setDraft(updated);
+        const active =
+          channel === 'webhook'
+            ? {
+                ...updated,
+                options: {
+                  ...updated.options,
+                  jsonPayload: options.jsonPayload,
+                },
+              }
+            : updated;
+        setSaved(active);
+        setDraft(active);
         if (
           channel === 'pushover' &&
           draft.options.accessToken !== saved.options.accessToken
@@ -335,7 +389,8 @@ function AgentForm({
               {kind === 'secret-multiline' || kind === 'multiline' ? (
                 <textarea
                   id={id}
-                  className="cfg-input"
+                  className={key === 'jsonPayload' ? 'cfg-json' : 'cfg-input'}
+                  rows={key === 'jsonPayload' ? 8 : undefined}
                   value={displayed}
                   maxLength={
                     kind === 'secret-multiline' ? 128 * 1024 : undefined
@@ -414,6 +469,19 @@ function AgentForm({
               </label>
             ))}
           </>
+        )}
+        {channel === 'webhook' && (
+          <label className="set cfg-row">
+            <span>Support URL Variables</span>
+            <input
+              type="checkbox"
+              disabled={busy}
+              checked={options.supportVariables === true}
+              onChange={(event) =>
+                setOptions({ supportVariables: event.target.checked })
+              }
+            />
+          </label>
         )}
         {channel === 'discord' &&
           (
@@ -503,6 +571,91 @@ function AgentForm({
             />
           </label>
         )}
+        {channel === 'webhook' && (
+          <>
+            <p className="note">Custom Headers</p>
+            <div className="setlist">
+              {headers.map((header, index) => (
+                <div key={index} className="set cfg-row">
+                  <input
+                    className="cfg-input"
+                    aria-label={`Header ${index + 1} Name`}
+                    placeholder="Header Name"
+                    disabled={busy}
+                    value={header.key}
+                    onChange={(event) =>
+                      setOptions({
+                        customHeaders: headers.map((item, current) =>
+                          current === index
+                            ? {
+                                key: event.target.value,
+                                value:
+                                  item.value === redacted ? '' : item.value,
+                              }
+                            : item
+                        ),
+                      })
+                    }
+                  />
+                  <input
+                    className="cfg-input"
+                    type="password"
+                    aria-label={`Header ${index + 1} Value`}
+                    autoComplete="new-password"
+                    maxLength={4096}
+                    disabled={busy}
+                    placeholder={
+                      header.value === redacted ? 'Saved value' : 'Header Value'
+                    }
+                    value={header.value === redacted ? '' : header.value}
+                    onChange={(event) =>
+                      setOptions({
+                        customHeaders: headers.map((item, current) =>
+                          current === index
+                            ? { ...item, value: event.target.value }
+                            : item
+                        ),
+                      })
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy}
+                    onClick={() =>
+                      setOptions({
+                        customHeaders: headers.filter(
+                          (_, current) => current !== index
+                        ),
+                      })
+                    }
+                  >
+                    Remove Header {index + 1}
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="toolbar">
+              <button
+                type="button"
+                className="btn btn-quiet btn-sm"
+                disabled={busy || headers.length >= 20}
+                onClick={() =>
+                  setOptions({
+                    customHeaders: [...headers, { key: '', value: '' }],
+                  })
+                }
+              >
+                Add Header
+              </button>
+            </div>
+            {headerError && (
+              <p className="note" role="alert">
+                {headerError}
+              </p>
+            )}
+          </>
+        )}
         {channel === 'pushover' && (
           <label className="set cfg-row">
             <span>Notification Sound</span>
@@ -582,6 +735,7 @@ function AgentForm({
           disabled={
             busy ||
             !changed ||
+            !!headerError ||
             !slackActionsValid ||
             (draft.enabled && (!valid || (eventChannel && !draft.types)))
           }
@@ -591,7 +745,7 @@ function AgentForm({
         <button
           className="btn btn-quiet btn-sm"
           type="button"
-          disabled={busy || !valid}
+          disabled={busy || !valid || !!headerError}
           onClick={() => void submit(true)}
         >
           Send {titles[channel]} Test
@@ -650,6 +804,7 @@ export default function AdminNotifications() {
       <AgentSection channel="apprise" />
       <AgentSection channel="discord" />
       <AgentSection channel="slack" />
+      <AgentSection channel="webhook" />
       <AgentSection channel="webpush" />
     </>
   );

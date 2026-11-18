@@ -98,3 +98,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the rendered Slack form against the existing ntfy form on desktop, iPhone 13, Pixel 7, and iPad Pro 11, including credential rows, multiline settings, and event controls. The production build, 16 notification browser checks, and four Discord and Slack API tests passed. Delivery used mock endpoints, and no live Slack actions were invoked.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-chat-notifications-20261118/`.
+
+## Generic Webhook follow-up — 2026-11-18
+
+`/admin/notifications` adds the Webhook destination, JSON payload editor, authorization, custom headers, URL variables, event selection, and draft test sends. Existing header values stay redacted. Renaming a saved header requires a new value. The editor retains readable JSON after a successful save.
+
+Compared the Webhook form with the established Slack form across desktop, iPhone 13, Pixel 7, and iPad Pro 11. Inspected credential prompts, JSON editor width, header rows, and action wrapping. The production build, twenty notification browser checks, and four API checks passed. The four Webhook browser cases also passed after adding visible prompts for empty header inputs. All sends were mocked.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-webhook-20261118/`.
