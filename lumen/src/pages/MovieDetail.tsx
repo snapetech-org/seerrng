@@ -18,6 +18,7 @@ import {
   shortDate,
   statusOf,
   TitleCard,
+  withoutPending4k,
 } from '../components/cards';
 import {
   ActionBar,
@@ -40,6 +41,7 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
 const cert = (m: MovieDetails) =>
@@ -70,17 +72,25 @@ export default function MovieDetail() {
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
   // A pending 4K copy must not make the independent HD request look requested.
-  const s = statusOf(
-    m.mediaInfo &&
-      (m.mediaInfo.status4k === MediaStatus.PENDING ||
-        m.mediaInfo.status4k === MediaStatus.PROCESSING)
-      ? { ...m.mediaInfo, status4k: undefined, downloadStatus4k: undefined }
-      : m.mediaInfo,
-    false,
-    serverName
-  );
+  const requestMedia = withoutPending4k(m.mediaInfo);
+  const s = statusOf(requestMedia, false, serverName);
+  const mode = pub?.otherUsersAvailability;
+  const visibleStatus = statusOf(requestMedia, false, serverName, mode);
+  const playableStatus =
+    mode === 'distinguish'
+      ? statusOf(requestMedia, false, serverName, 'hide')
+      : visibleStatus;
+  const shared4k = isSharedVideoCopy(m.mediaInfo, true, mode);
   const blocklisted = m.mediaInfo?.status === MediaStatus.BLOCKLISTED;
   const s4k = m.mediaInfo?.status4k;
+  const available4k =
+    s4k === MediaStatus.AVAILABLE || s4k === MediaStatus.PARTIAL;
+  const visible4k = available4k && !(shared4k && mode === 'hide');
+  const fourKLabel = shared4k
+    ? 'Available to Other Users'
+    : s4k === MediaStatus.PARTIAL
+      ? `Partly on ${serverName}`
+      : `On ${serverName}`;
   const date = m.releaseDate || '';
   const unreleased = date > localToday();
   const director = (m.credits?.crew || [])
@@ -116,19 +126,26 @@ export default function MovieDetail() {
   };
 
   const main =
-    s?.k === 'ok' ? (
+    playableStatus?.k === 'ok' ? (
       <a
         className="btn btn-primary"
-        {...mediaLink(m.mediaInfo, false, 'movie', serverName)}
+        {...mediaLink(
+          videoPlaybackMedia(m.mediaInfo, mode),
+          false,
+          'movie',
+          serverName
+        )}
       >
         <Icon name="play" />
         Watch on {serverName}
       </a>
     ) : s ? (
-      <button className="btn btn-tonal" disabled>
-        <Icon name={s.ico} />
-        {s.word}
-      </button>
+      visibleStatus && (
+        <button className="btn btn-tonal" disabled>
+          <Icon name={visibleStatus.ico} />
+          {visibleStatus.word}
+        </button>
+      )
     ) : (
       <button
         className="btn btn-primary"
@@ -166,7 +183,7 @@ export default function MovieDetail() {
   return (
     <article className="detail">
       <DetailTop
-        status={s}
+        status={visibleStatus}
         backdrop={tmdbImg(m.backdropPath, 'w1280')}
         poster={tmdbImg(m.posterPath)}
         title={m.title || ''}
@@ -183,14 +200,21 @@ export default function MovieDetail() {
       />
       <div className="dbody">
         <div className="dstatus">
-          {s && (
-            <Pill k={s.k} icon={s.ico}>
-              {s.word}
+          {visibleStatus && (
+            <Pill k={visibleStatus.k} icon={visibleStatus.ico}>
+              {visibleStatus.word}
             </Pill>
           )}
-          {s4k === MediaStatus.AVAILABLE && (
-            <Pill k="ok" icon="check">
-              4K on {serverName}
+          {visible4k && (
+            <Pill
+              k={shared4k ? 'wait' : 'ok'}
+              icon={shared4k ? 'user' : 'check'}
+            >
+              {shared4k
+                ? '4K · Available to Other Users'
+                : s4k === MediaStatus.PARTIAL
+                  ? `4K partly on ${serverName}`
+                  : `4K on ${serverName}`}
             </Pill>
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
@@ -303,8 +327,10 @@ export default function MovieDetail() {
                 [
                   '4K',
                   pub?.movie4kEnabled
-                    ? s4k === MediaStatus.AVAILABLE
-                      ? `On ${serverName}`
+                    ? available4k
+                      ? visible4k
+                        ? fourKLabel
+                        : ''
                       : has4k
                         ? 'Requested'
                         : 'Not yet'

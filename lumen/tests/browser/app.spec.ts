@@ -790,6 +790,58 @@ test('movie posters distinguish or hide shared copies without offering duplicate
   await expect(poster.getByRole('button', { name: /request/i })).toHaveCount(0);
 });
 
+test('movie details keep shared HD and viewer 4K availability separate', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.clock.install();
+  let mode = 'distinguish';
+  let own4k = false;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { otherUsersAvailability: mode, movie4kEnabled: true },
+    })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        mediaInfo: {
+          ...available,
+          status4k: 5,
+          mediaUrl: 'https://plex.example.test/shared-hd',
+          iOSPlexUrl: undefined,
+          mediaUrl4k: 'https://plex.example.test/viewer-4k',
+          viewerRequestCoverage: { standard: false, fourK: own4k },
+        },
+      },
+    })
+  );
+  await page.goto('/movie/101');
+  const status = page.locator('.dstatus');
+  await expect(status.getByText('4K · Available to Other Users')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Watch on Plex' })).toHaveCount(
+    0
+  );
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toHaveCount(0);
+
+  mode = 'hide';
+  own4k = true;
+  await page.clock.fastForward(181_000);
+  await page.reload();
+  await expect(status.getByText('4K on Plex', { exact: true })).toBeVisible();
+  await expect(page.getByText('4K · Available to Other Users')).toHaveCount(0);
+  await expect(page.locator('a[href*="shared-hd"]')).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Watch on Plex' }).first()
+  ).toHaveAttribute('href', 'https://plex.example.test/viewer-4k');
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toHaveCount(0);
+});
+
 test('featured video cards distinguish and hide shared availability', async ({
   page,
 }) => {

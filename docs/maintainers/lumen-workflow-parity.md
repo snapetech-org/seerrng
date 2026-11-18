@@ -1732,3 +1732,10 @@ recovery. Featured cards now use the same availability presentation and
 playback link filtering. Eight standalone cases verified poster and
 featured-card behavior across the four viewport presets. Title details
 and matched native visual acceptance remain open.
+
+Movie details now use the shared-availability mode for their status,
+4K summary, and playback actions. The raw acquisition status still
+controls request eligibility. Twelve standalone poster, featured-card,
+and movie-detail cases passed across four viewport presets, including
+a shared HD copy alongside a viewer 4K copy. Series details and matched
+native visual acceptance remain open.
