@@ -219,6 +219,10 @@ function normalizeNativeFilters(params: URLSearchParams) {
     normalized.set('show', 'have');
     if (availability === '4k') normalized.set('quality', '4k');
     else normalized.delete('quality');
+  } else if (normalized.get('libraryView') === 'available') {
+    normalized.set('show', 'have');
+  } else if (normalized.get('libraryView') === 'missing') {
+    normalized.set('show', 'not');
   }
   const genre = normalized.get('genre');
   if (
@@ -233,6 +237,7 @@ function normalizeNativeFilters(params: URLSearchParams) {
   normalized.delete('nativeFilters');
   normalized.delete('sortBy');
   normalized.delete('availability');
+  normalized.delete('libraryView');
   return normalized;
 }
 

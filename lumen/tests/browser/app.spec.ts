@@ -3616,6 +3616,27 @@ test('native companion discovery filters retain genre matching and clear without
   await expect(page).toHaveURL(/\/movies$/);
 });
 
+test('native companion discovery bookmarks retain library availability', async ({
+  page,
+}) => {
+  await fixtures(page);
+  for (const [search, selected] of [
+    ['libraryView=missing', /^Not on /],
+    ['libraryView=available', /^On /],
+    ['libraryView=missing&availability=4k', /^On /],
+  ] as const) {
+    await page.goto(`/movies?nativeFilters=1&${search}`);
+    const availability = page.getByRole('group', { name: 'Availability' });
+    await expect(
+      availability.getByRole('button', { name: selected })
+    ).toHaveAttribute('aria-pressed', 'true');
+    const all = availability.getByRole('button', { name: 'All', exact: true });
+    await all.click();
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    expect(new URL(page.url()).searchParams.has('libraryView')).toBe(false);
+  }
+});
+
 test('native search bookmarks retain the decoded term and media scope', async ({
   page,
 }) => {
