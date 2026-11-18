@@ -32,6 +32,139 @@ const features = [
   ['songId', 'SongID'],
 ] as const;
 
+const approvalsPath = '/readmeabook/admin/requests';
+const dashboardSections = [
+  ['metrics', 'Metrics'],
+  ['activeDownloads', 'Active Downloads'],
+  ['recentRequests', 'Recent Requests'],
+] as const;
+
+interface Approval {
+  id: number;
+  title: string;
+  author?: string;
+  user: { username?: string; email?: string } | null;
+}
+
+function ReadMeABookOperations() {
+  const approvals = useApi<Approval[]>(approvalsPath);
+  const dashboard = useApi<
+    Partial<Record<(typeof dashboardSections)[number][0], unknown>>
+  >('/readmeabook/admin/dashboard');
+  const pending = useRef(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function decide(id: number, action: 'approve' | 'deny') {
+    if (pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    const generation = sessionGeneration();
+    try {
+      await api(`${approvalsPath}/${id}/${action}`, { method: 'POST' });
+      if (generation !== sessionGeneration()) return;
+      approvals.reload();
+      dashboard.refresh();
+    } catch (failure) {
+      if (generation === sessionGeneration())
+        setError(
+          failure instanceof ApiError
+            ? failure.message
+            : 'Could not update the audiobook request.'
+        );
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <Section title="Audiobook Requests Awaiting Approval">
+        <ServiceNote
+          what="audiobook approvals"
+          error={approvals.error}
+          retry={approvals.reload}
+        />
+        {error && (
+          <p className="note" role="alert">
+            {error}
+          </p>
+        )}
+        {!approvals.data && !approvals.error && (
+          <p className="note" role="status">
+            Loading audiobook requests…
+          </p>
+        )}
+        {approvals.data?.length === 0 && (
+          <p className="note">
+            No audiobook requests are waiting for approval.
+          </p>
+        )}
+        <div className="setlist">
+          {approvals.data?.map(({ id, title, author, user }) => (
+            <div className="set cfg-row" key={id}>
+              <span>
+                <b>{title}</b>
+                <small>
+                  {[author, user?.username || user?.email]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </small>
+              </span>
+              <div className="toolbar">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  disabled={busy}
+                  aria-label={`Approve ${title}`}
+                  onClick={() => void decide(id, 'approve')}
+                >
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-quiet btn-sm"
+                  disabled={busy}
+                  aria-label={`Deny ${title}`}
+                  onClick={() => void decide(id, 'deny')}
+                >
+                  Deny
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+      <Section title="Acquisition Dashboard">
+        <ServiceNote
+          what="the acquisition dashboard"
+          error={dashboard.error}
+          retry={dashboard.reload}
+        />
+        {!dashboard.data && !dashboard.error && (
+          <p className="note" role="status">
+            Loading the acquisition dashboard…
+          </p>
+        )}
+        {dashboard.data &&
+          dashboardSections.map(([key, label]) => (
+            <details className="adv" key={key}>
+              <summary>{label}</summary>
+              <textarea
+                aria-label={label}
+                className="cfg-json"
+                readOnly
+                value={JSON.stringify(dashboard.data?.[key] ?? null, null, 2)}
+              />
+            </details>
+          ))}
+      </Section>
+    </>
+  );
+}
+
 function Connection({
   provider,
   initial,
@@ -132,157 +265,164 @@ function Connection({
   }
 
   return (
-    <Section title={soulseek ? 'slskdN Connection' : 'ReadMeABook Connection'}>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          void submit(false);
-        }}
+    <>
+      <Section
+        title={soulseek ? 'slskdN Connection' : 'ReadMeABook Connection'}
       >
-        {soulseek && (
-          <p className="note">
-            Use a read-write slskdN API key for track requests. SongID requires
-            an administrator key.
-          </p>
-        )}
-        <div className="setlist">
-          <label className="set cfg-row">
-            <span>Enable {name} Requests</span>
-            <input
-              type="checkbox"
-              disabled={busy}
-              checked={draft.enabled}
-              onChange={(event) => update({ enabled: event.target.checked })}
-            />
-          </label>
-          {textFields
-            .filter(([key]) => soulseek || key !== 'searchFilter')
-            .map(([key, label, length]) => (
-              <label className="set cfg-row" key={key}>
-                <span>{label}</span>
-                <input
-                  className="cfg-input"
-                  maxLength={length}
-                  disabled={busy}
-                  value={draft[key] ?? ''}
-                  onChange={(event) => update({ [key]: event.target.value })}
-                />
-              </label>
-            ))}
-          <label className="set cfg-row">
-            <span>Port</span>
-            <input
-              className="cfg-input"
-              type="number"
-              min={1}
-              max={65535}
-              required
-              disabled={busy}
-              value={draft.port || ''}
-              onChange={(event) => update({ port: Number(event.target.value) })}
-            />
-          </label>
-          <label className="set cfg-row">
-            <span>Use HTTPS</span>
-            <input
-              type="checkbox"
-              disabled={busy}
-              checked={draft.useSsl}
-              onChange={(event) => update({ useSsl: event.target.checked })}
-            />
-          </label>
-          <label className="set cfg-row">
-            <span>{secretLabel}</span>
-            <input
-              className="cfg-input"
-              type="password"
-              autoComplete="new-password"
-              maxLength={soulseek ? 2048 : 4096}
-              disabled={busy || clearApiKey}
-              value={apiKey}
-              placeholder={saved.apiKeyConfigured ? 'Saved key' : undefined}
-              onChange={(event) => {
-                setApiKey(event.target.value);
-                clearFeedback();
-              }}
-            />
-          </label>
-          {saved.apiKeyConfigured && (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            void submit(false);
+          }}
+        >
+          {soulseek && (
+            <p className="note">
+              Use a read-write slskdN API key for track requests. SongID
+              requires an administrator key.
+            </p>
+          )}
+          <div className="setlist">
             <label className="set cfg-row">
-              <span>Remove Saved {secretLabel}</span>
+              <span>Enable {name} Requests</span>
               <input
                 type="checkbox"
                 disabled={busy}
-                checked={clearApiKey}
+                checked={draft.enabled}
+                onChange={(event) => update({ enabled: event.target.checked })}
+              />
+            </label>
+            {textFields
+              .filter(([key]) => soulseek || key !== 'searchFilter')
+              .map(([key, label, length]) => (
+                <label className="set cfg-row" key={key}>
+                  <span>{label}</span>
+                  <input
+                    className="cfg-input"
+                    maxLength={length}
+                    disabled={busy}
+                    value={draft[key] ?? ''}
+                    onChange={(event) => update({ [key]: event.target.value })}
+                  />
+                </label>
+              ))}
+            <label className="set cfg-row">
+              <span>Port</span>
+              <input
+                className="cfg-input"
+                type="number"
+                min={1}
+                max={65535}
+                required
+                disabled={busy}
+                value={draft.port || ''}
+                onChange={(event) =>
+                  update({ port: Number(event.target.value) })
+                }
+              />
+            </label>
+            <label className="set cfg-row">
+              <span>Use HTTPS</span>
+              <input
+                type="checkbox"
+                disabled={busy}
+                checked={draft.useSsl}
+                onChange={(event) => update({ useSsl: event.target.checked })}
+              />
+            </label>
+            <label className="set cfg-row">
+              <span>{secretLabel}</span>
+              <input
+                className="cfg-input"
+                type="password"
+                autoComplete="new-password"
+                maxLength={soulseek ? 2048 : 4096}
+                disabled={busy || clearApiKey}
+                value={apiKey}
+                placeholder={saved.apiKeyConfigured ? 'Saved key' : undefined}
                 onChange={(event) => {
-                  setClearApiKey(event.target.checked);
+                  setApiKey(event.target.value);
                   clearFeedback();
                 }}
               />
             </label>
-          )}
-        </div>
-        {draft.enabled && !credentials && (
-          <p className="note">
-            An enabled connection requires a hostname and{' '}
-            {secretLabel.toLowerCase()}.
-          </p>
-        )}
-        {result && (
-          <div className="note" role="status">
-            <p>
-              {soulseek
-                ? `Connected to slskdN ${result.version}.`
-                : 'Connected to ReadMeABook.'}
-            </p>
-            {result.features &&
-              features.map(([key, label]) => (
-                <p key={key}>
-                  {label} {result.features?.[key] ? 'available' : 'unavailable'}
-                  .
-                </p>
-              ))}
+            {saved.apiKeyConfigured && (
+              <label className="set cfg-row">
+                <span>Remove Saved {secretLabel}</span>
+                <input
+                  type="checkbox"
+                  disabled={busy}
+                  checked={clearApiKey}
+                  onChange={(event) => {
+                    setClearApiKey(event.target.checked);
+                    clearFeedback();
+                  }}
+                />
+              </label>
+            )}
           </div>
-        )}
-        {notice && (
-          <p className="note" role="status">
-            {notice}
-          </p>
-        )}
-        {error && (
-          <p className="note" role="alert">
-            {error}
-          </p>
-        )}
-        <div className="toolbar">
-          <button
-            type="button"
-            className="btn btn-quiet btn-sm"
-            disabled={busy || !validPort || !credentials}
-            onClick={() => void submit(true)}
-          >
-            Test Connection
-          </button>
-          <button
-            type="submit"
-            className="btn btn-primary btn-sm"
-            disabled={
-              busy || !dirty || !validPort || (draft.enabled && !credentials)
-            }
-          >
-            Save Changes
-          </button>
-          <button
-            type="button"
-            className="btn btn-quiet btn-sm"
-            disabled={busy || !dirty}
-            onClick={() => reset(saved)}
-          >
-            Discard Changes
-          </button>
-        </div>
-      </form>
-    </Section>
+          {draft.enabled && !credentials && (
+            <p className="note">
+              An enabled connection requires a hostname and{' '}
+              {secretLabel.toLowerCase()}.
+            </p>
+          )}
+          {result && (
+            <div className="note" role="status">
+              <p>
+                {soulseek
+                  ? `Connected to slskdN ${result.version}.`
+                  : 'Connected to ReadMeABook.'}
+              </p>
+              {result.features &&
+                features.map(([key, label]) => (
+                  <p key={key}>
+                    {label}{' '}
+                    {result.features?.[key] ? 'available' : 'unavailable'}.
+                  </p>
+                ))}
+            </div>
+          )}
+          {notice && (
+            <p className="note" role="status">
+              {notice}
+            </p>
+          )}
+          {error && (
+            <p className="note" role="alert">
+              {error}
+            </p>
+          )}
+          <div className="toolbar">
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy || !validPort || !credentials}
+              onClick={() => void submit(true)}
+            >
+              Test Connection
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm"
+              disabled={
+                busy || !dirty || !validPort || (draft.enabled && !credentials)
+              }
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy || !dirty}
+              onClick={() => reset(saved)}
+            >
+              Discard Changes
+            </button>
+          </div>
+        </form>
+      </Section>
+      {!soulseek && saved.enabled && <ReadMeABookOperations />}
+    </>
   );
 }
 

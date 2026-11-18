@@ -288,3 +288,14 @@ Live connections, the acquisition dashboard, and approval actions remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-readmeabook-20261118/`.
+
+### ReadMeABook approvals and acquisition dashboard
+
+With the connection enabled, administrators can approve or deny audiobook
+requests and inspect metrics, active downloads, and recent requests. Compared
+with the existing connection form on desktop, iPhone 13, Pixel 7, and iPad Pro
+11. The production build and eight browser checks passed with synthetic
+responses. Live requests and downloads were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-readmeabook-ops-20261118/`.
