@@ -340,3 +340,16 @@ Headed Chrome at 1440 × 1000 verified standalone list loading, creation of
 a seven-day Discover token, one-time display, and revocation with synthetic
 data. Clipboard use, native comparison, mobile and bundled visual checks,
 and an external client round trip remain open.
+
+### Linked accounts increment
+
+Account Settings now lists local password availability, the linked media
+server, and linked identity providers. Users can link Jellyfin or Emby via
+credentials where allowed and confirm unlinking through native endpoints.
+Unlink controls require another sign-in method and respect the primary
+administrator media-server restriction. The server rechecks both rules.
+
+Headed Chrome at 1440 × 1000 verified standalone Jellyfin linking and
+unlinking against synthetic responses, including account refresh and cleared
+credentials. Plex and OIDC linking, Jellyfin Quick Connect linking, live
+providers, and mobile, bundled and native visual comparisons remain open.

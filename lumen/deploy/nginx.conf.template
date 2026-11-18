@@ -136,6 +136,9 @@ server {
     return 302 ${SEERR_FULL_URL}/?interface=classic;
   }
 
+  location ~ ^/profile/settings/linked-accounts/?$ {
+    return 302 /me/account/linked-accounts;
+  }
   location ~ ^/profile/settings/client-tokens/?$ {
     return 302 /me/account/client-tokens;
   }

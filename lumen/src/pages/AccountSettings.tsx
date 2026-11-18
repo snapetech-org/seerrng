@@ -350,6 +350,9 @@ export default function AccountSettings() {
         <h1>Account Settings</h1>
       </header>
       <div className="toolbar">
+        <Link className="btn btn-quiet btn-sm" to="/me/account/linked-accounts">
+          Linked Accounts
+        </Link>
         <Link className="btn btn-quiet btn-sm" to="/me/account/client-tokens">
           Client Tokens
         </Link>

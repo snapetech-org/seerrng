@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
 const ClientTokens = lazy(() => import('./pages/ClientTokens'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
@@ -197,6 +198,20 @@ function App() {
                 }
               >
                 <ClientTokens />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/me/account/linked-accounts"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Linked Accounts…
+                  </p>
+                }
+              >
+                <LinkedAccounts />
               </Suspense>
             }
           />

@@ -146,6 +146,8 @@ export interface MediaRow {
   mediaAddedAt?: string;
 }
 export interface User {
+  plexUsername?: string | null;
+  jellyfinUsername?: string | null;
   id: number;
   displayName: string;
   avatar?: string;
