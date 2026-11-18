@@ -469,6 +469,11 @@ export function PatchDetail() {
             )}
           </div>
           {version?.notes && <p className="note">{version.notes}</p>}
+          {versionId && !version && (
+            <p className="note">
+              This patch version is no longer listed. Choose another version.
+            </p>
+          )}
           {version && !version.base?.available && (
             <p className="note">The required base revision is unavailable.</p>
           )}
@@ -487,6 +492,12 @@ export function PatchDetail() {
               {resolvedGame && !systems.length && (
                 <p className="note">
                   No compatible system was found in this game type.
+                </p>
+              )}
+              {!!systems.length && system && !targetSystem && (
+                <p className="note">
+                  The selected console is incompatible with this patch. Choose a
+                  compatible system.
                 </p>
               )}
               <div className="toolbar">

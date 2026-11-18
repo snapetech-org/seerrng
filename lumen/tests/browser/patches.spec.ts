@@ -134,6 +134,20 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await expect(page.getByLabel('System', { exact: true })).toHaveValue(
     'switch'
   );
+  await page.goto(
+    '/patches/patch-1?category=modern&platform=unknown&version=missing'
+  );
+  await expect(
+    page.getByText(/This patch version is no longer listed/)
+  ).toBeVisible();
+  await expect(
+    page.getByText(/The selected console is incompatible/)
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Request Patch' })
+  ).toBeDisabled();
+  await page.getByLabel('Patch Version').selectOption('v2');
+  await page.getByLabel('System', { exact: true }).selectOption('switch');
   await page.getByRole('link', { name: 'Open Game' }).click();
   await expect(page.getByRole('combobox', { name: 'Console' })).toHaveValue(
     'switch'
