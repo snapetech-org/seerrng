@@ -114,3 +114,11 @@ The instance notifications page now provides a direct link to every channel. A d
 Compared the selected-channel layout against the existing form at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Checked active link styling, control wrapping, and form width. The production build, 24 browser cases, ten standalone proxy cases, and two bundled routing cases passed. Browser settings and deliveries used mocks.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-notification-links-20261118/`.
+
+## Prowlarr connection follow-up — 2026-11-18
+
+Administrators can open `/admin/prowlarr` from `/me` to configure or test a connection and review indexer diagnostics. The saved API key stays hidden. Category mappings, category-specific indexer assignments, and per-indexer limits still use native settings.
+
+Compared the rendered connection form with Network Settings at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected field widths, wrapping and action placement. The Lumen production build and four browser cases passed with synthetic settings and indexer responses.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-prowlarr-20261118/`.

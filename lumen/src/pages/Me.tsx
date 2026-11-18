@@ -155,6 +155,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Prowlarr Settings</b>
+              <Link
+                className="go"
+                to="/admin/prowlarr"
+                aria-label="Open Prowlarr Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Discovery Integrations</b>
               <Link
                 className="go"

@@ -63,6 +63,7 @@ const AdminLibraryMigration = lazy(
 );
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
+const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
@@ -427,6 +428,24 @@ function App() {
                   }
                 >
                   <AdminNetwork />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/prowlarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Prowlarr settings…
+                    </p>
+                  }
+                >
+                  <AdminProwlarr />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
