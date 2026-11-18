@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -70,6 +70,16 @@ interface Options {
   languageProfiles?: { id: number; name: string }[] | null;
   metadataProfiles?: { id: number; name: string }[];
   metadataLanguages?: { id: number; name: string }[] | null;
+}
+
+interface BookDiagnostic {
+  ok: boolean;
+  message: string;
+  detailMessage?: string;
+  provider?: string;
+  metadataSource?: string;
+  providerNotice?: string;
+  legacyWarning?: string;
 }
 
 const empty: Service = {
@@ -149,10 +159,28 @@ function ServiceForm({
   const [busy, setBusy] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
   const [failure, setFailure] = useState('');
+  const [diagnostic, setDiagnostic] = useState<BookDiagnostic>();
   const pending = useRef(false);
   const path =
     initial.id === undefined ? endpoint : `${endpoint}/${initial.id}`;
   const key = draft.apiKey || (initial.apiKey ? '[REDACTED]' : '');
+  const connection = {
+    id: initial.id,
+    hostname: draft.hostname,
+    port: draft.port,
+    apiKey: key,
+    baseUrl: draft.baseUrl,
+    useSsl: draft.useSsl,
+    ...(isBook
+      ? {
+          backend,
+          serviceType: draft.serviceType ?? 'ebook',
+          ...(bookorbit
+            ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
+            : {}),
+        }
+      : {}),
+  };
   const connected =
     (!bookorbit || !!draft.bookorbitUsername?.trim()) &&
     !!draft.hostname.trim() &&
@@ -195,6 +223,7 @@ function ServiceForm({
   function change(patch: Partial<Service>) {
     setDraft((previous) => ({ ...previous, ...patch }));
     setFailure('');
+    setDiagnostic(undefined);
     if (
       [
         'hostname',
@@ -232,26 +261,35 @@ function ServiceForm({
     void run(async () => {
       const result = await api<Options>(`${endpoint}/test`, {
         method: 'POST',
-        body: JSON.stringify({
-          id: initial.id,
-          hostname: draft.hostname,
-          port: draft.port,
-          apiKey: key,
-          baseUrl: draft.baseUrl,
-          useSsl: draft.useSsl,
-          ...(isBook
-            ? {
-                backend,
-                serviceType: draft.serviceType ?? 'ebook',
-                ...(bookorbit
-                  ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
-                  : {}),
-              }
-            : {}),
-        }),
+        body: JSON.stringify(connection),
       });
       if (generation === sessionGeneration()) setOptions(result);
     }, `Could not test ${name}. Check the address and API key.`);
+  }
+
+  function diagnose() {
+    if (!connected || !isBook || managed) return;
+    const generation = sessionGeneration();
+    setDiagnostic(undefined);
+    void run(async () => {
+      let result: BookDiagnostic;
+      try {
+        result = await api<BookDiagnostic>(`${endpoint}/diagnose`, {
+          method: 'POST',
+          body: JSON.stringify({
+            ...connection,
+            term: 'isbn:9780547928227',
+            activeDirectory: draft.activeDirectory || undefined,
+            activeProfileId: draft.activeProfileId || undefined,
+            activeMetadataProfileId: draft.activeMetadataProfileId,
+          }),
+        });
+      } catch (error) {
+        if (!(error instanceof ApiError)) throw error;
+        result = { ok: false, message: error.message };
+      }
+      if (generation === sessionGeneration()) setDiagnostic(result);
+    }, 'Could not run the book metadata diagnostic. Try again.');
   }
 
   function save() {
@@ -584,7 +622,30 @@ function ServiceForm({
           >
             Test {name}
           </button>
+          {isBook && !managed && (
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy || !connected}
+              onClick={diagnose}
+            >
+              Run Metadata Diagnostic
+            </button>
+          )}
         </div>
+        {diagnostic && (
+          <div className="note" role={diagnostic.ok ? 'status' : 'alert'}>
+            <p>{diagnostic.message}</p>
+            {diagnostic.detailMessage && <p>{diagnostic.detailMessage}</p>}
+            {diagnostic.provider && <p>Provider: {diagnostic.provider}</p>}
+            {diagnostic.metadataSource && (
+              <p>Metadata source: {diagnostic.metadataSource}</p>
+            )}
+            {(diagnostic.providerNotice ?? diagnostic.legacyWarning) && (
+              <p>{diagnostic.providerNotice ?? diagnostic.legacyWarning}</p>
+            )}
+          </div>
+        )}
         {backend === 'bindery' && (
           <div className="setlist">
             <label className="set cfg-row">

@@ -6,6 +6,7 @@ for (const backend of ['readarr', 'bindery', 'bookorbit'] as const) {
   }, info) => {
     const writes: Record<string, unknown>[] = [];
     let services: unknown[] = [];
+    const diagnosticCalls: unknown[] = [];
     const endpoint = '/api/v1/settings/readarr';
     const serviceName =
       backend === 'readarr'
@@ -22,6 +23,22 @@ for (const backend of ['readarr', 'bindery', 'bookorbit'] as const) {
       const path = new URL(req.url()).pathname;
       if (path.endsWith('/auth/me'))
         return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path === endpoint + '/diagnose') {
+        diagnosticCalls.push(req.postDataJSON());
+        if (diagnosticCalls.length === 1)
+          return route.fulfill({
+            status: 502,
+            json: { message: 'Could not reach the metadata provider.' },
+          });
+        return route.fulfill({
+          json: {
+            ok: true,
+            message: 'Bookshelf lookup returned usable metadata.',
+            provider: 'hardcover',
+            metadataSource: 'https://metadata.example',
+          },
+        });
+      }
       if (path !== endpoint && path !== endpoint + '/test')
         return route.fulfill({ json: {} });
       if (req.method() === 'GET') return route.fulfill({ json: services });
@@ -88,6 +105,33 @@ for (const backend of ['readarr', 'bindery', 'bookorbit'] as const) {
         path: info.outputPath(`${backend}.png`),
         fullPage: true,
       });
+    }
+    const diagnose = page.getByRole('button', {
+      name: 'Run Metadata Diagnostic',
+    });
+    if (backend === 'readarr') {
+      await diagnose.click();
+      await expect(page.getByRole('alert')).toContainText(
+        'Could not reach the metadata provider.'
+      );
+      await diagnose.click();
+      await expect(page.getByText('Provider: hardcover')).toBeVisible();
+      expect(diagnosticCalls).toHaveLength(2);
+      expect(diagnosticCalls[1]).toMatchObject({
+        backend,
+        serviceType: 'audiobook',
+        activeDirectory: '/books',
+        activeProfileId: 7,
+        activeMetadataProfileId: 8,
+        term: 'isbn:9780547928227',
+      });
+      if (process.env.LUMEN_CAPTURE_BOOK_SERVICES)
+        await page.screenshot({
+          path: info.outputPath('diagnostic.png'),
+          fullPage: true,
+        });
+    } else {
+      await expect(diagnose).toHaveCount(0);
     }
     await page.getByRole('button', { name: 'Save Book and Audiobook' }).click();
     await expect(

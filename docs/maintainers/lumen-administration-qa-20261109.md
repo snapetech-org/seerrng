@@ -194,3 +194,18 @@ Administrators can test and manage ChaptarrNG or Readarr-compatible, Bindery, an
 Compared the tested add forms with Lidarr at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and 28 browser checks passed with synthetic service responses. Live backend connections and advanced book diagnostics remain outside this verification.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-services-20261118/`.
+
+### Book metadata diagnostics
+
+The Readarr-compatible editor can run the native sample ISBN lookup with the
+current connection and destination settings. The action shows provider feedback
+and supports retry without discarding the draft. Bindery and BookOrbit keep their
+existing connection tests.
+
+The production build and 28 browser checks passed. Compared the diagnostic
+success state with the previous book service editor on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. Tests used synthetic provider errors and success
+responses. Live metadata provider behavior was outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-diagnostics-20261118/`.
