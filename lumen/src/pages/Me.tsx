@@ -205,6 +205,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>LazyLibrarian Services</b>
+              <Link
+                className="go"
+                to="/admin/lazylibrarian"
+                aria-label="Open LazyLibrarian Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"

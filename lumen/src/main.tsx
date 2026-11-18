@@ -527,6 +527,24 @@ function App() {
             }
           />
           <Route
+            path="/admin/lazylibrarian"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading LazyLibrarian services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="lazylibrarian" provider="lazylibrarian" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
             path="/admin/whisparr"
             element={
               isAdministrator(user.permissions) ? (

@@ -6,13 +6,15 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-type Provider = 'radarr' | 'sonarr' | 'lidarr' | 'whisparr' | 'readarr';
+type Provider =
+  'radarr' | 'sonarr' | 'lidarr' | 'whisparr' | 'readarr' | 'lazylibrarian';
 const names = {
   radarr: 'Radarr',
   sonarr: 'Sonarr',
   lidarr: 'Lidarr',
   whisparr: 'Whisparr',
   readarr: 'Book and Audiobook',
+  lazylibrarian: 'LazyLibrarian',
 };
 const ports = {
   radarr: 7878,
@@ -20,6 +22,7 @@ const ports = {
   lidarr: 8686,
   whisparr: 6969,
   readarr: 8787,
+  lazylibrarian: 5299,
 };
 interface Service {
   id?: number;
@@ -122,6 +125,7 @@ function ServiceForm({
   const isSonarr = provider === 'sonarr';
   const video = isSonarr || provider === 'radarr';
   const isBook = provider === 'readarr';
+  const isLazyLibrarian = provider === 'lazylibrarian';
   const hasMetadata = provider === 'lidarr' || isBook;
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
@@ -131,6 +135,7 @@ function ServiceForm({
   );
   const backend = draft.backend ?? 'readarr';
   const managed = isBook && backend !== 'readarr';
+  const usesProfiles = !managed && !isLazyLibrarian;
   const bookorbit = backend === 'bookorbit';
   let mappings: Record<string, number> | undefined;
   if (backend === 'bindery') {
@@ -195,7 +200,7 @@ function ServiceForm({
         JSON.stringify(initial.binderyUserMappings ?? {}));
   const configurationValid =
     !!draft.name.trim() &&
-    (managed
+    (!usesProfiles
       ? backend !== 'bindery' || mappings !== undefined
       : draft.activeProfileId > 0 &&
         !!draft.activeDirectory &&
@@ -299,60 +304,78 @@ function ServiceForm({
     void run(async () => {
       await api(path, {
         method: initial.id === undefined ? 'POST' : 'PUT',
-        body: JSON.stringify({
-          ...draft,
-          ...(isSonarr
+        body: JSON.stringify(
+          isLazyLibrarian
             ? {
-                seriesType: draft.seriesType ?? 'standard',
-                animeSeriesType: draft.animeSeriesType ?? 'anime',
-                monitorNewItems: draft.monitorNewItems ?? 'all',
-                activeAnimeProfileName:
-                  draft.activeAnimeProfileId === undefined
-                    ? undefined
-                    : (options?.profiles.find(
-                        ({ id }) => id === draft.activeAnimeProfileId
-                      )?.name ?? draft.activeAnimeProfileName),
+                ...connection,
+                name: draft.name,
+                externalUrl: draft.externalUrl,
+                tags: [],
+                isDefault: draft.isDefault ?? false,
+                syncEnabled: draft.syncEnabled ?? false,
+                preventSearch: draft.preventSearch ?? false,
               }
-            : provider === 'radarr'
-              ? { minimumAvailability: draft.minimumAvailability ?? 'released' }
-              : {
-                  is4k: false,
-                  ...(hasMetadata
+            : {
+                ...draft,
+                ...(isSonarr
+                  ? {
+                      seriesType: draft.seriesType ?? 'standard',
+                      animeSeriesType: draft.animeSeriesType ?? 'anime',
+                      monitorNewItems: draft.monitorNewItems ?? 'all',
+                      activeAnimeProfileName:
+                        draft.activeAnimeProfileId === undefined
+                          ? undefined
+                          : (options?.profiles.find(
+                              ({ id }) => id === draft.activeAnimeProfileId
+                            )?.name ?? draft.activeAnimeProfileName),
+                    }
+                  : provider === 'radarr'
                     ? {
-                        activeMetadataProfileId: draft.activeMetadataProfileId,
-                        activeMetadataProfileName:
-                          options?.metadataProfiles?.find(
-                            ({ id }) => id === draft.activeMetadataProfileId
-                          )?.name ?? draft.activeMetadataProfileName,
+                        minimumAvailability:
+                          draft.minimumAvailability ?? 'released',
                       }
-                    : {}),
-                }),
-          apiKey: key,
-          activeProfileName: managed
-            ? bookorbit
-              ? 'BookOrbit managed'
-              : 'Bindery managed'
-            : (options?.profiles.find(({ id }) => id === draft.activeProfileId)
-                ?.name ?? draft.activeProfileName),
-          ...(isBook
-            ? { backend, serviceType: draft.serviceType ?? 'ebook' }
-            : {}),
-          ...(managed
-            ? {
-                activeProfileId: 0,
-                activeMetadataProfileId: 0,
-                activeMetadataProfileName: bookorbit
-                  ? 'BookOrbit managed'
-                  : 'Bindery managed',
-                activeDirectory: '/',
-                preventSearch: true,
-                tagRequests: false,
-                ...(bookorbit
-                  ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
-                  : { binderyUserMappings: mappings }),
+                    : {
+                        is4k: false,
+                        ...(hasMetadata
+                          ? {
+                              activeMetadataProfileId:
+                                draft.activeMetadataProfileId,
+                              activeMetadataProfileName:
+                                options?.metadataProfiles?.find(
+                                  ({ id }) =>
+                                    id === draft.activeMetadataProfileId
+                                )?.name ?? draft.activeMetadataProfileName,
+                            }
+                          : {}),
+                      }),
+                apiKey: key,
+                activeProfileName: managed
+                  ? bookorbit
+                    ? 'BookOrbit managed'
+                    : 'Bindery managed'
+                  : (options?.profiles.find(
+                      ({ id }) => id === draft.activeProfileId
+                    )?.name ?? draft.activeProfileName),
+                ...(isBook
+                  ? { backend, serviceType: draft.serviceType ?? 'ebook' }
+                  : {}),
+                ...(managed
+                  ? {
+                      activeProfileId: 0,
+                      activeMetadataProfileId: 0,
+                      activeMetadataProfileName: bookorbit
+                        ? 'BookOrbit managed'
+                        : 'Bindery managed',
+                      activeDirectory: '/',
+                      preventSearch: true,
+                      tagRequests: false,
+                      ...(bookorbit
+                        ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
+                        : { binderyUserMappings: mappings }),
+                    }
+                  : {}),
               }
-            : {}),
-        }),
+        ),
       });
       if (generation === sessionGeneration()) done();
     }, `Could not save the ${name} service.`);
@@ -479,18 +502,33 @@ function ServiceForm({
                 video ||
                 (field !== 'is4k' &&
                   field !== 'requestButtonAnimeOnly' &&
-                  (!isBook || field !== 'tagRequests') &&
+                  (!(isBook || isLazyLibrarian) || field !== 'tagRequests') &&
                   (!managed || field !== 'preventSearch'))
             )
             .map(([field, label]) => (
               <label className="set cfg-row" key={field}>
-                <span>{label}</span>
+                <span>
+                  {isLazyLibrarian && field === 'syncEnabled'
+                    ? 'Enable Library Scan'
+                    : isLazyLibrarian && field === 'preventSearch'
+                      ? 'Search on Approval'
+                      : label}
+                </span>
                 <input
                   type="checkbox"
                   disabled={busy}
-                  checked={draft[field] === true}
+                  checked={
+                    isLazyLibrarian && field === 'preventSearch'
+                      ? !draft.preventSearch
+                      : draft[field] === true
+                  }
                   onChange={(event) =>
-                    change({ [field]: event.target.checked })
+                    change({
+                      [field]:
+                        isLazyLibrarian && field === 'preventSearch'
+                          ? !event.target.checked
+                          : event.target.checked,
+                    })
                   }
                 />
               </label>
@@ -587,18 +625,20 @@ function ServiceForm({
               </select>
             </label>
           ) : null}
-          <label className="set cfg-row">
-            <span>Download Queue Size</span>
-            <input
-              className="cfg-input"
-              type="number"
-              value={draft.downloadQueueSize ?? 1000}
-              disabled={busy}
-              onChange={(event) =>
-                change({ downloadQueueSize: Number(event.target.value) })
-              }
-            />
-          </label>
+          {!isLazyLibrarian && (
+            <label className="set cfg-row">
+              <span>Download Queue Size</span>
+              <input
+                className="cfg-input"
+                type="number"
+                value={draft.downloadQueueSize ?? 1000}
+                disabled={busy}
+                onChange={(event) =>
+                  change({ downloadQueueSize: Number(event.target.value) })
+                }
+              />
+            </label>
+          )}
           {video && (
             <label className="set cfg-row">
               <span>Request Button Label</span>
@@ -613,6 +653,12 @@ function ServiceForm({
             </label>
           )}
         </div>
+        {isLazyLibrarian && (
+          <p className="note">
+            Use a write-enabled API key from LazyLibrarian under Config →
+            Interface.
+          </p>
+        )}
         <div className="toolbar">
           <button
             type="button"
@@ -667,12 +713,12 @@ function ServiceForm({
               : 'Map SeerrNG user IDs to Bindery user IDs.'}
           </p>
         )}
-        {options && managed && (
+        {options && !usesProfiles && (
           <p className="note" role="status">
             {name} connection verified.
           </p>
         )}
-        {options && !managed && (
+        {options && usesProfiles && (
           <>
             <p className="note" role="status">
               {name} connection verified.
