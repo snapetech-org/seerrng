@@ -7078,3 +7078,32 @@ test('Classic author search bookmarks open the Authors scope and link to author 
     page.getByRole('link', { name: 'Fixture Author' })
   ).toBeVisible();
 });
+
+test('Classic music search bookmarks open the Music scope with album and artist results', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const albumId = 'ca52c0ec-764d-4705-9fac-6315533215a2';
+  const artistId = '8a7ca096-0778-49cb-8a0e-02cdabd91735';
+  await page.route('**/api/v1/search?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    expect(query.get('type')).toBe('music');
+    expect(query.get('genre')).toBe('jazz');
+    return route.fulfill({
+      json: paged([
+        { mediaType: 'album', id: albumId, title: 'Fixture Album' },
+        { mediaType: 'artist', id: artistId, name: 'Fixture Artist' },
+      ]),
+    });
+  });
+  await page.goto('/search?query=Fixture&type=music&genre=jazz');
+  await expect(
+    page.getByRole('button', { name: 'Music', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    page.getByRole('link', { name: 'Fixture Album' })
+  ).toHaveAttribute('href', '/music/' + albumId);
+  await expect(
+    page.getByRole('link', { name: 'Fixture Artist' })
+  ).toHaveAttribute('href', '/artist/' + artistId);
+});

@@ -23,7 +23,7 @@ import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
-import { useExtras, type ComicWork } from '../extras';
+import { useExtras, type Album, type ComicWork } from '../extras';
 import { cachedApi, useApi } from '../hooks';
 import { Icon } from '../icons';
 import {
@@ -38,6 +38,7 @@ import {
   videoFilterKeys,
 } from '../searchParams';
 import { usePrefs } from '../settings';
+import { AlbumCard } from './Music';
 import { PersonCard } from './People';
 
 const SCOPES = {
@@ -48,9 +49,11 @@ const SCOPES = {
   audio: 'Audiobooks',
   comic: 'Comics/Manga',
   author: 'Authors',
+  music: 'Music',
 } as const;
 type AuthorResult = { mediaType: 'author'; id: string; name: string };
-type SearchResult = VideoSearchResult | AuthorResult;
+type ArtistResult = { mediaType: 'artist'; id: string; name: string };
+type SearchResult = VideoSearchResult | AuthorResult | ArtistResult | Album;
 type Scope = keyof typeof SCOPES;
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
@@ -77,13 +80,19 @@ export default function Search() {
   const extras = useExtras();
   // comics join the search once the category is on and its catalogue answers
   const comicsOn = extras.list.some((e) => e.key === 'comic');
+  const musicOn = extras.list.some((e) => e.key === 'music');
   const term0 = (p.get('q') || '').trim();
   const videoPath = scopedVideoSearchPath(p, f, term0);
   const hasVideoFilters = videoPath.startsWith('/discover/');
   const resultPage = searchResultPage(p);
   const hasSearch = !!term0 || hasVideoFilters;
   const wantsTitles =
-    hasSearch && (f === 'all' || f === 'movie' || f === 'tv' || f === 'author');
+    hasSearch &&
+    (f === 'all' ||
+      f === 'movie' ||
+      f === 'tv' ||
+      f === 'author' ||
+      f === 'music');
   const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
@@ -113,7 +122,8 @@ export default function Search() {
   const scopes = (Object.keys(SCOPES) as Scope[]).filter(
     (s) =>
       (prefs.showBooks || (s !== 'ebook' && s !== 'audio' && s !== 'author')) &&
-      (comicsOn || s !== 'comic' || f === 'comic')
+      (comicsOn || s !== 'comic' || f === 'comic') &&
+      (musicOn || s !== 'music' || f === 'music')
   );
 
   // The box follows the address only when something else changed it (Back, a recent search,
@@ -176,17 +186,21 @@ export default function Search() {
       if (!live) return;
       const foundComics = cr?.results || [];
       const foundTitles = (tr?.results || []).filter((r) =>
-        f === 'author'
-          ? r.mediaType === 'author'
-          : f === 'movie'
-            ? r.mediaType === 'movie' || r.mediaType === 'collection'
-            : f === 'tv'
-              ? r.mediaType === 'tv'
-              : r.mediaType === 'movie' ||
-                r.mediaType === 'tv' ||
-                r.mediaType === 'person' ||
-                r.mediaType === 'collection' ||
-                (prefs.showBooks && r.mediaType === 'author')
+        f === 'music'
+          ? r.mediaType === 'album' || r.mediaType === 'artist'
+          : f === 'author'
+            ? r.mediaType === 'author'
+            : f === 'movie'
+              ? r.mediaType === 'movie' || r.mediaType === 'collection'
+              : f === 'tv'
+                ? r.mediaType === 'tv'
+                : r.mediaType === 'movie' ||
+                  r.mediaType === 'tv' ||
+                  r.mediaType === 'person' ||
+                  r.mediaType === 'collection' ||
+                  (prefs.showBooks && r.mediaType === 'author') ||
+                  (musicOn &&
+                    (r.mediaType === 'album' || r.mediaType === 'artist'))
       );
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
@@ -241,6 +255,7 @@ export default function Search() {
     prefs.showBooks,
     attempt,
     comicsOn,
+    musicOn,
   ]);
 
   const setParam = (k: string, v: string) => {
@@ -285,6 +300,12 @@ export default function Search() {
   const authors = (titles || []).filter(
     (item): item is AuthorResult => item.mediaType === 'author'
   );
+  const albums = (titles || []).filter(
+    (item): item is Album => item.mediaType === 'album'
+  );
+  const artists = (titles || []).filter(
+    (item): item is ArtistResult => item.mediaType === 'artist'
+  );
   const bookCards = books || [];
   const comicCards = comics || [];
   const nothing =
@@ -296,6 +317,8 @@ export default function Search() {
     !shows.length &&
     !people.length &&
     !authors.length &&
+    !albums.length &&
+    !artists.length &&
     !bookCards.length &&
     !comicCards.length;
 
@@ -514,6 +537,30 @@ export default function Search() {
             <div className="grid">
               {people.map((person) => (
                 <PersonCard key={person.id} person={person} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!albums.length && (
+          <Section title="Albums">
+            <div className="sqg grid">
+              {albums.map((album) => (
+                <AlbumCard key={album.id} a={album} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!artists.length && (
+          <Section title="Artists">
+            <div className="chips wrap">
+              {artists.map(({ id, name }) => (
+                <Link
+                  key={id}
+                  className="chip"
+                  to={'/artist/' + encodeURIComponent(id)}
+                >
+                  {name}
+                </Link>
               ))}
             </div>
           </Section>

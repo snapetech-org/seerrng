@@ -14,6 +14,7 @@ export function normalizeSearchParams(params: URLSearchParams) {
       type === 'author'
     )
       normalized.set('f', type);
+    if (type === 'music' || type === 'album') normalized.set('f', 'music');
     if (type === 'book')
       normalized.set(
         'f',
@@ -67,6 +68,15 @@ export function searchResultPage(params: URLSearchParams) {
   return /^[1-9]\d{0,2}$/.test(value) ? Math.min(Number(value), 500) : 1;
 }
 
+export const musicSearchFilters = [
+  'artist',
+  'artistId',
+  'genre',
+  'releaseType',
+  'primaryReleaseDateGte',
+  'primaryReleaseDateLte',
+] as const;
+
 export function scopedVideoSearchPath(
   params: URLSearchParams,
   scope: string,
@@ -85,5 +95,17 @@ export function scopedVideoSearchPath(
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
   }
-  return `/search?query=${encodeURIComponent(term)}&page=${searchResultPage(params)}${scope === 'author' ? '&type=author' : ''}`;
+  const query = new URLSearchParams({
+    query: term,
+    page: String(searchResultPage(params)),
+  });
+  if (scope === 'author' || scope === 'music') query.set('type', scope);
+  if (scope === 'music') {
+    for (const key of musicSearchFilters) {
+      const values = params.getAll(key);
+      if (values.length === 1 && values[0] && values[0].length <= 512)
+        query.set(key, values[0]);
+    }
+  }
+  return `/search?${query.toString().replaceAll('+', '%20')}`;
 }

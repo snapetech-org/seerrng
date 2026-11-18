@@ -564,6 +564,20 @@ function workflowDeepLink(
             query.set(key, value);
         }
       }
+    } else if (type === 'music' || type === 'album') {
+      query.set('f', 'music');
+      for (const key of [
+        'artist',
+        'artistId',
+        'genre',
+        'releaseType',
+        'primaryReleaseDateGte',
+        'primaryReleaseDateLte',
+      ]) {
+        const value = req.query[key];
+        if (typeof value === 'string' && value.length <= 512)
+          query.set(key, value);
+      }
     } else if (type === 'book') {
       query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
     }
