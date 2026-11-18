@@ -6638,3 +6638,67 @@ test('Trending and Coming Soon apply discovery visibility and keep later pages r
     '/api/v1/discover/movies/upcoming:2',
   ]);
 });
+
+test('Streaming Request Policy preserves edits across a failed save', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let policy = {
+    enabled: false,
+    condition: 'available',
+    action: 'reject',
+    rejectionMessage: '',
+    allowUserOverride: false,
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Policy settings temporarily unavailable.' },
+        });
+      policy = body.streamingRequestPolicy;
+    }
+    return route.fulfill({ json: { streamingRequestPolicy: policy } });
+  });
+
+  await page.goto('/admin/discovery');
+  const enable = page.getByLabel('Enable Streaming Request Policy');
+  await expect(enable).not.toBeChecked();
+  await enable.check();
+  const condition = page.getByLabel('When the title is');
+  await condition.selectOption('unavailable');
+  await page.getByLabel('Allow per-user overrides').check();
+  await page.getByLabel('Rejection message').fill('Review your subscriptions.');
+  const save = page.getByRole('button', {
+    name: 'Save Streaming Request Policy',
+  });
+  await save.click();
+  await expect(
+    page.getByText('Policy settings temporarily unavailable.')
+  ).toBeVisible();
+  await expect(condition).toHaveValue('unavailable');
+  await expect(page.getByLabel('Rejection message')).toHaveValue(
+    'Review your subscriptions.'
+  );
+  await save.click();
+  await expect(page.getByText('Streaming request policy saved.')).toBeVisible();
+  expect(writes).toEqual([
+    { streamingRequestPolicy: policy },
+    { streamingRequestPolicy: policy },
+  ]);
+  expect(policy).toEqual({
+    enabled: true,
+    condition: 'unavailable',
+    action: 'reject',
+    rejectionMessage: 'Review your subscriptions.',
+    allowUserOverride: true,
+  });
+  await expect(save).toBeDisabled();
+  await page.screenshot({
+    path: info.outputPath('streaming-request-policy.png'),
+  });
+});

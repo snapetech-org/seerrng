@@ -2,12 +2,12 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import CuratedIdentityPacks from '../components/CuratedIdentityPacks';
+import DiscoveryRegionSettings from '../components/DiscoveryRegionSettings';
+import StreamingRequestPolicy from '../components/StreamingRequestPolicy';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-
-import DiscoveryRegionSettings from '../components/DiscoveryRegionSettings';
 
 const path = '/integrations/discovery/configuration';
 const providers = [
@@ -192,6 +192,7 @@ export default function AdminDiscovery() {
         )
       )}
       <DiscoveryRegionSettings />
+      <StreamingRequestPolicy />
       <CuratedIdentityPacks />
     </>
   );
