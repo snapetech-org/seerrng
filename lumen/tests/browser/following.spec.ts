@@ -457,6 +457,7 @@ test('anime continuation loads on demand and follows the novel in its language',
               evidence: ['Publisher match'],
               continuation: { volume: 4 },
               continuationBasis: 'derived',
+              volumeApproximate: true,
               novel: {
                 ranobedbId: 81,
                 language: 'en',
@@ -509,6 +510,12 @@ test('anime continuation loads on demand and follows the novel in its language',
   await expect(
     page.getByRole('link', { name: 'Search for Fixture Novel' })
   ).toHaveAttribute('href', /\/search\?q=Fixture\+Novel\+%26\+Volume\+1$/);
+  await expect(
+    page.getByText(/Estimated from where the season ends/)
+  ).toBeVisible();
+  await expect(
+    page.getByText('The continuation volume is unconfirmed.')
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Follow Future Volumes' }).click();
   await expect(
     page.getByRole('button', { name: 'Following', exact: true })

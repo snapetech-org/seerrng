@@ -175,6 +175,15 @@ export default function AnimeContinuation({
                           · {next}
                         </small>
                       )}
+                      {next && source.continuationBasis === 'derived' && (
+                        <small>
+                          Estimated from where the season ends. The catalog does
+                          not document the next starting point.
+                        </small>
+                      )}
+                      {next && source.volumeApproximate && (
+                        <small>The continuation volume is unconfirmed.</small>
+                      )}
                       {volume && (
                         <small>
                           {volume.title} ·{' '}
