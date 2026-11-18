@@ -5380,7 +5380,14 @@ test('Classic service category bookmarks filter the Lumen administration menu', 
   await expect(
     page.getByRole('link', { name: 'Open Radarr Services' })
   ).toBeVisible();
-  await page.goto('/admin?serviceCategory=tv-movies');
+  const categories = page.getByRole('navigation', {
+    name: 'Administration Categories',
+  });
+  await categories.getByRole('link', { name: 'TV and Movies' }).click();
+  await expect(page).toHaveURL(/serviceCategory=tv-movies$/);
+  await expect(
+    categories.getByRole('link', { name: 'TV and Movies' })
+  ).toHaveAttribute('aria-current', 'page');
   await expect(
     page.getByRole('link', { name: 'Open Jellystat Settings' })
   ).toBeVisible();

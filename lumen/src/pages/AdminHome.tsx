@@ -106,10 +106,26 @@ export default function AdminHome() {
       <header className="ph">
         <h1>Administration</h1>
       </header>
-      <Section
-        title={group?.label ?? 'Settings and Tools'}
-        link={group ? ['All Settings and Tools', '/admin'] : undefined}
-      >
+      <nav className="toolbar" aria-label="Administration Categories">
+        <Link
+          className="btn btn-quiet btn-sm"
+          to="/admin"
+          aria-current={!group ? 'page' : undefined}
+        >
+          All Settings and Tools
+        </Link>
+        {Object.entries(serviceGroups).map(([key, { label }]) => (
+          <Link
+            className="btn btn-quiet btn-sm"
+            key={key}
+            to={`/admin?serviceCategory=${key}`}
+            aria-current={group && category === key ? 'page' : undefined}
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
+      <Section title={group?.label ?? 'Settings and Tools'}>
         <AdminLinks pages={group?.pages} />
       </Section>
     </>
