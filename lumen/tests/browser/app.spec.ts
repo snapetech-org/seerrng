@@ -1490,3 +1490,75 @@ test('quick series requests report accepted seasons', async ({ page }) => {
     page.getByText('Requested Fixture Series · Season 1')
   ).toBeVisible();
 });
+
+for (const use4k of [false, true]) {
+  test(`Coming Soon reports accepted seasons ${use4k ? 'through the 4K sheet' : 'from the row action'}`, async ({
+    page,
+  }) => {
+    await fixtures(page);
+    await page.route('**/api/v1/auth/me', (route) =>
+      route.fulfill({
+        json: {
+          id: 3,
+          displayName: 'Viewer',
+          permissions: 32 | (use4k ? 4096 : 0),
+        },
+      })
+    );
+    await page.route('**/api/v1/settings/public', (route) =>
+      route.fulfill({
+        json: { applicationTitle: 'SeerrNG', series4kEnabled: use4k },
+      })
+    );
+    await page.route('**/api/v1/discover/tv/upcoming', (route) =>
+      route.fulfill({
+        json: paged([
+          {
+            ...movie,
+            id: 202,
+            title: undefined,
+            name: 'Upcoming Fixture',
+            mediaType: 'tv',
+            firstAirDate: '2099-01-01',
+          },
+        ]),
+      })
+    );
+    const writes: unknown[] = [];
+    await page.route('**/api/v1/request', (route) => {
+      if (route.request().method() !== 'POST') return route.fallback();
+      writes.push(route.request().postDataJSON());
+      return route.fulfill({
+        status: 201,
+        json: { id: 77, seasons: [{ seasonNumber: 1 }] },
+      });
+    });
+
+    await page.goto('/soon');
+    await page
+      .locator('.si')
+      .filter({ hasText: 'Upcoming Fixture' })
+      .getByRole('button', { name: 'Request', exact: true })
+      .click();
+    if (use4k) {
+      const sheet = page.getByRole('dialog', {
+        name: 'Request Upcoming Fixture',
+      });
+      await sheet.getByRole('button', { name: '4K', exact: true }).click();
+      await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+    }
+    await expect(
+      page.getByText(
+        `Requested Upcoming Fixture${use4k ? ' in 4K' : ''} · Season 1`
+      )
+    ).toBeVisible();
+    expect(writes).toEqual([
+      {
+        mediaType: 'tv',
+        mediaId: 202,
+        seasons: 'all',
+        ...(use4k ? { is4k: true } : {}),
+      },
+    ]);
+  });
+}

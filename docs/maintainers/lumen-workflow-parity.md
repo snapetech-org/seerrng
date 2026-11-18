@@ -967,3 +967,9 @@ accepted seasons and gives a neutral submission message when none are
 returned. Standalone browser fixtures verified poster and detail requests
 on desktop and three touch presets. Featured, Coming Soon, options-sheet
 and bundled visual checks remain open.
+
+Coming Soon now has standalone browser coverage for both the direct request
+and the 4K options sheet. Both send whole-series intent, display the season
+accepted by SeerrNG, and preserve the selected quality in the confirmation.
+The checks passed at desktop, iPhone, Android and tablet presets. Featured
+cards and visual comparison with the bundled and native interfaces remain open.
