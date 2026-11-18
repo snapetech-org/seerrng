@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { api, bookArt } from '../api';
+import { api, bookArt, bookDetailPath } from '../api';
 import { Cover, Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
@@ -166,14 +166,7 @@ export default function BookRecommendations() {
         (candidate) => candidate.mediaType === 'book'
       );
       if (!match?.id) throw new Error('No catalog match was found.');
-      const detailParams = new URLSearchParams({
-        f: format === 'audiobook' ? 'audio' : 'book',
-      });
-      if (match.id.startsWith('bookshelf:')) {
-        const lookupTitle = (match.title || book.title).trim().slice(0, 512);
-        if (lookupTitle) detailParams.set('lookupTitle', lookupTitle);
-      }
-      navigate(`/book/${encodeURIComponent(match.id)}?${detailParams}`);
+      navigate(bookDetailPath(match.id, format, match.title || book.title));
     } catch (error) {
       toast(friendlyError(error, 'Could not find this book.'));
     } finally {

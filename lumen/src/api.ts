@@ -577,6 +577,19 @@ export const narratorKey = (names?: (string | null | undefined)[] | null) =>
 export const isBookshelf = (id: string) => id.startsWith('bookshelf:');
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const bookIdFor = (id: string, _format: 'ebook' | 'audiobook') => id;
+export function bookDetailPath(
+  id: string,
+  format: 'ebook' | 'audiobook',
+  lookupTitle?: string | null
+) {
+  const params = new URLSearchParams();
+  if (format === 'audiobook') params.set('f', 'audio');
+  const title = lookupTitle?.trim();
+  if (isBookshelf(id) && title && title.length <= 512)
+    params.set('lookupTitle', title);
+  const suffix = params.toString();
+  return `/book/${encodeURIComponent(bookIdFor(id, format))}${suffix ? `?${suffix}` : ''}`;
+}
 export const hardcoverWorkId = (id: string) => {
   if (!isBookshelf(id)) return null;
   try {

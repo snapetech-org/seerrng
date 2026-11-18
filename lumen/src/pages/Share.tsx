@@ -5,7 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { api, ApiError, requestSeries } from '../api';
+import { api, ApiError, bookDetailPath, requestSeries } from '../api';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
@@ -48,7 +48,11 @@ function candidatePath(candidate: ResolveCandidate, format: ShareFormat) {
   const id = encodeURIComponent(candidate.id);
   switch (candidate.mediaType) {
     case 'book':
-      return `/book/${id}?f=${(candidate.formatHint ?? format) === 'audiobook' ? 'audio' : 'book'}`;
+      return bookDetailPath(
+        candidate.id,
+        candidate.formatHint ?? format,
+        candidate.title
+      );
     case 'album':
       return `/music/${id}`;
     case 'movie':

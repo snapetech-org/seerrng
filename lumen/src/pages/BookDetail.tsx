@@ -5,6 +5,7 @@ import {
   audiobookEditionsPath,
   audiobookshelfLink,
   bookArt,
+  bookDetailPath,
   bookIdFor,
   bookMediaForFormat,
   englishAudioEdition,
@@ -147,12 +148,8 @@ export default function BookDetail() {
     lookupTitle && lookupTitle.length <= 512
       ? `?${new URLSearchParams({ lookupTitle })}`
       : '';
-  function formatHref(format: 'ebook' | 'audiobook') {
-    const params = new URLSearchParams(lookup);
-    if (format === 'audiobook') params.set('f', 'audio');
-    const suffix = params.toString();
-    return `/book/${encodeURIComponent(bookIdFor(id, format))}${suffix ? `?${suffix}` : ''}`;
-  }
+  const formatHref = (format: 'ebook' | 'audiobook') =>
+    bookDetailPath(id, format, lookupTitle);
   const first = useApi<BookDetails>(
     `/book/${encodeURIComponent(plainId)}${lookup}`
   );

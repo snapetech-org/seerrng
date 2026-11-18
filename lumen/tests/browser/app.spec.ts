@@ -5418,6 +5418,44 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('Share opens a Bookshelf match with the title and format', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true } })
+  );
+  await page.route('**/api/v1/resolve', (route) =>
+    route.fulfill({
+      json: {
+        groups: [
+          {
+            input: 'Fixture Book',
+            autoSelected: 0,
+            candidates: [
+              {
+                id: 'bookshelf:1:fixture',
+                mediaType: 'book',
+                title: 'Fixture Book',
+                formatHint: 'audiobook',
+                evidence: 'Title match',
+                href: '/book/bookshelf%3A1%3Afixture',
+              },
+            ],
+          },
+        ],
+      },
+    })
+  );
+  await page.goto('/share?title=Fixture+Book');
+  await page.getByRole('button', { name: 'Find Matches' }).click();
+  const open = page.getByRole('link', { name: 'Open Title' });
+  await expect(open).toHaveAttribute(
+    'href',
+    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Fixture+Book'
+  );
+});
+
 test('book recommendations recover an unavailable feed bookmark', async ({
   page,
 }) => {

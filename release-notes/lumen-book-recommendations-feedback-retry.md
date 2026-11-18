@@ -6,3 +6,4 @@
 - An unavailable recommendation bookmark can be retried or cleared without losing the selected book format.
 - Bookshelf matches opened from a recommendation keep their edition format and title lookup hint.
 - Switching between ebook and audiobook details preserves the Bookshelf lookup title.
+- Opening a Bookshelf result from Share preserves the resolved title and edition format.
