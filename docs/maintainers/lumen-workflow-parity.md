@@ -1640,3 +1640,17 @@ section once settings load. Profile refreshes preserve the mounted form
 and the confirmed save feedback. Express and nginx bookmark checks and
 12 standalone account browser checks passed across the four viewport
 presets. Matched native visual acceptance remains unverified.
+
+### Instance General Settings
+
+The administration menu opens a Lumen General Settings page for the
+SeerrNG application title, public URL, and existing request policies.
+Native General Settings bookmarks resolve to it in bundled and companion
+Lumen. The form sends only changed identity fields, keeps drafts after
+errors, and confirms the values in the server response.
+
+TypeScript, the production build, Express and nginx routing, and four
+standalone browser cases passed. The cases exercised navigation, failed
+save recovery, and clearing the public URL. Live configuration writes,
+bundled workflow rendering, matched native visual acceptance, and the
+remaining instance settings are open.

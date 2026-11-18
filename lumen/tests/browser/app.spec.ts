@@ -4290,6 +4290,57 @@ test('System Logs filters server entries and excludes non-admins', async ({
   expect(reads).toBe(adminReads);
 });
 
+test('General Settings retains application edits after failure and saves only changed fields', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const saved = {
+    applicationTitle: 'SeerrNG',
+    applicationUrl: 'https://seerr.example.test',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1) {
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Could not save settings.' },
+        });
+      }
+      Object.assign(saved, body);
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open General Settings' }).click();
+  const title = page.getByLabel('Application Title');
+  const save = page.getByRole('button', { name: 'Save Application Settings' });
+  await expect(title).toHaveValue('SeerrNG');
+  await expect(save).toBeDisabled();
+  await title.fill('Family Library');
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not save settings.'
+  );
+  await expect(title).toHaveValue('Family Library');
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  await expect(save).toBeDisabled();
+  const address = page.getByLabel('Application URL');
+  await expect(address).toHaveValue('https://seerr.example.test');
+  await address.clear();
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  await expect(save).toBeDisabled();
+  expect(writes).toEqual([
+    { applicationTitle: 'Family Library' },
+    { applicationTitle: 'Family Library' },
+    { applicationUrl: '' },
+  ]);
+});
+
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   page,
 }) => {

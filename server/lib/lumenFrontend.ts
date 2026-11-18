@@ -458,12 +458,16 @@ export const mountLumenFrontend = (
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
-  server.get(/^\/lumen\/settings\/(jobs|logs|about)\/?$/, (req, res) => {
-    const destination = req.params[0];
-    return res
-      .set('Cache-Control', 'no-store')
-      .redirect(302, `/lumen/admin/${destination}`);
-  });
+  server.get(
+    /^\/lumen\/settings(?:\/(main|jobs|logs|about))?\/?$/,
+    (req, res) => {
+      const page = req.params[0];
+      const destination = !page || page === 'main' ? 'general' : page;
+      return res
+        .set('Cache-Control', 'no-store')
+        .redirect(302, `/lumen/admin/${destination}`);
+    }
+  );
   server.post('/lumen/share-target', (_req, res) => {
     res
       .set('Cache-Control', 'no-store')

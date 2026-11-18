@@ -232,6 +232,9 @@ server {
   location ~ ^/settings/(jobs|logs|about)/?$ {
     return 302 /admin/$1;
   }
+  location ~ ^/settings(/main)?/?$ {
+    return 302 /admin/general;
+  }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG
   location ~ ^/(settings|users|profile|discover|setup|swipe|recordings|book-series|author|software|collections)(/|$) {

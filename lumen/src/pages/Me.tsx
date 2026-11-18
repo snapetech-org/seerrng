@@ -135,6 +135,16 @@ export default function Me() {
         <Section title="Administration">
           <div className="setlist">
             <div className="set">
+              <b>General Settings</b>
+              <Link
+                className="go"
+                to="/admin/general"
+                aria-label="Open General Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <span>
                 <b>Lumen Settings</b>
                 <small>
