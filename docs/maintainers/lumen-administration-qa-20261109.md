@@ -277,3 +277,14 @@ Live library sync and reader playback were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-readers-20261118/`.
+
+### ReadMeABook connection
+
+Administrators can configure and test ReadMeABook from You, and explicitly
+remove a stored API token after disabling the integration. Compared the tested
+form with Soulseek on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The
+production build and eight browser checks passed with synthetic responses.
+Live connections, the acquisition dashboard, and approval actions remain open.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-readmeabook-20261118/`.

@@ -66,7 +66,7 @@ const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminNavidrome = lazy(() => import('./pages/AdminNavidrome'));
-const AdminSoulseek = lazy(() => import('./pages/AdminSoulseek'));
+const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
@@ -630,7 +630,28 @@ function App() {
                     </p>
                   }
                 >
-                  <AdminSoulseek />
+                  <AdminRequestService key="slskdn" provider="slskdn" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/readmeabook"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading ReadMeABook settings…
+                    </p>
+                  }
+                >
+                  <AdminRequestService
+                    key="readmeabook"
+                    provider="readmeabook"
+                  />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

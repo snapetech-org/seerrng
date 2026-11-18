@@ -265,6 +265,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>ReadMeABook Settings</b>
+              <Link
+                className="go"
+                to="/admin/readmeabook"
+                aria-label="Open ReadMeABook Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Navidrome Settings</b>
               <Link
                 className="go"

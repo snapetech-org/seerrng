@@ -6,18 +6,19 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-const endpoint = '/settings/slskdn';
+type Provider = 'slskdn' | 'readmeabook';
+const names = { slskdn: 'Soulseek', readmeabook: 'ReadMeABook' };
 interface Settings {
   enabled: boolean;
   hostname: string;
   port: number;
   useSsl: boolean;
   baseUrl: string;
-  searchFilter: string;
+  searchFilter?: string;
   apiKeyConfigured: boolean;
 }
 interface TestResult {
-  version: string;
+  version?: string;
   features?: Record<'wishlist' | 'libraryHealth' | 'songId', boolean>;
 }
 const textFields = [
@@ -31,7 +32,17 @@ const features = [
   ['songId', 'SongID'],
 ] as const;
 
-function Connection({ initial }: { initial: Settings }) {
+function Connection({
+  provider,
+  initial,
+}: {
+  provider: Provider;
+  initial: Settings;
+}) {
+  const name = names[provider];
+  const endpoint = `/settings/${provider}`;
+  const soulseek = provider === 'slskdn';
+  const secretLabel = soulseek ? 'API Key' : 'API Token';
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [apiKey, setApiKey] = useState('');
@@ -71,6 +82,7 @@ function Connection({ initial }: { initial: Settings }) {
   async function submit(test: boolean) {
     if (
       pending.current ||
+      (!test && !dirty) ||
       !validPort ||
       ((test || draft.enabled) && !credentials)
     )
@@ -86,7 +98,7 @@ function Connection({ initial }: { initial: Settings }) {
       port,
       useSsl,
       baseUrl,
-      searchFilter,
+      ...(soulseek ? { searchFilter } : {}),
       clearApiKey,
       ...(apiKey ? { apiKey } : {}),
     });
@@ -102,7 +114,7 @@ function Connection({ initial }: { initial: Settings }) {
         if (generation !== sessionGeneration()) return;
         setSaved(response);
         reset(response);
-        setNotice('Soulseek settings saved.');
+        setNotice(`${name} settings saved.`);
       }
     } catch (failure) {
       if (generation === sessionGeneration())
@@ -110,8 +122,8 @@ function Connection({ initial }: { initial: Settings }) {
           failure instanceof ApiError
             ? failure.message
             : test
-              ? 'Could not test the Soulseek connection.'
-              : 'Could not save Soulseek settings.'
+              ? `Could not test the ${name} connection.`
+              : `Could not save ${name} settings.`
         );
     } finally {
       pending.current = false;
@@ -120,20 +132,22 @@ function Connection({ initial }: { initial: Settings }) {
   }
 
   return (
-    <Section title="slskdN Connection">
+    <Section title={soulseek ? 'slskdN Connection' : 'ReadMeABook Connection'}>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           void submit(false);
         }}
       >
-        <p className="note">
-          Use a read-write slskdN API key for track requests. SongID requires an
-          administrator key.
-        </p>
+        {soulseek && (
+          <p className="note">
+            Use a read-write slskdN API key for track requests. SongID requires
+            an administrator key.
+          </p>
+        )}
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Enable Soulseek Requests</span>
+            <span>Enable {name} Requests</span>
             <input
               type="checkbox"
               disabled={busy}
@@ -141,18 +155,20 @@ function Connection({ initial }: { initial: Settings }) {
               onChange={(event) => update({ enabled: event.target.checked })}
             />
           </label>
-          {textFields.map(([key, label, length]) => (
-            <label className="set cfg-row" key={key}>
-              <span>{label}</span>
-              <input
-                className="cfg-input"
-                maxLength={length}
-                disabled={busy}
-                value={draft[key]}
-                onChange={(event) => update({ [key]: event.target.value })}
-              />
-            </label>
-          ))}
+          {textFields
+            .filter(([key]) => soulseek || key !== 'searchFilter')
+            .map(([key, label, length]) => (
+              <label className="set cfg-row" key={key}>
+                <span>{label}</span>
+                <input
+                  className="cfg-input"
+                  maxLength={length}
+                  disabled={busy}
+                  value={draft[key] ?? ''}
+                  onChange={(event) => update({ [key]: event.target.value })}
+                />
+              </label>
+            ))}
           <label className="set cfg-row">
             <span>Port</span>
             <input
@@ -176,12 +192,12 @@ function Connection({ initial }: { initial: Settings }) {
             />
           </label>
           <label className="set cfg-row">
-            <span>API Key</span>
+            <span>{secretLabel}</span>
             <input
               className="cfg-input"
               type="password"
               autoComplete="new-password"
-              maxLength={2048}
+              maxLength={soulseek ? 2048 : 4096}
               disabled={busy || clearApiKey}
               value={apiKey}
               placeholder={saved.apiKeyConfigured ? 'Saved key' : undefined}
@@ -193,7 +209,7 @@ function Connection({ initial }: { initial: Settings }) {
           </label>
           {saved.apiKeyConfigured && (
             <label className="set cfg-row">
-              <span>Remove Saved API Key</span>
+              <span>Remove Saved {secretLabel}</span>
               <input
                 type="checkbox"
                 disabled={busy}
@@ -208,12 +224,17 @@ function Connection({ initial }: { initial: Settings }) {
         </div>
         {draft.enabled && !credentials && (
           <p className="note">
-            An enabled connection requires a hostname and API key.
+            An enabled connection requires a hostname and{' '}
+            {secretLabel.toLowerCase()}.
           </p>
         )}
         {result && (
           <div className="note" role="status">
-            <p>Connected to slskdN {result.version}.</p>
+            <p>
+              {soulseek
+                ? `Connected to slskdN ${result.version}.`
+                : 'Connected to ReadMeABook.'}
+            </p>
             {result.features &&
               features.map(([key, label]) => (
                 <p key={key}>
@@ -265,27 +286,32 @@ function Connection({ initial }: { initial: Settings }) {
   );
 }
 
-export default function AdminSoulseek() {
-  const settings = useApi<Settings>(endpoint);
+export default function AdminRequestService({
+  provider,
+}: {
+  provider: Provider;
+}) {
+  const name = names[provider];
+  const settings = useApi<Settings>(`/settings/${provider}`);
   return (
     <>
-      <h1>Soulseek Settings</h1>
+      <h1>{name} Settings</h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
           Back to Account
         </Link>
       </div>
       <ServiceNote
-        what="Soulseek settings"
+        what={`${name} settings`}
         error={settings.error}
         retry={settings.reload}
       />
       {settings.data ? (
-        <Connection initial={settings.data} />
+        <Connection provider={provider} initial={settings.data} />
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading Soulseek settings…
+            Loading {name} settings…
           </p>
         )
       )}
