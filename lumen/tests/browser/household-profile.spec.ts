@@ -153,11 +153,12 @@ for (const permissions of [2, 24, 16, 32]) {
   });
 }
 
-test('incomplete playback and watchlist responses recover independently', async ({
+test('incomplete household preview responses recover independently', async ({
   page,
 }) => {
   let attempts = 0;
   let watchlistAttempts = 0;
+  let requestAttempts = 0;
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     switch (path) {
@@ -182,7 +183,9 @@ test('incomplete playback and watchlist responses recover independently', async 
           json: ++watchlistAttempts === 1 ? {} : { results: [] },
         });
       case '/api/v1/user/19/requests':
-        return route.fulfill({ json: { results: [] } });
+        return route.fulfill({
+          json: ++requestAttempts === 1 ? {} : { results: [] },
+        });
       default:
         return route.fulfill({ json: {} });
     }
@@ -206,5 +209,10 @@ test('incomplete playback and watchlist responses recover independently', async 
   });
   await watchlistError.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByText('No titles on this watchlist.')).toBeVisible();
+  const requestError = page.getByRole('alert').filter({
+    hasText: 'Invalid recent requests response.',
+  });
+  await requestError.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('No requests yet.')).toBeVisible();
   await expect(page.getByText('Total plays: 3')).toBeVisible();
 });

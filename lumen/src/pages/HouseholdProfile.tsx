@@ -18,14 +18,21 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
   );
   const [rows, setRows] = useState<Awaited<ReturnType<typeof describeAll>>>();
   const [descriptionError, setDescriptionError] = useState(false);
+  const results = Array.isArray(requests.data?.results)
+    ? requests.data.results
+    : undefined;
+  const error =
+    requests.error ||
+    (requests.data && !results ? 'Invalid recent requests response.' : null) ||
+    (descriptionError ? 'Could not load request titles.' : null);
   useEffect(() => {
     let active = true;
-    if (requests.data) {
+    if (results) {
       setDescriptionError(false);
       const update = (result: Awaited<ReturnType<typeof describeAll>>) => {
         if (active) setRows(result);
       };
-      void describeAll(requests.data.results, update)
+      void describeAll(results, update)
         .then(update)
         .catch(() => {
           if (active) setDescriptionError(true);
@@ -34,27 +41,24 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
     return () => {
       active = false;
     };
-  }, [requests.data]);
+  }, [results]);
 
   return (
     <Section title="Recent Requests">
       <ServiceNote
-        error={
-          requests.error ||
-          (descriptionError ? 'Could not load request titles.' : null)
-        }
+        error={error}
         what="recent requests"
         retry={requests.reload}
       />
-      {!requests.error && !descriptionError && !rows && (
+      {!error && !rows && (
         <p className="note" role="status">
           Loading requests…
         </p>
       )}
-      {requests.data && rows?.length === 0 && (
+      {results && rows?.length === 0 && (
         <p className="note">No requests yet.</p>
       )}
-      {requests.data && !!rows?.length && (
+      {results && !!rows?.length && (
         <ul className="setlist">
           {rows.map(({ r, title }) => (
             <li className="set" key={r.id}>

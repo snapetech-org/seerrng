@@ -7,3 +7,5 @@ Playback activity explains when recent plays have no catalog titles to display w
 An incomplete playback activity response now stays within that panel, where it can be retried without interrupting the profile.
 
 An incomplete watchlist preview can be retried independently of other profile panels.
+
+Recent Requests also offers its own retry when the profile API returns an incomplete list.
