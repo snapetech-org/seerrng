@@ -18,6 +18,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import {
@@ -240,6 +241,8 @@ function LeagueRequestSheet({
   const target =
     advanced && serviceId !== undefined ? destination.data : league;
   const status = target && leagueStat(target);
+  const quota = useVideoRequestQuota('tv');
+  const restricted = quota.status?.restricted;
   const unavailable = services.data?.length === 0;
   return (
     <ConfirmSheet
@@ -248,7 +251,13 @@ function LeagueRequestSheet({
       confirm="Send Request"
       cancel="Cancel"
       busy={busy}
-      confirmDisabled={!target?.requestable || !!status || unavailable}
+      confirmDisabled={
+        quota.loading ||
+        restricted ||
+        !target?.requestable ||
+        !!status ||
+        unavailable
+      }
       onClose={() => {
         if (!busy) close();
       }}
@@ -271,6 +280,19 @@ function LeagueRequestSheet({
         }
       }}
     >
+      {!!quota.status?.limit && (
+        <p className="note" role={restricted ? 'status' : undefined}>
+          {restricted
+            ? 'TV request quota reached.'
+            : `${quota.status.remaining ?? 0} of ${quota.status.limit} TV requests remaining.`}
+          {' TV seasons and sports leagues share this quota.'}
+        </p>
+      )}
+      {restricted && (
+        <button className="chip" type="button" onClick={quota.reload}>
+          Recheck Quota
+        </button>
+      )}
       {!!services.data?.length && (
         <div className="toolbar">
           <label className="sel">

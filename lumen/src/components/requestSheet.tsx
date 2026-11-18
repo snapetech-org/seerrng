@@ -57,7 +57,12 @@ export function useVideoRequestQuota(kind: 'movie' | 'tv') {
       >
     >
   >(id ? `/user/${id}/quota` : null, { currentPathOnly: true });
-  return { status: quota.data?.[kind], refresh: quota.refresh };
+  return {
+    status: quota.data?.[kind],
+    loading: !!id && !quota.data && !quota.error,
+    refresh: quota.refresh,
+    reload: quota.reload,
+  };
 }
 
 // a just-closed sheet is about to undo its history step (one sheet is open at a time)

@@ -7668,6 +7668,17 @@ test('Sportarr league follow checks the selected destination before submitting',
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: 32 + 8192 },
+    })
+  );
+  let restricted = true;
+  await page.route('**/api/v1/user/1/quota', (route) =>
+    route.fulfill({
+      json: { tv: { limit: 4, remaining: restricted ? 0 : 2, restricted } },
+    })
+  );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
   );
@@ -7703,12 +7714,25 @@ test('Sportarr league follow checks the selected destination before submitting',
   const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
   const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
   await choice.selectOption('1');
-  await expect(sheet.getByRole('status')).toHaveText('Followed');
+  await expect(
+    sheet.getByRole('status').filter({ hasText: 'Followed' })
+  ).toHaveText('Followed');
   await expect(
     sheet.getByRole('button', { name: 'Send Request' })
   ).toBeDisabled();
   expect(writes).toHaveLength(0);
   await choice.selectOption('2');
+  await expect(
+    sheet.getByText('TV request quota reached.', { exact: false })
+  ).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Send Request' })
+  ).toBeDisabled();
+  restricted = false;
+  await sheet.getByRole('button', { name: 'Recheck Quota' }).click();
+  await expect(
+    sheet.getByText('2 of 4 TV requests remaining.', { exact: false })
+  ).toBeVisible();
   await sheet.getByRole('button', { name: 'Send Request' }).click();
   await expect(sheet).toHaveCount(0);
   expect(writes).toEqual([
