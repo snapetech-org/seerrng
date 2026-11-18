@@ -570,6 +570,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/book/bookshelf%3A1%3AaGM6MTIz?format=audiobook&lookupTitle=Fixture+Book',
         '/lumen/book/bookshelf%3A1%3AaGM6MTIz?f=audio&lookupTitle=Fixture+Book',
       ],
+      [
+        '/book/bookshelf%3A1%3AaGM6MTE5NzMyOA%3D%3D?format=audiobook&lookupTitle=Padded+Book',
+        '/lumen/book/bookshelf%3A1%3AaGM6MTE5NzMyOA?f=audio&lookupTitle=Padded+Book',
+      ],
       ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
       [
         '/music/5b36cb67-befa-41ca-a91d-a6dcf1f68062/',

@@ -2,7 +2,10 @@ import { isTmdbPublicListId } from '@server/constants/discover';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
-import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
+import {
+  canonicalizeBookshelfBookId,
+  parseBookshelfBookId,
+} from '@server/utils/bookshelfCatalog';
 import { getRateLimitKey } from '@server/utils/security';
 import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
@@ -309,7 +312,8 @@ function detailDeepLink(req: Request): string | undefined {
   }
   const magazine = magazineTitle(req.path);
   if (magazine) return `/lumen/magazine/${encodeURIComponent(magazine)}`;
-  const book = catalogSegment(req.path, 'book');
+  const bookSegment = catalogSegment(req.path, 'book');
+  const book = bookSegment && canonicalizeBookshelfBookId(bookSegment);
   if (book && parseBookshelfBookId(book)) {
     const query = new URLSearchParams();
     if (req.query.f === 'audio' || req.query.format === 'audiobook')

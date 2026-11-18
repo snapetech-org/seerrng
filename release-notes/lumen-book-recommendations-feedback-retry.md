@@ -16,3 +16,5 @@ Release Calendar links preserve the Bookshelf title for local book releases.
 Request links carry the resolved Bookshelf title and format, including when Lumen restores a cached row.
 
 Switching formats from an older Bookshelf bookmark carries forward the title resolved on the detail page.
+
+Bundled Lumen redirects older padded Bookshelf bookmarks to the book and keeps the title and format.
