@@ -18,11 +18,11 @@ import {
 import { DetailTop, Facts, Pill } from '../components/detail';
 import {
   comicState,
-  ExtraCard,
   ExtraGate,
   ExtraHeader,
   ExtraSearch,
   extraStat,
+  MagazineCard,
   RequestButton,
   ServiceNote,
   StatPill,
@@ -892,22 +892,8 @@ export function Magazines() {
         </div>
       )}
       <div className="grid">
-        {list.items.map((m) => (
-          <ExtraCard
-            key={m.id}
-            href={`/magazine/${encodeURIComponent(m.title)}`}
-            img={m.posterPath}
-            title={m.title}
-            shape="book"
-            icon="magazine"
-            stat={extraStat(m.mediaInfo)}
-            meta={[
-              m.publisher,
-              m.latestIssue ? `Latest ${m.latestIssue}` : m.firstPublishYear,
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-          />
+        {list.items.map((magazine) => (
+          <MagazineCard key={magazine.id} magazine={magazine} />
         ))}
       </div>
       <MoreOnScroll

@@ -7131,3 +7131,35 @@ test('Classic music search bookmarks open the Music scope with album and artist 
     page.getByRole('link', { name: 'Jazz Catalogue Album' })
   ).toHaveCount(0);
 });
+
+test('Classic magazine bookmarks keep the search scope and link to magazine details', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/search?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    expect(query.get('type')).toBe('magazine');
+    expect(query.get('page')).toBe('2');
+    return route.fulfill({
+      json: {
+        ...paged([
+          {
+            mediaType: 'magazine',
+            id: 'fixture',
+            provider: 'googlebooks',
+            title: 'Fixture Magazine',
+          },
+        ]),
+        page: 2,
+        totalPages: 2,
+      },
+    });
+  });
+  await page.goto('/search?query=Fixture&type=magazine&page=2');
+  await expect(
+    page.getByRole('button', { name: 'Magazines', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    page.getByRole('link', { name: 'Fixture Magazine' })
+  ).toHaveAttribute('href', '/magazine/Fixture%20Magazine');
+});

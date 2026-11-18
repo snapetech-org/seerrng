@@ -8,7 +8,7 @@ import {
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
-import { useExtras, type Extra } from '../extras';
+import { useExtras, type Extra, type Magazine } from '../extras';
 import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
@@ -89,6 +89,27 @@ export function comicState(mi?: MediaInfo): {
       },
     };
   return { stat: statusOf(mi, true) };
+}
+
+export function MagazineCard({ magazine }: { magazine: Magazine }) {
+  return (
+    <ExtraCard
+      href={'/magazine/' + encodeURIComponent(magazine.title)}
+      img={magazine.posterPath}
+      title={magazine.title}
+      shape="book"
+      icon="magazine"
+      stat={extraStat(magazine.mediaInfo)}
+      meta={[
+        magazine.publisher,
+        magazine.latestIssue
+          ? 'Latest ' + magazine.latestIssue
+          : magazine.firstPublishYear,
+      ]
+        .filter(Boolean)
+        .join(' · ')}
+    />
+  );
 }
 
 export function ExtraCard({

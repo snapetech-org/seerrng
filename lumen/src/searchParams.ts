@@ -11,7 +11,8 @@ export function normalizeSearchParams(params: URLSearchParams) {
       type === 'movie' ||
       type === 'tv' ||
       type === 'comic' ||
-      type === 'author'
+      type === 'author' ||
+      type === 'magazine'
     )
       normalized.set('f', type);
     if (type === 'music' || type === 'album') normalized.set('f', 'music');
@@ -112,7 +113,7 @@ export function scopedSearchPath(
     filters.set('type', 'music');
     return `/search?${filters}`;
   }
-  return `/search?query=${encodeURIComponent(term)}&page=${page}${scope === 'author' ? '&type=author' : ''}`;
+  return `/search?query=${encodeURIComponent(term)}&page=${page}${scope === 'author' || scope === 'magazine' ? '&type=' + scope : ''}`;
 }
 
 export function activeMusicSearchFilters(params: URLSearchParams) {

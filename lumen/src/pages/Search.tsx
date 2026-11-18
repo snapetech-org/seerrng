@@ -21,9 +21,14 @@ import {
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ComicCard } from '../components/comics';
-import { ServiceNote } from '../components/extra';
+import { MagazineCard, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
-import { useExtras, type Album, type ComicWork } from '../extras';
+import {
+  useExtras,
+  type Album,
+  type ComicWork,
+  type Magazine,
+} from '../extras';
 import { cachedApi, useApi } from '../hooks';
 import { Icon } from '../icons';
 import {
@@ -52,10 +57,12 @@ const SCOPES = {
   comic: 'Comics/Manga',
   author: 'Authors',
   music: 'Music',
+  magazine: 'Magazines',
 } as const;
 type AuthorResult = { mediaType: 'author'; id: string; name: string };
 type ArtistResult = { mediaType: 'artist'; id: string; name: string };
-type SearchResult = VideoSearchResult | AuthorResult | ArtistResult | Album;
+type SearchResult =
+  VideoSearchResult | AuthorResult | ArtistResult | Album | Magazine;
 type Scope = keyof typeof SCOPES;
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
@@ -83,6 +90,7 @@ export default function Search() {
   // comics join the search once the category is on and its catalogue answers
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const musicOn = extras.list.some((e) => e.key === 'music');
+  const magazinesOn = extras.list.some((e) => e.key === 'magazine');
   const term0 = (p.get('q') || '').trim();
   const titlePath = scopedSearchPath(p, f, term0);
   const hasVideoFilters =
@@ -97,7 +105,8 @@ export default function Search() {
       f === 'movie' ||
       f === 'tv' ||
       f === 'author' ||
-      f === 'music');
+      f === 'music' ||
+      f === 'magazine');
   const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
@@ -128,7 +137,8 @@ export default function Search() {
     (s) =>
       (prefs.showBooks || (s !== 'ebook' && s !== 'audio' && s !== 'author')) &&
       (comicsOn || s !== 'comic' || f === 'comic') &&
-      (musicOn || s !== 'music' || f === 'music')
+      (musicOn || s !== 'music' || f === 'music') &&
+      (magazinesOn || s !== 'magazine' || f === 'magazine')
   );
 
   // The box follows the address only when something else changed it (Back, a recent search,
@@ -190,23 +200,23 @@ export default function Search() {
       const cr = await comicsAsk;
       if (!live) return;
       const foundComics = cr?.results || [];
-      const foundTitles = (tr?.results || []).filter((r) =>
-        f === 'music'
-          ? r.mediaType === 'album' || r.mediaType === 'artist'
-          : f === 'author'
-            ? r.mediaType === 'author'
-            : f === 'movie'
-              ? r.mediaType === 'movie' || r.mediaType === 'collection'
-              : f === 'tv'
-                ? r.mediaType === 'tv'
-                : r.mediaType === 'movie' ||
-                  r.mediaType === 'tv' ||
-                  r.mediaType === 'person' ||
-                  r.mediaType === 'collection' ||
-                  (prefs.showBooks && r.mediaType === 'author') ||
-                  (musicOn &&
-                    (r.mediaType === 'album' || r.mediaType === 'artist'))
-      );
+      const foundTitles = (tr?.results || []).filter(({ mediaType }) => {
+        if (f === 'music')
+          return mediaType === 'album' || mediaType === 'artist';
+        if (f === 'author' || f === 'tv' || f === 'magazine')
+          return mediaType === f;
+        if (f === 'movie')
+          return mediaType === 'movie' || mediaType === 'collection';
+        return (
+          mediaType === 'movie' ||
+          mediaType === 'tv' ||
+          mediaType === 'person' ||
+          mediaType === 'collection' ||
+          (prefs.showBooks && mediaType === 'author') ||
+          (musicOn && (mediaType === 'album' || mediaType === 'artist')) ||
+          (magazinesOn && mediaType === 'magazine')
+        );
+      });
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
           .filter((b) => b.mediaType === 'book')
@@ -261,6 +271,7 @@ export default function Search() {
     attempt,
     comicsOn,
     musicOn,
+    magazinesOn,
   ]);
 
   const setParam = (k: string, v: string) => {
@@ -311,6 +322,9 @@ export default function Search() {
   const artists = (titles || []).filter(
     (item): item is ArtistResult => item.mediaType === 'artist'
   );
+  const magazines = (titles || []).filter(
+    (item): item is Magazine => item.mediaType === 'magazine'
+  );
   const bookCards = books || [];
   const comicCards = comics || [];
   const nothing =
@@ -324,6 +338,7 @@ export default function Search() {
     !authors.length &&
     !albums.length &&
     !artists.length &&
+    !magazines.length &&
     !bookCards.length &&
     !comicCards.length;
 
@@ -601,6 +616,15 @@ export default function Search() {
             <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
               {bookCards.map((b) => (
                 <BookCard key={`${b.id}:${b.bookFormat ?? ''}`} b={b} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!magazines.length && (
+          <Section title="Magazines">
+            <div className="grid">
+              {magazines.map((magazine) => (
+                <MagazineCard key={magazine.id} magazine={magazine} />
               ))}
             </div>
           </Section>
