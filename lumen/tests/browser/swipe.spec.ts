@@ -194,6 +194,7 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
   page,
 }, info) => {
   const writes: unknown[] = [];
+  const catalogQueries: string[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -212,7 +213,8 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
       return route.fulfill({
         json: { seriesRequest: 'first-season', bookFormat: 'ebook' },
       });
-    if (path.endsWith('/discover/magazines'))
+    if (path.endsWith('/discover/magazines')) {
+      catalogQueries.push(url.search);
       return route.fulfill({
         json: {
           results:
@@ -225,6 +227,7 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
           totalPages: 2,
         },
       });
+    }
     if (path.endsWith('/swipe/decisions') && request.method() === 'GET')
       return route.fulfill({
         json: { decisions: [{ id: 'Old Issue', decision: 'pass' }] },
@@ -234,6 +237,20 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
   });
   await page.goto('/swipe');
   await expect(page.getByRole('heading', { name: 'New Issue' })).toBeVisible();
+  await page.getByText('Deck Filters', { exact: true }).click();
+  await page
+    .getByRole('combobox', { name: 'Magazine Catalog' })
+    .selectOption('public');
+  await page.getByLabel('Search Titles').fill('Issue');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
+  await expect
+    .poll(() =>
+      catalogQueries.some(
+        (query) =>
+          query.includes('catalog=public') && query.includes('query=Issue')
+      )
+    )
+    .toBe(true);
   await page.screenshot({
     path: info.outputPath('swipe-catalog.png'),
     fullPage: true,

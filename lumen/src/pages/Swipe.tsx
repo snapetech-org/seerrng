@@ -4,7 +4,12 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-import { normalizeSwipeCatalogCards, swipeCatalogUrl } from '../swipeCatalog';
+import {
+  filterSwipeCards,
+  normalizeSwipeCatalogCards,
+  swipeCatalogUrl,
+  type SwipeCatalogFilters,
+} from '../swipeCatalog';
 import SwipeHistory from './SwipeHistory';
 
 const recommendations = { movie: 'Movies', tv: 'Series', book: 'Books' };
@@ -19,7 +24,7 @@ const categories = {
   adult: 'Adult',
 };
 type DeckCategory = keyof typeof categories;
-const catalogDefaults = {
+const catalogDefaults: SwipeCatalogFilters = {
   query: '',
   genre: '',
   yearFrom: '',
@@ -27,13 +32,15 @@ const catalogDefaults = {
   minimumRating: '',
   publisher: '',
   magazineCatalog: 'tracked',
-} as const;
+};
 type Decision = 'want' | 'pass' | 'seen';
 interface Card {
   id: string;
   title: string;
   subtitle?: string;
-  year?: string | number;
+  year?: number;
+  tags?: string[];
+  rating?: number;
   overview?: string;
   imageUrl?: string;
   authorId?: string;
@@ -44,6 +51,143 @@ interface Status {
   mediaTypes: string[];
   bookFormats: string[];
 }
+function DeckFilters({
+  category,
+  disabled,
+  onApply,
+}: {
+  category: DeckCategory;
+  disabled: boolean;
+  onApply: (filters: SwipeCatalogFilters) => void;
+}) {
+  const [draft, setDraft] = useState(catalogDefaults);
+  const basic = category === 'sports' || category === 'adult';
+  const ranged = !basic && category !== 'magazine';
+  const inverted =
+    !!draft.yearFrom &&
+    !!draft.yearTo &&
+    Number(draft.yearFrom) > Number(draft.yearTo);
+  const fields = [
+    ['query', 'Search Titles'],
+    ...(!basic ? [['genre', 'Genre or Subject']] : []),
+    ...(category === 'comic' ? [['publisher', 'Publisher']] : []),
+  ] as [keyof SwipeCatalogFilters, string][];
+
+  return (
+    <details className="adv">
+      <summary>Deck Filters</summary>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!inverted) onApply(draft);
+        }}
+      >
+        <div className="setlist">
+          {fields.map(([key, label]) => (
+            <label className="set cfg-row" key={key}>
+              <span>{label}</span>
+              <input
+                className="cfg-input"
+                maxLength={128}
+                disabled={disabled}
+                value={draft[key]}
+                onChange={(event) =>
+                  setDraft({ ...draft, [key]: event.target.value })
+                }
+              />
+            </label>
+          ))}
+          {category === 'magazine' && (
+            <label className="set cfg-row">
+              <span>Magazine Catalog</span>
+              <select
+                className="cfg-select"
+                disabled={disabled}
+                value={draft.magazineCatalog}
+                onChange={(event) =>
+                  setDraft({
+                    ...draft,
+                    magazineCatalog:
+                      event.target.value === 'public' ? 'public' : 'tracked',
+                  })
+                }
+              >
+                <option value="tracked">Tracked Magazines</option>
+                <option value="public">Public Catalog</option>
+              </select>
+            </label>
+          )}
+          {ranged && (
+            <>
+              {(
+                [
+                  ['yearFrom', 'From Year'],
+                  ['yearTo', 'To Year'],
+                ] as const
+              ).map(([key, label]) => (
+                <label className="set cfg-row" key={key}>
+                  <span>{label}</span>
+                  <input
+                    className="cfg-input"
+                    type="number"
+                    min={1800}
+                    max={2200}
+                    disabled={disabled}
+                    value={draft[key]}
+                    onChange={(event) =>
+                      setDraft({ ...draft, [key]: event.target.value })
+                    }
+                  />
+                </label>
+              ))}
+              <label className="set cfg-row">
+                <span>Minimum Rating</span>
+                <input
+                  className="cfg-input"
+                  type="number"
+                  min={0}
+                  max={category === 'book' || category === 'audiobook' ? 5 : 10}
+                  step={0.5}
+                  disabled={disabled}
+                  value={draft.minimumRating}
+                  onChange={(event) =>
+                    setDraft({ ...draft, minimumRating: event.target.value })
+                  }
+                />
+              </label>
+            </>
+          )}
+        </div>
+        {inverted && (
+          <p className="note" role="alert">
+            The starting year must be before or equal to the ending year.
+          </p>
+        )}
+        <div className="toolbar">
+          <button
+            type="submit"
+            className="btn btn-primary btn-sm"
+            disabled={disabled || inverted}
+          >
+            Apply Filters
+          </button>
+          <button
+            type="button"
+            className="btn btn-quiet btn-sm"
+            disabled={disabled}
+            onClick={() => {
+              setDraft(catalogDefaults);
+              onApply(catalogDefaults);
+            }}
+          >
+            Reset Filters
+          </button>
+        </div>
+      </form>
+    </details>
+  );
+}
+
 interface Favorite {
   mediaType: Category;
   id: string;
@@ -319,10 +463,14 @@ function Deck({
   const catalog = !Object.hasOwn(recommendations, category);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState(catalogDefaults);
+  const filtered = Object.keys(catalogDefaults).some(
+    (key) =>
+      filters[key as keyof SwipeCatalogFilters] !==
+      catalogDefaults[key as keyof SwipeCatalogFilters]
+  );
   const deckPath = catalog
-    ? swipeCatalogUrl(category, catalogDefaults, page, 'first').slice(
-        '/api/v1'.length
-      )
+    ? swipeCatalogUrl(category, filters, page, 'first').slice('/api/v1'.length)
     : `/swipe/deck?mediaType=${category}${refresh ? '&refresh=true' : ''}`;
   const deck = useApi<{
     cards?: Card[];
@@ -339,7 +487,7 @@ function Deck({
   const [notice, setNotice] = useState('');
   const pending = useRef(false);
   const catalogCards = catalog
-    ? normalizeSwipeCatalogCards(category, deck.data)
+    ? filterSwipeCards(normalizeSwipeCatalogCards(category, deck.data), filters)
     : [];
   const card =
     restored ??
@@ -350,7 +498,15 @@ function Deck({
             !handled.includes(id) &&
             !history.data?.decisions.some((item) => item.id === id)
         )
-      : deck.data?.cards?.find(({ id }) => !handled.includes(id)));
+      : deck.data?.cards?.find(
+          (item) =>
+            !handled.includes(item.id) &&
+            (!filtered ||
+              filterSwipeCards(
+                [{ ...item, mediaType: category, tags: item.tags ?? [] }],
+                filters
+              ).length > 0)
+        ));
   const format = formats.includes(profile?.bookFormat ?? '')
     ? profile?.bookFormat
     : formats[0];
@@ -518,6 +674,15 @@ function Deck({
   const image = artUrl(card?.imageUrl);
   return (
     <Section title={categories[category]}>
+      <DeckFilters
+        category={category}
+        disabled={busy}
+        onApply={(next) => {
+          setFilters(next);
+          setPage(1);
+          setRestored(undefined);
+        }}
+      />
       <ServiceNote
         what="previous decisions"
         error={history.error}
@@ -607,7 +772,11 @@ function Deck({
           </div>
         </>
       ) : deck.data && (!catalog || history.data) ? (
-        <p className="note">No more recommendations in this deck.</p>
+        <p className="note">
+          {filtered
+            ? 'No more titles match these filters on this page.'
+            : 'No more recommendations in this deck.'}
+        </p>
       ) : (
         !deck.error &&
         !history.error && (
@@ -633,7 +802,9 @@ function Deck({
               className="btn btn-quiet btn-sm"
               disabled={busy}
               onClick={() =>
-                nextDeck((deck.data?.remaining ?? 0) <= handled.length)
+                nextDeck(
+                  filtered || (deck.data?.remaining ?? 0) <= handled.length
+                )
               }
             >
               Load More Recommendations

@@ -1887,3 +1887,13 @@ catalog filters, and live catalog verification remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-catalog-20261118/`.
+
+Swipe deck filters expose title search, applicable genre, publisher, year and
+rating criteria, and magazine source. The form resets to the first catalog
+page when filters change. The production build and 16 browser checks passed
+with synthetic responses. Compared filtered and unfiltered magazine decks on
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. The browser fixture verified
+public-catalog query parameters and filtered pagination.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-filters-20261118/`.
