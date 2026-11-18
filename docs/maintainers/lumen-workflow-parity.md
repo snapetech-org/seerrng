@@ -1598,7 +1598,8 @@ configured Plex, Jellyfin, or Emby provider. Deletion uses the existing
 server protections and requires confirmation.
 
 The directory accepts the native list bookmark in the companion and bundled
-Lumen deployments. Individual native account settings bookmarks remain a
-separate gap. Standalone fixtures cover the managed settings actions.
+Lumen deployments. Account settings bookmarks open the selected user and the corresponding
+profile, password, permissions, maturity, or Episode Queue panel. Linked
+accounts, notifications, and TV request access bookmarks remain open. Standalone fixtures cover the managed settings actions.
 Live providers, full bundled user workflows, and matched native visual
 comparison remain unverified.

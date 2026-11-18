@@ -209,6 +209,15 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/issues': ['issue'],
 };
 
+function managedUserSettingsPath(path: string): string | undefined {
+  const match =
+    /^\/users\/([1-9]\d{0,9})\/settings(?:\/(main|episode-queue|maturity|permissions|password))?\/?$/.exec(
+      path
+    );
+  if (!match || Number(match[1]) > 1_000_000_000) return;
+  return `/lumen/admin/users/${match[1]}/${match[2] ?? 'main'}`;
+}
+
 function workflowDeepLink(req: Request): string | undefined {
   const nativePath = req.path.replace(/\/$/, '');
   const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
@@ -293,6 +302,7 @@ export const redirectLockedNativeFrontend: RequestHandler = (
               discoveryDeepLink(req) ??
               detailDeepLink(req) ??
               workflowDeepLink(req) ??
+              managedUserSettingsPath(req.path) ??
               '/lumen/')
       );
     return;
@@ -387,6 +397,13 @@ export const mountLumenFrontend = (
       return next();
     }
     return res.set('Cache-Control', 'no-store').redirect(302, target);
+  });
+  server.get(/^\/lumen\/users\//, (req, res, next) => {
+    const destination = managedUserSettingsPath(
+      req.path.slice('/lumen'.length)
+    );
+    if (!destination) return next();
+    return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get('/lumen/users', (_req, res) =>
     res.set('Cache-Control', 'no-store').redirect(302, '/lumen/admin/users')

@@ -4682,14 +4682,17 @@ test('Users clears one maturity limit and preserves the other', async ({
   page,
 }) => {
   await fixtures(page);
-  await page.route(/\/api\/v1\/user\?/, (route) =>
-    route.fulfill({
+  await page.route(/\/api\/v1\/user\?/, (route) => {
+    expect(new URL(route.request().url()).searchParams.get('includeIds')).toBe(
+      '19'
+    );
+    return route.fulfill({
       json: {
         pageInfo: { pages: 1 },
         results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
       },
-    })
-  );
+    });
+  });
   const policy = {
     movieMaturityRatingLimit: 'PG' as string | null,
     tvMaturityRatingLimit: 'TV-14',
@@ -4703,10 +4706,7 @@ test('Users clears one maturity limit and preserves the other', async ({
     }
     return route.fulfill({ json: policy });
   });
-  await page.goto('/admin/users');
-  await page
-    .getByRole('button', { name: 'Maturity Limits', exact: true })
-    .click();
+  await page.goto('/admin/users/19/maturity');
   await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG');
   await page.getByLabel('Movie Rating Limit').selectOption('');
   await page.getByRole('button', { name: 'Save Maturity Limits' }).click();

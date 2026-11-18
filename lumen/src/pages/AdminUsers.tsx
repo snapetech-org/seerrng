@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
@@ -272,6 +272,11 @@ function EditProfile({
 }
 
 export default function AdminUsers() {
+  const { userId, panel } = useParams();
+  const target =
+    userId && /^[1-9]\d{0,9}$/.test(userId) && Number(userId) <= 1_000_000_000
+      ? Number(userId)
+      : undefined;
   const { user: actor, signOut } = useAuth();
   const serverType = usePublicSettings()?.mediaServerType;
   const provider =
@@ -284,19 +289,29 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
-  const [passwordUser, setPasswordUser] = useState<number>();
-  const [profileUser, setProfileUser] = useState<number>();
+  const [passwordUser, setPasswordUser] = useState<number | undefined>(
+    panel === 'password' ? target : undefined
+  );
+  const [profileUser, setProfileUser] = useState<number | undefined>(
+    panel === 'main' ? target : undefined
+  );
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState('');
   const deleting = useRef(false);
-  const [quotaUser, setQuotaUser] = useState<number>();
-  const [categoryUser, setCategoryUser] = useState<number>();
-  const [maturityUser, setMaturityUser] = useState<number>();
-  const [permissionsUser, setPermissionsUser] = useState<number>();
+  const [quotaUser, setQuotaUser] = useState<number | undefined>();
+  const [categoryUser, setCategoryUser] = useState<number | undefined>();
+  const [maturityUser, setMaturityUser] = useState<number | undefined>(
+    panel === 'maturity' ? target : undefined
+  );
+  const [permissionsUser, setPermissionsUser] = useState<number | undefined>(
+    panel === 'permissions' ? target : undefined
+  );
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
-  const [queueUser, setQueueUser] = useState<number>();
+  const [queueUser, setQueueUser] = useState<number | undefined>(
+    panel === 'episode-queue' ? target : undefined
+  );
   const [notice, setNotice] = useState('');
   const search = (params.get('q') ?? '').slice(0, 200);
   const requestedSort = params.get('sort') ?? '';
@@ -312,11 +327,15 @@ export default function AdminUsers() {
     sort,
     sortDirection: direction,
   });
-  if (search) query.set('q', search);
+  if (target) query.set('includeIds', String(target));
+  else if (search) query.set('q', search);
   const { data, error, reload } = useApi<{
     pageInfo: { pages: number; results: number };
     results: DirectoryUser[];
-  }>(`/user?${query}`, { currentPathOnly: true, keepDuringRefresh: true });
+  }>(userId && !target ? null : `/user?${query}`, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
 
   function update(key: string, value: string) {
     const next = new URLSearchParams(params);
@@ -392,6 +411,11 @@ export default function AdminUsers() {
         <Link className="btn btn-quiet btn-sm" to="/me">
           Back to Account
         </Link>
+        {userId && (
+          <Link className="btn btn-quiet btn-sm" to="/admin/users">
+            All Users
+          </Link>
+        )}
         <button className="btn btn-quiet btn-sm" onClick={reload}>
           Refresh
         </button>
@@ -443,53 +467,56 @@ export default function AdminUsers() {
           {notice}
         </p>
       )}
-      <form
-        className="toolbar"
-        onSubmit={(event) => {
-          event.preventDefault();
-          update(
-            'q',
-            String(new FormData(event.currentTarget).get('q') ?? '').trim()
-          );
-        }}
-      >
-        <label className="sel">
-          <span className="lbl">Search Users</span>
-          <input
-            className="cfg-json"
-            key={search}
-            name="q"
-            defaultValue={search}
-            maxLength={200}
-          />
-        </label>
-        <button className="btn btn-tonal btn-sm">Search</button>
-        <label className="sel">
-          <span className="lbl">Sort By</span>
-          <select
-            value={sort}
-            onChange={(event) => update('sort', event.target.value)}
-          >
-            {Object.entries(sorts).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="sel">
-          <span className="lbl">Sort Direction</span>
-          <select
-            value={direction}
-            onChange={(event) => update('direction', event.target.value)}
-          >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-        </label>
-      </form>
+      {!userId && (
+        <form
+          className="toolbar"
+          onSubmit={(event) => {
+            event.preventDefault();
+            update(
+              'q',
+              String(new FormData(event.currentTarget).get('q') ?? '').trim()
+            );
+          }}
+        >
+          <label className="sel">
+            <span className="lbl">Search Users</span>
+            <input
+              className="cfg-json"
+              key={search}
+              name="q"
+              defaultValue={search}
+              maxLength={200}
+            />
+          </label>
+          <button className="btn btn-tonal btn-sm">Search</button>
+          <label className="sel">
+            <span className="lbl">Sort By</span>
+            <select
+              value={sort}
+              onChange={(event) => update('sort', event.target.value)}
+            >
+              {Object.entries(sorts).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sel">
+            <span className="lbl">Sort Direction</span>
+            <select
+              value={direction}
+              onChange={(event) => update('direction', event.target.value)}
+            >
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </label>
+        </form>
+      )}
       <ServiceNote error={error} what="users" retry={reload} />
-      {!data && !error && (
+      {userId && !target && <p className="note">Invalid user ID.</p>}
+      {(!userId || target) && !data && !error && (
         <p className="note" role="status">
           Loading users…
         </p>
@@ -499,182 +526,184 @@ export default function AdminUsers() {
       )}
       {!!data?.results.length && (
         <ul className="setlist">
-          {data.results.map((user) => (
-            <li className="set" key={user.id}>
-              <div>
-                <b>{user.displayName}</b>
-                {user.email && user.email !== user.displayName && (
-                  <small>{user.email}</small>
-                )}
-              </div>
-              <div>
-                <small>
-                  {user.id === 1
-                    ? 'Owner'
-                    : (user.permissions & 2) !== 0
-                      ? 'Administrator'
-                      : (user.permissions & 8) !== 0
-                        ? 'User Manager'
-                        : 'Member'}
-                </small>
-                {user.requestCount !== undefined && (
-                  <small>{user.requestCount.toLocaleString()} requests</small>
-                )}
-              </div>
-              <button
-                className="btn btn-quiet btn-sm"
-                aria-expanded={queueUser === user.id}
-                onClick={() =>
-                  setQueueUser(queueUser === user.id ? undefined : user.id)
-                }
-              >
-                Episode Queue
-              </button>
-              {queueUser === user.id && (
-                <ManagedEpisodeQueue id={user.id} name={user.displayName} />
-              )}
-              {actor &&
-                actor.id !== user.id &&
-                (actor.id === 1 || (user.permissions & 2) === 0) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={quotaUser === user.id}
-                      onClick={() =>
-                        setQuotaUser(
-                          quotaUser === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Request Quotas
-                    </button>
-                    {quotaUser === user.id && <ManagedQuotas id={user.id} />}
-                  </>
-                )}
-              {(user.permissions & 2) === 0 && (
-                <>
-                  <button
-                    className="btn btn-quiet btn-sm"
-                    aria-expanded={categoryUser === user.id}
-                    onClick={() =>
-                      setCategoryUser(
-                        categoryUser === user.id ? undefined : user.id
-                      )
-                    }
-                  >
-                    Media Categories
-                  </button>
-                  {categoryUser === user.id && (
-                    <ManagedMediaCategories id={user.id} />
+          {data.results
+            .filter((user) => !target || user.id === target)
+            .map((user) => (
+              <li className="set" key={user.id}>
+                <div>
+                  <b>{user.displayName}</b>
+                  {user.email && user.email !== user.displayName && (
+                    <small>{user.email}</small>
                   )}
-                </>
-              )}
-              {actor &&
-                (actor.id === user.id ||
-                  actor.id === 1 ||
-                  (user.permissions & 2) === 0) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={maturityUser === user.id}
-                      onClick={() =>
-                        setMaturityUser(
-                          maturityUser === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Maturity Limits
-                    </button>
-                    {maturityUser === user.id && (
-                      <ManagedMaturity id={user.id} />
-                    )}
-                  </>
-                )}
-              {actor &&
-                user.id !== 1 &&
-                actor.id !== user.id &&
-                (actor.id === 1 || (user.permissions & 2) === 0) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={permissionsUser === user.id}
-                      onClick={() =>
-                        setPermissionsUser(
-                          permissionsUser === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Permissions
-                    </button>
-                    {permissionsUser === user.id && (
-                      <ManagedPermissions
-                        id={user.id}
-                        name={user.displayName}
-                        actorId={actor.id}
-                        actorPermissions={actor.permissions}
-                        onSaved={reload}
-                      />
-                    )}
-                  </>
-                )}
-              {actor &&
-                (actor.id === user.id ||
-                  actor.id === 1 ||
-                  (user.permissions & 2) === 0) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={profileUser === user.id}
-                      onClick={() =>
-                        setProfileUser(
-                          profileUser === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Edit Profile
-                    </button>
-                    {profileUser === user.id && (
-                      <EditProfile
-                        id={user.id}
-                        canEditEmail={canEditUserEmail(user)}
-                        onSaved={reload}
-                      />
-                    )}
-                  </>
-                )}
-              {canSetUserPassword(user) && (
-                <>
-                  <button
-                    className="btn btn-quiet btn-sm"
-                    aria-expanded={passwordUser === user.id}
-                    onClick={() =>
-                      setPasswordUser(
-                        passwordUser === user.id ? undefined : user.id
-                      )
-                    }
-                  >
-                    Set Local Password
-                  </button>
-                  {passwordUser === user.id && (
-                    <ManagedPassword id={user.id} name={user.displayName} />
+                </div>
+                <div>
+                  <small>
+                    {user.id === 1
+                      ? 'Owner'
+                      : (user.permissions & 2) !== 0
+                        ? 'Administrator'
+                        : (user.permissions & 8) !== 0
+                          ? 'User Manager'
+                          : 'Member'}
+                  </small>
+                  {user.requestCount !== undefined && (
+                    <small>{user.requestCount.toLocaleString()} requests</small>
                   )}
-                </>
-              )}
-              {canDelete(user) && (
+                </div>
                 <button
                   className="btn btn-quiet btn-sm"
-                  disabled={removing}
-                  onClick={() => {
-                    setNotice('');
-                    setRemoveError('');
-                    setRemove(user);
-                  }}
+                  aria-expanded={queueUser === user.id}
+                  onClick={() =>
+                    setQueueUser(queueUser === user.id ? undefined : user.id)
+                  }
                 >
-                  Delete User
+                  Episode Queue
                 </button>
-              )}
-            </li>
-          ))}
+                {queueUser === user.id && (
+                  <ManagedEpisodeQueue id={user.id} name={user.displayName} />
+                )}
+                {actor &&
+                  actor.id !== user.id &&
+                  (actor.id === 1 || (user.permissions & 2) === 0) && (
+                    <>
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        aria-expanded={quotaUser === user.id}
+                        onClick={() =>
+                          setQuotaUser(
+                            quotaUser === user.id ? undefined : user.id
+                          )
+                        }
+                      >
+                        Request Quotas
+                      </button>
+                      {quotaUser === user.id && <ManagedQuotas id={user.id} />}
+                    </>
+                  )}
+                {(user.permissions & 2) === 0 && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={categoryUser === user.id}
+                      onClick={() =>
+                        setCategoryUser(
+                          categoryUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Media Categories
+                    </button>
+                    {categoryUser === user.id && (
+                      <ManagedMediaCategories id={user.id} />
+                    )}
+                  </>
+                )}
+                {actor &&
+                  (actor.id === user.id ||
+                    actor.id === 1 ||
+                    (user.permissions & 2) === 0) && (
+                    <>
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        aria-expanded={maturityUser === user.id}
+                        onClick={() =>
+                          setMaturityUser(
+                            maturityUser === user.id ? undefined : user.id
+                          )
+                        }
+                      >
+                        Maturity Limits
+                      </button>
+                      {maturityUser === user.id && (
+                        <ManagedMaturity id={user.id} />
+                      )}
+                    </>
+                  )}
+                {actor &&
+                  user.id !== 1 &&
+                  actor.id !== user.id &&
+                  (actor.id === 1 || (user.permissions & 2) === 0) && (
+                    <>
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        aria-expanded={permissionsUser === user.id}
+                        onClick={() =>
+                          setPermissionsUser(
+                            permissionsUser === user.id ? undefined : user.id
+                          )
+                        }
+                      >
+                        Permissions
+                      </button>
+                      {permissionsUser === user.id && (
+                        <ManagedPermissions
+                          id={user.id}
+                          name={user.displayName}
+                          actorId={actor.id}
+                          actorPermissions={actor.permissions}
+                          onSaved={reload}
+                        />
+                      )}
+                    </>
+                  )}
+                {actor &&
+                  (actor.id === user.id ||
+                    actor.id === 1 ||
+                    (user.permissions & 2) === 0) && (
+                    <>
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        aria-expanded={profileUser === user.id}
+                        onClick={() =>
+                          setProfileUser(
+                            profileUser === user.id ? undefined : user.id
+                          )
+                        }
+                      >
+                        Edit Profile
+                      </button>
+                      {profileUser === user.id && (
+                        <EditProfile
+                          id={user.id}
+                          canEditEmail={canEditUserEmail(user)}
+                          onSaved={reload}
+                        />
+                      )}
+                    </>
+                  )}
+                {canSetUserPassword(user) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={passwordUser === user.id}
+                      onClick={() =>
+                        setPasswordUser(
+                          passwordUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Set Local Password
+                    </button>
+                    {passwordUser === user.id && (
+                      <ManagedPassword id={user.id} name={user.displayName} />
+                    )}
+                  </>
+                )}
+                {canDelete(user) && (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    disabled={removing}
+                    onClick={() => {
+                      setNotice('');
+                      setRemoveError('');
+                      setRemove(user);
+                    }}
+                  >
+                    Delete User
+                  </button>
+                )}
+              </li>
+            ))}
         </ul>
       )}
       {(page > 1 || (data?.pageInfo.pages ?? 0) > 1) && (

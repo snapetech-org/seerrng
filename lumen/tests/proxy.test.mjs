@@ -166,7 +166,12 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/providers', '/providers'],
       ['/settings/jobs/', '/admin/jobs'],
       ['/users/', '/admin/users'],
-      ['/users/19/settings', 'https://seerr.example.test/users/19/settings'],
+      ['/users/19/settings', '/admin/users/19/main'],
+      ['/users/19/settings/maturity', '/admin/users/19/maturity'],
+      [
+        '/users/19/settings/linked-accounts',
+        'https://seerr.example.test/users/19/settings/linked-accounts',
+      ],
       ['/settings/logs', '/admin/logs'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });

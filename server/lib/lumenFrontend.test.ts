@@ -47,6 +47,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.status, 302);
     assert.equal(userDirectory.headers.location, '/lumen/admin/users');
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
+    const userSettings = await request(app).get(
+      '/lumen/users/19/settings/maturity'
+    );
+    assert.equal(userSettings.status, 302);
+    assert.equal(
+      userSettings.headers.location,
+      '/lumen/admin/users/19/maturity'
+    );
     const shareFallback = await request(app).post('/lumen/share-target');
     assert.equal(shareFallback.status, 303);
     assert.equal(

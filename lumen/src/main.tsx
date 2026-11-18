@@ -388,7 +388,7 @@ function App() {
             }
           />
           <Route
-            path="/admin/users"
+            path="/admin/users/:userId?/:panel?"
             element={
               (user.permissions & (2 | 8)) !== 0 ? (
                 <Suspense
