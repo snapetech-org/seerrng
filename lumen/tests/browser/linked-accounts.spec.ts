@@ -204,7 +204,13 @@ test('AniList connects through a code submitted in the request body', async ({
     if (path === '/user/2/settings/linked-accounts')
       return route.fulfill({ json: [] });
     if (path === base + '/configuration')
-      return route.fulfill({ json: { anilist: { configured: true } } });
+      return route.fulfill({
+        json: {
+          anilist: { configured: true },
+          trakt: { configured: false },
+          simkl: { configured: false },
+        },
+      });
     if (path === base + '/accounts')
       return route.fulfill({
         json: {
@@ -239,6 +245,12 @@ test('AniList connects through a code submitted in the request body', async ({
     name: 'Connect AniList',
     exact: true,
   });
+  await expect(
+    page.getByText(/Trakt, Simkl require setup before connecting/)
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Discovery Settings' })
+  ).toHaveCount(0);
   await connect.click();
   const authorize = page.getByRole('link', { name: 'Authorize on AniList' });
   await expect(authorize).toHaveAttribute('target', '_blank');

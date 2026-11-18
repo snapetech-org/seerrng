@@ -1,6 +1,7 @@
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
+import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
@@ -19,6 +20,7 @@ type Account = { provider: Provider; username: string; allowWrites: boolean };
 type SimklAttempt = { userCode: string; expiresAt: number; interval: number };
 
 export default function DiscoveryAccounts({ userId }: { userId: number }) {
+  const { user } = useAuth();
   const [params, setParams] = useSearchParams();
   const accounts = useApi<{ accounts: Account[] }>(base);
   const config = useApi<Partial<Record<Provider, { configured: boolean }>>>(
@@ -45,6 +47,9 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
     rows &&
     config.data?.[provider]?.configured &&
     (!connected(provider) || reconnect === provider);
+  const unconfigured = (Object.keys(providerNames) as Provider[])
+    .filter((provider) => config.data?.[provider]?.configured === false)
+    .map((provider) => providerNames[provider]);
   function finishConnection() {
     if (reconnect) {
       const next = new URLSearchParams(params);
@@ -314,6 +319,18 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
         what="tracking provider configuration"
         retry={config.reload}
       />
+      {unconfigured.length > 0 && (
+        <p className="note">
+          {unconfigured.join(', ')}{' '}
+          {unconfigured.length === 1 ? 'requires' : 'require'} setup before
+          connecting.{' '}
+          {isAdministrator(user?.permissions) ? (
+            <Link to="/admin/discovery">Open Discovery Settings</Link>
+          ) : (
+            'Ask your SeerrNG administrator to configure the integration.'
+          )}
+        </p>
+      )}
       {failure && !disconnect && (
         <p className="note" role="alert">
           {failure}
