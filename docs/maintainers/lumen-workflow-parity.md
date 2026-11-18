@@ -2962,3 +2962,10 @@ library. Twenty standalone and four bundled browser cases passed. The TV
 fixture verifies the narrowed add payload and the confirmed removal
 token. Live media-server writes and matched visual acceptance remain
 unverified.
+
+Movie collections now provide administrator-only media-server collection
+controls. Expanding the panel checks destinations on demand and uses the
+shared collection confirmation sheet for adds and removals. Twenty
+standalone and four bundled browser checks passed. The movie fixture
+verifies on-demand loading, visible member IDs, and status readback.
+Live provider writes and matched visual comparison remain unverified.

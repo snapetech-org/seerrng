@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api, MediaStatus, tmdbImg } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
 import CollectionPlaybackSheet, {
@@ -11,6 +11,9 @@ import CollectionQueueSheet from '../components/CollectionQueueSheet';
 import CollectionRequestSheet, {
   type MovieCollection,
 } from '../components/CollectionRequestSheet';
+import CollectionServerActions, {
+  type CollectionSync,
+} from '../components/CollectionServerSheet';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canRequest4k,
@@ -19,7 +22,9 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 import { CollectionAssociations } from './Associations';
 
 function CollectionContent({ id }: { id: number }) {
@@ -35,6 +40,46 @@ function CollectionContent({ id }: { id: number }) {
   const [queueOpen, setQueueOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
+  const checkingServer = useRef(false);
+  const [serverBusy, setServerBusy] = useState(false);
+  const [serverSync, setServerSync] = useState<CollectionSync>();
+  const [serverError, setServerError] = useState('');
+  const canSync =
+    isAdministrator(user?.permissions) &&
+    [1, 2, 3].includes(settings?.mediaServerType ?? 0);
+
+  async function checkServer() {
+    if (!canSync || checkingServer.current) return;
+    checkingServer.current = true;
+    setServerBusy(true);
+    setServerError('');
+    const generation = sessionGeneration();
+    try {
+      const result = await api<{
+        collection: MovieCollection;
+        sync: CollectionSync;
+      }>(`/collection/${id}/availability`, {
+        method: 'POST',
+        invalidateCache: false,
+      });
+      if (generation !== sessionGeneration()) return;
+      if (result.collection?.id !== id || !result.sync)
+        throw new Error(
+          'Could not verify this collection on the media server.'
+        );
+      setServerSync(result.sync);
+    } catch (error) {
+      if (generation === sessionGeneration()) {
+        setServerSync(undefined);
+        setServerError(
+          friendlyError(error, 'Could not check the media server.')
+        );
+      }
+    } finally {
+      checkingServer.current = false;
+      if (generation === sessionGeneration()) setServerBusy(false);
+    }
+  }
   const qualities: ('hd' | '4k')[] = [];
   if (canRequestMovies(user?.permissions)) qualities.push('hd');
   if (settings?.movie4kEnabled && canRequest4k(user?.permissions, 'movie'))
@@ -112,6 +157,39 @@ function CollectionContent({ id }: { id: number }) {
         ]}
       />
       <div className="dbody">
+        {canSync && data.parts.length > 0 && (
+          <details
+            className="adv"
+            onToggle={(event) => {
+              if (event.currentTarget.open && !serverSync) void checkServer();
+            }}
+          >
+            <summary>Media Server Collection</summary>
+            {serverBusy && (
+              <p className="note" role="status">
+                Checking media-server libraries…
+              </p>
+            )}
+            <ServiceNote
+              what="media-server libraries"
+              error={serverError || null}
+              retry={() => void checkServer()}
+            />
+            {serverSync && !serverSync.supported && (
+              <p className="note">
+                This media server does not support collection changes.
+              </p>
+            )}
+            {serverSync && (
+              <CollectionServerActions
+                endpoint={`/collection/${id}/server`}
+                sync={serverSync}
+                visibleIds={data.parts.map(({ id }) => String(id))}
+                onComplete={() => void checkServer()}
+              />
+            )}
+          </details>
+        )}
         <CollectionAssociations
           key={data.parts.map(({ id }) => id).join(',')}
           mediaType="movie"

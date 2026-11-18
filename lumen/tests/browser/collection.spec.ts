@@ -328,3 +328,82 @@ test('collection playback uses ordered internal IDs, skips shared copies, and op
     { mediaIds: [70], is4k: false },
   ]);
 });
+
+test('movie media-server collection sync checks on demand and adds visible verified movies', async ({
+  page,
+}) => {
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  const parts = [{ id: 42, title: 'Fixture Movie' }];
+  let checks = 0;
+  let writes = 0;
+  const destinations = () => [
+    {
+      libraryId: 'movies',
+      libraryName: 'Movies Library',
+      state: writes ? 'exists' : 'missing',
+      availableIds: ['42', '99'],
+    },
+  ];
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    switch (path) {
+      case '/auth/me':
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      case '/settings/public':
+        return route.fulfill({
+          json: { initialized: true, mediaServerType: 1 },
+        });
+      case '/collection/19':
+        return route.fulfill({
+          json: { id: 19, name: 'Fixture Collection', parts },
+        });
+      case '/collection/19/availability':
+        checks++;
+        expect(request.method()).toBe('POST');
+        return route.fulfill({
+          json: {
+            collection: { id: 19, parts },
+            sync: { supported: true, destinations: destinations() },
+          },
+        });
+      case '/collection/19/server':
+        writes++;
+        expect(request.method()).toBe('POST');
+        expect(request.postDataJSON()).toEqual({
+          libraryIds: ['movies'],
+          selectedIds: ['42'],
+        });
+        return route.fulfill({
+          json: { supported: true, destinations: destinations() },
+        });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+  await page.goto(`${mount}/collection/19`);
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Collection' })
+  ).toBeVisible();
+  expect(checks).toBe(0);
+  await page.getByText('Media Server Collection', { exact: true }).click();
+  await page.getByRole('button', { name: 'Add to Media Server' }).click();
+  const dialog = page.getByRole('dialog', {
+    name: 'Add Collection to Media Server',
+  });
+  await expect(
+    dialog.getByRole('checkbox', { name: 'Movies Library · 1 available' })
+  ).toBeChecked();
+  await dialog
+    .getByRole('button', { name: 'Add Collection to Media Server' })
+    .click();
+  await expect(dialog.getByRole('status')).toHaveText(
+    '1 of 1 libraries verified.'
+  );
+  await dialog.getByRole('button', { name: 'Done' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Add to Media Server' })
+  ).toBeDisabled();
+  expect(writes).toBe(1);
+  expect(checks).toBe(2);
+});
