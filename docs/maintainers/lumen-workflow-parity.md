@@ -1715,3 +1715,10 @@ Settings in both deployments, with a link to Media Categories for
 account category defaults. Four standalone sign-in settings browser
 checks and the Express and nginx bookmark checks passed. Live account
 admission and matched native visual acceptance remain open.
+
+General Settings now edits the shared-availability display mode through
+the existing SeerrNG settings endpoint. The server validation test and
+four standalone browser checks verified supported values, changed-only
+save, and reload readback. Lumen collection playback already consumes
+this setting. Applying it consistently to posters and title details,
+and matched native visual acceptance, remain open.

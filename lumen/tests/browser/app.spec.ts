@@ -4454,6 +4454,7 @@ test('General Settings retains application edits after failure and saves only ch
     applicationUrl: 'https://seerr.example.test',
     cacheImages: true,
     versionCheck: true,
+    otherUsersAvailability: 'show',
   };
   const writes: unknown[] = [];
   await page.route('**/api/v1/settings/main', (route) => {
@@ -4490,13 +4491,21 @@ test('General Settings retains application edits after failure and saves only ch
   await address.clear();
   await page.getByRole('checkbox', { name: 'Cache Images' }).uncheck();
   await page.getByRole('checkbox', { name: 'Version Check' }).uncheck();
+  await page
+    .getByLabel('Other Users’ Availability')
+    .selectOption('distinguish');
   await save.click();
   await expect(page.getByText('Application settings saved.')).toBeVisible();
   await expect(save).toBeDisabled();
   expect(writes).toEqual([
     { applicationTitle: 'Family Library' },
     { applicationTitle: 'Family Library' },
-    { applicationUrl: '', cacheImages: false, versionCheck: false },
+    {
+      applicationUrl: '',
+      cacheImages: false,
+      versionCheck: false,
+      otherUsersAvailability: 'distinguish',
+    },
   ]);
   await page.reload();
   await expect(
@@ -4505,6 +4514,9 @@ test('General Settings retains application edits after failure and saves only ch
   await expect(
     page.getByRole('checkbox', { name: 'Version Check' })
   ).not.toBeChecked();
+  await expect(page.getByLabel('Other Users’ Availability')).toHaveValue(
+    'distinguish'
+  );
 });
 
 test('General Settings selects bundled or standalone Lumen and scopes the native lock', async ({

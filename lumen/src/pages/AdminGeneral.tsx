@@ -16,6 +16,7 @@ import { sessionGeneration } from '../sessionState';
 
 const path = '/settings/main';
 type Frontend = 'native' | 'lumen' | 'external';
+type AvailabilityMode = 'show' | 'distinguish' | 'hide';
 
 interface ApplicationSettings {
   applicationTitle: string;
@@ -30,6 +31,7 @@ interface ApplicationSettings {
   mediaServerLogin: boolean;
   newPlexLogin: boolean;
   jellyfinQuickConnectOnly: boolean;
+  otherUsersAvailability: AvailabilityMode;
 }
 
 const textFields = [
@@ -218,6 +220,31 @@ function ApplicationForm({
             />
           </label>
         )}
+        <label className="set cfg-row">
+          <span>
+            <b>Other Users’ Availability</b>
+            <small>
+              Choose how availability appears when the viewer has no approved or
+              completed request for that copy.
+            </small>
+          </span>
+          <select
+            className="cfg-input"
+            aria-label="Other Users’ Availability"
+            disabled={busy}
+            value={draft.otherUsersAvailability}
+            onChange={(event) =>
+              change(
+                'otherUsersAvailability',
+                event.target.value as AvailabilityMode
+              )
+            }
+          >
+            <option value="show">Show Availability for Everyone</option>
+            <option value="distinguish">Mark Shared Availability</option>
+            <option value="hide">Hide Shared Availability</option>
+          </select>
+        </label>
         {switches
           .filter(({ key }) => {
             if (key === 'lockLumenForNonAdmins')
@@ -322,6 +349,8 @@ export default function AdminGeneral() {
               newPlexLogin: settings.data.newPlexLogin !== false,
               jellyfinQuickConnectOnly:
                 settings.data.jellyfinQuickConnectOnly === true,
+              otherUsersAvailability:
+                settings.data.otherUsersAvailability ?? 'show',
             }}
           />
         ) : (
