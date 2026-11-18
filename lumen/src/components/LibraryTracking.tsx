@@ -66,8 +66,19 @@ export default function LibraryTracking({
   const tv = useApi<TvDetails>(showEpisodes ? `/tv/${item.tmdbId}` : null, {
     currentPathOnly: true,
   });
-  const seasons =
-    tv.data?.seasons?.filter(({ episodeCount }) => episodeCount > 0) ?? [];
+  const seasons = Array.isArray(tv.data?.seasons)
+    ? tv.data.seasons.filter(
+        (entry) =>
+          Number.isSafeInteger(entry?.seasonNumber) &&
+          entry.seasonNumber >= 0 &&
+          entry.episodeCount > 0
+      )
+    : [];
+  const tvError =
+    tv.error ||
+    (tv.data && !Array.isArray(tv.data.seasons)
+      ? 'Invalid seasons response.'
+      : null);
   const season =
     seasons.find(({ seasonNumber }) => seasonNumber === chosenSeason)
       ?.seasonNumber ??
@@ -81,7 +92,17 @@ export default function LibraryTracking({
       : null,
     { currentPathOnly: true }
   );
-  const episodes = seasonDetails.data?.episodes ?? [];
+  const episodes = Array.isArray(seasonDetails.data?.episodes)
+    ? seasonDetails.data.episodes.filter(
+        (entry) =>
+          Number.isSafeInteger(entry?.episodeNumber) && entry.episodeNumber > 0
+      )
+    : [];
+  const episodesError =
+    seasonDetails.error ||
+    (seasonDetails.data && !Array.isArray(seasonDetails.data.episodes)
+      ? 'Invalid episodes response.'
+      : null);
   const episode =
     episodes.find(({ episodeNumber }) => episodeNumber === chosenEpisode)
       ?.episodeNumber ?? episodes[0]?.episodeNumber;
@@ -98,9 +119,22 @@ export default function LibraryTracking({
       : null,
     { currentPathOnly: true }
   );
-  const episodeWatched = watch.data?.available
-    ? watch.data.episodes?.find((entry) => entry.episode === episode)?.watched
-    : undefined;
+  const watchError =
+    watch.error ||
+    (watch.data &&
+    (!Array.isArray(watch.data.episodes) ||
+      typeof watch.data.available !== 'boolean')
+      ? 'Invalid provider watch status response.'
+      : null);
+  const episodeWatched =
+    !watchError && watch.data?.available
+      ? watch.data.episodes.find(
+          (entry) =>
+            entry &&
+            entry.episode === episode &&
+            typeof entry.watched === 'boolean'
+        )?.watched
+      : undefined;
   const [rating, setRating] = useState('');
   const [progress, setProgress] = useState('');
   const [confirm, setConfirm] = useState<Change>();
@@ -255,36 +289,34 @@ export default function LibraryTracking({
       {showEpisodes && (
         <>
           <ServiceNote
-            error={tv.error}
+            error={tvError}
             what="series seasons"
             retry={tv.reload}
           />
           <ServiceNote
-            error={seasonDetails.error}
+            error={episodesError}
             what="season episodes"
             retry={seasonDetails.reload}
           />
           <ServiceNote
-            error={watch.error}
+            error={watchError}
             what="provider episode status"
             retry={watch.reload}
           />
-          {!tv.data && !tv.error && (
+          {!tv.data && !tvError && (
             <p className="note" role="status">
               Loading seasons…
             </p>
           )}
-          {tv.data && !seasons.length && (
+          {tv.data && !tvError && !seasons.length && (
             <p className="note">No seasons are available.</p>
           )}
-          {season !== undefined &&
-            !seasonDetails.data &&
-            !seasonDetails.error && (
-              <p className="note" role="status">
-                Loading episodes…
-              </p>
-            )}
-          {seasonDetails.data && !episodes.length && (
+          {season !== undefined && !seasonDetails.data && !episodesError && (
+            <p className="note" role="status">
+              Loading episodes…
+            </p>
+          )}
+          {seasonDetails.data && !episodesError && !episodes.length && (
             <p className="note">No episodes are available.</p>
           )}
           <div className="toolbar">

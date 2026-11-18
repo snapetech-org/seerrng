@@ -509,6 +509,7 @@ test('My Media tracks and removes a selected provider episode', async ({
   page,
 }) => {
   let watched = false;
+  let statusReads = 0;
   const changes: boolean[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -559,7 +560,10 @@ test('My Media tracks and removes a selected provider episode', async ({
         season: '2',
       });
       return route.fulfill({
-        json: { available: true, episodes: [{ episode: 2, watched }] },
+        json: {
+          available: true,
+          episodes: ++statusReads === 1 ? {} : [{ episode: 2, watched }],
+        },
       });
     }
     if (path === '/integrations/discovery/tracking/simkl') {
@@ -582,6 +586,14 @@ test('My Media tracks and removes a selected provider episode', async ({
   await page
     .getByRole('combobox', { name: 'Tracking Episode' })
     .selectOption('2');
+  const statusError = page.getByRole('alert').filter({
+    hasText: 'Invalid provider watch status response.',
+  });
+  await expect(statusError).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Mark Episode Watched' })
+  ).toBeEnabled();
+  await statusError.getByRole('button', { name: 'Retry' }).click();
   await expect(
     page.getByText('Unwatched on provider.', { exact: true })
   ).toBeVisible();
