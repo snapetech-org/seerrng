@@ -120,7 +120,10 @@ demand. Users can change seasons, inspect match evidence, open mapped volumes
 or search, and follow future novels in the selected lookup language. Four
 standalone browser cases verified deferred lookup, season selection,
 translation status, the volume link, and the follow payload with API
-fixtures. Bundled, live provider, and matched visual checks remain open.
+fixtures. The bundled production build at `/lumen/` passed all 28 Following
+cases, including the four continuation cases. Eight server tests passed for
+season ordering and derivation of volume and chapter positions. Live provider
+and matched visual checks remain open.
 
 ### Release Calendar increment
 
