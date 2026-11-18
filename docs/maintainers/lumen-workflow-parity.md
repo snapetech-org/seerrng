@@ -127,6 +127,13 @@ cases, including the four continuation cases. Eight server tests passed for
 season ordering and derivation of volume and chapter positions. Live provider
 and matched visual checks remain open.
 
+The AniList franchise screen offers the same continuation lookup for
+titles without a TMDB match. Eight targeted standalone cases and the
+44-case bundled Following suite passed with API fixtures. A direct live
+AniList lookup also returned season options and manga source material
+for Naruto using isolated SQLite. Live browser navigation and matched
+visual review remain open.
+
 ### Release Calendar increment
 
 Lumen now serves `/calendar` in both deployments. The Release Calendar uses
