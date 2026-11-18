@@ -142,6 +142,7 @@ const workflowDestinations = new Map([
   ['/blocklist', '/blocklist'],
   ['/issues', '/issues'],
   ['/search', '/search'],
+  ['/discover/trending', '/trending'],
   ['/discover/adult', '/adult'],
   ['/discover/audiobooks', '/audiobooks'],
   ['/discover/books', '/books'],
@@ -156,6 +157,7 @@ const workflowDestinations = new Map([
 const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
   '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
+  '/trending': ['mediaType', 'timeWindow'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
   '/indexer-search': ['query', 'category'],
   '/issues': ['issue'],
@@ -166,6 +168,12 @@ function workflowDeepLink(req: Request): string | undefined {
   const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
   if (issue && Number.isSafeInteger(Number(issue))) {
     return `/lumen/issues/${issue}`;
+  }
+
+  if (nativePath === '/discover/trending') {
+    if (req.query.mediaType === 'music') return '/lumen/music';
+    if (req.query.mediaType === 'book') return '/lumen/books';
+    if (req.query.mediaType === 'audiobook') return '/lumen/audiobooks';
   }
 
   const destination = workflowDestinations.get(nativePath);

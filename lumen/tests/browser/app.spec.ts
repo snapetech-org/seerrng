@@ -2526,3 +2526,39 @@ test('Coming soon scopes results and network requests by media', async ({
     page.getByRole('link', { name: 'Upcoming Series' })
   ).toBeVisible();
 });
+
+test('Trending preserves mixed title identities and sends scoped filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requests: URLSearchParams[] = [];
+  await page.route(/\/api\/v1\/discover\/trending\?/, (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    requests.push(query);
+    const number = Number(query.get('page'));
+    const tv = { id: movie.id, name: 'Trending Series', mediaType: 'tv' };
+    const mixed = query.get('mediaType') === 'all';
+    const results =
+      mixed && number === 1 ? [{ ...movie, title: 'Trending Film' }] : [tv];
+    return route.fulfill({
+      json: { ...paged(results), page: number, totalPages: mixed ? 2 : 1 },
+    });
+  });
+
+  await page.goto('/trending');
+  await expect(page.getByRole('link', { name: 'Trending Film' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Trending Series' })
+  ).toHaveAttribute('href', '/tv/101');
+  await page.getByRole('button', { name: 'Series', exact: true }).click();
+  await page.getByRole('button', { name: 'Weekly', exact: true }).click();
+  await expect
+    .poll(() => Object.fromEntries(requests.at(-1) ?? []))
+    .toMatchObject({ mediaType: 'tv', timeWindow: 'week', page: '1' });
+  await expect(page.getByRole('link', { name: 'Trending Film' })).toHaveCount(
+    0
+  );
+  await expect(
+    page.getByRole('link', { name: 'Trending Series' })
+  ).toBeVisible();
+});

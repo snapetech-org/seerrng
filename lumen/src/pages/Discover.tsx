@@ -184,7 +184,7 @@ export default function Discover() {
       </header>
 
       {on.hero && (
-        <Section title="Popular right now">
+        <Section title="Popular right now" link={['See all', '/trending']}>
           {hero.length ? (
             <Rail className="feat-rail" restoreId="featured">
               {hero.map((it, i) => (

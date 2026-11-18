@@ -1295,3 +1295,17 @@ entry requests only its selected feed. Bundled route tests, companion
 container checks, and twelve standalone browser checks across desktop,
 iPhone, Android and tablet passed. Matched visual and live provider
 comparisons remain open.
+
+### Full video Trending grid
+
+The Discover hero links to a paginated Trending grid with movie, series,
+mixed media, daily and weekly scopes. The grid uses media type and ID
+together so a movie and series can share a numeric ID across pages.
+Native Trending bookmarks preserve video scopes in both deployments.
+Native music, book and audiobook scopes open their Lumen browse screens.
+
+Bundled and companion redirect checks and eight standalone browser
+checks passed across desktop, iPhone, Android and tablet. The browser
+fixtures cover mixed identities, filter queries, and shared pagination
+in related video lists. Live results and matched visual comparisons
+remain open.

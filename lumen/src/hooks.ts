@@ -126,7 +126,12 @@ const pagedSnap = new Map<
   string,
   { items: unknown[]; page: number; total: number; gen: number }
 >();
-export function usePaged<T>(base: string) {
+const pageItemId = (item: unknown) => String((item as { id?: unknown }).id);
+
+export function usePaged<T>(
+  base: string,
+  idOf: (item: T) => string = pageItemId
+) {
   const entry = useLocation().key;
   const snapKey = `${entry}|${base}`;
   const snap = pagedSnap.get(snapKey);
@@ -168,7 +173,6 @@ export function usePaged<T>(base: string) {
     let live = true;
     const gen = cacheGeneration();
     const sep = base.includes('?') ? '&' : '?';
-    const idOf = (x: T) => String((x as { id?: unknown }).id);
     const head = Math.min(2, s.page);
     const tail = [s.page - 1, s.page].filter((p) => p > head);
     (async () => {
@@ -213,7 +217,7 @@ export function usePaged<T>(base: string) {
     return () => {
       live = false;
     };
-  }, [snapKey, base]);
+  }, [snapKey, base, idOf]);
   useEffect(() => {
     if (loadedBase === base && page > 0)
       pagedSnap.set(snapKey, { items, page, total, gen: rowsGen.current });
@@ -249,7 +253,6 @@ export function usePaged<T>(base: string) {
         }>(`${base}${sep}page=${page + 1}`);
         if (!ownsRequest()) return; // an old filter must not replace the current list
         // popular lists shift between pages, so a title can come back; show it once
-        const idOf = (x: T) => String((x as { id?: unknown }).id);
         setItems((x) => {
           const seen = new Set(x.map(idOf));
           return x.concat(d.results.filter((r) => !seen.has(idOf(r))));
@@ -265,7 +268,7 @@ export function usePaged<T>(base: string) {
         }
       }
     },
-    [base, loadedBase, page, total, loading, error]
+    [base, loadedBase, page, total, loading, error, idOf]
   );
   const more = useCallback(() => loadNext(false), [loadNext]);
   const retry = useCallback(() => loadNext(true), [loadNext]);

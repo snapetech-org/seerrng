@@ -162,6 +162,12 @@ server {
   location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|patches|sports)/?$ {
     return 302 /$1$is_args$args;
   }
+  location ~ ^/discover/trending/?$ {
+    if ($arg_mediaType = music) { return 302 /music; }
+    if ($arg_mediaType = book) { return 302 /books; }
+    if ($arg_mediaType = audiobook) { return 302 /audiobooks; }
+    return 302 /trending$is_args$args;
+  }
   location ~ ^/discover/movies/upcoming/?$ {
     return 302 /soon?media=movie;
   }
