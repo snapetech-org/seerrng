@@ -1624,3 +1624,50 @@ test('featured series can retry a watch-rule rejection and confirm accepted seas
   const expected = { mediaType: 'tv', mediaId: 202, seasons: 'all' };
   expect(writes).toEqual([expected, expected]);
 });
+
+test('Coming Soon retries a failed series feed without dropping movies', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let seriesReads = 0;
+  let movieReads = 0;
+  await page.route('**/api/v1/discover/movies/upcoming', (route) => {
+    movieReads++;
+    return route.fulfill({ json: paged([movie]) });
+  });
+  await page.route('**/api/v1/discover/tv/upcoming', (route) => {
+    seriesReads++;
+    return seriesReads === 1
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Series feed unavailable.' },
+        })
+      : route.fulfill({
+          json: paged([
+            {
+              ...movie,
+              id: 202,
+              title: undefined,
+              name: 'Recovered Series',
+              firstAirDate: '2099-01-01',
+            },
+          ]),
+        });
+  });
+
+  await page.goto('/soon');
+  const title = page.getByRole('link', { name: 'The Test Film', exact: true });
+  const alert = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load upcoming series' });
+  await expect(title).toBeVisible();
+  await expect(alert).toBeVisible();
+  await expect(page.getByText('No upcoming titles found.')).toHaveCount(0);
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Recovered Series' })
+  ).toBeVisible();
+  await expect(title).toBeVisible();
+  await expect(alert).toHaveCount(0);
+  expect(movieReads).toBe(1);
+});

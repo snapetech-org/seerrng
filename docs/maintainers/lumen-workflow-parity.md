@@ -979,3 +979,8 @@ a watch-rule rejection and retry. Both attempts preserve whole-series intent,
 and the successful retry reports the accepted season. Desktop, iPhone,
 Android and tablet presets passed. Bundled and native visual comparisons
 remain open.
+
+Coming Soon now identifies failed movie or series feeds independently and
+retries the affected feed while keeping successful results visible. The
+standalone browser fixture verified a series-only failure and recovery on
+four viewport presets. Bundled and native visual comparisons remain open.

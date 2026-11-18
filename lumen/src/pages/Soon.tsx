@@ -45,8 +45,7 @@ export default function Soon() {
   const tvList = useApi<Paged<TitleResult>>('/discover/tv/upcoming');
   const movies = movieList.data;
   const tv = tvList.data;
-  // both lists failed: say so (with Retry) instead of "Loading…" for good
-  const failed = !movies && !tv && !!movieList.error && !!tvList.error;
+  const loading = (!movies && !movieList.error) || (!tv && !tvList.error);
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
@@ -107,15 +106,24 @@ export default function Soon() {
         </div>
         <p className="sub">Request ahead and it downloads the day it’s out.</p>
       </header>
-      {!movies && !tv && !failed && <p className="note">Loading…</p>}
+      {loading && (
+        <p className="note" role="status">
+          Loading upcoming titles…
+        </p>
+      )}
       <ServiceNote
-        error={failed ? movieList.error : null}
-        what="upcoming titles"
-        retry={() => {
-          movieList.reload();
-          tvList.reload();
-        }}
+        error={movieList.error}
+        what="upcoming movies"
+        retry={movieList.reload}
       />
+      <ServiceNote
+        error={tvList.error}
+        what="upcoming series"
+        retry={tvList.reload}
+      />
+      {movies && tv && !months.size && (
+        <p className="note">No upcoming titles found.</p>
+      )}
       {choosing && (
         <RequestSheet
           it={choosing}
