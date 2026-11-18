@@ -208,9 +208,37 @@ const SORTS = {
   ],
 } as const;
 
+function normalizeNativeFilters(params: URLSearchParams) {
+  if (params.get('nativeFilters') !== '1') return params;
+  const normalized = new URLSearchParams(params);
+  const sort = normalized.get('sortBy');
+  if (sort && /^[a-z_]+\.(asc|desc)$/.test(sort)) normalized.set('sort', sort);
+  const availability = normalized.get('availability');
+  if (availability === 'hd' || availability === '4k') {
+    normalized.set('show', 'have');
+    if (availability === '4k') normalized.set('quality', '4k');
+    else normalized.delete('quality');
+  }
+  const genre = normalized.get('genre');
+  if (
+    genre &&
+    genre.length <= 512 &&
+    /^\d{1,10}(?:[|,]\d{1,10})*$/.test(genre)
+  ) {
+    normalized.set('genre', genre.replaceAll('|', ','));
+    if (genre.includes(',')) normalized.set('match', 'all');
+    else normalized.delete('match');
+  }
+  normalized.delete('nativeFilters');
+  normalized.delete('sortBy');
+  normalized.delete('availability');
+  return normalized;
+}
+
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
-  const [p, setP] = useSearchParams();
+  const [params, setP] = useSearchParams();
+  const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
   const { prefs } = usePrefs();
   const asks = useAsksRequestOptions();

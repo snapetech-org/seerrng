@@ -3142,3 +3142,29 @@ test('music and Open Library book details open Associations with exact identity'
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
   await expect(association).toHaveCount(0);
 });
+
+test('native companion discovery filters retain genre matching and clear without reapplying aliases', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: URLSearchParams[] = [];
+  await page.route(/\/api\/v1\/discover\/movies\?/, (route) => {
+    reads.push(new URL(route.request().url()).searchParams);
+    return route.fulfill({ json: paged([movie]) });
+  });
+  await page.goto(
+    '/movies?nativeFilters=1&genre=18%2C35&sortBy=vote_average.desc&keywords=12'
+  );
+  await expect
+    .poll(() => Object.fromEntries(reads.at(-1) ?? []))
+    .toMatchObject({
+      genre: '18,35',
+      sortBy: 'vote_average.desc',
+      keywords: '12',
+    });
+  await page.getByRole('button', { name: /clear discovery filters/i }).click();
+  await expect.poll(() => reads.at(-1)?.get('sortBy')).toBe('popularity.desc');
+  expect(reads.at(-1)?.has('genre')).toBe(false);
+  expect(reads.at(-1)?.has('keywords')).toBe(false);
+  await expect(page).toHaveURL(/\/movies$/);
+});

@@ -1400,3 +1400,10 @@ Narrow viewports show the list, including when opening a graph URL.
 Eight standalone checks passed, including graph selection on desktop and
 tablet, the narrow fallback, and music and book entry points. Live
 provider data and matched visual comparisons remain open.
+
+The companion now opens native movie and series discovery bookmarks,
+including keyword, genre, language, movie studio, and TV network routes.
+Browse translates native sort, availability, and genre matching without
+reapplying those filters after Clear Discovery Filters. Production proxy
+checks and eight standalone browser checks passed across four viewport
+presets.

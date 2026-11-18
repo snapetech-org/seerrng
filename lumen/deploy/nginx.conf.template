@@ -177,6 +177,24 @@ server {
   location ~ ^/discover/tv/upcoming/?$ {
     return 302 /soon?media=tv;
   }
+  location ~ "^/discover/movies/(genre|studio)/([1-9][0-9]{0,8}|1000000000)/?$" {
+    return 302 /movies?nativeFilters=1&$1=$2&$args;
+  }
+  location ~ "^/discover/tv/(genre|network)/([1-9][0-9]{0,8}|1000000000)/?$" {
+    return 302 /series?nativeFilters=1&$1=$2&$args;
+  }
+  location ~ "^/discover/movies/language/([a-z]{2})/?$" {
+    return 302 /movies?nativeFilters=1&language=$1&$args;
+  }
+  location ~ "^/discover/tv/language/([a-z]{2})/?$" {
+    return 302 /series?nativeFilters=1&language=$1&$args;
+  }
+  location ~ ^/discover/movies(/keyword)?/?$ {
+    return 302 /movies?nativeFilters=1&$args;
+  }
+  location ~ ^/discover/tv(/keyword)?/?$ {
+    return 302 /series?nativeFilters=1&$args;
+  }
   location ~ ^/coming-soon/?$ {
     return 302 /soon;
   }
