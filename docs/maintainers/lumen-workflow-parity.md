@@ -991,3 +991,11 @@ Movie and series grids expose genre exclusion through SeerrNG's discovery
 query. The selection is shareable through the URL and clears with All genres.
 Standalone movie fixtures verified the query, reload and reset across four
 viewport presets. Series-specific, bundled and native comparisons remain open.
+
+### Video rating bounds
+
+Movie and series grids support minimum and maximum TMDB ratings in tenths.
+The applied bounds use server discovery queries and persist in the URL.
+Standalone series checks covered reversed bounds, exact query parameters,
+reload, and clearing the bounds while preserving genre exclusion. Four
+viewport presets passed. Bundled and native visual comparison remains open.

@@ -11,6 +11,82 @@ import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
 import { usePrefs } from '../settings';
 
+function ratingBound(value: string | null) {
+  return value && /^(?:[0-9](?:\.[0-9]0*)?|10(?:\.0+)?|\.[0-9]0*)$/.test(value)
+    ? value
+    : '';
+}
+
+function RatingFilter({
+  min,
+  max,
+  apply,
+}: {
+  min: string;
+  max: string;
+  apply: (min: string, max: string) => void;
+}) {
+  const [low, setLow] = useState(min);
+  const [high, setHigh] = useState(max);
+  const reversed = !!low && !!high && Number(low) > Number(high);
+  return (
+    <form
+      className="toolbar"
+      aria-label="TMDB Rating Filter"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!reversed) apply(ratingBound(low), ratingBound(high));
+      }}
+    >
+      <label className="sel">
+        <span className="lbl">Minimum Rating</span>
+        <input
+          className="cfg-input"
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={low}
+          onChange={(event) => setLow(event.target.value)}
+        />
+      </label>
+      <label className="sel">
+        <span className="lbl">Maximum Rating</span>
+        <input
+          className="cfg-input"
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={high}
+          onChange={(event) => setHigh(event.target.value)}
+        />
+      </label>
+      <button className="btn btn-tonal btn-sm" disabled={reversed}>
+        Apply Rating
+      </button>
+      {(min || max || low || high) && (
+        <button
+          className="btn btn-quiet btn-sm"
+          type="button"
+          onClick={() => {
+            setLow('');
+            setHigh('');
+            apply('', '');
+          }}
+        >
+          Clear Rating
+        </button>
+      )}
+      {reversed && (
+        <p className="note" role="alert">
+          Minimum rating must be at or below maximum rating.
+        </p>
+      )}
+    </form>
+  );
+}
+
 const SORTS = {
   movie: [
     ['popularity.desc', 'Popular'],
@@ -33,6 +109,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
   const keywordParam = p.get('keywords') ?? '';
   const keyword = /^[1-9][0-9]{0,9}$/.test(keywordParam) ? keywordParam : '';
+  const minRating = ratingBound(p.get('voteAverageGte'));
+  const maxRating = ratingBound(p.get('voteAverageLte'));
+  const validRatingRange =
+    !minRating || !maxRating || Number(minRating) <= Number(maxRating);
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -44,6 +124,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(validRatingRange && minRating ? { voteAverageGte: minRating } : {}),
+    ...(validRatingRange && maxRating ? { voteAverageLte: maxRating } : {}),
     ...(keyword ? { keywords: keyword } : {}),
     ...(genre
       ? { genre, ...(excludeGenre ? { excludeGenre: 'true' } : {}) }
@@ -183,6 +265,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           }}
         />
       </div>
+      <RatingFilter
+        key={`${minRating}:${maxRating}`}
+        min={minRating}
+        max={maxRating}
+        apply={(min, max) => {
+          const next = new URLSearchParams(p);
+          if (min) next.set('voteAverageGte', min);
+          else next.delete('voteAverageGte');
+          if (max) next.set('voteAverageLte', max);
+          else next.delete('voteAverageLte');
+          setP(next, { replace: true });
+        }}
+      />
       {list.error && !items.length && (
         <div className="empty">
           <b>Couldn’t load {word.toLowerCase()}</b>
@@ -191,7 +286,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       )}
       {!list.error && !items.length && !list.loading && !capped && (
         <div className="empty">
-          <b>Nothing here</b>Try another genre, or switch to All.
+          <b>Nothing here</b>Try changing your filters.
         </div>
       )}
       {list.loading && !items.length && list.page === 0 && <GridSkeleton />}

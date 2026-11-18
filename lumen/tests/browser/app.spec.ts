@@ -1699,3 +1699,30 @@ test('movie genre exclusion survives reload and clears with All genres', async (
   await expect(exclude).toBeDisabled();
   await expect(page).toHaveURL(/\/movies$/);
 });
+
+test('series discovery applies and clears decimal rating bounds', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/series?genre=18&excludeGenre=true');
+  await page.getByLabel('Minimum Rating').fill('8.7');
+  await page.getByLabel('Maximum Rating').fill('7.1');
+  const apply = page.getByRole('button', { name: 'Apply Rating' });
+  await expect(apply).toBeDisabled();
+  await page.getByLabel('Minimum Rating').fill('6.2');
+  const filtered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('voteAverageGte') === '6.2' &&
+      url.searchParams.get('voteAverageLte') === '7.1' &&
+      url.searchParams.get('excludeGenre') === 'true'
+    );
+  });
+  await apply.click();
+  await filtered;
+  await page.reload();
+  await expect(page.getByLabel('Minimum Rating')).toHaveValue('6.2');
+  await page.getByRole('button', { name: 'Clear Rating' }).click();
+  await expect(page).toHaveURL(/\/series\?genre=18&excludeGenre=true$/);
+});
