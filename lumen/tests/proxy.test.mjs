@@ -153,8 +153,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/profile/watchlist/?page=2', '/watchlist?page=2'],
       ['/users/19/watchlist/?page=2', '/watchlist/user/19?page=2'],
       [
-        '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie',
-        '/requests?requestedBy=19&show=pending&mediaType=movie',
+        '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie&timeFrame=7d&sort=added&sortDirection=asc',
+        '/requests?requestedBy=19&requestedBy=11&filter=pending&mediaType=movie&timeFrame=7d&sort=added&sortDirection=asc',
       ],
       ['/discover/comics?q=Example', '/comics?q=Example'],
       ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
