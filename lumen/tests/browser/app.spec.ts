@@ -4316,6 +4316,9 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
   await unmatched.click();
   await expect(unmatched).toBeChecked();
   await expect(page.getByText('Unmatched Fixture')).toBeVisible();
+  await expect(
+    page.getByText('This title has no stable provider ID for saving a match.')
+  ).toBeVisible();
   await expect(page.getByRole('link', { name: 'Matched Fixture' })).toHaveCount(
     0
   );
@@ -4391,6 +4394,7 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })
   ).toHaveAttribute('href', new URL('./tv/202', baseURL).pathname);
+  await expect(page.getByText(/Personal match/)).toBeVisible();
   await page.getByRole('button', { name: 'Reset Match' }).click();
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })

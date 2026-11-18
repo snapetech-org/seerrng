@@ -20,6 +20,12 @@ const feeds = {
   'mdblist/list': 'MDBList Public List',
 };
 
+const matchDescriptions = {
+  personal: 'Personal match',
+  curated: 'Curated match',
+  'external-id': 'Matched by catalog ID',
+};
+
 interface FeedPage {
   page: number;
   hasMore: boolean;
@@ -165,6 +171,13 @@ export default function ProviderDiscovery() {
             const animeId = feed.startsWith('anilist/')
               ? /^anilist:([1-9]\d{0,9})$/.exec(item.id)?.[1]
               : undefined;
+            const matchDescription =
+              item.identityResolution &&
+              Object.hasOwn(matchDescriptions, item.identityResolution)
+                ? matchDescriptions[item.identityResolution]
+                : item.identityMapped
+                  ? matchDescriptions.personal
+                  : undefined;
             return (
               <li className="set" key={item.id}>
                 <div>
@@ -183,10 +196,16 @@ export default function ProviderDiscovery() {
                           ? 'Movie'
                           : 'Series'
                         : 'No catalogue match',
+                      href ? matchDescription : undefined,
                     ]
                       .filter(Boolean)
                       .join(' · ')}
                   </small>
+                  {!href && !item.mappingAvailable && (
+                    <small>
+                      This title has no stable provider ID for saving a match.
+                    </small>
+                  )}
                   {animeId && (
                     <Link
                       className="btn btn-quiet btn-sm"
