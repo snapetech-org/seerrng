@@ -104,7 +104,8 @@ function releaseHref(item: Release) {
             item.mediaType,
             item.tmdbId,
             item.is4k,
-            item.seasonNumber
+            item.seasonNumber,
+            item.episodeNumber
           )
         : undefined;
     case 'music':

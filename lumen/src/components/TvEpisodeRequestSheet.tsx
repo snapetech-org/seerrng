@@ -17,6 +17,7 @@ export default function TvEpisodeRequestSheet({
   tvId,
   seasons,
   initialSeason,
+  initialEpisode,
   pending,
   is4k,
   approval,
@@ -29,6 +30,7 @@ export default function TvEpisodeRequestSheet({
   tvId: number;
   seasons: Season[];
   initialSeason?: number;
+  initialEpisode?: number;
   pending: ReadonlyMap<number, Set<number>>;
   is4k: boolean;
   approval: boolean;
@@ -43,7 +45,14 @@ export default function TvEpisodeRequestSheet({
       seasons.find(({ seasonNumber }) => seasonNumber === initialSeason)
         ?.seasonNumber ?? seasons[0].seasonNumber
   );
-  const [picked, setPicked] = useState(new Set<number>());
+  const [picked, setPicked] = useState(
+    () =>
+      new Set(
+        season === initialSeason && initialEpisode !== undefined
+          ? [initialEpisode]
+          : []
+      )
+  );
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, close);
   useBackCloses(close);

@@ -83,7 +83,7 @@ for (const permissions of [2, 32]) {
     ).toHaveAttribute('href', '/movie/12?quality=4k');
     await expect(
       page.getByRole('link', { name: 'Fixture Series' })
-    ).toHaveAttribute('href', '/tv/42?quality=4k#season-2');
+    ).toHaveAttribute('href', '/tv/42?quality=4k&episode=3#season-2');
     await expect(
       page.getByRole('link', { name: 'Fixture Audiobook' })
     ).toHaveAttribute('href', '/book/hc%3A10?f=audio');

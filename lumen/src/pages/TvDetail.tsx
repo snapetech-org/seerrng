@@ -751,6 +751,11 @@ export default function TvDetail() {
                       ? undefined
                       : Number(seasonAnchor)
                   }
+                  initialEpisode={
+                    /^[1-9]\d{0,8}$/.test(params.get('episode') ?? '')
+                      ? Number(params.get('episode'))
+                      : undefined
+                  }
                   pending={pendingEpisodes}
                   is4k={is4k}
                   approval={episodeApproval}

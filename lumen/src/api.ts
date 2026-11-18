@@ -587,7 +587,8 @@ export function videoDetailPath(
   kind: 'movie' | 'tv',
   id: number,
   is4k: boolean,
-  season?: number
+  season?: number,
+  episode?: number
 ) {
   const anchor =
     kind === 'tv' &&
@@ -596,7 +597,16 @@ export function videoDetailPath(
     season >= 0
       ? `#season-${season}`
       : '';
-  return `/${kind}/${id}${is4k ? '?quality=4k' : ''}${anchor}`;
+  const query = new URLSearchParams();
+  if (is4k) query.set('quality', '4k');
+  if (
+    anchor &&
+    episode !== undefined &&
+    Number.isSafeInteger(episode) &&
+    episode > 0
+  )
+    query.set('episode', String(episode));
+  return `/${kind}/${id}${query.size ? `?${query}` : ''}${anchor}`;
 }
 
 export function bookDetailPath(

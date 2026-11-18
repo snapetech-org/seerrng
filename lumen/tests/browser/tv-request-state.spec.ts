@@ -623,7 +623,7 @@ for (const available of [false, true]) {
         json: { episodes: [{ episodeNumber: 3, name: 'Bookmarked Season' }] },
       })
     );
-    await page.goto('/tv/84773#season-2');
+    await page.goto('/tv/84773?episode=3#season-2');
     await page
       .getByRole('button', { name: 'Request Episodes', exact: true })
       .click();
@@ -631,8 +631,10 @@ for (const available of [false, true]) {
     await expect(sheet.getByRole('combobox', { name: 'Season' })).toHaveValue(
       String(expected)
     );
-    await expect(
-      sheet.getByRole('checkbox', { name: 'E3 Bookmarked Season' })
-    ).toBeVisible();
+    const episode = sheet.getByRole('checkbox', {
+      name: 'E3 Bookmarked Season',
+    });
+    if (available) await expect(episode).not.toBeChecked();
+    else await expect(episode).toBeChecked();
   });
 }
