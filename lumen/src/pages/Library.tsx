@@ -237,10 +237,31 @@ function LibraryPage({
   previous: () => void;
   next: (cursor: number) => void;
 }) {
-  const { data, error, reload, refresh } = useApi<LibraryResult>(path, {
+  const {
+    data: response,
+    error: requestError,
+    reload,
+    refresh,
+  } = useApi<LibraryResult>(path, {
     currentPathOnly: true,
     keepDuringRefresh: true,
   });
+  const data =
+    response &&
+    Array.isArray(response.items) &&
+    response.items.every(
+      (item) => typeof item?.id === 'string' && typeof item.title === 'string'
+    ) &&
+    (response.libraries === undefined ||
+      (Array.isArray(response.libraries) &&
+        response.libraries.every(
+          (library) =>
+            typeof library?.id === 'string' && typeof library.name === 'string'
+        )))
+      ? response
+      : null;
+  const error =
+    requestError || (response && !data ? 'Invalid library response.' : null);
   const previousRevision = useRef(matchRevision);
   useEffect(() => {
     if (previousRevision.current !== matchRevision) {
@@ -317,10 +338,25 @@ export default function Library() {
   const connections = useApi<Connections>(`${BASE}/accounts`);
   const [matchRevision, setMatchRevision] = useState(0);
   const [bookmark, setBookmark] = useSearchParams();
-  const nativeSource = connections.data?.mediaServer;
+  const data = Array.isArray(connections.data?.accounts)
+    ? connections.data
+    : null;
+  const error =
+    connections.error ||
+    (connections.data && !data ? 'Invalid connected accounts response.' : null);
+  const nativeSource = data?.mediaServer;
   const sources = [
-    ...(nativeSource?.connected ? [nativeSource.provider] : []),
-    ...(connections.data?.accounts ?? []).map((account) => account.provider),
+    ...(nativeSource?.connected === true && isNative(nativeSource.provider)
+      ? [nativeSource.provider]
+      : []),
+    ...(data?.accounts ?? []).flatMap((account) => {
+      const provider = account?.provider;
+      return provider === 'trakt' ||
+        provider === 'anilist' ||
+        provider === 'simkl'
+        ? [provider]
+        : [];
+    }),
   ];
   const current =
     sources.find((source) => source === bookmark.get('source')) ?? sources[0];
@@ -330,16 +366,16 @@ export default function Library() {
         <h1>My Media</h1>
       </header>
       <ServiceNote
-        error={connections.error}
+        error={error}
         what="connected accounts"
         retry={connections.reload}
       />
-      {!connections.data && !connections.error && (
+      {!data && !error && (
         <p className="note" role="status">
           Loading connected accounts…
         </p>
       )}
-      {connections.data && !current && (
+      {data && !current && (
         <div className="toolbar">
           <p className="note">
             Link a media server or tracking account to browse your library.

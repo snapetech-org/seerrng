@@ -309,3 +309,53 @@ test('My Media offers account linking and reads new connections on return', asyn
     .click();
   await expect(page.getByText('Fixture Viewer')).toBeVisible();
 });
+
+test('My Media recovers from malformed connected accounts and shelf responses', async ({
+  page,
+}) => {
+  let accountReads = 0;
+  let shelfReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json:
+          ++accountReads === 1
+            ? { accounts: {} }
+            : {
+                accounts: [
+                  null,
+                  { provider: 'unrecognized' },
+                  { provider: 'trakt' },
+                ],
+                mediaServer: null,
+              },
+      });
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json:
+          ++shelfReads === 1
+            ? { items: [null] }
+            : {
+                items: [{ id: 'fixture', title: 'Recovered Film' }],
+                hasMore: false,
+              },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  const error = page.getByRole('alert');
+  await expect(error).toContainText('Invalid connected accounts response.');
+  await error.getByRole('button', { name: 'Retry' }).click();
+  await expect(error).toContainText('Invalid library response.');
+  await expect(
+    page.getByRole('combobox', { name: 'Library Source' }).getByRole('option')
+  ).toHaveCount(1);
+  await error.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('Recovered Film')).toBeVisible();
+});
