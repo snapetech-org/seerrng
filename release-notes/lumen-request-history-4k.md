@@ -31,3 +31,5 @@ Each season in TV Request History links directly to its row and keeps the reques
 The episode picker starts at the bookmarked season when that season is eligible to request.
 
 Release Calendar carries the episode number to the series detail page. The picker selects that episode if it is eligible when opened.
+
+Bundled TV redirects retain a valid episode selection from an older link.

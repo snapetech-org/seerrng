@@ -567,6 +567,12 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
       ['/tv/42?quality=4k&extra=discard', '/lumen/tv/42?quality=4k'],
+      [
+        '/tv/42?quality=4k&episode=3&extra=discard',
+        '/lumen/tv/42?quality=4k&episode=3',
+      ],
+      ['/tv/42?episode=3&episode=4', '/lumen/tv/42'],
+      ['/tv/42?episode=0', '/lumen/tv/42'],
       ['/tv/42?quality=4k&quality=hd', '/lumen/tv/42'],
       ['/movie/42?quality=4k', '/lumen/movie/42?quality=4k'],
       [

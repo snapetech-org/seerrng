@@ -397,11 +397,17 @@ function detailDeepLink(req: Request): string | undefined {
   );
   if (!match || Number(match[2]) > 1_000_000_000) return;
   const [, kind, id] = match;
-  const quality =
-    (kind === 'tv' || kind === 'movie') && req.query.quality === '4k'
-      ? '?quality=4k'
-      : '';
-  return `/lumen/${kind}/${id}${quality}`;
+  const query = new URLSearchParams();
+  if ((kind === 'tv' || kind === 'movie') && req.query.quality === '4k')
+    query.set('quality', '4k');
+  const episode = req.query.episode;
+  if (
+    kind === 'tv' &&
+    typeof episode === 'string' &&
+    /^[1-9]\d{0,8}$/.test(episode)
+  )
+    query.set('episode', episode);
+  return `/lumen/${kind}/${id}${query.size ? `?${query}` : ''}`;
 }
 
 const workflowDestinations = new Map([
