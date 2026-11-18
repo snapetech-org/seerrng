@@ -127,3 +127,65 @@ test('OIDC linking validates the round trip and consumes the callback once', asy
   await expect(page).toHaveURL(/\/me\/account\/linked-accounts$/);
   expect(callbacks).toBe(1);
 });
+
+test('tracking accounts read back write preferences and confirm disconnect', async ({
+  page,
+}) => {
+  const base = '/integrations/discovery/accounts';
+  let connected = true;
+  let allowWrites = false;
+  let denied = true;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === base)
+      return route.fulfill({
+        json: {
+          accounts: connected
+            ? [{ provider: 'trakt', username: 'Viewer', allowWrites }]
+            : [],
+        },
+      });
+    if (path === base + '/trakt/preferences') {
+      expect(request.method()).toBe('PUT');
+      expect(request.postDataJSON()).toEqual({ allowWrites: true });
+      if (denied) {
+        denied = false;
+        return route.fulfill({ status: 403, json: {} });
+      }
+      allowWrites = true;
+      return route.fulfill({ status: 204 });
+    }
+    if (path === base + '/trakt') {
+      expect(request.method()).toBe('DELETE');
+      connected = false;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/me/account/linked-accounts');
+  const writes = page.getByRole('checkbox', { name: 'Allow writes to Trakt' });
+  await writes.check({ trial: true });
+  await writes.click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(writes).not.toBeChecked();
+  await writes.click();
+  await expect(writes).toBeChecked();
+  await page.getByRole('button', { name: 'Disconnect Trakt' }).click();
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation.getByRole('button', { name: 'Keep connected' }).click();
+  await expect(writes).toBeChecked();
+  await page.getByRole('button', { name: 'Disconnect Trakt' }).click();
+  await confirmation
+    .getByRole('button', { name: 'Disconnect', exact: true })
+    .click();
+  await expect(
+    page.getByText('No tracking accounts are connected.')
+  ).toBeVisible();
+});

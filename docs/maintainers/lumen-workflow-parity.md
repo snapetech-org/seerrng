@@ -52,7 +52,7 @@ instance credentials. Personal connections need an account-owner entry point.
 
 | Workflow | Existing API and acceptance |
 | --- | --- |
-| Read, disconnect, and allow writes | Use the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Verify account isolation, readback after successful writes, and recovery after denied or failed writes. |
+| Read, disconnect, and allow writes | Lumen Linked Accounts uses the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Desktop and iPhone browser fixtures verify preference readback, a denied write, cancellation, and confirmed disconnection. Live provider and matched visual verification remain open. |
 | Trakt | Start through the provider connect endpoint, complete through the existing server-verified callback and completion endpoint, and show denied and expired results. The server currently returns to `/settings/discovery` with result parameters, and the bundled and standalone settings redirects discard those parameters. Verify the normal Classic flow and Lumen account-owner callback, with and without administrator permissions. |
 | AniList | Open the provider authorization URL and submit the returned code through the completion endpoint. Keep the code out of bookmark URLs and clear it on success or cancellation. |
 | Simkl | Display the device code and expiry, then poll at the server's interval. Stop polling on expiry, cancellation, account change, or unmount. |
