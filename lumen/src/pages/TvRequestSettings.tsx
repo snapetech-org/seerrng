@@ -6,6 +6,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
@@ -43,6 +44,140 @@ interface QueueAccess {
 type Change =
   | { kind: 'gate'; action: (typeof GATE)[GateStatus]['action']; label: string }
   | { kind: 'queue'; count: number };
+
+interface PendingAccessRequest {
+  id: number;
+  displayName: string;
+  requestedAt: string | null;
+}
+
+function AccessReview({ viewerId }: { viewerId: number }) {
+  const { data, error, reload } = useApi<PendingAccessRequest[]>(
+    '/user/tv-season-watch-gate-requests'
+  );
+  const [pending, setPending] = useState<{
+    request: PendingAccessRequest;
+    decision: 'approve' | 'deny';
+  }>();
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [failure, setFailure] = useState('');
+  const working = useRef(false);
+  useEffect(() => {
+    const timer = window.setInterval(reload, 60_000);
+    return () => window.clearInterval(timer);
+  }, [reload]);
+
+  const label = pending?.decision === 'approve' ? 'Approve' : 'Decline';
+
+  async function review() {
+    if (!pending || pending.request.id === viewerId || working.current) return;
+    const generation = sessionGeneration();
+    working.current = true;
+    setBusy(true);
+    setFailure('');
+    setNotice('');
+    try {
+      await api(
+        `/user/${pending.request.id}/settings/tv-season-watch-gate/review`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ decision: pending.decision }),
+        }
+      );
+      if (generation !== sessionGeneration()) return;
+      setNotice(
+        `Request ${pending.decision === 'approve' ? 'approved' : 'declined'}.`
+      );
+    } catch (error) {
+      if (generation !== sessionGeneration()) return;
+      setFailure(friendlyError(error, 'Could not review this request.'));
+    } finally {
+      if (generation === sessionGeneration()) {
+        setPending(undefined);
+        setBusy(false);
+        reload();
+      }
+      working.current = false;
+    }
+  }
+
+  return (
+    <Section title="Previous-Season Watch Requests">
+      <ServiceNote error={error} what="access requests" retry={reload} />
+      {failure && (
+        <p className="note" role="alert">
+          {failure}
+        </p>
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {!data && !error && (
+        <p className="note" role="status">
+          Loading access requests…
+        </p>
+      )}
+      {data?.length === 0 && (
+        <p className="note">No pending access requests.</p>
+      )}
+      {!!data?.length && (
+        <ul className="setlist">
+          {data.map((request) => (
+            <li className="set" key={request.id}>
+              <div>
+                <b>{request.displayName}</b>
+                {request.requestedAt && (
+                  <small>
+                    Requested{' '}
+                    {new Date(request.requestedAt).toLocaleDateString()}
+                  </small>
+                )}
+              </div>
+              {request.id === viewerId ? (
+                <small>Another user manager must review your request.</small>
+              ) : (
+                <div className="toolbar">
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    onClick={() => setPending({ request, decision: 'deny' })}
+                  >
+                    Decline
+                  </button>
+                  <button
+                    className="btn btn-tonal btn-sm"
+                    onClick={() => setPending({ request, decision: 'approve' })}
+                  >
+                    Approve
+                  </button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      {pending && (
+        <ConfirmSheet
+          title={`${label} access for ${pending.request.displayName}?`}
+          body={
+            pending.decision === 'approve'
+              ? 'This user can turn on the previous-season watch requirement for their account.'
+              : 'This user can request access again from their account.'
+          }
+          confirm={label}
+          cancel="Cancel"
+          busy={busy}
+          onConfirm={() => void review()}
+          onClose={() => {
+            if (!working.current) setPending(undefined);
+          }}
+        />
+      )}
+    </Section>
+  );
+}
 
 function RequestSettings({
   id,
@@ -190,6 +325,7 @@ function RequestSettings({
           </Link>
         </div>
       </Section>
+      {canManageUsers && <AccessReview viewerId={id} />}
       <Section title="Episode Queue">
         <p className="note">
           Playback can keep upcoming episodes requested on interactive TV

@@ -3532,3 +3532,57 @@ test('Provider Discovery waits for Retry-After and offers provider reconnect', a
   ).toHaveAttribute('href', '/me/account/linked-accounts');
   await expect(retry).toHaveCount(0);
 });
+
+test('TV access review confirms a decision and respects manager permissions', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let requests = [
+    { id: 1, displayName: 'Owner', requestedAt: null },
+    { id: 9, displayName: 'Household Member', requestedAt: null },
+  ];
+  let reads = 0;
+  let decision: unknown;
+  await page.route('**/api/v1/user/tv-season-watch-gate-requests', (route) => {
+    reads++;
+    return route.fulfill({ json: requests });
+  });
+  await page.route('**/api/v1/user/1/settings/tv-season-watch-gate', (route) =>
+    route.fulfill({ json: { status: 'off', globallyEnabled: false } })
+  );
+  await page.route('**/api/v1/user/1/settings/episode-queue', (route) =>
+    route.fulfill({ json: { defaultEpisodeCount: 0 } })
+  );
+  await page.route(
+    '**/api/v1/user/9/settings/tv-season-watch-gate/review',
+    (route) => {
+      decision = route.request().postDataJSON();
+      requests = requests.filter(({ id }) => id !== 9);
+      return route.fulfill({ json: { status: 'approved' } });
+    }
+  );
+  await page.goto('/me/account/tv-requests');
+  await expect(
+    page.getByText('Another user manager must review your request.')
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  const dialog = page.getByRole('alertdialog', {
+    name: 'Approve access for Household Member?',
+  });
+  await expect(dialog).toBeVisible();
+  expect(decision).toBeUndefined();
+  await dialog.getByRole('button', { name: 'Approve' }).click();
+  await expect(page.getByText('Request approved.')).toBeVisible();
+  await expect(page.getByText('Household Member')).toHaveCount(0);
+  expect(decision).toEqual({ decision: 'approve' });
+  const managerReads = reads;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Owner', permissions: 32 } })
+  );
+  await page.reload();
+  await expect(page.getByText('Approval needed')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Previous-Season Watch Requests' })
+  ).toHaveCount(0);
+  expect(reads).toBe(managerReads);
+});
