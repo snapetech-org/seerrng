@@ -330,6 +330,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/users/', '/lumen/admin/users'],
       ['/games', '/lumen/game-library'],
+      [
+        '/software?category=retro&game=42&q=Zelda&extra=1',
+        '/lumen/software?category=retro&q=Zelda&game=42',
+      ],
       ['/games?steam=connected', '/lumen/game-library?steam=connected'],
       ['/calendar', '/lumen/calendar'],
       ['/swipe/', '/lumen/swipe'],

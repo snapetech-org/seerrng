@@ -2240,3 +2240,13 @@ focused server tests, and 36 browser fixture checks passed. Fixtures verified
 the connection test, rejected-save recovery, and platform settings payload.
 Live provider connections were outside the check. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-software-admin-20261118/`.
+
+Legacy software bookmarks now resolve inside standalone Lumen and bundled
+Lumen when the native interface is locked. The redirect retains catalog
+search and category or opens the exact IGDB or DAT game. Game details now
+read the catalog endpoint's wrapped result and still accept older direct
+results. Verified the production build, 12 browser checks, two server
+routing tests, and ten built-image proxy tests. Inspected IGDB and DAT game
+details at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. Live catalog
+providers were outside the check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-software-bookmarks-20261118/`.

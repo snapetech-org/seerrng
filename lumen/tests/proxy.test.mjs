@@ -225,6 +225,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       '/swipe',
       '/swipe/',
       '/recordings',
+      '/software?category=retro&game=42',
       '/author/OL42A',
       '/book-series/bookshelf-series%3A1%3AU2VyaWVz',
     ]) {

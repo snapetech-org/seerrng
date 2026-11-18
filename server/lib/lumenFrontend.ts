@@ -228,6 +228,7 @@ const workflowDestinations = new Map([
   ['/following', '/following'],
   ['/library', '/library'],
   ['/games', '/game-library'],
+  ['/software', '/software'],
   ['/calendar', '/calendar'],
   ['/swipe', '/swipe'],
   ['/recordings', '/recordings'],
@@ -298,6 +299,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/books': ['subject'],
   '/music': ['genre', 'sortBy'],
   '/audiobooks': ['subject'],
+  '/software': ['category', 'q', 'game', 'catalogProvider'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
   '/indexer-search': ['query', 'category'],
   '/issues': [

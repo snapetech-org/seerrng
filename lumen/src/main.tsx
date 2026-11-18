@@ -27,7 +27,7 @@ import Discover from './pages/Discover';
 import Following from './pages/Following';
 import Franchise from './pages/Franchise';
 import GameLibrary from './pages/GameLibrary';
-import { GameDetail, Games } from './pages/Games';
+import { GameDetail, Games, SoftwareBookmark } from './pages/Games';
 import Library from './pages/Library';
 import Login from './pages/Login';
 import LumenSettings from './pages/LumenSettings';
@@ -206,6 +206,7 @@ function App() {
           <Route path="/magazines" element={<Magazines />} />
           <Route path="/magazine/:title" element={<MagazineDetail />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/software" element={<SoftwareBookmark />} />
           <Route path="/patches" element={<Patches />} />
           <Route path="/patches/:id" element={<PatchDetail />} />
           <Route path="/game-library" element={<GameLibrary />} />
