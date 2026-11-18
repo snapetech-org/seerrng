@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { bookRequestLabel, type RequestItem } from '../api';
 import { useApi } from '../hooks';
 import { Pill } from './detail';
@@ -153,7 +154,9 @@ export default function RequestHistorySheet({
 }: {
   id: number;
   title?: string;
-  describeRequest?: (request: RequestItem) => Promise<{ title: string }>;
+  describeRequest?: (
+    request: RequestItem
+  ) => Promise<{ title: string; href: string }>;
   close: () => void;
   renderActions?: (request: RequestItem, title: string) => ReactNode;
 }) {
@@ -171,23 +174,29 @@ export default function RequestHistorySheet({
     (history.data && !data ? 'Invalid request history response.' : null);
   const reload = history.reload;
 
-  const [resolvedTitle, setResolvedTitle] = useState<string>();
+  const [description, setDescription] = useState<{
+    request: RequestItem;
+    title: string;
+    href: string;
+  }>();
   const request = data?.request;
   useEffect(() => {
-    if (title || !describeRequest || request?.id !== id || !request.media)
-      return;
+    if (!describeRequest || request?.id !== id || !request.media) return;
     let active = true;
     void describeRequest(request).then(
-      (description) => {
-        if (active && description.title) setResolvedTitle(description.title);
+      (row) => {
+        if (active)
+          setDescription({ request, title: row.title, href: row.href });
       },
       () => {}
     );
     return () => {
       active = false;
     };
-  }, [describeRequest, id, request, title]);
-  const displayTitle = title || resolvedTitle || `Request #${id}`;
+  }, [describeRequest, id, request]);
+  const resolved = description?.request === request ? description : undefined;
+  const displayTitle = title || resolved?.title || `Request #${id}`;
+  const href = resolved?.href;
 
   return createPortal(
     <div className="sheet-wrap open">
@@ -204,6 +213,11 @@ export default function RequestHistorySheet({
           <header>
             <h2>Request History</h2>
             <p className="note">{displayTitle}</p>
+            {href && /^\/(?!\/)[^?]*[^/?](?:\?|$)/.test(href) && (
+              <Link className="go" to={href}>
+                Open Title
+              </Link>
+            )}
             {request?.type === 'book' && (
               <p className="note">{bookRequestLabel(request.bookFormat)}</p>
             )}

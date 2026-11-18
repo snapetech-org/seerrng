@@ -2093,6 +2093,12 @@ for (const format of ['audiobook', 'both'] as const) {
     await page.goto('/requests?requestId=615');
     const history = page.getByRole('dialog', { name: 'Request history' });
     await expect(
+      history.getByRole('link', { name: 'Open Title' })
+    ).toHaveAttribute(
+      'href',
+      `/book/bookshelf%3A1%3Afixture?${format === 'audiobook' ? 'f=audio&' : ''}lookupTitle=Requested+Audiobook`
+    );
+    await expect(
       history.getByText(
         format === 'both' ? 'Ebook and Audiobook' : 'Audiobook',
         { exact: true }
