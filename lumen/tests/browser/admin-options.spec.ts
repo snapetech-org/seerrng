@@ -1316,6 +1316,58 @@ test('admins can request on someone else’s behalf', async ({ page }) => {
   });
 });
 
+test('quota override clears when the selected requester changes', async ({
+  page,
+}, info) => {
+  const { posts } = await fixtures(page, { permissions: 2 });
+  let allowQuota!: () => void;
+  const heldQuota = new Promise<void>((resolve) => {
+    allowQuota = resolve;
+  });
+  await page.route('**/api/v1/user/1/quota', async (route) => {
+    await heldQuota;
+    await route.fulfill({
+      json: { movie: { limit: 1, remaining: 0, restricted: true } },
+    });
+  });
+  await page.route('**/api/v1/user?*', (route) =>
+    route.fulfill({
+      json: { results: [{ id: 5, displayName: 'Sam', permissions: 32 }] },
+    })
+  );
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const who = sheet.getByLabel('Request as');
+  await expect(who).toHaveValue('1');
+  await expect(sheet.getByLabel('Folder')).toBeVisible();
+  await settleVisuals(page);
+  await page.screenshot({
+    path: info.outputPath('quota-override-baseline.png'),
+  });
+  allowQuota();
+  const override = sheet.getByRole('checkbox', {
+    name: 'Ignore Request Quota',
+  });
+  await expect(override).not.toBeChecked();
+  await override.check();
+  await page.screenshot({
+    path: info.outputPath('quota-override-checked.png'),
+  });
+  await who.selectOption('5');
+  await expect(override).toHaveCount(0);
+  await who.selectOption('1');
+  await expect(override).not.toBeChecked();
+  await override.check();
+  await sheet.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts.find((post) => post.path === '/request')?.body).toMatchObject({
+    mediaType: 'movie',
+    mediaId: 302,
+    ignoreQuota: true,
+  });
+});
+
 test('request managers without Manage Users get no Request as', async ({
   page,
 }) => {

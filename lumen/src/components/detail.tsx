@@ -449,6 +449,7 @@ export const canRequestAs = (permissions?: number) => {
 interface RequestUser {
   id: number;
   displayName: string;
+  permissions?: number;
 }
 
 export function AdvancedOptions({
@@ -629,9 +630,32 @@ export function AdvancedOptions({
     (o.serverId !== initial.serverId || (order && order.path === lookupPath))
       ? null
       : undefined);
+  // The API evaluates the quota override against the user receiving the request.
+  const requesterId = (asAllowed ? asUser : undefined) ?? user?.id;
+  const requesterPermissions =
+    requesterId === user?.id
+      ? user?.permissions
+      : people?.find(({ id }) => id === requesterId)?.permissions;
+  const quotaRequesterId =
+    !initial &&
+    open &&
+    canManageRequests(user?.permissions) &&
+    canManageRequests(requesterPermissions)
+      ? requesterId
+      : undefined;
+  const { data: quotas } = useApi<
+    Partial<Record<'movie' | 'tv', { limit?: number }>>
+  >(quotaRequesterId ? `/user/${quotaRequesterId}/quota` : null, {
+    currentPathOnly: true,
+  });
+  const canOverrideQuota =
+    quotaRequesterId !== undefined && (quotas?.[kind]?.limit ?? 0) > 0;
+  const [overrideQuota, setOverrideQuota] = useState(false);
+  const ignoreQuota = canOverrideQuota && overrideQuota;
   useEffect(() => {
     if (!open) return onChange({});
     const base = picked4k === undefined ? { ...o } : { ...o, is4k: picked4k };
+    if (ignoreQuota) base.ignoreQuota = true;
     if (seriesId) base.sonarrSeasonType = seasonOverride;
     if (!initial && o.tags) {
       base.requesterSelectedOptions = {
@@ -661,6 +685,7 @@ export function AdvancedOptions({
     picked4k,
     seriesId,
     seasonOverride,
+    ignoreQuota,
   ]);
   // no server of this kind set up: nothing to choose, SeerrNG decides (as its own dialog does)
   const none = !!servers && !servers.length;
@@ -698,7 +723,10 @@ export function AdvancedOptions({
               <span className="lbl">Request as</span>
               <select
                 value={asUser ?? user.id}
-                onChange={(e) => setAsUser(+e.target.value)}
+                onChange={(e) => {
+                  setOverrideQuota(false);
+                  setAsUser(Number(e.target.value));
+                }}
               >
                 <option value={user.id}>Me ({user.displayName})</option>
                 {people
@@ -830,6 +858,18 @@ export function AdvancedOptions({
               )}
             </>
           )}
+        </div>
+      )}
+      {canOverrideQuota && (
+        <div className="setlist">
+          <label className="set cfg-row">
+            <span>Ignore Request Quota</span>
+            <input
+              type="checkbox"
+              checked={ignoreQuota}
+              onChange={(event) => setOverrideQuota(event.target.checked)}
+            />
+          </label>
         </div>
       )}
       {!!detail?.tags?.length && (

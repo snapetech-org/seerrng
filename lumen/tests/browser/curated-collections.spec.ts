@@ -248,3 +248,65 @@ test('series and album details reach their curated collections', async ({
     },
   ]);
 });
+
+test('TV collection quota override enables otherwise restricted requests', async ({
+  page,
+}, info) => {
+  const requests: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/request' && route.request().method() === 'POST') {
+      requests.push(route.request().postDataJSON());
+      return route.fulfill({ json: { id: 4 } });
+    }
+    const responses: Record<string, unknown> = {
+      '/auth/me': { id: 1, permissions: 2 },
+      '/settings/public': { partialRequestsEnabled: true },
+      '/user/1/quota': { tv: { limit: 1, remaining: 0, restricted: true } },
+      '/service/sonarr': [
+        { id: 1, name: 'Sonarr', isDefault: true, is4k: false },
+      ],
+      '/service/sonarr/1': {
+        server: { activeProfileId: 3, activeDirectory: '/series' },
+        profiles: [{ id: 3, name: 'HD' }],
+        rootFolders: [{ id: 1, path: '/series' }],
+      },
+      '/collection-catalog/tv/19': {
+        id: '19',
+        name: 'Fixture Collection',
+        parts: [{ id: '42', title: 'Fixture Series' }],
+      },
+      '/tv/42': {
+        id: 42,
+        externalIds: { tvdbId: 80 },
+        seasons: [{ seasonNumber: 1, episodeCount: 4 }],
+      },
+    };
+    return route.fulfill({ json: responses[path] ?? { results: [] } });
+  });
+  await page.goto('/collections/tv/19');
+  await page.getByRole('button', { name: 'Request Series' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Request Series' });
+  const submit = sheet.getByRole('button', { name: 'Request Selected Series' });
+  await sheet.getByRole('checkbox', { name: /Fixture Series/ }).check();
+  await expect(submit).toBeDisabled();
+  await expect(sheet.getByText(/Request quota exceeded/)).toBeVisible();
+  await sheet.getByRole('checkbox', { name: 'Ignore Request Quota' }).check();
+  await expect(submit).toBeEnabled();
+  await page.screenshot({
+    path: info.outputPath('tv-collection-quota-override.png'),
+  });
+  await submit.click();
+  await expect(sheet.getByText('1 requested, 0 failed.')).toBeVisible();
+  expect(requests).toEqual([
+    expect.objectContaining({
+      mediaId: 42,
+      mediaType: 'tv',
+      ignoreQuota: true,
+    }),
+  ]);
+});

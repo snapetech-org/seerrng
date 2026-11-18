@@ -2412,3 +2412,18 @@ browser verification.
 The broader admin options, review pages, and TV request suite then passed
 with 441 checks and seven skips. The log is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browser-fixtures-suite-20261118.log`.
+
+Advanced movie and TV requests expose Ignore Request Quota when the
+actor and selected requester can manage requests and the targeted quota
+has a limit. The opt-in resets when the requester changes. The TV
+collection sheet uses the override for selection and submission gating.
+The server continues to authorize and enforce the override.
+
+The production build and 24 focused browser checks passed. Compared
+the quick-request sheet before and after the quota loaded, and inspected
+the enabled TV collection sheet on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. Fixtures verify the requester-change reset, the quota-blocked
+batch, and the explicit override in the outgoing payload. Live quota
+and provider round trips were outside the check. Evidence is retained
+under `seerrng-lumen-quota-override*` in
+`/mnt/disks/scratch/task-deliverables/`.

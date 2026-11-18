@@ -426,6 +426,7 @@ export interface RequestOptions {
     rootFolder?: boolean;
     languageProfile?: boolean;
   };
+  ignoreQuota?: boolean;
   userId?: number; // request on someone else's behalf (admins)
 }
 const post = <T = { id: number }>(body: object) =>

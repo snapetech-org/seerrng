@@ -158,13 +158,16 @@ function Sheet({
     (total, row) => total + row.selections.length,
     0
   );
+  const ignoreQuota = advanced && options.ignoreQuota === true;
   const canSelectAll =
     !!quota.data &&
-    !quota.data.tv.restricted &&
-    (!quota.data.tv.limit || totalSeasons <= quota.data.tv.remaining);
+    (ignoreQuota ||
+      (!quota.data.tv.restricted &&
+        (!quota.data.tv.limit || totalSeasons <= quota.data.tv.remaining)));
   const overQuota =
-    !!quota.data?.tv.restricted ||
-    (!!quota.data?.tv.limit && count > quota.data.tv.remaining);
+    !ignoreQuota &&
+    (!!quota.data?.tv.restricted ||
+      (!!quota.data?.tv.limit && count > quota.data.tv.remaining));
   const canSubmit =
     !!settings && !!quota.data && !overQuota && !!count && (!advanced || ready);
 
