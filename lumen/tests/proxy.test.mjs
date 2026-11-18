@@ -185,8 +185,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
       ['/discover/book-recommendations/', '/books/recommendations'],
       [
-        '/discover/book-recommendations?feed=11',
-        '/books/recommendations?feed=11',
+        '/discover/book-recommendations?feed=11&format=audiobook',
+        '/books/recommendations?feed=11&format=audiobook',
       ],
       ['/discover/collectors/', '/music/collectors'],
       ['/discover/providers', '/providers'],

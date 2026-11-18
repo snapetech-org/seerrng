@@ -69,7 +69,7 @@ export default function BookRecommendations() {
   const [include, setInclude] = useState('');
   const [exclude, setExclude] = useState('');
   const [feedback, setFeedback] = useState<Record<number, 'more' | 'less'>>({});
-  const [format, setFormat] = useState<'ebook' | 'audiobook'>('ebook');
+  const format = params.get('format') === 'audiobook' ? 'audiobook' : 'ebook';
   const [title, setTitle] = useState('');
   const [mood, setMood] = useState('');
   const [createFirst, setCreateFirst] = useState(false);
@@ -263,7 +263,7 @@ export default function BookRecommendations() {
               <p className="note">No recommendation feeds found.</p>
             )}
           </Section>
-          {selected && (
+          {selected && selected.id === bookmarkedFeed?.id && (
             <Section title={selected.title}>
               <form
                 className="setlist"
@@ -304,13 +304,13 @@ export default function BookRecommendations() {
                   Format
                   <select
                     value={format}
-                    onChange={(event) =>
-                      setFormat(
-                        event.target.value === 'audiobook'
-                          ? 'audiobook'
-                          : 'ebook'
-                      )
-                    }
+                    onChange={(event) => {
+                      const next = new URLSearchParams(params);
+                      if (event.target.value === 'audiobook')
+                        next.set('format', 'audiobook');
+                      else next.delete('format');
+                      setParams(next, { preventScrollReset: true });
+                    }}
                   >
                     <option value="ebook">Ebook</option>
                     <option value="audiobook">Audiobook</option>

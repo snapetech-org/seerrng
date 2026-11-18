@@ -5439,8 +5439,12 @@ test('book recommendations preserve results when a feedback refresh fails', asyn
   await page.goto('/books/recommendations');
   await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
   await expect(page).toHaveURL(/feed=11$/);
+  const format = page.getByRole('combobox', { name: 'Format', exact: true });
+  await format.selectOption('audiobook');
+  await expect(page).toHaveURL(/format=audiobook$/);
   await page.reload();
   await expect(page.getByText('Fixture Book', { exact: true })).toBeVisible();
+  await expect(format).toHaveValue('audiobook');
   const vote = page.getByRole('button', { name: 'More Like This' });
   await vote.click();
   await expect(page.getByRole('alert')).toHaveText(
