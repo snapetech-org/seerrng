@@ -534,6 +534,15 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/movies?genre=18%7C35&keywords=73',
         '/lumen/movies?keywords=73&genre=18%2C35',
       ],
+      [
+        '/discover/movies?libraryView=missing&genre=18',
+        '/lumen/movies?genre=18&show=not',
+      ],
+      ['/discover/tv?libraryView=available', '/lumen/series?show=have'],
+      [
+        '/discover/tv?libraryView=missing&availability=4k',
+        '/lumen/series?show=have&quality=4k',
+      ],
       ['/discover/tv?genre=18,35', '/lumen/series?genre=18%2C35&match=all'],
       ['/movie/123', '/lumen/movie/123'],
       ['/tv/456/?ignored=1', '/lumen/tv/456'],

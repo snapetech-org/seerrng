@@ -188,6 +188,10 @@ function discoveryDeepLink(req: Request): string | undefined {
   if (req.query.availability === 'hd' || req.query.availability === '4k') {
     query.set('show', 'have');
     if (req.query.availability === '4k') query.set('quality', '4k');
+  } else if (req.query.libraryView === 'available') {
+    query.set('show', 'have');
+  } else if (req.query.libraryView === 'missing') {
+    query.set('show', 'not');
   }
   const suffix = query.toString();
   return `/lumen/${kind === 'movies' ? 'movies' : 'series'}${suffix ? `?${suffix}` : ''}`;
