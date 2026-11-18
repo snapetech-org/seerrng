@@ -2,52 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import AvatarContent from '../components/AvatarContent';
 import { Section, shortDate } from '../components/cards';
 import { canManageRequests, canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
-import { initials } from '../components/Shell';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { describeAll } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
-
-function avatarSource(avatar?: string) {
-  if (!avatar) return;
-  if (
-    /^\/avatarproxy\/(?:local\/\d+|[a-f0-9]{32})(?:\?v=[a-f0-9]{64})?$/i.test(
-      avatar
-    )
-  )
-    return avatar;
-  try {
-    const url = new URL(avatar);
-    if (
-      url.protocol === 'https:' &&
-      !url.username &&
-      !url.password &&
-      /(?:^|\.)(?:plex\.tv|gravatar\.com)$/i.test(url.hostname)
-    )
-      return `/avatarproxy/remote?${new URLSearchParams({ url: avatar })}`;
-  } catch {
-    // An absent or unsupported picture uses the profile initials.
-  }
-}
-
-function ProfilePicture({ name, avatar }: { name: string; avatar?: string }) {
-  const source = avatarSource(avatar);
-  const [failedSource, setFailedSource] = useState<string>();
-  return (
-    <span className="avatar" aria-hidden="true">
-      {source && source !== failedSource ? (
-        <img src={source} alt="" onError={() => setFailedSource(source)} />
-      ) : (
-        initials(name)
-      )}
-    </span>
-  );
-}
 
 const avatarTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
@@ -318,7 +282,7 @@ function PlaybackActivity({ id }: { id: number }) {
 
 export default function HouseholdProfile() {
   const { id: rawId = '' } = useParams();
-  const { user } = useAuth();
+  const { user, refresh } = useAuth();
   const id =
     rawId === 'me'
       ? (user?.id ?? 0)
@@ -361,16 +325,25 @@ export default function HouseholdProfile() {
         sub={subtitle}
         leading={
           loaded && (
-            <ProfilePicture
-              key={id}
-              name={profile.data!.displayName}
-              avatar={profile.data!.avatar}
-            />
+            <span className="avatar" aria-hidden="true">
+              <AvatarContent
+                key={id}
+                name={profile.data!.displayName}
+                avatar={profile.data!.avatar}
+              />
+            </span>
           )
         }
       >
         {loaded && own && profile.data?.userType === 2 && (
-          <ProfilePictureUpload key={id} id={id} saved={profile.reload} />
+          <ProfilePictureUpload
+            key={id}
+            id={id}
+            saved={() => {
+              profile.reload();
+              void refresh();
+            }}
+          />
         )}
         {loaded && canEdit && (
           <Link

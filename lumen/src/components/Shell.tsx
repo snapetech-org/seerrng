@@ -26,6 +26,7 @@ import { scrollBehavior } from '../motion';
 import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
 import { VideoAvailabilityProvider } from '../videoAvailability';
+import AvatarContent from './AvatarContent';
 import { BrandMark, brandName } from './brand';
 import { canManageRequests, canRequestMovies } from './detail';
 
@@ -67,20 +68,15 @@ const TABS: [string, IconName, string][] = [
   ['/me', 'user', 'You'],
 ];
 
-export const initials = (n: string) =>
-  n
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-
 export function Avatar({ className = 'avatar' }: { className?: string }) {
   const { user } = useAuth();
   return (
     <Link className={className} to="/me" aria-label="Your profile">
-      {initials(user?.displayName || '?')}
+      <AvatarContent
+        key={user?.id}
+        name={user?.displayName}
+        avatar={user?.avatar}
+      />
     </Link>
   );
 }
@@ -390,7 +386,13 @@ export default function Shell({ children }: { children: ReactNode }) {
             Coming soon
           </NavLink>
           <Link className="me" to="/me">
-            <span className="avatar">{initials(user?.displayName || '?')}</span>
+            <span className="avatar">
+              <AvatarContent
+                key={user?.id}
+                name={user?.displayName}
+                avatar={user?.avatar}
+              />
+            </span>
             <span>
               <b>{user?.displayName}</b>
               <small>Signed in</small>

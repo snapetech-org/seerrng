@@ -269,7 +269,14 @@ test('a local account can retry a picture upload without losing its current avat
     const request = route.request();
     switch (new URL(request.url()).pathname) {
       case '/api/v1/auth/me':
-        return route.fulfill({ json: { id: 19, permissions: 32 } });
+        return route.fulfill({
+          json: {
+            id: 19,
+            displayName: 'Local Member',
+            permissions: 32,
+            avatar: uploaded ? avatar : oldAvatar,
+          },
+        });
       case '/api/v1/user/19':
         return route.fulfill({
           json: {
@@ -296,7 +303,7 @@ test('a local account can retry a picture upload without losing its current avat
   });
   await page.goto('/household/me');
   const button = page.getByRole('button', { name: 'Change Profile Picture' });
-  const picture = page.locator('.ph .avatar img');
+  const picture = page.locator('.ph .avatar[aria-hidden="true"] img');
   async function selectPicture() {
     const chooser = page.waitForEvent('filechooser');
     await button.click();
@@ -318,5 +325,9 @@ test('a local account can retry a picture upload without losing its current avat
   await expect(picture).toHaveAttribute('src', oldAvatar);
   await selectPicture();
   await expect(picture).toHaveAttribute('src', avatar);
+  await expect(page.locator('.side .me .avatar img')).toHaveAttribute(
+    'src',
+    avatar
+  );
   expect(attempts).toBe(2);
 });

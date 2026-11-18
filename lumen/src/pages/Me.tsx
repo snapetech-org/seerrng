@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { useBlocklistNavigation } from '../blocklist';
+import AvatarContent from '../components/AvatarContent';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
@@ -9,7 +10,7 @@ import {
   canRequestMovies,
 } from '../components/detail';
 import RequestLimits from '../components/RequestLimits';
-import { fullSeerrUrl, initials } from '../components/Shell';
+import { fullSeerrUrl } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { canManageDownloads } from '../downloadPermissions';
 import { canViewFollowing } from '../followPermissions';
@@ -85,7 +86,13 @@ export default function Me() {
         </div>
       </header>
       <div className="me-card">
-        <span className="avatar">{initials(user?.displayName || '?')}</span>
+        <span className="avatar">
+          <AvatarContent
+            key={user?.id}
+            name={user?.displayName}
+            avatar={user?.avatar}
+          />
+        </span>
         <div>
           <b>{user?.displayName}</b>
           <small>Signed in to SeerrNG</small>

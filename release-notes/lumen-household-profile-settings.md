@@ -19,3 +19,5 @@ Household profiles show account email to the owner and authorized user managers,
 Household profiles show supported profile pictures through the SeerrNG avatar proxy and fall back to initials if the picture is unavailable.
 
 Local account owners can upload a JPEG, PNG, or WebP profile picture from My Profile.
+
+The signed-in account picture also appears in Lumen navigation and refreshes after an upload.
