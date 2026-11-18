@@ -243,3 +243,15 @@ and sports acquisition were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sportarr-20261118/`.
+
+### Soulseek connection
+
+Administrators can configure and test the slskdN connection from You, see track
+request, album repair, and SongID capabilities, and explicitly remove a saved
+key. Compared with the Sportarr connection surface on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and eight browser checks passed
+with synthetic responses. Live Soulseek requests and SongID were outside this
+check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-soulseek-20261118/`.

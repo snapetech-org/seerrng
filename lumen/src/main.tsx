@@ -64,6 +64,7 @@ const AdminLibraryMigration = lazy(
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
+const AdminSoulseek = lazy(() => import('./pages/AdminSoulseek'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
@@ -610,6 +611,24 @@ function App() {
                   }
                 >
                   <AdminServarr key="sportarr" provider="sportarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/soulseek"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Soulseek settings…
+                    </p>
+                  }
+                >
+                  <AdminSoulseek />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

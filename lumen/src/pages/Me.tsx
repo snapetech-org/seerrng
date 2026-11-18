@@ -255,6 +255,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Soulseek Settings</b>
+              <Link
+                className="go"
+                to="/admin/soulseek"
+                aria-label="Open Soulseek Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"
