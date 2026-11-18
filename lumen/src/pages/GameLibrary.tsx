@@ -4,7 +4,7 @@ import { api } from '../api';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { GAME_LABEL, type GameCategory } from '../extras';
+import { GAME_LABEL, type Game, type GameCategory } from '../extras';
 import { useApi } from '../hooks';
 
 const PROGRESS = {
@@ -69,6 +69,96 @@ function GameName({
   );
 }
 
+function CatalogMatch({
+  entry,
+  busy,
+  match,
+}: {
+  entry: GameEntry;
+  busy: boolean;
+  match: (catalogId: number) => void;
+}) {
+  const [term, setTerm] = useState('');
+  const query = new URLSearchParams({
+    category: entry.category,
+    q: term,
+    limit: '8',
+  });
+  const { data, error, reload } = useApi<{ results: Game[] }>(
+    term ? `/request/software/catalog/search?${query}` : null
+  );
+  const results = data?.results.flatMap((game) =>
+    typeof game.igdbId === 'number' &&
+    Number.isSafeInteger(game.igdbId) &&
+    game.igdbId > 0 &&
+    game.igdbId <= 2_147_483_647
+      ? [{ ...game, igdbId: game.igdbId }]
+      : []
+  );
+
+  return (
+    <section className="setlist">
+      <h3>Link a Catalogue Game</h3>
+      <form
+        className="toolbar"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const value = String(
+            new FormData(event.currentTarget).get('q') ?? ''
+          ).trim();
+          if (!value) return;
+          if (value === term) reload();
+          else setTerm(value);
+        }}
+      >
+        <label className="search">
+          <input
+            name="q"
+            type="search"
+            aria-label="Search Game Catalogue"
+            defaultValue={entry.title}
+            maxLength={120}
+            required
+          />
+        </label>
+        <button className="btn btn-tonal btn-sm" type="submit" disabled={busy}>
+          Search Catalogue
+        </button>
+      </form>
+      <ServiceNote error={error} what="game catalogue" retry={reload} />
+      {term && !data && !error && (
+        <p className="note" role="status">
+          Searching catalogue…
+        </p>
+      )}
+      {results?.length === 0 && (
+        <p className="note">No linkable games found.</p>
+      )}
+      {!!results?.length && (
+        <ul className="setlist">
+          {results.map((game) => (
+            <li className="set" key={game.igdbId}>
+              <div>
+                <b>{game.title}</b>
+                {game.releaseDate && <small>{game.releaseDate}</small>}
+              </div>
+              <button
+                className="btn btn-quiet btn-sm"
+                type="button"
+                disabled={busy}
+                aria-label={`Link ${game.title}`}
+                onClick={() => match(game.igdbId)}
+              >
+                Link Game
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
 function EntryEditor({
   entry,
   close,
@@ -83,13 +173,12 @@ function EntryEditor({
   const [confirmRemoval, setConfirmRemoval] = useState(false);
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
+  const editForm = useRef<HTMLFormElement>(null);
   const toast = useToast();
   const mayShare = owned || entry?.steamOwned === true;
 
-  async function save(event?: FormEvent<HTMLFormElement>) {
-    event?.preventDefault();
-    if (pending.current || (!event && !entry)) return;
-    const form = event ? new FormData(event.currentTarget) : null;
+  async function save(form?: FormData, catalogId?: number) {
+    if (pending.current || (!form && !entry)) return;
     pending.current = true;
     setBusy(true);
     try {
@@ -101,21 +190,31 @@ function EntryEditor({
           isOwned: owned,
           shareWithHousehold: mayShare && sharing,
         };
-        await api(
-          entry ? `/game-library/${entry.id}` : '/game-library/manual',
-          {
-            method: entry ? 'PATCH' : 'POST',
-            body: JSON.stringify(
-              entry
-                ? changes
-                : {
-                    ...changes,
-                    title: form.get('title'),
-                    category: form.get('category'),
-                  }
-            ),
-          }
-        );
+        if (entry && catalogId) {
+          await api(`/game-library/${entry.id}/match`, {
+            method: 'POST',
+            body: JSON.stringify({
+              ...changes,
+              category: entry.category,
+              catalogId,
+            }),
+          });
+        } else
+          await api(
+            entry ? `/game-library/${entry.id}` : '/game-library/manual',
+            {
+              method: entry ? 'PATCH' : 'POST',
+              body: JSON.stringify(
+                entry
+                  ? changes
+                  : {
+                      ...changes,
+                      title: form.get('title'),
+                      category: form.get('category'),
+                    }
+              ),
+            }
+          );
       } else if (entry) {
         await api(`/game-library/${entry.id}`, { method: 'DELETE' });
       }
@@ -124,7 +223,11 @@ function EntryEditor({
       toast(
         friendlyError(
           error,
-          form ? 'Couldn’t save the game' : 'Couldn’t remove the game'
+          catalogId
+            ? 'Couldn’t link the game'
+            : form
+              ? 'Couldn’t save the game'
+              : 'Couldn’t remove the game'
         )
       );
     } finally {
@@ -134,94 +237,113 @@ function EntryEditor({
   }
 
   return (
-    <form className="setlist" onSubmit={(event) => void save(event)}>
-      <h2>{entry ? `Edit ${entry.title}` : 'Add a Game'}</h2>
-      <fieldset className="setlist" disabled={busy}>
-        {!entry && (
-          <>
-            <label className="set cfg-row">
-              <b>Game Title</b>
-              <input name="title" required maxLength={512} />
-            </label>
-            <label className="set cfg-row">
-              <b>Game Type</b>
-              <select name="category" defaultValue="game">
-                <Options values={GAME_LABEL} />
-              </select>
-            </label>
-          </>
-        )}
-        <label className="set cfg-row">
-          <b>Progress</b>
-          <select name="status" defaultValue={entry?.status ?? 'backlog'}>
-            <Options values={PROGRESS} />
-          </select>
-        </label>
-        <label className="set cfg-row">
-          <b>Store or Copy</b>
-          <input
-            name="storeName"
-            maxLength={120}
-            defaultValue={entry?.storeName}
-          />
-        </label>
-        <label className="set cfg-row">
-          <b>Platform</b>
-          <input
-            name="platformName"
-            maxLength={120}
-            defaultValue={entry?.platformName}
-          />
-        </label>
-        <label className="set cfg-row">
-          <b>{entry?.steamOwned ? 'Also Owned Outside Steam' : 'Owned'}</b>
-          <input
-            type="checkbox"
-            checked={owned}
-            onChange={(event) => setOwned(event.target.checked)}
-          />
-        </label>
-        <label className="set cfg-row">
-          <b>Share With Household</b>
-          <input
-            type="checkbox"
-            checked={mayShare && sharing}
-            disabled={!mayShare}
-            onChange={(event) => setSharing(event.target.checked)}
-          />
-        </label>
-        <div className="toolbar">
-          <button className="btn btn-tonal btn-sm" type="submit">
-            {entry ? 'Save Changes' : 'Add Game'}
-          </button>
-          <button
-            className="btn btn-quiet btn-sm"
-            type="button"
-            onClick={close}
-          >
-            Cancel
-          </button>
-          {entry && !confirmRemoval && (
+    <>
+      <form
+        className="setlist"
+        ref={editForm}
+        onSubmit={(event) => {
+          event.preventDefault();
+          void save(new FormData(event.currentTarget));
+        }}
+      >
+        <h2>{entry ? `Edit ${entry.title}` : 'Add a Game'}</h2>
+        <fieldset className="setlist" disabled={busy}>
+          {!entry && (
+            <>
+              <label className="set cfg-row">
+                <b>Game Title</b>
+                <input name="title" required maxLength={512} />
+              </label>
+              <label className="set cfg-row">
+                <b>Game Type</b>
+                <select name="category" defaultValue="game">
+                  <Options values={GAME_LABEL} />
+                </select>
+              </label>
+            </>
+          )}
+          <label className="set cfg-row">
+            <b>Progress</b>
+            <select name="status" defaultValue={entry?.status ?? 'backlog'}>
+              <Options values={PROGRESS} />
+            </select>
+          </label>
+          <label className="set cfg-row">
+            <b>Store or Copy</b>
+            <input
+              name="storeName"
+              maxLength={120}
+              defaultValue={entry?.storeName}
+            />
+          </label>
+          <label className="set cfg-row">
+            <b>Platform</b>
+            <input
+              name="platformName"
+              maxLength={120}
+              defaultValue={entry?.platformName}
+            />
+          </label>
+          <label className="set cfg-row">
+            <b>{entry?.steamOwned ? 'Also Owned Outside Steam' : 'Owned'}</b>
+            <input
+              type="checkbox"
+              checked={owned}
+              onChange={(event) => setOwned(event.target.checked)}
+            />
+          </label>
+          <label className="set cfg-row">
+            <b>Share With Household</b>
+            <input
+              type="checkbox"
+              checked={mayShare && sharing}
+              disabled={!mayShare}
+              onChange={(event) => setSharing(event.target.checked)}
+            />
+          </label>
+          <div className="toolbar">
+            <button className="btn btn-tonal btn-sm" type="submit">
+              {entry ? 'Save Changes' : 'Add Game'}
+            </button>
             <button
               className="btn btn-quiet btn-sm"
               type="button"
-              onClick={() => setConfirmRemoval(true)}
+              onClick={close}
             >
-              Remove Game
+              Cancel
             </button>
-          )}
-          {confirmRemoval && (
-            <button
-              className="btn btn-quiet btn-sm"
-              type="button"
-              onClick={() => void save()}
-            >
-              Confirm Removal
-            </button>
-          )}
-        </div>
-      </fieldset>
-    </form>
+            {entry && !confirmRemoval && (
+              <button
+                className="btn btn-quiet btn-sm"
+                type="button"
+                onClick={() => setConfirmRemoval(true)}
+              >
+                Remove Game
+              </button>
+            )}
+            {confirmRemoval && (
+              <button
+                className="btn btn-quiet btn-sm"
+                type="button"
+                onClick={() => void save()}
+              >
+                Confirm Removal
+              </button>
+            )}
+          </div>
+        </fieldset>
+      </form>
+      {entry?.catalogId === null && (
+        <CatalogMatch
+          entry={entry}
+          busy={busy}
+          match={(catalogId) => {
+            if (editForm.current)
+              void save(new FormData(editForm.current), catalogId);
+          }}
+        />
+      )}
+    </>
   );
 }
 

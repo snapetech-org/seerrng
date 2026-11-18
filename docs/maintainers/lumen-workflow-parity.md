@@ -1207,3 +1207,15 @@ Browser coverage includes add, edit, owned-only sharing, removal
 confirmation, and separate household results. Steam linking and sync,
 catalog matching, live deployments and matched visual comparisons remain
 open.
+
+### Game library catalogue matching
+
+An unmatched private library entry can search the catalogue for its saved
+game category. Selecting an exact catalogue result saves the match and any
+pending progress, ownership or sharing edits in one API operation. Results
+without an IGDB identity cannot be submitted to the existing match API.
+
+Eight standalone browser checks passed across desktop, iPhone, Android
+and tablet. They covered explicit selection, preservation of pending edits,
+retry after a failed match, and the existing library workflows. Live
+catalogue results and matched visual comparisons remain open.
