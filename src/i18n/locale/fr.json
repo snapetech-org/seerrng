@@ -8234,7 +8234,6 @@
   "utils.ApiMessage.m7ee85a0d389281d5291a": "Erreur d'arrière-plan inconnue",
   "utils.ApiMessage.m7f08b46aec957adb527c": "La charge utile du webhook est invalide.",
   "utils.ApiMessage.m7f2b8fd41a190270efc8": "Série de bandes dessinées : {value0} (fichiers CBZ, CBR ou CB7)",
-  "utils.ApiMessage.m7f5c145fb190733ecd3b": "Définissez l'application SeerrNG URL avant de connecter Steam.",
   "utils.ApiMessage.m7f60aaefff40b6acfa0f": "Un bundle de téléchargement n'est pas disponible.",
   "utils.ApiMessage.m7f68799a248a84444681": "Collections de séries non vérifiées",
   "utils.ApiMessage.m7f7ca636dc3e19392ba4": ": nom d'utilisateur invalide.",

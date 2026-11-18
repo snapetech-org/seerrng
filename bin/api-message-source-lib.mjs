@@ -196,7 +196,7 @@ export const scanApiMessageSources = (root) => {
         if (
           kind.startsWith('protocol-helper') ||
           (kind === 'message-list-entry' &&
-            /^[a-z][a-z0-9]*(?:[A-Z][A-Za-z0-9]*)+$/.test(pattern.rawSource))
+            /^[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*$/.test(pattern.rawSource))
         )
           reason = 'stable protocol/control-flow code';
         else if (!pattern.rawSource.trim()) reason = 'empty value';

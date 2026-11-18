@@ -507,6 +507,7 @@ export const apiMessages: Record<
     'The import remains queued because Chaptarr may share it with an active SeerrNG request. Check its status in Chaptarr and cancel it only when no request needs it.',
   m2398134ba5e4550c4b84:
     'downloadPathMappings[{value0}].remoteRoot must not be a filesystem root.',
+  m23c45e84da510fcd70c7: 'Choose a supported Steam return interface.',
   m23dd7c865694153cf0bf: 'No pong response',
   m23f1d21c34734b753495:
     '{value0} {value1} must be {value2} characters or fewer.',
@@ -1814,8 +1815,6 @@ export const apiMessages: Record<
   m7ee85a0d389281d5291a: 'Unknown background error',
   m7f08b46aec957adb527c: 'Webhook payload is invalid.',
   m7f2b8fd41a190270efc8: 'Comic series: {value0} (CBR, CBZ, or CB7 files)',
-  m7f5c145fb190733ecd3b:
-    'Set the SeerrNG application URL before connecting Steam.',
   m7f60aaefff40b6acfa0f: 'A download bundle is not available.',
   m7f68799a248a84444681: 'Unverified series collections',
   m7f7ca636dc3e19392ba4: ': username is invalid.',
@@ -2188,6 +2187,8 @@ export const apiMessages: Record<
   m9d5b9aa5a03ba91d6cc5: 'Request for this media already exists.',
   m9d7f3e43bd53754d25dc: 'Vision base URL is invalid.',
   m9d82a518b0f895bd4787: 'Invalid Trakt list reference: {value0}',
+  m9d87547acd7ba65b0984:
+    'Set the public URL for this interface before connecting Steam.',
   m9d897fe285cf2293e0a1: 'Request for this book already exists.',
   m9da63f521210ba42de57: 'Unable to retrieve upcoming movies.',
   m9da8bdab3d45842884b6: 'Quick Connect is not available during initial setup.',
