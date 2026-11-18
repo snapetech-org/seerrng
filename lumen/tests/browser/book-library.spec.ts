@@ -562,6 +562,8 @@ async function fixtures(
               : [],
         },
       });
+    if (path === '/book-series/search')
+      return route.fulfill({ json: { status: 'ok', results: [] } });
     if (path === '/discover/books' || path === '/book/library') {
       const format = url.searchParams.get('format') || 'ebook';
       return route.fulfill({
@@ -607,7 +609,7 @@ for (const format of ['ebook', 'audiobook'] as const) {
     await expect(native).toBeVisible();
     await expect(native).toHaveAttribute(
       'href',
-      `/book/${encodeURIComponent(format === 'ebook' ? ebookId : audioId)}${format === 'audiobook' ? '?f=audio' : ''}`
+      `/book/${encodeURIComponent(format === 'ebook' ? ebookId : audioId)}${format === 'audiobook' ? '?f=audio&' : '?'}lookupTitle=Native+${format}`
     );
     await page.getByRole('button', { name: 'In library', exact: true }).click();
     await expect(
@@ -641,7 +643,7 @@ test('native ebook search works without a companion and retains its service-owne
   await expect(native).toBeVisible();
   await expect(native).toHaveAttribute(
     'href',
-    `/book/${encodeURIComponent(ebookId)}`
+    `/book/${encodeURIComponent(ebookId)}?lookupTitle=Native+ebook`
   );
   await native.locator('..').hover();
   const quick = page.getByRole('button', {
@@ -921,6 +923,9 @@ test('audiobook search offers books the audiobook catalogue has not seen yet', a
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/book-series/search?*', (route) =>
+    route.fulfill({ json: {} })
+  );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
       json: {
@@ -961,6 +966,9 @@ test('audiobook search offers books the audiobook catalogue has not seen yet', a
   await page.goto('/search?q=brand%20new&f=audio');
   const card = page.locator('.poster', { hasText: 'Brand New Book' });
   await expect(card).toHaveCount(1);
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Series search is unavailable.' })
+  ).toBeVisible();
   await expect(card).toHaveClass(/sq/);
   await expect(card.locator('a.hit')).toHaveAttribute(
     'href',

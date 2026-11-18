@@ -103,12 +103,15 @@ export function BookSeriesResults({
     status: 'ok' | 'partial' | 'unavailable' | 'unsupported' | 'disabled';
     truncated: boolean;
   }>(path, { currentPathOnly: true });
+  const results = Array.isArray(search.data?.results)
+    ? search.data.results
+    : undefined;
   return (
     <>
       <ServiceNote
         error={
           search.error ||
-          (search.data?.status === 'unavailable'
+          (search.data && (!results || search.data.status === 'unavailable')
             ? 'Series search is unavailable.'
             : null)
         }
@@ -131,7 +134,7 @@ export function BookSeriesResults({
           No configured services support book series search.
         </p>
       )}
-      {search.data?.status === 'ok' && !search.data.results.length && (
+      {search.data?.status === 'ok' && results?.length === 0 && (
         <p className="note">No series found.</p>
       )}
       {search.data?.truncated && (
@@ -140,8 +143,8 @@ export function BookSeriesResults({
         </p>
       )}
       <ul className="setlist">
-        {search.data?.results
-          .flatMap((result) =>
+        {results
+          ?.flatMap((result) =>
             result.variants?.length ? result.variants : [result]
           )
           .slice(0, limit ?? Infinity)

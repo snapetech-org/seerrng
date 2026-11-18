@@ -80,7 +80,7 @@ test('recommendation feeds apply feedback and create a personalized feed', async
     'src',
     '/imageproxy/hardcover/fixture.jpg'
   );
-  await page.getByLabel('Standalones only').check();
+  await page.getByRole('checkbox', { name: 'Standalones only' }).check();
   await page.getByRole('button', { name: 'More Like This' }).click();
   await expect
     .poll(() => submitted[1])
@@ -91,6 +91,7 @@ test('recommendation feeds apply feedback and create a personalized feed', async
     .poll(() => submitted[2])
     .toMatchObject({ title: 'My Fixture Feed', likeBookIds: [8] });
   await expect(page.getByText('Recommendation feed created.')).toBeVisible();
+  await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
   await page
     .getByRole('combobox', { name: 'Format', exact: true })
     .selectOption('audiobook');
