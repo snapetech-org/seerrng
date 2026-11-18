@@ -271,6 +271,23 @@ export default function MovieDetail() {
                   'Production Countries',
                   productionCountryLinks(m.productionCountries, '/movies'),
                 ],
+                [
+                  'Production Studios',
+                  m.productionCompanies?.length
+                    ? m.productionCompanies.map(({ id, name }, index) => (
+                        <span key={`${id}:${index}`}>
+                          {index > 0 && ', '}
+                          {Number.isSafeInteger(id) &&
+                          id > 0 &&
+                          id <= 1_000_000_000 ? (
+                            <Link to={`/movies?studio=${id}`}>{name}</Link>
+                          ) : (
+                            name
+                          )}
+                        </span>
+                      ))
+                    : null,
+                ],
                 ['Runtime', fmtRun(m.runtime)],
                 [
                   'Released',

@@ -1077,3 +1077,8 @@ The Series network picker reuses the native default catalog and retains
 network links outside the catalog. Standalone checks covered catalog
 selection, exact query, reload, reset and detail links at four viewport
 presets. Bundled and native visual comparisons remain open.
+
+Movie production studios link to matching discovery results and can be
+cleared from the Movies grid. Standalone checks covered the exact query
+and reset, alongside series network links, at four viewport presets.
+Interactive studio selection and bundled and native visuals remain open.

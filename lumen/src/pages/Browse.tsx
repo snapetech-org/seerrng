@@ -218,6 +218,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const status =
     kind === 'tv' && /^[0-5]$/.test(statusParam) ? statusParam : '';
   const excludeStatus = p.get('excludeStatus') === 'true';
+  const studioParam = p.get('studio') ?? '';
+  const studio =
+    kind === 'movie' &&
+    /^[1-9][0-9]{0,9}$/.test(studioParam) &&
+    Number(studioParam) <= 1_000_000_000
+      ? studioParam
+      : '';
+  const studioInfo = useApi<{ id: number; name: string }>(
+    studio ? `/studio/${studio}` : null
+  );
+  const studioLabel =
+    studioInfo.data?.id === Number(studio)
+      ? studioInfo.data?.name
+      : `#${studio}`;
   const networkParam = p.get('network') ?? '';
   const network =
     kind === 'tv' &&
@@ -271,6 +285,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(studio ? { studio } : {}),
     ...(network ? { network } : {}),
     ...(country ? { country } : {}),
     ...(language ? { language } : {}),
@@ -402,6 +417,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             onClick={() => upd('network', '')}
           >
             Clear Network {networkLabel}
+          </button>
+        )}
+        {studio && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => upd('studio', '')}
+          >
+            Clear Studio {studioLabel}
           </button>
         )}
         <CardTitleToggle kinds={[kind]} />

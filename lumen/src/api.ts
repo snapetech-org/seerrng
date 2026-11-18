@@ -625,6 +625,7 @@ export interface MovieDetails extends TitleResult {
   genres: { id: number; name: string }[];
   credits?: Credits;
   keywords?: SubjectTag[];
+  productionCompanies?: { id: number; name: string }[];
   productionCountries?: ProductionCountry[];
   relatedVideos?: { site: string; key: string; type: string; url: string }[];
   releases?: {

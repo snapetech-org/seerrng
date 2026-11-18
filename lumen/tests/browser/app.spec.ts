@@ -2072,3 +2072,35 @@ test('series discovery selects a network from the native catalog', async ({
   await network.selectOption('');
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
+
+test('movie studio details open the matching discovery query', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        productionCompanies: [{ id: 42, name: 'Fixture Studio' }],
+      },
+    })
+  );
+  await page.route('**/api/v1/studio/42', (route) =>
+    route.fulfill({ json: { id: 42, name: 'Fixture Studio' } })
+  );
+  await page.goto('/movie/101');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('studio') === '42'
+    );
+  });
+  await page.getByRole('link', { name: 'Fixture Studio', exact: true }).click();
+  await query;
+  await expect(page).toHaveURL(/\/movies\?studio=42$/);
+  await page
+    .getByRole('button', { name: 'Clear Studio Fixture Studio' })
+    .click();
+  await expect(page).toHaveURL(/\/movies$/);
+});
