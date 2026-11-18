@@ -4858,3 +4858,46 @@ test('Users protects administrators and confirms deletion of the selected member
   ).toHaveCount(0);
   expect(deleted).toBe(true);
 });
+
+test('Users imports and syncs selected Emby accounts', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { applicationTitle: 'SeerrNG', mediaServerType: 3 } })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({ json: { pageInfo: { pages: 0 }, results: [] } })
+  );
+  await page.route('**/api/v1/settings/jellyfin/users', (route) =>
+    route.fulfill({
+      json: [
+        { id: 'existing', username: 'Existing Viewer', isImported: true },
+        { id: 'new', username: 'New Viewer', isImported: false },
+      ],
+    })
+  );
+  let writes = 0;
+  await page.route('**/api/v1/user/import-from-jellyfin', (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      jellyfinUserIds: ['new', 'existing'],
+      syncExisting: true,
+    });
+    writes++;
+    return route.fulfill({ json: { createdUsers: [{}], refreshedUsers: 1 } });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Import Emby Users' }).click();
+  await page.getByRole('checkbox', { name: 'New Viewer' }).check();
+  await expect(page.getByText('Existing Viewer')).toHaveCount(0);
+  await page.getByRole('checkbox', { name: 'Sync Existing Users' }).check();
+  await page.getByRole('checkbox', { name: /Existing Viewer/ }).check();
+  await page
+    .getByRole('button', { name: 'Import Selected Users', exact: true })
+    .click();
+  expect(writes).toBe(0);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Import Selected Users' })
+    .click();
+  await expect(page.getByText('Imported 1, refreshed 1.')).toBeVisible();
+  expect(writes).toBe(1);
+});

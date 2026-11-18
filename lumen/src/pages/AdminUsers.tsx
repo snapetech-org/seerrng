@@ -5,13 +5,14 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
+import ImportMediaServerUsers from '../components/ImportMediaServerUsers';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedPermissions from '../components/ManagedPermissions';
 import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
-import { useApi } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 
 interface DirectoryUser {
   id: number;
@@ -155,6 +156,17 @@ function CreateLocalUser({
 
 export default function AdminUsers() {
   const { user: actor, signOut } = useAuth();
+  const serverType = usePublicSettings()?.mediaServerType;
+  const provider =
+    serverType === 1
+      ? 'Plex'
+      : serverType === 2
+        ? 'Jellyfin'
+        : serverType === 3
+          ? 'Emby'
+          : undefined;
+  const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
+  const [importing, setImporting] = useState(false);
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState('');
@@ -238,6 +250,14 @@ export default function AdminUsers() {
         <button className="btn btn-quiet btn-sm" onClick={reload}>
           Refresh
         </button>
+        {canImport && !importing && (
+          <button
+            className="btn btn-quiet btn-sm"
+            onClick={() => setImporting(true)}
+          >
+            Import {provider} Users
+          </button>
+        )}
         {!creating && (
           <button
             className="btn btn-tonal btn-sm"
@@ -250,6 +270,14 @@ export default function AdminUsers() {
           </button>
         )}
       </div>
+      {canImport && importing && (
+        <ImportMediaServerUsers
+          key={provider}
+          provider={canImport}
+          onComplete={reload}
+          onClose={() => setImporting(false)}
+        />
+      )}
       {creating && (
         <CreateLocalUser
           onCreated={(name) => {
