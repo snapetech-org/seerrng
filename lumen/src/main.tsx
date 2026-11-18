@@ -57,6 +57,7 @@ import './styles/touch.css';
 
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
+const AdminDiscovery = lazy(() => import('./pages/AdminDiscovery'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
@@ -421,6 +422,24 @@ function App() {
                   }
                 >
                   <AdminNetwork />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/discovery"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading discovery integrations…
+                    </p>
+                  }
+                >
+                  <AdminDiscovery />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

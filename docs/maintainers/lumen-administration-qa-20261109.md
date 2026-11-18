@@ -34,3 +34,11 @@ The administration list on `/me` now opens `/admin/network`. The bundled and sta
 Compared dark-theme screenshots of `/me` before and after the navigation change and of the new settings form against the shared controls on baseline `/admin/general` at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected section surfaces, control sizing and wrapping, button alignment, and navigation placement. The browser checks cover administrator and regular accounts, a rejected and retried save, and an environment-owned TLS configuration. The browser API fixtures use synthetic settings. Live reverse proxy, TLS restart, and household sign-in changes were excluded.
 
 Baseline `ad430864b`. Screenshots and test logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-network-20261118/`.
+
+## Discovery credentials follow-up — 2026-11-18
+
+`/me` opens `/admin/discovery` for administrators. The form reads public provider configuration and sends credential changes through the existing authorized PUT endpoint. Previously saved secrets never populate inputs. Clearing credentials stages removal until Save. A rejected save preserves the draft.
+
+Compared the initial form against the shared Network Settings controls from baseline `a5b76acad` on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Inspected the title wrap, section and row spacing, input widths, and action sizing. A production Lumen build and four browser checks passed, including failed-save recovery and horizontal overflow checks. Secrets were synthetic. Curated identity pack management still uses native Discovery Integrations.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-discovery-20261118/`.

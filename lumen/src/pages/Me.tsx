@@ -155,6 +155,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Discovery Integrations</b>
+              <Link
+                className="go"
+                to="/admin/discovery"
+                aria-label="Open Discovery Integrations"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Media Categories</b>
               <Link
                 className="go"
