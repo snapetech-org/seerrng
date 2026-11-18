@@ -2193,3 +2193,43 @@ test('movie discovery gives a single retry for a failed initial page', async ({
   await expect(alert).toHaveCount(0);
   expect(reads).toBe(2);
 });
+
+test('movie availability can distinguish HD and 4K', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { applicationTitle: 'SeerrNG', enable4k: true } })
+  );
+  await page.route('**/api/v1/discover/movies?*', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 201,
+          title: 'HD Fixture',
+          mediaInfo: { status: 5, status4k: 1 },
+        },
+        {
+          ...movie,
+          id: 202,
+          title: '4K Fixture',
+          mediaInfo: { status: 1, status4k: 5 },
+        },
+      ]),
+    })
+  );
+  await page.goto('/movies?show=have');
+  const hd = page.getByRole('link', { name: 'HD Fixture', exact: true });
+  const fourK = page.getByRole('link', { name: '4K Fixture', exact: true });
+  const quality = page.getByLabel('Availability Quality');
+  await expect(hd).toBeVisible();
+  await expect(fourK).toHaveCount(0);
+  await quality.selectOption('4k');
+  await expect(fourK).toBeVisible();
+  await expect(hd).toHaveCount(0);
+  await page.reload();
+  await expect(quality).toHaveValue('4k');
+  await expect(fourK).toBeVisible();
+  await page.getByRole('button', { name: /^Not on / }).click();
+  await expect(hd).toBeVisible();
+  await expect(fourK).toHaveCount(0);
+});

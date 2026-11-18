@@ -1097,3 +1097,9 @@ Movie and series discovery now show one retry action when a failed page
 leaves the grid empty. Standalone Movies fixtures verified recovery and
 retained filter state across four viewport presets. Visual comparisons
 with bundled Lumen and native remain open.
+
+Movies and Series can distinguish HD and 4K in the available and unavailable
+views when the instance enables 4K. The grid filters viewer-scoped discovery
+rows and retains the quality in the URL. Four standalone browser checks
+covered both qualities, reload and switching to unavailable. Native
+library-first availability queries and visual comparisons remain open.

@@ -157,6 +157,7 @@ const NETWORK_OPTIONS = tvNetworks.map(({ name, url }) => ({
 }));
 const BROWSE_FILTER_PARAMS = [
   'show',
+  'quality',
   'sort',
   'genre',
   'match',
@@ -354,9 +355,18 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const list = usePaged<TitleResult>(
     `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
-  const onServer = (x: TitleResult) =>
-    x.mediaInfo?.status === MediaStatus.AVAILABLE ||
-    x.mediaInfo?.status === MediaStatus.PARTIAL;
+  const qualityEnabled =
+    publicSettings?.enable4k === true ||
+    (publicSettings?.enable4k !== false &&
+      (kind === 'movie'
+        ? publicSettings?.movie4kEnabled
+        : publicSettings?.series4kEnabled));
+  const quality = qualityEnabled && p.get('quality') === '4k' ? '4k' : 'hd';
+  const onServer = (x: TitleResult) => {
+    const status =
+      quality === '4k' ? x.mediaInfo?.status4k : x.mediaInfo?.status;
+    return status === MediaStatus.AVAILABLE || status === MediaStatus.PARTIAL;
+  };
   const items = list.items.filter((x) =>
     show === 'have' ? onServer(x) : show === 'not' ? !onServer(x) : true
   );
@@ -367,7 +377,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // finds less than a screenful stops and lets them ask for more.
   const PAGES_PER_LOOK = 5;
   const SCREENFUL = 18;
-  const filterKey = `${kind}|${show}|${q}`;
+  const filterKey = `${kind}|${show}|${quality}|${q}`;
   const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
   if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
   else if (items.length - look.found >= SCREENFUL)
@@ -539,6 +549,21 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             </button>
           ))}
         </div>
+        {qualityEnabled && (show === 'have' || show === 'not') && (
+          <label className="sel">
+            <span className="lbl">Availability Quality</span>
+            <select
+              aria-label="Availability Quality"
+              value={quality}
+              onChange={(event) =>
+                upd('quality', event.target.value === '4k' ? '4k' : '')
+              }
+            >
+              <option value="hd">HD</option>
+              <option value="4k">4K</option>
+            </select>
+          </label>
+        )}
         <label className="sel">
           <span className="lbl">Sort</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
