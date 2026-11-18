@@ -5,7 +5,13 @@ import { ExtraHeader, ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { GAME_LABEL, requestGame, type Game } from '../extras';
+import {
+  GAME_LABEL,
+  PATCH_ID,
+  patchHref,
+  requestGame,
+  type Game,
+} from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
 
@@ -39,8 +45,6 @@ interface PatchProject {
     base?: { available: boolean; region?: string; revision?: string };
   }[];
 }
-
-const PATCH_ID = /^[A-Za-z0-9][A-Za-z0-9:_.-]{0,127}$/;
 
 function gameLink(key?: string, category = 'retro') {
   if (!key) return;
@@ -158,6 +162,7 @@ export default function Patches() {
         <ul className="setlist">
           {data.results.map((project) => {
             const game = gameLink(project.game.catalogKey);
+            const detail = patchHref(project.id);
             const latest =
               project.versions.find(
                 (version) => version.id === project.latestVersionId
@@ -180,11 +185,8 @@ export default function Patches() {
                   {project.summary && <small>{project.summary}</small>}
                 </div>
                 <div className="toolbar">
-                  {PATCH_ID.test(project.id) && (
-                    <Link
-                      className="go"
-                      to={`/patches/${encodeURIComponent(project.id)}`}
-                    >
+                  {detail && (
+                    <Link className="go" to={detail}>
                       Choose a Version
                     </Link>
                   )}
@@ -287,6 +289,7 @@ export function PatchDetail() {
   const [keepOriginal, setKeepOriginal] = useState(true);
   const [busy, setBusy] = useState(false);
   const [receipt, setReceipt] = useState('');
+  const [requestId, setRequestId] = useState<number>();
   const pending = useRef(false);
   const toast = useToast();
   const ready =
@@ -319,6 +322,7 @@ export function PatchDetail() {
           keepOriginal,
         },
       });
+      setRequestId(result.request.id);
       setReceipt(
         result.request.status === 'pending'
           ? 'Waiting for approval'
@@ -458,6 +462,14 @@ export function PatchDetail() {
                   Request Patch
                 </button>
               </div>
+              {!!requestId && (
+                <Link
+                  className="chip"
+                  to={`/requests?softwareRequestId=${requestId}`}
+                >
+                  Request History
+                </Link>
+              )}
               {receipt && (
                 <p role="status" className="note">
                   {receipt}

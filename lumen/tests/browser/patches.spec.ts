@@ -162,7 +162,27 @@ test('a Following update opens its exact patch version and submits only with a c
         submissions++;
         return route.fulfill({
           status: 201,
-          json: { request: { status: 'pending' } },
+          json: { request: { id: 71, status: 'pending' } },
+        });
+      case '/request/software/status/71':
+        return route.fulfill({
+          json: {
+            status: 'pending',
+            request: {
+              id: 71,
+              title: 'Fixture Game',
+              category: 'retro',
+              status: 'pending',
+              selection: {
+                kind: 'patch',
+                projectId: 'patch:fixture',
+                versionId: 'v2',
+                keepOriginal: true,
+              },
+            },
+            assets: [],
+            history: [],
+          },
         });
       default:
         return route.fulfill({ json: {} });
@@ -188,4 +208,22 @@ test('a Following update opens its exact patch version and submits only with a c
   await expect(page.getByText('Waiting for approval')).toBeVisible();
   await expect(submit).toBeDisabled();
   expect(submissions).toBe(1);
+  await page
+    .getByRole('link', { name: 'Request History', exact: true })
+    .click();
+  const history = page.getByRole('dialog', {
+    name: 'Software request history',
+  });
+  await expect(
+    history.getByText('Keep original', { exact: true })
+  ).toBeVisible();
+  const requestedVersion = history.getByRole('link', {
+    name: 'Open Requested Patch Version',
+  });
+  await expect(requestedVersion).toHaveAttribute(
+    'href',
+    '/patches/patch%3Afixture?version=v2'
+  );
+  await requestedVersion.click();
+  await expect(page.getByLabel('Patch Version')).toHaveValue('v2');
 });

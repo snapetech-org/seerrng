@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
-import type { SoftwareRequest } from '../extras';
+import { patchHref, type SoftwareRequest } from '../extras';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { canChooseRequestOptions } from './detail';
@@ -78,6 +79,9 @@ export function SoftwareRequestHistorySheet({
     (isAdministrator(user.permissions) || ((user.permissions ?? 0) & 32) !== 0);
   const manage = canChooseRequestOptions(user?.permissions);
   const status = data?.request.status;
+  const selection = data?.request.selection;
+  const patch = selection?.kind === 'patch' ? selection : null;
+  const project = patch && patchHref(patch.projectId, patch.versionId);
   const capabilities = data?.request.actions;
   const actions: Action[] = [];
   if (status === 'pending') {
@@ -187,6 +191,20 @@ export function SoftwareRequestHistorySheet({
                 {data.request.platform?.name &&
                   ` · ${data.request.platform.name}`}
               </p>
+              {patch && (
+                <div className="toolbar">
+                  {project && (
+                    <Link className="chip" to={project}>
+                      {patch.versionId
+                        ? 'Open Requested Patch Version'
+                        : 'Open Patch Project'}
+                    </Link>
+                  )}
+                  <span className="note">
+                    {patch.keepOriginal ? 'Keep original' : 'Replace original'}
+                  </span>
+                </div>
+              )}
               {confirm ? (
                 <>
                   <p className="note">

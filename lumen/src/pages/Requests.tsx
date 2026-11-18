@@ -36,6 +36,7 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
   GAME_LABEL,
+  patchHref,
   useExtras,
   type AlbumDetails,
   type Comic,
@@ -880,15 +881,21 @@ function gameRow(g: SoftwareRequest): Row {
     },
   } as unknown as RequestItem;
   const id = q.catalogProvider === 'dat' ? q.catalogKey : q.catalogId;
+  const patch = q.selection?.kind === 'patch' ? q.selection : null;
+  const patchLink = patch && patchHref(patch.projectId, patch.versionId);
   return {
     r,
     title: q.title,
     art: q.coverUrl || undefined,
     cover: true,
-    href: id
-      ? `/game/${q.category}/${encodeURIComponent(String(id))}${q.catalogProvider === 'dat' ? '?dat=1' : ''}`
-      : '',
-    sub: [GAME_LABEL[q.category], q.platform?.name].filter(Boolean).join(' · '),
+    href:
+      patchLink ||
+      (id
+        ? `/game/${q.category}/${encodeURIComponent(String(id))}${q.catalogProvider === 'dat' ? '?dat=1' : ''}`
+        : ''),
+    sub: [GAME_LABEL[q.category], q.platform?.name, patch && 'Patch']
+      .filter(Boolean)
+      .join(' · '),
   };
 }
 

@@ -1276,3 +1276,13 @@ Eight standalone browser checks passed across desktop, iPhone, Android
 and tablet. The request fixture covers a version-specific Following link,
 an unavailable base, and an exact DAT request pending approval. Live
 provider submission and matched visual comparison remain open.
+
+Patch requests now link from the submission receipt to software request
+history. The request list and history link back to the saved project and
+version. History also shows whether the request kept the original. Old
+requests made against the provider's latest version link to the project
+without claiming a specific saved version.
+
+The standalone patch fixtures passed on desktop, iPhone, Android, and
+tablet, including the round trip through software request history. Live
+provider history and matched visual comparisons remain open.

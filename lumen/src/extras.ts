@@ -458,6 +458,21 @@ export const PC_ARCH = [
   ['x86', '32-bit (x86)'],
   ['universal', 'Universal'],
 ] as const;
+export const PATCH_ID = /^[A-Za-z0-9][A-Za-z0-9:_.-]{0,127}$/;
+
+export function patchHref(id: string, version?: string) {
+  if (!PATCH_ID.test(id) || (version && !PATCH_ID.test(version))) return;
+  const query = version ? `?${new URLSearchParams({ version })}` : '';
+  return `/patches/${encodeURIComponent(id)}${query}`;
+}
+
+export type PatchSelection = {
+  kind: 'patch';
+  projectId: string;
+  versionId?: string;
+  keepOriginal: boolean;
+};
+
 export const requestGame = (
   category: GameCategory,
   g: Game,
@@ -465,15 +480,10 @@ export const requestGame = (
     os?: string;
     arch?: string;
     system?: string;
-    selection?: {
-      kind: 'patch';
-      projectId: string;
-      versionId: string;
-      keepOriginal: boolean;
-    };
+    selection?: PatchSelection;
   }
 ) =>
-  api<{ request: { status: string } }>('/request/software', {
+  api<{ request: { status: string; id?: number } }>('/request/software', {
     method: 'POST',
     body: JSON.stringify({
       category,
@@ -508,6 +518,15 @@ export interface SoftwareRequest {
     catalogId: number | null;
     catalogKey: string | null;
     catalogProvider: 'igdb' | 'dat';
+    selection?:
+      | PatchSelection
+      | {
+          kind: 'game-content';
+          mode: 'edition' | 'missing-selected';
+          editionId?: number;
+          addonIds?: number[];
+        }
+      | null;
     platform: { name: string } | null;
     percent: number | null;
     error: string | null;

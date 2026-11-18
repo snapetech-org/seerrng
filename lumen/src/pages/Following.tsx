@@ -6,6 +6,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
+import { patchHref } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
 
@@ -30,10 +31,8 @@ const BOOK_FOLLOW_KINDS = ['narrator', 'author', 'series-language', 'edition'];
 
 function eventHref({ target, title }: FollowEvent) {
   if (target?.mediaType === 'patch') {
-    const version = target.variantKey
-      ? `?${new URLSearchParams({ version: target.variantKey })}`
-      : '';
-    return `/patches/${encodeURIComponent(target.id)}${version}`;
+    const patch = patchHref(target.id, target.variantKey);
+    if (patch) return patch;
   }
   if (target && ['movie', 'tv', 'book', 'album'].includes(target.mediaType)) {
     const kind = target.mediaType === 'album' ? 'music' : target.mediaType;
