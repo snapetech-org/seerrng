@@ -11,6 +11,7 @@ for (const permissions of [2, 32]) {
       const path = url.pathname.slice('/api/v1'.length);
       if (path === '/calendar') {
         queries.push(url.searchParams);
+        if (queries.length === 1) return route.fulfill({ json: {} });
         return route.fulfill({
           json: {
             partialSources: [{ source: 'radarr' }],
@@ -78,6 +79,11 @@ for (const permissions of [2, 32]) {
     await expect(
       page.getByRole('heading', { name: 'Release Calendar' })
     ).toBeVisible();
+    const error = page.getByRole('alert').filter({
+      hasText: 'Invalid release calendar response.',
+    });
+    await expect(error).toBeVisible();
+    await error.getByRole('button', { name: 'Retry' }).click();
     await expect(
       page.getByRole('link', { name: 'Fixture 4K Movie' })
     ).toHaveAttribute('href', '/movie/12?quality=4k');

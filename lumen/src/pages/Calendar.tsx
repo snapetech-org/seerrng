@@ -128,8 +128,19 @@ function releaseHref(item: Release) {
 }
 
 function CalendarResults({ path }: { path: string }) {
-  const { data, error, reload } = useApi<CalendarResult>(path);
+  const {
+    data: response,
+    error: loadError,
+    reload,
+  } = useApi<CalendarResult>(path);
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const data =
+    Array.isArray(response?.results) && Array.isArray(response?.partialSources)
+      ? response
+      : null;
+  const error =
+    loadError ||
+    (response && !data ? 'Invalid release calendar response.' : null);
   if (!data) {
     return error ? (
       <ServiceNote error={error} what="releases" retry={reload} />
