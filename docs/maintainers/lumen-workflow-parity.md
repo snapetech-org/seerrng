@@ -2603,3 +2603,14 @@ desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and
 seven browser checks passed, with nine responsive-test skips. GitHub
 finding 647 remains open on earlier code. Evidence is retained under
 `seerrng-lumen-comic-text*` in `/mnt/disks/scratch/task-deliverables/`.
+
+Shared card covers and the request card's decorative image now validate
+artwork with the existing Lumen URL helper. The request fixture showed
+four image elements on the baseline, including two with the unsupported
+HTTP destination. The candidate kept the two elements for the valid
+proxy cover and used the drawn fallback for the other card. The production
+build and 48 browser checks passed across desktop, iPhone 13, Pixel 7,
+and iPad Pro 11. Baseline screenshots and traces are retained under
+`seerrng-lumen-cover-regression-baseline-20261118` in
+`/mnt/disks/scratch/task-deliverables/`. Alert 662 still refers to the
+earlier revision. Live provider artwork was outside this fixture check.

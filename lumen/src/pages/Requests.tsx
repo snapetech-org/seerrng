@@ -1901,13 +1901,14 @@ export default function Requests() {
         {list.map((x) => {
           const st = state(x, serverName, liveDownloads, allowRawHashes);
           const detail = requestFailureMessage(x.r) ?? st.detail;
+          const artwork = artUrl(x.art);
           return (
             <div className="rq" key={x.r.id}>
               <div className={`art ${x.cover ? 'cover' : ''}`}>
-                {x.cover && x.art && (
+                {x.cover && artwork && (
                   <img
                     className="art-fill"
-                    src={x.art}
+                    src={artwork}
                     alt=""
                     aria-hidden="true"
                     loading="lazy"
@@ -1916,7 +1917,7 @@ export default function Requests() {
                   />
                 )}
                 <Cover
-                  src={x.art}
+                  src={artwork}
                   title={x.title}
                   sub={x.sub}
                   icon={coverIcon(x.r.type, x.r.bookFormat)}

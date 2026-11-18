@@ -175,6 +175,54 @@ test('a request without artwork gets a drawn cover', async ({ page }) => {
   await expect(page.locator('.rq .art .nocover')).toHaveCount(1);
 });
 
+test('request covers reject untrusted artwork and keep valid proxy images', async ({
+  page,
+}) => {
+  const requests = [
+    '/imageproxy/coverartarchive/release/valid.jpg',
+    'http://art.example/unsafe.jpg',
+  ];
+  await page.route('**/imageproxy/coverartarchive/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"/>',
+    })
+  );
+  await fixtures(page, (path) => {
+    if (path === '/request')
+      return {
+        json: paged(
+          requests.map((_, index) => ({
+            ...ownRequest.results[0],
+            id: index + 20,
+            type: 'music',
+            media: { mediaType: 'music', mbId: `album-${index}`, status: 3 },
+          }))
+        ),
+      };
+    const index = requests.findIndex((_, i) => path === `/music/album-${i}`);
+    if (index >= 0)
+      return {
+        json: {
+          title: `Album ${index}`,
+          artist: { name: 'Artist' },
+          posterPath: requests[index],
+        },
+      };
+  });
+  await page.goto('/requests?tab=all');
+  await expect(page.locator('.rq .art img')).toHaveCount(2);
+  await expect(page.locator('.rq .art img').first()).toHaveAttribute(
+    'src',
+    requests[0]
+  );
+  await expect(page.locator('.rq .art img').last()).toHaveAttribute(
+    'src',
+    requests[0]
+  );
+  await expect(page.locator('.rq .art .nocover')).toHaveCount(1);
+});
+
 test('Escape closes the change-request sheet, focus returns and the page does not scroll behind it', async ({
   page,
 }) => {

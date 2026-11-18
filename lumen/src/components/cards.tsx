@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
+  artUrl,
   bookArt,
   englishAudioEdition,
   hardcoverWorkId,
@@ -70,12 +71,13 @@ export function Cover({
 }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
-  if (src && !failed)
+  const artwork = artUrl(src);
+  if (artwork && !failed)
     return (
       <img
         loading="lazy"
         decoding="async"
-        src={src}
+        src={artwork}
         alt=""
         onError={() => setFailed(true)}
       />
