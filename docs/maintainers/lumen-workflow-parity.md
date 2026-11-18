@@ -93,10 +93,12 @@ marking an update seen. Live provider and matched visual review remain open.
 
 Movie and Series browse show Follow for a single included genre, a selected
 production company, or a TV network when the viewer has request access.
-These controls use the same identities as Classic. Sixteen standalone
-browser checks passed across four viewport presets, including the submitted
-genre, studio, and network identities. Bundled and matched visual
-verification remain open for the browse controls.
+These controls use the same identities as Classic. Sixteen browser checks
+passed per deployment across desktop, iPhone, Android, and tablet, including
+the submitted genre, studio, and network identities. The bundled run used
+the Express mount and both runs used API fixtures. Nine separate server
+tests passed for follow admission, event persistence, and feed policy.
+Matched visual and live provider verification remain open.
 
 Headed Chrome at 1440 × 1000 verified the fixture's `/following` feed and
 `/me` link. Mark Seen removed the row control and unread action after the
