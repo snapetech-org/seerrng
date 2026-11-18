@@ -20,6 +20,8 @@ test('discovery credentials remain write-only and a rejected save can be retried
     const path = new URL(request.url()).pathname.slice(7);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/integrations/discovery/mappings/packs')
+      return route.fulfill({ json: { packs: [] } });
     if (path !== '/integrations/discovery/configuration')
       return route.fulfill({ json: {} });
     if (request.method() === 'GET')
@@ -63,4 +65,86 @@ test('discovery credentials remain write-only and a rejected save can be retried
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
+
+test('shared pack replacement requires acknowledgement and deletion requires confirmation', async ({
+  page,
+}, info) => {
+  const pack = { packId: 'test-pack', name: 'Test Pack', count: 1 };
+  const contents = {
+    format: 'seerrng.curated-title-matches',
+    version: 1,
+    packId: pack.packId,
+    name: pack.name,
+    entries: [{}],
+  };
+  let packs = [pack];
+  const calls: { method: string; body: string | null }[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    const method = request.method();
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/integrations/discovery/configuration')
+      return route.fulfill({
+        json: { trakt: {}, anilist: {}, simkl: {}, mdblist: {} },
+      });
+    if (path === '/integrations/discovery/mappings/packs') {
+      if (method === 'GET') return route.fulfill({ json: { packs } });
+      calls.push({ method, body: request.postData() });
+      expect(request.headers()['content-type']).toBe('text/plain');
+      return route.fulfill({
+        json: { total: 1, imported: 0, updated: 1, unchanged: 0, removed: 0 },
+      });
+    }
+    if (path.endsWith('/packs/test-pack')) {
+      if (method === 'GET') return route.fulfill({ json: contents });
+      calls.push({ method, body: request.postData() });
+      packs = [];
+      return route.fulfill({ json: {} });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/admin/discovery');
+  await expect(page.getByText('Test Pack', { exact: true })).toBeVisible();
+  const downloaded = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download Pack' }).click();
+  expect((await downloaded).suggestedFilename()).toMatch(
+    /^seerrng-test-pack-.*\.json$/
+  );
+  await page.getByLabel('Choose Pack File').setInputFiles({
+    name: 'pack.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(contents)),
+  });
+  const replace = page.getByRole('button', { name: 'Replace Shared Pack' });
+  await expect(replace).toBeDisabled();
+  if (process.env.LUMEN_CAPTURE_DISCOVERY)
+    await page.screenshot({
+      path: info.outputPath('packs.png'),
+      fullPage: true,
+    });
+  await page
+    .getByLabel('I understand this pack applies to every account.')
+    .check();
+  await replace.click();
+  await expect(page.getByText(/Published Test Pack/)).toBeVisible();
+  await page.getByRole('button', { name: 'Delete Pack', exact: true }).click();
+  await page.getByRole('button', { name: 'Keep Shared Pack' }).click();
+  expect(calls).toHaveLength(1);
+  await page.getByRole('button', { name: 'Delete Pack', exact: true }).click();
+  await page.getByRole('button', { name: 'Delete Shared Pack' }).click();
+  await expect(
+    page.getByText('No shared packs have been published.')
+  ).toBeVisible();
+  expect(calls).toEqual([
+    { method: 'POST', body: JSON.stringify(contents) },
+    { method: 'DELETE', body: null },
+  ]);
 });

@@ -99,7 +99,13 @@ const args = (settings = {}) => [
   ...Object.entries(settings).flatMap(([k, v]) => ['-e', `${k}=${v}`]),
   image,
 ];
-const paths = ['/api/v1/probe', '/imageproxy/probe', '/avatarproxy/probe'];
+const packPath = '/api/v1/integrations/discovery/mappings/packs';
+const paths = [
+  '/api/v1/probe',
+  '/imageproxy/probe',
+  '/avatarproxy/probe',
+  packPath,
+];
 async function check(settings, clientIp, scheme, headers = {}) {
   const id = await docker(
     'run',
@@ -192,6 +198,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/users/', '/admin/general'],
       ['/settings/categories', '/admin/categories'],
       ['/settings/network/', '/admin/network'],
+      ['/settings/discovery', '/admin/discovery'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);
@@ -208,6 +215,20 @@ async function check(settings, clientIp, scheme, headers = {}) {
       frontend.headers.get('content-security-policy'),
       /script-src 'self'/
     );
+    const supportedPack = await fetch(base + packPath, {
+      method: 'POST',
+      headers: { 'content-type': 'text/plain' },
+      body: ' '.repeat(2 * 1024 * 1024),
+    });
+    assert.equal(supportedPack.status, 200);
+    await supportedPack.text();
+    const oversizedPack = await fetch(base + packPath, {
+      method: 'POST',
+      headers: { 'content-type': 'text/plain' },
+      body: ' '.repeat(5 * 1024 * 1024 + 1),
+    });
+    assert.equal(oversizedPack.status, 413);
+    await oversizedPack.text();
     for (const path of paths) {
       const response = await fetch(base + path, {
         headers: {

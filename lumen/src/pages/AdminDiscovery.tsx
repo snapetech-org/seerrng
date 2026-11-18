@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
+import CuratedIdentityPacks from '../components/CuratedIdentityPacks';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -188,6 +189,7 @@ export default function AdminDiscovery() {
           </p>
         )
       )}
+      <CuratedIdentityPacks />
     </>
   );
 }

@@ -42,3 +42,11 @@ Baseline `ad430864b`. Screenshots and test logs are retained on kspld0 under `/m
 Compared the initial form against the shared Network Settings controls from baseline `a5b76acad` on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Inspected the title wrap, section and row spacing, input widths, and action sizing. A production Lumen build and four browser checks passed, including failed-save recovery and horizontal overflow checks. Secrets were synthetic. Curated identity pack management still uses native Discovery Integrations.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-discovery-20261118/`.
+
+## Shared title-match packs follow-up — 2026-11-18
+
+Discovery Integrations now supports preview, acknowledgement, publish/replace, export, and confirmed deletion. The standalone and bundled settings bookmarks open the Lumen page. The standalone proxy accepts pack uploads up to the API's 5 MiB limit for that endpoint.
+
+Compared baseline `0d45bf7d8` Discovery Integrations against the populated replacement preview at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected form and row widths, action wrapping, and mobile navigation clearance. The first mobile captures exposed horizontal overflow from the unstyled file input. The final captures use the shared upload control and all eight browser checks passed on the production build. Ten standalone proxy tests and two bundled frontend tests passed. Synthetic packs only, with no changes to a household instance.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-packs-20261118/`.
