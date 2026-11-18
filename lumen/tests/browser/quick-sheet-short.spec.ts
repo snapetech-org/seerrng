@@ -92,3 +92,63 @@ for (const [width, height] of [
     await expect(sheet).toBeHidden();
   });
 }
+
+for (const is4k of [false, true]) {
+  test(`poster request confirms an allowed streaming override (4K: ${is4k})`, async ({
+    page,
+  }, info) => {
+    test.skip(
+      info.project.name !== 'desktop',
+      'poster hover actions are desktop only'
+    );
+    await fixture(page);
+    if (!is4k)
+      await page.route('**/api/v1/settings/public', (route) =>
+        route.fulfill({ json: { mediaServerType: 2, movie4kEnabled: false } })
+      );
+    const submissions: unknown[] = [];
+    await page.route('**/api/v1/request', (route) => {
+      if (route.request().method() !== 'POST') return route.fallback();
+      const body = route.request().postDataJSON();
+      submissions.push(body);
+      if (body.bypassStreamingRequestPolicy)
+        return route.fulfill({ status: 201, json: { id: 42 } });
+      return route.fulfill({
+        status: 403,
+        json: {
+          code: 'STREAMING_REQUEST_POLICY_REJECTED',
+          allowOverride: true,
+          message: 'Available on your streaming service.',
+        },
+      });
+    });
+    await page.goto('/');
+    const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
+    await poster.scrollIntoViewIfNeeded();
+    await poster.hover();
+    await poster.locator('.qbtn.go').focus();
+    await page.keyboard.press('Enter');
+    const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+    if (is4k) {
+      await sheet.getByRole('button', { name: '4K', exact: true }).click();
+      await sheet.getByRole('button', { name: 'Request in 4K' }).click();
+    }
+    await expect(
+      sheet.getByText('Available on your streaming service.')
+    ).toBeVisible();
+    await expect(sheet.getByRole('button', { name: 'Cancel' })).toBeFocused();
+
+    const original = {
+      mediaType: 'movie',
+      mediaId: 302,
+      ...(is4k ? { is4k } : {}),
+    };
+    expect(submissions).toEqual([original]);
+    await sheet.getByRole('button', { name: 'Request Anyway' }).click();
+    await expect(sheet).toHaveCount(0);
+    expect(submissions).toEqual([
+      original,
+      { ...original, bypassStreamingRequestPolicy: true },
+    ]);
+  });
+}

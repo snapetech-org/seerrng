@@ -106,6 +106,15 @@ export function isQuotaDenial(error: unknown) {
   );
 }
 
+function streamingOverrideMessage(error: unknown) {
+  if (
+    error instanceof ApiError &&
+    error.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+    error.allowOverride
+  )
+    return error.message;
+}
+
 type RequestDone = (
   is4k: boolean,
   series?: SeriesRequest,
@@ -119,11 +128,13 @@ export function RequestSheet({
   onClose,
   onDone,
   quotaDenied = false,
+  streamingDenial,
 }: {
   it: TitleResult;
   onClose: () => void;
   onDone: RequestDone;
   quotaDenied?: boolean;
+  streamingDenial?: string;
 }) {
   const { user } = useAuth();
   const canAskApproval = !!user && !canManageRequests(user.permissions);
@@ -137,18 +148,37 @@ export function RequestSheet({
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
   const [err, setErr] = useState('');
+  const [override, setOverride] = useState<
+    | {
+        message: string;
+        options: RequestOptions;
+      }
+    | undefined
+  >(
+    streamingDenial === undefined
+      ? undefined
+      : { message: streamingDenial, options: {} }
+  );
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   useBackCloses(onClose);
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, onClose);
+  const cancel = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (override) cancel.current?.focus();
+  }, [override]);
   // without server choices there's nothing to wait for
-  const canSend = asks ? ready : true;
+  const canSend = !!override || !asks || ready;
   const send = async () => {
     if (busy || !canSend) return;
     setBusy(true);
     setErr('');
     const base = asks ? opts : {};
-    const body = offers4k && fourK ? { ...base, is4k: true } : base;
+    const body = override
+      ? { ...override.options, bypassStreamingRequestPolicy: true }
+      : offers4k && fourK
+        ? { ...base, is4k: true }
+        : base;
     try {
       const options =
         approval && !body.userId
@@ -164,7 +194,10 @@ export function RequestSheet({
         series?.quotaException ?? movie?.quotaException
       );
     } catch (e) {
-      if (!denied && canAskApproval && !body.userId && isQuotaDenial(e))
+      const message = streamingOverrideMessage(e);
+      if (!override && message !== undefined)
+        setOverride({ message, options: body });
+      else if (!denied && canAskApproval && !body.userId && isQuotaDenial(e))
         setDenied(true);
       else setErr(friendlyError(e, 'Request failed'));
       setBusy(false);
@@ -202,7 +235,7 @@ export function RequestSheet({
               </span>
             </div>
           </div>
-          {offers4k && (
+          {!override && offers4k && (
             <div className="seg" role="group" aria-label="Quality">
               {(
                 [
@@ -226,7 +259,7 @@ export function RequestSheet({
               ))}
             </div>
           )}
-          {asks && (
+          {!override && asks && (
             // keyed by quality: the 4K choice lists the 4K servers with their own defaults
             <AdvancedOptions
               key={fourK ? '4k' : 'hd'}
@@ -237,6 +270,11 @@ export function RequestSheet({
               inline
               onReady={setReady}
             />
+          )}
+          {override && (
+            <p className="note" role="alert">
+              {override.message}
+            </p>
           )}
           {approval && (
             <p className="note">
@@ -257,13 +295,17 @@ export function RequestSheet({
             >
               {busy
                 ? 'Requesting…'
-                : approval
-                  ? 'Request Approval'
-                  : offers4k && fourK
-                    ? 'Request in 4K'
-                    : 'Request'}
+                : override
+                  ? approval
+                    ? 'Request Approval Anyway'
+                    : 'Request Anyway'
+                  : approval
+                    ? 'Request Approval'
+                    : offers4k && fourK
+                      ? 'Request in 4K'
+                      : 'Request'}
             </button>
-            <button className="btn btn-tonal" onClick={onClose}>
+            <button ref={cancel} className="btn btn-tonal" onClick={onClose}>
               Cancel
             </button>
           </div>
@@ -281,7 +323,9 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
   const toast = useToast();
   const choosesOptions = useAsksRequestOptions();
   const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
-  const [sheet, setSheet] = useState<'options' | 'approval'>();
+  const [sheet, setSheet] = useState<
+    'options' | 'approval' | { streamingDenial: string }
+  >();
   const close = useCallback(() => setSheet(undefined), []);
   return {
     request: async () => {
@@ -295,7 +339,9 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
         if (it.mediaType === 'movie') await requestMovie(it.id);
         done(false, series);
       } catch (error) {
-        if (
+        const message = streamingOverrideMessage(error);
+        if (message !== undefined) setSheet({ streamingDenial: message });
+        else if (
           user &&
           !canManageRequests(user.permissions) &&
           isQuotaDenial(error)
@@ -308,6 +354,9 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
       <RequestSheet
         it={it}
         quotaDenied={sheet === 'approval'}
+        streamingDenial={
+          typeof sheet === 'object' ? sheet.streamingDenial : undefined
+        }
         onClose={close}
         onDone={(is4k, series, quotaException) => {
           close();
