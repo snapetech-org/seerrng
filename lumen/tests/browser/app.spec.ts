@@ -2701,3 +2701,80 @@ test('Discover displays enabled TMDB list shelves in configured order', async ({
     page.getByRole('heading', { name: 'Public List 11' })
   ).toBeVisible();
 });
+
+test('configured video shelves preserve keyword and streaming filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: string[] = [];
+  await page.route('**/api/v1/settings/discover', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 1,
+          type: 13,
+          title: 'Keyword Shelf',
+          enabled: true,
+          data: '12,34',
+          order: 2,
+        },
+        {
+          id: 2,
+          type: 21,
+          title: 'Streaming Shelf',
+          enabled: true,
+          data: 'US,8|9',
+          order: 1,
+        },
+        {
+          id: 3,
+          type: 18,
+          title: 'Invalid Shelf',
+          enabled: true,
+          data: '42?extra=true',
+          order: 3,
+        },
+      ],
+    })
+  );
+  await page.route(/\/api\/v1\/discover\/(movies|tv)\?/, (route) => {
+    const url = new URL(route.request().url());
+    reads.push(url.pathname + url.search);
+    return route.fulfill({
+      json: paged([
+        url.pathname.endsWith('/tv')
+          ? { id: 88, mediaType: 'tv', name: 'Streaming Fixture' }
+          : { ...movie, title: 'Keyword Fixture' },
+      ]),
+    });
+  });
+  await page.goto('/');
+  const streaming = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Streaming Shelf' }) });
+  const keywords = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Keyword Shelf' }) });
+  await streaming.scrollIntoViewIfNeeded();
+  await expect(
+    streaming.getByRole('link', { name: 'Streaming Fixture' })
+  ).toHaveAttribute('href', '/tv/88');
+  await expect(
+    streaming.getByRole('link', { name: 'See all' })
+  ).toHaveAttribute('href', '/series?watchRegion=US&watchProviders=8%7C9');
+  await keywords.scrollIntoViewIfNeeded();
+  await expect(
+    keywords.getByRole('link', { name: 'Keyword Fixture' })
+  ).toBeVisible();
+  await expect(keywords.getByRole('link', { name: 'See all' })).toHaveAttribute(
+    'href',
+    '/movies?keywords=12%2C34'
+  );
+  expect(reads).toContain('/api/v1/discover/movies?keywords=12%2C34&page=1');
+  expect(reads).toContain(
+    '/api/v1/discover/tv?watchRegion=US&watchProviders=8%7C9&page=1'
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Invalid Shelf' })
+  ).toHaveCount(0);
+});

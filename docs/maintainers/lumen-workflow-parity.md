@@ -1342,3 +1342,11 @@ viewport. Shelves reuse the standard rail and link to the full list page.
 Eight standalone checks passed across desktop, iPhone, Android, and
 tablet. Other configured shelf types, live provider coverage, and matched
 visual comparisons remain open.
+
+The configured video shelf renderer also supports TMDB movie and TV
+keywords and genres, movie studios, TV networks, and streaming providers.
+The preview and its See All link share the same validated filter values.
+Eight standalone checks passed across four viewport presets, covering
+keyword and provider queries, invalid data, and existing TMDB list
+shelves. Other configured shelf types, live provider results, and matched
+visual comparisons remain open.
