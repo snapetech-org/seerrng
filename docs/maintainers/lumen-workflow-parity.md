@@ -1127,3 +1127,10 @@ The position cache is bounded and cleared on account change. Standalone
 browser fixtures verified movie-shelf restoration after Back at four
 viewport presets. Other shelves and bundled and native visual comparisons
 remain open.
+
+When an administrator locks non-admin users to bundled Lumen, native movie
+and series discovery links now land on the matching Lumen grid. Supported
+filters, genre matching, and availability quality are carried forward.
+Server integration tests covered studio, network, keyword, genre matching,
+invalid identifiers, and existing frontend routing. Browser and companion
+deep-link verification remain open.

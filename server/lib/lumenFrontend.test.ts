@@ -187,6 +187,26 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .get('/requests/status?requestId=21')
       .set('X-Test-Role', 'user');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
+    for (const [route, destination] of [
+      [
+        '/discover/movies/studio/42?excludeStudio=true&sortBy=vote_average.desc&ignored=1',
+        '/lumen/movies?excludeStudio=true&sort=vote_average.desc&studio=42',
+      ],
+      [
+        '/discover/tv/network/213?availability=4k',
+        '/lumen/series?network=213&show=have&quality=4k',
+      ],
+      [
+        '/discover/movies?genre=18%7C35&keywords=73',
+        '/lumen/movies?keywords=73&genre=18%2C35',
+      ],
+      ['/discover/tv?genre=18,35', '/lumen/series?genre=18%2C35&match=all'],
+      ['/discover/movies/studio/nope', '/lumen/'],
+    ]) {
+      const response = await request(app).get(route).set('X-Test-Role', 'user');
+      assert.equal(response.headers.location, destination, route);
+      assert.equal(response.headers['cache-control'], 'no-store');
+    }
     const nonHtmlRequest = await request(app)
       .get('/movie/123')
       .set('X-Test-Role', 'user')

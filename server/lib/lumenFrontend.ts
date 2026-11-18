@@ -23,6 +23,75 @@ function requestDeepLink(req: Request): string | undefined {
   }
 }
 
+const discoveryFilters = [
+  'country',
+  'language',
+  'keywords',
+  'excludeKeywords',
+  'excludeGenre',
+  'primaryReleaseDateGte',
+  'primaryReleaseDateLte',
+  'firstAirDateGte',
+  'firstAirDateLte',
+  'withRuntimeGte',
+  'withRuntimeLte',
+  'voteAverageGte',
+  'voteAverageLte',
+  'voteCountGte',
+  'voteCountLte',
+  'watchProviders',
+  'watchRegion',
+  'watchProviderMode',
+  'status',
+  'excludeStatus',
+  'studio',
+  'excludeStudio',
+  'network',
+];
+
+function discoveryDeepLink(req: Request): string | undefined {
+  const route =
+    /^\/discover\/(movies|tv)(?:\/(keyword|genre|language|network|studio)(?:\/([a-zA-Z0-9]+))?)?\/?$/.exec(
+      req.path
+    );
+  if (!route) return;
+  const [, kind, dimension, id] = route;
+  const query = new URLSearchParams();
+  for (const key of discoveryFilters) {
+    const value = req.query[key];
+    if (typeof value === 'string' && value.length <= 512) query.set(key, value);
+  }
+  const sort = req.query.sortBy;
+  if (typeof sort === 'string' && /^[a-z_]+\.(asc|desc)$/.test(sort))
+    query.set('sort', sort);
+  const genre = dimension === 'genre' ? id : req.query.genre;
+  if (
+    typeof genre === 'string' &&
+    /^\d{1,10}(?:[|,]\d{1,10})*$/.test(genre) &&
+    genre.length <= 512
+  ) {
+    query.set('genre', genre.replace(/\|/g, ','));
+    if (genre.includes(',')) query.set('match', 'all');
+  }
+  if (dimension && dimension !== 'keyword') {
+    if (!id) return;
+    if (dimension === 'language') {
+      if (!/^[a-z]{2}$/.test(id)) return;
+      query.set('language', id);
+    } else {
+      if (!/^[1-9]\d{0,9}$/.test(id) || Number(id) > 1_000_000_000) return;
+      if (dimension === 'studio' && kind === 'movies') query.set('studio', id);
+      if (dimension === 'network' && kind === 'tv') query.set('network', id);
+    }
+  }
+  if (req.query.availability === 'hd' || req.query.availability === '4k') {
+    query.set('show', 'have');
+    if (req.query.availability === '4k') query.set('quality', '4k');
+  }
+  const suffix = query.toString();
+  return `/lumen/${kind === 'movies' ? 'movies' : 'series'}${suffix ? `?${suffix}` : ''}`;
+}
+
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
   res,
@@ -45,7 +114,7 @@ export const redirectLockedNativeFrontend: RequestHandler = (
         302,
         passwordRecoveryPath.test(req.path)
           ? `/lumen${req.path}`
-          : (requestDeepLink(req) ?? '/lumen/')
+          : (requestDeepLink(req) ?? discoveryDeepLink(req) ?? '/lumen/')
       );
     return;
   }
