@@ -47,6 +47,23 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.status, 302);
     assert.equal(userDirectory.headers.location, '/lumen/admin/users');
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
+    for (const [bookmark, destination] of [
+      ['/profile/', '/me'],
+      ['/profile/settings/client-tokens', '/me/account/client-tokens'],
+      [
+        '/profile/settings/notifications/email/',
+        '/me/account/notifications#notification-email',
+      ],
+      [
+        '/profile/watchlist?search=Arrival&page=2',
+        '/watchlist?search=Arrival&page=2',
+      ],
+    ]) {
+      const response = await request(app).get(`/lumen${bookmark}`);
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.location, `/lumen${destination}`);
+      assert.equal(response.headers['cache-control'], 'no-store');
+    }
     const userSettings = await request(app).get(
       '/lumen/users/19/settings/maturity'
     );

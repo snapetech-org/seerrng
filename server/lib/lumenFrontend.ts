@@ -237,8 +237,11 @@ function managedUserSettingsPath(path: string): string | undefined {
   return `/lumen/admin/users/${match[1]}/${panel}${channel ? `#notification-${channel}` : ''}`;
 }
 
-function workflowDeepLink(req: Request): string | undefined {
-  const nativePath = req.path.replace(/\/$/, '');
+function workflowDeepLink(
+  req: Request,
+  pathname = req.path
+): string | undefined {
+  const nativePath = pathname.replace(/\/$/, '');
   const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
   if (issue && Number.isSafeInteger(Number(issue))) {
     return `/lumen/issues/${issue}`;
@@ -424,9 +427,11 @@ export const mountLumenFrontend = (
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
-  server.get('/lumen/users', (_req, res) =>
-    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/admin/users')
-  );
+  server.get(/^\/lumen\/(?:profile(?:\/|$)|users\/?$)/, (req, res, next) => {
+    const destination = workflowDeepLink(req, req.path.slice('/lumen'.length));
+    if (!destination) return next();
+    return res.set('Cache-Control', 'no-store').redirect(302, destination);
+  });
   server.get(/^\/lumen\/settings\/(jobs|logs|about)\/?$/, (req, res) => {
     const destination = req.params[0];
     return res

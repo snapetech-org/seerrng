@@ -176,6 +176,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/users/19/settings/notifications/email',
         '/admin/users/19/notifications#notification-email',
       ],
+      ['/users/19/settings/notifications/', '/admin/users/19/notifications'],
       ['/settings/logs', '/admin/logs'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
