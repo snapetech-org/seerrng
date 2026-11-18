@@ -322,3 +322,52 @@ for (const mode of ['edition', 'missing-selected'] as const) {
     ]);
   });
 }
+
+test('game catalogue retries the same offset and keeps earlier results', async ({
+  page,
+}) => {
+  const offsets: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { softwareEnabled: true, enabledMediaCategories: { game: true } },
+      });
+    if (path === '/request/software/catalog/popular') {
+      if (url.searchParams.get('limit') !== '24')
+        return route.fulfill({ json: { results: [] } });
+      const offset = url.searchParams.get('offset') ?? '0';
+      offsets.push(offset);
+      if (
+        offset === '24' &&
+        offsets.filter((value) => value === '24').length === 1
+      )
+        return route.fulfill({ json: { results: [null] } });
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: offset === '0' ? 'igdb:42' : 'igdb:43',
+              igdbId: offset === '0' ? 42 : 43,
+              catalogProvider: 'igdb',
+              title: offset === '0' ? 'First Game' : 'Second Game',
+            },
+          ],
+          nextOffset: offset === '0' ? 24 : null,
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/games');
+  await expect(page.getByRole('link', { name: 'First Game' })).toBeVisible();
+  const retry = page.getByRole('alert').getByRole('button', { name: 'Retry' });
+  await retry.click();
+  await expect(page.getByRole('link', { name: 'Second Game' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'First Game' })).toBeVisible();
+  expect(offsets).toEqual(['0', '24', '24']);
+});

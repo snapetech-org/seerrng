@@ -58,6 +58,7 @@ function useGames(category: GameCategory | undefined, query: string) {
   // where a failed page was, so Retry asks for it again
   const failedAt = useRef<string | number | undefined>(undefined);
   useEffect(() => {
+    if (live.current === key) return;
     live.current = key;
     inFlight.current = null;
     failedAt.current = undefined;
@@ -66,46 +67,75 @@ function useGames(category: GameCategory | undefined, query: string) {
     setNext(undefined);
     setError(null);
   }, [key]);
-  const more = useCallback(async () => {
-    if (!category || loading || inFlight.current || next === null) return;
-    const token = Symbol();
-    inFlight.current = token;
-    const ownsRequest = () =>
-      live.current === key && inFlight.current === token;
-    setLoading(true);
-    const p = new URLSearchParams({ category, limit: '24' });
-    if (query) p.set('q', query);
-    if (next !== undefined) p.set(query ? 'cursor' : 'offset', String(next));
-    try {
-      const d = await api<GamePage>(
-        `/request/software/catalog/${query ? 'search' : 'popular'}?${p}`
-      );
-      if (!ownsRequest()) return;
-      setItems((x) => {
-        const seen = new Set(x.map((g) => g.id));
-        return x.concat(d.results.filter((g) => !seen.has(g.id)));
-      });
-      setNext((query ? d.nextCursor : d.nextOffset) ?? null);
-    } catch (e) {
-      if (ownsRequest()) {
-        setError(e instanceof Error ? e.message : 'Failed to load');
-        failedAt.current = next;
-        setNext(null);
+  const load = useCallback(
+    async (position: string | number | null | undefined) => {
+      if (
+        !category ||
+        live.current !== key ||
+        inFlight.current ||
+        position === null
+      )
+        return;
+      const token = Symbol();
+      inFlight.current = token;
+      const ownsRequest = () =>
+        live.current === key && inFlight.current === token;
+      setLoading(true);
+      setError(null);
+      const p = new URLSearchParams({ category, limit: '24' });
+      if (query) p.set('q', query);
+      if (position !== undefined)
+        p.set(query ? 'cursor' : 'offset', String(position));
+      try {
+        const d = await api<GamePage>(
+          `/request/software/catalog/${query ? 'search' : 'popular'}?${p}`
+        );
+        if (!ownsRequest()) return;
+        if (
+          !Array.isArray(d?.results) ||
+          !d.results.every(
+            (game) =>
+              typeof game?.id === 'string' && typeof game.title === 'string'
+          )
+        )
+          throw new Error('Invalid game catalogue response.');
+        const continuation = query ? d.nextCursor : d.nextOffset;
+        if (
+          continuation != null &&
+          (query
+            ? typeof continuation !== 'string' ||
+              !continuation ||
+              continuation === position
+            : typeof continuation !== 'number' ||
+              !Number.isSafeInteger(continuation) ||
+              continuation <= Number(position ?? 0))
+        )
+          throw new Error('Invalid game catalogue continuation.');
+        setItems((x) => {
+          const seen = new Set(x.map((g) => g.id));
+          return x.concat(d.results.filter((g) => !seen.has(g.id)));
+        });
+        setNext(continuation ?? null);
+      } catch (e) {
+        if (ownsRequest()) {
+          setError(e instanceof Error ? e.message : 'Failed to load');
+          failedAt.current = position;
+          setNext(null);
+        }
+      } finally {
+        if (ownsRequest()) {
+          inFlight.current = null;
+          setLoading(false);
+        }
       }
-    } finally {
-      if (ownsRequest()) {
-        inFlight.current = null;
-        setLoading(false);
-      }
-    }
-  }, [category, query, next, loading, key]);
+    },
+    [category, query, key]
+  );
+  const more = useCallback(() => void load(next), [load, next]);
   useEffect(() => {
     if (next === undefined && !loading) void more();
   }, [key, next, loading, more]);
-  const retry = useCallback(() => {
-    setError(null);
-    setNext(failedAt.current);
-  }, []);
+  const retry = () => void load(failedAt.current);
   return { items, more, retry, loading, error, done: next === null };
 }
 
