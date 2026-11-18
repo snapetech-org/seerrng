@@ -16,7 +16,26 @@ for (const manager of [true, false]) {
           json: { id: 1, permissions: manager ? 16 : 32 },
         });
       if (path === '/settings/public')
-        return route.fulfill({ json: { initialized: true } });
+        return route.fulfill({
+          json: {
+            initialized: true,
+            ebookServiceEnabled: true,
+            audiobookServiceEnabled: true,
+          },
+        });
+      if (path === '/request/bulk') {
+        expect(manager).toBe(false);
+        expect(route.request().postDataJSON()).toEqual({
+          mediaType: 'book',
+          format: 'audiobook',
+          items: [
+            { mediaId: 'OL123W', title: 'First Book', editionId: 'OL321M' },
+          ],
+        });
+        return route.fulfill({
+          json: { created: [{}], skipped: [], failed: [] },
+        });
+      }
       if (path === '/book-series/watch/requests/7/approve') {
         expect(manager).toBe(true);
         expect(route.request().method()).toBe('POST');
@@ -56,7 +75,11 @@ for (const manager of [true, false]) {
               {
                 title: 'First Book',
                 matchStatus: 'matched',
-                book: { id: 'OL123W' },
+                book: {
+                  id: 'OL123W',
+                  title: 'First Book',
+                  editionId: 'OL321M',
+                },
               },
               { title: 'Second Book', matchStatus: 'ambiguous' },
             ],
@@ -120,6 +143,21 @@ for (const manager of [true, false]) {
       await monitor.click();
       await expect(page.getByText('Monitoring status: pending')).toBeVisible();
       await expect(monitor).toHaveCount(0);
+      await page
+        .getByRole('button', { name: 'Request Books', exact: true })
+        .click();
+      const sheet = page.getByRole('dialog', { name: 'Request Books' });
+      const format = sheet.getByRole('combobox', { name: 'Format' });
+      await expect(format).toHaveValue('audiobook');
+      await expect(format.getByRole('option')).toHaveCount(1);
+      await expect(sheet.getByLabel('Second Book')).toHaveCount(0);
+      await sheet.getByLabel('First Book').check();
+      await sheet
+        .getByRole('button', { name: 'Request Selected Books' })
+        .click();
+      await expect(sheet.getByRole('status')).toHaveText(
+        '1 requested, 0 skipped, 0 failed.'
+      );
     }
   });
 }

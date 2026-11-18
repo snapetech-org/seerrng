@@ -482,9 +482,11 @@ function RequestSheet({
 export default function BulkBookRequest({
   source,
   onComplete,
+  fixedFormat,
 }: {
   source: Source;
   onComplete: () => void;
+  fixedFormat?: Format;
 }) {
   const { user } = useAuth();
   const settings = usePublicSettings();
@@ -498,11 +500,14 @@ export default function BulkBookRequest({
       (BigInt(permissions) & (32n | (1n << 35n))) !== 0n);
   const formats: Format[] = [];
   if (
+    fixedFormat !== 'audiobook' &&
     settings?.ebookServiceEnabled &&
+    settings.enabledMediaCategories?.ebook !== false &&
     settings.enabledMediaCategories?.book !== false
   )
     formats.push('ebook');
   if (
+    fixedFormat !== 'ebook' &&
     settings?.audiobookServiceEnabled &&
     settings.enabledMediaCategories?.audiobook !== false
   )

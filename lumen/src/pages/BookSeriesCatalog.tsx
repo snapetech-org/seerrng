@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, type BookResult } from '../api';
 import { useAuth } from '../auth';
+import BulkBookRequest from '../components/BulkBookRequest';
 import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
@@ -20,7 +21,7 @@ type Catalog = {
     author?: string;
     position?: string;
     matchStatus: 'matched' | 'unmatched' | 'ambiguous' | 'unavailable';
-    book?: { id: string };
+    book?: BookResult;
   }[];
 };
 
@@ -178,6 +179,15 @@ export default function BookSeriesCatalog() {
   });
   const data = catalog.data;
   const books = data?.entries ?? data?.books ?? [];
+  const matchedBooks = [
+    ...new Map(
+      books.flatMap((entry) =>
+        entry.matchStatus === 'matched' && entry.book?.id
+          ? [[entry.book.id, entry.book] as const]
+          : []
+      )
+    ).values(),
+  ];
   const monitoringQuery =
     query ?? (data?.watchTarget && bookSeriesCatalogQuery(data.watchTarget));
   return (
@@ -189,6 +199,14 @@ export default function BookSeriesCatalog() {
         <Link className="chip" to="/book-series/requests">
           Book Series Requests
         </Link>
+        {data && path && (
+          <BulkBookRequest
+            key={path}
+            source={{ id: path, books: matchedBooks }}
+            fixedFormat={data.format}
+            onComplete={catalog.reload}
+          />
+        )}
       </ExtraHeader>
       {!path && (
         <p className="note" role="alert">

@@ -2877,3 +2877,11 @@ frontend lock preserves search parameters and numeric detail bookmarks.
 Twenty-four browser checks passed across both deployments, plus two
 Express routing tests. Live catalog search, bulk requests, and matched
 visual acceptance remain unverified.
+
+Series previews reuse the bulk book request dialog for confirmed matches.
+The selection excludes ambiguous entries, deduplicates book identities,
+and uses the preview's format and the matched edition metadata. The
+existing author and series bulk flow remains format-selectable. Thirty-six
+browser checks passed, including the exact audiobook edition payload and
+the existing bibliography bulk flow. Live service delivery and matched
+visual acceptance remain unverified.
