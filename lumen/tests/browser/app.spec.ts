@@ -7781,7 +7781,9 @@ for (const autoApprove of [false, true]) {
     const writes: unknown[] = [];
     await page.route('**/api/v1/request', (route) => {
       writes.push(route.request().postDataJSON());
-      return route.fulfill({ json: { id: 8, status: 1 } });
+      return route.fulfill({
+        json: { id: 8, status: writes.length === 1 ? 4 : 1 },
+      });
     });
     await page.goto('/sportarr/lg-123456');
     await page
@@ -7816,8 +7818,14 @@ for (const autoApprove of [false, true]) {
       sheet.getByText('2 of 4 TV requests remaining.', { exact: false })
     ).toBeVisible();
     await sheet.getByRole('button', { name: 'Send Request' }).click();
+    await expect(sheet.getByRole('alert')).toHaveText(
+      'The league request failed.'
+    );
+    await expect(choice).toHaveValue('2');
+    await sheet.getByRole('button', { name: 'Send Request' }).click();
     await expect(sheet).toHaveCount(0);
     expect(writes).toEqual([
+      { mediaType: 'sports', mediaId: 'lg-123456', serverId: 2 },
       { mediaType: 'sports', mediaId: 'lg-123456', serverId: 2 },
     ]);
   });

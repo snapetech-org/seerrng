@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { MoreOnScroll, Section, type Stat } from '../components/cards';
@@ -264,6 +264,8 @@ function LeagueRequestSheet({
   const { user } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
+  const submitting = useRef(false);
+  const [requestError, setRequestError] = useState<string>();
   const [serviceId, setServiceId] = useState<number>();
   const permissions = user?.permissions ?? 0;
   // Admin, Manage Requests, Auto Approve, or Auto Approve Sports.
@@ -298,9 +300,12 @@ function LeagueRequestSheet({
         quota.loading || restricted || !target?.requestable || unavailable
       }
       onClose={() => {
-        if (!busy) close();
+        if (!submitting.current) close();
       }}
       onConfirm={async () => {
+        if (submitting.current) return;
+        submitting.current = true;
+        setRequestError(undefined);
         setBusy(true);
         try {
           const result = await requestExtra(
@@ -313,8 +318,9 @@ function LeagueRequestSheet({
           done();
           toast('League requested');
         } catch (error) {
-          toast(friendlyError(error, 'Request failed'));
+          setRequestError(friendlyError(error, 'Request failed'));
         } finally {
+          submitting.current = false;
           setBusy(false);
         }
       }}
@@ -344,11 +350,12 @@ function LeagueRequestSheet({
             <select
               value={serviceId ?? ''}
               disabled={busy}
-              onChange={(event) =>
+              onChange={(event) => {
+                setRequestError(undefined);
                 setServiceId(
                   event.target.value ? Number(event.target.value) : undefined
-                )
-              }
+                );
+              }}
             >
               <option value="">Default Service</option>
               {services.data.map(({ id, name }) => (
@@ -368,6 +375,11 @@ function LeagueRequestSheet({
       {unavailable && (
         <p className="note" role="status">
           No Sportarr service is configured.
+        </p>
+      )}
+      {requestError && (
+        <p className="note" role="alert">
+          {requestError}
         </p>
       )}
       <ServiceNote
