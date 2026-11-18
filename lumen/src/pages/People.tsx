@@ -1,7 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 import { tmdbImg, type TitleResult } from '../api';
+import { useAuth } from '../auth';
 import { Section, TitleCard } from '../components/cards';
 import { ExtraCard, ServiceNote } from '../components/extra';
+import FollowButton from '../components/FollowButton';
+import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
 
@@ -37,6 +40,7 @@ interface PersonCredits {
 
 export default function PersonDetail() {
   const { id: rawId } = useParams();
+  const { user } = useAuth();
   const id = Number(rawId);
   const path =
     Number.isInteger(id) && id > 0 && id <= 1_000_000_000
@@ -70,7 +74,22 @@ export default function PersonDetail() {
         <div className="eyebrow">
           <Link to="/search">People</Link>
         </div>
-        <h1>{person.data?.name || 'Person'}</h1>
+        <div className="ph-row">
+          <h1>{person.data?.name || 'Person'}</h1>
+          {canViewFollowing(user?.permissions) &&
+            person.data?.id === id &&
+            person.data.name && (
+              <FollowButton
+                key={id}
+                subject={{
+                  kind: 'tmdb-person',
+                  subjectKey: `tmdb:person:${id}`,
+                  subjectLabel: person.data.name,
+                  conditions: { ref: { tmdbId: id } },
+                }}
+              />
+            )}
+        </div>
       </header>
       <ServiceNote
         error={person.error}

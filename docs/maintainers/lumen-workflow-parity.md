@@ -49,8 +49,9 @@ under You on narrow screens. Users with request access can page through updates,
 mark them seen, and manage existing subscription notifications, automatic book
 requests, and removals. The standalone proxy serves this route directly.
 
-Following creation on source screens, detailed update reasons, and exact links
-for game and patch targets still need parity work. The current increment uses
+Person details now offer Follow and Unfollow using the native TMDB person
+identity. Other source screens, detailed update reasons, and exact links for
+game and patch targets still need parity work. The current increment uses
 the source label for each update and searches by title when it has no Lumen
 detail route for the target.
 

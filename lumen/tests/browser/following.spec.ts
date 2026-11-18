@@ -102,3 +102,59 @@ test('direct navigation without request access does not fetch follows', async ({
   ).toBeVisible();
   expect(requested).toBe(false);
 });
+
+test('following a person uses the exact identity and waits for server confirmation', async ({
+  page,
+}) => {
+  const person = { id: 77, name: 'Example Director' };
+  let followed = false;
+  let fail = true;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    const record = { id: 2, kind: 'tmdb-person', subjectKey: 'tmdb:person:77' };
+    if (path === '/follow' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual({
+        kind: 'tmdb-person',
+        subjectKey: 'tmdb:person:77',
+        subjectLabel: person.name,
+        conditions: { ref: { tmdbId: 77 } },
+      });
+      if (fail)
+        return route.fulfill({ status: 500, json: { message: 'Try again' } });
+      followed = true;
+      return route.fulfill({ status: 201, json: record });
+    }
+    if (path === '/follow/2' && request.method() === 'DELETE') {
+      followed = false;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Reader', permissions: 32 }
+          : path === '/person/77'
+            ? person
+            : path === '/follow'
+              ? { results: followed ? [record] : [] }
+              : {},
+    });
+  });
+  await page.goto('/person/77');
+  const follow = page.getByRole('button', { name: 'Follow', exact: true });
+  await follow.click();
+  await expect(page.getByRole('status')).toContainText('Try again');
+  await expect(follow).toHaveAttribute('aria-pressed', 'false');
+  fail = false;
+  await follow.click();
+  const following = page.getByRole('button', {
+    name: 'Following',
+    exact: true,
+  });
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  await following.click();
+  await expect(follow).toHaveAttribute('aria-pressed', 'false');
+});
