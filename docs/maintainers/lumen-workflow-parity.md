@@ -3018,3 +3018,19 @@ generated link in each deployment. Subsequent redemption attempts passed
 through the same deployment and were denied. The fixture used synthetic
 users and exercised the real API, session validation, and SQLite storage.
 An external TLS terminator and PostgreSQL were outside this run.
+
+### Desktop regression and narrow Comics verification
+
+The full desktop and iPhone browser suites on `2161e13a8` passed
+661 and 638 cases, with nine and 32 skipped, respectively. Both used
+the standalone production build and synthetic API fixtures. At 360 × 800, matched Comics landing screenshots showed that
+the Publisher filter fit inside the content margin after the shared
+filter change. The screenshot width fell from 361 to 360 pixels and
+the pixel diff within the shared image bounds was confined to the
+Publisher filter. The candidate also passed the Comics layout checks at
+768 and 1280 pixels and the calendar and genre-picker interaction checks.
+Live providers and the bundled deployment were outside this run.
+
+GitHub reported zero open code-scanning alerts and zero open Dependabot
+alerts at this checkpoint. The prior findings recorded above describe
+their state at the time of that audit.
