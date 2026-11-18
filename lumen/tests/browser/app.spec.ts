@@ -728,6 +728,68 @@ test('a double click on a poster’s Request sends one request', async ({
   expect(fixture.errors).toEqual([]);
 });
 
+test('movie posters distinguish or hide shared copies without offering duplicate requests', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.clock.install();
+  let mode = 'distinguish';
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { otherUsersAvailability: mode } })
+  );
+  await page.route(/\/api\/v1\/discover\/movies(?:\?|$)/, (route) =>
+    route.fulfill({
+      json: {
+        totalPages: 1,
+        results: [
+          {
+            id: 90,
+            title: 'Shared Movie',
+            mediaType: 'movie',
+            mediaInfo: {
+              status: 5,
+              viewerRequestCoverage: { standard: false },
+              mediaUrl: 'https://plex.example.test/shared',
+            },
+          },
+          {
+            id: 91,
+            title: 'Viewer Movie',
+            mediaType: 'movie',
+            mediaInfo: {
+              status: 5,
+              viewerRequestCoverage: { standard: true },
+            },
+          },
+        ],
+      },
+    })
+  );
+  await page.goto('/movies');
+  const poster = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Shared Movie', exact: true }),
+  });
+  const own = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Viewer Movie', exact: true }),
+  });
+  await expect(poster.getByTitle('Available to Other Users')).toBeVisible();
+  await expect(
+    poster.locator('a[href*="plex.example.test/shared"]')
+  ).toHaveCount(0);
+  await expect(poster.getByRole('button', { name: /request/i })).toHaveCount(0);
+  await expect(own.locator('.glyph.ok')).toBeVisible();
+
+  mode = 'hide';
+  await page.clock.fastForward(16_000);
+  await page.reload();
+  await expect(own.locator('.glyph.ok')).toBeVisible();
+  await expect(poster.locator('.glyph')).toHaveCount(0);
+  await expect(
+    poster.getByRole('link', { name: 'Shared Movie', exact: true })
+  ).toHaveAttribute('href', '/movie/90');
+  await expect(poster.getByRole('button', { name: /request/i })).toHaveCount(0);
+});
+
 test('a category page says when SeerrNG’s settings fail and retries', async ({
   page,
 }) => {

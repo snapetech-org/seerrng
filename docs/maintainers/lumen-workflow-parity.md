@@ -1722,3 +1722,11 @@ four standalone browser checks verified supported values, changed-only
 save, and reload readback. Lumen collection playback already consumes
 this setting. Applying it consistently to posters and title details,
 and matched native visual acceptance, remain open.
+
+Shared availability now applies to the standard video poster component.
+The policy is read once per page through the shared settings cache. Shared
+copies can be marked or hidden, and poster playback and quick requests
+respect the difference between display status and actual acquisition state.
+Eight standalone browser cases passed for poster status and settings-error
+recovery. Featured cards, title details, and matched native visual
+acceptance remain open.

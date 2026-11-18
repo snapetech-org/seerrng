@@ -19,6 +19,7 @@ import { canReadIssues } from '../issuePermissions';
 import { scrollBehavior } from '../motion';
 import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
+import { VideoAvailabilityProvider } from '../videoAvailability';
 import { BrandMark, brandName } from './brand';
 import { canChooseRequestOptions } from './detail';
 
@@ -406,7 +407,9 @@ export default function Shell({ children }: { children: ReactNode }) {
                 </Link>
               </p>
             )}
-            {children}
+            <VideoAvailabilityProvider key={loc.pathname}>
+              {children}
+            </VideoAvailabilityProvider>
           </main>
         </div>
       </div>
