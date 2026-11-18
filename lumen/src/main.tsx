@@ -38,6 +38,7 @@ import Requests from './pages/Requests';
 import Search from './pages/Search';
 import Soon from './pages/Soon';
 import { Adult, LeagueDetail, SceneDetail, Sports } from './pages/Sports';
+import TmdbList from './pages/TmdbList';
 import Trending from './pages/Trending';
 import TvDetail from './pages/TvDetail';
 import Watchlist from './pages/Watchlist';
@@ -98,6 +99,7 @@ function App() {
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/trending" element={<Trending />} />
+          <Route path="/list/:id" element={<TmdbList />} />
           <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
           <Route path="/series" element={<Browse key="tv" kind="tv" />} />
           <Route path="/books" element={<Books key="ebook" format="ebook" />} />

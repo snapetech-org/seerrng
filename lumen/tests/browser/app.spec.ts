@@ -2574,3 +2574,59 @@ test('Trending preserves mixed title identities and sends scoped filters', async
     page.getByRole('link', { name: 'Trending Series' })
   ).toBeVisible();
 });
+
+test('public TMDB lists show the named list and retain exact identities across pages', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let secondPage = 0;
+  await page.route('**/api/v1/discover/list/12345?*', (route) => {
+    const number = Number(
+      new URL(route.request().url()).searchParams.get('page')
+    );
+    if (number === 2 && ++secondPage === 1) {
+      return route.fulfill({
+        status: 502,
+        json: { message: 'Unable to retrieve TMDB list.' },
+      });
+    }
+    return route.fulfill({
+      json: {
+        ...paged(
+          number === 1
+            ? [
+                { ...movie, title: 'List Film' },
+                { id: movie.id, name: 'List Series', mediaType: 'tv' },
+              ]
+            : []
+        ),
+        page: number,
+        totalPages: 2,
+        list: { name: 'Public Fixture List', description: 'A curated list' },
+      },
+    });
+  });
+  await page.goto('/list/12345');
+  await expect(
+    page.getByRole('heading', { name: 'Public Fixture List' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'List Film' })).toHaveAttribute(
+    'href',
+    '/movie/101'
+  );
+  await expect(page.getByRole('link', { name: 'List Series' })).toHaveAttribute(
+    'href',
+    '/tv/101'
+  );
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page.getByRole('link', { name: 'List Film' })).toHaveCount(0);
+  const error = page
+    .getByRole('alert')
+    .filter({ hasText: 'Unable to retrieve TMDB list.' });
+  await error.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('No titles on this page.')).toBeVisible();
+  await expect(page).toHaveURL(/\?page=2$/);
+  expect(secondPage).toBe(2);
+  await page.getByRole('button', { name: 'Previous Page' }).click();
+  await expect(page.getByRole('link', { name: 'List Series' })).toBeVisible();
+});

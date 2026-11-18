@@ -1322,3 +1322,15 @@ Discover's quick-request hero remains scoped to movies and series.
 Twenty standalone Trending and collection checks and two server route
 checks passed. Live provider coverage and matched visual comparisons
 remain open.
+
+### Public TMDB list pages
+
+Lumen opens native public TMDB list bookmarks with the list name,
+description, mixed movie and series posters, and URL-backed pagination.
+It uses the existing viewer-filtered list endpoint. Invalid list IDs are
+rejected, and a failed page can be retried without resetting the page.
+
+Bundled and companion redirect checks and four standalone viewport tests
+passed. The browser fixture covers exact media links for a shared numeric
+ID, retry, and an empty page. Configured Discover shelves, live provider
+results and matched visual comparisons remain open.

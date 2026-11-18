@@ -1,3 +1,4 @@
+import { isTmdbPublicListId } from '@server/constants/discover';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
@@ -50,6 +51,16 @@ const discoveryFilters = [
 ];
 
 function discoveryDeepLink(req: Request): string | undefined {
+  const listId = /^\/discover\/list\/([1-9]\d{0,9})\/?$/.exec(req.path)?.[1];
+  if (isTmdbPublicListId(listId)) {
+    const page = req.query.page;
+    const suffix =
+      typeof page === 'string' && /^[1-9]\d{0,2}$/.test(page)
+        ? `?page=${Math.min(Number(page), 500)}`
+        : '';
+    return `/lumen/list/${listId}${suffix}`;
+  }
+
   const upcoming = /^\/discover\/(movies|tv)\/upcoming\/?$/.exec(req.path);
   if (upcoming)
     return `/lumen/soon?media=${upcoming[1] === 'movies' ? 'movie' : 'tv'}`;

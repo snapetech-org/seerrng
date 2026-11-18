@@ -144,6 +144,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/movie/12/cast', '/movie/12#cast'],
       ['/tv/1000000000/crew/', '/tv/1000000000#crew'],
       ['/discover/trending?mediaType=audiobook', '/audiobooks'],
+      ['/discover/list/12345/?page=2', '/list/12345?page=2'],
       ['/discover/trending?mediaType=tv', '/trending?mediaType=tv'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
       ['/discover/providers', 'https://seerr.example.test/discover/providers'],

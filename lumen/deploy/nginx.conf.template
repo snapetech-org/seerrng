@@ -162,6 +162,9 @@ server {
   location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|patches|sports)/?$ {
     return 302 /$1$is_args$args;
   }
+  location ~ "^/discover/list/([1-9][0-9]{0,9})/?$" {
+    return 302 /list/$1$is_args$args;
+  }
   location ~ ^/discover/trending/?$ {
     if ($arg_mediaType = music) { return 302 /music; }
     if ($arg_mediaType = book) { return 302 /books; }
