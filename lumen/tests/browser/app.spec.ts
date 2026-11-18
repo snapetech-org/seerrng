@@ -1016,3 +1016,59 @@ test('subject tags share browser visibility and open filtered video discovery', 
   await clear.click();
   await expect(page).toHaveURL(/\/series$/);
 });
+
+test('person filmography keeps complete cast and crew groups and sorts before filtering', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const cast = Array.from({ length: 26 }, (_, index) => ({
+    id: 900 + index,
+    title: `Film ${index + 1}`,
+    mediaType: 'movie',
+    voteCount: index + 1,
+    character: 'Pilot',
+  }));
+  await page.route('**/api/v1/person/39', (route) =>
+    route.fulfill({
+      json: { id: 39, name: 'Fixture Person', knownForDepartment: 'Acting' },
+    })
+  );
+  await page.route('**/api/v1/person/39/combined_credits', (route) =>
+    route.fulfill({
+      json: {
+        cast: [
+          ...cast,
+          { ...cast[0], character: 'Captain' },
+          { id: 900, name: 'Fixture Series', mediaType: 'tv' },
+        ],
+        crew: [{ ...cast[0], job: 'Director' }],
+      },
+    })
+  );
+  await page.goto('/person/39');
+  const castSection = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Cast', exact: true }) })
+    .filter({
+      hasNot: page.getByRole('heading', { name: 'Credits', exact: true }),
+    });
+  await expect(castSection.locator('.poster')).toHaveCount(27);
+  await expect(castSection.locator('a.hit').first()).toHaveAccessibleName(
+    'Film 26'
+  );
+  await expect(castSection.locator('a.hit').last()).toHaveAccessibleName(
+    'Fixture Series'
+  );
+  await expect(castSection.getByText('Pilot · Captain')).toBeVisible();
+  await expect(page.getByText('Director', { exact: true })).toBeVisible();
+  await page.getByLabel('Sort Credits').selectOption('title.asc');
+  await expect(castSection.locator('a.hit').nth(1)).toHaveAccessibleName(
+    'Film 2'
+  );
+  await page.getByLabel('Media Type').selectOption('tv');
+  await expect(castSection.locator('a.hit')).toHaveCount(1);
+  await expect(castSection.locator('a.hit')).toHaveAttribute('href', '/tv/900');
+  await expect(
+    page.getByRole('heading', { name: 'Crew', exact: true })
+  ).toHaveCount(0);
+});

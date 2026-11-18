@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { tmdbImg, type TitleResult } from '../api';
 import { useAuth } from '../auth';
@@ -31,11 +32,178 @@ interface PersonDetails {
 
 type PersonCredit = Omit<TitleResult, 'mediaType'> & {
   mediaType?: string;
+  popularity?: number;
+  voteCount?: number;
+  character?: string;
+  job?: string;
 };
 
 interface PersonCredits {
   cast: PersonCredit[];
   crew: PersonCredit[];
+}
+
+const creditSorts = [
+  ['voteCount', 'Votes'],
+  ['popularity', 'Popularity'],
+  ['date', 'Release Date'],
+  ['voteAverage', 'Rating'],
+  ['title', 'Title'],
+] as const;
+
+const creditCollator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: 'base',
+});
+
+type VideoCredit = PersonCredit & { mediaType: 'movie' | 'tv' };
+
+function creditTitles(
+  credits: PersonCredit[],
+  filter: string,
+  sort: string,
+  role: 'character' | 'job'
+) {
+  const titles = new Map<string, { title: VideoCredit; roles: Set<string> }>();
+  for (const credit of credits) {
+    const { mediaType, id } = credit;
+    if (
+      (mediaType !== 'movie' && mediaType !== 'tv') ||
+      (filter !== 'all' && filter !== mediaType)
+    )
+      continue;
+    if (!Number.isSafeInteger(id) || id <= 0) continue;
+    const key = `${mediaType}:${id}`;
+    const entry = titles.get(key) ?? {
+      title: { ...credit, mediaType },
+      roles: new Set<string>(),
+    };
+    if (credit[role]?.trim()) entry.roles.add(credit[role].trim());
+    titles.set(key, entry);
+  }
+  const descending = sort.endsWith('.desc');
+  const field = sort.split('.')[0];
+  const value = (credit: VideoCredit) => {
+    switch (field) {
+      case 'title':
+        return (
+          (credit.mediaType === 'movie' ? credit.title : credit.name)?.trim() ||
+          undefined
+        );
+      case 'date':
+        return Date.parse(
+          (credit.mediaType === 'movie'
+            ? credit.releaseDate
+            : credit.firstAirDate) ?? ''
+        );
+      case 'popularity':
+        return credit.popularity;
+      case 'voteAverage':
+        return credit.voteAverage;
+      default:
+        return credit.voteCount;
+    }
+  };
+  return [...titles.values()].sort((left, right) => {
+    const a = value(left.title);
+    const b = value(right.title);
+    const hasA = typeof a === 'string' || Number.isFinite(a);
+    const hasB = typeof b === 'string' || Number.isFinite(b);
+    if (!hasA || !hasB) return Number(hasB) - Number(hasA);
+    const order =
+      typeof a === 'number' && typeof b === 'number'
+        ? a - b
+        : creditCollator.compare(String(a), String(b));
+    return descending ? -order : order;
+  });
+}
+
+function Filmography({
+  credits,
+  acting,
+}: {
+  credits: PersonCredits;
+  acting: boolean;
+}) {
+  const [filter, setFilter] = useState('all');
+  const [sort, setSort] = useState('voteCount.desc');
+  const groups = [
+    {
+      label: 'Cast',
+      entries: creditTitles(credits.cast ?? [], filter, sort, 'character'),
+    },
+    {
+      label: 'Crew',
+      entries: creditTitles(credits.crew ?? [], filter, sort, 'job'),
+    },
+  ];
+  if (!acting) groups.reverse();
+  return (
+    <Section title="Credits">
+      <div className="toolbar">
+        <label className="sel">
+          <span className="lbl">Media Type</span>
+          <select
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="movie">Movies</option>
+            <option value="tv">Series</option>
+          </select>
+        </label>
+        <label className="sel">
+          <span className="lbl">Sort Credits</span>
+          <select
+            value={sort}
+            onChange={(event) => setSort(event.target.value)}
+          >
+            {creditSorts.map(([key, label]) => (
+              <optgroup key={key} label={label}>
+                <option value={`${key}.desc`}>
+                  {label} (
+                  {key === 'title'
+                    ? 'Z–A'
+                    : key === 'date'
+                      ? 'Newest'
+                      : 'High to Low'}
+                  )
+                </option>
+                <option value={`${key}.asc`}>
+                  {label} (
+                  {key === 'title'
+                    ? 'A–Z'
+                    : key === 'date'
+                      ? 'Oldest'
+                      : 'Low to High'}
+                  )
+                </option>
+              </optgroup>
+            ))}
+          </select>
+        </label>
+      </div>
+      {groups.every(({ entries }) => !entries.length) && (
+        <p className="note">No matching credits.</p>
+      )}
+      {groups.map(
+        ({ label, entries }) =>
+          entries.length > 0 && (
+            <Section title={label} key={label}>
+              <div className="grid">
+                {entries.map(({ title, roles }) => (
+                  <TitleCard
+                    key={`${title.mediaType}:${title.id}`}
+                    it={title}
+                    meta={[...roles].join(' · ') || undefined}
+                  />
+                ))}
+              </div>
+            </Section>
+          )
+      )}
+    </Section>
+  );
 }
 
 export default function PersonDetail() {
@@ -50,21 +218,6 @@ export default function PersonDetail() {
   const credits = useApi<PersonCredits>(
     path ? `${path}/combined_credits` : null
   );
-
-  const titles: TitleResult[] = [];
-  const seen = new Set<string>();
-  for (const credit of [
-    ...(credits.data?.cast || []),
-    ...(credits.data?.crew || []),
-  ]) {
-    if (credit.mediaType !== 'movie' && credit.mediaType !== 'tv') continue;
-    if (!Number.isSafeInteger(credit.id) || credit.id <= 0) continue;
-    const key = `${credit.mediaType}:${credit.id}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    titles.push({ ...credit, mediaType: credit.mediaType });
-    if (titles.length === 24) break;
-  }
 
   if (!path) return <div className="empty">Person not found.</div>;
 
@@ -133,14 +286,12 @@ export default function PersonDetail() {
       {!credits.data && !credits.error && (
         <p className="note">Loading credits…</p>
       )}
-      {!!titles.length && (
-        <Section title="Known For">
-          <div className="grid">
-            {titles.map((title) => (
-              <TitleCard key={`${title.mediaType}:${title.id}`} it={title} />
-            ))}
-          </div>
-        </Section>
+      {credits.data && (
+        <Filmography
+          key={id}
+          credits={credits.data}
+          acting={person.data?.knownForDepartment === 'Acting'}
+        />
       )}
     </>
   );

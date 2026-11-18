@@ -878,3 +878,15 @@ Standalone desktop, iPhone, Android and tablet fixtures verified the
 eleventh credit, visible character name, collapse, navigation to the
 matching person page, and retained pin and subject-tag behavior. Bundled
 and native visual comparisons remain open.
+
+### Person filmography increment
+
+Lumen person pages show separate cast and crew groups without the previous
+24-title cap. Movie and series filters and ten sort orders apply to both
+groups. Duplicate role names are grouped by media type and catalog ID.
+
+Standalone fixtures verified 27 distinct cast titles, merged character
+names, a crew role, natural title ordering, missing vote counts, series
+filtering, and distinct movie and series links for the same numeric ID.
+Desktop, iPhone, Android and tablet presets passed. Bundled and native
+visual comparison and the native bulk-request action remain open.

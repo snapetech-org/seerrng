@@ -1621,6 +1621,10 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 
 ### User-facing changes
 
+#### Added
+
+- **Lumen:** Person pages show complete cast and crew filmographies with media filters and sorting. SeerrNG independently adapted the sorting idea suggested upstream by [@zjgoodman](https://github.com/zjgoodman) in [Seerr PR #3342](https://github.com/seerr-team/seerr/pull/3342).
+
 #### Fixed
 
 - **Localization:** Updated 29 reviewed Apprise and Gotify settings translations across the 12 target locales.
