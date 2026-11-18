@@ -237,7 +237,13 @@ test('Sonarr language, season order, and tags follow the selected destination', 
   page,
 }, info) => {
   const posts: RecordedPost[] = [];
-  await show(page, { status: 1 }, posts);
+  const managerReads: string[] = [];
+  page.on('request', (request) => {
+    const { pathname } = new URL(request.url());
+    if (pathname === '/api/v1/request/count' || pathname === '/api/v1/user')
+      managerReads.push(pathname);
+  });
+  await show(page, { status: 1 }, posts, 32 | 8192);
   await page.route('**/api/v1/service/sonarr', (route) =>
     route.fulfill({
       json: [
@@ -292,7 +298,10 @@ test('Sonarr language, season order, and tags follow the selected destination', 
       ],
     });
   });
-  await page.getByText('Advanced (admins)', { exact: true }).click();
+  await page.getByText('Advanced Request Options', { exact: true }).click();
+  await expect(page.getByRole('combobox', { name: 'Request as' })).toHaveCount(
+    0
+  );
   const profile = page.getByRole('combobox', { name: 'Language Profile' });
   await expect(profile).toHaveValue('8');
   await profile.selectOption('9');
@@ -357,4 +366,14 @@ test('Sonarr language, season order, and tags follow the selected destination', 
     },
   ]);
   expect(posts[0].body).not.toHaveProperty('languageProfileId');
+  await page.goto('/me');
+  const preference = page.getByRole('switch', {
+    name: /Choose server and folder on quick requests/,
+  });
+  await expect(preference).toBeVisible();
+  await preference.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('advanced-request-preference.png'),
+  });
+  expect(managerReads).toEqual([]);
 });

@@ -21,7 +21,7 @@ import BlocklistButton from '../components/BlocklistButton';
 import { statusOf } from '../components/cards';
 import {
   ActionBar,
-  canChooseRequestOptions,
+  canManageRequests,
   DetailTop,
   Facts,
   fmtHrs,
@@ -260,7 +260,7 @@ export default function BookDetail() {
   // owned in this format: an audiobook in the library doesn't make the ebook owned (or the reverse)
   const available =
     bookMediaForFormat(b.mediaInfo, f)?.status === MediaStatus.AVAILABLE;
-  const pendingRequest = canChooseRequestOptions(user?.permissions)
+  const pendingRequest = canManageRequests(user?.permissions)
     ? b.mediaInfo?.requests?.find(
         (request) =>
           request.status === 1 &&

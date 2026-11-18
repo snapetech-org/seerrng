@@ -27,7 +27,7 @@ import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
 import { VideoAvailabilityProvider } from '../videoAvailability';
 import { BrandMark, brandName } from './brand';
-import { canChooseRequestOptions, canRequestMovies } from './detail';
+import { canManageRequests, canRequestMovies } from './detail';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -106,10 +106,10 @@ export default function Shell({ children }: { children: ReactNode }) {
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
   const showBlocklist = useBlocklistNavigation();
-  const canManageRequests = canChooseRequestOptions(user?.permissions);
+  const managesRequests = canManageRequests(user?.permissions);
   const [pendingRequests, setPendingRequests] = useState(0);
   useEffect(() => {
-    if (!canManageRequests) {
+    if (!managesRequests) {
       setPendingRequests(0);
       return;
     }
@@ -125,7 +125,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       live = false;
       window.clearInterval(timer);
     };
-  }, [canManageRequests, loc.pathname]);
+  }, [managesRequests, loc.pathname]);
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =

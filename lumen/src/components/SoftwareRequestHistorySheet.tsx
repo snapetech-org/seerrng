@@ -7,7 +7,7 @@ import { friendlyError } from '../errors';
 import { patchHref, type SoftwareRequest } from '../extras';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-import { canChooseRequestOptions } from './detail';
+import { canManageRequests } from './detail';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -77,7 +77,7 @@ export function SoftwareRequestHistorySheet({
     !!user &&
     data?.request.requestedBy?.id === user.id &&
     (isAdministrator(user.permissions) || ((user.permissions ?? 0) & 32) !== 0);
-  const manage = canChooseRequestOptions(user?.permissions);
+  const manage = canManageRequests(user?.permissions);
   const status = data?.request.status;
   const selection = data?.request.selection;
   const patch = selection?.kind === 'patch' ? selection : null;

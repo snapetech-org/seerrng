@@ -424,8 +424,10 @@ const permissionBits = (permissions?: number) =>
     : 0;
 
 // who may pick the Radarr/Sonarr server, quality and folder for a request
-export const canChooseRequestOptions = (permissions?: number) =>
+export const canManageRequests = (permissions?: number) =>
   (permissionBits(permissions) & MANAGE) !== 0;
+export const canChooseRequestOptions = (permissions?: number) =>
+  (permissionBits(permissions) & (MANAGE | 8192)) !== 0;
 export const canViewAllRequests = (permissions?: number) =>
   (permissionBits(permissions) & (MANAGE | REQUEST_VIEW)) !== 0;
 export const canRequestMovies = (permissions?: number) =>
@@ -482,14 +484,14 @@ export function AdvancedOptions({
   const [people, setPeople] = useState<RequestUser[] | null>(null);
   const [asUser, setAsUser] = useState<number | undefined>(initial?.userId);
   useEffect(() => {
-    if (!open || !asAllowed || people) return;
+    if (!allowed || !open || !asAllowed || people) return;
     api<{ results: RequestUser[] }>('/user?take=100&skip=0&sort=displayname')
       .then((d) => setPeople(d.results))
       .catch(() => setPeople([])); // the picker just stays hidden
-  }, [open, asAllowed, people]);
+  }, [allowed, open, asAllowed, people]);
 
   useEffect(() => {
-    if (!open || servers) return;
+    if (!allowed || !open || servers) return;
     api<Server[]>(`/service/${svc}`)
       .then((s) => {
         const mine = allow4k
@@ -504,7 +506,7 @@ export function AdvancedOptions({
         if (d) setO((x) => ({ ...x, serverId: d.id }));
       })
       .catch((e) => setErr(friendlyError(e)));
-  }, [open, servers, svc, is4k, allow4k]);
+  }, [allowed, open, servers, svc, is4k, allow4k]);
   useEffect(() => {
     if (o.serverId == null) return;
     let live = true;
@@ -868,7 +870,7 @@ export function AdvancedOptions({
     >
       <summary>
         <Icon name="info" size="sm" />
-        Advanced (admins)
+        Advanced Request Options
       </summary>
       {body}
     </details>

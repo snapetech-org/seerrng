@@ -1368,7 +1368,7 @@ test('Request 4K is offered before the HD copy exists, and goes to the 4K server
   ).toBeVisible();
   await expect(fourK).toBeVisible();
   // the admin's Advanced options belong to the HD server; the 4K request must not reuse them
-  await page.getByText('Advanced (admins)').click();
+  await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Folder')).toBeVisible();
   state.status4k = 2;
   await fourK.click();
@@ -1585,7 +1585,7 @@ test('Advanced options on a movie list the 4K server, and picking it requests 4K
     route.fulfill({ json: paged([]) })
   );
   await page.goto('/movie/302');
-  await page.getByText('Advanced (admins)').click();
+  await page.getByText('Advanced Request Options').click();
   const server = page.getByLabel('Server');
   await expect(server).toContainText('Radarr UHD');
   await expect(server.locator('option[value="2"]')).toHaveText(
@@ -2465,14 +2465,14 @@ test('HD controls reset after a 4K advanced request becomes pending', async ({
     })
   );
   await page.goto('/movie/302');
-  await page.getByText('Advanced (admins)').click();
+  await page.getByText('Advanced Request Options').click();
   await page.getByLabel('Server').selectOption('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/uhd');
   pending = true;
   await page.getByRole('button', { name: 'Request', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Request 4K' })).toHaveCount(0);
   if (!(await page.getByLabel('Server').isVisible()))
-    await page.getByText('Advanced (admins)').click();
+    await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Server')).toHaveValue('0');
   await expect(page.getByLabel('Folder')).toHaveValue('/movies');
   await page.screenshot({
@@ -2563,7 +2563,7 @@ test('4K series selection uses 4K season ownership even when every HD season is 
     .getByRole('group', { name: 'Quality' })
     .getByRole('button', { name: '4K' })
     .click();
-  await page.getByText('Advanced (admins)').click();
+  await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Server')).toHaveValue('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');
   await page.screenshot({

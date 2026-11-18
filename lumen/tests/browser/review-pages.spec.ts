@@ -89,7 +89,7 @@ test('Request 4K Series without request management can pick 4K on the series pag
   await page.goto('/tv/84773');
   const quality = page.getByRole('group', { name: 'Quality' });
   await expect(quality).toBeVisible();
-  await expect(page.getByText('Advanced (admins)')).toHaveCount(0);
+  await expect(page.getByText('Advanced Request Options')).toHaveCount(0);
   await quality.getByRole('button', { name: '4K' }).click();
   await expect(quality.getByRole('button', { name: '4K' })).toHaveAttribute(
     'aria-pressed',

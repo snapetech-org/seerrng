@@ -4,7 +4,7 @@ import { api } from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
-  canChooseRequestOptions,
+  canManageRequests,
   canViewAllRequests,
   Pill,
 } from '../components/detail';
@@ -57,7 +57,7 @@ const dateLabel = (raw?: string) => {
 export default function Recordings() {
   const status = useLiveTvStatus();
   const { user } = useAuth();
-  const manage = canChooseRequestOptions(user?.permissions);
+  const manage = canManageRequests(user?.permissions);
   const viewAll = canViewAllRequests(user?.permissions);
   const [scope, setScope] = useState('mine');
   const [filter, setFilter] = useState('active');

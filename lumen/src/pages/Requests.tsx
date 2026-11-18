@@ -20,7 +20,7 @@ import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import { Cover, shortDate } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
-  canChooseRequestOptions,
+  canManageRequests,
   canViewAllRequests,
   Pill,
 } from '../components/detail';
@@ -1101,7 +1101,7 @@ export default function Requests() {
     setTick((t) => t + 1);
   });
   const extras = useExtras();
-  const manage = canChooseRequestOptions(user?.permissions);
+  const manage = canManageRequests(user?.permissions);
   const everyone = viewAll && tab === 'everyone';
   const [others, setOthers] = useState<Row[] | null>(null);
   const [othersError, setOthersError] = useState(false);

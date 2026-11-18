@@ -34,7 +34,7 @@ export interface Prefs {
   hoverRequest: boolean; // quick request buttons on poster hover
   wholeSeriesDefault: boolean; // series requests start with every missing season ticked
   showBooks: boolean; // Books + Audiobooks in navigation and Discover
-  requestOptions: boolean; // poster quick requests ask for server/quality/folder (admins and request managers only)
+  requestOptions: boolean; // poster quick requests ask for server/quality/folder when the account permits advanced requests
   theme: 'dark' | 'light' | 'system';
 }
 

@@ -2386,3 +2386,19 @@ and destination changes, and the selected order in the request payload.
 Live Sonarr remapping and request edit persistence remain unverified.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sonarr-order-20261118/`.
+
+Accounts with Advanced Requests can now choose movie and TV request
+destinations and set the quick-request preference. Manage Requests still
+controls management surfaces and pending counts. Requesting on behalf
+of another user still requires the separate management permissions.
+
+The production build and 24 focused browser checks passed on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. Compared the Requesting preferences
+and advanced TV detail controls with the previous version. The fixture
+verifies an advanced requester can submit destination options without
+loading management data. A broader run produced 429 passes, seven skips,
+and 12 failures. The same failures reproduced on the previous commit:
+exporting Lumen configuration, retrying a failed browse page, and changing
+filters after a stale browse failure, across four viewports. Baseline and
+candidate evidence is retained under `seerrng-lumen-advanced-permission*`
+in `/mnt/disks/scratch/task-deliverables/`.
