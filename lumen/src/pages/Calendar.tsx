@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { bookDetailPath } from '../api';
+import { bookDetailPath, videoDetailPath } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -100,7 +100,7 @@ function releaseHref(item: Release) {
     case 'movie':
     case 'tv':
       return item.tmdbId
-        ? `/${item.mediaType}/${encode(item.tmdbId)}`
+        ? videoDetailPath(item.mediaType, item.tmdbId, item.is4k)
         : undefined;
     case 'music':
       return item.mbId ? `/music/${encode(item.mbId)}` : undefined;

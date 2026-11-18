@@ -28,6 +28,17 @@ for (const permissions of [2, 32]) {
                 startsAt: '2026-01-12T00:00:00.000Z',
               },
               {
+                id: 'radarr:2:12',
+                title: 'Fixture 4K Movie',
+                tmdbId: 12,
+                mediaType: 'movie',
+                dateType: 'digital',
+                allDay: true,
+                available: false,
+                is4k: true,
+                startsAt: '2026-01-12T00:00:00.000Z',
+              },
+              {
                 id: 'book:10',
                 title: 'Fixture Audiobook',
                 bookId: 'hc:10',
@@ -54,6 +65,9 @@ for (const permissions of [2, 32]) {
     await expect(
       page.getByRole('heading', { name: 'Release Calendar' })
     ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Fixture 4K Movie' })
+    ).toHaveAttribute('href', '/movie/12?quality=4k');
     await expect(
       page.getByRole('link', { name: 'Fixture Audiobook' })
     ).toHaveAttribute('href', '/book/hc%3A10?f=audio');

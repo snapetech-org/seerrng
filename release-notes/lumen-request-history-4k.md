@@ -21,3 +21,5 @@ A 4K movie bookmark explains when 4K playback is unavailable while retaining oth
 An open 4K movie bookmark refreshes a pending or processing copy while the page is visible, so the 4K Watch link appears when the copy arrives.
 
 Visible 4K series bookmarks now refresh pending seasons without jumping back to the season anchor on each update.
+
+Release Calendar links preserve the 4K selection for movie and series entries.

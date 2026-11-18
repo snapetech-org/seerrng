@@ -13,6 +13,7 @@ import {
   MediaStatus,
   plexUrl,
   tmdbImg,
+  videoDetailPath,
   type BookResult,
   type RequestItem,
   type TvDetails,
@@ -634,7 +635,7 @@ function cachedRow(r: RequestItem, known: Omit<Row, 'r'>): Row {
       r.type === 'book'
         ? requestBookPath(r, known.title === 'Book' ? undefined : known.title)
         : r.type === 'tv' || r.type === 'movie'
-          ? videoRequestPath(r, r.type)
+          ? videoDetailPath(r.type, r.media.tmdbId, r.is4k)
           : known.href,
   };
 }
@@ -756,16 +757,12 @@ function requestBookPath(r: RequestItem, title?: string) {
     title
   );
 }
-function videoRequestPath(r: RequestItem, kind: 'movie' | 'tv') {
-  return `/${kind}/${r.media.tmdbId}${r.is4k ? '?quality=4k' : ''}`;
-}
-
 function titlePlaceholder(r: RequestItem): Row {
   const kind = r.type === 'tv' ? 'tv' : 'movie';
   return {
     r,
     title: kind === 'tv' ? 'Series' : 'Movie',
-    href: videoRequestPath(r, kind),
+    href: videoDetailPath(kind, r.media.tmdbId, r.is4k),
     sub: [kind === 'tv' ? 'Series' : 'Movie', r.is4k ? '4K' : '']
       .filter(Boolean)
       .join(' · '),
@@ -830,7 +827,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
     r,
     title: t ? t.title || t.name || '' : kind === 'tv' ? 'Series' : 'Movie',
     art: tmdbImg(t?.backdropPath || t?.posterPath, 'w500'),
-    href: videoRequestPath(r, kind),
+    href: videoDetailPath(kind, r.media.tmdbId, r.is4k),
     sub: [kind === 'tv' ? 'Series' : 'Movie', seasons, r.is4k ? '4K' : '']
       .filter(Boolean)
       .join(' · '),

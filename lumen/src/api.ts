@@ -583,6 +583,14 @@ export function bookRequestLabel(format?: string) {
   return format === 'audiobook' ? 'Audiobook' : 'Ebook';
 }
 
+export function videoDetailPath(
+  kind: 'movie' | 'tv',
+  id: number,
+  is4k: boolean
+) {
+  return `/${kind}/${id}${is4k ? '?quality=4k' : ''}`;
+}
+
 export function bookDetailPath(
   id: string,
   format: 'ebook' | 'audiobook',
