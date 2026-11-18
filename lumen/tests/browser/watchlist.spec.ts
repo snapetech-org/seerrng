@@ -146,3 +146,68 @@ test('video Watchlist action confirms the current title and server response', as
   ).toBeVisible();
   expect(writes).toBe(2);
 });
+
+test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf ID', async ({
+  page,
+}) => {
+  const work = 'OL123W';
+  const bookshelf = 'bookshelf:1:MjYwNDY4';
+  let saved = false;
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = decodeURIComponent(url.pathname.slice(7));
+    if (path === '/watchlist' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual({
+        mediaType: 'book',
+        externalId: work,
+        title: 'Example Book',
+      });
+      saved = true;
+      writes++;
+      return route.fulfill({ status: 201, json: { id: 99 } });
+    }
+    if (path === `/watchlist/${work}` && request.method() === 'DELETE') {
+      expect(url.searchParams.get('mediaType')).toBe('book');
+      saved = false;
+      writes++;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Reader', permissions: 32, userType: 2 }
+          : path === '/settings/public'
+            ? {
+                booksEnabled: true,
+                ebookServiceEnabled: true,
+                enabledMediaCategories: { ebook: true },
+              }
+            : path === `/book/${work}` || path === `/book/${bookshelf}`
+              ? {
+                  id: path.slice(6),
+                  title: 'Example Book',
+                  bookFormat: 'ebook',
+                  description: 'A fixture.',
+                  onUserWatchlist: saved,
+                }
+              : {},
+    });
+  });
+  await page.goto(`/book/${work}`);
+  const add = page.getByRole('button', { name: 'Add To Watchlist' });
+  const remove = page.getByRole('button', { name: 'Remove From Watchlist' });
+  await add.click();
+  await expect(remove).toBeVisible();
+  await remove.click();
+  await expect(add).toBeVisible();
+  expect(writes).toBe(2);
+  await page.goto(`/book/${encodeURIComponent(bookshelf)}`);
+  await expect(
+    page.getByRole('heading', { name: 'Example Book' })
+  ).toBeVisible();
+  await expect(add.or(remove)).toHaveCount(0);
+  expect(writes).toBe(2);
+});

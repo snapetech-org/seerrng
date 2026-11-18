@@ -28,6 +28,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
 import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
@@ -439,6 +440,7 @@ export default function BookDetail() {
               {s.word}
             </Pill>
           )}
+          <WatchlistButton mediaType="book" detail={b} requestedId={plainId} />
         </div>
         {/* phones: the action bar holds only the request, so the owned copy's link goes here */}
         {alsoListen && <div className="dacts ph">{alsoListen}</div>}

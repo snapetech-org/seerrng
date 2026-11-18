@@ -12,6 +12,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import WatchlistButton from '../components/WatchlistButton';
 import {
   artistOf,
   fmtTrack,
@@ -202,6 +203,7 @@ export function AlbumDetail() {
                 {big(a.stats.totalListenCount)} plays
               </Pill>
             )}
+            <WatchlistButton mediaType="music" detail={a} requestedId={id} />
           </div>
           <div className="dacts pc">{main}</div>
           <div className="dcols">

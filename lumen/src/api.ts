@@ -605,6 +605,7 @@ export interface TvDetails extends TitleResult {
   };
 }
 export interface BookDetails extends BookResult {
+  onUserWatchlist?: boolean;
   description?: string;
   subjects?: string[];
   isbnCandidates?: string[];

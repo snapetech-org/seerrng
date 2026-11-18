@@ -248,6 +248,7 @@ export interface Album {
   mediaInfo?: MediaInfo;
 }
 export interface AlbumDetails {
+  onUserWatchlist?: boolean;
   id: string;
   title: string;
   type?: string;
@@ -292,6 +293,7 @@ export const fmtTrack = (ms?: number) =>
 
 // ---- comics (ComicVine volumes) and magazines (LazyLibrarian or Google Books) ----
 export interface Comic {
+  onUserWatchlist?: boolean;
   id: string;
   mediaType: 'comic';
   title: string;
@@ -379,6 +381,7 @@ export interface ComicIssue {
   coverUrl?: string;
 }
 export interface Magazine {
+  onUserWatchlist?: boolean;
   id: string;
   mediaType: 'magazine';
   provider: 'lazylibrarian' | 'googlebooks';

@@ -118,3 +118,14 @@ controls, and the other media categories remain open.
 Headed Chrome at 1440 × 1000 rendered the local-account movie action and
 verified Add and Remove against a synthetic API. The series and narrow
 renders, the unavailable branches, and bundled visual acceptance remain open.
+
+The local detail action now also covers Open Library works, MusicBrainz
+release groups, ComicVine editions, and magazines. It uses the same permission
+and preflight checks as movie and series details and keeps provider identities
+separate. Bookshelf-only works without an Open Library identity still cannot
+use SeerrNG's existing local Watchlist API. Poster and Plex actions remain open.
+
+Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
+Remove completed against a synthetic account and used the canonical work ID in
+the request. Visual checks for albums, comic edition changes, magazines,
+narrow layouts, and bundled deployment remain open.

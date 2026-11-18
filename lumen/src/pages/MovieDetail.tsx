@@ -30,7 +30,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import VideoWatchlistButton from '../components/VideoWatchlistButton';
+import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
@@ -196,7 +196,7 @@ export default function MovieDetail() {
               {m.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
-          <VideoWatchlistButton key={m.id} mediaType="movie" detail={m} />
+          <WatchlistButton key={m.id} mediaType="movie" detail={m} />
         </div>
         <div className="dacts pc">
           {main}

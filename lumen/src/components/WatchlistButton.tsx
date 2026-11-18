@@ -6,18 +6,61 @@ import { Icon } from '../icons';
 import { sessionGeneration } from '../sessionState';
 import { useToast } from './toast';
 
-interface VideoWatchlistTitle {
-  id: number;
+type WatchlistMedia = 'movie' | 'tv' | 'music' | 'book' | 'comic' | 'magazine';
+
+interface WatchlistTitle {
+  id: string | number;
+  title?: string;
   onUserWatchlist?: boolean;
   mediaInfo?: Pick<MediaInfo, 'status'> | null;
 }
 
-export default function VideoWatchlistButton({
+function canonicalId(mediaType: WatchlistMedia, input: string | number) {
+  const value = String(input).trim();
+  switch (mediaType) {
+    case 'movie':
+    case 'tv': {
+      const id = Number(value);
+      return /^[1-9]\d*$/.test(value) &&
+        Number.isSafeInteger(id) &&
+        id <= 1_000_000_000
+        ? String(id)
+        : undefined;
+    }
+    case 'music':
+      return /^[A-Za-z0-9_-]{1,128}$/.test(value)
+        ? value.toLowerCase()
+        : undefined;
+    case 'book': {
+      const workId = value.replace(/^\/?works\//i, '').toUpperCase();
+      return /^OL\d{1,124}W$/.test(workId) ? workId : undefined;
+    }
+    case 'comic':
+      return /^\d{1,18}$/.test(value) ? value : undefined;
+    case 'magazine': {
+      const title = value
+        .normalize('NFKC')
+        .trim()
+        .replace(/\s+/g, ' ')
+        .toLowerCase();
+      return title.length > 0 &&
+        title.length <= 256 &&
+        title !== '.' &&
+        title !== '..'
+        ? title
+        : undefined;
+    }
+  }
+}
+
+export default function WatchlistButton({
   mediaType,
   detail,
+  requestedId = detail.id,
 }: {
-  mediaType: 'movie' | 'tv';
-  detail: VideoWatchlistTitle;
+  mediaType: WatchlistMedia;
+  detail: WatchlistTitle;
+  requestedId?: string | number;
 }) {
   const { user } = useAuth();
   const toast = useToast();
@@ -25,20 +68,24 @@ export default function VideoWatchlistButton({
   const [busy, setBusy] = useState(false);
   const [confirmed, setConfirmed] = useState<boolean>();
   const [unavailable, setUnavailable] = useState(false);
-  const { id } = detail;
+  const id = canonicalId(mediaType, detail.id);
   if (
     unavailable ||
     !user?.userType ||
     user.userType === 1 ||
-    !Number.isSafeInteger(id) ||
-    id <= 0 ||
-    id > 1_000_000_000 ||
+    !id ||
+    id !== canonicalId(mediaType, requestedId) ||
     detail.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
     typeof detail.onUserWatchlist !== 'boolean'
   )
     return null;
 
   const listed = confirmed ?? detail.onUserWatchlist;
+  const encodedId = encodeURIComponent(id);
+  const detailPath =
+    mediaType === 'magazine'
+      ? `/magazine/${encodeURIComponent(requestedId)}`
+      : `/${mediaType}/${encodedId}`;
 
   async function toggle() {
     if (pending.current) return;
@@ -47,12 +94,12 @@ export default function VideoWatchlistButton({
     const desired = !listed;
     const session = sessionGeneration();
     try {
-      const fresh = await api<VideoWatchlistTitle>(`/${mediaType}/${id}`, {
+      const fresh = await api<WatchlistTitle>(detailPath, {
         cache: 'no-store',
       });
       if (sessionGeneration() !== session) return;
       if (
-        fresh.id !== id ||
+        canonicalId(mediaType, fresh.id) !== id ||
         fresh.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
         typeof fresh.onUserWatchlist !== 'boolean'
       ) {
@@ -64,7 +111,17 @@ export default function VideoWatchlistButton({
         if (desired) {
           const saved = await api<{ id: number }>('/watchlist', {
             method: 'POST',
-            body: JSON.stringify({ tmdbId: id, mediaType }),
+            body: JSON.stringify({
+              mediaType,
+              ...(mediaType === 'movie' || mediaType === 'tv'
+                ? { tmdbId: Number(id) }
+                : {
+                    ...(mediaType === 'music'
+                      ? { mbId: id }
+                      : { externalId: id }),
+                    title: fresh.title?.slice(0, 512),
+                  }),
+            }),
           });
           if (sessionGeneration() !== session) return;
           if (!saved || !Number.isSafeInteger(saved.id) || saved.id <= 0) {
@@ -72,7 +129,7 @@ export default function VideoWatchlistButton({
             return;
           }
         } else {
-          await api(`/watchlist/${id}?mediaType=${mediaType}`, {
+          await api(`/watchlist/${encodedId}?mediaType=${mediaType}`, {
             method: 'DELETE',
           });
         }

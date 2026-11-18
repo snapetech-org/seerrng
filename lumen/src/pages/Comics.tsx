@@ -28,6 +28,7 @@ import {
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import { useToast } from '../components/toast';
+import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
 import {
   editionLine,
@@ -593,6 +594,14 @@ export function ComicDetail() {
                 {g}
               </Pill>
             ))}
+            {c && chosen && (
+              <WatchlistButton
+                key={chosen.id}
+                mediaType="comic"
+                detail={c}
+                requestedId={chosen.id}
+              />
+            )}
           </div>
           {alsoRead && <div className="dacts ph">{alsoRead}</div>}
           {cs.pct != null && (
@@ -890,6 +899,11 @@ export function MagazineDetail() {
                 {have} issue{have === 1 ? '' : 's'} in library
               </Pill>
             )}
+            <WatchlistButton
+              mediaType="magazine"
+              detail={m}
+              requestedId={title}
+            />
           </div>
           <div className="dacts pc">{main}</div>
           <div className="dcols">
