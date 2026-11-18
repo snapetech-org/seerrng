@@ -1371,3 +1371,16 @@ in Music, including the yearly chart, and genre filtering can be cleared.
 Bundled native music bookmarks preserve the same filters. Eight browser
 checks across four viewport presets and the bundled redirect tests passed.
 Live provider results and matched visual comparisons remain open.
+
+### Association explorer
+
+Movie and series details link to the Associations explorer. The list uses
+the existing viewer-scoped endpoint, shows each relationship and reason,
+and filters by relationship type. Native explorer bookmarks open under
+bundled frontend lock and in the companion. The route supports movie,
+series, MusicBrainz album and artist, and Open Library book identities.
+
+Eight browser checks across four viewport presets, bundled redirects,
+and the companion route inventory passed. Graph presentation, entry
+links from music and books, live provider results, and matched visual
+comparisons remain open.

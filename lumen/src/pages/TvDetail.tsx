@@ -628,6 +628,11 @@ export default function TvDetail() {
           link={['Recommendations', `/tv/${id}/recommendations`]}
           action={<Link to={`/tv/${id}/similar`}>Similar Series</Link>}
         >
+          <div className="toolbar">
+            <Link className="chip" to={`/associations/tv/${id}`}>
+              Explore Associations
+            </Link>
+          </div>
           {!!like?.results.length && (
             <Rail>
               {like.results.map((x) => (

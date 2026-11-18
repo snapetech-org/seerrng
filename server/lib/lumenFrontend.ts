@@ -108,6 +108,12 @@ function discoveryDeepLink(req: Request): string | undefined {
 }
 
 function detailDeepLink(req: Request): string | undefined {
+  const association =
+    /^\/associations\/(movie|tv|album|artist|book)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(
+      req.path
+    );
+  if (association)
+    return `/lumen/associations/${association[1]}/${association[2]}`;
   const subpage =
     /^\/(movie|tv)\/([1-9]\d{0,9})\/(cast|crew|recommendations|similar)\/?$/.exec(
       req.path

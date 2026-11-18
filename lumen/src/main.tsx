@@ -16,6 +16,7 @@ import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
 import { canSearchIndexers } from './indexerPermissions';
 import { MediaServerProvider } from './mediaServer';
+import Associations from './pages/Associations';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
 import Browse from './pages/Browse';
@@ -99,6 +100,10 @@ function App() {
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/trending" element={<Trending />} />
+          <Route
+            path="/associations/:mediaType/:id"
+            element={<Associations />}
+          />
           <Route path="/list/:id" element={<TmdbList />} />
           <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
           <Route path="/series" element={<Browse key="tv" kind="tv" />} />

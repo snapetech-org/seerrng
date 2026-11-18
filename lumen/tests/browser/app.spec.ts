@@ -2992,3 +2992,47 @@ test('configured music shelves preserve genre and yearly chart in Music', async 
   await expect(page).toHaveURL(/\/music\?sort=ranked$/);
   await expect(page.getByRole('link', { name: 'Chart Fixture' })).toBeVisible();
 });
+
+test('movie associations preserve related identities and explanations', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(
+    '**/api/v1/association/movie/101?includeWeak=true',
+    (route) =>
+      route.fulfill({
+        json: {
+          root: { title: 'The Test Film' },
+          edges: [
+            {
+              type: 'recommended',
+              reason: 'Often recommended together',
+              node: { mediaType: 'tv', id: 101, name: 'Related Series' },
+            },
+            {
+              type: 'shared-person',
+              reason: 'Worked on the soundtrack',
+              node: { mediaType: 'person', id: 101, name: 'Related Person' },
+            },
+          ],
+        },
+      })
+  );
+  await page.goto('/movie/101');
+  await page.getByRole('link', { name: 'Explore Associations' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Associations for The Test Film' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Related Series' })
+  ).toHaveAttribute('href', '/tv/101');
+  await expect(
+    page.getByRole('link', { name: 'Related Person' })
+  ).toHaveAttribute('href', '/person/101');
+  await page.getByLabel('Relationship').selectOption('shared-person');
+  await expect(page.getByRole('link', { name: 'Related Series' })).toHaveCount(
+    0
+  );
+  await expect(page.getByText('Worked on the soundtrack')).toBeVisible();
+  await expect(page).toHaveURL(/type=shared-person$/);
+});
