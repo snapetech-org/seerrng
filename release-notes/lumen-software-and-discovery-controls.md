@@ -1,6 +1,6 @@
 ---
 category: added
-audience: everyone
+audience: users, operators
 area: lumen
 action: none
 breaking: false

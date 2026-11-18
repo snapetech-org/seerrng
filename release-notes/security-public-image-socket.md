@@ -1,7 +1,7 @@
 ---
 category: security
-audience: administrators
-area: image proxy
+audience: operators
+area: image-proxy
 action: none
 breaking: false
 ---
