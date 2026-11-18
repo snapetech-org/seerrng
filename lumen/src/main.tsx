@@ -23,6 +23,7 @@ import Calendar from './pages/Calendar';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
+import GameLibrary from './pages/GameLibrary';
 import { GameDetail, Games } from './pages/Games';
 import Library from './pages/Library';
 import Login from './pages/Login';
@@ -129,6 +130,7 @@ function App() {
           <Route path="/magazines" element={<Magazines />} />
           <Route path="/magazine/:title" element={<MagazineDetail />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/game-library" element={<GameLibrary />} />
           <Route path="/game/:category/:id" element={<GameDetail />} />
           <Route path="/sports" element={<Sports />} />
           <Route path="/sportarr/:id" element={<LeagueDetail />} />

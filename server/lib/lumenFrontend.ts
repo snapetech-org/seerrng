@@ -114,6 +114,7 @@ const workflowDestinations = new Map([
   ['/requests/status', '/requests'],
   ['/following', '/following'],
   ['/library', '/library'],
+  ['/games', '/game-library'],
   ['/calendar', '/calendar'],
   ['/coming-soon', '/soon'],
   ['/profile', '/me'],

@@ -154,6 +154,9 @@ server {
   location = /profile/watchlist {
     return 302 /watchlist$is_args$args;
   }
+  location ~ ^/discover/games/?$ {
+    return 302 /games$is_args$args;
+  }
   location ~ ^/discover/watchlist/?$ {
     return 302 /watchlist/discover$is_args$args;
   }

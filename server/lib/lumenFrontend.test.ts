@@ -175,7 +175,6 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       '/movie/123/cast/extra',
       '/person/123/crew',
       '/issues/9007199254740992',
-      '/games',
       '/tv/1000000001/cast',
       '/?interface=classic',
     ]) {
@@ -195,6 +194,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/requests', '/lumen/requests'],
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
+      ['/games', '/lumen/game-library'],
       ['/calendar', '/lumen/calendar'],
       ['/coming-soon', '/lumen/soon'],
       ['/profile/settings/password', '/lumen/me/account'],

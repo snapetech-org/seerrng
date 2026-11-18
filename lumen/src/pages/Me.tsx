@@ -179,6 +179,12 @@ export default function Me() {
               Open <Icon name="chev" size="sm" />
             </Link>
           </div>
+          <div className="set">
+            <b>My Games</b>
+            <Link className="go" to="/game-library" aria-label="Open My Games">
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
           {canViewFollowing(user?.permissions) && (
             <div className="set">
               <b>Following</b>

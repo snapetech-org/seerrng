@@ -1190,3 +1190,20 @@ and tablet. They cover both endpoint scopes, hidden media categories,
 filter paging, and existing personal watchlist actions. Server redirect
 tests and the companion redirect inventory check passed. Live bundled and
 companion browser checks and matched visual comparisons remain open.
+
+### Private and household game libraries
+
+My Games under You opens a private library, independently of the game
+catalogue and its provider availability. It supports title, progress and
+type filters, paging, manual entries, ownership and progress edits,
+opt-in sharing, removal confirmation, catalog links and request history.
+Household Games reads the server's shared-only list and can show all shared
+games or titles with two or more owners. Bundled native Games bookmarks
+open the private library. The companion keeps its existing Games catalogue
+URL and offers My Games from You and the catalogue.
+
+The server redirect tests and four standalone viewport fixtures passed.
+Browser coverage includes add, edit, owned-only sharing, removal
+confirmation, and separate household results. Steam linking and sync,
+catalog matching, live deployments and matched visual comparisons remain
+open.
