@@ -436,6 +436,12 @@ test('anime continuation loads on demand and follows the novel in its language',
                   href: '/book/OL42W',
                   title: 'Volume Four',
                 },
+                {
+                  label: 'start',
+                  exact: false,
+                  href: '/search?query=Fixture%20Novel%20%26%20Volume%201',
+                  title: 'Fixture Novel',
+                },
               ],
             },
           ],
@@ -466,6 +472,9 @@ test('anime continuation loads on demand and follows the novel in its language',
   await expect(
     page.getByRole('link', { name: 'Open Continuation Volume' })
   ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Search for Fixture Novel' })
+  ).toHaveAttribute('href', /\/search\?q=Fixture\+Novel\+%26\+Volume\+1$/);
   await page.getByRole('button', { name: 'Follow Future Volumes' }).click();
   await expect(
     page.getByRole('button', { name: 'Following', exact: true })

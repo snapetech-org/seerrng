@@ -183,6 +183,11 @@ export default function AnimeContinuation({
                           const exact =
                             target.exact &&
                             /^\/(?:book|comic)\/[^/?#\\]+$/.test(target.href);
+                          const searchTerm = target.href.startsWith('/search?')
+                            ? new URLSearchParams(
+                                target.href.slice('/search?'.length)
+                              ).get('query')
+                            : undefined;
                           return (
                             <Link
                               className="btn btn-quiet btn-sm"
@@ -190,7 +195,7 @@ export default function AnimeContinuation({
                               to={
                                 exact
                                   ? target.href
-                                  : `/search?${new URLSearchParams({ q: target.title })}`
+                                  : `/search?${new URLSearchParams({ q: searchTerm || target.title })}`
                               }
                             >
                               {exact
