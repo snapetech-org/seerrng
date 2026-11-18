@@ -38,6 +38,20 @@ export const fmtRun = (m?: number) =>
 export const fmtHrs = (sec?: number | null) =>
   !sec ? '' : fmtRun(Math.round(sec / 60));
 
+export function TrailerButton({ href }: { href: string }) {
+  return (
+    <a
+      className="btn btn-quiet"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Icon name="play" />
+      Trailer
+    </a>
+  );
+}
+
 export function Pill({
   k,
   icon,

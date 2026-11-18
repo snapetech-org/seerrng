@@ -2939,3 +2939,10 @@ standalone browser cases and eight bundled collection cases passed,
 including rejection of an invalid trailer ID before selecting the next
 valid candidate. Live metadata and matched visual comparison remain
 unverified.
+
+TV details now show the same validated trailer control as movie details,
+in the desktop action row and the narrow-layout detail controls. Forty
+browser checks passed across standalone and bundled Lumen. The trailer
+fixtures verify the valid YouTube destination and omission when metadata
+contains only an invalid candidate. Matched visual comparison remains
+unverified.

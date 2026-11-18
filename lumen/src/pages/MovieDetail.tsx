@@ -32,6 +32,7 @@ import {
   Pill,
   productionCountryLinks,
   SubjectTagsDisclosure,
+  TrailerButton,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
@@ -195,17 +196,7 @@ export default function MovieDetail() {
         {requireApproval ? 'Request 4K Approval' : 'Request 4K'}
       </button>
     ) : null;
-  const trailerBtn = trailer ? (
-    <a
-      className="btn btn-quiet"
-      href={trailer}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Icon name="play" />
-      Trailer
-    </a>
-  ) : null;
+  const trailerBtn = trailer ? <TrailerButton href={trailer} /> : null;
 
   return (
     <article className="detail">

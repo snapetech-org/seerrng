@@ -6,6 +6,7 @@ import {
   MediaStatus,
   requestSeries,
   tmdbImg,
+  youtubeTrailerUrl,
   type Paged,
   type RequestOptions,
   type SeasonRequestSelection,
@@ -32,6 +33,7 @@ import {
   Pill,
   productionCountryLinks,
   SubjectTagsDisclosure,
+  TrailerButton,
 } from '../components/detail';
 import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel';
 import { ServiceNote } from '../components/extra';
@@ -392,6 +394,7 @@ export default function TvDetail() {
           : null
       : mine;
   const playbackMedia = videoPlaybackMedia(t.mediaInfo, mode);
+  const trailer = youtubeTrailerUrl(t.relatedVideos);
   const asks = (t.mediaInfo?.requests || []).filter(
     (r) => !!r.is4k === !!is4k && live(r.status)
   );
@@ -489,6 +492,7 @@ export default function TvDetail() {
         <TvCollectionLinks key={t.id} id={t.id} />
         <div className="dacts pc">
           {main}
+          {trailer && <TrailerButton href={trailer} />}
           {canPlay && missing.length > 0 && (
             <a
               className="btn btn-quiet"
@@ -750,6 +754,11 @@ export default function TvDetail() {
               media="tv"
               tags={t.keywords}
             />
+            {trailer && (
+              <div className="ph-only-row">
+                <TrailerButton href={trailer} />
+              </div>
+            )}
           </div>
           <aside>
             <Facts
