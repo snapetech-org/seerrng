@@ -2006,6 +2006,46 @@ test('adult scene details keep the catalog and default request sources distinct'
   expect(reads.sort()).toEqual(['1', '2']);
 });
 
+test('adult request links use the saved Whisparr destination', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const scene = '12345678-1234-4123-8123-123456789abc';
+  await page.route('**/api/v1/request?*', (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: [
+          {
+            id: 614,
+            type: 'adult',
+            status: 1,
+            serverId: 2,
+            is4k: false,
+            seasons: [],
+            createdAt: '2026-11-08T12:00:00Z',
+            requestedBy: { id: 1, displayName: 'Owner' },
+            media: {
+              mediaType: 'adult',
+              status: 1,
+              identifiers: [{ provider: 'stashdb', value: scene }],
+            },
+          },
+        ],
+      },
+    })
+  );
+  await page.route(`**/api/v1/adult/${scene}?serverId=2`, (route) =>
+    route.fulfill({
+      json: { id: scene, title: 'Destination Scene', serviceId: 2 },
+    })
+  );
+  await page.goto('/requests?tab=active');
+  await expect(
+    page.getByRole('link', { name: 'Destination Scene', exact: true })
+  ).toHaveAttribute('href', `/adult/${scene}?serverId=2`);
+});
+
 test('Sportarr league details show paginated event availability', async ({
   page,
 }) => {

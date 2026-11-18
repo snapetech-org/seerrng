@@ -1790,3 +1790,8 @@ Scene display and default-destination request state are loaded separately
 where needed. Eight standalone scene and Sportarr browser cases and two
 routing tests passed. Live provider behavior and matched visual acceptance
 remain open.
+
+Whisparr request rows now look up and link to the saved destination.
+Cached rows with a different destination are resolved again. Eight
+standalone request and scene checks passed. Live provider behavior
+and matched visual acceptance remain open.

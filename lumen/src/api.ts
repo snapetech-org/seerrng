@@ -740,6 +740,7 @@ export interface DownloadItem {
   status?: string;
 }
 export interface RequestItem {
+  serverId?: number | null;
   isAutoRequest?: boolean;
   watchAheadParentRequestId?: number | null;
   watchAheadEpisodeCount?: number;

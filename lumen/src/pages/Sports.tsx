@@ -13,7 +13,12 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
-import { requestExtra, type League, type Scene } from '../extras';
+import {
+  adultScenePath,
+  requestExtra,
+  type League,
+  type Scene,
+} from '../extras';
 import { useApi, usePaged } from '../hooks';
 
 // Sportarr knows whether a league is followed even before SeerrNG has a request for it
@@ -285,7 +290,7 @@ export function Adult() {
         {list.items.map((x) => (
           <ExtraCard
             key={x.id}
-            href={`/adult/${encodeURIComponent(x.id)}${Number.isSafeInteger(x.serviceId) ? `?serverId=${x.serviceId}` : ''}`}
+            href={adultScenePath(x.id, x.serviceId)}
             img={x.posterPath}
             title={x.title}
             shape="wide"
@@ -319,10 +324,9 @@ export function SceneDetail() {
       : undefined;
   const canChoose = ((user?.permissions ?? 0) & (2 | 16 | 8192)) !== 0;
   const path = `/adult/${encodeURIComponent(id)}`;
-  const detail = useApi<Scene>(
-    serverId === undefined ? path : `${path}?serverId=${serverId}`,
-    { currentPathOnly: true }
-  );
+  const detail = useApi<Scene>(adultScenePath(id, serverId), {
+    currentPathOnly: true,
+  });
   const services = useApi<{ id: number; isDefault?: boolean }[]>(
     serverId !== undefined && !canChoose ? '/service/whisparr' : null
   );

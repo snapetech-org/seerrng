@@ -536,6 +536,15 @@ export interface SoftwareRequest {
 }
 
 // ---- sports (Sportarr leagues) and adult (Whisparr scenes, StashDB ids) ----
+export function adultScenePath(id: string, serverId?: number | null) {
+  const scoped =
+    typeof serverId === 'number' &&
+    Number.isSafeInteger(serverId) &&
+    serverId >= 0 &&
+    serverId <= 1_000_000_000;
+  return `/adult/${encodeURIComponent(id)}${scoped ? `?serverId=${serverId}` : ''}`;
+}
+
 export interface League {
   id: string;
   mediaType: 'sports';

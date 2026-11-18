@@ -35,6 +35,7 @@ import { useToast } from '../components/toast';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
+  adultScenePath,
   GAME_LABEL,
   patchHref,
   useExtras,
@@ -596,11 +597,17 @@ async function describe(r: RequestItem): Promise<Row> {
   const { r: _ignored, ...rest } = row;
   void _ignored;
   if (!retryLater.delete(r.id)) described.set(r.id, rest);
-  else if (known) return { ...known, r }; // keep the old name until a lookup works
+  else if (known && (r.type !== 'adult' || known.href === row.href))
+    return { ...known, r }; // keep the old name until a lookup works
   return row;
 }
 const isDescribed = (r: RequestItem) =>
-  !!described.get(r.id) && (r.type !== 'tv' || !!described.get(r.id)?.unaired);
+  !!described.get(r.id) &&
+  (r.type !== 'tv' || !!described.get(r.id)?.unaired) &&
+  (r.type !== 'adult' ||
+    r.serverId == null ||
+    described.get(r.id)?.href ===
+      adultScenePath(idOf(r, 'stashdb') || '', r.serverId));
 // SeerrNG rate-limits bursts (and book lookups to 30 a minute), so look a few up at a time and
 // at most 12 new books per visit; the rest show a plain label now and get named next time.
 const BOOK_LOOKUPS_PER_VISIT = 12; // an ebook can take 2 calls (plain id, then the Hardcover form)
@@ -839,12 +846,13 @@ async function describeExtra(r: RequestItem): Promise<Row | null> {
   }
   if (r.type === 'adult') {
     const id = idOf(r, 'stashdb') || '';
-    const x = id ? await get<Scene>(`/adult/${encodeURIComponent(id)}`) : null;
+    const href = adultScenePath(id, r.serverId);
+    const x = id ? await get<Scene>(href) : null;
     return {
       r,
       title: x?.title || 'Scene',
       art: x?.posterPath,
-      href: `/adult/${encodeURIComponent(id)}`,
+      href: r.serverId == null ? adultScenePath(id, x?.serviceId) : href,
       sub: ['Adult', x?.studio].filter(Boolean).join(' · '),
     };
   }
