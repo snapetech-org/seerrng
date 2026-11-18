@@ -20,7 +20,32 @@ for (const administrator of [true, false]) {
         return route.fulfill({
           json: { id: 1, permissions: administrator ? 2 : 0 },
         });
+      if (path === '/settings/download-clients') {
+        if (route.request().method() === 'PUT') {
+          expect(administrator).toBe(true);
+          expect(route.request().postDataJSON()).toEqual({
+            pollIntervalSeconds: 30,
+            clients: [],
+          });
+          return route.fulfill({
+            json: { pollIntervalSeconds: 30, clients: [] },
+          });
+        }
+        return route.fulfill({
+          json: { pollIntervalSeconds: 15, clients: [] },
+        });
+      }
       expect(route.request().method()).toBe('GET');
+      if (path === '/settings/prowlarr')
+        return route.fulfill({
+          json: {
+            hostname: '',
+            port: 9696,
+            baseUrl: '',
+            useSsl: false,
+            apiKeyConfigured: false,
+          },
+        });
       if (
         /^\/settings\/(lazylibrarian|mylar|kapowarr|backissue|sportarr|whisparr)$/.test(
           path
@@ -76,6 +101,20 @@ for (const administrator of [true, false]) {
     await expect(
       steps.getByRole('link', { name: 'Media Server Libraries' })
     ).toHaveAttribute('aria-current', 'step');
+    await steps.getByRole('link', { name: 'Download Clients' }).click();
+    const refreshInterval = page.getByLabel('Refresh Interval (Seconds)');
+    await refreshInterval.fill('25');
+    const next = page.getByRole('link', { name: 'Next Step' });
+    await expect(next).toBeDisabled();
+    await page.getByRole('button', { name: 'Discard Changes' }).click();
+    await expect(refreshInterval).toHaveValue('15');
+    await expect(next).toBeEnabled();
+    await refreshInterval.fill('30');
+    await expect(next).toBeDisabled();
+    await page.getByRole('button', { name: 'Save Changes' }).click();
+    await expect(next).toBeEnabled();
+    await next.click();
+    await expect(page).toHaveURL(`${mount}/setup?guide=1&step=indexer`);
     await page.getByRole('link', { name: 'Show All Setup Options' }).click();
     await expect(page.getByText('Configure Request Services')).toBeVisible();
     await page.getByRole('link', { name: 'Return to Administration' }).click();

@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has optional steps that resume from the URL. Native setup's category-specific orientation, connection review, and unsaved-download guard still need parity. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has optional steps that resume from the URL and protects unsaved download-client changes on guide controls and document unload. Category-specific orientation and connection review still need parity. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.
@@ -2799,3 +2799,10 @@ mounted editors available. Forty browser checks passed across both
 deployments and four viewport presets. They include guide navigation,
 reload, permission checks, and the three first-run provider fixtures.
 Matched visual acceptance remains unverified.
+
+The setup guide disables its navigation and completion controls while
+download-client settings have unsaved changes. Saving or discarding the
+draft restores navigation. Document unload also prompts while a draft is
+dirty. Eight administrator browser checks passed after completing the
+Prowlarr fixture. The other 32 setup cases passed on the same builds.
+Matched visual acceptance and browser unload prompts remain unverified.

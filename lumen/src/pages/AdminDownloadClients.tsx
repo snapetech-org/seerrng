@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
@@ -70,7 +70,13 @@ function payload(client: Draft) {
   };
 }
 
-function Editor({ initial }: { initial: Settings }) {
+function Editor({
+  initial,
+  onDirtyChange,
+}: {
+  initial: Settings;
+  onDirtyChange?: (dirty: boolean) => void;
+}) {
   const [interval, setInterval] = useState(initial.pollIntervalSeconds);
   const [clients, setClients] = useState(initial.clients.map(toDraft));
   const [saved, setSaved] = useState(initial);
@@ -81,6 +87,14 @@ function Editor({ initial }: { initial: Settings }) {
   );
   const nextRow = useRef(initial.clients.length);
   const pending = useRef(false);
+  const dirty =
+    interval !== saved.pollIntervalSeconds ||
+    JSON.stringify(clients.map(payload)) !==
+      JSON.stringify(saved.clients.map(toDraft).map(payload));
+
+  useEffect(() => {
+    onDirtyChange?.(dirty);
+  }, [dirty, onDirtyChange]);
 
   function update(row: number, patch: Partial<Draft>) {
     setClients((current) =>
@@ -395,7 +409,8 @@ function Editor({ initial }: { initial: Settings }) {
 
 export default function AdminDownloadClients({
   inSetup = false,
-}: { inSetup?: boolean } = {}) {
+  onDirtyChange,
+}: { inSetup?: boolean; onDirtyChange?: (dirty: boolean) => void } = {}) {
   const settings = useApi<Settings>(endpoint);
   return (
     <>
@@ -415,7 +430,7 @@ export default function AdminDownloadClients({
         retry={settings.reload}
       />
       {settings.data ? (
-        <Editor initial={settings.data} />
+        <Editor initial={settings.data} onDirtyChange={onDirtyChange} />
       ) : (
         !settings.error && (
           <p className="note" role="status">

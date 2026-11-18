@@ -1,9 +1,11 @@
 import {
   lazy,
   Suspense,
+  useEffect,
   useRef,
   useState,
   type FormEvent,
+  type MouseEvent,
   type ReactNode,
 } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
@@ -89,8 +91,26 @@ export default function Setup() {
     settings.data?.initialized === true && query.get('guide') === '1';
   const [provider, setProvider] = useState(1);
   const [busy, setBusy] = useState(false);
+  const [downloadDirty, setDownloadDirty] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
+
+  useEffect(() => {
+    if (!downloadDirty) return;
+    function confirmUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      event.returnValue = true;
+    }
+    window.addEventListener('beforeunload', confirmUnload);
+    return () => window.removeEventListener('beforeunload', confirmUnload);
+  }, [downloadDirty]);
+
+  const stepNavigation = {
+    'aria-disabled': downloadDirty || undefined,
+    onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+      if (downloadDirty) event.preventDefault();
+    },
+  };
 
   async function run(action: () => Promise<void>) {
     if (pending.current) return;
@@ -194,6 +214,7 @@ export default function Setup() {
                 className="btn btn-quiet btn-sm"
                 to={stepLink(id)}
                 aria-current={activeStep === id ? 'step' : undefined}
+                {...stepNavigation}
               >
                 {label}
               </Link>
@@ -202,12 +223,17 @@ export default function Setup() {
             <Link
               className="btn btn-quiet btn-sm"
               to={stepLink(setupSteps[0][0])}
+              {...stepNavigation}
             >
               Start Guided Setup
             </Link>
           )}
           {activeStep && (
-            <Link className="btn btn-quiet btn-sm" to={stepLink()}>
+            <Link
+              className="btn btn-quiet btn-sm"
+              to={stepLink()}
+              {...stepNavigation}
+            >
               Show All Setup Options
             </Link>
           )}
@@ -239,11 +265,16 @@ export default function Setup() {
         </details>
         <SetupEditor
           label="Configure Download Clients"
-          active={activeStep === 'downloads'}
-          hidden={!!activeStep && activeStep !== 'downloads'}
+          active={activeStep === 'downloads' || downloadDirty}
+          hidden={!!activeStep && activeStep !== 'downloads' && !downloadDirty}
         >
-          <AdminDownloadClients inSetup />
+          <AdminDownloadClients inSetup onDirtyChange={setDownloadDirty} />
         </SetupEditor>
+        {downloadDirty && (
+          <p className="note" role="status">
+            Save or discard download client changes before continuing setup.
+          </p>
+        )}
         <SetupEditor
           label="Configure Prowlarr"
           active={activeStep === 'indexer'}
@@ -258,6 +289,7 @@ export default function Setup() {
               <Link
                 className="btn btn-quiet"
                 to={stepLink(setupSteps[stepIndex - 1][0])}
+                {...stepNavigation}
               >
                 Previous Step
               </Link>
@@ -266,6 +298,7 @@ export default function Setup() {
               <Link
                 className="btn btn-primary"
                 to={stepLink(setupSteps[stepIndex + 1][0])}
+                {...stepNavigation}
               >
                 Next Step
               </Link>
@@ -273,13 +306,13 @@ export default function Setup() {
           </div>
         )}
         {reopening ? (
-          <Link className="btn btn-primary" to="/admin">
+          <Link className="btn btn-primary" to="/admin" {...stepNavigation}>
             Return to Administration
           </Link>
         ) : (
           <button
             className="btn btn-primary"
-            disabled={busy}
+            disabled={busy || downloadDirty}
             onClick={() => void run(finish)}
           >
             Finish Setup
