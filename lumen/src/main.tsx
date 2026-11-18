@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const AccountSettings = lazy(() => import('./pages/AccountSettings'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
@@ -170,6 +171,20 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />
           <Route path="/me" element={<Me />} />
+          <Route
+            path="/me/account"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Account Settings…
+                  </p>
+                }
+              >
+                <AccountSettings />
+              </Suspense>
+            }
+          />
           <Route path="/me/lumen" element={<LumenSettings />} />
           <Route path="*" element={<Placeholder title="Page not found" />} />
         </Routes>

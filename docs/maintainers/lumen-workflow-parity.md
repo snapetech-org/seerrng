@@ -312,3 +312,18 @@ playback dispatch, exclusion of a shared copy, and a playlist link for a
 changed selection against synthetic data. Mobile and bundled visual
 acceptance, comparison against rendered native workflows, and live provider
 playback remain open.
+
+### Personal profile and password increment
+
+You links to Account Settings. Users can save display name, non-Plex email,
+metadata language, and regional-format preferences for their own account.
+The form submits only changed fields, preserves failed drafts, and confirms
+saved profile values by reading them back. The separate password form uses
+the server's password-presence flag, confirms the new password locally, and
+clears password fields after each submission.
+
+Headed Chrome at 1440 × 1000 verified standalone entry from You, a rejected
+edit with its draft retained, successful retry and name readback, and a
+password change with synthetic credentials. Native baseline, mobile and
+bundled visual acceptance, live password and provider paths, interface
+localization, linked accounts, tokens, and other account settings remain open.

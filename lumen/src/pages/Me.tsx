@@ -234,6 +234,20 @@ export default function Me() {
         </Section>
       )}
 
+      <Section title="Account">
+        <div className="setlist">
+          <div className="set">
+            <b>Profile and Password</b>
+            <Link
+              className="go"
+              to="/me/account"
+              aria-label="Open Account Settings"
+            >
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+        </div>
+      </Section>
       <Section title="Request limits">
         <div className="quota">
           {q('movie', 'Movies')}
