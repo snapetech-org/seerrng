@@ -2000,6 +2000,7 @@ export default function Requests() {
             key={`${focusedId}:${historyRevision}`}
             id={focusedId}
             title={list.find(({ r }) => r.id === focusedId)?.title}
+            describeRequest={describe}
             renderActions={(request, title) => (
               <div className="rqa">
                 {renderRequestActions(

@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import type { RequestItem } from '../api';
 import { useApi } from '../hooks';
@@ -141,9 +141,11 @@ export default function RequestHistorySheet({
   title,
   close,
   renderActions,
+  describeRequest,
 }: {
   id: number;
   title?: string;
+  describeRequest?: (request: RequestItem) => Promise<{ title: string }>;
   close: () => void;
   renderActions?: (request: RequestItem, title: string) => ReactNode;
 }) {
@@ -153,6 +155,24 @@ export default function RequestHistorySheet({
   const { data, error, reload } = useApi<RequestHistory>(
     `/request/status/${id}`
   );
+
+  const [resolvedTitle, setResolvedTitle] = useState<string>();
+  const request = data?.request;
+  useEffect(() => {
+    if (title || !describeRequest || request?.id !== id || !request.media)
+      return;
+    let active = true;
+    void describeRequest(request).then(
+      (description) => {
+        if (active && description.title) setResolvedTitle(description.title);
+      },
+      () => {}
+    );
+    return () => {
+      active = false;
+    };
+  }, [describeRequest, id, request, title]);
+  const displayTitle = title || resolvedTitle || `Request #${id}`;
 
   return createPortal(
     <div className="sheet-wrap open">
@@ -168,7 +188,7 @@ export default function RequestHistorySheet({
         <div className="pk">
           <header>
             <h2>Request History</h2>
-            <p className="note">{title ?? `Request #${id}`}</p>
+            <p className="note">{displayTitle}</p>
           </header>
           <ServiceNote error={error} what="request history" retry={reload} />
           {!data && !error && (
@@ -189,7 +209,7 @@ export default function RequestHistorySheet({
                       message: data.current.message ?? undefined,
                     },
                   },
-                  title ?? `Request #${id}`
+                  displayTitle
                 )}
 
               {data.current.stage === 'available' &&

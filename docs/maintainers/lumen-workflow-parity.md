@@ -646,3 +646,13 @@ replace the history dialog while open and completed actions refresh it.
 Standalone Chrome verified a delegated manager declining a request absent
 from the list, including confirmation and a refreshed Declined state.
 Other actions, mobile, bundled and native visual comparison remain open.
+
+### Focused request title increment
+
+Direct request history links resolve the title through the shared request
+metadata lookup after the exact request has loaded. The ID remains visible
+while waiting or when metadata cannot supply a title.
+
+Standalone Chrome at 1440 × 1000 verified that a direct link resolved a movie
+title while the underlying Requests list was empty. Native visual comparison,
+mobile, bundled and other media categories remain unverified.
