@@ -646,7 +646,7 @@ test('filtered Movies view stops after a few pages and offers to look further', 
       },
     });
   });
-  await page.goto('/movies?show=have');
+  await page.goto('/movies?show=have&language=ja');
   await expect(
     page.getByRole('button', { name: 'Look further' })
   ).toBeVisible();
@@ -1341,14 +1341,16 @@ test('Request 4K is offered before the HD copy exists, and goes to the 4K server
       },
     })
   );
-  let status4k: number | undefined;
+  const state: { status4k?: number } = {};
   await page.route('**/api/v1/movie/302', (route) =>
     route.fulfill({
       json: {
         ...details301,
         id: 302,
         title: 'Fresh Pick',
-        mediaInfo: status4k ? { id: 2, status: 1, status4k } : undefined,
+        mediaInfo: state.status4k
+          ? { id: 2, status: 1, status4k: state.status4k }
+          : undefined,
       },
     })
   );
@@ -1368,7 +1370,7 @@ test('Request 4K is offered before the HD copy exists, and goes to the 4K server
   // the admin's Advanced options belong to the HD server; the 4K request must not reuse them
   await page.getByText('Advanced (admins)').click();
   await expect(page.getByLabel('Folder')).toBeVisible();
-  status4k = 2;
+  state.status4k = 2;
   await fourK.click();
   await expect
     .poll(() => posts.filter((p) => p.path === '/request').length)

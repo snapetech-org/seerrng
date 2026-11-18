@@ -352,9 +352,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       : {}),
     ...(validVotes && maxVotes ? { voteCountLte: maxVotes } : {}),
   });
-  const list = usePaged<TitleResult>(
-    `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
-  );
   const qualityEnabled =
     publicSettings?.enable4k === true ||
     (publicSettings?.enable4k !== false &&
@@ -362,15 +359,34 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         ? publicSettings?.movie4kEnabled
         : publicSettings?.series4kEnabled));
   const quality = qualityEnabled && p.get('quality') === '4k' ? '4k' : 'hd';
+  // The library endpoint only implements a subset of the catalog filters and sorts.
+  const libraryFirst =
+    show === 'have' &&
+    sort === 'popularity.desc' &&
+    [...q.keys()].every((key) =>
+      [
+        'sortBy',
+        'genre',
+        'excludeGenre',
+        'withRuntimeGte',
+        'withRuntimeLte',
+      ].includes(key)
+    );
+  if (libraryFirst) q.set('availability', quality);
+  const list = usePaged<TitleResult>(
+    `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
+  );
+  const filterCatalogRows =
+    !libraryFirst && (show === 'have' || show === 'not');
   const onServer = (x: TitleResult) => {
     const status =
       quality === '4k' ? x.mediaInfo?.status4k : x.mediaInfo?.status;
     return status === MediaStatus.AVAILABLE || status === MediaStatus.PARTIAL;
   };
-  const items = list.items.filter((x) =>
-    show === 'have' ? onServer(x) : show === 'not' ? !onServer(x) : true
+  const items = list.items.filter(
+    (x) => !filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))
   );
-  // Availability is filtered here, not by the API, so a filtered view reads TMDB's list a
+  // Catalog availability views read TMDB’s list a
   // page at a time. With a small library almost nothing matches, and an open-ended loop
   // would walk hundreds of pages and hit SeerrNG's rate limit for the whole account.
   // Pages that keep finding titles go on loading as the person scrolls; a run of pages that
@@ -383,13 +399,13 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   else if (items.length - look.found >= SCREENFUL)
     setLook({ key: filterKey, page: list.page, found: items.length });
   const capped =
-    show !== 'all' &&
+    filterCatalogRows &&
     !list.done &&
     list.page - look.page >= PAGES_PER_LOOK &&
     items.length - look.found < SCREENFUL;
   useEffect(() => {
     if (
-      show !== 'all' &&
+      filterCatalogRows &&
       items.length < SCREENFUL &&
       !list.done &&
       !list.loading &&
@@ -398,7 +414,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       !capped
     )
       void list.more();
-  }, [show, items.length, list, capped]);
+  }, [filterCatalogRows, items.length, list, capped]);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (!v || v === 'all' || v === 'popularity.desc') n.delete(k);
@@ -569,7 +585,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
             {SORTS[kind].map(([v, t]) => (
               <option key={v} value={v}>
-                {t}
+                {libraryFirst && v === 'popularity.desc' ? 'Library Order' : t}
               </option>
             ))}
           </select>

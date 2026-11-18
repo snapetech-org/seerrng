@@ -1103,3 +1103,10 @@ views when the instance enables 4K. The grid filters viewer-scoped discovery
 rows and retains the quality in the URL. Four standalone browser checks
 covered both qualities, reload and switching to unavailable. Native
 library-first availability queries and visual comparisons remain open.
+
+Available Movies and Series use SeerrNG's library-first query in default
+sort order when the selected filters are supported by that query. Catalog
+availability filtering remains for unavailable titles and other filters or
+sorts. Standalone Movies checks verified the HD and 4K library requests and
+the bounded catalog fallback at all four viewport presets. Series and
+live backend verification and bundled and native visual comparisons remain open.
