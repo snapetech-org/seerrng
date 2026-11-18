@@ -446,6 +446,19 @@ for (const [provider, serverType] of [
       page.getByRole('heading', { name: 'Indexer Diagnostics' })
     ).toBeVisible();
     expect(initialized).toBe(false);
+    await page.getByRole('link', { name: 'Start Guided Setup' }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Review' })
+      .click();
+    const review = page.locator('section').filter({
+      has: page.getByRole('heading', { name: 'Review Setup' }),
+    });
+    await review.getByText('Review Request Services', { exact: true }).click();
+    await review.getByText('Radarr', { exact: true }).click();
+    await expect(
+      review.getByRole('listitem').filter({ hasText: 'Fixture Radarr' })
+    ).toBeVisible();
     await finish.click();
     await expect(page).toHaveURL(bundled ? '/lumen/' : '/');
     expect(attempts).toBe(1);

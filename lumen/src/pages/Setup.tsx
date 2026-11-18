@@ -119,6 +119,14 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
         error={prowlarr.error}
         retry={prowlarr.reload}
       />
+      <details className="adv">
+        <summary>Review Request Services</summary>
+        {requestServices.map(([provider, label]) => (
+          <SetupEditor key={provider} label={label}>
+            <RequestServiceReview provider={provider} label={label} />
+          </SetupEditor>
+        ))}
+      </details>
       <p className="note">
         Request services, download clients, and Prowlarr are optional.
       </p>
@@ -137,6 +145,44 @@ const requestServices = [
   ['sportarr', 'Sportarr'],
   ['whisparr', 'Whisparr'],
 ] as const;
+
+function RequestServiceReview({
+  provider,
+  label,
+}: {
+  provider: (typeof requestServices)[number][0];
+  label: string;
+}) {
+  const services = useApi<{ id: number; name: string }[]>(
+    `/settings/${provider}`
+  );
+  if (services.error) {
+    return (
+      <ServiceNote
+        what={`saved ${label} settings`}
+        error={services.error}
+        retry={services.reload}
+      />
+    );
+  }
+  if (!services.data)
+    return (
+      <p className="note" role="status">
+        Checking saved services…
+      </p>
+    );
+  if (!services.data.length)
+    return <p className="note">No services configured.</p>;
+  return (
+    <ul className="setlist">
+      {services.data.map(({ id, name }) => (
+        <li key={id} className="set">
+          {name}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 function SetupEditor({
   label,
