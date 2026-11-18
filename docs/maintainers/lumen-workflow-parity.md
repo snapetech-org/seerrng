@@ -1562,6 +1562,12 @@ Sixteen browser cases passed per deployment with API fixtures, including
 assertions for all three match labels and the missing-ID explanation.
 Matched visual and live provider checks remain open.
 
+Unmatched AniList titles display their cover using the shared poster and
+the AniList image proxy URL. Four standalone cases and 20 bundled cases
+passed. The browser fixture verified the image request path, decoded
+image, and franchise navigation. Live image proxy and matched visual
+verification remain open.
+
 ### TV request access review
 
 TV Request Settings lets user managers approve or decline pending
