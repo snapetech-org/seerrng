@@ -122,7 +122,7 @@ const APPRISE_NOTIFICATION_SCHEMA = {
   booleanOptions: ['authMethodUsernamePassword'],
 } as const satisfies UrlNotificationSchema;
 const NTFY_NOTIFICATION_SCHEMA = {
-  stringOptions: ['topic', 'locale', 'username', 'password', 'token'],
+  stringOptions: ['topic', 'tags', 'locale', 'username', 'password', 'token'],
   booleanOptions: ['authMethodUsernamePassword', 'authMethodToken'],
   priority: true,
 } as const satisfies UrlNotificationSchema;

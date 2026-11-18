@@ -82,3 +82,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the shared form rows and credential actions against the Email baseline from `7f6752ecc` on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build, eight instance browser checks, and four managed notification browser checks passed. The browser used mocked settings and sound responses. No live messages were sent.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-messaging-20261118/`.
+
+## Gotify, ntfy, and Apprise follow-up — 2026-11-18
+
+`/admin/notifications` adds Gotify, ntfy, and Apprise configuration, event selection, authentication options, and draft tests. The existing ntfy settings API now retains tags during save and test.
+
+Compared the new controls with the Telegram form at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected rows, credential masking, input and action wrapping, and horizontal overflow. The production build, twelve instance notification browser cases, and three native API cases passed. Browser deliveries used mocks.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-agents-20261118/`.

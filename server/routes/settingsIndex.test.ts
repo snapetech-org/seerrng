@@ -2569,6 +2569,7 @@ describe('Settings route input validation', () => {
         options: {
           url: 'https://example.com/ntfy',
           topic: 'topic',
+          tags: 'bell,house',
           locale: 'en',
           unexpected: { retained: false },
         },
@@ -2592,6 +2593,7 @@ describe('Settings route input validation', () => {
     assert.deepStrictEqual(getSettings().notifications.agents.ntfy.options, {
       url: 'https://example.com/ntfy',
       topic: 'topic',
+      tags: 'bell,house',
       locale: 'en',
     });
   });

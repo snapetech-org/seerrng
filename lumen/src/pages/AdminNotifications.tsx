@@ -9,7 +9,15 @@ import { useApi } from '../hooks';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
-type Channel = 'email' | 'webpush' | 'telegram' | 'pushbullet' | 'pushover';
+type Channel =
+  | 'email'
+  | 'webpush'
+  | 'telegram'
+  | 'pushbullet'
+  | 'pushover'
+  | 'gotify'
+  | 'ntfy'
+  | 'apprise';
 type Configuration = {
   enabled: boolean;
   embedPoster: boolean;
@@ -22,6 +30,9 @@ const titles = {
   telegram: 'Telegram',
   pushbullet: 'Pushbullet',
   pushover: 'Pushover',
+  gotify: 'Gotify',
+  ntfy: 'ntfy',
+  apprise: 'Apprise',
 };
 const redacted = '[REDACTED]';
 const emailFields = [
@@ -40,6 +51,22 @@ const emailSwitches = [
   ['allowSelfSigned', 'Allow Self-Signed SMTP Certificates'],
 ] as const;
 
+const urlField = { key: 'url', label: 'Server URL', kind: 'url' } as const;
+const localeField = {
+  key: 'locale',
+  label: 'Notification Locale',
+  kind: 'text',
+} as const;
+const userFields = [
+  { key: 'username', label: 'Username', kind: 'text' },
+  { key: 'password', label: 'Password', kind: 'password' },
+] as const;
+const tokenField = {
+  key: 'token',
+  label: 'Access Token',
+  kind: 'password',
+} as const;
+
 const fields = {
   email: emailFields,
   webpush: [],
@@ -57,11 +84,32 @@ const fields = {
     { key: 'accessToken', label: 'Application Token', kind: 'password' },
     { key: 'userToken', label: 'User Key', kind: 'password' },
   ],
+  gotify: [
+    urlField,
+    tokenField,
+    { key: 'priority', label: 'Priority', kind: 'number' },
+    localeField,
+  ],
+  ntfy: [
+    urlField,
+    { key: 'topic', label: 'Topic', kind: 'text' },
+    { key: 'tags', label: 'Tags', kind: 'text' },
+    localeField,
+  ],
+  apprise: [
+    urlField,
+    { key: 'configKey', label: 'Configuration Key', kind: 'text' },
+    { key: 'tag', label: 'Tag', kind: 'text' },
+    localeField,
+  ],
 } as const;
 const required = {
   telegram: ['botAPI', 'chatId'],
   pushbullet: ['accessToken'],
   pushover: ['accessToken', 'userToken'],
+  gotify: ['url', 'token'],
+  ntfy: ['url', 'topic'],
+  apprise: ['url', 'configKey'],
 } as const;
 
 function AgentForm({
@@ -87,8 +135,31 @@ function AgentForm({
       ? '/settings/notifications/pushover/sounds'
       : null
   );
+  const supportsAuth = channel === 'ntfy' || channel === 'apprise';
+  const authMode = options.authMethodUsernamePassword
+    ? 'password'
+    : options.authMethodToken
+      ? 'token'
+      : 'none';
+  const authValid =
+    !supportsAuth ||
+    authMode === 'none' ||
+    (authMode === 'token'
+      ? Boolean(options.token)
+      : Boolean(options.username && options.password));
+  const priorityValid =
+    channel !== 'gotify' ||
+    (Number.isInteger(options.priority) &&
+      Number(options.priority) >= 0 &&
+      Number(options.priority) <= 1000);
+  const appriseKeyValid =
+    channel !== 'apprise' ||
+    /^[A-Za-z0-9_-]{1,64}$/.test(String(options.configKey ?? ''));
   const valid = eventChannel
-    ? required[channel].every((key) => String(options[key] ?? '').trim())
+    ? authValid &&
+      priorityValid &&
+      appriseKeyValid &&
+      required[channel].every((key) => String(options[key] ?? '').trim())
     : channel === 'webpush' ||
       (typeof options.emailFrom === 'string' &&
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(options.emailFrom) &&
@@ -196,7 +267,11 @@ function AgentForm({
             />
           </label>
         ))}
-        {fields[channel].map(({ key, label, kind }) => {
+        {[
+          ...fields[channel],
+          ...(supportsAuth && authMode === 'password' ? userFields : []),
+          ...(channel === 'ntfy' && authMode === 'token' ? [tokenField] : []),
+        ].map(({ key, label, kind }) => {
           const id = `notification-${channel}-${key}`;
           const value = options[key];
           const secret =
@@ -297,6 +372,49 @@ function AgentForm({
               </label>
             ))}
           </>
+        )}
+        {supportsAuth && (
+          <label className="set cfg-row">
+            <span>Authentication</span>
+            <select
+              className="cfg-select"
+              disabled={busy}
+              value={authMode}
+              onChange={(event) =>
+                setOptions({
+                  authMethodUsernamePassword: event.target.value === 'password',
+                  ...(channel === 'ntfy'
+                    ? { authMethodToken: event.target.value === 'token' }
+                    : {}),
+                })
+              }
+            >
+              <option value="none">None</option>
+              <option value="password">Username and Password</option>
+              {channel === 'ntfy' && (
+                <option value="token">Access Token</option>
+              )}
+            </select>
+          </label>
+        )}
+        {channel === 'ntfy' && (
+          <label className="set cfg-row">
+            <span>Priority</span>
+            <select
+              className="cfg-select"
+              value={Number(options.priority || 3)}
+              disabled={busy}
+              onChange={(event) =>
+                setOptions({ priority: Number(event.target.value) })
+              }
+            >
+              <option value={1}>Minimum</option>
+              <option value={2}>Low</option>
+              <option value={3}>Default</option>
+              <option value={4}>High</option>
+              <option value={5}>Urgent</option>
+            </select>
+          </label>
         )}
         {channel === 'telegram' && (
           <label className="set cfg-row">
@@ -445,6 +563,9 @@ export default function AdminNotifications() {
       <AgentSection channel="telegram" />
       <AgentSection channel="pushbullet" />
       <AgentSection channel="pushover" />
+      <AgentSection channel="gotify" />
+      <AgentSection channel="ntfy" />
+      <AgentSection channel="apprise" />
       <AgentSection channel="webpush" />
     </>
   );
