@@ -106,7 +106,7 @@ export function isQuotaDenial(error: unknown) {
   );
 }
 
-function streamingOverrideMessage(error: unknown) {
+export function streamingOverrideMessage(error: unknown) {
   if (
     error instanceof ApiError &&
     error.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&

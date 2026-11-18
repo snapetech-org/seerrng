@@ -7,7 +7,7 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
-async function fixtures(page: Page) {
+async function fixtures(page: Page, permissions = 2) {
   const upcoming = Array.from({ length: 6 }, (_, i) => ({
     id: 900 + i,
     title: `Victorian Psychosis Stories ${i + 1}`,
@@ -23,7 +23,7 @@ async function fixtures(page: Page) {
     );
     if (path === '/auth/me')
       return route.fulfill({
-        json: { id: 1, displayName: 'test', permissions: 2 },
+        json: { id: 1, displayName: 'test', permissions },
       });
     if (path === '/settings/public')
       return route.fulfill({
@@ -108,5 +108,51 @@ test('Coming Soon loads subsequent pages for the selected media only', async ({
   expect(pages).toEqual([
     '/api/v1/discover/movies/upcoming:1',
     '/api/v1/discover/movies/upcoming:2',
+  ]);
+});
+
+test('Coming Soon requests can confirm a permitted streaming override', async ({
+  page,
+}) => {
+  await fixtures(page, 32);
+  const submissions: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    const body = route.request().postDataJSON();
+    submissions.push(body);
+    if (body.bypassStreamingRequestPolicy === true)
+      return route.fulfill({ status: 201, json: { id: 42 } });
+    return route.fulfill({
+      status: 403,
+      json: {
+        code: 'STREAMING_REQUEST_POLICY_REJECTED',
+        allowOverride: true,
+        message: 'Available on your streaming service.',
+      },
+    });
+  });
+  await page.goto('/soon?media=movie');
+  const title = 'Victorian Psychosis Stories 1';
+  const item = page.locator('.si').filter({ hasText: title });
+  const trigger = item.getByRole('button', { name: 'Request', exact: true });
+  const sheet = page.getByRole('dialog', { name: `Request ${title}` });
+  const original = { mediaType: 'movie', mediaId: 900 };
+
+  await trigger.click();
+  await expect(sheet.getByRole('alert')).toHaveText(
+    'Available on your streaming service.'
+  );
+  await sheet.getByRole('button', { name: 'Cancel' }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(trigger).toBeVisible();
+  expect(submissions).toEqual([original]);
+
+  await trigger.click();
+  await sheet.getByRole('button', { name: 'Request Anyway' }).click();
+  await expect(item.getByText('Requested', { exact: true })).toBeVisible();
+  expect(submissions).toEqual([
+    original,
+    original,
+    { ...original, bypassStreamingRequestPolicy: true },
   ]);
 });

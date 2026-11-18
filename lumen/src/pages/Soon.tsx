@@ -8,6 +8,7 @@ import { ServiceNote } from '../components/extra';
 import {
   isQuotaDenial,
   RequestSheet,
+  streamingOverrideMessage,
   useAsksRequestOptions,
   useOffers4k,
 } from '../components/requestSheet';
@@ -71,6 +72,7 @@ export default function Soon() {
   const [choice, setChoice] = useState<{
     title: TitleResult;
     quotaDenied?: boolean;
+    streamingDenial?: string;
   }>();
   const choosing = choice?.title;
   const items = [
@@ -112,7 +114,10 @@ export default function Soon() {
       }
     } catch (e) {
       unask();
-      if (user && !canManageRequests(user.permissions) && isQuotaDenial(e))
+      const streamingDenial = streamingOverrideMessage(e);
+      if (streamingDenial !== undefined)
+        setChoice((current) => current ?? { title: it, streamingDenial });
+      else if (user && !canManageRequests(user.permissions) && isQuotaDenial(e))
         setChoice((current) => current ?? { title: it, quotaDenied: true });
       else toast(friendlyError(e, 'Request failed'));
     }
@@ -172,6 +177,7 @@ export default function Soon() {
         <RequestSheet
           it={choosing}
           quotaDenied={choice?.quotaDenied}
+          streamingDenial={choice?.streamingDenial}
           onClose={() => setChoice(undefined)}
           onDone={(is4k, series, quotaException) => {
             setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
