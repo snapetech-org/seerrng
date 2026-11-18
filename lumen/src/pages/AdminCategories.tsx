@@ -17,26 +17,28 @@ const path = '/settings/main';
 
 interface CategorySettings {
   enabledMediaCategories?: Record<string, boolean>;
+  defaultEnabledMediaCategories?: Record<string, boolean>;
   ageGate?: AgeGateSettings;
 }
 
-export default function AdminCategories() {
-  const { data, error, reload } = useApi<CategorySettings>(path, {
-    keepDuringRefresh: true,
-  });
-  const [confirmed, setConfirmed] = useState<CategorySettings>();
+function CategoryForm({
+  initial,
+  field,
+}: {
+  initial: Record<string, boolean>;
+  field: 'enabledMediaCategories' | 'defaultEnabledMediaCategories';
+}) {
+  const defaults = field === 'defaultEnabledMediaCategories';
+  const [categories, setCategories] = useState(initial);
   const [draft, setDraft] = useState<Record<string, boolean>>({});
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
-  const categories = data
-    ? (confirmed ?? data).enabledMediaCategories
-    : undefined;
   const changes = Object.entries(draft);
 
   async function save() {
-    if (!categories || !changes.length || pending.current) return;
+    if (!changes.length || pending.current) return;
     const generation = sessionGeneration();
     pending.current = true;
     setBusy(true);
@@ -45,22 +47,21 @@ export default function AdminCategories() {
     try {
       const result = await api<CategorySettings>(path, {
         method: 'POST',
-        body: JSON.stringify({ enabledMediaCategories: draft }),
+        body: JSON.stringify({ [field]: draft }),
       });
       if (generation !== sessionGeneration()) return;
       invalidatePublicSettings();
       forget('/settings/public');
-      if (
-        changes.some(
-          ([key, value]) => result.enabledMediaCategories?.[key] !== value
-        )
-      ) {
+      const saved = result[field];
+      if (!saved || changes.some(([key, value]) => saved[key] !== value)) {
         setFailure('Could not confirm the saved categories.');
         return;
       }
-      setConfirmed(result);
+      setCategories(saved);
       setDraft({});
-      setNotice('Category settings saved.');
+      setNotice(
+        defaults ? 'Default categories saved.' : 'Category settings saved.'
+      );
     } catch (error) {
       if (generation === sessionGeneration()) {
         setFailure(friendlyError(error, 'Could not save category settings.'));
@@ -70,6 +71,59 @@ export default function AdminCategories() {
       setBusy(false);
     }
   }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <MediaCategorySwitches
+        values={{ ...categories, ...draft }}
+        disabled={busy}
+        disableUnavailable
+        onChange={(key, enabled) => {
+          setNotice('');
+          setFailure('');
+          setDraft((current) => {
+            const next = { ...current };
+            if (enabled === categories[key]) delete next[key];
+            else next[key] = enabled;
+            return next;
+          });
+        }}
+      />
+      {!defaults && (draft.adult ?? categories.adult) && (
+        <p className="note">
+          Adult discovery requires a configured Whisparr v3 service and account
+          permission. Restricted accounts cannot access it.
+        </p>
+      )}
+      {failure && (
+        <p className="note" role="alert">
+          {failure}
+        </p>
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      <div className="toolbar">
+        <button
+          className="btn btn-primary btn-sm"
+          disabled={busy || !changes.length}
+        >
+          {defaults ? 'Save Default Categories' : 'Save Categories'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+export default function AdminCategories() {
+  const { data, error, reload } = useApi<CategorySettings>(path);
 
   return (
     <>
@@ -92,58 +146,27 @@ export default function AdminCategories() {
             Loading media categories…
           </p>
         )}
-        {data && !categories && (
-          <p className="note">Category settings are unavailable.</p>
-        )}
-        {categories && (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              void save();
-            }}
-          >
-            <MediaCategorySwitches
-              values={{ ...categories, ...draft }}
-              disabled={busy}
-              disableUnavailable
-              onChange={(key, enabled) => {
-                setNotice('');
-                setFailure('');
-                setDraft((current) => {
-                  const next = { ...current };
-                  if (enabled === categories[key]) delete next[key];
-                  else next[key] = enabled;
-                  return next;
-                });
-              }}
-            />
-            {(draft.adult ?? categories.adult) && (
-              <p className="note">
-                Adult discovery requires a configured Whisparr v3 service and
-                account permission. Restricted accounts cannot access it.
-              </p>
-            )}
-            {failure && (
-              <p className="note" role="alert">
-                {failure}
-              </p>
-            )}
-            {notice && (
-              <p className="note" role="status">
-                {notice}
-              </p>
-            )}
-            <div className="toolbar">
-              <button
-                className="btn btn-primary btn-sm"
-                disabled={busy || !changes.length}
-              >
-                Save Categories
-              </button>
-            </div>
-          </form>
+        {data?.enabledMediaCategories ? (
+          <CategoryForm
+            initial={data.enabledMediaCategories}
+            field="enabledMediaCategories"
+          />
+        ) : (
+          data && <p className="note">Category settings are unavailable.</p>
         )}
       </Section>
+      {data?.defaultEnabledMediaCategories && (
+        <Section title="Default User Categories">
+          <p className="note">
+            These choices apply to accounts that inherit the defaults.
+            Instance-wide category restrictions still apply.
+          </p>
+          <CategoryForm
+            initial={data.defaultEnabledMediaCategories}
+            field="defaultEnabledMediaCategories"
+          />
+        </Section>
+      )}
       {data?.ageGate && <InstanceAgeGate initial={data.ageGate} />}
     </>
   );

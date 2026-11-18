@@ -4328,6 +4328,54 @@ test('Media Categories saves only changed instance switches and excludes non-adm
   expect(reads).toBe(adminReads);
 });
 
+test('Default user categories save independently of instance availability', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const response = {
+    enabledMediaCategories: { movie: true, tv: true },
+    defaultEnabledMediaCategories: { movie: true, tv: true },
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(
+        response.defaultEnabledMediaCategories,
+        body.defaultEnabledMediaCategories
+      );
+    }
+    return route.fulfill({ json: response });
+  });
+  await page.goto('/admin/categories');
+  const available = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Available Categories' }),
+  });
+  const defaults = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Default User Categories' }),
+  });
+  await available.getByRole('checkbox', { name: 'Series' }).uncheck();
+  await defaults
+    .getByRole('checkbox', { name: 'Movies', exact: true })
+    .uncheck();
+  await defaults
+    .getByRole('button', { name: 'Save Default Categories' })
+    .click();
+  await expect(defaults.getByText('Default categories saved.')).toBeVisible();
+  expect(writes).toEqual([{ defaultEnabledMediaCategories: { movie: false } }]);
+  await expect(
+    available.getByRole('button', { name: 'Save Categories' })
+  ).toBeEnabled();
+  await page.reload();
+  await expect(
+    defaults.getByRole('checkbox', { name: 'Movies', exact: true })
+  ).not.toBeChecked();
+  await expect(
+    available.getByRole('checkbox', { name: 'Series' })
+  ).toBeChecked();
+});
+
 test('Instance Age Gate saves changed settings without submitting category drafts', async ({
   page,
 }) => {
