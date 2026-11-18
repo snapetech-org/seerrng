@@ -2676,3 +2676,12 @@ sending tuning feedback, and confirming creation on desktop, iPhone 13,
 Pixel 7, and iPad Pro 11. The browser checks also verify resolving a book and opening the matched
 audiobook detail in the selected format. Live Hardcover, artwork parity,
 and matched visual acceptance remain unverified.
+
+Household profiles now show the member name and independently gated
+request and watchlist previews. Managed-user directory entries link to
+the profile, and native member bookmarks resolve under bundled frontend
+lock and in the companion. The production build, two Express tests, ten
+companion tests, and eight browser checks passed. The browser tests
+verify preview links and that an unprivileged viewer makes neither
+private data request. Quota and playback activity panels, live providers,
+and matched visual acceptance remain open.

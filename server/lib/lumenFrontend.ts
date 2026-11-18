@@ -381,6 +381,9 @@ function workflowDeepLink(
   const [, userId, userWorkflow] =
     /^\/users\/([1-9]\d{0,9})\/(watchlist|requests)$/.exec(nativePath) ?? [];
   const userDestination = userId && Number(userId) <= 1_000_000_000;
+  const profile = /^\/users\/([1-9]\d{0,9})$/.exec(nativePath)?.[1];
+  if (profile && Number(profile) <= 1_000_000_000)
+    return `/lumen/household/${profile}`;
   if (userDestination && userWorkflow === 'requests') {
     const query = new URLSearchParams({ requestedBy: userId });
     for (const [source, target] of [

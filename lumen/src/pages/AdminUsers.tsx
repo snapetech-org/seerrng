@@ -554,7 +554,9 @@ export default function AdminUsers() {
             .map((user) => (
               <li className="set" key={user.id}>
                 <div>
-                  <b>{user.displayName}</b>
+                  <Link className="go" to={`/household/${user.id}`}>
+                    {user.displayName}
+                  </Link>
                   {user.email && user.email !== user.displayName && (
                     <small>{user.email}</small>
                   )}

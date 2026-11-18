@@ -30,6 +30,7 @@ import Following from './pages/Following';
 import Franchise from './pages/Franchise';
 import GameLibrary from './pages/GameLibrary';
 import { GameDetail, Games, SoftwareBookmark } from './pages/Games';
+import HouseholdProfile from './pages/HouseholdProfile';
 import Library from './pages/Library';
 import Login from './pages/Login';
 import LumenSettings from './pages/LumenSettings';
@@ -229,6 +230,7 @@ function App() {
           <Route path="/adult" element={<Adult />} />
           <Route path="/adult/:id" element={<SceneDetail />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/household/:id" element={<HouseholdProfile />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/requests/status" element={<Requests />} />
           <Route path="/following" element={<Following />} />

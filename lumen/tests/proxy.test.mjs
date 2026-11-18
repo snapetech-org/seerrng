@@ -138,6 +138,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       'https://seerr.example.test/?interface=classic'
     );
     for (const [path, target] of [
+      ['/users/19/', '/household/19'],
       ['/profile/', '/me'],
       ['/profile/settings/', '/me/account'],
       ['/profile/settings/password/', '/me/account#password'],

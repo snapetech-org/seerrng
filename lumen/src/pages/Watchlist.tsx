@@ -31,7 +31,7 @@ interface WatchlistItem {
   externalId?: string;
 }
 
-interface WatchlistData {
+export interface WatchlistData {
   results: WatchlistItem[];
   totalPages: number;
   filtersSupported: boolean;
@@ -41,7 +41,7 @@ export function canViewUserWatchlist(permissions: number) {
   return (permissions & (2 | 16 | 134217728)) !== 0;
 }
 
-function itemId(item: WatchlistItem) {
+export function itemId(item: WatchlistItem) {
   if (item.mediaType === 'movie' || item.mediaType === 'tv') {
     return Number.isSafeInteger(item.tmdbId) && (item.tmdbId ?? 0) > 0
       ? String(item.tmdbId)

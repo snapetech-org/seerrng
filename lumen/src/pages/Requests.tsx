@@ -651,7 +651,7 @@ let limited = false;
 // A slow lookup (a title SeerrNG has to fetch, a book while the metadata service is busy) shouldn't
 // hold back the whole list: `partial` gets the rows at once, with names already known or a plain
 // label, and again as lookups finish. Other categories join as their names arrive.
-async function describeAll(
+export async function describeAll(
   list: RequestItem[],
   partial?: (rows: Row[]) => void
 ): Promise<Row[]> {
