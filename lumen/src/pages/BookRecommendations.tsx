@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, bookArt } from '../api';
 import { Cover, Section } from '../components/cards';
@@ -54,6 +54,8 @@ export default function BookRecommendations() {
   const [selected, select] = useState<Feed>();
   const [books, setBooks] = useState<Books>();
   const [busy, setBusy] = useState(false);
+  const loadingFeed = useRef(false);
+  const [feedError, setFeedError] = useState<string>();
   const [flags, setFlags] = useState({
     standalones: false,
     firstInSeries: false,
@@ -77,12 +79,19 @@ export default function BookRecommendations() {
       .filter(Boolean);
 
   async function load(feed: Feed, next = feedback) {
-    if (selected?.id !== feed.id) setBooks(undefined);
+    if (busy || loadingFeed.current) return;
+    loadingFeed.current = true;
+    setFeedError(undefined);
+    if (selected?.id !== feed.id) {
+      setBooks(undefined);
+      setFeedback({});
+    }
     select(feed);
     setBusy(true);
     try {
-      setBooks(
-        await api<Books>(`/book-recommendations/${feed.id}/books`, {
+      const result = await api<Books>(
+        `/book-recommendations/${feed.id}/books`,
+        {
           method: 'POST',
           body: JSON.stringify({
             tuning: {
@@ -93,11 +102,18 @@ export default function BookRecommendations() {
               lessLike: votes('less', next),
             },
           }),
-        })
+        }
       );
+      if (!result.available) {
+        setFeedError(unavailable(result.code));
+        return;
+      }
+      setBooks(result);
+      setFeedback(next);
     } catch (error) {
-      toast(friendlyError(error, 'Could not load this feed.'));
+      setFeedError(friendlyError(error, 'Could not load this feed.'));
     } finally {
+      loadingFeed.current = false;
       setBusy(false);
     }
   }
@@ -203,7 +219,6 @@ export default function BookRecommendations() {
                     className="btn btn-quiet btn-sm"
                     disabled={busy}
                     onClick={() => {
-                      setFeedback({});
                       void load(feed, {});
                     }}
                     aria-label={`Show Books: ${feed.title}`}
@@ -274,8 +289,10 @@ export default function BookRecommendations() {
                   Apply Filters
                 </button>
               </form>
-              {books && !books.available && (
-                <p className="note">{unavailable(books.code)}</p>
+              {feedError && (
+                <p className="note" role="alert">
+                  {feedError}
+                </p>
               )}
               {books?.available && (
                 <p className="note">
@@ -323,7 +340,6 @@ export default function BookRecommendations() {
                             const next = { ...feedback };
                             if (next[book.id] === value) delete next[book.id];
                             else next[book.id] = value;
-                            setFeedback(next);
                             void load(selected, next);
                           }}
                         >

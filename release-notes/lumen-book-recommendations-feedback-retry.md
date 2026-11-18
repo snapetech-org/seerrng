@@ -1,0 +1,1 @@
+- Lumen keeps the last successful recommendation results and feedback selections if a refresh fails, and displays the error beside the feed.

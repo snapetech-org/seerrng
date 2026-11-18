@@ -5409,6 +5409,48 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('book recommendations preserve results when a feedback refresh fails', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book-recommendations', (route) =>
+    route.fulfill({
+      json: {
+        available: true,
+        results: [
+          { id: 11, title: 'Fixture Feed', source: 'featured', likes: 1 },
+        ],
+      },
+    })
+  );
+  let feedbackReads = 0;
+  await page.route('**/api/v1/book-recommendations/11/books', (route) => {
+    const { tuning } = route.request().postDataJSON();
+    if (tuning.moreLike.length && ++feedbackReads === 1)
+      return route.fulfill({ json: { available: false, code: 'rejected' } });
+    return route.fulfill({
+      json: {
+        available: true,
+        books: [{ id: 44, title: 'Fixture Book' }],
+        total: 1,
+      },
+    });
+  });
+  await page.goto('/books/recommendations');
+  await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
+  const vote = page.getByRole('button', { name: 'More Like This' });
+  await vote.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Hardcover rejected your API token.'
+  );
+  await expect(page.getByText('Fixture Book', { exact: true })).toBeVisible();
+  await expect(vote).toHaveAttribute('aria-pressed', 'false');
+  await vote.click();
+  await expect(vote).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(feedbackReads).toBe(2);
+});
+
 test('standalone user request bookmarks keep the user from the path', async ({
   page,
 }) => {
