@@ -1,11 +1,17 @@
 import { expect, test } from '@playwright/test';
 
+const appHref = (path: string, baseURL: string | undefined) => {
+  const url = new URL(path, baseURL);
+  return url.pathname + url.search;
+};
+
 for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
   const canManageRequests = [2, 24, 16].includes(permissions);
   const canReadRequests = canManageRequests || permissions === 16384;
   const canReadWatchlist = canManageRequests || permissions === 134217728;
   test(`household profile permissions ${permissions} gate each preview`, async ({
     page,
+    baseURL,
   }) => {
     const fetched: string[] = [];
     const avatar = 'https://plex.tv/users/example/avatar';
@@ -121,7 +127,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
           return route.fulfill({ json: {} });
       }
     });
-    await page.goto('/household/19');
+    await page.goto('./household/19');
     await expect(
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
@@ -141,13 +147,16 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
     );
     const edit = page.getByRole('link', { name: 'Edit Settings' });
     if (permissions === 2 || permissions === 24)
-      await expect(edit).toHaveAttribute('href', '/admin/users/19');
+      await expect(edit).toHaveAttribute(
+        'href',
+        appHref('admin/users/19', baseURL)
+      );
     else await expect(edit).toHaveCount(0);
     if (permissions === 2) {
       await expect(page.getByText('Total plays: 3')).toBeVisible();
       await expect(
         page.getByRole('link', { name: 'Watched Series' })
-      ).toHaveAttribute('href', '/tv/25');
+      ).toHaveAttribute('href', appHref('tv/25', baseURL));
       await expect(page.locator('.rail img')).toHaveAttribute(
         'src',
         '/imageproxy/tmdb/t/p/w342/watched.jpg'
@@ -172,7 +181,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
     if (canReadWatchlist) {
       await expect(
         page.getByRole('link', { name: 'Saved Film' })
-      ).toHaveAttribute('href', '/movie/23');
+      ).toHaveAttribute('href', appHref('movie/23', baseURL));
     } else {
       await expect(
         page.getByRole('link', { name: 'View Watchlist' })
@@ -186,11 +195,11 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
       await expect(page.getByText('Over Quota', { exact: true })).toBeVisible();
       await expect(page.getByText('Movie · 4K', { exact: true })).toBeVisible();
       await page.getByRole('link', { name: 'Requested Film' }).click();
-      await expect(page).toHaveURL('/requests?requestedBy=19&requestId=3');
+      await expect(page).toHaveURL('./requests?requestedBy=19&requestId=3');
       const history = page.getByRole('dialog', { name: 'Request history' });
       await expect(
         history.getByRole('link', { name: 'Open Title' })
-      ).toHaveAttribute('href', '/movie/24?quality=4k');
+      ).toHaveAttribute('href', appHref('movie/24?quality=4k', baseURL));
       await expect(
         history.getByText('Movie · 4K', { exact: true })
       ).toBeVisible();
@@ -198,7 +207,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
         history.getByText('Current status: Requested', { exact: true })
       ).toBeVisible();
       await history.getByRole('button', { name: 'Close', exact: true }).click();
-      await expect(page).toHaveURL('/requests?requestedBy=19');
+      await expect(page).toHaveURL('./requests?requestedBy=19');
     } else {
       await expect(
         page.getByRole('link', { name: 'View Requests' })
@@ -210,6 +219,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
 
 test('incomplete household preview responses recover independently', async ({
   page,
+  baseURL,
 }) => {
   let attempts = 0;
   let watchlistAttempts = 0;
@@ -245,18 +255,18 @@ test('incomplete household preview responses recover independently', async ({
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto('/me');
+  await page.goto('./me');
   await page.getByRole('link', { name: 'Open My Profile' }).click();
-  await expect(page).toHaveURL('/household/me');
+  await expect(page).toHaveURL('./household/me');
   await expect(
     page.getByRole('heading', { name: 'Household Member' })
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Edit Settings' })
-  ).toHaveAttribute('href', '/me/account');
+  ).toHaveAttribute('href', appHref('me/account', baseURL));
   await expect(
     page.getByRole('link', { name: 'View Requests' })
-  ).toHaveAttribute('href', '/requests?tab=all');
+  ).toHaveAttribute('href', appHref('requests?tab=all', baseURL));
   const error = page.getByRole('alert').filter({
     hasText: 'Invalid playback activity response.',
   });
@@ -329,7 +339,7 @@ test('a local account can retry a picture upload without losing its current avat
         return route.fulfill({ json: { results: [] } });
     }
   });
-  await page.goto('/household/me');
+  await page.goto('./household/me');
   const button = page.getByRole('button', { name: 'Change Profile Picture' });
   const picture = page.locator('.ph .avatar[aria-hidden="true"] img');
   async function selectPicture() {

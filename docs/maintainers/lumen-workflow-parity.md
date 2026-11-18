@@ -2677,9 +2677,11 @@ permissions separately from bookmark routing.
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
 | `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
 
-The household and recommendation browser fixtures cover API-driven behavior
-in the standalone build. Live authorization, provider behavior, and matched
-visual verification remain open for these targeted checks.
+The household and recommendation browser suites passed 36 cases per
+deployment across desktop, iPhone, Android, and tablet. The bundled run
+served the production build through the Express mount at `/lumen/`. Both
+suites used API fixtures. Live authorization, provider behavior, and
+matched visual verification remain open for these targeted checks.
 
 Lumen Movies and Series now link to their genre directories. Legacy
 genre-directory bookmarks route to Lumen under bundled frontend lock and

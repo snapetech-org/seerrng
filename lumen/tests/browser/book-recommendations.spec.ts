@@ -73,7 +73,7 @@ test('recommendation feeds apply feedback and create a personalized feed', async
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/books/recommendations');
+  await page.goto('./books/recommendations');
   await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
   await expect(page.getByText('Fixture Book')).toBeVisible();
   await expect(page.locator('.poster.book img')).toHaveAttribute(
@@ -96,7 +96,7 @@ test('recommendation feeds apply feedback and create a personalized feed', async
     .getByRole('combobox', { name: 'Format', exact: true })
     .selectOption('audiobook');
   await page.getByRole('button', { name: 'Open Book' }).click();
-  await expect(page).toHaveURL('/book/OL42W?f=audio');
+  await expect(page).toHaveURL('./book/OL42W?f=audio');
   await expect(
     page.getByRole('heading', { name: 'Matched Fixture Audiobook' })
   ).toBeVisible();
