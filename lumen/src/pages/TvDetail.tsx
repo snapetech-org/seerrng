@@ -631,6 +631,9 @@ export default function TvDetail() {
         >
           <div className="toolbar">
             <AssociationLink mediaType="tv" id={id} />
+            <Link className="chip" to={`/franchise/tv/${id}`}>
+              Franchise
+            </Link>
           </div>
           {!!like?.results.length && (
             <Rail>

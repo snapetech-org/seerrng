@@ -3201,3 +3201,65 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   await expect(page).toHaveURL(/\/search\?q=A\+%26\+B&f=movie$/);
   await expect(page.getByRole('link', { name: 'Bookmark Film' })).toBeVisible();
 });
+
+test('Franchise opens related titles and confirms a server-authorized relationship', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let verified = false;
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        title: undefined,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [],
+      },
+    })
+  );
+  await page.route('**/api/v1/franchise/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        anchor: { title: 'Fixture Series' },
+        canCurate: true,
+        notes: [],
+        items: [
+          {
+            group: 'sequel',
+            title: 'Fixture Sequel',
+            mediaType: 'tv',
+            href: '/tv/203',
+            confidence: 'high',
+            evidence: 'Catalogue relation',
+            verified,
+            relationId: 9,
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/franchise/relations/9', (route) => {
+    expect(route.request().method()).toBe('PATCH');
+    expect(route.request().postDataJSON()).toEqual({ verified: true });
+    verified = true;
+    return route.fulfill({ json: {} });
+  });
+  await page.route('**/api/v1/follow', (route) =>
+    route.fulfill({ json: { results: [] } })
+  );
+  await page.goto('/tv/202');
+  await page.getByRole('link', { name: 'Franchise', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Franchise for Fixture Series' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Sequel' })
+  ).toHaveAttribute('href', '/tv/203');
+  await page.getByRole('button', { name: 'Confirm', exact: true }).click();
+  await expect(page.getByText('tv · Verified')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Confirm', exact: true })
+  ).toHaveCount(0);
+});

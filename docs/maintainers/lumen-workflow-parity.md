@@ -1416,3 +1416,16 @@ parameters. Eight standalone checks passed across four viewport presets.
 Bundled frontend lock now retains the graph view, relationship filter,
 and audiobook format on Association bookmarks. The server integration
 test covers those supported values and ambiguous or unsupported inputs.
+
+### Franchise explorer
+
+Series details link to the Franchise explorer. It groups source material,
+adaptations, sequels and other relationships and displays the server's
+evidence and confidence. Viewers can follow the franchise. The server
+controls access to Confirm and Hide. Native TV and anime franchise links
+open in both Lumen deployments.
+
+Four standalone browser checks verified the series entry point, linked
+identity and curator confirmation. Bundled redirect and companion route
+inventory checks passed. Live AniList results, creation of curated
+relationships, and matched visual comparisons remain open.

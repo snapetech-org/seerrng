@@ -108,6 +108,8 @@ function discoveryDeepLink(req: Request): string | undefined {
 }
 
 function detailDeepLink(req: Request): string | undefined {
+  const franchise = /^\/franchise\/(tv|anime)\/(\d{1,10})\/?$/.exec(req.path);
+  if (franchise) return `/lumen/franchise/${franchise[1]}/${franchise[2]}`;
   const association =
     /^\/associations\/(movie|tv|album|artist|book)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(
       req.path

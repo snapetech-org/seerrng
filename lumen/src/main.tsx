@@ -24,6 +24,7 @@ import Calendar from './pages/Calendar';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
+import Franchise from './pages/Franchise';
 import GameLibrary from './pages/GameLibrary';
 import { GameDetail, Games } from './pages/Games';
 import Library from './pages/Library';
@@ -105,6 +106,7 @@ function App() {
             element={<Associations />}
           />
           <Route path="/list/:id" element={<TmdbList />} />
+          <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
           <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
           <Route path="/series" element={<Browse key="tv" kind="tv" />} />
           <Route path="/books" element={<Books key="ebook" format="ebook" />} />
