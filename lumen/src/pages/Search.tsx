@@ -34,8 +34,8 @@ import {
 import {
   normalizeSearchParams,
   scopedVideoSearchPath,
+  searchResultPage,
   videoFilterKeys,
-  videoSearchPage,
 } from '../searchParams';
 import { usePrefs } from '../settings';
 import { PersonCard } from './People';
@@ -63,7 +63,7 @@ export default function Search() {
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [comics, setComics] = useState<ComicWork[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
-  const [videoTotalPages, setVideoTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searching, setSearching] = useState(false);
   // a lookup failed and nothing was found: an error with Retry, not "No matches"
   const [failed, setFailed] = useState<string | null>(null);
@@ -77,9 +77,10 @@ export default function Search() {
   const term0 = (p.get('q') || '').trim();
   const videoPath = scopedVideoSearchPath(p, f, term0);
   const hasVideoFilters = videoPath.startsWith('/discover/');
-  const videoPage = videoSearchPage(p);
+  const resultPage = searchResultPage(p);
   const hasSearch = !!term0 || hasVideoFilters;
   const wantsVideo = hasSearch && (f === 'all' || f === 'movie' || f === 'tv');
+  const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
     hasSearch ? null : '/discover/trending'
@@ -149,7 +150,7 @@ export default function Search() {
       };
       const comicsAsk = wantComics
         ? cachedApi<Paged<ComicWork>>(
-            `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=1`
+            `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=${cataloguePage}`
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
@@ -159,7 +160,7 @@ export default function Search() {
         ...formats.map((fmt) =>
           wantBooks
             ? cachedApi<Paged<BookResult>>(
-                `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=1`
+                `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=${cataloguePage}`
               ).catch((e: unknown) => {
                 catalogueUnavailable ||=
                   e instanceof ApiError && e.status >= 500;
@@ -194,6 +195,7 @@ export default function Search() {
       // The format-neutral metadata endpoint also serves audiobook-only households.
       // Only canonical Open Library works can be retargeted as audiobook cards.
       if (
+        cataloguePage === 1 &&
         format === 'audiobook' &&
         wantBooks &&
         (br || catalogueUnavailable) &&
@@ -207,7 +209,8 @@ export default function Search() {
           .filter((b) => b.mediaType === 'book' && /^OL[1-9]\d*W$/.test(b.id))
           .map((b) => ({ ...b, bookFormat: 'audiobook' }));
       }
-      setVideoTotalPages(Math.min(500, tr?.totalPages ?? 1));
+      const pagedResults = wantsVideo ? tr : f === 'comic' ? cr : br;
+      setTotalPages(Math.min(500, pagedResults?.totalPages ?? 1));
       setTitles(foundTitles);
       setBooks(foundBooks);
       setComics(foundComics);
@@ -229,6 +232,7 @@ export default function Search() {
     term0,
     hasSearch,
     wantsVideo,
+    cataloguePage,
     prefs.showBooks,
     attempt,
     comicsOn,
@@ -241,7 +245,7 @@ export default function Search() {
     else n.set(k, v);
     setP(n, { replace: true });
   };
-  function moveVideoPage(page: number) {
+  function moveResultPage(page: number) {
     const next = new URLSearchParams(p);
     if (page === 1) next.delete('page');
     else next.set('page', String(page));
@@ -532,22 +536,22 @@ export default function Search() {
           </Section>
         )}
       </div>
-      {wantsVideo && (videoPage > 1 || videoTotalPages > 1) && (
-        <nav className="toolbar" aria-label="Video Search Pages">
+      {hasSearch && (resultPage > 1 || totalPages > 1) && (
+        <nav className="toolbar" aria-label="Search Result Pages">
           <button
             className="btn btn-quiet btn-sm"
             type="button"
-            disabled={searching || videoPage <= 1}
-            onClick={() => moveVideoPage(videoPage - 1)}
+            disabled={searching || resultPage <= 1}
+            onClick={() => moveResultPage(resultPage - 1)}
           >
             Previous Page
           </button>
-          <span className="note">Page {videoPage}</span>
+          <span className="note">Page {resultPage}</span>
           <button
             className="btn btn-quiet btn-sm"
             type="button"
-            disabled={searching || !!failed || videoPage >= videoTotalPages}
-            onClick={() => moveVideoPage(videoPage + 1)}
+            disabled={searching || !!failed || resultPage >= totalPages}
+            onClick={() => moveResultPage(resultPage + 1)}
           >
             Next Page
           </button>

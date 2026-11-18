@@ -548,7 +548,6 @@ function workflowDeepLink(
     if (type === 'movie' || type === 'tv' || type === 'comic') {
       query.set('f', type);
       if (type !== 'comic') {
-        const baseSize = query.size;
         for (const key of [
           ...discoveryFilters,
           'availability',
@@ -559,23 +558,17 @@ function workflowDeepLink(
           if (typeof value === 'string' && value.length <= 512)
             query.set(key, value);
         }
-        const page = req.query.page;
-        if (
-          (query.size > baseSize || Boolean(query.get('q'))) &&
-          typeof page === 'string' &&
-          /^[1-9]\d{0,2}$/.test(page)
-        )
-          query.set('page', String(Math.min(Number(page), 500)));
       }
     } else if (type === 'book') {
       query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
-    } else if (
-      query.get('q') &&
-      typeof req.query.page === 'string' &&
-      /^[1-9]\d{0,2}$/.test(req.query.page)
-    ) {
-      query.set('page', String(Math.min(Number(req.query.page), 500)));
     }
+    const page = req.query.page;
+    if (
+      (query.has('q') || query.size > 1) &&
+      typeof page === 'string' &&
+      /^[1-9]\d{0,2}$/.test(page)
+    )
+      query.set('page', String(Math.min(Number(page), 500)));
   }
 
   const suffix = query.toString();

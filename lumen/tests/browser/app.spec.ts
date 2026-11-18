@@ -7004,3 +7004,47 @@ test('regular video search links to later pages and resets on scope change', asy
   ).toBeVisible();
   await expect(page).toHaveURL(/q=Test&f=movie$/);
 });
+
+test('scoped book and comic searches retain their catalogue page in the URL', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book/search?*', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  for (const [scope, endpoint, format] of [
+    ['ebook', 'books', 'ebook'],
+    ['audio', 'books', 'audiobook'],
+    ['comic', 'comics', ''],
+  ]) {
+    const matches = (request: { url: () => string }, number: string) => {
+      const url = new URL(request.url());
+      return (
+        url.pathname === '/api/v1/discover/' + endpoint &&
+        url.searchParams.get('query') === 'Fixture' &&
+        url.searchParams.get('page') === number &&
+        (format
+          ? url.searchParams.get('format') === format
+          : url.searchParams.get('group') === 'works')
+      );
+    };
+    await page.route(
+      (url) => url.pathname === '/api/v1/discover/' + endpoint,
+      (route) => route.fulfill({ json: { ...paged([]), totalPages: 2 } })
+    );
+    const first = page.waitForRequest((request) => matches(request, '1'));
+    await page.goto('/search?q=Fixture&f=' + scope);
+    await first;
+    const second = page.waitForRequest((request) => matches(request, '2'));
+    await page.getByRole('button', { name: 'Next Page' }).click();
+    await second;
+    await expect(page).toHaveURL(/page=2$/);
+    await expect(
+      page.getByRole('button', { name: 'Next Page' })
+    ).toBeDisabled();
+    await page.reload();
+    await expect(
+      page.getByRole('navigation', { name: 'Search Result Pages' })
+    ).toContainText('Page 2');
+  }
+});

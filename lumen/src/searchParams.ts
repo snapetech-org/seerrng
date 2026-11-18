@@ -57,7 +57,7 @@ export const videoFilterKeys = [
   'network',
 ] as const;
 
-export function videoSearchPage(params: URLSearchParams) {
+export function searchResultPage(params: URLSearchParams) {
   const value = params.get('page') ?? '';
   return /^[1-9]\d{0,2}$/.test(value) ? Math.min(Number(value), 500) : 1;
 }
@@ -76,9 +76,9 @@ export function scopedVideoSearchPath(
     }
     if (filters.size) {
       if (term) filters.set('search', term);
-      filters.set('page', String(videoSearchPage(params)));
+      filters.set('page', String(searchResultPage(params)));
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
   }
-  return `/search?query=${encodeURIComponent(term)}&page=${videoSearchPage(params)}`;
+  return `/search?query=${encodeURIComponent(term)}&page=${searchResultPage(params)}`;
 }
