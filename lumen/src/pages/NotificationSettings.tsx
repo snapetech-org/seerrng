@@ -28,6 +28,7 @@ const notificationEvents = [
 interface Preferences {
   emailEnabled?: boolean;
   pgpKey?: string | null;
+  pushbulletAccessToken?: string | null;
   discordEnabled?: boolean;
   discordEnabledTypes?: number;
   discordIds?: string[];
@@ -36,7 +37,12 @@ interface Preferences {
   telegramChatId?: string | null;
   telegramMessageThreadId?: string | null;
   telegramSendSilently?: boolean | null;
-  notificationTypes: { email?: number; telegram?: number; discord?: number };
+  notificationTypes: {
+    email?: number;
+    telegram?: number;
+    discord?: number;
+    pushbullet?: number;
+  };
 }
 
 const defaultMask = 65534; // Native default includes all current bits and the test bit.
@@ -572,6 +578,137 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
   );
 }
 
+function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
+  const [configured, setConfigured] = useState(!!data.pushbulletAccessToken);
+  const [saved, setSaved] = useState(data.notificationTypes?.pushbullet ?? 0);
+  const [mask, setMask] = useState(saved);
+  const [token, setToken] = useState('');
+  const [remove, setRemove] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+  const replacement = token.trim();
+  const changed = remove || !!replacement || mask !== saved;
+
+  async function save() {
+    if (pending.current || !changed) return;
+    setNotice('');
+    if (
+      !remove &&
+      (replacement === '[REDACTED]' || (mask && !configured && !replacement))
+    ) {
+      setError(
+        'Enter a Pushbullet access token to enable notification events.'
+      );
+      return;
+    }
+    const generation = sessionGeneration();
+    const nextMask = remove ? 0 : mask;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      const result = await api<Preferences>(path, {
+        method: 'POST',
+        body: JSON.stringify({
+          notificationTypes: { pushbullet: nextMask },
+          ...(remove
+            ? { pushbulletAccessToken: null }
+            : replacement
+              ? { pushbulletAccessToken: replacement }
+              : {}),
+        }),
+      });
+      if (generation !== sessionGeneration()) return;
+      const expectedConfigured = !remove && (configured || !!replacement);
+      if (
+        result.notificationTypes?.pushbullet !== nextMask ||
+        !!result.pushbulletAccessToken !== expectedConfigured
+      ) {
+        setError(
+          'Could not confirm the saved Pushbullet settings. Reload settings and try again.'
+        );
+        return;
+      }
+      forget(path);
+      setConfigured(expectedConfigured);
+      setSaved(nextMask);
+      setMask(nextMask);
+      setToken('');
+      setRemove(false);
+      setNotice('Pushbullet settings saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setError('Could not save Pushbullet settings. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <div className="setlist">
+        <label className="set cfg-row">
+          <b>{configured ? 'Replacement Access Token' : 'Access Token'}</b>
+          <input
+            className="cfg-input"
+            type="password"
+            autoComplete="new-password"
+            maxLength={512}
+            value={token}
+            disabled={busy || remove}
+            onChange={(event) => setToken(event.target.value)}
+          />
+        </label>
+        {configured && (
+          <label className="set cfg-row">
+            <b>Remove Token and Disable Pushbullet Events</b>
+            <input
+              type="checkbox"
+              checked={remove}
+              disabled={busy}
+              onChange={(event) => setRemove(event.target.checked)}
+            />
+          </label>
+        )}
+      </div>
+      {configured && (
+        <p className="note">
+          An access token is configured. Leave the replacement field empty to
+          keep it.
+        </p>
+      )}
+      <EventChoices
+        mask={remove ? 0 : mask}
+        disabled={busy || remove}
+        change={setMask}
+      />
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="toolbar">
+        <button className="btn btn-tonal" disabled={busy || !changed}>
+          {busy ? 'Saving…' : 'Save Pushbullet Settings'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function UserNotifications({ id }: { id: number }) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -630,6 +767,18 @@ function UserNotifications({ id }: { id: number }) {
         <Section title="Telegram">
           <TelegramForm
             key={JSON.stringify(telegramValues(data))}
+            path={path}
+            data={data}
+          />
+        </Section>
+      )}
+      {data && (
+        <Section title="Pushbullet">
+          <PushbulletForm
+            key={JSON.stringify([
+              !!data.pushbulletAccessToken,
+              data.notificationTypes?.pushbullet,
+            ])}
             path={path}
             data={data}
           />

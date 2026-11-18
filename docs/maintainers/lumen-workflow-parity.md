@@ -698,3 +698,13 @@ and sends only Discord fields.
 Standalone Chrome verified a synthetic save of two Discord IDs and the single
 event enabled by the fixture. Live delivery, native visual comparison,
 mobile and bundled checks remain open.
+
+### Personal Pushbullet notifications increment
+
+Notification Settings supports Pushbullet access-token replacement, removal,
+and event preferences. Event-only saves omit the token field. Removing the
+token explicitly clears the Pushbullet event selection.
+
+Standalone Chrome verified an event-only save with a redacted stored token
+and a separate removal write against a synthetic endpoint. Live delivery,
+native visual comparison, mobile and bundled checks remain open.
