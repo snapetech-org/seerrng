@@ -1110,3 +1110,9 @@ availability filtering remains for unavailable titles and other filters or
 sorts. Standalone Movies checks verified the HD and 4K library requests and
 the bounded catalog fallback at all four viewport presets. Series and
 live backend verification and bundled and native visual comparisons remain open.
+
+Standalone Series fixtures verified that a shared 4K availability link
+uses the library query, that a series-status filter switches to the catalog
+while retaining 4K filtering, and that clearing status restores library
+results. All four viewport presets passed. Live-backend and visual
+comparisons remain open.

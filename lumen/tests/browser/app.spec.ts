@@ -2247,3 +2247,66 @@ test('movie availability can distinguish HD and 4K', async ({ page }) => {
   await expect(fourK).toHaveCount(0);
   expect(queries).toEqual(expect.arrayContaining(['hd', '4k', null]));
 });
+
+test('available series use the library query and retain quality with catalog filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { applicationTitle: 'SeerrNG', enable4k: true } })
+  );
+  const queries: [string | null, string | null][] = [];
+  await page.route('**/api/v1/discover/tv?*', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    const availability = params.get('availability');
+    queries.push([availability, params.get('status')]);
+    const series = { ...movie, title: undefined, mediaType: 'tv' };
+    return route.fulfill({
+      json: paged(
+        availability
+          ? [
+              {
+                ...series,
+                id: 201,
+                name: 'Library Series',
+                mediaInfo: { status: 1, status4k: 5 },
+              },
+            ]
+          : [
+              {
+                ...series,
+                id: 202,
+                name: 'Catalog 4K Series',
+                mediaInfo: { status: 1, status4k: 5 },
+              },
+              {
+                ...series,
+                id: 203,
+                name: 'Catalog HD Series',
+                mediaInfo: { status: 5, status4k: 1 },
+              },
+            ]
+      ),
+    });
+  });
+  await page.goto('/series?show=have&quality=4k');
+  const library = page.getByRole('link', {
+    name: 'Library Series',
+    exact: true,
+  });
+  await expect(library).toBeVisible();
+  await expect.poll(() => queries).toContainEqual(['4k', null]);
+  const status = page.getByLabel('Series Status', { exact: true });
+  await status.selectOption('0');
+  await expect(
+    page.getByRole('link', { name: 'Catalog 4K Series', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Catalog HD Series', exact: true })
+  ).toHaveCount(0);
+  await expect(library).toHaveCount(0);
+  expect(queries).toContainEqual([null, '0']);
+  await status.selectOption('');
+  await expect(library).toBeVisible();
+  await expect(page.getByLabel('Availability Quality')).toHaveValue('4k');
+});
