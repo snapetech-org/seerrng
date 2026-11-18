@@ -2664,22 +2664,22 @@ frontend lock. The redirect retains the service, series, and optional
 author identity. Both Express tests and all ten production companion
 image tests passed, including the encoded bookmark.
 
-### Remaining native entry points
+### Native entry points and remaining verification
 
-Compared the native page tree with the Lumen route table and companion
-redirects. These workflows still need their own Lumen entry points and
-behavior checks.
+These native bookmarks have Lumen destinations. Check behavior and
+permissions separately from bookmark routing.
 
 | Native entry point | Behavior still to cover |
 | --- | --- |
-| `/users/[userId]` | Household profile with visible request activity and permitted watchlist previews. The managed-user editor and delegated request and watchlist links cover separate actions. |
+| `/users/[userId]` | Both deployments map the bookmark to `/household/:id`. Standalone browser fixtures cover independent permission checks and recovery for request and watchlist previews. The managed-user editor remains a separate action. |
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
-| `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
+| `/discover/book-recommendations` | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Standalone browser fixtures cover creating a personalized feed and applying feedback. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
 | `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
 
-This is a route and source audit. Each workflow still needs permission,
-interaction, and rendered verification in both deployments.
+The household and recommendation browser fixtures cover API-driven behavior
+in the standalone build. Live authorization, provider behavior, and matched
+visual verification remain open for these targeted checks.
 
 Lumen Movies and Series now link to their genre directories. Legacy
 genre-directory bookmarks route to Lumen under bundled frontend lock and
