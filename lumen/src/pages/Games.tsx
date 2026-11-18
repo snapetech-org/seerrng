@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, artUrl } from '../api';
+import { useAuth } from '../auth';
 import { GridSkeleton, MoreOnScroll, type Stat } from '../components/cards';
 import { DetailTop, Facts, fmtHrs, Pill } from '../components/detail';
 import {
@@ -11,6 +12,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import FollowButton from '../components/FollowButton';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import {
@@ -24,6 +26,7 @@ import {
   type GameCategory,
   type GamePage,
 } from '../extras';
+import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
 
@@ -271,6 +274,7 @@ function GameDetailView({
   cat: GameCategory;
   dat: boolean;
 }) {
+  const { user } = useAuth();
   const { data, error, reload } = useApi<Game | { game: Game }>(
     `/request/software/catalog/games/${encodeURIComponent(id)}?category=${encodeURIComponent(cat)}${dat ? '&catalogProvider=dat' : ''}`
   );
@@ -358,6 +362,22 @@ function GameDetailView({
           <div className="dstatus">
             <StatPill s={s} />
             <IndexerSearchLink category={cat} title={g.title} />
+            {cat === 'game' &&
+              !dat &&
+              typeof g.igdbId === 'number' &&
+              Number.isSafeInteger(g.igdbId) &&
+              g.igdbId > 0 &&
+              canViewFollowing(user?.permissions) && (
+                <FollowButton
+                  label="Follow Story Expansions"
+                  subject={{
+                    kind: 'expansion',
+                    subjectKey: `igdb:${g.igdbId}`,
+                    subjectLabel: g.title,
+                    conditions: { ref: { igdbId: g.igdbId, storyOnly: true } },
+                  }}
+                />
+              )}
             {g.rating != null && (
               <Pill k="neutral" icon="star">
                 {Math.round(g.rating)} / 100

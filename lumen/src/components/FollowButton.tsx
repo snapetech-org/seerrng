@@ -8,7 +8,7 @@ interface FollowIdentity {
   kind: string;
   subjectKey: string;
   subjectLabel: string;
-  conditions?: { ref: Record<string, string | number> };
+  conditions?: { ref: Record<string, string | number | boolean> };
 }
 
 interface FollowRecord {
@@ -17,22 +17,32 @@ interface FollowRecord {
   subjectKey: string;
 }
 
-export default function FollowButton({ subject }: { subject: FollowIdentity }) {
+export default function FollowButton({
+  subject,
+  label = 'Follow',
+}: {
+  subject: FollowIdentity;
+  label?: string;
+}) {
   const follows = useApi<{ results: FollowRecord[] }>('/follow');
   const toast = useToast();
   const pending = useRef(false);
   const [saving, setSaving] = useState(false);
   const [confirmed, setConfirmed] = useState<FollowRecord | null>();
+  const rows = Array.isArray(follows.data?.results)
+    ? follows.data.results
+    : undefined;
+  const loadError = follows.error || (follows.data && !rows);
   const match =
     confirmed === undefined
-      ? follows.data?.results.find(
+      ? rows?.find(
           ({ kind, subjectKey }) =>
             kind === subject.kind && subjectKey === subject.subjectKey
         )
       : confirmed;
 
   async function toggle() {
-    if (pending.current || !follows.data) return;
+    if (pending.current || !rows) return;
     pending.current = true;
     setSaving(true);
     try {
@@ -58,11 +68,11 @@ export default function FollowButton({ subject }: { subject: FollowIdentity }) {
     <button
       type="button"
       className="btn btn-tonal btn-sm"
-      disabled={saving || (!follows.data && !follows.error)}
-      aria-pressed={!follows.error ? Boolean(match) : undefined}
-      onClick={() => (follows.error ? follows.reload() : void toggle())}
+      disabled={saving || (!rows && !loadError)}
+      aria-pressed={!loadError ? Boolean(match) : undefined}
+      onClick={() => (loadError ? follows.reload() : void toggle())}
     >
-      {follows.error ? 'Retry Follow Status' : match ? 'Following' : 'Follow'}
+      {loadError ? 'Retry Follow Status' : match ? 'Following' : label}
     </button>
   );
 }

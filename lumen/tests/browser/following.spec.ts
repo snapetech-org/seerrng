@@ -27,7 +27,7 @@ test('household users can open Following and manage their own updates', async ({
     if (path === '/follow/events')
       return route.fulfill({
         json: {
-          total: 1,
+          total: 2,
           results: [
             {
               id: 1,
@@ -35,6 +35,13 @@ test('household users can open Following and manage their own updates', async ({
               seen,
               follow: { subjectLabel: 'Example Director' },
               target: { mediaType: 'movie', id: '10' },
+            },
+            {
+              id: 3,
+              title: 'New Story Expansion',
+              seen: true,
+              follow: { subjectLabel: 'Fixture Game', kind: 'expansion' },
+              target: { mediaType: 'game', id: '42' },
             },
           ],
         },
@@ -65,6 +72,9 @@ test('household users can open Following and manage their own updates', async ({
     'href',
     '/movie/10'
   );
+  await expect(
+    page.getByRole('link', { name: 'New Story Expansion' })
+  ).toHaveAttribute('href', '/game/game/42');
   await page.getByRole('button', { name: 'Mark Seen: A New Film' }).click();
   await expect(
     page.getByRole('button', { name: 'Mark Seen: A New Film' })

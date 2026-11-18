@@ -39,6 +39,13 @@ function eventHref({ target, title }: FollowEvent) {
     return `/franchise/anime/${target.id}`;
   }
   if (
+    target?.mediaType === 'game' &&
+    /^[1-9]\d{0,15}$/.test(target.id) &&
+    Number.isSafeInteger(Number(target.id))
+  ) {
+    return `/game/game/${target.id}`;
+  }
+  if (
     target &&
     [
       'movie',

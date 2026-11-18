@@ -7,6 +7,7 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   const reads: string[] = [];
   const requests: unknown[] = [];
   let failSecond = true;
+  let followed = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/imageproxy/**', (route) =>
     route.fulfill({
@@ -22,6 +23,25 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     const path = url.pathname.slice(7);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/follow' && route.request().method() === 'POST') {
+      const subject = route.request().postDataJSON();
+      expect(subject).toEqual({
+        kind: 'expansion',
+        subjectKey: 'igdb:42',
+        subjectLabel: 'Fixture PC Game',
+        conditions: { ref: { igdbId: 42, storyOnly: true } },
+      });
+      followed = true;
+      return route.fulfill({ json: { id: 7, ...subject } });
+    }
+    if (path === '/follow')
+      return route.fulfill({
+        json: {
+          results: followed
+            ? [{ id: 7, kind: 'expansion', subjectKey: 'igdb:42' }]
+            : [],
+        },
+      });
     if (path === '/settings/public')
       return route.fulfill({
         json: {
@@ -71,6 +91,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   });
   await page.goto('/software?category=game&game=42');
   await expect(page).toHaveURL(/\/game\/game\/42$/);
+  await page.getByRole('button', { name: 'Follow Story Expansions' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Following', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
   await expect(
     page.getByRole('heading', { name: 'Fixture PC Game' })
   ).toBeVisible();
