@@ -1314,3 +1314,11 @@ The Trending API attaches availability and active request metadata by
 media type and TMDB ID. The route fixture verifies that an available
 movie and an in-progress series with the same ID retain distinct server
 records in the mixed feed.
+
+Trending collections now open the collection detail page through the
+same poster card used by Search. The API keeps collection identities
+distinct and follows Search's movie-category and maturity rules.
+Discover's quick-request hero remains scoped to movies and series.
+Twenty standalone Trending and collection checks and two server route
+checks passed. Live provider coverage and matched visual comparisons
+remain open.

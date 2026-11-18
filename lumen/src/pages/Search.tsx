@@ -8,12 +8,17 @@ import {
 import {
   ApiError,
   api,
-  tmdbImg,
   type BookResult,
   type Paged,
   type TitleResult,
+  type VideoSearchResult,
 } from '../api';
-import { BookCard, Cover, Section, TitleCard } from '../components/cards';
+import {
+  BookCard,
+  CollectionCard,
+  Section,
+  TitleCard,
+} from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
@@ -38,14 +43,6 @@ const SCOPES = {
   comic: 'Comics/Manga',
 } as const;
 type Scope = keyof typeof SCOPES;
-type CollectionResult = {
-  id: number;
-  mediaType: 'collection';
-  title: string;
-  posterPath?: string;
-};
-type VideoSearchResult = TitleResult | CollectionResult;
-
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
   const [p, setP] = useSearchParams();
@@ -68,7 +65,7 @@ export default function Search() {
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const term0 = (p.get('q') || '').trim();
   // nothing typed yet: something to tap instead of an empty screen
-  const trending = useApi<Paged<TitleResult>>(
+  const trending = useApi<Paged<VideoSearchResult>>(
     term0 ? null : '/discover/trending'
   ).data;
   // a search is remembered when it's finished (Enter, or a result opened), not on every keystroke,
@@ -375,7 +372,10 @@ export default function Search() {
         <Section title="Trending this week">
           <div className="grid">
             {trending.results
-              .filter((r) => r.mediaType === 'movie' || r.mediaType === 'tv')
+              .filter(
+                (r): r is TitleResult =>
+                  r.mediaType === 'movie' || r.mediaType === 'tv'
+              )
               .slice(0, 12)
               .map((m) => (
                 <TitleCard key={m.mediaType + m.id} it={m} />
@@ -433,28 +433,7 @@ export default function Search() {
           <Section title="Collections">
             <div className="grid">
               {collections.map((collection) => (
-                <div className="poster" key={collection.id}>
-                  <div className="art">
-                    <Cover
-                      src={tmdbImg(collection.posterPath)}
-                      title={collection.title}
-                      icon="film"
-                    />
-                    <Link
-                      className="hit"
-                      to={`/collection/${collection.id}`}
-                      aria-label={collection.title}
-                    />
-                  </div>
-                  <Link
-                    className="t"
-                    to={`/collection/${collection.id}`}
-                    tabIndex={-1}
-                    aria-hidden="true"
-                  >
-                    {collection.title}
-                  </Link>
-                </div>
+                <CollectionCard key={collection.id} collection={collection} />
               ))}
             </div>
           </Section>

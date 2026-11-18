@@ -1056,7 +1056,7 @@ describe('GET /discover/movies', () => {
     mockPrivate(ExternalAPI.prototype, 'get', async () => ({
       page: 1,
       total_pages: 1,
-      total_results: 2,
+      total_results: 3,
       results: [
         {
           id: tmdbId,
@@ -1070,6 +1070,11 @@ describe('GET /discover/movies', () => {
           name: 'Trending Series',
           genre_ids: [],
         },
+        {
+          id: tmdbId,
+          media_type: 'collection',
+          title: 'Trending Collection',
+        },
       ],
     }));
 
@@ -1078,15 +1083,16 @@ describe('GET /discover/movies', () => {
     assert.equal(response.status, 200);
     assert.deepEqual(
       response.body.results.map(
-        (item: { mediaType: string; mediaInfo: Media }) => [
+        (item: { mediaType: string; mediaInfo?: Media }) => [
           item.mediaType,
-          item.mediaInfo.mediaType,
-          item.mediaInfo.status,
+          item.mediaInfo?.mediaType,
+          item.mediaInfo?.status,
         ]
       ),
       [
         [MediaType.MOVIE, MediaType.MOVIE, MediaStatus.AVAILABLE],
         [MediaType.TV, MediaType.TV, MediaStatus.PROCESSING],
+        ['collection', undefined, undefined],
       ]
     );
   });

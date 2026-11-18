@@ -127,6 +127,16 @@ export interface TitleResult {
   genreIds?: number[];
   mediaInfo?: MediaInfo;
 }
+export interface CollectionResult {
+  id: number;
+  mediaType: 'collection';
+  title: string;
+  posterPath?: string;
+  backdropPath?: string;
+}
+
+export type VideoSearchResult = TitleResult | CollectionResult;
+
 export interface BookResult {
   id: string;
   mediaType: 'book';

@@ -21,6 +21,7 @@ import {
   yearOf,
   type BookResult,
   type CardTitleKind,
+  type CollectionResult,
   type MediaInfo,
   type TitleResult,
 } from '../api';
@@ -238,6 +239,29 @@ function useRequested(initial: Stat) {
 export function useCardTitleMode(kind?: CardTitleKind) {
   const { user } = useAuth();
   return kind ? cardTitleModes(user?.settings)[kind] : undefined;
+}
+
+export function CollectionCard({
+  collection,
+}: {
+  collection: CollectionResult;
+}) {
+  const href = `/collection/${collection.id}`;
+  return (
+    <div className="poster">
+      <div className="art">
+        <Cover
+          src={tmdbImg(collection.posterPath)}
+          title={collection.title}
+          icon="film"
+        />
+        <Link className="hit" to={href} aria-label={collection.title} />
+      </div>
+      <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
+        {collection.title}
+      </Link>
+    </div>
+  );
 }
 
 export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {

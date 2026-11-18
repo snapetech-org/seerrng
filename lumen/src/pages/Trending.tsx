@@ -1,6 +1,11 @@
 import { useSearchParams } from 'react-router-dom';
-import type { TitleResult } from '../api';
-import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
+import type { VideoSearchResult } from '../api';
+import {
+  CollectionCard,
+  GridSkeleton,
+  MoreOnScroll,
+  TitleCard,
+} from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { usePaged } from '../hooks';
@@ -15,7 +20,7 @@ const windows = [
   ['day', 'Daily'],
   ['week', 'Weekly'],
 ] as const;
-const identity = (item: TitleResult) => `${item.mediaType}:${item.id}`;
+const identity = (item: VideoSearchResult) => `${item.mediaType}:${item.id}`;
 
 export default function Trending() {
   const [params, setParams] = useSearchParams();
@@ -23,7 +28,10 @@ export default function Trending() {
   const mediaType = media === 'movie' || media === 'tv' ? media : 'all';
   const timeWindow = params.get('timeWindow') === 'week' ? 'week' : 'day';
   const query = new URLSearchParams({ mediaType, timeWindow });
-  const list = usePaged<TitleResult>(`/discover/trending?${query}`, identity);
+  const list = usePaged<VideoSearchResult>(
+    `/discover/trending?${query}`,
+    identity
+  );
   const empty = list.items.length === 0;
   function select(key: string, value: string) {
     const next = new URLSearchParams(params);
@@ -79,6 +87,8 @@ export default function Trending() {
         {list.items.map((item) =>
           item.mediaType === 'person' ? (
             <PersonCard key={identity(item)} person={item} />
+          ) : item.mediaType === 'collection' ? (
+            <CollectionCard key={identity(item)} collection={item} />
           ) : (
             <TitleCard key={identity(item)} it={item} />
           )

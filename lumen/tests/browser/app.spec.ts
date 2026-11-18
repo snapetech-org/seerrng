@@ -2539,7 +2539,16 @@ test('Trending preserves mixed title identities and sends scoped filters', async
     const tv = { id: movie.id, name: 'Trending Series', mediaType: 'tv' };
     const mixed = query.get('mediaType') === 'all';
     const results =
-      mixed && number === 1 ? [{ ...movie, title: 'Trending Film' }] : [tv];
+      mixed && number === 1
+        ? [
+            { ...movie, title: 'Trending Film' },
+            {
+              id: movie.id,
+              mediaType: 'collection',
+              title: 'Trending Collection',
+            },
+          ]
+        : [tv];
     return route.fulfill({
       json: { ...paged(results), page: number, totalPages: mixed ? 2 : 1 },
     });
@@ -2547,6 +2556,9 @@ test('Trending preserves mixed title identities and sends scoped filters', async
 
   await page.goto('/trending');
   await expect(page.getByRole('link', { name: 'Trending Film' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Trending Collection' })
+  ).toHaveAttribute('href', '/collection/101');
   await expect(
     page.getByRole('link', { name: 'Trending Series' })
   ).toHaveAttribute('href', '/tv/101');

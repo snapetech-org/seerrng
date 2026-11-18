@@ -2914,12 +2914,12 @@ discoverRoutes.get('/trending', async (req, res, next) => {
             | TmdbCollectionResult,
           media?: Media
         ) => {
-          if (isMovie(result)) {
+          if (isCollection(result)) {
+            return mapCollectionResult(result);
+          } else if (isMovie(result)) {
             return mapMovieResult(result, media);
           } else if (isPerson(result)) {
             return mapPersonResult(result);
-          } else if (isCollection(result)) {
-            return mapCollectionResult(result);
           } else {
             return mapTvResult(result, media);
           }
@@ -2933,11 +2933,9 @@ discoverRoutes.get('/trending', async (req, res, next) => {
       media?: Media
     ) => unknown;
     const availableTrendingResults = data.results.filter((result) =>
-      isMovie(result)
+      isCollection(result) || isMovie(result)
         ? isUserMediaCategoryEnabled(req.user, 'movie')
-        : isPerson(result) || isCollection(result)
-          ? true
-          : isUserMediaCategoryEnabled(req.user, 'tv')
+        : isPerson(result) || isUserMediaCategoryEnabled(req.user, 'tv')
     );
 
     const maturityPolicy = req.user
@@ -2947,7 +2945,10 @@ discoverRoutes.get('/trending', async (req, res, next) => {
       tmdb,
       maturityPolicy,
       MediaType.MOVIE,
-      availableTrendingResults.filter(isMovie),
+      availableTrendingResults.filter(
+        (result): result is TmdbMovieResult =>
+          !isCollection(result) && isMovie(result)
+      ),
       language
     );
     const tvTrendingResults = await filterVideoResultsByMaturityPolicy(
@@ -2964,20 +2965,17 @@ discoverRoutes.get('/trending', async (req, res, next) => {
     const allowedTvIds = new Set(tvTrendingResults.map(({ id }) => id));
     const maturityFilteredTrendingResults = availableTrendingResults.filter(
       (result) =>
-        isMovie(result)
-          ? allowedMovieIds.has(result.id)
-          : isPerson(result) || isCollection(result)
-            ? true
-            : allowedTvIds.has(result.id)
+        isCollection(result)
+          ? maturityPolicy.movie === null
+          : isMovie(result)
+            ? allowedMovieIds.has(result.id)
+            : isPerson(result) || allowedTvIds.has(result.id)
     );
 
     const media = await Media.getRelatedMedia(
       req.user,
       maturityFilteredTrendingResults
-        .filter(
-          (result) =>
-            isMovie(result) || (!isPerson(result) && !isCollection(result))
-        )
+        .filter((result) => !isPerson(result) && !isCollection(result))
         .map((result) => ({
           tmdbId: result.id,
           mediaType: isMovie(result) ? MediaType.MOVIE : MediaType.TV,

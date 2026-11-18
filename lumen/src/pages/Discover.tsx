@@ -7,6 +7,7 @@ import {
   type MediaRow,
   type Paged,
   type TitleResult,
+  type VideoSearchResult,
 } from '../api';
 import { cached, isFresh, remember } from '../apiCache';
 import { useAuth, useMediaServerName } from '../auth';
@@ -107,7 +108,7 @@ export default function Discover() {
   const { prefs } = usePrefs();
   const on = prefs.rows;
   const books_ = prefs.showBooks;
-  const trending = useApi<Paged<TitleResult>>(
+  const trending = useApi<Paged<VideoSearchResult>>(
     on.hero ? '/discover/trending' : null
   );
   const movies = useApi<Paged<TitleResult>>(
@@ -134,7 +135,11 @@ export default function Discover() {
   const extras = useExtras();
 
   const hero = (trending.data?.results || [])
-    .filter((r) => r.backdropPath && r.mediaType !== 'person')
+    .filter(
+      (r): r is TitleResult =>
+        Boolean(r.backdropPath) &&
+        (r.mediaType === 'movie' || r.mediaType === 'tv')
+    )
     .slice(0, 6);
   const today = new Date().toLocaleDateString(undefined, {
     weekday: 'long',
