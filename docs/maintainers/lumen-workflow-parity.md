@@ -484,3 +484,18 @@ audiobook-only request. Only the matching combined request was queried for
 files and only its ebook appeared. Native visual comparison, mobile, bundled
 and live provider verification remain open, along with browser coverage for
 the other reader categories.
+
+### Request deep links increment
+
+Lumen opens request history from `/requests?requestId=…` and from the
+`/requests/status` alias used by notifications, including requests absent
+from the current list. Bundled Lumen preserves the request ID when it is the
+selected or enforced frontend. Authorization stays with the existing
+request history endpoint. Closing history preserves the selected tab.
+
+Standalone Chrome at 1440 × 1000 verified the notification alias with an
+empty request list, an authorized history, Escape dismissal, and a 403
+response with no history or files. Server tests cover bundled redirects,
+classic preference, invalid or duplicate IDs, and the frontend lock.
+Native visual comparison, mobile and bundled browser checks, software
+request links, and full management from focused links remain open.

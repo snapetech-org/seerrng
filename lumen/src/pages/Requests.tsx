@@ -861,6 +861,16 @@ export default function Requests() {
   const { user } = useAuth();
   const toast = useToast();
   const [p, setP] = useSearchParams();
+  const requestParam = p.get('requestId');
+  const focusedId =
+    requestParam && /^\d+$/.test(requestParam) ? Number(requestParam) : 0;
+  const validRequestLink = Number.isSafeInteger(focusedId) && focusedId > 0;
+  const closeHistory = () => {
+    const next = new URLSearchParams(p);
+    next.delete('requestId');
+    setP(next, { replace: true });
+  };
+
   const viewAll = canViewAllRequests(user?.permissions);
   const defaultTab = viewAll ? 'everyone' : 'active';
   const requestedTab = p.get('tab');
@@ -898,7 +908,6 @@ export default function Requests() {
   }, [show, everyone]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
-  const [history, setHistory] = useState<Row | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
   // a decline, a cancel or a remove waits for a yes; none can be taken back
@@ -1366,7 +1375,11 @@ export default function Requests() {
                   {x.r.id > 0 && (
                     <button
                       className="btn btn-sm btn-quiet"
-                      onClick={() => setHistory(x)}
+                      onClick={() => {
+                        const next = new URLSearchParams(p);
+                        next.set('requestId', String(x.r.id));
+                        setP(next);
+                      }}
                     >
                       History
                     </button>
@@ -1521,13 +1534,17 @@ export default function Requests() {
           }}
         />
       )}
-      {history && (
+      {requestParam !== null && !validRequestLink && (
+        <p className="note" role="alert">
+          This request link is invalid.
+        </p>
+      )}
+      {validRequestLink && (
         <RequestHistorySheet
-          key={history.r.id}
-          id={history.r.id}
-          title={history.title}
-          type={history.r.type}
-          close={() => setHistory(null)}
+          key={focusedId}
+          id={focusedId}
+          title={list.find(({ r }) => r.id === focusedId)?.title}
+          close={closeHistory}
         />
       )}
       {queueEdit && (

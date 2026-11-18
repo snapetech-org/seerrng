@@ -1,12 +1,25 @@
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
-import type { Express, RequestHandler } from 'express';
+import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
 import path from 'node:path';
 
 const classicCookie = 'seerrng-frontend';
 const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
+
+function requestDeepLink(req: Request): string | undefined {
+  if (!/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
+  const id = req.query.requestId;
+  if (
+    typeof id === 'string' &&
+    /^\d+$/.test(id) &&
+    Number.isSafeInteger(Number(id)) &&
+    Number(id) > 0
+  ) {
+    return `/lumen/requests?requestId=${Number(id)}`;
+  }
+}
 
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
@@ -28,7 +41,9 @@ export const redirectLockedNativeFrontend: RequestHandler = (
       .set('Cache-Control', 'no-store')
       .redirect(
         302,
-        passwordRecoveryPath.test(req.path) ? `/lumen${req.path}` : '/lumen/'
+        passwordRecoveryPath.test(req.path)
+          ? `/lumen${req.path}`
+          : (requestDeepLink(req) ?? '/lumen/')
       );
     return;
   }
@@ -110,6 +125,18 @@ export const mountLumenFrontend = (
     return res
       .set('Cache-Control', 'no-store')
       .redirect(302, `/lumen${req.path}`);
+  });
+  server.get(['/requests', '/requests/status'], (req, res, next) => {
+    const target = requestDeepLink(req);
+    if (
+      !target ||
+      !isInitialized() ||
+      frontend() !== 'lumen' ||
+      (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic')
+    ) {
+      return next();
+    }
+    return res.set('Cache-Control', 'no-store').redirect(302, target);
   });
   server.use(
     '/lumen',

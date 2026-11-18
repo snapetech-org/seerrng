@@ -118,6 +118,7 @@ function App() {
           <Route path="/adult/:id" element={<SceneDetail />} />
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
+          <Route path="/requests/status" element={<Requests />} />
           <Route path="/following" element={<Following />} />
           <Route
             path="/downloads"

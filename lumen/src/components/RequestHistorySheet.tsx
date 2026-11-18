@@ -17,6 +17,7 @@ interface StatusEvent extends Status {
 }
 
 interface RequestHistory {
+  request: { type: string };
   current: Status;
   history: { results: StatusEvent[]; total: number };
 }
@@ -40,12 +41,10 @@ const stages = new Map([
 export default function RequestHistorySheet({
   id,
   title,
-  type,
   close,
 }: {
   id: number;
-  title: string;
-  type: string;
+  title?: string;
   close: () => void;
 }) {
   const [showFiles, setShowFiles] = useState(false);
@@ -69,7 +68,7 @@ export default function RequestHistorySheet({
         <div className="pk">
           <header>
             <h2>Request History</h2>
-            <p className="note">{title}</p>
+            <p className="note">{title ?? `Request #${id}`}</p>
           </header>
           <ServiceNote error={error} what="request history" retry={reload} />
           {!data && !error && (
@@ -83,7 +82,7 @@ export default function RequestHistorySheet({
                 Current status: {stages.get(data.current.stage) ?? 'Unknown'}
               </p>
               {data.current.stage === 'available' &&
-                downloadableTypes.has(type) &&
+                downloadableTypes.has(data.request?.type) &&
                 (showFiles ? (
                   <RequestFiles id={id} />
                 ) : (

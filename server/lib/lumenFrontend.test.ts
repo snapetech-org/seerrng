@@ -34,7 +34,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       enforceFrontend: () => enforceFrontend,
       companionUrl: () => companionUrl,
     });
-    app.get(['/', '/resetpassword/:guid'], (_req, res) =>
+    app.get(['/', '/resetpassword/:guid', '/requests/status'], (_req, res) =>
       res.send('Native interface')
     );
     const recovery = await request(app).get('/resetpassword/example');
@@ -46,6 +46,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       assert.equal(response.headers.location, '/lumen/');
       assert.equal(response.headers['cache-control'], 'no-store');
     }
+    const requestLink = await request(app).get('/requests/status?requestId=21');
+    assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
+    assert.equal(requestLink.headers['cache-control'], 'no-store');
+    assert.equal(
+      (await request(app).get('/requests/status?requestId=21&requestId=22'))
+        .text,
+      'Native interface'
+    );
     const companion = request.agent(app);
     assert.equal(
       (await companion.get('/?interface=classic')).text,
@@ -54,6 +62,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal((await companion.get('/')).text, 'Native interface');
     assert.equal(
       (await companion.get('/resetpassword/example')).text,
+      'Native interface'
+    );
+    assert.equal(
+      (await companion.get('/requests/status?requestId=21')).text,
       'Native interface'
     );
     const browser = request.agent(app);
@@ -163,6 +175,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .get('/resetpassword/example')
       .set('X-Test-Role', 'user');
     assert.equal(recovery.headers.location, '/lumen/resetpassword/example');
+    const requestLink = await request(app)
+      .get('/requests/status?requestId=21')
+      .set('X-Test-Role', 'user');
+    assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     const nonHtmlRequest = await request(app)
       .get('/movie/123')
       .set('X-Test-Role', 'user')
