@@ -482,6 +482,32 @@ export type PatchSelection = {
   keepOriginal: boolean;
 };
 
+type Content = {
+  igdbId: number;
+  title: string;
+  owned: boolean;
+  storyContent: boolean | null;
+};
+type Edition = {
+  igdbId: number;
+  title: string;
+  owned: boolean;
+  contentKnown: boolean;
+  includes: Content[];
+};
+type GameContentCatalog = {
+  available: boolean;
+  editions?: Edition[];
+  addons?: Content[];
+};
+export function useGameContentCatalog(id?: number | null) {
+  return useApi<GameContentCatalog>(
+    typeof id === 'number' && Number.isSafeInteger(id) && id > 0
+      ? `/game-content/${id}/editions`
+      : null
+  );
+}
+
 export type GameContentSelection =
   | { kind: 'game-content'; mode: 'edition'; editionId: number; addonIds: [] }
   | { kind: 'game-content'; mode: 'missing-selected'; addonIds: number[] };

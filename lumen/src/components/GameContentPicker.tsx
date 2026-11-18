@@ -1,24 +1,9 @@
 import { useState } from 'react';
-import type { GameContentSelection } from '../extras';
-import { useApi } from '../hooks';
+import { type GameContentSelection, useGameContentCatalog } from '../extras';
 import { Section } from './cards';
 import { Pill } from './detail';
 import { ServiceNote } from './extra';
 
-type Content = {
-  igdbId: number;
-  title: string;
-  owned: boolean;
-  storyContent: boolean | null;
-};
-type Edition = {
-  igdbId: number;
-  title: string;
-  owned: boolean;
-  contentKnown: boolean;
-  includes: Content[];
-};
-type Catalog = { available: boolean; editions?: Edition[]; addons?: Content[] };
 type Mode = 'base' | 'missing-selected' | 'edition';
 
 export default function GameContentPicker({
@@ -30,7 +15,7 @@ export default function GameContentPicker({
   disabled: boolean;
   onChange: (value: GameContentSelection | null | undefined) => void;
 }) {
-  const catalog = useApi<Catalog>(`/game-content/${id}/editions`);
+  const catalog = useGameContentCatalog(id);
   const [mode, setMode] = useState<Mode>('base');
   const [addonIds, setAddonIds] = useState<number[]>([]);
   const [editionId, setEditionId] = useState<number>();

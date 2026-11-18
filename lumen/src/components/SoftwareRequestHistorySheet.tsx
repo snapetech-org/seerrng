@@ -7,6 +7,7 @@ import { friendlyError } from '../errors';
 import {
   patchHref,
   softwareSelectionLabel,
+  useGameContentCatalog,
   type SoftwareRequest,
 } from '../extras';
 import { useApi } from '../hooks';
@@ -84,6 +85,23 @@ export function SoftwareRequestHistorySheet({
   const manage = canManageRequests(user?.permissions);
   const status = data?.request.status;
   const selection = data?.request.selection;
+  const { data: catalog } = useGameContentCatalog(
+    selection?.kind === 'game-content' ? data?.request.catalogId : null
+  );
+  const requestedEdition =
+    selection?.kind === 'game-content' && selection.mode === 'edition'
+      ? selection.editionId
+      : undefined;
+  const requestedAddons =
+    selection?.kind === 'game-content' && selection.mode === 'missing-selected'
+      ? selection.addonIds
+      : undefined;
+  const editionTitle =
+    requestedEdition && Array.isArray(catalog?.editions)
+      ? catalog.editions.find((edition) => edition?.igdbId === requestedEdition)
+          ?.title
+      : undefined;
+  const addons = Array.isArray(catalog?.addons) ? catalog.addons : [];
   const patch = selection?.kind === 'patch' ? selection : null;
   const project = patch && patchHref(patch.projectId, patch.versionId);
   const capabilities = data?.request.actions;
@@ -198,12 +216,16 @@ export function SoftwareRequestHistorySheet({
               {selection?.kind === 'game-content' && (
                 <p className="note">
                   {softwareSelectionLabel(selection)}
-                  {selection.mode === 'edition' && selection.editionId
-                    ? ` · IGDB edition ${selection.editionId}`
-                    : selection.mode === 'missing-selected' &&
-                        selection.addonIds?.length
-                      ? ` · IGDB add-ons ${selection.addonIds.join(', ')}`
-                      : ''}
+                  {requestedEdition &&
+                    ` · ${editionTitle || `IGDB edition ${requestedEdition}`}`}
+                  {!!requestedAddons?.length &&
+                    ` · ${requestedAddons
+                      .map(
+                        (id) =>
+                          addons.find((addon) => addon?.igdbId === id)?.title ||
+                          `IGDB add-on ${id}`
+                      )
+                      .join(', ')}`}
                 </p>
               )}
               {patch && (

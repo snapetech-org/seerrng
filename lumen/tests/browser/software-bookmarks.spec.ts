@@ -165,124 +165,134 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   expect(reads).toHaveLength(3);
 });
 
-test('an owned PC game can request only the selected add-ons', async ({
-  page,
-}) => {
-  const submitted: unknown[] = [];
-  await page.route('https://**/*', (route) => route.abort());
-  await page.route('**/api/v1/**', (route) => {
-    const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
-    if (path === '/auth/me')
-      return route.fulfill({ json: { id: 1, permissions: 32 } });
-    if (path === '/settings/public')
-      return route.fulfill({
-        json: { softwareEnabled: true, enabledMediaCategories: { game: true } },
-      });
-    if (path === '/request/software/catalog/games/42')
-      return route.fulfill({
-        json: {
-          game: {
-            title: 'Owned PC Game',
-            igdbId: 42,
-            catalogProvider: 'igdb',
-            availability: 'owned',
-            genres: [],
-            platforms: [],
+for (const mode of ['edition', 'missing-selected'] as const) {
+  test(`an owned PC game can request ${mode} and show the selection in history`, async ({
+    page,
+  }) => {
+    const submitted: unknown[] = [];
+    const requested =
+      mode === 'edition'
+        ? { kind: 'game-content', mode, editionId: 51, addonIds: [] }
+        : { kind: 'game-content', mode, addonIds: [53] };
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname.slice(7);
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 32 } });
+      if (path === '/settings/public')
+        return route.fulfill({
+          json: {
+            softwareEnabled: true,
+            enabledMediaCategories: { game: true },
           },
-        },
-      });
-    if (path === '/game-content/42/editions')
-      return route.fulfill({
-        json: {
-          available: true,
-          editions: [
-            {
-              igdbId: 51,
-              title: 'Deluxe Edition',
-              owned: false,
-              contentKnown: false,
+        });
+      if (path === '/request/software/catalog/games/42')
+        return route.fulfill({
+          json: {
+            game: {
+              title: 'Owned PC Game',
+              igdbId: 42,
+              catalogProvider: 'igdb',
+              availability: 'owned',
+              genres: [],
+              platforms: [],
             },
-          ],
-          addons: [
-            {
-              igdbId: 52,
-              title: 'Owned Add-on',
-              owned: true,
-              storyContent: false,
-            },
-            {
-              igdbId: 53,
-              title: 'New Expansion',
-              owned: false,
-              storyContent: true,
-            },
-          ],
-        },
-      });
-    if (path === '/request/software' && request.method() === 'POST') {
-      submitted.push(request.postDataJSON());
-      return route.fulfill({
-        json: { request: { id: 71, status: 'pending' } },
-      });
-    }
-    if (path === '/request/software/status/71')
-      return route.fulfill({
-        json: {
-          status: 'pending',
-          request: {
-            id: 71,
-            category: 'game',
-            title: 'Owned PC Game',
+          },
+        });
+      if (path === '/game-content/42/editions')
+        return route.fulfill({
+          json: {
+            available: true,
+            editions: [
+              {
+                igdbId: 51,
+                title: 'Deluxe Edition',
+                owned: false,
+                contentKnown: false,
+              },
+            ],
+            addons: [
+              {
+                igdbId: 52,
+                title: 'Owned Add-on',
+                owned: true,
+                storyContent: false,
+              },
+              {
+                igdbId: 53,
+                title: 'New Expansion',
+                owned: false,
+                storyContent: true,
+              },
+            ],
+          },
+        });
+      if (path === '/request/software' && request.method() === 'POST') {
+        submitted.push(request.postDataJSON());
+        return route.fulfill({
+          json: { request: { id: 71, status: 'pending' } },
+        });
+      }
+      if (path === '/request/software/status/71')
+        return route.fulfill({
+          json: {
             status: 'pending',
-            selection: {
-              kind: 'game-content',
-              mode: 'missing-selected',
-              addonIds: [53],
+            request: {
+              id: 71,
+              category: 'game',
+              title: 'Owned PC Game',
+              status: 'pending',
+              catalogId: 42,
+              selection: requested,
             },
+            history: [],
+            assets: [],
           },
-          history: [],
-          assets: [],
-        },
-      });
-    return route.fulfill({ json: { results: [] } });
-  });
-  await page.goto('/game/game/42');
-  const content = page.getByRole('combobox', { name: 'Content to Request' });
-  await content.selectOption('edition');
-  await expect(page.getByText('Edition contents are unknown.')).toBeVisible();
-  await page.getByRole('radio', { name: 'Deluxe Edition' }).check();
-  await content.selectOption('missing-selected');
-  await expect(
-    page.getByRole('checkbox', { name: 'Owned Add-on' })
-  ).toBeDisabled();
-  const request = page
-    .getByRole('button', { name: 'Request', exact: true })
-    .filter({ visible: true });
-  await page.getByRole('combobox', { name: 'System' }).selectOption('linux');
-  await page.getByRole('combobox', { name: 'Build' }).selectOption('arm64');
-  await expect(request).toBeDisabled();
-  await page.getByRole('checkbox', { name: 'New Expansion' }).check();
-  await request.click();
-  await page
-    .getByRole('link', { name: 'Request History', exact: true })
-    .click();
-  await expect(
-    page
-      .getByRole('dialog', { name: 'Software request history' })
-      .getByText('1 Add-on · IGDB add-ons 53')
-  ).toBeVisible();
-  expect(submitted).toEqual([
-    {
-      category: 'game',
-      catalogProvider: 'igdb',
-      catalogId: 42,
-      variant: { operatingSystem: 'linux', architecture: 'arm64' },
-      selection: {
-        kind: 'game-content',
-        mode: 'missing-selected',
-        addonIds: [53],
+        });
+      return route.fulfill({ json: { results: [] } });
+    });
+    await page.goto('/game/game/42');
+    const content = page.getByRole('combobox', { name: 'Content to Request' });
+    await content.selectOption('edition');
+    await expect(page.getByText('Edition contents are unknown.')).toBeVisible();
+    await page.getByRole('radio', { name: 'Deluxe Edition' }).check();
+    if (mode === 'missing-selected') {
+      await content.selectOption(mode);
+      await expect(
+        page.getByRole('checkbox', { name: 'Owned Add-on' })
+      ).toBeDisabled();
+    }
+    const request = page
+      .getByRole('button', { name: 'Request', exact: true })
+      .filter({ visible: true });
+    await page.getByRole('combobox', { name: 'System' }).selectOption('linux');
+    await page.getByRole('combobox', { name: 'Build' }).selectOption('arm64');
+    if (mode === 'missing-selected') {
+      await expect(request).toBeDisabled();
+      await page.getByRole('checkbox', { name: 'New Expansion' }).check();
+    }
+    await request.click();
+    await page
+      .getByRole('link', { name: 'Request History', exact: true })
+      .click();
+    await expect(
+      page
+        .getByRole('dialog', { name: 'Software request history' })
+        .getByText(
+          mode === 'edition'
+            ? 'Complete Edition · Deluxe Edition'
+            : '1 Add-on · New Expansion'
+        )
+    ).toBeVisible();
+    expect(submitted).toEqual([
+      {
+        category: 'game',
+        catalogProvider: 'igdb',
+        catalogId: 42,
+        variant: { operatingSystem: 'linux', architecture: 'arm64' },
+        selection: requested,
       },
-    },
-  ]);
-});
+    ]);
+  });
+}
