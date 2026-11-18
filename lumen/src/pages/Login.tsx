@@ -72,6 +72,26 @@ export default function Login() {
   const [callback] = useState(() =>
     location.pathname === '/login' ? readOidcCallback() : null
   );
+  const [loginLinkToken, setLoginLinkToken] = useState(() => {
+    const [token, duplicate] = new URLSearchParams(
+      location.hash.slice(1)
+    ).getAll('loginToken');
+    return !duplicate && token && /^[A-Za-z0-9_-]{43}$/.test(token)
+      ? token
+      : null;
+  });
+  useEffect(() => {
+    const { hash, pathname, search } = window.location;
+    const params = new URLSearchParams(hash.slice(1));
+    if (!params.has('loginToken')) return;
+    params.delete('loginToken');
+    const remaining = params.toString();
+    window.history.replaceState(
+      window.history.state,
+      '',
+      `${pathname}${search}${remaining ? `#${remaining}` : ''}`
+    );
+  }, []);
   const callbackWork = useRef<Promise<string> | undefined>(undefined);
   const callbackDelivered = useRef(false);
   const server = mediaServer();
@@ -176,6 +196,16 @@ export default function Login() {
       setBusy(false);
     }
   };
+  const useLoginLink = () => {
+    if (!loginLinkToken || active.current) return;
+    setLoginLinkToken(null);
+    void run(() =>
+      api('/auth/login-link', {
+        method: 'POST',
+        body: JSON.stringify({ token: loginLinkToken }),
+      })
+    );
+  };
   const local = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
@@ -262,6 +292,16 @@ export default function Login() {
           <p className="login-err" role="alert">
             {err}
           </p>
+        )}
+
+        {loginLinkToken && (
+          <button
+            className="btn btn-primary login-primary"
+            disabled={busy}
+            onClick={useLoginLink}
+          >
+            Continue with sign-in link
+          </button>
         )}
 
         {mode === 'quick' ? (

@@ -27,6 +27,7 @@ async function fixtures(page: Page, settings: Record<string, unknown>) {
         json: signedIn ? { id: 1, displayName: 'viewer', permissions: 2 } : {},
       });
     if (
+      path === '/auth/login-link' ||
       path === '/auth/jellyfin' ||
       path === '/auth/jellyfin/quickconnect/authenticate'
     ) {
@@ -267,4 +268,28 @@ test('failed public settings shows retry without guessing enabled login methods'
   await expect(
     page.getByRole('button', { name: /Sign in with|Continue with/ })
   ).toHaveCount(0);
+});
+
+test('a one-time sign-in link requires confirmation and keeps the requested page', async ({
+  page,
+}, info) => {
+  const fixture = await fixtures(page, {});
+  const token = 'A'.repeat(43);
+  await page.goto(`/movie/101#loginToken=${token}`);
+  const confirm = page.getByRole('button', {
+    name: 'Continue with sign-in link',
+  });
+  await expect(confirm).toBeVisible();
+  await expect(page).toHaveURL(/\/movie\/101$/);
+  expect(fixture.posts).toEqual([]);
+  await page.screenshot({
+    path: info.outputPath('login-link-confirmation.png'),
+  });
+  await confirm.click();
+  await expect(
+    page.getByRole('heading', { name: 'Jellyfin fixture' })
+  ).toBeVisible();
+  expect(fixture.posts).toEqual([
+    { path: '/auth/login-link', body: { token } },
+  ]);
 });
