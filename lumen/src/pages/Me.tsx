@@ -165,6 +165,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Radarr Services</b>
+              <Link
+                className="go"
+                to="/admin/radarr"
+                aria-label="Open Radarr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Discovery Integrations</b>
               <Link
                 className="go"

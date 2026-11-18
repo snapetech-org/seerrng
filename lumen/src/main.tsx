@@ -64,6 +64,7 @@ const AdminLibraryMigration = lazy(
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
+const AdminRadarr = lazy(() => import('./pages/AdminRadarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
@@ -447,6 +448,24 @@ function App() {
                   }
                 >
                   <AdminProwlarr />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/radarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Radarr services…
+                    </p>
+                  }
+                >
+                  <AdminRadarr />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

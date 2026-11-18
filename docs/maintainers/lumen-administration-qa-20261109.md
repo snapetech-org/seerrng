@@ -162,3 +162,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the new section with the shared Plex connection controls at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build, 24 browser cases, and six Tautulli API cases passed. Browser responses and server connections used fixtures.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tautulli-20261118/`.
+
+## Radarr service administration follow-up — 2026-11-18
+
+Administrators can add, test, edit, or remove Radarr destinations from `/admin/radarr`. The form uses Radarr test results for profiles, root folders, and tags. Saved credentials stay hidden and removal requires confirmation.
+
+Compared the form with Prowlarr's shared control layout on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and four browser checks passed with synthetic Radarr responses. Other service integrations remain in native settings.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-radarr-20261118/`.
