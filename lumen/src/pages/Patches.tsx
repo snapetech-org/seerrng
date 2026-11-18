@@ -10,6 +10,7 @@ import {
   PATCH_ID,
   patchHref,
   requestGame,
+  unwrapCatalogGame,
   type Game,
 } from '../extras';
 import { canViewFollowing } from '../followPermissions';
@@ -282,7 +283,15 @@ export function PatchDetail() {
   const patch = useApi<PatchProject>(
     PATCH_ID.test(id) ? `/patches/projects/${encodeURIComponent(id)}` : null
   );
-  const project = patch.data?.id === id ? patch.data : null;
+  const project =
+    patch.data?.id === id &&
+    patch.data.game &&
+    Array.isArray(patch.data.versions)
+      ? patch.data
+      : null;
+  const patchError =
+    patch.error ||
+    (patch.data && !project ? 'Invalid patch project response.' : null);
   const category = params.get('category') === 'modern' ? 'modern' : 'retro';
   const key = project?.game.catalogKey;
   const link = gameLink(
@@ -293,13 +302,13 @@ export function PatchDetail() {
   const lookupQuery = new URLSearchParams({ category });
   const isDat = key?.startsWith('dat-');
   if (isDat) lookupQuery.set('catalogProvider', 'dat');
-  const game = useApi<Game>(
+  const game = useApi<Game | { game: Game }>(
     link && key && canRequest
       ? `/request/software/catalog/games/${encodeURIComponent(key)}?${lookupQuery}`
       : null,
     { currentPathOnly: true }
   );
-  const resolvedGame = game.data;
+  const resolvedGame = unwrapCatalogGame(game.data);
   const matchingGame = isDat
     ? resolvedGame?.catalogProvider === 'dat' && resolvedGame.catalogId === key
     : resolvedGame?.catalogProvider === 'igdb' &&
@@ -389,11 +398,11 @@ export function PatchDetail() {
       </ExtraHeader>
       {!PATCH_ID.test(id) && <p className="note">Patch project not found.</p>}
       <ServiceNote
-        error={patch.error}
+        error={patchError}
         what="patch project"
         retry={patch.reload}
       />
-      {PATCH_ID.test(id) && !project && !patch.error && (
+      {PATCH_ID.test(id) && !project && !patchError && (
         <p className="note" role="status">
           Loading patch project…
         </p>
@@ -485,11 +494,16 @@ export function PatchDetail() {
                 </p>
               )}
               <ServiceNote
-                error={game.error}
+                error={
+                  game.error ||
+                  (game.data && !matchingGame
+                    ? 'The catalogue returned a different base game.'
+                    : null)
+                }
                 what="associated game"
                 retry={game.reload}
               />
-              {resolvedGame && !systems.length && (
+              {matchingGame && !systems.length && (
                 <p className="note">
                   No compatible system was found in this game type.
                 </p>

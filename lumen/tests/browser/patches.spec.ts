@@ -5,6 +5,7 @@ test('Patch discovery filters, follows the exact project and pages through resul
 }) => {
   const key = `dat-${'a'.repeat(64)}`;
   let followed = false;
+  let invalidProject = true;
   const searches: Record<string, string>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -60,6 +61,10 @@ test('Patch discovery filters, follows the exact project and pages through resul
         }
         return route.fulfill({ json: { results: [] } });
       case '/patches/projects/patch-1':
+        if (invalidProject) {
+          invalidProject = false;
+          return route.fulfill({ json: { id: 'patch-1' } });
+        }
         return route.fulfill({
           json: {
             id: 'patch-1',
@@ -126,6 +131,11 @@ test('Patch discovery filters, follows the exact project and pages through resul
     '/patches/patch-1?category=modern&platform=switch'
   );
   await choose.click();
+  const invalid = page
+    .getByRole('alert')
+    .filter({ hasText: 'Invalid patch project response.' });
+  await expect(invalid).toBeVisible();
+  await invalid.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByLabel('Game Type')).toHaveValue('modern');
   await expect(page.getByLabel('System', { exact: true })).toHaveValue(
     'switch'
@@ -216,12 +226,14 @@ test('a Following update opens its exact patch version and submits only with a c
       case `/request/software/catalog/games/${key}`:
         return route.fulfill({
           json: {
-            catalogProvider: 'dat',
-            catalogId: key,
-            emulationSystems: [
-              { group: 'retro', slug: 'snes', name: 'SNES' },
-              { group: 'retro', slug: 'other', name: 'Other System' },
-            ],
+            game: {
+              catalogProvider: 'dat',
+              catalogId: key,
+              emulationSystems: [
+                { group: 'retro', slug: 'snes', name: 'SNES' },
+                { group: 'retro', slug: 'other', name: 'Other System' },
+              ],
+            },
           },
         });
       case '/request/software':

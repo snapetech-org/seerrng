@@ -22,6 +22,7 @@ import {
   PC_ARCH,
   PC_OS,
   requestGame,
+  unwrapCatalogGame,
   useExtras,
   type Game,
   type GameCategory,
@@ -286,10 +287,25 @@ function GameDetailView({
   platform: string;
 }) {
   const { user } = useAuth();
-  const { data, error, reload } = useApi<Game | { game: Game }>(
+  const {
+    data,
+    error: loadError,
+    reload,
+  } = useApi<Game | { game: Game }>(
     `/request/software/catalog/games/${encodeURIComponent(id)}?category=${encodeURIComponent(cat)}${dat ? '&catalogProvider=dat' : ''}`
   );
-  const g = data && ('game' in data ? data.game : data);
+  const game = unwrapCatalogGame(data);
+  const g =
+    game &&
+    typeof game.title === 'string' &&
+    Array.isArray(game.genres) &&
+    Array.isArray(game.platforms) &&
+    (game.emulationSystems === undefined ||
+      Array.isArray(game.emulationSystems))
+      ? game
+      : null;
+  const error =
+    loadError || (data && !g ? 'Invalid game catalogue response.' : null);
   const toast = useToast();
   const [os, setOs] = useState('');
   const [arch, setArch] = useState('');

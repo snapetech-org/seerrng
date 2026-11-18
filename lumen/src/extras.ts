@@ -456,6 +456,12 @@ export interface GamePage {
   nextCursor?: string | null;
   nextOffset?: number | null;
 }
+
+export function unwrapCatalogGame(response: Game | { game: Game } | null) {
+  if (!response || typeof response !== 'object') return null;
+  const game = 'game' in response ? response.game : response;
+  return game && typeof game === 'object' ? game : null;
+}
 export const PC_OS = [
   ['windows', 'Windows'],
   ['linux', 'Linux'],
