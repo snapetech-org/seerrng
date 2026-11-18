@@ -35,7 +35,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       companionUrl: () => companionUrl,
     });
     app.get(
-      ['/', '/resetpassword/:guid', '/requests/status', '/watch-sessions/:id'],
+      [
+        '/',
+        '/resetpassword/:guid',
+        '/requests/status',
+        '/watch-sessions/:id',
+        '/movie/:id',
+        '/discover/movies',
+      ],
       (_req, res) => res.send('Native interface')
     );
     for (const page of [
@@ -218,6 +225,22 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       (await request(app).get('/watch-sessions/9007199254740992')).text,
       'Native interface'
     );
+    for (const [bookmark, destination] of [
+      ['/movie/550', '/lumen/movie/550'],
+      ['/tv/12/crew', '/lumen/tv/12/crew'],
+      ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
+      ['/discover/movies?libraryView=missing', '/lumen/movies?show=not'],
+      ['/discover/books?subject=History', '/lumen/books?subject=History'],
+    ]) {
+      const response = await request(app).get(bookmark);
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.location, destination);
+      assert.equal(response.headers['cache-control'], 'no-store');
+    }
+    assert.equal(
+      (await request(app).get('/movie/about')).text,
+      'Native interface'
+    );
     const companion = request.agent(app);
     assert.equal(
       (await companion.get('/?interface=classic')).text,
@@ -234,6 +257,11 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     );
     assert.equal(
       (await companion.get('/watch-sessions/join')).text,
+      'Native interface'
+    );
+    assert.equal((await companion.get('/movie/550')).text, 'Native interface');
+    assert.equal(
+      (await companion.get('/discover/movies')).text,
       'Native interface'
     );
     const browser = request.agent(app);

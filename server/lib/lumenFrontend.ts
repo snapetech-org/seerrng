@@ -673,6 +673,23 @@ export const mountLumenFrontend = (
       return res.set('Cache-Control', 'no-store').redirect(302, target);
     }
   );
+  server.get(
+    /^\/(?:discover|movie|tv|person|collection|collections|book|book-series|series|author|comic|magazine|adult|music|artist|sportarr|associations|franchise)\//,
+    (req, res, next) => {
+      if (
+        !isInitialized() ||
+        frontend() !== 'lumen' ||
+        (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic')
+      ) {
+        return next();
+      }
+      const destination = req.path.startsWith('/discover/')
+        ? (discoveryDeepLink(req) ?? workflowDeepLink(req))
+        : detailDeepLink(req);
+      if (!destination) return next();
+      return res.set('Cache-Control', 'no-store').redirect(302, destination);
+    }
+  );
   server.get(/^\/lumen\/discover(?:\/|$)/, (req, res, next) => {
     const pathname = req.path.slice('/lumen'.length);
     const destination =
