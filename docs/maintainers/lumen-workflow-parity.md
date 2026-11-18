@@ -91,6 +91,13 @@ served the production build through Express at `/lumen/`. The suites verify
 expansion and patch explanations, game and version-specific patch links, and
 marking an update seen. Live provider and matched visual review remain open.
 
+Movie and Series browse show Follow for a single included genre, a selected
+production company, or a TV network when the viewer has request access.
+These controls use the same identities as Classic. Sixteen standalone
+browser checks passed across four viewport presets, including the submitted
+genre, studio, and network identities. Bundled and matched visual
+verification remain open for the browse controls.
+
 Headed Chrome at 1440 × 1000 verified the fixture's `/following` feed and
 `/me` link. Mark Seen removed the row control and unread action after the
 successful response. The rendered rows initially inherited the browser's list

@@ -203,3 +203,63 @@ test('following a person uses the exact identity and waits for server confirmati
   await following.click();
   await expect(follow).toHaveAttribute('aria-pressed', 'false');
 });
+
+test('filtered discovery follows the exact genre, studio, and network', async ({
+  page,
+}) => {
+  const posted: unknown[] = [];
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/genres/tv') return route.fulfill({ json: [] });
+    if (path === '/genres/movie')
+      return route.fulfill({ json: [{ id: 18, name: 'Drama' }] });
+    if (path === '/studio/72')
+      return route.fulfill({ json: { id: 72, name: 'Fixture Studio' } });
+    if (path === '/network/900009')
+      return route.fulfill({ json: { id: 900009, name: 'Fixture Network' } });
+    if (path === '/follow' && request.method() === 'POST') {
+      const subject = request.postDataJSON();
+      posted.push(subject);
+      return route.fulfill({ json: { ...subject, id: posted.length } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('./movies?genre=18&studio=72');
+  await page.getByRole('button', { name: 'Follow Drama', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Follow Fixture Studio', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Following', exact: true })
+  ).toHaveCount(2);
+  await page.goto('./series?network=900009');
+  await page
+    .getByRole('button', { name: 'Follow Fixture Network', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Following', exact: true })
+  ).toHaveCount(1);
+  expect(posted).toEqual([
+    {
+      kind: 'tmdb-genre',
+      subjectKey: 'tmdb:genre:movie:18',
+      subjectLabel: 'Drama',
+      conditions: { ref: { genreId: 18, mediaType: 'movie' } },
+    },
+    {
+      kind: 'tmdb-studio',
+      subjectKey: 'tmdb:studio:72',
+      subjectLabel: 'Fixture Studio',
+      conditions: { ref: { tmdbId: 72 } },
+    },
+    {
+      kind: 'tmdb-network',
+      subjectKey: 'tmdb:network:900009',
+      subjectLabel: 'Fixture Network',
+      conditions: { ref: { tmdbId: 900009 } },
+    },
+  ]);
+});

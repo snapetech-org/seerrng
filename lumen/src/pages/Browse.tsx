@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ServiceNote } from '../components/extra';
+import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import GenreTiles from '../components/GenreTiles';
 import { useAsksRequestOptions } from '../components/requestSheet';
@@ -17,6 +18,7 @@ import {
   discoveryVisibility,
   showDiscoveryTitle,
 } from '../discoveryVisibility';
+import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
@@ -574,6 +576,18 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     setP(next, { replace: true });
   };
   const word = kind === 'movie' ? 'Movies' : 'Series';
+  const followedGenre =
+    !excludeGenre && picked.length === 1
+      ? genres.find(({ id }) => String(id) === picked[0])
+      : undefined;
+  const followedStudio =
+    studio && !excludeStudio && studioInfo.data?.id === Number(studio)
+      ? studioInfo.data
+      : undefined;
+  const followedNetwork =
+    network && networkLabel && networkLabel !== `#${network}`
+      ? { id: Number(network), name: networkLabel }
+      : undefined;
 
   return (
     <>
@@ -597,6 +611,48 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </Link>
       </header>
       <div className="toolbar">
+        {canViewFollowing(user?.permissions) && (
+          <>
+            {followedGenre && (
+              <FollowButton
+                key={`genre:${kind}:${followedGenre.id}`}
+                label={`Follow ${followedGenre.name}`}
+                subject={{
+                  kind: 'tmdb-genre',
+                  subjectKey: `tmdb:genre:${kind}:${followedGenre.id}`,
+                  subjectLabel: followedGenre.name,
+                  conditions: {
+                    ref: { genreId: followedGenre.id, mediaType: kind },
+                  },
+                }}
+              />
+            )}
+            {followedStudio && (
+              <FollowButton
+                key={`studio:${followedStudio.id}`}
+                label={`Follow ${followedStudio.name}`}
+                subject={{
+                  kind: 'tmdb-studio',
+                  subjectKey: `tmdb:studio:${followedStudio.id}`,
+                  subjectLabel: followedStudio.name,
+                  conditions: { ref: { tmdbId: followedStudio.id } },
+                }}
+              />
+            )}
+            {followedNetwork && (
+              <FollowButton
+                key={`network:${followedNetwork.id}`}
+                label={`Follow ${followedNetwork.name}`}
+                subject={{
+                  kind: 'tmdb-network',
+                  subjectKey: `tmdb:network:${followedNetwork.id}`,
+                  subjectLabel: followedNetwork.name,
+                  conditions: { ref: { tmdbId: followedNetwork.id } },
+                }}
+              />
+            )}
+          </>
+        )}
         <button
           className="btn btn-tonal btn-sm"
           type="button"
