@@ -6,14 +6,21 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-type Provider = 'radarr' | 'sonarr' | 'lidarr' | 'whisparr';
+type Provider = 'radarr' | 'sonarr' | 'lidarr' | 'whisparr' | 'readarr';
 const names = {
   radarr: 'Radarr',
   sonarr: 'Sonarr',
   lidarr: 'Lidarr',
   whisparr: 'Whisparr',
+  readarr: 'Book and Audiobook',
 };
-const ports = { radarr: 7878, sonarr: 8989, lidarr: 8686, whisparr: 6969 };
+const ports = {
+  radarr: 7878,
+  sonarr: 8989,
+  lidarr: 8686,
+  whisparr: 6969,
+  readarr: 8787,
+};
 interface Service {
   id?: number;
   name: string;
@@ -37,6 +44,10 @@ interface Service {
   minimumAvailability?: string;
   activeMetadataProfileId?: number;
   activeMetadataProfileName?: string;
+  backend?: 'readarr' | 'bindery' | 'bookorbit';
+  serviceType?: 'ebook' | 'audiobook' | 'both';
+  bookorbitUsername?: string;
+  binderyUserMappings?: Record<string, number>;
   seriesType?: string;
   animeSeriesType?: string;
   activeAnimeProfileId?: number;
@@ -100,10 +111,41 @@ function ServiceForm({
   const name = names[provider];
   const isSonarr = provider === 'sonarr';
   const video = isSonarr || provider === 'radarr';
-  const isLidarr = provider === 'lidarr';
+  const isBook = provider === 'readarr';
+  const hasMetadata = provider === 'lidarr' || isBook;
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
   const [options, setOptions] = useState<Options>();
+  const [mappingText, setMappingText] = useState(() =>
+    JSON.stringify(initial.binderyUserMappings ?? {}, null, 2)
+  );
+  const backend = draft.backend ?? 'readarr';
+  const managed = isBook && backend !== 'readarr';
+  const bookorbit = backend === 'bookorbit';
+  let mappings: Record<string, number> | undefined;
+  if (backend === 'bindery') {
+    try {
+      const parsed = JSON.parse(mappingText);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const entries = Object.entries(parsed);
+        if (
+          entries.length <= 1000 &&
+          entries.every(
+            ([source, destination]) =>
+              /^[1-9][0-9]{0,9}$/.test(source) &&
+              Number(source) <= 2_147_483_647 &&
+              typeof destination === 'number' &&
+              Number.isSafeInteger(destination) &&
+              destination >= 1 &&
+              destination <= 2_147_483_647
+          )
+        )
+          mappings = Object.fromEntries(entries) as Record<string, number>;
+      }
+    } catch {
+      // Keep an invalid draft editable until the administrator corrects it.
+    }
+  }
   const [busy, setBusy] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
   const [failure, setFailure] = useState('');
@@ -112,42 +154,58 @@ function ServiceForm({
     initial.id === undefined ? endpoint : `${endpoint}/${initial.id}`;
   const key = draft.apiKey || (initial.apiKey ? '[REDACTED]' : '');
   const connected =
+    (!bookorbit || !!draft.bookorbitUsername?.trim()) &&
     !!draft.hostname.trim() &&
     !!key &&
     Number.isInteger(draft.port) &&
     draft.port >= 1 &&
     draft.port <= 65535;
   const fieldsChanged =
-    JSON.stringify(draft) !== JSON.stringify({ ...initial, apiKey: '' });
+    JSON.stringify(draft) !== JSON.stringify({ ...initial, apiKey: '' }) ||
+    (backend === 'bindery' &&
+      JSON.stringify(mappings) !==
+        JSON.stringify(initial.binderyUserMappings ?? {}));
   const configurationValid =
     !!draft.name.trim() &&
-    draft.activeProfileId > 0 &&
-    !!draft.activeDirectory &&
-    (!isLidarr ||
-      !options?.metadataProfiles?.length ||
-      options.metadataProfiles.some(
-        ({ id }) => id === draft.activeMetadataProfileId
-      )) &&
-    (!options ||
-      (options.profiles.some(({ id }) => id === draft.activeProfileId) &&
-        options.rootFolders.some(
-          ({ path }) => path === draft.activeDirectory
-        )));
+    (managed
+      ? backend !== 'bindery' || mappings !== undefined
+      : draft.activeProfileId > 0 &&
+        !!draft.activeDirectory &&
+        (!hasMetadata ||
+          !options?.metadataProfiles?.length ||
+          options.metadataProfiles.some(
+            ({ id }) => id === draft.activeMetadataProfileId
+          )) &&
+        (!options ||
+          (options.profiles.some(({ id }) => id === draft.activeProfileId) &&
+            options.rootFolders.some(
+              ({ path }) => path === draft.activeDirectory
+            ))));
   const optionsRequired =
     initial.id === undefined ||
     draft.hostname !== initial.hostname ||
     draft.port !== initial.port ||
     draft.baseUrl !== initial.baseUrl ||
     draft.useSsl !== initial.useSsl ||
+    draft.backend !== initial.backend ||
+    draft.serviceType !== initial.serviceType ||
+    draft.bookorbitUsername !== initial.bookorbitUsername ||
     !!draft.apiKey;
 
   function change(patch: Partial<Service>) {
     setDraft((previous) => ({ ...previous, ...patch }));
     setFailure('');
     if (
-      ['hostname', 'port', 'baseUrl', 'useSsl', 'apiKey'].some(
-        (field) => field in patch
-      )
+      [
+        'hostname',
+        'port',
+        'baseUrl',
+        'useSsl',
+        'apiKey',
+        'backend',
+        'serviceType',
+        'bookorbitUsername',
+      ].some((field) => field in patch)
     )
       setOptions(undefined);
   }
@@ -181,6 +239,15 @@ function ServiceForm({
           apiKey: key,
           baseUrl: draft.baseUrl,
           useSsl: draft.useSsl,
+          ...(isBook
+            ? {
+                backend,
+                serviceType: draft.serviceType ?? 'ebook',
+                ...(bookorbit
+                  ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
+                  : {}),
+              }
+            : {}),
         }),
       });
       if (generation === sessionGeneration()) setOptions(result);
@@ -212,7 +279,7 @@ function ServiceForm({
               ? { minimumAvailability: draft.minimumAvailability ?? 'released' }
               : {
                   is4k: false,
-                  ...(isLidarr
+                  ...(hasMetadata
                     ? {
                         activeMetadataProfileId: draft.activeMetadataProfileId,
                         activeMetadataProfileName:
@@ -223,9 +290,30 @@ function ServiceForm({
                     : {}),
                 }),
           apiKey: key,
-          activeProfileName:
-            options?.profiles.find(({ id }) => id === draft.activeProfileId)
-              ?.name ?? draft.activeProfileName,
+          activeProfileName: managed
+            ? bookorbit
+              ? 'BookOrbit managed'
+              : 'Bindery managed'
+            : (options?.profiles.find(({ id }) => id === draft.activeProfileId)
+                ?.name ?? draft.activeProfileName),
+          ...(isBook
+            ? { backend, serviceType: draft.serviceType ?? 'ebook' }
+            : {}),
+          ...(managed
+            ? {
+                activeProfileId: 0,
+                activeMetadataProfileId: 0,
+                activeMetadataProfileName: bookorbit
+                  ? 'BookOrbit managed'
+                  : 'Bindery managed',
+                activeDirectory: '/',
+                preventSearch: true,
+                tagRequests: false,
+                ...(bookorbit
+                  ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
+                  : { binderyUserMappings: mappings }),
+              }
+            : {}),
         }),
       });
       if (generation === sessionGeneration()) done();
@@ -256,9 +344,77 @@ function ServiceForm({
         }}
       >
         <div className="setlist">
+          {isBook && (
+            <>
+              <label className="set cfg-row">
+                <span>Backend</span>
+                <select
+                  className="cfg-select"
+                  disabled={busy || initial.id !== undefined}
+                  value={backend}
+                  onChange={(event) => {
+                    const selected = event.target.value as Service['backend'];
+                    change({
+                      backend: selected,
+                      port: selected === 'bookorbit' ? 3000 : 8787,
+                      serviceType: 'ebook',
+                      activeProfileId: 0,
+                      activeDirectory: '',
+                      activeMetadataProfileId: undefined,
+                    });
+                  }}
+                >
+                  <option value="readarr">
+                    ChaptarrNG or Readarr-Compatible
+                  </option>
+                  <option value="bindery">Bindery</option>
+                  <option value="bookorbit">BookOrbit</option>
+                </select>
+              </label>
+              <label className="set cfg-row">
+                <span>Book Format</span>
+                <select
+                  className="cfg-select"
+                  disabled={busy}
+                  value={draft.serviceType ?? 'ebook'}
+                  onChange={(event) =>
+                    change({
+                      serviceType: event.target.value as Service['serviceType'],
+                      ...(managed
+                        ? {}
+                        : {
+                            activeProfileId: 0,
+                            activeDirectory: '',
+                            activeMetadataProfileId: undefined,
+                          }),
+                    })
+                  }
+                >
+                  <option value="ebook">Ebook</option>
+                  <option value="audiobook">Audiobook</option>
+                  {managed && <option value="both">Both Formats</option>}
+                </select>
+              </label>
+              {bookorbit && (
+                <label className="set cfg-row">
+                  <span>BookOrbit Username</span>
+                  <input
+                    className="cfg-input"
+                    value={draft.bookorbitUsername ?? ''}
+                    disabled={busy}
+                    onChange={(event) =>
+                      change({ bookorbitUsername: event.target.value })
+                    }
+                  />
+                </label>
+              )}
+            </>
+          )}
           {connectionFields.map(([field, label, type]) => (
             <label className="set cfg-row" key={field}>
-              <span>{label}</span>
+              <span>
+                {field === 'apiKey' && bookorbit ? 'BookOrbit Password' : label}
+              </span>
               <input
                 className="cfg-input"
                 type={type}
@@ -283,7 +439,10 @@ function ServiceForm({
             .filter(
               ([field]) =>
                 video ||
-                (field !== 'is4k' && field !== 'requestButtonAnimeOnly')
+                (field !== 'is4k' &&
+                  field !== 'requestButtonAnimeOnly' &&
+                  (!isBook || field !== 'tagRequests') &&
+                  (!managed || field !== 'preventSearch'))
             )
             .map(([field, label]) => (
               <label className="set cfg-row" key={field}>
@@ -426,7 +585,33 @@ function ServiceForm({
             Test {name}
           </button>
         </div>
-        {options && (
+        {backend === 'bindery' && (
+          <div className="setlist">
+            <label className="set cfg-row">
+              <span>Bindery User Mappings (JSON)</span>
+              <textarea
+                className="cfg-json"
+                rows={5}
+                disabled={busy}
+                value={mappingText}
+                onChange={(event) => setMappingText(event.target.value)}
+              />
+            </label>
+          </div>
+        )}
+        {backend === 'bindery' && (
+          <p className="note">
+            {mappings === undefined
+              ? 'Enter a JSON object with positive integer SeerrNG user IDs as keys and Bindery user IDs as values.'
+              : 'Map SeerrNG user IDs to Bindery user IDs.'}
+          </p>
+        )}
+        {options && managed && (
+          <p className="note" role="status">
+            {name} connection verified.
+          </p>
+        )}
+        {options && !managed && (
           <>
             <p className="note" role="status">
               {name} connection verified.
@@ -469,7 +654,7 @@ function ServiceForm({
                 </select>
               </label>
             </div>
-            {isLidarr && options.metadataProfiles && (
+            {hasMetadata && options.metadataProfiles && (
               <div className="setlist">
                 <label className="set cfg-row">
                   <span>Metadata Profile</span>
@@ -576,7 +761,7 @@ function ServiceForm({
             )}
             {(
               [
-                'tags',
+                ...(isBook ? [] : (['tags'] as const)),
                 ...(video ? (['syncExcludedTags'] as const) : []),
                 ...(isSonarr ? (['animeTags'] as const) : []),
               ] as const

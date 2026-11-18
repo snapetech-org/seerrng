@@ -186,3 +186,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared both forms with the established Radarr layout at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and sixteen browser checks passed with synthetic service responses across Radarr, Sonarr, Lidarr, and Whisparr.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-lidarr-whisparr-20261118/`.
+
+## Book and audiobook service administration follow-up — 2026-11-18
+
+Administrators can test and manage ChaptarrNG or Readarr-compatible, Bindery, and BookOrbit destinations at `/admin/readarr`. The shared form supports book format, managed profiles and root folders, Bindery user mappings, and BookOrbit requester credentials.
+
+Compared the tested add forms with Lidarr at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and 28 browser checks passed with synthetic service responses. Live backend connections and advanced book diagnostics remain outside this verification.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-services-20261118/`.

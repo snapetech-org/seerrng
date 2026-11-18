@@ -509,6 +509,24 @@ function App() {
             }
           />
           <Route
+            path="/admin/readarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading book and audiobook services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="readarr" provider="readarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
             path="/admin/whisparr"
             element={
               isAdministrator(user.permissions) ? (

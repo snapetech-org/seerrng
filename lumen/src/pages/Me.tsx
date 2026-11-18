@@ -195,6 +195,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Book and Audiobook Services</b>
+              <Link
+                className="go"
+                to="/admin/readarr"
+                aria-label="Open Book and Audiobook Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"
