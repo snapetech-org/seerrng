@@ -43,7 +43,7 @@ import {
   type Scene,
   type SoftwareRequest,
 } from '../extras';
-import { usePullToRefresh } from '../hooks';
+import { useApi, usePullToRefresh } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { canRetryRequest, requestFailureMessage } from '../requestRetry';
 import {
@@ -887,10 +887,67 @@ const SOFTWARE_STATUSES = [
   ['cancelled', 'Cancelled'],
 ] as const;
 
+function RequesterFilter({
+  value,
+  change,
+}: {
+  value: string;
+  change: (value: string) => void;
+}) {
+  const [page, setPage] = useState(0);
+  const { data, error, reload } = useApi<{
+    results: { id: number; displayName: string }[];
+    pageInfo: { page: number; pages: number };
+  }>(`/request/status/users?take=100&skip=${page * 100}`);
+  const users = data?.results ?? [];
+  return (
+    <div className="toolbar" role="group" aria-label="Requester filter">
+      <label className="sel">
+        <span className="lbl">Requester</span>
+        <select value={value} onChange={(event) => change(event.target.value)}>
+          <option value="all">Everyone</option>
+          {value !== 'all' && !users.some(({ id }) => String(id) === value) && (
+            <option value={value}>User #{value}</option>
+          )}
+          {users.map(({ id, displayName }) => (
+            <option key={id} value={id}>
+              {displayName}
+            </option>
+          ))}
+        </select>
+      </label>
+      {page > 0 && (
+        <button
+          className="btn btn-quiet btn-sm"
+          onClick={() => setPage(page - 1)}
+        >
+          Previous Users
+        </button>
+      )}
+      {!!data &&
+        data.pageInfo.page === page + 1 &&
+        data.pageInfo.pages > page + 1 && (
+          <button
+            className="btn btn-quiet btn-sm"
+            onClick={() => setPage(page + 1)}
+          >
+            More Users
+          </button>
+        )}
+      {error && (
+        <button className="btn btn-quiet btn-sm" onClick={reload}>
+          Retry Loading Users
+        </button>
+      )}
+    </div>
+  );
+}
+
 async function householdSoftwareRequests(
   pages: number,
   category: string,
-  status: string
+  status: string,
+  requester: string
 ) {
   const rows: Row[] = [];
   let more = false;
@@ -901,6 +958,7 @@ async function householdSoftwareRequests(
       filter: status,
     });
     if (category !== 'all') params.set('category', category);
+    if (requester !== 'all') params.set('requestedBy', requester);
     const data = await api<{
       results: SoftwareRequest[];
       pageInfo: { pages: number };
@@ -972,7 +1030,15 @@ export default function Requests() {
     SOFTWARE_STATUSES.find(
       ([value]) => value === p.get('softwareStatus')
     )?.[0] ?? 'all';
-  const setSoftwareFilter = (key: string, value: string) => {
+  const requesterParam = p.get('requestedBy');
+  const requester =
+    requesterParam &&
+    /^[1-9]\d*$/.test(requesterParam) &&
+    Number.isSafeInteger(Number(requesterParam))
+      ? requesterParam
+      : 'all';
+  const requesterQuery = requester === 'all' ? '' : `&requestedBy=${requester}`;
+  const setRequestFilter = (key: string, value: string) => {
     const next = new URLSearchParams(p);
     if (value === 'all') next.delete(key);
     else next.set(key, value);
@@ -985,7 +1051,7 @@ export default function Requests() {
   useEffect(() => {
     setPages(1);
     setOthers(null);
-  }, [show, everyone, softwareCategory, softwareStatus]);
+  }, [show, everyone, softwareCategory, softwareStatus, requester]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
@@ -1032,11 +1098,12 @@ export default function Requests() {
       let total = 0;
       for (let skip = 0; skip < take; skip += 100) {
         const d = await requestList(
-          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added`
+          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added${requesterQuery}`
         );
         total = d.pageInfo?.results ?? 0;
         if (
           live &&
+          !requesterQuery &&
           (filter === 'available' || filter === 'processing') &&
           d.authoritativeStatus
         ) {
@@ -1055,11 +1122,12 @@ export default function Requests() {
         return householdSoftwareRequests(
           pages,
           softwareCategory,
-          softwareStatus
+          softwareStatus,
+          requester
         );
       const started =
         show === 'all' || show === 'processing'
-          ? startedDownloads()
+          ? startedDownloads(requesterQuery)
               .then((x) => x.sort((a, b) => progress(b) - progress(a)))
               .catch(() => [])
           : Promise.resolve([]);
@@ -1099,7 +1167,16 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [everyone, show, pages, tick, softwareCategory, softwareStatus]);
+  }, [
+    everyone,
+    show,
+    pages,
+    tick,
+    softwareCategory,
+    softwareStatus,
+    requester,
+    requesterQuery,
+  ]);
 
   useEffect(() => {
     if (!user || everyone) return;
@@ -1206,7 +1283,7 @@ export default function Requests() {
       !everyone &&
       current.some((x) => x.r.id < 0 && state(x, serverName).pct != null);
     Promise.all([
-      processingRequests(everyone ? '' : `&requestedBy=${user.id}`),
+      processingRequests(everyone ? requesterQuery : `&requestedBy=${user.id}`),
       gameBusy
         ? api<{ results: SoftwareRequest[] }>(
             `/request/software/status?take=40&requestedBy=${user.id}`
@@ -1376,24 +1453,21 @@ export default function Requests() {
               key={v}
               className="chip"
               aria-pressed={show === v}
-              onClick={() =>
-                setP(
-                  v === 'all'
-                    ? { tab: 'everyone' }
-                    : { tab: 'everyone', show: v },
-                  {
-                    replace: true,
-                  }
-                )
-              }
+              onClick={() => setRequestFilter('show', v)}
             >
               {t}
-              {counts?.[key] != null && (
+              {requester === 'all' && counts?.[key] != null && (
                 <span className="n">{counts[key]}</span>
               )}
             </button>
           ))}
         </div>
+      )}
+      {everyone && (
+        <RequesterFilter
+          value={requester}
+          change={(value) => setRequestFilter('requestedBy', value)}
+        />
       )}
       {everyone && show === 'software' && (
         <div
@@ -1406,7 +1480,7 @@ export default function Requests() {
             <select
               value={softwareCategory}
               onChange={(event) =>
-                setSoftwareFilter('category', event.target.value)
+                setRequestFilter('category', event.target.value)
               }
             >
               {SOFTWARE_CATEGORIES.map(([value, label]) => (
@@ -1421,7 +1495,7 @@ export default function Requests() {
             <select
               value={softwareStatus}
               onChange={(event) =>
-                setSoftwareFilter('softwareStatus', event.target.value)
+                setRequestFilter('softwareStatus', event.target.value)
               }
             >
               {SOFTWARE_STATUSES.map(([value, label]) => (

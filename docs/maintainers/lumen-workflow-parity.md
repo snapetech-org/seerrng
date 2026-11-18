@@ -547,3 +547,16 @@ Standalone Chrome at 1440 × 1000 verified a bookmarked Retro games and Failed
 view, keyboard selection of Modern games, and the refreshed result with Failed
 retained. Native visual comparison, mobile, bundled and live provider checks
 remain open.
+
+### Household requester filter increment
+
+The Everyone tab can scope both media and software lists to a requester
+from the permission-checked, paginated user directory. The filter persists
+when changing request type, and scoped requests use the same owner in the
+initial and progress queries. Household-wide badge counts are excluded from
+scoped filter chips.
+
+Standalone Chrome at 1440 × 1000 verified loading the second user page,
+selecting a requester by keyboard, and retaining that requester when switching
+from Software to Waiting. Mobile, bundled, native visual comparison and
+live-provider checks remain open.
