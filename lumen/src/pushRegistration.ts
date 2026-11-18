@@ -37,6 +37,31 @@ export function supportsBrowserPush() {
   );
 }
 
+const workerPath = `${import.meta.env.BASE_URL}push-worker/notifications.js`;
+const workerScope = (id: number) =>
+  `${import.meta.env.BASE_URL}push-worker/${id}/`;
+
+export async function getBrowserPushSubscription(id: number) {
+  if (!supportsBrowserPush()) return null;
+  const scope = new URL(workerScope(id), location.origin).href;
+  const script = new URL(workerPath, location.origin).href;
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  const registration = registrations.find(
+    (candidate) =>
+      candidate.scope === scope && candidate.active?.scriptURL === script
+  );
+  return registration ? registration.pushManager.getSubscription() : null;
+}
+
+export async function unsubscribeBrowserPush(id: number, endpoint: string) {
+  const generation = sessionGeneration();
+  const subscription = await getBrowserPushSubscription(id);
+  return generation === sessionGeneration() &&
+    subscription?.endpoint === endpoint
+    ? subscription.unsubscribe()
+    : false;
+}
+
 export async function registerBrowserPush(id: number) {
   const generation = sessionGeneration();
   if (!supportsBrowserPush())
@@ -59,13 +84,9 @@ export async function registerBrowserPush(id: number) {
   }
   if (generation !== sessionGeneration()) return false;
 
-  const base = import.meta.env.BASE_URL;
-  const registration = await navigator.serviceWorker.register(
-    `${base}push-worker/notifications.js`,
-    {
-      scope: `${base}push-worker/${id}/`,
-    }
-  );
+  const registration = await navigator.serviceWorker.register(workerPath, {
+    scope: workerScope(id),
+  });
   await waitForActivation(registration);
   if (generation !== sessionGeneration()) return false;
 
@@ -94,7 +115,7 @@ export async function registerBrowserPush(id: number) {
       },
       'empty'
     );
-    return generation === sessionGeneration();
+    return generation === sessionGeneration() ? subscription.endpoint : null;
   } finally {
     if (!existing && generation !== sessionGeneration())
       await subscription.unsubscribe().catch(() => false);

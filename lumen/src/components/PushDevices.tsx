@@ -1,7 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { useApi } from '../hooks';
-import { registerBrowserPush, supportsBrowserPush } from '../pushRegistration';
+import {
+  getBrowserPushSubscription,
+  registerBrowserPush,
+  supportsBrowserPush,
+  unsubscribeBrowserPush,
+} from '../pushRegistration';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
@@ -29,6 +34,21 @@ export function PushDevices({ id }: { id: number }) {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
   const [notice, setNotice] = useState('');
+  const [browserEndpoint, setBrowserEndpoint] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    void getBrowserPushSubscription(id)
+      .then((subscription) => {
+        if (active) setBrowserEndpoint(subscription?.endpoint ?? null);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [id]);
+  const currentDevice = data?.some(
+    (device) => device.endpoint === browserEndpoint
+  );
   const pending = useRef(false);
   const dismiss = () => {
     if (!pending.current) setSelection(null);
@@ -42,7 +62,9 @@ export function PushDevices({ id }: { id: number }) {
     setNotice('');
     const generation = sessionGeneration();
     try {
-      if (await registerBrowserPush(id)) {
+      const endpoint = await registerBrowserPush(id);
+      if (endpoint) {
+        setBrowserEndpoint(endpoint);
         setNotice('This browser is registered.');
         reload();
       }
@@ -79,8 +101,15 @@ export function PushDevices({ id }: { id: number }) {
         'empty'
       );
       if (generation !== sessionGeneration()) return;
+      const endpoint = selection.endpoint;
       setSelection(null);
       setNotice('Browser device removed.');
+      try {
+        if (await unsubscribeBrowserPush(id, endpoint))
+          setBrowserEndpoint(null);
+      } catch {
+        // The server subscription is already gone, so delivery is disabled.
+      }
       reload();
     } catch {
       if (generation === sessionGeneration()) {
@@ -96,7 +125,9 @@ export function PushDevices({ id }: { id: number }) {
   return (
     <>
       <h3>Registered Browser Devices</h3>
-      {supportsBrowserPush() ? (
+      {currentDevice ? (
+        <p className="note">This browser is registered.</p>
+      ) : supportsBrowserPush() ? (
         <div className="toolbar">
           <button
             className="btn btn-tonal btn-sm"
@@ -127,6 +158,9 @@ export function PushDevices({ id }: { id: number }) {
             <li className="set cfg-row" key={device.endpoint}>
               <span>
                 <b>{deviceName(device.userAgent)}</b>
+                {device.endpoint === browserEndpoint && (
+                  <small>This browser</small>
+                )}
                 {Number.isFinite(Date.parse(device.createdAt)) && (
                   <small>
                     Registered {new Date(device.createdAt).toLocaleString()}
@@ -138,7 +172,9 @@ export function PushDevices({ id }: { id: number }) {
                 disabled={busy}
                 onClick={() => setSelection(device)}
               >
-                Remove Device
+                {device.endpoint === browserEndpoint
+                  ? 'Disable This Browser'
+                  : 'Remove Device'}
               </button>
             </li>
           ))}

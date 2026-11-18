@@ -743,3 +743,14 @@ Worker tests verified notification display arguments, request link resolution
 in both deployment layouts, and rejection of cross-origin and ambiguous
 navigation targets. Real subscription and delivery through a secure browser,
 mobile installation, and native visual comparison remain open.
+
+### Current browser push device increment
+
+Lumen matches the current account's dedicated browser registration to the
+server device list. It labels the matching device and allows disabling it.
+Confirmed removal clears the server subscription first, then unsubscribes the
+local browser only when its account, worker and endpoint match.
+
+An isolated test verified that disabling one browser does not unsubscribe a
+different endpoint, another account's worker or the native worker. Secure
+browser interaction, mobile installation and live delivery remain open.
