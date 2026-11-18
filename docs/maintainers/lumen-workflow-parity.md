@@ -2122,3 +2122,15 @@ detail and book grid layouts across desktop, iPhone 13, Pixel 7, and iPad
 Pro 11. Browser fixtures checked pagination, order, and shelf preview
 identities. Real reader providers were outside the check. Evidence is retained
 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-20261118/`.
+
+Lumen book series now filter by format, publication year, subject, minimum
+rating, and language. The format filter retains untracked books and keeps
+each selected format's detail links. Clearing the filters restores reading
+order. Subject and language choices come from the returned books, and filter
+state is local to the series page.
+
+Compared the previous, unfiltered and filtered states on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and 32 browser checks passed,
+including combined filters, the empty state, reset, and audiobook links.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-series-filters-20261118/`.

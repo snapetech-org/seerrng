@@ -178,6 +178,9 @@ export interface BookResult {
   posterPath?: string | null;
   bookFormat?: 'ebook' | 'audiobook' | string;
   firstPublishYear?: number;
+  languages?: string[];
+  ratingsAverage?: number;
+  subjects?: string[];
   series?: { id?: string; title?: string; position?: string }[];
   mediaInfo?: MediaInfo;
 }
@@ -719,7 +722,6 @@ export interface TvDetails extends TitleResult {
 export interface BookDetails extends BookResult {
   onUserWatchlist?: boolean;
   description?: string;
-  subjects?: string[];
   isbnCandidates?: string[];
 }
 export interface Edition {

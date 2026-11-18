@@ -10,12 +10,22 @@ test('book details reach the author and series and send the exact shelf target',
     mediaType: 'book',
     author: 'Fixture Author',
     authorId: 'OL42A',
+    firstPublishYear: 1960,
+    ratingsAverage: 4.5,
+    subjects: ['Fantasy'],
+    languages: ['eng'],
+    mediaInfo: { status: 5, availableEbookServiceIds: [1] },
     series: [{ id: seriesId, title: 'Fixture Series', position: '1' }],
   };
   const second = {
     ...first,
     id: 'OL22W',
     title: 'Another Fixture Book',
+    firstPublishYear: 2020,
+    ratingsAverage: 3,
+    subjects: ['Adventure'],
+    languages: ['fre'],
+    mediaInfo: { status: 5, availableAudiobookServiceIds: [1] },
     series: [{ ...first.series[0], position: '2' }],
   };
   const targets: unknown[] = [];
@@ -94,11 +104,28 @@ test('book details reach the author and series and send the exact shelf target',
   await expect(
     page.getByRole('heading', { name: 'Fixture Series' })
   ).toBeVisible();
-  await expect(page.locator('.grid a').first()).toHaveAttribute(
+  await expect(page.locator('.grid a.hit').first()).toHaveAttribute(
     'href',
     '/book/OL11W'
   );
   await page.screenshot({ path: info.outputPath('series.png') });
+  const filters = page.getByRole('group', { name: 'Book Series Filters' });
+  const cards = page.locator('.grid a.hit');
+  await filters.getByLabel('Format').selectOption('audiobook');
+  await expect(cards).toHaveCount(1);
+  await expect(cards.first()).toHaveAttribute('href', '/book/OL22W?f=audio');
+  await filters.getByLabel('Minimum Rating').selectOption('4.0');
+  await expect(page.getByText('No books match these filters.')).toBeVisible();
+  await filters.getByRole('button', { name: 'Clear Filters' }).click();
+  await filters.getByLabel('First Published').selectOption('older');
+  await filters.getByLabel('Subject').selectOption('fantasy');
+  await filters.getByLabel('Language').selectOption('eng');
+  await expect(cards).toHaveCount(1);
+  await expect(cards.first()).toHaveAttribute('href', '/book/OL11W');
+  await page.screenshot({ path: info.outputPath('series-filtered.png') });
+  await filters.getByRole('button', { name: 'Clear Filters' }).click();
+  await expect(cards.first()).toHaveAttribute('href', '/book/OL11W');
+  await expect(cards.nth(1)).toHaveAttribute('href', '/book/OL22W');
   await preview();
   expect(targets).toEqual([
     { type: 'author', id: 'OL42A', name: 'Fixture Author' },
