@@ -49,6 +49,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
     for (const [bookmark, destination] of [
       ['/profile/', '/me'],
+      [
+        '/users/19/watchlist?search=Arrival&page=2',
+        '/watchlist/user/19?search=Arrival&page=2',
+      ],
       ['/profile/settings/client-tokens', '/me/account/client-tokens'],
       [
         '/profile/settings/notifications/email/',

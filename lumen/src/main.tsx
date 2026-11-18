@@ -48,7 +48,7 @@ import TmdbList from './pages/TmdbList';
 import TrackRequests from './pages/TrackRequests';
 import Trending from './pages/Trending';
 import TvDetail from './pages/TvDetail';
-import Watchlist from './pages/Watchlist';
+import Watchlist, { UserWatchlist } from './pages/Watchlist';
 import { PrefsProvider } from './settings';
 import './styles/app-react.css';
 import './styles/app.css';
@@ -241,6 +241,7 @@ function App() {
           />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/watchlist/discover" element={<Watchlist discover />} />
+          <Route path="/watchlist/user/:userId" element={<UserWatchlist />} />
           <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />

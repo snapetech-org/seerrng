@@ -139,6 +139,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/me/account/notifications#notification-webpush',
       ],
       ['/profile/watchlist/?page=2', '/watchlist?page=2'],
+      ['/users/19/watchlist/?page=2', '/watchlist/user/19?page=2'],
       ['/discover/comics?q=Example', '/comics?q=Example'],
       ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
       [

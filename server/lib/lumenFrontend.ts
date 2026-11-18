@@ -253,11 +253,19 @@ function workflowDeepLink(
     if (req.query.mediaType === 'audiobook') return '/lumen/audiobooks';
   }
 
-  const destination = workflowDestinations.get(nativePath);
+  const watchlistUser = /^\/users\/([1-9]\d{0,9})\/watchlist$/.exec(
+    nativePath
+  )?.[1];
+  const userWatchlist = watchlistUser && Number(watchlistUser) <= 1_000_000_000;
+  const destination = userWatchlist
+    ? `/watchlist/user/${watchlistUser}`
+    : workflowDestinations.get(nativePath);
   if (!destination) return;
   const query = new URLSearchParams();
 
-  for (const key of workflowQueryKeys[destination] ?? []) {
+  for (const key of workflowQueryKeys[
+    userWatchlist ? '/watchlist' : destination
+  ] ?? []) {
     const value = req.query[key];
     if (typeof value !== 'string') continue;
     if (destination === '/share') {
@@ -421,9 +429,9 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, target);
   });
   server.get(/^\/lumen\/users\//, (req, res, next) => {
-    const destination = managedUserSettingsPath(
-      req.path.slice('/lumen'.length)
-    );
+    const pathname = req.path.slice('/lumen'.length);
+    const destination =
+      managedUserSettingsPath(pathname) ?? workflowDeepLink(req, pathname);
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });

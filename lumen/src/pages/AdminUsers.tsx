@@ -16,6 +16,7 @@ import ManagedQuotas from '../components/ManagedQuotas';
 import ManagedTvAccess from '../components/ManagedTvAccess';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { canViewUserWatchlist } from './Watchlist';
 
 const UserNotifications = lazy(() =>
   import('./NotificationSettings').then(({ UserNotifications }) => ({
@@ -571,6 +572,15 @@ export default function AdminUsers() {
                     <small>{user.requestCount.toLocaleString()} requests</small>
                   )}
                 </div>
+                {actor && canViewUserWatchlist(actor.permissions) && (
+                  <Link
+                    className="btn btn-quiet btn-sm"
+                    to={`/watchlist/user/${user.id}`}
+                    aria-label={`View Watchlist for ${user.displayName}`}
+                  >
+                    Watchlist
+                  </Link>
+                )}
                 <button
                   className="btn btn-quiet btn-sm"
                   aria-expanded={queueUser === user.id}

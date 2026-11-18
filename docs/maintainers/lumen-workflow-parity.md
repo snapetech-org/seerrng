@@ -1604,3 +1604,18 @@ open the matching panel for the selected user. Delegated notification settings
 reuse the personal forms. Browser registration stays with the signed-in user.
 Standalone fixtures cover the managed settings actions. Live providers, full
 bundled user workflows, and matched native visual comparison remain unverified.
+
+### Delegated watchlists
+
+The user directory and native user-watchlist bookmarks now open Lumen's
+read-only view for administrators, request managers, and users with Watchlist
+View permission. The directory link requires access to the directory as well.
+The view uses the existing authorized user endpoint and shares the filter,
+pagination, catalogue-link, and recovery controls with the personal list.
+
+TypeScript, the production build, and 28 standalone watchlist browser cases
+passed across desktop, iPhone, Android, and tablet presets. The cases include
+directory entry, filtering and pagination on the selected account, absence of
+removal, and no watchlist request on a denied direct visit. Express and nginx
+tests verified bookmark redirects. Bundled workflow rendering, live Plex, and
+matched native visual acceptance remain unverified.

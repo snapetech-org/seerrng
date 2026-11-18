@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
@@ -36,6 +36,10 @@ interface WatchlistData {
   filtersSupported: boolean;
 }
 
+export function canViewUserWatchlist(permissions: number) {
+  return (permissions & (2 | 16 | 134217728)) !== 0;
+}
+
 function itemId(item: WatchlistItem) {
   if (item.mediaType === 'movie' || item.mediaType === 'tv') {
     return Number.isSafeInteger(item.tmdbId) && (item.tmdbId ?? 0) > 0
@@ -53,6 +57,7 @@ function WatchlistPage({
   page,
   movePage,
   setFiltersSupported,
+  canRemove,
 }: {
   path: string;
   label: string;
@@ -60,6 +65,7 @@ function WatchlistPage({
   page: number;
   movePage: (page: number) => void;
   setFiltersSupported: (supported: boolean) => void;
+  canRemove: boolean;
 }) {
   const { data, error, reload, refresh } = useApi<WatchlistData>(path);
   const [removed, setRemoved] = useState<string[]>([]);
@@ -72,7 +78,7 @@ function WatchlistPage({
   }, [data, setFiltersSupported]);
 
   async function remove(mediaType: WatchlistItem['mediaType'], id: string) {
-    if (pending.current || !data?.filtersSupported) return;
+    if (!canRemove || pending.current || !data?.filtersSupported) return;
     const key = `${mediaType}:${id}`;
     pending.current = true;
     setRemoving(key);
@@ -124,7 +130,7 @@ function WatchlistPage({
                   )}
                   <small>{MEDIA_LABELS[item.mediaType]}</small>
                 </div>
-                {id && data?.filtersSupported && (
+                {id && canRemove && data?.filtersSupported && (
                   <button
                     className="btn btn-quiet btn-sm"
                     type="button"
@@ -167,10 +173,34 @@ function WatchlistPage({
   );
 }
 
+export function UserWatchlist() {
+  const { userId } = useParams();
+  const { user } = useAuth();
+  const target = userId && /^[1-9]\d{0,9}$/.test(userId) ? Number(userId) : 0;
+
+  if (
+    !user ||
+    !target ||
+    target > 1_000_000_000 ||
+    !canViewUserWatchlist(user.permissions)
+  ) {
+    return (
+      <header className="ph">
+        <h1>User Watchlist</h1>
+        <p className="note">This watchlist is unavailable.</p>
+      </header>
+    );
+  }
+
+  return <Watchlist key={target} targetUserId={target} />;
+}
+
 export default function Watchlist({
   discover = false,
+  targetUserId,
 }: {
   discover?: boolean;
+  targetUserId?: number;
 }) {
   const { user } = useAuth();
   const settings = usePublicSettings();
@@ -181,7 +211,11 @@ export default function Watchlist({
   const search = params.get('search')?.trim().slice(0, 100) ?? '';
   const media = params.get('mediaType') ?? '';
   const sort = params.get('sortBy') ?? '';
-  const label = discover ? 'Discover Watchlist' : 'Watchlist';
+  const label = targetUserId
+    ? 'User Watchlist'
+    : discover
+      ? 'Discover Watchlist'
+      : 'Watchlist';
   const categories = discover ? settings?.enabledMediaCategories : undefined;
   const mediaOptions = Object.entries(MEDIA_LABELS).filter(([type]) =>
     type === 'book'
@@ -214,26 +248,36 @@ export default function Watchlist({
   }
   const filterKey = query.toString();
   query.set('page', String(page));
-  const base = discover ? '/discover' : `/user/${user.id}`;
+  const base = discover ? '/discover' : `/user/${targetUserId ?? user.id}`;
   const path = `${base}/watchlist?${query}`;
 
   return (
     <>
       <header className="ph">
         <h1>{label}</h1>
-        <div className="toolbar">
-          <Link
-            className="chip"
-            to={discover ? '/watchlist' : '/watchlist/discover'}
-          >
-            {discover ? 'Personal Watchlist' : 'Discover Watchlist'}
-          </Link>
-        </div>
+        {targetUserId ? (
+          (user.permissions & (2 | 8)) !== 0 && (
+            <div className="toolbar">
+              <Link className="chip" to={`/admin/users/${targetUserId}`}>
+                Back to User
+              </Link>
+            </div>
+          )
+        ) : (
+          <div className="toolbar">
+            <Link
+              className="chip"
+              to={discover ? '/watchlist' : '/watchlist/discover'}
+            >
+              {discover ? 'Personal Watchlist' : 'Discover Watchlist'}
+            </Link>
+          </div>
+        )}
       </header>
       {filtersSupported === false && (
         <p className="note">
-          Plex and SeerrNG items share this list. Filters and local removal are
-          unavailable in this view.
+          Plex and SeerrNG items share this list. Filters are unavailable in
+          this view.{!targetUserId && ' Local removal is also unavailable.'}
         </p>
       )}
       {filtersSupported && (
@@ -304,6 +348,7 @@ export default function Watchlist({
           setParams(selected);
         }}
         setFiltersSupported={setFiltersSupported}
+        canRemove={targetUserId === undefined}
       />
     </>
   );

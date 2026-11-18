@@ -1,5 +1,88 @@
 import { expect, test } from '@playwright/test';
 
+test('delegated Watchlist uses the selected user and offers no removal', async ({
+  page,
+}) => {
+  const queries: URLSearchParams[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    switch (path) {
+      case '/auth/me':
+        return route.fulfill({
+          json: { id: 1, displayName: 'Administrator', permissions: 2 },
+        });
+      case '/user':
+        return route.fulfill({
+          json: {
+            pageInfo: { pages: 1 },
+            results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+          },
+        });
+      case '/user/19/watchlist':
+        expect(route.request().method()).toBe('GET');
+        queries.push(url.searchParams);
+        return route.fulfill({
+          json: {
+            filtersSupported: true,
+            totalPages: 2,
+            results: [
+              {
+                id: 20,
+                ratingKey: 'local20',
+                tmdbId: 20,
+                title: 'Example Movie',
+                mediaType: 'movie',
+              },
+            ],
+          },
+        });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+
+  await page.goto('/admin/users');
+  await page.getByRole('link', { name: 'View Watchlist for Viewer' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'User Watchlist' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Example Movie' })
+  ).toHaveAttribute('href', '/movie/20');
+  await expect(
+    page.getByRole('button', { name: /remove.*watchlist/i })
+  ).toHaveCount(0);
+  await page.getByRole('searchbox', { name: 'Search Titles' }).fill('Example');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect
+    .poll(() => queries.at(-1)?.toString())
+    .toBe('search=Example&page=2');
+  await page.getByRole('link', { name: 'Back to User' }).click();
+  await expect(page).toHaveURL(/\/admin\/users\/19$/);
+});
+
+test('a user manager without watchlist authority cannot load another user’s watchlist', async ({
+  page,
+}) => {
+  let requested = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    if (pathname.endsWith('/watchlist')) requested = true;
+    return route.fulfill({
+      json: pathname.endsWith('/auth/me')
+        ? { id: 2, displayName: 'Manager', permissions: 8 }
+        : {},
+    });
+  });
+  await page.goto('/watchlist/user/19');
+  await expect(page.getByText('This watchlist is unavailable.')).toBeVisible();
+  expect(requested).toBe(false);
+});
+
 for (const combined of [false, true]) {
   test(`personal Watchlist handles ${combined ? 'combined Plex' : 'local'} results`, async ({
     page,
