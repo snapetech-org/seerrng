@@ -3404,8 +3404,11 @@ describe('OpenID Connect', () => {
       const rejectedPath = await request(app)
         .get('/auth/oidc/login/test')
         .query({ returnUrl: '/settings/main' });
-      for (const prefix of ['', '/lumen']) {
-        const callback = `${prefix}/me/account/linked-accounts`;
+      for (const callback of [
+        '/me/account/linked-accounts',
+        '/lumen/me/account/linked-accounts',
+        '/lumen/login',
+      ]) {
         const result = await request(app)
           .get('/auth/oidc/login/test')
           .query({ returnUrl: callback });

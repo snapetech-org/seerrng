@@ -1,19 +1,62 @@
 import { api } from './api';
 import { sessionGeneration } from './sessionState';
 
-const STORAGE_KEY = 'lumen-oidc-link';
+const STORAGE_KEY = 'lumen-oidc-attempt';
 const STATE = /^[A-Za-z0-9_-]{16,256}$/;
 
 interface Attempt {
   slug: string;
-  userId: number;
+  userId: number | null;
+  destination: string;
   state: string;
 }
 
-export async function startOidcLink(slug: string, userId: number) {
+function safeDestination(value: unknown): string {
+  if (
+    typeof value !== 'string' ||
+    !value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('\\') ||
+    value.length > 2000
+  )
+    return '/';
+  const url = new URL(value, window.location.origin);
+  return url.origin === window.location.origin && url.pathname !== '/login'
+    ? url.pathname + url.search + url.hash
+    : '/';
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export const startOidcLink = (slug: string, userId: number) =>
+  startOidc(
+    slug,
+    userId,
+    window.location.pathname,
+    window.location.pathname,
+    '/'
+  );
+
+export const startOidcSignIn = (slug: string, returnTo: string) => {
+  const destination = safeDestination(returnTo);
+  return startOidc(
+    slug,
+    null,
+    base + '/login',
+    base + destination,
+    destination
+  );
+};
+
+async function startOidc(
+  slug: string,
+  userId: number | null,
+  path: string,
+  returnTo: string,
+  destination: string
+) {
   const generation = sessionGeneration();
-  const path = window.location.pathname;
-  const params = new URLSearchParams({ returnUrl: path, returnTo: path });
+  const params = new URLSearchParams({ returnUrl: path, returnTo });
   const { redirectUrl } = await api<{ redirectUrl: string }>(
     `/auth/oidc/login/${encodeURIComponent(slug)}?${params}`,
     { cache: 'no-store' }
@@ -46,20 +89,20 @@ export async function startOidcLink(slug: string, userId: number) {
   if (callback === localCallback) {
     sessionStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ slug, userId, state } satisfies Attempt)
+      JSON.stringify({ slug, userId, state, destination } satisfies Attempt)
     );
   }
   window.location.assign(provider.href);
 }
 
-export function readOidcLinkCallback() {
+export function readOidcCallback() {
   const url = new URL(window.location.href);
   return url.searchParams.has('code') || url.searchParams.has('error')
     ? url
     : null;
 }
 
-export async function completeOidcLink(url: URL, userId: number) {
+export async function completeOidc(url: URL, userId: number | null) {
   const saved = sessionStorage.getItem(STORAGE_KEY);
   sessionStorage.removeItem(STORAGE_KEY);
   if (!saved || url.searchParams.has('error'))
@@ -82,4 +125,5 @@ export async function completeOidcLink(url: URL, userId: number) {
     method: 'POST',
     body: JSON.stringify({ callbackUrl: url.href }),
   });
+  return safeDestination(attempt.destination);
 }

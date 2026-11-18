@@ -128,16 +128,18 @@ current flow constructs. If a reverse proxy rewrites a base path, confirm the
 `redirect_uri` in SeerrNG's authorization request and register that exact
 external URL; do not add a prefix or wildcard by assumption.
 
-For linking from Lumen, also register the exact URL for your deployment:
+For Lumen, register the exact sign-in and linking URLs for your deployment:
 
 ```text
+https://requests.example.com/lumen/login
 https://requests.example.com/lumen/me/account/linked-accounts
+https://requests.example.com/login
 https://requests.example.com/me/account/linked-accounts
 ```
 
-Use the first path for bundled Lumen and the second for a standalone
-companion served at the root. The browser must be on the configured
-Application URL origin when it starts linking.
+Use the two paths under `/lumen` for bundled Lumen and the two root paths
+for a standalone companion. The browser must be on the configured
+Application URL origin when it starts authorization.
 
 Sign in with Apple uses a fixed callback instead:
 

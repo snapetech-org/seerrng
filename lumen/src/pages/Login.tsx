@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import {
   finishQuickConnect,
@@ -11,7 +12,9 @@ import {
 import { BrandMark } from '../components/brand';
 import { fullSeerrUrl } from '../components/Shell';
 import { embedded } from '../deployment';
+import { usePublicSettings } from '../hooks';
 import { mediaServer, services, site } from '../mediaServer';
+import { completeOidc, readOidcCallback, startOidcSignIn } from '../oidc';
 import { usePrefs } from '../settings';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
@@ -61,13 +64,21 @@ export function friendly(e: unknown, serverName: string): string {
 export default function Login() {
   const { seerrPublicUrl } = usePrefs();
   const { refresh } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const providers = usePublicSettings()?.openIdProviders ?? [];
+  const [callback] = useState(() =>
+    location.pathname === '/login' ? readOidcCallback() : null
+  );
+  const callbackWork = useRef<Promise<string> | undefined>(undefined);
+  const callbackDelivered = useRef(false);
   const server = mediaServer();
   const plex = server.kind === 'plex';
   const passwordForm = !plex && !server.quickConnectOnly;
   // "loginStyle": "form": the username + password boxes are the sign-in page, with no
   // media server names, for families who don't know or care what Jellyfin is
   const family = site().loginForm && passwordForm && server.serverLogin;
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(!!callback);
   const [err, setErr] = useState('');
   // nothing to choose between: open the only form straight away
   // The admin's form setting wins; otherwise open the way this device last signed in.
@@ -88,7 +99,54 @@ export default function Login() {
   const [code, setCode] = useState('');
   const quickRun = useRef(0);
   const quickAbort = useRef<AbortController | null>(null);
-  const active = useRef(false);
+  const active = useRef(!!callback);
+  useEffect(() => {
+    if (!callback) return;
+    let live = true;
+    if (!callbackWork.current) {
+      window.history.replaceState(window.history.state, '', callback.pathname);
+      callbackWork.current = completeOidc(callback, null);
+    }
+    void callbackWork.current
+      .then(async (destination) => {
+        if (!live || callbackDelivered.current) return;
+        callbackDelivered.current = true;
+        navigate(destination, { replace: true });
+        await refresh();
+      })
+      .catch(() => {
+        if (live)
+          setErr('OpenID Connect sign-in could not be completed. Start again.');
+      })
+      .finally(() => {
+        if (live) {
+          active.current = false;
+          setBusy(false);
+        }
+      });
+    return () => {
+      live = false;
+    };
+  }, [callback, navigate, refresh]);
+
+  async function oidc(slug: string) {
+    if (active.current) return;
+    active.current = true;
+    setBusy(true);
+    setErr('');
+    try {
+      await startOidcSignIn(
+        slug,
+        location.pathname + location.search + location.hash
+      );
+    } catch {
+      setErr(
+        'Could not start OpenID Connect sign-in. Check the provider configuration and SeerrNG application URL.'
+      );
+      active.current = false;
+      setBusy(false);
+    }
+  }
   useEffect(
     () => () => {
       quickRun.current++; // leaving the page stops any Quick Connect polling
@@ -232,7 +290,6 @@ export default function Login() {
                 spellCheck={false}
                 disabled={busy}
                 required
-                autoFocus
               />
             </label>
             <label>
@@ -308,30 +365,43 @@ export default function Login() {
         )}
 
         {mode !== 'quick' &&
-          (!server.serverLogin && !server.localLogin ? (
-            <p className="sub" role="status">
-              Sign-in is disabled. Contact your administrator.
-            </p>
-          ) : mode === 'local' ? (
-            server.serverLogin && (
-              <button
-                className="btn btn-quiet btn-sm"
-                disabled={busy}
-                onClick={() => setMode(home)}
-              >
-                {family ? 'Back' : `Use your ${server.name} account instead`}
-              </button>
-            )
-          ) : (
-            server.localLogin && (
-              <button
-                className="btn btn-quiet btn-sm"
-                disabled={busy}
-                onClick={() => setMode('local')}
-              >
-                Use an email and password instead
-              </button>
-            )
+          (!server.serverLogin && !server.localLogin
+            ? providers.length === 0 && (
+                <p className="sub" role="status">
+                  Sign-in is disabled. Contact your administrator.
+                </p>
+              )
+            : mode === 'local'
+              ? server.serverLogin && (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy}
+                    onClick={() => setMode(home)}
+                  >
+                    {family
+                      ? 'Back'
+                      : `Use your ${server.name} account instead`}
+                  </button>
+                )
+              : server.localLogin && (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy}
+                    onClick={() => setMode('local')}
+                  >
+                    Use an email and password instead
+                  </button>
+                ))}
+        {mode !== 'quick' &&
+          providers.map(({ slug, name }) => (
+            <button
+              key={slug}
+              className="btn btn-tonal btn-sm"
+              disabled={busy}
+              onClick={() => void oidc(slug)}
+            >
+              Sign in with {name}
+            </button>
           ))}
         {embedded && (
           <a className="btn btn-quiet btn-sm" href="/login">

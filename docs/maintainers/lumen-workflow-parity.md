@@ -381,3 +381,15 @@ The native route test verifies same-origin admission for both exact Lumen
 callback paths and continued rejection of unrelated destinations. Live
 providers, Apple form-post completion, mobile, bundled browser execution,
 and Lumen's unauthenticated OIDC sign-in remain open.
+
+### OpenID Connect sign-in increment
+
+Lumen's signed-out screen displays configured identity providers and uses
+the existing server authorization and callback endpoints. It restores the
+requested same-origin route with its query and fragment. Bundled Lumen
+uses the exact additional `/lumen/login` callback path.
+
+Headed Chrome at 1440 × 1000 verified the standalone synthetic sign-in
+round trip and restoration of a Requests deep link with query and fragment.
+The native route test verifies the bundled callback allowlist. Real
+providers, Apple form-post, and bundled and mobile browser checks remain open.

@@ -11,11 +11,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi, usePublicSettings } from '../hooks';
-import {
-  completeOidcLink,
-  readOidcLinkCallback,
-  startOidcLink,
-} from '../oidcLink';
+import { completeOidc, readOidcCallback, startOidcLink } from '../oidc';
 import { sessionGeneration } from '../sessionState';
 
 interface Account {
@@ -44,8 +40,8 @@ function Accounts({ user }: { user: User }) {
   const [authorizing, setAuthorizing] = useState(false);
   useEffect(() => () => authorization.current?.abort(), []);
 
-  const [callback] = useState(readOidcLinkCallback);
-  const callbackWork = useRef<Promise<void> | undefined>(undefined);
+  const [callback] = useState(readOidcCallback);
+  const callbackWork = useRef<Promise<string> | undefined>(undefined);
   const accountId = user.id;
   const refreshLinks = linked.refresh;
   useEffect(() => {
@@ -53,7 +49,7 @@ function Accounts({ user }: { user: User }) {
     let active = true;
     if (!callbackWork.current) {
       window.history.replaceState(window.history.state, '', callback.pathname);
-      callbackWork.current = completeOidcLink(callback, accountId);
+      callbackWork.current = completeOidc(callback, accountId);
     }
     working.current = true;
     setBusy(true);

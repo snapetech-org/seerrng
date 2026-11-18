@@ -2279,6 +2279,7 @@ const getOidcRedirectUrl = (req: Request) => {
   // leak whenever the provider's redirect allowlist is permissive.
   const allowedPaths = new Set([
     '/login',
+    '/lumen/login',
     '/profile/settings/linked-accounts',
     '/me/account/linked-accounts',
     '/lumen/me/account/linked-accounts',
