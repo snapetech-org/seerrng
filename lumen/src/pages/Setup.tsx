@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { lazy, Suspense, useRef, useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
@@ -11,6 +11,45 @@ import { invalidatePublicSettings } from '../mediaServer';
 import AdminCategories from './AdminCategories';
 import AdminMediaLibraries from './AdminMediaLibraries';
 import Login from './Login';
+
+const AdminServarr = lazy(() => import('./AdminServarr'));
+const requestServices = [
+  ['radarr', 'Radarr'],
+  ['sonarr', 'Sonarr'],
+  ['readarr', 'Book and Audiobook Services'],
+  ['lidarr', 'Lidarr'],
+] as const;
+
+function SetupRequestService({
+  provider,
+  label,
+}: {
+  provider: (typeof requestServices)[number][0];
+  label: string;
+}) {
+  const [opened, setOpened] = useState(false);
+  return (
+    <details
+      className="adv"
+      onToggle={(event) => {
+        if (event.currentTarget.open) setOpened(true);
+      }}
+    >
+      <summary>{label}</summary>
+      {opened && (
+        <Suspense
+          fallback={
+            <p className="note" role="status">
+              Loading services…
+            </p>
+          }
+        >
+          <AdminServarr provider={provider} inSetup />
+        </Suspense>
+      )}
+    </details>
+  );
+}
 
 export default function Setup() {
   const { user, refresh } = useAuth();
@@ -108,6 +147,16 @@ export default function Setup() {
         <details className="adv">
           <summary>Configure Media Categories</summary>
           <AdminCategories inSetup />
+        </details>
+        <details className="adv">
+          <summary>Configure Request Services</summary>
+          {requestServices.map(([provider, label]) => (
+            <SetupRequestService
+              key={provider}
+              provider={provider}
+              label={label}
+            />
+          ))}
         </details>
         <ServiceNote error={error || null} what="setup" />
         <button

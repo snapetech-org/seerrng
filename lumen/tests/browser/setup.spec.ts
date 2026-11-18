@@ -9,6 +9,7 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   let enabled = false;
   let attempts = 0;
   let booksEnabled = false;
+  let radarrReads = 0;
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -56,6 +57,9 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
             defaultEnabledMediaCategories: { ebook: booksEnabled },
           },
         });
+      case '/settings/radarr':
+        radarrReads += 1;
+        return route.fulfill({ json: [] });
       case '/settings/initialize':
         attempts += 1;
         initialized = true;
@@ -88,6 +92,18 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   await page.getByRole('button', { name: 'Save Default Categories' }).click();
   await expect(page.getByText('Default categories saved.')).toBeVisible();
   expect(booksEnabled).toBe(true);
+  expect(radarrReads).toBe(0);
+  await page.getByText('Configure Request Services', { exact: true }).click();
+  const radarr = page.getByText('Radarr', { exact: true });
+  await radarr.click();
+  await page.getByRole('button', { name: 'Add Radarr' }).click();
+  await page.getByLabel('Service Name', { exact: true }).fill('Fixture Radarr');
+  await radarr.click();
+  await radarr.click();
+  await expect(page.getByLabel('Service Name', { exact: true })).toHaveValue(
+    'Fixture Radarr'
+  );
+  expect(radarrReads).toBe(1);
   await finish.click();
   await expect(page).toHaveURL(bundled ? '/lumen/' : '/');
   expect(attempts).toBe(1);

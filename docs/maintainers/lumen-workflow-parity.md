@@ -2725,3 +2725,10 @@ saving a default category before initialization in both the standalone
 build and the embedded build mounted at `/lumen/`. The two suites used
 desktop, iPhone 13, Pixel 7, and iPad Pro 11 presets. Matched visual
 acceptance and live settings writes remain unverified.
+
+First-run setup can now open the existing Radarr, Sonarr, Lidarr, and
+book service editors before initialization. Each editor loads on first
+open and keeps its draft when collapsed. The production build and four
+standalone browser checks passed, including opening Radarr and retaining
+its unsaved draft. Live service testing and saving, bundled browser
+coverage for this panel, and matched visual acceptance remain open.

@@ -1020,7 +1020,13 @@ function ServiceForm({
   );
 }
 
-export default function AdminServarr({ provider }: { provider: Provider }) {
+export default function AdminServarr({
+  provider,
+  inSetup = false,
+}: {
+  provider: Provider;
+  inSetup?: boolean;
+}) {
   const name = names[provider];
   const services = useApi<Service[]>(`/settings/${provider}`);
   const [editing, setEditing] = useState<Service>();
@@ -1030,14 +1036,16 @@ export default function AdminServarr({ provider }: { provider: Provider }) {
   }
   return (
     <>
-      <header className="ph">
-        <h1>{name} Services</h1>
-        <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
-          </Link>
-        </div>
-      </header>
+      {!inSetup && (
+        <header className="ph">
+          <h1>{name} Services</h1>
+          <div className="toolbar">
+            <Link className="btn btn-quiet btn-sm" to="/me">
+              Back to Account
+            </Link>
+          </div>
+        </header>
+      )}
       <ServiceNote
         error={services.error}
         what={`${name} services`}
