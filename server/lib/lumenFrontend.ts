@@ -227,6 +227,14 @@ function magazineTitle(pathname: string) {
   if (title?.trim() && title.length <= 256) return title;
 }
 
+function legacyBookSeriesDeepLink(pathname: string): string | undefined {
+  const id =
+    /^\/series\/(bookshelf-series(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(
+      pathname
+    )?.[1];
+  if (id) return `/lumen/book-series/${id}`;
+}
+
 function detailDeepLink(req: Request): string | undefined {
   const adult = /^\/adult\/([0-9a-f-]{36})\/?$/i.exec(req.path);
   const sceneId = normalizeStashDbId(adult?.[1]);
@@ -288,13 +296,8 @@ function detailDeepLink(req: Request): string | undefined {
     const [, media, id, page] = subpage;
     return `/lumen/${media}/${id}/${page}`;
   }
-  const legacyBookSeries =
-    /^\/series\/(bookshelf-series(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(
-      req.path
-    );
-  if (legacyBookSeries) {
-    return `/lumen/book-series/${legacyBookSeries[1]}`;
-  }
+  const legacySeries = legacyBookSeriesDeepLink(req.path);
+  if (legacySeries) return legacySeries;
   const bookGrouping =
     /^\/(author|book-series)\/(OL\d{1,18}A|bookshelf-(?:author|series)(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(
       req.path
@@ -699,6 +702,13 @@ export const mountLumenFrontend = (
       return res.set('Cache-Control', 'no-store').redirect(302, destination);
     }
   );
+  server.get(/^\/lumen\/series\//i, (req, res, next) => {
+    const destination = legacyBookSeriesDeepLink(
+      req.path.slice('/lumen'.length)
+    );
+    if (!destination) return next();
+    return res.set('Cache-Control', 'no-store').redirect(302, destination);
+  });
   server.get(/^\/lumen\/discover(?:\/|$)/, (req, res, next) => {
     const pathname = req.path.slice('/lumen'.length);
     const destination =

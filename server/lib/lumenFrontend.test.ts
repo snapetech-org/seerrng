@@ -88,6 +88,16 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       assert.equal(response.headers.location, `/lumen${destination}`);
       assert.equal(response.headers['cache-control'], 'no-store');
     }
+    const legacySeries = await request(app).get(
+      '/lumen/series/bookshelf-series%3A1%3AU2VyaWVz%3A42/'
+    );
+    assert.equal(legacySeries.status, 302);
+    assert.equal(
+      legacySeries.headers.location,
+      '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz%3A42'
+    );
+    assert.equal(legacySeries.headers['cache-control'], 'no-store');
+    assert.equal((await request(app).get('/lumen/series/genres')).status, 200);
     const userDirectory = await request(app).get('/lumen/users/');
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');
