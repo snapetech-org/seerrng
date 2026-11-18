@@ -23,6 +23,7 @@ const feeds = {
 interface FeedPage {
   page: number;
   hasMore: boolean;
+  missingMappings?: number;
   items: MappingCandidate[];
 }
 
@@ -48,6 +49,7 @@ export default function ProviderDiscovery() {
   );
   const current = data?.page === page ? data : null;
   const items = current?.items.filter((item) => !unmatched || !videoHref(item));
+  const missingMappings = current?.missingMappings;
 
   function update(name: string, value: string, resetPage = true) {
     const next = new URLSearchParams(params);
@@ -94,6 +96,12 @@ export default function ProviderDiscovery() {
           />{' '}
           Unmatched Only
         </label>
+        {typeof missingMappings === 'number' && missingMappings > 0 && (
+          <span className="note">
+            {missingMappings} unmatched{' '}
+            {missingMappings === 1 ? 'title' : 'titles'} on this page
+          </span>
+        )}
       </div>
       {needsList && (
         <form

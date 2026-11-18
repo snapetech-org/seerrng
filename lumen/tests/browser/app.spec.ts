@@ -4288,7 +4288,7 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
         json: {
           page: number,
           hasMore: number === 1,
-          missingMappings: 1,
+          missingMappings: number === 1 ? 1 : 0,
           items:
             number === 1
               ? [
@@ -4310,6 +4310,7 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
     page.getByRole('link', { name: 'Matched Fixture' })
   ).toHaveAttribute('href', '/movie/101');
   expect(requests[0].get('list')).toBe('viewer/fixture');
+  await expect(page.getByText('1 unmatched title on this page')).toBeVisible();
   const unmatched = page.getByRole('checkbox', { name: 'Unmatched Only' });
   await unmatched.click();
   await expect(unmatched).toBeChecked();
@@ -4322,6 +4323,7 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
     page.getByText('No unmatched titles on this page.')
   ).toBeVisible();
   expect(requests.at(-1)?.get('page')).toBe('2');
+  await expect(page.getByText('1 unmatched title on this page')).toHaveCount(0);
 });
 
 test('Provider Discovery saves and resets an exact viewer title match', async ({
@@ -4385,11 +4387,11 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
   await page.getByRole('button', { name: 'Search Matches' }).click();
   await page.getByRole('button', { name: 'Match Catalogue Series' }).click();
   await expect(
-    page.getByRole('link', { name: 'Provider Fixture' })
+    page.getByRole('link', { name: 'Provider Fixture', exact: true })
   ).toHaveAttribute('href', '/tv/202');
   await page.getByRole('button', { name: 'Reset Match' }).click();
   await expect(
-    page.getByRole('link', { name: 'Provider Fixture' })
+    page.getByRole('link', { name: 'Provider Fixture', exact: true })
   ).toHaveCount(0);
   await expect(
     page.getByRole('button', { name: 'Match Title', exact: true })
