@@ -2982,3 +2982,20 @@ release order, using the same YouTube validation as title details.
 Twenty standalone and four bundled collection checks passed. The fixture
 verifies that an invalid trailer ID is skipped in favor of a valid one.
 Live metadata and matched visual acceptance remain unverified.
+
+### Bookmark and account workflow verification
+
+| Workflow | Landed on main | Verified | Still to verify |
+| --- | --- | --- | --- |
+| Watch session links | `734054549` | Bundled default and locked routes preserve list, detail, and invite destinations. The redirect excludes query tokens and remains compatible with browser fragment inheritance. | A signed-out click from a Classic invite through the bundled redirect, login, and join against the real server. |
+| Discovery and catalog bookmarks | `59c94ea41`, `2cb2b54ef`, `544a8f00a`, `8e410df1f` | Bundled redirect cases cover title details and discovery filters. Standalone browser cases cover availability filter selection, explicit quality precedence, and clearing legacy aliases. | Matched standalone and bundled discovery renders at narrow and wide viewports with the affected filters active. |
+| Personal and administrator bookmarks | `c057b5047`, `a58961631`, `0e8994380` | Bundled routing cases cover calendar, account, watchlist, search, settings, and dotted magazine titles. They also check Classic opt-in and unsupported settings fallthrough. | End-to-end sign-in and access-denial checks reached through the redirected administration bookmarks. |
+| Request bookmarks and My Software | `41b4302b7`, `709e83136`, `698c1568f`, `c6b2863f0`, `a8a136a1e` | Bundled routing, actual standalone nginx redirects, and standalone browser fixtures cover the requester, status, media, format and sort translations. My Software sends only the signed-in user's ID. Matched request renders were inspected at 390 and 1440 pixels. | Repeat the owner-scoped workflow against the bundled production server and isolated software requests populated through the normal API. |
+| Coming Soon pagination | `6d9bf45a2` | Browser fixtures cover an additional page, media-specific network requests, failure and retry, title wrapping, and the existing tablet layout. | Matched renders of the new pagination controls and real-server paging in both deployments. |
+| One-time sign-in links | `ed08e9ee9`, `df8b19237`, `ae0cda171` | Standalone browser fixtures cover administrator creation and revocation, explicit redemption, address-bar cleanup, restoration of the requested title, and opening a link into an existing session. | Click a generated link into a fresh browser against both production deployments and verify expiry, revocation, and single use. Compare the expanded administrator panel and sign-in confirmation at matching desktop and mobile widths. |
+
+The older increment notes describe the state at delivery. Use the table above for
+these workflows and current route, permission, and browser evidence when
+rechecking the original inventory. A continuation audit must include both
+deployments and a real authorization decision wherever a fixture stood in for
+the server.
