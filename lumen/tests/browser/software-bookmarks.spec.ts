@@ -5,6 +5,7 @@ test('software bookmarks open catalog titles by provider and preserve search', a
 }, info) => {
   const datKey = 'dat-' + 'a'.repeat(64);
   const reads: string[] = [];
+  const patchReads: URLSearchParams[] = [];
   const requests: unknown[] = [];
   let failSecond = true;
   let followed = false;
@@ -21,6 +22,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname.slice(7);
+    if (path === '/patches/search') {
+      patchReads.push(url.searchParams);
+      return route.fulfill({ json: { available: true, results: [] } });
+    }
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/follow' && route.request().method() === 'POST') {
@@ -155,6 +160,27 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     'nes'
   );
   await page.screenshot({ path: info.outputPath('dat-bookmark.png') });
+  await page
+    .getByRole('link', { name: 'Translations and Hacks for This Game' })
+    .click();
+  await expect(
+    page.getByText('Showing projects for the selected game and console.')
+  ).toBeVisible();
+  await expect
+    .poll(() => Object.fromEntries(patchReads.at(-1) ?? []))
+    .toEqual({
+      catalogKey: datKey,
+      platform: 'nes',
+    });
+  await page.getByLabel('Language').selectOption('fr');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
+  await expect
+    .poll(() => Object.fromEntries(patchReads.at(-1) ?? []))
+    .toEqual({
+      catalogKey: datKey,
+      platform: 'nes',
+      language: 'fr',
+    });
   expect(reads).toEqual([
     '/request/software/catalog/games/42?category=game',
     '/request/software/catalog/games/43?category=game',

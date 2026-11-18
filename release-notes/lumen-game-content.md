@@ -14,3 +14,5 @@ or add-ons by name when the catalog has them, with IGDB IDs as a fallback.
 
 Game Finder supports filtered QuestarrNG searches, including excluded themes,
 and lets you save searches and opt into notifications for new matches.
+Emulated game details link to translations and hacks for the selected game
+and console.

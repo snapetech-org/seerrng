@@ -308,6 +308,15 @@ function GameDetailView({
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
   const sys =
     systems.find(({ slug }) => slug === system)?.slug ?? systems[0]?.slug ?? '';
+  const patchSearch =
+    (cat === 'retro' || cat === 'modern') && sys && (g.catalogId || id)
+      ? new URLSearchParams({
+          catalogKey: g.catalogId || id,
+          platform: sys,
+          language: '',
+          completeOnly: 'false',
+        })
+      : undefined;
   const contentId =
     cat === 'game' &&
     !dat &&
@@ -389,6 +398,14 @@ function GameDetailView({
           <div className="dstatus">
             <StatPill s={s} />
             <IndexerSearchLink category={cat} title={g.title} />
+            {patchSearch && (
+              <Link
+                className="btn btn-quiet btn-sm"
+                to={`/patches?${patchSearch}`}
+              >
+                Translations and Hacks for This Game
+              </Link>
+            )}
             {cat === 'game' &&
               !dat &&
               typeof g.igdbId === 'number' &&

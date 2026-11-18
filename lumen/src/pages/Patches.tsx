@@ -68,7 +68,11 @@ export default function Patches() {
     : '';
   const completeOnly = params.get('completeOnly') !== 'false';
   const cursor = (params.get('cursor') ?? '').slice(0, 256);
+  const catalogKey = (params.get('catalogKey') ?? '').trim().slice(0, 128);
+  const platform = (params.get('platform') ?? '').trim().slice(0, 64);
   const query = new URLSearchParams();
+  if (catalogKey) query.set('catalogKey', catalogKey);
+  if (platform) query.set('platform', platform);
   if (search) query.set('q', search);
   if (kind) query.set('kind', kind);
   if (language) query.set('language', language);
@@ -78,13 +82,23 @@ export default function Patches() {
     available: boolean;
     results: PatchProject[];
     nextCursor?: string | null;
-  }>(`/patches/search?${query}`);
+  }>(`/patches/search?${query}`, { currentPathOnly: true });
 
   const nextCursor = data?.nextCursor;
 
   return (
     <>
       <ExtraHeader title="Translations and Hacks" />
+      {catalogKey && (
+        <div className="toolbar">
+          <p className="note">
+            Showing projects for the selected game and console.
+          </p>
+          <Link className="btn btn-quiet btn-sm" to="/patches">
+            Browse All Projects
+          </Link>
+        </div>
+      )}
       <form
         key={query.toString()}
         className="toolbar"
@@ -92,6 +106,8 @@ export default function Patches() {
           event.preventDefault();
           const form = new FormData(event.currentTarget);
           const filters = new URLSearchParams();
+          if (catalogKey) filters.set('catalogKey', catalogKey);
+          if (platform) filters.set('platform', platform);
           for (const key of ['q', 'kind', 'language']) {
             filters.set(key, String(form.get(key) ?? '').trim());
           }
