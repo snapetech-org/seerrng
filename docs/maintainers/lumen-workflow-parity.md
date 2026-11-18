@@ -447,3 +447,15 @@ using a synthetic API. An eligible TV request changed from Failed to
 Searching after Retry. An owner season mismatch and another user's request
 both lacked the Retry action. Native baseline comparison, mobile, bundled,
 other media and quality combinations, and live service checks remain open.
+
+### Request history increment
+
+Lumen request rows open the latest lifecycle events and current stage from
+SeerrNG's permission-checked request detail endpoint. Events show timestamps,
+retry attempts, and recorded messages. The UI marks truncated histories and
+uses the existing sheet, list and error controls.
+
+Standalone Chrome at 1440 × 1000 verified a personal TV request with two
+events across two attempts, newest first, and dismissal with Escape.
+Native visual comparison, mobile, bundled, delegated browser verification,
+and the software-request and download-file history workflows remain open.

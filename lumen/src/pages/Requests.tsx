@@ -27,6 +27,7 @@ import { RequestEditSheet } from '../components/requestEdit';
 import RequestEpisodeQueueSheet, {
   canEditEpisodeQueue,
 } from '../components/RequestEpisodeQueueSheet';
+import RequestHistorySheet from '../components/RequestHistorySheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { localToday } from '../dates';
@@ -897,6 +898,7 @@ export default function Requests() {
   }, [show, everyone]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
+  const [history, setHistory] = useState<Row | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
   // a decline, a cancel or a remove waits for a yes; none can be taken back
@@ -1361,6 +1363,14 @@ export default function Requests() {
                   {detail && <span className="d">{detail}</span>}
                 </div>
                 <div className="rqa">
+                  {x.r.id > 0 && (
+                    <button
+                      className="btn btn-sm btn-quiet"
+                      onClick={() => setHistory(x)}
+                    >
+                      History
+                    </button>
+                  )}
                   {canEditEpisodeQueue(x.r, user?.permissions) && (
                     <button
                       className="btn btn-sm btn-quiet"
@@ -1509,6 +1519,14 @@ export default function Requests() {
             if (how === 'cancel') void cancel(id);
             else void decide(id, how);
           }}
+        />
+      )}
+      {history && (
+        <RequestHistorySheet
+          key={history.r.id}
+          id={history.r.id}
+          title={history.title}
+          close={() => setHistory(null)}
         />
       )}
       {queueEdit && (
