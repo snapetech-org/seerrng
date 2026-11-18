@@ -657,7 +657,9 @@ function workflowDeepLink(
   }
 
   if (destination === '/search') {
-    const { query: term, type, format } = req.query;
+    const { q, query: legacyTerm, f, type: legacyType, format } = req.query;
+    const term = q ?? legacyTerm;
+    const type = f ?? legacyType;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
     if (type === 'software') {
       for (const key of ['category', 'game', 'catalogProvider']) {
@@ -688,7 +690,7 @@ function workflowDeepLink(
             query.set(key, value);
         }
       }
-    } else if (type === 'music' || type === 'album') {
+    } else if (type === 'music' || (type === 'album' && f === undefined)) {
       query.set('f', 'music');
       for (const key of [
         'artist',
@@ -702,7 +704,9 @@ function workflowDeepLink(
         if (typeof value === 'string' && value.length <= 512)
           query.set(key, value);
       }
-    } else if (type === 'book') {
+    } else if (type === 'ebook' || type === 'audio') {
+      query.set('f', type);
+    } else if (type === 'book' && f === undefined) {
       query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
     }
     const page = req.query.page;
