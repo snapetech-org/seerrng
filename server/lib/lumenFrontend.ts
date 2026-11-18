@@ -222,6 +222,7 @@ const workflowDestinations = new Map([
   ['/library', '/library'],
   ['/games', '/game-library'],
   ['/calendar', '/calendar'],
+  ['/swipe', '/swipe'],
   ['/coming-soon', '/soon'],
   ['/profile', '/me'],
   ['/users', '/admin/users'],
@@ -552,6 +553,9 @@ export const mountLumenFrontend = (
         );
     }
   );
+  server.get(/^\/lumen\/settings\/services\/?$/, (_req, res) => {
+    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/admin');
+  });
   server.get(
     /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr))?\/?$/,
     (req, res) => {

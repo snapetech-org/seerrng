@@ -2056,3 +2056,16 @@ Both production builds passed, as did 48 candidate browser checks with
 synthetic responses. Published image routing was outside this check.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-entry-20261118/`.
+
+Standalone Swipe bookmarks now serve the Lumen app instead of redirecting
+to classic SeerrNG. On bundled installations that lock members to Lumen,
+the legacy Swipe path opens the Lumen deck. Explicit bundled
+`/lumen/settings/services` bookmarks now open the Lumen administration
+directory. Verified two server tests and ten tests against the built
+standalone proxy image, including direct requests to the Swipe and admin
+entry points. The previous browser fixtures cover rendering inside the app.
+
+Native Plex and Jellyfin connection forms still need Lumen coverage before
+their legacy bookmarks can move. The classic Services page also includes
+software acquisition, reader delivery, recognition, Tunerr, override rules,
+and connection import controls that need separate coverage.

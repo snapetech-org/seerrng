@@ -67,6 +67,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(general.headers.location, '/lumen/admin/general');
     const userDefaults = await request(app).get('/lumen/settings/users/');
     assert.equal(userDefaults.headers.location, '/lumen/admin/general');
+    const services = await request(app).get('/lumen/settings/services/');
+    assert.equal(services.status, 302);
+    assert.equal(services.headers.location, '/lumen/admin');
+    assert.equal(services.headers['cache-control'], 'no-store');
+    const admin = await request(app).get('/lumen/admin');
+    assert.equal(admin.status, 200);
+    assert.match(admin.text, /Lumen/);
     assert.equal(userDirectory.status, 302);
     assert.equal(userDirectory.headers.location, '/lumen/admin/users');
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
@@ -320,6 +327,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/games', '/lumen/game-library'],
       ['/games?steam=connected', '/lumen/game-library?steam=connected'],
       ['/calendar', '/lumen/calendar'],
+      ['/swipe/', '/lumen/swipe'],
       ['/coming-soon', '/lumen/soon'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],

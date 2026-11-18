@@ -220,6 +220,11 @@ async function check(settings, clientIp, scheme, headers = {}) {
       frontend.headers.get('content-security-policy'),
       /script-src 'self'/
     );
+    for (const pathname of ['/admin', '/swipe', '/swipe/']) {
+      const response = await fetch(base + pathname, { redirect: 'manual' });
+      assert.equal(response.status, 200, pathname);
+      assert.match(await response.text(), /<div id="root"><\/div>/);
+    }
     const supportedPack = await fetch(base + packPath, {
       method: 'POST',
       headers: { 'content-type': 'text/plain' },
