@@ -738,6 +738,8 @@ export interface EditionList {
   source?: 'library' | 'lookup' | 'none';
 }
 export interface DownloadItem {
+  liveDownloadToken?: string;
+  downloadId?: string;
   size: number;
   sizeLeft: number;
   timeLeft?: string; // "hh:mm:ss"

@@ -1972,3 +1972,15 @@ playback and cross-device use remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-verify-20261118/`.
+
+Request rows now use the shared live download stream for the selected media
+copy, with scheduled progress retained as a fallback. The requester's opaque
+ID is preferred, and raw torrent hashes are limited to administrators.
+Requester pagination also tolerates responses without pagination metadata.
+Compared the scheduled and updated progress states on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build, eight store tests, and all
+80 request-status browser checks passed. Actual download clients and live
+progress on movie or series detail pages remain outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-progress-20261118/`.

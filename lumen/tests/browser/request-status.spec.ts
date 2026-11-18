@@ -345,3 +345,82 @@ test('a double click on Cancel cancels the request once', async ({ page }) => {
   await expect(page.getByText('Not found')).toHaveCount(0);
   expect(deletes).toBe(1);
 });
+
+for (const admin of [false, true]) {
+  test(`live progress updates visible request rows for ${admin ? 'administrators' : 'members'}`, async ({
+    page,
+  }, info) => {
+    const hash = 'b'.repeat(40);
+    const token = admin ? hash : 'ld1_' + 'a'.repeat(32);
+    await fixture(page, { stage: 'downloading', percent: 10 });
+    await page.route('**/api/v1/auth/me', (route) =>
+      route.fulfill({ json: { id: 1, permissions: admin ? 2 : 32 } })
+    );
+    await page.route('**/api/v1/request?**', (route) => {
+      const url = new URL(route.request().url());
+      return route.fulfill({
+        json: {
+          pageInfo: { pages: 1, results: 1 },
+          results:
+            url.searchParams.get('filter') === 'processing'
+              ? []
+              : [
+                  {
+                    id: 614,
+                    type: 'book',
+                    status: 2,
+                    bookFormat: 'audiobook',
+                    is4k: false,
+                    createdAt: '2026-11-08T12:00:00Z',
+                    currentStatus: { stage: 'downloading', percent: 10 },
+                    media: {
+                      status: 3,
+                      identifiers: [
+                        { provider: 'openlibrary', value: 'OL614W' },
+                      ],
+                      audiobookDownloadStatus: [
+                        {
+                          size: 100,
+                          sizeLeft: 90,
+                          downloadId: hash,
+                          ...(admin ? {} : { liveDownloadToken: token }),
+                        },
+                      ],
+                    },
+                  },
+                ],
+        },
+      });
+    });
+    let releaseUpdate: () => void = () => {};
+    const update = new Promise<void>((resolve) => {
+      releaseUpdate = resolve;
+    });
+    await page.route('**/api/v1/live/downloads?**', async (route) => {
+      expect(new URL(route.request().url()).searchParams.get('ids')).toBe(
+        token
+      );
+      await update;
+      await route.fulfill({
+        contentType: 'text/event-stream',
+        body: `event: downloads\ndata: ${JSON.stringify([{ id: token, state: 'downloading', size: 100, sizeLeft: 35, progress: 0.65 }])}\n\n`,
+      });
+    });
+    await page.goto('/requests?tab=all');
+    await expect(
+      page.getByText('Downloading 10%', { exact: true })
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath('scheduled.png'),
+      fullPage: true,
+    });
+    releaseUpdate();
+    await expect(
+      page.getByText('Downloading 65%', { exact: true })
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath('live.png'),
+      fullPage: true,
+    });
+  });
+}

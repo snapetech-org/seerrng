@@ -16,7 +16,7 @@ import {
   type TvDetails,
 } from '../api';
 import { forget } from '../apiCache';
-import { useAuth, useMediaServerName } from '../auth';
+import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import { Cover, shortDate } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
@@ -48,12 +48,17 @@ import {
 } from '../extras';
 import { useApi, usePullToRefresh } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import type { LiveDownload } from '../liveDownloadStore';
 import { canRetryRequest, requestFailureMessage } from '../requestRetry';
 import {
   onSessionReset,
   sessionGeneration,
   sessionUserId,
 } from '../sessionState';
+import {
+  downloadSubscriptionId,
+  useLiveDownloadProgress,
+} from '../useLiveDownloadProgress';
 
 // the glyph on a drawn cover when a request has no artwork
 const coverIcon = (type: string, format?: string): IconName =>
@@ -277,9 +282,21 @@ function otherEditionInLibrary(r: RequestItem): boolean {
       : ebook;
 }
 
+function requestDownloads(r: RequestItem) {
+  return (
+    (r.is4k
+      ? r.media.downloadStatus4k
+      : r.bookFormat === 'audiobook'
+        ? r.media.audiobookDownloadStatus
+        : r.media.downloadStatus) ?? []
+  );
+}
+
 function state(
   x: Row,
-  serverName = 'Plex'
+  serverName = 'Plex',
+  live?: ReadonlyMap<string, LiveDownload>,
+  allowRawHashes = false
 ): {
   k: 'ok' | 'dl' | 'wait' | 'bad';
   word: string;
@@ -290,6 +307,26 @@ function state(
 } {
   const r = x.r;
   const current = r.currentStatus;
+  const scheduled = requestDownloads(r);
+  const dls = scheduled.map((download) => {
+    const id = live && downloadSubscriptionId(download, allowRawHashes);
+    const update = id ? live?.get(id) : undefined;
+    return update &&
+      Number.isFinite(update.size) &&
+      update.size > 0 &&
+      Number.isFinite(update.sizeLeft) &&
+      update.sizeLeft >= 0 &&
+      update.sizeLeft <= update.size
+      ? { ...download, size: update.size, sizeLeft: update.sizeLeft }
+      : download;
+  });
+  const downloading = dls.length;
+  const size = dls.reduce((a, d) => a + (d.size || 0), 0);
+  const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);
+  const pct = size
+    ? Math.max(0, Math.min(100, Math.round((1 - left / size) * 100)))
+    : undefined;
+
   // a comic or manga series with part of it in the library and nothing downloading
   if (
     r.type === 'comic' &&
@@ -336,24 +373,27 @@ function state(
       case 'searching':
         return { ...base, k: 'wait', word: 'Searching', ico: 'clock' };
       case 'downloading': {
-        const pct =
-          typeof current.percent === 'number' &&
-          Number.isFinite(current.percent) &&
-          current.percent >= 0 &&
-          current.percent <= 100
+        const displayedPct = dls.some(
+          (item, index) => item !== scheduled[index]
+        )
+          ? pct
+          : typeof current.percent === 'number' &&
+              Number.isFinite(current.percent) &&
+              current.percent >= 0 &&
+              current.percent <= 100
             ? Math.round(current.percent)
             : undefined;
         return {
           ...base,
           k: 'dl',
           word:
-            pct === 0
+            displayedPct === 0
               ? 'Queued'
-              : pct === undefined
+              : displayedPct === undefined
                 ? 'Downloading'
-                : `Downloading ${pct}%`,
+                : `Downloading ${displayedPct}%`,
           ico: 'down',
-          pct,
+          pct: displayedPct,
         };
       }
       case 'importing':
@@ -406,18 +446,6 @@ function state(
       : r.is4k
         ? r.media.status4k
         : r.media.status;
-  const dls =
-    (r.is4k
-      ? r.media.downloadStatus4k
-      : r.bookFormat === 'audiobook'
-        ? r.media.audiobookDownloadStatus
-        : r.media.downloadStatus) || [];
-  const downloading = dls.length;
-  const size = dls.reduce((a, d) => a + (d.size || 0), 0);
-  const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);
-  const pct = size
-    ? Math.max(0, Math.min(100, Math.round((1 - left / size) * 100)))
-    : undefined;
   if (ms === MediaStatus.AVAILABLE)
     return {
       k: 'ok',
@@ -488,12 +516,7 @@ function state(
 // download client's queue "downloading", so this is what tells a running download from a
 // queued one.
 function progress(r: RequestItem) {
-  const dls =
-    (r.is4k
-      ? r.media.downloadStatus4k
-      : r.bookFormat === 'audiobook'
-        ? r.media.audiobookDownloadStatus
-        : r.media.downloadStatus) || [];
+  const dls = requestDownloads(r);
   const size = dls.reduce((a, d) => a + (d.size || 0), 0);
   const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);
   return size ? 1 - left / size : 0;
@@ -996,7 +1019,7 @@ function RequesterFilter({
         </button>
       )}
       {!!data &&
-        data.pageInfo.page === page + 1 &&
+        data.pageInfo?.page === page + 1 &&
         data.pageInfo.pages > page + 1 && (
           <button
             className="btn btn-quiet btn-sm"
@@ -1369,6 +1392,15 @@ export default function Requests() {
       : tab === 'all'
         ? all
         : act;
+  const allowRawHashes = isAdministrator(user?.permissions);
+  const liveDownloads = useLiveDownloadProgress(
+    list.flatMap(({ r }) =>
+      requestDownloads(r).map((download) =>
+        downloadSubscriptionId(download, allowRawHashes)
+      )
+    )
+  );
+
   const shown = everyone ? others : rows;
 
   // keep download percentages moving while anything shown is downloading
@@ -1505,7 +1537,7 @@ export default function Requests() {
   };
 
   const renderRequestActions = (x: Row, moderate: boolean) => {
-    const st = state(x, serverName);
+    const st = state(x, serverName, liveDownloads, allowRawHashes);
     return (
       <>
         {canEditEpisodeQueue(x.r, user?.permissions) && (
@@ -1873,7 +1905,7 @@ export default function Requests() {
       )}
       <div className="rqlist">
         {list.map((x) => {
-          const st = state(x, serverName);
+          const st = state(x, serverName, liveDownloads, allowRawHashes);
           const detail = requestFailureMessage(x.r) ?? st.detail;
           return (
             <div className="rq" key={x.r.id}>
