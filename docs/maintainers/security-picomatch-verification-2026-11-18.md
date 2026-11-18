@@ -1,11 +1,14 @@
 # Picomatch dependency verification, 2026-11-18
 
-The two open Dependabot alerts track
+Two Dependabot alerts tracked
 [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf).
 [Alert 386](https://github.com/snapetech-org/seerrng/security/dependabot/386)
 tracks the root lockfile. [Alert 384](https://github.com/snapetech-org/seerrng/security/dependabot/384)
-tracks the documentation lockfile. GitHub lists versions through 4.0.7
-as affected and lists no patched registry version. The alerts remain open.
+tracks the documentation lockfile. GitHub withdrew the advisory on
+November 18 and now reports both alerts as fixed. The advisory has no
+patched registry version. The [upstream maintainer's disposition](https://github.com/micromatch/picomatch/pull/235#issuecomment-6315749381)
+describes these patterns as caller-controlled regular expressions.
+The local patches remain in place.
 
 [Commit 8e7c32eab](https://github.com/snapetech-org/seerrng/commit/8e7c32eab)
 adds a local mitigation for repeated wildcard extglobs. The root workspace
