@@ -46,14 +46,16 @@ interface PatchProject {
   }[];
 }
 
-function gameLink(key?: string, category = 'retro') {
+function gameLink(key?: string, category = 'retro', platform?: string | null) {
   if (!key) return;
-  if (/^dat-[0-9a-f]{64}$/.test(key)) {
-    return `/game/${category}/${encodeURIComponent(key)}?dat=1`;
-  }
-  if (/^[1-9]\d{0,9}$/.test(key) && Number(key) <= 2_147_483_647) {
-    return `/game/${category}/${key}`;
-  }
+  const dat = /^dat-[0-9a-f]{64}$/.test(key);
+  if (!dat && !(/^[1-9]\d{0,9}$/.test(key) && Number(key) <= 2_147_483_647))
+    return;
+  const query = new URLSearchParams();
+  if (dat) query.set('dat', '1');
+  if (platform && /^[a-z0-9][a-z0-9_-]{0,63}$/i.test(platform))
+    query.set('platform', platform);
+  return `/game/${category}/${key}${query.size ? `?${query}` : ''}`;
 }
 
 export default function Patches() {
@@ -179,7 +181,11 @@ export default function Patches() {
       {!!data?.results.length && (
         <ul className="setlist">
           {data.results.map((project) => {
-            const game = gameLink(project.game.catalogKey, category);
+            const game = gameLink(
+              project.game.catalogKey,
+              category,
+              platform || project.game.platformSlug
+            );
             const detail = patchHref(
               project.id,
               undefined,
@@ -279,7 +285,11 @@ export function PatchDetail() {
   const project = patch.data?.id === id ? patch.data : null;
   const category = params.get('category') === 'modern' ? 'modern' : 'retro';
   const key = project?.game.catalogKey;
-  const link = gameLink(key, category);
+  const link = gameLink(
+    key,
+    category,
+    params.get('platform') || project?.game.platformSlug
+  );
   const lookupQuery = new URLSearchParams({ category });
   const isDat = key?.startsWith('dat-');
   if (isDat) lookupQuery.set('catalogProvider', 'dat');

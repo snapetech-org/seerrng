@@ -262,12 +262,14 @@ export function GameDetail() {
   const [p] = useSearchParams();
   const cat = category as GameCategory;
   const dat = p.get('dat') === '1';
+  const platform = p.get('platform') ?? '';
   return (
     <GameDetailView
-      key={JSON.stringify([cat, id, dat])}
+      key={JSON.stringify([cat, id, dat, platform])}
       id={id}
       cat={cat}
       dat={dat}
+      platform={platform}
     />
   );
 }
@@ -276,10 +278,12 @@ function GameDetailView({
   id,
   cat,
   dat,
+  platform,
 }: {
   id: string;
   cat: GameCategory;
   dat: boolean;
+  platform: string;
 }) {
   const { user } = useAuth();
   const { data, error, reload } = useApi<Game | { game: Game }>(
@@ -289,7 +293,7 @@ function GameDetailView({
   const toast = useToast();
   const [os, setOs] = useState('');
   const [arch, setArch] = useState('');
-  const [system, setSystem] = useState('');
+  const [system, setSystem] = useState(platform);
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const [done, setDone] = useState('');
@@ -306,8 +310,9 @@ function GameDetailView({
   if (!g) return <div className="detail-loading" aria-busy="true" />;
   const s = statOf(g);
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
-  const sys =
-    systems.find(({ slug }) => slug === system)?.slug ?? systems[0]?.slug ?? '';
+  const sys = system
+    ? (systems.find(({ slug }) => slug === system)?.slug ?? '')
+    : (systems[0]?.slug ?? '');
   const patchSearch =
     (cat === 'retro' || cat === 'modern') && sys && (g.catalogId || id)
       ? new URLSearchParams({
@@ -473,6 +478,7 @@ function GameDetailView({
                     value={sys}
                     onChange={(e) => setSystem(e.target.value)}
                   >
+                    {!sys && <option value="">Choose a console</option>}
                     {systems.map((x) => (
                       <option key={x.slug} value={x.slug}>
                         {x.name}

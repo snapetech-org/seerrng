@@ -15,6 +15,14 @@ test('Patch discovery filters, follows the exact project and pages through resul
         return route.fulfill({
           json: { id: 1, displayName: 'Player', permissions: 32 },
         });
+      case '/settings/public':
+        return route.fulfill({
+          json: {
+            softwareEnabled: true,
+            romarrEnabled: true,
+            enabledMediaCategories: { game: true, modern: true },
+          },
+        });
       case '/patches/search':
         searches.push(Object.fromEntries(url.searchParams));
         return route.fulfill({
@@ -69,6 +77,9 @@ test('Patch discovery filters, follows the exact project and pages through resul
           json: {
             catalogProvider: 'dat',
             catalogId: key,
+            title: 'Fixture Game',
+            genres: [],
+            platforms: [],
             emulationSystems: [
               { group: 'modern', slug: '3ds', name: 'Nintendo 3DS' },
               { group: 'modern', slug: 'switch', name: 'Switch' },
@@ -107,7 +118,7 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await page.goto(`/patches?catalogKey=${key}&platform=switch&category=modern`);
   await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
     'href',
-    `/game/modern/${key}?dat=1`
+    `/game/modern/${key}?dat=1&platform=switch`
   );
   const choose = page.getByRole('link', { name: 'Choose a Version' });
   await expect(choose).toHaveAttribute(
@@ -123,6 +134,17 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await expect(page.getByLabel('System', { exact: true })).toHaveValue(
     'switch'
   );
+  await page.getByRole('link', { name: 'Open Game' }).click();
+  await expect(page.getByRole('combobox', { name: 'Console' })).toHaveValue(
+    'switch'
+  );
+  await page.goto(`/game/modern/${key}?dat=1&platform=unsupported`);
+  await expect(page.getByRole('combobox', { name: 'Console' })).toHaveValue('');
+  await expect(
+    page
+      .getByRole('button', { name: 'Request', exact: true })
+      .filter({ visible: true })
+  ).toBeDisabled();
 });
 
 test('a Following update opens its exact patch version and submits only with a compatible base', async ({
