@@ -1391,3 +1391,12 @@ format through filtering and Back to Details. Bookshelf-only identities
 do not offer an Open Library association link. Eight browser checks
 across four presets passed. The graph view, live provider data, and
 matched visual comparisons remain open.
+
+Associations now has an interactive graph on viewports of at least
+640 CSS pixels. Graph nodes use the same relationship filters and detail
+links as the list. Keyboard selection reveals the relationship reason.
+Narrow viewports show the list, including when opening a graph URL.
+
+Eight standalone checks passed, including graph selection on desktop and
+tablet, the narrow fallback, and music and book entry points. Live
+provider data and matched visual comparisons remain open.

@@ -3035,6 +3035,34 @@ test('movie associations preserve related identities and explanations', async ({
   );
   await expect(page.getByText('Worked on the soundtrack')).toBeVisible();
   await expect(page).toHaveURL(/type=shared-person$/);
+  if (page.viewportSize()!.width >= 640) {
+    await page.getByRole('button', { name: 'Graph', exact: true }).click();
+    const graph = page.getByRole('region', { name: 'Association Graph' });
+    const node = graph.getByRole('button', {
+      name: 'Related Person, Shared People',
+    });
+    await expect(graph.getByRole('button')).toHaveCount(1);
+    await node.focus();
+    await page.keyboard.press('Enter');
+    await expect(node).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      graph.getByRole('link', { name: 'Related Person' })
+    ).toHaveAttribute('href', '/person/101');
+    await expect(graph.getByText('Worked on the soundtrack')).toBeVisible();
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+    await expect(graph).toHaveCount(0);
+    await expect(
+      page.getByRole('link', { name: 'Related Person' })
+    ).toBeVisible();
+  } else {
+    await expect(
+      page.getByRole('button', { name: 'Graph', exact: true })
+    ).toHaveCount(0);
+    await page.goto('/associations/movie/101?view=graph');
+    await expect(
+      page.getByRole('link', { name: 'Related Person' })
+    ).toBeVisible();
+  }
 });
 
 test('music and Open Library book details open Associations with exact identity', async ({
