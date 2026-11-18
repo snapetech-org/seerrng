@@ -1820,3 +1820,18 @@ including the filtered page round trip. Matched visual acceptance remains open.
 Issue pagination now returns to the last available page when deleting a
 report reduces the page count. The active filters stay in the URL. All 32
 standalone issue browser checks passed. Matched visual acceptance remains open.
+
+### Swipe recommendations
+
+Lumen opens the native recommendation decks for movies, series, and books.
+The server gates the available categories. Requests use the account's Swipe
+preferences and record the decision after successful submission. Users can
+also pass, mark a title seen or read, and undo a decision.
+
+The production build and four browser checks passed with synthetic movie
+recommendations across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The checks
+covered request payloads, pass, and undo. Catalog decks, gesture controls,
+history, preference editing, and Swipe administration remain open.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-20261118/`.

@@ -117,6 +117,7 @@ export interface PublicSettings {
   otherUsersAvailability?: 'show' | 'distinguish' | 'hide';
   lockLumenForNonAdmins?: boolean;
   softwareEnabled?: boolean;
+  swipeEnabled?: boolean;
   romarrEnabled?: boolean;
   emailEnabled?: boolean;
   streamingRegion?: string;

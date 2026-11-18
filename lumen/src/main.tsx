@@ -69,6 +69,7 @@ const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
+const Swipe = lazy(() => import('./pages/Swipe'));
 const AdminConnectionHosts = lazy(() => import('./pages/AdminConnectionHosts'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
@@ -260,6 +261,20 @@ function App() {
           <Route path="/watchlist/user/:userId" element={<UserWatchlist />} />
           <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route
+            path="/swipe"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Swipe…
+                  </p>
+                }
+              >
+                <Swipe />
+              </Suspense>
+            }
+          />
           <Route path="/soon" element={<Soon />} />
           <Route path="/me" element={<Me />} />
           <Route

@@ -83,6 +83,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { prefs, seerrPublicUrl } = usePrefs();
   const extras = useExtras();
+  const swipeEnabled = usePublicSettings()?.swipeEnabled;
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
   const showBlocklist = useBlocklistNavigation();
@@ -343,6 +344,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Icon name="book" />
             My Media
           </NavLink>
+          {swipeEnabled && (
+            <NavLink to="/swipe">
+              <Icon name="star" />
+              Swipe
+            </NavLink>
+          )}
           <NavLink to="/calendar">
             <Icon name="cal" />
             Release Calendar

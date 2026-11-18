@@ -72,7 +72,8 @@ export default function Me() {
   const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = isAdministrator(user?.permissions);
-  const lockedToLumen = usePublicSettings()?.lockLumenForNonAdmins && !isAdmin;
+  const publicSettings = usePublicSettings();
+  const lockedToLumen = publicSettings?.lockLumenForNonAdmins && !isAdmin;
   const q = (k: string, label: string) => {
     const x = quota?.[k];
     if (!x) return null;
@@ -466,6 +467,14 @@ export default function Me() {
               Open <Icon name="chev" size="sm" />
             </Link>
           </div>
+          {publicSettings?.swipeEnabled && (
+            <div className="set">
+              <b>Swipe</b>
+              <Link className="go" to="/swipe" aria-label="Open Swipe">
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
           <div className="set">
             <b>Release Calendar</b>
             <Link
