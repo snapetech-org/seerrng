@@ -1,0 +1,179 @@
+import { useRef, useState } from 'react';
+import { api } from '../api';
+import { forget } from '../apiCache';
+import { useApi } from '../hooks';
+import { sessionGeneration } from '../sessionState';
+import { Section } from './cards';
+import { ServiceNote } from './extra';
+
+interface Provider {
+  id: number;
+  name: string;
+}
+
+interface ProviderSettings {
+  streamingSubscriptionProviderIds?: number[];
+}
+
+const MAX_PROVIDERS = 500;
+
+function sameSelection(left: Set<number>, right: Set<number>) {
+  return left.size === right.size && [...left].every((id) => right.has(id));
+}
+
+export function StreamingSubscriptions({
+  path,
+  region,
+  initialIds,
+}: {
+  path: string;
+  region: string;
+  initialIds: number[];
+}) {
+  const suffix = `?watchRegion=${encodeURIComponent(region)}`;
+  const movies = useApi<Provider[]>(`/watchproviders/movies${suffix}`);
+  const series = useApi<Provider[]>(`/watchproviders/tv${suffix}`);
+  const [saved, setSaved] = useState(() => new Set(initialIds));
+  const [draft, setDraft] = useState(saved);
+  const [search, setSearch] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [failure, setFailure] = useState('');
+  const pending = useRef(false);
+  const byId = new Map(
+    [...(movies.data ?? []), ...(series.data ?? [])].map((provider) => [
+      provider.id,
+      provider,
+    ])
+  );
+  for (const id of draft) {
+    if (!byId.has(id)) byId.set(id, { id, name: `Provider #${id}` });
+  }
+  const query = search.trim().toLocaleLowerCase();
+  const visible = [...byId.values()]
+    .filter(({ name }) => name.toLocaleLowerCase().includes(query))
+    .sort(
+      (a, b) =>
+        Number(draft.has(b.id)) - Number(draft.has(a.id)) ||
+        a.name.localeCompare(b.name)
+    );
+  const changed = !sameSelection(saved, draft);
+
+  async function save() {
+    if (pending.current || !changed || draft.size > MAX_PROVIDERS) return;
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    setNotice('');
+    setFailure('');
+    try {
+      const result = await api<ProviderSettings>(path, {
+        method: 'POST',
+        body: JSON.stringify({ streamingSubscriptionProviderIds: [...draft] }),
+      });
+      if (generation !== sessionGeneration()) return;
+      const ids = result.streamingSubscriptionProviderIds;
+      if (!Array.isArray(ids) || !sameSelection(new Set(ids), draft)) {
+        setFailure('Could not confirm the saved subscriptions. Try again.');
+        return;
+      }
+      forget(path);
+      setSaved(draft);
+      setNotice('Streaming subscriptions saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setFailure('Could not save streaming subscriptions. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Section title="Streaming Subscriptions">
+      <p className="note">
+        Choose services you subscribe to{region ? ` in ${region}` : ''}. SeerrNG
+        uses this list when the instance applies streaming availability rules to
+        requests.
+      </p>
+      <ServiceNote
+        error={movies.error}
+        what="movie providers"
+        retry={movies.reload}
+      />
+      <ServiceNote
+        error={series.error}
+        what="series providers"
+        retry={series.reload}
+      />
+      {((!movies.data && !movies.error) || (!series.data && !series.error)) && (
+        <p className="note" role="status">
+          Loading streaming providers…
+        </p>
+      )}
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void save();
+        }}
+      >
+        <div className="toolbar">
+          <label className="search">
+            <input
+              type="search"
+              aria-label="Filter streaming services"
+              placeholder="Filter streaming services"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </label>
+        </div>
+        {visible.length > 0 ? (
+          <div className="setlist">
+            {visible.map(({ id, name }) => (
+              <label className="set cfg-row" key={id}>
+                <b>{name}</b>
+                <input
+                  type="checkbox"
+                  checked={draft.has(id)}
+                  disabled={busy}
+                  onChange={(event) => {
+                    const next = new Set(draft);
+                    if (event.target.checked) next.add(id);
+                    else next.delete(id);
+                    setDraft(next);
+                  }}
+                />
+              </label>
+            ))}
+          </div>
+        ) : movies.data && series.data ? (
+          <p className="note">No matching streaming services.</p>
+        ) : null}
+        {draft.size > MAX_PROVIDERS && (
+          <p className="note" role="alert">
+            Select at most 500 services.
+          </p>
+        )}
+        {notice && (
+          <p className="note" role="status">
+            {notice}
+          </p>
+        )}
+        {failure && (
+          <p className="note" role="alert">
+            {failure}
+          </p>
+        )}
+        <div className="toolbar">
+          <button
+            className="btn btn-primary btn-sm"
+            disabled={busy || !changed || draft.size > MAX_PROVIDERS}
+          >
+            {busy ? 'Saving…' : 'Save Streaming Subscriptions'}
+          </button>
+        </div>
+      </form>
+    </Section>
+  );
+}

@@ -4,7 +4,8 @@ import { api, ApiError } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
-import { useApi } from '../hooks';
+import { StreamingSubscriptions } from '../components/StreamingSubscriptions';
+import { useApi, usePublicSettings } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
 interface Profile {
@@ -15,6 +16,7 @@ interface Profile {
   discoverRegion?: string | null;
   streamingRegion?: string | null;
   originalLanguage?: string | null;
+  streamingSubscriptionProviderIds?: number[];
 }
 
 function profileDraft(profile: Profile) {
@@ -38,10 +40,12 @@ function ProfileForm({
   path,
   profile,
   plex,
+  onSaved,
 }: {
   path: string;
   profile: Profile;
   plex: boolean;
+  onSaved: () => void;
 }) {
   const { refresh } = useAuth();
   const [saved, setSaved] = useState(() => profileDraft(profile));
@@ -120,6 +124,7 @@ function ProfileForm({
         if (generation !== sessionGeneration()) return;
         setSaved(confirmed);
         setDraft(confirmed);
+        onSaved();
         if (changes.every(({ key }) => confirmed[key] === normalized[key])) {
           setNotice('Profile saved.');
         } else {
@@ -328,6 +333,9 @@ function PasswordForm({
 function Settings({ id, plex }: { id: number; plex: boolean }) {
   const base = `/user/${id}/settings`;
   const profile = useApi<Profile>(base + '/main');
+  const publicSettings = usePublicSettings();
+  const region =
+    profile.data?.streamingRegion || publicSettings?.streamingRegion || 'US';
   const password = useApi<{ hasPassword: boolean }>(base + '/password');
   return (
     <>
@@ -342,6 +350,7 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
             path={base + '/main'}
             profile={profile.data}
             plex={plex}
+            onSaved={profile.refresh}
           />
         ) : (
           !profile.error && (
@@ -351,6 +360,13 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           )
         )}
       </Section>
+      {profile.data && (
+        <StreamingSubscriptions
+          path={base + '/main'}
+          region={region === 'all' ? '' : region}
+          initialIds={profile.data.streamingSubscriptionProviderIds ?? []}
+        />
+      )}
       <Section title="Password">
         <ServiceNote
           error={password.error}

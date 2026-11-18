@@ -777,3 +777,15 @@ the query, and Discover Home revisions include the preference.
 The route regression test verified the exact TMDB region for an override,
 All regions and the streaming fallback. Live TMDB and rendered comparison
 remain unverified.
+
+### Personal streaming subscriptions increment
+
+Account Settings lets users search and save streaming subscriptions from the
+combined movie and series provider catalogs. It uses the saved personal or
+server streaming region and preserves selected IDs absent from the catalog.
+The save only changes the subscription list.
+
+Standalone Chrome verified region-scoped catalog loading, provider search,
+and saving a new selection while retaining an existing ID absent from the
+fixture. Bulk selection, live policy effects, mobile, bundled and native
+visual comparison remain open.
