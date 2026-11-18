@@ -730,3 +730,16 @@ New browser registration and Lumen service-worker delivery remain open.
 Standalone Chrome verified device removal against a synthetic API, with an
 empty device list on API readback. Mobile, bundled and native visual checks
 remain open.
+
+### Browser push registration increment
+
+Lumen registers a push worker in an account-specific scope outside its app
+pages. The standalone cleanup targets the legacy root worker and preserves
+the new registrations. Bundled Lumen leaves the native root worker alone.
+Notification clicks validate the destination and preserve supported request
+links under the appropriate frontend base.
+
+Worker tests verified notification display arguments, request link resolution
+in both deployment layouts, and rejection of cross-origin and ambiguous
+navigation targets. Real subscription and delivery through a secure browser,
+mobile installation, and native visual comparison remain open.

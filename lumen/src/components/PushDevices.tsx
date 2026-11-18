@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { api } from '../api';
 import { useApi } from '../hooks';
+import { registerBrowserPush, supportsBrowserPush } from '../pushRegistration';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
@@ -33,6 +34,37 @@ export function PushDevices({ id }: { id: number }) {
     if (!pending.current) setSelection(null);
   };
 
+  async function register() {
+    if (pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setFailure('');
+    setNotice('');
+    const generation = sessionGeneration();
+    try {
+      if (await registerBrowserPush(id)) {
+        setNotice('This browser is registered.');
+        reload();
+      }
+    } catch (cause) {
+      if (generation === sessionGeneration()) {
+        // Never surface network exceptions that might include subscription details.
+        setFailure(
+          cause instanceof Error &&
+            [
+              'Allow notifications in your browser to register this device.',
+              'Browser push registration is disabled. Check your notification preferences.',
+            ].includes(cause.message)
+            ? cause.message
+            : 'Could not register this browser. Try again.'
+        );
+      }
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
   async function remove() {
     if (!selection || pending.current) return;
     const generation = sessionGeneration();
@@ -64,6 +96,22 @@ export function PushDevices({ id }: { id: number }) {
   return (
     <>
       <h3>Registered Browser Devices</h3>
+      {supportsBrowserPush() ? (
+        <div className="toolbar">
+          <button
+            className="btn btn-tonal btn-sm"
+            disabled={busy}
+            onClick={() => void register()}
+          >
+            Register This Browser
+          </button>
+        </div>
+      ) : (
+        <p className="note">
+          Browser registration requires a compatible browser and a secure
+          connection.
+        </p>
+      )}
       <ServiceNote error={error} what="browser devices" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">

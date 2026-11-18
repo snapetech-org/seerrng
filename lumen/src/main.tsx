@@ -280,7 +280,22 @@ function App() {
 if (!embedded && 'serviceWorker' in navigator) {
   navigator.serviceWorker
     .getRegistrations()
-    .then((regs) => regs.forEach((r) => r.unregister()))
+    .then((regs) => {
+      const legacyScript = new URL('/sw.js', location.origin).href;
+      const rootScope = new URL('/', location.origin).href;
+      for (const registration of regs) {
+        const worker =
+          registration.active ??
+          registration.waiting ??
+          registration.installing;
+        if (
+          registration.scope === rootScope &&
+          worker?.scriptURL === legacyScript
+        ) {
+          void registration.unregister().catch(() => {});
+        }
+      }
+    })
     .catch(() => {});
 }
 // ...and the offline caches it left behind
