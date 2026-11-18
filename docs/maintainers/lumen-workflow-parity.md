@@ -973,3 +973,9 @@ and the 4K options sheet. Both send whole-series intent, display the season
 accepted by SeerrNG, and preserve the selected quality in the confirmation.
 The checks passed at desktop, iPhone, Android and tablet presets. Featured
 cards and visual comparison with the bundled and native interfaces remain open.
+
+The Discover featured-series action now has standalone browser coverage for
+a watch-rule rejection and retry. Both attempts preserve whole-series intent,
+and the successful retry reports the accepted season. Desktop, iPhone,
+Android and tablet presets passed. Bundled and native visual comparisons
+remain open.

@@ -1562,3 +1562,65 @@ for (const use4k of [false, true]) {
     ]);
   });
 }
+
+test('featured series can retry a watch-rule rejection and confirm accepted seasons', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 3, displayName: 'Viewer', permissions: 32 } })
+  );
+  await page.route('**/api/v1/discover/trending', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 202,
+          title: undefined,
+          name: 'Featured Series',
+          mediaType: 'tv',
+        },
+      ]),
+    })
+  );
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    writes.push(route.request().postDataJSON());
+    return writes.length === 1
+      ? route.fulfill({
+          status: 403,
+          json: {
+            code: 'TV_SEASON_WATCH_GATE',
+            message: 'Finish the previous season first.',
+          },
+        })
+      : route.fulfill({
+          status: 201,
+          json: { id: 77, seasons: [{ seasonNumber: 2 }] },
+        });
+  });
+
+  await page.goto('/');
+  const card = page.locator('.feat').filter({ hasText: 'Featured Series' });
+  const request = card.getByRole('button', {
+    name: 'Request series',
+    exact: true,
+  });
+  await request.click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Finish the previous season first.' })
+  ).toBeVisible();
+  await expect(request).toBeEnabled();
+  await request.click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Requested Featured Series · Season 2' })
+  ).toBeVisible();
+  await expect(request).toHaveCount(0);
+  const expected = { mediaType: 'tv', mediaId: 202, seasons: 'all' };
+  expect(writes).toEqual([expected, expected]);
+});
