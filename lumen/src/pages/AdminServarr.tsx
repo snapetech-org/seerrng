@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, ApiError } from '../api';
+import { api, ApiError, connectionHostsPath, type Host } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -150,6 +150,7 @@ function ServiceForm({
     isLazyLibrarian || comicCollector || provider === 'backissue';
   const hasMetadata = provider === 'lidarr' || isBook;
   const endpoint = `/settings/${provider}`;
+  const hosts = useApi<Host[]>(connectionHostsPath);
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
   const [options, setOptions] = useState<Options>();
   const [mappingText, setMappingText] = useState(() =>
@@ -497,6 +498,27 @@ function ServiceForm({
                 </label>
               )}
             </>
+          )}
+          {!!hosts.data?.length && (
+            <label className="set cfg-row">
+              <span>Saved Connection Host</span>
+              <select
+                className="cfg-select"
+                disabled={busy}
+                value=""
+                onChange={(event) => {
+                  if (event.target.value)
+                    change({ hostname: event.target.value });
+                }}
+              >
+                <option value="">Choose a Saved Host</option>
+                {hosts.data.map(({ name, hostname }) => (
+                  <option key={name} value={hostname}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
           {connectionFields.map(([field, label, type]) => (
             <label className="set cfg-row" key={field}>

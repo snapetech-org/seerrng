@@ -155,6 +155,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Connection Hosts</b>
+              <Link
+                className="go"
+                to="/admin/connection-hosts"
+                aria-label="Open Connection Hosts"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Prowlarr Settings</b>
               <Link
                 className="go"

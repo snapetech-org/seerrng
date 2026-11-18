@@ -309,3 +309,14 @@ synthetic responses. Live Jellystat statistics were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-jellystat-20261118/`.
+
+### Saved connection hosts
+
+Administrators can edit the reusable host list from You and populate the
+hostname in the shared service editor. Compared the saved list and Radarr
+picker against the existing service form on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. The production build and eight browser checks passed with
+synthetic settings responses. Other connection editors were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-hosts-20261118/`.

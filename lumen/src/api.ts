@@ -813,3 +813,9 @@ export async function bookCovers(
   await Promise.all([worker(), worker(), worker()]);
   return out;
 }
+
+export const connectionHostsPath = '/settings/connection-hosts';
+export interface Host {
+  name: string;
+  hostname: string;
+}

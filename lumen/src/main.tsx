@@ -69,6 +69,7 @@ const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
+const AdminConnectionHosts = lazy(() => import('./pages/AdminConnectionHosts'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
@@ -433,6 +434,24 @@ function App() {
                   }
                 >
                   <AdminNetwork />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/connection-hosts"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading connection hosts…
+                    </p>
+                  }
+                >
+                  <AdminConnectionHosts />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
