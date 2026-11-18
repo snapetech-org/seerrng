@@ -1,12 +1,18 @@
 import { useRef, useState } from 'react';
-import { api } from '../api';
+import { api, type TvDetails } from '../api';
+import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
 import { type MappingCandidate, videoHref } from './IdentityMapping';
+import { ServiceNote } from './extra';
 
 type Provider = 'trakt' | 'anilist' | 'simkl';
 type Action = 'watched' | 'rating' | 'progress';
-type Change = { action: Action; value: number | boolean };
+type Change = {
+  action: Action;
+  value: number | boolean;
+  episode?: { season: number; episode: number };
+};
 type TrackingItem = MappingCandidate & {
   sourceId?: string;
   status?: string;
@@ -51,6 +57,50 @@ export default function LibraryTracking({
       ? { tmdbId: item.tmdbId, mediaType: item.mediaType }
       : null;
   const [open, setOpen] = useState(false);
+  const [episodeOpen, setEpisodeOpen] = useState(false);
+  const [chosenSeason, setChosenSeason] = useState<number>();
+  const [chosenEpisode, setChosenEpisode] = useState<number>();
+  const episodeTracking =
+    !aniList && item.mediaType === 'tv' && !!target && !!item.sourceId;
+  const showEpisodes = open && episodeOpen && episodeTracking;
+  const tv = useApi<TvDetails>(showEpisodes ? `/tv/${item.tmdbId}` : null, {
+    currentPathOnly: true,
+  });
+  const seasons =
+    tv.data?.seasons?.filter(({ episodeCount }) => episodeCount > 0) ?? [];
+  const season =
+    seasons.find(({ seasonNumber }) => seasonNumber === chosenSeason)
+      ?.seasonNumber ??
+    (seasons.find(({ seasonNumber }) => seasonNumber > 0) ?? seasons[0])
+      ?.seasonNumber;
+  const seasonDetails = useApi<{
+    episodes: { episodeNumber: number; name: string }[];
+  }>(
+    showEpisodes && season !== undefined
+      ? `/tv/${item.tmdbId}/season/${season}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const episodes = seasonDetails.data?.episodes ?? [];
+  const episode =
+    episodes.find(({ episodeNumber }) => episodeNumber === chosenEpisode)
+      ?.episodeNumber ?? episodes[0]?.episodeNumber;
+  const watch = useApi<{
+    available: boolean;
+    episodes: { episode: number; watched: boolean }[];
+  }>(
+    showEpisodes && season !== undefined && episodes.length
+      ? `${base}/${provider}/episodes?${new URLSearchParams({
+          sourceId: item.sourceId!,
+          tmdbId: String(item.tmdbId),
+          season: String(season),
+        })}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const episodeWatched = watch.data?.available
+    ? watch.data.episodes?.find((entry) => entry.episode === episode)?.watched
+    : undefined;
   const [rating, setRating] = useState('');
   const [progress, setProgress] = useState('');
   const [confirm, setConfirm] = useState<Change>();
@@ -88,6 +138,7 @@ export default function LibraryTracking({
       if (result.state === 'succeeded') {
         attempts.current.delete(signature);
         setNotice('Provider tracking updated.');
+        if (change.episode) watch.reload();
         updated();
       } else {
         setFailure(
@@ -188,7 +239,143 @@ export default function LibraryTracking({
               </button>
             </>
           )}
+          {episodeTracking && (
+            <button
+              className="btn btn-quiet btn-sm"
+              type="button"
+              disabled={busy}
+              aria-expanded={episodeOpen}
+              onClick={() => setEpisodeOpen(!episodeOpen)}
+            >
+              Track Individual Episodes
+            </button>
+          )}
         </div>
+      )}
+      {showEpisodes && (
+        <>
+          <ServiceNote
+            error={tv.error}
+            what="series seasons"
+            retry={tv.reload}
+          />
+          <ServiceNote
+            error={seasonDetails.error}
+            what="season episodes"
+            retry={seasonDetails.reload}
+          />
+          <ServiceNote
+            error={watch.error}
+            what="provider episode status"
+            retry={watch.reload}
+          />
+          {!tv.data && !tv.error && (
+            <p className="note" role="status">
+              Loading seasons…
+            </p>
+          )}
+          {tv.data && !seasons.length && (
+            <p className="note">No seasons are available.</p>
+          )}
+          {season !== undefined &&
+            !seasonDetails.data &&
+            !seasonDetails.error && (
+              <p className="note" role="status">
+                Loading episodes…
+              </p>
+            )}
+          {seasonDetails.data && !episodes.length && (
+            <p className="note">No episodes are available.</p>
+          )}
+          <div className="toolbar">
+            {season !== undefined && (
+              <label className="sel">
+                <span className="lbl">Tracking Season</span>
+                <select
+                  value={season}
+                  disabled={busy}
+                  onChange={(event) => {
+                    setChosenSeason(Number(event.target.value));
+                    setChosenEpisode(undefined);
+                  }}
+                >
+                  {seasons.map(({ seasonNumber, name }) => (
+                    <option key={seasonNumber} value={seasonNumber}>
+                      {name || `Season ${seasonNumber}`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {episode !== undefined && (
+              <label className="sel">
+                <span className="lbl">Tracking Episode</span>
+                <select
+                  value={episode}
+                  disabled={busy}
+                  onChange={(event) =>
+                    setChosenEpisode(Number(event.target.value))
+                  }
+                >
+                  {episodes.map(({ episodeNumber, name }) => (
+                    <option key={episodeNumber} value={episodeNumber}>
+                      {episodeNumber}. {name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {season !== undefined &&
+              episode !== undefined &&
+              (watch.data || watch.error) && (
+                <>
+                  {episodeWatched !== true && (
+                    <button
+                      className="btn btn-tonal btn-sm"
+                      type="button"
+                      disabled={busy}
+                      onClick={() =>
+                        void apply({
+                          action: 'watched',
+                          value: true,
+                          episode: { season, episode },
+                        })
+                      }
+                    >
+                      Mark Episode Watched
+                    </button>
+                  )}
+                  {episodeWatched !== false && (
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      type="button"
+                      disabled={busy}
+                      onClick={() =>
+                        setConfirm({
+                          action: 'watched',
+                          value: false,
+                          episode: { season, episode },
+                        })
+                      }
+                    >
+                      Mark Episode Unwatched
+                    </button>
+                  )}
+                </>
+              )}
+          </div>
+          {episode !== undefined && (
+            <p className="note" role="status">
+              {episodeWatched === true
+                ? 'Watched on provider.'
+                : episodeWatched === false
+                  ? 'Unwatched on provider.'
+                  : watch.data || watch.error
+                    ? 'Watch status unavailable.'
+                    : 'Loading provider episode status…'}
+            </p>
+          )}
+        </>
       )}
       {notice && (
         <p className="note" role="status">
@@ -202,8 +389,18 @@ export default function LibraryTracking({
       )}
       {confirm && (
         <ConfirmSheet
-          title={confirm.value ? 'Mark Watched?' : 'Mark Unwatched?'}
-          body={`Update watched status for ${item.title} on your tracking account?`}
+          title={
+            confirm.episode
+              ? 'Mark Episode Unwatched?'
+              : confirm.value
+                ? 'Mark Watched?'
+                : 'Mark Unwatched?'
+          }
+          body={
+            confirm.episode
+              ? `Remove watched status for ${item.title}, season ${confirm.episode.season}, episode ${confirm.episode.episode}?`
+              : `Update watched status for ${item.title} on your tracking account?`
+          }
           confirm={confirm.value ? 'Mark Watched' : 'Mark Unwatched'}
           cancel="Cancel"
           onConfirm={() => void apply(confirm)}

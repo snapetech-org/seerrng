@@ -504,3 +504,97 @@ test('My Media gates provider tracking and recovers a confirmed update without r
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   expect(writes).toBe(1);
 });
+
+test('My Media tracks and removes a selected provider episode', async ({
+  page,
+}) => {
+  let watched = false;
+  const changes: boolean[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32 } });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: { accounts: [{ provider: 'simkl' }], mediaServer: null },
+      });
+    if (path === '/integrations/discovery/library/simkl')
+      return route.fulfill({
+        json: {
+          items: [
+            {
+              id: 'simkl:tv:123',
+              title: 'Tracked Series',
+              sourceId: '123',
+              tmdbId: 21,
+              mediaType: 'tv',
+            },
+          ],
+          allowWrites: true,
+          hasMore: false,
+        },
+      });
+    if (path === '/tv/21')
+      return route.fulfill({
+        json: {
+          seasons: [{ seasonNumber: 2, name: 'Season Two', episodeCount: 2 }],
+        },
+      });
+    if (path === '/tv/21/season/2')
+      return route.fulfill({
+        json: {
+          episodes: [
+            { episodeNumber: 1, name: 'First' },
+            { episodeNumber: 2, name: 'Second' },
+          ],
+        },
+      });
+    if (path === '/integrations/discovery/tracking/simkl/episodes') {
+      expect(Object.fromEntries(url.searchParams)).toEqual({
+        sourceId: '123',
+        tmdbId: '21',
+        season: '2',
+      });
+      return route.fulfill({
+        json: { available: true, episodes: [{ episode: 2, watched }] },
+      });
+    }
+    if (path === '/integrations/discovery/tracking/simkl') {
+      const body = request.postDataJSON();
+      expect(body).toMatchObject({
+        action: 'watched',
+        tmdbId: 21,
+        mediaType: 'tv',
+        episode: { season: 2, episode: 2 },
+      });
+      watched = body.value;
+      changes.push(watched);
+      return route.fulfill({ json: { state: 'succeeded' } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await page.getByRole('button', { name: 'Update Tracking' }).click();
+  await page.getByRole('button', { name: 'Track Individual Episodes' }).click();
+  await page
+    .getByRole('combobox', { name: 'Tracking Episode' })
+    .selectOption('2');
+  await expect(
+    page.getByText('Unwatched on provider.', { exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Mark Episode Watched' }).click();
+  await expect(
+    page.getByText('Watched on provider.', { exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Mark Episode Unwatched' }).click();
+  const dialog = page.getByRole('alertdialog');
+  await expect(dialog.getByText(/season 2, episode 2/)).toBeVisible();
+  await dialog.getByRole('button', { name: 'Mark Unwatched' }).click();
+  await expect(
+    page.getByText('Unwatched on provider.', { exact: true })
+  ).toBeVisible();
+  expect(changes).toEqual([true, false]);
+});
