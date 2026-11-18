@@ -38,6 +38,12 @@ const SORTS = [
   ['popular.year', 'This year'],
   ['listen_count.desc', 'Most played'],
   ['release_date.desc', 'Newest'],
+  ['release_date.asc', 'Oldest'],
+  ['listen_count.asc', 'Least played'],
+  ['ranked.asc', 'Recommended (ascending)'],
+  ['popular.week.asc', 'This week (ascending)'],
+  ['popular.month.asc', 'This month (ascending)'],
+  ['popular.year.asc', 'This year (ascending)'],
 ] as const;
 const TYPES = [
   ['', 'Any'],
@@ -72,25 +78,36 @@ export const AlbumCard = ({ a }: { a: Album }) => (
 // Music: albums from MusicBrainz and ListenBrainz charts; requests go to Lidarr
 export function Music() {
   const [p, setP] = useSearchParams();
-  const [q, setQ] = useState(p.get('q') || '');
+  const query = p.get('q') || p.get('search') || '';
+  const [q, setQ] = useState(query);
   const requestedSort = p.get('sort') || p.get('sortBy');
   const sort =
     SORTS.find(([value]) => value === requestedSort)?.[0] ?? 'ranked';
   const rawGenre = p.get('genre')?.trim() ?? '';
   const genre = rawGenre.length <= 512 ? rawGenre : '';
-  const type = p.get('type') || '';
-  const query = p.get('q') || '';
-  // searching ignores the chart sorts, which only rank the curated feed
+  const type = p.get('type') || p.get('releaseType') || '';
   const qs = new URLSearchParams({
-    sortBy: query ? 'ranked' : sort,
+    sortBy: sort,
     ...(query ? { query } : {}),
     ...(type ? { releaseType: type } : {}),
     ...(genre ? { genre } : {}),
   });
+  for (const name of [
+    'artist',
+    'artistId',
+    'availability',
+    'primaryReleaseDateGte',
+    'primaryReleaseDateLte',
+  ]) {
+    const value = p.get(name);
+    if (value) qs.set(name, value);
+  }
   const list = usePaged<Album>(`/discover/music?${qs}`);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (k === 'sort') n.delete('sortBy');
+    if (k === 'type') n.delete('releaseType');
+    if (k === 'q') n.delete('search');
     if (!v || (k === 'sort' && v === 'ranked')) n.delete(k);
     else n.set(k, v);
     setP(n, { replace: true });
@@ -100,6 +117,9 @@ export function Music() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
+  useEffect(() => {
+    setQ((value) => (value.trim() === query ? value : query));
+  }, [query]);
   const items = list.items;
 
   return (
@@ -134,18 +154,16 @@ export function Music() {
             Clear Genre: {genre}
           </button>
         )}
-        {!query && (
-          <label className="sel">
-            <span className="lbl">Sort</span>
-            <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
-              {SORTS.map(([v, t]) => (
-                <option key={v} value={v}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
+        <label className="sel">
+          <span className="lbl">Sort</span>
+          <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
+            {SORTS.map(([v, t]) => (
+              <option key={v} value={v}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </label>
         <div className="seg" role="group" aria-label="Release type">
           {TYPES.map(([v, t]) => (
             <button

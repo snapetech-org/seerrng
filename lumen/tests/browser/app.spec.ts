@@ -3367,6 +3367,66 @@ test('configured book shelves carry an arbitrary subject into both book formats'
   await expect(page).toHaveURL(/\/audiobooks\?sort=ranked$/);
 });
 
+test('Classic music discovery bookmarks retain catalogue filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { music: true } } })
+  );
+  const artistId = '5b36cb67-befa-41ca-a91d-a6dcf1f68062';
+  const filters = {
+    query: 'Jazz',
+    artist: 'Fixture Artist',
+    artistId,
+    availability: 'flac',
+    primaryReleaseDateGte: '1990-01-01',
+    primaryReleaseDateLte: '2000-12-31',
+    genre: 'jazz',
+    sortBy: 'release_date.asc',
+  };
+  const observed: URLSearchParams[] = [];
+  await page.route('**/api/v1/discover/music?*', (route) => {
+    observed.push(new URL(route.request().url()).searchParams);
+    return route.fulfill({ json: paged([]) });
+  });
+  const { query, ...bookmark } = filters;
+  const params = new URLSearchParams({
+    ...bookmark,
+    search: query,
+    releaseType: 'ep',
+  });
+  await page.goto('/music?' + params);
+  await expect(page.getByPlaceholder('Search albums and artists…')).toHaveValue(
+    query
+  );
+  await expect(
+    page.getByRole('combobox', { name: 'Sort', exact: true })
+  ).toHaveValue(filters.sortBy);
+  await expect(page.getByRole('button', { name: 'EPs' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect
+    .poll(() =>
+      observed.some(
+        (read) =>
+          read.get('releaseType') === 'ep' &&
+          Object.entries(filters).every(
+            ([key, value]) => read.get(key) === value
+          )
+      )
+    )
+    .toBe(true);
+  await page.getByRole('button', { name: 'Any', exact: true }).click();
+  await expect.poll(() => observed.at(-1)?.get('releaseType')).toBeNull();
+});
+
 test('configured music shelves preserve genre and yearly chart in Music', async ({
   page,
 }) => {
