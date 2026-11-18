@@ -47,7 +47,13 @@ const policies = [
 ] as const;
 type Policies = Record<(typeof policies)[number]['key'], boolean>;
 
-function RequestSettingsForm({ initial }: { initial: Policies }) {
+function RequestSettingsForm({
+  initial,
+  anchorReady,
+}: {
+  initial: Policies;
+  anchorReady: boolean;
+}) {
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const changed = policies.filter(({ key }) => draft[key] !== saved[key]);
@@ -57,9 +63,9 @@ function RequestSettingsForm({ initial }: { initial: Policies }) {
   const pending = useRef(false);
 
   useEffect(() => {
-    if (window.location.hash === '#enable4k')
+    if (anchorReady && window.location.hash === '#enable4k')
       document.getElementById('enable4k')?.scrollIntoView({ block: 'start' });
-  }, []);
+  }, [anchorReady]);
 
   async function save() {
     if (pending.current || !changed.length) return;
@@ -152,7 +158,11 @@ function RequestSettingsForm({ initial }: { initial: Policies }) {
   );
 }
 
-export function InstanceRequestSettings() {
+export function InstanceRequestSettings({
+  anchorReady = true,
+}: {
+  anchorReady?: boolean;
+}) {
   const settings = useApi<PublicSettings>(publicPath);
   return (
     <Section title="Instance Request Settings">
@@ -163,6 +173,7 @@ export function InstanceRequestSettings() {
       />
       {settings.data ? (
         <RequestSettingsForm
+          anchorReady={anchorReady}
           initial={{
             personMovieBulkRequestsEnabled:
               settings.data.personMovieBulkRequestsEnabled === true,

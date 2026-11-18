@@ -370,7 +370,9 @@ export default function AdminGeneral() {
         <ApplicationApiKey initial={settings.data.apiKey} />
       )}
       {settings.data && <SpotifyCredentials initial={settings.data} />}
-      <InstanceRequestSettings />
+      <InstanceRequestSettings
+        anchorReady={Boolean(settings.data || settings.error)}
+      />
       {settings.data?.defaultQuotas && (
         <DefaultRequestQuotas initial={settings.data.defaultQuotas} />
       )}

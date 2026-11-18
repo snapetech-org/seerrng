@@ -6308,3 +6308,28 @@ test('application API key is masked and regeneration requires confirmation', asy
   await expect(input).toHaveValue('fixture-replacement-key');
   expect(rotations).toBe(1);
 });
+
+test('General Settings shortcuts scroll to their controls after settings load', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        apiKey: 'fixture-masked-key',
+        spotifyClientId: 'fixture-client',
+      },
+    })
+  );
+  for (const [anchor, label] of [
+    ['enable4k', 'Enable 4K'],
+    ['spotifyClientId', 'Spotify Client ID'],
+    ['apiKey', 'API Key'],
+  ] as const) {
+    await page.goto(`/admin/general#${anchor}`);
+    const control = page.getByLabel(label, { exact: true });
+    await expect(control).toBeInViewport({ ratio: 1 });
+    await page.screenshot({ path: info.outputPath(`settings-${anchor}.png`) });
+  }
+});
