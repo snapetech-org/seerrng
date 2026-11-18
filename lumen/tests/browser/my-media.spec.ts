@@ -49,12 +49,12 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
     });
   });
 
-  await page.goto('/me');
+  await page.goto('./me');
   await page.getByRole('link', { name: 'Open My Media' }).click();
   await expect(page.getByRole('heading', { name: 'My Media' })).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Matched Movie' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', /\/movie\/20$/);
   await page
     .getByRole('combobox', { name: 'Library', exact: true })
     .selectOption('2');
@@ -82,7 +82,7 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
   await expect(
     page.getByRole('combobox', { name: 'Shelf', exact: true })
   ).toHaveValue('watched');
-  await page.goto('/library?source=anilist&shelf=rated&libraryId=unknown');
+  await page.goto('./library?source=anilist&shelf=rated&libraryId=unknown');
   await expect(
     page.getByRole('combobox', { name: 'Library Source' })
   ).toHaveValue('plex');
@@ -159,7 +159,7 @@ test('provider library scans keep filter scope while paging and resume after a p
             : {},
     });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await page
     .getByRole('combobox', { name: 'Media Type' })
     .selectOption('movie');
@@ -174,7 +174,7 @@ test('provider library scans keep filter scope while paging and resume after a p
   await expect(page.getByText('Scan paused at page 6.')).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Second Fixture Film' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', /\/movie\/20$/);
   await page.getByRole('button', { name: 'Continue Scan' }).click();
   await expect(page.getByText('Library scan complete.')).toBeVisible();
   expect(scans).toEqual([
@@ -231,7 +231,7 @@ test('My Media exports private packs and refreshes the current shelf after impor
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await expect(page.getByText('Private Match')).toBeVisible();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export Title Matches' }).click();
@@ -252,7 +252,7 @@ test('My Media exports private packs and refreshes the current shelf after impor
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Private Match' })
-  ).toHaveAttribute('href', '/movie/21');
+  ).toHaveAttribute('href', /\/movie\/21$/);
 });
 
 test('My Media offers account linking and reads new connections on return', async ({
@@ -294,7 +294,7 @@ test('My Media offers account linking and reads new connections on return', asyn
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await page
     .getByRole('link', { name: 'Open Linked Accounts', exact: true })
     .click();
@@ -348,7 +348,7 @@ test('My Media recovers from malformed connected accounts and shelf responses', 
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   const error = page.getByRole('alert');
   await expect(error).toContainText('Invalid connected accounts response.');
   await error.getByRole('button', { name: 'Retry' }).click();
@@ -418,13 +418,13 @@ test('My Media saves and resets a private catalog match', async ({ page }) => {
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await page.getByRole('button', { name: 'Match Title', exact: true }).click();
   await page.getByRole('button', { name: 'Search Matches' }).click();
   await page.getByRole('button', { name: 'Match Catalog Film' }).click();
   await expect(
     page.getByRole('link', { name: 'Provider Film' })
-  ).toHaveAttribute('href', '/movie/21');
+  ).toHaveAttribute('href', /\/movie\/21$/);
   await page.getByRole('button', { name: 'Reset Match' }).click();
   await expect(
     page.getByRole('button', { name: 'Match Title', exact: true })
@@ -501,7 +501,7 @@ test('My Media gates provider tracking and recovers a confirmed update without r
       return route.fulfill({ status: 404, json: {} });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await expect(page.getByRole('link', { name: 'Tracked Movie' })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Update Tracking' })
@@ -598,7 +598,7 @@ test('My Media tracks and removes a selected provider episode', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await page.getByRole('button', { name: 'Update Tracking' }).click();
   await page.getByRole('button', { name: 'Track Individual Episodes' }).click();
   await page
@@ -660,7 +660,7 @@ test('My Media opens reconnection for an expired provider account', async ({
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/library');
+  await page.goto('./library');
   await page.getByRole('link', { name: 'Reconnect Provider' }).click();
   await expect(page).toHaveURL(/linked-accounts\?reconnect=trakt$/);
   await expect(

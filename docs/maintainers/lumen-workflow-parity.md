@@ -58,8 +58,11 @@ connect Trakt, AniList, and Simkl from Linked Accounts.
 
 The shared server routes live in `server/routes/discoveryIntegrations.ts`.
 Classic's account controls are in `src/components/DiscoveryIntegrations/Accounts.tsx`.
-Browser fixtures can verify behavior on both deployments before live provider
-verification. This inventory records the gap and its acceptance criteria.
+The Linked Accounts and My Media browser suites run against both the standalone
+build and the production bundle served by Express at `/lumen/`. Desktop and
+iPhone cases cover the provider round trips, library selection and pagination,
+private matches, and tracking updates using fixture API responses. Live provider
+effects and matched visual acceptance remain unverified.
 
 ### Following feed increment
 
