@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
@@ -58,6 +58,7 @@ export default function Share() {
       .join('\n')
       .slice(0, 16000)
   );
+  const [image, setImage] = useState<File>();
   const [format, setFormat] = useState<ShareFormat>('ebook');
   const [seasons, setSeasons] = useState<'first' | 'all'>('first');
   const [result, setResult] = useState<ResolveResponse>();
@@ -67,7 +68,27 @@ export default function Share() {
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
-  const caps = useApi<{ enabled: boolean }>('/resolve/capabilities');
+  const caps = useApi<{
+    enabled: boolean;
+    image?: boolean;
+    maxImageBytes?: number;
+  }>('/resolve/capabilities');
+  const imageEnabled = caps.data?.enabled && caps.data.image;
+
+  function attachImage(file: File) {
+    if (busy || !imageEnabled) return;
+    if (!file.type.startsWith('image/') || !file.size) {
+      setError('Choose a readable image file.');
+      return;
+    }
+    if (file.size > (caps.data?.maxImageBytes ?? 6 * 1024 * 1024)) {
+      setError('This image exceeds the server’s upload limit.');
+      return;
+    }
+    setImage(file);
+    setError('');
+  }
+
   const selected = (result?.groups ?? []).flatMap((group, index) => {
     const candidate = group.candidates[choices[index]];
     const body =
@@ -79,16 +100,47 @@ export default function Share() {
   });
 
   async function find() {
-    if (working.current || !text.trim() || !caps.data?.enabled) return;
+    const input = text.trim();
+    const attachment = imageEnabled ? image : undefined;
+    if (working.current || (!input && !attachment) || !caps.data?.enabled)
+      return;
     working.current = true;
     setBusy(true);
     setError('');
     setNotice('');
     try {
-      const response = await api<ResolveResponse>('/resolve', {
-        method: 'POST',
-        body: JSON.stringify({ text: text.trim(), formatHint: format }),
-      });
+      const groups: ResolveResponse['groups'] = [];
+      if (attachment) {
+        try {
+          const response = await api<ResolveResponse>(
+            `/resolve/image?formatHint=${format}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': attachment.type },
+              body: attachment,
+            }
+          );
+          groups.push(...response.groups);
+        } catch (failure) {
+          if (
+            !input ||
+            !(failure instanceof ApiError) ||
+            failure.status !== 422
+          )
+            throw failure;
+          setNotice(
+            'The image could not be read. Showing matches from the text.'
+          );
+        }
+      }
+      if (input) {
+        const response = await api<ResolveResponse>('/resolve', {
+          method: 'POST',
+          body: JSON.stringify({ text: input, formatHint: format }),
+        });
+        groups.unshift(...response.groups);
+      }
+      const response = { groups };
       setResult(response);
       setChoices(response.groups.map((group) => group.autoSelected ?? -1));
       setSubmitted([]);
@@ -150,6 +202,24 @@ export default function Share() {
             event.preventDefault();
             void find();
           }}
+          onPaste={(event) => {
+            const file = Array.from(event.clipboardData.files).find((item) =>
+              item.type.startsWith('image/')
+            );
+            if (!imageEnabled || !file) return;
+            event.preventDefault();
+            attachImage(file);
+          }}
+          onDragOver={(event) => {
+            if (imageEnabled && event.dataTransfer.types.includes('Files'))
+              event.preventDefault();
+          }}
+          onDrop={(event) => {
+            const file = event.dataTransfer.files[0];
+            if (!imageEnabled || !file) return;
+            event.preventDefault();
+            attachImage(file);
+          }}
         >
           <label className="sel">
             <span className="lbl">Titles, links, or ISBNs</span>
@@ -162,6 +232,36 @@ export default function Share() {
               onChange={(event) => setText(event.target.value)}
             />
           </label>
+          {imageEnabled && (
+            <div className="toolbar">
+              <label>
+                Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  disabled={busy}
+                  onChange={(event) => {
+                    const file = event.currentTarget.files?.[0];
+                    if (file) attachImage(file);
+                    event.currentTarget.value = '';
+                  }}
+                />
+              </label>
+              {image && (
+                <>
+                  <span>{image.name}</span>
+                  <button
+                    type="button"
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy}
+                    onClick={() => setImage(undefined)}
+                  >
+                    Remove Image
+                  </button>
+                </>
+              )}
+            </div>
+          )}
           <div className="toolbar">
             <label className="sel">
               <span className="lbl">Book Format</span>
@@ -178,7 +278,10 @@ export default function Share() {
                 <option value="audiobook">Audiobook</option>
               </select>
             </label>
-            <button className="btn btn-tonal" disabled={busy || !text.trim()}>
+            <button
+              className="btn btn-tonal"
+              disabled={busy || (!text.trim() && !(imageEnabled && image))}
+            >
               Find Matches
             </button>
           </div>

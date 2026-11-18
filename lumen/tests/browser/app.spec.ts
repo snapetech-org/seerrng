@@ -3698,3 +3698,74 @@ test('Share opens a recognized title and requests the selected seasons', async (
     page.getByRole('button', { name: 'Request Selected' })
   ).toHaveCount(0);
 });
+
+test('Share uploads image bytes and can fall back to typed text', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const image = Buffer.from('mock image bytes');
+  const candidate = {
+    mediaType: 'movie',
+    id: '101',
+    title: 'The Test Film',
+    evidence: 'Title match',
+  };
+  let uploads = 0;
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true, image: true, maxImageBytes: 100 } })
+  );
+  await page.route('**/api/v1/resolve/image?formatHint=ebook', (route) => {
+    expect(route.request().headers()['content-type']).toBe('image/png');
+    expect(route.request().postDataBuffer()).toEqual(image);
+    if (++uploads === 2)
+      return route.fulfill({
+        status: 422,
+        json: { message: 'Unreadable image' },
+      });
+    return route.fulfill({
+      json: {
+        groups: [
+          { input: 'From image', autoSelected: 0, candidates: [candidate] },
+        ],
+      },
+    });
+  });
+  await page.route('**/api/v1/resolve', (route) =>
+    route.fulfill({
+      json: {
+        groups: [
+          { input: 'From text', autoSelected: 0, candidates: [candidate] },
+        ],
+      },
+    })
+  );
+  await page.goto('/share');
+  await page.getByLabel('Image', { exact: true }).setInputFiles({
+    name: 'oversized.png',
+    mimeType: 'image/png',
+    buffer: Buffer.alloc(101),
+  });
+  await expect(page.getByRole('alert')).toContainText('upload limit');
+  const find = page.getByRole('button', { name: 'Find Matches' });
+  await expect(find).toBeDisabled();
+  await page.getByLabel('Image', { exact: true }).setInputFiles({
+    name: 'poster.png',
+    mimeType: 'image/png',
+    buffer: image,
+  });
+  expect(uploads).toBe(0);
+  await find.click();
+  await expect(page.getByRole('link', { name: 'Open Title' })).toHaveAttribute(
+    'href',
+    '/movie/101'
+  );
+  await page.getByLabel('Titles, links, or ISBNs').fill('The Test Film');
+  await find.click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Showing matches from the text' })
+  ).toBeVisible();
+  await expect(page.getByText('From text', { exact: true })).toBeVisible();
+  await expect(page.getByText('From image', { exact: true })).toHaveCount(0);
+});

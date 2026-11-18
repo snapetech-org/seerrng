@@ -1492,3 +1492,12 @@ TypeScript, the standalone build, and browser fixtures passed for bookmarked
 text, exact series navigation, explicit submission, and all-season selection
 across four presets. Image recognition, the OS Share Target, live recognition,
 bundled execution, and matched native visual comparison remain open.
+
+Share accepts a file, clipboard image, or dropped image when server image
+recognition is available. It checks the advertised size limit before upload
+and still resolves typed text when an attached image cannot be read.
+TypeScript, the standalone production build, and eight browser fixture checks
+passed across desktop, iPhone, Android, and tablet. Fixtures cover file
+selection, size limits, raw upload, and text fallback. Clipboard and drop
+interactions, local barcodes, OS sharing, live OCR, the bundled deployment,
+and matched visual comparison remain unverified.
