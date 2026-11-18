@@ -26,9 +26,9 @@ export const RECHECK_MS = 15_000;
 // these change as people use the site: always asked again (still shown at once meanwhile)
 const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
 // These answers depend on current account category and maturity policies.
-// Never serve cached person details or personal library data after those settings tighten.
+// Never serve cached person details, watchlists, or personal library data after those settings tighten.
 const NEVER_CACHE =
-  /^\/(?:person\/\d+(?:\/combined_credits)?|integrations\/discovery\/(?:accounts|library\/[a-z]+))(?:\?|$)/;
+  /^\/(?:person\/\d+(?:\/combined_credits)?|user\/\d+\/watchlist|integrations\/discovery\/(?:accounts|library\/[a-z]+))(?:\?|$)/;
 
 type Entry = { at: number; data: unknown };
 let entries = new Map<string, Entry>();

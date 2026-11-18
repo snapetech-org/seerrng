@@ -136,6 +136,13 @@ server {
     return 302 ${SEERR_FULL_URL}/?interface=classic;
   }
 
+  location = /profile/watchlist {
+    return 302 /watchlist$is_args$args;
+  }
+  location = /discover/watchlist {
+    return 302 /watchlist$is_args$args;
+  }
+
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG
   location ~ ^/(issues|settings|users|profile|collection|discover|blocklist|setup|swipe|downloads|recordings|share|identify|indexer-search|track-requests|book-series|author|software|franchise|collections|associations|resetpassword)(/|$) {
     return 302 ${SEERR_FULL_URL}$request_uri;

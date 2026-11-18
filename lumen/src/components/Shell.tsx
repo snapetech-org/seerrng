@@ -302,6 +302,10 @@ export default function Shell({ children }: { children: ReactNode }) {
               Following
             </NavLink>
           )}
+          <NavLink to="/watchlist">
+            <Icon name="star" />
+            Watchlist
+          </NavLink>
           <NavLink to="/library">
             <Icon name="book" />
             My Media

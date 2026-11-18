@@ -95,3 +95,17 @@ movie, showed the unmatched title without a link, and loaded page two with the
 fixture's cursor. Checks used a dedicated Agent GUI VM session because the
 isolated desktop pool could not reach the fixture network in the prior two
 increments. Tracking-provider and narrow layouts still need rendered evidence.
+
+### Watchlist increment
+
+The personal Watchlist reads the signed-in user's existing SeerrNG and Plex
+watchlist. For local lists it supports title, media, and sort filters, shareable
+filter and page URLs, and removal with confirmed catalog identity. Combined
+lists preserve provider order and avoid offering local removal for rows whose
+ownership source cannot be distinguished. Watchlist creation from details and
+posters, delegated watchlists, and combined-list local actions remain open.
+
+Headed Chrome at 1440 × 1000 verified a movie filter opened from a bookmarked
+URL, cleared it to show a second item, and removed the movie through the
+fixture API. The remaining book was still shown after the server response.
+Narrow, combined Plex, and bundled visual checks remain open.

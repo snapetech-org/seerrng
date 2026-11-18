@@ -1,0 +1,280 @@
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { api } from '../api';
+import { useAuth } from '../auth';
+import { ServiceNote } from '../components/extra';
+import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
+import { useApi } from '../hooks';
+
+const MEDIA_LABELS = {
+  movie: 'Movies',
+  tv: 'Series',
+  music: 'Music',
+  book: 'Books',
+  comic: 'Comics',
+  magazine: 'Magazines',
+};
+const SORT_LABELS = {
+  'added-desc': 'Recently Added',
+  'title-asc': 'Title (A to Z)',
+  'title-desc': 'Title (Z to A)',
+};
+interface WatchlistItem {
+  id: number;
+  ratingKey: string;
+  mediaType: keyof typeof MEDIA_LABELS;
+  title: string;
+  tmdbId?: number;
+  mbId?: string;
+  externalId?: string;
+}
+
+interface WatchlistData {
+  results: WatchlistItem[];
+  totalPages: number;
+  filtersSupported: boolean;
+}
+
+function itemId(item: WatchlistItem) {
+  if (item.mediaType === 'movie' || item.mediaType === 'tv') {
+    return Number.isSafeInteger(item.tmdbId) && (item.tmdbId ?? 0) > 0
+      ? String(item.tmdbId)
+      : undefined;
+  }
+  const id = item.mediaType === 'music' ? item.mbId : item.externalId;
+  return id && id !== '.' && id !== '..' ? id : undefined;
+}
+
+function WatchlistPage({
+  path,
+  page,
+  movePage,
+  setFiltersSupported,
+}: {
+  path: string;
+  page: number;
+  movePage: (page: number) => void;
+  setFiltersSupported: (supported: boolean) => void;
+}) {
+  const { data, error, reload, refresh } = useApi<WatchlistData>(path);
+  const [removed, setRemoved] = useState<string[]>([]);
+  const [removing, setRemoving] = useState<string>();
+  const pending = useRef(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (data) setFiltersSupported(data.filtersSupported);
+  }, [data, setFiltersSupported]);
+
+  async function remove(mediaType: WatchlistItem['mediaType'], id: string) {
+    if (pending.current || !data?.filtersSupported) return;
+    const key = `${mediaType}:${id}`;
+    pending.current = true;
+    setRemoving(key);
+    try {
+      await api(`/watchlist/${encodeURIComponent(id)}?mediaType=${mediaType}`, {
+        method: 'DELETE',
+      });
+      setRemoved((previous) => [...previous, key]);
+      refresh();
+    } catch (error) {
+      toast(friendlyError(error, 'Couldn’t remove this title'));
+    } finally {
+      pending.current = false;
+      setRemoving(undefined);
+    }
+  }
+
+  const rows = data?.results.filter(
+    (item) => !removed.includes(`${item.mediaType}:${itemId(item)}`)
+  );
+
+  return (
+    <>
+      <ServiceNote error={error} what="your watchlist" retry={reload} />
+      {!data && !error && (
+        <p className="note" role="status">
+          Loading your watchlist…
+        </p>
+      )}
+      {rows?.length === 0 && <p className="note">No titles on this page.</p>}
+      {!!rows?.length && (
+        <ul className="setlist">
+          {rows.map((item) => {
+            const id = itemId(item);
+            return (
+              <li className="set" key={`${item.mediaType}:${item.ratingKey}`}>
+                <div>
+                  {id ? (
+                    <Link
+                      className="go"
+                      to={`/${item.mediaType}/${encodeURIComponent(id)}`}
+                    >
+                      {item.title}
+                    </Link>
+                  ) : (
+                    <b>{item.title}</b>
+                  )}
+                  <small>{MEDIA_LABELS[item.mediaType]}</small>
+                </div>
+                {id && data?.filtersSupported && (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    type="button"
+                    aria-label={`Remove ${item.title} from Watchlist`}
+                    disabled={Boolean(removing)}
+                    onClick={() => void remove(item.mediaType, id)}
+                  >
+                    {removing === `${item.mediaType}:${id}`
+                      ? 'Removing…'
+                      : 'Remove'}
+                  </button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {(page > 1 || (data?.totalPages ?? 0) > 1) && (
+        <nav className="toolbar" aria-label="Watchlist Pages">
+          <button
+            className="btn btn-quiet btn-sm"
+            disabled={page <= 1 || Boolean(removing)}
+            onClick={() => movePage(page - 1)}
+          >
+            Previous Page
+          </button>
+          <span className="note">Page {page}</span>
+          <button
+            className="btn btn-quiet btn-sm"
+            disabled={
+              page >= Math.min(data?.totalPages ?? 0, 500) || Boolean(removing)
+            }
+            onClick={() => movePage(page + 1)}
+          >
+            Next Page
+          </button>
+        </nav>
+      )}
+    </>
+  );
+}
+
+export default function Watchlist() {
+  const { user } = useAuth();
+  const [params, setParams] = useSearchParams();
+  const [filtersSupported, setFiltersSupported] = useState<boolean>();
+  if (!user) return null;
+
+  const search = params.get('search')?.trim().slice(0, 100) ?? '';
+  const media = params.get('mediaType') ?? '';
+  const sort = params.get('sortBy') ?? '';
+  const requestedPage = Number(params.get('page'));
+  const page =
+    Number.isSafeInteger(requestedPage) && requestedPage >= 1
+      ? Math.min(requestedPage, 500)
+      : 1;
+
+  function apply(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const selected = new URLSearchParams();
+    for (const key of ['search', 'mediaType', 'sortBy']) {
+      const value = String(form.get(key) ?? '').trim();
+      if (value) selected.set(key, value);
+    }
+    setParams(selected);
+  }
+
+  const query = new URLSearchParams();
+  if (filtersSupported !== false) {
+    if (search) query.set('search', search);
+    if (Object.hasOwn(MEDIA_LABELS, media)) query.set('mediaType', media);
+    if (Object.hasOwn(SORT_LABELS, sort)) query.set('sortBy', sort);
+  }
+  const filterKey = query.toString();
+  query.set('page', String(page));
+  const path = `/user/${user.id}/watchlist?${query}`;
+
+  return (
+    <>
+      <header className="ph">
+        <h1>Watchlist</h1>
+      </header>
+      {filtersSupported === false && (
+        <p className="note">
+          Plex and SeerrNG items share this list. Filters and local removal are
+          unavailable in this view.
+        </p>
+      )}
+      {filtersSupported && (
+        <form
+          key={filterKey}
+          className="toolbar"
+          aria-label="Watchlist Filters"
+          onSubmit={apply}
+          onReset={() => {
+            setParams(new URLSearchParams());
+          }}
+        >
+          <label className="search">
+            <input
+              type="search"
+              name="search"
+              aria-label="Search Titles"
+              placeholder="Search titles…"
+              defaultValue={search}
+              maxLength={100}
+            />
+          </label>
+          <label className="sel">
+            <span className="lbl">Media Type</span>
+            <select
+              name="mediaType"
+              defaultValue={Object.hasOwn(MEDIA_LABELS, media) ? media : ''}
+            >
+              <option value="">All Types</option>
+              {Object.entries(MEDIA_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sel">
+            <span className="lbl">Sort By</span>
+            <select
+              name="sortBy"
+              defaultValue={Object.hasOwn(SORT_LABELS, sort) ? sort : ''}
+            >
+              <option value="">Added Order</option>
+              {Object.entries(SORT_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button className="btn btn-tonal btn-sm" type="submit">
+            Apply Filters
+          </button>
+          <button className="btn btn-quiet btn-sm" type="reset">
+            Clear Filters
+          </button>
+        </form>
+      )}
+      <WatchlistPage
+        key={path}
+        path={path}
+        page={page}
+        movePage={(next) => {
+          const selected = new URLSearchParams(filterKey);
+          if (next > 1) selected.set('page', String(next));
+          setParams(selected);
+        }}
+        setFiltersSupported={setFiltersSupported}
+      />
+    </>
+  );
+}

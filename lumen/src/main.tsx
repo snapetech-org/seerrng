@@ -33,6 +33,7 @@ import Search from './pages/Search';
 import Soon from './pages/Soon';
 import { Adult, LeagueDetail, SceneDetail, Sports } from './pages/Sports';
 import TvDetail from './pages/TvDetail';
+import Watchlist from './pages/Watchlist';
 import { PrefsProvider } from './settings';
 import './styles/app-react.css';
 import './styles/app.css';
@@ -86,6 +87,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />
