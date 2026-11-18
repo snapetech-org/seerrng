@@ -1687,6 +1687,9 @@ body.is-detail .tabbar {
 }
 .setlist {
   display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   background: var(--surface);
   border-radius: var(--r-lg);
   box-shadow: 0 0 0 1px var(--line);

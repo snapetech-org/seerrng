@@ -53,3 +53,11 @@ Following creation on source screens, detailed update reasons, and exact links
 for game and patch targets still need parity work. The current increment uses
 the source label for each update and searches by title when it has no Lumen
 detail route for the target.
+
+Headed Chrome at 1440 × 1000 verified the fixture's `/following` feed and
+`/me` link. Mark Seen removed the row control and unread action after the
+successful response. The rendered rows initially inherited the browser's list
+indent. Resetting it in the shared list style aligned the update and subscription
+rows with the existing You screen. The isolated desktop could not reach the
+fixture, so this check used a dedicated session on the persistent Agent GUI VM.
+Narrow and embedded-browser visual acceptance remains open.

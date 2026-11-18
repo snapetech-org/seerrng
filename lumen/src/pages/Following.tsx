@@ -185,7 +185,7 @@ export default function Following() {
                               notify: event.target.checked,
                             })
                           }
-                        />
+                        />{' '}
                         Notify Me
                       </label>
                       {BOOK_FOLLOW_KINDS.includes(subscription.kind) && (
@@ -199,7 +199,7 @@ export default function Following() {
                                 autoRequest: event.target.checked,
                               })
                             }
-                          />
+                          />{' '}
                           Request Automatically
                         </label>
                       )}
