@@ -14,6 +14,9 @@ test('a household can create a watch session and opt in to watchlist contributio
     ownPreferences: { includeWatchlistContributions: false },
   };
   const writes: unknown[] = [];
+  const token = 'a'.repeat(43);
+  let invites: { id: number; status: string }[] = [];
+  let userId = 1;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -22,11 +25,27 @@ test('a household can create a watch session and opt in to watchlist contributio
     const request = route.request();
     const url = new URL(request.url()).pathname;
     if (url.endsWith('/auth/me'))
-      return route.fulfill({ json: { id: 1, permissions: 2 } });
+      return route.fulfill({ json: { id: userId, permissions: 2 } });
     if (url === path && request.method() === 'GET')
       return route.fulfill({
         json: { sessions: session.title ? [session] : [] },
       });
+    if (url === path + '/9/invites') {
+      if (request.method() === 'GET')
+        return route.fulfill({ json: { invites } });
+      const id = invites.length + 1;
+      invites.push({ id, status: 'open' });
+      return route.fulfill({ json: { id, token } });
+    }
+    if (url === path + '/9/invites/1') {
+      expect(request.method()).toBe('DELETE');
+      invites = [{ id: 1, status: 'revoked' }];
+      return route.fulfill({ json: { revoked: true } });
+    }
+    if (url === path + '/invites/accept') {
+      expect(request.postDataJSON()).toEqual({ token });
+      return route.fulfill({ json: { sessionId: 9 } });
+    }
     if (url === path + '/9') return route.fulfill({ json: { session } });
     if (url === path || url === path + '/9/preferences') {
       const body = request.postDataJSON();
@@ -68,4 +87,30 @@ test('a household can create a watch session and opt in to watchlist contributio
     },
     { includeWatchlistContributions: true },
   ]);
+  await page.getByRole('button', { name: 'Create Invite Link' }).click();
+  await expect(page.getByLabel('Invite Link', { exact: true })).toHaveValue(
+    new RegExp(`/watch-sessions/join#token=${token}$`)
+  );
+  await page.screenshot({
+    path: info.outputPath('watch-invites.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Revoke Invitation 1' }).click();
+  await expect(page.getByLabel('Invite Link', { exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Create Invite Link' }).click();
+  await expect(page.getByLabel('Invite Link', { exact: true })).toHaveValue(
+    new RegExp(`/watch-sessions/join#token=${token}$`)
+  );
+  const invite = await page
+    .getByLabel('Invite Link', { exact: true })
+    .inputValue();
+  userId = 2;
+  await page.goto(invite);
+  await expect(page).toHaveURL(/\/watch-sessions\/9$/);
+  await expect(
+    page.getByRole('heading', { name: 'Movie Night' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Create Invite Link' })
+  ).toHaveCount(0);
 });

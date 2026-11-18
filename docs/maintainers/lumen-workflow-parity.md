@@ -1921,3 +1921,13 @@ playback, and live multi-user verification remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-sessions-20261118/`.
+
+Hosts can create, copy, and revoke watch-session invitations. Guests can accept
+the fragment-token link and open the room. Compared empty and populated
+invitation states across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The
+production build and four fixture browser checks passed, including creating,
+revoking, and accepting an invitation under distinct simulated accounts.
+Live sign-in redirects and multi-user sessions remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-invites-20261118/`.

@@ -16,6 +16,7 @@ import { usePublicSettings } from '../hooks';
 import { mediaServer, services, site } from '../mediaServer';
 import { completeOidc, readOidcCallback, startOidcSignIn } from '../oidc';
 import { usePrefs } from '../settings';
+import { captureWatchSessionInviteTokenFromHash } from '../watchSessionInvite';
 
 type Mode = 'start' | 'server' | 'local' | 'quick';
 type Method = 'server' | 'local' | 'quick';
@@ -136,9 +137,11 @@ export default function Login() {
     setBusy(true);
     setErr('');
     try {
+      if (location.pathname === '/watch-sessions/join')
+        captureWatchSessionInviteTokenFromHash();
       await startOidcSignIn(
         slug,
-        location.pathname + location.search + location.hash
+        location.pathname + location.search + window.location.hash
       );
     } catch {
       setErr(

@@ -6,6 +6,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
+import { JoinWatchSession, WatchSessionInvites } from './WatchSessionInvites';
 
 const path = '/watch-sessions';
 interface Summary {
@@ -313,11 +314,15 @@ function SessionRoom({ id }: { id: string }) {
           )}
         </Section>
       )}
+      {session && session.ownerId === user?.id && (
+        <WatchSessionInvites id={id} draft={session.status === 'draft'} />
+      )}
     </>
   );
 }
 
 export default function WatchSessions() {
   const { id } = useParams();
+  if (id === 'join') return <JoinWatchSession />;
   return id ? <SessionRoom key={id} id={id} /> : <SessionList />;
 }
