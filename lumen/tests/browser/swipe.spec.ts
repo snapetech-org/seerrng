@@ -55,15 +55,38 @@ test('Swipe records decisions and restores or clears history', async ({
   await page.goto('/swipe');
   await expect(page.getByRole('heading', { name: 'First Film' })).toBeVisible();
   await page.screenshot({ path: info.outputPath('swipe.png'), fullPage: true });
-  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  const shortcuts = page.getByRole('application', { name: 'Swipe shortcuts' });
+  await shortcuts.press('ArrowRight');
   await expect(
     page.getByRole('heading', { name: 'Second Film' })
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Pass', exact: true }).click();
+  if (await page.evaluate(() => navigator.maxTouchPoints > 0)) {
+    const title = page.getByRole('heading', { name: 'Second Film' });
+    await title.scrollIntoViewIfNeeded();
+    const bounds = (await title.boundingBox())!;
+    const x = Math.round(bounds.x + Math.min(120, bounds.width - 10));
+    const y = Math.round(bounds.y + bounds.height / 2);
+    const touch = await page.context().newCDPSession(page);
+    await touch.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x, y }],
+    });
+    await touch.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ x: x - 85, y }],
+    });
+    await touch.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    });
+    await touch.detach();
+  } else {
+    await shortcuts.press('ArrowLeft');
+  }
   await expect(
     page.getByText('No more recommendations in this deck.')
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Undo Last Decision' }).click();
+  await shortcuts.press('Backspace');
   await expect(
     page.getByRole('heading', { name: 'Second Film' })
   ).toBeVisible();

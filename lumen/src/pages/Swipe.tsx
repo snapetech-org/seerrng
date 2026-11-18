@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { api, ApiError, artUrl } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
@@ -312,6 +312,61 @@ function Deck({
     ? profile?.bookFormat
     : formats[0];
 
+  const gesture = useRef<{
+    pointer: number;
+    cardId: string;
+    x: number;
+    y: number;
+  }>(undefined);
+
+  function handleKey(event: KeyboardEvent<HTMLDivElement>) {
+    if (
+      event.target !== event.currentTarget ||
+      event.repeat ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey
+    )
+      return;
+    const shortcuts: Record<string, Decision | 'undo'> = {
+      ArrowLeft: 'pass',
+      ArrowRight: 'want',
+      ArrowUp: 'seen',
+      Backspace: 'undo',
+    };
+    const decision = Object.hasOwn(shortcuts, event.key)
+      ? shortcuts[event.key]
+      : undefined;
+    if (!decision) return;
+    event.preventDefault();
+    void act(decision);
+  }
+
+  function startGesture(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== 'touch' || !event.isPrimary || !card || busy)
+      return;
+    gesture.current = {
+      pointer: event.pointerId,
+      cardId: card.id,
+      x: event.clientX,
+      y: event.clientY,
+    };
+  }
+
+  function finishGesture(event: PointerEvent<HTMLDivElement>) {
+    const start = gesture.current;
+    if (!start || start.pointer !== event.pointerId) return;
+    gesture.current = undefined;
+    if (start.cardId !== card?.id) return;
+    const x = event.clientX - start.x;
+    const y = event.clientY - start.y;
+    const threshold = 50;
+    if (Math.abs(x) >= threshold && Math.abs(x) > Math.abs(y) * 1.25)
+      void act(x < 0 ? 'pass' : 'want');
+    else if (y <= -threshold && -y > Math.abs(x) * 1.25) void act('seen');
+  }
+
   function nextDeck(regenerate: boolean) {
     setHandled([]);
     setRestored(undefined);
@@ -320,7 +375,12 @@ function Deck({
   }
 
   async function act(decision: Decision | 'undo') {
-    if (pending.current || (decision !== 'undo' && !card)) return;
+    if (
+      pending.current ||
+      (decision === 'undo' ? !deck.data : !card) ||
+      (decision === 'want' && (!profile || (category === 'book' && !format)))
+    )
+      return;
     const generation = sessionGeneration();
     pending.current = true;
     setBusy(true);
@@ -408,16 +468,38 @@ function Deck({
           {notice}
         </p>
       )}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- The focusable region exposes keyboard shortcuts alongside native buttons. */}
+      <div
+        role="application"
+        aria-label="Swipe shortcuts"
+        aria-describedby="swipe-shortcuts"
+        tabIndex={0}
+        onKeyDown={handleKey}
+      >
+        <p id="swipe-shortcuts" className="note">
+          Focus here for keyboard shortcuts. Left passes, right requests, up
+          marks seen or read, and Backspace undoes.
+        </p>
+      </div>
       {card ? (
         <>
-          {image && (
-            <div className="poster">
-              <div className="art">
-                <img src={image} alt="" />
+          <div
+            className="gesture-surface"
+            onPointerDown={startGesture}
+            onPointerUp={finishGesture}
+            onPointerCancel={() => {
+              gesture.current = undefined;
+            }}
+          >
+            {image && (
+              <div className="poster">
+                <div className="art">
+                  <img src={image} alt="" draggable={false} />
+                </div>
               </div>
-            </div>
-          )}
-          <h3>{card.title}</h3>
+            )}
+            <h3>{card.title}</h3>
+          </div>
           {(card.subtitle || card.year) && (
             <p className="note">
               {[card.subtitle, card.year].filter(Boolean).join(' · ')}

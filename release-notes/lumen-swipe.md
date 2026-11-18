@@ -3,3 +3,4 @@ Swipe users can change their series and book request defaults, recommendation so
 Swipe users can select favorite titles from their library and request history to guide recommendations.
 Swipe History can restore individual passed or seen titles and clear decisions by category.
 Administrators can enable Swipe and configure and test its ranking provider in Lumen.
+Swipe recommendation decks support keyboard shortcuts and directional touch gestures.

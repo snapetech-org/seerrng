@@ -906,3 +906,8 @@ html.embedded .mock-tools {
   color: var(--ink-3);
   font-size: 14px;
 }
+
+/* A bounded surface that handles directional gestures instead of page panning. */
+.gesture-surface {
+  touch-action: none;
+}

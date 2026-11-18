@@ -1866,3 +1866,13 @@ of requested titles. Live account history was outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-history-20261118/`.
+
+The recommendation deck supports keyboard shortcuts when the shortcut region
+has focus and directional touch gestures on the title and artwork. Compared
+the deck before and after on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+The production build and 12 browser checks passed with synthetic data.
+Browser input covered keyboard request and undo, desktop keyboard pass, and
+touch pass in the three emulated touch viewports.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-input-20261118/`.
