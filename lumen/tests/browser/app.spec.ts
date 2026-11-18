@@ -5409,6 +5409,52 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('book recommendations open a newly created feed', async ({ page }) => {
+  await fixtures(page);
+  const posts: unknown[] = [];
+  await page.route('**/api/v1/book-recommendations', (route) => {
+    if (route.request().method() === 'POST') {
+      posts.push(route.request().postDataJSON());
+      if (posts.length === 1)
+        return route.fulfill({ json: { available: false, code: 'rejected' } });
+      return route.fulfill({ status: 201, json: { id: 18 } });
+    }
+    return route.fulfill({
+      json: {
+        available: true,
+        results:
+          posts.length > 1
+            ? [{ id: 18, title: 'Personal Picks', source: 'mine', likes: 0 }]
+            : [],
+      },
+    });
+  });
+  await page.route('**/api/v1/book-recommendations/18/books', (route) =>
+    route.fulfill({
+      json: {
+        available: true,
+        books: [{ id: 44, title: 'Recommended Book' }],
+        total: 1,
+      },
+    })
+  );
+  await page.goto('/books/recommendations?format=audiobook');
+  const title = page.getByRole('textbox', { name: 'Title', exact: true });
+  const create = page.getByRole('button', { name: 'Create on Hardcover' });
+  await title.fill('Personal Picks');
+  await create.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Hardcover rejected your API token.'
+  );
+  await expect(title).toHaveValue('Personal Picks');
+  await create.click();
+  await expect(page).toHaveURL(/format=audiobook&feed=18$/);
+  await expect(
+    page.getByText('Recommended Book', { exact: true })
+  ).toBeVisible();
+  expect(posts).toHaveLength(2);
+});
+
 test('book recommendations preserve results when a feedback refresh fails', async ({
   page,
 }) => {

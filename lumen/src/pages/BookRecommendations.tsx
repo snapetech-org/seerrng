@@ -60,6 +60,7 @@ export default function BookRecommendations() {
   const [books, setBooks] = useState<Books>();
   const [busy, setBusy] = useState(false);
   const loadingFeed = useRef(false);
+  const creatingFeed = useRef(false);
   const [feedError, setFeedError] = useState<string>();
   const [flags, setFlags] = useState({
     standalones: false,
@@ -73,6 +74,7 @@ export default function BookRecommendations() {
   const [title, setTitle] = useState('');
   const [mood, setMood] = useState('');
   const [createFirst, setCreateFirst] = useState(false);
+  const [createError, setCreateError] = useState<string>();
   const votes = (value: 'more' | 'less', source = feedback) =>
     Object.keys(source)
       .filter((id) => source[Number(id)] === value)
@@ -169,6 +171,9 @@ export default function BookRecommendations() {
   }
 
   async function create() {
+    if (!title.trim() || busy || creatingFeed.current) return;
+    creatingFeed.current = true;
+    setCreateError(undefined);
     setBusy(true);
     try {
       const result = await api<{ id?: number; code?: string }>(
@@ -189,11 +194,15 @@ export default function BookRecommendations() {
       setTitle('');
       setMood('');
       setCreateFirst(false);
+      const next = new URLSearchParams(params);
+      next.set('feed', String(result.id));
+      setParams(next);
       feeds.reload();
       toast('Recommendation feed created.');
     } catch (error) {
-      toast(friendlyError(error, 'Could not create the feed.'));
+      setCreateError(friendlyError(error, 'Could not create the feed.'));
     } finally {
+      creatingFeed.current = false;
       setBusy(false);
     }
   }
@@ -430,6 +439,11 @@ export default function BookRecommendations() {
                 Create on Hardcover
               </button>
             </form>
+            {createError && (
+              <p className="note" role="alert">
+                {createError}
+              </p>
+            )}
           </Section>
         </>
       )}
