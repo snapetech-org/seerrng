@@ -148,7 +148,9 @@ export default function BookRecommendations() {
     setBusy(true);
     try {
       const result = await api<{
-        groups: { candidates: { id: string; mediaType: string }[] }[];
+        groups: {
+          candidates: { id: string; mediaType: string; title?: string }[];
+        }[];
       }>('/resolve', {
         method: 'POST',
         body: JSON.stringify({
@@ -164,9 +166,14 @@ export default function BookRecommendations() {
         (candidate) => candidate.mediaType === 'book'
       );
       if (!match?.id) throw new Error('No catalog match was found.');
-      navigate(
-        `/book/${encodeURIComponent(match.id)}?f=${format === 'audiobook' ? 'audio' : 'book'}`
-      );
+      const detailParams = new URLSearchParams({
+        f: format === 'audiobook' ? 'audio' : 'book',
+      });
+      if (match.id.startsWith('bookshelf:')) {
+        const lookupTitle = (match.title || book.title).trim().slice(0, 512);
+        if (lookupTitle) detailParams.set('lookupTitle', lookupTitle);
+      }
+      navigate(`/book/${encodeURIComponent(match.id)}?${detailParams}`);
     } catch (error) {
       toast(friendlyError(error, 'Could not find this book.'));
     } finally {

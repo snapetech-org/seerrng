@@ -5558,6 +5558,38 @@ test('book recommendations preserve results when a feedback refresh fails', asyn
   await expect(vote).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('alert')).toHaveCount(0);
   expect(feedbackReads).toBe(2);
+  await page.route('**/api/v1/resolve', (route) => {
+    expect(route.request().postDataJSON()).toMatchObject({
+      text: 'Fixture Book',
+      types: ['book'],
+      formatHint: 'audiobook',
+    });
+    return route.fulfill({
+      json: {
+        groups: [
+          {
+            candidates: [
+              {
+                id: 'bookshelf:1:fixture',
+                mediaType: 'book',
+                title: 'Matched Book',
+              },
+            ],
+          },
+        ],
+      },
+    });
+  });
+  const detailRead = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/book/bookshelf%3A1%3Afixture') &&
+      url.searchParams.get('lookupTitle') === 'Matched Book'
+    );
+  });
+  await page.getByRole('button', { name: 'Open Book' }).click();
+  await expect(page).toHaveURL(/f=audio&lookupTitle=Matched\+Book$/);
+  await detailRead;
 });
 
 test('standalone user request bookmarks keep the user from the path', async ({
