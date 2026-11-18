@@ -413,6 +413,8 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/music?genre=folk&sortBy=popular.year',
       ],
       ['/discover/providers', '/lumen/providers'],
+      ['/discover/movies/genres', '/lumen/movies/genres'],
+      ['/discover/tv/genres/', '/lumen/series/genres'],
       [
         '/discover/providers?feed=mdblist%2Flist&page=2&list=https%3A%2F%2Fmdblist.com%2Flists%2Fsample%2Flist&unmatched=1&ignored=1',
         '/lumen/providers?feed=mdblist%2Flist&page=2&list=https%3A%2F%2Fmdblist.com%2Flists%2Fsample%2Flist&unmatched=1',

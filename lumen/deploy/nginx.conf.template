@@ -203,6 +203,12 @@ server {
   location ~ "^/discover/tv/language/([a-z]{2})/?$" {
     return 302 /series?nativeFilters=1&language=$1&$args;
   }
+  location ~ ^/discover/movies/genres/?$ {
+    return 302 /movies/genres;
+  }
+  location ~ ^/discover/tv/genres/?$ {
+    return 302 /series/genres;
+  }
   location ~ ^/discover/movies(/keyword)?/?$ {
     return 302 /movies?nativeFilters=1&$args;
   }

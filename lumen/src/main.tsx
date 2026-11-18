@@ -20,7 +20,7 @@ import AdminHome from './pages/AdminHome';
 import Associations from './pages/Associations';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
-import Browse from './pages/Browse';
+import Browse, { GenreDirectory } from './pages/Browse';
 import Calendar from './pages/Calendar';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
@@ -152,6 +152,11 @@ function App() {
           />
           <Route path="/list/:id" element={<TmdbList />} />
           <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
+          <Route
+            path="/movies/genres"
+            element={<GenreDirectory kind="movie" />}
+          />
+          <Route path="/series/genres" element={<GenreDirectory kind="tv" />} />
           <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
           <Route
             path="/author/:id"

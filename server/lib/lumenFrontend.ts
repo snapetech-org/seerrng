@@ -66,6 +66,10 @@ function discoveryDeepLink(req: Request): string | undefined {
     return `/lumen/list/${listId}${suffix}`;
   }
 
+  const genres = /^\/discover\/(movies|tv)\/genres\/?$/.exec(req.path);
+  if (genres)
+    return `/lumen/${genres[1] === 'movies' ? 'movies' : 'series'}/genres`;
+
   const upcoming = /^\/discover\/(movies|tv)\/upcoming\/?$/.exec(req.path);
   if (upcoming)
     return `/lumen/soon?media=${upcoming[1] === 'movies' ? 'movie' : 'tv'}`;

@@ -235,6 +235,41 @@ function normalizeNativeFilters(params: URLSearchParams) {
   return normalized;
 }
 
+export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
+  const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
+  const browse = kind === 'movie' ? '/movies' : '/series';
+  return (
+    <>
+      <header className="ph">
+        <h1>{kind === 'movie' ? 'Movie Genres' : 'Series Genres'}</h1>
+      </header>
+      <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
+      {genres.data ? (
+        genres.data.length ? (
+          <div className="setlist">
+            {genres.data.map(({ id, name }) => (
+              <div className="set" key={id}>
+                <b>{name}</b>
+                <Link
+                  className="go"
+                  to={`${browse}?genre=${id}`}
+                  aria-label={`Browse ${name}`}
+                >
+                  Browse <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="note">No genres found.</p>
+        )
+      ) : (
+        !genres.error && <div className="detail-loading" aria-busy="true" />
+      )}
+    </>
+  );
+}
+
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [params, setP] = useSearchParams();
@@ -722,6 +757,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         />
       </div>
       <div className="toolbar">
+        <Link
+          className="chip"
+          to={kind === 'movie' ? '/movies/genres' : '/series/genres'}
+        >
+          Browse Genres
+        </Link>
         <button
           type="button"
           className="chip"
