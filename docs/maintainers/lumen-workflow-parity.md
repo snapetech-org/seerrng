@@ -1407,3 +1407,8 @@ Browse translates native sort, availability, and genre matching without
 reapplying those filters after Clear Discovery Filters. Production proxy
 checks and eight standalone browser checks passed across four viewport
 presets.
+
+Native Search bookmarks now retain the search term and supported media
+scope on the companion. The Search screen and desktop search bar use
+the same URL normalization, and editing a filter writes the Lumen
+parameters. Eight standalone checks passed across four viewport presets.

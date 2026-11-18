@@ -3168,3 +3168,36 @@ test('native companion discovery filters retain genre matching and clear without
   expect(reads.at(-1)?.has('keywords')).toBe(false);
   await expect(page).toHaveURL(/\/movies$/);
 });
+
+test('native search bookmarks retain the decoded term and media scope', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const queries: string[] = [];
+  await page.route(/\/api\/v1\/search\?/, (route) => {
+    queries.push(
+      new URL(route.request().url()).searchParams.get('query') ?? ''
+    );
+    return route.fulfill({
+      json: paged([
+        { ...movie, title: 'Bookmark Film' },
+        { id: 202, mediaType: 'tv', name: 'Bookmark Series' },
+      ]),
+    });
+  });
+  await page.goto('/search?query=A+%26+B&type=tv');
+  await expect(page.getByRole('searchbox')).toHaveValue('A & B');
+  await expect(
+    page.getByRole('button', { name: 'Series', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    page.getByRole('link', { name: 'Bookmark Series' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bookmark Film' })).toHaveCount(
+    0
+  );
+  expect(queries).toContain('A & B');
+  await page.getByRole('button', { name: 'Movies', exact: true }).click();
+  await expect(page).toHaveURL(/\/search\?q=A\+%26\+B&f=movie$/);
+  await expect(page.getByRole('link', { name: 'Bookmark Film' })).toBeVisible();
+});

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Link,
   useLocation,
@@ -31,6 +31,7 @@ import {
   readRecentSearches,
   saveRecentSearches,
 } from '../recentSearches';
+import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
 import { PersonCard } from './People';
 
@@ -45,10 +46,14 @@ const SCOPES = {
 type Scope = keyof typeof SCOPES;
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
-  const [p, setP] = useSearchParams();
+  const [params, setP] = useSearchParams();
+  const p = useMemo(() => normalizeSearchParams(params), [params]);
   const { prefs } = usePrefs();
   const [q, setQ] = useState(p.get('q') || '');
-  const f = ((p.get('f') as Scope) in SCOPES ? p.get('f') : 'all') as Scope;
+  const requestedScope = p.get('f') ?? '';
+  const f = Object.hasOwn(SCOPES, requestedScope)
+    ? (requestedScope as Scope)
+    : 'all';
   const [titles, setTitles] = useState<VideoSearchResult[] | null>(null);
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [comics, setComics] = useState<ComicWork[] | null>(null);

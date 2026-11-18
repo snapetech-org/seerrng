@@ -17,6 +17,7 @@ import { Icon, type IconName } from '../icons';
 import { canSearchIndexers } from '../indexerPermissions';
 import { canReadIssues } from '../issuePermissions';
 import { scrollBehavior } from '../motion';
+import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
 import { canChooseRequestOptions } from './detail';
@@ -111,7 +112,9 @@ export default function Shell({ children }: { children: ReactNode }) {
       loc.pathname
     );
   // the top search stays in the section you're in (Audiobooks searches audiobooks), like the phone pages
-  const params = new URLSearchParams(loc.search);
+  const query = new URLSearchParams(loc.search);
+  const params =
+    loc.pathname === '/search' ? normalizeSearchParams(query) : query;
   const path = loc.pathname;
   const scope =
     path === '/search'
