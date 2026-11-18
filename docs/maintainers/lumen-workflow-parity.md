@@ -2913,3 +2913,9 @@ pages reuse person cards and show the full list. Sixteen browser checks
 passed across both deployments, along with two Express routing checks
 and ten production-image proxy checks. Matched visual acceptance and
 live metadata remain unverified.
+
+GitHub code-scanning alert 693 flagged the ComicVine plain-text formatter
+in the analysis of `ba2844e70`. In that revision and current main, its
+only consumer renders each paragraph as a React text child. The alert was
+dismissed as a false positive because the formatted value never reaches
+an HTML parser. The artwork URL findings remain open for separate review.
