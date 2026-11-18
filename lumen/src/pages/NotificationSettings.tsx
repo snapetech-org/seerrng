@@ -28,38 +28,45 @@ const notificationEvents = [
 interface Preferences {
   emailEnabled?: boolean;
   pgpKey?: string | null;
+  discordEnabled?: boolean;
+  discordEnabledTypes?: number;
+  discordIds?: string[];
   telegramEnabled?: boolean;
   telegramBotUsername?: string;
   telegramChatId?: string | null;
   telegramMessageThreadId?: string | null;
   telegramSendSilently?: boolean | null;
-  notificationTypes: { email?: number; telegram?: number };
+  notificationTypes: { email?: number; telegram?: number; discord?: number };
 }
 
 const defaultMask = 65534; // Native default includes all current bits and the test bit.
 
 function EventChoices({
   mask,
+  enabledMask = defaultMask,
   disabled,
   change,
 }: {
   mask: number;
+  enabledMask?: number;
   disabled: boolean;
   change: (mask: number) => void;
 }) {
   return (
     <div className="setlist">
-      {notificationEvents.map(([bit, label]) => (
-        <label key={bit} className="set cfg-row">
-          <b>{label}</b>
-          <input
-            type="checkbox"
-            disabled={disabled}
-            checked={(BigInt(mask) & BigInt(bit)) !== 0n}
-            onChange={() => change(Number(BigInt(mask) ^ BigInt(bit)))}
-          />
-        </label>
-      ))}
+      {notificationEvents
+        .filter(([bit]) => (enabledMask & bit) !== 0)
+        .map(([bit, label]) => (
+          <label key={bit} className="set cfg-row">
+            <b>{label}</b>
+            <input
+              type="checkbox"
+              disabled={disabled}
+              checked={(BigInt(mask) & BigInt(bit)) !== 0n}
+              onChange={() => change(Number(BigInt(mask) ^ BigInt(bit)))}
+            />
+          </label>
+        ))}
     </div>
   );
 }
@@ -445,6 +452,126 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
   );
 }
 
+function DiscordForm({ path, data }: { path: string; data: Preferences }) {
+  const enabledMask = data.discordEnabledTypes ?? 0;
+  const [saved, setSaved] = useState(() => ({
+    ids: (data.discordIds ?? []).join('\n'),
+    mask: (data.notificationTypes?.discord ?? 0) & enabledMask,
+  }));
+  const [draft, setDraft] = useState(saved);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+  const ids = draft.ids
+    .split(/\r?\n/)
+    .map((id) => id.trim())
+    .filter(Boolean);
+  const normalizedIds = ids.join('\n');
+  const changed = normalizedIds !== saved.ids || draft.mask !== saved.mask;
+
+  async function save() {
+    if (pending.current || !changed) return;
+    setNotice('');
+    if (
+      ids.length > 10 ||
+      ids.some(
+        (id) =>
+          !/^[1-9]\d{0,19}$/.test(id) ||
+          BigInt(id) > 18_446_744_073_709_551_615n
+      )
+    ) {
+      setError('Enter up to ten valid Discord user IDs, one per line.');
+      return;
+    }
+    if (draft.mask && !ids.length) {
+      setError('Enter at least one Discord user ID to receive mentions.');
+      return;
+    }
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      const result = await api<Preferences>(path, {
+        method: 'POST',
+        body: JSON.stringify({
+          discordIds: ids,
+          notificationTypes: { discord: draft.mask },
+        }),
+      });
+      if (generation !== sessionGeneration()) return;
+      if (
+        result.discordIds?.join('\n') !== normalizedIds ||
+        result.notificationTypes?.discord !== draft.mask
+      ) {
+        setError('Could not confirm the saved Discord settings. Try again.');
+        return;
+      }
+      forget(path);
+      const confirmed = { ids: normalizedIds, mask: draft.mask };
+      setSaved(confirmed);
+      setDraft(confirmed);
+      setNotice('Discord settings saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setError('Could not save Discord settings. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <label>
+        <span className="note">Discord User IDs</span>
+        <textarea
+          className="cfg-json"
+          rows={4}
+          maxLength={256}
+          spellCheck={false}
+          disabled={busy}
+          value={draft.ids}
+          onChange={(event) => setDraft({ ...draft, ids: event.target.value })}
+        />
+      </label>
+      <p className="note">
+        Enter one user ID per line. The server controls which events can send
+        mentions.
+      </p>
+      {enabledMask !== 0 && (
+        <EventChoices
+          mask={draft.mask}
+          enabledMask={enabledMask}
+          disabled={busy}
+          change={(mask) => setDraft({ ...draft, mask })}
+        />
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="toolbar">
+        <button className="btn btn-tonal" disabled={busy || !changed}>
+          {busy ? 'Saving…' : 'Save Discord Settings'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function UserNotifications({ id }: { id: number }) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -486,6 +613,19 @@ function UserNotifications({ id }: { id: number }) {
             </p>
           ))}
       </Section>
+      {data?.discordEnabled && (
+        <Section title="Discord">
+          <DiscordForm
+            key={JSON.stringify([
+              data.discordIds,
+              data.discordEnabledTypes,
+              data.notificationTypes?.discord,
+            ])}
+            path={path}
+            data={data}
+          />
+        </Section>
+      )}
       {data?.telegramEnabled && (
         <Section title="Telegram">
           <TelegramForm

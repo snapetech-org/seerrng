@@ -688,3 +688,13 @@ Standalone Chrome verified a negative group chat ID, a topic, silent
 delivery and Media available preferences against a synthetic endpoint.
 Live bot delivery, native visual comparison, mobile and bundled checks
 remain open.
+
+### Personal Discord notifications increment
+
+Notification Settings supports personal Discord mention IDs and event
+preferences when mentions are enabled. The form shows server-enabled events
+and sends only Discord fields.
+
+Standalone Chrome verified a synthetic save of two Discord IDs and the single
+event enabled by the fixture. Live delivery, native visual comparison,
+mobile and bundled checks remain open.
