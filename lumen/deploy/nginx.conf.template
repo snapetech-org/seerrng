@@ -205,6 +205,9 @@ server {
     return 302 /watchlist/discover$is_args$args;
   }
 
+  location ~ ^/users/?$ {
+    return 302 /admin/users;
+  }
   location ~ ^/settings/(jobs|logs|about)/?$ {
     return 302 /admin/$1;
   }

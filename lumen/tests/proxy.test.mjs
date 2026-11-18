@@ -165,6 +165,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
       ['/discover/providers', '/providers'],
       ['/settings/jobs/', '/admin/jobs'],
+      ['/users/', '/admin/users'],
+      ['/users/19/settings', 'https://seerr.example.test/users/19/settings'],
       ['/settings/logs', '/admin/logs'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });

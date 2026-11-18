@@ -157,6 +157,7 @@ const workflowDestinations = new Map([
   ['/calendar', '/calendar'],
   ['/coming-soon', '/soon'],
   ['/profile', '/me'],
+  ['/users', '/admin/users'],
   ['/profile/settings', '/me/account'],
   ['/profile/settings/main', '/me/account'],
   ['/profile/settings/password', '/me/account'],
@@ -387,6 +388,9 @@ export const mountLumenFrontend = (
     }
     return res.set('Cache-Control', 'no-store').redirect(302, target);
   });
+  server.get('/lumen/users', (_req, res) =>
+    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/admin/users')
+  );
   server.get(/^\/lumen\/settings\/(jobs|logs|about)\/?$/, (req, res) => {
     const destination = req.params[0];
     return res

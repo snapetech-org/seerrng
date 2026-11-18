@@ -1586,3 +1586,19 @@ TypeScript, the production build, and four standalone browser fixtures passed
 for run confirmation and schedule save readback. Cache controls, guided
 interval editing, live jobs, bundled rendering, and native visual comparison
 remain open.
+
+### Managed users
+
+Administrators and delegated user managers can search the user directory,
+create local accounts, and manage eligible accounts' profile, local
+password, explicit permissions, request destinations, age gate, maturity
+limits, media categories, indexer visibility, quotas, and Episode Queue
+defaults. Administrators can also import and sync accounts through the
+configured Plex, Jellyfin, or Emby provider. Deletion uses the existing
+server protections and requires confirmation.
+
+The directory accepts the native list bookmark in the companion and bundled
+Lumen deployments. Individual native account settings bookmarks remain a
+separate gap. Standalone fixtures cover the managed settings actions.
+Live providers, full bundled user workflows, and matched native visual
+comparison remain unverified.
