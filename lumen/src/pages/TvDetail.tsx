@@ -558,22 +558,18 @@ export default function TvDetail() {
                 seasons={seasons}
               />
             )}
-            {!!t.credits?.cast?.length && (
-              <CreditsDisclosure
-                key={`cast-${t.id}`}
-                media="tv"
-                credit="cast"
-                people={t.credits.cast}
-              />
-            )}
-            {!!t.credits?.crew?.length && (
-              <CreditsDisclosure
-                key={`crew-${t.id}`}
-                media="tv"
-                credit="crew"
-                people={t.credits.crew}
-              />
-            )}
+            <CreditsDisclosure
+              key={`cast-${t.id}`}
+              media="tv"
+              credit="cast"
+              people={t.credits?.cast}
+            />
+            <CreditsDisclosure
+              key={`crew-${t.id}`}
+              media="tv"
+              credit="crew"
+              people={t.credits?.crew}
+            />
             <SubjectTagsDisclosure
               key={`tags-${t.id}`}
               media="tv"

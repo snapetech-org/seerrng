@@ -236,22 +236,18 @@ export default function MovieDetail() {
           <div style={{ display: 'grid', gap: 22 }}>
             {m.tagline && <p className="tagline">{m.tagline}</p>}
             <p className="ov">{m.overview}</p>
-            {!!m.credits?.cast?.length && (
-              <CreditsDisclosure
-                key={`cast-${m.id}`}
-                media="movie"
-                credit="cast"
-                people={m.credits.cast}
-              />
-            )}
-            {!!m.credits?.crew?.length && (
-              <CreditsDisclosure
-                key={`crew-${m.id}`}
-                media="movie"
-                credit="crew"
-                people={m.credits.crew}
-              />
-            )}
+            <CreditsDisclosure
+              key={`cast-${m.id}`}
+              media="movie"
+              credit="cast"
+              people={m.credits?.cast}
+            />
+            <CreditsDisclosure
+              key={`crew-${m.id}`}
+              media="movie"
+              credit="crew"
+              people={m.credits?.crew}
+            />
             <SubjectTagsDisclosure
               key={`tags-${m.id}`}
               media="movie"

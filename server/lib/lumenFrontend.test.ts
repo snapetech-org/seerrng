@@ -172,7 +172,9 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
     for (const route of [
       '/',
       '/seerrng',
-      '/movie/123/cast',
+      '/movie/123/cast/extra',
+      '/person/123/crew',
+      '/tv/1000000001/cast',
       '/?interface=classic',
     ]) {
       const response = await request(app).get(route).set('X-Test-Role', 'user');
@@ -188,6 +190,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .set('X-Test-Role', 'user');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     for (const [route, destination] of [
+      ['/movie/123/cast', '/lumen/movie/123#cast'],
+      ['/movie/123/crew/', '/lumen/movie/123#crew'],
+      ['/tv/456/cast/', '/lumen/tv/456#cast'],
+      ['/tv/456/crew', '/lumen/tv/456#crew'],
       [
         '/discover/movies/studio/42?excludeStudio=true&sortBy=vote_average.desc&ignored=1',
         '/lumen/movies?excludeStudio=true&sort=vote_average.desc&studio=42',

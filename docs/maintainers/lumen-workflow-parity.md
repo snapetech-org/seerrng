@@ -1139,3 +1139,15 @@ Bundled Lumen's frontend lock now preserves native movie, series,
 collection and person detail links. Server integration coverage verifies
 the destinations, identifier bounds, and administrator access to the
 native interface. Native detail subpages and browser verification remain open.
+
+### Video credit deep links
+
+The bundled Lumen lock redirects native movie and TV cast and crew links to
+the corresponding detail panel. The panel opens and scrolls into view after
+the title loads. Viewers can close it without changing their saved pin.
+
+Redirect tests cover all four routes and reject unsupported suffixes and
+out-of-range IDs. Standalone desktop, iPhone, Android, and tablet fixtures
+verified anchored scrolling, open and close behavior, and preservation of
+the saved pin. The bundled sign-in round trip and live visual comparison
+remain unverified.

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   api,
   tmdbImg,
@@ -120,15 +120,18 @@ export function CreditsDisclosure({
 }: {
   media: 'movie' | 'tv';
   credit: 'cast' | 'crew';
-  people: Person[];
+  people?: Person[];
 }) {
+  const { hash } = useLocation();
+  if (!people?.length && hash !== `#${credit}`) return null;
+
   return (
     <VideoDisclosure
       media={media}
       panel={credit}
       label={credit === 'cast' ? 'Starring' : 'Crew'}
     >
-      <People list={people} />
+      {people?.length ? <People list={people} /> : <p>No credits available.</p>}
     </VideoDisclosure>
   );
 }
@@ -211,6 +214,18 @@ function VideoDisclosure({
   const { user, refresh } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
+  const disclosure = useRef<HTMLDetailsElement>(null);
+  const { hash, key } = useLocation();
+  const anchor = panel === 'subjectTags' ? undefined : panel;
+
+  useEffect(() => {
+    const element = disclosure.current;
+    if (element && anchor && hash === `#${anchor}`) {
+      element.open = true;
+      element.scrollIntoView();
+    }
+  }, [anchor, hash, key]);
+
   const pending = useRef(false);
   const legacy = {
     cast: user?.settings?.detailDisclosureCastPinned,
@@ -248,7 +263,7 @@ function VideoDisclosure({
   }
 
   return (
-    <details className="adv" open={pinned}>
+    <details ref={disclosure} id={anchor} className="adv" open={pinned}>
       <summary>
         <Icon name="chev" size="sm" />
         {label}

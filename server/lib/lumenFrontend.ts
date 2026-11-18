@@ -93,6 +93,12 @@ function discoveryDeepLink(req: Request): string | undefined {
 }
 
 function detailDeepLink(req: Request): string | undefined {
+  const credits = /^\/(movie|tv)\/([1-9]\d{0,9})\/(cast|crew)\/?$/.exec(
+    req.path
+  );
+  if (credits && Number(credits[2]) <= 1_000_000_000) {
+    return `/lumen/${credits[1]}/${credits[2]}#${credits[3]}`;
+  }
   const match = /^\/(movie|tv|collection|person)\/([1-9]\d{0,9})\/?$/.exec(
     req.path
   );

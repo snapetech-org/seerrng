@@ -958,6 +958,24 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   await page.goto('/tv/202');
   await expect(page.getByText('Starring', { exact: true })).toBeVisible();
   await expect(actor).toBeHidden();
+
+  for (const path of ['/movie/101#crew', '/tv/202#crew', '/tv/202#cast']) {
+    await page.goto(path);
+    const credit = path.endsWith('#cast') ? 'Starring' : 'Crew';
+    const summary = page.locator('summary').getByText(credit, { exact: true });
+    const person = page.getByRole('link', {
+      name:
+        credit === 'Crew' ? 'Fixture Director Director' : 'Fixture Actor Lead',
+    });
+    await expect(summary).toBeInViewport();
+    await expect(person).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: `Keep ${credit} Open` })
+    ).toHaveAttribute('aria-pressed', 'false');
+    await summary.click();
+    await expect(person).toBeHidden();
+  }
+  expect(writes).toHaveLength(2);
 });
 
 test('subject tags share browser visibility and open filtered video discovery', async ({
