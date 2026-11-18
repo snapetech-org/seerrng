@@ -1435,3 +1435,9 @@ related title's media type and catalogue ID, with optional evidence.
 Lumen uses the existing curator endpoint and keeps form values when the
 request fails. Four standalone checks passed, including confirmation,
 creation and retry. Live provider and matched visual checks remain open.
+
+Following now opens anime relationship updates at their exact Franchise
+destination and displays the relationship type. Updates for supported
+person, artist, comic and collection targets also open their detail
+routes. Eight standalone browser checks passed for franchise and patch
+event links across four viewport presets.

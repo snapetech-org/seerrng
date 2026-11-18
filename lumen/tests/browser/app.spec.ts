@@ -3313,3 +3313,50 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
   ).toHaveAttribute('href', '/music/album-22');
   expect(additions).toBe(2);
 });
+
+test('Following opens the exact anime franchise from a relationship update', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Viewer', permissions: 32 } })
+  );
+  await page.route(/\/api\/v1\/follow\/events\?/, (route) =>
+    route.fulfill({
+      json: {
+        total: 1,
+        results: [
+          {
+            id: 1,
+            title: 'Franchise Fixture',
+            seen: true,
+            follow: { kind: 'franchise', subjectLabel: 'Franchise Fixture' },
+            reasonValues: { relation: 'side-story' },
+            target: { mediaType: 'anime', id: '713' },
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/franchise/anime/713', (route) =>
+    route.fulfill({
+      json: {
+        anchor: { title: 'Anime Side Story' },
+        items: [],
+        notes: [],
+        canCurate: false,
+      },
+    })
+  );
+  await page.goto('/following');
+  const event = page.getByRole('link', {
+    name: 'Franchise Fixture',
+    exact: true,
+  });
+  await expect(event).toHaveAttribute('href', '/franchise/anime/713');
+  await expect(page.getByText('side story', { exact: true })).toBeVisible();
+  await event.click();
+  await expect(
+    page.getByRole('heading', { name: 'Franchise for Anime Side Story' })
+  ).toBeVisible();
+});

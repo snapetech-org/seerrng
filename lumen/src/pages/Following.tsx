@@ -22,7 +22,8 @@ interface FollowEvent {
   id: number;
   title: string;
   seen: boolean;
-  follow: Pick<Subscription, 'subjectLabel'>;
+  follow: Pick<Subscription, 'subjectLabel' | 'kind'>;
+  reasonValues?: { relation?: string };
   target: { mediaType: string; id: string; variantKey?: string } | null;
 }
 
@@ -34,10 +35,26 @@ function eventHref({ target, title }: FollowEvent) {
     const patch = patchHref(target.id, target.variantKey);
     if (patch) return patch;
   }
-  if (target && ['movie', 'tv', 'book', 'album'].includes(target.mediaType)) {
+  if (target?.mediaType === 'anime' && /^\d{1,10}$/.test(target.id)) {
+    return `/franchise/anime/${target.id}`;
+  }
+  if (
+    target &&
+    [
+      'movie',
+      'tv',
+      'book',
+      'album',
+      'artist',
+      'comic',
+      'collection',
+      'person',
+    ].includes(target.mediaType)
+  ) {
     const kind = target.mediaType === 'album' ? 'music' : target.mediaType;
     const format = kind === 'book' && target.variantKey ? '?f=audio' : '';
-    return `/${kind}/${encodeURIComponent(target.id)}${format}`;
+    if (target.id && target.id !== '.' && target.id !== '..')
+      return `/${kind}/${encodeURIComponent(target.id)}${format}`;
   }
   return `/search?q=${encodeURIComponent(title)}`;
 }
@@ -121,6 +138,12 @@ export default function Following() {
                         {event.title}
                       </Link>
                       <small>From {event.follow.subjectLabel}</small>
+                      {event.follow.kind === 'franchise' &&
+                        event.reasonValues?.relation && (
+                          <small>
+                            {event.reasonValues.relation.replaceAll('-', ' ')}
+                          </small>
+                        )}
                     </span>
                     {!event.seen && (
                       <button
