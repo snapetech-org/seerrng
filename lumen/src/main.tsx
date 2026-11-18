@@ -70,6 +70,7 @@ const AdminSwipe = lazy(() => import('./pages/AdminSwipe'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
+const WatchSessions = lazy(() => import('./pages/WatchSessions'));
 const Swipe = lazy(() => import('./pages/Swipe'));
 const AdminConnectionHosts = lazy(() => import('./pages/AdminConnectionHosts'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
@@ -261,6 +262,20 @@ function App() {
           <Route path="/watchlist/discover" element={<Watchlist discover />} />
           <Route path="/watchlist/user/:userId" element={<UserWatchlist />} />
           <Route path="/library" element={<Library />} />
+          <Route
+            path="/watch-sessions/:id?"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading watch sessions…
+                  </p>
+                }
+              >
+                <WatchSessions />
+              </Suspense>
+            }
+          />
           <Route path="/calendar" element={<Calendar />} />
           <Route
             path="/swipe"

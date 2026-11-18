@@ -4,7 +4,10 @@ import { isAdministrator, useAuth } from '../auth';
 import { useBlocklistNavigation } from '../blocklist';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
-import { canChooseRequestOptions } from '../components/detail';
+import {
+  canChooseRequestOptions,
+  canRequestMovies,
+} from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { canManageDownloads } from '../downloadPermissions';
@@ -481,6 +484,18 @@ export default function Me() {
             <div className="set">
               <b>Swipe</b>
               <Link className="go" to="/swipe" aria-label="Open Swipe">
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
+          {canRequestMovies(user?.permissions) && (
+            <div className="set">
+              <b>Watch Sessions</b>
+              <Link
+                className="go"
+                to="/watch-sessions"
+                aria-label="Open Watch Sessions"
+              >
                 Open <Icon name="chev" size="sm" />
               </Link>
             </div>

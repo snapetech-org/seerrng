@@ -26,7 +26,7 @@ import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
 import { VideoAvailabilityProvider } from '../videoAvailability';
 import { BrandMark, brandName } from './brand';
-import { canChooseRequestOptions } from './detail';
+import { canChooseRequestOptions, canRequestMovies } from './detail';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -365,6 +365,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/swipe">
               <Icon name="star" />
               Swipe
+            </NavLink>
+          )}
+          {canRequestMovies(user?.permissions) && (
+            <NavLink to="/watch-sessions">
+              <Icon name="cal" />
+              Watch Sessions
             </NavLink>
           )}
           <NavLink to="/calendar">

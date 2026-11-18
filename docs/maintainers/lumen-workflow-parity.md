@@ -1908,3 +1908,16 @@ pagination. Live acquisition and software search cursor behavior remain unverifi
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-software-20261118/`.
+
+### Watch sessions
+
+Lumen lists private movie sessions, creates a draft with ranking, release year,
+and rating filters, displays room membership, and lets users opt in to
+watchlist contributions before the host starts. The production build and four
+fixture browser checks passed for creation and preference readback. Inspected
+the create and room states on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+Genre selection, invitations, membership management, ballots, matches,
+playback, and live multi-user verification remain open.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-sessions-20261118/`.

@@ -1,0 +1,323 @@
+import { useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { api, ApiError } from '../api';
+import { useAuth } from '../auth';
+import { Section } from '../components/cards';
+import { ServiceNote } from '../components/extra';
+import { useApi } from '../hooks';
+import { sessionGeneration } from '../sessionState';
+
+const path = '/watch-sessions';
+interface Summary {
+  id: number;
+  title: string;
+  status: 'draft' | 'active';
+  ownerId: number;
+  memberCount: number;
+}
+interface Detail extends Summary {
+  members: { id: number; displayName: string; isOwner: boolean }[];
+  ownPreferences: { includeWatchlistContributions: boolean };
+}
+
+function SessionList() {
+  const list = useApi<{ sessions: Summary[] }>(path);
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [ranking, setRanking] = useState('popularity.desc');
+  const [years, setYears] = useState({
+    releaseYearFrom: '',
+    releaseYearTo: '',
+  });
+  const [rating, setRating] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+
+  async function create() {
+    if (pending.current || !title.trim()) return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    const generation = sessionGeneration();
+    try {
+      const { session } = await api<{ session: Summary }>(path, {
+        method: 'POST',
+        body: JSON.stringify({
+          title: title.trim(),
+          filters: {
+            ranking,
+            ...(years.releaseYearFrom
+              ? { releaseYearFrom: Number(years.releaseYearFrom) }
+              : {}),
+            ...(years.releaseYearTo
+              ? { releaseYearTo: Number(years.releaseYearTo) }
+              : {}),
+            ...(rating ? { minimumRating: Number(rating) } : {}),
+          },
+        }),
+      });
+      if (generation === sessionGeneration()) navigate(`${path}/${session.id}`);
+    } catch (failure) {
+      if (generation === sessionGeneration())
+        setError(
+          failure instanceof ApiError
+            ? failure.message
+            : 'Could not create the watch session.'
+        );
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <h1>Watch Sessions</h1>
+      <ServiceNote
+        what="watch sessions"
+        error={list.error}
+        retry={list.reload}
+      />
+      {!list.data && !list.error && (
+        <p className="note" role="status">
+          Loading watch sessions…
+        </p>
+      )}
+      {list.data && (
+        <>
+          <Section title="Your Sessions">
+            {list.data.sessions.length === 0 && (
+              <p className="note">You haven’t joined any watch sessions.</p>
+            )}
+            <div className="setlist">
+              {list.data.sessions.map((session) => (
+                <div className="set cfg-row" key={session.id}>
+                  <span>
+                    <b>{session.title}</b>
+                    <small>
+                      {session.status === 'active' ? 'Active' : 'Draft'} ·{' '}
+                      {session.memberCount}{' '}
+                      {session.memberCount === 1 ? 'Member' : 'Members'}
+                    </small>
+                  </span>
+                  <Link
+                    to={`${path}/${session.id}`}
+                    className="btn btn-quiet btn-sm"
+                    aria-label={`Open ${session.title}`}
+                  >
+                    Open
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Section>
+          <Section title="Create a Session">
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                void create();
+              }}
+            >
+              <div className="setlist">
+                <label className="set cfg-row">
+                  <span>Session Title</span>
+                  <input
+                    className="cfg-input"
+                    required
+                    maxLength={80}
+                    disabled={busy}
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                  />
+                </label>
+                <label className="set cfg-row">
+                  <span>Movie Ranking</span>
+                  <select
+                    className="cfg-select"
+                    disabled={busy}
+                    value={ranking}
+                    onChange={(event) => setRanking(event.target.value)}
+                  >
+                    <option value="popularity.desc">Most Popular</option>
+                    <option value="vote_average.desc">Highest Rated</option>
+                    <option value="primary_release_date.desc">
+                      Newest Releases
+                    </option>
+                  </select>
+                </label>
+                {(
+                  [
+                    ['releaseYearFrom', 'From Year'],
+                    ['releaseYearTo', 'To Year'],
+                  ] as const
+                ).map(([key, label]) => (
+                  <label className="set cfg-row" key={key}>
+                    <span>{label}</span>
+                    <input
+                      className="cfg-input"
+                      type="number"
+                      min={1870}
+                      max={2100}
+                      disabled={busy}
+                      value={years[key]}
+                      onChange={(event) =>
+                        setYears({ ...years, [key]: event.target.value })
+                      }
+                    />
+                  </label>
+                ))}
+                <label className="set cfg-row">
+                  <span>Minimum Rating</span>
+                  <input
+                    className="cfg-input"
+                    type="number"
+                    min={0}
+                    max={9.9}
+                    step={0.1}
+                    disabled={busy}
+                    value={rating}
+                    onChange={(event) => setRating(event.target.value)}
+                  />
+                </label>
+              </div>
+              {error && (
+                <p className="note" role="alert">
+                  {error}
+                </p>
+              )}
+              <div className="toolbar">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm"
+                  disabled={busy || !title.trim()}
+                >
+                  Create Session
+                </button>
+              </div>
+            </form>
+          </Section>
+        </>
+      )}
+    </>
+  );
+}
+
+function SessionRoom({ id }: { id: string }) {
+  const { user } = useAuth();
+  const endpoint = `${path}/${id}`;
+  const room = useApi<{ session: Detail }>(endpoint, {
+    keepDuringRefresh: true,
+  });
+  const session = room.data?.session;
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+
+  async function change(action: 'start' | 'preferences', checked?: boolean) {
+    if (pending.current || session?.status !== 'draft') return;
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    const generation = sessionGeneration();
+    try {
+      await api(
+        `${endpoint}/${action}`,
+        action === 'start'
+          ? { method: 'POST' }
+          : {
+              method: 'PUT',
+              body: JSON.stringify({ includeWatchlistContributions: checked }),
+            }
+      );
+      if (generation === sessionGeneration()) room.refresh();
+    } catch (failure) {
+      if (generation === sessionGeneration())
+        setError(
+          failure instanceof ApiError
+            ? failure.message
+            : 'Could not update the watch session.'
+        );
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <h1>{session?.title ?? 'Watch Session'}</h1>
+      <div className="toolbar">
+        <Link to={path} className="btn btn-quiet btn-sm">
+          Back to Watch Sessions
+        </Link>
+      </div>
+      <ServiceNote
+        what="the watch session"
+        error={room.error}
+        retry={room.reload}
+      />
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      {!session && !room.error && (
+        <p className="note" role="status">
+          Loading the watch session…
+        </p>
+      )}
+      {session && (
+        <Section
+          title={
+            session.status === 'active' ? 'Active Session' : 'Waiting to Start'
+          }
+        >
+          <div className="setlist">
+            {session.members.map((member) => (
+              <div className="set cfg-row" key={member.id}>
+                <span>
+                  <b>{member.displayName}</b>
+                  {member.isOwner && <small>Host</small>}
+                </span>
+              </div>
+            ))}
+            <label className="set cfg-row">
+              <span>Contribute My Watchlist</span>
+              <input
+                type="checkbox"
+                disabled={busy || session.status !== 'draft'}
+                checked={session.ownPreferences.includeWatchlistContributions}
+                onChange={(event) =>
+                  void change('preferences', event.target.checked)
+                }
+              />
+            </label>
+          </div>
+          {session.status === 'draft' && session.ownerId === user?.id && (
+            <div className="toolbar">
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                disabled={busy || session.memberCount < 2}
+                onClick={() => void change('start')}
+              >
+                Start Session
+              </button>
+              {session.memberCount < 2 && (
+                <p className="note">
+                  At least two people must join before starting.
+                </p>
+              )}
+            </div>
+          )}
+        </Section>
+      )}
+    </>
+  );
+}
+
+export default function WatchSessions() {
+  const { id } = useParams();
+  return id ? <SessionRoom key={id} id={id} /> : <SessionList />;
+}
