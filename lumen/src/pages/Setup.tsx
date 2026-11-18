@@ -13,6 +13,7 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import { isAdministrator, signInWithPlex, useAuth } from '../auth';
 import Shell from '../components/Shell';
+import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi, type PublicSettings } from '../hooks';
@@ -30,7 +31,57 @@ const setupSteps = [
   ['services', 'Request Services'],
   ['downloads', 'Download Clients'],
   ['indexer', 'Prowlarr'],
+  ['review', 'Review'],
 ] as const;
+
+type SetupConnection = {
+  libraries?: { id: string; name: string; enabled: boolean }[];
+};
+
+function mediaServerSettings(type?: number) {
+  return type === 1 ? '/settings/plex' : '/settings/jellyfin';
+}
+
+function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
+  const connection = useApi<SetupConnection>(
+    mediaServerSettings(mediaServerType)
+  );
+  const enabled = connection.data?.libraries?.filter(
+    (library) => library.enabled
+  );
+  return (
+    <Section title="Review Setup">
+      <ServiceNote
+        what="saved media libraries"
+        error={connection.error}
+        retry={connection.reload}
+      />
+      {enabled?.length ? (
+        <>
+          <p className="note">Enabled Media Libraries</p>
+          <ul className="setlist">
+            {enabled.map(({ id, name }) => (
+              <li key={id} className="set">
+                {name}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : connection.data ? (
+        <p className="note">
+          Enable at least one media library before finishing setup.
+        </p>
+      ) : !connection.error ? (
+        <p className="note" role="status">
+          Checking saved media libraries…
+        </p>
+      ) : null}
+      <p className="note">
+        Request services, download clients, and Prowlarr are optional.
+      </p>
+    </Section>
+  );
+}
 const requestServices = [
   ['radarr', 'Radarr'],
   ['sonarr', 'Sonarr'],
@@ -158,9 +209,9 @@ export default function Setup() {
   }
 
   async function finish() {
-    const endpoint = settings.data?.mediaServerType === 1 ? 'plex' : 'jellyfin';
-    const connection = await api<{ libraries: { enabled: boolean }[] }>(
-      `/settings/${endpoint}`
+    const connection = await api<SetupConnection>(
+      mediaServerSettings(settings.data?.mediaServerType),
+      { cache: 'no-store' }
     );
     if (!connection.libraries?.some((library) => library.enabled)) {
       throw new Error(
@@ -282,6 +333,9 @@ export default function Setup() {
         >
           <AdminProwlarr inSetup />
         </SetupEditor>
+        {activeStep === 'review' && (
+          <SetupReview mediaServerType={settings.data.mediaServerType} />
+        )}
         <ServiceNote error={error || null} what="setup" />
         {activeStep && (
           <div className="toolbar">

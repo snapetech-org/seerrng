@@ -237,6 +237,15 @@ test('first-run Plex setup exchanges the PIN and configures a discovered server'
   ).toBeVisible();
   await films.click();
   await expect(films).toBeChecked();
+  await page.getByRole('link', { name: 'Start Guided Setup' }).click();
+  await page
+    .getByRole('navigation', { name: 'Setup steps' })
+    .getByRole('link', { name: 'Review' })
+    .click();
+  const review = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Review Setup' }),
+  });
+  await expect(review.getByRole('listitem')).toHaveText('Films');
   await finish.click();
   await expect(page).toHaveURL(`${mount}/`);
   expect(initialized).toBe(true);
