@@ -1,0 +1,23 @@
+# Picomatch dependency verification, 2026-11-18
+
+The two open Dependabot alerts track
+[GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf).
+[Alert 386](https://github.com/snapetech-org/seerrng/security/dependabot/386)
+tracks the root lockfile. [Alert 384](https://github.com/snapetech-org/seerrng/security/dependabot/384)
+tracks the documentation lockfile. GitHub lists versions through 4.0.7
+as affected and lists no patched registry version. The alerts remain open.
+
+[Commit 8e7c32eab](https://github.com/snapetech-org/seerrng/commit/8e7c32eab)
+adds a local mitigation for repeated wildcard extglobs. The root workspace
+pins its patch for 2.3.2. The documentation workspace pins patches for
+2.3.2 and 4.0.4. Verified that all three workspace declarations and
+lockfile package snapshots reference the SHA-256 digests of the checked-in
+patch files. The two 2.3.2 patch files are byte-identical.
+
+Both patches applied cleanly to fresh npm tarballs of the exact pinned
+versions. Ordinary matching checks passed for globstar paths, file
+extensions, and bounded extglob alternatives. These checks verify patch
+binding, applicability, and basic compatibility. They do not establish
+that a previously installed dependency tree includes the patch. Release
+validation must use a fresh frozen install and verify the patch in the
+resulting dependency tree.
