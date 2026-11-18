@@ -3292,7 +3292,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 347,
+          "line": 351,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image exceeds disk cache capacity.'",
@@ -9460,7 +9460,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 665,
+          "line": 672,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Directory inspection limit must be positive.'",
@@ -12570,7 +12570,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 490,
+          "line": 495,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache write capacity exceeded.'",
@@ -16987,7 +16987,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 1121,
+          "line": 1136,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Upstream response is not a supported raster image'",
@@ -25211,7 +25211,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 679,
+          "line": 686,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Directory exceeds the inspection entry limit.'",
@@ -26797,7 +26797,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 597,
+          "line": 604,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache file exceeds the in-memory read limit.'",
@@ -26805,7 +26805,7 @@
         },
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 602,
+          "line": 609,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache file exceeds the in-memory read limit.'",
@@ -29358,7 +29358,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 1086,
+          "line": 1101,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image URL is not safe to request.'",
@@ -29773,7 +29773,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 528,
+          "line": 533,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache filename must not contain path segments'",
@@ -33232,7 +33232,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 1114,
+          "line": 1129,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image exceeds maximum allowed size'",
@@ -34133,7 +34133,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 407,
+          "line": 412,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image disk cache entry escapes cache directory.'",
@@ -37816,7 +37816,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 459,
+          "line": 464,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache files must not be hard-linked.'",
@@ -41000,7 +41000,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 95,
+          "line": 99,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image URL is invalid.'",
@@ -43005,7 +43005,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 654,
+          "line": 661,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Transcoded image exceeds maximum allowed size.'",
@@ -43567,7 +43567,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 626,
+          "line": 633,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image exceeds maximum decoded pixel count.'",
@@ -45886,7 +45886,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 909,
+          "line": 922,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Failed to load image'",
@@ -49821,7 +49821,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 335,
+          "line": 339,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image disk cache entry limit must be positive.'",
@@ -50119,7 +50119,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 545,
+          "line": 550,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache parent path is not a directory'",
@@ -50981,7 +50981,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 218,
+          "line": 222,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache path escapes cache directory'",
@@ -50989,7 +50989,7 @@
         },
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 230,
+          "line": 234,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache path escapes cache directory'",
@@ -53875,7 +53875,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 594,
+          "line": 601,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache path must be a private regular file.'",
@@ -56117,6 +56117,25 @@
       ]
     },
     {
+      "key": "md7b2ceece13c0a11f408",
+      "id": "utils.ApiMessage.md7b2ceece13c0a11f408",
+      "source": "Image URL must use the configured origin.",
+      "defaultMessage": "Image URL must use the configured origin.",
+      "sourceHash": "d7b2ceece13c0a11f4081c234921a315661e0c52f7dd1fa26748c24ab5c12e5a",
+      "parts": ["Image URL must use the configured origin."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/imageproxy.ts",
+          "line": 95,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Image URL must use the configured origin.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "md7bd84d3def61cc44674",
       "id": "utils.ApiMessage.md7bd84d3def61cc44674",
       "source": "mediaId is required for movie and series requests.",
@@ -58299,7 +58318,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 556,
+          "line": 561,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache path is not a directory'",
@@ -59720,7 +59739,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 584,
+          "line": 590,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image cache read limit must be positive.'",
@@ -59884,7 +59903,7 @@
       "callsites": [
         {
           "path": "server/lib/imageproxy.ts",
-          "line": 332,
+          "line": 336,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Image disk cache byte limit must be positive.'",
@@ -72559,7 +72578,7 @@
     },
     {
       "path": "server/lib/imageproxy.ts",
-      "line": 516,
+      "line": 521,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "(error as Error).message",
@@ -72568,7 +72587,7 @@
     },
     {
       "path": "server/lib/imageproxy.ts",
-      "line": 800,
+      "line": 810,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -72577,7 +72596,7 @@
     },
     {
       "path": "server/lib/imageproxy.ts",
-      "line": 962,
+      "line": 975,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -72586,7 +72605,7 @@
     },
     {
       "path": "server/lib/imageproxy.ts",
-      "line": 988,
+      "line": 1001,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -72595,7 +72614,7 @@
     },
     {
       "path": "server/lib/imageproxy.ts",
-      "line": 1161,
+      "line": 1176,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "(error as Error).message",

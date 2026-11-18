@@ -3006,6 +3006,7 @@ export const apiMessages: Record<
   md7a5af66ab373d8c3d83:
     '[Tautulli] Failed to fetch user watch stats: {value0}',
   md7a76372293e7ef56368: 'A series and narrator are required.',
+  md7b2ceece13c0a11f408: 'Image URL must use the configured origin.',
   md7bd84d3def61cc44674: 'mediaId is required for movie and series requests.',
   md7c3e7b2d3f529e32d6f: 'Library target is no longer verified.',
   md7fa140d4e82ae7d910c:
