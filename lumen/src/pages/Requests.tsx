@@ -41,6 +41,7 @@ import {
   adultScenePath,
   GAME_LABEL,
   patchHref,
+  softwareSelectionLabel,
   useExtras,
   type AlbumDetails,
   type Comic,
@@ -960,7 +961,11 @@ function gameRow(g: SoftwareRequest): Row {
       (id
         ? `/game/${q.category}/${encodeURIComponent(String(id))}${q.catalogProvider === 'dat' ? '?dat=1' : ''}`
         : ''),
-    sub: [GAME_LABEL[q.category], q.platform?.name, patch && 'Patch']
+    sub: [
+      GAME_LABEL[q.category],
+      q.platform?.name,
+      softwareSelectionLabel(q.selection),
+    ]
       .filter(Boolean)
       .join(' · '),
   };

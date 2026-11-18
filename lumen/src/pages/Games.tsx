@@ -288,6 +288,7 @@ function GameDetailView({
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const [done, setDone] = useState('');
+  const [requestId, setRequestId] = useState<number>();
   const [selection, setSelection] = useState<
     GameContentSelection | null | undefined
   >(null);
@@ -327,6 +328,7 @@ function GameDetailView({
       setDone(
         r.request.status === 'pending' ? 'Waiting for approval' : 'Requested'
       );
+      setRequestId(r.request.id);
       toast(`Requested ${g.title}`);
     } catch (e) {
       const m = e instanceof Error ? e.message : '';
@@ -465,6 +467,18 @@ function GameDetailView({
             </div>
           )}
           <div className="dacts pc">{main}</div>
+          {typeof requestId === 'number' &&
+            Number.isSafeInteger(requestId) &&
+            requestId > 0 && (
+              <div className="toolbar">
+                <Link
+                  className="chip"
+                  to={`/requests?softwareRequestId=${requestId}`}
+                >
+                  Request History
+                </Link>
+              </div>
+            )}
           <div className="dcols">
             <div style={{ display: 'grid', gap: 22 }}>
               {g.summary && <p className="ov">{g.summary}</p>}

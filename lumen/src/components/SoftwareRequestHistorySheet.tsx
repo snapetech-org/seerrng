@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
-import { patchHref, type SoftwareRequest } from '../extras';
+import {
+  patchHref,
+  softwareSelectionLabel,
+  type SoftwareRequest,
+} from '../extras';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { canManageRequests } from './detail';
@@ -191,6 +195,17 @@ export function SoftwareRequestHistorySheet({
                 {data.request.platform?.name &&
                   ` · ${data.request.platform.name}`}
               </p>
+              {selection?.kind === 'game-content' && (
+                <p className="note">
+                  {softwareSelectionLabel(selection)}
+                  {selection.mode === 'edition' && selection.editionId
+                    ? ` · IGDB edition ${selection.editionId}`
+                    : selection.mode === 'missing-selected' &&
+                        selection.addonIds?.length
+                      ? ` · IGDB add-ons ${selection.addonIds.join(', ')}`
+                      : ''}
+                </p>
+              )}
               {patch && (
                 <div className="toolbar">
                   {project && (

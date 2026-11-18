@@ -547,6 +547,20 @@ export interface SoftwareRequest {
   };
 }
 
+export function softwareSelectionLabel(
+  selection: SoftwareRequest['request']['selection']
+) {
+  if (selection?.kind === 'patch') return 'Patch';
+  if (selection?.kind !== 'game-content') return undefined;
+  if (selection.mode === 'edition') return 'Complete Edition';
+  const count = selection.addonIds?.length ?? 0;
+  return count === 1
+    ? '1 Add-on'
+    : count > 1
+      ? `${count} Add-ons`
+      : 'Selected Add-ons';
+}
+
 // ---- sports (Sportarr leagues) and adult (Whisparr scenes, StashDB ids) ----
 export function adultScenePath(id: string, serverId?: number | null) {
   const scoped =

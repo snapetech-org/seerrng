@@ -222,8 +222,29 @@ test('an owned PC game can request only the selected add-ons', async ({
       });
     if (path === '/request/software' && request.method() === 'POST') {
       submitted.push(request.postDataJSON());
-      return route.fulfill({ json: { request: { status: 'pending' } } });
+      return route.fulfill({
+        json: { request: { id: 71, status: 'pending' } },
+      });
     }
+    if (path === '/request/software/status/71')
+      return route.fulfill({
+        json: {
+          status: 'pending',
+          request: {
+            id: 71,
+            category: 'game',
+            title: 'Owned PC Game',
+            status: 'pending',
+            selection: {
+              kind: 'game-content',
+              mode: 'missing-selected',
+              addonIds: [53],
+            },
+          },
+          history: [],
+          assets: [],
+        },
+      });
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto('/game/game/42');
@@ -243,6 +264,14 @@ test('an owned PC game can request only the selected add-ons', async ({
   await expect(request).toBeDisabled();
   await page.getByRole('checkbox', { name: 'New Expansion' }).check();
   await request.click();
+  await page
+    .getByRole('link', { name: 'Request History', exact: true })
+    .click();
+  await expect(
+    page
+      .getByRole('dialog', { name: 'Software request history' })
+      .getByText('1 Add-on · IGDB add-ons 53')
+  ).toBeVisible();
   expect(submitted).toEqual([
     {
       category: 'game',
