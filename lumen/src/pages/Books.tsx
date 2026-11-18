@@ -21,6 +21,7 @@ import {
 } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { BookSeriesResults } from './BookSeriesSearch';
 
 // the sorts SeerrNG's book feed takes (the same four the SeerrNG web app offers); the first is
 // the default, which the feed is asked for without a sortBy
@@ -103,10 +104,24 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p] = useSearchParams();
   const { prefs } = usePrefs();
   const audio = format === 'audiobook';
-  const grid =
-    p.has('show') || p.has('sort') || p.has('genre') || p.has('subject');
-  const subject = p.get('subject');
-  const formatQuery = subject ? `?${new URLSearchParams({ subject })}` : '';
+  const grid = [
+    'show',
+    'sort',
+    'genre',
+    'subject',
+    'search',
+    'author',
+    'narrator',
+  ].some((key) => p.has(key));
+  function formatQuery(target: 'ebook' | 'audiobook') {
+    const query = new URLSearchParams();
+    for (const key of ['subject', 'search', 'author', 'narrator']) {
+      const value = p.get(key);
+      if (value && (key !== 'narrator' || target === 'audiobook'))
+        query.set(key, value);
+    }
+    return query.size ? '?' + query : '';
+  }
   const note = (
     <p className="note" style={{ margin: '-4px 0 14px' }}>
       {audio
@@ -139,14 +154,14 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
         </div>
         <div className="seg wide" role="group" aria-label="Format">
           <Link
-            to={`/books${formatQuery}`}
+            to={`/books${formatQuery('ebook')}`}
             aria-current={!audio ? 'page' : undefined}
           >
             <Icon name="book" size="sm" />
             Ebooks
           </Link>
           <Link
-            to={`/audiobooks${formatQuery}`}
+            to={`/audiobooks${formatQuery('audiobook')}`}
             aria-current={audio ? 'page' : undefined}
           >
             <Icon name="headphones" size="sm" />
@@ -388,10 +403,27 @@ function BooksGrid({
   const genres = show === 'have' ? [] : genresOf(p);
   const rawSubject = p.get('subject')?.trim() ?? '';
   const subject = show !== 'have' && rawSubject.length <= 512 ? rawSubject : '';
+  const filters = new URLSearchParams();
+  for (const [key, apiKey] of [
+    ['search', 'query'],
+    ['author', 'author'],
+    ['narrator', 'narrator'],
+  ]) {
+    const value = p.get(key)?.trim();
+    if (
+      show !== 'have' &&
+      value &&
+      value.length <= 256 &&
+      (key !== 'narrator' || format === 'audiobook')
+    )
+      filters.set(apiKey, value);
+  }
+  const search = filters.get('query') ?? '';
+  const seriesQuery = new URLSearchParams({ query: search, format });
   const list = usePaged<BookResult>(
     show === 'have'
       ? `/book/library?format=${format}`
-      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${subject ? `&subject=${encodeURIComponent(subject)}` : subjectParam(genres)}`
+      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${subject ? `&subject=${encodeURIComponent(subject)}` : subjectParam(genres)}${filters.size ? '&' + filters : ''}`
   );
   const audio = format === 'audiobook';
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
@@ -424,7 +456,7 @@ function BooksGrid({
   // Not yet hides owned books here, page by page: with most of a feed owned the grid stays
   // short and scrolling would fetch page after page. As on Movies and Series, a run of pages
   // that finds less than a screenful stops and asks first.
-  const filterKey = `${format}|${show}|${sort}|${genres.join(',')}`;
+  const filterKey = `${format}|${show}|${sort}|${subject}|${genres.join(',')}|${filters}`;
   const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
   if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
   else if (items.length - look.found >= SCREENFUL)
@@ -478,6 +510,31 @@ function BooksGrid({
         <Link to={audio ? '/audiobooks' : '/books'}>Overview</Link>
       </div>
       {note}
+      {search.length >= 2 && search.length <= 200 && (
+        <Section
+          title="Book Series"
+          link={['View All Series Results', '/book-series?' + seriesQuery]}
+        >
+          <BookSeriesResults query={search} format={format} limit={6} />
+        </Section>
+      )}
+      {filters.size > 0 && (
+        <div className="toolbar">
+          <span className="note">{[...filters.values()].join(' · ')}</span>
+          <button
+            type="button"
+            className="chip"
+            onClick={() => {
+              const next = new URLSearchParams(p);
+              for (const key of ['search', 'author', 'narrator'])
+                next.delete(key);
+              keepList(next);
+            }}
+          >
+            Clear Book Search
+          </button>
+        </div>
+      )}
       <div className="toolbar">
         {subject && (
           <button className="chip" type="button" onClick={() => setGenres([])}>

@@ -7251,3 +7251,34 @@ test('audiobook search includes exact series matches and a format-preserving res
     '/book-series?query=Fixture+Series&format=audiobook'
   );
 });
+
+test('audiobook discovery bookmarks apply search, author and narrator and show series matches', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book-series/search?*', (route) =>
+    route.fulfill({ json: { status: 'ok', results: [] } })
+  );
+  const filtered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/books' &&
+      url.searchParams.get('format') === 'audiobook' &&
+      url.searchParams.get('query') === 'Fixture Series' &&
+      url.searchParams.get('author') === 'Author' &&
+      url.searchParams.get('narrator') === 'Reader'
+    );
+  });
+  await page.goto(
+    '/audiobooks?search=Fixture+Series&author=Author&narrator=Reader'
+  );
+  await filtered;
+  await expect(
+    page.getByRole('link', { name: 'View All Series Results' })
+  ).toHaveAttribute(
+    'href',
+    '/book-series?query=Fixture+Series&format=audiobook'
+  );
+  await page.getByRole('button', { name: 'Clear Book Search' }).click();
+  await expect(page).not.toHaveURL(/search=|author=|narrator=/);
+});

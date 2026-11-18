@@ -279,6 +279,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['/tv/12/crew', '/lumen/tv/12/crew'],
       ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
       ['/discover/movies?libraryView=missing', '/lumen/movies?show=not'],
+      [
+        '/discover/audiobooks?search=Fixture+Series&author=Author&narrator=Reader',
+        '/lumen/audiobooks?search=Fixture+Series&author=Author&narrator=Reader',
+      ],
       ['/discover/books?subject=History', '/lumen/books?subject=History'],
     ]) {
       const response = await request(app).get(bookmark);
