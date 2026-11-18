@@ -2515,3 +2515,14 @@ IDs. Compared the sheet with and without the message on desktop, iPhone
 13, Pixel 7, and iPad Pro 11. Live Sonarr was outside the check. Evidence
 is retained under `seerrng-lumen-episode-confirmation*` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+TV collection results count a series as requested only after SeerrNG
+returns a request ID. A response adding no seasons is reported against the
+affected series. Closing the results refreshes the collection.
+
+The production build and eight browser checks passed. Compared the result
+sheet before and after on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+Fixtures cover both a no-op response and a confirmed request. Live Sonarr
+was outside the check. Evidence is retained under
+`seerrng-lumen-collection-confirmation*` in
+`/mnt/disks/scratch/task-deliverables/`.

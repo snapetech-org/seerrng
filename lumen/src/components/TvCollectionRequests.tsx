@@ -173,7 +173,7 @@ function Sheet({
 
   function finish() {
     if (active.current) return;
-    if (results?.some((result) => !result.error)) refresh();
+    if (results) refresh();
     close();
   }
   useDialog(dialog, finish);
@@ -187,7 +187,7 @@ function Sheet({
       setResults(
         await mapSeries(selected, async ({ member, detail, selections }) => {
           try {
-            await requestSeries(
+            const result = await requestSeries(
               Number(member.id),
               selections.map(({ seasonNumber }) => seasonNumber),
               {
@@ -199,7 +199,13 @@ function Sheet({
                   : undefined,
               }
             );
-            return { title: member.title };
+            return {
+              title: member.title,
+              error:
+                Number.isSafeInteger(result?.id) && result.id > 0
+                  ? undefined
+                  : 'No selected seasons were added.',
+            };
           } catch (error) {
             return {
               title: member.title,

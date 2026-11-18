@@ -17,7 +17,10 @@ test('series and album details reach their curated collections', async ({
     if (path === '/request') {
       expect(route.request().method()).toBe('POST');
       tvRequests.push(route.request().postDataJSON());
-      return route.fulfill({ json: { id: 2 } });
+      return route.fulfill({
+        status: 202,
+        json: { message: 'No seasons available.' },
+      });
     }
     if (path === '/request/bulk') {
       expect(route.request().method()).toBe('POST');
@@ -174,7 +177,14 @@ test('series and album details reach their curated collections', async ({
   await tvSheet
     .getByRole('button', { name: 'Request Selected Series' })
     .click();
-  await expect(tvSheet.getByText('1 requested, 0 failed.')).toBeVisible();
+  await expect(tvSheet.getByText('0 requested, 1 failed.')).toBeVisible();
+  await expect(
+    tvSheet.getByText('Fixture Series · No selected seasons were added.')
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('series-request-unconfirmed.png'),
+    animations: 'disabled',
+  });
   expect(tvRequests).toEqual([
     {
       mediaType: 'tv',
