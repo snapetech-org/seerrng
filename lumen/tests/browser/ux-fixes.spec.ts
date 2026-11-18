@@ -54,7 +54,7 @@ const bookJson = (extra: object = {}) => ({
   title: 'Whole Cover Book',
   author: 'Ada Writer',
   description: 'A story about covers.\n\nSecond paragraph.',
-  posterPath: '/cover.jpg',
+  posterPath: '/imageproxy/hardcover/cover.jpg',
   subjects: ['Fantasy'],
   ...extra,
 });
@@ -181,6 +181,7 @@ test('request covers reject untrusted artwork and keep valid proxy images', asyn
   const requests = [
     '/imageproxy/coverartarchive/release/valid.jpg',
     'http://art.example/unsafe.jpg',
+    '/api/v1/user/settings',
   ];
   await page.route('**/imageproxy/coverartarchive/**', (route) =>
     route.fulfill({
@@ -210,7 +211,8 @@ test('request covers reject untrusted artwork and keep valid proxy images', asyn
         },
       };
   });
-  await page.goto('/requests?tab=all');
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  await page.goto(`${mount}/requests?tab=all`);
   await expect(page.locator('.rq .art img')).toHaveCount(2);
   await expect(page.locator('.rq .art img').first()).toHaveAttribute(
     'src',
@@ -220,7 +222,7 @@ test('request covers reject untrusted artwork and keep valid proxy images', asyn
     'src',
     requests[0]
   );
-  await expect(page.locator('.rq .art .nocover')).toHaveCount(1);
+  await expect(page.locator('.rq .art .nocover')).toHaveCount(2);
 });
 
 test('Escape closes the change-request sheet, focus returns and the page does not scroll behind it', async ({

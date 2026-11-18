@@ -2919,3 +2919,9 @@ in the analysis of `ba2844e70`. In that revision and current main, its
 only consumer renders each paragraph as a React text child. The alert was
 dismissed as a false positive because the formatted value never reaches
 an HTML parser. The artwork URL findings remain open for separate review.
+
+Lumen's shared artwork validator limits same-origin image loads to the
+image proxy and dedicated image endpoints. It retains query parameters
+for those routes and preserves external HTTPS artwork support. The
+request-cover fixture checks that an unrelated same-origin API URL falls
+back to drawn artwork. Matched visual acceptance remains unverified.

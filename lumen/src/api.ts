@@ -380,16 +380,27 @@ export function proxiedArtPath(raw: string, host: string): string | undefined {
     return undefined;
   return u.pathname.slice(1) || undefined;
 }
+const LOCAL_ART_ROUTE =
+  /^(?:\/imageproxy\/.+|\/api\/v1\/(?:(?:sportarr|magazine)\/cover\/[^/]+\/[^/]+|(?:movie|author|adult)\/[^/]+\/cover|book-series\/covers\/image))$/;
+
+function localArt(raw: string) {
+  const path = raw.split(/[?#]/, 1)[0];
+  return LOCAL_ART_ROUTE.test(path) &&
+    !raw.includes('\\') &&
+    isSafeImagePath(path)
+    ? raw
+    : undefined;
+}
+
 export const artUrl = (url?: string | null) => {
   if (typeof url !== 'string' || !url || IMAGE_URL_CONTROL_CHARACTERS.test(url))
     return undefined;
   // Preserve the query string on valid same-origin proxy paths.
-  if (url.startsWith('/')) {
-    const path = url.split(/[?#]/, 1)[0];
-    return !url.includes('\\') && isSafeImagePath(path) ? url : undefined;
-  }
+  if (url.startsWith('/')) return localArt(url);
   const u = httpsArt(url);
   if (!u) return undefined;
+  if (typeof location !== 'undefined' && u.origin === location.origin)
+    return localArt(u.pathname + u.search);
   const to = Object.hasOwn(PROXIED_ART, u.hostname)
     ? PROXIED_ART[u.hostname]
     : undefined;
