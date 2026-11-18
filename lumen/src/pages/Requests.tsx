@@ -1084,7 +1084,8 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
       next.set('softwareStatus', status);
     }
     next.set('show', 'software');
-    next.set('category', type);
+    if (!SOFTWARE_CATEGORIES.some(([value]) => value === next.get('category')))
+      next.set('category', type);
     next.delete('mediaType');
   }
 

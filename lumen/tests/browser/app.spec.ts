@@ -5438,6 +5438,28 @@ test('standalone user request bookmarks keep the user from the path', async ({
   }
 });
 
+test('standalone request bookmarks preserve explicit software category and status', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: URLSearchParams[] = [];
+  await page.route('**/api/v1/request/software/status?*', (route) => {
+    reads.push(new URL(route.request().url()).searchParams);
+    return route.fulfill({
+      json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+    });
+  });
+  await page.goto(
+    '/requests/by-user/19?mediaType=retro&category=modern&filter=pending&softwareStatus=failed'
+  );
+  await expect.poll(() => reads.length).toBeGreaterThan(0);
+  for (const read of reads) {
+    expect(read.get('requestedBy')).toBe('19');
+    expect(read.get('category')).toBe('modern');
+    expect(read.get('filter')).toBe('failed');
+  }
+});
+
 test('account permissions bookmarks show the signed-in users assigned permissions', async ({
   page,
 }) => {
