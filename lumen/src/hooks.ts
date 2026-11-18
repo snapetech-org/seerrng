@@ -39,19 +39,21 @@ export function useApi<T>(
   );
   const [error, setError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<ApiError>();
-  const [tick, setTick] = useState(0);
+  const [trigger, setTrigger] = useState<{ forcePath?: string }>({});
   useEffect(() => {
     if (!path) return;
     let live = true;
     const generation = sessionGeneration();
-    const keep = keepDuringRefresh && lastRequestedPath.current === path;
+    const samePath = lastRequestedPath.current === path;
+    const keep = keepDuringRefresh && samePath;
+    const force = samePath && trigger.forcePath === path;
     lastRequestedPath.current = path;
     setResponsePath(path);
     setError(null);
     setApiError(undefined);
     const saved = cached<T>(path);
     if (!keep || saved !== undefined) setData(saved ?? null);
-    if (saved !== undefined && isFresh(path)) return;
+    if (saved !== undefined && isFresh(path) && !force) return;
     fetchShared<T>(path)
       .then((d) => {
         if (generation !== sessionGeneration()) return;
@@ -59,9 +61,17 @@ export function useApi<T>(
       })
       .catch((e) => {
         // a saved answer stays up if refreshing it fails
-        if (live && generation === sessionGeneration() && saved === undefined) {
-          if (e instanceof ApiError && (e.status === 401 || e.status === 403))
+        const denied =
+          e instanceof ApiError && (e.status === 401 || e.status === 403);
+        if (
+          live &&
+          generation === sessionGeneration() &&
+          (saved === undefined || (force && denied))
+        ) {
+          if (denied) {
+            if (force) forget(path);
             setData(null);
+          }
           setError(friendlyError(e, 'Failed to load'));
           setApiError(e instanceof ApiError ? e : undefined);
         }
@@ -69,14 +79,17 @@ export function useApi<T>(
     return () => {
       live = false;
     };
-  }, [path, tick, keepDuringRefresh]);
+  }, [path, trigger, keepDuringRefresh]);
   const reload = useCallback(() => {
     if (path) forget(path);
-    setTick((t) => t + 1);
+    setTrigger({});
   }, [path]);
   // ask again but keep what is on screen meanwhile (after a request the saved copy is already
   // marked stale, so the page updates in place instead of blanking)
-  const refresh = useCallback(() => setTick((t) => t + 1), []);
+  const refresh = useCallback(() => setTrigger({}), []);
+  const revalidate = useCallback(() => {
+    if (path) setTrigger({ forcePath: path });
+  }, [path]);
   const current = !currentPathOnly || responsePath === path;
   return {
     data: current ? data : null,
@@ -85,6 +98,7 @@ export function useApi<T>(
     apiError: current ? apiError : undefined,
     reload,
     refresh,
+    revalidate,
   };
 }
 

@@ -80,6 +80,7 @@ export default function MovieDetail() {
     error,
     reload,
     refresh,
+    revalidate,
   } = useApi<MovieDetails>(`/movie/${id}`, {
     currentPathOnly: true,
     keepDuringRefresh: true,
@@ -93,10 +94,10 @@ export default function MovieDetail() {
     )
       return;
     const timer = window.setInterval(() => {
-      if (document.visibilityState === 'visible') reload();
+      if (document.visibilityState === 'visible') revalidate();
     }, 30_000);
     return () => window.clearInterval(timer);
-  }, [reload, selected4k, status4k]);
+  }, [revalidate, selected4k, status4k]);
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
