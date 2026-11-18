@@ -760,17 +760,19 @@ export function Rail({
 
 export function Section({
   title,
+  id,
   link,
   action,
   children,
 }: {
   title: string;
+  id?: string;
   link?: [string, string];
   action?: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <section>
+    <section id={id}>
       <div className="sec-head">
         <h2>{title}</h2>
         {link && <Link to={link[1]}>{link[0]}</Link>}

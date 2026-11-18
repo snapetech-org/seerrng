@@ -5194,7 +5194,20 @@ test('Managed notifications save for the selected user without touching browser 
     deviceReads++;
     return route.fulfill({ json: [] });
   });
-  await page.goto('/admin/users/19/notifications');
+  await page.addInitScript(() => {
+    const originalScroll = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function (options) {
+      if (this.id.startsWith('notification-')) {
+        this.setAttribute('data-bookmark-target', 'true');
+      }
+      originalScroll.call(this, options);
+    };
+  });
+  await page.goto('/admin/users/19/notifications#notification-webpush');
+  await expect(page.locator('#notification-webpush')).toHaveAttribute(
+    'data-bookmark-target',
+    'true'
+  );
   await page
     .getByRole('checkbox', { name: 'Request approved', exact: true })
     .first()

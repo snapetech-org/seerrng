@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { useAuth } from '../auth';
@@ -953,8 +953,21 @@ export function UserNotifications({
   id: number;
   manageBrowser?: boolean;
 }) {
+  const { hash } = useLocation();
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
+  useEffect(() => {
+    if (
+      data &&
+      /^#notification-(email|discord|telegram|pushbullet|pushover|webpush)$/.test(
+        hash
+      )
+    ) {
+      document
+        .getElementById(hash.slice(1))
+        ?.scrollIntoView({ block: 'start' });
+    }
+  }, [data, hash]);
   const emailMask = data?.notificationTypes?.email;
   const mask =
     typeof emailMask === 'number' &&
@@ -964,7 +977,7 @@ export function UserNotifications({
       : defaultMask;
   return (
     <>
-      <Section title="Email">
+      <Section title="Email" id="notification-email">
         <ServiceNote
           error={error}
           what="notification settings"
@@ -1000,7 +1013,7 @@ export function UserNotifications({
           ))}
       </Section>
       {data?.discordEnabled && (
-        <Section title="Discord">
+        <Section title="Discord" id="notification-discord">
           <DiscordForm
             key={JSON.stringify([
               data.discordIds,
@@ -1013,7 +1026,7 @@ export function UserNotifications({
         </Section>
       )}
       {data?.telegramEnabled && (
-        <Section title="Telegram">
+        <Section title="Telegram" id="notification-telegram">
           <TelegramForm
             key={JSON.stringify(telegramValues(data))}
             path={path}
@@ -1022,7 +1035,7 @@ export function UserNotifications({
         </Section>
       )}
       {data && (
-        <Section title="Pushbullet">
+        <Section title="Pushbullet" id="notification-pushbullet">
           <PushbulletForm
             key={JSON.stringify([
               !!data.pushbulletAccessToken,
@@ -1034,7 +1047,7 @@ export function UserNotifications({
         </Section>
       )}
       {data && (
-        <Section title="Pushover">
+        <Section title="Pushover" id="notification-pushover">
           <PushoverForm
             key={JSON.stringify([
               !!data.pushoverApplicationToken,
@@ -1049,7 +1062,7 @@ export function UserNotifications({
         </Section>
       )}
       {data?.webPushEnabled && (
-        <Section title="Browser Push">
+        <Section title="Browser Push" id="notification-webpush">
           <EventForm
             key={data.notificationTypes?.webpush ?? defaultMask}
             path={path}

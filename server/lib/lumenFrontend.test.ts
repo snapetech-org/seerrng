@@ -62,6 +62,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       tvAccess.headers.location,
       '/lumen/admin/users/19/tv-request-access'
     );
+    const notifications = await request(app).get(
+      '/lumen/users/19/settings/notifications/telegram'
+    );
+    assert.equal(
+      notifications.headers.location,
+      '/lumen/admin/users/19/notifications#notification-telegram'
+    );
     const shareFallback = await request(app).post('/lumen/share-target');
     assert.equal(shareFallback.status, 303);
     assert.equal(
@@ -241,11 +248,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/profile/settings/password', '/lumen/me/account'],
       [
         '/profile/settings/notifications/webpush',
-        '/lumen/me/account/notifications',
+        '/lumen/me/account/notifications#notification-webpush',
       ],
       [
         '/profile/settings/notifications/discord',
-        '/lumen/me/account/notifications',
+        '/lumen/me/account/notifications#notification-discord',
       ],
       ['/profile/settings/episode-queue', '/lumen/me/account/tv-requests'],
       ['/profile/settings/client-tokens', '/lumen/me/account/client-tokens'],

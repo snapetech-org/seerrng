@@ -134,7 +134,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
     for (const [path, target] of [
       ['/profile/', '/me'],
       ['/profile/settings/', '/me/account'],
-      ['/profile/settings/notifications/webpush', '/me/account/notifications'],
+      [
+        '/profile/settings/notifications/webpush',
+        '/me/account/notifications#notification-webpush',
+      ],
       ['/profile/watchlist/?page=2', '/watchlist?page=2'],
       ['/discover/comics?q=Example', '/comics?q=Example'],
       ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
@@ -171,7 +174,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/users/19/settings/linked-accounts', '/admin/users/19/linked-accounts'],
       [
         '/users/19/settings/notifications/email',
-        '/admin/users/19/notifications',
+        '/admin/users/19/notifications#notification-email',
       ],
       ['/settings/logs', '/admin/logs'],
     ]) {

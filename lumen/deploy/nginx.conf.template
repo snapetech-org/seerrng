@@ -151,7 +151,7 @@ server {
     return 302 /me/account/client-tokens;
   }
   location ~ ^/profile/settings/notifications/(email|telegram|discord|pushbullet|pushover|webpush)/?$ {
-    return 302 /me/account/notifications;
+    return 302 "/me/account/notifications#notification-$1";
   }
   location ~ ^/profile/settings(/(main|password))?/?$ {
     return 302 /me/account;
@@ -206,7 +206,7 @@ server {
   }
 
   location ~ "^/users/([1-9][0-9]{0,8}|1000000000)/settings/notifications/(email|discord|telegram|pushbullet|pushover|webpush)/?$" {
-    return 302 /admin/users/$1/notifications;
+    return 302 "/admin/users/$1/notifications#notification-$2";
   }
   location ~ "^/users/([1-9][0-9]{0,8}|1000000000)/settings/(main|episode-queue|maturity|permissions|password|tv-request-access|linked-accounts)/?$" {
     return 302 /admin/users/$1/$2;

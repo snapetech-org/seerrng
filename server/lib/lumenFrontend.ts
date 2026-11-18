@@ -165,12 +165,30 @@ const workflowDestinations = new Map([
   ['/profile/settings/linked-accounts', '/me/account/linked-accounts'],
   ['/profile/settings/tv-request-access', '/me/account/tv-requests'],
   ['/profile/settings/episode-queue', '/me/account/tv-requests'],
-  ['/profile/settings/notifications/email', '/me/account/notifications'],
-  ['/profile/settings/notifications/telegram', '/me/account/notifications'],
-  ['/profile/settings/notifications/discord', '/me/account/notifications'],
-  ['/profile/settings/notifications/pushbullet', '/me/account/notifications'],
-  ['/profile/settings/notifications/pushover', '/me/account/notifications'],
-  ['/profile/settings/notifications/webpush', '/me/account/notifications'],
+  [
+    '/profile/settings/notifications/email',
+    '/me/account/notifications#notification-email',
+  ],
+  [
+    '/profile/settings/notifications/telegram',
+    '/me/account/notifications#notification-telegram',
+  ],
+  [
+    '/profile/settings/notifications/discord',
+    '/me/account/notifications#notification-discord',
+  ],
+  [
+    '/profile/settings/notifications/pushbullet',
+    '/me/account/notifications#notification-pushbullet',
+  ],
+  [
+    '/profile/settings/notifications/pushover',
+    '/me/account/notifications#notification-pushover',
+  ],
+  [
+    '/profile/settings/notifications/webpush',
+    '/me/account/notifications#notification-webpush',
+  ],
   ['/profile/watchlist', '/watchlist'],
   ['/discover/watchlist', '/watchlist/discover'],
   ['/downloads', '/downloads'],
@@ -215,7 +233,8 @@ function managedUserSettingsPath(path: string): string | undefined {
       path
     );
   if (!match || Number(match[1]) > 1_000_000_000) return;
-  return `/lumen/admin/users/${match[1]}/${match[2]?.startsWith('notifications') ? 'notifications' : (match[2] ?? 'main')}`;
+  const [panel, channel] = (match[2] ?? 'main').split('/');
+  return `/lumen/admin/users/${match[1]}/${panel}${channel ? `#notification-${channel}` : ''}`;
 }
 
 function workflowDeepLink(req: Request): string | undefined {
