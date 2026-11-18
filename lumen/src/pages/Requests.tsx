@@ -1526,6 +1526,7 @@ export default function Requests() {
           key={history.r.id}
           id={history.r.id}
           title={history.title}
+          type={history.r.type}
           close={() => setHistory(null)}
         />
       )}

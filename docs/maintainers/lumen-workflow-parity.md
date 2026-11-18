@@ -459,3 +459,14 @@ Standalone Chrome at 1440 × 1000 verified a personal TV request with two
 events across two attempts, newest first, and dismissal with Escape.
 Native visual comparison, mobile, bundled, delegated browser verification,
 and the software-request and download-file history workflows remain open.
+
+### Request file downloads increment
+
+Request History offers an on-demand file lookup for available movies, series,
+books, comics and magazines. It displays partial provider results and uses
+SeerrNG's existing authorized download endpoints for each file.
+
+Standalone Chrome at 1440 × 1000 verified the ebook file list, partial-source
+notice and successful attachment response with a synthetic provider result.
+Native comparison, mobile, bundled, live provider and media-detail download
+entry points remain open.
