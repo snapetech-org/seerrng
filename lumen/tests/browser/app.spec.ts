@@ -2069,23 +2069,28 @@ test('Sportarr league details show paginated event availability', async ({
     })
   );
   await page.route('**/api/v1/sportarr/lg-000123/events?*', (route) => {
-    const second =
-      new URL(route.request().url()).searchParams.get('page') === '2';
+    const requestedPage = Number(
+      new URL(route.request().url()).searchParams.get('page')
+    );
+    const second = requestedPage === 2;
     return route.fulfill({
       json: {
         eventsAvailable: true,
         totalPages: 2,
         totalRecords: 51,
-        results: [
-          {
-            id: second ? 2 : 1,
-            title: second ? 'Final' : 'Opening Match',
-            monitored: true,
-            hasFile: !second,
-            fileCount: second ? 0 : 3,
-            quality: second ? undefined : 'HDTV',
-          },
-        ],
+        results:
+          requestedPage > 2
+            ? []
+            : [
+                {
+                  id: second ? 2 : 1,
+                  title: second ? 'Final' : 'Opening Match',
+                  monitored: true,
+                  hasFile: !second,
+                  fileCount: second ? 0 : 3,
+                  quality: second ? undefined : 'HDTV',
+                },
+              ],
       },
     });
   });
@@ -2104,6 +2109,9 @@ test('Sportarr league details show paginated event availability', async ({
   await expect(page.getByText('Final', { exact: true })).toBeVisible();
   await page.goBack();
   await expect(page.getByText('Opening Match')).toBeVisible();
+  await page.goto('/sportarr/lg-000123?eventPage=9');
+  await expect(page).toHaveURL(/eventPage=2$/);
+  await expect(page.getByText('Final', { exact: true })).toBeVisible();
 });
 
 test('Coming Soon retries a failed series feed without dropping movies', async ({

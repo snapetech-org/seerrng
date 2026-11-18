@@ -182,6 +182,19 @@ function LeagueEvents({ id }: { id: string }) {
     currentPathOnly: true,
   });
 
+  const lastPage =
+    data?.eventsAvailable && Number.isSafeInteger(data.totalPages)
+      ? Math.max(1, Math.min(data.totalPages, 1000))
+      : undefined;
+  const beyondSchedule = lastPage !== undefined && page > lastPage;
+  useEffect(() => {
+    if (!beyondSchedule) return;
+    const next = new URLSearchParams(params);
+    if (lastPage === 1) next.delete('eventPage');
+    else next.set('eventPage', String(lastPage));
+    setParams(next, { replace: true, preventScrollReset: true });
+  }, [beyondSchedule, lastPage, params, setParams]);
+
   return (
     <Section
       title="Events"
@@ -199,14 +212,14 @@ function LeagueEvents({ id }: { id: string }) {
           Loading events…
         </p>
       )}
-      {data && !data.results.length && (
+      {data && !beyondSchedule && !data.results.length && (
         <p className="note">
           {data.eventsAvailable
             ? 'Sportarr has no events on this page.'
             : 'Events appear once this league is monitored in Sportarr.'}
         </p>
       )}
-      {!!data?.results.length && (
+      {!beyondSchedule && !!data?.results.length && (
         <ul className="setlist">
           {data.results.map((event) => (
             <li className="set" key={event.id}>
@@ -239,7 +252,7 @@ function LeagueEvents({ id }: { id: string }) {
           ))}
         </ul>
       )}
-      {(page > 1 || (data?.totalPages ?? 0) > 1) && (
+      {!beyondSchedule && (page > 1 || (lastPage ?? 0) > 1) && (
         <nav className="toolbar" aria-label="Event Pages">
           <button
             className="btn btn-quiet btn-sm"
@@ -251,7 +264,7 @@ function LeagueEvents({ id }: { id: string }) {
           <span className="note">Page {page}</span>
           <button
             className="btn btn-quiet btn-sm"
-            disabled={!data || page >= Math.min(data.totalPages, 1000)}
+            disabled={lastPage === undefined || page >= lastPage}
             onClick={() => setPage(page + 1)}
           >
             Next Page
