@@ -13,6 +13,7 @@ import { BrandMark } from '../components/brand';
 import { fullSeerrUrl } from '../components/Shell';
 import { embedded } from '../deployment';
 import { usePublicSettings } from '../hooks';
+import { clearLoginLinkFromAddress } from '../loginLink';
 import { mediaServer, services, site } from '../mediaServer';
 import { completeOidc, readOidcCallback, startOidcSignIn } from '../oidc';
 import { usePrefs } from '../settings';
@@ -73,25 +74,14 @@ export default function Login() {
     location.pathname === '/login' ? readOidcCallback() : null
   );
   const [loginLinkToken, setLoginLinkToken] = useState(() => {
-    const [token, duplicate] = new URLSearchParams(
-      location.hash.slice(1)
-    ).getAll('loginToken');
-    return !duplicate && token && /^[A-Za-z0-9_-]{43}$/.test(token)
-      ? token
+    const tokens = new URLSearchParams(location.hash.slice(1)).getAll(
+      'loginToken'
+    );
+    return tokens.length === 1 && /^[A-Za-z0-9_-]{43}$/.test(tokens[0])
+      ? tokens[0]
       : null;
   });
-  useEffect(() => {
-    const { hash, pathname, search } = window.location;
-    const params = new URLSearchParams(hash.slice(1));
-    if (!params.has('loginToken')) return;
-    params.delete('loginToken');
-    const remaining = params.toString();
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${pathname}${search}${remaining ? `#${remaining}` : ''}`
-    );
-  }, []);
+  useEffect(clearLoginLinkFromAddress, []);
   const callbackWork = useRef<Promise<string> | undefined>(undefined);
   const callbackDelivered = useRef(false);
   const server = mediaServer();

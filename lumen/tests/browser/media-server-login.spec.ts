@@ -1,7 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function fixtures(page: Page, settings: Record<string, unknown>) {
-  let signedIn = false;
+async function fixtures(
+  page: Page,
+  settings: Record<string, unknown>,
+  signedIn = false
+) {
   const posts: { path: string; body: Record<string, unknown> }[] = [];
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -292,4 +295,16 @@ test('a one-time sign-in link requires confirmation and keeps the requested page
   expect(fixture.posts).toEqual([
     { path: '/auth/login-link', body: { token } },
   ]);
+});
+
+test('opening a one-time link while signed in leaves the session and other fragment fields intact', async ({
+  page,
+}) => {
+  const fixture = await fixtures(page, {}, true);
+  await page.goto(`/movie/101#loginToken=${'A'.repeat(43)}&section=details`);
+  await expect(
+    page.getByRole('heading', { name: 'Jellyfin fixture' })
+  ).toBeVisible();
+  await expect(page).toHaveURL(/\/movie\/101#section=details$/);
+  expect(fixture.posts).toEqual([]);
 });

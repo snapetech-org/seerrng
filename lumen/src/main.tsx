@@ -1,4 +1,4 @@
-import { lazy, StrictMode, Suspense } from 'react';
+import { lazy, StrictMode, Suspense, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
@@ -16,6 +16,7 @@ import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
 import { usePublicSettings } from './hooks';
 import { canSearchIndexers } from './indexerPermissions';
+import { clearLoginLinkFromAddress } from './loginLink';
 import { MediaServerProvider } from './mediaServer';
 import AdminHome from './pages/AdminHome';
 import Associations from './pages/Associations';
@@ -118,6 +119,9 @@ function App() {
   const setup = useMatch('/setup');
   const resetLink = useMatch('/resetpassword/:guid');
   const resetRequest = useMatch('/resetpassword');
+  useEffect(() => {
+    if (user) clearLoginLinkFromAddress();
+  }, [user, location.hash]);
   if (setup) {
     return (
       <Suspense fallback={<div className="boot" aria-busy="true" />}>
