@@ -126,7 +126,8 @@ async function requestList(path: string): Promise<RequestListPage> {
 async function requestListOnce(path: string): Promise<RequestListPage> {
   const params = new URLSearchParams(path.split('?')[1]);
   const filter = params.get('filter');
-  const requiresTimeline = params.has('timeFrame') || params.has('bookFormat');
+  const requiresTimeline =
+    params.has('timeFrame') || params.has('bookFormat') || params.has('search');
   if (
     requiresTimeline ||
     (statusFilterSupported &&
@@ -1091,16 +1092,18 @@ export default function Requests() {
   const timeFrame =
     REQUEST_TIME_FRAMES.find(([value]) => value === timeFrameParam)?.[0] ??
     'all';
+  const search = (p.get('search') ?? '').trim().slice(0, 200);
   const mediaQuery =
     requesterQuery +
     (mediaType === 'all' ? '' : `&mediaType=${mediaType}`) +
     (timeFrame === 'all' ? '' : `&timeFrame=${timeFrame}`) +
-    (bookFormat === 'all' ? '' : `&bookFormat=${bookFormat}`);
+    (bookFormat === 'all' ? '' : `&bookFormat=${bookFormat}`) +
+    (search ? `&${new URLSearchParams({ search })}` : '');
   const setRequestFilter = (key: string, value: string) => {
     const next = new URLSearchParams(p);
     if (key === 'mediaType' && value !== 'book') next.delete('bookFormat');
     if (key === 'bookFormat') next.set('mediaType', 'book');
-    if (value === 'all') next.delete(key);
+    if (!value || (key !== 'search' && value === 'all')) next.delete(key);
     else next.set(key, value);
     setPages(1);
     setP(next, { replace: true });
@@ -1120,6 +1123,7 @@ export default function Requests() {
     mediaType,
     bookFormat,
     timeFrame,
+    search,
   ]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
@@ -1586,6 +1590,42 @@ export default function Requests() {
             </select>
           </label>
         </div>
+      )}
+      {everyone && show !== 'software' && (
+        <form
+          className="toolbar"
+          aria-label="Search media requests"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const value = new FormData(event.currentTarget).get('search');
+            setRequestFilter(
+              'search',
+              typeof value === 'string' ? value.trim() : ''
+            );
+          }}
+        >
+          <label className="search">
+            <input
+              key={search}
+              name="search"
+              type="search"
+              aria-label="Search media requests"
+              placeholder="Search media requests"
+              maxLength={200}
+              defaultValue={search}
+            />
+          </label>
+          <button className="btn btn-tonal btn-sm">Search</button>
+          {search && (
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              onClick={() => setRequestFilter('search', '')}
+            >
+              Clear Search
+            </button>
+          )}
+        </form>
       )}
       {everyone && show === 'software' && (
         <div

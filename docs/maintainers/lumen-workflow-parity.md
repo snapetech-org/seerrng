@@ -594,3 +594,13 @@ switching to a non-book media type.
 Standalone Chrome at 1440 × 1000 verified a bookmarked audiobook filter
 and a keyboard switch to ebooks against synthetic data. Native visual
 comparison, mobile, bundled and live providers remain open.
+
+### Household request search increment
+
+The Everyone media list can search server-side across the current status,
+requester, type, format and date filters. Search terms are bookmarkable and
+apply before pagination. Clearing search retains the other filters.
+
+Standalone Chrome at 1440 × 1000 submitted a term containing an ampersand,
+verified the matching synthetic request, and cleared search while retaining
+Waiting. Native visual comparison, mobile and bundled checks remain open.
