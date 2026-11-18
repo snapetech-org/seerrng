@@ -7603,6 +7603,51 @@ test('Classic magazine bookmarks keep the search scope and link to magazine deta
   ).toHaveAttribute('href', '/magazine/Fixture%20Magazine');
 });
 
+test('Classic sports discovery bookmarks preserve the editable league search', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
+  );
+  const queries: string[] = [];
+  await page.route('**/api/v1/discover/sports?*', (route) => {
+    const query = new URL(route.request().url()).searchParams.get('query');
+    if (query) queries.push(query);
+    return route.fulfill({
+      json: paged(
+        query
+          ? [
+              {
+                mediaType: 'sports',
+                id: 'lg-123456',
+                title: query,
+              },
+            ]
+          : []
+      ),
+    });
+  });
+  await page.goto('/sports?query=Fixture+League');
+  const search = page.getByPlaceholder(
+    'Search leagues — Premier League, NFL, F1…'
+  );
+  await expect(search).toHaveValue('Fixture League');
+  await expect(
+    page.getByRole('link', { name: 'Fixture League' })
+  ).toHaveAttribute('href', '/sportarr/lg-123456');
+  await search.fill('Another League');
+  await expect(
+    page.getByRole('link', { name: 'Another League' })
+  ).toBeVisible();
+  await search.fill('');
+  await expect(page).toHaveURL(/\/sports$/);
+  await expect(page.getByRole('link', { name: 'Fixture League' })).toHaveCount(
+    0
+  );
+  expect(queries).toContain('Another League');
+});
+
 test('Classic sports search bookmarks open the requested page of Sportarr leagues', async ({
   page,
 }) => {

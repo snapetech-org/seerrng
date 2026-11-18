@@ -1,0 +1,1 @@
+- Lumen preserves Classic league and adult discovery search text when opening bookmarks.

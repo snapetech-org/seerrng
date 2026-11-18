@@ -48,19 +48,23 @@ export function LeagueCard({ league: l }: { league: League }) {
 
 function useSearchBox() {
   const [p, setP] = useSearchParams();
-  const query = p.get('q') || '';
+  const query = p.get('q') ?? p.get('query') ?? '';
   const [q, setQ] = useState(query);
   useEffect(() => {
-    const t = setTimeout(() => {
-      if (q.trim() === query) return;
-      const n = new URLSearchParams(p);
-      if (q.trim()) n.set('q', q.trim());
-      else n.delete('q');
-      setP(n, { replace: true });
+    const value = q.trim();
+    if (value === query) return;
+    const timer = setTimeout(() => {
+      const next = new URLSearchParams(p);
+      next.delete('query');
+      if (value) next.set('q', value);
+      else next.delete('q');
+      setP(next, { replace: true });
     }, 350);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
+    return () => clearTimeout(timer);
+  }, [p, q, query, setP]);
+  useEffect(() => {
+    setQ(query);
+  }, [query]);
   return { q, setQ, query };
 }
 
