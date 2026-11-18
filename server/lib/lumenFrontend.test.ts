@@ -601,6 +601,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/search?query=Fixture&type=sports&page=2',
         '/lumen/search?q=Fixture&f=sports&page=2',
       ],
+      [
+        '/search?query=Fixture+Game&type=software&category=retro',
+        '/lumen/software?q=Fixture+Game&category=retro',
+      ],
       ['/search?query=Test&page=2', '/lumen/search?q=Test&page=2'],
       [
         '/search?query=Test&type=movie&page=2',

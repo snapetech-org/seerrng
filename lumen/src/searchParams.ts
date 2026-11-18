@@ -13,7 +13,8 @@ export function normalizeSearchParams(params: URLSearchParams) {
       type === 'comic' ||
       type === 'author' ||
       type === 'magazine' ||
-      type === 'sports'
+      type === 'sports' ||
+      type === 'software'
     )
       normalized.set('f', type);
     if (type === 'music' || type === 'album') normalized.set('f', 'music');

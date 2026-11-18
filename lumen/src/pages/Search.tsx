@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Link,
+  Navigate,
   useLocation,
   useNavigationType,
   useSearchParams,
@@ -71,6 +72,29 @@ type Scope = keyof typeof SCOPES;
 export default function Search() {
   const [params, setP] = useSearchParams();
   const p = useMemo(() => normalizeSearchParams(params), [params]);
+  if (p.get('f') === 'software') {
+    const search = new URLSearchParams();
+    for (const key of ['q', 'category', 'game', 'catalogProvider']) {
+      const value = p.get(key);
+      if (value && value.length <= 256) search.set(key, value);
+    }
+    return (
+      <Navigate
+        replace
+        to={{ pathname: '/software', search: search.toString() }}
+      />
+    );
+  }
+  return <SearchResults p={p} setP={setP} />;
+}
+
+function SearchResults({
+  p,
+  setP,
+}: {
+  p: URLSearchParams;
+  setP: ReturnType<typeof useSearchParams>[1];
+}) {
   const { prefs } = usePrefs();
   const [q, setQ] = useState(p.get('q') || '');
   const requestedScope = p.get('f') ?? '';
@@ -401,6 +425,16 @@ export default function Search() {
               {SCOPES[s]}
             </button>
           ))}
+          {extras.list.some(({ key }) => key === 'game') && (
+            <Link
+              className="chip"
+              to={
+                '/software' + (term0 ? '?q=' + encodeURIComponent(term0) : '')
+              }
+            >
+              Software
+            </Link>
+          )}
         </div>
         {hasDiscoveryFilters && (
           <div className="toolbar">

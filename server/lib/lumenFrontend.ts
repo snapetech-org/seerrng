@@ -545,6 +545,14 @@ function workflowDeepLink(
   if (destination === '/search') {
     const { query: term, type, format } = req.query;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
+    if (type === 'software') {
+      for (const key of ['category', 'game', 'catalogProvider']) {
+        const value = req.query[key];
+        if (typeof value === 'string' && value.length <= 256)
+          query.set(key, value);
+      }
+      return `/lumen/software${query.size ? '?' + query.toString() : ''}`;
+    }
     if (
       type === 'movie' ||
       type === 'tv' ||

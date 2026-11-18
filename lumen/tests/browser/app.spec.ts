@@ -7198,3 +7198,11 @@ test('Classic sports search bookmarks open the requested page of Sportarr league
     page.getByRole('navigation', { name: 'Search Result Pages' })
   ).toContainText('Page 2');
 });
+
+test('Classic Software search bookmarks open the matching Lumen catalog and query', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/search?type=software&query=Fixture+Game&category=retro');
+  await expect(page).toHaveURL(/\/games\?c=retro&q=Fixture\+Game$/);
+});
