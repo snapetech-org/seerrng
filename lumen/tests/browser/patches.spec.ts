@@ -63,6 +63,18 @@ test('Patch discovery filters, follows the exact project and pages through resul
             latestVersionId: 'v2',
           },
         });
+      case `/request/software/catalog/games/${key}`:
+        expect(url.searchParams.get('category')).toBe('modern');
+        return route.fulfill({
+          json: {
+            catalogProvider: 'dat',
+            catalogId: key,
+            emulationSystems: [
+              { group: 'modern', slug: '3ds', name: 'Nintendo 3DS' },
+              { group: 'modern', slug: 'switch', name: 'Switch' },
+            ],
+          },
+        });
       default:
         return route.fulfill({ json: {} });
     }
@@ -100,10 +112,17 @@ test('Patch discovery filters, follows the exact project and pages through resul
   const choose = page.getByRole('link', { name: 'Choose a Version' });
   await expect(choose).toHaveAttribute(
     'href',
-    '/patches/patch-1?category=modern'
+    '/patches/patch-1?category=modern&platform=switch'
   );
   await choose.click();
   await expect(page.getByLabel('Game Type')).toHaveValue('modern');
+  await expect(page.getByLabel('System', { exact: true })).toHaveValue(
+    'switch'
+  );
+  await page.reload();
+  await expect(page.getByLabel('System', { exact: true })).toHaveValue(
+    'switch'
+  );
 });
 
 test('a Following update opens its exact patch version and submits only with a compatible base', async ({

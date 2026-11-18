@@ -951,7 +951,8 @@ function gameRow(g: SoftwareRequest): Row {
   const id = q.catalogProvider === 'dat' ? q.catalogKey : q.catalogId;
   const patch = q.selection?.kind === 'patch' ? q.selection : null;
   const patchLink =
-    patch && patchHref(patch.projectId, patch.versionId, q.category);
+    patch &&
+    patchHref(patch.projectId, patch.versionId, q.category, q.platform?.slug);
   return {
     r,
     title: q.title,

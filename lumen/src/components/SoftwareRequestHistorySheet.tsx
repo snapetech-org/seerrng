@@ -105,7 +105,12 @@ export function SoftwareRequestHistorySheet({
   const patch = selection?.kind === 'patch' ? selection : null;
   const project =
     patch &&
-    patchHref(patch.projectId, patch.versionId, data?.request.category);
+    patchHref(
+      patch.projectId,
+      patch.versionId,
+      data?.request.category,
+      data?.request.platform?.slug
+    );
   const capabilities = data?.request.actions;
   const actions: Action[] = [];
   if (status === 'pending') {

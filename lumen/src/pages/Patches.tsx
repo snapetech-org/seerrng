@@ -180,7 +180,12 @@ export default function Patches() {
         <ul className="setlist">
           {data.results.map((project) => {
             const game = gameLink(project.game.catalogKey, category);
-            const detail = patchHref(project.id, undefined, category);
+            const detail = patchHref(
+              project.id,
+              undefined,
+              category,
+              platform || project.game.platformSlug
+            );
             const latest =
               project.versions.find(
                 (version) => version.id === project.latestVersionId
@@ -297,10 +302,12 @@ export function PatchDetail() {
             option.slug === project.game.platformSlug)
       )
     : [];
-  const [system, setSystem] = useState('');
-  const targetSystem =
-    systems.find((option) => option.slug === system) ??
-    (systems.length === 1 ? systems[0] : undefined);
+  const system = params.get('platform');
+  const targetSystem = system
+    ? systems.find((option) => option.slug === system)
+    : systems.length === 1
+      ? systems[0]
+      : undefined;
   const [picked, setPicked] = useState<string>();
   const versionId =
     picked ?? params.get('version') ?? project?.latestVersionId ?? '';
@@ -416,8 +423,8 @@ export function PatchDetail() {
                       if (event.target.value === 'modern')
                         next.set('category', 'modern');
                       else next.delete('category');
+                      next.delete('platform');
                       setParams(next, { replace: true });
-                      setSystem('');
                     }}
                   >
                     <option value="retro">{GAME_LABEL.retro}</option>
@@ -430,7 +437,13 @@ export function PatchDetail() {
                     aria-label="System"
                     value={targetSystem?.slug ?? ''}
                     disabled={busy || Boolean(receipt) || !systems.length}
-                    onChange={(event) => setSystem(event.target.value)}
+                    onChange={(event) => {
+                      const next = new URLSearchParams(params);
+                      if (event.target.value)
+                        next.set('platform', event.target.value);
+                      else next.delete('platform');
+                      setParams(next, { replace: true });
+                    }}
                   >
                     <option value="">Choose a system</option>
                     {systems.map((option) => (

@@ -472,12 +472,15 @@ export const PATCH_ID = /^[A-Za-z0-9][A-Za-z0-9:_.-]{0,127}$/;
 export function patchHref(
   id: string,
   version?: string,
-  category?: GameCategory
+  category?: GameCategory,
+  platform?: string | null
 ) {
   if (!PATCH_ID.test(id) || (version && !PATCH_ID.test(version))) return;
   const query = new URLSearchParams();
   if (version) query.set('version', version);
   if (category === 'modern') query.set('category', category);
+  if (platform && /^[a-z0-9][a-z0-9_-]{0,63}$/i.test(platform))
+    query.set('platform', platform);
   return `/patches/${encodeURIComponent(id)}${query.size ? `?${query}` : ''}`;
 }
 
@@ -572,7 +575,7 @@ export interface SoftwareRequest {
           addonIds?: number[];
         }
       | null;
-    platform: { name: string } | null;
+    platform: { name: string; slug?: string } | null;
     percent: number | null;
     error: string | null;
     createdAt: string;
