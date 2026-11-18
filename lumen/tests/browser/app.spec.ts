@@ -4160,3 +4160,45 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
   ).toBeVisible();
   await expect(page).toHaveURL(/\/music\/playlist-import$/);
 });
+
+test('Track Requests can browse history beyond the first page', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: true } })
+  );
+  await page.route(/\/api\/v1\/soulseek\/track-requests\?/, (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    const skip = Number(params.get('skip'));
+    const history = params.get('filter') === 'all';
+    return route.fulfill({
+      json: {
+        pageInfo: { total: history ? 101 : 0, skip, take: 100 },
+        results: history
+          ? [
+              {
+                id: skip + 1,
+                title: skip ? 'Older track' : 'Recent track',
+                artist: 'Artist',
+                status: 'completed',
+              },
+            ]
+          : [],
+      },
+    });
+  });
+  await page.goto('/track-requests');
+  await page.getByLabel('Status').selectOption('all');
+  await expect(page.getByText('Recent track')).toBeVisible();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page.getByText('Older track')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
+  await page.getByLabel('Status').selectOption('active');
+  await expect(
+    page.getByText('No track requests match these filters.')
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Previous Page' })).toHaveCount(
+    0
+  );
+});

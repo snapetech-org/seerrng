@@ -20,6 +20,8 @@ const actions = {
   decline: 'Decline',
   cancel: 'Cancel Request',
 };
+const pageSize = 100;
+
 type Action = keyof typeof actions;
 interface TrackRequest {
   id: number;
@@ -39,6 +41,7 @@ export default function TrackRequests() {
   const canViewAll = manage || (permissions & 16384) !== 0;
   const [showAll, setShowAll] = useState(false);
   const [active, setActive] = useState(true);
+  const [skip, setSkip] = useState(0);
   const [confirmation, setConfirmation] = useState<{
     track: TrackRequest;
     action: Action;
@@ -48,12 +51,16 @@ export default function TrackRequests() {
   const working = useRef(false);
   const service = useApi<{ configured: boolean }>('/soulseek/status');
   const scope = canViewAll && showAll ? 'all' : 'mine';
-  const list = useApi<{ results: TrackRequest[] }>(
+  const list = useApi<{
+    results: TrackRequest[];
+    pageInfo?: { total: number; skip: number; take: number };
+  }>(
     service.data?.configured
-      ? `/soulseek/track-requests?scope=${scope}&filter=${active ? 'active' : 'all'}&take=100`
+      ? `/soulseek/track-requests?scope=${scope}&filter=${active ? 'active' : 'all'}&take=${pageSize}&skip=${skip}`
       : null
   );
   const reload = list.reload;
+  const page = list.data?.pageInfo;
   useEffect(() => {
     if (!service.data?.configured) return;
     const timer = window.setInterval(reload, 60_000);
@@ -122,7 +129,10 @@ export default function TrackRequests() {
                 <span className="lbl">Scope</span>
                 <select
                   value={scope}
-                  onChange={(event) => setShowAll(event.target.value === 'all')}
+                  onChange={(event) => {
+                    setShowAll(event.target.value === 'all');
+                    setSkip(0);
+                  }}
                 >
                   <option value="mine">My Requests</option>
                   <option value="all">All Requests</option>
@@ -133,13 +143,42 @@ export default function TrackRequests() {
               <span className="lbl">Status</span>
               <select
                 value={active ? 'active' : 'all'}
-                onChange={(event) => setActive(event.target.value === 'active')}
+                onChange={(event) => {
+                  setActive(event.target.value === 'active');
+                  setSkip(0);
+                }}
               >
                 <option value="active">Active Only</option>
                 <option value="all">Show All</option>
               </select>
             </label>
           </div>
+          {(skip > 0 || (page && page.total > pageSize)) && (
+            <div className="toolbar" aria-label="Track request pages">
+              <button
+                className="btn btn-quiet btn-sm"
+                disabled={busy || !skip}
+                onClick={() =>
+                  setSkip((current) => Math.max(0, current - pageSize))
+                }
+              >
+                Previous Page
+              </button>
+              <span>Page {skip / pageSize + 1}</span>
+              <button
+                className="btn btn-quiet btn-sm"
+                disabled={
+                  busy ||
+                  !page ||
+                  page.skip !== skip ||
+                  skip + pageSize >= page.total
+                }
+                onClick={() => setSkip((current) => current + pageSize)}
+              >
+                Next Page
+              </button>
+            </div>
+          )}
           <ServiceNote
             error={list.error}
             what="track requests"
