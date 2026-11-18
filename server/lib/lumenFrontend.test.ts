@@ -766,6 +766,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
 
       ['/discover/games', '/lumen/games/discovery'],
       ['/discover/patches?kind=hack', '/lumen/patches?kind=hack'],
+      [
+        '/discover/patches?catalogKey=42&category=modern&platform=switch&language=&completeOnly=false&ignored=1',
+        '/lumen/patches?language=&completeOnly=false&catalogKey=42&platform=switch&category=modern',
+      ],
       ['/discover/audiobooks', '/lumen/audiobooks'],
       ['/discover/list/12345/?page=2&ignored=1', '/lumen/list/12345?page=2'],
       ['/franchise/anime/123/', '/lumen/franchise/anime/123'],

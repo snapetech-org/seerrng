@@ -178,6 +178,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ],
       ['/coming-soon/', '/soon'],
       ['/discover/games/', '/games/discovery'],
+      [
+        '/discover/patches/?catalogKey=42&category=modern&platform=switch&language=&completeOnly=false',
+        '/patches?catalogKey=42&category=modern&platform=switch&language=&completeOnly=false',
+      ],
       ['/games?steam=connected', '/game-library?steam=connected'],
       ['/games/?steam=error&ignored=1', '/game-library?steam=error'],
       ['/coming-soon/?media=tv&extra=1', '/soon?media=tv'],
