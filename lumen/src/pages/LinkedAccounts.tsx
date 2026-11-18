@@ -1,7 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError, type User } from '../api';
-import { useAuth } from '../auth';
+import {
+  linkPlexAccount,
+  linkQuickConnectAccount,
+  startQuickConnect,
+  useAuth,
+} from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
@@ -29,6 +34,10 @@ function Accounts({ user }: { user: User }) {
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
   const working = useRef(false);
+  const authorization = useRef<AbortController | undefined>(undefined);
+  const [code, setCode] = useState('');
+  const [authorizing, setAuthorizing] = useState(false);
+  useEffect(() => () => authorization.current?.abort(), []);
 
   const accounts = linked.data?.filter(
     (account) => !removed.includes(String(account.id))
@@ -54,6 +63,53 @@ function Accounts({ user }: { user: User }) {
     (settings?.mediaServerType === 3 ||
       (settings?.mediaServerType === 2 && !settings.jellyfinQuickConnectOnly));
   const provider = settings?.mediaServerType === 3 ? 'Emby' : 'Jellyfin';
+
+  async function linkProvider(kind: 'plex' | 'jellyfin') {
+    if (working.current || mediaLinked) return;
+    working.current = true;
+    const controller = new AbortController();
+    authorization.current = controller;
+    const generation = sessionGeneration();
+    setAuthorizing(true);
+    setBusy(true);
+    setNotice('');
+    setFailure('');
+    try {
+      if (kind === 'plex') {
+        await linkPlexAccount(user.id, controller.signal);
+      } else {
+        const credentials = await startQuickConnect(controller.signal);
+        if (controller.signal.aborted || generation !== sessionGeneration())
+          return;
+        setCode(credentials.code);
+        await linkQuickConnectAccount(
+          user.id,
+          credentials.secret,
+          controller.signal
+        );
+      }
+      if (controller.signal.aborted || generation !== sessionGeneration())
+        return;
+      setRemoved((ids) => ids.filter((id) => id !== kind));
+      setNotice('Account linked.');
+      linked.refresh();
+      await refreshUser();
+    } catch {
+      if (!controller.signal.aborted && generation === sessionGeneration()) {
+        setFailure(
+          kind === 'plex'
+            ? 'Could not complete Plex authorization or link the account.'
+            : 'Could not complete Quick Connect. Start again for a new code.'
+        );
+      }
+    } finally {
+      authorization.current = undefined;
+      working.current = false;
+      setCode('');
+      setAuthorizing(false);
+      setBusy(false);
+    }
+  }
 
   async function change(action: 'link' | 'unlink') {
     if (
@@ -190,6 +246,52 @@ function Accounts({ user }: { user: User }) {
           <p className="note">No linked providers.</p>
         )}
       </Section>
+      {!mediaLinked &&
+        (settings?.mediaServerType === 1 ||
+          settings?.mediaServerType === 2) && (
+          <Section
+            title={
+              settings.mediaServerType === 1
+                ? 'Link Plex'
+                : 'Jellyfin Quick Connect'
+            }
+          >
+            <div className="toolbar">
+              <button
+                className="btn btn-tonal btn-sm"
+                disabled={busy}
+                onClick={() =>
+                  void linkProvider(
+                    settings.mediaServerType === 1 ? 'plex' : 'jellyfin'
+                  )
+                }
+              >
+                {settings.mediaServerType === 1
+                  ? 'Authorize Plex'
+                  : 'Start Quick Connect'}
+              </button>
+              {authorizing && (
+                <button
+                  className="btn btn-quiet btn-sm"
+                  onClick={() => authorization.current?.abort()}
+                >
+                  Cancel Authorization
+                </button>
+              )}
+            </div>
+            {authorizing && !code && (
+              <p className="note" role="status">
+                Waiting for authorization…
+              </p>
+            )}
+            {code && (
+              <p className="note" role="status">
+                Enter <b>{code}</b> in a signed-in Jellyfin app to approve
+                linking.
+              </p>
+            )}
+          </Section>
+        )}
       {canLink && (
         <Section title={`Link ${provider}`}>
           <form

@@ -353,3 +353,16 @@ Headed Chrome at 1440 × 1000 verified standalone Jellyfin linking and
 unlinking against synthetic responses, including account refresh and cleared
 credentials. Plex and OIDC linking, Jellyfin Quick Connect linking, live
 providers, and mobile, bundled and native visual comparisons remain open.
+
+### Plex and Quick Connect linking increment
+
+Linked Accounts reuses Lumen's Plex PIN and Jellyfin Quick Connect provider
+authorization. Completion calls the signed-in user's existing linking
+endpoint. The provider attempt can be canceled and is aborted on page exit.
+The Quick Connect option is available on Jellyfin, including installations
+that require Quick Connect.
+
+Headed Chrome at 1440 × 1000 verified the standalone Quick Connect-only
+branch and account readback against synthetic data. Plex popup completion,
+live integrations, OIDC linking, and mobile, bundled and native visual
+comparisons remain open.

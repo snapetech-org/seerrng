@@ -127,7 +127,15 @@ const PLEX_HEADERS = () => {
   };
 };
 
-export async function signInWithPlex(): Promise<void> {
+export const signInWithPlex = () => authorizePlex('/auth/plex');
+
+export const linkPlexAccount = (userId: number, signal: AbortSignal) =>
+  authorizePlex(`/user/${userId}/settings/linked-accounts/plex`, signal);
+
+async function authorizePlex(
+  path: string,
+  signal?: AbortSignal
+): Promise<void> {
   // open the window first so popup blockers treat it as a click result
   const win = window.open('', 'plex-auth', 'width=600,height=700');
   // without the window there is nothing to sign in with: say so now, not after 5 minutes
@@ -136,18 +144,27 @@ export async function signInWithPlex(): Promise<void> {
       'Your browser blocked the Plex sign-in window. Allow pop-ups for this site, then try again.'
     );
   win.opener = null;
+  const close = () => win.close();
+  signal?.addEventListener('abort', close, { once: true });
   try {
-    await plexPinFlow(win);
+    await plexPinFlow(win, path, signal);
   } catch (e) {
     win.close(); // never leave a blank Plex window behind
     throw e;
+  } finally {
+    signal?.removeEventListener('abort', close);
   }
 }
 
-async function plexPinFlow(win: Window): Promise<void> {
+async function plexPinFlow(
+  win: Window,
+  path: string,
+  signal?: AbortSignal
+): Promise<void> {
   const created = await fetch('https://plex.tv/api/v2/pins?strong=true', {
     method: 'POST',
     headers: PLEX_HEADERS(),
+    signal,
   });
   if (!created.ok)
     throw new Error(
@@ -165,11 +182,12 @@ async function plexPinFlow(win: Window): Promise<void> {
   let failures = 0;
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 1500));
-    if (win.closed) break;
+    if (win.closed || signal?.aborted) break;
     let p: { authToken?: string };
     try {
       const res = await fetch(`https://plex.tv/api/v2/pins/${pin.id}`, {
         headers: PLEX_HEADERS(),
+        signal,
       });
       if (!res.ok) throw new Error(`Plex ${res.status}`);
       p = await res.json();
@@ -180,16 +198,17 @@ async function plexPinFlow(win: Window): Promise<void> {
       continue;
     }
     // Closing Plex cancels even when an already-started poll returns a token.
-    if (win.closed) break;
+    if (win.closed || signal?.aborted) break;
     if (p.authToken) {
       win.close();
-      await api('/auth/plex', {
+      await api(path, {
         method: 'POST',
+        signal,
         body: JSON.stringify({ authToken: p.authToken }),
       });
       return;
     }
-    if (win.closed) break;
+    if (win.closed || signal?.aborted) break;
   }
   throw new Error('Plex sign-in was cancelled or timed out.');
 }
@@ -218,8 +237,35 @@ export async function startQuickConnect(signal?: AbortSignal): Promise<{
   });
 }
 
-export async function finishQuickConnect(
+export function finishQuickConnect(
   secret: string,
+  cancelled: () => boolean,
+  signal?: AbortSignal
+) {
+  return completeQuickConnect(
+    secret,
+    '/auth/jellyfin/quickconnect/authenticate',
+    cancelled,
+    signal
+  );
+}
+
+export function linkQuickConnectAccount(
+  userId: number,
+  secret: string,
+  signal: AbortSignal
+) {
+  return completeQuickConnect(
+    secret,
+    `/user/${userId}/settings/linked-accounts/jellyfin/quickconnect`,
+    () => false,
+    signal
+  );
+}
+
+async function completeQuickConnect(
+  secret: string,
+  path: string,
   cancelled: () => boolean,
   signal?: AbortSignal
 ): Promise<void> {
@@ -251,12 +297,14 @@ export async function finishQuickConnect(
     } catch (e) {
       if (cancelled() || signal?.aborted) throw new QuickConnectCancelled();
       if (e instanceof ApiError && e.status === 404)
-        throw new Error('This code has expired. Try again for a new one.');
+        throw new Error('This code has expired. Try again for a new one.', {
+          cause: e,
+        });
       if (++errors >= 5) throw e;
     }
     if (cancelled() || signal?.aborted) throw new QuickConnectCancelled();
     if (ok) {
-      await api('/auth/jellyfin/quickconnect/authenticate', {
+      await api(path, {
         method: 'POST',
         signal,
         body: JSON.stringify({ secret }),
