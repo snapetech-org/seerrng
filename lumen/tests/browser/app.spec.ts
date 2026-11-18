@@ -4901,3 +4901,55 @@ test('Users imports and syncs selected Emby accounts', async ({ page }) => {
   await expect(page.getByText('Imported 1, refreshed 1.')).toBeVisible();
   expect(writes).toBe(1);
 });
+
+test('Users sends exact Plex selections and confirms the all-account sync', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { applicationTitle: 'SeerrNG', mediaServerType: 1 } })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({ json: { pageInfo: { pages: 0 }, results: [] } })
+  );
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/plex/users', (route) =>
+    route.fulfill({
+      json: writes.length
+        ? []
+        : [
+            { id: '42', title: 'Plex Friend', username: 'friend' },
+            { id: '43', username: 'other' },
+          ],
+    })
+  );
+  await page.route('**/api/v1/user/import-from-plex', (route) => {
+    writes.push(route.request().postDataJSON());
+    return route.fulfill({
+      json:
+        writes.length === 1
+          ? { createdUsers: [{}], refreshedUsers: 0 }
+          : { createdUsers: [], refreshedUsers: 1 },
+    });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Import Plex Users' }).click();
+  await page.getByRole('checkbox', { name: 'Plex Friend' }).check();
+  await page
+    .getByRole('button', { name: 'Import Selected Users', exact: true })
+    .click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Import Selected Users' })
+    .click();
+  await expect(page.getByText('Imported 1, refreshed 0.')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Sync Existing Users', exact: true })
+    .click();
+  const dialog = page.getByRole('alertdialog');
+  await expect(dialog).toContainText('import any newly eligible Plex users');
+  expect(writes).toEqual([{ plexIds: ['42'] }]);
+  await dialog.getByRole('button', { name: 'Sync Existing Users' }).click();
+  await expect(page.getByText('Imported 0, refreshed 1.')).toBeVisible();
+  expect(writes).toEqual([{ plexIds: ['42'] }, { plexIds: [] }]);
+});

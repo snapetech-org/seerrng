@@ -150,7 +150,7 @@ export default function ImportMediaServerUsers({
           title={`${label}?`}
           body={
             syncOnly
-              ? 'Refresh linked Plex accounts.'
+              ? 'Refresh linked Plex accounts and import any newly eligible Plex users.'
               : `${ids.length} selected from ${provider}.`
           }
           confirm={label}
