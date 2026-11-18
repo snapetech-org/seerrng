@@ -1785,8 +1785,10 @@ and matched visual review remain open.
 Live GitHub notes exposed horizontal overflow at 390 pixels. The shared
 long-prose style now wraps long links. A repeat live browser check passed
 at 390 and 1440 pixels. Each production deployment passed 20 fixture cases across release
-history and book descriptions. Matched visual review of person
-biographies remains open for the shared style change.
+history and book descriptions. Matched Chromium renders of person biographies at 390 and 1440 pixels
+were byte-identical for ordinary text. A long unbroken link wrapped
+within the biography at both widths. This comparison used a fixture
+profile and standalone production builds.
 
 ### Instance General Settings
 
