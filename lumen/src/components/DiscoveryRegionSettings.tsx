@@ -17,6 +17,7 @@ const fields = [
 ] as const;
 
 const visibility = [
+  ['includeAdult', 'Include Adult Content in TMDB Search and Discovery'],
   ['hideAvailable', 'Hide Available Titles'],
   ['hideRequested', 'Hide Requested Titles'],
   ['hideBlocklisted', 'Hide Blocklisted Titles From Blocklist Managers'],

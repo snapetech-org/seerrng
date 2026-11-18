@@ -6491,25 +6491,43 @@ test('Discovery region settings preserve legacy values and retry only changed fi
   const save = page.getByRole('button', {
     name: 'Save Discovery Region Settings',
   });
+  const includeAdult = page.getByRole('checkbox', {
+    name: 'Include Adult Content in TMDB Search and Discovery',
+  });
+  await expect(includeAdult).not.toBeChecked();
   await expect(discover).toHaveValue('ZZ');
   await discover.selectOption('CA');
   await discover.selectOption('ZZ');
   await expect(save).toBeDisabled();
   await streaming.selectOption('CA');
   await language.selectOption('fr');
+  await includeAdult.check();
   await page.getByLabel('Hide Requested Titles', { exact: true }).check();
   await save.click();
   await expect(page.getByText('Could not save regions.')).toBeVisible();
   await expect(streaming).toHaveValue('CA');
   await expect(language).toHaveValue('fr');
+  await expect(includeAdult).toBeChecked();
   await save.click();
   await expect(
     page.getByText('Discovery region settings saved.')
   ).toBeVisible();
   expect(writes).toEqual([
-    { streamingRegion: 'CA', originalLanguage: 'fr', hideRequested: true },
-    { streamingRegion: 'CA', originalLanguage: 'fr', hideRequested: true },
+    {
+      streamingRegion: 'CA',
+      originalLanguage: 'fr',
+      hideRequested: true,
+      includeAdult: true,
+    },
+    {
+      streamingRegion: 'CA',
+      originalLanguage: 'fr',
+      hideRequested: true,
+      includeAdult: true,
+    },
   ]);
+  await page.reload();
+  await expect(includeAdult).toBeChecked();
   await page.screenshot({
     path: info.outputPath('discovery-region-settings.png'),
   });
