@@ -1515,8 +1515,9 @@ Live AniList and Bookshelf responses remain unverified for these checks.
 The curator form saves direct links for Bookshelf volume IDs and numeric
 IGDB IDs. Eight targeted standalone browser cases and the 40-case bundled
 Following suite verified the submitted identities and the links returned
-after saving. Both used API fixtures. Live catalog lookup and persisted
-relationship writes remain unverified in this checkpoint.
+after saving. Both browser runs used API fixtures. A separate route test
+verified that local sessions enforce curator access and that authorized
+writes persist both link types in SQLite. Live catalog lookup remains open.
 
 ### Provider Discovery
 
