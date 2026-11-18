@@ -70,6 +70,7 @@ export default function Patches() {
   const cursor = (params.get('cursor') ?? '').slice(0, 256);
   const catalogKey = (params.get('catalogKey') ?? '').trim().slice(0, 128);
   const platform = (params.get('platform') ?? '').trim().slice(0, 64);
+  const category = params.get('category') === 'modern' ? 'modern' : 'retro';
   const query = new URLSearchParams();
   if (catalogKey) query.set('catalogKey', catalogKey);
   if (platform) query.set('platform', platform);
@@ -108,6 +109,7 @@ export default function Patches() {
           const filters = new URLSearchParams();
           if (catalogKey) filters.set('catalogKey', catalogKey);
           if (platform) filters.set('platform', platform);
+          if (category === 'modern') filters.set('category', category);
           for (const key of ['q', 'kind', 'language']) {
             filters.set(key, String(form.get(key) ?? '').trim());
           }
@@ -177,8 +179,8 @@ export default function Patches() {
       {!!data?.results.length && (
         <ul className="setlist">
           {data.results.map((project) => {
-            const game = gameLink(project.game.catalogKey);
-            const detail = patchHref(project.id);
+            const game = gameLink(project.game.catalogKey, category);
+            const detail = patchHref(project.id, undefined, category);
             const latest =
               project.versions.find(
                 (version) => version.id === project.latestVersionId
@@ -263,14 +265,14 @@ export default function Patches() {
 
 export function PatchDetail() {
   const { id = '' } = useParams();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const { user } = useAuth();
   const canRequest = canViewFollowing(user?.permissions);
   const patch = useApi<PatchProject>(
     PATCH_ID.test(id) ? `/patches/projects/${encodeURIComponent(id)}` : null
   );
   const project = patch.data?.id === id ? patch.data : null;
-  const [category, setCategory] = useState<'retro' | 'modern'>('retro');
+  const category = params.get('category') === 'modern' ? 'modern' : 'retro';
   const key = project?.game.catalogKey;
   const link = gameLink(key, category);
   const lookupQuery = new URLSearchParams({ category });
@@ -279,7 +281,8 @@ export function PatchDetail() {
   const game = useApi<Game>(
     link && key && canRequest
       ? `/request/software/catalog/games/${encodeURIComponent(key)}?${lookupQuery}`
-      : null
+      : null,
+    { currentPathOnly: true }
   );
   const resolvedGame = game.data;
   const matchingGame = isDat
@@ -409,9 +412,11 @@ export function PatchDetail() {
                     value={category}
                     disabled={busy || Boolean(receipt)}
                     onChange={(event) => {
-                      setCategory(
-                        event.target.value === 'modern' ? 'modern' : 'retro'
-                      );
+                      const next = new URLSearchParams(params);
+                      if (event.target.value === 'modern')
+                        next.set('category', 'modern');
+                      else next.delete('category');
+                      setParams(next, { replace: true });
                       setSystem('');
                     }}
                   >

@@ -51,6 +51,18 @@ test('Patch discovery filters, follows the exact project and pages through resul
           return route.fulfill({ status: 201, json: { id: 1, ...subject } });
         }
         return route.fulfill({ json: { results: [] } });
+      case '/patches/projects/patch-1':
+        return route.fulfill({
+          json: {
+            id: 'patch-1',
+            name: 'Fixture Translation',
+            kind: 'translation',
+            status: 'complete',
+            game: { catalogKey: key, title: 'Fixture Game' },
+            versions: [{ id: 'v2', version: '2.0' }],
+            latestVersionId: 'v2',
+          },
+        });
       default:
         return route.fulfill({ json: {} });
     }
@@ -80,6 +92,18 @@ test('Patch discovery filters, follows the exact project and pages through resul
   expect(searches.at(-1)?.cursor).toBe('fixture-cursor');
   await page.getByRole('button', { name: 'First Page' }).click();
   await expect(page.getByText('Fixture Translation')).toBeVisible();
+  await page.goto(`/patches?catalogKey=${key}&platform=switch&category=modern`);
+  await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
+    'href',
+    `/game/modern/${key}?dat=1`
+  );
+  const choose = page.getByRole('link', { name: 'Choose a Version' });
+  await expect(choose).toHaveAttribute(
+    'href',
+    '/patches/patch-1?category=modern'
+  );
+  await choose.click();
+  await expect(page.getByLabel('Game Type')).toHaveValue('modern');
 });
 
 test('a Following update opens its exact patch version and submits only with a compatible base', async ({

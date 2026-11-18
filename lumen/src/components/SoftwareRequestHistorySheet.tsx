@@ -103,7 +103,9 @@ export function SoftwareRequestHistorySheet({
       : undefined;
   const addons = Array.isArray(catalog?.addons) ? catalog.addons : [];
   const patch = selection?.kind === 'patch' ? selection : null;
-  const project = patch && patchHref(patch.projectId, patch.versionId);
+  const project =
+    patch &&
+    patchHref(patch.projectId, patch.versionId, data?.request.category);
   const capabilities = data?.request.actions;
   const actions: Action[] = [];
   if (status === 'pending') {

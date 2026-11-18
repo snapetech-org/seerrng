@@ -469,10 +469,16 @@ export const PC_ARCH = [
 ] as const;
 export const PATCH_ID = /^[A-Za-z0-9][A-Za-z0-9:_.-]{0,127}$/;
 
-export function patchHref(id: string, version?: string) {
+export function patchHref(
+  id: string,
+  version?: string,
+  category?: GameCategory
+) {
   if (!PATCH_ID.test(id) || (version && !PATCH_ID.test(version))) return;
-  const query = version ? `?${new URLSearchParams({ version })}` : '';
-  return `/patches/${encodeURIComponent(id)}${query}`;
+  const query = new URLSearchParams();
+  if (version) query.set('version', version);
+  if (category === 'modern') query.set('category', category);
+  return `/patches/${encodeURIComponent(id)}${query.size ? `?${query}` : ''}`;
 }
 
 export type PatchSelection = {

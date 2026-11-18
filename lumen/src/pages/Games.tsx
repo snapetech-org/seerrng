@@ -313,6 +313,7 @@ function GameDetailView({
       ? new URLSearchParams({
           catalogKey: g.catalogId || id,
           platform: sys,
+          category: cat,
           language: '',
           completeOnly: 'false',
         })
