@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { Section } from '../components/cards';
@@ -131,6 +131,15 @@ export default function AdminCategories({
 }: { inSetup?: boolean; onAvailableCategoriesSaved?: () => void } = {}) {
   const { data, error, reload } = useApi<CategorySettings>(path);
 
+  const { hash } = useLocation();
+  const defaultCategoriesReady = !!data?.defaultEnabledMediaCategories;
+  useEffect(() => {
+    if (defaultCategoriesReady && hash === '#default-user-categories')
+      document
+        .getElementById('default-user-categories')
+        ?.scrollIntoView({ block: 'start' });
+  }, [defaultCategoriesReady, hash]);
+
   return (
     <>
       {!inSetup && (
@@ -165,7 +174,7 @@ export default function AdminCategories({
         )}
       </Section>
       {data?.defaultEnabledMediaCategories && (
-        <Section title="Default User Categories">
+        <Section title="Default User Categories" id="default-user-categories">
           <p className="note">
             These choices apply to accounts that inherit the defaults.
             Instance-wide category restrictions still apply.

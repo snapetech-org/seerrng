@@ -97,7 +97,14 @@ export default function DefaultRequestQuotas({
 
   if (!quota) return null;
   return (
-    <Section title="Default Request Quotas" id="default-request-quotas">
+    <Section
+      title="Default Request Quotas"
+      id="default-request-quotas"
+      link={[
+        'Default User Categories',
+        '/admin/categories#default-user-categories',
+      ]}
+    >
       <p className="note">
         Default limits apply to accounts without a quota override. Use 0 for an
         unlimited request limit.

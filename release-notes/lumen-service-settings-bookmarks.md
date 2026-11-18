@@ -1,2 +1,3 @@
 - Classic service settings search links open the matching administration page in bundled and standalone Lumen.
 - Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings.
+- Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.

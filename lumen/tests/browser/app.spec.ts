@@ -5378,7 +5378,11 @@ test('General Settings saves default request quotas without changing other media
       Object.assign(defaultQuotas.adult, body.defaultQuotas.adult);
     }
     return route.fulfill({
-      json: { applicationTitle: 'SeerrNG', defaultQuotas },
+      json: {
+        applicationTitle: 'SeerrNG',
+        defaultQuotas,
+        defaultEnabledMediaCategories: { movie: true },
+      },
     });
   });
   await page.goto('/admin/general#default-request-quotas');
@@ -5405,6 +5409,11 @@ test('General Settings saves default request quotas without changing other media
   await category.selectOption('adult');
   await expect(limit).toHaveValue('0');
   await expect(days).toHaveValue('14');
+  await page.getByRole('link', { name: 'Default User Categories' }).click();
+  await expect(page).toHaveURL(/\/admin\/categories#default-user-categories$/);
+  await expect(
+    page.getByRole('heading', { name: 'Default User Categories' })
+  ).toBeInViewport();
 });
 
 test('General Settings confirms default permissions and preserves higher permission bits', async ({
