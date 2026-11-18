@@ -1512,6 +1512,12 @@ IDs. Four standalone cases and the 32-case bundled Following suite verified
 the link destinations and per-title follow submissions using API fixtures.
 Live AniList and Bookshelf responses remain unverified for these checks.
 
+The curator form saves direct links for Bookshelf volume IDs and numeric
+IGDB IDs. Eight targeted standalone browser cases and the 40-case bundled
+Following suite verified the submitted identities and the links returned
+after saving. Both used API fixtures. Live catalog lookup and persisted
+relationship writes remain unverified in this checkpoint.
+
 ### Provider Discovery
 
 Discover links to Lumen's Trakt, AniList, and MDBList feeds. Feed and
