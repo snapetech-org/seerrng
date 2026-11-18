@@ -25,3 +25,16 @@ cookies encrypt the correlation payload with AES-256-GCM and expire after
 ten minutes on both the client and server. Existing signed cookies can
 finish an in-flight login within the same lifetime. The alert is still
 open in GitHub.
+
+## Markup handling
+
+Dismissed alerts 644, 645, and 651 after verifying that the expressions
+inspect checked-in source in test assertions and never render the
+results as markup.
+
+Dismissed alerts 649 and 650 after tracing AniList work descriptions
+through the comic work JSON response to React paragraph text in Lumen.
+The regular expressions format descriptions for display. Native
+ComicVine detail descriptions pass through the API adapter's DOMPurify
+allowlist before the separate native markup renderer uses them.
+Alert 646 covers the Visual Lab production renderer and remains open.
