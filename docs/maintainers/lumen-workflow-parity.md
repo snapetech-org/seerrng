@@ -656,3 +656,14 @@ while waiting or when metadata cannot supply a title.
 Standalone Chrome at 1440 × 1000 verified that a direct link resolved a movie
 title while the underlying Requests list was empty. Native visual comparison,
 mobile, bundled and other media categories remain unverified.
+
+### Personal email notifications increment
+
+Account Settings opens Notification Settings with the email event choices
+when email is enabled. It saves the email mask through the existing personal
+settings endpoint and preserves other notification channels.
+
+Standalone Chrome at 1440 × 1000 verified opting out of Media available,
+the email-only write, and persisted readback after navigation. OpenPGP,
+other channels, live delivery, mobile, bundled and native visual checks
+remain open.

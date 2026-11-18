@@ -359,6 +359,9 @@ export default function AccountSettings() {
         <Link className="btn btn-quiet btn-sm" to="/me/account/client-tokens">
           Client Tokens
         </Link>
+        <Link className="btn btn-quiet btn-sm" to="/me/account/notifications">
+          Notification Settings
+        </Link>
         <Link className="btn btn-quiet btn-sm" to="/me">
           Back to You
         </Link>

@@ -48,6 +48,7 @@ const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
 const TvRequestSettings = lazy(() => import('./pages/TvRequestSettings'));
 const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
 const ClientTokens = lazy(() => import('./pages/ClientTokens'));
+const NotificationSettings = lazy(() => import('./pages/NotificationSettings'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
@@ -248,6 +249,20 @@ function App() {
                 }
               >
                 <TvRequestSettings />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/me/account/notifications"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Notification Settings…
+                  </p>
+                }
+              >
+                <NotificationSettings />
               </Suspense>
             }
           />
