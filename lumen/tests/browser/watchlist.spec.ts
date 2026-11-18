@@ -93,3 +93,56 @@ for (const combined of [false, true]) {
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
   });
 }
+
+test('video Watchlist action confirms the current title and server response', async ({
+  page,
+}) => {
+  let saved = false;
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/watchlist' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual({
+        tmdbId: 20,
+        mediaType: 'movie',
+      });
+      writes++;
+      saved = true;
+      return route.fulfill({ status: 201, json: { id: 99 } });
+    }
+    if (path === '/watchlist/20' && request.method() === 'DELETE') {
+      expect(url.searchParams.get('mediaType')).toBe('movie');
+      writes++;
+      saved = false;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Reader', permissions: 32, userType: 2 }
+          : path === '/movie/20'
+            ? {
+                id: 20,
+                title: 'Example Movie',
+                genres: [],
+                onUserWatchlist: saved,
+              }
+            : { results: [] },
+    });
+  });
+  await page.goto('/movie/20');
+  await page.getByRole('button', { name: 'Add To Watchlist' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Remove From Watchlist' })
+  ).toBeVisible();
+  expect(writes).toBe(1);
+  await page.reload();
+  await page.getByRole('button', { name: 'Remove From Watchlist' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Add To Watchlist' })
+  ).toBeVisible();
+  expect(writes).toBe(2);
+});

@@ -30,6 +30,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
+import VideoWatchlistButton from '../components/VideoWatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
@@ -298,6 +299,7 @@ export default function TvDetail() {
               {t.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
+          <VideoWatchlistButton key={t.id} mediaType="tv" detail={t} />
         </div>
         <div className="dacts pc">
           {main}

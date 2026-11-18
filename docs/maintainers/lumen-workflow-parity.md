@@ -109,3 +109,12 @@ Headed Chrome at 1440 × 1000 verified a movie filter opened from a bookmarked
 URL, cleared it to show a second item, and removed the movie through the
 fixture API. The remaining book was still shown after the server response.
 Narrow, combined Plex, and bundled visual checks remain open.
+
+Movie and series details now offer the local Watchlist action. The action
+checks current membership and title identity before writing and uses the
+existing authenticated SeerrNG endpoint. Plex Watchlist actions, poster
+controls, and the other media categories remain open.
+
+Headed Chrome at 1440 × 1000 rendered the local-account movie action and
+verified Add and Remove against a synthetic API. The series and narrow
+renders, the unavailable branches, and bundled visual acceptance remain open.

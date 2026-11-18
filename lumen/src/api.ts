@@ -59,6 +59,7 @@ export const MediaStatus = {
   PROCESSING: 3,
   PARTIAL: 4,
   AVAILABLE: 5,
+  BLOCKLISTED: 6,
 } as const;
 
 export interface MediaInfo {
@@ -141,6 +142,7 @@ export interface User {
   displayName: string;
   avatar?: string;
   permissions: number;
+  userType?: 1 | 2 | 3 | 4;
   warnings?: string[];
 }
 export interface Genre {
@@ -154,6 +156,8 @@ export interface Genre {
 // would turn metadata into a browser-side tracking/request primitive.
 const TMDB_IMAGE_SIZES = new Set(['w342', 'w500', 'w780', 'w1280']);
 const THEAUDIODB_IMAGE_HOST = 'theaudiodb.com';
+// eslint-disable-next-line no-control-regex -- Reject control characters in provider URL paths.
+const UNSAFE_IMAGE_PATH_CHARACTERS = /[\u0000-\u001f\u007f?#]/;
 const isSafeImagePath = (path: string) => {
   if (
     path.length > 2048 ||
@@ -161,7 +165,7 @@ const isSafeImagePath = (path: string) => {
     path.startsWith('//') ||
     path.includes('//') ||
     path.includes('\\') ||
-    /[\u0000-\u001f\u007f?#]/.test(path)
+    UNSAFE_IMAGE_PATH_CHARACTERS.test(path)
   ) {
     return false;
   }
@@ -186,7 +190,7 @@ const isSafeImagePath = (path: string) => {
           decoded === '..' ||
           decoded.includes('/') ||
           decoded.includes('\\') ||
-          /[\u0000-\u001f\u007f?#]/.test(decoded)
+          UNSAFE_IMAGE_PATH_CHARACTERS.test(decoded)
         ) {
           return false;
         }
@@ -553,6 +557,7 @@ export interface Credits {
   crew: Person[];
 }
 export interface MovieDetails extends TitleResult {
+  onUserWatchlist?: boolean;
   runtime?: number;
   tagline?: string;
   overview?: string;
@@ -574,6 +579,7 @@ export interface Season {
   name: string;
 }
 export interface TvDetails extends TitleResult {
+  onUserWatchlist?: boolean;
   overview?: string;
   genres: { id: number; name: string }[];
   seasons: Season[];
