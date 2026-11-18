@@ -133,6 +133,23 @@ export function Sports() {
   );
 }
 
+function leagueEventDate(value?: string, timeZone?: string) {
+  const date = value ? new Date(value) : undefined;
+  if (!date || !Number.isFinite(date.getTime())) return 'Date not announced';
+  const options = { dateStyle: 'medium', timeStyle: 'short' } as const;
+  try {
+    return new Intl.DateTimeFormat(undefined, {
+      ...options,
+      timeZone: timeZone || 'UTC',
+    }).format(date);
+  } catch {
+    return new Intl.DateTimeFormat(undefined, {
+      ...options,
+      timeZone: 'UTC',
+    }).format(date);
+  }
+}
+
 function LeagueEvents({ id }: { id: string }) {
   const [page, setPage] = useState(1);
   const { data, error, reload } = useApi<{
@@ -142,6 +159,7 @@ function LeagueEvents({ id }: { id: string }) {
       id: number;
       title: string;
       eventDate?: string;
+      season?: number;
       broadcastDate?: string;
       broadcastTimezone?: string;
       monitored: boolean;
@@ -174,11 +192,13 @@ function LeagueEvents({ id }: { id: string }) {
               <div>
                 <b>{event.title}</b>
                 <small>
-                  {event.broadcastDate
-                    ? [event.broadcastDate, event.broadcastTimezone]
-                        .filter(Boolean)
-                        .join(' ')
-                    : event.eventDate}
+                  <time dateTime={event.broadcastDate ?? event.eventDate}>
+                    {event.season ? `Season ${event.season} · ` : ''}
+                    {leagueEventDate(
+                      event.broadcastDate ?? event.eventDate,
+                      event.broadcastTimezone
+                    )}
+                  </time>
                 </small>
               </div>
               <small>
@@ -421,7 +441,17 @@ export function LeagueDetail() {
               />
             </aside>
           </div>
-          {l.eventsAvailable && <LeagueEvents key={l.id} id={l.id} />}
+          {l.eventsAvailable ? (
+            <LeagueEvents key={l.id} id={l.id} />
+          ) : (
+            <Section title="Events">
+              <p className="note">
+                {l.libraryState === 'unmonitored'
+                  ? 'This league is in Sportarr but is not monitored. Enable monitoring in Sportarr to see its events here.'
+                  : 'Events appear after the league is added to Sportarr and monitoring is enabled.'}
+              </p>
+            </Section>
+          )}
         </div>
         {main && (
           <div className="actionbar">

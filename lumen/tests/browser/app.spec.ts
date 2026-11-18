@@ -7664,6 +7664,71 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   await expect(page.getByText('Nothing found')).toBeVisible();
 });
 
+test('Sportarr league details explain unmonitored schedules and show event dates', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
+  );
+  await page.route(/\/api\/v1\/sportarr\/lg-12345[67]$/, (route) => {
+    const monitored = route.request().url().endsWith('7');
+    return route.fulfill({
+      json: {
+        id: monitored ? 'lg-123457' : 'lg-123456',
+        title: 'Fixture League',
+        mediaType: 'sports',
+        requestable: false,
+        eventsAvailable: monitored,
+        libraryState: monitored ? 'monitored' : 'unmonitored',
+      },
+    });
+  });
+  let eventReads = 0;
+  await page.route('**/api/v1/sportarr/*/events?*', (route) => {
+    eventReads += 1;
+    return route.fulfill({
+      json: {
+        eventsAvailable: true,
+        totalPages: 1,
+        results: [
+          {
+            id: 1,
+            title: 'Scheduled Event',
+            season: 2026,
+            broadcastDate: '2026-06-01T01:00:00Z',
+            broadcastTimezone: 'America/New_York',
+            monitored: true,
+            hasFile: false,
+          },
+          {
+            id: 2,
+            title: 'Unscheduled Event',
+            monitored: false,
+            hasFile: false,
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/sportarr/lg-123456');
+  await expect(
+    page.getByText('Enable monitoring in Sportarr', { exact: false })
+  ).toBeVisible();
+  expect(eventReads).toBe(0);
+  await page.goto('/sportarr/lg-123457');
+  const scheduled = page
+    .getByRole('listitem')
+    .filter({ has: page.getByText('Scheduled Event', { exact: true }) });
+  await expect(scheduled.locator('time')).toHaveAttribute(
+    'datetime',
+    '2026-06-01T01:00:00Z'
+  );
+  await expect(scheduled).toContainText('Season 2026');
+  await expect(scheduled).toContainText('May 31');
+  await expect(page.getByText('Date not announced')).toBeVisible();
+});
+
 for (const autoApprove of [false, true]) {
   test(`Sportarr league follow checks the selected destination and ${autoApprove ? 'automatic approval' : 'required approval'}`, async ({
     page,
