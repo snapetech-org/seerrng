@@ -2021,3 +2021,13 @@ Whisparr connections remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-scene-progress-20261118/`.
+
+Comic details now calculate download percentages from valid byte counts as
+well as explicit provider percentages. The selected edition keeps its own
+progress. Compared matching fixture states on desktop, iPhone 13, Pixel 7,
+and iPad Pro 11. Both production builds and 17 candidate browser checks
+passed. This uses the scheduled queue data, and live comic streams remain
+outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-progress-20261118/`.

@@ -571,6 +571,39 @@ test('an edition not in the library shows its own state, not the owned one', asy
   ).toBeVisible();
 });
 
+test('comic download progress combines percentage and byte-based queue items', async ({
+  page,
+}, info) => {
+  const media = {
+    ...owned,
+    downloadStatus: [{ percent: 80 }, { size: 100, sizeLeft: 60 }],
+  };
+  await fixtures(page, {
+    pub: comicPub,
+    handle: (path) => {
+      if (path === '/comic/work/al-1')
+        return {
+          json: work({
+            mediaInfo: media,
+            editions: [ed('11', 'English', { mediaInfo: media })],
+          }),
+        };
+      if (path.endsWith('/issues')) return { json: paged([]) };
+      if (path.startsWith('/comic/')) return { json: {} };
+    },
+  });
+  await page.goto('/comic/al-1');
+  await expect(page.locator('.dstatus')).toContainText('Downloading');
+  await page.screenshot({
+    path: info.outputPath('comic-progress.png'),
+    fullPage: true,
+  });
+  await expect(page.locator('.dstatus')).toContainText('Downloading 60%');
+  await expect(
+    page.getByRole('progressbar', { name: 'Download progress' })
+  ).toHaveAttribute('aria-valuenow', '60');
+});
+
 test('comic pages that fail offer Retry, volumes included', async ({
   page,
 }) => {

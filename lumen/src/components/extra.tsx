@@ -37,7 +37,18 @@ export function comicState(mi?: MediaInfo): {
   const dls = mi.downloadStatus || [];
   if (dls.length) {
     const pcts = dls
-      .map((d) => d.percent)
+      .map((d) => {
+        if (typeof d.percent === 'number' && Number.isFinite(d.percent))
+          return d.percent;
+        if (
+          Number.isFinite(d.size) &&
+          d.size > 0 &&
+          Number.isFinite(d.sizeLeft) &&
+          d.sizeLeft >= 0 &&
+          d.sizeLeft <= d.size
+        )
+          return ((d.size - d.sizeLeft) / d.size) * 100;
+      })
       .filter((x): x is number => typeof x === 'number' && Number.isFinite(x));
     const pct =
       pcts.length === dls.length
