@@ -621,9 +621,12 @@ function workflowDeepLink(
   }
   const query = new URLSearchParams();
 
-  for (const key of workflowQueryKeys[
-    userWatchlist ? '/watchlist' : issueDetail ? '/issues' : destination
-  ] ?? []) {
+  const queryWorkflow = userWatchlist
+    ? '/watchlist'
+    : issueDetail
+      ? '/issues'
+      : destination;
+  for (const key of workflowQueryKeys[queryWorkflow] ?? []) {
     if (issueDetail && key === 'issue') continue;
     const value = req.query[key];
     if (typeof value !== 'string') continue;
@@ -634,7 +637,9 @@ function workflowDeepLink(
     const limit =
       key === 'list' || key === 'source'
         ? 2048
-        : key === 'subject' || key === 'genre'
+        : key === 'subject' ||
+            key === 'genre' ||
+            (queryWorkflow === '/issues' && key === 'search')
           ? 512
           : 256;
     if (value.length <= limit) query.set(key, value);

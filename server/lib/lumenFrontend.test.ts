@@ -652,6 +652,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/issues/71?mediaType=book&search=A%26B&page=2',
       ],
       ['/issues?issue=71', '/lumen/issues?issue=71'],
+      [
+        `/issues/71?search=${'a'.repeat(512)}`,
+        `/lumen/issues/71?search=${'a'.repeat(512)}`,
+      ],
+      [`/issues/71?search=${'a'.repeat(513)}`, '/lumen/issues/71'],
       ['/downloads', '/lumen/downloads'],
       [
         '/indexer-search?query=A%26B&category=movie',
