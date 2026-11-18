@@ -264,20 +264,19 @@ test('Emby uses its own name and has no Quick Connect', async ({ page }) => {
   );
 });
 
-test('remembered sign-in forms retain the existing light and dark layout', async ({
-  page,
-}, info) => {
-  await fixtures(page, { serverType: 2 });
-  await page.addInitScript(() =>
-    localStorage.setItem(
-      'lumen-last-sign-in',
-      new URLSearchParams(location.search).get('method') || 'server'
-    )
-  );
-  for (const colorScheme of ['light', 'dark'] as const) {
-    await page.emulateMedia({ colorScheme });
-    for (const method of ['server', 'local']) {
-      await page.goto(`/?method=${method}`);
+for (const method of ['server', 'local'] as const) {
+  test(`remembered ${method} sign-in retains the existing light and dark layout`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, { serverType: 2 });
+    await page.addInitScript(
+      (rememberedMethod) =>
+        localStorage.setItem('lumen-last-sign-in', rememberedMethod),
+      method
+    );
+    for (const colorScheme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme });
+      await page.goto('/');
       await expect(
         page.getByLabel(method === 'server' ? 'Jellyfin username' : 'Email')
       ).toBeVisible();
@@ -287,8 +286,8 @@ test('remembered sign-in forms retain the existing light and dark layout', async
         animations: 'disabled',
       });
     }
-  }
-});
+  });
+}
 
 test('administrator form style wins over the remembered local method', async ({
   page,
