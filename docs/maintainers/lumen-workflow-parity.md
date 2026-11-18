@@ -2716,3 +2716,10 @@ editor. The expanded fixture checks the actual Enable Library mutation
 before finishing setup. It passed on four viewport presets against both
 the standalone build and an embedded build mounted at `/lumen/`. The
 browser fixtures stub provider responses.
+
+First-run setup now includes an optional Media Categories panel for
+instance availability and default user categories. It reuses the
+administration forms and preserves drafts when collapsed. The production
+build and four standalone browser fixtures passed. The fixture verifies
+saving a default category before initialization. Bundled rendering and
+matched visual acceptance for this section remain unverified.

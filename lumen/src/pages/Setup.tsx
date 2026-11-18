@@ -8,6 +8,7 @@ import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi, type PublicSettings } from '../hooks';
 import { invalidatePublicSettings } from '../mediaServer';
+import AdminCategories from './AdminCategories';
 import AdminMediaLibraries from './AdminMediaLibraries';
 import Login from './Login';
 
@@ -104,6 +105,10 @@ export default function Setup() {
       <Shell>
         <ExtraHeader title="Finish Setup" />
         <AdminMediaLibraries mediaServerType={settings.data.mediaServerType} />
+        <details className="adv">
+          <summary>Configure Media Categories</summary>
+          <AdminCategories inSetup />
+        </details>
         <ServiceNote error={error || null} what="setup" />
         <button
           className="btn btn-primary"

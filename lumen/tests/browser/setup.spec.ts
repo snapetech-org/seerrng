@@ -8,6 +8,7 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   let initialized = false;
   let enabled = false;
   let attempts = 0;
+  let booksEnabled = false;
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -42,6 +43,19 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
         expect(route.request().postDataJSON()).toEqual({ enable: '1' });
         enabled = true;
         return route.fulfill({ json: [{ id: '1', name: 'Films', enabled }] });
+      case '/settings/main':
+        if (route.request().method() === 'POST') {
+          expect(route.request().postDataJSON()).toEqual({
+            defaultEnabledMediaCategories: { ebook: true },
+          });
+          booksEnabled = true;
+        }
+        return route.fulfill({
+          json: {
+            enabledMediaCategories: { ebook: true },
+            defaultEnabledMediaCategories: { ebook: booksEnabled },
+          },
+        });
       case '/settings/initialize':
         attempts += 1;
         initialized = true;
@@ -66,6 +80,14 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   const library = page.getByRole('checkbox', { name: 'Enable Films' });
   await library.click();
   await expect(library).toBeChecked();
+  await page.getByText('Configure Media Categories', { exact: true }).click();
+  const defaults = page
+    .getByRole('group', { name: 'Enabled Media Categories' })
+    .last();
+  await defaults.getByRole('checkbox', { name: 'Ebooks', exact: true }).check();
+  await page.getByRole('button', { name: 'Save Default Categories' }).click();
+  await expect(page.getByText('Default categories saved.')).toBeVisible();
+  expect(booksEnabled).toBe(true);
   await finish.click();
   await expect(page).toHaveURL(bundled ? '/lumen/' : '/');
   expect(attempts).toBe(1);

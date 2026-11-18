@@ -122,19 +122,23 @@ function CategoryForm({
   );
 }
 
-export default function AdminCategories() {
+export default function AdminCategories({
+  inSetup = false,
+}: { inSetup?: boolean } = {}) {
   const { data, error, reload } = useApi<CategorySettings>(path);
 
   return (
     <>
-      <header className="ph">
-        <h1>Media Categories</h1>
-        <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
-          </Link>
-        </div>
-      </header>
+      {!inSetup && (
+        <header className="ph">
+          <h1>Media Categories</h1>
+          <div className="toolbar">
+            <Link className="btn btn-quiet btn-sm" to="/me">
+              Back to Account
+            </Link>
+          </div>
+        </header>
+      )}
       <Section title="Available Categories">
         <p className="note">
           Disabled categories are hidden from discovery and block new requests.
