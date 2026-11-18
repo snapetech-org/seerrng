@@ -2427,3 +2427,18 @@ batch, and the explicit override in the outgoing payload. Live quota
 and provider round trips were outside the check. Evidence is retained
 under `seerrng-lumen-quota-override*` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+Movie and TV detail pages offer Request Approval for a viewer's own
+over-quota requests. TV compares the selected season count with the
+remaining quota. Lumen sends an explicit approval request and uses
+the returned quota exception to confirm it. The server retains
+responsibility for validating the exception and checking duplicates.
+
+The production build and 20 focused browser checks passed. Compared
+the movie and TV detail actions with the previous version on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. Fixtures verify payloads and
+confirmation for both media types. Live quota enforcement and approval
+are outside this check. Poster quick requests and manager-facing
+exception identification still need parity review. Evidence is retained
+under `seerrng-lumen-quota-approval*` in
+`/mnt/disks/scratch/task-deliverables/`.

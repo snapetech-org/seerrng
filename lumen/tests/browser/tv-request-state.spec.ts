@@ -47,7 +47,8 @@ async function show(
   page: Page,
   mediaInfo: Record<string, unknown>,
   posts: RecordedPost[] = [],
-  permissions = 2
+  permissions = 2,
+  quota?: { limit: number; remaining: number; restricted: boolean }
 ) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -60,6 +61,10 @@ async function show(
         json: { id: 1, displayName: 'alex', permissions },
       });
     if (path === '/settings/public') return r.fulfill({ json: {} });
+    if (quota && path === '/user/1/quota')
+      return r.fulfill({ json: { tv: quota } });
+    if (quota && path === '/request' && r.request().method() === 'POST')
+      return r.fulfill({ json: { id: 44, status: 1, quotaException: true } });
     if (path === '/tv/84773')
       return r.fulfill({
         json: {
@@ -376,4 +381,37 @@ test('Sonarr language, season order, and tags follow the selected destination', 
     path: info.outputPath('advanced-request-preference.png'),
   });
   expect(managerReads).toEqual([]);
+});
+
+test('requesters can ask for approval for TV seasons over quota', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  await show(page, { status: 1 }, posts, 32, {
+    limit: 2,
+    remaining: 1,
+    restricted: false,
+  });
+  const approval = page.getByRole('button', {
+    name: 'Request Approval',
+    exact: true,
+  });
+  await expect(approval).toBeVisible();
+  await approval.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('tv-quota-approval.png') });
+  await approval.click();
+  await expect(
+    page.getByText('Approval requested for The Rings of Power')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        seasons: 'all',
+        requestQuotaApproval: true,
+      },
+    },
+  ]);
 });

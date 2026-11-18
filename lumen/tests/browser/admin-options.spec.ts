@@ -2771,3 +2771,44 @@ test('storage recovery keeps the draft and enables visible Save and Upload contr
     'Keep this draft'
   );
 });
+
+test('a movie over quota offers approval on its detail page', async ({
+  page,
+}, info) => {
+  const { posts } = await fixtures(page, { permissions: 32 });
+  await page.route('**/api/v1/user/1/quota', (route) =>
+    route.fulfill({
+      json: { movie: { limit: 1, remaining: 0, restricted: true } },
+    })
+  );
+  await page.route('**/api/v1/movie/302', (route) =>
+    route.fulfill({ json: { ...movie(302, 'Fresh Pick'), genres: [] } })
+  );
+  await page.route('**/api/v1/request', (route) => {
+    posts.push({ path: '/request', body: route.request().postDataJSON() });
+    return route.fulfill({ json: { id: 44, status: 1, quotaException: true } });
+  });
+  await page.goto('/movie/302');
+  const approval = page.getByRole('button', {
+    name: 'Request Approval',
+    exact: true,
+  });
+  await expect(approval).toBeVisible();
+  await approval.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('movie-quota-approval.png') });
+  await approval.click();
+  await expect(
+    page.getByText('Approval requested for Fresh Pick')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'movie',
+        mediaId: 302,
+        is4k: false,
+        requestQuotaApproval: true,
+      },
+    },
+  ]);
+});

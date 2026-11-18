@@ -36,6 +36,7 @@ import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
+import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
@@ -69,6 +70,8 @@ export default function MovieDetail() {
   );
   const can4k = !!user && canRequest4k(user.permissions, 'movie');
   const toast = useToast();
+  const quota = useVideoRequestQuota('movie');
+  const requireApproval = quota.status?.restricted === true;
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
@@ -124,14 +127,21 @@ export default function MovieDetail() {
     try {
       // the Request 4K button ignores options chosen for an HD server and keeps only who
       // it's for, so SeerrNG uses the 4K server's own defaults
-      await requestMovie(
-        m.id,
+      const destination =
         force4k && !opts.is4k
           ? { is4k: true, userId: opts.userId }
-          : { ...opts, is4k }
+          : { ...opts, is4k };
+      const result = await requestMovie(m.id, {
+        ...destination,
+        requestQuotaApproval: requireApproval || undefined,
+      });
+      toast(
+        result.quotaException
+          ? `Approval requested for ${m.title}`
+          : `Requested ${m.title}${is4k ? ' in 4K' : ''}`
       );
-      toast(`Requested ${m.title}${is4k ? ' in 4K' : ''}`);
       refresh();
+      quota.refresh();
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {
@@ -167,7 +177,11 @@ export default function MovieDetail() {
         onClick={() => request()}
       >
         <Icon name="plus" />
-        {unreleased ? 'Request · downloads on release' : 'Request'}
+        {requireApproval
+          ? 'Request Approval'
+          : unreleased
+            ? 'Request · downloads on release'
+            : 'Request'}
       </button>
     );
   // offered whether or not the HD copy is here or requested: they're separate files
@@ -179,7 +193,7 @@ export default function MovieDetail() {
         onClick={() => request(true)}
       >
         <Icon name="plus" />
-        Request 4K
+        {requireApproval ? 'Request 4K Approval' : 'Request 4K'}
       </button>
     ) : null;
   const trailerBtn = trailer ? (

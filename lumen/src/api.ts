@@ -427,6 +427,7 @@ export interface RequestOptions {
     languageProfile?: boolean;
   };
   ignoreQuota?: boolean;
+  requestQuotaApproval?: boolean;
   userId?: number; // request on someone else's behalf (admins)
 }
 const post = <T = { id: number }>(body: object) =>
@@ -436,7 +437,11 @@ const post = <T = { id: number }>(body: object) =>
   });
 // movies are one click
 export const requestMovie = (id: number, o: RequestOptions = {}) =>
-  post({ mediaType: 'movie', mediaId: id, ...o });
+  post<{ id: number; quotaException?: boolean }>({
+    mediaType: 'movie',
+    mediaId: id,
+    ...o,
+  });
 // series default to the whole show; a list asks for just those seasons
 export const requestSeries = (
   id: number,
@@ -446,7 +451,11 @@ export const requestSeries = (
     seasonRequests?: SeasonRequestSelection[];
   } = {}
 ) =>
-  post<{ id: number; seasons?: { seasonNumber: number }[] }>({
+  post<{
+    id: number;
+    quotaException?: boolean;
+    seasons?: { seasonNumber: number }[];
+  }>({
     mediaType: 'tv',
     mediaId: id,
     seasons,

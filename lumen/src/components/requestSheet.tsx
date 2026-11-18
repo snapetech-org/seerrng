@@ -10,11 +10,12 @@ import {
 } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
-import { usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 import { usePrefs } from '../settings';
 import {
   AdvancedOptions,
   canChooseRequestOptions,
+  canManageRequests,
   canRequest4k,
 } from './detail';
 import { useDialog } from './useDialog';
@@ -36,6 +37,25 @@ export function useOffers4k(kind: 'movie' | 'tv') {
     !!(kind === 'movie' ? pub?.movie4kEnabled : pub?.series4kEnabled) &&
     canRequest4k(user?.permissions, kind)
   );
+}
+
+export function useVideoRequestQuota(kind: 'movie' | 'tv') {
+  const { user } = useAuth();
+  const id =
+    user?.id && !canManageRequests(user.permissions) ? user.id : undefined;
+  const quota = useApi<
+    Partial<
+      Record<
+        'movie' | 'tv',
+        {
+          limit?: number;
+          remaining?: number;
+          restricted?: boolean;
+        }
+      >
+    >
+  >(id ? `/user/${id}/quota` : null, { currentPathOnly: true });
+  return { status: quota.data?.[kind], refresh: quota.refresh };
 }
 
 // a just-closed sheet is about to undo its history step (one sheet is open at a time)

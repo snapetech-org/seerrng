@@ -36,7 +36,7 @@ import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
-import { useOffers4k } from '../components/requestSheet';
+import { useOffers4k, useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import TvCollectionLinks from '../components/TvCollectionLinks';
 import WatchlistButton from '../components/WatchlistButton';
@@ -83,6 +83,7 @@ export default function TvDetail() {
   const { prefs } = usePrefs();
   const toast = useToast();
   const [sel, setSel] = useState<Set<number>>(new Set());
+  const quota = useVideoRequestQuota('tv');
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
   const [watchFailure, setWatchFailure] = useState<{
@@ -197,6 +198,10 @@ export default function TvDetail() {
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
   const n = sel.size;
+  const requireApproval =
+    !!n &&
+    (quota.status?.restricted === true ||
+      (!!quota.status?.limit && n > (quota.status.remaining ?? 0)));
   const selectedSeasons = [...sel].sort((a, b) => a - b);
   const selectionKey = JSON.stringify([
     t.id,
@@ -235,10 +240,19 @@ export default function TvDetail() {
       const result = await requestSeries(
         t.id,
         whole ? 'all' : selectedSeasons,
-        is4k ? { ...opts, is4k: true } : opts
+        {
+          ...opts,
+          ...(is4k ? { is4k: true } : {}),
+          requestQuotaApproval: requireApproval || undefined,
+        }
       );
-      toast(seriesRequestSummary(t.name || 'this series', result, is4k));
+      toast(
+        result.quotaException
+          ? `Approval requested for ${t.name || 'this series'}`
+          : seriesRequestSummary(t.name || 'this series', result, is4k)
+      );
       refresh();
+      quota.refresh();
     } catch (e) {
       if (e instanceof ApiError && e.code === 'TV_SEASON_WATCH_GATE') {
         setWatchFailure({
@@ -314,7 +328,7 @@ export default function TvDetail() {
   ) : missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
-      {label}
+      {requireApproval ? 'Request Approval' : label}
       {is4k ? ' in 4K' : ''}
     </button>
   ) : canPlay ? (
