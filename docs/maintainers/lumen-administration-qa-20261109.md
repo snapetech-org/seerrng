@@ -138,3 +138,11 @@ Administrators open `/admin/media-libraries` from `/me`. The page uses the insta
 Compared the shared controls and library rows with Network Settings at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production Lumen build and twelve browser checks passed for Plex, Jellyfin, and Emby. Browser fixtures used synthetic libraries and scan commands. No live server configuration was modified.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-media-libraries-20261118/`.
+
+## Media server connections follow-up — 2026-11-18
+
+`/admin/media-libraries` now includes connection settings for the configured Plex, Jellyfin, or Emby server and the independent Jellyfin bridge sign-in switch. The server validates the connection and supplies the resulting libraries. Saving without a replacement key preserves the stored key.
+
+Compared the shared field and toggle controls with the previous Media Server Libraries baseline at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production Lumen build and sixteen browser checks passed with mocked connection and library data. Tautulli settings and Plex device discovery still use the native interface.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-media-connections-20261118/`.

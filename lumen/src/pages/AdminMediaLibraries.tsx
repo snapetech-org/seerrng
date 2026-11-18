@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import MediaServerConnection, {
+  type ConnectionSettings,
+} from '../components/MediaServerConnection';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
@@ -36,7 +39,7 @@ function MediaLibraries({
   provider: 'plex' | 'jellyfin';
 }) {
   const path = `/settings/${provider}`;
-  const settings = useApi<{ libraries: Library[] }>(path);
+  const settings = useApi<ConnectionSettings & { libraries: Library[] }>(path);
   const scan = useApi<Scan>(`${path}/sync`, { keepDuringRefresh: true });
   const refreshScan = scan.refresh;
   const [updated, setUpdated] = useState<Library[]>();
@@ -130,6 +133,17 @@ function MediaLibraries({
 
   return (
     <>
+      {settings.data && (
+        <MediaServerConnection
+          provider={provider}
+          name={name}
+          initial={settings.data}
+          busy={busy}
+          setBusy={setBusy}
+          pending={pending}
+          onSaved={(connection) => setUpdated(connection.libraries)}
+        />
+      )}
       <Section title={`${name} Libraries`}>
         <ServiceNote
           error={settings.error}

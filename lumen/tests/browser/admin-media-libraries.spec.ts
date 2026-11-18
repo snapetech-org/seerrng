@@ -111,3 +111,73 @@ for (const [type, name, provider] of [
       });
   });
 }
+
+test('Jellyfin connection and bridge saves preserve credentials and update the library list', async ({
+  page,
+}, info) => {
+  const path = '/api/v1/settings/jellyfin';
+  const settings = {
+    ip: 'jellyfin.internal',
+    port: 8096,
+    apiKey: '[REDACTED]',
+    libraries: [
+      { id: 'old', name: 'Old Library', enabled: true, type: 'show' },
+    ],
+    bridgeLoginEnabled: false,
+  };
+  const writes: { path: string; body: Record<string, unknown> }[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const endpoint = new URL(request.url()).pathname;
+    if (endpoint.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (endpoint.endsWith('/settings/public'))
+      return route.fulfill({ json: { mediaServerType: 2 } });
+    if (endpoint === path + '/sync')
+      return route.fulfill({ json: { running: false } });
+    if (!endpoint.startsWith(path)) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') return route.fulfill({ json: settings });
+    const body = request.postDataJSON();
+    writes.push({ path: endpoint.slice(path.length), body });
+    if (endpoint.endsWith('/bridge-login'))
+      return route.fulfill({ json: { bridgeLoginEnabled: body.enabled } });
+    return route.fulfill({ json: { ...settings, ...body, libraries: [] } });
+  });
+  await page.goto('/admin/media-libraries');
+  await expect(page.getByLabel('Server API Key')).toHaveValue('');
+  await page.getByLabel('Server Port').fill('8920');
+  await page.getByLabel('Use HTTPS').check();
+  await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
+  await expect(page.getByText('Connection settings saved.')).toBeVisible();
+  await expect(page.getByText('Old Library', { exact: true })).toHaveCount(0);
+  const bridge = page.getByLabel('Enable Jellyfin Bridge Sign-In');
+  await bridge.click();
+  await expect(bridge).toBeChecked();
+  expect(writes).toEqual([
+    {
+      path: '',
+      body: {
+        ip: 'jellyfin.internal',
+        port: 8920,
+        useSsl: true,
+        urlBase: '',
+        externalHostname: '',
+        jellyfinForgotPasswordUrl: '',
+        apiKey: '[REDACTED]',
+      },
+    },
+    { path: '/bridge-login', body: { enabled: true } },
+  ]);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('connection.png'),
+      fullPage: true,
+    });
+});
