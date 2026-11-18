@@ -499,3 +499,16 @@ response with no history or files. Server tests cover bundled redirects,
 classic preference, invalid or duplicate IDs, and the frontend lock.
 Native visual comparison, mobile and bundled browser checks, software
 request links, and full management from focused links remain open.
+
+### Software request history increment
+
+Software request rows and `softwareRequestId` notification links open the
+permission-checked status, event history, and available files or bundle for
+the exact request. The bundled frontend redirect preserves software IDs
+separately from media request IDs.
+
+Standalone Chrome at 1440 × 1000 verified a direct software notification
+link, its history and download choices, and a missing request response.
+Server routing tests cover the bundled redirect. Native comparison,
+mobile, bundled browser checks, live providers, and software moderation
+and recovery actions remain open.

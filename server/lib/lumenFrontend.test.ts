@@ -49,6 +49,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const requestLink = await request(app).get('/requests/status?requestId=21');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     assert.equal(requestLink.headers['cache-control'], 'no-store');
+    const softwareLink = await request(app).get(
+      '/requests/status?softwareRequestId=42'
+    );
+    assert.equal(
+      softwareLink.headers.location,
+      '/lumen/requests?softwareRequestId=42'
+    );
+
     assert.equal(
       (await request(app).get('/requests/status?requestId=21&requestId=22'))
         .text,

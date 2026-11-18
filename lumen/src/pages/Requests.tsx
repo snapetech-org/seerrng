@@ -29,6 +29,7 @@ import RequestEpisodeQueueSheet, {
 } from '../components/RequestEpisodeQueueSheet';
 import RequestHistorySheet from '../components/RequestHistorySheet';
 import { Avatar } from '../components/Shell';
+import { SoftwareRequestHistorySheet } from '../components/SoftwareRequestHistorySheet';
 import { useToast } from '../components/toast';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -861,13 +862,16 @@ export default function Requests() {
   const { user } = useAuth();
   const toast = useToast();
   const [p, setP] = useSearchParams();
-  const requestParam = p.get('requestId');
+  const requestKey = p.has('softwareRequestId')
+    ? 'softwareRequestId'
+    : 'requestId';
+  const requestParam = p.get(requestKey);
   const focusedId =
     requestParam && /^\d+$/.test(requestParam) ? Number(requestParam) : 0;
   const validRequestLink = Number.isSafeInteger(focusedId) && focusedId > 0;
   const closeHistory = () => {
     const next = new URLSearchParams(p);
-    next.delete('requestId');
+    next.delete(requestKey);
     setP(next, { replace: true });
   };
 
@@ -1372,12 +1376,17 @@ export default function Requests() {
                   {detail && <span className="d">{detail}</span>}
                 </div>
                 <div className="rqa">
-                  {x.r.id > 0 && (
+                  {x.r.id !== 0 && (
                     <button
                       className="btn btn-sm btn-quiet"
                       onClick={() => {
                         const next = new URLSearchParams(p);
-                        next.set('requestId', String(x.r.id));
+                        next.delete('requestId');
+                        next.delete('softwareRequestId');
+                        next.set(
+                          x.r.id < 0 ? 'softwareRequestId' : 'requestId',
+                          String(Math.abs(x.r.id))
+                        );
                         setP(next);
                       }}
                     >
@@ -1539,7 +1548,14 @@ export default function Requests() {
           This request link is invalid.
         </p>
       )}
-      {validRequestLink && (
+      {validRequestLink && requestKey === 'softwareRequestId' && (
+        <SoftwareRequestHistorySheet
+          key={focusedId}
+          id={focusedId}
+          close={closeHistory}
+        />
+      )}
+      {validRequestLink && requestKey === 'requestId' && (
         <RequestHistorySheet
           key={focusedId}
           id={focusedId}

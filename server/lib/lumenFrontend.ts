@@ -10,14 +10,16 @@ const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
 
 function requestDeepLink(req: Request): string | undefined {
   if (!/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
-  const id = req.query.requestId;
+  const key =
+    'softwareRequestId' in req.query ? 'softwareRequestId' : 'requestId';
+  const id = req.query[key];
   if (
     typeof id === 'string' &&
     /^\d+$/.test(id) &&
     Number.isSafeInteger(Number(id)) &&
     Number(id) > 0
   ) {
-    return `/lumen/requests?requestId=${Number(id)}`;
+    return `/lumen/requests?${key}=${Number(id)}`;
   }
 }
 
