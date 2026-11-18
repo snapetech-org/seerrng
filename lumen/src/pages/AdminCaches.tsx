@@ -48,6 +48,10 @@ export default function AdminCaches() {
   const { data, error, reload } = useApi<CacheResponse>('/settings/cache', {
     keepDuringRefresh: true,
   });
+  const { data: config } = useApi<{ appDataPath?: string }>(
+    data ? '/status/appdata' : null,
+    { currentPathOnly: true }
+  );
   const [selection, setSelection] = useState<Selection>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
@@ -75,6 +79,7 @@ export default function AdminCaches() {
   }
 
   const dnsEntries = Object.entries(data?.dnsCache?.entries ?? {});
+  const dnsAvailable = !!(data?.dnsCache?.entries || data?.dnsCache?.stats);
   return (
     <>
       <header className="ph">
@@ -140,6 +145,14 @@ export default function AdminCaches() {
             )}
           </Section>
           <Section title="Image Caches">
+            {config?.appDataPath && (
+              <p className="note">
+                Disk cache location{' '}
+                <code>
+                  {config.appDataPath.replace(/[\\/]+$/, '')}/cache/images
+                </code>
+              </p>
+            )}
             <ul className="setlist">
               {Object.entries(data.imageCache).map(([id, cache]) => (
                 <li className="set" key={id}>
@@ -173,7 +186,10 @@ export default function AdminCaches() {
                 })}
               </ul>
             )}
-            {!dnsEntries.length && (
+            {!dnsAvailable && (
+              <p className="note">DNS cache data is unavailable.</p>
+            )}
+            {dnsAvailable && !dnsEntries.length && (
               <p className="note">No DNS cache entries.</p>
             )}
             {!!dnsEntries.length && (
@@ -210,7 +226,7 @@ export default function AdminCaches() {
           </Section>
         </>
       )}
-      {selection && (
+      {data && selection && (
         <ConfirmSheet
           title="Flush Cache?"
           body={selection.name}

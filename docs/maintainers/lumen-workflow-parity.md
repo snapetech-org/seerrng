@@ -1591,6 +1591,11 @@ browser cases passed across the four viewport presets for guided schedule
 editing, run confirmation, and DNS flush. Live jobs, bundled rendering,
 and native visual comparison remain open.
 
+System Caches also shows the configured image-cache directory and
+distinguishes unavailable DNS data from an empty cache. Four standalone
+browser checks verified the path, DNS flush, data retention during an
+outage, and removal of cache details when the server denies access.
+
 ### Managed users
 
 Administrators and delegated user managers can search the user directory,

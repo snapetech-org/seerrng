@@ -4378,34 +4378,40 @@ test('Scheduled Jobs describes calendar presets and preserves existing custom sc
 test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await fixtures(page);
   let flushed = false;
+  let status = 200;
+  await page.route('**/api/v1/status/appdata', (route) =>
+    route.fulfill({ json: { appDataPath: '/data/fixture/' } })
+  );
   await page.route('**/api/v1/settings/cache', (route) =>
-    route.fulfill({
-      json: {
-        apiCaches: [
-          {
-            id: 'tmdb',
-            name: 'TMDB',
-            stats: { hits: 1, misses: 2, keys: 3, ksize: 4, vsize: 5 },
-          },
-        ],
-        imageCache: {
-          tmdb: { imageCount: 1, size: 42 },
-          avatar: { imageCount: 0, size: 0 },
-        },
-        dnsCache: {
-          entries: flushed
-            ? {}
-            : {
-                'cache.example': {
-                  activeAddress: '192.0.2.1',
-                  hits: 2,
-                  misses: 1,
-                  age: 3000,
-                },
+    status !== 200
+      ? route.fulfill({ status, json: { message: 'Cache read failed.' } })
+      : route.fulfill({
+          json: {
+            apiCaches: [
+              {
+                id: 'tmdb',
+                name: 'TMDB',
+                stats: { hits: 1, misses: 2, keys: 3, ksize: 4, vsize: 5 },
               },
-        },
-      },
-    })
+            ],
+            imageCache: {
+              tmdb: { imageCount: 1, size: 42 },
+              avatar: { imageCount: 0, size: 0 },
+            },
+            dnsCache: {
+              entries: flushed
+                ? {}
+                : {
+                    'cache.example': {
+                      activeAddress: '192.0.2.1',
+                      hits: 2,
+                      misses: 1,
+                      age: 3000,
+                    },
+                  },
+            },
+          },
+        })
   );
   await page.route(
     '**/api/v1/settings/cache/dns/cache.example/flush',
@@ -4417,6 +4423,7 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   );
   await page.goto('/admin/caches');
   await expect(page.getByText('cache.example', { exact: true })).toBeVisible();
+  await expect(page.getByText('/data/fixture/cache/images')).toBeVisible();
   await page.getByRole('button', { name: 'Flush DNS Entry' }).click();
   expect(flushed).toBe(false);
   await page
@@ -4426,6 +4433,16 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await expect(page.getByText('Flushed cache.example.')).toBeVisible();
   await expect(page.getByText('No DNS cache entries.')).toBeVisible();
   expect(flushed).toBe(true);
+  const refresh = page.getByRole('button', { name: 'Refresh', exact: true });
+  status = 503;
+  await refresh.click();
+  await expect(page.getByText('Cache read failed.')).toBeVisible();
+  await expect(page.getByText('TMDB Images')).toBeVisible();
+  status = 403;
+  await refresh.click();
+  await expect(page.getByText('Cache read failed.')).toBeVisible();
+  await expect(page.getByText('TMDB Images')).toHaveCount(0);
+  await expect(page.getByText('/data/fixture/cache/images')).toHaveCount(0);
 });
 
 test('About SeerrNG shows installed version and respects disabled update checks', async ({
