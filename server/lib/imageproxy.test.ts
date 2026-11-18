@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
+import { requiresDirectSafeHttpConnection } from '@server/utils/security';
 import type { AxiosInstance } from 'axios';
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
@@ -161,6 +162,20 @@ describe('resolveImageRequestUrl', () => {
       /Image URL is invalid/
     );
   });
+});
+
+it('enforces the validated socket lookup for public image requests', () => {
+  const publicProxy = new ImageProxy('tmdb', 'https://image.tmdb.org');
+  const privateProxy = new ImageProxy('avatar', 'http://media.local', {
+    allowPrivateAddresses: true,
+  });
+  const publicOptions = (publicProxy as unknown as { axios: AxiosInstance })
+    .axios.defaults;
+  const privateOptions = (privateProxy as unknown as { axios: AxiosInstance })
+    .axios.defaults;
+  assert.equal(publicOptions.proxy, false);
+  assert.equal(requiresDirectSafeHttpConnection(publicOptions.lookup), true);
+  assert.equal(requiresDirectSafeHttpConnection(privateOptions.lookup), false);
 });
 
 describe('writePrivateImageCacheFile', () => {

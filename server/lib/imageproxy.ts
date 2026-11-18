@@ -891,6 +891,9 @@ class ImageProxy {
       headers: options.headers,
       ...createSafeHttpRequestOptions(
         this.allowPrivateAddresses,
+        !this.allowPrivateAddresses,
+        // A forward proxy would resolve the destination independently of
+        // the vetted socket lookup used for public image requests.
         !this.allowPrivateAddresses
       ),
       ...IMAGE_PROXY_HTTP_OPTIONS,

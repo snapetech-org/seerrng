@@ -124,3 +124,13 @@ five affected callsites use cache-root containment, a checked filename
 basename, or names supplied directly by filesystem enumeration. Added
 rule-specific explanations at those callsites. The targeted Semgrep
 scan returned zero unsuppressed findings.
+
+### Public image socket lookup
+
+Public image proxies now require a direct connection so the validated
+lookup is used by the socket on every request and redirect. An outbound
+forward proxy cannot perform its own resolution for these image requests.
+Private media-server avatar fetching retains its configured-origin and
+same-origin redirect policy. All 109 focused image proxy, avatar proxy,
+and URL security tests passed. GitHub alert 312 still shows the historical
+analysis.
