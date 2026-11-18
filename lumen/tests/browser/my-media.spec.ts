@@ -162,3 +162,75 @@ test('provider library scans keep filter scope while paging and resume after a p
     { shelf: 'watched', startPage: 6, pageCount: 5, mediaType: 'movie' },
   ]);
 });
+
+test('My Media exports private packs and refreshes the current shelf after import', async ({
+  page,
+}) => {
+  const pack = {
+    format: 'seerrng.personal-title-matches',
+    version: 1,
+    exportedAt: '2026-11-18T00:00:00.000Z',
+    entries: [{ identity: 'trakt:movie:123', mediaType: 'movie', tmdbId: 21 }],
+  };
+  let imported = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const req = route.request();
+    const path = new URL(req.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Reader', permissions: 32 },
+      });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: { accounts: [{ provider: 'trakt' }], mediaServer: null },
+      });
+    if (path === '/integrations/discovery/mappings/pack') {
+      if (req.method() === 'GET') return route.fulfill({ json: pack });
+      expect(req.method()).toBe('POST');
+      expect(req.headers()['content-type']).toBe('text/plain');
+      expect(JSON.parse(req.postData()!)).toEqual(pack);
+      imported = true;
+      return route.fulfill({ json: { imported: 1, updated: 0, unchanged: 0 } });
+    }
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json: {
+          items: [
+            {
+              id: 'fixture',
+              title: 'Private Match',
+              mediaType: 'movie',
+              ...(imported ? { tmdbId: 21 } : {}),
+            },
+          ],
+          hasMore: false,
+          missingMappings: imported ? 0 : 1,
+          truncated: false,
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await expect(page.getByText('Private Match')).toBeVisible();
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export Title Matches' }).click();
+  expect((await download).suggestedFilename()).toMatch(
+    /^seerrng-title-matches-.*\.json$/
+  );
+  await page.getByLabel('Choose Personal Pack').setInputFiles({
+    name: 'private.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(pack)),
+  });
+  await expect(
+    page.getByText(/private\.json contains 1 title match/)
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Import Title Matches' }).click();
+  await expect(
+    page.getByText('Imported 1, updated 0, and left 0 unchanged.')
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Private Match' })
+  ).toHaveAttribute('href', '/movie/21');
+});

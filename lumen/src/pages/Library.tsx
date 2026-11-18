@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LibraryRepair from '../components/LibraryRepair';
+import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -96,7 +97,13 @@ function LibraryRows({ data }: { data: LibraryResult }) {
   );
 }
 
-function LibraryShelf({ source }: { source: Source }) {
+function LibraryShelf({
+  source,
+  matchRevision,
+}: {
+  source: Source;
+  matchRevision: number;
+}) {
   const native = isNative(source);
   const shelves: Shelf[] = native
     ? ['all', 'watched', 'unwatched', 'in-progress']
@@ -180,6 +187,7 @@ function LibraryShelf({ source }: { source: Source }) {
       </div>
       <LibraryPage
         path={path}
+        matchRevision={matchRevision}
         page={page}
         native={native}
         repairPath={native ? undefined : `${BASE}/library/${source}/repair`}
@@ -196,6 +204,7 @@ function LibraryShelf({ source }: { source: Source }) {
 
 function LibraryPage({
   path,
+  matchRevision,
   page,
   native,
   repairPath,
@@ -207,6 +216,7 @@ function LibraryPage({
   next,
 }: {
   path: string;
+  matchRevision: number;
   page: number;
   native: boolean;
   repairPath?: string;
@@ -221,6 +231,13 @@ function LibraryPage({
     currentPathOnly: true,
     keepDuringRefresh: true,
   });
+  const previousRevision = useRef(matchRevision);
+  useEffect(() => {
+    if (previousRevision.current !== matchRevision) {
+      previousRevision.current = matchRevision;
+      refresh();
+    }
+  }, [matchRevision, refresh]);
   useEffect(() => {
     if (data) setLibraries(data.libraries);
   }, [data, setLibraries]);
@@ -288,6 +305,7 @@ function LibraryPage({
 
 export default function Library() {
   const connections = useApi<Connections>(`${BASE}/accounts`);
+  const [matchRevision, setMatchRevision] = useState(0);
   const [source, setSource] = useState<Source>();
   const nativeSource = connections.data?.mediaServer;
   const sources = [
@@ -315,6 +333,9 @@ export default function Library() {
           Link a media server or tracking account to browse your library.
         </p>
       )}
+      <PersonalIdentityPacks
+        onImported={() => setMatchRevision((revision) => revision + 1)}
+      />
       {current && (
         <>
           <div className="toolbar">
@@ -332,7 +353,11 @@ export default function Library() {
               </select>
             </label>
           </div>
-          <LibraryShelf key={current} source={current} />
+          <LibraryShelf
+            key={current}
+            source={current}
+            matchRevision={matchRevision}
+          />
         </>
       )}
     </>

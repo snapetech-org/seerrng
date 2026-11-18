@@ -60,6 +60,10 @@ server {
       client_max_body_size 5m;
       proxy_pass ${SEERR_URL};
     }
+    location = /api/v1/integrations/discovery/mappings/pack {
+      client_max_body_size 5m;
+      proxy_pass ${SEERR_URL};
+    }
   }
   location ~ ^/(imageproxy|avatarproxy)/ {
     proxy_pass ${SEERR_URL};

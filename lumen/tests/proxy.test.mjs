@@ -105,6 +105,7 @@ const paths = [
   '/imageproxy/probe',
   '/avatarproxy/probe',
   packPath,
+  packPath.slice(0, -1),
 ];
 async function check(settings, clientIp, scheme, headers = {}) {
   const id = await docker(
@@ -285,20 +286,22 @@ async function check(settings, clientIp, scheme, headers = {}) {
       assert.equal(response.status, 200, pathname);
       assert.match(await response.text(), /<div id="root"><\/div>/);
     }
-    const supportedPack = await fetch(base + packPath, {
-      method: 'POST',
-      headers: { 'content-type': 'text/plain' },
-      body: ' '.repeat(2 * 1024 * 1024),
-    });
-    assert.equal(supportedPack.status, 200);
-    await supportedPack.text();
-    const oversizedPack = await fetch(base + packPath, {
-      method: 'POST',
-      headers: { 'content-type': 'text/plain' },
-      body: ' '.repeat(5 * 1024 * 1024 + 1),
-    });
-    assert.equal(oversizedPack.status, 413);
-    await oversizedPack.text();
+    for (const uploadPath of [packPath, packPath.slice(0, -1)]) {
+      const supportedPack = await fetch(base + uploadPath, {
+        method: 'POST',
+        headers: { 'content-type': 'text/plain' },
+        body: ' '.repeat(2 * 1024 * 1024),
+      });
+      assert.equal(supportedPack.status, 200);
+      await supportedPack.text();
+      const oversizedPack = await fetch(base + uploadPath, {
+        method: 'POST',
+        headers: { 'content-type': 'text/plain' },
+        body: ' '.repeat(5 * 1024 * 1024 + 1),
+      });
+      assert.equal(oversizedPack.status, 413);
+      await oversizedPack.text();
+    }
     for (const path of paths) {
       const response = await fetch(base + path, {
         headers: {
