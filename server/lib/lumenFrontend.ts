@@ -548,21 +548,28 @@ function workflowDeepLink(
   return `/lumen${destination}${suffix ? `?${suffix}` : ''}`;
 }
 
+export function shouldCheckLumenLock(req: Request): boolean {
+  const { defaultFrontend, lockLumenForNonAdmins } = getSettings().main;
+  return (
+    defaultFrontend === 'lumen' &&
+    lockLumenForNonAdmins === true &&
+    req.method === 'GET' &&
+    !req.path.startsWith('/lumen') &&
+    !req.path.startsWith('/_next') &&
+    !req.path.startsWith('/api') &&
+    (!path.extname(req.path) || Boolean(magazineTitle(req.path)))
+  );
+}
+
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
   res,
   next
 ) => {
   if (
-    getSettings().main.defaultFrontend === 'lumen' &&
-    getSettings().main.lockLumenForNonAdmins === true &&
+    shouldCheckLumenLock(req) &&
     req.user &&
-    !req.user.hasPermission(Permission.ADMIN) &&
-    req.method === 'GET' &&
-    !req.path.startsWith('/lumen') &&
-    !req.path.startsWith('/_next') &&
-    !req.path.startsWith('/api') &&
-    (!path.extname(req.path) || magazineTitle(req.path))
+    !req.user.hasPermission(Permission.ADMIN)
   ) {
     res
       .set('Cache-Control', 'no-store')

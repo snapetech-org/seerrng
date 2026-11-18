@@ -12,6 +12,7 @@ import request from 'supertest';
 import {
   mountLumenFrontend,
   redirectLockedNativeFrontend,
+  shouldCheckLumenLock,
 } from './lumenFrontend';
 
 test('selected frontend, explicit native access, and setup stay reachable', async () => {
@@ -402,6 +403,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
   settings.main.lockLumenForNonAdmins = true;
   const app = express();
   app.use((req, _res, next) => {
+    if (!shouldCheckLumenLock(req)) return next();
     const role = req.header('X-Test-Role');
     if (role)
       req.user = new User({
@@ -427,6 +429,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       assert.equal(response.status, 302, route);
       assert.equal(response.headers.location, '/lumen/', route);
     }
+    const asset = await request(app)
+      .get('/favicon.ico')
+      .set('X-Test-Role', 'user');
+    assert.equal(asset.text, 'Native interface');
     const recovery = await request(app)
       .get('/resetpassword/example')
       .set('X-Test-Role', 'user');

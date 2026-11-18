@@ -21,6 +21,7 @@ import { loadExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import {
   mountLumenFrontend,
   redirectLockedNativeFrontend,
+  shouldCheckLumenLock,
 } from '@server/lib/lumenFrontend';
 import {
   METRICS_RATE_LIMIT,
@@ -494,16 +495,7 @@ Promise.resolve()
       });
 
       server.use((req, res, next) => {
-        if (
-          getSettings().main.defaultFrontend !== 'lumen' ||
-          getSettings().main.lockLumenForNonAdmins !== true ||
-          req.method !== 'GET' ||
-          req.path.startsWith('/lumen') ||
-          req.path.startsWith('/_next') ||
-          path.extname(req.path)
-        ) {
-          return next();
-        }
+        if (!shouldCheckLumenLock(req)) return next();
         return sessionMiddleware(req, res, () =>
           checkUser(req, res, () =>
             redirectLockedNativeFrontend(req, res, next)
