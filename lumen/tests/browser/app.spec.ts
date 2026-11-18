@@ -4459,6 +4459,66 @@ test('General Settings retains application edits after failure and saves only ch
   ).not.toBeChecked();
 });
 
+test('General Settings selects bundled or standalone Lumen and scopes the native lock', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const saved = {
+    applicationTitle: 'SeerrNG',
+    defaultFrontend: 'native',
+    enforceDefaultFrontend: false,
+    lockLumenForNonAdmins: false,
+    lumenPublicUrl: '',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(saved, body);
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/general');
+  const frontend = page.getByLabel('Default Interface', { exact: true });
+  const lock = page.getByRole('checkbox', {
+    name: 'Keep Non-Administrators in Lumen',
+  });
+  const save = page.getByRole('button', { name: 'Save Application Settings' });
+  await frontend.selectOption('lumen');
+  await lock.check();
+  await page
+    .getByRole('checkbox', { name: 'Enforce Default Interface' })
+    .check();
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  await frontend.selectOption('external');
+  await expect(lock).toHaveCount(0);
+  await expect(save).toBeDisabled();
+  await page
+    .getByLabel('Lumen Companion URL')
+    .fill('https://lumen.example.test');
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  expect(writes).toEqual([
+    {
+      defaultFrontend: 'lumen',
+      enforceDefaultFrontend: true,
+      lockLumenForNonAdmins: true,
+    },
+    {
+      defaultFrontend: 'external',
+      lockLumenForNonAdmins: false,
+      lumenPublicUrl: 'https://lumen.example.test',
+    },
+  ]);
+  await page.reload();
+  await expect(frontend).toHaveValue('external');
+  await expect(page.getByLabel('Lumen Companion URL')).toHaveValue(
+    'https://lumen.example.test'
+  );
+});
+
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   page,
 }) => {

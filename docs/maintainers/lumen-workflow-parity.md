@@ -1674,3 +1674,10 @@ the default restriction, movie and series rating ceilings, and country.
 Twelve standalone browser cases verified Age Gate validation and retry,
 independent category drafts, and the managed-user maturity regression path.
 Bundled workflow rendering and matched native visual acceptance remain open.
+
+General Settings also selects Full SeerrNG, bundled Lumen, or the standalone
+companion as the default interface. It supports enforcing the default and
+the bundled-only non-administrator lock. Eight standalone browser checks
+verified mode selection, companion URL requirements, lock clearing when
+leaving bundled mode, and readback. Live mode switching and matched native
+visual acceptance remain open.
