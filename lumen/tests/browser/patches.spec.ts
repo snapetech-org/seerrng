@@ -267,7 +267,13 @@ test('a Following update opens its exact patch version and submits only with a c
     page.getByText('The required base revision is unavailable.')
   ).toBeVisible();
   expect(submissions).toBe(0);
+  await page.getByLabel('Patch Version').selectOption('');
+  await page.reload();
+  await expect(page.getByLabel('Patch Version')).toHaveValue('');
+  await expect(submit).toBeDisabled();
   await page.getByLabel('Patch Version').selectOption('v2');
+  await page.reload();
+  await expect(page.getByLabel('Patch Version')).toHaveValue('v2');
   await expect(page.getByLabel('System', { exact: true })).toHaveValue('snes');
   await submit.click();
   await expect(page.getByText('Waiting for approval')).toBeVisible();

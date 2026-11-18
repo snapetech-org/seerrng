@@ -318,9 +318,7 @@ export function PatchDetail() {
     : systems.length === 1
       ? systems[0]
       : undefined;
-  const [picked, setPicked] = useState<string>();
-  const versionId =
-    picked ?? params.get('version') ?? project?.latestVersionId ?? '';
+  const versionId = params.get('version') ?? project?.latestVersionId ?? '';
   const version = project?.versions.find((item) => item.id === versionId);
   const [keepOriginal, setKeepOriginal] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -410,7 +408,11 @@ export function PatchDetail() {
                 aria-label="Patch Version"
                 value={version?.id ?? ''}
                 disabled={busy || Boolean(receipt)}
-                onChange={(event) => setPicked(event.target.value)}
+                onChange={(event) => {
+                  const next = new URLSearchParams(params);
+                  next.set('version', event.target.value);
+                  setParams(next, { replace: true });
+                }}
               >
                 <option value="">Choose a version</option>
                 {project.versions.map((item) => (
