@@ -234,6 +234,9 @@ server {
   location ~ ^/users/?$ {
     return 302 /admin/users;
   }
+  location ~ ^/settings/notifications(/(?:email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?/?$ {
+    return 302 /admin/notifications$1;
+  }
   location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration)/?$ {
     return 302 /admin/$1;
   }

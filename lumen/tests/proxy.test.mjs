@@ -200,6 +200,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/network/', '/admin/network'],
       ['/settings/discovery', '/admin/discovery'],
       ['/settings/metadata', '/admin/metadata'],
+      ['/settings/notifications/', '/admin/notifications'],
+      ['/settings/notifications/webhook/', '/admin/notifications/webhook'],
       ['/settings/library-migration', '/admin/library-migration'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });

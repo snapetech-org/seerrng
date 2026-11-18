@@ -470,7 +470,7 @@ function App() {
             }
           />
           <Route
-            path="/admin/notifications"
+            path="/admin/notifications/:channel?"
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense

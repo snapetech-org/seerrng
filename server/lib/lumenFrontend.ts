@@ -541,6 +541,18 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(
+    /^\/lumen\/settings\/notifications(?:\/(email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?\/?$/,
+    (req, res) => {
+      const channel = req.params[0];
+      return res
+        .set('Cache-Control', 'no-store')
+        .redirect(
+          302,
+          `/lumen/admin/notifications${channel ? `/${channel}` : ''}`
+        );
+    }
+  );
+  server.get(
     /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration))?\/?$/,
     (req, res) => {
       const page = req.params[0];

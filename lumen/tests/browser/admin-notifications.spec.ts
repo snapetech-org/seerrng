@@ -526,3 +526,52 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await section.screenshot({ path: info.outputPath('webhook.png') });
 });
+
+test('a channel link loads only that channel settings', async ({
+  page,
+}, info) => {
+  const channels: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (!path.startsWith('/api/v1/settings/notifications/'))
+      return route.fulfill({ json: {} });
+    const channel = path.split('/').at(-1)!;
+    channels.push(channel);
+    return route.fulfill({
+      json: {
+        enabled: false,
+        embedPoster: false,
+        types: 0,
+        options: { jsonPayload: '{}' },
+      },
+    });
+  });
+  await page.goto('/admin/notifications/webhook');
+  const nav = page.getByRole('navigation', { name: 'Notification Channels' });
+  await expect(
+    nav.getByRole('link', { name: 'Webhook', exact: true })
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByLabel('JSON Payload')).toHaveValue('{}');
+  expect(channels).toEqual(['webhook']);
+  await nav.getByRole('link', { name: 'Discord', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discord', exact: true })
+  ).toBeVisible();
+  await expect(page.getByLabel('Thread ID')).toBeVisible();
+  await expect(page.getByLabel('JSON Payload')).toHaveCount(0);
+  expect(channels).toEqual(['webhook', 'discord']);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
+    await page.screenshot({
+      path: info.outputPath('channel.png'),
+      fullPage: true,
+    });
+});

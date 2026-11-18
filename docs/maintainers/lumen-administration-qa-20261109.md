@@ -106,3 +106,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the Webhook form with the established Slack form across desktop, iPhone 13, Pixel 7, and iPad Pro 11. Inspected credential prompts, JSON editor width, header rows, and action wrapping. The production build, twenty notification browser checks, and four API checks passed. The four Webhook browser cases also passed after adding visible prompts for empty header inputs. All sends were mocked.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-webhook-20261118/`.
+
+## Notification channel navigation follow-up — 2026-11-18
+
+The instance notifications page now provides a direct link to every channel. A direct link loads only the selected channel's settings. The previous notification settings paths within bundled and standalone Lumen redirect to the matching channel.
+
+Compared the selected-channel layout against the existing form at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Checked active link styling, control wrapping, and form width. The production build, 24 browser cases, ten standalone proxy cases, and two bundled routing cases passed. Browser settings and deliveries used mocks.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-notification-links-20261118/`.

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { EventChoices } from '../components/NotificationEventChoices';
@@ -41,6 +41,19 @@ const titles = {
   slack: 'Slack',
   webhook: 'Webhook',
 };
+const channels: Channel[] = [
+  'email',
+  'telegram',
+  'pushbullet',
+  'pushover',
+  'gotify',
+  'ntfy',
+  'apprise',
+  'discord',
+  'slack',
+  'webhook',
+  'webpush',
+];
 const redacted = '[REDACTED]';
 const emailFields = [
   { key: 'senderName', label: 'Sender Name', kind: 'text' },
@@ -785,6 +798,8 @@ function AgentSection({ channel }: { channel: Channel }) {
 }
 
 export default function AdminNotifications() {
+  const { channel } = useParams();
+  const selected = channels.find((item) => item === channel);
   return (
     <>
       <header className="ph">
@@ -795,17 +810,36 @@ export default function AdminNotifications() {
           </Link>
         </div>
       </header>
-      <AgentSection channel="email" />
-      <AgentSection channel="telegram" />
-      <AgentSection channel="pushbullet" />
-      <AgentSection channel="pushover" />
-      <AgentSection channel="gotify" />
-      <AgentSection channel="ntfy" />
-      <AgentSection channel="apprise" />
-      <AgentSection channel="discord" />
-      <AgentSection channel="slack" />
-      <AgentSection channel="webhook" />
-      <AgentSection channel="webpush" />
+      <nav className="toolbar" aria-label="Notification Channels">
+        {channel && (
+          <Link className="btn btn-quiet btn-sm" to="/admin/notifications">
+            All Channels
+          </Link>
+        )}
+        {channels.map((item) => (
+          <Link
+            key={item}
+            className={
+              item === selected
+                ? 'btn btn-tonal btn-sm'
+                : 'btn btn-quiet btn-sm'
+            }
+            to={`/admin/notifications/${item}`}
+            aria-current={item === selected ? 'page' : undefined}
+          >
+            {titles[item]}
+          </Link>
+        ))}
+      </nav>
+      {selected ? (
+        <AgentSection key={selected} channel={selected} />
+      ) : channel ? (
+        <p className="note" role="alert">
+          Unknown notification channel.
+        </p>
+      ) : (
+        channels.map((item) => <AgentSection key={item} channel={item} />)
+      )}
     </>
   );
 }
