@@ -4224,3 +4224,52 @@ test('Provider Discovery clears feed rows when the next feed needs a list', asyn
   await expect(page.getByText('Prior Feed Title')).toHaveCount(0);
   await expect(page.getByText('Loading feed…')).toHaveCount(0);
 });
+
+test('System Logs filters server entries and excludes non-admins', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let reads = 0;
+  await page.route(/\/api\/v1\/settings\/logs\?/, (route) => {
+    reads++;
+    const query = new URL(route.request().url()).searchParams;
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [
+          {
+            timestamp: '2026-11-18T00:00:00Z',
+            level: 'error',
+            label: 'Fixture',
+            message:
+              query.get('search') === 'a&b'
+                ? 'Filtered result'
+                : 'Initial result',
+            data: { attempts: 2 },
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open System Logs' }).click();
+  await expect(page.getByText('Initial result')).toBeVisible();
+  await page.getByLabel('Search Logs').fill('a&b');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect(page.getByText('Filtered result')).toBeVisible();
+  await page.getByText('Details', { exact: true }).click();
+  await expect(page.getByText('{"attempts":2}', { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
+    'Filtered result'
+  );
+  const adminReads = reads;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Member', permissions: 32 } })
+  );
+  await page.goto('/admin/logs');
+  await expect(page).toHaveURL(/\/me$/);
+  await expect(
+    page.getByRole('link', { name: 'Open System Logs' })
+  ).toHaveCount(0);
+  expect(reads).toBe(adminReads);
+});

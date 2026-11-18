@@ -1566,3 +1566,13 @@ browser fixtures verified retry after a partial failure and Spotify disconnect.
 Server fixtures verified the cancelled Spotify callback return path for bundled
 and companion deployments. Live providers, bundled rendering, and matched
 native visual comparison remain open.
+
+### Administrator system logs
+
+The Account administration section opens System Logs inside Lumen.
+Administrators can search and filter logs, page through results, inspect
+structured data, copy an entry, and opt into live refresh. Log responses
+bypass persistent application and HTTP caches. TypeScript, the production
+build, and four standalone browser fixtures passed for search, details,
+and non-admin route denial. Live server logs, clipboard and refresh,
+bundled rendering, and native visual comparison remain unverified.

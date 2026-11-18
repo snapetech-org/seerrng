@@ -2930,6 +2930,7 @@ settingsRoutes.get(
   '/logs',
   rateLimit({ windowMs: 60 * 1000, max: 50 }),
   async (req, res, next) => {
+    res.set('Cache-Control', 'no-store');
     const { pageSize, skip } = parsePageParams(req.query, {
       take: 25,
       maxTake: 100,

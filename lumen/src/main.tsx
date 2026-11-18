@@ -8,7 +8,7 @@ import {
   useLocation,
   useMatch,
 } from 'react-router-dom';
-import { AuthProvider, useAuth } from './auth';
+import { AuthProvider, isAdministrator, useAuth } from './auth';
 import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
@@ -55,6 +55,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const AdminLogs = lazy(() => import('./pages/AdminLogs'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
 const TvRequestSettings = lazy(() => import('./pages/TvRequestSettings'));
@@ -308,6 +309,24 @@ function App() {
               >
                 <NotificationSettings />
               </Suspense>
+            }
+          />
+          <Route
+            path="/admin/logs"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading system logs…
+                    </p>
+                  }
+                >
+                  <AdminLogs />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
             }
           />
           <Route path="/me/lumen" element={<LumenSettings />} />
