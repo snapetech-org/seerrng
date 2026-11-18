@@ -34,6 +34,7 @@ import {
 import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
@@ -372,6 +373,13 @@ export default function TvDetail() {
               {t.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
+          <LiveTvAirings
+            key={`live-tv:${t.id}`}
+            tmdbId={t.id}
+            mediaType="tv"
+            title={t.name}
+            original={t.originalName}
+          />
           <IndexerSearchLink category="tv" title={t.name} />
           <BlocklistButton
             mediaType="tv"

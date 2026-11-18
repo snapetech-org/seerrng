@@ -669,6 +669,7 @@ export interface ProductionCountry {
 }
 
 export interface MovieDetails extends TitleResult {
+  originalTitle?: string;
   onUserWatchlist?: boolean;
   runtime?: number;
   tagline?: string;
@@ -694,6 +695,7 @@ export interface Season {
   name: string;
 }
 export interface TvDetails extends TitleResult {
+  originalName?: string;
   onUserWatchlist?: boolean;
   overview?: string;
   genres: { id: number; name: string }[];

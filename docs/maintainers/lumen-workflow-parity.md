@@ -2201,3 +2201,16 @@ iPad Pro 11. Fixtures verified manager approval and member cancellation
 with history readback. Creating recordings from guide matches and live
 provider verification remain open. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-recordings-20261118/`.
+
+Movie and series details now open a Live TV airings sheet when Tunerr is
+configured. Opening the sheet looks up the localized and original titles.
+Users with recording access can request a specific channel and start time
+or a series rule and then open Recordings. The sheet distinguishes requests
+awaiting approval from scheduled recordings and can retry a warming guide.
+
+The production build and 44 browser fixture checks passed. Inspected the
+movie and series sheets on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+Fixtures verified deferred guide reads, exact recording payloads, and return
+to Recordings. Actual broadcasts and Sportarr team follows were outside the
+check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-airings-20261118/`.

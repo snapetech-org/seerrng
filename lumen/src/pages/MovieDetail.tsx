@@ -34,6 +34,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
@@ -240,6 +241,13 @@ export default function MovieDetail() {
               {m.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
+          <LiveTvAirings
+            key={`live-tv:${m.id}`}
+            tmdbId={m.id}
+            mediaType="movie"
+            title={m.title}
+            original={m.originalTitle}
+          />
           <IndexerSearchLink category="movie" title={m.title} />
           <BlocklistButton
             mediaType="movie"
