@@ -85,9 +85,13 @@ export default function TvDetail() {
   const [fourK, setFourK] = useState(false);
   const is4k = offers4k && fourK;
 
+  const specials = pub?.enableSpecialEpisodes === true;
   const seasons = useMemo(
-    () => (t?.seasons || []).filter((s) => s.seasonNumber > 0),
-    [t]
+    () =>
+      (t?.seasons || []).filter(
+        (s) => s.seasonNumber > 0 || (specials && s.seasonNumber === 0)
+      ),
+    [t, specials]
   );
   const stat = useMemo(() => {
     const m = new Map<number, SeasonState>();
@@ -144,7 +148,7 @@ export default function TvDetail() {
   useEffect(() => {
     setSel(new Set(prefs.wholeSeriesDefault || !partialOk ? missing : []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showId, prefs.wholeSeriesDefault, partialOk, is4k]);
+  }, [showId, prefs.wholeSeriesDefault, partialOk, is4k, specials]);
   // seasons that were just requested (or arrived) can no longer be ticked
   const missingKey = missing.join(',');
   useEffect(() => {
@@ -469,7 +473,12 @@ export default function TvDetail() {
                         <Icon name="check" />
                       </span>
                       <span>
-                        <b>{s.name || `Season ${s.seasonNumber}`}</b>
+                        <b>
+                          {s.name ||
+                            (s.seasonNumber === 0
+                              ? 'Specials'
+                              : `Season ${s.seasonNumber}`)}
+                        </b>
                         <small>
                           {s.episodeCount} episode
                           {s.episodeCount === 1 ? '' : 's'} · {yr}

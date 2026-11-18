@@ -1140,11 +1140,12 @@ test('person bulk requests confirm the exact unique movie list and stop on quota
   ]);
 });
 
-test('instance request settings save only the bulk movie flag and retain failed edits', async ({
+test('instance request settings save only changed policy flags and retain failed edits', async ({
   page,
 }) => {
   await fixtures(page);
   let enabled = false;
+  let enable4k = true;
   let admin = true;
   let reject = true;
   const writes: unknown[] = [];
@@ -1158,6 +1159,7 @@ test('instance request settings save only the bulk movie flag and retain failed 
       json: {
         applicationTitle: 'SeerrNG',
         personMovieBulkRequestsEnabled: enabled,
+        enable4k,
       },
     })
   );
@@ -1165,8 +1167,11 @@ test('instance request settings save only the bulk movie flag and retain failed 
     const body = route.request().postDataJSON();
     writes.push(body);
     if (reject) return route.fulfill({ status: 503, json: {} });
-    enabled = body.personMovieBulkRequestsEnabled;
-    return route.fulfill({ json: { personMovieBulkRequestsEnabled: enabled } });
+    enabled = body.personMovieBulkRequestsEnabled ?? enabled;
+    enable4k = body.enable4k ?? enable4k;
+    return route.fulfill({
+      json: { personMovieBulkRequestsEnabled: enabled, enable4k },
+    });
   });
   await page.goto('/me/lumen');
   const flag = page.getByRole('checkbox', {
@@ -1190,6 +1195,9 @@ test('instance request settings save only the bulk movie flag and retain failed 
   ).toBeVisible();
   await expect(save).toBeDisabled();
   await flag.uncheck();
+  await page
+    .getByRole('checkbox', { name: 'Enable 4K', exact: true })
+    .uncheck();
   await save.click();
   await expect(
     page.getByText('Instance request settings saved.')
@@ -1197,10 +1205,59 @@ test('instance request settings save only the bulk movie flag and retain failed 
   expect(writes).toEqual([
     { personMovieBulkRequestsEnabled: true },
     { personMovieBulkRequestsEnabled: true },
-    { personMovieBulkRequestsEnabled: false },
+    { personMovieBulkRequestsEnabled: false, enable4k: false },
   ]);
   admin = false;
   await page.reload();
   await expect(page.getByText('Admins only', { exact: true })).toBeVisible();
   await expect(flag).toHaveCount(0);
+});
+
+test('series specials follow the instance request policy', async ({ page }) => {
+  await fixtures(page);
+  let specials = false;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enableSpecialEpisodes: specials,
+        partialRequestsEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [
+          { id: 20, seasonNumber: 0, episodeCount: 1 },
+          { id: 21, seasonNumber: 1, episodeCount: 2 },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/settings/main', (route) => {
+    const body = route.request().postDataJSON();
+    expect(body).toEqual({ enableSpecialEpisodes: true });
+    specials = true;
+    return route.fulfill({ json: { enableSpecialEpisodes: specials } });
+  });
+  await page.goto('/tv/202');
+  await expect(page.getByText('Season 1', { exact: true })).toBeVisible();
+  await expect(page.getByText('Specials', { exact: true })).toHaveCount(0);
+  await page.goto('/me/lumen');
+  await page
+    .getByRole('checkbox', { name: 'Allow Special Episode Requests' })
+    .check();
+  await page
+    .getByRole('button', { name: 'Save Instance Request Settings' })
+    .click();
+  await expect(
+    page.getByText('Instance request settings saved.')
+  ).toBeVisible();
+  await page.goto('/tv/202');
+  await expect(page.getByText('Specials', { exact: true })).toBeVisible();
 });

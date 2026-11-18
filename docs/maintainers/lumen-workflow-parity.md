@@ -917,3 +917,16 @@ and false payloads, a second save without reloading, and non-admin denial.
 The adjacent bulk-request workflow also passed at desktop, iPhone,
 Android and tablet presets. Live instance writes, bundled and native
 visual comparisons, and the broader administration surface remain open.
+
+### Instance video request policy increment
+
+Lumen's instance request form manages the global 4K switch, partial series
+requests, special episode requests, and previous-season watch requirements
+alongside person-page bulk requests. Saves send only changed policy flags.
+Series details include season zero in the request picker when enabled.
+
+Standalone browser fixtures verified a multi-field save with explicit false
+values, failed-save recovery, and specials appearing after the administrator
+enables them. Desktop, iPhone, Android and tablet presets passed. Individual
+episode availability tracking configuration, live playback enforcement and
+bundled and native visual comparisons remain open.
