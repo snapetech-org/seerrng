@@ -229,7 +229,7 @@ server {
   location ~ ^/users/?$ {
     return 302 /admin/users;
   }
-  location ~ ^/settings/(jobs|logs|about|categories)/?$ {
+  location ~ ^/settings/(jobs|logs|about|categories|network)/?$ {
     return 302 /admin/$1;
   }
   location ~ ^/settings(/(main|users))?/?$ {

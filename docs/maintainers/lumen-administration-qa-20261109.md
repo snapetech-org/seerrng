@@ -26,3 +26,11 @@ Evidence retained on kspld0 at `/mnt/disks/scratch/task-deliverables/seerrng-lum
 Synthetic accounts, empty catalog responses and isolated config only; no household provider writes. Production fixtures skipped migrations and periodic jobs, so this does not qualify migrations or real provider availability. The companion URL behavior was browser-tested with fixtures; no household sidecar was modified. Native settings navigation was tested, but this work does not requalify every native settings page or theme.
 
 Excluded harness attempts used WebKit device defaults with a Chromium executable, an incorrect tablet breakpoint, a nonexistent storage endpoint, or a hidden native-sidebar selector instead of the visible Settings heading. The isolated install initially targeted a shared dependency symlink; it was stopped and the original cache was restored using its frozen lockfile and offline package store, then reinstalled after isolation was corrected. Setup logs remain retained. These attempts are not counted as product acceptance.
+
+## Network settings follow-up — 2026-11-18
+
+The administration list on `/me` now opens `/admin/network`. The bundled and standalone settings bookmarks redirect to that same screen. The screen uses the existing server network settings mutation for partial saves and reads runtime TLS status before allowing transport edits. Network settings and transport status bypass the Lumen response cache.
+
+Compared dark-theme screenshots of `/me` before and after the navigation change and of the new settings form against the shared controls on baseline `/admin/general` at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected section surfaces, control sizing and wrapping, button alignment, and navigation placement. The browser checks cover administrator and regular accounts, a rejected and retried save, and an environment-owned TLS configuration. The browser API fixtures use synthetic settings. Live reverse proxy, TLS restart, and household sign-in changes were excluded.
+
+Baseline `ad430864b`. Screenshots and test logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-network-20261118/`.

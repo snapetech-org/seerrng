@@ -57,6 +57,7 @@ import './styles/touch.css';
 
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
+const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
 const AdminCaches = lazy(() => import('./pages/AdminCaches'));
@@ -402,6 +403,24 @@ function App() {
                   }
                 >
                   <AdminGeneral />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/network"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading network settings…
+                    </p>
+                  }
+                >
+                  <AdminNetwork />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

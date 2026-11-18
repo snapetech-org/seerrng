@@ -239,3 +239,12 @@ test('marking everything stale also tells anything kept outside the cache', () =
   cache.markAllStale();
   assert.equal(told, 1);
 });
+
+test('network settings and TLS runtime status always require fresh data', (t) => {
+  session.resetSessionState(4);
+  t.after(() => session.resetSessionState(null));
+  for (const path of ['/settings/network', '/status/tls']) {
+    cache.remember(path, { configured: true });
+    assert.equal(cache.cached(path), undefined);
+  }
+});

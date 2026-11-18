@@ -145,6 +145,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Network Settings</b>
+              <Link
+                className="go"
+                to="/admin/network"
+                aria-label="Open Network Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Media Categories</b>
               <Link
                 className="go"
