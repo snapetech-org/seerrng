@@ -447,6 +447,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
     'minRating',
     'sortBy',
   ],
+  '/magazines': ['query', 'catalog'],
   '/comics': ['query', 'publisher', 'startYear', 'minIssues', 'maxIssues'],
   '/software': ['category', 'q', 'game', 'catalogProvider'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],

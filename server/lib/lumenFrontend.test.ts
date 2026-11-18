@@ -641,6 +641,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/comics?query=Night&publisher=Image&startYear=2010&minIssues=1&maxIssues=12&extra=1',
         '/lumen/comics?query=Night&publisher=Image&startYear=2010&minIssues=1&maxIssues=12',
       ],
+      [
+        '/discover/magazines?query=Garden&catalog=public&extra=1',
+        '/lumen/magazines?query=Garden&catalog=public',
+      ],
       ['/discover/collectors/', '/lumen/music/collectors'],
       ['/discover/providers', '/lumen/providers'],
       ['/discover/movies/genres', '/lumen/movies/genres'],

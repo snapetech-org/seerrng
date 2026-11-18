@@ -51,28 +51,6 @@ import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
 // the search box writes ?q= after a pause, so typing doesn't fire a request per letter
-function useQueryParam() {
-  const [p, setP] = useSearchParams();
-  const query = p.get('q') || '';
-  const [q, setQ] = useState(query);
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (q.trim() === query) return;
-      const n = new URLSearchParams(p);
-      if (q.trim()) n.set('q', q.trim());
-      else n.delete('q');
-      setP(n, { replace: true });
-    }, 350);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
-  // ?q= changed from outside (Back, Forward, a link): show that in the box
-  useEffect(() => {
-    setQ((x) => (x.trim() === query ? x : query));
-  }, [query]);
-  return { q, setQ, query, p, setP };
-}
-
 const MANGA_SORTS = [
   ['popular', 'Popular'],
   ['trending', 'Trending'],
@@ -999,13 +977,35 @@ export function ComicDetail() {
 
 // ---- magazines: the tracked list from LazyLibrarian, or a Google Books search ----
 export function Magazines() {
-  const { q, setQ, query } = useQueryParam();
-  // tracked titles are listed by default; a search looks further afield
-  const list = usePaged<Magazine>(
-    query
-      ? `/discover/magazines?catalog=public&query=${encodeURIComponent(query)}`
-      : '/discover/magazines?catalog=tracked'
-  );
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') ?? params.get('query') ?? '';
+  const [q, setQ] = useState(query);
+  const mode = params.get('catalog');
+  const catalog =
+    mode === 'tracked' || mode === 'public'
+      ? mode
+      : query && params.has('q')
+        ? 'public'
+        : 'tracked';
+  useEffect(() => {
+    const value = q.trim();
+    if (value === query) return;
+    const timer = setTimeout(() => {
+      const next = new URLSearchParams(params);
+      if (next.has('query') && !next.has('catalog'))
+        next.set('catalog', 'tracked');
+      next.delete('query');
+      if (value) next.set('q', value);
+      else next.delete('q');
+      setParams(next, { replace: true });
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [params, q, query, setParams]);
+  useEffect(() => setQ(query), [query]);
+
+  const requestParams = new URLSearchParams({ catalog });
+  if (query) requestParams.set('query', query);
+  const list = usePaged<Magazine>(`/discover/magazines?${requestParams}`);
   return (
     <ExtraGate k="magazine">
       <ExtraHeader
@@ -1013,7 +1013,9 @@ export function Magazines() {
         sub={
           query
             ? 'Search results. Request a title to start getting new issues.'
-            : 'Titles the library follows. Search to find more.'
+            : catalog === 'public'
+              ? 'Search Google Books for magazine titles.'
+              : 'Titles the library follows.'
         }
       >
         <ExtraSearch
@@ -1022,6 +1024,29 @@ export function Magazines() {
           placeholder="Search magazines…"
         />
       </ExtraHeader>
+      <div className="toolbar">
+        <div className="seg" role="group" aria-label="Magazine Catalogue">
+          {(
+            [
+              ['tracked', 'Tracked Titles'],
+              ['public', 'Public Catalogue'],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={catalog === value}
+              onClick={() => {
+                const next = new URLSearchParams(params);
+                next.set('catalog', value);
+                setParams(next, { replace: true });
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="magazines"

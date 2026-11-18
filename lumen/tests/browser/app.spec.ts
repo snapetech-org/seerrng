@@ -7369,6 +7369,37 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   ).toHaveCount(0);
 });
 
+test('magazine discovery bookmarks keep the catalogue when editing a search', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+  );
+  const reads: URLSearchParams[] = [];
+  await page.route('**/api/v1/discover/magazines?*', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    reads.push(params);
+    return route.fulfill({ json: paged([]) });
+  });
+  await page.goto('/magazines?query=Garden');
+  const search = page.getByPlaceholder('Search magazines…');
+  await expect(search).toHaveValue('Garden');
+  await expect.poll(() => reads.at(-1)?.get('catalog')).toBe('tracked');
+  await search.fill('Garden Design');
+  await expect
+    .poll(() => Object.fromEntries(reads.at(-1) ?? []))
+    .toMatchObject({ catalog: 'tracked', query: 'Garden Design' });
+  await page.getByRole('button', { name: 'Public Catalogue' }).click();
+  await expect
+    .poll(() => Object.fromEntries(reads.at(-1) ?? []))
+    .toMatchObject({ catalog: 'public', query: 'Garden Design' });
+  await expect(search).toHaveValue('Garden Design');
+});
+
 test('Classic magazine bookmarks keep the search scope and link to magazine details', async ({
   page,
 }) => {

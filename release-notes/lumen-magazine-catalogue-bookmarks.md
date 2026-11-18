@@ -1,0 +1,1 @@
+- Lumen Magazines preserves Classic discovery searches and lets users switch between tracked titles and the public catalogue.
