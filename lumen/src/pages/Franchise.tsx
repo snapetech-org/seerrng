@@ -55,6 +55,7 @@ interface FranchiseItem {
   title: string;
   href: string;
   mediaType: string;
+  anilistId?: number;
   format?: string;
   year?: number;
   confidence: 'high' | 'moderate' | 'low';
@@ -325,6 +326,19 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
                             .join(' · ')}
                         </small>
                         {item.evidence && <small>{item.evidence}</small>}
+                        {item.mediaType === 'anime' &&
+                          typeof item.anilistId === 'number' &&
+                          Number.isSafeInteger(item.anilistId) &&
+                          item.anilistId > 0 &&
+                          item.anilistId <= 9_999_999_999 && (
+                            <Link
+                              className="btn btn-quiet btn-sm"
+                              to={`/franchise/anime/${item.anilistId}`}
+                              aria-label={`Explore Franchise: ${item.title}`}
+                            >
+                              Explore Franchise
+                            </Link>
+                          )}
                       </div>
                       {data.canCurate && item.relationId && (
                         <div className="toolbar">

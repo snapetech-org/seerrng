@@ -535,7 +535,8 @@ test('switching franchise titles keeps the follow identity and state separate', 
               group: 'sequel',
               title: 'Fixture Sequel',
               mediaType: 'anime',
-              href: '/franchise/anime/11',
+              href: '/search?query=Fixture%20Sequel',
+              anilistId: 11,
               confidence: 'high',
               verified: true,
             },
@@ -590,7 +591,12 @@ test('switching franchise titles keeps the follow identity and state separate', 
   });
   await follow.click();
   await expect(following).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('link', { name: 'Fixture Sequel', exact: true }).click();
+  await page
+    .getByRole('link', {
+      name: 'Explore Franchise: Fixture Sequel',
+      exact: true,
+    })
+    .click();
   await expect(
     page.getByRole('heading', { name: 'Franchise for Fixture Sequel' })
   ).toBeVisible();

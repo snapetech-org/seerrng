@@ -28,6 +28,7 @@ export interface FranchiseItem {
   title: string;
   mediaType:
     'anime' | 'manga' | 'novel' | 'movie' | 'tv' | 'game' | 'album' | 'book';
+  anilistId?: number;
   format?: string;
   year?: number;
   imageUrl?: string;
@@ -158,6 +159,7 @@ export const getFranchise = async (options: {
           relation: mapped.relation,
           title: titleOf(edge),
           mediaType: kindOf(edge),
+          anilistId: edge.node.id,
           format: edge.node.format ?? undefined,
           year: edge.node.startDate?.year ?? undefined,
           imageUrl:
