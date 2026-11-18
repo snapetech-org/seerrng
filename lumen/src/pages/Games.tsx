@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { api, artUrl } from '../api';
 import { useAuth } from '../auth';
 import { GridSkeleton, MoreOnScroll, type Stat } from '../components/cards';
@@ -166,28 +172,35 @@ export function SoftwareBookmark() {
 export function Games() {
   const x = useExtras();
   const [p, setP] = useSearchParams();
+  const { key: locationKey } = useLocation();
   const cat = (
     x.games.includes(p.get('c') as GameCategory) ? p.get('c') : x.games[0]
   ) as GameCategory | undefined;
-  const query = p.get('q') || '';
-  const [q, setQ] = useState(query);
+  const query = (p.get('q') ?? '').trim().slice(0, 200);
+  const [draft, setDraft] = useState({ key: locationKey, value: query });
+  const q = draft.key === locationKey ? draft.value : query;
   useEffect(() => {
+    setDraft({ key: locationKey, value: query });
+  }, [locationKey, query]);
+  useEffect(() => {
+    const term = q.trim();
+    if (term === query) return;
     const t = setTimeout(() => {
-      if (q.trim() === query) return;
       const n = new URLSearchParams(p);
-      if (q.trim()) n.set('q', q.trim());
+      if (term) n.set('q', term);
       else n.delete('q');
       setP(n, { replace: true });
     }, 350);
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
+  }, [p, q, query, setP]);
   // no game service behind the category: the gate explains, so don't ask SeerrNG for lists
   const list = useGames(x.enabled('game') ? cat : undefined, query);
   const checking = x.enabled('game') && !x.gamesChecked;
   const setCat = (c: GameCategory) => {
     const n = new URLSearchParams(p);
     n.set('c', c);
+    if (q.trim()) n.set('q', q.trim());
+    else n.delete('q');
     setP(n, { replace: true });
   };
 
@@ -229,7 +242,9 @@ export function Games() {
         )}
         <ExtraSearch
           value={q}
-          onChange={setQ}
+          onChange={(value) =>
+            setDraft({ key: locationKey, value: value.slice(0, 200) })
+          }
           placeholder={
             {
               game: 'Search PC games…',

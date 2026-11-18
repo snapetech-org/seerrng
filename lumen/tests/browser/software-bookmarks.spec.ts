@@ -337,6 +337,21 @@ test('game catalogue retries the same offset and keeps earlier results', async (
       return route.fulfill({
         json: { softwareEnabled: true, enabledMediaCategories: { game: true } },
       });
+    if (path === '/request/software/catalog/search') {
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: 'igdb:44',
+              igdbId: 44,
+              catalogProvider: 'igdb',
+              title: url.searchParams.get('q') + ' result',
+            },
+          ],
+          nextCursor: null,
+        },
+      });
+    }
     if (path === '/request/software/catalog/popular') {
       if (url.searchParams.get('limit') !== '24')
         return route.fulfill({ json: { results: [] } });
@@ -370,4 +385,24 @@ test('game catalogue retries the same offset and keeps earlier results', async (
   await expect(page.getByRole('link', { name: 'Second Game' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'First Game' })).toBeVisible();
   expect(offsets).toEqual(['0', '24', '24']);
+  const search = page.getByPlaceholder('Search PC games…');
+  await search.fill('First bookmark');
+  await expect(page).toHaveURL(/q=First\+bookmark/);
+  await page.evaluate(() => {
+    history.pushState(
+      { ...history.state, key: 'second-bookmark' },
+      '',
+      '/games?q=Second+bookmark'
+    );
+    dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
+  });
+  await expect(search).toHaveValue('Second bookmark');
+  await expect(
+    page.getByRole('link', { name: 'Second bookmark result' })
+  ).toBeVisible();
+  await page.goBack();
+  await expect(search).toHaveValue('First bookmark');
+  await expect(
+    page.getByRole('link', { name: 'First bookmark result' })
+  ).toBeVisible();
 });
