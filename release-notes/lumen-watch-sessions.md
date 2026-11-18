@@ -1,5 +1,11 @@
+---
+category: added
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+
 Lumen now lists private watch sessions and lets users create movie sessions and choose whether to contribute their watchlist.
 Watch-session hosts can create and revoke invitation links in Lumen, and guests can use those links to join.
 Watch-session members can vote on movies, change their votes, and open group matches in Lumen.
-Watch-session hosts can remove guests or end a room, and guests can leave from Lumen.
-Watch-session hosts can select movie genres and edit a draft session’s title and filters from Lumen.

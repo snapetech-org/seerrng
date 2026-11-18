@@ -1,6 +1,6 @@
 ---
 category: security
-audience: maintainers
+audience: operators
 area: lumen
 action: none
 breaking: false

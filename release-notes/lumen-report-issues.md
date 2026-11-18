@@ -1,1 +1,9 @@
+---
+category: added
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+
 Lumen users with issue reporting permission can report problems from movie, series, book, album, comic and magazine pages. Reports can identify the affected video quality, seasons, episodes, or publication issue type.

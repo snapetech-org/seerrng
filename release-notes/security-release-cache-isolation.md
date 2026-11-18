@@ -1,6 +1,6 @@
 ---
 category: security
-audience: maintainers
+audience: operators
 area: release
 action: none
 breaking: false
