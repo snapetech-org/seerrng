@@ -4677,3 +4677,43 @@ test('Users changes media categories and indexer visibility independently', asyn
     { showIndexerDetails: null },
   ]);
 });
+
+test('Users clears one maturity limit and preserves the other', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  const policy = {
+    movieMaturityRatingLimit: 'PG' as string | null,
+    tvMaturityRatingLimit: 'TV-14',
+  };
+  await page.route('**/api/v1/user/19/settings/maturity', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        movieMaturityRatingLimit: null,
+      });
+      policy.movieMaturityRatingLimit = null;
+    }
+    return route.fulfill({ json: policy });
+  });
+  await page.goto('/admin/users');
+  await page
+    .getByRole('button', { name: 'Maturity Limits', exact: true })
+    .click();
+  await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG');
+  await page.getByLabel('Movie Rating Limit').selectOption('');
+  await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
+  await expect(page.getByText('Maturity limits saved.')).toBeVisible();
+  await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('');
+  await expect(page.getByLabel('Series Rating Limit')).toHaveValue('TV-14');
+  await expect(
+    page.getByRole('button', { name: 'Save Maturity Limits' })
+  ).toBeDisabled();
+});

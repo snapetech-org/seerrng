@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
+import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
@@ -154,6 +155,7 @@ export default function AdminUsers() {
   const { user: actor } = useAuth();
   const [quotaUser, setQuotaUser] = useState<number>();
   const [categoryUser, setCategoryUser] = useState<number>();
+  const [maturityUser, setMaturityUser] = useState<number>();
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
   const [queueUser, setQueueUser] = useState<number>();
@@ -351,6 +353,27 @@ export default function AdminUsers() {
                   )}
                 </>
               )}
+              {actor &&
+                (actor.id === user.id ||
+                  actor.id === 1 ||
+                  (user.permissions & 2) === 0) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={maturityUser === user.id}
+                      onClick={() =>
+                        setMaturityUser(
+                          maturityUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Maturity Limits
+                    </button>
+                    {maturityUser === user.id && (
+                      <ManagedMaturity id={user.id} />
+                    )}
+                  </>
+                )}
             </li>
           ))}
         </ul>
