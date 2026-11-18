@@ -6270,3 +6270,41 @@ test('Spotify credentials retain a saved secret on ID changes and allow explicit
   await expect(page.getByLabel('Remove saved Spotify secret')).toHaveCount(0);
   expect(writes.at(-1)).toEqual({ spotifyClientSecret: '' });
 });
+
+test('application API key is masked and regeneration requires confirmation', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/main', (route) =>
+    route.fulfill({
+      json: { applicationTitle: 'SeerrNG', apiKey: 'fixture-original-key' },
+    })
+  );
+  let rotations = 0;
+  await page.route('**/api/v1/settings/main/regenerate', (route) => {
+    expect(route.request().method()).toBe('POST');
+    rotations++;
+    return route.fulfill({ json: { apiKey: 'fixture-replacement-key' } });
+  });
+
+  await page.goto('/admin/general#apiKey');
+  const input = page.getByLabel('API Key', { exact: true });
+  await expect(input).toHaveValue('••••••••••••••••');
+  const regenerate = page.getByRole('button', { name: 'Regenerate Key' });
+  await regenerate.click();
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation.getByRole('button', { name: 'Keep Current Key' }).click();
+  expect(rotations).toBe(0);
+  await page.getByRole('button', { name: 'Reveal Key' }).click();
+  await expect(input).toHaveValue('fixture-original-key');
+  await regenerate.click();
+  await confirmation.getByRole('button', { name: 'Regenerate Key' }).click();
+  await expect(input).toHaveValue('••••••••••••••••');
+  await expect(
+    page.getByText('Application API key regenerated.')
+  ).toBeVisible();
+  await page.screenshot({ path: info.outputPath('application-api-key.png') });
+  await page.getByRole('button', { name: 'Reveal Key' }).click();
+  await expect(input).toHaveValue('fixture-replacement-key');
+  expect(rotations).toBe(1);
+});

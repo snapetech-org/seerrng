@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
+import ApplicationApiKey from '../components/ApplicationApiKey';
 import { Section } from '../components/cards';
 import DefaultRequestQuotas, {
   type DefaultQuotas,
@@ -310,6 +311,7 @@ export default function AdminGeneral() {
       mediaServerType?: number;
       defaultQuotas?: DefaultQuotas;
       defaultPermissions?: number;
+      apiKey?: string;
       spotifyClientId?: string;
       spotifyClientSecret?: string;
     }
@@ -364,6 +366,9 @@ export default function AdminGeneral() {
           )
         )}
       </Section>
+      {settings.data?.apiKey && (
+        <ApplicationApiKey initial={settings.data.apiKey} />
+      )}
       {settings.data && <SpotifyCredentials initial={settings.data} />}
       <InstanceRequestSettings />
       {settings.data?.defaultQuotas && (
