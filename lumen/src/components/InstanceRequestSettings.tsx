@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../api';
 import { forget } from '../apiCache';
 import { useApi, type PublicSettings } from '../hooks';
@@ -56,6 +56,11 @@ function RequestSettingsForm({ initial }: { initial: Policies }) {
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
 
+  useEffect(() => {
+    if (window.location.hash === '#enable4k')
+      document.getElementById('enable4k')?.scrollIntoView({ block: 'start' });
+  }, []);
+
   async function save() {
     if (pending.current || !changed.length) return;
     const generation = sessionGeneration();
@@ -102,7 +107,11 @@ function RequestSettingsForm({ initial }: { initial: Policies }) {
     >
       <div className="setlist">
         {policies.map(({ key, label, description }) => (
-          <label className="set cfg-row" key={key}>
+          <label
+            className="set cfg-row"
+            key={key}
+            id={key === 'enable4k' ? key : undefined}
+          >
             <span>
               <b>{label}</b>
               <small>{description}</small>

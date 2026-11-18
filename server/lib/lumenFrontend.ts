@@ -758,7 +758,9 @@ export const mountLumenFrontend = (
       const target = req.query.settingsSearchTarget;
       destination =
         section === 'main' &&
-        (target === 'spotifyClientId' || target === 'apiKey')
+        (target === 'spotifyClientId' ||
+          target === 'apiKey' ||
+          target === 'enable4k')
           ? `/admin/general#${target}`
           : '/admin/general';
     } else if (
