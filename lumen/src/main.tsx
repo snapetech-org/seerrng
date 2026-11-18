@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
@@ -12,6 +12,7 @@ import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
+import { canManageDownloads } from './downloadPermissions';
 import { MediaServerProvider } from './mediaServer';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
@@ -39,6 +40,8 @@ import './styles/app-react.css';
 import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
+
+const Downloads = lazy(() => import('./pages/Downloads'));
 
 function App() {
   const { user, unreachable, refresh } = useAuth();
@@ -87,6 +90,20 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/following" element={<Following />} />
+          <Route
+            path="/downloads"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Download Inbox…
+                  </p>
+                }
+              >
+                <Downloads allowed={canManageDownloads(user.permissions)} />
+              </Suspense>
+            }
+          />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />

@@ -6,6 +6,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { canManageDownloads } from '../downloadPermissions';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -185,6 +186,23 @@ export default function Me() {
           )}
         </div>
       </Section>
+
+      {canManageDownloads(user?.permissions) && (
+        <Section title="Acquisition">
+          <div className="setlist">
+            <div className="set">
+              <b>Download Inbox</b>
+              <Link
+                className="go"
+                to="/downloads"
+                aria-label="Open Download Inbox"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          </div>
+        </Section>
+      )}
 
       <Section title="Request limits">
         <div className="quota">

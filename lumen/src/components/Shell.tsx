@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { api } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import { canManageDownloads } from '../downloadPermissions';
 import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useBack, usePublicSettings } from '../hooks';
@@ -300,6 +301,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/following">
               <Icon name="list" />
               Following
+            </NavLink>
+          )}
+          {canManageDownloads(user?.permissions) && (
+            <NavLink to="/downloads">
+              <Icon name="down" />
+              Download Inbox
             </NavLink>
           )}
           <NavLink to="/watchlist">

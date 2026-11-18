@@ -1714,6 +1714,10 @@ body.is-detail .tabbar {
 .set + .set {
   border-top: 1px solid var(--line);
 }
+.set b,
+.set small {
+  overflow-wrap: anywhere;
+}
 .set b {
   font-size: 15px;
   font-weight: 650;

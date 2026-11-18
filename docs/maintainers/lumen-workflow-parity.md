@@ -129,3 +129,16 @@ Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in
 the request. Visual checks for albums, comic edition changes, magazines,
 narrow layouts, and bundled deployment remain open.
+
+### Download Inbox browse increment
+
+Lumen's Download Inbox shows active warnings, resolved items, and intervention
+history for accounts with Manage Downloads access. Direct navigation with no
+permission shows the access message and does not fetch queue data. The
+standalone proxy serves the screen directly. Preview, manual import, rejection,
+and the separate indexer handoff remain open.
+
+Headed Chrome at 1440 × 1000 verified the authorized Inbox, History switch,
+partial-source warning, and expanded action record against synthetic data.
+Narrow and bundled visual checks remain open. The Inbox is loaded on demand
+so the home entry does not download its 1.51 kB gzip route chunk.
