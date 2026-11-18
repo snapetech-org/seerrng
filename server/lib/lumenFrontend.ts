@@ -55,7 +55,22 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
       query.set(target, value);
     }
   }
-  if (query.get('mediaType') === 'audiobook') {
+  const mediaType = query.get('mediaType');
+  if (mediaType === 'game' || mediaType === 'retro' || mediaType === 'modern') {
+    const status = query.get('show');
+    query.set('show', 'software');
+    query.delete('mediaType');
+    query.set('category', mediaType);
+    if (
+      status &&
+      /^(active|pending|approved|searching|downloading|importing|available|attention|failed|declined|cancelled)$/.test(
+        status
+      )
+    ) {
+      query.set('softwareStatus', status);
+    }
+  }
+  if (mediaType === 'audiobook') {
     query.set('mediaType', 'book');
     query.set('bookFormat', 'audiobook');
   }

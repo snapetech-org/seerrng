@@ -172,6 +172,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       filteredRequests.headers.location,
       '/lumen/requests?requestedBy=19&show=pending&mediaType=book&bookFormat=audiobook&timeFrame=7d&order=oldest&requestId=21'
     );
+    const softwareList = await request(app).get(
+      '/requests?mediaType=retro&filter=downloading&userId=19'
+    );
+    assert.equal(
+      softwareList.headers.location,
+      '/lumen/requests?requestedBy=19&show=software&category=retro&softwareStatus=downloading'
+    );
     const softwareLink = await request(app).get(
       '/requests/status?softwareRequestId=42'
     );
@@ -362,6 +369,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       [
         '/requests?userId=19&userId=20&filter=pending&filter=failed',
         '/lumen/requests',
+      ],
+      [
+        '/requests?mediaType=modern&filter=all',
+        '/lumen/requests?show=software&category=modern',
       ],
       ['/requests', '/lumen/requests'],
       ['/following/', '/lumen/following'],
