@@ -3950,8 +3950,23 @@ test('music and Open Library book details open Associations with exact identity'
     'href',
     '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Book'
   );
+  await page.route(
+    '**/api/v1/book/bookshelf%3A1%3Afixture/ratings?lookupTitle=Local+Book',
+    (route) =>
+      route.fulfill({
+        json: {
+          average: 4.2,
+          count: 24,
+          source: 'openlibrary',
+          workId: 'OL123W',
+        },
+      })
+  );
   await page.goto('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book');
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: '4.2/5 · Open Library' })
+  ).toHaveAttribute('href', 'https://openlibrary.org/works/OL123W');
   await expect(association).toHaveCount(0);
   await page.getByRole('link', { name: /^Audiobook / }).click();
   const audio = new URL(page.url());

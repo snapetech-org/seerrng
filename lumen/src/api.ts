@@ -195,6 +195,7 @@ export interface BookResult {
   firstPublishYear?: number;
   languages?: string[];
   ratingsAverage?: number;
+  ratingsCount?: number;
   subjects?: string[];
   series?: { id?: string; title?: string; position?: string }[];
   mediaInfo?: MediaInfo;

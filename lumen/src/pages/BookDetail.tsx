@@ -42,6 +42,38 @@ import { usePrefs } from '../settings';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { AssociationLink } from './Associations';
 
+interface BookRating {
+  average?: number;
+  count: number;
+  source: 'openlibrary' | 'bookshelf';
+  workId?: string;
+}
+
+function ratingLabel(rating: BookRating | null, book: BookDetails) {
+  const valid = (score: unknown, count: number): score is number =>
+    typeof score === 'number' &&
+    score >= 0 &&
+    score <= 5 &&
+    Number.isSafeInteger(count) &&
+    count > 0;
+  const score = rating?.average;
+  const localScore = book.ratingsAverage;
+  const localCount = book.ratingsCount ?? 0;
+  if (rating && valid(score, rating.count)) {
+    const library = rating.source === 'openlibrary';
+    const source = library ? 'Open Library' : 'Bookshelf';
+    const label = `${score.toFixed(1)}/5 · ${source}`;
+    const work = rating.workId ?? book.id;
+    return library && /^OL[0-9]+W$/.test(work) ? (
+      <a href={`https://openlibrary.org/works/${work}`}>{label}</a>
+    ) : (
+      label
+    );
+  }
+  if (book.provider === 'bookshelf' && valid(localScore, localCount))
+    return `${localScore.toFixed(1)}/5 · Bookshelf`;
+}
+
 const english = (e: Edition) =>
   !e.language || /^(en|eng|english|und)$/i.test(e.language);
 const who = (e: Edition) =>
@@ -149,6 +181,10 @@ export default function BookDetail() {
   const lookup = lookupTitle ? `?${new URLSearchParams({ lookupTitle })}` : '';
   const first = useApi<BookDetails>(
     `/book/${encodeURIComponent(plainId)}${lookup}`,
+    { currentPathOnly: true }
+  );
+  const ratings = useApi<BookRating>(
+    first.data ? `/book/${encodeURIComponent(plainId)}/ratings${lookup}` : null,
     { currentPathOnly: true }
   );
   const bookId = plainId;
@@ -436,6 +472,7 @@ export default function BookDetail() {
             ? `${series.title}${series.position ? ' #' + series.position : ''}`
             : '',
           b.firstPublishYear,
+          ratingLabel(ratings.data, b),
           audio && longest ? fmtHrs(longest) + ' listen' : '',
           audio ? 'Audiobook' : 'Ebook',
         ]}
