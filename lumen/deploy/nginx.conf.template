@@ -27,7 +27,7 @@ map "$uri:$arg_steam" $legacy_steam {
 js_import lumen from /etc/nginx/lumen/lumen-config.js;
 
 map "" $lumen_csp {
-  default "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://plex.tv https://*.plex.tv; manifest-src 'self'; worker-src 'self'; frame-src 'none'";
+  default "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://plex.tv https://*.plex.tv https://api.github.com; manifest-src 'self'; worker-src 'self'; frame-src 'none'";
 }
 
 server {

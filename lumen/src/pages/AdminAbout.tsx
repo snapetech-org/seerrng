@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import ReleaseHistory from '../components/ReleaseHistory';
 import { useApi, usePublicSettings } from '../hooks';
 
 const project = 'https://github.com/snapetech-org/seerrng';
@@ -107,6 +108,7 @@ export default function AdminAbout() {
           </a>
         </div>
       </Section>
+      {about.data && <ReleaseHistory installed={about.data.version} />}
       <Section title="Metadata Attribution">
         <p className="note">
           SeerrNG uses The Movie Database API. TMDB does not endorse or certify

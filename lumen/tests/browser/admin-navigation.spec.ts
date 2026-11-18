@@ -125,3 +125,55 @@ test('configured companion destination is retained with the classic interface es
     'https://seerr.example.test/base/?keep=1&interface=classic'
   );
 });
+
+test('About opens release history on demand and retries a failed lookup', async ({
+  page,
+}) => {
+  await session(page, 2);
+  await page.route('**/api/v1/settings/about', (route) =>
+    route.fulfill({
+      json: {
+        version: '3.72.38',
+        totalMediaItems: 10,
+        totalRequests: 5,
+        appDataPath: '/config',
+      },
+    })
+  );
+  let lookups = 0;
+  await page.route(
+    'https://api.github.com/repos/snapetech-org/seerrng/releases?per_page=20',
+    (route) =>
+      ++lookups === 1
+        ? route.fulfill({ status: 503 })
+        : route.fulfill({
+            json: [
+              {
+                tag_name: 'v3.72.38',
+                name: 'Fixture Release',
+                body: 'Fixture release notes.',
+              },
+            ],
+          })
+  );
+  await page.goto('./admin/about');
+  const open = page.getByRole('button', { name: 'Show Releases' });
+  await expect(open).toBeVisible();
+  expect(lookups).toBe(0);
+  await open.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Release history could not be loaded'
+  );
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await page
+    .getByText('Fixture Release · Latest · Installed', { exact: true })
+    .click();
+  await expect(page.getByText('Fixture release notes.')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'View on GitHub' })
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/snapetech-org/seerrng/releases/tag/v3.72.38'
+  );
+  expect(lookups).toBe(2);
+});
