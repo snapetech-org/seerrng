@@ -11,6 +11,7 @@ import {
 } from '../api';
 import { sessionGeneration } from '../sessionState';
 import { AdvancedOptions, canChooseRequestOptions } from './detail';
+import { streamingOverrideMessage } from './requestSheet';
 import { useDialog } from './useDialog';
 import VideoCollectionFilters, {
   emptyVideoFilters,
@@ -26,7 +27,12 @@ export interface MovieCollection {
   parts: TitleResult[];
 }
 
-type Outcome = { id: number; message: string; accepted: boolean };
+type Outcome = {
+  id: number;
+  message: string;
+  accepted: boolean;
+  overrideOptions?: RequestOptions;
+};
 
 function eligibility(part: TitleResult, is4k: boolean) {
   if (
@@ -98,8 +104,20 @@ export default function CollectionRequestSheet({
     (!advanced || ready) &&
     !outcomes;
 
-  async function submit() {
-    if (!canSubmit || working.current) return;
+  const permittedOverrides = (outcomes ?? []).flatMap(
+    ({ id, overrideOptions }) =>
+      overrideOptions ? [{ id, options: overrideOptions }] : []
+  );
+
+  async function submit(override = false) {
+    if (working.current || (override ? !permittedOverrides.length : !canSubmit))
+      return;
+    const requests = override
+      ? permittedOverrides
+      : targets.map(({ id }) => ({
+          id,
+          options: { ...(advanced ? options : {}), is4k },
+        }));
     working.current = true;
     setBusy(true);
     setError('');
@@ -112,7 +130,7 @@ export default function CollectionRequestSheet({
       if (fresh.id !== collection.id) throw new Error();
       const current = new Map(fresh.parts.map((part) => [part.id, part]));
       const results: Outcome[] = [];
-      for (const { id } of targets) {
+      for (const { id, options: requestOptions } of requests) {
         if (sessionGeneration() !== session) return;
         const part = current.get(id);
         const reason = part
@@ -123,9 +141,26 @@ export default function CollectionRequestSheet({
           continue;
         }
         try {
-          await requestMovie(id, { ...(advanced ? options : {}), is4k });
+          await requestMovie(
+            id,
+            override
+              ? { ...requestOptions, bypassStreamingRequestPolicy: true }
+              : requestOptions
+          );
           results.push({ id, message: 'Request Submitted', accepted: true });
         } catch (failure) {
+          const message = override
+            ? undefined
+            : streamingOverrideMessage(failure);
+          if (message !== undefined) {
+            results.push({
+              id,
+              message,
+              accepted: false,
+              overrideOptions: requestOptions,
+            });
+            continue;
+          }
           results.push({
             id,
             message:
@@ -136,7 +171,14 @@ export default function CollectionRequestSheet({
           });
         }
       }
-      setOutcomes(results);
+      if (sessionGeneration() !== session) return;
+      setOutcomes(
+        override
+          ? outcomes?.map(
+              (item) => results.find(({ id }) => id === item.id) ?? item
+            )
+          : results
+      );
     } catch {
       setError('Could not verify the collection. Try again before submitting.');
     } finally {
@@ -287,6 +329,17 @@ export default function CollectionRequestSheet({
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
               Close
             </button>
+            {permittedOverrides.length > 0 && (
+              <button
+                className="btn btn-primary"
+                disabled={busy}
+                onClick={() => void submit(true)}
+              >
+                {busy
+                  ? 'Submitting Requests…'
+                  : `Request Anyway (${permittedOverrides.length})`}
+              </button>
+            )}
             {!outcomes && (
               <button
                 className="btn btn-primary"

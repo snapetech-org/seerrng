@@ -199,9 +199,16 @@ test('bulk collection requests exclude blocked titles and show partial results',
       const body = request.postDataJSON();
       submitted.push(body);
       return route.fulfill(
-        body.mediaId === 20
+        body.mediaId === 20 || body.bypassStreamingRequestPolicy === true
           ? { status: 201, json: { id: 8 } }
-          : { status: 403, json: { message: 'Quota exceeded' } }
+          : {
+              status: 403,
+              json: {
+                code: 'STREAMING_REQUEST_POLICY_REJECTED',
+                message: 'Available on your streaming service.',
+                allowOverride: true,
+              },
+            }
       );
     }
     return route.fulfill({ json: {} });
@@ -243,11 +250,23 @@ test('bulk collection requests exclude blocked titles and show partial results',
     sheet.getByText('1 of 2 requests submitted.', { exact: false })
   ).toBeVisible();
   await expect(
-    sheet.getByText('Request Rejected', { exact: true })
+    sheet.getByText('Available on your streaming service.', { exact: true })
   ).toBeVisible();
+  expect(submitted).toHaveLength(2);
+  await sheet.getByRole('button', { name: 'Request Anyway (1)' }).click();
+  await expect(sheet.getByText('2 of 2 requests submitted.')).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: /Request Anyway/ })
+  ).toHaveCount(0);
   expect(submitted).toEqual([
     { mediaId: 20, mediaType: 'movie', is4k: false },
     { mediaId: 21, mediaType: 'movie', is4k: false },
+    {
+      mediaId: 21,
+      mediaType: 'movie',
+      is4k: false,
+      bypassStreamingRequestPolicy: true,
+    },
   ]);
 });
 
