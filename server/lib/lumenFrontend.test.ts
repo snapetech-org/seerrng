@@ -333,6 +333,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/games?steam=connected', '/lumen/game-library?steam=connected'],
       ['/calendar', '/lumen/calendar'],
       ['/swipe/', '/lumen/swipe'],
+      ['/recordings/', '/lumen/recordings'],
       ['/coming-soon', '/lumen/soon'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],

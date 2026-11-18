@@ -230,6 +230,7 @@ const workflowDestinations = new Map([
   ['/games', '/game-library'],
   ['/calendar', '/calendar'],
   ['/swipe', '/swipe'],
+  ['/recordings', '/recordings'],
   ['/coming-soon', '/soon'],
   ['/profile', '/me'],
   ['/users', '/admin/users'],

@@ -2187,3 +2187,17 @@ on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Fixtures checked partial
 diagnostics, password preservation, and feed-link readback. Real Tunerr and
 Sportarr connections were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tunerr-20261118/`.
+
+Lumen now opens Recordings from the sidebar and You when Tunerr is
+configured. The page lists active requests or history, supports the
+authorized all-users scope, and refreshes while visible. Approval, decline,
+and cancellation use the existing permissions and confirmation sheet.
+Standalone and bundled locked deep links resolve to the new page.
+
+The production build, 48 browser fixture checks, seven server tests, and
+ten built-image proxy tests passed. Inspected the recording rows and filters
+against existing Lumen list controls on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. Fixtures verified manager approval and member cancellation
+with history readback. Creating recordings from guide matches and live
+provider verification remain open. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-recordings-20261118/`.

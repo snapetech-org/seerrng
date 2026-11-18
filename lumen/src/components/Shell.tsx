@@ -21,6 +21,7 @@ import {
 import { Icon, type IconName } from '../icons';
 import { canSearchIndexers } from '../indexerPermissions';
 import { canReadIssues } from '../issuePermissions';
+import { useLiveTvStatus } from '../liveTv';
 import { scrollBehavior } from '../motion';
 import { normalizeSearchParams } from '../searchParams';
 import { usePrefs } from '../settings';
@@ -86,6 +87,7 @@ export function Avatar({ className = 'avatar' }: { className?: string }) {
 
 export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const liveTv = useLiveTvStatus();
   const { prefs } = usePrefs();
   const extras = useExtras();
   const swipeSettings = useApi<PublicSettings>('/settings/public', {
@@ -371,6 +373,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/watch-sessions">
               <Icon name="cal" />
               Watch Sessions
+            </NavLink>
+          )}
+          {liveTv.data?.configured && (
+            <NavLink to="/recordings">
+              <Icon name="cal" />
+              Recordings
             </NavLink>
           )}
           <NavLink to="/calendar">

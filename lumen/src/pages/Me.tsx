@@ -15,6 +15,7 @@ import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { canReadIssues } from '../issuePermissions';
+import { useLiveTvStatus } from '../liveTv';
 import { mediaServer, services } from '../mediaServer';
 import {
   DISCOVER_ROWS,
@@ -69,6 +70,7 @@ function Toggle({
 
 export default function Me() {
   const { user, signOut } = useAuth();
+  const liveTv = useLiveTvStatus();
   const showBlocklist = useBlocklistNavigation();
   const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
@@ -177,6 +179,18 @@ export default function Me() {
                 className="go"
                 to="/watch-sessions"
                 aria-label="Open Watch Sessions"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
+          {liveTv.data?.configured && (
+            <div className="set">
+              <b>Recordings</b>
+              <Link
+                className="go"
+                to="/recordings"
+                aria-label="Open Recordings"
               >
                 Open <Icon name="chev" size="sm" />
               </Link>

@@ -147,6 +147,7 @@ function Editor({ initial }: { initial: Settings }) {
         setPassword('');
         setClear(false);
         setNotice({ text: 'Tunerr settings saved.' });
+        window.dispatchEvent(new Event('lumen-livetv-updated'));
       }
     } catch (failure) {
       if (

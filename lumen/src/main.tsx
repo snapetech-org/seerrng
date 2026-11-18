@@ -84,6 +84,7 @@ const AdminCategories = lazy(() => import('./pages/AdminCategories'));
 const AdminCaches = lazy(() => import('./pages/AdminCaches'));
 const AdminJobs = lazy(() => import('./pages/AdminJobs'));
 const BookGrouping = lazy(() => import('./pages/BookGrouping'));
+const Recordings = lazy(() => import('./pages/Recordings'));
 const AdminLogs = lazy(() => import('./pages/AdminLogs'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
@@ -288,6 +289,16 @@ function App() {
           <Route path="/watchlist/discover" element={<Watchlist discover />} />
           <Route path="/watchlist/user/:userId" element={<UserWatchlist />} />
           <Route path="/library" element={<Library />} />
+          <Route
+            path="/recordings"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <Recordings />
+              </Suspense>
+            }
+          />
           <Route
             path="/watch-sessions/:id?"
             element={

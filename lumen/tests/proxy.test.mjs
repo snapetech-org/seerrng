@@ -224,6 +224,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       '/admin',
       '/swipe',
       '/swipe/',
+      '/recordings',
       '/author/OL42A',
       '/book-series/bookshelf-series%3A1%3AU2VyaWVz',
     ]) {
