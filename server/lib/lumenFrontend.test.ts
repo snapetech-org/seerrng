@@ -71,6 +71,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(services.status, 302);
     assert.equal(services.headers.location, '/lumen/admin');
     assert.equal(services.headers['cache-control'], 'no-store');
+    const legacyProwlarr = await request(app).get(
+      '/lumen/settings/services?settingsSearchTarget=prowlarr'
+    );
+    assert.equal(legacyProwlarr.headers.location, '/lumen/admin/prowlarr');
     const admin = await request(app).get('/lumen/admin');
     assert.equal(admin.status, 200);
     assert.match(admin.text, /Lumen/);

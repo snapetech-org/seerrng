@@ -2614,3 +2614,9 @@ and iPad Pro 11. Baseline screenshots and traces are retained under
 `seerrng-lumen-cover-regression-baseline-20261118` in
 `/mnt/disks/scratch/task-deliverables/`. Alert 662 still refers to the
 earlier revision. Live provider artwork was outside this fixture check.
+
+Legacy Services settings bookmarks now open Administration in standalone
+Lumen, matching bundled Lumen. The legacy Prowlarr search target opens
+Prowlarr Settings directly in either deployment. The existing screen
+routes retain their permission checks. Both Express tests and all ten
+companion production-image tests passed, including the redirect checks.

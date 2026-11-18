@@ -240,6 +240,10 @@ server {
   location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)/?$ {
     return 302 /admin/$1;
   }
+  location ~ ^/settings/services/?$ {
+    if ($arg_settingsSearchTarget = prowlarr) { return 302 /admin/prowlarr; }
+    return 302 /admin;
+  }
   location ~ ^/settings(/(main|users))?/?$ {
     return 302 /admin/general;
   }

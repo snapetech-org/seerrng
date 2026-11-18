@@ -582,8 +582,12 @@ export const mountLumenFrontend = (
         );
     }
   );
-  server.get(/^\/lumen\/settings\/services\/?$/, (_req, res) => {
-    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/admin');
+  server.get(/^\/lumen\/settings\/services\/?$/, (req, res) => {
+    const destination =
+      req.query.settingsSearchTarget === 'prowlarr' ? '/prowlarr' : '';
+    res
+      .set('Cache-Control', 'no-store')
+      .redirect(302, `/lumen/admin${destination}`);
   });
   server.get(
     /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr))?\/?$/,
