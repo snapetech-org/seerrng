@@ -179,6 +179,7 @@ const workflowDestinations = new Map([
   ['/search', '/search'],
   ['/discover/trending', '/trending'],
   ['/discover/providers', '/providers'],
+  ['/share', '/share'],
   ['/discover/adult', '/adult'],
   ['/discover/audiobooks', '/audiobooks'],
   ['/discover/books', '/books'],
@@ -194,6 +195,8 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
   '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
   '/trending': ['mediaType', 'timeWindow'],
+  '/providers': ['feed', 'page', 'list', 'unmatched'],
+  '/share': ['title', 'text', 'url'],
   '/books': ['subject'],
   '/music': ['genre', 'sortBy'],
   '/audiobooks': ['subject'],
@@ -221,11 +224,14 @@ function workflowDeepLink(req: Request): string | undefined {
 
   for (const key of workflowQueryKeys[destination] ?? []) {
     const value = req.query[key];
-    if (
-      typeof value === 'string' &&
-      value.length <= (key === 'subject' || key === 'genre' ? 512 : 256)
-    )
-      query.set(key, value);
+    if (typeof value !== 'string') continue;
+    if (destination === '/share') {
+      query.set(key, value.slice(0, 4000));
+      continue;
+    }
+    const limit =
+      key === 'list' ? 2048 : key === 'subject' || key === 'genre' ? 512 : 256;
+    if (value.length <= limit) query.set(key, value);
   }
 
   if (
