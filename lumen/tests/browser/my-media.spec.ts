@@ -438,6 +438,7 @@ test('My Media gates provider tracking and recovers a confirmed update without r
   let allowWrites = false;
   let watched = false;
   let actionId = '';
+  let deniedId = '';
   let writes = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -475,6 +476,17 @@ test('My Media gates provider tracking and recovers a confirmed update without r
         tmdbId: 21,
       });
       expect(body.requestId).toMatch(/^[0-9a-f-]{36}$/);
+      if (!deniedId) {
+        deniedId = body.requestId;
+        return route.fulfill({
+          status: 403,
+          json: {
+            message:
+              'Enable watched-status and rating updates under Linked Accounts.',
+          },
+        });
+      }
+      expect(body.requestId).toBe(deniedId);
       actionId = body.requestId;
       watched = true;
       writes++;
@@ -485,6 +497,8 @@ test('My Media gates provider tracking and recovers a confirmed update without r
       path === '/integrations/discovery/tracking/actions/' + actionId
     )
       return route.fulfill({ json: { state: 'succeeded' } });
+    if (path.startsWith('/integrations/discovery/tracking/actions/'))
+      return route.fulfill({ status: 404, json: {} });
     return route.fulfill({ json: {} });
   });
   await page.goto('/library');
@@ -495,6 +509,10 @@ test('My Media gates provider tracking and recovers a confirmed update without r
   allowWrites = true;
   await page.reload();
   await page.getByRole('button', { name: 'Update Tracking' }).click();
+  await page.getByRole('button', { name: 'Mark Watched', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Enable watched-status and rating updates under Linked Accounts.'
+  );
   await page.getByRole('button', { name: 'Mark Watched', exact: true }).click();
   await expect(page.getByText('Provider tracking updated.')).toBeVisible();
   await page

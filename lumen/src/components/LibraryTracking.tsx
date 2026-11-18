@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { api, type TvDetails } from '../api';
+import { api, ApiError, type TvDetails } from '../api';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
@@ -164,9 +165,25 @@ export default function LibraryTracking({
           method: 'POST',
           body: JSON.stringify({ requestId, ...target, ...change }),
         });
-      } catch {
+      } catch (writeError) {
         if (generation !== sessionGeneration()) return;
-        result = await api(base + '/actions/' + requestId);
+        try {
+          result = await api(base + '/actions/' + requestId);
+        } catch (lookupError) {
+          if (generation !== sessionGeneration()) return;
+          if (
+            lookupError instanceof ApiError &&
+            lookupError.status === 404 &&
+            writeError instanceof ApiError &&
+            writeError.status < 500
+          ) {
+            setFailure(
+              friendlyError(writeError, 'The tracking update was rejected.')
+            );
+            return;
+          }
+          throw lookupError;
+        }
       }
       if (generation !== sessionGeneration()) return;
       if (result.state === 'succeeded') {
@@ -174,6 +191,10 @@ export default function LibraryTracking({
         setNotice('Provider tracking updated.');
         if (change.episode) watch.reload();
         updated();
+      } else if (result.state === 'pending') {
+        setFailure(
+          'The provider is still processing the update. Check your account before retrying.'
+        );
       } else {
         setFailure(
           'The provider did not confirm the update. Check your account before retrying.'
