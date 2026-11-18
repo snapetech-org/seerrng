@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { canDetectBarcodes, detectBarcodes } from '../shareBarcode';
 
 import {
   requestBodyForCandidate,
@@ -75,8 +76,11 @@ export default function Share() {
   }>('/resolve/capabilities');
   const imageEnabled = caps.data?.enabled && caps.data.image;
 
-  function attachImage(file: File) {
-    if (busy || !imageEnabled) return;
+  const localBarcode = canDetectBarcodes();
+  const acceptsImage = caps.data?.enabled && (imageEnabled || localBarcode);
+
+  async function attachImage(file: File) {
+    if (working.current || !acceptsImage) return;
     if (!file.type.startsWith('image/') || !file.size) {
       setError('Choose a readable image file.');
       return;
@@ -85,8 +89,34 @@ export default function Share() {
       setError('This image exceeds the server’s upload limit.');
       return;
     }
-    setImage(file);
+    setImage(imageEnabled ? file : undefined);
     setError('');
+    setNotice('');
+    if (!localBarcode) return;
+
+    working.current = true;
+    setBusy(true);
+    try {
+      const isbn = (await detectBarcodes(file)).find((code) =>
+        /^97[89]\d{10}$/.test(code)
+      );
+      if (isbn) {
+        const next = text.includes(isbn)
+          ? text
+          : [text.trim(), isbn].filter(Boolean).join('\n');
+        if (next.length <= 16000) setText(next);
+        setNotice(
+          next.length <= 16000
+            ? `Found ISBN ${isbn}.`
+            : `Found ISBN ${isbn}. Shorten the text to add it.`
+        );
+      } else if (!imageEnabled) {
+        setError('No ISBN barcode was found in this image.');
+      }
+    } finally {
+      working.current = false;
+      setBusy(false);
+    }
   }
 
   const selected = (result?.groups ?? []).flatMap((group, index) => {
@@ -206,19 +236,19 @@ export default function Share() {
             const file = Array.from(event.clipboardData.files).find((item) =>
               item.type.startsWith('image/')
             );
-            if (!imageEnabled || !file) return;
+            if (!acceptsImage || !file) return;
             event.preventDefault();
-            attachImage(file);
+            void attachImage(file);
           }}
           onDragOver={(event) => {
-            if (imageEnabled && event.dataTransfer.types.includes('Files'))
+            if (acceptsImage && event.dataTransfer.types.includes('Files'))
               event.preventDefault();
           }}
           onDrop={(event) => {
             const file = event.dataTransfer.files[0];
-            if (!imageEnabled || !file) return;
+            if (!acceptsImage || !file) return;
             event.preventDefault();
-            attachImage(file);
+            void attachImage(file);
           }}
         >
           <label className="sel">
@@ -232,7 +262,7 @@ export default function Share() {
               onChange={(event) => setText(event.target.value)}
             />
           </label>
-          {imageEnabled && (
+          {acceptsImage && (
             <div className="toolbar">
               <label>
                 Image
@@ -242,7 +272,7 @@ export default function Share() {
                   disabled={busy}
                   onChange={(event) => {
                     const file = event.currentTarget.files?.[0];
-                    if (file) attachImage(file);
+                    if (file) void attachImage(file);
                     event.currentTarget.value = '';
                   }}
                 />

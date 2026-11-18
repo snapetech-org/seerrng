@@ -1501,3 +1501,11 @@ passed across desktop, iPhone, Android, and tablet. Fixtures cover file
 selection, size limits, raw upload, and text fallback. Clipboard and drop
 interactions, local barcodes, OS sharing, live OCR, the bundled deployment,
 and matched visual comparison remain unverified.
+
+Share checks attached images for book ISBNs on the device when the browser
+provides barcode detection. With server OCR disabled, only the recognized
+ISBN is sent when the user asks for matches. Native and Lumen Share use the
+same detector and release the decoded bitmap even if detection fails.
+TypeScript, the production build, and twelve standalone browser fixture
+checks passed. The ISBN fixture substitutes the browser barcode API.
+Live barcode decoding and matched visual checks remain open.

@@ -3769,3 +3769,49 @@ test('Share uploads image bytes and can fall back to typed text', async ({
   await expect(page.getByText('From text', { exact: true })).toBeVisible();
   await expect(page.getByText('From image', { exact: true })).toHaveCount(0);
 });
+
+test('Share reads an ISBN locally when server OCR is disabled', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'BarcodeDetector', {
+      configurable: true,
+      value: class {
+        async detect() {
+          return [{ rawValue: '9780140328721' }];
+        }
+      },
+    });
+    window.createImageBitmap = async () => ({ close() {} }) as ImageBitmap;
+  });
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true, image: false, maxImageBytes: 100 } })
+  );
+  let uploads = 0;
+  await page.route('**/api/v1/resolve/image?*', (route) => {
+    uploads++;
+    return route.abort();
+  });
+  await page.route('**/api/v1/resolve', (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      text: '9780140328721',
+      formatHint: 'ebook',
+    });
+    return route.fulfill({ json: { groups: [] } });
+  });
+
+  await page.goto('/share');
+  await page.getByLabel('Image', { exact: true }).setInputFiles({
+    name: 'barcode.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from('fixture'),
+  });
+  await expect(page.getByLabel('Titles, links, or ISBNs')).toHaveValue(
+    '9780140328721'
+  );
+  await expect(page.getByText('Found ISBN 9780140328721.')).toBeVisible();
+  await page.getByRole('button', { name: 'Find Matches' }).click();
+  await expect(page.getByText('No matches found.')).toBeVisible();
+  expect(uploads).toBe(0);
+});
