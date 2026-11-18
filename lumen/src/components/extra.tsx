@@ -173,16 +173,19 @@ export function ExtraCard({
 export function ExtraHeader({
   title,
   sub,
+  leading,
   children,
 }: {
   title: string;
   sub?: string;
+  leading?: ReactNode;
   children?: ReactNode;
 }) {
   return (
     <header className="ph">
       <div className="ph-row">
         <div>
+          {leading}
           <h1>{title}</h1>
         </div>
         <Avatar className="avatar ph-only-avatar" />

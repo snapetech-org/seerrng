@@ -6,6 +6,18 @@ for (const permissions of [2, 24, 16, 32]) {
     page,
   }) => {
     const fetched: string[] = [];
+    const avatar = 'https://plex.tv/users/example/avatar';
+    await page.route('**/avatarproxy/remote?*', (route) => {
+      expect(new URL(route.request().url()).searchParams.get('url')).toBe(
+        avatar
+      );
+      return permissions === 32
+        ? route.fulfill({ status: 404 })
+        : route.fulfill({
+            contentType: 'image/svg+xml',
+            body: '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"/>',
+          });
+    });
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
     );
@@ -31,6 +43,7 @@ for (const permissions of [2, 24, 16, 32]) {
               userType: 1,
               createdAt: '2020-06-15T12:00:00.000Z',
               email: 'member@example.test',
+              avatar,
             },
           });
         case '/user/19/watch_data':
@@ -99,6 +112,13 @@ for (const permissions of [2, 24, 16, 32]) {
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
     await expect(page.getByText(/Joined Jun 15, 2020/)).toBeVisible();
+    const portrait = page.locator('.ph .avatar[aria-hidden="true"]');
+    if (permissions === 32) await expect(portrait).toHaveText('HM');
+    else
+      await expect(portrait.locator('img')).toHaveAttribute(
+        'src',
+        '/avatarproxy/remote?url=https%3A%2F%2Fplex.tv%2Fusers%2Fexample%2Favatar'
+      );
     await expect(page.getByText(/member@example\.test/)).toHaveCount(
       permissions === 2 || permissions === 24 ? 1 : 0
     );

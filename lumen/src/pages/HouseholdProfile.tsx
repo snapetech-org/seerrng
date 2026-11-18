@@ -6,9 +6,46 @@ import { Section, shortDate } from '../components/cards';
 import { canManageRequests, canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
+import { initials } from '../components/Shell';
 import { useApi } from '../hooks';
 import { describeAll } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
+
+function avatarSource(avatar?: string) {
+  if (!avatar) return;
+  if (
+    /^\/avatarproxy\/(?:local\/\d+|[a-f0-9]{32})(?:\?v=[a-f0-9]{64})?$/i.test(
+      avatar
+    )
+  )
+    return avatar;
+  try {
+    const url = new URL(avatar);
+    if (
+      url.protocol === 'https:' &&
+      !url.username &&
+      !url.password &&
+      /(?:^|\.)(?:plex\.tv|gravatar\.com)$/i.test(url.hostname)
+    )
+      return `/avatarproxy/remote?${new URLSearchParams({ url: avatar })}`;
+  } catch {
+    // An absent or unsupported picture uses the profile initials.
+  }
+}
+
+function ProfilePicture({ name, avatar }: { name: string; avatar?: string }) {
+  const source = avatarSource(avatar);
+  const [failedSource, setFailedSource] = useState<string>();
+  return (
+    <span className="avatar" aria-hidden="true">
+      {source && source !== failedSource ? (
+        <img src={source} alt="" onError={() => setFailedSource(source)} />
+      ) : (
+        initials(name)
+      )}
+    </span>
+  );
+}
 
 function RecentRequests({ id, own }: { id: number; own: boolean }) {
   const requestScope = own ? 'tab=all' : `requestedBy=${id}`;
@@ -218,6 +255,7 @@ export default function HouseholdProfile() {
     displayName: string;
     createdAt?: string;
     email?: string;
+    avatar?: string;
     userType?: number;
   }>(valid ? `/user/${id}` : null, { currentPathOnly: true });
   const own = user?.id === id;
@@ -245,6 +283,15 @@ export default function HouseholdProfile() {
       <ExtraHeader
         title={loaded ? profile.data!.displayName : 'Household Profile'}
         sub={subtitle}
+        leading={
+          loaded && (
+            <ProfilePicture
+              key={id}
+              name={profile.data!.displayName}
+              avatar={profile.data!.avatar}
+            />
+          )
+        }
       >
         {loaded && canEdit && (
           <Link
