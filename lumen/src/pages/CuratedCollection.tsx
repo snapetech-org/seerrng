@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api, artUrl, MediaStatus, tmdbImg, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { DetailTop } from '../components/detail';
 import {
   ExtraCard,
@@ -11,9 +13,11 @@ import {
   ServiceNote,
 } from '../components/extra';
 import MusicCollectionRequests from '../components/MusicCollectionRequests';
+import { useToast } from '../components/toast';
 import TvCollectionRequests from '../components/TvCollectionRequests';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 
 type Kind = 'tv' | 'music';
 interface Collection {
@@ -41,6 +45,115 @@ interface Collection {
 }
 
 const emptyMusicFilters = { type: '', genre: '', year: '' };
+
+function CollectionBlocklist({
+  kind,
+  members,
+  refresh,
+}: {
+  kind: Kind;
+  members: Collection['parts'];
+  refresh: () => void;
+}) {
+  const { user } = useAuth();
+  const toast = useToast();
+  const allowed = canManageBlocklist(user?.permissions);
+  const [confirmed, setConfirmed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
+  const eligible = [
+    ...new Map(
+      members
+        .filter(
+          (part) =>
+            part.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
+            (kind === 'tv'
+              ? /^[1-9]\d{0,8}$|^1000000000$/.test(part.id)
+              : /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(part.id))
+        )
+        .map((part) => [part.id, part])
+    ).values(),
+  ];
+  if (!allowed || !members.length) return null;
+  const noun = kind === 'music' ? 'albums' : 'series';
+
+  async function blocklist() {
+    if (!allowed || !confirmed || !eligible.length || pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    const generation = sessionGeneration();
+    let succeeded = 0;
+    try {
+      for (let offset = 0; offset < eligible.length; offset += 5) {
+        if (generation !== sessionGeneration()) return;
+        const results = await Promise.allSettled(
+          eligible.slice(offset, offset + 5).map((part) =>
+            api(
+              '/blocklist',
+              {
+                method: 'POST',
+                body: JSON.stringify(
+                  kind === 'music'
+                    ? {
+                        externalId: part.id,
+                        externalProvider: 'musicbrainz',
+                        mediaType: 'music',
+                        title: part.title,
+                      }
+                    : {
+                        tmdbId: Number(part.id),
+                        mediaType: 'tv',
+                        title: part.title,
+                      }
+                ),
+              },
+              'empty'
+            )
+          )
+        );
+        succeeded += results.filter(
+          (result) => result.status === 'fulfilled'
+        ).length;
+      }
+      if (generation === sessionGeneration()) {
+        toast(
+          `${succeeded} added to the Blocklist, ${eligible.length - succeeded} failed.`
+        );
+        notifyBlocklistChanged();
+        refresh();
+      }
+    } finally {
+      pending.current = false;
+      setBusy(false);
+      setConfirmed(false);
+    }
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        className="btn btn-quiet btn-sm"
+        disabled={!eligible.length || busy}
+        onClick={() => setConfirmed(true)}
+      >
+        Blocklist Collection
+      </button>
+      {confirmed && (
+        <ConfirmSheet
+          title="Blocklist this collection?"
+          body={`New requests will be blocked for ${eligible.length} eligible ${noun} in this collection.`}
+          confirm="Blocklist Collection"
+          busy={busy}
+          onConfirm={() => void blocklist()}
+          onClose={() => {
+            if (!pending.current) setConfirmed(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
 
 function releaseTypes(part: Collection['parts'][number]) {
   const fallback = part.subtitle?.split(' · ') ?? [];
@@ -233,7 +346,7 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
     const updates = new Map(latest?.map((part) => [part.id, part]));
     return (data?.parts ?? []).map((part) => {
       const updated = updates.get(part.id);
-      return updated
+      return updated && part.mediaInfo?.status !== MediaStatus.BLOCKLISTED
         ? {
             ...part,
             mediaInfo: updated.mediaInfo,
@@ -314,6 +427,14 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         line={[`${members.length} ${noun}`]}
       />
       <div className="dbody">
+        <CollectionBlocklist
+          kind={kind}
+          members={members}
+          refresh={() => {
+            setLatest(undefined);
+            collection.reload();
+          }}
+        />
         {albumId && music && (
           <Link className="btn btn-quiet btn-sm" to={`/music/${albumId}`}>
             Back to Album

@@ -2925,3 +2925,10 @@ image proxy and dedicated image endpoints. It retains query parameters
 for those routes and preserves external HTTPS artwork support. The
 request-cover fixture checks that an unrelated same-origin API URL falls
 back to drawn artwork. Matched visual acceptance remains unverified.
+
+Curated series and music collections now let Blocklist managers add the
+eligible members after confirmation. The action uses each member's
+existing TMDB or MusicBrainz identity, skips already blocked members, and
+reports partial results. Sixteen standalone browser cases and eight
+bundled Blocklist cases passed. Matched visual comparison remains
+unverified.

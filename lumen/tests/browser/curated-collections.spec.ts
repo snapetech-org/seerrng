@@ -320,3 +320,80 @@ test('TV collection quota override enables otherwise restricted requests', async
     }),
   ]);
 });
+
+for (const kind of ['tv', 'music']) {
+  test(`curated ${kind} blocklisting confirms the exact eligible member`, async ({
+    page,
+  }) => {
+    const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+    const id = kind === 'tv' ? '42' : '62a8e15d-a5f1-4213-a794-e10e0150e945';
+    const blockedId =
+      kind === 'tv' ? '43' : '60a8e15d-a5f1-4213-a794-e10e0150e946';
+    let writes = 0;
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname.slice(7);
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+      if (path === '/settings/public')
+        return route.fulfill({
+          json: {
+            initialized: true,
+            musicEnabled: true,
+            enabledMediaCategories: { music: true },
+          },
+        });
+      if (path === '/blocklist') {
+        expect(route.request().method()).toBe('POST');
+        expect(route.request().postDataJSON()).toEqual(
+          kind === 'tv'
+            ? { tmdbId: 42, mediaType: 'tv', title: 'Fixture Member' }
+            : {
+                externalId: id,
+                externalProvider: 'musicbrainz',
+                mediaType: 'music',
+                title: 'Fixture Member',
+              }
+        );
+        writes++;
+        return route.fulfill({ status: 201, body: '' });
+      }
+      if (path === `/collection-catalog/${kind}/19`)
+        return route.fulfill({
+          json: {
+            id: '19',
+            name: 'Fixture Collection',
+            parts: [
+              {
+                id,
+                title: 'Fixture Member',
+                mediaInfo: { status: writes ? 6 : 1 },
+              },
+              {
+                id: blockedId,
+                title: 'Already Blocked',
+                mediaInfo: { status: 6 },
+              },
+            ],
+          },
+        });
+      return route.fulfill({ json: { count: 0 } });
+    });
+    await page.goto(`${mount}/collections/${kind}/19`);
+    const action = page.getByRole('button', {
+      name: 'Blocklist Collection',
+      exact: true,
+    });
+    await action.click();
+    const dialog = page.getByRole('alertdialog', {
+      name: 'Blocklist this collection?',
+    });
+    await expect(dialog).toContainText('1 eligible');
+    expect(writes).toBe(0);
+    await dialog.getByRole('button', { name: 'Blocklist Collection' }).click();
+    await expect(
+      page.getByText('1 added to the Blocklist, 0 failed.')
+    ).toBeVisible();
+    await expect(action).toBeDisabled();
+    expect(writes).toBe(1);
+  });
+}
