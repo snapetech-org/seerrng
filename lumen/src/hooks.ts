@@ -28,7 +28,11 @@ import { onSessionReset, sessionGeneration } from './sessionState';
 const PUBLIC_PATH = '/settings/public';
 
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
-export function useApi<T>(path: string | null) {
+export function useApi<T>(
+  path: string | null,
+  { currentPathOnly = false } = {}
+) {
+  const [responsePath, setResponsePath] = useState(path);
   const [data, setData] = useState<T | null>(
     path ? (cached<T>(path) ?? null) : null
   );
@@ -39,6 +43,7 @@ export function useApi<T>(path: string | null) {
     if (!path) return;
     let live = true;
     const generation = sessionGeneration();
+    setResponsePath(path);
     setError(null);
     setApiError(undefined);
     const saved = cached<T>(path);
@@ -67,11 +72,12 @@ export function useApi<T>(path: string | null) {
   // ask again but keep what is on screen meanwhile (after a request the saved copy is already
   // marked stale, so the page updates in place instead of blanking)
   const refresh = useCallback(() => setTick((t) => t + 1), []);
+  const current = !currentPathOnly || responsePath === path;
   return {
-    data,
-    error,
-    errorStatus: apiError?.status ?? 0,
-    apiError,
+    data: current ? data : null,
+    error: current ? error : null,
+    errorStatus: current ? (apiError?.status ?? 0) : 0,
+    apiError: current ? apiError : undefined,
     reload,
     refresh,
   };

@@ -57,7 +57,8 @@ export default function TrackRequests() {
   }>(
     service.data?.configured
       ? `/soulseek/track-requests?scope=${scope}&filter=${active ? 'active' : 'all'}&take=${pageSize}&skip=${skip}`
-      : null
+      : null,
+    { currentPathOnly: true }
   );
   const reload = list.reload;
   const page = list.data?.pageInfo;
