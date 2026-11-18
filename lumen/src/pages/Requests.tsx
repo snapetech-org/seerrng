@@ -284,6 +284,25 @@ function otherEditionInLibrary(r: RequestItem): boolean {
       : ebook;
 }
 
+export function RequestStatusPills({
+  request,
+  status,
+}: {
+  request: RequestItem;
+  status: ReturnType<typeof requestRowStatus>;
+}) {
+  return (
+    <>
+      <Pill k={status.k} icon={status.ico}>
+        {status.word}
+      </Pill>
+      {request.status === 1 && request.quotaException && (
+        <Pill k="wait">Over Quota</Pill>
+      )}
+    </>
+  );
+}
+
 function requestDownloads(r: RequestItem) {
   return (
     (r.is4k
@@ -2059,12 +2078,7 @@ export default function Requests() {
                   {x.sub} · {shortDate(x.r.createdAt.slice(0, 10))}
                 </div>
                 <div className="st">
-                  <Pill k={st.k} icon={st.ico}>
-                    {st.word}
-                  </Pill>
-                  {x.r.status === 1 && x.r.quotaException && (
-                    <Pill k="wait">Over Quota</Pill>
-                  )}
+                  <RequestStatusPills request={x.r} status={st} />
                   {x.r.watchAheadParentRequestId ? (
                     <span className="d">Auto-Queued</span>
                   ) : (x.r.watchAheadEpisodeCount ?? 0) > 0 ? (

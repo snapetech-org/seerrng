@@ -4,17 +4,13 @@ import { api, tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import AvatarContent from '../components/AvatarContent';
 import { Section, shortDate } from '../components/cards';
-import {
-  canManageRequests,
-  canViewAllRequests,
-  Pill,
-} from '../components/detail';
+import { canManageRequests, canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-import { describeAll, requestRowStatus } from './Requests';
+import { describeAll, requestRowStatus, RequestStatusPills } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
 
 const avatarTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -153,9 +149,7 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
                 >
                   {title}
                 </Link>
-                <Pill k={status.k} icon={status.ico}>
-                  {status.word}
-                </Pill>
+                <RequestStatusPills request={r} status={status} />
               </li>
             );
           })}
