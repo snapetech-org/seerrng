@@ -56,6 +56,7 @@ import {
   sessionUserId,
 } from '../sessionState';
 import {
+  applyLiveDownloadProgress,
   downloadSubscriptionId,
   useLiveDownloadProgress,
 } from '../useLiveDownloadProgress';
@@ -308,18 +309,11 @@ function state(
   const r = x.r;
   const current = r.currentStatus;
   const scheduled = requestDownloads(r);
-  const dls = scheduled.map((download) => {
-    const id = live && downloadSubscriptionId(download, allowRawHashes);
-    const update = id ? live?.get(id) : undefined;
-    return update &&
-      Number.isFinite(update.size) &&
-      update.size > 0 &&
-      Number.isFinite(update.sizeLeft) &&
-      update.sizeLeft >= 0 &&
-      update.sizeLeft <= update.size
-      ? { ...download, size: update.size, sizeLeft: update.sizeLeft }
-      : download;
-  });
+  const dls = live?.size
+    ? scheduled.map((download) =>
+        applyLiveDownloadProgress(download, live, allowRawHashes)
+      )
+    : scheduled;
   const downloading = dls.length;
   const size = dls.reduce((a, d) => a + (d.size || 0), 0);
   const left = dls.reduce((a, d) => a + (d.sizeLeft || 0), 0);

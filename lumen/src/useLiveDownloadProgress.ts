@@ -1,8 +1,10 @@
 import { useEffect, useReducer } from 'react';
+import { MediaStatus, type DownloadItem, type MediaInfo } from './api';
 import {
   isLiveDownloadToken,
   liveDownloadStore,
   toInfoHash,
+  type LiveDownload,
 } from './liveDownloadStore';
 
 export function downloadSubscriptionId(
@@ -39,4 +41,52 @@ export function useLiveDownloadProgress(tokens: (string | undefined)[]) {
         })
       : []
   );
+}
+
+export function applyLiveDownloadProgress(
+  download: DownloadItem,
+  live: ReadonlyMap<string, LiveDownload> | undefined,
+  allowRawHashes: boolean
+): DownloadItem {
+  const id = live?.size
+    ? downloadSubscriptionId(download, allowRawHashes)
+    : undefined;
+  const update = id ? live?.get(id) : undefined;
+  return update &&
+    Number.isFinite(update.size) &&
+    update.size > 0 &&
+    Number.isFinite(update.sizeLeft) &&
+    update.sizeLeft >= 0 &&
+    update.sizeLeft <= update.size
+    ? { ...download, size: update.size, sizeLeft: update.sizeLeft }
+    : download;
+}
+
+export function useLiveMediaProgress(
+  media: MediaInfo | undefined,
+  allowRawHashes: boolean
+): MediaInfo | undefined {
+  const standard =
+    media?.status === MediaStatus.PROCESSING ? media.downloadStatus : undefined;
+  const fourK =
+    media?.status4k === MediaStatus.PROCESSING
+      ? media.downloadStatus4k
+      : undefined;
+  const live = useLiveDownloadProgress(
+    [...(standard ?? []), ...(fourK ?? [])].map((download) =>
+      downloadSubscriptionId(download, allowRawHashes)
+    )
+  );
+  if (!media || !live.size) return media;
+  return {
+    ...media,
+    downloadStatus:
+      standard?.map((item) =>
+        applyLiveDownloadProgress(item, live, allowRawHashes)
+      ) ?? media.downloadStatus,
+    downloadStatus4k:
+      fourK?.map((item) =>
+        applyLiveDownloadProgress(item, live, allowRawHashes)
+      ) ?? media.downloadStatus4k,
+  };
 }

@@ -128,8 +128,8 @@ export interface MediaInfo {
   audiobookExternalServiceId?: number | null;
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
-  downloadStatus?: { size: number; sizeLeft: number; percent?: number }[];
-  downloadStatus4k?: { size: number; sizeLeft: number }[];
+  downloadStatus?: DownloadItem[];
+  downloadStatus4k?: DownloadItem[];
   // comics: issues/volumes in the library out of those known (BackIssue)
   comicProgress?: { owned: number; total: number };
   // comics: the series in the reading server (Kavita), once any of it is in
@@ -738,6 +738,7 @@ export interface EditionList {
   source?: 'library' | 'lookup' | 'none';
 }
 export interface DownloadItem {
+  percent?: number;
   liveDownloadToken?: string;
   downloadId?: string;
   size: number;

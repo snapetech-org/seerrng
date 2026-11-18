@@ -11,7 +11,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
-import { useAuth, useMediaServerName } from '../auth';
+import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -45,6 +45,7 @@ import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
+import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import {
   isSharedVideoCopy,
   isSharedVideoSeason,
@@ -72,6 +73,10 @@ export default function TvDetail() {
   const loc = useLocation();
   const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
+  const progressMedia = useLiveMediaProgress(
+    t?.mediaInfo,
+    isAdministrator(user?.permissions)
+  );
   const pub = usePublicSettings();
   const { prefs } = usePrefs();
   const toast = useToast();
@@ -270,14 +275,14 @@ export default function TvDetail() {
       : '';
   // the series' own state, as the poster glyph says it (downloading x%, requested, ...)
   const mine = statusOf(
-    is4k && t.mediaInfo
+    is4k && progressMedia
       ? {
-          ...t.mediaInfo,
-          status: t.mediaInfo.status4k ?? 1,
+          ...progressMedia,
+          status: progressMedia.status4k ?? 1,
           status4k: undefined,
-          downloadStatus: t.mediaInfo.downloadStatus4k,
+          downloadStatus: progressMedia.downloadStatus4k,
         }
-      : t.mediaInfo,
+      : progressMedia,
     false,
     serverName
   );

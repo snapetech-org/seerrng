@@ -1984,3 +1984,12 @@ progress on movie or series detail pages remain outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-progress-20261118/`.
+
+Movie and series details now use the same live progress stream as Requests.
+Movie badges show separate HD and 4K progress, and series progress follows the
+selected quality. Compared scheduled and live states on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and 112 browser checks passed
+with synthetic streams. Real download-client connections remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-details-20261118/`.

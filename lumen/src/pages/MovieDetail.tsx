@@ -10,7 +10,7 @@ import {
   type RequestOptions,
   type TitleResult,
 } from '../api';
-import { useAuth, useMediaServerName } from '../auth';
+import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -41,6 +41,7 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
@@ -61,6 +62,10 @@ export default function MovieDetail() {
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
+  const progressMedia = useLiveMediaProgress(
+    m?.mediaInfo,
+    isAdministrator(user?.permissions)
+  );
   const can4k = !!user && canRequest4k(user.permissions, 'movie');
   const toast = useToast();
   const [opts, setOpts] = useState<RequestOptions>({});
@@ -72,7 +77,7 @@ export default function MovieDetail() {
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
   // A pending 4K copy must not make the independent HD request look requested.
-  const requestMedia = withoutPending4k(m.mediaInfo);
+  const requestMedia = withoutPending4k(progressMedia);
   const s = statusOf(requestMedia, false, serverName);
   const mode = pub?.otherUsersAvailability;
   const visibleStatus = statusOf(requestMedia, false, serverName, mode);
@@ -83,6 +88,14 @@ export default function MovieDetail() {
   const shared4k = isSharedVideoCopy(m.mediaInfo, true, mode);
   const blocklisted = m.mediaInfo?.status === MediaStatus.BLOCKLISTED;
   const s4k = m.mediaInfo?.status4k;
+  const progress4k =
+    s4k === MediaStatus.PROCESSING && progressMedia?.downloadStatus4k?.length
+      ? statusOf(
+          { status: s4k, downloadStatus: progressMedia.downloadStatus4k },
+          false,
+          serverName
+        )
+      : null;
   const available4k =
     s4k === MediaStatus.AVAILABLE || s4k === MediaStatus.PARTIAL;
   const visible4k = available4k && !(shared4k && mode === 'hide');
@@ -218,8 +231,8 @@ export default function MovieDetail() {
             </Pill>
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
-            <Pill k="wait" icon="clock">
-              4K requested
+            <Pill k={progress4k?.k ?? 'wait'} icon={progress4k?.ico ?? 'clock'}>
+              {progress4k ? `4K · ${progress4k.word}` : '4K requested'}
             </Pill>
           )}
           {!!m.voteAverage && (
