@@ -188,3 +188,60 @@ test('active watch sessions save and revise ballots and show matches', async ({
   await expect(page.getByText('Passed', { exact: true })).toBeVisible();
   expect(writes).toEqual([{ decision: 'want' }, { decision: 'pass' }]);
 });
+
+test('host removal handles the server closing the watch session', async ({
+  page,
+}, info) => {
+  const path = '/api/v1/watch-sessions';
+  const deletes: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url()).pathname;
+    if (url.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (url === path) return route.fulfill({ json: { sessions: [] } });
+    if (url === path + '/9')
+      return route.fulfill({
+        json: {
+          session: {
+            id: 9,
+            title: 'Movie Night',
+            status: 'draft',
+            ownerId: 1,
+            memberCount: 2,
+            members: [
+              { id: 1, displayName: 'Host', isOwner: true },
+              { id: 2, displayName: 'Guest' },
+            ],
+            ownPreferences: { includeWatchlistContributions: false },
+          },
+        },
+      });
+    if (url === path + '/9/invites')
+      return route.fulfill({ json: { invites: [] } });
+    if (request.method() === 'DELETE') {
+      deletes.push(url);
+      return route.fulfill({ json: { closed: true } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/watch-sessions/9');
+  await page.getByRole('button', { name: 'Remove Guest' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'fewer than two members remain'
+  );
+  await page.screenshot({
+    path: info.outputPath('watch-members.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  expect(deletes).toHaveLength(0);
+  await page.getByRole('button', { name: 'Remove Guest' }).click();
+  await page.getByRole('button', { name: 'Confirm', exact: true }).click();
+  await expect(page).toHaveURL(/\/watch-sessions$/);
+  expect(deletes).toEqual([path + '/9/members/2']);
+});

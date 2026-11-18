@@ -207,32 +207,41 @@ function SessionList() {
 
 function SessionRoom({ id }: { id: string }) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const endpoint = `${path}/${id}`;
   const room = useApi<{ session: Detail }>(endpoint, {
     keepDuringRefresh: true,
   });
   const session = room.data?.session;
+  const owner = session?.ownerId === user?.id;
+  const [confirmation, setConfirmation] = useState<{
+    suffix: string;
+    prompt: string;
+    returnsToList: boolean;
+  }>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
 
-  async function change(action: 'start' | 'preferences', checked?: boolean) {
-    if (pending.current || session?.status !== 'draft') return;
+  async function change(
+    suffix: string,
+    options: RequestInit,
+    returnsToList = false
+  ) {
+    if (pending.current || !session) return;
     pending.current = true;
     setBusy(true);
     setError('');
     const generation = sessionGeneration();
     try {
-      await api(
-        `${endpoint}/${action}`,
-        action === 'start'
-          ? { method: 'POST' }
-          : {
-              method: 'PUT',
-              body: JSON.stringify({ includeWatchlistContributions: checked }),
-            }
+      const result = await api<{ closed?: boolean }>(
+        `${endpoint}${suffix}`,
+        options
       );
-      if (generation === sessionGeneration()) room.refresh();
+      if (generation !== sessionGeneration()) return;
+      setConfirmation(undefined);
+      if (result.closed || returnsToList) navigate(path, { replace: true });
+      else room.refresh();
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
@@ -253,6 +262,14 @@ function SessionRoom({ id }: { id: string }) {
         <Link to={path} className="btn btn-quiet btn-sm">
           Back to Watch Sessions
         </Link>
+        <button
+          type="button"
+          className="btn btn-quiet btn-sm"
+          disabled={busy}
+          onClick={room.refresh}
+        >
+          Refresh Room
+        </button>
       </div>
       <ServiceNote
         what="the watch session"
@@ -282,6 +299,23 @@ function SessionRoom({ id }: { id: string }) {
                   <b>{member.displayName}</b>
                   {member.isOwner && <small>Host</small>}
                 </span>
+                {owner && !member.isOwner && (
+                  <button
+                    type="button"
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy}
+                    aria-label={`Remove ${member.displayName}`}
+                    onClick={() =>
+                      setConfirmation({
+                        suffix: `/members/${member.id}`,
+                        prompt: `Remove ${member.displayName} from this session? The room closes if fewer than two members remain.`,
+                        returnsToList: false,
+                      })
+                    }
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
             ))}
             <label className="set cfg-row">
@@ -291,7 +325,12 @@ function SessionRoom({ id }: { id: string }) {
                 disabled={busy || session.status !== 'draft'}
                 checked={session.ownPreferences.includeWatchlistContributions}
                 onChange={(event) =>
-                  void change('preferences', event.target.checked)
+                  void change('/preferences', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                      includeWatchlistContributions: event.target.checked,
+                    }),
+                  })
                 }
               />
             </label>
@@ -302,7 +341,7 @@ function SessionRoom({ id }: { id: string }) {
                 type="button"
                 className="btn btn-primary btn-sm"
                 disabled={busy || session.memberCount < 2}
-                onClick={() => void change('start')}
+                onClick={() => void change('/start', { method: 'POST' })}
               >
                 Start Session
               </button>
@@ -312,6 +351,62 @@ function SessionRoom({ id }: { id: string }) {
                 </p>
               )}
             </div>
+          )}
+          <div className="toolbar">
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy}
+              onClick={() =>
+                setConfirmation(
+                  owner
+                    ? {
+                        suffix: '',
+                        prompt: 'End this session for everyone?',
+                        returnsToList: true,
+                      }
+                    : {
+                        suffix: '/members/me',
+                        prompt:
+                          'Leave this session? Your votes will be removed, and the room closes if fewer than two members remain.',
+                        returnsToList: true,
+                      }
+                )
+              }
+            >
+              {owner ? 'End Session' : 'Leave Session'}
+            </button>
+          </div>
+          {confirmation && (
+            <>
+              <p className="note" role="alert">
+                {confirmation.prompt}
+              </p>
+              <div className="toolbar">
+                <button
+                  type="button"
+                  className="btn btn-quiet btn-sm"
+                  disabled={busy}
+                  onClick={() =>
+                    void change(
+                      confirmation.suffix,
+                      { method: 'DELETE' },
+                      confirmation.returnsToList
+                    )
+                  }
+                >
+                  Confirm
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-quiet btn-sm"
+                  disabled={busy}
+                  onClick={() => setConfirmation(undefined)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
           )}
         </Section>
       )}

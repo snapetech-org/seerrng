@@ -1941,3 +1941,13 @@ this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-ballots-20261118/`.
+
+Hosts can remove a guest or end the room, and guests can leave. Destructive
+changes require confirmation. The room can refresh membership, and returns to
+the list if the server reports closure. Compared draft room states on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. The production build and 12 browser checks
+passed with synthetic responses, including removal and server-reported closure.
+Guest departure and host closure still need direct interaction tests.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-members-20261118/`.
