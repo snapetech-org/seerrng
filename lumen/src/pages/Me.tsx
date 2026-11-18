@@ -289,6 +289,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Download Client Settings</b>
+              <Link
+                className="go"
+                to="/admin/download-clients"
+                aria-label="Open Download Client Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>ReadMeABook Settings</b>
               <Link
                 className="go"

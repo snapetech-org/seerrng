@@ -66,6 +66,7 @@ const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
+const AdminDownloadClients = lazy(() => import('./pages/AdminDownloadClients'));
 const AdminSwipe = lazy(() => import('./pages/AdminSwipe'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
@@ -699,6 +700,24 @@ function App() {
                   }
                 >
                   <AdminSwipe />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/download-clients"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading download client settings…
+                    </p>
+                  }
+                >
+                  <AdminDownloadClients />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

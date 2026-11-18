@@ -343,3 +343,15 @@ Live ranking providers were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-swipe-20261118/`.
+
+### Live download client settings
+
+Lumen administrators can configure and test download clients, set the refresh
+interval, and view the last connection check. Compared the expanded SABnzbd
+form with the existing ReadMeABook connection form on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and four fixture browser
+checks passed, including saving and testing without resending the stored key.
+Live clients and direct checks of the other client types remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-download-clients-20261118/`.
