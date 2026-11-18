@@ -1,14 +1,57 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { StreamingSubscriptions } from '../components/StreamingSubscriptions';
 import { useApi, usePublicSettings } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-interface Profile {
+const watchlistFields = [
+  {
+    key: 'watchlistSyncMovies',
+    label: 'Auto-Request Movies',
+    source: 'Plex Watchlist',
+    plex: true,
+    permission: 16777216n,
+  },
+  {
+    key: 'watchlistSyncTv',
+    label: 'Auto-Request Series',
+    source: 'Plex Watchlist',
+    plex: true,
+    permission: 33554432n,
+  },
+  {
+    key: 'watchlistSyncMusic',
+    label: 'Auto-Request Music',
+    source: 'SeerrNG music watchlists',
+    permission: 8589934592n,
+  },
+  {
+    key: 'watchlistSyncBooks',
+    label: 'Auto-Request Books',
+    source: 'SeerrNG book watchlists',
+    permission: 68719476736n,
+  },
+  {
+    key: 'watchlistSyncComics',
+    label: 'Auto-Request Comics',
+    source: 'your SeerrNG comic watchlist',
+    permission: 549755813888n,
+  },
+  {
+    key: 'watchlistSyncMagazines',
+    label: 'Auto-Request Magazines',
+    source: 'your SeerrNG magazine watchlist',
+    permission: 4398046511104n,
+  },
+] as const;
+
+type WatchlistField = (typeof watchlistFields)[number]['key'];
+
+interface Profile extends Partial<Record<WatchlistField, boolean | null>> {
   username?: string | null;
   email?: string | null;
   metadataLocale?: string | null;
@@ -21,6 +64,12 @@ interface Profile {
 
 function profileDraft(profile: Profile) {
   return {
+    watchlistSyncMovies: profile.watchlistSyncMovies ?? false,
+    watchlistSyncTv: profile.watchlistSyncTv ?? false,
+    watchlistSyncMusic: profile.watchlistSyncMusic ?? false,
+    watchlistSyncBooks: profile.watchlistSyncBooks ?? false,
+    watchlistSyncComics: profile.watchlistSyncComics ?? false,
+    watchlistSyncMagazines: profile.watchlistSyncMagazines ?? false,
     username: profile.username ?? '',
     email: profile.email ?? '',
     metadataLocale: profile.metadataLocale ?? '',
@@ -47,7 +96,7 @@ function ProfileForm({
   plex: boolean;
   onSaved: () => void;
 }) {
-  const { refresh } = useAuth();
+  const { refresh, user } = useAuth();
   const [saved, setSaved] = useState(() => profileDraft(profile));
   const [draft, setDraft] = useState(saved);
   const [busy, setBusy] = useState(false);
@@ -88,7 +137,23 @@ function ProfileForm({
       max: 16,
     },
   ] as const;
-  const editable = fields.filter(({ key }) => key !== 'email' || !plex);
+  const permissions = user?.permissions;
+  const mask =
+    typeof permissions === 'number' &&
+    Number.isSafeInteger(permissions) &&
+    permissions >= 0
+      ? BigInt(permissions)
+      : 0n;
+  const visibleWatchlists = watchlistFields.filter(
+    (field) =>
+      (!('plex' in field) || plex) &&
+      (isAdministrator(permissions) ||
+        (mask & (8388608n | field.permission)) !== 0n)
+  );
+  const editable = [
+    ...fields.filter(({ key }) => key !== 'email' || !plex),
+    ...visibleWatchlists,
+  ];
   const normalized = {
     ...draft,
     username: draft.username.trim(),
@@ -112,7 +177,10 @@ function ProfileForm({
     setFailure('');
     const generation = sessionGeneration();
     const body = Object.fromEntries(
-      changes.map(({ key }) => [key, normalized[key] || null])
+      changes.map(({ key }) => [
+        key,
+        normalized[key] === '' ? null : normalized[key],
+      ])
     );
     try {
       await api<Profile>(path, { method: 'POST', body: JSON.stringify(body) });
@@ -176,6 +244,23 @@ function ProfileForm({
               disabled={busy || (plex && key === 'email')}
               onChange={(event) =>
                 setDraft({ ...draft, [key]: event.target.value })
+              }
+            />
+          </label>
+        ))}
+        {visibleWatchlists.map(({ key, label, source }) => (
+          <label className="set cfg-row" key={key}>
+            <span>
+              <b>{label}</b>
+              <small>Automatically request titles added to {source}.</small>
+            </span>
+            <input
+              type="checkbox"
+              aria-label={label}
+              checked={draft[key]}
+              disabled={busy}
+              onChange={(event) =>
+                setDraft({ ...draft, [key]: event.target.checked })
               }
             />
           </label>

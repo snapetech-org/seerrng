@@ -41,10 +41,10 @@ export function StreamingSubscriptions({
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
   const byId = new Map(
-    [...(movies.data ?? []), ...(series.data ?? [])].map((provider) => [
-      provider.id,
-      provider,
-    ])
+    [
+      ...(Array.isArray(movies.data) ? movies.data : []),
+      ...(Array.isArray(series.data) ? series.data : []),
+    ].map((provider) => [provider.id, provider])
   );
   for (const id of draft) {
     if (!byId.has(id)) byId.set(id, { id, name: `Provider #${id}` });

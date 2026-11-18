@@ -801,3 +801,18 @@ Standalone Chrome verified both actions with a search active. The fixture
 readback confirmed the new matches and retained both a hidden provider and
 an existing ID missing from the source catalog. Mobile, bundled and native
 visual comparison remain open.
+
+### Personal watchlist auto-request preferences increment
+
+Account Settings exposes the six native watchlist auto-request preferences
+through the existing profile form. Movie and series controls require a Plex
+account. All six follow native automatic-request permissions. The form
+sends changed fields only and preserves explicit false values.
+
+Standalone Chromium fixtures passed the profile save and retry flows and
+verified that a non-Plex user with movie and music permission can turn off
+music auto-requests without seeing the Plex movie or ungranted book control.
+The exact false value persisted through page reload at desktop, iPhone,
+Android and tablet viewport presets. The fixtures also surfaced a provider
+response shape that could crash Account Settings, which is now handled.
+Live automatic requests, bundled and native visual comparison remain open.
