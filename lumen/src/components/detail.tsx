@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import type { SubjectTag } from '../api';
 import {
   api,
   type Person,
   type RequestOptions,
-  type VideoCreditPins,
+  type VideoDetailPins,
 } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
@@ -84,18 +86,105 @@ export function CreditsDisclosure({
   credit: 'cast' | 'crew';
   people: Person[];
 }) {
+  return (
+    <VideoDisclosure
+      media={media}
+      panel={credit}
+      label={credit === 'cast' ? 'Starring' : 'Crew'}
+    >
+      <People list={people.slice(0, 10)} />
+    </VideoDisclosure>
+  );
+}
+
+export function SubjectTagsDisclosure({
+  media,
+  tags,
+}: {
+  media: 'movie' | 'tv';
+  tags?: SubjectTag[];
+}) {
+  const { user } = useAuth();
+  const contentId = useId();
+  const storageKey = `seerr.subjectTagVisibility:${user?.id ?? 'anonymous'}`;
+  const [visible, setVisible] = useState(() => {
+    try {
+      return localStorage.getItem(storageKey) !== 'hidden';
+    } catch {
+      return true;
+    }
+  });
+  const browse = media === 'movie' ? '/movies' : '/series';
+
+  function toggleVisibility() {
+    setVisible(!visible);
+    try {
+      localStorage.setItem(storageKey, visible ? 'hidden' : 'visible');
+    } catch {
+      // The current panel still works when storage is unavailable.
+    }
+  }
+
+  return (
+    <VideoDisclosure media={media} panel="subjectTags" label="Subject Tags">
+      {tags?.length ? (
+        <>
+          <div className="toolbar">
+            <button
+              type="button"
+              className="chip"
+              aria-pressed={visible}
+              aria-controls={contentId}
+              onClick={toggleVisibility}
+            >
+              Show Subject Tags
+            </button>
+          </div>
+          <div id={contentId} hidden={!visible}>
+            <div className="toolbar">
+              {tags.map((tag) => (
+                <Link
+                  className="chip"
+                  key={tag.id}
+                  to={`${browse}?keywords=${tag.id}`}
+                >
+                  {tag.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <p className="note">No subject tags.</p>
+      )}
+    </VideoDisclosure>
+  );
+}
+
+function VideoDisclosure({
+  media,
+  panel,
+  label,
+  children,
+}: {
+  media: 'movie' | 'tv';
+  panel: keyof VideoDetailPins;
+  label: string;
+  children: ReactNode;
+}) {
   const { user, refresh } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
-  const legacy =
-    credit === 'cast'
-      ? user?.settings?.detailDisclosureCastPinned
-      : user?.settings?.detailDisclosureCrewPinned;
+  const legacy = {
+    cast: user?.settings?.detailDisclosureCastPinned,
+    crew: user?.settings?.detailDisclosureCrewPinned,
+    subjectTags: user?.settings?.detailDisclosureSubjectTagsPinned,
+  };
   const pinned =
-    user?.settings?.detailDisclosurePins?.[media]?.[credit] ??
-    (media === 'movie' && legacy === true);
-  const label = credit === 'cast' ? 'Starring' : 'Crew';
+    user?.settings?.detailDisclosurePins?.[media]?.[panel] ??
+    (media === 'movie' && legacy[panel] === true);
+  const preference = panel === 'subjectTags' ? 'subject tag' : 'credit';
 
   async function togglePin() {
     if (!user || pending.current) return;
@@ -103,19 +192,19 @@ export function CreditsDisclosure({
     pending.current = true;
     setBusy(true);
     try {
-      const result = await api<VideoCreditPins>(
+      const result = await api<VideoDetailPins>(
         `/user/${user.id}/settings/detail-disclosures/${media}`,
-        { method: 'POST', body: JSON.stringify({ [credit]: !pinned }) }
+        { method: 'POST', body: JSON.stringify({ [panel]: !pinned }) }
       );
       if (generation !== sessionGeneration()) return;
-      if (result[credit] !== !pinned) {
-        toast('Could not confirm the saved credit preference.');
+      if (result[panel] !== !pinned) {
+        toast(`Could not confirm the saved ${preference} preference.`);
         return;
       }
       await refresh();
     } catch {
       if (generation === sessionGeneration())
-        toast('Could not save the credit preference. Try again.');
+        toast(`Could not save the ${preference} preference. Try again.`);
     } finally {
       pending.current = false;
       setBusy(false);
@@ -128,7 +217,7 @@ export function CreditsDisclosure({
         <Icon name="chev" size="sm" />
         {label}
       </summary>
-      <People list={people.slice(0, 10)} />
+      {children}
       {user && (
         <div className="toolbar">
           <button

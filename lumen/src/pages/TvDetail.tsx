@@ -27,6 +27,7 @@ import {
   Facts,
   fmtRun,
   Pill,
+  SubjectTagsDisclosure,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
@@ -515,6 +516,11 @@ export default function TvDetail() {
                 people={t.credits.crew}
               />
             )}
+            <SubjectTagsDisclosure
+              key={`tags-${t.id}`}
+              media="tv"
+              tags={t.keywords}
+            />
           </div>
           <aside>
             <Facts

@@ -28,6 +28,7 @@ import {
   Facts,
   fmtRun,
   Pill,
+  SubjectTagsDisclosure,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
@@ -250,6 +251,11 @@ export default function MovieDetail() {
                 people={m.credits.crew}
               />
             )}
+            <SubjectTagsDisclosure
+              key={`tags-${m.id}`}
+              media="movie"
+              tags={m.keywords}
+            />
             {(fourK || trailerBtn) && (
               <div className="ph-only-row">
                 {fourK}

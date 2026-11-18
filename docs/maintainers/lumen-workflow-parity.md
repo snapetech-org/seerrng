@@ -855,3 +855,15 @@ movie cast save and retry, persisted open state after reload, independent
 series state, and access to crew credits. The checks ran at desktop,
 iPhone, Android, and tablet presets. Bundled and native visual comparison
 and the remaining detail disclosures are open.
+
+### Video subject tags increment
+
+Movie and series details expose subject tags through the shared pinned
+disclosure. Visibility inside the panel follows native SeerrNG's per-user
+browser preference. Tag links open Lumen's corresponding discovery grid
+with the keyword filter active and a control to clear it.
+
+Standalone desktop, iPhone, Android and tablet fixtures verified movie to
+series visibility persistence, the exact filtered discovery query, clearing
+the filter, and the existing credit pin behavior. Bundled and native visual
+comparison and live provider results remain open.

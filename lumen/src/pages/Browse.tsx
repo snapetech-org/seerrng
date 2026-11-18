@@ -31,6 +31,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const asks = useAsksRequestOptions();
   // "plex" is the old name for "have", kept so saved links still work
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
+  const keywordParam = p.get('keywords') ?? '';
+  const keyword = /^[1-9][0-9]{0,9}$/.test(keywordParam) ? keywordParam : '';
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -41,6 +43,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(keyword ? { keywords: keyword } : {}),
     ...(genre ? { genre } : {}),
     ...(sort === 'vote_average.desc'
       ? { voteCountGte: kind === 'movie' ? '500' : '200' }
@@ -122,6 +125,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       </header>
       <div className="toolbar">
         <CardTitleToggle kinds={[kind]} />
+        {keyword && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => upd('keywords', '')}
+          >
+            Clear Subject Tag
+          </button>
+        )}
         <div className="seg" role="group" aria-label="Availability">
           {[
             ['all', 'All'],

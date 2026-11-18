@@ -930,3 +930,60 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   await expect(page.getByText('Starring', { exact: true })).toBeVisible();
   await expect(actor).toBeHidden();
 });
+
+test('subject tags share browser visibility and open filtered video discovery', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const keywords = [{ id: 73, name: 'Space travel' }];
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: {
+        id: 1,
+        displayName: 'Viewer',
+        permissions: 2,
+        settings: {
+          detailDisclosureSubjectTagsPinned: true,
+          detailDisclosurePins: { tv: { subjectTags: true } },
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({ json: { ...movie, keywords } })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        mediaType: 'tv',
+        name: 'Fixture Series',
+        seasons: [],
+        keywords,
+      },
+    })
+  );
+  await page.goto('/movie/101');
+  const tag = page.getByRole('link', { name: 'Space travel' });
+  const toggle = page.getByRole('button', { name: 'Show Subject Tags' });
+  await expect(tag).toBeVisible();
+  await toggle.click();
+  await expect(tag).toBeHidden();
+  await page.goto('/tv/202');
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await toggle.click();
+  const filtered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('keywords') === '73'
+    );
+  });
+  await tag.click();
+  await filtered;
+  await expect(page).toHaveURL(/\/series\?keywords=73$/);
+  const clear = page.getByRole('button', { name: 'Clear Subject Tag' });
+  await clear.click();
+  await expect(page).toHaveURL(/\/series$/);
+});

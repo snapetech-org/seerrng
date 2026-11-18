@@ -159,7 +159,9 @@ export const defaultCardTitleModes = {
   book: 'always',
 } satisfies Record<CardTitleKind, CardTitleMode>;
 
-export type VideoCreditPins = Partial<Record<'cast' | 'crew', boolean>>;
+export type VideoDetailPins = Partial<
+  Record<'cast' | 'crew' | 'subjectTags', boolean>
+>;
 
 export interface User {
   plexUsername?: string | null;
@@ -173,7 +175,8 @@ export interface User {
   settings?: {
     detailDisclosureCastPinned?: boolean;
     detailDisclosureCrewPinned?: boolean;
-    detailDisclosurePins?: Partial<Record<'movie' | 'tv', VideoCreditPins>>;
+    detailDisclosureSubjectTagsPinned?: boolean;
+    detailDisclosurePins?: Partial<Record<'movie' | 'tv', VideoDetailPins>>;
     cardTextVisibilityMovie?: CardTitleMode;
     cardTextVisibilityTv?: CardTitleMode;
     cardTextVisibilityAlbum?: CardTitleMode;
@@ -591,6 +594,11 @@ export interface Credits {
   cast: Person[];
   crew: Person[];
 }
+export interface SubjectTag {
+  id: number;
+  name: string;
+}
+
 export interface MovieDetails extends TitleResult {
   onUserWatchlist?: boolean;
   runtime?: number;
@@ -598,6 +606,7 @@ export interface MovieDetails extends TitleResult {
   overview?: string;
   genres: { id: number; name: string }[];
   credits?: Credits;
+  keywords?: SubjectTag[];
   relatedVideos?: { site: string; key: string; type: string; url: string }[];
   releases?: {
     results: {
@@ -623,6 +632,7 @@ export interface TvDetails extends TitleResult {
   networks?: { name: string }[];
   status?: string;
   credits?: Credits;
+  keywords?: SubjectTag[];
   createdBy?: { name: string }[];
   contentRatings?: { results: { iso_3166_1: string; rating: string }[] };
   lastEpisodeToAir?: {
