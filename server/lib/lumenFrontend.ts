@@ -253,12 +253,30 @@ function workflowDeepLink(
     if (req.query.mediaType === 'audiobook') return '/lumen/audiobooks';
   }
 
-  const watchlistUser = /^\/users\/([1-9]\d{0,9})\/watchlist$/.exec(
-    nativePath
-  )?.[1];
-  const userWatchlist = watchlistUser && Number(watchlistUser) <= 1_000_000_000;
+  const [, userId, userWorkflow] =
+    /^\/users\/([1-9]\d{0,9})\/(watchlist|requests)$/.exec(nativePath) ?? [];
+  const userDestination = userId && Number(userId) <= 1_000_000_000;
+  if (userDestination && userWorkflow === 'requests') {
+    const query = new URLSearchParams({ requestedBy: userId });
+    for (const [source, target] of [
+      ['filter', 'show'],
+      ['mediaType', 'mediaType'],
+    ]) {
+      const value = req.query[source];
+      if (
+        typeof value === 'string' &&
+        /^[a-z]+$/.test(value) &&
+        value.length <= 20
+      ) {
+        query.set(target, value);
+      }
+    }
+    return `/lumen/requests?${query}`;
+  }
+
+  const userWatchlist = userDestination && userWorkflow === 'watchlist';
   const destination = userWatchlist
-    ? `/watchlist/user/${watchlistUser}`
+    ? `/watchlist/user/${userId}`
     : workflowDestinations.get(nativePath);
   if (!destination) return;
   const query = new URLSearchParams();

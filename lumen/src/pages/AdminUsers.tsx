@@ -4,6 +4,7 @@ import { api } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { canViewAllRequests } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import ImportMediaServerUsers from '../components/ImportMediaServerUsers';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
@@ -579,6 +580,15 @@ export default function AdminUsers() {
                     aria-label={`View Watchlist for ${user.displayName}`}
                   >
                     Watchlist
+                  </Link>
+                )}
+                {canViewAllRequests(actor?.permissions) && (
+                  <Link
+                    className="btn btn-quiet btn-sm"
+                    to={`/requests?requestedBy=${user.id}`}
+                    aria-label={`View Requests for ${user.displayName}`}
+                  >
+                    Requests
                   </Link>
                 )}
                 <button

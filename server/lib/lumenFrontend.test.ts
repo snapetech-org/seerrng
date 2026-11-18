@@ -50,6 +50,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     for (const [bookmark, destination] of [
       ['/profile/', '/me'],
       [
+        '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie',
+        '/requests?requestedBy=19&show=pending&mediaType=movie',
+      ],
+      [
         '/users/19/watchlist?search=Arrival&page=2',
         '/watchlist/user/19?search=Arrival&page=2',
       ],

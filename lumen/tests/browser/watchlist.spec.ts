@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
 
-test('delegated Watchlist uses the selected user and offers no removal', async ({
+test('directory Watchlist and Requests links scope reads to the selected user', async ({
   page,
 }) => {
   const queries: URLSearchParams[] = [];
+  let scopedRequests = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
@@ -38,6 +39,12 @@ test('delegated Watchlist uses the selected user and offers no removal', async (
             ],
           },
         });
+      case '/request':
+      case '/request/status':
+        if (url.searchParams.get('requestedBy') === '19') scopedRequests = true;
+        return route.fulfill({
+          json: { results: [], pageInfo: { results: 0, pages: 1 } },
+        });
       default:
         return route.fulfill({ json: {} });
     }
@@ -62,6 +69,9 @@ test('delegated Watchlist uses the selected user and offers no removal', async (
     .toBe('search=Example&page=2');
   await page.getByRole('link', { name: 'Back to User' }).click();
   await expect(page).toHaveURL(/\/admin\/users\/19$/);
+  await page.getByRole('link', { name: 'View Requests for Viewer' }).click();
+  await expect(page).toHaveURL(/\/requests\?requestedBy=19$/);
+  await expect.poll(() => scopedRequests).toBe(true);
 });
 
 test('a user manager without watchlist authority cannot load another user’s watchlist', async ({

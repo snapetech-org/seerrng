@@ -1619,3 +1619,9 @@ directory entry, filtering and pagination on the selected account, absence of
 removal, and no watchlist request on a denied direct visit. Express and nginx
 tests verified bookmark redirects. Bundled workflow rendering, live Plex, and
 matched native visual acceptance remain unverified.
+
+The user directory and native user-request bookmarks open the existing
+Requests screen with the selected requester. Supported status and media
+filters carry forward from native bookmarks. Express and nginx redirect
+checks and standalone browser fixtures at all four viewport presets verified
+requester scoping. Matched native visual acceptance remains unverified.
