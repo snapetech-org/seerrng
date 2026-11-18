@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../api';
-import { Section } from '../components/cards';
+import { api, bookArt } from '../api';
+import { Cover, Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
@@ -21,6 +21,7 @@ type Book = {
   title: string;
   author?: string;
   isbn13?: string;
+  imageUrl?: string;
   series?: { name: string; position?: number };
 };
 type Books = Availability & { books?: Book[]; total?: number };
@@ -286,6 +287,22 @@ export default function BookRecommendations() {
               <ul className="setlist">
                 {books?.books?.map((book) => (
                   <li className="set" key={book.id}>
+                    {book.imageUrl && (
+                      <div
+                        className={`poster ${format === 'audiobook' ? 'sq' : 'book'}`}
+                        aria-hidden="true"
+                      >
+                        <div className="art">
+                          <Cover
+                            src={bookArt(book.imageUrl)}
+                            title={book.title}
+                            icon={
+                              format === 'audiobook' ? 'headphones' : 'book'
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                     <span>
                       <b>{book.title}</b>
                       <small>

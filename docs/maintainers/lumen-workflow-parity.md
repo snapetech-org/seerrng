@@ -2754,3 +2754,9 @@ Collector Picks now uses Lumen's shared square cover when a matched
 album supplies artwork. The production build and all four collector
 browser checks passed, including a proxied artwork fixture. Live
 federation and matched visual acceptance remain unverified.
+
+Book Recommendations now renders supplied Hardcover artwork through
+the existing shared cover and image proxy. The cover uses the selected
+book format's shape. The production build and four browser fixtures
+passed, including the proxied cover and audiobook navigation. Live
+Hardcover artwork and matched visual acceptance remain unverified.

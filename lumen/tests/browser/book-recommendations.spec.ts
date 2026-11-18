@@ -8,6 +8,12 @@ test('recommendation feeds apply feedback and create a personalized feed', async
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
+  await page.route('**/imageproxy/hardcover/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>',
+    })
+  );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(
       '/api/v1'.length
@@ -41,7 +47,13 @@ test('recommendation feeds apply feedback and create a personalized feed', async
         json: {
           available: true,
           total: 1,
-          books: [{ id: 8, title: 'Fixture Book' }],
+          books: [
+            {
+              id: 8,
+              title: 'Fixture Book',
+              imageUrl: 'https://assets.hardcover.app/fixture.jpg',
+            },
+          ],
         },
       });
     }
@@ -64,6 +76,10 @@ test('recommendation feeds apply feedback and create a personalized feed', async
   await page.goto('/books/recommendations');
   await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
   await expect(page.getByText('Fixture Book')).toBeVisible();
+  await expect(page.locator('.poster.book img')).toHaveAttribute(
+    'src',
+    '/imageproxy/hardcover/fixture.jpg'
+  );
   await page.getByLabel('Standalones only').check();
   await page.getByRole('button', { name: 'More Like This' }).click();
   await expect
