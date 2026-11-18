@@ -66,3 +66,12 @@ The agents validate the URL and share request options that enforce
 guarded DNS on direct connections and reject cross-origin redirects.
 Private addresses require the operator's explicit environment opt-in.
 All 57 focused notification and security tests passed.
+
+## Jellystat and Audiobookshelf service destinations
+
+Dismissed alerts 612 and 614. Administrator permissions guard both
+service configuration and connection tests. The consumers use their
+configured service roots and scoped API paths. Both clients validate
+the URL and disable redirects before sending authentication headers.
+Private hosts are supported for self-hosted services. All 12 focused
+client and settings tests passed.
