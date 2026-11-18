@@ -6336,7 +6336,7 @@ const validateCurrentBatchContract = (files) => {
   );
   requireText(
     'server/lib/imageproxy.ts',
-    'new URL(imagePath, baseUrl || undefined).href',
+    'new URL(imagePath, baseUrl || undefined)',
     'remote Plex avatars must accept an absolute HTTPS URL when no provider base URL exists'
   );
   requireText(
