@@ -388,7 +388,8 @@ export const swipeCatalogUrl = (
   filters: SwipeCatalogFilters,
   page: number,
   shuffleSeed: string,
-  cursor?: string
+  cursor?: string,
+  offset?: number
 ): string => {
   if (mediaType === 'movie' || mediaType === 'tv' || mediaType === 'book') {
     return `/api/v1/swipe/deck?mediaType=${mediaType}`;
@@ -448,9 +449,38 @@ export const swipeCatalogUrl = (
     }
     params.set('category', category);
     params.set('limit', '20');
-    params.set('offset', String((page - 1) * 20));
+    params.set('offset', String(offset ?? (page - 1) * 20));
     if (filters.genre.trim()) params.set('genre', filters.genre.trim());
     return `/api/v1/request/software/catalog/popular?${params}`;
   }
   return `/api/v1/swipe/deck?mediaType=movie`;
+};
+
+export const softwareRequestBodyFor = (
+  software: SwipeSoftwareTarget,
+  target: { system?: string; operatingSystem?: string; architecture?: string }
+): Record<string, unknown> | undefined => {
+  if (software.category === 'game') {
+    if (!target.operatingSystem || !target.architecture) return undefined;
+    return {
+      category: software.category,
+      catalogProvider: software.catalogProvider,
+      ...(software.catalogProvider === 'dat'
+        ? { catalogKey: software.catalogId }
+        : { catalogId: software.igdbId ?? Number(software.catalogId) }),
+      variant: {
+        operatingSystem: target.operatingSystem,
+        architecture: target.architecture,
+      },
+    };
+  }
+  if (!target.system) return undefined;
+  return {
+    category: software.category,
+    catalogProvider: software.catalogProvider,
+    ...(software.catalogProvider === 'dat'
+      ? { catalogKey: software.catalogId }
+      : { catalogId: software.igdbId ?? Number(software.catalogId) }),
+    platformSlug: target.system,
+  };
 };

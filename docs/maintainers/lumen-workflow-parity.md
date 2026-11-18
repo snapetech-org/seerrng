@@ -1897,3 +1897,14 @@ public-catalog query parameters and filtered pagination.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-filters-20261118/`.
+
+Swipe now opens the permitted retro games, apps, and PC games decks. Software
+requests use the selected system or OS and architecture, and the deck follows
+the server's page continuation. Native and Lumen share the request payload
+builder. Compared the PC game and magazine decks across desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build, 42 native tests, and 20 browser
+checks passed. The browser fixture verified PC target selection and offset
+pagination. Live acquisition and software search cursor behavior remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-software-20261118/`.

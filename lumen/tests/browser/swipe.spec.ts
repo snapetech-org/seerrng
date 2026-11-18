@@ -275,3 +275,82 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
     },
   ]);
 });
+
+test('Swipe software requests use the chosen PC variant and next catalog offset', async ({
+  page,
+}, info) => {
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/swipe/status'))
+      return route.fulfill({
+        json: { mediaTypes: ['software-game'], bookFormats: [] },
+      });
+    if (path.endsWith('/swipe/profile'))
+      return route.fulfill({
+        json: { seriesRequest: 'first-season', bookFormat: 'ebook' },
+      });
+    if (path.endsWith('/catalog/popular')) {
+      const next = url.searchParams.get('offset') === '37';
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: next ? 83 : 82,
+              title: next ? 'Next Game' : 'First Game',
+              platformOptions: [{ name: 'Windows' }],
+            },
+          ],
+          nextOffset: next ? null : 37,
+        },
+      });
+    }
+    if (path.endsWith('/swipe/decisions') && request.method() === 'GET')
+      return route.fulfill({ json: { decisions: [] } });
+    if (request.method() === 'POST')
+      writes.push({ path, body: request.postDataJSON() });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/swipe');
+  await expect(page.getByRole('heading', { name: 'First Game' })).toBeVisible();
+  const request = page.getByRole('button', { name: 'Request', exact: true });
+  await expect(request).toBeDisabled();
+  await page
+    .getByRole('combobox', { name: 'PC Variant' })
+    .selectOption({ label: 'Windows · arm64' });
+  await page.screenshot({
+    path: info.outputPath('swipe-software.png'),
+    fullPage: true,
+  });
+  await request.click();
+  await expect(page.getByText('First Game requested.')).toBeVisible();
+  await page.getByRole('button', { name: 'Load More Recommendations' }).click();
+  await expect(page.getByRole('heading', { name: 'Next Game' })).toBeVisible();
+  await expect(request).toBeDisabled();
+  expect(writes[0]).toEqual({
+    path: '/api/v1/request/software',
+    body: {
+      category: 'game',
+      catalogProvider: 'igdb',
+      catalogId: 82,
+      variant: { operatingSystem: 'windows', architecture: 'arm64' },
+    },
+  });
+  expect(writes[1]).toMatchObject({
+    path: '/api/v1/swipe/decisions',
+    body: {
+      mediaType: 'software-game',
+      id: '82',
+      decision: 'want',
+      card: { software: { category: 'game', catalogId: '82' } },
+    },
+  });
+});

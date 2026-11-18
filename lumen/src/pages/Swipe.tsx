@@ -6,9 +6,12 @@ import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import {
   filterSwipeCards,
+  MAX_SWIPE_SOFTWARE_CURSOR_LENGTH,
   normalizeSwipeCatalogCards,
+  softwareRequestBodyFor,
   swipeCatalogUrl,
   type SwipeCatalogFilters,
+  type SwipeSoftwareTarget,
 } from '../swipeCatalog';
 import SwipeHistory from './SwipeHistory';
 
@@ -22,6 +25,9 @@ const categories = {
   music: 'Music',
   sports: 'Sports',
   adult: 'Adult',
+  'software-retro': 'Retro Games',
+  'software-modern': 'Apps',
+  'software-game': 'PC Games',
 };
 type DeckCategory = keyof typeof categories;
 const catalogDefaults: SwipeCatalogFilters = {
@@ -46,6 +52,7 @@ interface Card {
   authorId?: string;
   reason?: string;
   serviceId?: number;
+  software?: SwipeSoftwareTarget;
 }
 interface Status {
   mediaTypes: string[];
@@ -462,7 +469,14 @@ function Deck({
 }) {
   const catalog = !Object.hasOwn(recommendations, category);
   const [refresh, setRefresh] = useState(false);
+  const software = category.startsWith('software-');
   const [page, setPage] = useState(1);
+  const [cursor, setCursor] = useState<string>();
+  const [offset, setOffset] = useState<number>();
+  const [selection, setSelection] = useState<{
+    cardId: string;
+    index: number;
+  }>();
   const [filters, setFilters] = useState(catalogDefaults);
   const filtered = Object.keys(catalogDefaults).some(
     (key) =>
@@ -470,12 +484,16 @@ function Deck({
       catalogDefaults[key as keyof SwipeCatalogFilters]
   );
   const deckPath = catalog
-    ? swipeCatalogUrl(category, filters, page, 'first').slice('/api/v1'.length)
+    ? swipeCatalogUrl(category, filters, page, 'first', cursor, offset).slice(
+        '/api/v1'.length
+      )
     : `/swipe/deck?mediaType=${category}${refresh ? '&refresh=true' : ''}`;
   const deck = useApi<{
     cards?: Card[];
     remaining?: number;
     totalPages?: number;
+    nextCursor?: string | null;
+    nextOffset?: number | null;
   }>(deckPath, { currentPathOnly: true });
   const history = useApi<{ decisions: { id: string }[] }>(
     catalog ? `/swipe/decisions?mediaType=${category}` : null
@@ -510,6 +528,37 @@ function Deck({
   const format = formats.includes(profile?.bookFormat ?? '')
     ? profile?.bookFormat
     : formats[0];
+
+  const softwareTarget = card?.software;
+  const targets =
+    softwareTarget?.category === 'game'
+      ? softwareTarget.pcVariants.map((variant) => ({
+          label: `${{ windows: 'Windows', linux: 'Linux', macos: 'macOS' }[variant.operatingSystem]} · ${variant.architecture}`,
+          variant,
+        }))
+      : (softwareTarget?.systems.map(({ name, slug }) => ({
+          label: name,
+          variant: { system: slug },
+        })) ?? []);
+  const targetIndex =
+    selection && selection.cardId === card?.id ? selection.index : -1;
+  const target = targets[targetIndex];
+  const softwareBody =
+    softwareTarget &&
+    target &&
+    softwareRequestBodyFor(softwareTarget, target.variant);
+  const canRequest = software
+    ? !!softwareBody
+    : !!profile && (category !== 'book' || !!format);
+  const nextCursor = deck.data?.nextCursor;
+  const nextOffset = deck.data?.nextOffset;
+  const moreSoftware = filters.query.trim()
+    ? !!nextCursor &&
+      nextCursor !== cursor &&
+      nextCursor.length <= MAX_SWIPE_SOFTWARE_CURSOR_LENGTH
+    : typeof nextOffset === 'number' &&
+      Number.isSafeInteger(nextOffset) &&
+      nextOffset > (offset ?? 0);
 
   const gesture = useRef<{
     pointer: number;
@@ -568,6 +617,11 @@ function Deck({
 
   function nextDeck(regenerate: boolean) {
     if (catalog) {
+      if (software) {
+        if (!moreSoftware) return;
+        setCursor(nextCursor ?? undefined);
+        setOffset(nextOffset ?? undefined);
+      }
       setPage((value) => value + 1);
       return;
     }
@@ -581,7 +635,7 @@ function Deck({
     if (
       pending.current ||
       (decision === 'undo' ? !deck.data : !card) ||
-      (decision === 'want' && (!profile || (category === 'book' && !format)))
+      (decision === 'want' && !canRequest)
     )
       return;
     const generation = sessionGeneration();
@@ -602,37 +656,41 @@ function Deck({
         );
         if (generation !== sessionGeneration()) return;
         if (catalog) history.reload();
+        setSelection(undefined);
         setRestored(result.card);
         return;
       }
       if (!card) return;
       if (decision === 'want') {
-        if (!profile || (category === 'book' && !format)) return;
         await api(
-          '/request',
-          body({
-            mediaType: category === 'audiobook' ? 'book' : category,
-            mediaId:
-              category === 'movie' || category === 'tv' || category === 'comic'
-                ? Number(card.id)
-                : card.id,
-            ...(category === 'tv'
-              ? {
-                  seasons:
-                    profile.seriesRequest === 'all-seasons' ? 'all' : [1],
-                }
-              : {}),
-            ...(category === 'book' || category === 'audiobook'
-              ? {
-                  authorId: card.authorId,
-                  format: category === 'audiobook' ? 'audiobook' : format,
-                }
-              : {}),
-            ...(card.serviceId !== undefined &&
-            ['magazine', 'sports', 'adult'].includes(category)
-              ? { serverId: card.serviceId }
-              : {}),
-          })
+          software ? '/request/software' : '/request',
+          body(
+            softwareBody || {
+              mediaType: category === 'audiobook' ? 'book' : category,
+              mediaId:
+                category === 'movie' ||
+                category === 'tv' ||
+                category === 'comic'
+                  ? Number(card.id)
+                  : card.id,
+              ...(category === 'tv'
+                ? {
+                    seasons:
+                      profile?.seriesRequest === 'all-seasons' ? 'all' : [1],
+                  }
+                : {}),
+              ...(category === 'book' || category === 'audiobook'
+                ? {
+                    authorId: card.authorId,
+                    format: category === 'audiobook' ? 'audiobook' : format,
+                  }
+                : {}),
+              ...(card.serviceId !== undefined &&
+              ['magazine', 'sports', 'adult'].includes(category)
+                ? { serverId: card.serviceId }
+                : {}),
+            }
+          )
         );
         requested = true;
       }
@@ -679,6 +737,8 @@ function Deck({
         disabled={busy}
         onApply={(next) => {
           setFilters(next);
+          setCursor(undefined);
+          setOffset(undefined);
           setPage(1);
           setRestored(undefined);
         }}
@@ -742,11 +802,40 @@ function Deck({
           )}
           {card.overview && <p>{card.overview}</p>}
           {card.reason && <p className="note">{card.reason}</p>}
+          {softwareTarget && (
+            <div className="setlist">
+              <label className="set cfg-row">
+                <span>
+                  {softwareTarget.category === 'game'
+                    ? 'PC Variant'
+                    : 'Target System'}
+                </span>
+                <select
+                  className="cfg-select"
+                  value={targetIndex}
+                  disabled={busy}
+                  onChange={(event) =>
+                    setSelection({
+                      cardId: card.id,
+                      index: Number(event.target.value),
+                    })
+                  }
+                >
+                  <option value={-1}>Choose a Request Target</option>
+                  {targets.map(({ label }, index) => (
+                    <option key={label} value={index}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          )}
           <div className="toolbar">
             <button
               type="button"
               className="btn btn-primary btn-sm"
-              disabled={busy || !profile || (category === 'book' && !format)}
+              disabled={busy || !canRequest}
               onClick={() => void act('want')}
             >
               Request
@@ -796,7 +885,8 @@ function Deck({
         </button>
         {!card &&
           deck.data &&
-          (!catalog || (deck.data.totalPages ?? 0) > page) && (
+          (!catalog ||
+            (software ? moreSoftware : (deck.data.totalPages ?? 0) > page)) && (
             <button
               type="button"
               className="btn btn-quiet btn-sm"

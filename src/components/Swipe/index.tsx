@@ -15,10 +15,10 @@ import {
   MAX_SWIPE_SOFTWARE_CURSOR_LENGTH,
   normalizeSwipeCatalogCards,
   shuffleSwipeCards,
+  softwareRequestBodyFor,
   swipeCatalogUrl,
   type SwipeCardData,
   type SwipeCatalogFilters,
-  type SwipeSoftwareTarget,
 } from '@app/components/Swipe/swipeCatalog';
 import useToasts from '@app/hooks/useToasts';
 import defineMessages from '@app/utils/defineMessages';
@@ -266,34 +266,7 @@ export const requestBodyFor = (
   return undefined;
 };
 
-export const softwareRequestBodyFor = (
-  software: SwipeSoftwareTarget,
-  target: { system?: string; operatingSystem?: string; architecture?: string }
-): Record<string, unknown> | undefined => {
-  if (software.category === 'game') {
-    if (!target.operatingSystem || !target.architecture) return undefined;
-    return {
-      category: software.category,
-      catalogProvider: software.catalogProvider,
-      ...(software.catalogProvider === 'dat'
-        ? { catalogKey: software.catalogId }
-        : { catalogId: software.igdbId ?? Number(software.catalogId) }),
-      variant: {
-        operatingSystem: target.operatingSystem,
-        architecture: target.architecture,
-      },
-    };
-  }
-  if (!target.system) return undefined;
-  return {
-    category: software.category,
-    catalogProvider: software.catalogProvider,
-    ...(software.catalogProvider === 'dat'
-      ? { catalogKey: software.catalogId }
-      : { catalogId: software.igdbId ?? Number(software.catalogId) }),
-    platformSlug: target.system,
-  };
-};
+export { softwareRequestBodyFor } from './swipeCatalog';
 
 const errorMessage = (error: unknown) =>
   axios.isAxiosError(error) && typeof error.response?.data?.message === 'string'
