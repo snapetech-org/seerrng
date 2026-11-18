@@ -79,3 +79,80 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
+
+test('provider library scans keep filter scope and resume after a pause', async ({
+  page,
+}) => {
+  const scans: unknown[] = [];
+  let releaseBatch!: () => void;
+  const firstBatch = new Promise<void>((resolve) => {
+    releaseBatch = resolve;
+  });
+  let matched = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/integrations/discovery/library/trakt/repair') {
+      expect(request.method()).toBe('POST');
+      scans.push(request.postDataJSON());
+      if (scans.length === 1) await firstBatch;
+      matched = true;
+      return route.fulfill({
+        json: {
+          nextPage: 6,
+          scanned: 2,
+          matched: 1,
+          saved: 1,
+          hasMore: scans.length === 1,
+          truncated: false,
+          limitReached: false,
+        },
+      });
+    }
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json: {
+          items: [
+            {
+              id: 'fixture',
+              title: 'Fixture Film',
+              mediaType: 'movie',
+              ...(matched ? { tmdbId: 20 } : {}),
+            },
+          ],
+          hasMore: false,
+          missingMappings: matched ? 0 : 1,
+          truncated: false,
+        },
+      });
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Reader', permissions: 32 }
+          : path === '/integrations/discovery/accounts'
+            ? { accounts: [{ provider: 'trakt' }], mediaServer: null }
+            : {},
+    });
+  });
+  await page.goto('/library');
+  await page
+    .getByRole('combobox', { name: 'Media Type' })
+    .selectOption('movie');
+  await expect(page.getByText('Fixture Film')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Fixture Film' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Scan Library', exact: true }).click();
+  await expect.poll(() => scans.length).toBe(1);
+  await page.getByRole('button', { name: 'Stop After This Batch' }).click();
+  releaseBatch();
+  await expect(page.getByText('Scan paused at page 6.')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Film' })
+  ).toHaveAttribute('href', '/movie/20');
+  await page.getByRole('button', { name: 'Continue Scan' }).click();
+  await expect(page.getByText('Library scan complete.')).toBeVisible();
+  expect(scans).toEqual([
+    { shelf: 'watched', startPage: 1, pageCount: 5, mediaType: 'movie' },
+    { shelf: 'watched', startPage: 6, pageCount: 5, mediaType: 'movie' },
+  ]);
+});

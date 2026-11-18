@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import LibraryRepair from '../components/LibraryRepair';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -182,6 +183,9 @@ function LibraryShelf({ source }: { source: Source }) {
         path={path}
         page={page}
         native={native}
+        repairPath={native ? undefined : `${BASE}/library/${source}/repair`}
+        shelf={shelf}
+        mediaType={mediaType}
         setLibraries={setLibraries}
         choosingLibrary={native && !selectedLibrary}
         previous={() => setCursors(cursors.slice(0, -1))}
@@ -195,6 +199,9 @@ function LibraryPage({
   path,
   page,
   native,
+  repairPath,
+  shelf,
+  mediaType,
   setLibraries,
   choosingLibrary,
   previous,
@@ -203,6 +210,9 @@ function LibraryPage({
   path: string;
   page: number;
   native: boolean;
+  repairPath?: string;
+  shelf: Shelf;
+  mediaType: string;
   setLibraries: (libraries: LibraryResult['libraries']) => void;
   choosingLibrary: boolean;
   previous: () => void;
@@ -215,6 +225,14 @@ function LibraryPage({
 
   return (
     <>
+      {repairPath && (
+        <LibraryRepair
+          path={repairPath}
+          shelf={shelf}
+          mediaType={mediaType || undefined}
+          reload={reload}
+        />
+      )}
       <ServiceNote error={error} what="your library" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
