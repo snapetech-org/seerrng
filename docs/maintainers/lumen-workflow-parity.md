@@ -135,10 +135,18 @@ narrow layouts, and bundled deployment remain open.
 Lumen's Download Inbox shows active warnings, resolved items, and intervention
 history for accounts with Manage Downloads access. Direct navigation with no
 permission shows the access message and does not fetch queue data. The
-standalone proxy serves the screen directly. Preview, manual import, rejection,
-and the separate indexer handoff remain open.
+standalone proxy serves the screen directly.
 
 Headed Chrome at 1440 × 1000 verified the authorized Inbox, History switch,
 partial-source warning, and expanded action record against synthetic data.
 Narrow and bundled visual checks remain open. The Inbox is loaded on demand
 so the home entry does not download its 1.51 kB gzip route chunk.
+
+Lumen's Download Inbox now also offers manual import and rejection. The
+import sheet uses the backend's current file preview, eligible selections,
+confirmed library target, and preview fingerprint. Rejection offers distinct
+blocklist and client-removal controls, with client removal off by default.
+Both actions re-read the inbox after submission or an uncertain result.
+Headed Chrome at 1440 × 1000 verified the manual import and rejection flows
+against synthetic data. Mobile and bundled visual checks, indexer search,
+and indexer handoff remain open.

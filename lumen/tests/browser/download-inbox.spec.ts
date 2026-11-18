@@ -84,3 +84,119 @@ for (const permissions of [32, 8796093022208]) {
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
   });
 }
+
+test('manual import sends the chosen target and only eligible files, while rejection keeps source files by default', async ({
+  page,
+}) => {
+  const posts: { path: string; body: unknown }[] = [];
+  const fingerprint = 'a'.repeat(64);
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    const base = '/downloads/interventions';
+    if (request.method() === 'POST' && path.startsWith(base)) {
+      posts.push({ path, body: request.postDataJSON() });
+      return route.fulfill({
+        json: {
+          id: 7,
+          state: path.endsWith('/import') ? 'importing' : 'resolved',
+        },
+      });
+    }
+    if (path === base)
+      return route.fulfill({
+        json: {
+          total: 1,
+          partialSources: [],
+          truncated: false,
+          results: [
+            {
+              id: 7,
+              title: 'Example Release',
+              serviceName: 'Movies',
+              serviceType: 'radarr',
+              state: 'active',
+              warnings: [],
+              manualImportCapable: true,
+            },
+          ],
+        },
+      });
+    if (path === `${base}/7/targets`)
+      return route.fulfill({ json: [{ id: 3, title: 'Matched Movie' }] });
+    if (path === `${base}/7/preview`) {
+      const matched = url.searchParams.get('targetId') === '3';
+      return route.fulfill({
+        json: {
+          target: matched ? { id: 3, title: 'Matched Movie' } : null,
+          fingerprint,
+          candidates: [
+            {
+              id: 14,
+              name: 'Movie.mkv',
+              size: 102400,
+              eligible: matched,
+              rejections: [],
+            },
+            {
+              id: 15,
+              name: 'Sample.mkv',
+              size: 1024,
+              eligible: false,
+              rejections: ['Sample file'],
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Operator', permissions: 8796093022208 }
+          : {},
+    });
+  });
+  await page.goto('/downloads');
+  await page.getByRole('button', { name: 'Preview Files' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Preview Download Files' });
+  await expect(
+    sheet.getByRole('button', { name: 'Import Selected Files' })
+  ).toBeDisabled();
+  await sheet.getByRole('button', { name: 'Search Library' }).click();
+  await sheet
+    .getByRole('button', { name: 'Choose Match: Matched Movie' })
+    .click();
+  await expect(sheet.getByText('Selected match: Matched Movie')).toBeVisible();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Select Sample.mkv' })
+  ).toBeDisabled();
+  await sheet.getByRole('checkbox', { name: 'Select Movie.mkv' }).check();
+  await sheet.getByRole('button', { name: 'Import Selected Files' }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(posts).toEqual([
+    {
+      path: '/downloads/interventions/7/import',
+      body: {
+        candidateIds: [14],
+        importMode: 'copy',
+        fingerprint,
+        targetId: 3,
+      },
+    },
+  ]);
+  await page.getByRole('button', { name: 'Reject Download' }).click();
+  const reject = page.getByRole('dialog', { name: 'Reject Download' });
+  await expect(
+    reject.getByRole('checkbox', {
+      name: 'Remove the Download and Files From Its Client',
+    })
+  ).not.toBeChecked();
+  await reject.getByRole('button', { name: 'Confirm Rejection' }).click();
+  await expect(reject).toHaveCount(0);
+  expect(posts.at(-1)).toEqual({
+    path: '/downloads/interventions/7/reject',
+    body: { blocklist: true, removeFromClient: false },
+  });
+});

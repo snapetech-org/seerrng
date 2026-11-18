@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { Pill } from '../components/detail';
+import {
+  DOWNLOAD_INBOX_PATH,
+  DownloadActionSheet,
+} from '../components/DownloadActionSheet';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -31,6 +35,7 @@ interface DownloadWarning {
   serviceType: string;
   state: keyof typeof STATES;
   resolution?: string | null;
+  manualImportCapable?: boolean;
   warnings: string[];
   actions?: {
     at: string;
@@ -68,6 +73,16 @@ function DownloadRows({
   setPage: (page: number) => void;
 }) {
   const { data, error, reload } = useApi<DownloadResponse>(path);
+  const [action, setAction] = useState<{
+    warning: DownloadWarning;
+    operation: 'import' | 'reject';
+  }>();
+  const [notice, setNotice] = useState('');
+
+  function begin(warning: DownloadWarning, operation: 'import' | 'reject') {
+    setNotice('');
+    setAction({ warning, operation });
+  }
 
   return (
     <>
@@ -80,6 +95,22 @@ function DownloadRows({
           Refresh
         </button>
       </div>
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {action && (
+        <DownloadActionSheet
+          {...action}
+          close={() => setAction(undefined)}
+          finished={(message) => {
+            setAction(undefined);
+            setNotice(message);
+            reload();
+          }}
+        />
+      )}
       <ServiceNote error={error} what="download warnings" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
@@ -145,6 +176,24 @@ function DownloadRows({
                   </details>
                 )}
               </div>
+              {(warning.state === 'active' || warning.state === 'failed') && (
+                <div className="toolbar">
+                  {warning.manualImportCapable && (
+                    <button
+                      className="btn btn-tonal btn-sm"
+                      onClick={() => begin(warning, 'import')}
+                    >
+                      Preview Files
+                    </button>
+                  )}
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    onClick={() => begin(warning, 'reject')}
+                  >
+                    Reject Download
+                  </button>
+                </div>
+              )}
               <Pill k={warning.state === 'resolved' ? 'neutral' : 'wait'}>
                 {STATES[warning.state] ?? 'Needs Review'}
               </Pill>
@@ -178,7 +227,7 @@ function DownloadRows({
 export default function Downloads({ allowed }: { allowed: boolean }) {
   const [scope, setScope] = useState<'active' | 'history'>('active');
   const [page, setPage] = useState(1);
-  const path = `/downloads/interventions?scope=${scope}&page=${page}`;
+  const path = `${DOWNLOAD_INBOX_PATH}?scope=${scope}&page=${page}`;
   return (
     <>
       <header className="ph">
