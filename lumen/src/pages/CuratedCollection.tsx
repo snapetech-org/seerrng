@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api, artUrl, MediaStatus, tmdbImg, type MediaInfo } from '../api';
+import {
+  api,
+  artUrl,
+  MediaStatus,
+  tmdbImg,
+  youtubeTrailerUrl,
+  type MediaInfo,
+  type TvDetails,
+} from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
@@ -355,6 +363,14 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         : part;
     });
   }, [data?.parts, latest]);
+  const firstSeriesId = !music ? members[0]?.id : undefined;
+  const firstSeries = useApi<TvDetails>(
+    firstSeriesId && /^[1-9]\d{0,8}$|^1000000000$/.test(firstSeriesId)
+      ? `/tv/${firstSeriesId}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const trailer = youtubeTrailerUrl(firstSeries.data?.relatedVideos);
   const hasMembers = members.length > 0;
   const shouldPoll =
     isAdministrator(user?.permissions) ||
@@ -427,6 +443,16 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         line={[`${members.length} ${noun}`]}
       />
       <div className="dbody">
+        {trailer && (
+          <a
+            className="btn btn-quiet btn-sm"
+            href={trailer}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Watch Trailer
+          </a>
+        )}
         <CollectionBlocklist
           kind={kind}
           members={members}

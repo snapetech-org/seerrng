@@ -2932,3 +2932,10 @@ existing TMDB or MusicBrainz identity, skips already blocked members, and
 reports partial results. Sixteen standalone browser cases and eight
 bundled Blocklist cases passed. Matched visual comparison remains
 unverified.
+
+Curated TV collections now offer a trailer from the first visible series
+using the same validated YouTube destination as movie details. Forty-four
+standalone browser cases and eight bundled collection cases passed,
+including rejection of an invalid trailer ID before selecting the next
+valid candidate. Live metadata and matched visual comparison remain
+unverified.

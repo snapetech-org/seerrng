@@ -5,6 +5,7 @@ import {
   MediaStatus,
   requestMovie,
   tmdbImg,
+  youtubeTrailerUrl,
   type MovieDetails,
   type Paged,
   type RequestOptions,
@@ -114,13 +115,7 @@ export default function MovieDetail() {
     .filter((c) => c.job === 'Director')
     .map((c) => c.name)
     .join(', ');
-  const trailer = m.relatedVideos?.find(
-    (v) =>
-      v?.type === 'Trailer' &&
-      v.site === 'YouTube' &&
-      typeof v.key === 'string' &&
-      /^[a-zA-Z0-9_-]{11}$/.test(v.key)
-  );
+  const trailer = youtubeTrailerUrl(m.relatedVideos);
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
     !!s4k && s4k >= MediaStatus.PENDING && s4k <= MediaStatus.AVAILABLE;
@@ -203,7 +198,7 @@ export default function MovieDetail() {
   const trailerBtn = trailer ? (
     <a
       className="btn btn-quiet"
-      href={`https://www.youtube.com/watch?v=${trailer.key}`}
+      href={trailer}
       target="_blank"
       rel="noreferrer"
     >

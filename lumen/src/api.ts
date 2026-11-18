@@ -728,6 +728,19 @@ export interface Credits {
   cast: Person[];
   crew: Person[];
 }
+type RelatedVideo = { site: string; key: string; type: string };
+
+export function youtubeTrailerUrl(videos?: RelatedVideo[]) {
+  const trailer = videos?.find(
+    (video) =>
+      video?.type === 'Trailer' &&
+      video.site === 'YouTube' &&
+      typeof video.key === 'string' &&
+      /^[a-zA-Z0-9_-]{11}$/.test(video.key)
+  );
+  return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : undefined;
+}
+
 export interface SubjectTag {
   id: number;
   name: string;
@@ -749,7 +762,7 @@ export interface MovieDetails extends TitleResult {
   keywords?: SubjectTag[];
   productionCompanies?: { id: number; name: string }[];
   productionCountries?: ProductionCountry[];
-  relatedVideos?: { site: string; key: string; type: string }[];
+  relatedVideos?: RelatedVideo[];
   releases?: {
     results: {
       iso_3166_1: string;
@@ -765,6 +778,7 @@ export interface Season {
   name: string;
 }
 export interface TvDetails extends TitleResult {
+  relatedVideos?: RelatedVideo[];
   externalIds?: { tvdbId?: number | null };
   originalName?: string;
   onUserWatchlist?: boolean;

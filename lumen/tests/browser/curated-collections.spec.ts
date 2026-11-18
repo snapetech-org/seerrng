@@ -357,6 +357,15 @@ for (const kind of ['tv', 'music']) {
         writes++;
         return route.fulfill({ status: 201, body: '' });
       }
+      if (path === '/tv/42')
+        return route.fulfill({
+          json: {
+            relatedVideos: [
+              { site: 'YouTube', type: 'Trailer', key: 'invalid' },
+              { site: 'YouTube', type: 'Trailer', key: 'AbCdEf12345' },
+            ],
+          },
+        });
       if (path === `/collection-catalog/${kind}/19`)
         return route.fulfill({
           json: {
@@ -379,6 +388,15 @@ for (const kind of ['tv', 'music']) {
       return route.fulfill({ json: { count: 0 } });
     });
     await page.goto(`${mount}/collections/${kind}/19`);
+    const trailer = page.getByRole('link', { name: 'Watch Trailer' });
+    if (kind === 'tv') {
+      await expect(trailer).toHaveAttribute(
+        'href',
+        'https://www.youtube.com/watch?v=AbCdEf12345'
+      );
+    } else {
+      await expect(trailer).toHaveCount(0);
+    }
     const action = page.getByRole('button', {
       name: 'Blocklist Collection',
       exact: true,
