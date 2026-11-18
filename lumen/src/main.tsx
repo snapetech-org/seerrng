@@ -7,6 +7,7 @@ import {
   Routes,
   useLocation,
   useMatch,
+  useParams,
 } from 'react-router-dom';
 import { AuthProvider, isAdministrator, useAuth } from './auth';
 import { PageBoundary } from './components/PageBoundary';
@@ -111,6 +112,20 @@ const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
+
+function UserRequestsBookmark() {
+  const { requesterId = '' } = useParams();
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  if (
+    !/^[1-9]\d{0,9}$/.test(requesterId) ||
+    Number(requesterId) > 1_000_000_000
+  )
+    return <Navigate to="/requests" replace />;
+  params.delete('userId');
+  params.set('requestedBy', requesterId);
+  return <Navigate to={`/requests?${params}`} replace />;
+}
 
 function App() {
   const { user, unreachable, refresh } = useAuth();
@@ -293,6 +308,10 @@ function App() {
             }
           />
           <Route path="/requests/status" element={<Requests />} />
+          <Route
+            path="/requests/by-user/:requesterId"
+            element={<UserRequestsBookmark />}
+          />
           <Route path="/following" element={<Following />} />
           <Route
             path="/downloads"

@@ -5409,6 +5409,20 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('standalone user request bookmarks keep the user from the path', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto(
+    '/requests/by-user/19?userId=12&requestedBy=11&filter=pending'
+  );
+  await expect(page).toHaveURL(/\/requests\?/);
+  const params = new URL(page.url()).searchParams;
+  expect(params.getAll('requestedBy')).toEqual(['19']);
+  expect(params.has('userId')).toBe(false);
+  expect(params.get('show') ?? params.get('filter')).toBe('pending');
+});
+
 test('account permissions bookmarks show the signed-in users assigned permissions', async ({
   page,
 }) => {
