@@ -3367,6 +3367,55 @@ test('configured book shelves carry an arbitrary subject into both book formats'
   await expect(page).toHaveURL(/\/audiobooks\?sort=ranked$/);
 });
 
+test('comic catalogue indexing refreshes into filtered results', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  let reads = 0;
+  await page.route('**/api/v1/discover/comics?*', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    expect(params.get('publisher')).toBe('Image');
+    expect(params.get('page')).toBe('1');
+    reads += 1;
+    if (reads < 3) {
+      return route.fulfill({
+        json: {
+          ...paged([]),
+          totalPages: 0,
+          indexing: true,
+          indexedResults: 6 * reads,
+          expectedResults: 20,
+          indexError: reads === 1 ? 'unstable-order' : undefined,
+        },
+      });
+    }
+    return route.fulfill({
+      json: paged([{ id: '1234', mediaType: 'comic', title: 'Indexed Comic' }]),
+    });
+  });
+  await page.clock.install();
+  await page.goto('/comics?publisher=Image');
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Comic catalogue indexing' })
+  ).toContainText('6 of 20 volumes indexed');
+  await expect(page.getByText('No comics found')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Check Again' }).click();
+  await expect(
+    page.getByText('12 of 20 volumes indexed', { exact: false })
+  ).toBeVisible();
+  await page.clock.fastForward(15000);
+  await expect(
+    page.getByRole('link', { name: 'Indexed Comic' })
+  ).toHaveAttribute('href', '/comic/1234');
+  await expect(page.getByText('Comic catalogue indexing')).toHaveCount(0);
+});
+
 test('Classic comic discovery bookmarks restore catalogue filters and results', async ({
   page,
 }) => {

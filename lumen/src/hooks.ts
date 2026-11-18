@@ -149,11 +149,17 @@ export const usePublicSettings = () =>
 // each history entry keeps what it had loaded, so Back lands on the same rows (and scroll spot)
 const pagedSnap = new Map<
   string,
-  { items: unknown[]; page: number; total: number; gen: number }
+  {
+    items: unknown[];
+    page: number;
+    total: number;
+    gen: number;
+    firstPage: unknown;
+  }
 >();
 const pageItemId = (item: unknown) => String((item as { id?: unknown }).id);
 
-export function usePaged<T>(
+export function usePaged<T, Metadata extends object = object>(
   base: string | null,
   idOf: (item: T) => string = pageItemId
 ) {
@@ -162,6 +168,9 @@ export function usePaged<T>(
   const snap = pagedSnap.get(snapKey);
   const [items, setItems] = useState<T[]>((snap?.items as T[]) || []);
   const [page, setPage] = useState(snap?.page || 0);
+  const [firstPage, setFirstPage] = useState(
+    snap?.firstPage as Metadata | undefined
+  );
   const [total, setTotal] = useState(snap?.total || 1);
   const [loading, setLoading] = useState(false);
   const [loadedBase, setLoadedBase] = useState(base);
@@ -182,6 +191,7 @@ export function usePaged<T>(
     const s = pagedSnap.get(`${entry}|${base}`);
     setItems((s?.items as T[]) || []);
     setPage(s?.page || 0);
+    setFirstPage(s?.firstPage as Metadata | undefined);
     setTotal(s?.total || 1);
     setError(null);
     rowsGen.current = s?.gen ?? cacheGeneration();
@@ -202,18 +212,17 @@ export function usePaged<T>(
     const tail = [s.page - 1, s.page].filter((p) => p > head);
     (async () => {
       const read = (p: number) =>
-        cachedApi<{
-          page: number;
-          totalPages: number;
-          results: T[];
-        }>(`${base}${sep}page=${p}`);
+        cachedApi<Paged<T> & Metadata>(`${base}${sep}page=${p}`);
       const rows: T[] = [];
       const seen = new Set<string>();
       let totalPages = s.total;
       for (let p = 1; p <= head; p++) {
         const d = await read(p);
         if (!live) return;
-        if (p === 1) totalPages = d.totalPages || 1;
+        if (p === 1) {
+          totalPages = d.totalPages || 1;
+          setFirstPage(d);
+        }
         for (const r of d.results)
           if (!seen.has(idOf(r))) {
             seen.add(idOf(r));
@@ -245,11 +254,17 @@ export function usePaged<T>(
   }, [snapKey, base, idOf]);
   useEffect(() => {
     if (loadedBase === base && page > 0)
-      pagedSnap.set(snapKey, { items, page, total, gen: rowsGen.current });
+      pagedSnap.set(snapKey, {
+        items,
+        page,
+        total,
+        gen: rowsGen.current,
+        firstPage,
+      });
     // keep memory bounded: a long session visits many lists
     if (pagedSnap.size > 30)
       pagedSnap.delete(pagedSnap.keys().next().value as string);
-  }, [base, loadedBase, snapKey, items, page, total]);
+  }, [base, loadedBase, snapKey, items, page, total, firstPage]);
   const loadNext = useCallback(
     async (retrying: boolean) => {
       // after a failure only Retry asks again: retrying by itself would hammer the rate limit
@@ -272,17 +287,16 @@ export function usePaged<T>(
       setLoading(true);
       try {
         const sep = base.includes('?') ? '&' : '?';
-        const d = await cachedApi<{
-          page: number;
-          totalPages: number;
-          results: T[];
-        }>(`${base}${sep}page=${page + 1}`);
+        const d = await cachedApi<Paged<T> & Metadata>(
+          `${base}${sep}page=${page + 1}`
+        );
         if (!ownsRequest()) return; // an old filter must not replace the current list
         // popular lists shift between pages, so a title can come back; show it once
         setItems((x) => {
           const seen = new Set(x.map(idOf));
           return x.concat(d.results.filter((r) => !seen.has(idOf(r))));
         });
+        if (page === 0) setFirstPage(d);
         setPage(d.page);
         setTotal(d.totalPages || 1);
       } catch (e) {
@@ -296,6 +310,14 @@ export function usePaged<T>(
     },
     [base, loadedBase, page, total, loading, error, idOf]
   );
+  const recheckEmptyFirstPage = useCallback(() => {
+    if (!base || loadedBase !== base || page !== 1 || items.length || loading)
+      return;
+    const separator = base.includes('?') ? '&' : '?';
+    forget(`${base}${separator}page=1`);
+    setPage(0);
+    setError(null);
+  }, [base, loadedBase, page, items.length, loading]);
   const more = useCallback(() => loadNext(false), [loadNext]);
   const retry = useCallback(() => loadNext(true), [loadNext]);
   useEffect(() => {
@@ -303,6 +325,8 @@ export function usePaged<T>(
   }, [base, page, loading, error, more]);
   return {
     items,
+    firstPage: loadedBase === base ? firstPage : undefined,
+    recheckEmptyFirstPage,
     more,
     retry,
     loading,

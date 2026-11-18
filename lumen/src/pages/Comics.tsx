@@ -135,6 +135,16 @@ const inLibrary = (w: ComicWork) =>
   w.mediaInfo?.status === MediaStatus.AVAILABLE ||
   w.mediaInfo?.status === MediaStatus.PARTIAL;
 
+interface ComicCatalogueStatus {
+  comicVineConfigured?: boolean;
+  indexing?: boolean;
+  indexedResults?: number;
+  expectedResults?: number;
+  indexError?: string;
+}
+
+const CATALOGUE_RECHECK_MS = 15_000;
+
 const COMIC_CATALOG_FIELDS = [
   { key: 'query', label: 'Title', maxLength: 256 },
   { key: 'publisher', label: 'Publisher', maxLength: 128 },
@@ -179,9 +189,17 @@ export function Comics() {
   const catalogQuery = new URLSearchParams(catalogFilters);
   if (catalogQuery.size === 1 && catalogQuery.has('query'))
     catalogQuery.set('group', 'works');
-  const catalog = usePaged<Comic | ComicWork>(
+  const catalog = usePaged<Comic | ComicWork, ComicCatalogueStatus>(
     catalogMode ? `/discover/comics?${catalogQuery}` : null
   );
+  const catalogueStatus = catalogMode ? catalog.firstPage : undefined;
+  const indexing = catalogueStatus?.indexing === true;
+  const { recheckEmptyFirstPage } = catalog;
+  useEffect(() => {
+    if (!indexing || catalog.page !== 1) return;
+    const timer = setTimeout(recheckEmptyFirstPage, CATALOGUE_RECHECK_MS);
+    return () => clearTimeout(timer);
+  }, [indexing, catalog.page, recheckEmptyFirstPage]);
   const publisher = p.get('publisher') || '';
   const sort = p.get('sort') || '';
   const filtered = !!(
@@ -465,13 +483,35 @@ export function Comics() {
         {list.error && !items.length && (
           <ServiceNote error={list.error} what="comics" retry={list.retry} />
         )}
-        {!list.error &&
+        {indexing && (
+          <div className="empty" role="status">
+            <b>Comic catalogue indexing</b>
+            {typeof catalogueStatus.indexedResults === 'number' &&
+              (catalogueStatus.expectedResults
+                ? `${catalogueStatus.indexedResults} of ${catalogueStatus.expectedResults} volumes indexed.`
+                : `${catalogueStatus.indexedResults} volumes indexed.`)}
+            {catalogueStatus.indexError &&
+              ' Indexing encountered a problem. SeerrNG will retry.'}
+            <button
+              className="btn btn-tonal btn-sm"
+              type="button"
+              onClick={recheckEmptyFirstPage}
+              disabled={catalog.loading || catalog.page === 0}
+            >
+              Check Again
+            </button>
+          </div>
+        )}
+        {!indexing &&
+          !list.error &&
           !items.length &&
           !list.loading &&
           list.page > 0 &&
           (catalogMode || show !== 'not' || list.done) && (
             <div className="empty">
-              {catalogMode ? (
+              {catalogueStatus?.comicVineConfigured === false ? (
+                <b>The comic catalogue needs a ComicVine key</b>
+              ) : catalogMode ? (
                 <>
                   <b>No comics found</b>Try different filters or check whether
                   the catalogue has finished indexing.
