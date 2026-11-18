@@ -424,3 +424,52 @@ for (const admin of [false, true]) {
     });
   });
 }
+
+test('available request history finds download copies on demand and links the selected file', async ({
+  page,
+}) => {
+  await fixture(page, { stage: 'available', percent: null });
+  const path = '/api/v1/request/status/614';
+  const assetId = 'A'.repeat(43);
+  let lookups = 0;
+  await page.route(`**${path}`, (route) =>
+    route.fulfill({
+      json: {
+        request: {
+          id: 614,
+          type: 'book',
+          status: 2,
+          bookFormat: 'audiobook',
+          is4k: false,
+          createdAt: '2026-11-08T12:00:00Z',
+          requestedBy: { id: 1, displayName: 'reader' },
+          media: { mediaType: 'book', status: 5 },
+        },
+        current: { stage: 'available' },
+        history: { results: [], pageInfo: { pages: 0 } },
+      },
+    })
+  );
+  await page.route(`**${path}/downloads`, (route) => {
+    lookups++;
+    return route.fulfill({
+      json: {
+        results: [
+          { id: assetId, name: 'Fixture audiobook.m4b', format: 'audiobook' },
+          { id: '../invalid', name: 'Invalid file' },
+        ],
+      },
+    });
+  });
+  await page.goto('/requests?requestId=614');
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  const find = history.getByRole('button', { name: 'Find Download Files' });
+  await expect(find).toBeVisible();
+  expect(lookups).toBe(0);
+  await find.click();
+  await expect(history.getByText('Invalid file')).toHaveCount(0);
+  const file = history.getByRole('link', { name: 'Fixture audiobook.m4b' });
+  await expect(file).toHaveAttribute('href', `${path}/downloads/${assetId}`);
+  await expect(file).toHaveAttribute('download', '');
+  expect(lookups).toBe(1);
+});
