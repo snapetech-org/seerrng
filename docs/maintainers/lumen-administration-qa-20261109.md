@@ -232,3 +232,14 @@ responses. Live provider connections and acquisition were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-collectors-20261118/`.
+
+### Sportarr service
+
+Administrators can manage Sportarr from You. The connection test loads quality
+profiles and the editor saves the selected profile. Compared the tested form
+with LazyLibrarian on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production
+build and 24 browser checks passed using synthetic responses. Live connections
+and sports acquisition were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-sportarr-20261118/`.

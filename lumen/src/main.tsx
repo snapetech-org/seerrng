@@ -599,6 +599,24 @@ function App() {
             }
           />
           <Route
+            path="/admin/sportarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Sportarr services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="sportarr" provider="sportarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
             path="/admin/whisparr"
             element={
               isAdministrator(user.permissions) ? (

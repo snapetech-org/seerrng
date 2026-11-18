@@ -245,6 +245,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Sportarr Services</b>
+              <Link
+                className="go"
+                to="/admin/sportarr"
+                aria-label="Open Sportarr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"

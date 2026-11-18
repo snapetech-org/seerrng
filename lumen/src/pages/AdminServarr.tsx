@@ -15,7 +15,8 @@ type Provider =
   | 'lazylibrarian'
   | 'mylar'
   | 'kapowarr'
-  | 'backissue';
+  | 'backissue'
+  | 'sportarr';
 const names = {
   radarr: 'Radarr',
   sonarr: 'Sonarr',
@@ -26,6 +27,7 @@ const names = {
   mylar: 'Mylar',
   kapowarr: 'Kapowarr',
   backissue: 'BackIssue',
+  sportarr: 'Sportarr',
 };
 const ports = {
   radarr: 7878,
@@ -37,6 +39,7 @@ const ports = {
   mylar: 8090,
   kapowarr: 5656,
   backissue: 8787,
+  sportarr: 1867,
 };
 interface Service {
   id?: number;
@@ -137,6 +140,7 @@ function ServiceForm({
   done: () => void;
 }) {
   const name = names[provider];
+  const isSportarr = provider === 'sportarr';
   const isSonarr = provider === 'sonarr';
   const video = isSonarr || provider === 'radarr';
   const isBook = provider === 'readarr';
@@ -222,7 +226,7 @@ function ServiceForm({
       ? (backend !== 'bindery' || mappings !== undefined) &&
         (provider !== 'kapowarr' || !!draft.rootFolder?.trim())
       : draft.activeProfileId > 0 &&
-        !!draft.activeDirectory &&
+        (isSportarr || !!draft.activeDirectory) &&
         (!hasMetadata ||
           !options?.metadataProfiles?.length ||
           options.metadataProfiles.some(
@@ -230,9 +234,10 @@ function ServiceForm({
           )) &&
         (!options ||
           (options.profiles.some(({ id }) => id === draft.activeProfileId) &&
-            options.rootFolders.some(
-              ({ path }) => path === draft.activeDirectory
-            ))));
+            (isSportarr ||
+              options.rootFolders.some(
+                ({ path }) => path === draft.activeDirectory
+              )))));
   const optionsRequired =
     initial.id === undefined ||
     draft.hostname !== initial.hostname ||
@@ -531,14 +536,15 @@ function ServiceForm({
             </label>
           )}
           {flags
-            .filter(
-              ([field]) =>
-                video ||
-                (field !== 'is4k' &&
-                  field !== 'requestButtonAnimeOnly' &&
-                  (!(isBook || collector) || field !== 'tagRequests') &&
-                  (!(managed || provider === 'backissue') ||
-                    field !== 'preventSearch'))
+            .filter(([field]) =>
+              isSportarr
+                ? field === 'useSsl' || field === 'isDefault'
+                : video ||
+                  (field !== 'is4k' &&
+                    field !== 'requestButtonAnimeOnly' &&
+                    (!(isBook || collector) || field !== 'tagRequests') &&
+                    (!(managed || provider === 'backissue') ||
+                      field !== 'preventSearch'))
             )
             .map(([field, label]) => (
               <label className="set cfg-row" key={field}>
@@ -660,7 +666,7 @@ function ServiceForm({
               </select>
             </label>
           ) : null}
-          {!collector && (
+          {!collector && !isSportarr && (
             <label className="set cfg-row">
               <span>Download Queue Size</span>
               <input
@@ -777,24 +783,26 @@ function ServiceForm({
                   ))}
                 </select>
               </label>
-              <label className="set cfg-row">
-                <span>Root Folder</span>
-                <select
-                  className="cfg-select"
-                  value={draft.activeDirectory}
-                  disabled={busy}
-                  onChange={(event) =>
-                    change({ activeDirectory: event.target.value })
-                  }
-                >
-                  <option value="">Choose a Folder</option>
-                  {options.rootFolders.map(({ id, path }) => (
-                    <option key={id} value={path}>
-                      {path}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              {!isSportarr && (
+                <label className="set cfg-row">
+                  <span>Root Folder</span>
+                  <select
+                    className="cfg-select"
+                    value={draft.activeDirectory}
+                    disabled={busy}
+                    onChange={(event) =>
+                      change({ activeDirectory: event.target.value })
+                    }
+                  >
+                    <option value="">Choose a Folder</option>
+                    {options.rootFolders.map(({ id, path }) => (
+                      <option key={id} value={path}>
+                        {path}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
             </div>
             {hasMetadata && options.metadataProfiles && (
               <div className="setlist">
@@ -903,7 +911,7 @@ function ServiceForm({
             )}
             {(
               [
-                ...(isBook ? [] : (['tags'] as const)),
+                ...(isBook || isSportarr ? [] : (['tags'] as const)),
                 ...(video ? (['syncExcludedTags'] as const) : []),
                 ...(isSonarr ? (['animeTags'] as const) : []),
               ] as const
@@ -1046,7 +1054,10 @@ export default function AdminServarr({ provider }: { provider: Provider }) {
                 setEditing({
                   ...empty,
                   port: ports[provider],
-                  ...(provider === 'whisparr' ? { isDefault: true } : {}),
+                  ...(provider === 'whisparr' || provider === 'sportarr'
+                    ? { isDefault: true }
+                    : {}),
+                  ...(provider === 'sportarr' ? { name } : {}),
                 })
               }
             >
