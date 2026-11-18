@@ -127,7 +127,10 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
   const params = new URLSearchParams(path.split('?')[1]);
   const filter = params.get('filter');
   const requiresTimeline =
-    params.has('timeFrame') || params.has('bookFormat') || params.has('search');
+    params.has('timeFrame') ||
+    params.has('bookFormat') ||
+    params.has('search') ||
+    params.has('sortDirection');
   if (
     requiresTimeline ||
     (statusFilterSupported &&
@@ -876,6 +879,15 @@ function gameRow(g: SoftwareRequest): Row {
   };
 }
 
+const REQUEST_SORTS = [
+  ['priority', 'Request priority', 'added', 'desc'],
+  ['newest', 'Newest first', 'added', 'desc'],
+  ['oldest', 'Oldest first', 'added', 'asc'],
+  ['updated', 'Recently updated', 'modified', 'desc'],
+  ['title-asc', 'Title A–Z', 'title', 'asc'],
+  ['title-desc', 'Title Z–A', 'title', 'desc'],
+] as const;
+
 const REQUEST_TIME_FRAMES = [
   ['all', 'All time'],
   ['7d', 'Last 7 days'],
@@ -1093,6 +1105,13 @@ export default function Requests() {
     REQUEST_TIME_FRAMES.find(([value]) => value === timeFrameParam)?.[0] ??
     'all';
   const search = (p.get('search') ?? '').trim().slice(0, 200);
+  const [sortMode, , sortField, sortDirection] =
+    REQUEST_SORTS.find(([value]) => value === p.get('order')) ??
+    REQUEST_SORTS[0];
+  const priorityOrder = sortMode === 'priority';
+  const requestSortQuery = priorityOrder
+    ? 'sort=added'
+    : `sort=${sortField}&sortDirection=${sortDirection}`;
   const mediaQuery =
     requesterQuery +
     (mediaType === 'all' ? '' : `&mediaType=${mediaType}`) +
@@ -1103,7 +1122,12 @@ export default function Requests() {
     const next = new URLSearchParams(p);
     if (key === 'mediaType' && value !== 'book') next.delete('bookFormat');
     if (key === 'bookFormat') next.set('mediaType', 'book');
-    if (!value || (key !== 'search' && value === 'all')) next.delete(key);
+    if (
+      !value ||
+      (key !== 'search' && value === 'all') ||
+      (key === 'order' && value === 'priority')
+    )
+      next.delete(key);
     else next.set(key, value);
     setPages(1);
     setP(next, { replace: true });
@@ -1124,6 +1148,7 @@ export default function Requests() {
     bookFormat,
     timeFrame,
     search,
+    sortMode,
   ]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
@@ -1171,7 +1196,7 @@ export default function Requests() {
       let total = 0;
       for (let skip = 0; skip < take; skip += 100) {
         const d = await requestList(
-          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added${mediaQuery}`
+          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&${requestSortQuery}${mediaQuery}`
         );
         total = d.pageInfo?.results ?? 0;
         if (
@@ -1199,13 +1224,13 @@ export default function Requests() {
           requester
         );
       const started =
-        show === 'all' || show === 'processing'
+        priorityOrder && (show === 'all' || show === 'processing')
           ? startedDownloads(mediaQuery)
               .then((x) => x.sort((a, b) => progress(b) - progress(a)))
               .catch(() => [])
           : Promise.resolve([]);
       const pending =
-        show === 'all'
+        priorityOrder && show === 'all'
           ? list('pending', 50).then((x) => x.results)
           : Promise.resolve([]);
       const [waitingList, startedList, rest] = await Promise.all([
@@ -1249,6 +1274,8 @@ export default function Requests() {
     softwareStatus,
     requester,
     mediaQuery,
+    priorityOrder,
+    requestSortQuery,
   ]);
 
   useEffect(() => {
@@ -1343,7 +1370,7 @@ export default function Requests() {
   useEffect(() => {
     // a full load still on its way would land over the poll's newer numbers: skip this one
     if (!poll || !user || loads.current) return;
-    if (everyone && show === 'software') {
+    if (everyone && (show === 'software' || sortMode === 'updated')) {
       setTick((n) => n + 1);
       return;
     }
@@ -1351,7 +1378,8 @@ export default function Requests() {
     const current = shown || [];
     const ids = new Set(current.map((x) => x.r.id));
     // these lists always include every started download
-    const withStarted = !everyone || show === 'all' || show === 'processing';
+    const withStarted =
+      !everyone || (priorityOrder && (show === 'all' || show === 'processing'));
     const gameBusy =
       !everyone &&
       current.some((x) => x.r.id < 0 && state(x, serverName).pct != null);
@@ -1453,9 +1481,11 @@ export default function Requests() {
           {everyone
             ? show === 'software'
               ? 'Software and game requests from everyone, newest first.'
-              : show === 'all'
-                ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
-                : 'Everyone’s requests, newest first.'
+              : !priorityOrder
+                ? 'Everyone’s requests in the selected order.'
+                : show === 'all'
+                  ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+                  : 'Everyone’s requests, newest first.'
             : 'Everything you’ve asked for, newest first.'}
         </p>
       </header>
@@ -1574,6 +1604,21 @@ export default function Requests() {
               </select>
             </label>
           )}
+          <label className="sel">
+            <span className="lbl">Sort</span>
+            <select
+              value={sortMode}
+              onChange={(event) =>
+                setRequestFilter('order', event.target.value)
+              }
+            >
+              {REQUEST_SORTS.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="sel">
             <span className="lbl">Date Added</span>
             <select

@@ -604,3 +604,14 @@ apply before pagination. Clearing search retains the other filters.
 Standalone Chrome at 1440 × 1000 submitted a term containing an ampersand,
 verified the matching synthetic request, and cleared search while retaining
 Waiting. Native visual comparison, mobile and bundled checks remain open.
+
+### Household request sorting increment
+
+Everyone media requests can sort across pages by date added, last update or
+title. The default Request Priority option retains pending and active download
+prioritization. Other options follow the server's order and are bookmarkable.
+
+Standalone Chrome at 1440 × 1000 verified a bookmarked Oldest first movie
+view and switched it to Newest first by keyboard, reversing the fixture rows
+and retaining the media filter. Native visual comparison, mobile, bundled and
+other sort options remain unverified.
