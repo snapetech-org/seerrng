@@ -1329,3 +1329,73 @@ test('episode availability loads on demand and switches source results with the 
   await expect(page.getByText('Plex HD', { exact: true })).toHaveCount(0);
   expect(reads).toEqual([1, 2]);
 });
+
+test('series watch rule keeps the rejected selection and links playback accounts', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: {
+        id: 2,
+        displayName: 'Viewer',
+        permissions: 32,
+        tvSeasonWatchGateStatus: 'enabled',
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [
+          { id: 21, seasonNumber: 1, episodeCount: 2 },
+          { id: 22, seasonNumber: 2, episodeCount: 2 },
+        ],
+      },
+    })
+  );
+  let body: unknown;
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    body = route.request().postDataJSON();
+    return route.fulfill({
+      status: 403,
+      json: {
+        code: 'TV_SEASON_WATCH_GATE',
+        reason: 'account-required',
+        message: 'Link your playback account before requesting a later season.',
+      },
+    });
+  });
+  await page.goto('/tv/202');
+  await expect(
+    page.getByText('Later seasons may require', { exact: false })
+  ).toBeVisible();
+  const first = page.getByRole('checkbox', { name: /Season 1/ });
+  const second = page.getByRole('checkbox', { name: /Season 2/ });
+  await expect(second).toBeVisible();
+  if ((await first.getAttribute('aria-checked')) === 'true')
+    await first.click();
+  if ((await second.getAttribute('aria-checked')) === 'false')
+    await second.click();
+  await page
+    .getByRole('button', { name: 'Request 1 season', exact: true })
+    .filter({ visible: true })
+    .first()
+    .click();
+  const alert = page.getByRole('alert').filter({
+    hasText: 'Link your playback account before requesting a later season.',
+  });
+  await expect(alert).toBeVisible();
+  await expect(
+    alert.getByRole('link', { name: 'Link Playback Account' })
+  ).toHaveAttribute('href', '/me/account/linked-accounts');
+  await expect(second).toHaveAttribute('aria-checked', 'true');
+  expect(body).toMatchObject({ mediaType: 'tv', mediaId: 202, seasons: [2] });
+  await second.click();
+  await expect(alert).toHaveCount(0);
+});

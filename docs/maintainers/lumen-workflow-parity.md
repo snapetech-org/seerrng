@@ -942,3 +942,13 @@ Standalone desktop, iPhone, Android and tablet fixtures verified no season
 read before expansion, Plex HD, absent reports, and a season change to
 legacy Sonarr 4K. Live provider scans and bundled and native visual
 comparison remain open.
+
+### Previous-season watch rule feedback
+
+Series details show when the watch rule may apply. A structured SeerrNG
+rejection keeps the selected seasons intact and displays the server's reason
+beside the picker. A missing playback account links to Linked Accounts.
+Standalone browser fixtures verified the exact rejected season, retained
+selection, recovery link, and clearing the message on selection change
+across desktop and three touch presets. Live playback and bundled and
+native visual comparisons remain open.

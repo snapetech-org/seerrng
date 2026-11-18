@@ -23320,7 +23320,10 @@ paths:
                     example: 403
                   code:
                     type: string
-                    enum: [STREAMING_REQUEST_POLICY_REJECTED]
+                    enum: [STREAMING_REQUEST_POLICY_REJECTED, TV_SEASON_WATCH_GATE]
+                  reason:
+                    type: string
+                    enum: [account-required]
                   message:
                     type: string
                   allowOverride:
@@ -23328,6 +23331,21 @@ paths:
                     description: True when this requester may retry once while bypassing this policy match.
         '409':
           description: Another quota exception for this media type is already awaiting review
+        '503':
+          description: Playback history could not be verified for the previous-season watch rule
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 503
+                  code:
+                    type: string
+                    enum: [TV_SEASON_WATCH_GATE]
+                  message:
+                    type: string
   /request/bulk:
     post:
       summary: Create bulk media requests

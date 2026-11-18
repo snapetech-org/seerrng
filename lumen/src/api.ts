@@ -19,7 +19,9 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
-    public confirmationRequired?: string
+    public confirmationRequired?: string,
+    public code?: string,
+    public reason?: string
   ) {
     super(message);
   }
@@ -45,15 +47,19 @@ export async function api<T>(
   if (!res.ok) {
     let msg = res.statusText;
     let confirmationRequired: string | undefined;
+    let code: string | undefined;
+    let reason: string | undefined;
     try {
       const b = await res.json();
       msg = b.message || b.error || msg;
+      if (typeof b.code === 'string') code = b.code;
+      if (typeof b.reason === 'string') reason = b.reason;
       if (typeof b.confirmationRequired === 'string')
         confirmationRequired = b.confirmationRequired;
     } catch {
       // body wasn't JSON
     }
-    throw new ApiError(res.status, msg, confirmationRequired);
+    throw new ApiError(res.status, msg, confirmationRequired, code, reason);
   }
   // a request or other change: saved answers may now be out of date
   if (init.method && init.method !== 'GET') markAllStale();
@@ -172,6 +178,7 @@ export interface User {
   permissions: number;
   userType?: 1 | 2 | 3 | 4;
   warnings?: string[];
+  tvSeasonWatchGateStatus?: string;
   settings?: {
     detailDisclosureCastPinned?: boolean;
     detailDisclosureCrewPinned?: boolean;

@@ -20,7 +20,8 @@ import { hasWatchAheadMediaServerLink } from '@server/lib/watchAheadEligibility'
 export class TvSeasonWatchGateError extends Error {
   public constructor(
     public readonly status: 403 | 503,
-    message: string
+    message: string,
+    public readonly reason?: 'account-required'
   ) {
     super(message);
     this.name = 'TvSeasonWatchGateError';
@@ -76,7 +77,8 @@ const getVerifiedWatchHistory = async (
   ) {
     throw new TvSeasonWatchGateError(
       403,
-      'Link your Plex, Jellyfin, or Emby account before requesting a later season.'
+      'Link your Plex, Jellyfin, or Emby account before requesting a later season.',
+      'account-required'
     );
   }
 

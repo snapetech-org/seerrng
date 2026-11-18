@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import {
+  ApiError,
   mediaLink,
   MediaStatus,
   requestSeries,
@@ -10,7 +11,7 @@ import {
   type TitleResult,
   type TvDetails,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -70,6 +71,7 @@ const seasonList = (n: number[]) => {
 
 export default function TvDetail() {
   const serverName = useMediaServerName();
+  const { user } = useAuth();
   const { id } = useParams();
   const loc = useLocation();
   const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
@@ -80,6 +82,11 @@ export default function TvDetail() {
   const [sel, setSel] = useState<Set<number>>(new Set());
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
+  const [watchFailure, setWatchFailure] = useState<{
+    selection: string;
+    message: string;
+    needsAccount: boolean;
+  }>();
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   // people who may request 4K series pick 1080p or 4K here, admins or not
   const offers4k = useOffers4k('tv');
@@ -171,6 +178,18 @@ export default function TvDetail() {
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
   const n = sel.size;
+  const selectedSeasons = [...sel].sort((a, b) => a - b);
+  const selectionKey = JSON.stringify([
+    t.id,
+    is4k,
+    opts.userId,
+    selectedSeasons,
+  ]);
+  const gateFailure =
+    watchFailure?.selection === selectionKey ? watchFailure : undefined;
+  const watchRule =
+    pub?.tvSeasonWatchGateEnabled === true ||
+    user?.tvSeasonWatchGateStatus === 'enabled';
   const label = !n
     ? 'Pick seasons'
     : n === missing.length && n > 1
@@ -189,13 +208,14 @@ export default function TvDetail() {
   };
   const blocklisted = t.mediaInfo?.status === MediaStatus.BLOCKLISTED;
   const request = async () => {
-    if (!n || blocklisted) return;
+    if (!n || blocklisted || busy) return;
+    setWatchFailure(undefined);
     setBusy(true);
     try {
       const whole = n === seasons.length;
       await requestSeries(
         t.id,
-        whole ? 'all' : [...sel].sort((a, b) => a - b),
+        whole ? 'all' : selectedSeasons,
         is4k ? { ...opts, is4k: true } : opts
       );
       toast(
@@ -203,7 +223,21 @@ export default function TvDetail() {
       );
       refresh();
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      if (e instanceof ApiError && e.code === 'TV_SEASON_WATCH_GATE') {
+        setWatchFailure({
+          selection: selectionKey,
+          message: friendlyError(
+            e,
+            'Could not verify the previous season. Try again.'
+          ),
+          needsAccount: e.reason === 'account-required',
+        });
+        document
+          .getElementById('seasons')
+          ?.scrollIntoView({ behavior: scrollBehavior() });
+      } else {
+        toast(friendlyError(e, 'Request failed'));
+      }
     } finally {
       setBusy(false);
     }
@@ -409,6 +443,25 @@ export default function TvDetail() {
               <div className="sec-head">
                 <h2>Seasons</h2>
               </div>
+              {watchRule && (
+                <p className="note">
+                  Later seasons may require finishing the previous regular
+                  season on your linked media server.
+                </p>
+              )}
+              {gateFailure && (
+                <div className="note" role="alert">
+                  <p>{gateFailure.message}</p>
+                  {gateFailure.needsAccount && (
+                    <Link
+                      className="btn btn-tonal btn-sm"
+                      to="/me/account/linked-accounts"
+                    >
+                      Link Playback Account
+                    </Link>
+                  )}
+                </div>
+              )}
               {missing.length > 1 && (
                 <p className="note" style={{ margin: '-4px 0 12px' }}>
                   {!partialOk

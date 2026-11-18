@@ -3109,7 +3109,14 @@ requestRoutes.get<
 });
 
 type MediaRequestCreationResponse =
-  MediaRequest | StreamingRequestPolicyRejectionResponse;
+  | MediaRequest
+  | StreamingRequestPolicyRejectionResponse
+  | {
+      status: TvSeasonWatchGateError['status'];
+      code: 'TV_SEASON_WATCH_GATE';
+      message: string;
+      reason?: TvSeasonWatchGateError['reason'];
+    };
 
 requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
   '/',
@@ -3254,7 +3261,12 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
       }
 
       if (error instanceof TvSeasonWatchGateError) {
-        return next({ status: error.status, message: error.message });
+        return res.status(error.status).json({
+          status: error.status,
+          code: 'TV_SEASON_WATCH_GATE',
+          message: error.message,
+          reason: error.reason,
+        });
       }
 
       if (error instanceof StreamingRequestPolicyRejection) {
