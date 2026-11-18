@@ -33,6 +33,12 @@ const policies = [
     description: 'Include specials when users select seasons to request.',
   },
   {
+    key: 'trackEpisodeAvailability',
+    label: 'Track Individual Episode Availability',
+    description:
+      'Record episode files during Sonarr, Plex, Jellyfin, and Emby scans. Sonarr tracking requires TheTVDB. Match library episode numbering to the selected metadata provider.',
+  },
+  {
     key: 'tvSeasonWatchGateEnabled',
     label: 'Require the Previous Season to Be Watched',
     description:
@@ -155,6 +161,8 @@ export function InstanceRequestSettings() {
             partialRequestsEnabled:
               settings.data.partialRequestsEnabled !== false,
             enableSpecialEpisodes: settings.data.enableSpecialEpisodes === true,
+            trackEpisodeAvailability:
+              settings.data.trackEpisodeAvailability === true,
             tvSeasonWatchGateEnabled:
               settings.data.tvSeasonWatchGateEnabled === true,
           }}

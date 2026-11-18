@@ -107,6 +107,7 @@ export interface PublicSettings {
   personMovieBulkRequestsEnabled?: boolean;
   enable4k?: boolean;
   enableSpecialEpisodes?: boolean;
+  trackEpisodeAvailability?: boolean;
   tvSeasonWatchGateEnabled?: boolean;
   series4kEnabled: boolean;
   partialRequestsEnabled: boolean;

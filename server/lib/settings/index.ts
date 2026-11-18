@@ -715,6 +715,7 @@ interface FullPublicSettings extends PublicSettings {
   tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
+  trackEpisodeAvailability: boolean;
   cacheImages: boolean;
   vapidPublic: string;
   enablePushRegistration: boolean;
@@ -1898,6 +1899,7 @@ class Settings {
       personMovieBulkRequestsEnabled:
         this.data.main.personMovieBulkRequestsEnabled,
       enableSpecialEpisodes: this.data.main.enableSpecialEpisodes,
+      trackEpisodeAvailability: this.data.main.trackEpisodeAvailability,
       cacheImages: this.data.main.cacheImages,
       vapidPublic: this.vapidPublic,
       enablePushRegistration: this.data.notifications.agents.webpush.enabled,

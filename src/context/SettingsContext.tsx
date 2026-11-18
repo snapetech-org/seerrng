@@ -56,6 +56,7 @@ const defaultSettings: PublicSettingsResponse = {
   tvSeasonWatchGateEnabled: false,
   personMovieBulkRequestsEnabled: false,
   enableSpecialEpisodes: false,
+  trackEpisodeAvailability: false,
   cacheImages: true,
   vapidPublic: '',
   enablePushRegistration: false,

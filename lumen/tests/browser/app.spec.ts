@@ -1261,3 +1261,71 @@ test('series specials follow the instance request policy', async ({ page }) => {
   await page.goto('/tv/202');
   await expect(page.getByText('Specials', { exact: true })).toBeVisible();
 });
+
+test('episode availability loads on demand and switches source results with the season', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: number[] = [];
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { applicationTitle: 'SeerrNG', trackEpisodeAvailability: true },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        mediaType: 'tv',
+        name: 'Fixture Series',
+        seasons: [
+          { id: 21, seasonNumber: 1, episodeCount: 2 },
+          { id: 22, seasonNumber: 2, episodeCount: 1 },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202/season/*', (route) => {
+    const season = Number(
+      new URL(route.request().url()).pathname.split('/').at(-1)
+    );
+    reads.push(season);
+    return route.fulfill({
+      json: {
+        episodes:
+          season === 1
+            ? [
+                {
+                  episodeNumber: 1,
+                  name: 'Pilot',
+                  availabilitySources: [
+                    { sourceType: 'plex', hd: true, fourK: false },
+                  ],
+                },
+                { episodeNumber: 2, name: 'Second' },
+              ]
+            : [
+                {
+                  episodeNumber: 1,
+                  name: 'Return',
+                  sonarrAvailability: { hd: false, fourK: true },
+                },
+              ],
+      },
+    });
+  });
+  await page.goto('/tv/202');
+  const summary = page.getByText('Episode Availability', { exact: true });
+  await expect(summary).toBeVisible();
+  expect(reads).toEqual([]);
+  await summary.click();
+  await expect(page.getByText('Plex HD', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('No file reported', { exact: true })
+  ).toBeVisible();
+  await page.getByLabel('Availability Season').selectOption('2');
+  await expect(page.getByText('Sonarr 4K', { exact: true })).toBeVisible();
+  await expect(page.getByText('Plex HD', { exact: true })).toHaveCount(0);
+  expect(reads).toEqual([1, 2]);
+});

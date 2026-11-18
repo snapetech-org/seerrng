@@ -67,6 +67,7 @@ export interface PublicSettingsResponse {
   tvSeasonWatchGateEnabled: boolean;
   personMovieBulkRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
+  trackEpisodeAvailability: boolean;
   cacheImages: boolean;
   vapidPublic: string;
   enablePushRegistration: boolean;

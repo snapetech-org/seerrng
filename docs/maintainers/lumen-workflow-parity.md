@@ -930,3 +930,15 @@ values, failed-save recovery, and specials appearing after the administrator
 enables them. Desktop, iPhone, Android and tablet presets passed. Individual
 episode availability tracking configuration, live playback enforcement and
 bundled and native visual comparisons remain open.
+
+### Episode file availability increment
+
+Lumen administers individual episode availability tracking with the native
+instance flag. Series details show an on-demand season panel when tracking
+is enabled. It uses the existing viewer-filtered season endpoint and
+displays reported source and quality, including the older Sonarr response.
+
+Standalone desktop, iPhone, Android and tablet fixtures verified no season
+read before expansion, Plex HD, absent reports, and a season change to
+legacy Sonarr 4K. Live provider scans and bundled and native visual
+comparison remain open.

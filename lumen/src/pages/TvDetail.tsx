@@ -29,6 +29,7 @@ import {
   Pill,
   SubjectTagsDisclosure,
 } from '../components/detail';
+import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -509,6 +510,13 @@ export default function TvDetail() {
                 })}
               </div>
             </div>
+            {pub?.trackEpisodeAvailability === true && seasons.length > 0 && (
+              <EpisodeAvailabilityPanel
+                key={t.id}
+                tvId={t.id}
+                seasons={seasons}
+              />
+            )}
             {!!t.credits?.cast?.length && (
               <CreditsDisclosure
                 key={`cast-${t.id}`}

@@ -4943,6 +4943,10 @@ components:
         - plexClientIdentifier
         - jellyfinQuickConnectOnly
       properties:
+        trackEpisodeAvailability:
+          type: boolean
+          description: Whether the instance records individual episode file availability.
+          example: false
         lockLumenForNonAdmins:
           type: boolean
           description: Whether signed-in non-administrators are restricted to included Lumen pages.
