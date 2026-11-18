@@ -112,8 +112,24 @@ function detailDeepLink(req: Request): string | undefined {
     /^\/associations\/(movie|tv|album|artist|book)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(
       req.path
     );
-  if (association)
-    return `/lumen/associations/${association[1]}/${association[2]}`;
+  if (association) {
+    const [, mediaType, id] = association;
+    const query = new URLSearchParams();
+    if (req.query.view === 'graph') query.set('view', 'graph');
+    if (mediaType === 'book' && req.query.f === 'audio')
+      query.set('f', 'audio');
+    const type = req.query.type;
+    if (
+      type === 'similar' ||
+      type === 'recommended' ||
+      type === 'shared-person' ||
+      type === 'shared-genre'
+    ) {
+      query.set('type', type);
+    }
+    const suffix = query.toString();
+    return `/lumen/associations/${mediaType}/${id}${suffix ? `?${suffix}` : ''}`;
+  }
   const subpage =
     /^\/(movie|tv)\/([1-9]\d{0,9})\/(cast|crew|recommendations|similar)\/?$/.exec(
       req.path

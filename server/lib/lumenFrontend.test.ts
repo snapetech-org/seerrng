@@ -250,6 +250,14 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/discover/audiobooks', '/lumen/audiobooks'],
       ['/discover/list/12345/?page=2&ignored=1', '/lumen/list/12345?page=2'],
       ['/associations/movie/123/', '/lumen/associations/movie/123'],
+      [
+        '/associations/book/OL123W?view=graph&f=audio&type=shared-person&ignored=1',
+        '/lumen/associations/book/OL123W?view=graph&f=audio&type=shared-person',
+      ],
+      [
+        '/associations/movie/123?view=graph&view=list&f=audio&type=unrecognized',
+        '/lumen/associations/movie/123',
+      ],
       ['/movie/123/cast', '/lumen/movie/123#cast'],
       ['/movie/123/crew/', '/lumen/movie/123#crew'],
       ['/tv/456/cast/', '/lumen/tv/456#cast'],

@@ -1412,3 +1412,7 @@ Native Search bookmarks now retain the search term and supported media
 scope on the companion. The Search screen and desktop search bar use
 the same URL normalization, and editing a filter writes the Lumen
 parameters. Eight standalone checks passed across four viewport presets.
+
+Bundled frontend lock now retains the graph view, relationship filter,
+and audiobook format on Association bookmarks. The server integration
+test covers those supported values and ambiguous or unsupported inputs.
