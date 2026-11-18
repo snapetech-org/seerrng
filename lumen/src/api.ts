@@ -799,7 +799,11 @@ export interface MovieDetails extends TitleResult {
   releases?: {
     results: {
       iso_3166_1: string;
-      release_dates: { certification: string; type: number }[];
+      release_dates: {
+        certification: string;
+        type: number;
+        release_date?: string;
+      }[];
     }[];
   };
   collection?: { id: number; name: string };

@@ -6747,11 +6747,33 @@ test('movie and series details use separate account regions for providers and ra
           results: [
             {
               iso_3166_1: 'US',
-              release_dates: [{ certification: 'PG-13', type: 3 }],
+              release_dates: [
+                {
+                  certification: 'PG-13',
+                  type: 3,
+                  release_date: '2020-05-01T00:00:00Z',
+                },
+              ],
             },
             {
               iso_3166_1: 'GB',
-              release_dates: [{ certification: '12A', type: 3 }],
+              release_dates: [
+                {
+                  certification: '12A',
+                  type: 3,
+                  release_date: '2020-05-08T00:00:00Z',
+                },
+                {
+                  certification: '',
+                  type: 4,
+                  release_date: '2020-06-01T00:00:00Z',
+                },
+                {
+                  certification: '',
+                  type: 1,
+                  release_date: '2020-04-22T00:00:00Z',
+                },
+              ],
             },
           ],
         },
@@ -6788,6 +6810,12 @@ test('movie and series details use separate account regions for providers and ra
     ).toBeVisible();
     await expect(page.getByText('US Stream', { exact: true })).toHaveCount(0);
     await expect(page.locator('.cert')).toHaveText(rating);
+    if (capture === 'movie') {
+      await expect(page.getByText('Theatrical · May 8, 2020')).toBeVisible();
+      await expect(page.getByText('Digital · Jun 1, 2020')).toBeVisible();
+      await expect(page.getByText('Theatrical · May 1, 2020')).toHaveCount(0);
+      await expect(page.getByText(/Apr 22, 2020/)).toHaveCount(0);
+    }
     await expect(page.getByText(wrongRating, { exact: true })).toHaveCount(0);
     await page.screenshot({
       path: info.outputPath(capture + '-regional-details.png'),

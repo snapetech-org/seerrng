@@ -52,6 +52,12 @@ import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
+const releaseKinds = new Map([
+  [3, 'Theatrical'],
+  [4, 'Digital'],
+  [5, 'Physical'],
+]);
+
 export default function MovieDetail() {
   const serverName = useMediaServerName();
   const { id } = useParams();
@@ -92,9 +98,21 @@ export default function MovieDetail() {
     return <ServiceNote error={error} what="this movie" retry={reload} />;
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
-  const certification = m.releases?.results
-    .find((release) => release.iso_3166_1 === ratingRegion)
-    ?.release_dates.find((release) => release.certification)?.certification;
+  const regionReleases =
+    m.releases?.results.find((release) => release.iso_3166_1 === ratingRegion)
+      ?.release_dates ?? [];
+  const certification = regionReleases.find(
+    (release) => release.certification
+  )?.certification;
+  const releaseDates = new Map<number, { label: string; date: string }>();
+  for (const release of regionReleases) {
+    const label = releaseKinds.get(release.type);
+    const day = release.release_date?.slice(0, 10);
+    if (!label || !day || !/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
+    const date = new Date(day);
+    if (Number.isFinite(date.valueOf()) && date.toISOString().startsWith(day))
+      releaseDates.set(release.type, { label, date: day });
+  }
 
   // A pending 4K copy must not make the independent HD request look requested.
   const requestMedia = withoutPending4k(progressMedia);
@@ -362,8 +380,20 @@ export default function MovieDetail() {
                 ],
                 ['Runtime', fmtRun(m.runtime)],
                 [
-                  'Released',
-                  date ? `${shortDate(date, false)}, ${date.slice(0, 4)}` : '',
+                  releaseDates.size > 1 ? 'Release Dates' : 'Released',
+                  releaseDates.size
+                    ? [...releaseDates.values()].map(
+                        ({ label, date }, index) => (
+                          <span key={label}>
+                            {index > 0 && <br />}
+                            {label} · {shortDate(date, false)},{' '}
+                            {date.slice(0, 4)}
+                          </span>
+                        )
+                      )
+                    : date
+                      ? `${shortDate(date, false)}, ${date.slice(0, 4)}`
+                      : '',
                 ],
                 ['Director', director],
                 ['Rated', certification],
