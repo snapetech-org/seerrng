@@ -634,7 +634,8 @@ export const mountLumenFrontend = (
     /^\/lumen(?:\/|$)/i,
     (req, res, next) => {
       if (req.method !== 'GET') return next('route');
-      if (!isInitialized()) return res.redirect(302, '/setup');
+      if (!isInitialized() && !/^\/lumen\/setup\/?$/.test(req.path))
+        return res.redirect(302, '/setup');
       const pathname = req.path.slice('/lumen'.length);
       // Missing assets must not become successful HTML responses or consume the shell budget.
       if (path.extname(pathname) && !magazineTitle(pathname))

@@ -266,6 +266,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       (await request(app).get('/lumen/')).headers.location,
       '/setup'
     );
+    assert.equal((await request(app).get('/lumen/setup')).status, 200);
   } finally {
     await fs.rm(root, { recursive: true, force: true });
   }

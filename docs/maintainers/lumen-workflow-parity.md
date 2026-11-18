@@ -2699,3 +2699,13 @@ Playback responses bypass Lumen's browser cache. A missing Tautulli
 integration leaves the panel hidden. The production build, 16 household
 browser checks, and 14 cache tests passed. Live Tautulli responses,
 playback artwork, and matched visual acceptance remain unverified.
+
+The companion now opens first-run setup when SeerrNG reports that
+initialization is pending. Bundled Lumen exposes the same flow at
+`/lumen/setup`. It uses the existing Plex or Jellyfin/Emby sign-in
+endpoints, checks the browser session before exposing administrator
+controls, and reuses the media-library editor. Finish verifies an
+enabled library and waits for the server to confirm initialization.
+Four Jellyfin fixture checks and both deployment routing suites passed.
+Live provider sign-in, advanced guided setup, and matched visual
+acceptance remain open.

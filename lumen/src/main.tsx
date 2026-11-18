@@ -14,6 +14,7 @@ import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
+import { usePublicSettings } from './hooks';
 import { canSearchIndexers } from './indexerPermissions';
 import { MediaServerProvider } from './mediaServer';
 import AdminHome from './pages/AdminHome';
@@ -99,6 +100,7 @@ const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
 const ClientTokens = lazy(() => import('./pages/ClientTokens'));
 const NotificationSettings = lazy(() => import('./pages/NotificationSettings'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
+const Setup = lazy(() => import('./pages/Setup'));
 const CuratedCollection = lazy(() => import('./pages/CuratedCollection'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
@@ -108,8 +110,17 @@ const Downloads = lazy(() => import('./pages/Downloads'));
 function App() {
   const { user, unreachable, refresh } = useAuth();
   const location = useLocation();
+  const settings = usePublicSettings();
+  const setup = useMatch('/setup');
   const resetLink = useMatch('/resetpassword/:guid');
   const resetRequest = useMatch('/resetpassword');
+  if (setup) {
+    return (
+      <Suspense fallback={<div className="boot" aria-busy="true" />}>
+        <Setup />
+      </Suspense>
+    );
+  }
   if (resetLink || resetRequest) {
     return (
       <Suspense fallback={<div className="boot" aria-busy="true" />}>
@@ -126,6 +137,8 @@ function App() {
       </Suspense>
     );
   }
+  if (!embedded && settings?.initialized === false)
+    return <Navigate to="/setup" replace />;
   if (unreachable && !user)
     return (
       <div className="boot boot-note" role="alert">

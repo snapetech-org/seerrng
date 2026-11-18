@@ -226,6 +226,9 @@ async function check(settings, clientIp, scheme, headers = {}) {
         path
       );
     }
+    const setup = await fetch(base + '/setup', { redirect: 'manual' });
+    assert.equal(setup.status, 200);
+    assert.match(await setup.text(), /<div id="root"><\/div>/);
     const frontend = await fetch(base + '/');
     assert.equal(frontend.status, 200);
     assert.match(await frontend.text(), /<div id="root"><\/div>/);
