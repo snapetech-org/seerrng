@@ -14,6 +14,23 @@ import { normalizeStashDbId } from './stashdbIdentity';
 const classicCookie = 'seerrng-frontend';
 const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
 
+function watchSessionDeepLink(pathname: string): string | undefined {
+  const match = /^\/watch-sessions(?:\/(join|[1-9]\d{0,15}))?\/?$/i.exec(
+    pathname
+  );
+  if (!match) return;
+  const destination = match[1]?.toLowerCase();
+  if (
+    destination &&
+    destination !== 'join' &&
+    !Number.isSafeInteger(Number(destination))
+  ) {
+    return;
+  }
+  // An invite's fragment follows the redirect in the browser.
+  return `/lumen/watch-sessions${destination ? `/${destination}` : ''}`;
+}
+
 function requestDeepLink(req: Request): string | undefined {
   if (!/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
   const key =
@@ -366,6 +383,8 @@ function workflowDeepLink(
   pathname = req.path
 ): string | undefined {
   const nativePath = pathname.replace(/\/$/, '');
+  const watchSession = watchSessionDeepLink(nativePath);
+  if (watchSession) return watchSession;
   if (nativePath === '/book-series/requests')
     return '/lumen/book-series/requests';
   const localBookSeries = /^\/book-series\/([1-9]\d{0,15})$/.exec(nativePath);
@@ -584,18 +603,21 @@ export const mountLumenFrontend = (
       .set('Cache-Control', 'no-store')
       .redirect(302, `/lumen${req.path}`);
   });
-  server.get(['/requests', '/requests/status'], (req, res, next) => {
-    const target = requestDeepLink(req);
-    if (
-      !target ||
-      !isInitialized() ||
-      frontend() !== 'lumen' ||
-      (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic')
-    ) {
-      return next();
+  server.get(
+    ['/requests', '/requests/status', '/watch-sessions', '/watch-sessions/:id'],
+    (req, res, next) => {
+      const target = requestDeepLink(req) ?? watchSessionDeepLink(req.path);
+      if (
+        !target ||
+        !isInitialized() ||
+        frontend() !== 'lumen' ||
+        (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic')
+      ) {
+        return next();
+      }
+      return res.set('Cache-Control', 'no-store').redirect(302, target);
     }
-    return res.set('Cache-Control', 'no-store').redirect(302, target);
-  });
+  );
   server.get(/^\/lumen\/users\//, (req, res, next) => {
     const pathname = req.path.slice('/lumen'.length);
     const destination =

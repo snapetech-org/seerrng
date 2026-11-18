@@ -34,8 +34,9 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       enforceFrontend: () => enforceFrontend,
       companionUrl: () => companionUrl,
     });
-    app.get(['/', '/resetpassword/:guid', '/requests/status'], (_req, res) =>
-      res.send('Native interface')
+    app.get(
+      ['/', '/resetpassword/:guid', '/requests/status', '/watch-sessions/:id'],
+      (_req, res) => res.send('Native interface')
     );
     for (const page of [
       'jobs',
@@ -177,6 +178,18 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         .text,
       'Native interface'
     );
+    for (const suffix of ['', '/join', '/42']) {
+      const response = await request(app).get(
+        `/watch-sessions${suffix}?token=ignored`
+      );
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.location, `/lumen/watch-sessions${suffix}`);
+      assert.equal(response.headers['cache-control'], 'no-store');
+    }
+    assert.equal(
+      (await request(app).get('/watch-sessions/9007199254740992')).text,
+      'Native interface'
+    );
     const companion = request.agent(app);
     assert.equal(
       (await companion.get('/?interface=classic')).text,
@@ -189,6 +202,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     );
     assert.equal(
       (await companion.get('/requests/status?requestId=21')).text,
+      'Native interface'
+    );
+    assert.equal(
+      (await companion.get('/watch-sessions/join')).text,
       'Native interface'
     );
     const browser = request.agent(app);
@@ -324,6 +341,9 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .set('X-Test-Role', 'user');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     for (const [route, destination] of [
+      ['/watch-sessions', '/lumen/watch-sessions'],
+      ['/watch-sessions/join?token=ignored', '/lumen/watch-sessions/join'],
+      ['/watch-sessions/42', '/lumen/watch-sessions/42'],
       ['/requests', '/lumen/requests'],
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
