@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+test.use({ locale: 'en-US', timezoneId: 'America/Los_Angeles' });
+
 for (const permissions of [2, 32]) {
   test(`release calendar uses the selected interval and authorized scope for ${permissions}`, async ({
     page,
@@ -91,8 +93,20 @@ for (const permissions of [2, 32]) {
       page.getByRole('link', { name: 'Fixture Series' })
     ).toHaveAttribute('href', '/tv/42?quality=4k&episode=3#season-2');
     await expect(
+      page
+        .getByRole('listitem')
+        .filter({ hasText: 'Fixture Series' })
+        .locator('time')
+    ).toHaveText(/Jan 11, 2026/);
+    await expect(
       page.getByRole('link', { name: 'Fixture Audiobook' })
     ).toHaveAttribute('href', '/book/hc%3A10?f=audio');
+    await expect(
+      page
+        .getByRole('listitem')
+        .filter({ hasText: 'Fixture Audiobook' })
+        .locator('time')
+    ).toHaveText('Jan 12, 2026');
     await expect(
       page.getByRole('link', { name: 'Local Audiobook' })
     ).toHaveAttribute(
@@ -125,6 +139,7 @@ for (const permissions of [2, 32]) {
       .toMatchObject({
         start: '2026-01-01',
         end: '2026-02-01',
+        timeZone: 'America/Los_Angeles',
         mediaType: 'book',
         scope: permissions === 2 ? 'all' : 'mine',
         includeUnmonitored: String(permissions === 2),
