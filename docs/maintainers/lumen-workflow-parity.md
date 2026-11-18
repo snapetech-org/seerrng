@@ -1550,6 +1550,12 @@ passed. The targeted cases opened an unmatched title from the feed and
 verified the AniList route and franchise heading using API fixtures.
 Live AniList data and matched visual verification remain open.
 
+Provider Discovery shows the unmatched title count for the current page.
+Sixteen fixture-based browser checks passed per deployment across desktop,
+iPhone, Android, and tablet. They verified that the count clears on page
+change and that mapping, reset, retry, and provider reconnect still work.
+Matched visual and live provider checks remain open.
+
 ### TV request access review
 
 TV Request Settings lets user managers approve or decline pending

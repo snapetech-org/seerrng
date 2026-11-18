@@ -4275,6 +4275,7 @@ test('Following opens the exact anime franchise from a relationship update', asy
 
 test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList feed', async ({
   page,
+  baseURL,
 }) => {
   await fixtures(page);
   const requests: URLSearchParams[] = [];
@@ -4305,10 +4306,10 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
       });
     }
   );
-  await page.goto('/providers?feed=mdblist%2Flist&list=viewer%2Ffixture');
+  await page.goto('./providers?feed=mdblist%2Flist&list=viewer%2Ffixture');
   await expect(
     page.getByRole('link', { name: 'Matched Fixture' })
-  ).toHaveAttribute('href', '/movie/101');
+  ).toHaveAttribute('href', new URL('./movie/101', baseURL).pathname);
   expect(requests[0].get('list')).toBe('viewer/fixture');
   await expect(page.getByText('1 unmatched title on this page')).toBeVisible();
   const unmatched = page.getByRole('checkbox', { name: 'Unmatched Only' });
@@ -4328,6 +4329,7 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
 
 test('Provider Discovery saves and resets an exact viewer title match', async ({
   page,
+  baseURL,
 }) => {
   await fixtures(page);
   let matched = false;
@@ -4381,14 +4383,14 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
     }
   );
 
-  await page.goto('/providers');
+  await page.goto('./providers');
   await page.getByRole('button', { name: 'Match Title', exact: true }).click();
   await page.getByLabel('Match Media Type').selectOption('tv');
   await page.getByRole('button', { name: 'Search Matches' }).click();
   await page.getByRole('button', { name: 'Match Catalogue Series' }).click();
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })
-  ).toHaveAttribute('href', '/tv/202');
+  ).toHaveAttribute('href', new URL('./tv/202', baseURL).pathname);
   await page.getByRole('button', { name: 'Reset Match' }).click();
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })
@@ -4401,6 +4403,7 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
 
 test('Provider Discovery waits for Retry-After and offers provider reconnect', async ({
   page,
+  baseURL,
 }) => {
   await fixtures(page);
   let attempts = 0;
@@ -4431,7 +4434,7 @@ test('Provider Discovery waits for Retry-After and offers provider reconnect', a
         },
       })
   );
-  await page.goto('/providers');
+  await page.goto('./providers');
   const retry = page.getByRole('button', { name: 'Retry', exact: true });
   await expect(retry).toBeDisabled();
   await expect(page.getByRole('alert')).toContainText('Retry in');
@@ -4443,7 +4446,11 @@ test('Provider Discovery waits for Retry-After and offers provider reconnect', a
   await page.getByLabel('Provider Feed').selectOption('trakt/watchlist');
   await expect(
     page.getByRole('link', { name: 'Reconnect Provider' })
-  ).toHaveAttribute('href', '/me/account/linked-accounts?reconnect=trakt');
+  ).toHaveAttribute(
+    'href',
+    new URL('./me/account/linked-accounts', baseURL).pathname +
+      '?reconnect=trakt'
+  );
   await expect(retry).toHaveCount(0);
 });
 
@@ -5132,7 +5139,7 @@ test('Provider Discovery clears feed rows when the next feed needs a list', asyn
         },
       })
   );
-  await page.goto('/providers');
+  await page.goto('./providers');
   await expect(page.getByText('Prior Feed Title')).toBeVisible();
   await page.getByLabel('Provider Feed').selectOption('mdblist/list');
   await expect(page.getByText('Prior Feed Title')).toHaveCount(0);
