@@ -266,3 +266,14 @@ this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-navidrome-20261118/`.
+
+### Audiobookshelf and Kavita connections
+
+Administrators can test and save both connections from You. Audiobookshelf
+selects the library to scan and Kavita lists compatible libraries. Compared
+both tested forms with Navidrome on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+The production build and 12 browser checks passed with synthetic responses.
+Live library sync and reader playback were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-readers-20261118/`.

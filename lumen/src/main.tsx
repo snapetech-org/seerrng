@@ -64,6 +64,7 @@ const AdminLibraryMigration = lazy(
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
+const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminNavidrome = lazy(() => import('./pages/AdminNavidrome'));
 const AdminSoulseek = lazy(() => import('./pages/AdminSoulseek'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
@@ -648,6 +649,45 @@ function App() {
                   }
                 >
                   <AdminNavidrome />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/audiobookshelf"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Audiobookshelf settings…
+                    </p>
+                  }
+                >
+                  <AdminReaders
+                    key="audiobookshelf"
+                    provider="audiobookshelf"
+                  />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/kavita"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Kavita settings…
+                    </p>
+                  }
+                >
+                  <AdminReaders key="kavita" provider="kavita" />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

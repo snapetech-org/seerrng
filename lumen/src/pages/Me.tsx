@@ -275,6 +275,26 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Audiobookshelf Settings</b>
+              <Link
+                className="go"
+                to="/admin/audiobookshelf"
+                aria-label="Open Audiobookshelf Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
+              <b>Kavita Settings</b>
+              <Link
+                className="go"
+                to="/admin/kavita"
+                aria-label="Open Kavita Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"
