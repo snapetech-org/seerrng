@@ -1856,3 +1856,13 @@ series identity in the save payload. Live library ranking was outside this check
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-favorites-20261118/`.
+
+Swipe History now lists decisions by category, restores individual passed or
+seen titles, and clears those decisions after confirmation. Requested titles
+link to Requests. Compared the history and deck views on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and eight browser checks passed
+using synthetic responses, including category-scoped clearing and preservation
+of requested titles. Live account history was outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-history-20261118/`.

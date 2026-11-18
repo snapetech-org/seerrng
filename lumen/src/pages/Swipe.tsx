@@ -4,6 +4,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
+import SwipeHistory from './SwipeHistory';
 
 const categories = { movie: 'Movies', tv: 'Series', book: 'Books' };
 type Category = keyof typeof categories;
@@ -489,6 +490,7 @@ export default function Swipe() {
   const profile = useApi<Profile>(status.data ? '/swipe/profile' : null);
   const [savedProfile, setSavedProfile] = useState<Profile>();
   const currentProfile = savedProfile ?? profile.data;
+  const [showHistory, setShowHistory] = useState(false);
   const [selected, setSelected] = useState<Category>();
   const available = (Object.keys(categories) as Category[]).filter((category) =>
     status.data?.mediaTypes.includes(category)
@@ -523,7 +525,21 @@ export default function Swipe() {
           available={available}
         />
       )}
-      {category && (
+      {status.data && (
+        <div className="toolbar">
+          <button
+            type="button"
+            className="btn btn-quiet btn-sm"
+            onClick={() => setShowHistory((value) => !value)}
+          >
+            {showHistory ? 'Back to Recommendations' : 'View Swipe History'}
+          </button>
+        </div>
+      )}
+      {showHistory && status.data && (
+        <SwipeHistory categories={status.data.mediaTypes} />
+      )}
+      {category && !showHistory && (
         <>
           <div className="toolbar">
             <label className="set cfg-row">

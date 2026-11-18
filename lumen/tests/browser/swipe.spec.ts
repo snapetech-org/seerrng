@@ -1,11 +1,16 @@
 import { expect, test } from '@playwright/test';
 
-test('Swipe requests, passes, and undoes a recommendation', async ({
+test('Swipe records decisions and restores or clears history', async ({
   page,
 }, info) => {
   const cards = [
     { id: '7', title: 'First Film', overview: 'A fixture recommendation.' },
     { id: '8', title: 'Second Film' },
+  ];
+  let decisions = [
+    { mediaType: 'movie', id: '7', title: 'First Film', decision: 'want' },
+    { mediaType: 'movie', id: '8', title: 'Second Film', decision: 'pass' },
+    { mediaType: 'movie', id: '9', title: 'Third Film', decision: 'seen' },
   ];
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -27,6 +32,21 @@ test('Swipe requests, passes, and undoes a recommendation', async ({
       });
     if (path.endsWith('/swipe/deck'))
       return route.fulfill({ json: { cards, remaining: 2 } });
+    if (path.endsWith('/history/restore')) {
+      expect(request.postDataJSON()).toEqual({ mediaType: 'movie', id: '8' });
+      decisions = decisions.filter(({ id }) => id !== '8');
+      return route.fulfill({ json: { restored: true } });
+    }
+    if (path.endsWith('/history')) {
+      if (request.method() === 'DELETE') {
+        expect(new URL(request.url()).searchParams.get('mediaType')).toBe(
+          'movie'
+        );
+        decisions = decisions.filter(({ decision }) => decision === 'want');
+        return route.fulfill({ json: { cleared: 1 } });
+      }
+      return route.fulfill({ json: { decisions, hasMore: false } });
+    }
     if (request.method() === 'POST') writes.push(request.postDataJSON());
     return route.fulfill({
       json: path.endsWith('/undo') ? { card: cards[1] } : {},
@@ -53,6 +73,31 @@ test('Swipe requests, passes, and undoes a recommendation', async ({
     { mediaType: 'movie', id: '8', decision: 'pass' },
     { mediaType: 'movie' },
   ]);
+  await page.getByRole('button', { name: 'View Swipe History' }).click();
+  await page
+    .getByRole('combobox', { name: 'History Category' })
+    .selectOption('movie');
+  await expect(
+    page.getByRole('button', { name: 'Restore Second Film' })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('swipe-history.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Restore Second Film' }).click();
+  await expect(page.getByText('Second Film restored.')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Restore Second Film' })
+  ).toHaveCount(0);
+  await page
+    .getByRole('button', { name: 'Clear History', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Confirm Clear History' }).click();
+  await expect(page.getByText('Cleared 1 decisions.')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Restore Third Film' })
+  ).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'View Requests' })).toBeVisible();
 });
 
 test('saved Swipe preferences apply to the active series deck', async ({
