@@ -6,6 +6,7 @@ import { Section } from '../components/cards';
 import DefaultRequestQuotas, {
   type DefaultQuotas,
 } from '../components/DefaultRequestQuotas';
+import DefaultUserPermissions from '../components/DefaultUserPermissions';
 import { ServiceNote } from '../components/extra';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { friendlyError } from '../errors';
@@ -273,6 +274,7 @@ export default function AdminGeneral() {
     ApplicationSettings & {
       mediaServerType?: number;
       defaultQuotas?: DefaultQuotas;
+      defaultPermissions?: number;
     }
   >(path);
   return (
@@ -323,6 +325,11 @@ export default function AdminGeneral() {
       {settings.data?.defaultQuotas && (
         <DefaultRequestQuotas initial={settings.data.defaultQuotas} />
       )}
+      {typeof settings.data?.defaultPermissions === 'number' &&
+        Number.isSafeInteger(settings.data.defaultPermissions) &&
+        settings.data.defaultPermissions >= 0 && (
+          <DefaultUserPermissions initial={settings.data.defaultPermissions} />
+        )}
     </>
   );
 }

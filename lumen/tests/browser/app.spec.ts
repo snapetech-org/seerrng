@@ -4657,6 +4657,50 @@ test('General Settings saves default request quotas without changing other media
   await expect(days).toHaveValue('14');
 });
 
+test('General Settings confirms default permissions and preserves higher permission bits', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let defaultPermissions = 4398046511104 + 32;
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      defaultPermissions = body.defaultPermissions;
+    }
+    return route.fulfill({
+      json: { applicationTitle: 'SeerrNG', defaultPermissions },
+    });
+  });
+  await page.goto('/admin/general');
+  await page.getByText('Edit Default Permissions', { exact: true }).click();
+  await expect(
+    page.getByRole('checkbox', { name: 'Admin', exact: true })
+  ).toBeDisabled();
+  await expect(
+    page.getByRole('checkbox', { name: 'Auto Request Magazine' })
+  ).toBeChecked();
+  await page
+    .getByRole('checkbox', { name: 'Request Book', exact: true })
+    .check();
+  await page.getByRole('button', { name: 'Save Default Permissions' }).click();
+  expect(writes).toEqual([]);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Save Default Permissions' })
+    .click();
+  await expect(page.getByText('Default permissions saved.')).toBeVisible();
+  expect(writes).toEqual([
+    { defaultPermissions: 4398046511104 + 34359738368 + 32 },
+  ]);
+  await page.reload();
+  await page.getByText('Edit Default Permissions', { exact: true }).click();
+  await expect(
+    page.getByRole('checkbox', { name: 'Request Book', exact: true })
+  ).toBeChecked();
+});
+
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   page,
 }) => {

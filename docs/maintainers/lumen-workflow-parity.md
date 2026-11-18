@@ -1701,3 +1701,10 @@ selected category and preserve drafts for other categories. TypeScript,
 the production build, and 20 standalone browser cases passed, including
 per-user quota regression checks. Live quota enforcement and matched
 native visual acceptance remain open.
+
+General Settings also edits the explicit default permissions assigned to
+new accounts. The form requires confirmation and preserves the native
+default editor's restriction on changing the Admin permission. Twenty-four
+standalone browser checks covered General Settings and delegated permissions,
+including high permission bits and settings readback. Live account creation
+and matched native visual acceptance remain open.
