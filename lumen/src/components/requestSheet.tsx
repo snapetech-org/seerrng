@@ -167,6 +167,7 @@ export function RequestSheet({
             <AdvancedOptions
               key={fourK ? '4k' : 'hd'}
               kind={tv ? 'tv' : 'movie'}
+              series={tv ? { id: it.id } : undefined}
               is4k={offers4k && fourK}
               onChange={onOpts}
               inline

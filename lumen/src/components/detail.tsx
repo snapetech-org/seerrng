@@ -7,10 +7,12 @@ import {
   type ProductionCountry,
   type RequestOptions,
   type SubjectTag,
+  type TvDetails,
   type VideoDetailPins,
 } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
+import { useApi } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { sessionGeneration } from '../sessionState';
 import { Glyph, type Stat } from './cards';
@@ -455,8 +457,10 @@ export function AdvancedOptions({
   onReady,
   initial,
   allow4k = false,
+  series,
 }: {
   kind: 'movie' | 'tv';
+  series?: { id: number; tvdbId?: number | null };
   is4k: boolean;
   // also list the 4K servers (for people who may request 4K); picking one makes it a 4K request
   allow4k?: boolean;
@@ -572,9 +576,61 @@ export function AdvancedOptions({
   const picked4k = allow4k
     ? servers?.find((x) => x.id === o.serverId)?.is4k
     : undefined;
+  const seriesId = series?.id;
+  const { data: lookupDetails } = useApi<TvDetails>(
+    open &&
+      allowed &&
+      detail &&
+      kind === 'tv' &&
+      series &&
+      series.tvdbId === undefined
+      ? `/tv/${series.id}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const tvdbId = series?.tvdbId ?? lookupDetails?.externalIds?.tvdbId;
+  const lookupPath =
+    open &&
+    allowed &&
+    kind === 'tv' &&
+    detail &&
+    series &&
+    tvdbId &&
+    o.serverId != null
+      ? `/service/sonarr/lookup/${series.id}?${new URLSearchParams({
+          is4k: String(picked4k ?? is4k),
+          serverId: String(o.serverId),
+          ...(o.metadataLanguageId != null
+            ? { language: String(o.metadataLanguageId) }
+            : {}),
+        })}`
+      : null;
+  const { data: lookup } = useApi<
+    { tvdbId: number; seasonTypes?: { type: string; name: string }[] }[]
+  >(lookupPath, { currentPathOnly: true });
+  const seasonTypes =
+    (Array.isArray(lookup) ? lookup : []).find((item) => item.tvdbId === tvdbId)
+      ?.seasonTypes ?? [];
+  const [order, setOrder] = useState<{ path: string; type: string }>();
+  const proposedOrder =
+    order && order.path === lookupPath
+      ? order.type
+      : o.serverId === initial?.serverId && order === undefined
+        ? initial?.sonarrSeasonType
+        : undefined;
+  const selectedOrder = seasonTypes.find(
+    ({ type }) => type === proposedOrder
+  )?.type;
+  const seasonOverride =
+    selectedOrder ??
+    (initial?.sonarrSeasonType &&
+    (o.serverId !== initial.serverId || (order && order.path === lookupPath))
+      ? null
+      : undefined);
   useEffect(() => {
     if (!open) return onChange({});
     const base = picked4k === undefined ? { ...o } : { ...o, is4k: picked4k };
+    if (seriesId) base.sonarrSeasonType = seasonOverride;
     if (!initial && o.tags) {
       base.requesterSelectedOptions = {
         tags: true,
@@ -592,7 +648,18 @@ export function AdvancedOptions({
         ? { ...base, userId: asUser }
         : base
     );
-  }, [o, open, asUser, user?.id, initial, kind, onChange, picked4k]);
+  }, [
+    o,
+    open,
+    asUser,
+    user?.id,
+    initial,
+    kind,
+    onChange,
+    picked4k,
+    seriesId,
+    seasonOverride,
+  ]);
   // no server of this kind set up: nothing to choose, SeerrNG decides (as its own dialog does)
   const none = !!servers && !servers.length;
   useEffect(() => {
@@ -648,6 +715,7 @@ export function AdvancedOptions({
               value={o.serverId ?? ''}
               onChange={(e) => {
                 setDetail(null);
+                setOrder(undefined);
                 setO({ serverId: +e.target.value });
               }}
             >
@@ -724,6 +792,7 @@ export function AdvancedOptions({
                     value={o.metadataLanguageId ?? ''}
                     onChange={(event) => {
                       const value = event.target.value;
+                      setOrder(undefined);
                       setO((previous) => ({
                         ...previous,
                         metadataLanguageId: value === '' ? null : Number(value),
@@ -734,6 +803,24 @@ export function AdvancedOptions({
                     {detail.metadataLanguages.map(({ id, name }) => (
                       <option key={id} value={id}>
                         {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {lookupPath && seasonTypes.length > 1 && (
+                <label className="sel">
+                  <span className="lbl">Season Order</span>
+                  <select
+                    value={selectedOrder ?? ''}
+                    onChange={(event) =>
+                      setOrder({ path: lookupPath, type: event.target.value })
+                    }
+                  >
+                    <option value="">Sonarr Default</option>
+                    {seasonTypes.map(({ type, name }) => (
+                      <option key={type} value={type}>
+                        {name === type ? name : `${name} (${type})`}
                       </option>
                     ))}
                   </select>

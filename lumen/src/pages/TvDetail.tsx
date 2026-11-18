@@ -467,6 +467,7 @@ export default function TvDetail() {
           <AdvancedOptions
             key={is4k ? '4k' : 'hd'}
             kind="tv"
+            series={{ id: t.id, tvdbId: t.externalIds?.tvdbId ?? null }}
             is4k={is4k}
             onChange={onOpts}
           />

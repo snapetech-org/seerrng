@@ -65,6 +65,7 @@ async function show(
         json: {
           id: 84773,
           name: 'The Rings of Power',
+          externalIds: { tvdbId: 80 },
           overview: 'Rings.',
           genres: [],
           seasons,
@@ -232,7 +233,7 @@ test('a fully available series says so and offers no request', async ({
   await expect(page.locator('.rinfo')).toHaveCount(0);
 });
 
-test('Sonarr request language choices follow the selected destination', async ({
+test('Sonarr language, season order, and tags follow the selected destination', async ({
   page,
 }, info) => {
   const posts: RecordedPost[] = [];
@@ -270,10 +271,36 @@ test('Sonarr request language choices follow the selected destination', async ({
       },
     });
   });
+  await page.route('**/api/v1/service/sonarr/lookup/**', (route) => {
+    const { searchParams } = new URL(route.request().url());
+    const alternate =
+      searchParams.get('serverId') === '2' &&
+      searchParams.get('language') === '4';
+    expect(searchParams.get('is4k')).toBe('false');
+    return route.fulfill({
+      json: [
+        { tvdbId: 79, seasonTypes: [{ type: 'wrong', name: 'Wrong Series' }] },
+        {
+          tvdbId: 80,
+          seasonTypes: [
+            { type: 'aired', name: 'Aired' },
+            alternate
+              ? { type: 'dvd', name: 'DVD' }
+              : { type: 'absolute', name: 'Absolute' },
+          ],
+        },
+      ],
+    });
+  });
   await page.getByText('Advanced (admins)', { exact: true }).click();
   const profile = page.getByRole('combobox', { name: 'Language Profile' });
   await expect(profile).toHaveValue('8');
   await profile.selectOption('9');
+  const order = page.getByRole('combobox', { name: 'Season Order' });
+  await order.selectOption('absolute');
+  await expect(order.getByRole('option', { name: 'Wrong Series' })).toHaveCount(
+    0
+  );
   const tags = page.getByRole('group', { name: 'Request Tags' });
   await expect(
     tags.getByRole('checkbox', { name: 'Legacy Shows' })
@@ -289,6 +316,11 @@ test('Sonarr request language choices follow the selected destination', async ({
   await expect(profile).toHaveCount(0);
   const metadata = page.getByRole('combobox', { name: 'Metadata Language' });
   await metadata.selectOption('4');
+  await expect(order.getByRole('option', { name: 'DVD (dvd)' })).toHaveCount(1);
+  await expect(order).toHaveValue('');
+  await order.selectOption('dvd');
+  await order.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('sonarr-season-order.png') });
   await expect(
     tags.getByRole('checkbox', { name: 'Legacy Shows' })
   ).toHaveCount(0);
@@ -313,6 +345,7 @@ test('Sonarr request language choices follow the selected destination', async ({
         mediaType: 'tv',
         serverId: 2,
         metadataLanguageId: 4,
+        sonarrSeasonType: 'dvd',
         tags: [],
         requesterSelectedOptions: {
           tags: true,

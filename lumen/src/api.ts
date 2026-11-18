@@ -418,6 +418,7 @@ export interface RequestOptions {
   rootFolder?: string;
   languageProfileId?: number;
   metadataLanguageId?: number | null;
+  sonarrSeasonType?: string | null;
   tags?: number[] | null;
   requesterSelectedOptions?: {
     tags: boolean;
@@ -788,6 +789,7 @@ export interface RequestItem {
   serverId?: number | null;
   languageProfileId?: number | null;
   metadataLanguageId?: number | null;
+  sonarrSeasonType?: string | null;
   tags?: number[] | null;
   isAutoRequest?: boolean;
   watchAheadParentRequestId?: number | null;

@@ -48,6 +48,7 @@ export function RequestEditSheet({
     languageProfileId: r.languageProfileId ?? undefined,
     metadataLanguageId: r.metadataLanguageId ?? undefined,
     tags: r.tags,
+    sonarrSeasonType: r.sonarrSeasonType,
     userId: r.requestedBy?.id,
   }));
   const [opts, setOpts] = useState<RequestOptions>({});
@@ -59,6 +60,7 @@ export function RequestEditSheet({
   const [seasons, setSeasons] = useState<
     { seasonNumber: number; name?: string; episodeCount?: number }[] | null
   >(null);
+  const [tvdbId, setTvdbId] = useState<number | null>(null);
   const [picked, setPicked] = useState(
     () => new Set(r.seasons.map((s) => s.seasonNumber))
   );
@@ -66,15 +68,15 @@ export function RequestEditSheet({
     if (!tv) return;
     let live = true;
     api<TvDetails>(`/tv/${r.media.tmdbId}`)
-      .then(
-        (t) =>
-          live &&
-          setSeasons(
-            (t.seasons || []).filter(
-              (s) => s.seasonNumber > 0 && (s.episodeCount ?? 1) > 0
-            )
+      .then((t) => {
+        if (!live) return;
+        setTvdbId(t.externalIds?.tvdbId ?? null);
+        setSeasons(
+          (t.seasons || []).filter(
+            (s) => s.seasonNumber > 0 && (s.episodeCount ?? 1) > 0
           )
-      )
+        );
+      })
       .catch(() => live && setSeasons([]));
     return () => {
       live = false;
@@ -146,6 +148,7 @@ export function RequestEditSheet({
           </div>
           <AdvancedOptions
             kind={tv ? 'tv' : 'movie'}
+            series={tv ? { id: r.media.tmdbId, tvdbId } : undefined}
             is4k={r.is4k}
             onChange={onOpts}
             inline

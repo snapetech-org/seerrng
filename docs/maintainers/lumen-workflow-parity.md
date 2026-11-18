@@ -2371,3 +2371,18 @@ and explicitly removing all tags from a new request. Live Radarr and
 Sonarr delivery and persistence of edited tags remain unverified.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-tags-final-20261118/`.
+
+Lumen's advanced single-series request, quick request, and edit controls
+offer Sonarr season ordering when the matching TVDB series advertises
+multiple orders. The lookup follows the destination, quality, and metadata
+language. Changing the destination or metadata language resets the
+selection. Collection-wide options remain shared across series and omit
+this title-specific override.
+
+The production build and 48 browser checks passed. Compared expanded
+TV detail controls with the previous version on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The fixture verifies TVDB matching, language
+and destination changes, and the selected order in the request payload.
+Live Sonarr remapping and request edit persistence remain unverified.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-sonarr-order-20261118/`.
