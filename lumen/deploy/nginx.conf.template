@@ -219,6 +219,9 @@ server {
     add_header Referrer-Policy same-origin always;
     try_files $uri =404;
   }
+  location = /share-target {
+    return 303 "/share#share=unavailable";
+  }
   location = /manifest.webmanifest {
     default_type application/manifest+json;
     try_files $uri =404;

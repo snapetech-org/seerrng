@@ -1509,3 +1509,17 @@ same detector and release the decoded bitmap even if detection fails.
 TypeScript, the production build, and twelve standalone browser fixture
 checks passed. The ISBN fixture substitutes the browser barcode API.
 Live barcode decoding and matched visual checks remain open.
+
+### Installed app Share Target
+
+Lumen's web app manifest accepts shared text, links, and images through
+a scope-relative POST target. A scoped service worker keeps the form in
+a short-lived local inbox until Share opens it, then removes the entry.
+Share still requires explicit recognition and request actions. Both
+deployment configurations provide a fallback when no worker handles the
+handoff.
+
+TypeScript, the production build, and 16 standalone browser checks passed.
+The handoff fixture uses a real service worker and a browser-submitted form
+across four viewport presets. Installed OS share sheets, the bundled server
+handoff, and matched native visual comparison remain unverified.

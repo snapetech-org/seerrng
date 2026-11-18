@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { canDetectBarcodes, detectBarcodes } from '../shareBarcode';
+import { takeSharedForm } from '../shareInbox';
 
 import {
   requestBodyForCandidate,
@@ -52,6 +58,9 @@ function candidatePath(candidate: ResolveCandidate, format: ShareFormat) {
 
 export default function Share() {
   const [params] = useSearchParams();
+  const { hash, pathname, search } = useLocation();
+  const navigate = useNavigate();
+  const consumed = useRef('');
   const [text, setText] = useState(() =>
     ['title', 'text', 'url']
       .map((key) => params.get(key))
@@ -79,7 +88,7 @@ export default function Share() {
   const localBarcode = canDetectBarcodes();
   const acceptsImage = caps.data?.enabled && (imageEnabled || localBarcode);
 
-  async function attachImage(file: File) {
+  async function attachImage(file: File, inputText = text) {
     if (working.current || !acceptsImage) return;
     if (!file.type.startsWith('image/') || !file.size) {
       setError('Choose a readable image file.');
@@ -101,9 +110,9 @@ export default function Share() {
         /^97[89]\d{10}$/.test(code)
       );
       if (isbn) {
-        const next = text.includes(isbn)
-          ? text
-          : [text.trim(), isbn].filter(Boolean).join('\n');
+        const next = inputText.includes(isbn)
+          ? inputText
+          : [inputText.trim(), isbn].filter(Boolean).join('\n');
         if (next.length <= 16000) setText(next);
         setNotice(
           next.length <= 16000
@@ -118,6 +127,53 @@ export default function Share() {
       setBusy(false);
     }
   }
+
+  const receiveShare = useEffectEvent(async (id: string) => {
+    try {
+      const form = await takeSharedForm(id);
+      if (!form) {
+        setError(
+          'This share could not be opened. Try sharing again or paste it here.'
+        );
+        return;
+      }
+      const incoming = [
+        ...new Set(['title', 'text', 'url'].map((field) => form.get(field))),
+      ]
+        .filter(
+          (value): value is string => typeof value === 'string' && !!value
+        )
+        .join('\n');
+      if (incoming) setText(incoming);
+      const file = form.get('image');
+      if (form.has('imageTooLarge'))
+        setError('This shared image exceeds the upload limit.');
+      if (file instanceof File) {
+        if (acceptsImage) await attachImage(file, incoming || text);
+        else
+          setError(
+            'Image recognition is unavailable. You can still use shared text.'
+          );
+      }
+    } catch {
+      setError(
+        'This share could not be opened. Try sharing again or paste it here.'
+      );
+    }
+  });
+
+  useEffect(() => {
+    if (
+      !hash.startsWith('#share=') ||
+      !caps.data ||
+      busy ||
+      consumed.current === hash
+    )
+      return;
+    consumed.current = hash;
+    navigate({ pathname, search }, { replace: true });
+    void receiveShare(hash.slice('#share='.length));
+  }, [hash, pathname, search, navigate, caps.data, busy]);
 
   const selected = (result?.groups ?? []).flatMap((group, index) => {
     const candidate = group.candidates[choices[index]];

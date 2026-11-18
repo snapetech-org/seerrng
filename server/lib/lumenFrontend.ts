@@ -370,6 +370,11 @@ export const mountLumenFrontend = (
     }
     return res.set('Cache-Control', 'no-store').redirect(302, target);
   });
+  server.post('/lumen/share-target', (_req, res) => {
+    res
+      .set('Cache-Control', 'no-store')
+      .redirect(303, '/lumen/share#share=unavailable');
+  });
   server.use(
     '/lumen',
     express.static(directory, { index: false, fallthrough: true }),

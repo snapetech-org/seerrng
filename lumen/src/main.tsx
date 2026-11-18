@@ -312,31 +312,7 @@ function App() {
   );
 }
 
-// pages still controlled by SeerrNG's old service worker: drop it (public/sw.js does the same
-// for browsers that only check /sw.js). Not when included in SeerrNG under /lumen/: there
-// the service worker and caches belong to classic SeerrNG, which still uses them.
-if (!embedded && 'serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .getRegistrations()
-    .then((regs) => {
-      const legacyScript = new URL('/sw.js', location.origin).href;
-      const rootScope = new URL('/', location.origin).href;
-      for (const registration of regs) {
-        const worker =
-          registration.active ??
-          registration.waiting ??
-          registration.installing;
-        if (
-          registration.scope === rootScope &&
-          worker?.scriptURL === legacyScript
-        ) {
-          void registration.unregister().catch(() => {});
-        }
-      }
-    })
-    .catch(() => {});
-}
-// ...and the offline caches it left behind
+// Remove obsolete native offline caches only in the companion deployment.
 if (!embedded && 'caches' in window) {
   caches
     .keys()
@@ -345,6 +321,14 @@ if (!embedded && 'caches' in window) {
         .filter((k) => k.startsWith('seerrng'))
         .forEach((k) => caches.delete(k))
     )
+    .catch(() => {});
+}
+
+if ('serviceWorker' in navigator) {
+  void navigator.serviceWorker
+    .register(`${import.meta.env.BASE_URL}share-worker.js`, {
+      scope: import.meta.env.BASE_URL,
+    })
     .catch(() => {});
 }
 

@@ -3815,3 +3815,48 @@ test('Share reads an ISBN locally when server OCR is disabled', async ({
   await expect(page.getByText('No matches found.')).toBeVisible();
   expect(uploads).toBe(0);
 });
+
+test('installed Share Target hands text and image to Share once', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true, image: true, maxImageBytes: 100 } })
+  );
+  await page.goto('/share');
+  await expect
+    .poll(() =>
+      page.evaluate(() => Boolean(navigator.serviceWorker.controller))
+    )
+    .toBe(true);
+  await page.evaluate(() => {
+    const form = document.createElement('form');
+    form.action = '/share-target';
+    form.method = 'post';
+    form.enctype = 'multipart/form-data';
+    const text = document.createElement('input');
+    text.name = 'text';
+    text.value = 'From the OS';
+    const image = document.createElement('input');
+    image.type = 'file';
+    image.name = 'image';
+    const files = new DataTransfer();
+    files.items.add(
+      new File(['fixture'], 'from-os.png', { type: 'image/png' })
+    );
+    image.files = files.files;
+    form.append(text, image);
+    document.body.append(form);
+    form.submit();
+  });
+  await expect(page.getByLabel('Titles, links, or ISBNs')).toHaveValue(
+    'From the OS'
+  );
+  await expect(page.getByText('from-os.png', { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/share$/);
+  expect(
+    await page.evaluate(
+      async () => (await (await caches.open('lumen-share-inbox')).keys()).length
+    )
+  ).toBe(0);
+});
