@@ -2537,3 +2537,17 @@ skips. Compared the TV detail notification before and after on desktop,
 iPhone 13, Pixel 7, and iPad Pro 11. Evidence is retained under
 `seerrng-lumen-series-confirmation*` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+Swipe and Share now use the shared TV request confirmation. Swipe retains
+the card without writing a decision when no seasons were added. Share
+counts only the confirmed requests in a mixed batch and leaves the
+unconfirmed series available to retry.
+
+The production build and 24 browser checks passed. Compared Swipe and
+Share before and after on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+Fixtures cover a no-op followed by a confirmed request in both workflows.
+Live provider delivery was outside the check. Evidence is retained under
+`seerrng-lumen-share-swipe-baseline-20261118/`,
+`seerrng-lumen-swipe-series-confirmation-20261118/`, and
+`seerrng-lumen-share-series-confirmation-20261118/` in
+`/mnt/disks/scratch/task-deliverables/`.

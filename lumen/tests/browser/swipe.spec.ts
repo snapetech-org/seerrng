@@ -128,6 +128,8 @@ test('saved Swipe preferences apply to the active series deck', async ({
 }, info) => {
   const series = { id: '42', title: 'Fixture Series' };
   const calls: unknown[] = [];
+  const decisions: unknown[] = [];
+  let attempts = 0;
   const profile = {
     seriesRequest: 'first-season',
     bookFormat: 'ebook',
@@ -157,7 +159,16 @@ test('saved Swipe preferences apply to the active series deck', async ({
       return route.fulfill({ json: [{ ...series, mediaType: 'tv' }] });
     if (path.endsWith('/swipe/deck'))
       return route.fulfill({ json: { cards: [series], remaining: 1 } });
-    if (path.endsWith('/request')) calls.push(request.postDataJSON());
+    if (path.endsWith('/request')) {
+      calls.push(request.postDataJSON());
+      return route.fulfill(
+        ++attempts === 1
+          ? { status: 202, json: { message: 'No seasons available.' } }
+          : { status: 201, json: { id: 19 } }
+      );
+    }
+    if (path.endsWith('/swipe/decisions') && request.method() === 'POST')
+      decisions.push(request.postDataJSON());
     return route.fulfill({ json: {} });
   });
   await page.goto('/swipe');
@@ -177,7 +188,15 @@ test('saved Swipe preferences apply to the active series deck', async ({
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(page.getByText('No selected seasons were added.')).toBeVisible();
+  expect(decisions).toEqual([]);
+  await page.screenshot({
+    path: info.outputPath('swipe-tv-unconfirmed.png'),
+    animations: 'disabled',
+  });
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
   await expect(page.getByText('Fixture Series requested.')).toBeVisible();
+  expect(decisions).toHaveLength(1);
   expect(calls).toEqual([
     {
       seriesRequest: 'all-seasons',
@@ -186,6 +205,7 @@ test('saved Swipe preferences apply to the active series deck', async ({
       seedScope: 'favorites',
       favoriteSeeds: [{ ...series, mediaType: 'tv' }],
     },
+    { mediaType: 'tv', mediaId: 42, seasons: 'all' },
     { mediaType: 'tv', mediaId: 42, seasons: 'all' },
   ]);
 });

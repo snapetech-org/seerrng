@@ -5,7 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { api, ApiError } from '../api';
+import { api, ApiError, requestSeries } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { embedded } from '../deployment';
@@ -251,7 +251,13 @@ export default function Share() {
     try {
       for (const { index, body, title } of selected) {
         try {
-          await api('/request', { method: 'POST', body: JSON.stringify(body) });
+          if (body.mediaType === 'tv')
+            await requestSeries(body.mediaId, body.seasons);
+          else
+            await api('/request', {
+              method: 'POST',
+              body: JSON.stringify(body),
+            });
           setSubmitted((current) => [...current, index]);
           count++;
         } catch (failure) {

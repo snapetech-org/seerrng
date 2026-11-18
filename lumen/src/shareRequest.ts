@@ -11,7 +11,12 @@ export interface ShareCandidateIdentity {
 export const requestBodyForCandidate = (
   candidate: ShareCandidateIdentity,
   options: { format: ShareFormat; seriesSeasons: 'first' | 'all' }
-): Record<string, unknown> | undefined => {
+):
+  | { mediaType: 'movie'; mediaId: number }
+  | { mediaType: 'tv'; mediaId: number; seasons: number[] | 'all' }
+  | { mediaType: 'book'; mediaId: string; format: ShareFormat }
+  | { mediaType: 'music'; mediaId: string }
+  | undefined => {
   switch (candidate.mediaType) {
     case 'movie':
       return { mediaType: 'movie', mediaId: Number(candidate.id) };

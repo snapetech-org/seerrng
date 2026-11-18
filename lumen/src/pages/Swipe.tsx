@@ -1,5 +1,5 @@
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
-import { api, ApiError, artUrl } from '../api';
+import { api, ApiError, artUrl, requestSeries } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -662,36 +662,34 @@ function Deck({
       }
       if (!card) return;
       if (decision === 'want') {
-        await api(
-          software ? '/request/software' : '/request',
-          body(
-            softwareBody || {
-              mediaType: category === 'audiobook' ? 'book' : category,
-              mediaId:
-                category === 'movie' ||
-                category === 'tv' ||
-                category === 'comic'
-                  ? Number(card.id)
-                  : card.id,
-              ...(category === 'tv'
-                ? {
-                    seasons:
-                      profile?.seriesRequest === 'all-seasons' ? 'all' : [1],
-                  }
-                : {}),
-              ...(category === 'book' || category === 'audiobook'
-                ? {
-                    authorId: card.authorId,
-                    format: category === 'audiobook' ? 'audiobook' : format,
-                  }
-                : {}),
-              ...(card.serviceId !== undefined &&
-              ['magazine', 'sports', 'adult'].includes(category)
-                ? { serverId: card.serviceId }
-                : {}),
-            }
-          )
-        );
+        if (category === 'tv')
+          await requestSeries(
+            Number(card.id),
+            profile?.seriesRequest === 'all-seasons' ? 'all' : [1]
+          );
+        else
+          await api(
+            software ? '/request/software' : '/request',
+            body(
+              softwareBody || {
+                mediaType: category === 'audiobook' ? 'book' : category,
+                mediaId:
+                  category === 'movie' || category === 'comic'
+                    ? Number(card.id)
+                    : card.id,
+                ...(category === 'book' || category === 'audiobook'
+                  ? {
+                      authorId: card.authorId,
+                      format: category === 'audiobook' ? 'audiobook' : format,
+                    }
+                  : {}),
+                ...(card.serviceId !== undefined &&
+                ['magazine', 'sports', 'adult'].includes(category)
+                  ? { serverId: card.serviceId }
+                  : {}),
+              }
+            )
+          );
         requested = true;
       }
       if (generation !== sessionGeneration()) return;
