@@ -2848,3 +2848,11 @@ passed across both deployments and four viewport presets. The guide
 fixture adds a SABnzbd draft and verifies that switching to Torrents
 preserves it. Live provider tests and matched visual acceptance remain
 unverified.
+
+Lumen now opens Book Series Requests from Requests and from the native
+queue bookmark under frontend lock. The queue shows saved status and
+monitors, and request managers can approve, decline, or stop according to
+the current state. Sixteen browser checks covered manager approval and
+member visibility across both deployments. The Express routing suite
+passed. Catalog search and preview, exact links to catalog targets, live
+service interactions, and matched visual acceptance remain open.

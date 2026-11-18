@@ -60,6 +60,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const BookSeriesRequests = lazy(() => import('./pages/BookSeriesRequests'));
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
 const AdminDiscovery = lazy(() => import('./pages/AdminDiscovery'));
@@ -245,6 +246,20 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/household/:id" element={<HouseholdProfile />} />
           <Route path="/requests" element={<Requests />} />
+          <Route
+            path="/book-series/requests"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading book series requests…
+                  </p>
+                }
+              >
+                <BookSeriesRequests />
+              </Suspense>
+            }
+          />
           <Route path="/requests/status" element={<Requests />} />
           <Route path="/following" element={<Following />} />
           <Route

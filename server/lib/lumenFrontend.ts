@@ -367,6 +367,8 @@ function workflowDeepLink(
   pathname = req.path
 ): string | undefined {
   const nativePath = pathname.replace(/\/$/, '');
+  if (nativePath === '/book-series/requests')
+    return '/lumen/book-series/requests';
   const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
   if (issue && Number.isSafeInteger(Number(issue))) {
     return `/lumen/issues/${issue}`;

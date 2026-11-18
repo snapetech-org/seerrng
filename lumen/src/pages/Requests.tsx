@@ -1643,6 +1643,9 @@ export default function Requests() {
         <div className="ph-row">
           <div>
             <h1>Requests</h1>
+            <Link className="chip" to="/book-series/requests">
+              Book Series Requests
+            </Link>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
