@@ -712,6 +712,26 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
       return route.fulfill({
         json: { anchor: { title: 'Fixture Anime' }, notes: [], items: [] },
       });
+    if (path === '/continuation/anilist/713') {
+      const season = new URL(route.request().url()).searchParams.get('season');
+      return route.fulfill({
+        json: {
+          available: true,
+          seasons: [{ number: 1, title: 'First season' }],
+          sources: [
+            {
+              anilistId: 11,
+              kind: 'manga',
+              title:
+                season === '1' ? 'First Season Manga' : 'Latest Season Manga',
+              confidence: 'high',
+              evidence: [],
+              targets: [],
+            },
+          ],
+        },
+      });
+    }
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto('./providers?unmatched=1');
@@ -727,4 +747,10 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
   await expect(
     page.getByRole('heading', { name: 'Franchise for Fixture Anime' })
   ).toBeVisible();
+  await page.getByRole('button', { name: 'Find Sources' }).click();
+  await expect(page.getByText('Latest Season Manga')).toBeVisible();
+  const season = page.getByRole('combobox', { name: 'Continuation season' });
+  await season.selectOption('1');
+  await expect(page.getByText('First Season Manga')).toBeVisible();
+  await expect(season).toHaveValue('1');
 });

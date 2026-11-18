@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
+import AnimeContinuation from '../components/AnimeContinuation';
 import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
@@ -223,6 +224,12 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
           )}
         </div>
       </ExtraHeader>
+      {data &&
+        mediaType === 'anime' &&
+        Number(id) > 0 &&
+        Number(id) <= 1_000_000_000 && (
+          <AnimeContinuation source="anilist" id={Number(id)} />
+        )}
       {!valid && (
         <p className="note" role="alert">
           Invalid franchise title.

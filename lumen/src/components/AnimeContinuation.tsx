@@ -50,26 +50,42 @@ const targetLabels = {
   series: 'Open Source',
 };
 
+interface ContinuationResult {
+  available: boolean;
+  seasonMapping?: string;
+  sources?: Source[];
+  seasons?: { number: number; title?: string }[];
+}
+
 export default function AnimeContinuation({
-  tvId,
+  source,
+  id,
   seasons,
 }: {
-  tvId: number;
-  seasons: { seasonNumber: number; name?: string }[];
+  source: 'tv' | 'anilist';
+  id: number;
+  seasons?: { seasonNumber: number; name?: string }[];
 }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [season, setSeason] = useState<number>();
   const language = document.documentElement.lang.slice(0, 2) || 'en';
-  const query = new URLSearchParams({ language });
-  if (season !== undefined) query.set('season', String(season));
-  const continuation = useApi<{
-    available: boolean;
-    seasonMapping?: string;
-    sources?: Source[];
-  }>(open ? `/continuation/tv/${tvId}?${query}` : null, {
+  const path = `/continuation/${source}/${id}?${new URLSearchParams({ language })}`;
+  const latest = useApi<ContinuationResult>(open ? path : null, {
     currentPathOnly: true,
   });
+  const selected = useApi<ContinuationResult>(
+    open && season !== undefined ? `${path}&season=${season}` : null,
+    { currentPathOnly: true }
+  );
+  const continuation = season === undefined ? latest : selected;
+  const seasonOptions =
+    seasons ??
+    latest.data?.seasons?.map(({ number, title }) => ({
+      seasonNumber: number,
+      name: title,
+    })) ??
+    [];
 
   return (
     <Section
@@ -87,7 +103,7 @@ export default function AnimeContinuation({
     >
       {open && (
         <>
-          {seasons.length > 0 && (
+          {seasonOptions.length > 0 && (
             <label className="sel">
               <span className="lbl">Season</span>
               <select
@@ -100,7 +116,7 @@ export default function AnimeContinuation({
                 }
               >
                 <option value="">Latest Season</option>
-                {seasons.map(({ seasonNumber, name }) => (
+                {seasonOptions.map(({ seasonNumber, name }) => (
                   <option key={seasonNumber} value={seasonNumber}>
                     {name || `Season ${seasonNumber}`}
                   </option>

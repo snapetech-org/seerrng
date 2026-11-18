@@ -932,7 +932,8 @@ export default function TvDetail() {
           t.genres?.some(({ id }) => id === 16) && (
             <AnimeContinuation
               key={id}
-              tvId={t.id}
+              source="tv"
+              id={t.id}
               seasons={seasons.filter(({ seasonNumber }) => seasonNumber > 0)}
             />
           )}
