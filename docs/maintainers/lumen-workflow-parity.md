@@ -239,3 +239,18 @@ external ID removal, and empty navigation state against a fixture. Mobile and
 bundled visual checks and the rendered native comparison remain open. Adding
 entries from media details, collection actions, and automatic rule setup
 remain open.
+
+### Blocklist media detail increment
+
+Managers can confirm adding or removing a title from movie, series, album,
+Open Library book, ComicVine edition, and magazine details. The action looks
+up the exact canonical identity and rechecks the detail, entry, and
+navigation count after a change. Request controls reflect Blocklisted after
+detail refresh. Bookshelf-only records without a supported Open Library work
+identity are excluded from the detail action.
+
+Headed Chrome at 1440 × 1000 compared the standalone movie detail with its
+previous build. The synthetic API confirmed an empty 201 add response and
+204 removal, and the UI switched both the request button and navigation after
+readback. Other media, mobile, and bundled visual acceptance remain open.
+Collection actions and automatic rule setup remain open.

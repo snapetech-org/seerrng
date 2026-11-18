@@ -78,3 +78,67 @@ for (const permissions of [32, 1073741824, 268435456]) {
     ).toHaveCount(0);
   });
 }
+
+test('movie detail adds and removes the exact blocked title and refreshes requests and navigation', async ({
+  page,
+}) => {
+  let blocked = false;
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: {
+          id: 20,
+          title: 'Example Movie',
+          genres: [],
+          mediaInfo: { status: blocked ? 6 : 1 },
+        },
+      });
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    if (path === '/blocklist' && request.method() === 'POST') {
+      writes.push(request.postDataJSON());
+      blocked = true;
+      return route.fulfill({ status: 201 });
+    }
+    if (path === '/blocklist/20') {
+      if (request.method() === 'DELETE') {
+        writes.push(new URL(request.url()).search);
+        blocked = false;
+        return route.fulfill({ status: 204 });
+      }
+      return blocked
+        ? route.fulfill({ json: { id: 99 } })
+        : route.fulfill({ status: 404, json: { message: 'Not found' } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('/movie/20');
+  await page.getByRole('button', { name: 'Add to Blocklist' }).click();
+  expect(writes).toEqual([]);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Add to Blocklist' })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Blocklisted' }).first()
+  ).toBeDisabled();
+  await page.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Remove from Blocklist' })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Add to Blocklist' })
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { mediaType: 'movie', title: 'Example Movie', tmdbId: 20 },
+    '?mediaType=movie',
+  ]);
+});

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
+import BlocklistButton from '../components/BlocklistButton';
 import {
   GridSkeleton,
   MoreOnScroll,
@@ -494,7 +495,10 @@ export function ComicDetail() {
       : work?.recommendedId) ??
     editions[0]?.id;
   const chosen = editions.find((e) => e.id === chosenId);
-  const { data: c } = useApi<Comic>(chosen ? `/comic/${chosen.id}` : null);
+  const { data: edition, refresh: refreshEdition } = useApi<Comic>(
+    chosen ? `/comic/${chosen.id}` : null
+  );
+  const c = edition?.id === chosen?.id ? edition : undefined;
   if (workError)
     return (
       <ExtraGate k="comic">
@@ -548,30 +552,35 @@ export function ComicDetail() {
     </a>
   ) : null;
   const alsoRead = complete ? null : read;
-  const main = !chosen ? (
-    <button className="btn btn-tonal" disabled>
-      <Icon name="clock" />
-      {work.editionsResolved
-        ? 'No edition to request yet'
-        : 'Looking up editions…'}
-    </button>
-  ) : complete && read ? (
-    read
-  ) : s ? (
-    <button className="btn btn-tonal" disabled>
-      <Icon name={s.ico} />
-      {s.word}
-    </button>
-  ) : (
-    <button className="btn btn-primary" disabled={busy} onClick={request}>
-      <Icon name="plus" />
-      {editions.length > 1
-        ? `Request · ${editionLabel(chosen)}`
-        : manga
-          ? 'Request manga'
-          : 'Request series'}
-    </button>
-  );
+  const main =
+    c?.mediaInfo?.status === MediaStatus.BLOCKLISTED ? (
+      <button className="btn btn-tonal" disabled>
+        Blocklisted
+      </button>
+    ) : !chosen ? (
+      <button className="btn btn-tonal" disabled>
+        <Icon name="clock" />
+        {work.editionsResolved
+          ? 'No edition to request yet'
+          : 'Looking up editions…'}
+      </button>
+    ) : complete && read ? (
+      read
+    ) : s ? (
+      <button className="btn btn-tonal" disabled>
+        <Icon name={s.ico} />
+        {s.word}
+      </button>
+    ) : (
+      <button className="btn btn-primary" disabled={busy} onClick={request}>
+        <Icon name="plus" />
+        {editions.length > 1
+          ? `Request · ${editionLabel(chosen)}`
+          : manga
+            ? 'Request manga'
+            : 'Request series'}
+      </button>
+    );
   return (
     <ExtraGate k="comic">
       <article className="detail">
@@ -599,6 +608,16 @@ export function ComicDetail() {
             <IndexerSearchLink
               category="comic"
               title={chosen?.title || work.title}
+            />
+            <BlocklistButton
+              mediaType="comic"
+              id={c?.id}
+              requestedId={chosen?.id}
+              title={c?.title}
+              onChange={() => {
+                refreshEdition();
+                reload();
+              }}
             />
             <ReportIssueButton
               key={chosen?.id}
@@ -872,6 +891,7 @@ export function MagazineDetail() {
     data: m,
     error,
     reload,
+    refresh,
   } = useApi<Magazine>(`/magazine/${encodeURIComponent(title)}`);
   if (error)
     return (
@@ -912,6 +932,13 @@ export function MagazineDetail() {
               </Pill>
             )}
             <IndexerSearchLink category="magazine" title={m.title} />
+            <BlocklistButton
+              mediaType="magazine"
+              id={m.id}
+              requestedId={title}
+              title={m.title}
+              onChange={refresh}
+            />
             <ReportIssueButton
               type="magazine"
               title={m.title}

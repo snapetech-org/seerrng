@@ -24,7 +24,11 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function api<T>(
+  path: string,
+  init: RequestInit = {},
+  response: 'json' | 'empty' = 'json'
+): Promise<T> {
   const res = await fetch('/api/v1' + path, {
     credentials: 'same-origin',
     // SeerrNG marks detail responses cacheable for 5 minutes (stale for 30), which would hide
@@ -49,7 +53,9 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   }
   // a request or other change: saved answers may now be out of date
   if (init.method && init.method !== 'GET') markAllStale();
-  return res.status === 204 ? (undefined as T) : res.json();
+  return response === 'empty' || res.status === 204
+    ? (undefined as T)
+    : res.json();
 }
 
 // ---- shapes we use (subset of SeerrNG's) ----
@@ -480,7 +486,7 @@ export const bookMediaForFormat = (
   media: MediaInfo | undefined,
   format: 'ebook' | 'audiobook'
 ): MediaInfo | undefined => {
-  if (!media) return media;
+  if (!media || media.status === MediaStatus.BLOCKLISTED) return media;
   const hasRequests = Array.isArray((media as { requests?: unknown }).requests);
   if (
     media.status !== MediaStatus.AVAILABLE &&

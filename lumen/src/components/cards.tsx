@@ -89,6 +89,8 @@ export function statusOf(
   book = false,
   serverName = 'Plex'
 ): Stat {
+  if (mi?.status === MediaStatus.BLOCKLISTED)
+    return { k: 'wait', word: 'Blocklisted', ico: 'lock' };
   // SeerrNG's own cards count the 4K copy too: a title that's only in the 4K library
   // (or only requested in 4K) still gets its glyph
   const shown = (x?: number) =>

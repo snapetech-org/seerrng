@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
+import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
 import { DetailTop, Facts, Pill } from '../components/detail';
 import {
@@ -153,7 +154,7 @@ export function Music() {
 
 export function AlbumDetail() {
   const { id } = useParams();
-  const { data: a, error } = useApi<AlbumDetails>(`/music/${id}`);
+  const { data: a, error, refresh } = useApi<AlbumDetails>(`/music/${id}`);
   if (error)
     return (
       <ExtraGate k="music">
@@ -206,6 +207,13 @@ export function AlbumDetail() {
               </Pill>
             )}
             <IndexerSearchLink category="music" title={a.title} />
+            <BlocklistButton
+              mediaType="music"
+              id={a.id}
+              requestedId={id}
+              title={a.title}
+              onChange={refresh}
+            />
             <ReportIssueButton
               type="music"
               title={a.title}

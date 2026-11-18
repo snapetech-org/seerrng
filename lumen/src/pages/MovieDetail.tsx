@@ -11,6 +11,7 @@ import {
   type TitleResult,
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
+import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
   Section,
@@ -75,6 +76,7 @@ export default function MovieDetail() {
     false,
     serverName
   );
+  const blocklisted = m.mediaInfo?.status === MediaStatus.BLOCKLISTED;
   const s4k = m.mediaInfo?.status4k;
   const date = m.releaseDate || '';
   const unreleased = date > localToday();
@@ -136,7 +138,7 @@ export default function MovieDetail() {
     );
   // offered whether or not the HD copy is here or requested: they're separate files
   const fourK =
-    pub?.movie4kEnabled && can4k && !has4k ? (
+    !blocklisted && pub?.movie4kEnabled && can4k && !has4k ? (
       <button
         className="btn btn-quiet"
         disabled={busy}
@@ -199,6 +201,13 @@ export default function MovieDetail() {
             </Pill>
           )}
           <IndexerSearchLink category="movie" title={m.title} />
+          <BlocklistButton
+            mediaType="movie"
+            id={m.id}
+            requestedId={id}
+            title={m.title}
+            onChange={refresh}
+          />
           <ReportIssueButton
             type="movie"
             title={m.title}

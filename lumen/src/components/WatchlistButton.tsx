@@ -3,10 +3,9 @@ import { api, MediaStatus, type MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { Icon } from '../icons';
+import { canonicalMediaId, type ManagedMediaType } from '../mediaIdentity';
 import { sessionGeneration } from '../sessionState';
 import { useToast } from './toast';
-
-type WatchlistMedia = 'movie' | 'tv' | 'music' | 'book' | 'comic' | 'magazine';
 
 interface WatchlistTitle {
   id: string | number;
@@ -15,50 +14,12 @@ interface WatchlistTitle {
   mediaInfo?: Pick<MediaInfo, 'status'> | null;
 }
 
-function canonicalId(mediaType: WatchlistMedia, input: string | number) {
-  const value = String(input).trim();
-  switch (mediaType) {
-    case 'movie':
-    case 'tv': {
-      const id = Number(value);
-      return /^[1-9]\d*$/.test(value) &&
-        Number.isSafeInteger(id) &&
-        id <= 1_000_000_000
-        ? String(id)
-        : undefined;
-    }
-    case 'music':
-      return /^[A-Za-z0-9_-]{1,128}$/.test(value)
-        ? value.toLowerCase()
-        : undefined;
-    case 'book': {
-      const workId = value.replace(/^\/?works\//i, '').toUpperCase();
-      return /^OL\d{1,124}W$/.test(workId) ? workId : undefined;
-    }
-    case 'comic':
-      return /^\d{1,18}$/.test(value) ? value : undefined;
-    case 'magazine': {
-      const title = value
-        .normalize('NFKC')
-        .trim()
-        .replace(/\s+/g, ' ')
-        .toLowerCase();
-      return title.length > 0 &&
-        title.length <= 256 &&
-        title !== '.' &&
-        title !== '..'
-        ? title
-        : undefined;
-    }
-  }
-}
-
 export default function WatchlistButton({
   mediaType,
   detail,
   requestedId = detail.id,
 }: {
-  mediaType: WatchlistMedia;
+  mediaType: ManagedMediaType;
   detail: WatchlistTitle;
   requestedId?: string | number;
 }) {
@@ -68,13 +29,13 @@ export default function WatchlistButton({
   const [busy, setBusy] = useState(false);
   const [confirmed, setConfirmed] = useState<boolean>();
   const [unavailable, setUnavailable] = useState(false);
-  const id = canonicalId(mediaType, detail.id);
+  const id = canonicalMediaId(mediaType, detail.id);
   if (
     unavailable ||
     !user?.userType ||
     user.userType === 1 ||
     !id ||
-    id !== canonicalId(mediaType, requestedId) ||
+    id !== canonicalMediaId(mediaType, requestedId) ||
     detail.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
     typeof detail.onUserWatchlist !== 'boolean'
   )
@@ -99,7 +60,7 @@ export default function WatchlistButton({
       });
       if (sessionGeneration() !== session) return;
       if (
-        canonicalId(mediaType, fresh.id) !== id ||
+        canonicalMediaId(mediaType, fresh.id) !== id ||
         fresh.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
         typeof fresh.onUserWatchlist !== 'boolean'
       ) {

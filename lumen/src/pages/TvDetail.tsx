@@ -11,6 +11,7 @@ import {
   type TvDetails,
 } from '../api';
 import { useMediaServerName } from '../auth';
+import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
   Section,
@@ -180,8 +181,9 @@ export default function TvDetail() {
       return y;
     });
   };
+  const blocklisted = t.mediaInfo?.status === MediaStatus.BLOCKLISTED;
   const request = async () => {
-    if (!n) return;
+    if (!n || blocklisted) return;
     setBusy(true);
     try {
       const whole = n === seasons.length;
@@ -232,7 +234,11 @@ export default function TvDetail() {
   const asks = (t.mediaInfo?.requests || []).filter(
     (r) => !!r.is4k === !!is4k && live(r.status)
   );
-  const main = missing.length ? (
+  const main = blocklisted ? (
+    <button className="btn btn-tonal" disabled>
+      Blocklisted
+    </button>
+  ) : missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
       {label}
@@ -302,6 +308,13 @@ export default function TvDetail() {
             </Pill>
           )}
           <IndexerSearchLink category="tv" title={t.name} />
+          <BlocklistButton
+            mediaType="tv"
+            id={t.id}
+            requestedId={id}
+            title={t.name}
+            onChange={refresh}
+          />
           <ReportIssueButton
             type="tv"
             title={t.name}
