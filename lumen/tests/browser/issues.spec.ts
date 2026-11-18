@@ -291,4 +291,14 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
     .poll(() => queries.at(-1)?.get('search'))
     .toBe('missing & audio');
   await expect(page.getByLabel('Media Type')).toHaveValue('book');
+  await page.getByLabel('Release Year').fill('2020');
+  await page.getByLabel('Genre', { exact: true }).fill('science fiction');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBe('2020');
+  expect(queries.at(-1)?.get('genre')).toBe('science fiction');
+  await page.getByLabel('Sort Issues').selectOption('modified');
+  await expect.poll(() => queries.at(-1)?.get('sort')).toBe('modified');
+  await page.getByLabel('Media Type').selectOption('all');
+  await expect(page.getByLabel('Release Year')).toHaveCount(0);
+  await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBeNull();
 });

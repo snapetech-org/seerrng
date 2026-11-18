@@ -299,6 +299,13 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
     'timeFrame',
     'search',
     'page',
+    'sort',
+    'sortDirection',
+    'releaseYear',
+    'genre',
+    'studio',
+    'network',
+    'albumType',
   ],
 };
 

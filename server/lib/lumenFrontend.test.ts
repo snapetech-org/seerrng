@@ -277,8 +277,8 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
       [
-        '/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2',
-        '/lumen/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2',
+        '/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2&sort=modified&releaseYear=2020&genre=fiction',
+        '/lumen/issues?filter=open&mediaType=book&issueType=audio&timeFrame=7d&page=2&sort=modified&releaseYear=2020&genre=fiction',
       ],
       ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
       [

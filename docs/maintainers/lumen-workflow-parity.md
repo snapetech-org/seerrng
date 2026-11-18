@@ -1806,3 +1806,9 @@ Status, filters, search, and page are bookmarkable, and changing a filter
 resets pagination. All 28 standalone issue cases and both server routing
 tests passed. Advanced native metadata filters and matched visual
 acceptance remain open.
+
+Issue lists now support media-specific year, genre, studio, network, and
+album type filters along with sort order. The metadata controls use text
+entry for genre, studio, and network. The bundled lock preserves these
+parameters on native bookmarks. All 28 issue browser checks and two
+server routing cases passed. Matched native visual acceptance remains open.

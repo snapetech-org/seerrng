@@ -150,7 +150,33 @@ const issueFilters = [
       '6m': '6 Months',
     },
   },
+  {
+    key: 'sort',
+    label: 'Sort Issues',
+    options: {
+      all: 'Date Reported',
+      modified: 'Last Updated',
+      status: 'Status',
+    },
+  },
+  {
+    key: 'sortDirection',
+    label: 'Sort Direction',
+    options: { all: 'Descending', asc: 'Ascending' },
+  },
 ];
+
+const issueMetadata = [
+  {
+    key: 'releaseYear',
+    label: 'Release Year',
+    media: ['movie', 'tv', 'music', 'book'],
+  },
+  { key: 'genre', label: 'Genre', media: ['movie', 'tv', 'music', 'book'] },
+  { key: 'studio', label: 'Studio', media: ['movie'] },
+  { key: 'network', label: 'Network', media: ['tv'] },
+  { key: 'albumType', label: 'Album Type', media: ['music'] },
+] as const;
 
 function IssueList() {
   const [bookmark, setBookmark] = useSearchParams();
@@ -171,10 +197,25 @@ function IssueList() {
     if (value && value !== 'all' && Object.hasOwn(options, value))
       params.set(key, value);
   }
+  const media = params.get('mediaType') ?? 'all';
+  const metadata = issueMetadata.filter(({ media: types }) =>
+    (types as readonly string[]).includes(media)
+  );
+  for (const { key } of metadata) {
+    const value = (bookmark.get(key) ?? '').trim().slice(0, 128);
+    if (value && (key !== 'releaseYear' || /^(\d{4}|before-1970)$/.test(value)))
+      params.set(key, value);
+  }
   function update(key: string, value: string) {
     const next = new URLSearchParams(bookmark);
     if (value) next.set(key, value);
     else next.delete(key);
+    if (key === 'mediaType') {
+      for (const { key: metadataKey, media: types } of issueMetadata) {
+        if (!(types as readonly string[]).includes(value))
+          next.delete(metadataKey);
+      }
+    }
     if (key !== 'page') next.delete('page');
     setBookmark(next);
   }
@@ -188,8 +229,15 @@ function IssueList() {
         className="toolbar"
         onSubmit={(event) => {
           event.preventDefault();
-          const search = new FormData(event.currentTarget).get('search');
-          update('search', typeof search === 'string' ? search.trim() : '');
+          const form = new FormData(event.currentTarget);
+          const next = new URLSearchParams(bookmark);
+          for (const key of ['search', ...metadata.map(({ key }) => key)]) {
+            const value = String(form.get(key) ?? '').trim();
+            if (value) next.set(key, value);
+            else next.delete(key);
+          }
+          next.delete('page');
+          setBookmark(next);
         }}
       >
         {issueFilters.map(({ key, label, options }) => (
@@ -223,6 +271,32 @@ function IssueList() {
             defaultValue={submitted}
           />
         </label>
+        {metadata.map(({ key, label }) => (
+          <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
+            <span className="lbl">{label}</span>
+            {key === 'albumType' ? (
+              <select name={key} defaultValue={params.get(key) ?? ''}>
+                <option value="">Any Album Type</option>
+                <option value="album">Album</option>
+                <option value="ep">EP</option>
+                <option value="single">Single</option>
+              </select>
+            ) : (
+              <input
+                className="cfg-json"
+                name={key}
+                defaultValue={params.get(key) ?? ''}
+                maxLength={key === 'releaseYear' ? 11 : 128}
+                pattern={
+                  key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
+                }
+                placeholder={
+                  key === 'releaseYear' ? 'YYYY or before-1970' : undefined
+                }
+              />
+            )}
+          </label>
+        ))}
         <button className="btn btn-tonal btn-sm">Search</button>
       </form>
       <ServiceNote error={error} what="issues" retry={reload} />
