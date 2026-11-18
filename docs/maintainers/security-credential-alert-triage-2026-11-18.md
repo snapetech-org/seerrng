@@ -173,3 +173,18 @@ disable their package caches by default, and the jobs do not enable
 them. The release publisher and scanner cache checks remain separate.
 GitHub's default CodeQL setup is disabled. The alerts remain open for
 review of the dispatch trust boundary.
+
+### GitHub disposition on current main
+
+The remote avatar finding (312) was dismissed after verifying the HTTPS
+host allowlist, direct socket lookup that rejects private addresses, and
+redirect validation. All 109 focused tests passed.
+
+The CI findings (590–610) cover the owner-only validation dispatch. Its
+metadata job does not check out or execute the PR. The validation it
+dispatches uses GitHub-hosted runners with read-only contents access,
+no persisted checkout credentials, and disabled shared dependency caches.
+A workflow contract now checks those boundaries alongside the existing
+publishing cache isolation checks. All 50 workflow contract tests passed.
+The CI findings were dismissed against this configuration. GitHub default
+CodeQL setup remains disabled.

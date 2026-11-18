@@ -52,6 +52,47 @@ test('trusted image publishers and their scans do not restore shared caches', ()
   }
 });
 
+test('main-pinned owner PR validation keeps its checkout and cache trust boundary', () => {
+  const ci = readWorkflow('ci.yml');
+  assert.deepEqual(ci.permissions, { contents: 'read' });
+  const dispatch = ci.jobs['dispatch-owner-pr'];
+  for (const condition of [
+    "github.event_name == 'pull_request_target'",
+    "github.actor == 'snapetech'",
+    "github.event.pull_request.user.login == 'snapetech'",
+    'github.event.pull_request.head.repo.id == github.repository_id',
+    "github.event.pull_request.base.ref == 'main'",
+  ]) {
+    assert.ok(dispatch.if.includes(condition), condition);
+  }
+  assert.ok(dispatch.steps.every(({ uses }) => !uses));
+
+  for (const name of [
+    'i18n-and-tooling',
+    'test',
+    'unit-test',
+    'node-test',
+    'jellyfin-plugin',
+    'playwright',
+  ]) {
+    const job = ci.jobs[name];
+    assert.match(job['runs-on'], /^ubuntu-/u, name);
+    assert.ok(job.if.includes("github.actor == 'github-actions[bot]'"), name);
+    assert.doesNotMatch(JSON.stringify(job), /actions\/cache|secrets\./u, name);
+    for (const { uses, with: inputs } of job.steps) {
+      if (uses?.startsWith('actions/checkout@'))
+        assert.equal(inputs['persist-credentials'], false, name);
+      if (uses?.startsWith('actions/setup-node@'))
+        assert.equal(inputs['package-manager-cache'], false, name);
+      if (
+        uses?.startsWith('pnpm/action-setup@') ||
+        uses?.startsWith('actions/setup-dotnet@')
+      )
+        assert.equal(inputs?.cache ?? false, false, name);
+    }
+  }
+});
+
 test('release workflows use GitHub-hosted runners, including Windows packaging', () => {
   for (const workflowName of ['release.yml', 'release-assets.yml']) {
     const source = fs.readFileSync(
