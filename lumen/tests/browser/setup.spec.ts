@@ -99,6 +99,12 @@ for (const administrator of [true, false]) {
       .getByRole('button', { name: 'Save Categories', exact: true })
       .click();
     await expect(providerPanels.nth(2)).toHaveText('Lidarr');
+    const serviceGroup = page.getByRole('combobox', { name: 'Service Group' });
+    await serviceGroup.selectOption('music');
+    await expect(page.getByText('Lidarr', { exact: true })).toBeVisible();
+    await expect(page.getByText('Radarr', { exact: true })).toBeHidden();
+    await serviceGroup.selectOption('');
+    await expect(page.getByText('Radarr', { exact: true })).toBeVisible();
     for (const provider of [
       'LazyLibrarian',
       'Mylar',

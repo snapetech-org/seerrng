@@ -146,16 +146,45 @@ const requestServices = [
   ['whisparr', 'Whisparr', ['adult']],
 ] as const;
 
+const setupServiceGroups: Record<
+  string,
+  { label: string; categories: string[] }
+> = {
+  video: { label: 'Movies and Series', categories: ['movie', 'tv'] },
+  reading: {
+    label: 'Books, Audiobooks, Comics, and Magazines',
+    categories: ['ebook', 'audiobook', 'comic', 'magazine'],
+  },
+  music: { label: 'Music', categories: ['music'] },
+  other: { label: 'Sports and Adult', categories: ['sports', 'adult'] },
+};
+
 function SetupRequestServices({
   categories,
 }: {
   categories?: PublicSettings['enabledMediaCategories'];
 }) {
+  const [group, setGroup] = useState('');
+  const groupCategories = setupServiceGroups[group]?.categories;
   const recommended = requestServices.filter(([, , keys]) =>
     keys.some((key) => categories?.[key] === true)
   );
   return (
     <>
+      <label className="sel">
+        Service Group
+        <select
+          value={group}
+          onChange={(event) => setGroup(event.target.value)}
+        >
+          <option value="">All Request Services</option>
+          {Object.entries(setupServiceGroups).map(([id, { label }]) => (
+            <option key={id} value={id}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </label>
       {recommended.length > 0 && (
         <p className="note">
           Services for your enabled categories appear first.
@@ -164,8 +193,15 @@ function SetupRequestServices({
       {[
         ...recommended,
         ...requestServices.filter((service) => !recommended.includes(service)),
-      ].map(([provider, label]) => (
-        <SetupEditor key={provider} label={label}>
+      ].map(([provider, label, keys]) => (
+        <SetupEditor
+          key={provider}
+          label={label}
+          hidden={
+            !!groupCategories &&
+            !keys.some((key) => groupCategories.includes(key))
+          }
+        >
           <AdminServarr provider={provider} inSetup />
         </SetupEditor>
       ))}
