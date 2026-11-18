@@ -6925,10 +6925,18 @@ test('a filter-only Classic series bookmark shows matching titles without a sear
     expect(url.searchParams.get('genre')).toBe('18');
     expect(url.searchParams.get('language')).toBe('fr');
     expect(url.searchParams.has('search')).toBe(false);
+    const second = url.searchParams.get('page') === '2';
     return route.fulfill({
-      json: paged([
-        { mediaType: 'tv', id: 91, name: 'Filtered Series Fixture' },
-      ]),
+      json: {
+        ...paged([
+          {
+            mediaType: 'tv',
+            id: second ? 92 : 91,
+            name: second ? 'Second Filtered Series' : 'Filtered Series Fixture',
+          },
+        ]),
+        totalPages: 2,
+      },
     });
   });
   await page.goto('/search?type=tv&genre=18&language=fr');
@@ -6938,6 +6946,15 @@ test('a filter-only Classic series bookmark shows matching titles without a sear
   await expect(
     page.getByRole('heading', { name: 'Trending this week' })
   ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Second Filtered Series' })
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole('link', { name: 'Second Filtered Series' })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
   await page.getByRole('button', { name: 'Clear Discovery Filters' }).click();
   await expect(
     page.getByRole('link', { name: 'Filtered Series Fixture' })

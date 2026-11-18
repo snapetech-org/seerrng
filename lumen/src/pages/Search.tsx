@@ -35,6 +35,7 @@ import {
   normalizeSearchParams,
   scopedVideoSearchPath,
   videoFilterKeys,
+  videoSearchPage,
 } from '../searchParams';
 import { usePrefs } from '../settings';
 import { PersonCard } from './People';
@@ -62,6 +63,7 @@ export default function Search() {
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [comics, setComics] = useState<ComicWork[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
+  const [videoTotalPages, setVideoTotalPages] = useState(1);
   const [searching, setSearching] = useState(false);
   // a lookup failed and nothing was found: an error with Retry, not "No matches"
   const [failed, setFailed] = useState<string | null>(null);
@@ -75,6 +77,7 @@ export default function Search() {
   const term0 = (p.get('q') || '').trim();
   const videoPath = scopedVideoSearchPath(p, f, term0);
   const hasVideoFilters = videoPath.startsWith('/discover/');
+  const videoPage = videoSearchPage(p);
   const hasSearch = !!term0 || hasVideoFilters;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
@@ -204,6 +207,7 @@ export default function Search() {
           .filter((b) => b.mediaType === 'book' && /^OL[1-9]\d*W$/.test(b.id))
           .map((b) => ({ ...b, bookFormat: 'audiobook' }));
       }
+      setVideoTotalPages(Math.min(500, tr?.totalPages ?? 1));
       setTitles(foundTitles);
       setBooks(foundBooks);
       setComics(foundComics);
@@ -223,10 +227,18 @@ export default function Search() {
 
   const setParam = (k: string, v: string) => {
     const n = new URLSearchParams(p);
+    if (k === 'q' || k === 'f') n.delete('page');
     if (!v || v === 'all') n.delete(k);
     else n.set(k, v);
     setP(n, { replace: true });
   };
+  function moveVideoPage(page: number) {
+    const next = new URLSearchParams(p);
+    if (page === 1) next.delete('page');
+    else next.set('page', String(page));
+    setP(next);
+  }
+
   const ph =
     f === 'all'
       ? prefs.showBooks
@@ -324,6 +336,7 @@ export default function Search() {
                 const next = new URLSearchParams(p);
                 for (const key of videoFilterKeys) next.delete(key);
                 next.delete('certificationMode');
+                next.delete('page');
                 setP(next, { replace: true });
               }}
             >
@@ -510,6 +523,27 @@ export default function Search() {
           </Section>
         )}
       </div>
+      {hasVideoFilters && (videoPage > 1 || videoTotalPages > 1) && (
+        <nav className="toolbar" aria-label="Discovery Search Pages">
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={searching || videoPage <= 1}
+            onClick={() => moveVideoPage(videoPage - 1)}
+          >
+            Previous Page
+          </button>
+          <span className="note">Page {videoPage}</span>
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={searching || !!failed || videoPage >= videoTotalPages}
+            onClick={() => moveVideoPage(videoPage + 1)}
+          >
+            Next Page
+          </button>
+        </nav>
+      )}
     </>
   );
 }
