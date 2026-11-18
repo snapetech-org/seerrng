@@ -1771,6 +1771,17 @@ and the confirmed save feedback. Express and nginx bookmark checks and
 12 standalone account browser checks passed across the four viewport
 presets. Matched native visual acceptance remains unverified.
 
+### About release history
+
+About loads the public GitHub release history on demand, identifies the
+latest and installed versions, and expands release notes as plain text.
+Four browser cases passed per production deployment, with Express at
+`/lumen/` and the standalone nginx image. The browser used fixtures to
+check deferred loading and retry. Both production responses permit the
+GitHub API through their content security policy. A separate live request
+returned 20 releases and allowed cross-origin reads. Live browser loading
+and matched visual review remain open.
+
 ### Instance General Settings
 
 The administration menu opens a Lumen General Settings page for the
