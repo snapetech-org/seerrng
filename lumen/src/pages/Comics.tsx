@@ -469,7 +469,11 @@ export function ComicDetail() {
     data: work,
     error: workError,
     reload,
-  } = useApi<ComicWork>(`/comic/work/${encodeURIComponent(id)}`);
+    refresh,
+  } = useApi<ComicWork>(`/comic/work/${encodeURIComponent(id)}`, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
   const [pick, setPick] = useState<string | null>(null);
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
@@ -477,15 +481,16 @@ export function ComicDetail() {
   const sending = useRef(false);
   useEffect(() => setPick(null), [id]);
   // #editions (from a card's "Choose edition") scrolls to the picker once it's there
+  const workLoaded = !!work;
   useEffect(() => {
-    if (work && window.location.hash === '#editions')
+    if (workLoaded && window.location.hash === '#editions')
       document.getElementById('editions')?.scrollIntoView({ block: 'start' });
-  }, [work]);
+  }, [id, workLoaded]);
   const editions = work?.editions || [];
   const stateOf = (editionId: string) => {
     const e = editions.find((x) => x.id === editionId);
     const st = comicState(e?.mediaInfo).stat;
-    return asked.has(editionId) && st?.k !== 'ok'
+    return asked.has(editionId) && !st
       ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
       : st;
   };
@@ -500,6 +505,23 @@ export function ComicDetail() {
     chosen ? `/comic/${chosen.id}` : null
   );
   const c = edition?.id === chosen?.id ? edition : undefined;
+  // Keep queue progress tied to the selected edition.
+  const shown = chosen
+    ? (chosen.mediaInfo ??
+      (chosen.id === work?.mediaEditionId ? work?.mediaInfo : undefined))
+    : work?.mediaInfo;
+  const trackDownload =
+    shown?.status === MediaStatus.PENDING ||
+    shown?.status === MediaStatus.PROCESSING ||
+    (shown?.status === MediaStatus.PARTIAL && !!shown.downloadStatus?.length);
+  useEffect(() => {
+    if (!trackDownload) return;
+    // The server's Download Sync job updates these provider queues once a minute.
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') refresh();
+    }, 60_000);
+    return () => window.clearInterval(timer);
+  }, [id, chosenId, trackDownload, refresh]);
   if (workError)
     return (
       <ExtraGate k="comic">
@@ -509,12 +531,6 @@ export function ComicDetail() {
   if (!work) return <div className="detail-loading" aria-busy="true" />;
   const manga = work.kind === 'manga';
   const unit = manga ? 'vol' : 'issue';
-  // the chosen edition's own state: an edition not in the library doesn't show the owned
-  // edition's progress or reader link
-  const shown = chosen
-    ? (chosen.mediaInfo ??
-      (chosen.id === work.mediaEditionId ? work.mediaInfo : undefined))
-    : work.mediaInfo;
   const cs = comicState(shown);
   const s = chosen ? stateOf(chosen.id) : cs.stat;
   const about = work.description
@@ -530,6 +546,7 @@ export function ComicDetail() {
     try {
       toast(await requestComicEdition(work, chosen));
       setAsked((x) => new Set(x).add(chosen.id));
+      refresh();
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     } finally {

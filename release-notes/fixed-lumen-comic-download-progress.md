@@ -6,3 +6,4 @@ action: none
 breaking: false
 ---
 Lumen now shows comic download percentages when the queue reports total and remaining bytes.
+Comic details also refresh while an active download page is open.

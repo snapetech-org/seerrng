@@ -24,7 +24,8 @@ const SAVE_DELAY_MS = 400;
 // how long an always-checked answer is reused before asking again
 export const RECHECK_MS = 15_000;
 // these change as people use the site: always asked again (still shown at once meanwhile)
-const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
+const ALWAYS_CHECK =
+  /^\/(request|auth|user\/\d+\/quota|settings\/public|comic\/work\/)/;
 // These answers depend on current account category and maturity policies.
 // Never serve cached person details, watchlists, or personal library data after those settings tighten.
 const NEVER_CACHE =

@@ -574,20 +574,26 @@ test('an edition not in the library shows its own state, not the owned one', asy
 test('comic download progress combines percentage and byte-based queue items', async ({
   page,
 }, info) => {
-  const media = {
+  await page.clock.install();
+  let reads = 0;
+  let failing = false;
+  let media = {
     ...owned,
     downloadStatus: [{ percent: 80 }, { size: 100, sizeLeft: 60 }],
   };
   await fixtures(page, {
     pub: comicPub,
     handle: (path) => {
-      if (path === '/comic/work/al-1')
+      if (path === '/comic/work/al-1') {
+        reads++;
+        if (failing) return { status: 500, json: { message: 'Offline' } };
         return {
           json: work({
             mediaInfo: media,
             editions: [ed('11', 'English', { mediaInfo: media })],
           }),
         };
+      }
       if (path.endsWith('/issues')) return { json: paged([]) };
       if (path.startsWith('/comic/')) return { json: {} };
     },
@@ -602,6 +608,26 @@ test('comic download progress combines percentage and byte-based queue items', a
   await expect(
     page.getByRole('progressbar', { name: 'Download progress' })
   ).toHaveAttribute('aria-valuenow', '60');
+  failing = true;
+  await page.clock.fastForward(60_000);
+  await expect.poll(() => reads).toBe(2);
+  await expect(page.locator('.dstatus')).toContainText('Downloading 60%');
+  failing = false;
+  media = {
+    ...media,
+    downloadStatus: [{ percent: 100 }, { size: 100, sizeLeft: 40 }],
+  };
+  await page.clock.fastForward(60_000);
+  await expect(page.locator('.dstatus')).toContainText('Downloading 80%');
+  await page.screenshot({
+    path: info.outputPath('comic-progress-updated.png'),
+    fullPage: true,
+  });
+  media = { ...media, status: 5, downloadStatus: [] };
+  await page.clock.fastForward(60_000);
+  await expect(page.locator('.dstatus')).toContainText('Complete');
+  await page.clock.fastForward(120_000);
+  expect(reads).toBe(4);
 });
 
 test('comic pages that fail offer Retry, volumes included', async ({

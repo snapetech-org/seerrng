@@ -2031,3 +2031,14 @@ outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-progress-20261118/`.
+
+Open comic details refresh scheduled queue data once a minute while the
+selected edition is pending or processing, or while a partially available
+edition has downloads. Hidden tabs skip refreshes. A failed refresh preserves
+the last progress, and polling stops after completion. Compared the same
+fixture and four viewports against the preceding comic progress milestone.
+The browser fixture advances the clock and verifies failure, recovery, and
+completion without navigation. Real provider round trips are unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-refresh-20261118/`.
