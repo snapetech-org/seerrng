@@ -2310,3 +2310,48 @@ test('available series use the library query and retain quality with catalog fil
   await expect(library).toBeVisible();
   await expect(page.getByLabel('Availability Quality')).toHaveValue('4k');
 });
+
+test('discovery retries a failed second page without replacing existing titles', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: number[] = [];
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    const number = Number(
+      new URL(route.request().url()).searchParams.get('page')
+    );
+    reads.push(number);
+    if (number === 2 && reads.filter((read) => read === 2).length === 1)
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Page unavailable.' },
+      });
+    return route.fulfill({
+      json: {
+        page: number,
+        totalPages: 2,
+        results:
+          number === 1
+            ? [movie]
+            : [{ ...movie, id: 202, title: 'Second Page Film' }],
+      },
+    });
+  });
+  await page.goto('/movies');
+  const first = page.getByRole('link', { name: 'The Test Film', exact: true });
+  const alert = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load more.' });
+  await expect(first).toBeVisible();
+  await page.evaluate(() =>
+    window.scrollTo(0, document.documentElement.scrollHeight)
+  );
+  await expect(alert).toBeVisible();
+  await expect(first).toBeVisible();
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Second Page Film', exact: true })
+  ).toBeVisible();
+  await expect(first).toBeVisible();
+  expect(reads).toEqual([1, 2, 2]);
+});

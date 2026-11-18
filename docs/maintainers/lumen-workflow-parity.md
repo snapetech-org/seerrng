@@ -1116,3 +1116,8 @@ uses the library query, that a series-status filter switches to the catalog
 while retaining 4K filtering, and that clearing status restores library
 results. All four viewport presets passed. Live-backend and visual
 comparisons remain open.
+
+The shared pagination hook now retries the failed page directly on user
+action. It keeps previously loaded titles and no longer depends on the
+scroll marker to start the retry. Standalone Movies checks verified initial
+and second-page recovery across four viewport presets.

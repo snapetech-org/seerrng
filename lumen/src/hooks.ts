@@ -221,49 +221,57 @@ export function usePaged<T>(base: string) {
     if (pagedSnap.size > 30)
       pagedSnap.delete(pagedSnap.keys().next().value as string);
   }, [base, loadedBase, snapKey, items, page, total]);
-  const more = useCallback(async () => {
-    // after a failure only Retry asks again: retrying by itself would hammer the rate limit
-    if (loadedBase !== base || loading || page >= total || error) return;
-    const key = `${base}#${page + 1}`;
-    if (inFlight.current === key) return;
-    inFlight.current = key;
-    if (page === 0) rowsGen.current = cacheGeneration();
-    const requestGeneration = generation.current;
-    const ownsRequest = () =>
-      generation.current === requestGeneration && inFlight.current === key;
-    setLoading(true);
-    try {
-      const sep = base.includes('?') ? '&' : '?';
-      const d = await cachedApi<{
-        page: number;
-        totalPages: number;
-        results: T[];
-      }>(`${base}${sep}page=${page + 1}`);
-      if (!ownsRequest()) return; // an old filter must not replace the current list
-      // popular lists shift between pages, so a title can come back; show it once
-      const idOf = (x: T) => String((x as { id?: unknown }).id);
-      setItems((x) => {
-        const seen = new Set(x.map(idOf));
-        return x.concat(d.results.filter((r) => !seen.has(idOf(r))));
-      });
-      setPage(d.page);
-      setTotal(d.totalPages || 1);
-    } catch (e) {
-      if (ownsRequest()) setError(friendlyError(e, 'Failed to load'));
-    } finally {
-      if (ownsRequest()) {
-        inFlight.current = null;
-        setLoading(false);
+  const loadNext = useCallback(
+    async (retrying: boolean) => {
+      // after a failure only Retry asks again: retrying by itself would hammer the rate limit
+      if (
+        loadedBase !== base ||
+        loading ||
+        page >= total ||
+        (error && !retrying)
+      )
+        return;
+      const key = `${base}#${page + 1}`;
+      if (inFlight.current === key) return;
+      inFlight.current = key;
+      if (page === 0) rowsGen.current = cacheGeneration();
+      const requestGeneration = generation.current;
+      const ownsRequest = () =>
+        generation.current === requestGeneration && inFlight.current === key;
+      setError(null);
+      setLoading(true);
+      try {
+        const sep = base.includes('?') ? '&' : '?';
+        const d = await cachedApi<{
+          page: number;
+          totalPages: number;
+          results: T[];
+        }>(`${base}${sep}page=${page + 1}`);
+        if (!ownsRequest()) return; // an old filter must not replace the current list
+        // popular lists shift between pages, so a title can come back; show it once
+        const idOf = (x: T) => String((x as { id?: unknown }).id);
+        setItems((x) => {
+          const seen = new Set(x.map(idOf));
+          return x.concat(d.results.filter((r) => !seen.has(idOf(r))));
+        });
+        setPage(d.page);
+        setTotal(d.totalPages || 1);
+      } catch (e) {
+        if (ownsRequest()) setError(friendlyError(e, 'Failed to load'));
+      } finally {
+        if (ownsRequest()) {
+          inFlight.current = null;
+          setLoading(false);
+        }
       }
-    }
-  }, [base, loadedBase, page, total, loading, error]);
+    },
+    [base, loadedBase, page, total, loading, error]
+  );
+  const more = useCallback(() => loadNext(false), [loadNext]);
+  const retry = useCallback(() => loadNext(true), [loadNext]);
   useEffect(() => {
     if (page === 0 && !loading && !error) void more();
   }, [base, page, loading, error, more]);
-  const retry = useCallback(() => {
-    inFlight.current = null;
-    setError(null);
-  }, []);
   return {
     items,
     more,
