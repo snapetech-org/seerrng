@@ -41,3 +41,11 @@ Dismissed alert 646 after tracing the Visual Lab iframe document to
 checked-in templates. The expression protects authored script blocks
 from localization changes and restores them afterward. Localized text
 and attributes are HTML-escaped before insertion.
+
+## Slack action callbacks
+
+Dismissed alert 627 after tracing the callback from the signature and
+workspace checks to the outbound request. The callback requires HTTPS,
+the exact Slack webhook host, and an actions path. It rejects credentials
+and custom ports, validates the address on a direct connection, and
+disables redirects.
