@@ -1,0 +1,2 @@
+Lumen series details now confirm which seasons SeerrNG accepted, including
+when a whole-series request stages only eligible seasons.

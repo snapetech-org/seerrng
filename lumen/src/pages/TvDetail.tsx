@@ -212,14 +212,28 @@ export default function TvDetail() {
     setWatchFailure(undefined);
     setBusy(true);
     try {
-      const whole = n === seasons.length;
-      await requestSeries(
+      const whole = !partialOk || n === seasons.length;
+      const result = await requestSeries(
         t.id,
         whole ? 'all' : selectedSeasons,
         is4k ? { ...opts, is4k: true } : opts
       );
+      const accepted = [
+        ...new Set(
+          result.seasons
+            ?.map(({ seasonNumber }) => seasonNumber)
+            .filter((number) => Number.isSafeInteger(number) && number >= 0)
+        ),
+      ];
+      const scope = accepted.length
+        ? seasonList(accepted)
+        : !whole
+          ? seasonList(selectedSeasons)
+          : '';
       toast(
-        `Requested ${t.name} · ${whole ? 'entire series' : n === 1 ? 'Season ' + [...sel][0] : n + ' seasons'}`
+        scope
+          ? `Requested ${t.name} · ${scope}`
+          : `Request submitted for ${t.name}`
       );
       refresh();
     } catch (e) {

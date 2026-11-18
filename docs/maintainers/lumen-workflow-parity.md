@@ -952,3 +952,11 @@ Standalone browser fixtures verified the exact rejected season, retained
 selection, recovery link, and clearing the message on selection change
 across desktop and three touch presets. Live playback and bundled and
 native visual comparisons remain open.
+
+### Whole-series request confirmation
+
+Series details preserve whole-series intent when the instance disables
+partial requests, even when some seasons are already available. The
+confirmation reports the seasons returned by SeerrNG. Standalone browser
+fixtures verified the exact request and confirmation on desktop and three
+touch presets. Live playback and bundled and native visual checks remain open.

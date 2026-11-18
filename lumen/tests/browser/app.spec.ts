@@ -1399,3 +1399,52 @@ test('series watch rule keeps the rejected selection and links playback accounts
   await second.click();
   await expect(alert).toHaveCount(0);
 });
+
+test('whole-series confirmation reports the seasons SeerrNG accepted', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        partialRequestsEnabled: false,
+        tvSeasonWatchGateEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [
+          { id: 21, seasonNumber: 1, episodeCount: 2 },
+          { id: 22, seasonNumber: 2, episodeCount: 2 },
+        ],
+        mediaInfo: { status: 4, seasons: [{ seasonNumber: 1, status: 5 }] },
+      },
+    })
+  );
+  let body: unknown;
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    body = route.request().postDataJSON();
+    return route.fulfill({
+      status: 201,
+      json: { id: 77, seasons: [{ seasonNumber: 2 }] },
+    });
+  });
+  await page.goto('/tv/202');
+  await page
+    .getByRole('button', { name: 'Request 1 season', exact: true })
+    .filter({ visible: true })
+    .first()
+    .click();
+  await expect(
+    page.getByText('Requested Fixture Series · Season 2')
+  ).toBeVisible();
+  expect(body).toMatchObject({ mediaType: 'tv', mediaId: 202, seasons: 'all' });
+});

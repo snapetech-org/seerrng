@@ -358,8 +358,8 @@ export interface RequestOptions {
   rootFolder?: string;
   userId?: number; // request on someone else's behalf (admins)
 }
-const post = (body: object) =>
-  api<{ id: number }>('/request', {
+const post = <T = { id: number }>(body: object) =>
+  api<T>('/request', {
     method: 'POST',
     body: JSON.stringify(body),
   });
@@ -371,7 +371,13 @@ export const requestSeries = (
   id: number,
   seasons: number[] | 'all' = 'all',
   o: RequestOptions = {}
-) => post({ mediaType: 'tv', mediaId: id, seasons, ...o });
+) =>
+  post<{ id: number; seasons?: { seasonNumber: number }[] }>({
+    mediaType: 'tv',
+    mediaId: id,
+    seasons,
+    ...o,
+  });
 // books: the format decides which ChaptarrNG server; an edition pins one narration
 // policy 'only' = exactly that narration; 'either' = that edition is the target, other copies OK;
 // 'alongside' = add that narration as a separate copy next to the one already in the library
