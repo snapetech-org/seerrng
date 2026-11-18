@@ -19,6 +19,7 @@ import {
   shortDate,
   TitleCard,
 } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { Avatar } from '../components/Shell';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
@@ -223,6 +224,21 @@ export default function Discover() {
         <Section
           title={`New on ${serverName}`}
           link={['See all', '/movies?show=plex']}
+          action={
+            fresh?.length ? (
+              <CardTitleToggle
+                kinds={[
+                  ...new Set(
+                    fresh.map((item) =>
+                      item.mediaType === 'tv'
+                        ? ('tv' as const)
+                        : ('movie' as const)
+                    )
+                  ),
+                ]}
+              />
+            ) : undefined
+          }
         >
           {fresh ? (
             <Rail>
@@ -245,7 +261,11 @@ export default function Discover() {
       )}
 
       {on.trendingMovies && !empty(movies.data?.results) && (
-        <Section title="Trending movies" link={['See all', '/movies']}>
+        <Section
+          title="Trending movies"
+          action={<CardTitleToggle kinds={['movie']} />}
+          link={['See all', '/movies']}
+        >
           {movies.data ? (
             <Rail>
               {movies.data.results.map((m) => (
@@ -261,7 +281,11 @@ export default function Discover() {
       )}
 
       {on.popularSeries && !empty(series.data?.results) && (
-        <Section title="Popular series" link={['See all', '/series']}>
+        <Section
+          title="Popular series"
+          action={<CardTitleToggle kinds={['tv']} />}
+          link={['See all', '/series']}
+        >
           {series.data ? (
             <Rail>
               {series.data.results.map((t) => (
@@ -279,7 +303,11 @@ export default function Discover() {
       {books_ &&
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
-          <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
+          <Section
+            title="Popular audiobooks"
+            action={<CardTitleToggle kinds={['book']} />}
+            link={['See all', '/audiobooks']}
+          >
             {audio.data ? (
               <Rail>
                 {withCovers(audio.data).map((b) => (
@@ -295,7 +323,11 @@ export default function Discover() {
         )}
 
       {books_ && on.books && !empty(books.data ? ebookCards : undefined) && (
-        <Section title="Popular books" link={['See all', '/books']}>
+        <Section
+          title="Popular books"
+          action={<CardTitleToggle kinds={['book']} />}
+          link={['See all', '/books']}
+        >
           {books.data ? (
             <Rail>
               {ebookCards.map((b) => (
@@ -314,7 +346,11 @@ export default function Discover() {
       )}
 
       {on.comingSoon && !empty(soon.data?.results) && (
-        <Section title="Coming soon" link={['See all', '/soon']}>
+        <Section
+          title="Coming soon"
+          action={<CardTitleToggle kinds={['movie']} />}
+          link={['See all', '/soon']}
+        >
           {soon.data ? (
             <Rail>
               {soon.data.results.map((m) => (

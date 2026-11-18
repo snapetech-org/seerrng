@@ -1,12 +1,12 @@
 import { useId, useRef, useState } from 'react';
 import {
-  api,
   defaultCardTitleModes,
   type CardTitleMode,
   type CardTitleSettings,
 } from '../api';
 import { forget } from '../apiCache';
 import { useAuth } from '../auth';
+import { saveCardTitleModes } from '../cardTitleModes';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
@@ -44,12 +44,10 @@ function CardTitleForm({
     setNotice('');
     setError('');
     try {
-      const confirmed = await api<CardTitleSettings>(path, {
-        method: 'POST',
-        body: JSON.stringify(
-          Object.fromEntries(changed.map(([kind]) => [kind, draft[kind]]))
-        ),
-      });
+      const confirmed = await saveCardTitleModes(
+        path,
+        Object.fromEntries(changed.map(([kind]) => [kind, draft[kind]]))
+      );
       if (generation !== sessionGeneration()) return;
       forget(path);
       await refresh();

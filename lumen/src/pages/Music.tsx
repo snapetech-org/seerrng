@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { DetailTop, Facts, Pill } from '../components/detail';
 import {
   ExtraCard,
@@ -104,6 +105,7 @@ export function Music() {
         />
       </ExtraHeader>
       <div className="toolbar">
+        <CardTitleToggle kinds={['album']} />
         {!query && (
           <label className="sel">
             <span className="lbl">Sort</span>

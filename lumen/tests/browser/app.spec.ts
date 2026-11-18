@@ -777,6 +777,7 @@ test('card title preferences save only changed categories and apply to posters',
   await fixtures(page);
   const settings: { movie?: string } = {};
   const writes: unknown[] = [];
+  let reject = false;
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
       json: {
@@ -791,6 +792,7 @@ test('card title preferences save only changed categories and apply to posters',
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
       writes.push(body);
+      if (reject) return route.fulfill({ status: 503, json: {} });
       Object.assign(settings, body);
     }
     return route.fulfill({ json: settings });
@@ -831,4 +833,26 @@ test('card title preferences save only changed categories and apply to posters',
 
   await page.goto('/movies');
   await expect(title).toBeVisible();
+  const toggle = page.getByRole('button', {
+    name: 'Title View: Always show poster titles',
+  });
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  reject = true;
+  await toggle.click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Could not save card title settings' })
+  ).toBeVisible();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  reject = false;
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  expect(writes).toEqual([
+    { movie: 'always' },
+    { movie: 'hover' },
+    { movie: 'hover' },
+  ]);
+  if (hoverCapable) await expect(title).toBeHidden();
+  else await expect(title).toBeVisible();
 });

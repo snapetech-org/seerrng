@@ -9,6 +9,7 @@ import {
   RailSkeleton,
   Section,
 } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { GenrePicker } from '../components/GenrePicker';
 import { Avatar } from '../components/Shell';
 import {
@@ -323,7 +324,11 @@ function BookRow({
   // the library row is a bonus: no access to it just leaves it out
   if (row.error && owned) return null;
   return (
-    <Section title={title} link={link}>
+    <Section
+      title={title}
+      link={link}
+      action={books.length ? <CardTitleToggle kinds={['book']} /> : undefined}
+    >
       {row.data ? (
         <Rail>
           {books.map((b) => (
@@ -451,6 +456,7 @@ function BooksGrid({
       </div>
       {note}
       <div className="toolbar">
+        <CardTitleToggle kinds={['book']} />
         <LibrarySeg show={show} pick={upd} />
         {show !== 'have' && <SortMenu sort={sort} pick={setSort} />}
         {show !== 'have' && (

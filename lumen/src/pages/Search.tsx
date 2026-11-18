@@ -14,6 +14,7 @@ import {
   type TitleResult,
 } from '../api';
 import { BookCard, Cover, Section, TitleCard } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
@@ -307,6 +308,16 @@ export default function Search() {
             </button>
           ))}
         </div>
+        {p.get('q') &&
+          (f === 'all' ||
+            f === 'movie' ||
+            f === 'tv' ||
+            f === 'ebook' ||
+            f === 'audio') && (
+            <div className="toolbar">
+              <CardTitleToggle kinds={['movie', 'tv', 'album', 'book']} />
+            </div>
+          )}
       </header>
       {!p.get('q') && !!recent.length && (
         <Section

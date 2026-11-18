@@ -829,3 +829,16 @@ Standalone browser fixtures cover default settings, a movie preference
 change, exact changed-category submission and poster rendering across desktop,
 iPhone, Android and tablet presets. The native per-list toggle, bundled
 verification and matching native visual comparison remain open.
+
+### Browsing card title toggle increment
+
+Title View is available in the movie and series filters, Music, Books and
+Audiobooks, relevant Search scopes, and Discover shelves that use the
+shared poster titles. It uses the same account preference as the settings
+form. A mixed-media toggle sends one update for the categories that change.
+The existing heading row can wrap when it contains a title toggle.
+
+The standalone Movies fixture verified a saved change, a failed toggle that
+keeps the current value, and a successful retry that applies without a page
+reload. Desktop and touch viewport presets passed. The remaining screens
+need rendered checks, along with bundled and native visual comparisons.

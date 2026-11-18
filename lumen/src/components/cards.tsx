@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   bookArt,
-  defaultCardTitleModes,
   englishAudioEdition,
   hardcoverWorkId,
   mediaLink,
@@ -20,6 +19,7 @@ import {
   type TitleResult,
 } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
+import { cardTitleModes } from '../cardTitleModes';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
@@ -229,15 +229,7 @@ function useRequested(initial: Stat) {
 
 export function useCardTitleMode(kind?: CardTitleKind) {
   const { user } = useAuth();
-  if (!kind) return;
-  const settings = user?.settings;
-  const modes = {
-    movie: settings?.cardTextVisibilityMovie,
-    tv: settings?.cardTextVisibilityTv,
-    album: settings?.cardTextVisibilityAlbum,
-    book: settings?.cardTextVisibilityBook,
-  };
-  return modes[kind] ?? defaultCardTitleModes[kind];
+  return kind ? cardTitleModes(user?.settings)[kind] : undefined;
 }
 
 export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {

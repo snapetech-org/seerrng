@@ -506,6 +506,9 @@ h3 {
   gap: 12px;
   margin-bottom: 10px;
 }
+.sec-head:has(> .chip) {
+  flex-wrap: wrap;
+}
 .sec-head h2 {
   font-size: 20px;
   font-weight: 750;

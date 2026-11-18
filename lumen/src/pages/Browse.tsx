@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
@@ -120,6 +121,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </Link>
       </header>
       <div className="toolbar">
+        <CardTitleToggle kinds={[kind]} />
         <div className="seg" role="group" aria-label="Availability">
           {[
             ['all', 'All'],
