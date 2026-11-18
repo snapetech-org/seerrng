@@ -69,16 +69,22 @@ export default function AnimeContinuation({
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [season, setSeason] = useState<number>();
+  const chosenSeason = season ?? seasons?.at(-1)?.seasonNumber;
   const language = document.documentElement.lang.slice(0, 2) || 'en';
   const path = `/continuation/${source}/${id}?${new URLSearchParams({ language })}`;
-  const latest = useApi<ContinuationResult>(open ? path : null, {
-    currentPathOnly: true,
-  });
+  const latest = useApi<ContinuationResult>(
+    open && (source === 'anilist' || chosenSeason === undefined) ? path : null,
+    {
+      currentPathOnly: true,
+    }
+  );
   const selected = useApi<ContinuationResult>(
-    open && season !== undefined ? `${path}&season=${season}` : null,
+    open && chosenSeason !== undefined
+      ? `${path}&season=${chosenSeason}`
+      : null,
     { currentPathOnly: true }
   );
-  const continuation = season === undefined ? latest : selected;
+  const continuation = chosenSeason === undefined ? latest : selected;
   const seasonOptions =
     seasons ??
     latest.data?.seasons?.map(({ number, title }) => ({
@@ -108,14 +114,16 @@ export default function AnimeContinuation({
               <span className="lbl">Season</span>
               <select
                 aria-label="Continuation season"
-                value={season ?? ''}
+                value={chosenSeason ?? ''}
                 onChange={(event) =>
                   setSeason(
                     event.target.value ? Number(event.target.value) : undefined
                   )
                 }
               >
-                <option value="">Latest Season</option>
+                {source === 'anilist' && (
+                  <option value="">This Anime Entry</option>
+                )}
                 {seasonOptions.map(({ seasonNumber, name }) => (
                   <option key={seasonNumber} value={seasonNumber}>
                     {name || `Season ${seasonNumber}`}

@@ -440,6 +440,7 @@ test('anime continuation loads on demand and follows the novel in its language',
           genres: [{ id: 16, name: 'Animation' }],
           seasons: [
             { id: 1, seasonNumber: 1, name: 'First Season', episodeCount: 12 },
+            { id: 2, seasonNumber: 2, name: 'Second Season', episodeCount: 12 },
           ],
         },
       });
@@ -503,7 +504,7 @@ test('anime continuation loads on demand and follows the novel in its language',
     .selectOption('1');
   await expect
     .poll(() => lookups)
-    .toEqual(['?language=en', '?language=en&season=1']);
+    .toEqual(['?language=en&season=2', '?language=en&season=1']);
   await expect(
     page.getByRole('link', { name: 'Open Continuation Volume' })
   ).toBeVisible();
