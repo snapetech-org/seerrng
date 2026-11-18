@@ -512,3 +512,16 @@ link, its history and download choices, and a missing request response.
 Server routing tests cover the bundled redirect. Native comparison,
 mobile, bundled browser checks, live providers, and software moderation
 and recovery actions remain open.
+
+### Software request actions increment
+
+Software Request History offers approval, decline, withdrawal, cancellation,
+retry, stop tracking, and clearing cancelled history based on ownership,
+permission, request state, and provider capabilities. When the server cannot
+confirm a previous handoff, retry or cancellation waits for the user to check
+the download queue and history and explicitly confirm there is no match.
+
+Standalone Chrome at 1440 × 1000 verified that an owner retry waited for
+explicit confirmation after a synthetic 409 and refreshed to Searching after
+the confirmed retry. Native visual comparison, mobile, bundled, delegated
+roles, other actions, and live provider behavior remain unverified.

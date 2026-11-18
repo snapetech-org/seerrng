@@ -1550,6 +1550,7 @@ export default function Requests() {
       )}
       {validRequestLink && requestKey === 'softwareRequestId' && (
         <SoftwareRequestHistorySheet
+          changed={() => setTick((value) => value + 1)}
           key={focusedId}
           id={focusedId}
           close={closeHistory}

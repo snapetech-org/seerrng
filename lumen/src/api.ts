@@ -18,7 +18,8 @@ export function csrfHeaders(): Record<string, string> {
 export class ApiError extends Error {
   constructor(
     public status: number,
-    message: string
+    message: string,
+    public confirmationRequired?: string
   ) {
     super(message);
   }
@@ -43,13 +44,16 @@ export async function api<T>(
   });
   if (!res.ok) {
     let msg = res.statusText;
+    let confirmationRequired: string | undefined;
     try {
       const b = await res.json();
       msg = b.message || b.error || msg;
+      if (typeof b.confirmationRequired === 'string')
+        confirmationRequired = b.confirmationRequired;
     } catch {
       // body wasn't JSON
     }
-    throw new ApiError(res.status, msg);
+    throw new ApiError(res.status, msg, confirmationRequired);
   }
   // a request or other change: saved answers may now be out of date
   if (init.method && init.method !== 'GET') markAllStale();
