@@ -978,6 +978,15 @@ export function ComicDetail() {
 }
 
 // ---- magazines: the tracked list from LazyLibrarian, or a Google Books search ----
+const MAGAZINE_SEARCH_SUGGESTIONS = [
+  'National Geographic',
+  'Time',
+  'Vogue',
+  'The New Yorker',
+  'Scientific American',
+  'Wired',
+];
+
 export function Magazines() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? params.get('query') ?? '';
@@ -1020,7 +1029,10 @@ export function Magazines() {
 
   const requestParams = new URLSearchParams({ catalog });
   if (query) requestParams.set('query', query);
-  const list = usePaged<Magazine>(`/discover/magazines?${requestParams}`);
+  const needsPublicQuery = catalog === 'public' && !query;
+  const list = usePaged<Magazine>(
+    needsPublicQuery ? null : `/discover/magazines?${requestParams}`
+  );
   return (
     <ExtraGate k="magazine">
       <ExtraHeader
@@ -1062,6 +1074,30 @@ export function Magazines() {
           ))}
         </div>
       </div>
+      {needsPublicQuery && !title && (
+        <div
+          className="toolbar"
+          role="group"
+          aria-label="Suggested Magazine Searches"
+        >
+          {MAGAZINE_SEARCH_SUGGESTIONS.map((suggestion) => (
+            <button
+              className="chip"
+              key={suggestion}
+              type="button"
+              onClick={() => {
+                const next = new URLSearchParams(params);
+                next.delete('query');
+                next.set('q', suggestion);
+                next.set('catalog', 'public');
+                setParams(next, { replace: true });
+              }}
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      )}
       {mayRequest && title && title.length <= 256 && (
         <div className="toolbar">
           <button
@@ -1109,14 +1145,17 @@ export function Magazines() {
         what="magazines"
         retry={list.retry}
       />
-      {!list.error && !list.items.length && !list.loading && (
-        <div className="empty">
-          <b>{query ? 'No magazines found' : 'No magazines yet'}</b>
-          {query
-            ? 'Try the magazine’s full title.'
-            : 'Search for a title to request it.'}
-        </div>
-      )}
+      {!needsPublicQuery &&
+        !list.error &&
+        !list.items.length &&
+        !list.loading && (
+          <div className="empty">
+            <b>{query ? 'No magazines found' : 'No magazines yet'}</b>
+            {query
+              ? 'Try the magazine’s full title.'
+              : 'Search for a title to request it.'}
+          </div>
+        )}
       <div className="grid">
         {list.items.map((magazine) => (
           <MagazineCard key={magazine.id} magazine={magazine} />

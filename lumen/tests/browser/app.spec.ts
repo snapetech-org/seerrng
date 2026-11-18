@@ -7436,6 +7436,29 @@ test('magazine discovery bookmarks keep the catalogue when editing a search', as
     .poll(() => Object.fromEntries(reads.at(-1) ?? []))
     .toMatchObject({ catalog: 'public', query: 'Garden Design' });
   await expect(search).toHaveValue('Garden Design');
+  await search.fill('');
+  const suggestions = page.getByRole('group', {
+    name: 'Suggested Magazine Searches',
+  });
+  await expect(
+    suggestions.getByRole('button', { name: 'National Geographic' })
+  ).toBeVisible();
+  await expect(page.getByText('No magazines yet')).toHaveCount(0);
+  await expect(page).toHaveURL(/\/magazines\?catalog=public$/);
+  expect(
+    reads.some((read) => read.get('catalog') === 'public' && !read.has('query'))
+  ).toBe(false);
+  await suggestions
+    .getByRole('button', { name: 'National Geographic' })
+    .click();
+  await expect(search).toHaveValue('National Geographic');
+  await expect
+    .poll(() => Object.fromEntries(reads.at(-1) ?? []))
+    .toMatchObject({
+      catalog: 'public',
+      query: 'National Geographic',
+    });
+  await expect(suggestions).toHaveCount(0);
 });
 
 test('Classic magazine bookmarks keep the search scope and link to magazine details', async ({
