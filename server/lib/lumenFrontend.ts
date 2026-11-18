@@ -478,6 +478,7 @@ const workflowDestinations = new Map([
 ]);
 
 const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
+  '/calendar': ['month', 'mediaType', 'scope', 'includeUnmonitored'],
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
   '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
   '/trending': ['mediaType', 'timeWindow'],

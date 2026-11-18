@@ -609,6 +609,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/calendar', '/lumen/calendar'],
       ['/swipe/', '/lumen/swipe'],
       ['/recordings/', '/lumen/recordings'],
+      [
+        '/calendar?month=2026-02&mediaType=tv&scope=all&includeUnmonitored=true&extra=discard',
+        '/lumen/calendar?month=2026-02&mediaType=tv&scope=all&includeUnmonitored=true',
+      ],
+      ['/calendar?month=2026-02&month=2026-03', '/lumen/calendar'],
       ['/collections/tv/19/', '/lumen/collections/tv/19'],
       [
         '/collections/music/artist-42?view=discography&extra=1',
