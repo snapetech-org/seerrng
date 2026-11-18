@@ -114,3 +114,77 @@ test('a household can create a watch session and opt in to watchlist contributio
     page.getByRole('button', { name: 'Create Invite Link' })
   ).toHaveCount(0);
 });
+
+test('active watch sessions save and revise ballots and show matches', async ({
+  page,
+}, info) => {
+  const path = '/api/v1/watch-sessions/9';
+  const movie = {
+    id: 84,
+    candidateId: 23,
+    title: 'Fixture Match',
+    overview: 'A movie to watch together.',
+  };
+  let decision: string | undefined;
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url()).pathname;
+    if (url.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 2, permissions: 2 } });
+    if (url === path)
+      return route.fulfill({
+        json: {
+          session: {
+            id: 9,
+            title: 'Movie Night',
+            status: 'active',
+            ownerId: 1,
+            memberCount: 2,
+            members: [
+              { id: 1, displayName: 'Host', isOwner: true },
+              { id: 2, displayName: 'Guest' },
+            ],
+            ownPreferences: { includeWatchlistContributions: false },
+          },
+        },
+      });
+    if (url === path + '/deck')
+      return route.fulfill({
+        json: { candidates: decision ? [] : [movie], hasMore: false },
+      });
+    if (url === path + '/my-ballots')
+      return route.fulfill({
+        json: { ballots: decision ? [{ ...movie, decision }] : [] },
+      });
+    if (url === path + '/matches')
+      return route.fulfill({
+        json: { matches: decision === 'want' ? [movie] : [], hasMore: false },
+      });
+    if (url === path + '/candidates/23/ballot') {
+      const body = request.postDataJSON();
+      decision = body.decision;
+      writes.push(body);
+      return route.fulfill({ json: { saved: true } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/watch-sessions/9');
+  await page
+    .getByRole('button', { name: 'Want to Watch Fixture Match' })
+    .click();
+  const match = page.getByRole('link', { name: 'Open Fixture Match' });
+  await expect(match).toHaveAttribute('href', '/movie/84');
+  await page.screenshot({
+    path: info.outputPath('watch-ballots.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Pass on Fixture Match' }).click();
+  await expect(match).toHaveCount(0);
+  await expect(page.getByText('Passed', { exact: true })).toBeVisible();
+  expect(writes).toEqual([{ decision: 'want' }, { decision: 'pass' }]);
+});

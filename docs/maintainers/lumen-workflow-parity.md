@@ -1931,3 +1931,13 @@ Live sign-in redirects and multi-user sessions remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-invites-20261118/`.
+
+Active watch sessions now offer private movie ballots, vote changes, and
+unanimous matches with links to the movie pages. Compared draft and active
+rooms on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and
+eight fixture browser checks passed, including changing a vote and refreshing
+the corresponding match. Live household voting and playback were outside
+this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-ballots-20261118/`.
