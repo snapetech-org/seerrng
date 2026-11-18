@@ -1506,6 +1506,12 @@ person, artist, comic and collection targets also open their detail
 routes. Eight standalone browser checks passed for franchise and patch
 event links across four viewport presets.
 
+Switching franchise titles resets the previous title's follow state. Franchise
+links translate Classic search queries and retain encoded Bookshelf catalog
+IDs. Four standalone cases and the 32-case bundled Following suite verified
+the link destinations and per-title follow submissions using API fixtures.
+Live AniList and Bookshelf responses remain unverified for these checks.
+
 ### Provider Discovery
 
 Discover links to Lumen's Trakt, AniList, and MDBList feeds. Feed and
