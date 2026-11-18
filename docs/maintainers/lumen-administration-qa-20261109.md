@@ -58,3 +58,11 @@ The administrator's `/me` menu and bundled and standalone metadata bookmarks now
 Compared the new form with the approved shared Network Settings controls at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected select and input wrapping, actions, and status rows. The production Lumen build, four browser cases, ten standalone proxy cases, and two bundled routing cases passed. The browser cases used synthetic provider responses and verified independent saves, normalized book-language codes, failed connection status, and horizontal overflow. Live provider connectivity was excluded.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-metadata-20261118/`.
+
+## Bookshelf library migration follow-up — 2026-11-18
+
+Administrators open `/admin/library-migration` from `/me` or the bundled and standalone settings bookmarks. Lumen uses the existing BookshelfNG move API for library selection, preview, explicit confirmation, and command polling. Destination or author changes invalidate the preview. A conflicting preview cannot start a move.
+
+Compared the configuration and expanded file preview with the established Network Settings form controls at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. The first comparison exposed side-by-side disclosure content on wide screens. The final comparison uses the shared disclosure owner and shows detail rows beneath the author heading. The final production build and four browser checks passed. Ten standalone proxy tests and eight native routing/API tests passed. Validation used isolated synthetic authors and commands. No live library was moved.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-migration-20261118/`.

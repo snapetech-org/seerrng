@@ -45,6 +45,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'network',
       'discovery',
       'metadata',
+      'library-migration',
     ]) {
       const response = await request(app).get(`/lumen/settings/${page}/`);
       assert.equal(response.status, 302);

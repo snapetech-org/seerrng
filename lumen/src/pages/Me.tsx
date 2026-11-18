@@ -175,6 +175,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Library Migration</b>
+              <Link
+                className="go"
+                to="/admin/library-migration"
+                aria-label="Open Library Migration"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Media Categories</b>
               <Link
                 className="go"

@@ -541,7 +541,7 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(
-    /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata))?\/?$/,
+    /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration))?\/?$/,
     (req, res) => {
       const page = req.params[0];
       const destination =

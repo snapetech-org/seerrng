@@ -58,6 +58,9 @@ import './styles/touch.css';
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
 const AdminDiscovery = lazy(() => import('./pages/AdminDiscovery'));
+const AdminLibraryMigration = lazy(
+  () => import('./pages/AdminLibraryMigration')
+);
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
@@ -459,6 +462,24 @@ function App() {
                   }
                 >
                   <AdminMetadata />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/library-migration"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading library migration…
+                    </p>
+                  }
+                >
+                  <AdminLibraryMigration />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
