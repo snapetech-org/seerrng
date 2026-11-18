@@ -189,3 +189,69 @@ test('tracking accounts read back write preferences and confirm disconnect', asy
     page.getByText('No tracking accounts are connected.')
   ).toBeVisible();
 });
+
+test('AniList connects through a code submitted in the request body', async ({
+  page,
+}) => {
+  const base = '/integrations/discovery';
+  let connected = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === base + '/configuration')
+      return route.fulfill({ json: { anilist: { configured: true } } });
+    if (path === base + '/accounts')
+      return route.fulfill({
+        json: {
+          accounts: connected
+            ? [
+                {
+                  provider: 'anilist',
+                  username: 'Ani Viewer',
+                  allowWrites: false,
+                },
+              ]
+            : [],
+        },
+      });
+    if (path === base + '/accounts/anilist/connect')
+      return route.fulfill({
+        json: {
+          verificationUrl:
+            'https://anilist.co/api/v2/oauth/authorize?client_id=123',
+        },
+      });
+    if (path === base + '/accounts/anilist/complete') {
+      expect(request.method()).toBe('POST');
+      expect(request.postDataJSON()).toEqual({ code: 'fixture-code' });
+      connected = true;
+      return route.fulfill({ json: { status: 'authorized' } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/me/account/linked-accounts');
+  const connect = page.getByRole('button', {
+    name: 'Connect AniList',
+    exact: true,
+  });
+  await connect.click();
+  const authorize = page.getByRole('link', { name: 'Authorize on AniList' });
+  await expect(authorize).toHaveAttribute('target', '_blank');
+  const code = page.getByLabel('AniList authorization code');
+  await code.fill('discard-this');
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await connect.click();
+  await expect(code).toHaveValue('');
+  await code.fill('  fixture-code  ');
+  await page
+    .getByRole('button', { name: 'Complete AniList Connection' })
+    .click();
+  await expect(page.getByText('Ani Viewer')).toBeVisible();
+  await expect(code).toHaveCount(0);
+  expect(new URL(page.url()).search).toBe('');
+});

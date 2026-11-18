@@ -44,17 +44,16 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 ### Open gap in personal discovery accounts
 
-Lumen's Linked Accounts page manages sign-in methods. My Media can read
-libraries from already linked tracking accounts. Classic's personal discovery
-integration controls still own connection, disconnection, and write preferences
-for Trakt, AniList, and Simkl. The Lumen administrator Discovery page manages
-instance credentials. Personal connections need an account-owner entry point.
+Lumen's Linked Accounts page manages sign-in methods and personal tracking
+accounts. My Media can read libraries from linked tracking accounts. The
+Lumen administrator Discovery page manages instance credentials. Connecting
+Trakt and Simkl still requires Classic.
 
 | Workflow | Existing API and acceptance |
 | --- | --- |
 | Read, disconnect, and allow writes | Lumen Linked Accounts uses the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Desktop and iPhone browser fixtures verify preference readback, a denied write, cancellation, and confirmed disconnection. Live provider and matched visual verification remain open. |
 | Trakt | Start through the provider connect endpoint, complete through the existing server-verified callback and completion endpoint, and show denied and expired results. The server currently returns to `/settings/discovery` with result parameters, and the bundled and standalone settings redirects discard those parameters. Verify the normal Classic flow and Lumen account-owner callback, with and without administrator permissions. |
-| AniList | Open the provider authorization URL and submit the returned code through the completion endpoint. Keep the code out of bookmark URLs and clear it on success or cancellation. |
+| AniList | Lumen opens the provider authorization URL and submits the returned code through the completion endpoint. Desktop and iPhone browser fixtures cover successful readback, clearing the code on cancellation, and keeping the code out of the URL. Live provider and matched visual verification remain open. |
 | Simkl | Display the device code and expiry, then poll at the server's interval. Stop polling on expiry, cancellation, account change, or unmount. |
 
 The shared server routes live in `server/routes/discoveryIntegrations.ts`.
