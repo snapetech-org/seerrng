@@ -73,7 +73,13 @@ import {
   parseOptionalBoundedString,
 } from '@server/utils/validation';
 import axios from 'axios';
-import { createHash, createHmac } from 'crypto';
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  createHmac,
+  randomBytes,
+} from 'crypto';
 import { Router, type Request, type Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import gravatarUrl from 'gravatar-url';
@@ -2325,6 +2331,7 @@ const getOidcReturnUrl = (req: Request): URL => {
 
 const OIDC_CORRELATION_COOKIE_PREFIX = 'oidc-correlation-';
 const OIDC_CORRELATION_COOKIE_PATH = '/api/v1/auth/oidc';
+const OIDC_CORRELATION_MAX_AGE_MS = 10 * 60 * 1000;
 const OIDC_STATE_PATTERN = /^[A-Za-z0-9_-]{16,256}$/;
 export const OIDC_HTTP_TIMEOUT_SECONDS = 10;
 export const MAX_ACTIVE_OIDC_CORRELATIONS = 8;
@@ -2418,13 +2425,62 @@ export const parseOidcCallbackUrl = (value: unknown): URL | undefined => {
   }
 };
 
-const parseOidcCorrelation = (value: unknown): OidcCorrelation | undefined => {
+const OIDC_CORRELATION_VERSION = 'v1.';
+const OIDC_CORRELATION_IV_BYTES = 12;
+const OIDC_CORRELATION_TAG_BYTES = 16;
+
+const getOidcCorrelationKey = () =>
+  createHmac('sha256', getSettings().sessionSecret)
+    .update('seerrng:oidc-correlation-cookie:v1')
+    .digest();
+
+const sealOidcCorrelation = (name: string, correlation: OidcCorrelation) => {
+  const iv = randomBytes(OIDC_CORRELATION_IV_BYTES);
+  const cipher = createCipheriv('aes-256-gcm', getOidcCorrelationKey(), iv);
+  cipher.setAAD(Buffer.from(name));
+  const ciphertext = Buffer.concat([
+    cipher.update(JSON.stringify(correlation), 'utf8'),
+    cipher.final(),
+  ]);
+  return (
+    OIDC_CORRELATION_VERSION +
+    Buffer.concat([iv, cipher.getAuthTag(), ciphertext]).toString('base64url')
+  );
+};
+
+// Only call this with values already verified by Express's signed-cookie parser.
+const parseOidcCorrelation = (
+  name: string,
+  value: unknown
+): OidcCorrelation | undefined => {
   if (typeof value !== 'string') {
     return undefined;
   }
 
   try {
-    const parsed: unknown = JSON.parse(value);
+    let plaintext = value;
+    if (value.startsWith(OIDC_CORRELATION_VERSION)) {
+      const payload = value.slice(OIDC_CORRELATION_VERSION.length);
+      if (!/^[A-Za-z0-9_-]+$/.test(payload)) return undefined;
+      const packed = Buffer.from(payload, 'base64url');
+      const tagEnd = OIDC_CORRELATION_IV_BYTES + OIDC_CORRELATION_TAG_BYTES;
+      if (packed.length <= tagEnd) return undefined;
+      const decipher = createDecipheriv(
+        'aes-256-gcm',
+        getOidcCorrelationKey(),
+        packed.subarray(0, OIDC_CORRELATION_IV_BYTES)
+      );
+      decipher.setAAD(Buffer.from(name));
+      decipher.setAuthTag(packed.subarray(OIDC_CORRELATION_IV_BYTES, tagEnd));
+      plaintext = Buffer.concat([
+        decipher.update(packed.subarray(tagEnd)),
+        decipher.final(),
+      ]).toString('utf8');
+    } else if (!value.startsWith('{')) {
+      return undefined;
+    }
+    // Pre-upgrade signed correlations can finish within their existing lifetime.
+    const parsed: unknown = JSON.parse(plaintext);
     if (
       typeof parsed === 'object' &&
       parsed !== null &&
@@ -2445,7 +2501,10 @@ const parseOidcCorrelation = (value: unknown): OidcCorrelation | undefined => {
       typeof (parsed as Partial<OidcCorrelation>).redirectUri === 'string' &&
       typeof (parsed as Partial<OidcCorrelation>).state === 'string'
     ) {
-      return parsed as OidcCorrelation;
+      const correlation = parsed as OidcCorrelation;
+      if (Date.now() - correlation.issuedAt < OIDC_CORRELATION_MAX_AGE_MS) {
+        return correlation;
+      }
     }
   } catch {
     // Invalid signed correlation payloads are handled as failed authorization.
@@ -2461,7 +2520,7 @@ const pruneOidcCorrelationCookies = (req: Request, res: Response): void => {
     .filter(([name]) => name.startsWith(OIDC_CORRELATION_COOKIE_PREFIX))
     .map(([name, value]) => ({
       name,
-      issuedAt: parseOidcCorrelation(value)?.issuedAt ?? 0,
+      issuedAt: parseOidcCorrelation(name, value)?.issuedAt ?? 0,
     }))
     .sort((left, right) => right.issuedAt - left.issuedAt);
 
@@ -2618,7 +2677,7 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
   pruneOidcCorrelationCookies(req, res);
   res.cookie(
     correlationCookieName,
-    JSON.stringify({
+    sealOidcCorrelation(correlationCookieName, {
       authorizationContext: getOidcAuthorizationContext(provider),
       ...(code_verifier ? { codeVerifier: code_verifier } : {}),
       // A flow started as a login must stay a login, and a flow started as an
@@ -2638,7 +2697,7 @@ authRoutes.get('/oidc/login/:slug', authRateLimit, async (req, res, next) => {
       secure: callbackUrl.protocol === 'https:',
       signed: true,
       sameSite: appleIssuer ? 'none' : 'lax',
-      maxAge: 10 * 60 * 1000,
+      maxAge: OIDC_CORRELATION_MAX_AGE_MS,
     }
   );
 
@@ -2709,6 +2768,7 @@ authRoutes.post(
           throw new Error('OIDC callback is missing a valid state parameter');
         }
         correlation = parseOidcCorrelation(
+          correlationCookieName,
           req.signedCookies[correlationCookieName]
         );
         if (!correlation) {
@@ -2734,6 +2794,7 @@ authRoutes.post(
           throw new Error('OIDC callback is missing a valid state parameter');
         }
         correlation = parseOidcCorrelation(
+          correlationCookieName,
           req.signedCookies[correlationCookieName]
         );
       }

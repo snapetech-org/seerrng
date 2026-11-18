@@ -3300,6 +3300,15 @@ describe('OpenID Connect', () => {
         correlationCookie,
         /(?:^|;) Path=\/api\/v1\/auth\/oidc(?:;|$)/
       );
+      const encodedCookie = correlationCookie.split(';', 1)[0];
+      const envelope = decodeURIComponent(
+        encodedCookie.slice(encodedCookie.indexOf('=') + 1)
+      );
+      assert.match(envelope, /^s:v1\.[A-Za-z0-9_-]+\./);
+      assert.doesNotMatch(
+        envelope,
+        /authorizationContext|codeVerifier|returnUrl/
+      );
       assert.match(correlationCookie, /SameSite=Lax/i);
       assert.match(correlationCookie, /Secure/i);
     });

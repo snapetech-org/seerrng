@@ -20,5 +20,8 @@ under the owner directive.
 Dismissed alerts 659–661 after confirming that the session middleware
 instances belong to Express fixtures excluded from the server build.
 Dismissed alert 652 because the locale cookie stores only a validated
-display language. Alert 653 is still open for the OIDC correlation cookie
-and needs a separate production-path review.
+display language. Alert 653 concerns the production OIDC correlation cookie. Newly issued
+cookies encrypt the correlation payload with AES-256-GCM and expire after
+ten minutes on both the client and server. Existing signed cookies can
+finish an in-flight login within the same lifetime. The alert is still
+open in GitHub.
