@@ -310,3 +310,72 @@ test('book details follow the author by catalog identity', async ({ page }) => {
   await following.click();
   await expect(follow).toHaveAttribute('aria-pressed', 'false');
 });
+
+test('an audiobook can follow a solo narrator without selecting an edition', async ({
+  page,
+}) => {
+  const subject = {
+    kind: 'narrator',
+    subjectKey: 'narrator:fixture reader',
+    subjectLabel: 'Fixture Reader',
+  };
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { booksEnabled: true, audiobookServiceEnabled: true },
+      });
+    if (path === '/editions/book')
+      return route.fulfill({
+        json: {
+          editions: [
+            {
+              id: 'solo',
+              title: 'Solo edition',
+              format: 'audiobook',
+              language: 'en',
+              narrators: ['Fixture Reader'],
+            },
+            {
+              id: 'cast',
+              title: 'Cast edition',
+              format: 'audiobook',
+              language: 'en',
+              narrators: ['Full Cast'],
+            },
+          ],
+        },
+      });
+    if (path.startsWith('/book/') && !path.endsWith('/ratings'))
+      return route.fulfill({
+        json: {
+          id: 'bookshelf:1:aGM6MjYwNDY4',
+          title: 'Fixture Audiobook',
+          mediaType: 'book',
+          bookFormat: 'audiobook',
+          description: 'Fixture description.',
+        },
+      });
+    if (path === '/follow' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual(subject);
+      return route.fulfill({ json: { ...subject, id: 7 } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('./book/bookshelf:1:aGM6MjYwNDY4?f=audio');
+  const narrations = page.getByRole('radiogroup', { name: 'Narrations' });
+  await expect(narrations).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Follow Full Cast' })
+  ).toHaveCount(0);
+  const selected = narrations.getByRole('radio', { checked: true });
+  const selection = await selected.allTextContents();
+  await page.getByRole('button', { name: 'Follow Fixture Reader' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Following', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  expect(await selected.allTextContents()).toEqual(selection);
+});
