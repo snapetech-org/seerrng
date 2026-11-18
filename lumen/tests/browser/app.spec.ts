@@ -7664,6 +7664,58 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   await expect(page.getByText('Nothing found')).toBeVisible();
 });
 
+test('Sportarr league follow checks the selected destination before submitting', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
+  );
+  await page.route('**/api/v1/service/sportarr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, name: 'Already Following' },
+        { id: 2, name: 'Alternate Service' },
+      ],
+    })
+  );
+  await page.route(/\/api\/v1\/sportarr\/lg-123456(?:\?|$)/, (route) => {
+    const source = new URL(route.request().url()).searchParams.get('serverId');
+    return route.fulfill({
+      json: {
+        id: 'lg-123456',
+        title: 'Fixture League',
+        mediaType: 'sports',
+        requestable: source !== '1',
+        libraryState: source === '1' ? 'monitored' : 'not-added',
+      },
+    });
+  });
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    writes.push(route.request().postDataJSON());
+    return route.fulfill({ json: { id: 8, status: 1 } });
+  });
+  await page.goto('/sportarr/lg-123456');
+  await page
+    .getByRole('button', { name: 'Follow league', exact: true })
+    .click();
+  const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
+  const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
+  await choice.selectOption('1');
+  await expect(sheet.getByRole('status')).toHaveText('Followed');
+  await expect(
+    sheet.getByRole('button', { name: 'Send Request' })
+  ).toBeDisabled();
+  expect(writes).toHaveLength(0);
+  await choice.selectOption('2');
+  await sheet.getByRole('button', { name: 'Send Request' }).click();
+  await expect(sheet).toHaveCount(0);
+  expect(writes).toEqual([
+    { mediaType: 'sports', mediaId: 'lg-123456', serverId: 2 },
+  ]);
+});
+
 test('Classic sports discovery bookmarks preserve the editable league search', async ({
   page,
 }) => {

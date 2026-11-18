@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { MoreOnScroll, Section, type Stat } from '../components/cards';
-import { DetailTop, Facts } from '../components/detail';
+import { ConfirmSheet } from '../components/ConfirmSheet';
+import {
+  canChooseRequestOptions,
+  DetailTop,
+  Facts,
+} from '../components/detail';
 import {
   ExtraCard,
   ExtraGate,
@@ -13,6 +18,8 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import {
   adultScenePath,
   requestExtra,
@@ -207,11 +214,120 @@ function LeagueEvents({ id }: { id: string }) {
   );
 }
 
+function LeagueRequestSheet({
+  league,
+  close,
+  done,
+}: {
+  league: League;
+  close: () => void;
+  done: () => void;
+}) {
+  const { user } = useAuth();
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
+  const [serviceId, setServiceId] = useState<number>();
+  const advanced = canChooseRequestOptions(user?.permissions);
+  const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
+    advanced ? '/service/sportarr' : null
+  );
+  const destination = useApi<League>(
+    advanced && serviceId !== undefined
+      ? `/sportarr/${encodeURIComponent(league.id)}?serverId=${serviceId}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const target =
+    advanced && serviceId !== undefined ? destination.data : league;
+  const status = target && leagueStat(target);
+  const unavailable = services.data?.length === 0;
+  return (
+    <ConfirmSheet
+      title="Follow League"
+      body={league.title}
+      confirm="Send Request"
+      cancel="Cancel"
+      busy={busy}
+      confirmDisabled={!target?.requestable || !!status || unavailable}
+      onClose={() => {
+        if (!busy) close();
+      }}
+      onConfirm={async () => {
+        setBusy(true);
+        try {
+          const result = await requestExtra(
+            'sports',
+            league.id,
+            advanced ? serviceId : undefined
+          );
+          if ((result as { status?: number } | null)?.status === 4)
+            throw new Error('The league request failed.');
+          done();
+          toast('League requested');
+        } catch (error) {
+          toast(friendlyError(error, 'Request failed'));
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      {!!services.data?.length && (
+        <div className="toolbar">
+          <label className="sel">
+            <span className="lbl">Sportarr Service</span>
+            <select
+              value={serviceId ?? ''}
+              disabled={busy}
+              onChange={(event) =>
+                setServiceId(
+                  event.target.value ? Number(event.target.value) : undefined
+                )
+              }
+            >
+              <option value="">Default Service</option>
+              {services.data.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
+      {status && (
+        <p className="note" role="status">
+          {status.word}
+        </p>
+      )}
+      {unavailable && (
+        <p className="note" role="status">
+          No Sportarr service is configured.
+        </p>
+      )}
+      <ServiceNote
+        error={destination.error}
+        what="the selected Sportarr service"
+        retry={destination.reload}
+      />
+    </ConfirmSheet>
+  );
+}
+
 export function LeagueDetail() {
   const { id = '' } = useParams();
-  const { data: l, error } = useApi<League>(
-    `/sportarr/${encodeURIComponent(id)}`
-  );
+  const { user } = useAuth();
+  const [requesting, setRequesting] = useState(false);
+  const [requested, setRequested] = useState('');
+  const bits = user?.permissions ?? 0;
+  const mayRequest =
+    Number.isSafeInteger(bits) &&
+    bits >= 0 &&
+    (BigInt(bits) & (2n | 32n | (1n << 45n))) !== 0n;
+  const {
+    data: l,
+    error,
+    refresh,
+  } = useApi<League>(`/sportarr/${encodeURIComponent(id)}`);
   if (error)
     return (
       <ExtraGate k="sports">
@@ -224,15 +340,33 @@ export function LeagueDetail() {
   if (!l) return <div className="detail-loading" aria-busy="true" />;
   const s = leagueStat(l);
   const main =
-    l.requestable === false && !s ? null : (
-      <RequestButton
-        stat={s}
-        label="Follow league"
-        request={() => requestExtra('sports', l.id)}
-      />
-    );
+    s || requested === id ? (
+      <button className="btn btn-tonal" disabled>
+        {s?.word ?? 'Requested'}
+      </button>
+    ) : l.requestable !== false && mayRequest ? (
+      <button
+        className="btn btn-primary"
+        type="button"
+        onClick={() => setRequesting(true)}
+      >
+        Follow league
+      </button>
+    ) : null;
   return (
     <ExtraGate k="sports">
+      {requesting && mayRequest && (
+        <LeagueRequestSheet
+          key={id}
+          league={l}
+          close={() => setRequesting(false)}
+          done={() => {
+            setRequested(id);
+            setRequesting(false);
+            refresh();
+          }}
+        />
+      )}
       <article className="detail">
         <DetailTop
           status={s}
