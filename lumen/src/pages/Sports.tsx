@@ -228,6 +228,12 @@ function LeagueRequestSheet({
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const [serviceId, setServiceId] = useState<number>();
+  const permissions = user?.permissions ?? 0;
+  // Admin, Manage Requests, Auto Approve, or Auto Approve Sports.
+  const autoApprove =
+    Number.isSafeInteger(permissions) &&
+    permissions >= 0 &&
+    (BigInt(permissions) & (2n | 16n | 128n | (1n << 44n))) !== 0n;
   const advanced = canChooseRequestOptions(user?.permissions);
   const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
     advanced ? '/service/sportarr' : null
@@ -276,6 +282,11 @@ function LeagueRequestSheet({
         }
       }}
     >
+      {target?.requestable && (
+        <p className="note">
+          {autoApprove ? 'Automatically approved' : 'Approval required'}
+        </p>
+      )}
       {!!quota.status?.limit && (
         <p className="note" role={restricted ? 'status' : undefined}>
           {restricted

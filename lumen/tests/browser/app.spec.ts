@@ -7664,82 +7664,96 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   await expect(page.getByText('Nothing found')).toBeVisible();
 });
 
-test('Sportarr league follow checks the selected destination before submitting', async ({
-  page,
-}) => {
-  await fixtures(page);
-  await page.route('**/api/v1/auth/me', (route) =>
-    route.fulfill({
-      json: { id: 1, displayName: 'Viewer', permissions: 32 + 8192 },
-    })
-  );
-  let restricted = true;
-  await page.route('**/api/v1/user/1/quota', (route) =>
-    route.fulfill({
-      json: { tv: { limit: 4, remaining: restricted ? 0 : 2, restricted } },
-    })
-  );
-  await page.route('**/api/v1/settings/public', (route) =>
-    route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
-  );
-  await page.route('**/api/v1/service/sportarr', (route) =>
-    route.fulfill({
-      json: [
-        { id: 1, name: 'Already Following' },
-        { id: 2, name: 'Alternate Service' },
-      ],
-    })
-  );
-  await page.route(/\/api\/v1\/sportarr\/lg-123456(?:\?|$)/, (route) => {
-    const source = new URL(route.request().url()).searchParams.get('serverId');
-    return route.fulfill({
-      json: {
-        id: 'lg-123456',
-        title: 'Fixture League',
-        mediaType: 'sports',
-        requestable: source === '2',
-        libraryState: source === '2' ? 'not-added' : 'monitored',
-        mediaInfo: { status: 5 },
-      },
+for (const autoApprove of [false, true]) {
+  test(`Sportarr league follow checks the selected destination and ${autoApprove ? 'automatic approval' : 'required approval'}`, async ({
+    page,
+  }) => {
+    await fixtures(page);
+    await page.route('**/api/v1/auth/me', (route) =>
+      route.fulfill({
+        json: {
+          id: 1,
+          displayName: 'Viewer',
+          permissions: 32 + 8192 + (autoApprove ? 2 ** 44 : 0),
+        },
+      })
+    );
+    let restricted = true;
+    await page.route('**/api/v1/user/1/quota', (route) =>
+      route.fulfill({
+        json: { tv: { limit: 4, remaining: restricted ? 0 : 2, restricted } },
+      })
+    );
+    await page.route('**/api/v1/settings/public', (route) =>
+      route.fulfill({ json: { enabledMediaCategories: { sports: true } } })
+    );
+    await page.route('**/api/v1/service/sportarr', (route) =>
+      route.fulfill({
+        json: [
+          { id: 1, name: 'Already Following' },
+          { id: 2, name: 'Alternate Service' },
+        ],
+      })
+    );
+    await page.route(/\/api\/v1\/sportarr\/lg-123456(?:\?|$)/, (route) => {
+      const source = new URL(route.request().url()).searchParams.get(
+        'serverId'
+      );
+      return route.fulfill({
+        json: {
+          id: 'lg-123456',
+          title: 'Fixture League',
+          mediaType: 'sports',
+          requestable: source === '2',
+          libraryState: source === '2' ? 'not-added' : 'monitored',
+          mediaInfo: { status: 5 },
+        },
+      });
     });
+    const writes: unknown[] = [];
+    await page.route('**/api/v1/request', (route) => {
+      writes.push(route.request().postDataJSON());
+      return route.fulfill({ json: { id: 8, status: 1 } });
+    });
+    await page.goto('/sportarr/lg-123456');
+    await page
+      .getByRole('button', { name: 'Choose Sportarr Service', exact: true })
+      .click();
+    const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
+    const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
+    await choice.selectOption('1');
+    await expect(
+      sheet.getByRole('status').filter({ hasText: /In library|Followed/i })
+    ).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: 'Send Request' })
+    ).toBeDisabled();
+    expect(writes).toHaveLength(0);
+    await choice.selectOption('2');
+    await expect(
+      sheet.getByText(
+        autoApprove ? 'Automatically approved' : 'Approval required',
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(
+      sheet.getByText('TV request quota reached.', { exact: false })
+    ).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: 'Send Request' })
+    ).toBeDisabled();
+    restricted = false;
+    await sheet.getByRole('button', { name: 'Recheck Quota' }).click();
+    await expect(
+      sheet.getByText('2 of 4 TV requests remaining.', { exact: false })
+    ).toBeVisible();
+    await sheet.getByRole('button', { name: 'Send Request' }).click();
+    await expect(sheet).toHaveCount(0);
+    expect(writes).toEqual([
+      { mediaType: 'sports', mediaId: 'lg-123456', serverId: 2 },
+    ]);
   });
-  const writes: unknown[] = [];
-  await page.route('**/api/v1/request', (route) => {
-    writes.push(route.request().postDataJSON());
-    return route.fulfill({ json: { id: 8, status: 1 } });
-  });
-  await page.goto('/sportarr/lg-123456');
-  await page
-    .getByRole('button', { name: 'Choose Sportarr Service', exact: true })
-    .click();
-  const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
-  const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
-  await choice.selectOption('1');
-  await expect(
-    sheet.getByRole('status').filter({ hasText: /In library|Followed/i })
-  ).toBeVisible();
-  await expect(
-    sheet.getByRole('button', { name: 'Send Request' })
-  ).toBeDisabled();
-  expect(writes).toHaveLength(0);
-  await choice.selectOption('2');
-  await expect(
-    sheet.getByText('TV request quota reached.', { exact: false })
-  ).toBeVisible();
-  await expect(
-    sheet.getByRole('button', { name: 'Send Request' })
-  ).toBeDisabled();
-  restricted = false;
-  await sheet.getByRole('button', { name: 'Recheck Quota' }).click();
-  await expect(
-    sheet.getByText('2 of 4 TV requests remaining.', { exact: false })
-  ).toBeVisible();
-  await sheet.getByRole('button', { name: 'Send Request' }).click();
-  await expect(sheet).toHaveCount(0);
-  expect(writes).toEqual([
-    { mediaType: 'sports', mediaId: 'lg-123456', serverId: 2 },
-  ]);
-});
+}
 
 test('Classic sports discovery bookmarks preserve the editable league search', async ({
   page,
