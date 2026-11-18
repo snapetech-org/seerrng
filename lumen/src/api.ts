@@ -586,9 +586,17 @@ export function bookRequestLabel(format?: string) {
 export function videoDetailPath(
   kind: 'movie' | 'tv',
   id: number,
-  is4k: boolean
+  is4k: boolean,
+  season?: number
 ) {
-  return `/${kind}/${id}${is4k ? '?quality=4k' : ''}`;
+  const anchor =
+    kind === 'tv' &&
+    season !== undefined &&
+    Number.isSafeInteger(season) &&
+    season >= 0
+      ? `#season-${season}`
+      : '';
+  return `/${kind}/${id}${is4k ? '?quality=4k' : ''}${anchor}`;
 }
 
 export function bookDetailPath(

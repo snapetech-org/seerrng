@@ -511,6 +511,12 @@ test('a bookmarked TV request shows its season and episode selection', async ({
     history.getByRole('link', { name: 'Open Title' })
   ).toHaveAttribute('href', '/tv/22?quality=4k');
   const seasons = history.getByRole('list', { name: 'Requested seasons' });
+  await expect(
+    seasons.getByRole('link', { name: 'Season 2', exact: true })
+  ).toHaveAttribute('href', '/tv/22?quality=4k#season-2');
+  await expect(
+    seasons.getByRole('link', { name: 'Specials', exact: true })
+  ).toHaveAttribute('href', '/tv/22?quality=4k#season-0');
   await expect(seasons.getByRole('listitem')).toHaveText([
     /Specials.*Episodes 2 · Declined/,
     /Season 2.*Episodes 3, 5 · Approved/,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { bookRequestLabel, type RequestItem } from '../api';
+import { bookRequestLabel, videoDetailPath, type RequestItem } from '../api';
 import { useApi } from '../hooks';
 import { Pill } from './detail';
 import { ServiceNote } from './extra';
@@ -240,23 +240,41 @@ export default function RequestHistorySheet({
               {request?.type === 'tv' && !!request.seasons?.length && (
                 <ul className="setlist" aria-label="Requested seasons">
                   {request.seasons.map(
-                    ({ seasonNumber, episodeNumbers, status }) => (
-                      <li className="set" key={seasonNumber}>
-                        <b>
-                          {seasonNumber === 0
-                            ? 'Specials'
-                            : `Season ${seasonNumber}`}
-                        </b>
-                        <small>
-                          {episodeNumbers?.length
-                            ? `Episodes ${episodeNumbers.join(', ')}`
-                            : 'All episodes'}
-                          {status !== undefined &&
-                            seasonStatus.has(status) &&
-                            ` · ${seasonStatus.get(status)}`}
-                        </small>
-                      </li>
-                    )
+                    ({ seasonNumber, episodeNumbers, status }) => {
+                      const name =
+                        seasonNumber === 0
+                          ? 'Specials'
+                          : `Season ${seasonNumber}`;
+                      const tmdbId = request.media?.tmdbId;
+                      const target =
+                        Number.isSafeInteger(tmdbId) && tmdbId > 0
+                          ? videoDetailPath(
+                              'tv',
+                              tmdbId,
+                              request.is4k,
+                              seasonNumber
+                            )
+                          : undefined;
+                      return (
+                        <li className="set" key={seasonNumber}>
+                          {target ? (
+                            <Link className="go" to={target}>
+                              {name}
+                            </Link>
+                          ) : (
+                            <b>{name}</b>
+                          )}
+                          <small>
+                            {episodeNumbers?.length
+                              ? `Episodes ${episodeNumbers.join(', ')}`
+                              : 'All episodes'}
+                            {status !== undefined &&
+                              seasonStatus.has(status) &&
+                              ` · ${seasonStatus.get(status)}`}
+                          </small>
+                        </li>
+                      );
+                    }
                   )}
                 </ul>
               )}
