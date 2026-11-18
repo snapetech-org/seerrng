@@ -12,17 +12,31 @@ import { sessionGeneration } from '../sessionState';
 
 const path = '/settings/main';
 
-interface Identity {
+interface ApplicationSettings {
   applicationTitle: string;
   applicationUrl: string;
+  cacheImages: boolean;
+  versionCheck: boolean;
 }
 
-const fields = [
+const textFields = [
   { key: 'applicationTitle', label: 'Application Title' },
   { key: 'applicationUrl', label: 'Application URL' },
 ] as const;
+const switches = [
+  {
+    key: 'cacheImages',
+    label: 'Cache Images',
+    help: 'Proxy and cache supported images on the SeerrNG server.',
+  },
+  {
+    key: 'versionCheck',
+    label: 'Version Check',
+    help: 'Automatically check GitHub for new versions.',
+  },
+] as const;
 
-function IdentityForm({ initial }: { initial: Identity }) {
+function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -30,10 +44,22 @@ function IdentityForm({ initial }: { initial: Identity }) {
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
   const values = {
+    ...draft,
     applicationTitle: draft.applicationTitle.trim(),
     applicationUrl: draft.applicationUrl.trim(),
   };
-  const changed = fields.filter(({ key }) => values[key] !== saved[key]);
+  const changed = [...textFields, ...switches].filter(
+    ({ key }) => values[key] !== saved[key]
+  );
+
+  function change<Key extends keyof ApplicationSettings>(
+    key: Key,
+    value: ApplicationSettings[Key]
+  ) {
+    setDraft((current) => ({ ...current, [key]: value }));
+    setNotice('');
+    setFailure('');
+  }
 
   async function save() {
     if (pending.current || !changed.length || !values.applicationTitle) return;
@@ -43,7 +69,7 @@ function IdentityForm({ initial }: { initial: Identity }) {
     setNotice('');
     setFailure('');
     try {
-      const result = await api<Identity>(path, {
+      const result = await api<ApplicationSettings>(path, {
         method: 'POST',
         body: JSON.stringify(
           Object.fromEntries(changed.map(({ key }) => [key, values[key]]))
@@ -78,7 +104,7 @@ function IdentityForm({ initial }: { initial: Identity }) {
       }}
     >
       <div className="setlist">
-        {fields.map(({ key, label }) => (
+        {textFields.map(({ key, label }) => (
           <label className="set cfg-row" key={key}>
             <span>
               <b>{label}</b>
@@ -94,11 +120,22 @@ function IdentityForm({ initial }: { initial: Identity }) {
               maxLength={512}
               disabled={busy}
               value={draft[key]}
-              onChange={(event) => {
-                setDraft({ ...draft, [key]: event.target.value });
-                setNotice('');
-                setFailure('');
-              }}
+              onChange={(event) => change(key, event.target.value)}
+            />
+          </label>
+        ))}
+        {switches.map(({ key, label, help }) => (
+          <label className="set cfg-row" key={key}>
+            <span>
+              <b>{label}</b>
+              <small>{help}</small>
+            </span>
+            <input
+              type="checkbox"
+              aria-label={label}
+              disabled={busy}
+              checked={draft[key]}
+              onChange={(event) => change(key, event.target.checked)}
             />
           </label>
         ))}
@@ -126,7 +163,7 @@ function IdentityForm({ initial }: { initial: Identity }) {
 }
 
 export default function AdminGeneral() {
-  const settings = useApi<Identity>(path);
+  const settings = useApi<ApplicationSettings>(path);
   return (
     <>
       <header className="ph">
@@ -144,10 +181,12 @@ export default function AdminGeneral() {
           retry={settings.reload}
         />
         {settings.data ? (
-          <IdentityForm
+          <ApplicationForm
             initial={{
               applicationTitle: settings.data.applicationTitle ?? '',
               applicationUrl: settings.data.applicationUrl ?? '',
+              cacheImages: settings.data.cacheImages === true,
+              versionCheck: settings.data.versionCheck === true,
             }}
           />
         ) : (

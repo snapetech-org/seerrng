@@ -739,6 +739,27 @@ describe('Settings route input validation', () => {
     }
   });
 
+  it('persists and validates the version check setting', async () => {
+    const settings = getSettings();
+    const original = settings.main.versionCheck;
+    try {
+      const response = await request(app)
+        .post('/settings/main')
+        .send({ versionCheck: !original });
+      assert.equal(response.status, 200);
+      assert.equal(response.body.versionCheck, !original);
+      assert.equal(settings.main.versionCheck, !original);
+
+      const invalid = await request(app)
+        .post('/settings/main')
+        .send({ versionCheck: 'false' });
+      assert.equal(invalid.status, 400);
+      assert.match(invalid.body.message, /versionCheck must be a boolean/);
+    } finally {
+      settings.main.versionCheck = original;
+    }
+  });
+
   it('persists only supported shared-availability display modes', async () => {
     const settings = getSettings();
     const original = settings.main.otherUsersAvailability;

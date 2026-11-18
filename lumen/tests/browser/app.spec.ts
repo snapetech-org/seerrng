@@ -4297,6 +4297,8 @@ test('General Settings retains application edits after failure and saves only ch
   const saved = {
     applicationTitle: 'SeerrNG',
     applicationUrl: 'https://seerr.example.test',
+    cacheImages: true,
+    versionCheck: true,
   };
   const writes: unknown[] = [];
   await page.route('**/api/v1/settings/main', (route) => {
@@ -4331,14 +4333,23 @@ test('General Settings retains application edits after failure and saves only ch
   const address = page.getByLabel('Application URL');
   await expect(address).toHaveValue('https://seerr.example.test');
   await address.clear();
+  await page.getByRole('checkbox', { name: 'Cache Images' }).uncheck();
+  await page.getByRole('checkbox', { name: 'Version Check' }).uncheck();
   await save.click();
   await expect(page.getByText('Application settings saved.')).toBeVisible();
   await expect(save).toBeDisabled();
   expect(writes).toEqual([
     { applicationTitle: 'Family Library' },
     { applicationTitle: 'Family Library' },
-    { applicationUrl: '' },
+    { applicationUrl: '', cacheImages: false, versionCheck: false },
   ]);
+  await page.reload();
+  await expect(
+    page.getByRole('checkbox', { name: 'Cache Images' })
+  ).not.toBeChecked();
+  await expect(
+    page.getByRole('checkbox', { name: 'Version Check' })
+  ).not.toBeChecked();
 });
 
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({

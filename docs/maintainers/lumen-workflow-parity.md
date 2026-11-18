@@ -1654,3 +1654,10 @@ standalone browser cases passed. The cases exercised navigation, failed
 save recovery, and clearing the public URL. Live configuration writes,
 bundled workflow rendering, matched native visual acceptance, and the
 remaining instance settings are open.
+
+General Settings also exposes image caching and automatic version checks.
+The shared settings endpoint now validates and persists the version-check
+switch used by both frontends. The 102 settings-route tests and eight
+standalone General Settings and About browser cases passed. The browser
+cases verified that false values remain selected after reloading and that
+About skips update checks when disabled.

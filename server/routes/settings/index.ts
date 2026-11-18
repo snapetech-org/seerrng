@@ -1350,6 +1350,7 @@ const parseMainSettingsBody = (
     ['enableSpecialEpisodes', 'enableSpecialEpisodes'],
     ['trackEpisodeAvailability', 'trackEpisodeAvailability'],
     ['cacheImages', 'cacheImages'],
+    ['versionCheck', 'versionCheck'],
     ['includeAdult', 'includeAdult'],
   ] as const) {
     const parsed = parseOptionalBooleanSetting(body[key], fieldName);
