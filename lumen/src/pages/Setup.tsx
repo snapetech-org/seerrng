@@ -1,4 +1,11 @@
-import { lazy, Suspense, useRef, useState, type FormEvent } from 'react';
+import {
+  lazy,
+  Suspense,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from 'react';
 import { Navigate } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
@@ -12,6 +19,8 @@ import AdminCategories from './AdminCategories';
 import AdminMediaLibraries from './AdminMediaLibraries';
 import Login from './Login';
 
+const AdminDownloadClients = lazy(() => import('./AdminDownloadClients'));
+const AdminProwlarr = lazy(() => import('./AdminProwlarr'));
 const AdminServarr = lazy(() => import('./AdminServarr'));
 const requestServices = [
   ['radarr', 'Radarr'],
@@ -20,12 +29,12 @@ const requestServices = [
   ['lidarr', 'Lidarr'],
 ] as const;
 
-function SetupRequestService({
-  provider,
+function SetupEditor({
   label,
+  children,
 }: {
-  provider: (typeof requestServices)[number][0];
   label: string;
+  children: ReactNode;
 }) {
   const [opened, setOpened] = useState(false);
   return (
@@ -44,7 +53,7 @@ function SetupRequestService({
             </p>
           }
         >
-          <AdminServarr provider={provider} inSetup />
+          {children}
         </Suspense>
       )}
     </details>
@@ -151,13 +160,17 @@ export default function Setup() {
         <details className="adv">
           <summary>Configure Request Services</summary>
           {requestServices.map(([provider, label]) => (
-            <SetupRequestService
-              key={provider}
-              provider={provider}
-              label={label}
-            />
+            <SetupEditor key={provider} label={label}>
+              <AdminServarr provider={provider} inSetup />
+            </SetupEditor>
           ))}
         </details>
+        <SetupEditor label="Configure Download Clients">
+          <AdminDownloadClients inSetup />
+        </SetupEditor>
+        <SetupEditor label="Configure Prowlarr">
+          <AdminProwlarr inSetup />
+        </SetupEditor>
         <ServiceNote error={error || null} what="setup" />
         <button
           className="btn btn-primary"

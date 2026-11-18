@@ -393,16 +393,22 @@ function Editor({ initial }: { initial: Settings }) {
   );
 }
 
-export default function AdminDownloadClients() {
+export default function AdminDownloadClients({
+  inSetup = false,
+}: { inSetup?: boolean } = {}) {
   const settings = useApi<Settings>(endpoint);
   return (
     <>
-      <h1>Download Client Settings</h1>
-      <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
-        </Link>
-      </div>
+      {!inSetup && (
+        <>
+          <h1>Download Client Settings</h1>
+          <div className="toolbar">
+            <Link className="btn btn-quiet btn-sm" to="/me">
+              Back to Account
+            </Link>
+          </div>
+        </>
+      )}
       <ServiceNote
         what="download client settings"
         error={settings.error}

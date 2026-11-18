@@ -551,18 +551,22 @@ function ConnectionForm({ initial }: { initial: Settings }) {
   );
 }
 
-export default function AdminProwlarr() {
+export default function AdminProwlarr({
+  inSetup = false,
+}: { inSetup?: boolean } = {}) {
   const settings = useApi<Settings>(path);
   return (
     <>
-      <header className="ph">
-        <h1>Prowlarr Settings</h1>
-        <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
-          </Link>
-        </div>
-      </header>
+      {!inSetup && (
+        <header className="ph">
+          <h1>Prowlarr Settings</h1>
+          <div className="toolbar">
+            <Link className="btn btn-quiet btn-sm" to="/me">
+              Back to Account
+            </Link>
+          </div>
+        </header>
+      )}
       <ServiceNote
         error={settings.error}
         what="Prowlarr settings"

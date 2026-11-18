@@ -2737,3 +2737,9 @@ The expanded setup fixture verifies testing a Radarr connection,
 selecting its returned quality profile and root folder, and saving
 the service before initialization. Four standalone and four bundled
 browser checks passed. The service responses were stubbed.
+
+First-run setup opens the download-client and Prowlarr editors on
+demand. Both reuse the administrator forms. Four standalone and four
+bundled browser fixtures verified that the panels open before
+initialization. Saving live download-client or indexer settings and
+matched visual acceptance remain unverified.

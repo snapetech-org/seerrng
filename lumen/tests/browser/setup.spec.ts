@@ -84,6 +84,20 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
         }
         radarrReads += 1;
         return route.fulfill({ json: radarrServices });
+      case '/settings/download-clients':
+        return route.fulfill({
+          json: { pollIntervalSeconds: 15, clients: [] },
+        });
+      case '/settings/prowlarr':
+        return route.fulfill({
+          json: {
+            hostname: '',
+            port: 9696,
+            baseUrl: '',
+            useSsl: false,
+            apiKeyConfigured: false,
+          },
+        });
       case '/settings/initialize':
         attempts += 1;
         initialized = true;
@@ -143,6 +157,14 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   await page.getByRole('button', { name: 'Save Radarr' }).click();
   await expect(
     page.getByRole('button', { name: 'Edit Fixture Radarr' })
+  ).toBeVisible();
+  await page.getByText('Configure Download Clients', { exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Add Download Client' })
+  ).toBeVisible();
+  await page.getByText('Configure Prowlarr', { exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Indexer Diagnostics' })
   ).toBeVisible();
   expect(initialized).toBe(false);
   await finish.click();
