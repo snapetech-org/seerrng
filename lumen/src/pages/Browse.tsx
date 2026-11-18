@@ -39,9 +39,44 @@ function dateBound(value: string | null) {
     : '';
 }
 
-function runtimeBound(value: string | null) {
+function integerBound(value: string | null) {
   return value && /^\d{1,9}$/.test(value) ? value : '';
 }
+
+const RANGE_FILTERS = {
+  dates: {
+    name: 'Release Dates',
+    label: 'Release Date Filter',
+    low: 'Released On or After',
+    high: 'Released On or Before',
+    normalize: dateBound,
+    input: { type: 'date' },
+  },
+  rating: {
+    name: 'Rating',
+    label: 'TMDB Rating Filter',
+    low: 'Minimum Rating',
+    high: 'Maximum Rating',
+    normalize: ratingBound,
+    input: { type: 'number', min: '0', max: '10', step: '0.1' },
+  },
+  runtime: {
+    name: 'Runtime',
+    label: 'Runtime Filter',
+    low: 'Minimum Runtime (Minutes)',
+    high: 'Maximum Runtime (Minutes)',
+    normalize: integerBound,
+    input: { type: 'number', min: '0', max: '999999999', step: '1' },
+  },
+  votes: {
+    name: 'Vote Count',
+    label: 'TMDB Vote Count Filter',
+    low: 'Minimum Votes',
+    high: 'Maximum Votes',
+    normalize: integerBound,
+    input: { type: 'number', min: '0', max: '999999999', step: '1' },
+  },
+};
 
 function RangeFilter({
   kind = 'rating',
@@ -49,74 +84,47 @@ function RangeFilter({
   max,
   apply,
 }: {
-  kind?: 'rating' | 'dates' | 'runtime';
+  kind?: keyof typeof RANGE_FILTERS;
   min: string;
   max: string;
   apply: (min: string, max: string) => void;
 }) {
   const [low, setLow] = useState(min);
   const [high, setHigh] = useState(max);
-  const dates = kind === 'dates';
-  const runtime = kind === 'runtime';
-  const normalize = dates ? dateBound : runtime ? runtimeBound : ratingBound;
+  const filter = RANGE_FILTERS[kind];
   const reversed =
-    !!low && !!high && (dates ? low > high : Number(low) > Number(high));
-  const name = dates ? 'Release Dates' : runtime ? 'Runtime' : 'Rating';
-  const inputProps = dates
-    ? { type: 'date' }
-    : {
-        type: 'number',
-        min: '0',
-        max: runtime ? '999999999' : '10',
-        step: runtime ? '1' : '0.1',
-      };
+    !!low &&
+    !!high &&
+    (kind === 'dates' ? low > high : Number(low) > Number(high));
   return (
     <form
       className="toolbar"
-      aria-label={
-        dates
-          ? 'Release Date Filter'
-          : runtime
-            ? 'Runtime Filter'
-            : 'TMDB Rating Filter'
-      }
+      aria-label={filter.label}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!reversed) apply(normalize(low), normalize(high));
+        if (!reversed) apply(filter.normalize(low), filter.normalize(high));
       }}
     >
       <label className="sel">
-        <span className="lbl">
-          {dates
-            ? 'Released On or After'
-            : runtime
-              ? 'Minimum Runtime (Minutes)'
-              : 'Minimum Rating'}
-        </span>
+        <span className="lbl">{filter.low}</span>
         <input
           className="cfg-input"
-          {...inputProps}
+          {...filter.input}
           value={low}
           onChange={(event) => setLow(event.target.value)}
         />
       </label>
       <label className="sel">
-        <span className="lbl">
-          {dates
-            ? 'Released On or Before'
-            : runtime
-              ? 'Maximum Runtime (Minutes)'
-              : 'Maximum Rating'}
-        </span>
+        <span className="lbl">{filter.high}</span>
         <input
           className="cfg-input"
-          {...inputProps}
+          {...filter.input}
           value={high}
           onChange={(event) => setHigh(event.target.value)}
         />
       </label>
       <button className="btn btn-tonal btn-sm" disabled={reversed}>
-        Apply {name}
+        Apply {filter.name}
       </button>
       {(min || max || low || high) && (
         <button
@@ -128,16 +136,12 @@ function RangeFilter({
             apply('', '');
           }}
         >
-          Clear {name}
+          Clear {filter.name}
         </button>
       )}
       {reversed && (
         <p className="note" role="alert">
-          {dates
-            ? 'Start date must be on or before the end date.'
-            : runtime
-              ? 'Minimum runtime must be at or below maximum runtime.'
-              : 'Minimum rating must be at or below maximum rating.'}
+          The lower bound must be at or below the upper bound.
         </p>
       )}
     </form>
@@ -181,8 +185,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const start = dateBound(p.get(startKey));
   const end = dateBound(p.get(endKey));
   const validDates = !start || !end || start <= end;
-  const minRuntime = runtimeBound(p.get('withRuntimeGte'));
-  const maxRuntime = runtimeBound(p.get('withRuntimeLte'));
+  const minRuntime = integerBound(p.get('withRuntimeGte'));
+  const maxRuntime = integerBound(p.get('withRuntimeLte'));
   const validRuntime =
     !minRuntime || !maxRuntime || Number(minRuntime) <= Number(maxRuntime);
   const minRating = ratingBound(p.get('voteAverageGte'));
@@ -216,6 +220,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const genre = picked.join(matchAll ? ',' : '|');
   const genres =
     useApi<{ id: number; name: string }[]>(`/genres/${kind}`).data || [];
+  const defaultVotes =
+    sort === 'vote_average.desc' ? (kind === 'movie' ? '500' : '200') : '';
+  const minVotes = integerBound(p.get('voteCountGte'));
+  const maxVotes = integerBound(p.get('voteCountLte'));
+  const effectiveMinVotes = minVotes || (maxVotes ? '' : defaultVotes);
+  const validVotes =
+    !effectiveMinVotes ||
+    !maxVotes ||
+    Number(effectiveMinVotes) <= Number(maxVotes);
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
@@ -240,9 +253,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     ...(genre
       ? { genre, ...(excludeGenre ? { excludeGenre: 'true' } : {}) }
       : {}),
-    ...(sort === 'vote_average.desc'
-      ? { voteCountGte: kind === 'movie' ? '500' : '200' }
+    ...(validVotes && effectiveMinVotes
+      ? { voteCountGte: effectiveMinVotes }
       : {}),
+    ...(validVotes && maxVotes ? { voteCountLte: maxVotes } : {}),
   });
   const list = usePaged<TitleResult>(
     `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
@@ -511,6 +525,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           else next.delete('withRuntimeGte');
           if (max) next.set('withRuntimeLte', max);
           else next.delete('withRuntimeLte');
+          setP(next, { replace: true });
+        }}
+      />
+      <RangeFilter
+        kind="votes"
+        key={`votes:${minVotes}:${maxVotes}`}
+        min={minVotes}
+        max={maxVotes}
+        apply={(min, max) => {
+          const next = new URLSearchParams(p);
+          if (min) next.set('voteCountGte', min);
+          else next.delete('voteCountGte');
+          if (max) next.set('voteCountLte', max);
+          else next.delete('voteCountLte');
           setP(next, { replace: true });
         }}
       />

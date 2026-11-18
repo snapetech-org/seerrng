@@ -1042,3 +1042,9 @@ Movies and Series now support runtime bounds in minutes. The standalone
 Movie fixture verified the exact server bounds, reload and independent
 reset across four viewport presets. Existing release-date and rating
 checks also passed. Live results and bundled and native visuals remain open.
+
+Movies and Series now support TMDB vote-count bounds. Explicit bounds
+override the Top rated default and clearing them restores that default.
+Standalone checks covered the Series query, reload, reset and adjacent
+range filters across four viewport presets. Bundled and native visual
+comparisons remain open.

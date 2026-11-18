@@ -1902,3 +1902,26 @@ test('movie runtime filters use minute bounds and clear independently', async ({
   await page.getByRole('button', { name: 'Clear Runtime' }).click();
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('explicit series vote counts override the Top rated default and reset cleanly', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/series?sort=vote_average.desc');
+  await page.getByLabel('Minimum Votes').fill('10');
+  await page.getByLabel('Maximum Votes').fill('50');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('voteCountGte') === '10' &&
+      url.searchParams.get('voteCountLte') === '50'
+    );
+  });
+  await page.getByRole('button', { name: 'Apply Vote Count' }).click();
+  await query;
+  await page.reload();
+  await expect(page.getByLabel('Minimum Votes')).toHaveValue('10');
+  await page.getByRole('button', { name: 'Clear Vote Count' }).click();
+  await expect(page).toHaveURL(/\/series\?sort=vote_average.desc$/);
+});
