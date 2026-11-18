@@ -132,3 +132,115 @@ test('book details reach the author and series and send the exact shelf target',
     { type: 'book-series', id: seriesId, name: 'Fixture Series' },
   ]);
 });
+
+test('bulk bibliography requests preserve selection across pages and report partial results', async ({
+  page,
+}, info) => {
+  const first = {
+    id: 'OL11W',
+    mediaType: 'book',
+    title: 'First Fixture Book',
+    authorId: 'OL42A',
+    editionId: 'OL123M',
+    isbn13: '9780306406157',
+  };
+  const second = {
+    ...first,
+    id: 'OL22W',
+    title: 'Second Fixture Book',
+    editionId: 'OL124M',
+  };
+  const payloads: unknown[] = [];
+  let reject = true;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 34359738368 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { ebookServiceEnabled: true, audiobookServiceEnabled: true },
+      });
+    if (path === '/author/OL42A' || path === '/author/OL42A/works') {
+      const offset = Number(url.searchParams.get('offset'));
+      return route.fulfill({
+        json: {
+          id: 'OL42A',
+          name: 'Fixture Author',
+          works: [offset ? second : first],
+          pagination: {
+            offset,
+            limit: 20,
+            nextOffset: offset + 1,
+            totalItems: 2,
+          },
+        },
+      });
+    }
+    if (path === '/request/bulk') {
+      payloads.push(request.postDataJSON());
+      if (reject)
+        return route.fulfill({
+          status: 403,
+          json: { message: 'Book quota exceeded.' },
+        });
+      return route.fulfill({
+        status: 207,
+        json: {
+          created: [{ id: 9 }],
+          skipped: [],
+          failed: [
+            {
+              mediaId: second.id,
+              title: second.title,
+              reason: 'The service did not accept this request.',
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/author/OL42A');
+  await page
+    .getByRole('button', { name: 'Request Books', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Books' });
+  await sheet.getByLabel('First Fixture Book').check();
+  await sheet.getByRole('button', { name: 'Load More Books' }).click();
+  await sheet.getByLabel('Second Fixture Book').check();
+  await expect(sheet.getByLabel('First Fixture Book')).toBeChecked();
+  await page.screenshot({ path: info.outputPath('bulk-books.png') });
+  const submit = sheet.getByRole('button', { name: 'Request Selected Books' });
+  await submit.click();
+  await expect(sheet.getByRole('alert')).toContainText('Book quota exceeded.');
+  await expect(sheet.getByLabel('Second Fixture Book')).toBeChecked();
+  reject = false;
+  await submit.click();
+  await expect(sheet.getByRole('status')).toHaveText(
+    '1 requested, 0 skipped, 1 failed.'
+  );
+  await expect(
+    sheet.getByText('Second Fixture Book', { exact: false })
+  ).toContainText('The service did not accept');
+  expect(payloads[1]).toEqual({
+    mediaType: 'book',
+    format: 'ebook',
+    items: [first, second].map(
+      ({ id, title, authorId, editionId, isbn13 }) => ({
+        mediaId: id,
+        title,
+        authorId,
+        editionId,
+        isbn13,
+      })
+    ),
+  });
+  await sheet.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+});

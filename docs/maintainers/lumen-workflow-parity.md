@@ -2134,3 +2134,16 @@ Pixel 7, and iPad Pro 11. The production build and 32 browser checks passed,
 including combined filters, the empty state, reset, and audiobook links.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-series-filters-20261118/`.
+
+Author and series pages can submit bulk ebook or audiobook requests through
+the existing bulk API. Author selections can span bibliography pages.
+The sheet submits up to 100 titles per batch using normal request defaults,
+preserves selections after rejection, and reports created, skipped, and
+failed results. Native advanced destination overrides remain separate work.
+
+The production build, 18 bulk API tests, and 36 browser checks passed.
+Compared the new sheet with existing Lumen dialog geometry on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. Browser fixtures verified exact book
+and edition IDs, pagination, quota rejection, and partial results. Real
+provider requests were outside the check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-books-20261118/`.

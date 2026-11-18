@@ -6,6 +6,7 @@ import {
   MediaStatus,
   type BookResult,
 } from '../api';
+import BulkBookRequest from '../components/BulkBookRequest';
 import { BookCard, GridSkeleton, Section } from '../components/cards';
 import { DetailTop } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -79,16 +80,19 @@ function Loading({
 function AuthorDetail({ id }: { id: string }) {
   const [offsets, setOffsets] = useState([0]);
   const offset = offsets.at(-1) ?? 0;
-  const author = useApi<Author>(
-    `/author/${encodeURIComponent(id)}?limit=${pageSize}&offset=${offset}`,
-    { currentPathOnly: true }
-  );
+  const path = `/author/${encodeURIComponent(id)}?limit=${pageSize}`;
+  const firstPage = useApi<Author>(`${path}&offset=0`);
+  const laterPage = useApi<Author>(offset ? `${path}&offset=${offset}` : null, {
+    currentPathOnly: true,
+  });
+  const author = offset ? laterPage : firstPage;
   const data = author.data;
   if (!data)
     return (
       <Loading title="Author" error={author.error} reload={author.reload} />
     );
   const nextOffset = data.pagination.offset + data.works.length;
+  const bibliography = firstPage.data;
   return (
     <article className="detail">
       <DetailTop
@@ -99,6 +103,24 @@ function AuthorDetail({ id }: { id: string }) {
       />
       <div className="dbody">
         <div className="dstatus">
+          {bibliography && (
+            <BulkBookRequest
+              source={{
+                id: data.id,
+                books: bibliography.works,
+                nextOffset:
+                  bibliography.works.length &&
+                  bibliography.works.length < bibliography.pagination.totalItems
+                    ? bibliography.works.length
+                    : undefined,
+              }}
+              onComplete={() => {
+                firstPage.reload();
+                if (offset) laterPage.reload();
+              }}
+            />
+          )}
+
           <ReaderShelf
             target={{ type: 'author', id: data.id, name: data.name }}
           />
@@ -337,6 +359,11 @@ function SeriesDetail({ id }: { id: string }) {
       />
       <div className="dbody">
         <div className="dstatus">
+          <BulkBookRequest
+            source={{ id: data.id, books }}
+            onComplete={series.reload}
+          />
+
           <ReaderShelf
             target={{ type: 'book-series', id: data.id, name: data.title }}
           />

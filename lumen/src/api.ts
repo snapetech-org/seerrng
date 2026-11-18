@@ -175,6 +175,8 @@ export interface BookResult {
   title: string;
   author?: string;
   authorId?: string;
+  isbn13?: string;
+  editionId?: string;
   posterPath?: string | null;
   bookFormat?: 'ebook' | 'audiobook' | string;
   firstPublishYear?: number;
