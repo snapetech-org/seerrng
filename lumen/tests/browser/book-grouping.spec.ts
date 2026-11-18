@@ -244,3 +244,95 @@ test('bulk bibliography requests preserve selection across pages and report part
   await sheet.getByRole('button', { name: 'Close', exact: true }).click();
   await expect(sheet).toHaveCount(0);
 });
+
+test('advanced bulk book options send the selected destination and clear format-specific overrides', async ({
+  page,
+}, info) => {
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    const responses: Record<string, unknown> = {
+      '/auth/me': { id: 1, permissions: 2 },
+      '/settings/public': {
+        ebookServiceEnabled: true,
+        audiobookServiceEnabled: true,
+      },
+      '/author/OL42A': {
+        id: 'OL42A',
+        name: 'Fixture Author',
+        works: [
+          { id: 'OL11W', mediaType: 'book', title: 'First Fixture Book' },
+        ],
+        pagination: { offset: 0, limit: 20, totalItems: 1 },
+      },
+      '/service/readarr': [
+        { id: 1, name: 'Ebook Service', serviceType: 'ebook' },
+        { id: 2, name: 'Audiobook Service', serviceType: 'audiobook' },
+      ],
+      '/service/readarr/1': {
+        server: { id: 1, activeTags: [] },
+        profiles: [{ id: 3, name: 'EPUB' }],
+        metadataProfiles: [{ id: 4, name: 'Standard Metadata' }],
+        rootFolders: [{ path: '/books' }],
+        tags: [{ id: 5, label: 'family' }],
+      },
+      '/user': { results: [{ id: 2, displayName: 'Family Member' }] },
+    };
+    if (path === '/request/bulk') {
+      writes.push(request.postDataJSON());
+      return route.fulfill({
+        status: 207,
+        json: { created: [], skipped: [], failed: [] },
+      });
+    }
+    return route.fulfill({ json: responses[path] ?? {} });
+  });
+  await page.goto('/author/OL42A');
+  await page
+    .getByRole('button', { name: 'Request Books', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Books' });
+  await sheet.getByText('Advanced Request Options', { exact: true }).click();
+  const server = sheet.getByLabel('Book Service');
+  await server.selectOption('1');
+  await sheet.getByLabel('Quality Profile').selectOption('3');
+  await sheet
+    .getByRole('combobox', { name: 'Format', exact: true })
+    .selectOption('audiobook');
+  await expect(server).toHaveValue('');
+  await expect(
+    server.locator('option', { hasText: 'Ebook Service' })
+  ).toHaveCount(0);
+  await expect(sheet.getByLabel('Quality Profile')).toHaveCount(0);
+  await sheet
+    .getByRole('combobox', { name: 'Format', exact: true })
+    .selectOption('ebook');
+  await server.selectOption('1');
+  await sheet.getByLabel('Quality Profile').selectOption('3');
+  await sheet.getByLabel('Metadata Profile').selectOption('4');
+  await sheet.getByLabel('Root Folder').selectOption('/books');
+  await sheet.getByLabel('family', { exact: true }).check();
+  await sheet.getByLabel('Request As').selectOption('2');
+  await sheet.getByLabel('First Fixture Book').check();
+  await page.screenshot({ path: info.outputPath('advanced-bulk-books.png') });
+  await sheet.getByRole('button', { name: 'Request Selected Books' }).click();
+  await expect(sheet.getByRole('status')).toContainText('0 requested');
+  expect(writes).toEqual([
+    {
+      mediaType: 'book',
+      format: 'ebook',
+      items: [{ mediaId: 'OL11W', title: 'First Fixture Book' }],
+      serverId: 1,
+      profileId: 3,
+      metadataProfileId: 4,
+      rootFolder: '/books',
+      tags: [5],
+      userId: 2,
+    },
+  ]);
+});

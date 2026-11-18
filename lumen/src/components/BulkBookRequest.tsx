@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom';
 import { api, bookMediaForFormat, MediaStatus, type BookResult } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
-import { dropBookStates, usePublicSettings } from '../hooks';
+import { dropBookStates, useApi, usePublicSettings } from '../hooks';
+import { canRequestAs } from './detail';
+import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
 const limit = 100;
@@ -20,6 +22,39 @@ interface Result {
   failed: Outcome[];
 }
 
+interface Destination {
+  serverId?: number;
+  profileId?: number;
+  metadataProfileId?: number;
+  rootFolder?: string;
+  tags?: number[];
+  userId?: number;
+}
+interface BookService {
+  id: number;
+  name: string;
+  backend?: 'readarr' | 'bindery' | 'bookorbit';
+  serviceType?: Format | 'both';
+  activeTags?: number[];
+}
+interface BookServiceDetails {
+  server: BookService;
+  profiles: { id: number; name: string }[];
+  metadataProfiles?: { id: number; name: string }[];
+  rootFolders: { path?: string }[];
+  tags: { id: number; label: string }[];
+}
+
+function mayChooseDestination(permissions: unknown) {
+  return (
+    isAdministrator(permissions) ||
+    (typeof permissions === 'number' &&
+      Number.isSafeInteger(permissions) &&
+      permissions >= 0 &&
+      (BigInt(permissions) & (16n | 8192n)) !== 0n)
+  );
+}
+
 function RequestSheet({
   source,
   formats,
@@ -31,6 +66,7 @@ function RequestSheet({
   close: () => void;
   onComplete: () => void;
 }) {
+  const { user } = useAuth();
   const dialog = useRef<HTMLDivElement>(null);
   const pending = useRef(false);
   const [books, setBooks] = useState(source.books);
@@ -40,6 +76,32 @@ function RequestSheet({
   const [result, setResult] = useState<Result>();
   const [error, setError] = useState<string>();
   const [busy, setBusy] = useState(false);
+  const [advanced, setAdvanced] = useState(false);
+  const [destination, setDestination] = useState<Destination>({});
+  const allowed = mayChooseDestination(user?.permissions);
+  const asAllowed = canRequestAs(user?.permissions);
+  const servers = useApi<BookService[]>(
+    advanced && allowed ? '/service/readarr' : null
+  );
+  const details = useApi<BookServiceDetails>(
+    allowed && destination.serverId !== undefined
+      ? `/service/readarr/${destination.serverId}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const users = useApi<{ results: { id: number; displayName: string }[] }>(
+    advanced && asAllowed ? '/user?take=100&skip=0&sort=displayname' : null
+  );
+  const available = (servers.data ?? []).filter(
+    (server) =>
+      (server.serviceType === 'both' && server.backend !== 'readarr') ||
+      (server.serviceType === 'audiobook' ? 'audiobook' : 'ebook') === format
+  );
+  const chosen =
+    details.data?.server.id === destination.serverId ? details.data : null;
+  const destinationReady =
+    !allowed || destination.serverId === undefined || !!chosen;
+  const tags = destination.tags ?? chosen?.server.activeTags ?? [];
   useDialog(dialog, finish);
 
   const eligible = (book: BookResult) => {
@@ -76,7 +138,8 @@ function RequestSheet({
   }
 
   async function submit() {
-    if (!selected.size || pending.current || result) return;
+    if (!selected.size || pending.current || result || !destinationReady)
+      return;
     const items = books
       .filter((book) => selected.has(book.id) && eligible(book))
       .map((book) => ({
@@ -94,7 +157,13 @@ function RequestSheet({
       setResult(
         await api<Result>('/request/bulk', {
           method: 'POST',
-          body: JSON.stringify({ mediaType: 'book', format, items }),
+          body: JSON.stringify({
+            mediaType: 'book',
+            format,
+            items,
+            ...(allowed ? destination : {}),
+            userId: asAllowed ? destination.userId : undefined,
+          }),
         })
       );
       dropBookStates();
@@ -161,6 +230,7 @@ function RequestSheet({
                   value={format}
                   onChange={(event) => {
                     setFormat(event.target.value as Format);
+                    setDestination((current) => ({ userId: current.userId }));
                     setSelected(new Set());
                     setError(undefined);
                   }}
@@ -173,6 +243,167 @@ function RequestSheet({
                   )}
                 </select>
               </label>
+              {allowed && (
+                <details
+                  className="adv"
+                  onToggle={(event) => {
+                    if (event.currentTarget.open) setAdvanced(true);
+                  }}
+                >
+                  <summary>Advanced Request Options</summary>
+                  <div className="adv-grid">
+                    {asAllowed && !!users.data?.results?.length && (
+                      <label className="sel">
+                        <span className="lbl">Request As</span>
+                        <select
+                          value={destination.userId ?? ''}
+                          disabled={busy}
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            setDestination((current) => ({
+                              ...current,
+                              userId: value ? Number(value) : undefined,
+                            }));
+                          }}
+                        >
+                          <option value="">Me</option>
+                          {users.data.results
+                            .filter((person) => person.id !== user?.id)
+                            .map((person) => (
+                              <option key={person.id} value={person.id}>
+                                {person.displayName}
+                              </option>
+                            ))}
+                        </select>
+                      </label>
+                    )}
+                    <label className="sel">
+                      <span className="lbl">Book Service</span>
+                      <select
+                        value={destination.serverId ?? ''}
+                        disabled={busy}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setDestination((current) => ({
+                            userId: current.userId,
+                            serverId: value ? Number(value) : undefined,
+                          }));
+                        }}
+                      >
+                        <option value="">Use Default</option>
+                        {available.map((server) => (
+                          <option key={server.id} value={server.id}>
+                            {server.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    {(
+                      [
+                        ['profileId', 'Quality Profile', chosen?.profiles],
+                        [
+                          'metadataProfileId',
+                          'Metadata Profile',
+                          chosen?.metadataProfiles,
+                        ],
+                      ] as const
+                    ).map(
+                      ([key, label, options]) =>
+                        !!options?.length && (
+                          <label className="sel" key={key}>
+                            <span className="lbl">{label}</span>
+                            <select
+                              value={destination[key] ?? ''}
+                              disabled={busy}
+                              onChange={(event) => {
+                                const value = event.target.value;
+                                setDestination((current) => ({
+                                  ...current,
+                                  [key]: value ? Number(value) : undefined,
+                                }));
+                              }}
+                            >
+                              <option value="">Use Default</option>
+                              {options.map((option) => (
+                                <option key={option.id} value={option.id}>
+                                  {option.name}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        )
+                    )}
+                    {!!chosen?.rootFolders.length && (
+                      <label className="sel">
+                        <span className="lbl">Root Folder</span>
+                        <select
+                          value={destination.rootFolder ?? ''}
+                          disabled={busy}
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            setDestination((current) => ({
+                              ...current,
+                              rootFolder: value || undefined,
+                            }));
+                          }}
+                        >
+                          <option value="">Use Default</option>
+                          {chosen.rootFolders.map(
+                            ({ path }) =>
+                              path && (
+                                <option key={path} value={path}>
+                                  {path}
+                                </option>
+                              )
+                          )}
+                        </select>
+                      </label>
+                    )}
+                  </div>
+                  {!!chosen?.tags.length && (
+                    <div
+                      className="setlist"
+                      role="group"
+                      aria-label="Request Tags"
+                    >
+                      {chosen.tags.map((tag) => (
+                        <label className="set cfg-row" key={tag.id}>
+                          <span>{tag.label}</span>
+                          <input
+                            type="checkbox"
+                            checked={tags.includes(tag.id)}
+                            disabled={busy}
+                            onChange={(event) => {
+                              const next = event.target.checked
+                                ? [...tags, tag.id]
+                                : tags.filter((id) => id !== tag.id);
+                              setDestination((current) => ({
+                                ...current,
+                                tags: next,
+                              }));
+                            }}
+                          />
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                  <ServiceNote
+                    what="book services"
+                    error={servers.error}
+                    retry={servers.reload}
+                  />
+                  <ServiceNote
+                    what="book service options"
+                    error={details.error}
+                    retry={details.reload}
+                  />
+                  {!destinationReady && !details.error && (
+                    <p className="note" role="status">
+                      Loading book service options…
+                    </p>
+                  )}
+                </details>
+              )}
               <div className="setlist">
                 {books.map((book) => {
                   const requestable = eligible(book);
@@ -226,7 +457,7 @@ function RequestSheet({
               <button
                 className="btn btn-primary"
                 type="button"
-                disabled={busy || !selected.size}
+                disabled={busy || !selected.size || !destinationReady}
                 onClick={() => void submit()}
               >
                 Request Selected Books

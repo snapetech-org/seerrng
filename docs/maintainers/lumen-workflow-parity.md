@@ -2147,3 +2147,17 @@ iPhone 13, Pixel 7, and iPad Pro 11. Browser fixtures verified exact book
 and edition IDs, pagination, quota rejection, and partial results. Real
 provider requests were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-books-20261118/`.
+
+Bulk book requests now offer advanced destinations to authorized users.
+The sheet lists services compatible with the selected format and exposes
+available quality and metadata profiles, root folders, and tags. Changing
+the service or format clears its overrides. Delegated users with both
+required permissions can select the requester. The default route continues
+to use configured server defaults.
+
+The production build and 12 browser checks passed. Compared default and
+expanded sheets on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Fixtures
+verified format changes and the submitted destination, profiles, folder, tags,
+and requester. Real service writes were outside the check. Evidence is
+retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-destinations-20261118/`.
