@@ -39,6 +39,7 @@ const targetTypes = {
   album: 'Album',
   book: 'Book',
 };
+const bookshelfId = /^bookshelf:\d+:[A-Za-z0-9_-]+$/;
 const targetRoutes: Record<string, string> = {
   movie: '/movie',
   tv: '/tv',
@@ -143,8 +144,10 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       ? targetRoutes[toType]
       : '';
     const href =
-      route && /^[A-Za-z0-9_-]{1,128}$/.test(toId)
-        ? `${route}/${toId}`
+      route &&
+      (/^[A-Za-z0-9_-]{1,128}$/.test(toId) ||
+        (toType === 'book' && toId.length <= 128 && bookshelfId.test(toId)))
+        ? `${route}/${encodeURIComponent(toId)}`
         : undefined;
     pending.current = true;
     setBusy(true);

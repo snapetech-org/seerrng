@@ -612,3 +612,63 @@ test('switching franchise titles keeps the follow identity and state separate', 
     },
   ]);
 });
+
+test('franchise curators can save an exact Bookshelf volume link', async ({
+  page,
+  baseURL,
+}) => {
+  const bookId = 'bookshelf:1:aGM6MjYwNDY4';
+  const href = '/book/bookshelf%3A1%3AaGM6MjYwNDY4';
+  let saved = false;
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/franchise/anime/10')
+      return route.fulfill({
+        json: {
+          anchor: { title: 'Fixture Original' },
+          notes: [],
+          canCurate: true,
+          items: saved
+            ? [
+                {
+                  group: 'source',
+                  title: 'Fixture Volume',
+                  mediaType: 'book',
+                  href,
+                  confidence: 'high',
+                  verified: true,
+                },
+              ]
+            : [],
+        },
+      });
+    if (path === '/franchise/relations' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toMatchObject({
+        toType: 'book',
+        toId: bookId,
+        href,
+      });
+      saved = true;
+      return route.fulfill({ status: 201, json: { ok: true } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('./franchise/anime/10');
+  await page
+    .getByRole('button', { name: 'Add Relationship', exact: true })
+    .click();
+  await page.getByLabel('Related Title').fill('Fixture Volume');
+  await page.getByLabel('Catalogue ID').fill(bookId);
+  await page.getByLabel('Media Type').selectOption('book');
+  await page
+    .getByLabel('Relationship', { exact: true })
+    .selectOption('source-material');
+  await page.getByRole('button', { name: 'Save Relationship' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Volume' })
+  ).toHaveAttribute('href', new URL('.' + href, baseURL).pathname);
+});
