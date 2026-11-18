@@ -4018,3 +4018,64 @@ test('Song identification polls and requests the exact recording', async ({
     ],
   });
 });
+
+test('Playlist Import reviews album and track matches before submitting', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const submitted: unknown[] = [];
+  await page.route('**/api/v1/playlist/spotify/status', (route) =>
+    route.fulfill({ json: { connected: false } })
+  );
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: true, canRequest: true } })
+  );
+  await page.route('**/api/v1/playlist/resolve', (route) =>
+    route.fulfill({
+      json: {
+        name: 'Fixture Playlist',
+        totalItems: 2,
+        items: [
+          {
+            id: 'album-id',
+            title: 'Matched Album',
+            sourceTitle: 'Source song',
+            matchStatus: 'matched',
+          },
+          {
+            id: 'row-2',
+            title: 'Unmatched Track',
+            artist: 'Artist',
+            sourceTitle: 'Unmatched Track',
+            matchStatus: 'unmatched',
+          },
+        ],
+      },
+    })
+  );
+  await page.route(
+    /\/api\/v1\/(request|soulseek\/track-requests)$/,
+    (route) => {
+      submitted.push(route.request().postDataJSON());
+      return route.fulfill({ json: {} });
+    }
+  );
+  await page.goto('/music/playlist-import');
+  await page
+    .getByLabel('Spotify or YouTube Playlist URL')
+    .fill('https://www.youtube.com/playlist?list=fixture');
+  await page.getByRole('button', { name: 'Preview Matches' }).click();
+  await page.getByRole('checkbox', { name: 'Request Album' }).check();
+  await page.getByRole('checkbox', { name: 'Request Track' }).check();
+  expect(submitted).toEqual([]);
+  await page.getByRole('button', { name: 'Request Selected (2)' }).click();
+  await expect(page.getByText('Requested', { exact: true })).toHaveCount(2);
+  expect(submitted).toEqual([
+    { mediaType: 'music', mediaId: 'album-id' },
+    {
+      tracks: [
+        { title: 'Unmatched Track', artist: 'Artist', source: 'playlist' },
+      ],
+    },
+  ]);
+});

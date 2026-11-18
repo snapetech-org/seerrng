@@ -117,6 +117,9 @@ export function Music() {
         <Link className="btn btn-quiet btn-sm" to="/track-requests">
           Track Requests
         </Link>
+        <Link className="btn btn-quiet btn-sm" to="/music/playlist-import">
+          Import Playlist
+        </Link>
         {genre && (
           <button
             className="chip"

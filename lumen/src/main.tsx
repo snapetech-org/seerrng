@@ -35,6 +35,7 @@ import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
 import Patches, { PatchDetail } from './pages/Patches';
 import PersonDetail from './pages/People';
+import PlaylistImport from './pages/PlaylistImport';
 import ProviderDiscovery from './pages/ProviderDiscovery';
 import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
@@ -107,6 +108,7 @@ function App() {
           <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/share" element={<Share />} />
           <Route path="/identify" element={<SongIdentify />} />
+          <Route path="/music/playlist-import" element={<PlaylistImport />} />
           <Route path="/track-requests" element={<TrackRequests />} />
           <Route path="/trending" element={<Trending />} />
           <Route
