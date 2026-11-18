@@ -30,6 +30,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
+import { ReaderDownloads } from '../components/RequestFiles';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
@@ -459,6 +460,7 @@ export default function BookDetail() {
             title={b.title}
             onChange={first.refresh}
           />
+          <ReaderDownloads mediaId={b.mediaInfo?.id} type="book" format={f} />
           <ReportIssueButton type="book" title={b.title} media={b.mediaInfo} />
           <WatchlistButton mediaType="book" detail={b} requestedId={plainId} />
         </div>

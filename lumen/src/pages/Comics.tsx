@@ -30,6 +30,7 @@ import {
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
+import { ReaderDownloads } from '../components/RequestFiles';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
@@ -619,6 +620,10 @@ export function ComicDetail() {
                 reload();
               }}
             />
+            <ReaderDownloads
+              mediaId={chosen ? shown?.id : undefined}
+              type="comic"
+            />
             <ReportIssueButton
               key={chosen?.id}
               type="comic"
@@ -939,6 +944,7 @@ export function MagazineDetail() {
               title={m.title}
               onChange={refresh}
             />
+            <ReaderDownloads mediaId={m.mediaInfo?.id} type="magazine" />
             <ReportIssueButton
               type="magazine"
               title={m.title}

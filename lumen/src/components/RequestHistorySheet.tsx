@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useApi } from '../hooks';
+import { RequestFiles } from './RequestFiles';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -20,59 +21,7 @@ interface RequestHistory {
   history: { results: StatusEvent[]; total: number };
 }
 
-interface DownloadList {
-  results: { id: string; name: string; format?: 'ebook' | 'audiobook' }[];
-  hadErrors?: boolean;
-}
-
 const downloadableTypes = new Set(['movie', 'tv', 'book', 'comic', 'magazine']);
-
-function RequestFiles({ id }: { id: number }) {
-  const path = `/request/status/${id}/downloads`;
-  const { data, error, reload } = useApi<DownloadList>(path);
-  const files = data?.results.filter((file) =>
-    /^[A-Za-z0-9_-]{43}$/.test(file.id)
-  );
-  return (
-    <section aria-labelledby="request-files-heading">
-      <h3 id="request-files-heading">Download Files</h3>
-      <ServiceNote error={error} what="request files" retry={reload} />
-      {!data && !error && (
-        <p className="note" role="status">
-          Checking for downloadable files…
-        </p>
-      )}
-      {data?.hadErrors && (
-        <p className="note" role="status">
-          Some sources couldn’t be checked.{' '}
-          <button className="btn btn-quiet btn-sm" onClick={reload}>
-            Check again
-          </button>
-        </p>
-      )}
-      {files?.length ? (
-        <ul className="setlist">
-          {files.map((file) => (
-            <li className="set" key={file.id}>
-              <div>
-                <a className="go" href={`/api/v1${path}/${file.id}`} download>
-                  {file.name}
-                </a>
-                {file.format && (
-                  <div className="note">
-                    {file.format === 'ebook' ? 'Ebook' : 'Audiobook'}
-                  </div>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : data && !data.hadErrors ? (
-        <p className="note">No downloadable files were found.</p>
-      ) : null}
-    </section>
-  );
-}
 
 const stages = new Map([
   ['requested', 'Requested'],

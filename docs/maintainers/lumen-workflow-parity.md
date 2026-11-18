@@ -470,3 +470,17 @@ Standalone Chrome at 1440 × 1000 verified the ebook file list, partial-source
 notice and successful attachment response with a synthetic provider result.
 Native comparison, mobile, bundled, live provider and media-detail download
 entry points remain open.
+
+### Reader detail downloads increment
+
+Book, audiobook, comic edition and magazine details can look up the signed-in
+user's available requests using the exact stored media ID. The picker keeps
+ebook and audiobook files separate even when the request covers both. Multiple
+matching requests can be inspected individually using the shared file list.
+
+Standalone Chrome at 1440 × 1000 verified the ebook detail entry point. A
+synthetic response included another user's request, another media ID and an
+audiobook-only request. Only the matching combined request was queried for
+files and only its ebook appeared. Native visual comparison, mobile, bundled
+and live provider verification remain open, along with browser coverage for
+the other reader categories.
