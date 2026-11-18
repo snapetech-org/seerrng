@@ -148,3 +148,7 @@ The pinned Docker setup actions default to caching their Buildx binary
 and QEMU image. The trusted main, release, and preview workflows now
 disable those defaults explicitly. The release-workflow tests check the
 inputs as well as the absence of shared layer and scanner caches.
+
+The standalone Lumen manifest and stable alias jobs and the manual
+container-alias promotion job also disable the Buildx binary cache.
+The same workflow test now covers those jobs.

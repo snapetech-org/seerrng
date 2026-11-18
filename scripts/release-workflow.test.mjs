@@ -28,6 +28,8 @@ test('trusted image publishers and their scans do not restore shared caches', ()
     ['release.yml', ['publish', 'scan-release-image']],
     ['preview.yml', ['publish']],
     ['trivy-scan.yml', ['trivy']],
+    ['lumen-release.yml', ['native-image', 'manifest', 'stable-alias']],
+    ['promote-container-aliases.yml', ['promote']],
   ]) {
     const workflow = readWorkflow(workflowName);
     for (const { steps = [] } of Object.values(workflow.jobs)) {
