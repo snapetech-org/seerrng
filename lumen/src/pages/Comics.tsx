@@ -991,13 +991,17 @@ const MAGAZINE_SEARCH_SUGGESTIONS = [
   'Wired',
 ];
 
-function canRequestMagazines(permissions = 0) {
-  // Admin, Request, or Request Magazines. The category-specific bit exceeds 32 bits.
+function hasMagazinePermission(permissions: number, mask: bigint) {
   return (
     Number.isSafeInteger(permissions) &&
     permissions >= 0 &&
-    (BigInt(permissions) & (2n | 32n | 2199023255552n)) !== 0n
+    (BigInt(permissions) & mask) !== 0n
   );
+}
+
+function canRequestMagazines(permissions = 0) {
+  // Admin, Request, or Request Magazines.
+  return hasMagazinePermission(permissions, 2n | 32n | (1n << 41n));
 }
 
 function MagazineRequestSheet({
@@ -1014,6 +1018,20 @@ function MagazineRequestSheet({
   const [sending, setSending] = useState(false);
   const activeRequest = useRef(false);
   const permissions = user?.permissions ?? 0;
+  const quota = useApi<{
+    magazine?: {
+      limit?: number;
+      remaining?: number;
+      days?: number;
+      restricted: boolean;
+    };
+  }>(user?.id ? `/user/${user.id}/quota` : null, { currentPathOnly: true });
+  const magazineQuota = quota.data?.magazine;
+  // Admin, Manage Requests, Auto Approve, or Auto Approve Magazines.
+  const autoApprove = hasMagazinePermission(
+    permissions,
+    2n | 16n | 128n | (1n << 40n)
+  );
   const advanced = canChooseRequestOptions(permissions);
   const [serviceId, setServiceId] = useState<number>();
   const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
@@ -1031,7 +1049,11 @@ function MagazineRequestSheet({
       confirm="Send Request"
       cancel="Cancel"
       busy={sending}
-      confirmDisabled={advanced && services.data?.length === 0}
+      confirmDisabled={
+        (!quota.data && !quota.error) ||
+        magazineQuota?.restricted ||
+        (advanced && services.data?.length === 0)
+      }
       onClose={() => {
         if (!activeRequest.current) onClose();
       }}
@@ -1057,6 +1079,25 @@ function MagazineRequestSheet({
         }
       }}
     >
+      <p className="sub">
+        {autoApprove ? 'Automatically approved' : 'Approval required'}
+      </p>
+      {!!magazineQuota?.limit && (
+        <p
+          className="sub"
+          role={magazineQuota.restricted ? 'status' : undefined}
+        >
+          {magazineQuota.restricted
+            ? 'Magazine request quota reached.'
+            : `${magazineQuota.remaining ?? 0} of ${magazineQuota.limit} magazine requests remaining.`}
+          {!!magazineQuota.days && ` Quota period: ${magazineQuota.days} days.`}
+        </p>
+      )}
+      {magazineQuota?.restricted && (
+        <button className="chip" type="button" onClick={quota.reload}>
+          Recheck Quota
+        </button>
+      )}
       {advanced && !!services.data?.length && (
         <div className="toolbar">
           <label className="sel">

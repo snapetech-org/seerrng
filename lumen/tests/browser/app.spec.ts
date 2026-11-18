@@ -7396,6 +7396,19 @@ for (const { advanced, detail } of [
     await page.route('**/api/v1/discover/magazines?*', (route) =>
       route.fulfill({ json: paged([]) })
     );
+    let restricted = true;
+    await page.route('**/api/v1/user/1/quota', (route) =>
+      route.fulfill({
+        json: {
+          magazine: {
+            limit: 3,
+            remaining: restricted ? 0 : 2,
+            days: 7,
+            restricted,
+          },
+        },
+      })
+    );
     let serviceReads = 0;
     await page.route('**/api/v1/service/magazine', (route) => {
       serviceReads += 1;
@@ -7433,9 +7446,19 @@ for (const { advanced, detail } of [
     await request.click();
     const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
     await expect(sheet).toContainText('Unlisted');
+    await expect(sheet).toContainText('Approval required');
+    await expect(
+      sheet.getByText('Magazine request quota reached.', { exact: false })
+    ).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: 'Send Request' })
+    ).toBeDisabled();
     await sheet.getByRole('button', { name: 'Cancel' }).click();
     expect(posts).toHaveLength(0);
+    restricted = false;
     await request.click();
+    await sheet.getByRole('button', { name: 'Recheck Quota' }).click();
+    await expect(sheet).toContainText('2 of 3 magazine requests remaining.');
     const service = sheet.getByRole('combobox', { name: 'Magazine Service' });
     if (advanced) await service.selectOption('7');
     else await expect(service).toHaveCount(0);
