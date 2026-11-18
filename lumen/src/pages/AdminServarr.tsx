@@ -6,8 +6,9 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-const endpoint = '/settings/radarr';
-interface Radarr {
+type Provider = 'radarr' | 'sonarr';
+const names = { radarr: 'Radarr', sonarr: 'Sonarr' };
+interface Service {
   id?: number;
   name: string;
   hostname: string;
@@ -28,6 +29,18 @@ interface Radarr {
   requestButtonLabel?: string;
   downloadQueueSize?: number;
   minimumAvailability?: string;
+  seriesType?: string;
+  animeSeriesType?: string;
+  activeAnimeProfileId?: number;
+  activeAnimeProfileName?: string;
+  activeAnimeDirectory?: string;
+  activeLanguageProfileId?: number;
+  activeAnimeLanguageProfileId?: number;
+  defaultMetadataLanguageId?: number | null;
+  defaultSeasonType?: string;
+  enableSeasonFolders?: boolean;
+  monitorNewItems?: string;
+  animeTags?: number[];
   tags?: number[];
   syncExcludedTags?: number[];
 }
@@ -35,9 +48,11 @@ interface Options {
   profiles: { id: number; name: string }[];
   rootFolders: { id: number; path: string }[];
   tags: { id: number; label: string }[];
+  languageProfiles?: { id: number; name: string }[] | null;
+  metadataLanguages?: { id: number; name: string }[] | null;
 }
 
-const empty: Radarr = {
+const empty: Service = {
   name: '',
   hostname: '',
   port: 7878,
@@ -45,7 +60,6 @@ const empty: Radarr = {
   useSsl: false,
   activeProfileId: 0,
   activeDirectory: '',
-  minimumAvailability: 'released',
 };
 const connectionFields = [
   ['name', 'Service Name', 'text'],
@@ -65,7 +79,18 @@ const flags = [
   ['requestButtonAnimeOnly', 'Show Request Button for Anime Only'],
 ] as const;
 
-function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
+function ServiceForm({
+  provider,
+  initial,
+  done,
+}: {
+  provider: Provider;
+  initial: Service;
+  done: () => void;
+}) {
+  const name = names[provider];
+  const isSonarr = provider === 'sonarr';
+  const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
   const [options, setOptions] = useState<Options>();
   const [busy, setBusy] = useState(false);
@@ -100,7 +125,7 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
     draft.useSsl !== initial.useSsl ||
     !!draft.apiKey;
 
-  function change(patch: Partial<Radarr>) {
+  function change(patch: Partial<Service>) {
     setDraft((previous) => ({ ...previous, ...patch }));
     setFailure('');
     if (
@@ -143,7 +168,7 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
         }),
       });
       if (generation === sessionGeneration()) setOptions(result);
-    }, 'Could not test Radarr. Check the address and API key.');
+    }, `Could not test ${name}. Check the address and API key.`);
   }
 
   function save() {
@@ -155,7 +180,19 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
         method: initial.id === undefined ? 'POST' : 'PUT',
         body: JSON.stringify({
           ...draft,
-          minimumAvailability: draft.minimumAvailability ?? 'released',
+          ...(isSonarr
+            ? {
+                seriesType: draft.seriesType ?? 'standard',
+                animeSeriesType: draft.animeSeriesType ?? 'anime',
+                monitorNewItems: draft.monitorNewItems ?? 'all',
+                activeAnimeProfileName:
+                  draft.activeAnimeProfileId === undefined
+                    ? undefined
+                    : (options?.profiles.find(
+                        ({ id }) => id === draft.activeAnimeProfileId
+                      )?.name ?? draft.activeAnimeProfileName),
+              }
+            : { minimumAvailability: draft.minimumAvailability ?? 'released' }),
           apiKey: key,
           activeProfileName:
             options?.profiles.find(({ id }) => id === draft.activeProfileId)
@@ -163,7 +200,7 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
         }),
       });
       if (generation === sessionGeneration()) done();
-    }, 'Could not save the Radarr service.');
+    }, `Could not save the ${name} service.`);
   }
 
   function remove() {
@@ -172,13 +209,15 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
     void run(async () => {
       await api(path, { method: 'DELETE' }, 'empty');
       if (generation === sessionGeneration()) done();
-    }, 'Could not remove the Radarr service.');
+    }, `Could not remove the ${name} service.`);
   }
 
   return (
     <Section
       title={
-        initial.id === undefined ? 'Add Radarr Service' : `Edit ${initial.name}`
+        initial.id === undefined
+          ? `Add ${name} Service`
+          : `Edit ${initial.name}`
       }
     >
       <form
@@ -222,21 +261,98 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
               />
             </label>
           ))}
-          <label className="set cfg-row">
-            <span>Minimum Availability</span>
-            <select
-              className="cfg-select"
-              value={draft.minimumAvailability ?? 'released'}
-              disabled={busy}
-              onChange={(event) =>
-                change({ minimumAvailability: event.target.value })
-              }
-            >
-              <option value="announced">Announced</option>
-              <option value="inCinemas">In Cinemas</option>
-              <option value="released">Released</option>
-            </select>
-          </label>
+          {isSonarr ? (
+            <>
+              {(
+                [
+                  [
+                    'seriesType',
+                    'Series Type',
+                    'standard',
+                    [
+                      ['standard', 'Standard'],
+                      ['daily', 'Daily'],
+                      ['anime', 'Anime'],
+                    ],
+                  ],
+                  [
+                    'animeSeriesType',
+                    'Anime Series Type',
+                    'anime',
+                    [
+                      ['standard', 'Standard'],
+                      ['daily', 'Daily'],
+                      ['anime', 'Anime'],
+                    ],
+                  ],
+                  [
+                    'defaultSeasonType',
+                    'Season Order',
+                    'official',
+                    [
+                      ['official', 'Official'],
+                      ['automatic', 'Automatic'],
+                    ],
+                  ],
+                  [
+                    'monitorNewItems',
+                    'Monitor New Items',
+                    'all',
+                    [
+                      ['all', 'All'],
+                      ['none', 'None'],
+                      ['latest', 'Latest Season'],
+                    ],
+                  ],
+                ] as const
+              ).map(([field, label, fallback, choices]) => (
+                <label key={field} className="set cfg-row">
+                  <span>{label}</span>
+                  <select
+                    className="cfg-select"
+                    value={draft[field] ?? fallback}
+                    disabled={busy}
+                    onChange={(event) =>
+                      change({ [field]: event.target.value })
+                    }
+                  >
+                    {choices.map(([value, title]) => (
+                      <option key={value} value={value}>
+                        {title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+              <label className="set cfg-row">
+                <span>Enable Season Folders</span>
+                <input
+                  type="checkbox"
+                  checked={draft.enableSeasonFolders === true}
+                  disabled={busy}
+                  onChange={(event) =>
+                    change({ enableSeasonFolders: event.target.checked })
+                  }
+                />
+              </label>
+            </>
+          ) : (
+            <label className="set cfg-row">
+              <span>Minimum Availability</span>
+              <select
+                className="cfg-select"
+                value={draft.minimumAvailability ?? 'released'}
+                disabled={busy}
+                onChange={(event) =>
+                  change({ minimumAvailability: event.target.value })
+                }
+              >
+                <option value="announced">Announced</option>
+                <option value="inCinemas">In Cinemas</option>
+                <option value="released">Released</option>
+              </select>
+            </label>
+          )}
           <label className="set cfg-row">
             <span>Download Queue Size</span>
             <input
@@ -268,13 +384,13 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
             disabled={busy || !connected}
             onClick={testConnection}
           >
-            Test Radarr
+            Test {name}
           </button>
         </div>
         {options && (
           <>
             <p className="note" role="status">
-              Radarr connection verified.
+              {name} connection verified.
             </p>
             <div className="setlist">
               <label className="set cfg-row">
@@ -314,10 +430,98 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
                 </select>
               </label>
             </div>
-            {(['tags', 'syncExcludedTags'] as const).map((field) => (
+            {isSonarr && (
+              <div className="setlist">
+                <label className="set cfg-row">
+                  <span>Anime Root Folder</span>
+                  <select
+                    className="cfg-select"
+                    value={draft.activeAnimeDirectory ?? ''}
+                    disabled={busy}
+                    onChange={(event) =>
+                      change({ activeAnimeDirectory: event.target.value })
+                    }
+                  >
+                    <option value="">Use Standard Root Folder</option>
+                    {options.rootFolders.map(({ id, path }) => (
+                      <option key={id} value={path}>
+                        {path}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {(
+                  [
+                    [
+                      'activeAnimeProfileId',
+                      'Anime Quality Profile',
+                      options.profiles,
+                    ],
+                    [
+                      'activeLanguageProfileId',
+                      'Series Language Profile',
+                      options.languageProfiles,
+                    ],
+                    [
+                      'activeAnimeLanguageProfileId',
+                      'Anime Language Profile',
+                      options.languageProfiles,
+                    ],
+                    [
+                      'defaultMetadataLanguageId',
+                      'Metadata Language',
+                      options.metadataLanguages,
+                    ],
+                  ] as const
+                ).map(([field, label, choices]) =>
+                  choices ? (
+                    <label className="set cfg-row" key={field}>
+                      <span>{label}</span>
+                      <select
+                        className="cfg-select"
+                        value={draft[field] ?? ''}
+                        disabled={busy}
+                        onChange={(event) =>
+                          change({
+                            [field]:
+                              event.target.value === ''
+                                ? field === 'defaultMetadataLanguageId'
+                                  ? null
+                                  : undefined
+                                : Number(event.target.value),
+                          })
+                        }
+                      >
+                        <option value="">
+                          {field === 'defaultMetadataLanguageId'
+                            ? 'Automatic'
+                            : 'Use Default'}
+                        </option>
+                        {choices.map(({ id, name: title }) => (
+                          <option key={id} value={id}>
+                            {title}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  ) : null
+                )}
+              </div>
+            )}
+            {(
+              [
+                'tags',
+                'syncExcludedTags',
+                ...(isSonarr ? (['animeTags'] as const) : []),
+              ] as const
+            ).map((field) => (
               <details key={field} className="adv">
                 <summary>
-                  {field === 'tags' ? 'Request Tags' : 'Exclude Tags From Sync'}
+                  {field === 'tags'
+                    ? 'Request Tags'
+                    : field === 'animeTags'
+                      ? 'Anime Request Tags'
+                      : 'Exclude Tags From Sync'}
                 </summary>
                 <div className="setlist">
                   {options.tags.map(({ id, label }) => (
@@ -359,7 +563,7 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
               (optionsRequired && !options)
             }
           >
-            Save Radarr
+            Save {name}
           </button>
           <button
             type="button"
@@ -410,9 +614,10 @@ function RadarrForm({ initial, done }: { initial: Radarr; done: () => void }) {
   );
 }
 
-export default function AdminRadarr() {
-  const services = useApi<Radarr[]>(endpoint);
-  const [editing, setEditing] = useState<Radarr>();
+export default function AdminServarr({ provider }: { provider: Provider }) {
+  const name = names[provider];
+  const services = useApi<Service[]>(`/settings/${provider}`);
+  const [editing, setEditing] = useState<Service>();
   function done() {
     setEditing(undefined);
     services.reload();
@@ -420,7 +625,7 @@ export default function AdminRadarr() {
   return (
     <>
       <header className="ph">
-        <h1>Radarr Services</h1>
+        <h1>{name} Services</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/me">
             Back to Account
@@ -429,23 +634,32 @@ export default function AdminRadarr() {
       </header>
       <ServiceNote
         error={services.error}
-        what="Radarr services"
+        what={`${name} services`}
         retry={services.reload}
       />
       {editing ? (
-        <RadarrForm key={editing.id ?? 'new'} initial={editing} done={done} />
+        <ServiceForm
+          key={editing.id ?? 'new'}
+          provider={provider}
+          initial={editing}
+          done={done}
+        />
       ) : services.data ? (
         <Section title="Configured Services">
           <div className="toolbar">
             <button
               className="btn btn-primary btn-sm"
-              onClick={() => setEditing(empty)}
+              onClick={() =>
+                setEditing(
+                  provider === 'sonarr' ? { ...empty, port: 8989 } : empty
+                )
+              }
             >
-              Add Radarr
+              Add {name}
             </button>
           </div>
           {services.data.length === 0 && (
-            <p className="note">No Radarr services configured.</p>
+            <p className="note">No {name} services configured.</p>
           )}
           <div className="setlist">
             {services.data.map((service) => (
@@ -470,7 +684,7 @@ export default function AdminRadarr() {
       ) : (
         !services.error && (
           <p className="note" role="status">
-            Loading Radarr services…
+            Loading {name} services…
           </p>
         )
       )}

@@ -170,3 +170,11 @@ Administrators can add, test, edit, or remove Radarr destinations from `/admin/r
 Compared the form with Prowlarr's shared control layout on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and four browser checks passed with synthetic Radarr responses. Other service integrations remain in native settings.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-radarr-20261118/`.
+
+## Sonarr service administration follow-up — 2026-11-18
+
+`/admin/sonarr` reuses the Radarr service editor for connection tests and destination management. Sonarr also supports separate anime profiles, folders and tags, version-specific language options, season order and monitoring defaults.
+
+Compared the Sonarr form against the Radarr baseline at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. Inspected the shared controls and the additional Sonarr selections. The production build and eight targeted browser checks passed with synthetic Radarr and Sonarr responses.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sonarr-20261118/`.

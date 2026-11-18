@@ -175,6 +175,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Sonarr Services</b>
+              <Link
+                className="go"
+                to="/admin/sonarr"
+                aria-label="Open Sonarr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Discovery Integrations</b>
               <Link
                 className="go"
