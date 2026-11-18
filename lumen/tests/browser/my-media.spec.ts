@@ -234,3 +234,58 @@ test('My Media exports private packs and refreshes the current shelf after impor
     page.getByRole('link', { name: 'Private Match' })
   ).toHaveAttribute('href', '/movie/21');
 });
+
+test('My Media offers account linking and reads new connections on return', async ({
+  page,
+}) => {
+  let connected = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: {
+          accounts: connected
+            ? [
+                {
+                  provider: 'trakt',
+                  username: 'Fixture Viewer',
+                  allowWrites: false,
+                },
+              ]
+            : [],
+          mediaServer: null,
+        },
+      });
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json: {
+          items: [{ id: 'fixture', title: 'New Library Film' }],
+          hasMore: false,
+          missingMappings: 0,
+          truncated: false,
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await page
+    .getByRole('link', { name: 'Open Linked Accounts', exact: true })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'Linked Accounts', exact: true })
+  ).toBeVisible();
+  connected = true;
+  await page.getByRole('link', { name: 'Open My Media', exact: true }).click();
+  await expect(page.getByText('New Library Film')).toBeVisible();
+  await page
+    .getByRole('link', { name: 'Manage Linked Accounts', exact: true })
+    .click();
+  await expect(page.getByText('Fixture Viewer')).toBeVisible();
+});

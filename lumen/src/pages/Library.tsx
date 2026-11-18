@@ -329,9 +329,17 @@ export default function Library() {
         </p>
       )}
       {connections.data && !current && (
-        <p className="note">
-          Link a media server or tracking account to browse your library.
-        </p>
+        <div className="toolbar">
+          <p className="note">
+            Link a media server or tracking account to browse your library.
+          </p>
+          <Link
+            className="btn btn-tonal btn-sm"
+            to="/me/account/linked-accounts"
+          >
+            Open Linked Accounts
+          </Link>
+        </div>
       )}
       <PersonalIdentityPacks
         onImported={() => setMatchRevision((revision) => revision + 1)}
@@ -352,6 +360,12 @@ export default function Library() {
                 ))}
               </select>
             </label>
+            <Link
+              className="btn btn-quiet btn-sm"
+              to="/me/account/linked-accounts"
+            >
+              Manage Linked Accounts
+            </Link>
           </div>
           <LibraryShelf
             key={current}

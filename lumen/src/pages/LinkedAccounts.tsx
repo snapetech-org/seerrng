@@ -441,6 +441,9 @@ export default function LinkedAccounts() {
         <Link className="btn btn-quiet btn-sm" to="/me/account">
           Back to Account Settings
         </Link>
+        <Link className="btn btn-quiet btn-sm" to="/library">
+          Open My Media
+        </Link>
       </div>
       {user && <Accounts key={user.id} user={user} />}
       {user && (
