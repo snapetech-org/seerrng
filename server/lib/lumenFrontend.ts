@@ -202,8 +202,7 @@ function detailDeepLink(req: Request): string | undefined {
     );
   if (subpage && Number(subpage[2]) <= 1_000_000_000) {
     const [, media, id, page] = subpage;
-    const separator = page === 'cast' || page === 'crew' ? '#' : '/';
-    return `/lumen/${media}/${id}${separator}${page}`;
+    return `/lumen/${media}/${id}/${page}`;
   }
   const legacyBookSeries =
     /^\/series\/(bookshelf-series(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(

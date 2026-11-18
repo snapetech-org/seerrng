@@ -2906,3 +2906,10 @@ Series request actions now wait for server readback before re-enabling
 the queue controls. Twenty-four browser checks passed across both
 deployments, including decline, approval, stop, and a delayed readback.
 Live provider effects and matched visual acceptance remain unverified.
+
+Movie and series cast and crew bookmarks now open dedicated Lumen
+credits pages. The title disclosures link to these pages, and the
+pages reuse person cards and show the full list. Sixteen browser checks
+passed across both deployments, along with two Express routing checks
+and ten production-image proxy checks. Matched visual acceptance and
+live metadata remain unverified.

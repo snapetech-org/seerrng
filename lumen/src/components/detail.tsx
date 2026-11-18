@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import {
   api,
   artUrl,
@@ -55,10 +55,16 @@ export function Pill({
   );
 }
 
-function People({ list }: { list: Person[] }) {
+export function People({
+  list,
+  full = false,
+}: {
+  list: Person[];
+  full?: boolean;
+}) {
   const listId = useId();
   const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? list : list.slice(0, 10);
+  const visible = full || expanded ? list : list.slice(0, 10);
   return (
     <>
       <div id={listId} className="people">
@@ -97,7 +103,7 @@ function People({ list }: { list: Person[] }) {
           );
         })}
       </div>
-      {list.length > 10 && (
+      {!full && list.length > 10 && (
         <div className="toolbar">
           <button
             className="chip"
@@ -126,6 +132,7 @@ export function CreditsDisclosure({
   people?: Person[];
 }) {
   const { hash } = useLocation();
+  const { id } = useParams();
   if (!people?.length && hash !== `#${credit}`) return null;
 
   return (
@@ -135,6 +142,13 @@ export function CreditsDisclosure({
       label={credit === 'cast' ? 'Starring' : 'Crew'}
     >
       {people?.length ? <People list={people} /> : <p>No credits available.</p>}
+      {id && !!people?.length && (
+        <div className="toolbar">
+          <Link className="chip" to={`/${media}/${id}/${credit}`}>
+            {credit === 'cast' ? 'Open Full Cast' : 'Open Full Crew'}
+          </Link>
+        </div>
+      )}
     </VideoDisclosure>
   );
 }

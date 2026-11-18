@@ -53,6 +53,7 @@ import TmdbList from './pages/TmdbList';
 import TrackRequests from './pages/TrackRequests';
 import Trending from './pages/Trending';
 import TvDetail from './pages/TvDetail';
+import VideoCredits from './pages/VideoCredits';
 import Watchlist, { UserWatchlist } from './pages/Watchlist';
 import { PrefsProvider } from './settings';
 import './styles/app-react.css';
@@ -246,6 +247,11 @@ function App() {
             path="/tv/:id/recommendations"
             element={<RelatedVideo media="tv" relation="recommendations" />}
           />
+          <Route
+            path="/movie/:id/:credit"
+            element={<VideoCredits media="movie" />}
+          />
+          <Route path="/tv/:id/:credit" element={<VideoCredits media="tv" />} />
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/music" element={<Music />} />
           <Route path="/music/collectors" element={<Collectors />} />

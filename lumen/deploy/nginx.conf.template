@@ -224,9 +224,6 @@ server {
   location ~ ^/coming-soon/?$ {
     return 302 /soon;
   }
-  location ~ "^/(movie|tv)/([1-9][0-9]{0,8}|1000000000)/(cast|crew)/?$" {
-    return 302 "/$1/$2#$3";
-  }
   location ~ ^/discover/watchlist/?$ {
     return 302 /watchlist/discover$is_args$args;
   }
