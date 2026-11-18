@@ -101,7 +101,11 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
-  viewerRequestCoverage?: { standard?: boolean; fourK?: boolean };
+  viewerRequestCoverage?: {
+    standard?: boolean;
+    fourK?: boolean;
+    seasons?: { seasonNumber: number; standard: boolean; fourK: boolean }[];
+  };
   id?: number;
   requests?: {
     id: number;

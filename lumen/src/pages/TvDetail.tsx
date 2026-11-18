@@ -45,6 +45,11 @@ import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
+import {
+  isSharedVideoCopy,
+  isSharedVideoSeason,
+  videoPlaybackMedia,
+} from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
@@ -125,14 +130,30 @@ export default function TvDetail() {
       );
     })
     .map((s) => s.seasonNumber);
+  const mode = pub?.otherUsersAvailability;
+  const coverage = t?.mediaInfo?.viewerRequestCoverage;
+  const sharedSeasons = new Set(
+    seasons
+      .filter(({ seasonNumber }) => {
+        const state = stat.get(seasonNumber);
+        return (
+          (state === 'have' || state === 'part') &&
+          isSharedVideoSeason(coverage, seasonNumber, !!is4k, mode)
+        );
+      })
+      .map(({ seasonNumber }) => seasonNumber)
+  );
   const have = seasons.filter(
-    (s) => stat.get(s.seasonNumber) === 'have'
+    ({ seasonNumber }) =>
+      !sharedSeasons.has(seasonNumber) && stat.get(seasonNumber) === 'have'
   ).length;
-  // some episodes on the server count too: there's something to watch
   const part = seasons.filter(
-    (s) => stat.get(s.seasonNumber) === 'part'
+    ({ seasonNumber }) =>
+      !sharedSeasons.has(seasonNumber) && stat.get(seasonNumber) === 'part'
   ).length;
   const watchable = have + part > 0;
+  // A series link opens the whole library entry, including any shared seasons.
+  const canPlay = watchable && sharedSeasons.size === 0;
   const asked = seasons.filter(
     (s) =>
       stat.get(s.seasonNumber) === 'asked' ||
@@ -260,6 +281,22 @@ export default function TvDetail() {
     false,
     serverName
   );
+  const sharedAvailability =
+    sharedSeasons.size > 0 ||
+    (!watchable && isSharedVideoCopy(t.mediaInfo, !!is4k, mode));
+  const visibleStatus =
+    mine?.k === 'ok' && sharedAvailability
+      ? watchable
+        ? { ...mine, word: statusLine }
+        : mode === 'distinguish'
+          ? ({
+              k: 'wait',
+              word: 'Available to Other Users',
+              ico: 'user',
+            } as const)
+          : null
+      : mine;
+  const playbackMedia = videoPlaybackMedia(t.mediaInfo, mode);
   const asks = (t.mediaInfo?.requests || []).filter(
     (r) => !!r.is4k === !!is4k && live(r.status)
   );
@@ -273,15 +310,15 @@ export default function TvDetail() {
       {label}
       {is4k ? ' in 4K' : ''}
     </button>
-  ) : watchable ? (
+  ) : canPlay ? (
     <a
       className="btn btn-primary"
-      {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
+      {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
     >
       <Icon name="play" />
       Watch on {serverName}
     </a>
-  ) : (
+  ) : sharedAvailability ? null : (
     <button className="btn btn-tonal" disabled>
       <Icon name={mine?.ico || 'clock'} />
       {mine?.word || 'Requested'}
@@ -290,18 +327,7 @@ export default function TvDetail() {
   return (
     <article className="detail">
       <DetailTop
-        status={statusOf(
-          is4k && t.mediaInfo
-            ? {
-                ...t.mediaInfo,
-                status: t.mediaInfo.status4k ?? 1,
-                status4k: undefined,
-                downloadStatus: t.mediaInfo.downloadStatus4k,
-              }
-            : t.mediaInfo,
-          false,
-          serverName
-        )}
+        status={visibleStatus}
         backdrop={tmdbImg(t.backdropPath, 'w1280')}
         poster={tmdbImg(t.posterPath)}
         title={t.name || ''}
@@ -324,6 +350,11 @@ export default function TvDetail() {
           {watchable && (
             <Pill k="ok" icon="check">
               {statusLine}
+            </Pill>
+          )}
+          {mode === 'distinguish' && sharedAvailability && (
+            <Pill k="wait" icon="user">
+              Available to Other Users
             </Pill>
           )}
           {asked > 0 && (
@@ -355,10 +386,10 @@ export default function TvDetail() {
         </div>
         <div className="dacts pc">
           {main}
-          {watchable && missing.length > 0 && (
+          {canPlay && missing.length > 0 && (
             <a
               className="btn btn-quiet"
-              {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
+              {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
             >
               <Icon name="play" />
               Watch on {serverName}
@@ -489,6 +520,7 @@ export default function TvDetail() {
                   const st = stat.get(s.seasonNumber) || 'none';
                   const requested =
                     st === 'asked' || activeRequestSeasons.has(s.seasonNumber);
+                  const shared = sharedSeasons.has(s.seasonNumber);
                   const locked = st === 'have' || requested;
                   const on = locked || sel.has(s.seasonNumber);
                   const yr = s.airDate
@@ -527,26 +559,32 @@ export default function TvDetail() {
                           {s.episodeCount === 1 ? '' : 's'} · {yr}
                         </small>
                       </span>
-                      {st === 'have' && (
+                      {shared && mode === 'distinguish' && (
+                        <Pill k="wait" icon="user">
+                          Available to Other Users
+                        </Pill>
+                      )}
+                      {!shared && st === 'have' && (
                         <Pill k="ok" icon="check">
                           On {serverName}
                         </Pill>
                       )}
-                      {st === 'part' && !requested && (
+                      {!shared && st === 'part' && !requested && (
                         <Pill k="ok" icon="check">
                           Partly on {serverName}
                         </Pill>
                       )}
-                      {st === 'part' && requested && (
+                      {!shared && st === 'part' && requested && (
                         <Pill k="wait" icon="clock">
                           Partly on {serverName} · Requested
                         </Pill>
                       )}
-                      {requested && st !== 'have' && st !== 'part' && (
-                        <Pill k="wait" icon="clock">
-                          Requested
-                        </Pill>
-                      )}
+                      {requested &&
+                        (shared || (st !== 'have' && st !== 'part')) && (
+                          <Pill k="wait" icon="clock">
+                            Requested
+                          </Pill>
+                        )}
                     </div>
                   );
                 })}
@@ -649,12 +687,12 @@ export default function TvDetail() {
         meta={statusLine || `${seasons.length} seasons`}
       >
         {/* phones only get this bar: keep a way to watch the seasons already there */}
-        {watchable && missing.length > 0 && (
+        {canPlay && missing.length > 0 && (
           <a
             className="icon-btn"
             aria-label={`Watch on ${serverName}`}
             title={`Watch on ${serverName}`}
-            {...mediaLink(t.mediaInfo, !!is4k, 'tv', serverName)}
+            {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
           >
             <Icon name="play" />
           </a>

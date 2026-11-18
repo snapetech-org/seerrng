@@ -20,6 +20,24 @@ export function VideoAvailabilityProvider({
 
 export const useVideoAvailability = () => useContext(AvailabilityContext);
 
+export function isSharedVideoSeason(
+  coverage: MediaInfo['viewerRequestCoverage'],
+  seasonNumber: number,
+  is4k: boolean,
+  mode: AvailabilityMode
+) {
+  if ((mode !== 'hide' && mode !== 'distinguish') || !coverage?.seasons) {
+    return false;
+  }
+  const quality = is4k ? 'fourK' : 'standard';
+  return (
+    !coverage[quality] &&
+    !coverage.seasons.some(
+      (season) => season.seasonNumber === seasonNumber && season[quality]
+    )
+  );
+}
+
 export function isSharedVideoCopy(
   media: MediaInfo | undefined,
   is4k: boolean,

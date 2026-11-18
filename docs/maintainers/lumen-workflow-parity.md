@@ -1739,3 +1739,10 @@ controls request eligibility. Twelve standalone poster, featured-card,
 and movie-detail cases passed across four viewport presets, including
 a shared HD copy alongside a viewer 4K copy. Series details and matched
 native visual acceptance remain open.
+
+Series details now distinguish viewer-owned and shared seasons for the
+selected quality. The list preserves request eligibility and suppresses the
+whole-series playback shortcut when the entry also contains shared seasons.
+Twenty-eight standalone browser cases passed for series availability and
+request-state regressions. Episode-level presentation and matched native
+visual acceptance remain open.

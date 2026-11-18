@@ -842,6 +842,62 @@ test('movie details keep shared HD and viewer 4K availability separate', async (
   ).toHaveCount(0);
 });
 
+test('series details hide or mark shared seasons without reopening requests', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.clock.install();
+  let mode = 'distinguish';
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { otherUsersAvailability: mode } })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'The Test Series',
+        firstAirDate: '2020-01-01',
+        seasons: [1, 2, 3].map((seasonNumber) => ({
+          id: seasonNumber,
+          seasonNumber,
+          episodeCount: 2,
+          name: `Season ${seasonNumber}`,
+        })),
+        mediaInfo: {
+          ...available,
+          seasons: [
+            { seasonNumber: 1, status: 5 },
+            { seasonNumber: 2, status: 5 },
+          ],
+          viewerRequestCoverage: {
+            standard: false,
+            seasons: [{ seasonNumber: 1, standard: true, fourK: false }],
+          },
+        },
+      },
+    })
+  );
+  await page.goto('/tv/202');
+  const shared = page.getByRole('checkbox', { name: /Season 2/ });
+  const owned = page.getByRole('checkbox', { name: /Season 1/ });
+  const missing = page.getByRole('checkbox', { name: /Season 3/ });
+  await expect(shared.getByText('Available to Other Users')).toBeVisible();
+  await expect(shared).toBeDisabled();
+  await expect(owned.getByText('On Plex', { exact: true })).toBeVisible();
+  await expect(missing).toBeEnabled();
+  await expect(page.getByRole('link', { name: 'Watch on Plex' })).toHaveCount(
+    0
+  );
+  mode = 'hide';
+  await page.clock.fastForward(181_000);
+  await page.reload();
+  await expect(owned.getByText('On Plex', { exact: true })).toBeVisible();
+  await expect(shared.getByText('Available to Other Users')).toHaveCount(0);
+  await expect(shared).toBeDisabled();
+  await expect(missing).toBeEnabled();
+});
+
 test('featured video cards distinguish and hide shared availability', async ({
   page,
 }) => {
