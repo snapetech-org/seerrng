@@ -1475,6 +1475,7 @@ permission-checked endpoints, refreshes after a decision, and leaves
 self-review to another manager.
 
 TypeScript and the production build passed. Standalone browser fixtures
-verified approval, confirmation, self-review restrictions, and manager-only
-queue access on desktop, iPhone, Android, and tablet. Decline, live accounts,
-bundled rendering, and matched native visual comparison remain open.
+verified approval, decline, cancellation, recovery from concurrent review,
+self-review restrictions, and manager-only queue access on desktop, iPhone,
+Android, and tablet. Live accounts, bundled rendering, and matched native
+visual comparison remain open.

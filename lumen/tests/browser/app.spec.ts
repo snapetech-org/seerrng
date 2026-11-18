@@ -3540,9 +3540,12 @@ test('TV access review confirms a decision and respects manager permissions', as
   let requests = [
     { id: 1, displayName: 'Owner', requestedAt: null },
     { id: 9, displayName: 'Household Member', requestedAt: null },
+    { id: 10, displayName: 'Another Member', requestedAt: null },
+    { id: 11, displayName: 'Already Reviewed', requestedAt: null },
   ];
   let reads = 0;
   let decision: unknown;
+  let declined: unknown;
   await page.route('**/api/v1/user/tv-season-watch-gate-requests', (route) => {
     reads++;
     return route.fulfill({ json: requests });
@@ -3561,11 +3564,33 @@ test('TV access review confirms a decision and respects manager permissions', as
       return route.fulfill({ json: { status: 'approved' } });
     }
   );
+  await page.route(
+    '**/api/v1/user/10/settings/tv-season-watch-gate/review',
+    (route) => {
+      declined = route.request().postDataJSON();
+      requests = requests.filter(({ id }) => id !== 10);
+      return route.fulfill({ json: { status: 'denied' } });
+    }
+  );
+  await page.route(
+    '**/api/v1/user/11/settings/tv-season-watch-gate/review',
+    (route) => {
+      requests = requests.filter(({ id }) => id !== 11);
+      return route.fulfill({
+        status: 409,
+        json: { message: 'This access request is no longer pending.' },
+      });
+    }
+  );
   await page.goto('/me/account/tv-requests');
   await expect(
     page.getByText('Another user manager must review your request.')
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  await page
+    .getByRole('listitem')
+    .filter({ hasText: 'Household Member' })
+    .getByRole('button', { name: 'Approve' })
+    .click();
   const dialog = page.getByRole('alertdialog', {
     name: 'Approve access for Household Member?',
   });
@@ -3575,6 +3600,37 @@ test('TV access review confirms a decision and respects manager permissions', as
   await expect(page.getByText('Request approved.')).toBeVisible();
   await expect(page.getByText('Household Member')).toHaveCount(0);
   expect(decision).toEqual({ decision: 'approve' });
+  const decline = page
+    .getByRole('listitem')
+    .filter({ hasText: 'Another Member' })
+    .getByRole('button', { name: 'Decline' });
+  await decline.click();
+  const declineDialog = page.getByRole('alertdialog', {
+    name: 'Decline access for Another Member?',
+  });
+  await declineDialog.getByRole('button', { name: 'Cancel' }).click();
+  expect(declined).toBeUndefined();
+  await decline.click();
+  await declineDialog.getByRole('button', { name: 'Decline' }).click();
+  await expect(page.getByText('Request declined.')).toBeVisible();
+  await expect(page.getByText('Another Member')).toHaveCount(0);
+  expect(declined).toEqual({ decision: 'deny' });
+
+  await page
+    .getByRole('listitem')
+    .filter({ hasText: 'Already Reviewed' })
+    .getByRole('button', { name: 'Approve' })
+    .click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Approve' })
+    .click();
+  await expect(page.getByRole('alert')).toContainText(
+    'This access request is no longer pending.'
+  );
+  await expect(
+    page.getByRole('listitem').filter({ hasText: 'Already Reviewed' })
+  ).toHaveCount(0);
   const managerReads = reads;
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ json: { id: 1, displayName: 'Owner', permissions: 32 } })
