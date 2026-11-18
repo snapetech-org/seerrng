@@ -275,9 +275,34 @@ export default function BookRecommendations() {
               ))}
             </ul>
             {feedId && !bookmarkedFeed && (
-              <p className="note" role="status">
-                This recommendation feed is unavailable.
-              </p>
+              <>
+                <p className="note" role="status">
+                  This recommendation feed is unavailable.
+                </p>
+                <div className="toolbar">
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    type="button"
+                    onClick={feeds.reload}
+                  >
+                    Refresh Feeds
+                  </button>
+                  <button
+                    className="chip"
+                    type="button"
+                    onClick={() => {
+                      const next = new URLSearchParams(params);
+                      next.delete('feed');
+                      setParams(next, {
+                        replace: true,
+                        preventScrollReset: true,
+                      });
+                    }}
+                  >
+                    Clear Feed Selection
+                  </button>
+                </div>
+              </>
             )}
             {!feeds.data.results?.length && (
               <p className="note">No recommendation feeds found.</p>

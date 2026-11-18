@@ -5409,6 +5409,49 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('book recommendations recover an unavailable feed bookmark', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let reads = 0;
+  let opened = 0;
+  await page.route('**/api/v1/book-recommendations', (route) =>
+    route.fulfill({
+      json: {
+        available: true,
+        results:
+          ++reads > 1
+            ? [{ id: 18, title: 'Personal Picks', source: 'mine', likes: 0 }]
+            : [],
+      },
+    })
+  );
+  await page.route('**/api/v1/book-recommendations/18/books', (route) => {
+    opened += 1;
+    return route.fulfill({
+      json: {
+        available: true,
+        books: [{ id: 44, title: 'Recovered Book' }],
+        total: 1,
+      },
+    });
+  });
+  await page.goto('/books/recommendations?format=audiobook&feed=18');
+  await expect(
+    page.getByText('This recommendation feed is unavailable.')
+  ).toBeVisible();
+  expect(opened).toBe(0);
+  await page.getByRole('button', { name: 'Refresh Feeds' }).click();
+  await expect(page.getByText('Recovered Book', { exact: true })).toBeVisible();
+  expect(opened).toBe(1);
+  await page.goto('/books/recommendations?format=audiobook&feed=999');
+  await page.getByRole('button', { name: 'Clear Feed Selection' }).click();
+  await expect(page).toHaveURL(/format=audiobook$/);
+  await expect(
+    page.getByText('This recommendation feed is unavailable.')
+  ).toHaveCount(0);
+});
+
 test('book recommendations open a newly created feed', async ({ page }) => {
   await fixtures(page);
   const posts: unknown[] = [];
