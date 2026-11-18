@@ -4298,6 +4298,14 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
                     title: 'Matched Fixture',
                     mediaType: 'movie',
                     tmdbId: 101,
+                    identityResolution: 'curated',
+                  },
+                  {
+                    id: 'external',
+                    title: 'External Fixture',
+                    mediaType: 'tv',
+                    tmdbId: 202,
+                    identityResolution: 'external-id',
                   },
                   { id: 'unmatched', title: 'Unmatched Fixture' },
                 ]
@@ -4311,6 +4319,8 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
     page.getByRole('link', { name: 'Matched Fixture' })
   ).toHaveAttribute('href', new URL('./movie/101', baseURL).pathname);
   expect(requests[0].get('list')).toBe('viewer/fixture');
+  await expect(page.getByText(/Curated match/)).toBeVisible();
+  await expect(page.getByText(/Matched by catalog ID/)).toBeVisible();
   await expect(page.getByText('1 unmatched title on this page')).toBeVisible();
   const unmatched = page.getByRole('checkbox', { name: 'Unmatched Only' });
   await unmatched.click();

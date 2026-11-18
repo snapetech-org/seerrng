@@ -1556,6 +1556,12 @@ iPhone, Android, and tablet. They verified that the count clears on page
 change and that mapping, reset, retry, and provider reconnect still work.
 Matched visual and live provider checks remain open.
 
+Provider Discovery identifies personal, curated, and catalog-ID matches
+and explains when a title has no stable provider ID for saving a match.
+Sixteen browser cases passed per deployment with API fixtures, including
+assertions for all three match labels and the missing-ID explanation.
+Matched visual and live provider checks remain open.
+
 ### TV request access review
 
 TV Request Settings lets user managers approve or decline pending
