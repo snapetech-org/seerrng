@@ -2467,3 +2467,15 @@ The fixture checks that only the explicitly confirmed write carries
 the approval flag. Live provider delivery and moderation were outside
 the check. Evidence is retained under `seerrng-lumen-poster-quota*`
 in `/mnt/disks/scratch/task-deliverables/`.
+
+Coming Soon rows now open the shared approval sheet when a direct
+movie or TV request exceeds quota. Successful direct requests keep the
+existing one-click behavior.
+
+The production build and six applicable browser checks passed, with
+six viewport-specific skips. Compared the Coming Soon list and approval
+sheet on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The fixture covers
+the older quota-error response, explicit approval, and the row's
+requested state after success. Live approval remains unverified.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-soon-quota-20261118/`.

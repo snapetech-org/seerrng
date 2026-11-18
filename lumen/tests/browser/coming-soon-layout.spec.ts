@@ -11,7 +11,7 @@ const paged = (results: unknown[]) => ({
 type RequestBody = { mediaType: string; mediaId: number };
 type LayoutEvidence = { overflow: number[]; columns: number };
 
-async function fixtures(page: Page) {
+async function fixtures(page: Page, permissions = 2) {
   const requestBodies: RequestBody[] = [];
   const upcoming = Array.from({ length: 6 }, (_, i) => ({
     id: 900 + i,
@@ -28,7 +28,7 @@ async function fixtures(page: Page) {
     );
     if (path === '/auth/me')
       return route.fulfill({
-        json: { id: 1, displayName: 'test', permissions: 2 },
+        json: { id: 1, displayName: 'test', permissions },
       });
     if (path === '/settings/public')
       return route.fulfill({
@@ -163,4 +163,43 @@ test('Coming Soon fits Request buttons in tablet landscape and preserves request
   await expect.poll(() => requestBodies.length).toBe(1);
   expect(requestBodies[0]).toEqual({ mediaType: 'movie', mediaId: 900 });
   await expect(page.getByText('Requested').first()).toBeVisible();
+});
+
+test('Coming Soon offers approval after a quota denial', async ({
+  page,
+}, info) => {
+  await fixtures(page, 32);
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    const body = route.request().postDataJSON();
+    writes.push(body);
+    return route.fulfill(
+      body.requestQuotaApproval
+        ? { status: 201, json: { id: 42, quotaException: true } }
+        : { status: 403, json: { message: 'Movie Quota exceeded.' } }
+    );
+  });
+  await page.goto('/soon');
+  const row = page.locator('.si').filter({ hasText: 'Upcoming Movie 1' });
+  const request = row.getByRole('button', { name: 'Request', exact: true });
+  await expect(request).toBeVisible();
+  await page.screenshot({ path: info.outputPath('coming-soon-request.png') });
+  await request.click();
+  const sheet = page.getByRole('dialog', { name: 'Request Upcoming Movie 1' });
+  const approve = sheet.getByRole('button', { name: 'Request Approval' });
+  await expect(approve).toBeVisible();
+  expect(writes).toEqual([{ mediaType: 'movie', mediaId: 900 }]);
+  await page.screenshot({
+    path: info.outputPath('coming-soon-quota-approval.png'),
+    animations: 'disabled',
+  });
+  await approve.click();
+  await expect(
+    page.getByText('Approval requested for Upcoming Movie 1')
+  ).toBeVisible();
+  await expect(row.getByText('Requested', { exact: true })).toBeVisible();
+  expect(writes).toEqual([
+    { mediaType: 'movie', mediaId: 900 },
+    { mediaType: 'movie', mediaId: 900, requestQuotaApproval: true },
+  ]);
 });

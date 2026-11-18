@@ -7,11 +7,12 @@ import {
   type Paged,
   type TitleResult,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import { statusOf } from '../components/cards';
-import { Pill } from '../components/detail';
+import { canManageRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import {
+  isQuotaDenial,
   RequestSheet,
   useAsksRequestOptions,
   useOffers4k,
@@ -41,6 +42,7 @@ const MONTHS = [
 
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
+  const { user } = useAuth();
   const serverName = useMediaServerName();
   const availability = useVideoAvailability();
   const [params] = useSearchParams();
@@ -64,7 +66,11 @@ export default function Soon() {
   const asks = useAsksRequestOptions();
   const offers4kMovie = useOffers4k('movie');
   const offers4kTv = useOffers4k('tv');
-  const [choosing, setChoosing] = useState<TitleResult | null>(null);
+  const [choice, setChoice] = useState<{
+    title: TitleResult;
+    quotaDenied?: boolean;
+  }>();
+  const choosing = choice?.title;
   const items = [
     ...(movies?.results || []).map((m) => ({
       ...m,
@@ -104,7 +110,9 @@ export default function Soon() {
       }
     } catch (e) {
       unask();
-      toast(friendlyError(e, 'Request failed'));
+      if (user && !canManageRequests(user.permissions) && isQuotaDenial(e))
+        setChoice((current) => current ?? { title: it, quotaDenied: true });
+      else toast(friendlyError(e, 'Request failed'));
     }
   };
 
@@ -163,7 +171,8 @@ export default function Soon() {
       {choosing && (
         <RequestSheet
           it={choosing}
-          onClose={() => setChoosing(null)}
+          quotaDenied={choice?.quotaDenied}
+          onClose={() => setChoice(undefined)}
           onDone={(is4k, series, quotaException) => {
             setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
             toast(
@@ -177,7 +186,7 @@ export default function Soon() {
                     )
                   : `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
             );
-            setChoosing(null);
+            setChoice(undefined);
           }}
         />
       )}
@@ -239,7 +248,7 @@ export default function Soon() {
                           onClick={() =>
                             asks ||
                             (it.mediaType === 'tv' ? offers4kTv : offers4kMovie)
-                              ? setChoosing(it)
+                              ? setChoice({ title: it })
                               : req(it)
                           }
                         >

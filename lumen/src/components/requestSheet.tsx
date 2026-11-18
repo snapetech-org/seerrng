@@ -96,7 +96,7 @@ export function useBackCloses(onClose: () => void) {
   }, []);
 }
 
-function isQuotaDenial(error: unknown) {
+export function isQuotaDenial(error: unknown) {
   return (
     error instanceof ApiError &&
     error.status === 403 &&
