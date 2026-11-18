@@ -220,7 +220,13 @@ async function check(settings, clientIp, scheme, headers = {}) {
       frontend.headers.get('content-security-policy'),
       /script-src 'self'/
     );
-    for (const pathname of ['/admin', '/swipe', '/swipe/']) {
+    for (const pathname of [
+      '/admin',
+      '/swipe',
+      '/swipe/',
+      '/author/OL42A',
+      '/book-series/bookshelf-series%3A1%3AU2VyaWVz',
+    ]) {
       const response = await fetch(base + pathname, { redirect: 'manual' });
       assert.equal(response.status, 200, pathname);
       assert.match(await response.text(), /<div id="root"><\/div>/);

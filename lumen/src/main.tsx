@@ -82,6 +82,7 @@ const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
 const AdminCaches = lazy(() => import('./pages/AdminCaches'));
 const AdminJobs = lazy(() => import('./pages/AdminJobs'));
+const BookGrouping = lazy(() => import('./pages/BookGrouping'));
 const AdminLogs = lazy(() => import('./pages/AdminLogs'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
@@ -146,6 +147,26 @@ function App() {
           <Route path="/list/:id" element={<TmdbList />} />
           <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
           <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
+          <Route
+            path="/author/:id"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <BookGrouping kind="author" />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/book-series/:id"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <BookGrouping kind="series" />
+              </Suspense>
+            }
+          />
           <Route path="/series" element={<Browse key="tv" kind="tv" />} />
           <Route path="/books" element={<Books key="ebook" format="ebook" />} />
           <Route

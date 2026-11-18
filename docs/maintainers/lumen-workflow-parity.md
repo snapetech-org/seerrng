@@ -2108,3 +2108,17 @@ surrounding comic detail at desktop, iPhone 13, Pixel 7, and iPad Pro 11
 sizes. The fixtures verified the exact selected edition and empty-shelf
 consent. Real providers were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-shelf-20261118/`.
+
+Book details now link to Lumen author bibliographies and book series when
+the API supplies their identities. Author pages support forward and backward
+pagination, and series pages order books by their series position. Both
+pages reuse the Reader Shelf action. Direct links work with the standalone
+proxy and with the bundled Lumen lock. Native bulk requests and series
+filters are still separate parity gaps.
+
+The production build, 28 browser checks, two server routing tests, and ten
+built-image proxy tests passed. Inspected the new pages against Lumen's book
+detail and book grid layouts across desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. Browser fixtures checked pagination, order, and shelf preview
+identities. Real reader providers were outside the check. Evidence is retained
+under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-20261118/`.

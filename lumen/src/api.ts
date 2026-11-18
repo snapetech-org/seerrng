@@ -174,10 +174,11 @@ export interface BookResult {
   provider?: 'openlibrary' | 'bookshelf';
   title: string;
   author?: string;
+  authorId?: string;
   posterPath?: string | null;
   bookFormat?: 'ebook' | 'audiobook' | string;
   firstPublishYear?: number;
-  series?: { title?: string; position?: string }[];
+  series?: { id?: string; title?: string; position?: string }[];
   mediaInfo?: MediaInfo;
 }
 export interface Paged<T> {

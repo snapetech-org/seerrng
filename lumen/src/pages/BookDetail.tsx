@@ -421,7 +421,15 @@ export default function BookDetail() {
         square={audio}
         whole
         title={b.title}
-        by={b.author || undefined}
+        by={
+          b.authorId && b.author ? (
+            <Link to={`/author/${encodeURIComponent(b.authorId)}`}>
+              {b.author}
+            </Link>
+          ) : (
+            b.author || undefined
+          )
+        }
         line={[
           series?.title
             ? `${series.title}${series.position ? ' #' + series.position : ''}`
@@ -701,9 +709,16 @@ export default function BookDetail() {
               rows={[
                 [
                   'Series',
-                  series?.title
-                    ? `${series.title}${series.position ? ' #' + series.position : ''}`
-                    : '',
+                  series?.id && series.title ? (
+                    <Link to={`/book-series/${encodeURIComponent(series.id)}`}>
+                      {series.title}
+                      {series.position ? ` #${series.position}` : ''}
+                    </Link>
+                  ) : series?.title ? (
+                    `${series.title}${series.position ? ' #' + series.position : ''}`
+                  ) : (
+                    ''
+                  ),
                 ],
                 ['First published', b.firstPublishYear],
                 ['Listening time', audio && longest ? fmtHrs(longest) : ''],
