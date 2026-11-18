@@ -352,7 +352,11 @@ test('movie media-server collection sync checks on demand and adds visible verif
         return route.fulfill({ json: { id: 1, permissions: 2 } });
       case '/settings/public':
         return route.fulfill({
-          json: { initialized: true, mediaServerType: 1 },
+          json: {
+            initialized: true,
+            youtubeUrl: 'https://videos.example.test/watch?v=',
+            mediaServerType: 1,
+          },
         });
       case '/collection/19':
         return route.fulfill({
@@ -402,7 +406,7 @@ test('movie media-server collection sync checks on demand and adds visible verif
   expect(checks).toBe(0);
   await expect(
     page.getByRole('link', { name: 'Watch Trailer' })
-  ).toHaveAttribute('href', 'https://www.youtube.com/watch?v=AbCdEf12345');
+  ).toHaveAttribute('href', 'https://videos.example.test/watch?v=AbCdEf12345');
   await page.getByText('Media Server Collection', { exact: true }).click();
   await page.getByRole('button', { name: 'Add to Media Server' }).click();
   const dialog = page.getByRole('dialog', {

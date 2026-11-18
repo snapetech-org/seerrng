@@ -116,7 +116,7 @@ export default function MovieDetail() {
     .filter((c) => c.job === 'Director')
     .map((c) => c.name)
     .join(', ');
-  const trailer = youtubeTrailerUrl(m.relatedVideos);
+  const trailer = youtubeTrailerUrl(m.relatedVideos, pub?.youtubeUrl);
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
     !!s4k && s4k >= MediaStatus.PENDING && s4k <= MediaStatus.AVAILABLE;

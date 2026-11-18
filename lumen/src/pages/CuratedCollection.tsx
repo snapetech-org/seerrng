@@ -379,7 +379,10 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
       : null,
     { currentPathOnly: true }
   );
-  const trailer = youtubeTrailerUrl(firstSeries.data?.relatedVideos);
+  const trailer = youtubeTrailerUrl(
+    firstSeries.data?.relatedVideos,
+    settings?.youtubeUrl
+  );
   const hasMembers = members.length > 0;
   const shouldPoll =
     isAdministrator(user?.permissions) ||

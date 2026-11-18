@@ -394,7 +394,7 @@ export default function TvDetail() {
           : null
       : mine;
   const playbackMedia = videoPlaybackMedia(t.mediaInfo, mode);
-  const trailer = youtubeTrailerUrl(t.relatedVideos);
+  const trailer = youtubeTrailerUrl(t.relatedVideos, pub?.youtubeUrl);
   const asks = (t.mediaInfo?.requests || []).filter(
     (r) => !!r.is4k === !!is4k && live(r.status)
   );

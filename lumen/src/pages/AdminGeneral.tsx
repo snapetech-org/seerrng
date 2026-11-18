@@ -26,6 +26,7 @@ type AvailabilityMode = 'show' | 'distinguish' | 'hide';
 interface ApplicationSettings {
   applicationTitle: string;
   applicationUrl: string;
+  youtubeUrl: string;
   cacheImages: boolean;
   versionCheck: boolean;
   defaultFrontend: Frontend;
@@ -42,6 +43,7 @@ interface ApplicationSettings {
 const textFields = [
   { key: 'applicationTitle', label: 'Application Title' },
   { key: 'applicationUrl', label: 'Application URL' },
+  { key: 'youtubeUrl', label: 'YouTube Trailer URL' },
 ] as const;
 const switches = [
   {
@@ -103,6 +105,7 @@ function ApplicationForm({
     ...draft,
     applicationTitle: draft.applicationTitle.trim(),
     applicationUrl: draft.applicationUrl.trim(),
+    youtubeUrl: draft.youtubeUrl.trim(),
     lumenPublicUrl:
       draft.defaultFrontend === 'external'
         ? draft.lumenPublicUrl.trim()
@@ -181,10 +184,16 @@ function ApplicationForm({
               {key === 'applicationUrl' && (
                 <small>Public address used in links sent by SeerrNG.</small>
               )}
+              {key === 'youtubeUrl' && (
+                <small>
+                  Optional URL prefix for a self-hosted YouTube player. SeerrNG
+                  appends the video ID.
+                </small>
+              )}
             </span>
             <input
               className="cfg-input"
-              type={key === 'applicationUrl' ? 'url' : 'text'}
+              type={key === 'applicationTitle' ? 'text' : 'url'}
               required={key === 'applicationTitle'}
               aria-label={label}
               maxLength={512}
@@ -345,6 +354,7 @@ export default function AdminGeneral() {
             initial={{
               applicationTitle: settings.data.applicationTitle ?? '',
               applicationUrl: settings.data.applicationUrl ?? '',
+              youtubeUrl: settings.data.youtubeUrl ?? '',
               cacheImages: settings.data.cacheImages === true,
               versionCheck: settings.data.versionCheck === true,
               defaultFrontend: settings.data.defaultFrontend ?? 'native',

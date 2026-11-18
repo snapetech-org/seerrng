@@ -730,7 +730,10 @@ export interface Credits {
 }
 type RelatedVideo = { site: string; key: string; type: string };
 
-export function youtubeTrailerUrl(videos?: RelatedVideo[]) {
+export function youtubeTrailerUrl(
+  videos?: RelatedVideo[],
+  configuredBase?: string
+) {
   const trailer = videos?.find(
     (video) =>
       video?.type === 'Trailer' &&
@@ -738,7 +741,25 @@ export function youtubeTrailerUrl(videos?: RelatedVideo[]) {
       typeof video.key === 'string' &&
       /^[a-zA-Z0-9_-]{11}$/.test(video.key)
   );
-  return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : undefined;
+  if (!trailer) return;
+  if (configuredBase) {
+    try {
+      const base = new URL(configuredBase);
+      const destination = new URL(configuredBase + trailer.key);
+      if (
+        (base.protocol === 'https:' || base.protocol === 'http:') &&
+        !base.username &&
+        !base.password &&
+        !base.hash &&
+        destination.origin === base.origin
+      ) {
+        return destination.href;
+      }
+    } catch {
+      // An invalid configuration leaves the standard trailer destination usable.
+    }
+  }
+  return `https://www.youtube.com/watch?v=${trailer.key}`;
 }
 
 export interface SubjectTag {

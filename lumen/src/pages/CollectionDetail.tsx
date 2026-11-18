@@ -49,9 +49,12 @@ function CollectionContent({ id }: { id: number }) {
       : null,
     { currentPathOnly: true }
   );
-  const trailer = youtubeTrailerUrl(firstMovieDetails.data?.relatedVideos);
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
   const settings = usePublicSettings();
+  const trailer = youtubeTrailerUrl(
+    firstMovieDetails.data?.relatedVideos,
+    settings?.youtubeUrl
+  );
   const [requestOpen, setRequestOpen] = useState(false);
   const [playOpen, setPlayOpen] = useState(false);
   const [queueOpen, setQueueOpen] = useState(false);

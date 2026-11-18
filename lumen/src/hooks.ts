@@ -110,6 +110,7 @@ export async function cachedApi<T>(path: string): Promise<T> {
 }
 
 export interface PublicSettings {
+  youtubeUrl?: string;
   initialized?: boolean;
   versionCheck?: boolean;
   openIdProviders?: { slug: string; name: string }[];
