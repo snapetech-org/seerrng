@@ -9,6 +9,7 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import FollowedTeams from '../components/FollowedTeams';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLiveTvStatus } from '../liveTv';
@@ -130,6 +131,7 @@ export default function Recordings() {
       )}
       {configured && (
         <>
+          <FollowedTeams canRequest={status.data?.canRequest === true} />
           <div className="toolbar">
             {viewAll && (
               <label className="sel">

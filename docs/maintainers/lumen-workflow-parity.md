@@ -2214,3 +2214,16 @@ Fixtures verified deferred guide reads, exact recording payloads, and return
 to Recordings. Actual broadcasts and Sportarr team follows were outside the
 check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-airings-20261118/`.
+
+Recordings now includes Followed Teams, with a shortcut from Sports.
+The control uses Tunerr's team catalog and preserves the exact dataset and
+team name. Users with recording access can add follows, and users can
+remove their existing follows. Each successful action reloads the saved
+list. The server retains authority over recording approval and the team limit.
+
+The production build and 24 browser tests passed. Compared the recording
+layout with the added team controls on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. Fixtures verified rejection recovery, exact follow identity, and
+follow and unfollow readback. Live Tunerr scheduling was outside the check.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-team-follows-20261118/`.

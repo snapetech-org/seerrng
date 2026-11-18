@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import { MoreOnScroll, Section, type Stat } from '../components/cards';
 import { DetailTop, Facts } from '../components/detail';
@@ -20,6 +20,7 @@ import {
   type Scene,
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
+import { useLiveTvStatus } from '../liveTv';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 
 // Sportarr knows whether a league is followed even before SeerrNG has a request for it
@@ -51,6 +52,7 @@ function useSearchBox() {
 
 // ---- sports: Sportarr leagues; requesting one follows the league's events ----
 export function Sports() {
+  const liveTv = useLiveTvStatus();
   const { q, setQ, query } = useSearchBox();
   // Sportarr has no browse feed: the page starts with a search
   const list = usePaged<League>(
@@ -68,6 +70,13 @@ export function Sports() {
           placeholder="Search leagues — Premier League, NFL, F1…"
         />
       </ExtraHeader>
+      {liveTv.data?.configured && (
+        <div className="toolbar">
+          <Link className="btn btn-tonal btn-sm" to="/recordings">
+            Team Follows and Recordings
+          </Link>
+        </div>
+      )}
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="sports"
