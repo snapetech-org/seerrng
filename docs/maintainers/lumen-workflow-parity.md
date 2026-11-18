@@ -81,11 +81,13 @@ under You on narrow screens. Users with request access can page through updates,
 mark them seen, and manage existing subscription notifications, automatic book
 requests, and removals. The standalone proxy serves this route directly.
 
-Person details now offer Follow and Unfollow using the native TMDB person
-identity. Other source screens, detailed update reasons, and exact links for
-game and patch targets still need parity work. The current increment uses
-the source label for each update and searches by title when it has no Lumen
-detail route for the target.
+Person details offer Follow and Unfollow using the native TMDB person
+identity. Updates include Classic’s explanation when the API supplies the
+required fields. Game updates link by catalog ID and patch updates preserve
+the version when present. Updates without a supported detail target link to
+search by title. Standalone browser fixtures verify an expansion explanation,
+a game detail link, and marking an update seen. Matched visual review remains
+open for the expanded update rows.
 
 Headed Chrome at 1440 × 1000 verified the fixture's `/following` feed and
 `/me` link. Mark Seen removed the row control and unread action after the

@@ -39,6 +39,8 @@ test('household users can open Following and manage their own updates', async ({
             {
               id: 3,
               title: 'New Story Expansion',
+              reasonKey: 'newExpansion',
+              reasonValues: { game: 'Fixture Game' },
               seen: true,
               follow: { subjectLabel: 'Fixture Game', kind: 'expansion' },
               target: { mediaType: 'game', id: '42' },
@@ -75,6 +77,9 @@ test('household users can open Following and manage their own updates', async ({
   await expect(
     page.getByRole('link', { name: 'New Story Expansion' })
   ).toHaveAttribute('href', '/game/game/42');
+  await expect(
+    page.getByText('New content for Fixture Game: New Story Expansion.')
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Mark Seen: A New Film' }).click();
   await expect(
     page.getByRole('button', { name: 'Mark Seen: A New Film' })

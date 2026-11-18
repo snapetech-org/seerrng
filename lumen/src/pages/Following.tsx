@@ -23,12 +23,56 @@ interface FollowEvent {
   title: string;
   seen: boolean;
   follow: Pick<Subscription, 'subjectLabel' | 'kind'>;
-  reasonValues?: { relation?: string };
+  reasonKey?: string;
+  reasonValues?: Record<string, string>;
   target: { mediaType: string; id: string; variantKey?: string } | null;
 }
 
 const PAGE_SIZE = 30;
 const BOOK_FOLLOW_KINDS = ['narrator', 'author', 'series-language', 'edition'];
+
+const eventReasons = new Map(
+  Object.entries({
+    nextVolumeAnnounced:
+      'The next volume of {series} is announced in {language}: {title}.',
+    newVolumeReleased: 'A new {language} volume of {series} is out: {title}.',
+    newNarrationAvailable:
+      'A different narration of {title} exists: {narrators}.',
+    fullCastProduction: 'A full-cast production of {title} exists.',
+    newBookByNarrator: '{narrator} narrates a new audiobook: {title}.',
+    newBookByAuthor: '{author} has a new work: {title}.',
+    newExpansion: 'New content for {game}: {title}.',
+    newPatchVersion: '{project} {version} is available for {game}.',
+    newArtistRelease: '{artist} released {title}.',
+    newFranchiseRelation: 'New connection in {franchise}: {relation}.',
+    savedDiscoveryMatch: 'A new match for “{discovery}”: {attributes}.',
+    collectorsAreSharing: 'Collectors you follow are sharing {title}.',
+    newVideoTitle:
+      'New movie or series title related to {subject}: {title} ({date}).',
+    upcomingVideoTitle:
+      'Upcoming movie or series related to {subject}: {title} ({date}).',
+    videoReleaseDateReached:
+      'The listed release date has passed for {title}, related to {subject} ({date}).',
+  })
+);
+
+function eventReason(event: FollowEvent) {
+  const template = event.reasonKey && eventReasons.get(event.reasonKey);
+  if (!template) return undefined;
+
+  const parameters: Record<string, string> = {
+    title: event.title,
+    ...event.reasonValues,
+  };
+  const placeholders = [...template.matchAll(/\{(\w+)\}/g)];
+  if (placeholders.some(([, name]) => !parameters[name])) return undefined;
+
+  return template.replace(/\{(\w+)\}/g, (_, name: string) =>
+    name === 'relation'
+      ? parameters[name].replaceAll('-', ' ')
+      : parameters[name]
+  );
+}
 
 function eventHref({ target, title }: FollowEvent) {
   if (target?.mediaType === 'patch') {
@@ -138,36 +182,38 @@ export default function Following() {
             )}
             {!!rows?.length && (
               <ul className="setlist">
-                {rows.map((event) => (
-                  <li className="set" key={event.id}>
-                    <span>
-                      <Link className="go" to={eventHref(event)}>
-                        {event.title}
-                      </Link>
-                      <small>From {event.follow.subjectLabel}</small>
-                      {event.follow.kind === 'franchise' &&
-                        event.reasonValues?.relation && (
-                          <small>
-                            {event.reasonValues.relation.replaceAll('-', ' ')}
-                          </small>
-                        )}
-                    </span>
-                    {!event.seen && (
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-label={`Mark Seen: ${event.title}`}
-                        disabled={saving}
-                        onClick={() =>
-                          void save('/follow/events/seen', 'POST', {
-                            ids: [event.id],
-                          })
-                        }
-                      >
-                        Mark Seen
-                      </button>
-                    )}
-                  </li>
-                ))}
+                {rows.map((event) => {
+                  const reason =
+                    eventReason(event) ??
+                    (event.follow.kind === 'franchise'
+                      ? event.reasonValues?.relation?.replaceAll('-', ' ')
+                      : undefined);
+                  return (
+                    <li className="set" key={event.id}>
+                      <span>
+                        <Link className="go" to={eventHref(event)}>
+                          {event.title}
+                        </Link>
+                        <small>From {event.follow.subjectLabel}</small>
+                        {reason && <small>{reason}</small>}
+                      </span>
+                      {!event.seen && (
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          aria-label={`Mark Seen: ${event.title}`}
+                          disabled={saving}
+                          onClick={() =>
+                            void save('/follow/events/seen', 'POST', {
+                              ids: [event.id],
+                            })
+                          }
+                        >
+                          Mark Seen
+                        </button>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             )}
             {page > 0 && (
