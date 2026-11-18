@@ -1948,6 +1948,9 @@ export default function Requests() {
                   <Pill k={st.k} icon={st.ico}>
                     {st.word}
                   </Pill>
+                  {x.r.status === 1 && x.r.quotaException && (
+                    <Pill k="wait">Over Quota</Pill>
+                  )}
                   {x.r.watchAheadParentRequestId ? (
                     <span className="d">Auto-Queued</span>
                   ) : (x.r.watchAheadEpisodeCount ?? 0) > 0 ? (

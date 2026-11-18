@@ -796,6 +796,7 @@ export interface DownloadItem {
   status?: string;
 }
 export interface RequestItem {
+  quotaException?: boolean;
   serverId?: number | null;
   languageProfileId?: number | null;
   metadataLanguageId?: number | null;

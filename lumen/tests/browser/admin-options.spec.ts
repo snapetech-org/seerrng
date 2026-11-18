@@ -1213,7 +1213,7 @@ const waitingRequest = {
   requestedBy: { id: 5, displayName: 'Sam' },
   media: { mediaType: 'movie', tmdbId: 301, status: 2 },
 };
-async function requestRoutes(page: Page) {
+async function requestRoutes(page: Page, quotaException = false) {
   const asked: string[] = [];
   await page.route('**/api/v1/request**', async (route) => {
     const req = route.request();
@@ -1223,13 +1223,22 @@ async function requestRoutes(page: Page) {
     asked.push(path + url.search);
     if (path === '/request/count')
       return route.fulfill({ json: { total: 1, pending: 1 } });
+    if (path === '/request/status/77' && quotaException)
+      return route.fulfill({
+        json: {
+          request: { ...waitingRequest, quotaException },
+          current: { stage: 'requested', attempt: 1 },
+          history: { results: [], total: 0 },
+        },
+      });
     if (path !== '/request') return route.fallback();
     const mine = url.searchParams.has('requestedBy');
     const pending = url.searchParams.get('filter') === 'pending';
     return route.fulfill({
       json: {
         pageInfo: { pages: 1, results: 1 },
-        results: !mine && pending ? [waitingRequest] : [],
+        results:
+          !mine && pending ? [{ ...waitingRequest, quotaException }] : [],
       },
     });
   });
@@ -1241,9 +1250,9 @@ async function requestRoutes(page: Page) {
 
 test('admins see everyone’s requests and approve or decline them', async ({
   page,
-}) => {
+}, info) => {
   const { posts, errors } = await fixtures(page, { permissions: 2 });
-  await requestRoutes(page);
+  await requestRoutes(page, true);
   await page.route('**/api/v1/request/77/*', (route) => {
     if (route.request().method() !== 'POST') return route.fallback();
     posts.push({
@@ -1259,6 +1268,15 @@ test('admins see everyone’s requests and approve or decline them', async ({
   const row = page.locator('.rq', { hasText: 'Only In 4K' });
   await expect(row).toContainText('Sam');
   await expect(row).toContainText('Waiting for approval');
+  await expect(row.getByText('Over Quota', { exact: true })).toBeVisible();
+  await row.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('quota-review-list.png') });
+  await row.getByRole('button', { name: 'History' }).click();
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  await expect(history.getByText('Over Quota', { exact: true })).toBeVisible();
+  await settleVisuals(page);
+  await page.screenshot({ path: info.outputPath('quota-review-history.png') });
+  await history.getByRole('button', { name: 'Close' }).click();
   await row.getByRole('button', { name: 'Approve' }).click();
   await expect
     .poll(() => posts.map((p) => p.path))

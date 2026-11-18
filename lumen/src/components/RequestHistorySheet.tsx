@@ -2,8 +2,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import type { RequestItem } from '../api';
 import { useApi } from '../hooks';
-import { RequestFiles } from './RequestFiles';
+import { Pill } from './detail';
 import { ServiceNote } from './extra';
+import { RequestFiles } from './RequestFiles';
 import { useDialog } from './useDialog';
 
 interface Status {
@@ -199,6 +200,9 @@ export default function RequestHistorySheet({
           {data && (
             <>
               <RequestProgress current={data.current} />
+              {data.request?.status === 1 && data.request.quotaException && (
+                <Pill k="wait">Over Quota</Pill>
+              )}
               {data.request?.id === id &&
                 renderActions?.(
                   {

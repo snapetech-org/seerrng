@@ -2442,3 +2442,14 @@ are outside this check. Poster quick requests and manager-facing
 exception identification still need parity review. Evidence is retained
 under `seerrng-lumen-quota-approval*` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+Pending quota exceptions are marked Over Quota in Lumen's request
+list and request history. The label uses the authorized request record and
+disappears once the request leaves pending status.
+
+The production build and 12 focused browser checks passed. Compared
+the request list and history with the previous version on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. The manager fixture verifies both
+labels and the existing approve and decline actions. Live moderation
+was outside the check. Evidence is retained under
+`seerrng-lumen-quota-review*` in `/mnt/disks/scratch/task-deliverables/`.
