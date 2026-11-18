@@ -182,6 +182,8 @@ export const canChooseRequestOptions = (permissions?: number) =>
   (permissionBits(permissions) & MANAGE) !== 0;
 export const canViewAllRequests = (permissions?: number) =>
   (permissionBits(permissions) & (MANAGE | REQUEST_VIEW)) !== 0;
+export const canRequestMovies = (permissions?: number) =>
+  (permissionBits(permissions) & (2 | 32 | 262144)) !== 0;
 // who may request in 4K: Admin, Request 4K, or Request 4K Movies / Request 4K Series
 export const canRequest4k = (
   permissions: number | undefined,

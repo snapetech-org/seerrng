@@ -1,35 +1,39 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api, MediaStatus, tmdbImg, type TitleResult } from '../api';
+import { api, MediaStatus, tmdbImg } from '../api';
 import { useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
 import CollectionQueueSheet from '../components/CollectionQueueSheet';
+import CollectionRequestSheet, {
+  type MovieCollection,
+} from '../components/CollectionRequestSheet';
 import { ConfirmSheet } from '../components/ConfirmSheet';
-import { DetailTop } from '../components/detail';
+import {
+  canRequest4k,
+  canRequestMovies,
+  DetailTop,
+} from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
-import { useApi } from '../hooks';
-
-interface Collection {
-  id: number;
-  name: string;
-  overview?: string;
-  posterPath?: string;
-  backdropPath?: string;
-  parts: TitleResult[];
-}
+import { useApi, usePublicSettings } from '../hooks';
 
 function CollectionContent({ id }: { id: number }) {
   const { user } = useAuth();
   const toast = useToast();
-  const { data, error, reload, refresh } = useApi<Collection>(
+  const { data, error, reload, refresh } = useApi<MovieCollection>(
     `/collection/${id}`
   );
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
+  const settings = usePublicSettings();
+  const [requestOpen, setRequestOpen] = useState(false);
   const [queueOpen, setQueueOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
+  const qualities: ('hd' | '4k')[] = [];
+  if (canRequestMovies(user?.permissions)) qualities.push('hd');
+  if (settings?.movie4kEnabled && canRequest4k(user?.permissions, 'movie'))
+    qualities.push('4k');
   const manager = canManageBlocklist(user?.permissions);
   const blocked =
     data?.parts.filter(
@@ -98,6 +102,14 @@ function CollectionContent({ id }: { id: number }) {
       <div className="dbody">
         {data.parts.length > 0 && (
           <div className="dstatus">
+            {qualities.length > 0 && (
+              <button
+                className="btn btn-tonal btn-sm"
+                onClick={() => setRequestOpen(true)}
+              >
+                Request Collection
+              </button>
+            )}
             <button
               className="btn btn-quiet btn-sm"
               onClick={() => setQueueOpen(true)}
@@ -133,6 +145,17 @@ function CollectionContent({ id }: { id: number }) {
           )}
         </Section>
       </div>
+      {requestOpen && (
+        <CollectionRequestSheet
+          collection={data}
+          qualities={qualities}
+          permissions={user?.permissions}
+          close={(submitted) => {
+            setRequestOpen(false);
+            if (submitted) reload();
+          }}
+        />
+      )}
       {queueOpen && (
         <CollectionQueueSheet
           id={id}

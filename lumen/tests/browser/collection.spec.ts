@@ -145,3 +145,61 @@ test('progressive requests start, stop, and restart the selected quality', async
     { bufferSize: 2, is4k: true },
   ]);
 });
+
+test('bulk collection requests exclude blocked titles and show partial results', async ({
+  page,
+}) => {
+  const submitted: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Example Collection',
+          parts: [
+            { id: 20, mediaType: 'movie', title: 'First Movie' },
+            { id: 21, mediaType: 'movie', title: 'Second Movie' },
+            {
+              id: 22,
+              mediaType: 'movie',
+              title: 'Blocked Movie',
+              mediaInfo: { status: 6 },
+            },
+          ],
+        },
+      });
+    if (path === '/request' && request.method() === 'POST') {
+      const body = request.postDataJSON();
+      submitted.push(body);
+      return route.fulfill(
+        body.mediaId === 20
+          ? { status: 201, json: { id: 8 } }
+          : { status: 403, json: { message: 'Quota exceeded' } }
+      );
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/collection/30');
+  await page.getByRole('button', { name: 'Request Collection' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Request Collection' });
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Blocked Movie Blocklisted' })
+  ).toBeDisabled();
+  await sheet.getByRole('button', { name: 'Select Eligible Movies' }).click();
+  await sheet.getByRole('button', { name: 'Request Selected (2)' }).click();
+  await expect(
+    sheet.getByText('1 of 2 requests submitted.', { exact: false })
+  ).toBeVisible();
+  await expect(
+    sheet.getByText('Request Rejected', { exact: true })
+  ).toBeVisible();
+  expect(submitted).toEqual([
+    { mediaId: 20, mediaType: 'movie', is4k: false },
+    { mediaId: 21, mediaType: 'movie', is4k: false },
+  ]);
+});

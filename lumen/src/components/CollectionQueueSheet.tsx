@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { api, ApiError } from '../api';
 import { useAuth } from '../auth';
 import { useApi, usePublicSettings } from '../hooks';
-import { canRequest4k } from './detail';
+import { canRequest4k, canRequestMovies } from './detail';
 import { useDialog } from './useDialog';
 
 const STATUS = {
@@ -227,7 +227,7 @@ export default function CollectionQueueSheet({
   const permissions = user?.permissions ?? 0;
   const canStart = is4k
     ? enabled4k && canRequest4k(permissions, 'movie')
-    : (permissions & (2 | 32 | 262144)) !== 0;
+    : canRequestMovies(permissions);
   const dismiss = () => {
     if (!busy) close();
   };

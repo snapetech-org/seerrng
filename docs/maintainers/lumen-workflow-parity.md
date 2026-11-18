@@ -284,3 +284,17 @@ synthetic data. A 4K-only account selected a buffer of two, saw a playback
 history wait reason, stopped the queue, and restarted it with the same
 buffer. Native rendered comparison, bundled and mobile visual checks, live
 playback progression, bulk requests, and collection playback remain open.
+
+### Bulk movie collection requests increment
+
+Collection details offer a separate Request Collection sheet for eligible HD
+and 4K requests. It selects individual movies or all eligible members, rechecks
+the collection before submitting, and uses the standard request API once per
+selected title. Managers can reuse Lumen's advanced destination controls.
+The sheet displays accepted, rejected, uncertain, and newly ineligible
+results per title and refreshes the collection when closed.
+
+Headed Chrome at 1440 × 1000 verified a standalone batch with one acceptance,
+one rejection, and one blocked movie that was excluded. The fixture accepted
+only the two eligible IDs. Mobile, bundled and native comparisons, live
+authorization and destination branches, and collection playback remain open.
