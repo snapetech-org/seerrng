@@ -3058,3 +3058,14 @@ Collection playback and queue tests use Vitest. Both files passed all
 41 cases under that runner after the Node runner rejected their Vitest
 imports. These checks complement the browser fixtures. External
 provider interactions still used test doubles.
+
+### Household profile picture persistence
+
+Lumen's desktop and iPhone browser fixtures exercised the local
+account upload and subsequent profile read. The server integration
+test used a synthetic local account and a generated PNG. It verified
+that the account owner could upload the image, an administrator
+could not upload for that account, and the returned versioned URL
+served the stored 512 × 512 WebP. The storage directory belonged to
+the test and the avatar was removed after verification. The browser
+and server checks ran separately.

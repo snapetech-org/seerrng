@@ -29,6 +29,7 @@ import { UserSettings } from '@server/entity/UserSettings';
 import { Watchlist } from '@server/entity/Watchlist';
 import PreparedEmail from '@server/lib/email';
 import ImageProxy from '@server/lib/imageproxy';
+import { removeLocalAvatarFiles } from '@server/lib/localAvatar';
 import { MAX_PERMISSION_VALUE, Permission } from '@server/lib/permissions';
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
 import { getSettings } from '@server/lib/settings';
@@ -40,9 +41,11 @@ import type { Express } from 'express';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import session from 'express-session';
+import sharp from 'sharp';
 import request from 'supertest';
 import type { EntityManager } from 'typeorm';
 import authRoutes from './auth';
+import avatarProxyRoutes from './avatarproxy';
 import userRoutes, {
   MAX_PUSH_SUBSCRIPTIONS_PER_USER,
   USER_REQUEST_DELETE_BATCH_SIZE,
@@ -72,6 +75,7 @@ function createApp() {
   app.use(rateLimit({ windowMs: 60_000, limit: 10_000 }), checkUser);
   app.use('/auth', authRoutes);
   app.use('/user', userRoutes);
+  app.use('/avatarproxy', avatarProxyRoutes);
   app.use(
     (
       err: { status?: number; message?: string },
@@ -136,6 +140,46 @@ async function loginAs(email: string, password: string) {
     settings.main.localLogin = priorLocalLogin;
   }
 }
+
+describe('local profile picture persistence', () => {
+  it('stores only the account owner’s upload and serves the normalized picture', async () => {
+    const users = getRepository(User);
+    const owner = await users.findOneByOrFail({ email: 'friend@seerr.dev' });
+    await users.update(owner.id, { userType: UserType.LOCAL });
+    const picture = await sharp({
+      create: { width: 80, height: 40, channels: 3, background: '#306090' },
+    })
+      .png()
+      .toBuffer();
+    const manager = await loginAs('admin@seerr.dev', 'test1234');
+    const account = await loginAs(owner.email, 'test1234');
+    const endpoint = `/user/${owner.id}/avatar`;
+    try {
+      await manager.put(endpoint).type('png').send(picture).expect(403);
+      const upload = await account
+        .put(endpoint)
+        .type('png')
+        .send(picture)
+        .expect(200);
+      const avatar = upload.body.avatar as string;
+      assert.match(
+        avatar,
+        new RegExp(`^/avatarproxy/local/${owner.id}\\?v=[a-f0-9]{64}$`)
+      );
+      const profile = await account.get(`/user/${owner.id}`).expect(200);
+      assert.equal(profile.body.avatar, avatar);
+      const image = await account
+        .get(avatar)
+        .expect('Content-Type', /image\/webp/)
+        .expect(200);
+      const metadata = await sharp(image.body).metadata();
+      assert.equal(metadata.width, 512);
+      assert.equal(metadata.height, 512);
+    } finally {
+      await removeLocalAvatarFiles(owner.id);
+    }
+  });
+});
 
 describe('User media availability subscriptions', () => {
   beforeEach(() => {
