@@ -232,7 +232,7 @@ server {
   location ~ ^/settings/(jobs|logs|about|categories)/?$ {
     return 302 /admin/$1;
   }
-  location ~ ^/settings(/main)?/?$ {
+  location ~ ^/settings(/(main|users))?/?$ {
     return 302 /admin/general;
   }
 

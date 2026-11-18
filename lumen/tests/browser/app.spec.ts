@@ -4576,6 +4576,7 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
     mediaServerType: 2,
     localLogin: true,
     mediaServerLogin: true,
+    newPlexLogin: true,
     jellyfinQuickConnectOnly: false,
   };
   const writes: unknown[] = [];
@@ -4590,6 +4591,9 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await page.goto('/admin/general');
   const local = page.getByRole('checkbox', { name: 'Local Sign-In' });
   const media = page.getByRole('checkbox', { name: 'Media Server Sign-In' });
+  const admission = page.getByRole('checkbox', {
+    name: 'Allow New Media Server Users',
+  });
   const quick = page.getByRole('checkbox', {
     name: 'Require Jellyfin Quick Connect',
   });
@@ -4601,18 +4605,21 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
     'Keep at least one sign-in method enabled.'
   );
   await expect(quick).toHaveCount(0);
+  await expect(admission).toHaveCount(0);
   expect(writes).toEqual([]);
   await media.check();
   await quick.check();
+  await admission.uncheck();
   await save.click();
   await expect(page.getByText('Application settings saved.')).toBeVisible();
   expect(writes).toEqual([
-    { localLogin: false, jellyfinQuickConnectOnly: true },
+    { localLogin: false, newPlexLogin: false, jellyfinQuickConnectOnly: true },
   ]);
   await page.reload();
   await expect(local).not.toBeChecked();
   await expect(media).toBeChecked();
   await expect(quick).toBeChecked();
+  await expect(admission).not.toBeChecked();
 });
 
 test('General Settings saves default request quotas without changing other media drafts', async ({

@@ -1708,3 +1708,10 @@ default editor's restriction on changing the Admin permission. Twenty-four
 standalone browser checks covered General Settings and delegated permissions,
 including high permission bits and settings readback. Live account creation
 and matched native visual acceptance remain open.
+
+General Settings now manages whether eligible media-server accounts may
+sign in before an import. Native Users settings bookmarks open General
+Settings in both deployments, with a link to Media Categories for
+account category defaults. Four standalone sign-in settings browser
+checks and the Express and nginx bookmark checks passed. Live account
+admission and matched native visual acceptance remain open.

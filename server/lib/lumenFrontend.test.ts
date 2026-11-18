@@ -46,6 +46,8 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const userDirectory = await request(app).get('/lumen/users/');
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');
+    const userDefaults = await request(app).get('/lumen/settings/users/');
+    assert.equal(userDefaults.headers.location, '/lumen/admin/general');
     assert.equal(userDirectory.status, 302);
     assert.equal(userDirectory.headers.location, '/lumen/admin/users');
     assert.equal(userDirectory.headers['cache-control'], 'no-store');

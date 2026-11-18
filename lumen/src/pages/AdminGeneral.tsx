@@ -28,6 +28,7 @@ interface ApplicationSettings {
   lumenPublicUrl: string;
   localLogin: boolean;
   mediaServerLogin: boolean;
+  newPlexLogin: boolean;
   jellyfinQuickConnectOnly: boolean;
 }
 
@@ -65,6 +66,11 @@ const switches = [
     key: 'mediaServerLogin',
     label: 'Media Server Sign-In',
     help: 'Allow users to sign in with their linked media server account.',
+  },
+  {
+    key: 'newPlexLogin',
+    label: 'Allow New Media Server Users',
+    help: 'Let eligible media server users sign in without importing their accounts first.',
   },
   {
     key: 'jellyfinQuickConnectOnly',
@@ -218,6 +224,7 @@ function ApplicationForm({
               return draft.defaultFrontend === 'lumen';
             if (key === 'jellyfinQuickConnectOnly')
               return jellyfin && draft.mediaServerLogin;
+            if (key === 'newPlexLogin') return draft.mediaServerLogin;
             return true;
           })
           .map(({ key, label, help }) => (
@@ -285,6 +292,9 @@ export default function AdminGeneral() {
           <Link className="btn btn-quiet btn-sm" to="/me">
             Back to Account
           </Link>
+          <Link className="btn btn-quiet btn-sm" to="/admin/categories">
+            Media Categories
+          </Link>
         </div>
       </header>
       <Section title="Application">
@@ -309,6 +319,7 @@ export default function AdminGeneral() {
               lumenPublicUrl: settings.data.lumenPublicUrl ?? '',
               localLogin: settings.data.localLogin !== false,
               mediaServerLogin: settings.data.mediaServerLogin !== false,
+              newPlexLogin: settings.data.newPlexLogin !== false,
               jellyfinQuickConnectOnly:
                 settings.data.jellyfinQuickConnectOnly === true,
             }}
