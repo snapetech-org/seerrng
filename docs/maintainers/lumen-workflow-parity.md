@@ -1816,3 +1816,7 @@ server routing cases passed. Matched native visual acceptance remains open.
 Issue discussions preserve list parameters on their return link and when
 returning after deletion. All 28 standalone issue browser checks passed,
 including the filtered page round trip. Matched visual acceptance remains open.
+
+Issue pagination now returns to the last available page when deleting a
+report reduces the page count. The active filters stay in the URL. All 32
+standalone issue browser checks passed. Matched visual acceptance remains open.

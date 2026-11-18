@@ -317,3 +317,48 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await expect(page.getByLabel('Release Year')).toHaveCount(0);
   await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBeNull();
 });
+
+test('deleting the final issue on a page preserves filters and returns to the last available page', async ({
+  page,
+}) => {
+  let deleted = false;
+  const issue = {
+    id: 7,
+    status: 1,
+    issueType: 1,
+    createdBy: { id: 2 },
+    createdAt: '2026-11-12T00:00:00Z',
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 2, permissions: 1048576 } });
+    if (url.pathname.endsWith('/issue/7')) {
+      if (route.request().method() === 'DELETE') {
+        deleted = true;
+        return route.fulfill({ status: 204 });
+      }
+      return route.fulfill({ json: issue });
+    }
+    if (url.pathname.endsWith('/issue')) {
+      const first = url.searchParams.get('skip') === '0';
+      return route.fulfill({
+        json: {
+          results: first ? [{ ...issue, id: 6 }] : deleted ? [] : [issue],
+          pageInfo: { page: first ? 1 : 2, pages: deleted ? 1 : 2 },
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/issues?mediaType=movie&page=2');
+  await page.getByRole('link', { name: 'Video #7' }).click();
+  await page.getByRole('button', { name: 'Delete Issue' }).click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Delete Issue' })
+    .click();
+  await expect(page).toHaveURL(/\/issues\?mediaType=movie$/);
+  await expect(page.getByRole('link', { name: 'Video #6' })).toBeVisible();
+});

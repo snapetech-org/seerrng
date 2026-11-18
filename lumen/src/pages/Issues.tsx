@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Link,
   useNavigate,
@@ -223,6 +223,19 @@ function IssueList() {
     '/issue?' + params.toString(),
     { currentPathOnly: true }
   );
+  const pages = data?.pageInfo.pages;
+  useEffect(() => {
+    if (pages === undefined || page <= Math.max(1, pages)) return;
+    setBookmark(
+      (current) => {
+        const next = new URLSearchParams(current);
+        if (pages > 1) next.set('page', String(pages));
+        else next.delete('page');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [page, pages, setBookmark]);
   return (
     <>
       <form
