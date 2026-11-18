@@ -615,3 +615,13 @@ Standalone Chrome at 1440 × 1000 verified a bookmarked Oldest first movie
 view and switched it to Newest first by keyboard, reversing the fixture rows
 and retaining the media filter. Native visual comparison, mobile, bundled and
 other sort options remain unverified.
+
+### Household lifecycle filters increment
+
+Everyone media requests have Incomplete, Needs attention, Unavailable and
+Completed views. These use the existing lifecycle endpoint before pagination,
+including its treatment of partially available series with ongoing downloads.
+
+Standalone Chrome at 1440 × 1000 showed a partially available series
+downloading in Incomplete and confirmed the Unavailable and Completed
+responses against fixtures. Mobile, bundled and native comparison remain open.

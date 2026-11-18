@@ -79,7 +79,11 @@ const EVERYONE_FILTERS = [
   ['all', 'All', 'total'],
   ['pending', 'Waiting', 'pending'],
   ['processing', 'Downloading', 'processing'],
+  ['incomplete', 'Incomplete', 'incomplete'],
+  ['attention', 'Needs attention', 'attention'],
+  ['unavailable', 'Unavailable', 'unavailable'],
   ['failed', 'Failed', 'failed'],
+  ['completed', 'Completed', 'completed'],
   ['available', 'Available', 'available'],
   ['software', 'Software', 'software'],
 ] as const;
@@ -123,10 +127,18 @@ async function requestList(path: string): Promise<RequestListPage> {
     authoritativeStatus: pages.every((p) => p.authoritativeStatus) || undefined,
   };
 }
+const TIMELINE_ONLY_REQUEST_FILTERS = new Set([
+  'incomplete',
+  'attention',
+  'unavailable',
+  'completed',
+]);
+
 async function requestListOnce(path: string): Promise<RequestListPage> {
   const params = new URLSearchParams(path.split('?')[1]);
   const filter = params.get('filter');
   const requiresTimeline =
+    TIMELINE_ONLY_REQUEST_FILTERS.has(filter ?? '') ||
     params.has('timeFrame') ||
     params.has('bookFormat') ||
     params.has('search') ||
