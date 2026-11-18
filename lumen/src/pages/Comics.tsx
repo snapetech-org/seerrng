@@ -29,6 +29,7 @@ import {
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReaderShelf from '../components/ReaderShelf';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { ReaderDownloads } from '../components/RequestFiles';
 import { useToast } from '../components/toast';
@@ -637,19 +638,29 @@ export function ComicDetail() {
                 reload();
               }}
             />
+            {chosen && (
+              <ReaderShelf
+                key={`reader-shelf:${chosen.id}`}
+                target={{
+                  type: 'comic-series',
+                  id: chosen.id,
+                  name: chosen.title,
+                }}
+              />
+            )}
             <ReaderDownloads
               mediaId={chosen ? shown?.id : undefined}
               type="comic"
             />
             <ReportIssueButton
-              key={chosen?.id}
+              key={`report-issue:${chosen?.id}`}
               type="comic"
               title={c?.title ?? work.title}
               media={c?.mediaInfo}
             />
             {c && chosen && (
               <WatchlistButton
-                key={chosen.id}
+                key={`watchlist:${chosen.id}`}
                 mediaType="comic"
                 detail={c}
                 requestedId={chosen.id}

@@ -867,3 +867,83 @@ test('the magazine search box follows ?q= on Back and Forward', async ({
   await page.goBack();
   await expect(box).toHaveValue('time');
 });
+
+test('comic reader shelves preview the selected edition and require empty shelf consent', async ({
+  page,
+}, info) => {
+  const path = '/settings/reader-delivery';
+  const posts = await fixtures(page, {
+    pub: comicPub,
+    handle: (url) => {
+      if (url === '/comic/work/al-1') return { json: work() };
+      if (url === path)
+        return {
+          json: {
+            preferredProvider: 'grimmory',
+            bookorbitUrl: 'https://reader.example.test',
+          },
+        };
+      if (url === path + '/groupings/preview')
+        return {
+          json: {
+            matchedCount: 0,
+            ruleSummary: 'Series match',
+            sampleTitles: [],
+          },
+        };
+      if (url === path + '/groupings')
+        return {
+          json: posts.some((post) => post.path === url)
+            ? {
+                grouping: {
+                  serviceUrl: 'https://reader.example.test',
+                  countVerified: true,
+                  lastMatchCount: 0,
+                },
+              }
+            : [],
+        };
+      if (url.endsWith('/issues')) return { json: paged([]) };
+      if (url.startsWith('/comic/')) return { json: {} };
+    },
+  });
+  await page.goto('/comic/al-1');
+  await page.getByRole('radio', { name: /French/ }).click();
+  await page.getByRole('button', { name: 'Manage Reader Shelf' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Reader Shelf' });
+  await expect(dialog.getByLabel('Reader Service')).toHaveValue('bookorbit');
+  await dialog.getByLabel('Sync to Kobo').check();
+  await dialog.getByRole('button', { name: 'Preview Matches' }).click();
+  await expect(dialog.getByText('0 current matches')).toBeVisible();
+  const create = dialog.getByRole('button', {
+    name: 'Create Shelf',
+    exact: true,
+  });
+  await expect(create).toBeDisabled();
+  await dialog.getByLabel('Create an Empty Shelf for Future Matches').check();
+  await page.screenshot({ path: info.outputPath('reader-shelf.png') });
+  await create.click();
+  await expect(dialog.getByText('Reader shelf saved')).toBeVisible();
+  await expect(
+    dialog.getByRole('link', { name: 'Open BookOrbit' })
+  ).toHaveAttribute('href', 'https://reader.example.test/');
+  expect(posts).toEqual([
+    {
+      path: path + '/groupings/preview',
+      body: {
+        provider: 'bookorbit',
+        target: { id: '12', name: 'Blade Saga', type: 'comic-series' },
+      },
+    },
+    {
+      path: path + '/groupings',
+      body: {
+        provider: 'bookorbit',
+        target: { id: '12', name: 'Blade Saga', type: 'comic-series' },
+        isPublic: true,
+        allowEmpty: true,
+        syncToKobo: true,
+      },
+    },
+  ]);
+});

@@ -506,28 +506,29 @@ export const hardcoverWorkId = (id: string) => {
     return null;
   }
 };
+export const readerServiceUrl = (raw: string) => {
+  try {
+    const url = new URL(raw);
+    return ['http:', 'https:'].includes(url.protocol) &&
+      !url.username &&
+      !url.password
+      ? url
+      : null;
+  } catch {
+    return null;
+  }
+};
+
 // "Read in Kavita": SeerrNG's link to the series (http/https only), moved onto the admin's
 // Kavita address when Lumen has one, the way the Audiobookshelf address works
 export const kavitaLink = (
   readerUrl?: string | null,
   base?: string
 ): string | null => {
-  const web = (raw: string) => {
-    try {
-      const url = new URL(raw);
-      return ['http:', 'https:'].includes(url.protocol) &&
-        !url.username &&
-        !url.password
-        ? url
-        : null;
-    } catch {
-      return null;
-    }
-  };
-  const link = readerUrl ? web(readerUrl) : null;
+  const link = readerUrl ? readerServiceUrl(readerUrl) : null;
   if (!link) return null;
   const series = /\/library\/(\d+)\/series\/(\d+)\/?$/.exec(link.pathname);
-  const own = base ? web(base) : null;
+  const own = base ? readerServiceUrl(base) : null;
   if (own && series) {
     own.search = '';
     own.hash = '';
