@@ -536,3 +536,14 @@ Standalone Chrome at 1440 × 1000 verified requester attribution, loading
 page two, reaching moderation as a delegated request manager, and preserving
 the Software filter after closing history. Native and mobile visual comparison,
 bundled browser execution, view-only roles and live providers remain open.
+
+### Household software filters increment
+
+Everyone → Software now filters by software category and lifecycle status
+through the existing server query. Both filters can be bookmarked and changing
+either resets pagination.
+
+Standalone Chrome at 1440 × 1000 verified a bookmarked Retro games and Failed
+view, keyboard selection of Modern games, and the refreshed result with Failed
+retained. Native visual comparison, mobile, bundled and live provider checks
+remain open.

@@ -865,14 +865,46 @@ function gameRow(g: SoftwareRequest): Row {
   };
 }
 
-async function householdSoftwareRequests(pages: number) {
+const SOFTWARE_CATEGORIES = [
+  ['all', 'All categories'],
+  ['game', 'PC games'],
+  ['retro', 'Retro games'],
+  ['modern', 'Modern games'],
+] as const;
+
+const SOFTWARE_STATUSES = [
+  ['all', 'All statuses'],
+  ['active', 'Active'],
+  ['pending', 'Waiting for approval'],
+  ['approved', 'Approved'],
+  ['searching', 'Searching'],
+  ['downloading', 'Downloading'],
+  ['importing', 'Importing'],
+  ['available', 'Available'],
+  ['attention', 'Needs attention'],
+  ['failed', 'Failed'],
+  ['declined', 'Declined'],
+  ['cancelled', 'Cancelled'],
+] as const;
+
+async function householdSoftwareRequests(
+  pages: number,
+  category: string,
+  status: string
+) {
   const rows: Row[] = [];
   let more = false;
   for (let page = 0; page < pages; page++) {
+    const params = new URLSearchParams({
+      take: String(PAGE),
+      skip: String(page * PAGE),
+      filter: status,
+    });
+    if (category !== 'all') params.set('category', category);
     const data = await api<{
       results: SoftwareRequest[];
       pageInfo: { pages: number };
-    }>(`/request/software/status?take=${PAGE}&skip=${page * PAGE}`);
+    }>(`/request/software/status?${params}`);
     rows.push(...data.results.map(gameRow));
     more = data.pageInfo.pages > page + 1;
     if (!more) break;
@@ -933,13 +965,27 @@ export default function Requests() {
   // Everyone: which requests (SeerrNG's own filters) and how many pages of them
   const show = (EVERYONE_FILTERS.find(([v]) => v === p.get('show')) ||
     EVERYONE_FILTERS[0])[0];
+  const softwareCategory =
+    SOFTWARE_CATEGORIES.find(([value]) => value === p.get('category'))?.[0] ??
+    'all';
+  const softwareStatus =
+    SOFTWARE_STATUSES.find(
+      ([value]) => value === p.get('softwareStatus')
+    )?.[0] ?? 'all';
+  const setSoftwareFilter = (key: string, value: string) => {
+    const next = new URLSearchParams(p);
+    if (value === 'all') next.delete(key);
+    else next.set(key, value);
+    setPages(1);
+    setP(next, { replace: true });
+  };
   const [pages, setPages] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   useEffect(() => {
     setPages(1);
     setOthers(null);
-  }, [show, everyone]);
+  }, [show, everyone, softwareCategory, softwareStatus]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
@@ -1005,7 +1051,12 @@ export default function Requests() {
     // All: waiting for approval, then downloads that have started (furthest along first), then
     // the newest of the rest. Downloading: started ones first too. Others: newest first.
     const load = async () => {
-      if (show === 'software') return householdSoftwareRequests(pages);
+      if (show === 'software')
+        return householdSoftwareRequests(
+          pages,
+          softwareCategory,
+          softwareStatus
+        );
       const started =
         show === 'all' || show === 'processing'
           ? startedDownloads()
@@ -1048,7 +1099,7 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [everyone, show, pages, tick]);
+  }, [everyone, show, pages, tick, softwareCategory, softwareStatus]);
 
   useEffect(() => {
     if (!user || everyone) return;
@@ -1342,6 +1393,44 @@ export default function Requests() {
               )}
             </button>
           ))}
+        </div>
+      )}
+      {everyone && show === 'software' && (
+        <div
+          className="toolbar"
+          role="group"
+          aria-label="Software request filters"
+        >
+          <label className="sel">
+            <span className="lbl">Category</span>
+            <select
+              value={softwareCategory}
+              onChange={(event) =>
+                setSoftwareFilter('category', event.target.value)
+              }
+            >
+              {SOFTWARE_CATEGORIES.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sel">
+            <span className="lbl">Status</span>
+            <select
+              value={softwareStatus}
+              onChange={(event) =>
+                setSoftwareFilter('softwareStatus', event.target.value)
+              }
+            >
+              {SOFTWARE_STATUSES.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       )}
       {shown && !list.length && everyone && (
