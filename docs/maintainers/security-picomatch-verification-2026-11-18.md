@@ -21,3 +21,12 @@ binding, applicability, and basic compatibility. They do not establish
 that a previously installed dependency tree includes the patch. Release
 validation must use a fresh frozen install and verify the patch in the
 resulting dependency tree.
+
+Fresh frozen installs of the root, documentation, and production-only
+dependency graphs also passed with pnpm 10.24.0. Lifecycle scripts were
+disabled for this dependency check. Readback of the installed parser
+confirmed the mitigation in root and production Picomatch 2.3.2 and in
+documentation Picomatch 2.3.2 and 4.0.4. The production Dockerfile copies
+the patches before its frozen installs. Verification of a built release
+artifact remains pending. Install logs and readback are retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-picomatch-frozen-20261118/`.
