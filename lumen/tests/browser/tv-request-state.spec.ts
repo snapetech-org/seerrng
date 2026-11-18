@@ -64,8 +64,10 @@ async function show(
     if (path === '/settings/public') return r.fulfill({ json: settings });
     if (quota && path === '/user/1/quota')
       return r.fulfill({ json: { tv: quota } });
-    if (quota && path === '/request' && r.request().method() === 'POST')
-      return r.fulfill({ json: { id: 44, status: 1, quotaException: true } });
+    if (path === '/request' && r.request().method() === 'POST')
+      return r.fulfill({
+        json: { id: 44, status: 1, quotaException: !!quota },
+      });
     if (path === '/tv/84773')
       return r.fulfill({
         json: {
@@ -514,4 +516,30 @@ test('TV detail can request missing episodes from a partly requested season', as
       },
     },
   ]);
+});
+
+test('an unconfirmed season request keeps the selection without a success message', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  await show(page, { status: 1 }, posts);
+  await page.route('**/api/v1/request', (route) =>
+    route.fulfill({ status: 202, json: { message: 'No seasons available.' } })
+  );
+  const request = page.getByRole('button', {
+    name: 'Request entire series',
+    exact: true,
+  });
+  await request.click();
+  await expect(
+    page.getByText('No selected seasons were added.', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText(/Request submitted for The Rings of Power/)
+  ).toHaveCount(0);
+  await expect(request).toBeEnabled();
+  await page.screenshot({
+    path: info.outputPath('series-request-unconfirmed.png'),
+    animations: 'disabled',
+  });
 });

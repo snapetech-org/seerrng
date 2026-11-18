@@ -443,15 +443,15 @@ export const requestMovie = (id: number, o: RequestOptions = {}) =>
     ...o,
   });
 // series default to the whole show; a list asks for just those seasons
-export const requestSeries = (
+export const requestSeries = async (
   id: number,
   seasons: number[] | 'all' = 'all',
   o: RequestOptions & {
     tvdbId?: number;
     seasonRequests?: SeasonRequestSelection[];
   } = {}
-) =>
-  post<{
+) => {
+  const result = await post<{
     id: number;
     quotaException?: boolean;
     seasons?: { seasonNumber: number }[];
@@ -461,6 +461,21 @@ export const requestSeries = (
     seasons,
     ...o,
   });
+  if (!Number.isSafeInteger(result?.id) || result.id <= 0) {
+    const unit = o.seasonRequests?.some(
+      ({ episodeNumbers }) => episodeNumbers?.length
+    )
+      ? 'episodes'
+      : 'seasons';
+    throw new ApiError(
+      202,
+      `No selected ${unit} were added.`,
+      undefined,
+      'REQUEST_NOT_CONFIRMED'
+    );
+  }
+  return result;
+};
 // books: the format decides which ChaptarrNG server; an edition pins one narration
 // policy 'only' = exactly that narration; 'either' = that edition is the target, other copies OK;
 // 'alongside' = add that narration as a separate copy next to the one already in the library

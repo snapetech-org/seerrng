@@ -179,7 +179,7 @@ test('series and album details reach their curated collections', async ({
     .click();
   await expect(tvSheet.getByText('0 requested, 1 failed.')).toBeVisible();
   await expect(
-    tvSheet.getByText('Fixture Series · No selected seasons were added.')
+    tvSheet.getByText('Fixture Series · No selected episodes were added.')
   ).toBeVisible();
   await page.screenshot({
     path: info.outputPath('series-request-unconfirmed.png'),

@@ -187,7 +187,7 @@ function Sheet({
       setResults(
         await mapSeries(selected, async ({ member, detail, selections }) => {
           try {
-            const result = await requestSeries(
+            await requestSeries(
               Number(member.id),
               selections.map(({ seasonNumber }) => seasonNumber),
               {
@@ -199,13 +199,7 @@ function Sheet({
                   : undefined,
               }
             );
-            return {
-              title: member.title,
-              error:
-                Number.isSafeInteger(result?.id) && result.id > 0
-                  ? undefined
-                  : 'No selected seasons were added.',
-            };
+            return { title: member.title };
           } catch (error) {
             return {
               title: member.title,

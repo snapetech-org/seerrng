@@ -2526,3 +2526,14 @@ Fixtures cover both a no-op response and a confirmed request. Live Sonarr
 was outside the check. Evidence is retained under
 `seerrng-lumen-collection-confirmation*` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+The shared TV request client now requires a confirmed request ID.
+Season, episode, poster, Coming Soon, and TV collection callers using
+that client no longer treat a no-op response as a successful request.
+TV details preserve the season selection after a no-op.
+
+The production build and browser suite passed with 139 checks and nine
+skips. Compared the TV detail notification before and after on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. Evidence is retained under
+`seerrng-lumen-series-confirmation*` in
+`/mnt/disks/scratch/task-deliverables/`.

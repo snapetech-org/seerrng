@@ -286,13 +286,6 @@ export default function TvDetail() {
         seasonRequests: [selection],
         requestQuotaApproval: episodeApproval || undefined,
       });
-      if (!Number.isSafeInteger(result?.id) || result.id <= 0) {
-        setEpisodeError(
-          'No selected episodes were added. Refresh the request options and try again.'
-        );
-        refresh();
-        return;
-      }
       toast(
         result.quotaException
           ? `Approval requested for ${t.name || 'this series'}`
@@ -303,6 +296,8 @@ export default function TvDetail() {
       quota.refresh();
     } catch (error) {
       setEpisodeError(friendlyError(error, 'Could not request episodes'));
+      if (error instanceof ApiError && error.code === 'REQUEST_NOT_CONFIRMED')
+        refresh();
     } finally {
       episodeSubmission.current = false;
       setBusy(false);
@@ -345,6 +340,8 @@ export default function TvDetail() {
           ?.scrollIntoView({ behavior: scrollBehavior() });
       } else {
         toast(friendlyError(e, 'Request failed'));
+        if (e instanceof ApiError && e.code === 'REQUEST_NOT_CONFIRMED')
+          refresh();
       }
     } finally {
       setBusy(false);
