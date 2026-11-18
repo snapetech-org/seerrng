@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
@@ -27,6 +28,7 @@ import {
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
+import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { AssociationLink } from './Associations';
 
 const SORTS = [
@@ -180,7 +182,12 @@ export function Music() {
 
 export function AlbumDetail() {
   const { id } = useParams();
+  const { user } = useAuth();
   const { data: a, error, refresh } = useApi<AlbumDetails>(`/music/${id}`);
+  const progressMedia = useLiveMediaProgress(
+    a?.mediaInfo,
+    isAdministrator(user?.permissions)
+  );
   if (error)
     return (
       <ExtraGate k="music">
@@ -191,7 +198,7 @@ export function AlbumDetail() {
       </ExtraGate>
     );
   if (!a) return <div className="detail-loading" aria-busy="true" />;
-  const s = extraStat(a.mediaInfo);
+  const s = extraStat(progressMedia);
   const tags = (
     a.tags?.releaseGroup?.length ? a.tags.releaseGroup : a.tags?.artist || []
   )

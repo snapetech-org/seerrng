@@ -2003,3 +2003,11 @@ Pro 11. Real client connections remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-progress-20261118/`.
+
+Album details also update the existing status badge and request button from
+the live stream. The production build and 20 detail browser checks passed.
+Compared scheduled and live album states on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. The fixture simulated the server stream.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-album-progress-20261118/`.
