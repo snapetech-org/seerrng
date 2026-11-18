@@ -1350,3 +1350,10 @@ Eight standalone checks passed across four viewport presets, covering
 keyword and provider queries, invalid data, and existing TMDB list
 shelves. Other configured shelf types, live provider results, and matched
 visual comparisons remain open.
+
+Configured TMDB search shelves now reuse Search's movie, series, person
+and collection cards. See All opens the configured term in Lumen Search.
+Twelve standalone checks passed across desktop, iPhone, Android and
+tablet, including a mixed-result shelf with overlapping numeric IDs and
+a term containing punctuation. Live results and matched visual
+comparisons remain open.

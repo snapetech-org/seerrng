@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Paged, TitleResult } from '../api';
+import type { Paged, VideoSearchResult } from '../api';
 import { useApi, usePublicSettings } from '../hooks';
-import { Rail, RailSkeleton, Section, TitleCard } from './cards';
+import { PersonCard } from '../pages/People';
+import {
+  CollectionCard,
+  Rail,
+  RailSkeleton,
+  Section,
+  TitleCard,
+} from './cards';
 
 // DiscoverSliderType values from SeerrNG's settings API.
 const videoFilters = new Map<number, { media: 'movie' | 'tv'; filter: string }>(
@@ -16,6 +23,7 @@ const videoFilters = new Map<number, { media: 'movie' | 'tv'; filter: string }>(
     [21, { media: 'tv', filter: 'streaming' }],
   ] as const
 );
+const TMDB_SEARCH = 17;
 const TMDB_LIST = 28;
 const positiveId = (value: string, max = 1_000_000_000) =>
   /^[1-9]\d{0,9}$/.test(value) && Number(value) <= max;
@@ -29,7 +37,7 @@ interface DiscoverSlider {
   data?: string;
 }
 
-interface ShelfPage extends Paged<TitleResult> {
+interface ShelfPage extends Paged<VideoSearchResult> {
   list?: { name: string };
 }
 
@@ -48,6 +56,15 @@ function shelfDestination(
     return {
       endpoint: `/discover/list/${value}?page=1`,
       href: `/list/${value}`,
+    };
+  }
+
+  if (slider.type === TMDB_SEARCH) {
+    const term = value.trim();
+    if (!term || term.length > 256) return;
+    return {
+      endpoint: `/search?query=${encodeURIComponent(term)}&page=1`,
+      href: `/search?${new URLSearchParams({ q: term })}`,
     };
   }
 
@@ -101,7 +118,14 @@ function VideoShelf({
     return () => observer.disconnect();
   }, [visible]);
 
-  if (data && !data.results.length) return null;
+  const items = data?.results.filter(
+    ({ mediaType }) =>
+      mediaType === 'movie' ||
+      mediaType === 'tv' ||
+      mediaType === 'person' ||
+      mediaType === 'collection'
+  );
+  if (items?.length === 0) return null;
 
   return (
     <div ref={anchor}>
@@ -109,11 +133,16 @@ function VideoShelf({
         title={title || data?.list?.name || 'Discover Titles'}
         link={['See all', href]}
       >
-        {data ? (
+        {items ? (
           <Rail restoreId={`configured-video-${id}`}>
-            {data.results.map((item) => (
-              <TitleCard key={`${item.mediaType}:${item.id}`} it={item} />
-            ))}
+            {items.map((item) => {
+              const key = `${item.mediaType}:${item.id}`;
+              if (item.mediaType === 'collection')
+                return <CollectionCard key={key} collection={item} />;
+              if (item.mediaType === 'person')
+                return <PersonCard key={key} person={item} />;
+              return <TitleCard key={key} it={item} />;
+            })}
           </Rail>
         ) : error ? (
           <div className="empty">

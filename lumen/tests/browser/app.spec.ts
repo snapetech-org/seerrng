@@ -2778,3 +2778,62 @@ test('configured video shelves preserve keyword and streaming filters', async ({
     page.getByRole('heading', { name: 'Invalid Shelf' })
   ).toHaveCount(0);
 });
+
+test('configured search shelves link mixed results and preserve the search term', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/discover', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 9,
+          type: 17,
+          order: 1,
+          enabled: true,
+          title: 'Search Shelf',
+          data: 'A & B',
+        },
+      ],
+    })
+  );
+  const queries: string[] = [];
+  await page.route(/\/api\/v1\/search\?/, (route) => {
+    const term = new URL(route.request().url()).searchParams.get('query');
+    queries.push(term ?? '');
+    return route.fulfill({
+      json: paged([
+        { ...movie, title: 'Shelf Film' },
+        { id: 101, mediaType: 'tv', name: 'Shelf Series' },
+        { id: 101, mediaType: 'person', name: 'Shelf Person' },
+        { id: 101, mediaType: 'collection', title: 'Shelf Collection' },
+        { id: 101, mediaType: 'artist', name: 'Other Category' },
+      ]),
+    });
+  });
+  await page.goto('/');
+  const shelf = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Search Shelf' }) });
+  await shelf.scrollIntoViewIfNeeded();
+  for (const [label, path] of [
+    ['Shelf Film', '/movie/101'],
+    ['Shelf Series', '/tv/101'],
+    ['Shelf Person', '/person/101'],
+    ['Shelf Collection', '/collection/101'],
+  ]) {
+    await expect(shelf.getByRole('link', { name: label })).toHaveAttribute(
+      'href',
+      path
+    );
+  }
+  await expect(shelf.getByText('Other Category')).toHaveCount(0);
+  expect(queries).toEqual(['A & B']);
+  const all = shelf.getByRole('link', { name: 'See all' });
+  await expect(all).toHaveAttribute('href', '/search?q=A+%26+B');
+  await all.click();
+  await expect(page).toHaveURL(/\/search\?q=A\+%26\+B$/);
+  await expect(
+    page.getByRole('link', { name: 'Shelf Collection' })
+  ).toBeVisible();
+});
