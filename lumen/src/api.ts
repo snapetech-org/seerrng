@@ -570,6 +570,13 @@ export const hardcoverWorkId = (id: string) => {
   }
 };
 export const readerServiceUrl = (raw: string) => {
+  if (
+    typeof raw !== 'string' ||
+    IMAGE_URL_CONTROL_CHARACTERS.test(raw) ||
+    !/^https?:\/\//i.test(raw) ||
+    raw.includes('\\')
+  )
+    return null;
   try {
     const url = new URL(raw);
     return ['http:', 'https:'].includes(url.protocol) &&
@@ -591,14 +598,15 @@ export const kavitaLink = (
   const link = readerUrl ? readerServiceUrl(readerUrl) : null;
   if (!link) return null;
   const series = /\/library\/(\d+)\/series\/(\d+)\/?$/.exec(link.pathname);
+  if (!series) return null;
   const own = base ? readerServiceUrl(base) : null;
-  if (own && series) {
-    own.search = '';
-    own.hash = '';
+  const target = own ?? link;
+  target.search = '';
+  target.hash = '';
+  if (own) {
     own.pathname = `${own.pathname.replace(/\/+$/, '')}/library/${series[1]}/series/${series[2]}`;
-    return own.href;
   }
-  return link.href;
+  return target.href;
 };
 
 // The admin's Audiobookshelf address (http/https only), opening the item when SeerrNG knows it
@@ -606,30 +614,24 @@ export const audiobookshelfLink = (
   base?: string,
   itemId?: string | null
 ): string | null => {
-  if (!base) return null;
-  try {
-    const url = new URL(base);
-    if (
-      !['http:', 'https:'].includes(url.protocol) ||
-      url.username ||
-      url.password
-    )
-      return null;
-    url.search = '';
-    url.hash = '';
-    if (
-      itemId &&
-      itemId !== '.' &&
-      itemId !== '..' &&
-      // eslint-disable-next-line no-control-regex
-      !/[\x00-\x1f]/.test(itemId)
-    ) {
+  const url = base ? readerServiceUrl(base) : null;
+  if (!url) return null;
+  url.search = '';
+  url.hash = '';
+  if (
+    typeof itemId === 'string' &&
+    itemId &&
+    itemId !== '.' &&
+    itemId !== '..' &&
+    !IMAGE_URL_CONTROL_CHARACTERS.test(itemId)
+  ) {
+    try {
       url.pathname = `${url.pathname.replace(/\/+$/, '')}/item/${encodeURIComponent(itemId)}`;
+    } catch {
+      return null;
     }
-    return url.href;
-  } catch {
-    return null;
   }
+  return url.href;
 };
 export const bookMediaForFormat = (
   media: MediaInfo | undefined,

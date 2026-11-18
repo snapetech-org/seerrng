@@ -543,6 +543,49 @@ const comicPub = {
   enabledMediaCategories: { comic: true },
 };
 
+test('Kavita links require a series route', async ({ page }, info) => {
+  await fixtures(page, {
+    pub: comicPub,
+    handle: (path) => {
+      if (path.startsWith('/comic/work/') && !path.endsWith('/issues')) {
+        const valid = path === '/comic/work/al-1';
+        const mediaInfo = {
+          ...owned,
+          readerUrl: valid
+            ? 'https://manga.example.com/kavita/library/2/series/41'
+            : 'https://manga.example.com/settings',
+        };
+        return {
+          json: work({
+            mediaInfo,
+            editions: [ed('11', 'English', { recommended: true, mediaInfo })],
+          }),
+        };
+      }
+      if (path.endsWith('/issues')) return { json: paged([]) };
+    },
+  });
+  const read = page
+    .getByRole('link', { name: 'Read in Kavita' })
+    .filter({ visible: true });
+  await page.goto('/comic/al-1');
+  await expect(read).toHaveAttribute(
+    'href',
+    'https://manga.example.com/kavita/library/2/series/41'
+  );
+  await page.screenshot({
+    path: info.outputPath('kavita-series-link.png'),
+    animations: 'disabled',
+  });
+  await page.goto('/comic/al-2');
+  await expect(page.getByRole('heading', { name: 'Blade Saga' })).toBeVisible();
+  await expect(read).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('kavita-nonseries-link.png'),
+    animations: 'disabled',
+  });
+});
+
 test('an edition not in the library shows its own state, not the owned one', async ({
   page,
 }) => {
