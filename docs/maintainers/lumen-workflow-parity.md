@@ -85,9 +85,11 @@ Person details offer Follow and Unfollow using the native TMDB person
 identity. Updates include Classic’s explanation when the API supplies the
 required fields. Game updates link by catalog ID and patch updates preserve
 the version when present. Updates without a supported detail target link to
-search by title. Standalone browser fixtures verify an expansion explanation,
-a game detail link, and marking an update seen. Matched visual review remains
-open for the expanded update rows.
+search by title. Twelve browser cases passed per deployment using API
+fixtures at desktop, iPhone, Android, and tablet sizes. The bundled cases
+served the production build through Express at `/lumen/`. The suites verify
+expansion and patch explanations, game and version-specific patch links, and
+marking an update seen. Live provider and matched visual review remain open.
 
 Headed Chrome at 1440 × 1000 verified the fixture's `/following` feed and
 `/me` link. Mark Seen removed the row control and unread action after the

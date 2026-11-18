@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('household users can open Following and manage their own updates', async ({
   page,
+  baseURL,
 }) => {
   let seen = false;
   let notify = true;
@@ -27,7 +28,7 @@ test('household users can open Following and manage their own updates', async ({
     if (path === '/follow/events')
       return route.fulfill({
         json: {
-          total: 2,
+          total: 3,
           results: [
             {
               id: 1,
@@ -44,6 +45,26 @@ test('household users can open Following and manage their own updates', async ({
               seen: true,
               follow: { subjectLabel: 'Fixture Game', kind: 'expansion' },
               target: { mediaType: 'game', id: '42' },
+            },
+            {
+              id: 4,
+              title: 'Translation Patch 2',
+              seen: true,
+              follow: {
+                subjectLabel: 'Translation Patch',
+                kind: 'patch-project',
+              },
+              reasonKey: 'newPatchVersion',
+              reasonValues: {
+                project: 'Translation Patch',
+                version: '2',
+                game: 'Fixture Game',
+              },
+              target: {
+                mediaType: 'patch',
+                id: 'translation',
+                variantKey: 'v2',
+              },
             },
           ],
         },
@@ -65,21 +86,30 @@ test('household users can open Following and manage their own updates', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me');
+  await page.goto('./me');
   await page.getByRole('link', { name: 'Open Following', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Following', exact: true })
   ).toBeVisible();
   await expect(page.getByRole('link', { name: 'A New Film' })).toHaveAttribute(
     'href',
-    '/movie/10'
+    new URL('./movie/10', baseURL).pathname
   );
   await expect(
     page.getByRole('link', { name: 'New Story Expansion' })
-  ).toHaveAttribute('href', '/game/game/42');
+  ).toHaveAttribute('href', new URL('./game/game/42', baseURL).pathname);
   await expect(
     page.getByText('New content for Fixture Game: New Story Expansion.')
   ).toBeVisible();
+  await expect(
+    page.getByText('Translation Patch 2 is available for Fixture Game.')
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Translation Patch 2', exact: true })
+  ).toHaveAttribute(
+    'href',
+    new URL('./patches/translation', baseURL).pathname + '?version=v2'
+  );
   await page.getByRole('button', { name: 'Mark Seen: A New Film' }).click();
   await expect(
     page.getByRole('button', { name: 'Mark Seen: A New Film' })
@@ -111,7 +141,7 @@ test('direct navigation without request access does not fetch follows', async ({
           : {},
     });
   });
-  await page.goto('/following');
+  await page.goto('./following');
   await expect(
     page.getByText('Request access is required to use Following.')
   ).toBeVisible();
@@ -156,7 +186,7 @@ test('following a person uses the exact identity and waits for server confirmati
               : {},
     });
   });
-  await page.goto('/person/77');
+  await page.goto('./person/77');
   const follow = page.getByRole('button', { name: 'Follow', exact: true });
   await follow.click();
   await expect(page.getByRole('status')).toContainText('Try again');
