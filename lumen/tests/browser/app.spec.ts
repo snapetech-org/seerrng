@@ -3907,3 +3907,52 @@ test('bundled Share consumes a native image handoff', async ({ page }) => {
     )
   ).toBe(0);
 });
+
+test('Track Requests scopes the queue and confirms manager approval', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let approved = false;
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: true } })
+  );
+  await page.route(/\/api\/v1\/soulseek\/track-requests\?/, (route) =>
+    route.fulfill({
+      json: {
+        results:
+          new URL(route.request().url()).searchParams.get('scope') === 'all'
+            ? [
+                {
+                  id: 7,
+                  title: 'Example Track',
+                  artist: 'Example Artist',
+                  status: approved ? 'searching' : 'pending',
+                  searchCount: 1,
+                  lastMatchCount: 2,
+                  requestedBy: { id: 9, displayName: 'Member' },
+                },
+              ]
+            : [],
+      },
+    })
+  );
+  await page.route('**/api/v1/soulseek/track-requests/7/approve', (route) => {
+    expect(route.request().method()).toBe('POST');
+    approved = true;
+    return route.fulfill({ json: { status: 'searching' } });
+  });
+  await page.goto('/track-requests');
+  await expect(
+    page.getByText('No track requests match these filters.')
+  ).toBeVisible();
+  await page.getByLabel('Scope').selectOption('all');
+  await expect(page.getByText('Requested by Member')).toBeVisible();
+  await page.getByRole('button', { name: 'Approve', exact: true }).click();
+  expect(approved).toBe(false);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Approve' })
+    .click();
+  await expect(page.getByText('Searches: 1 · Last matches: 2')).toBeVisible();
+  expect(approved).toBe(true);
+});

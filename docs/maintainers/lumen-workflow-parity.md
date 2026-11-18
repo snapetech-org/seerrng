@@ -1531,3 +1531,16 @@ The Express route test also verified the no-worker redirect, no-store
 header, and bundled Share page entry. Browser checks used production builds
 served by Vite preview. Physical OS share sheets and matched native visual
 comparisons remain open.
+
+### Track Requests
+
+Music links to the Soulseek track request queue. Lumen shows personal and
+authorized household requests, active and historical status, and search
+progress. The page uses the existing endpoints for manager approval and
+decline and for authorized cancellation.
+
+TypeScript, the standalone production build, and four browser fixtures
+passed for scope selection, approval confirmation, and search readback.
+Live Soulseek, decline and cancellation checks, bundled rendering, matched
+native visual comparison, and track creation from playlist import or song
+identification remain open.

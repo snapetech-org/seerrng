@@ -114,6 +114,9 @@ export function Music() {
       </ExtraHeader>
       <div className="toolbar">
         <CardTitleToggle kinds={['album']} />
+        <Link className="btn btn-quiet btn-sm" to="/track-requests">
+          Track Requests
+        </Link>
         {genre && (
           <button
             className="chip"

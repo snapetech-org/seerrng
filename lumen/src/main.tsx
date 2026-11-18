@@ -43,6 +43,7 @@ import Share from './pages/Share';
 import Soon from './pages/Soon';
 import { Adult, LeagueDetail, SceneDetail, Sports } from './pages/Sports';
 import TmdbList from './pages/TmdbList';
+import TrackRequests from './pages/TrackRequests';
 import Trending from './pages/Trending';
 import TvDetail from './pages/TvDetail';
 import Watchlist from './pages/Watchlist';
@@ -104,6 +105,7 @@ function App() {
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/share" element={<Share />} />
+          <Route path="/track-requests" element={<TrackRequests />} />
           <Route path="/trending" element={<Trending />} />
           <Route
             path="/associations/:mediaType/:id"

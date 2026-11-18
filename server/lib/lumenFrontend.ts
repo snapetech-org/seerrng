@@ -180,6 +180,7 @@ const workflowDestinations = new Map([
   ['/discover/trending', '/trending'],
   ['/discover/providers', '/providers'],
   ['/share', '/share'],
+  ['/track-requests', '/track-requests'],
   ['/discover/adult', '/adult'],
   ['/discover/audiobooks', '/audiobooks'],
   ['/discover/books', '/books'],
