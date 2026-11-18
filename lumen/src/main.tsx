@@ -96,6 +96,7 @@ const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
 const ClientTokens = lazy(() => import('./pages/ClientTokens'));
 const NotificationSettings = lazy(() => import('./pages/NotificationSettings'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
+const CuratedCollection = lazy(() => import('./pages/CuratedCollection'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
@@ -272,6 +273,16 @@ function App() {
                 }
               >
                 <Blocklist />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/collections/:kind/:id"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <CuratedCollection />
               </Suspense>
             }
           />

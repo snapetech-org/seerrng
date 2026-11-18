@@ -338,6 +338,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/calendar', '/lumen/calendar'],
       ['/swipe/', '/lumen/swipe'],
       ['/recordings/', '/lumen/recordings'],
+      ['/collections/tv/19/', '/lumen/collections/tv/19'],
+      [
+        '/collections/music/artist-42?view=discography&extra=1',
+        '/lumen/collections/music/artist-42?view=discography',
+      ],
       ['/coming-soon', '/lumen/soon'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],

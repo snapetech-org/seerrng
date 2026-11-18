@@ -206,6 +206,23 @@ function detailDeepLink(req: Request): string | undefined {
   if (bookGrouping) {
     return `/lumen/${bookGrouping[1].toLowerCase()}/${bookGrouping[2]}`;
   }
+  const curated = /^\/collections\/(tv|music)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(
+    req.path
+  );
+  if (curated) {
+    const [, kind, id] = curated;
+    const query = new URLSearchParams();
+    if (kind === 'music' && req.query.view === 'discography') {
+      query.set('view', 'discography');
+      if (
+        typeof req.query.albumId === 'string' &&
+        /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(req.query.albumId)
+      )
+        query.set('albumId', req.query.albumId);
+    }
+    const suffix = query.toString();
+    return `/lumen/collections/${kind}/${id}${suffix ? `?${suffix}` : ''}`;
+  }
   const catalog =
     /^\/(book|comic|music|artist)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(req.path);
   if (catalog) {

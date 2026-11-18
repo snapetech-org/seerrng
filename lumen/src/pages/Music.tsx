@@ -239,6 +239,12 @@ export function AlbumDetail() {
                 {big(a.stats.totalListenCount)} plays
               </Pill>
             )}
+            <Link
+              className="btn btn-tonal btn-sm"
+              to={`/collections/music/${encodeURIComponent(a.artist.id)}?view=discography&albumId=${encodeURIComponent(a.id)}`}
+            >
+              View Discography
+            </Link>
             <IndexerSearchLink category="music" title={a.title} />
             <AssociationLink mediaType="album" id={id} />
             <BlocklistButton
@@ -309,7 +315,7 @@ export function AlbumDetail() {
 }
 
 export function Artist() {
-  const { id } = useParams();
+  const { id = '' } = useParams();
   const { data: a, error } = useApi<ArtistDetails>(`/artist/${id}`);
   if (error)
     return (
@@ -343,6 +349,12 @@ export function Artist() {
         />
         <div className="dbody">
           <div className="dstatus">
+            <Link
+              className="btn btn-tonal btn-sm"
+              to={`/collections/music/${encodeURIComponent(id)}?view=discography`}
+            >
+              View Discography
+            </Link>
             <IndexerSearchLink category="music" title={a.artist.name} />
             <AssociationLink mediaType="artist" id={id} />
           </div>

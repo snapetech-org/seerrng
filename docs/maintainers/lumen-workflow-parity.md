@@ -2260,3 +2260,15 @@ title's requested variant. Inspected the new retry state against the
 existing Lumen service-error layout in four viewports. Live provider writes
 were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-identity-20261118/`.
+
+Lumen can browse curated series collections and artist discographies.
+Series details load collection names on expansion. Album and artist details
+link to the discography, and album-origin visits can return to that album.
+Direct bookmarks resolve in standalone and bundled locked deployments.
+Collection-wide requests, filters, and availability refresh remain open.
+
+The production build, 28 browser checks, two server routing tests, and
+ten built-image proxy tests passed. Inspected series and discography grids
+using shared Lumen detail and card layouts across four viewports. Live
+catalog providers were outside the check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-collections-20261118/`.

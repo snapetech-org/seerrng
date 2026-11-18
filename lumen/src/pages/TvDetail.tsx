@@ -38,6 +38,7 @@ import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
+import TvCollectionLinks from '../components/TvCollectionLinks';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -397,6 +398,7 @@ export default function TvDetail() {
           />
           <WatchlistButton key={t.id} mediaType="tv" detail={t} />
         </div>
+        <TvCollectionLinks key={t.id} id={t.id} />
         <div className="dacts pc">
           {main}
           {canPlay && missing.length > 0 && (
