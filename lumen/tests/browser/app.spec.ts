@@ -4328,6 +4328,75 @@ test('Media Categories saves only changed instance switches and excludes non-adm
   expect(reads).toBe(adminReads);
 });
 
+test('Instance Age Gate saves changed settings without submitting category drafts', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const ageGate = {
+    defaultRestricted: false,
+    maxMovieCertification: 'PG-13',
+    maxTvCertification: 'TV-14',
+    certificationCountry: 'US',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1) {
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Could not save settings.' },
+        });
+      }
+      Object.assign(ageGate, body.ageGate);
+    }
+    return route.fulfill({
+      json: { enabledMediaCategories: { movie: true }, ageGate },
+    });
+  });
+  await page.goto('/admin/categories');
+  const movies = page.getByRole('checkbox', { name: 'Movies', exact: true });
+  const restricted = page.getByRole('checkbox', {
+    name: 'Restrict Accounts by Default',
+  });
+  const movieLimit = page.getByLabel('Highest Movie Rating');
+  const country = page.getByLabel('Rating Country');
+  const save = page.getByRole('button', { name: 'Save Age Gate' });
+  await movies.uncheck();
+  await restricted.check();
+  await movieLimit.selectOption('PG');
+  await country.fill('c');
+  await expect(save).toBeDisabled();
+  await country.fill('ca');
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not save settings.'
+  );
+  await expect(restricted).toBeChecked();
+  await expect(country).toHaveValue('ca');
+  await save.click();
+  await expect(page.getByText('Age Gate settings saved.')).toBeVisible();
+  await expect(country).toHaveValue('CA');
+  await expect(movies).not.toBeChecked();
+  await expect(
+    page.getByRole('button', { name: 'Save Categories' })
+  ).toBeEnabled();
+  const patch = {
+    ageGate: {
+      defaultRestricted: true,
+      maxMovieCertification: 'PG',
+      certificationCountry: 'CA',
+    },
+  };
+  expect(writes).toEqual([patch, patch]);
+  await page.reload();
+  await expect(restricted).toBeChecked();
+  await expect(movieLimit).toHaveValue('PG');
+  await expect(page.getByLabel('Highest Series Rating')).toHaveValue('TV-14');
+  await expect(movies).toBeChecked();
+});
+
 test('General Settings retains application edits after failure and saves only changed fields', async ({
   page,
 }) => {

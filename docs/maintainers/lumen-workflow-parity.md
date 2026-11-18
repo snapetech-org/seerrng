@@ -1669,5 +1669,8 @@ bookmarks in both deployments and a shared switch list with managed
 account settings. Eight standalone browser cases across the four
 viewport presets verified changed-only saves, reload readback, direct
 route denial, and the existing managed-user category and indexer controls.
-Express and nginx verified the redirects. Instance Age Gate settings,
-bundled workflow rendering, and matched native visual acceptance remain open.
+Express and nginx verified the redirects. The Age Gate section now edits
+the default restriction, movie and series rating ceilings, and country.
+Twelve standalone browser cases verified Age Gate validation and retry,
+independent category drafts, and the managed-user maturity regression path.
+Bundled workflow rendering and matched native visual acceptance remain open.

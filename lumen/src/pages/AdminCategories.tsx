@@ -4,6 +4,9 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import InstanceAgeGate, {
+  type AgeGateSettings,
+} from '../components/InstanceAgeGate';
 import MediaCategorySwitches from '../components/MediaCategorySwitches';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -14,6 +17,7 @@ const path = '/settings/main';
 
 interface CategorySettings {
   enabledMediaCategories?: Record<string, boolean>;
+  ageGate?: AgeGateSettings;
 }
 
 export default function AdminCategories() {
@@ -140,6 +144,7 @@ export default function AdminCategories() {
           </form>
         )}
       </Section>
+      {data?.ageGate && <InstanceAgeGate initial={data.ageGate} />}
     </>
   );
 }

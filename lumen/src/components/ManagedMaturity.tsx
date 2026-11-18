@@ -2,19 +2,12 @@ import { useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { ServiceNote } from './extra';
 
 const fields = [
-  [
-    'movieMaturityRatingLimit',
-    'Movie Rating Limit',
-    ['G', 'PG', 'PG-13', 'R', 'NC-17'],
-  ],
-  [
-    'tvMaturityRatingLimit',
-    'Series Rating Limit',
-    ['TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA'],
-  ],
+  ['movieMaturityRatingLimit', 'Movie Rating Limit', movieCertifications],
+  ['tvMaturityRatingLimit', 'Series Rating Limit', tvCertifications],
 ] as const;
 type Policy = Record<(typeof fields)[number][0], string | null>;
 
