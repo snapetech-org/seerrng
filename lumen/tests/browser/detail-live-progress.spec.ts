@@ -98,7 +98,7 @@ for (const kind of ['movie', 'tv']) {
   });
 }
 
-for (const format of ['ebook', 'audiobook', 'album']) {
+for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
   test(`${format} detail subscribes only to its own queue`, async ({
     page,
   }, info) => {
@@ -120,7 +120,26 @@ for (const format of ['ebook', 'audiobook', 'album']) {
         return route.fulfill({ json: { id: 1, permissions: 2 } });
       if (url.pathname.endsWith('/settings/public'))
         return route.fulfill({
-          json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+          json: {
+            musicEnabled: true,
+            adultEnabled: true,
+            enabledMediaCategories: { music: true, adult: true },
+          },
+        });
+      if (url.pathname.endsWith('/adult/42'))
+        return route.fulfill({
+          json: {
+            id: '42',
+            title: 'Fixture Scene',
+            performers: [],
+            mediaInfo: {
+              id: 1,
+              status: 3,
+              downloadStatus: [
+                { size: 100, sizeLeft: 90, liveDownloadToken: ebook },
+              ],
+            },
+          },
         });
       if (url.pathname.endsWith('/music/42'))
         return route.fulfill({
@@ -173,11 +192,13 @@ for (const format of ['ebook', 'audiobook', 'album']) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto(
-      format === 'album'
-        ? '/music/42'
-        : `/book/OL700W${isAudio ? '?f=audio' : ''}`
-    );
+    const path = {
+      scene: '/adult/42',
+      album: '/music/42',
+      ebook: '/book/OL700W',
+      audiobook: '/book/OL700W?f=audio',
+    }[format]!;
+    await page.goto(path);
     const status = page.locator('.dstatus');
     await expect(
       status.getByText(isAudio ? 'Downloading 30%' : 'Downloading 10%', {

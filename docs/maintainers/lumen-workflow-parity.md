@@ -2011,3 +2011,13 @@ iPad Pro 11. The fixture simulated the server stream.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-album-progress-20261118/`.
+
+Adult scene details show live Whisparr download progress. The request action
+uses progress for its own destination when the viewed scene uses a different
+service. Compared scheduled and live scene states on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The production build and 24 detail browser checks
+passed with synthetic streams. A separate destination's live update and real
+Whisparr connections remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-scene-progress-20261118/`.

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { MoreOnScroll, Section, type Stat } from '../components/cards';
 import { DetailTop, Facts } from '../components/detail';
 import {
@@ -20,6 +20,7 @@ import {
   type Scene,
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
+import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 
 // Sportarr knows whether a league is followed even before SeerrNG has a request for it
 const leagueStat = (l: League): Stat =>
@@ -338,6 +339,16 @@ export function SceneDetail() {
     { currentPathOnly: true }
   );
   const { data: x, error } = detail;
+  const destination =
+    canChoose || serverId === undefined || serverId === defaultId
+      ? x
+      : requestDetail.data;
+  const isAdmin = isAdministrator(user?.permissions);
+  const sceneMedia = useLiveMediaProgress(x?.mediaInfo, isAdmin);
+  const otherDestinationMedia = useLiveMediaProgress(
+    destination !== x ? destination?.mediaInfo : undefined,
+    isAdmin
+  );
   if (error)
     return (
       <ExtraGate k="adult">
@@ -348,15 +359,11 @@ export function SceneDetail() {
       </ExtraGate>
     );
   if (!x) return <div className="detail-loading" aria-busy="true" />;
-  const s = extraStat(x.mediaInfo);
-  const destination =
-    canChoose || serverId === undefined || serverId === defaultId
-      ? x
-      : requestDetail.data;
+  const s = extraStat(sceneMedia);
   const main = destination && (
     <RequestButton
       key={destination.serviceId}
-      stat={extraStat(destination.mediaInfo)}
+      stat={destination === x ? s : extraStat(otherDestinationMedia)}
       request={() =>
         requestExtra('adult', destination.id, canChoose ? serverId : undefined)
       }
