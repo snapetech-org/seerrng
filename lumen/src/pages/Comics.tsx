@@ -29,6 +29,7 @@ import {
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReaderShelf from '../components/ReaderShelf';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { ReaderDownloads } from '../components/RequestFiles';
@@ -648,6 +649,7 @@ export function ComicDetail() {
                 }}
               />
             )}
+            <ReaderDeliveryLink target="comic" />
             <ReaderDownloads
               mediaId={chosen ? shown?.id : undefined}
               type="comic"
@@ -972,6 +974,7 @@ export function MagazineDetail() {
               title={m.title}
               onChange={refresh}
             />
+            <ReaderDeliveryLink target="magazine" />
             <ReaderDownloads mediaId={m.mediaInfo?.id} type="magazine" />
             <ReportIssueButton
               type="magazine"

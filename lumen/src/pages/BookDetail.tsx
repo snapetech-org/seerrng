@@ -29,6 +29,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { ReaderDownloads } from '../components/RequestFiles';
 import { useToast } from '../components/toast';
@@ -486,6 +487,7 @@ export default function BookDetail() {
             title={b.title}
             onChange={first.refresh}
           />
+          <ReaderDeliveryLink target={f} />
           <ReaderDownloads mediaId={b.mediaInfo?.id} type="book" format={f} />
           <ReportIssueButton type="book" title={b.title} media={b.mediaInfo} />
           <WatchlistButton mediaType="book" detail={b} requestedId={plainId} />

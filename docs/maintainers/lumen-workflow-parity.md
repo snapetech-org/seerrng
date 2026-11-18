@@ -2161,3 +2161,15 @@ verified format changes and the submitted destination, profiles, folder, tags,
 and requester. Real service writes were outside the check. Evidence is
 retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-destinations-20261118/`.
+
+Ebook, audiobook, comic, and magazine detail pages now open the configured
+Grimmory or BookOrbit library. The links use the server-selected reader and
+its browser address, including legacy addresses ending in OPDS or Komga
+paths. Unsafe addresses are omitted. The action opens the library, where
+readers can choose a title.
+
+The production build and 56 browser fixture checks passed. Compared the
+same routes with and without usable reader addresses on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. Fixtures verify the destination and new-tab
+behavior. Live provider playback was outside this check. Evidence is retained
+under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-links-20261118/`.
