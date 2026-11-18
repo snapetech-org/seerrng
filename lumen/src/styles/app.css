@@ -941,6 +941,10 @@ body.is-detail .tabbar {
   font-weight: 650;
   overflow-wrap: anywhere;
 }
+.facts2 dd a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .people {
   display: flex;
   gap: 8px;

@@ -28,6 +28,7 @@ import {
   Facts,
   fmtRun,
   Pill,
+  productionCountryLinks,
   SubjectTagsDisclosure,
 } from '../components/detail';
 import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel';
@@ -582,6 +583,10 @@ export default function TvDetail() {
           <aside>
             <Facts
               rows={[
+                [
+                  'Production Countries',
+                  productionCountryLinks(t.productionCountries, '/series'),
+                ],
                 ['Network', t.networks?.map((x) => x.name).join(', ')],
                 [
                   'Status',

@@ -1975,3 +1975,34 @@ test('movie origin country sends the server filter and clears independently', as
   await country.selectOption('');
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('production country links open the matching movie and series filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const productionCountries = [
+    { iso_3166_1: 'CA', name: 'Canada' },
+    { iso_3166_1: 'JP', name: 'Japan' },
+  ];
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({ json: { ...movie, productionCountries } })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [],
+        productionCountries,
+      },
+    })
+  );
+  await page.goto('/movie/101');
+  await page.getByRole('link', { name: 'Canada', exact: true }).click();
+  await expect(page).toHaveURL(/\/movies\?country=CA$/);
+  await page.goto('/tv/202');
+  await page.getByRole('link', { name: 'Japan', exact: true }).click();
+  await expect(page).toHaveURL(/\/series\?country=JP$/);
+});

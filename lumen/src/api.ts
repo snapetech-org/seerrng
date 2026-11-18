@@ -612,6 +612,11 @@ export interface SubjectTag {
   name: string;
 }
 
+export interface ProductionCountry {
+  iso_3166_1: string;
+  name: string;
+}
+
 export interface MovieDetails extends TitleResult {
   onUserWatchlist?: boolean;
   runtime?: number;
@@ -620,6 +625,7 @@ export interface MovieDetails extends TitleResult {
   genres: { id: number; name: string }[];
   credits?: Credits;
   keywords?: SubjectTag[];
+  productionCountries?: ProductionCountry[];
   relatedVideos?: { site: string; key: string; type: string; url: string }[];
   releases?: {
     results: {
@@ -646,6 +652,7 @@ export interface TvDetails extends TitleResult {
   status?: string;
   credits?: Credits;
   keywords?: SubjectTag[];
+  productionCountries?: ProductionCountry[];
   createdBy?: { name: string }[];
   contentRatings?: { results: { iso_3166_1: string; rating: string }[] };
   lastEpisodeToAir?: {

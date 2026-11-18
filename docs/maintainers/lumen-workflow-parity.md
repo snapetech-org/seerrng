@@ -1061,3 +1061,8 @@ from a shared link even when absent from that list. Standalone Movies
 checks covered the request, reload and independent reset across four
 viewport presets. The production-country detail links, live results
 and bundled and native visual comparisons remain open.
+
+Movie and series facts list production countries and link them to the
+matching discovery grid. Standalone browser checks verified both link
+targets and the existing country filter on four viewport presets. Bundled
+and native visual comparison remains open.

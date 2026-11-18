@@ -28,6 +28,7 @@ import {
   Facts,
   fmtRun,
   Pill,
+  productionCountryLinks,
   SubjectTagsDisclosure,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -266,6 +267,10 @@ export default function MovieDetail() {
           <aside>
             <Facts
               rows={[
+                [
+                  'Production Countries',
+                  productionCountryLinks(m.productionCountries, '/movies'),
+                ],
                 ['Runtime', fmtRun(m.runtime)],
                 [
                   'Released',

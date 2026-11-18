@@ -4,6 +4,7 @@ import {
   api,
   tmdbImg,
   type Person,
+  type ProductionCountry,
   type RequestOptions,
   type SubjectTag,
   type VideoDetailPins,
@@ -268,6 +269,24 @@ function VideoDisclosure({
       )}
     </details>
   );
+}
+
+export function productionCountryLinks(
+  countries: ProductionCountry[] | undefined,
+  browse: '/movies' | '/series'
+) {
+  const unique = new Map<string, string>();
+  for (const { iso_3166_1: code, name } of countries ?? []) {
+    if (/^[A-Z]{2}$/.test(code) && !unique.has(code))
+      unique.set(code, name || code);
+  }
+  if (!unique.size) return null;
+  return [...unique].map(([code, name], index) => (
+    <span key={code}>
+      {index > 0 && ', '}
+      <Link to={`${browse}?country=${code}`}>{name}</Link>
+    </span>
+  ));
 }
 
 export function Facts({ rows }: { rows: [string, ReactNode][] }) {
