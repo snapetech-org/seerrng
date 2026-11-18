@@ -2837,3 +2837,80 @@ test('configured search shelves link mixed results and preserve the search term'
     page.getByRole('link', { name: 'Shelf Collection' })
   ).toBeVisible();
 });
+
+test('configured book shelves carry an arbitrary subject into both book formats', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        booksEnabled: true,
+        ebookServiceEnabled: true,
+        audiobookServiceEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/settings/discover', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 24,
+          type: 24,
+          order: 1,
+          enabled: true,
+          title: 'Local History Shelf',
+          data: 'local history',
+        },
+      ],
+    })
+  );
+  const reads: URLSearchParams[] = [];
+  await page.route(/\/api\/v1\/discover\/books\?/, (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    reads.push(query);
+    const audio = query.get('format') === 'audiobook';
+    return route.fulfill({
+      json: paged(
+        query.has('subject')
+          ? [
+              {
+                id: 'OL123W',
+                title: audio ? 'Local History Audio' : 'Local History Book',
+                mediaType: 'book',
+                bookFormat: audio ? 'audiobook' : 'ebook',
+              },
+            ]
+          : []
+      ),
+    });
+  });
+  await page.goto('/');
+  const shelf = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Local History Shelf' }),
+  });
+  await shelf.scrollIntoViewIfNeeded();
+  await expect(
+    shelf.getByRole('link', { name: 'Local History Book' })
+  ).toBeVisible();
+  await shelf.getByRole('link', { name: 'See all' }).click();
+  await expect(page).toHaveURL(/\/books\?subject=local\+history$/);
+  await expect(
+    page.getByRole('link', { name: 'Local History Book' })
+  ).toBeVisible();
+  await page
+    .getByRole('group', { name: 'Format' })
+    .getByRole('link', { name: 'Audiobooks' })
+    .click();
+  await expect(
+    page.getByRole('link', { name: 'Local History Audio' })
+  ).toBeVisible();
+  expect(
+    reads.some(
+      (q) =>
+        q.get('subject') === 'local history' && q.get('format') === 'audiobook'
+    )
+  ).toBe(true);
+  await page.getByRole('button', { name: 'Clear Subject' }).click();
+  await expect(page).toHaveURL(/\/audiobooks\?sort=ranked$/);
+});

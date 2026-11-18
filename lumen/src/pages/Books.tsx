@@ -103,7 +103,10 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p] = useSearchParams();
   const { prefs } = usePrefs();
   const audio = format === 'audiobook';
-  const grid = p.has('show') || p.has('sort') || p.has('genre');
+  const grid =
+    p.has('show') || p.has('sort') || p.has('genre') || p.has('subject');
+  const subject = p.get('subject');
+  const formatQuery = subject ? `?${new URLSearchParams({ subject })}` : '';
   const note = (
     <p className="note" style={{ margin: '-4px 0 14px' }}>
       {audio
@@ -124,11 +127,17 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <div className="seg wide" role="group" aria-label="Format">
-          <Link to="/books" aria-current={!audio ? 'page' : undefined}>
+          <Link
+            to={`/books${formatQuery}`}
+            aria-current={!audio ? 'page' : undefined}
+          >
             <Icon name="book" size="sm" />
             Ebooks
           </Link>
-          <Link to="/audiobooks" aria-current={audio ? 'page' : undefined}>
+          <Link
+            to={`/audiobooks${formatQuery}`}
+            aria-current={audio ? 'page' : undefined}
+          >
             <Icon name="headphones" size="sm" />
             Audiobooks
           </Link>
@@ -366,10 +375,12 @@ function BooksGrid({
   const sorted = show !== 'have' && sort !== 'ranked';
   // nor genres: In library is the whole library (the genre waits in the address for All)
   const genres = show === 'have' ? [] : genresOf(p);
+  const rawSubject = p.get('subject')?.trim() ?? '';
+  const subject = show !== 'have' && rawSubject.length <= 512 ? rawSubject : '';
   const list = usePaged<BookResult>(
     show === 'have'
       ? `/book/library?format=${format}`
-      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${subjectParam(genres)}`
+      : `/discover/books?format=${format}${sorted ? `&sortBy=${sort}` : ''}${subject ? `&subject=${encodeURIComponent(subject)}` : subjectParam(genres)}`
   );
   const audio = format === 'audiobook';
   // the popular feed doesn't say which books are owned: "Not yet" checks the owned list
@@ -430,6 +441,7 @@ function BooksGrid({
   const setGenres = (v: string[]) => {
     const n = new URLSearchParams(p);
     n.delete('genre');
+    n.delete('subject');
     if (v.length) n.set('genre', v.join(','));
     keepList(n);
   };
@@ -448,7 +460,7 @@ function BooksGrid({
             ? 'In your library'
             : genres.length > 2
               ? `${genres.length} genres · ${SORT_TITLES[sort]} ${noun}`
-              : [SORT_TITLES[sort], genres.join(' & '), noun]
+              : [SORT_TITLES[sort], subject || genres.join(' & '), noun]
                   .filter(Boolean)
                   .join(' ')}
         </h2>
@@ -456,6 +468,11 @@ function BooksGrid({
       </div>
       {note}
       <div className="toolbar">
+        {subject && (
+          <button className="chip" type="button" onClick={() => setGenres([])}>
+            Clear Subject
+          </button>
+        )}
         <CardTitleToggle kinds={['book']} />
         <LibrarySeg show={show} pick={upd} />
         {show !== 'have' && <SortMenu sort={sort} pick={setSort} />}

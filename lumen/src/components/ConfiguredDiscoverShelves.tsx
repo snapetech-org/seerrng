@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Paged, VideoSearchResult } from '../api';
+import type { BookResult, Paged, VideoSearchResult } from '../api';
 import { useApi, usePublicSettings } from '../hooks';
 import { PersonCard } from '../pages/People';
 import {
+  BookCard,
   CollectionCard,
   Rail,
   RailSkeleton,
@@ -24,6 +25,7 @@ const videoFilters = new Map<number, { media: 'movie' | 'tv'; filter: string }>(
   ] as const
 );
 const TMDB_SEARCH = 17;
+const BOOK_SUBJECT = 24;
 const TMDB_LIST = 28;
 const positiveId = (value: string, max = 1_000_000_000) =>
   /^[1-9]\d{0,9}$/.test(value) && Number(value) <= max;
@@ -37,21 +39,35 @@ interface DiscoverSlider {
   data?: string;
 }
 
-interface ShelfPage extends Paged<VideoSearchResult> {
+interface ShelfPage extends Paged<VideoSearchResult | BookResult> {
   list?: { name: string };
 }
 
 interface ShelfDestination {
   endpoint: string;
   href: string;
+  books?: boolean;
 }
 
 function shelfDestination(
   slider: DiscoverSlider,
-  categories?: Record<string, boolean>
+  categories: Record<string, boolean> | undefined,
+  bookFormat: 'ebook' | 'audiobook' | undefined
 ): ShelfDestination | undefined {
   const value = slider.data;
   if (typeof value !== 'string') return;
+  if (slider.type === BOOK_SUBJECT) {
+    const subject = value.trim();
+    if (!bookFormat || !subject || subject.length > 512) return;
+    const query = new URLSearchParams({ subject });
+    return {
+      endpoint: `/discover/books?${query}&sortBy=ranked&page=1`,
+      href: `/${bookFormat === 'ebook' ? 'books' : 'audiobooks'}?${query}`,
+      books: true,
+    };
+  }
+
+  if (categories?.movie === false && categories.tv === false) return;
   if (slider.type === TMDB_LIST && positiveId(value, 2_147_483_647)) {
     return {
       endpoint: `/discover/list/${value}?page=1`,
@@ -92,11 +108,12 @@ function shelfDestination(
   };
 }
 
-function VideoShelf({
+function DiscoverShelf({
   id,
   title,
   endpoint,
   href,
+  books,
 }: ShelfDestination & { id: number; title?: string }) {
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -118,12 +135,13 @@ function VideoShelf({
     return () => observer.disconnect();
   }, [visible]);
 
-  const items = data?.results.filter(
-    ({ mediaType }) =>
-      mediaType === 'movie' ||
-      mediaType === 'tv' ||
-      mediaType === 'person' ||
-      mediaType === 'collection'
+  const items = data?.results.filter(({ mediaType }) =>
+    books
+      ? mediaType === 'book'
+      : mediaType === 'movie' ||
+        mediaType === 'tv' ||
+        mediaType === 'person' ||
+        mediaType === 'collection'
   );
   if (items?.length === 0) return null;
 
@@ -137,6 +155,13 @@ function VideoShelf({
           <Rail restoreId={`configured-video-${id}`}>
             {items.map((item) => {
               const key = `${item.mediaType}:${item.id}`;
+              if (item.mediaType === 'book')
+                return (
+                  <BookCard
+                    key={`${key}:${item.bookFormat ?? 'ebook'}`}
+                    b={item}
+                  />
+                );
               if (item.mediaType === 'collection')
                 return <CollectionCard key={key} collection={item} />;
               if (item.mediaType === 'person')
@@ -163,10 +188,24 @@ function VideoShelf({
   );
 }
 
-export function ConfiguredVideoShelves() {
+export function ConfiguredDiscoverShelves({
+  showBooks,
+}: {
+  showBooks: boolean;
+}) {
   const settings = usePublicSettings();
   const categories = settings?.enabledMediaCategories;
-  const visible = categories?.movie !== false || categories?.tv !== false;
+  const ebook =
+    showBooks &&
+    categories?.ebook !== false &&
+    (settings?.ebookServiceEnabled ?? settings?.booksEnabled);
+  const audio =
+    showBooks &&
+    categories?.audiobook !== false &&
+    (settings?.audiobookServiceEnabled ?? settings?.booksEnabled);
+  const bookFormat = ebook ? 'ebook' : audio ? 'audiobook' : undefined;
+  const visible =
+    !!bookFormat || categories?.movie !== false || categories?.tv !== false;
   const { data } = useApi<DiscoverSlider[]>(
     visible ? '/settings/discover' : null
   );
@@ -176,9 +215,9 @@ export function ConfiguredVideoShelves() {
     .filter((slider) => slider.enabled)
     .sort((a, b) => a.order - b.order)
     .map((slider) => {
-      const destination = shelfDestination(slider, categories);
+      const destination = shelfDestination(slider, categories, bookFormat);
       return destination ? (
-        <VideoShelf
+        <DiscoverShelf
           key={`${slider.id}:${destination.endpoint}`}
           id={slider.id}
           title={slider.title}

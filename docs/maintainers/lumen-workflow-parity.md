@@ -1357,3 +1357,10 @@ Twelve standalone checks passed across desktop, iPhone, Android and
 tablet, including a mixed-result shelf with overlapping numeric IDs and
 a term containing punctuation. Live results and matched visual
 comparisons remain open.
+
+Configured Open Library book-subject shelves now appear in Discover.
+See All carries the source subject into Books or Audiobooks, and the
+format switch retains that subject. Bundled native book bookmarks also
+preserve it. Eight standalone checks across four viewport presets and
+the bundled redirect tests passed. Live provider results and matched
+visual comparisons remain open.

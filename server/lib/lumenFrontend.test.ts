@@ -237,6 +237,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/trending?mediaType=tv&timeWindow=week',
       ],
       ['/discover/trending?mediaType=book', '/lumen/books'],
+      [
+        '/discover/books?subject=local+history',
+        '/lumen/books?subject=local+history',
+      ],
       ['/discover/games', '/lumen/games'],
       ['/discover/patches?kind=hack', '/lumen/patches?kind=hack'],
       ['/discover/audiobooks', '/lumen/audiobooks'],

@@ -21,7 +21,7 @@ import {
   TitleCard,
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
-import { ConfiguredVideoShelves } from '../components/ConfiguredVideoShelves';
+import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
 import { Avatar } from '../components/Shell';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
@@ -375,7 +375,7 @@ export default function Discover() {
         </Section>
       )}
 
-      <ConfiguredVideoShelves />
+      <ConfiguredDiscoverShelves showBooks={books_} />
 
       {on.genres && genres.data && (
         <Section title="Browse by genre">

@@ -169,6 +169,8 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
   '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
   '/trending': ['mediaType', 'timeWindow'],
+  '/books': ['subject'],
+  '/audiobooks': ['subject'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
   '/indexer-search': ['query', 'category'],
   '/issues': ['issue'],
@@ -193,7 +195,11 @@ function workflowDeepLink(req: Request): string | undefined {
 
   for (const key of workflowQueryKeys[destination] ?? []) {
     const value = req.query[key];
-    if (typeof value === 'string' && value.length <= 256) query.set(key, value);
+    if (
+      typeof value === 'string' &&
+      value.length <= (key === 'subject' ? 512 : 256)
+    )
+      query.set(key, value);
   }
 
   if (
