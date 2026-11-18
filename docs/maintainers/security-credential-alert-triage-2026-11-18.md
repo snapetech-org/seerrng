@@ -14,3 +14,11 @@ was changed.
 
 Verified that neither rule has any open alerts. CodeQL remains disabled
 under the owner directive.
+
+## Token validation and storage
+
+Dismissed alerts 659–661 after confirming that the session middleware
+instances belong to Express fixtures excluded from the server build.
+Dismissed alert 652 because the locale cookie stores only a validated
+display language. Alert 653 is still open for the OIDC correlation cookie
+and needs a separate production-path review.

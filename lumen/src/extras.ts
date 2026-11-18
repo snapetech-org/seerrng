@@ -398,18 +398,26 @@ export interface Magazine {
   mediaInfo?: MediaInfo;
 }
 
-// ComicVine descriptions are HTML; show them as plain paragraphs
+const comicDescriptionEntities: Record<string, string> = {
+  '&nbsp;': ' ',
+  '&amp;': '&',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#039;': "'",
+  '&lt;': '<',
+  '&gt;': '>',
+};
+
+// ComicVine descriptions are HTML; show them as plain paragraphs.
 export const plainText = (html?: string) =>
-  (html || '')
+  (typeof html === 'string' ? html : '')
     .replace(/<\/(p|h\d|li|div)>/gi, '\n')
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(
+      /&(?:nbsp|amp|quot|#0?39|lt|gt);/g,
+      (entity) => comicDescriptionEntities[entity]
+    )
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean);

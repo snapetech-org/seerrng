@@ -190,6 +190,8 @@ const oshiVolume = {
   edition: 'en',
   anilistId: 117195,
   label: 'Manga · English edition · Yen Press · 13 vols',
+  description:
+    '<p>Cover &amp; story</p><p>Literal &amp;lt; and &lt; symbols.</p>',
 };
 
 async function fixtures(
@@ -671,12 +673,22 @@ test('requests list a manga with its cover, progress and volumes in', async ({
   );
 });
 
-test('a ComicVine link from Requests opens the work page', async ({ page }) => {
+test('a ComicVine link from Requests opens the work page', async ({
+  page,
+}, info) => {
   await fixtures(page);
   await page.goto('/comic/147500');
   await expect(page.locator('article.detail h1')).toHaveText('[Oshi no Ko]');
   await expect(page.getByText('Manga, English edition')).toBeVisible();
   await expect(page.locator('.h2', { hasText: 'Volumes' })).toBeVisible();
+  await expect(page.getByText('Cover & story', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Literal &lt; and < symbols.', { exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('comic-description.png'),
+    animations: 'disabled',
+  });
 });
 
 for (const width of [360, 768, 1280]) {

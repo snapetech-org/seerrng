@@ -2596,3 +2596,10 @@ trust boundary. Both frontend routing integration tests passed,
 including deep links and the distinction between shell and asset
 responses. GitHub alert 671 remains open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shell-ratelimit-20261118.log`.
+
+ComicVine description formatting now decodes supported entities in one
+pass and renders the result as React text. Compared comic details on
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and
+seven browser checks passed, with nine responsive-test skips. GitHub
+finding 647 remains open on earlier code. Evidence is retained under
+`seerrng-lumen-comic-text*` in `/mnt/disks/scratch/task-deliverables/`.
