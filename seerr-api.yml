@@ -23320,7 +23320,10 @@ paths:
                     example: 403
                   code:
                     type: string
-                    enum: [STREAMING_REQUEST_POLICY_REJECTED, TV_SEASON_WATCH_GATE]
+                    enum:
+                      - STREAMING_REQUEST_POLICY_REJECTED
+                      - TV_SEASON_WATCH_GATE
+                      - REQUEST_QUOTA_EXCEEDED
                   reason:
                     type: string
                     enum: [account-required]
