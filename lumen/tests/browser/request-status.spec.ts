@@ -478,8 +478,10 @@ test('a bookmarked TV request shows its season and episode selection', async ({
   page,
 }) => {
   await fixture(page, undefined);
-  await page.route('**/api/v1/request/status/615', (route) =>
-    route.fulfill({
+  let attempts = 0;
+  await page.route('**/api/v1/request/status/615', (route) => {
+    if (++attempts === 1) return route.fulfill({ json: {} });
+    return route.fulfill({
       json: {
         request: {
           id: 615,
@@ -497,10 +499,15 @@ test('a bookmarked TV request shows its season and episode selection', async ({
         current: { stage: 'requested', attempt: 1 },
         history: { results: [], total: 0 },
       },
-    })
-  );
+    });
+  });
   await page.goto('/requests?requestId=615');
-  const seasons = page.getByRole('list', { name: 'Requested seasons' });
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  await expect(
+    history.getByText('Invalid request history response.')
+  ).toBeVisible();
+  await history.getByRole('button', { name: 'Retry' }).click();
+  const seasons = history.getByRole('list', { name: 'Requested seasons' });
   await expect(seasons.getByRole('listitem')).toHaveText([
     /Specials.*Episodes 2 · Declined/,
     /Season 2.*Episodes 3, 5 · Approved/,

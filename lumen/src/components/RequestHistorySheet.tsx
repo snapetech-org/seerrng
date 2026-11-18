@@ -160,9 +160,16 @@ export default function RequestHistorySheet({
   const [showFiles, setShowFiles] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useDialog(ref, close);
-  const { data, error, reload } = useApi<RequestHistory>(
-    `/request/status/${id}`
-  );
+  const history = useApi<RequestHistory>(`/request/status/${id}`);
+  const data =
+    typeof history.data?.current?.stage === 'string' &&
+    Array.isArray(history.data?.history?.results)
+      ? history.data
+      : null;
+  const error =
+    history.error ||
+    (history.data && !data ? 'Invalid request history response.' : null);
+  const reload = history.reload;
 
   const [resolvedTitle, setResolvedTitle] = useState<string>();
   const request = data?.request;
