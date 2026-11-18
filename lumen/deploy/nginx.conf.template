@@ -260,7 +260,13 @@ server {
     return 302 /admin/media-libraries;
   }
   location ~ ^/settings/services/?$ {
-    if ($arg_settingsSearchTarget = prowlarr) { return 302 /admin/prowlarr; }
+    if ($arg_settingsSearchTarget ~ ^prowlarr(-|$)) { return 302 /admin/prowlarr; }
+    if ($arg_settingsSearchTarget ~ ^download-clients-) { return 302 /admin/download-clients; }
+    if ($arg_settingsSearchTarget ~ ^slskdn-) { return 302 /admin/soulseek; }
+    if ($arg_settingsSearchTarget ~ ^tunerr-) { return 302 /admin/tunerr; }
+    if ($arg_settingsSearchTarget ~ ^reader-) { return 302 /admin/reader-delivery; }
+    if ($arg_settingsSearchTarget ~ ^readmeabook-) { return 302 /admin/readmeabook; }
+    if ($arg_settingsSearchTarget = steamApiKey) { return 302 /admin/software-acquisition; }
     return 302 /admin;
   }
   location ~ ^/settings/main/?$ {

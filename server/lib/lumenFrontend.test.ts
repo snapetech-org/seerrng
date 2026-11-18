@@ -129,6 +129,20 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       '/lumen/settings/services?settingsSearchTarget=prowlarr'
     );
     assert.equal(legacyProwlarr.headers.location, '/lumen/admin/prowlarr');
+    for (const [target, service] of [
+      ['download-clients-settings-title', 'download-clients'],
+      ['slskdn-settings-title', 'soulseek'],
+      ['tunerr-settings-title', 'tunerr'],
+      ['reader-settings-title', 'reader-delivery'],
+      ['readmeabook-settings-title', 'readmeabook'],
+      ['steamApiKey', 'software-acquisition'],
+    ]) {
+      const bookmark = await request(app).get(
+        `/lumen/settings/services?settingsSearchTarget=${target}`
+      );
+      assert.equal(bookmark.status, 302);
+      assert.equal(bookmark.headers.location, `/lumen/admin/${service}`);
+    }
     const admin = await request(app).get('/lumen/admin');
     assert.equal(admin.status, 200);
     assert.match(admin.text, /Lumen/);

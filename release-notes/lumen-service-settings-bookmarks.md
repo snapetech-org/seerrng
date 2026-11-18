@@ -1,0 +1,1 @@
+- Classic service settings search links open the matching administration page in bundled and standalone Lumen.

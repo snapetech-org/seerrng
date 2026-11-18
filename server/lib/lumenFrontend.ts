@@ -845,10 +845,21 @@ export const mountLumenFrontend = (
     } else if (section === 'plex' || section === 'jellyfin') {
       destination = '/admin/media-libraries';
     } else if (section === 'services') {
-      destination =
-        req.query.settingsSearchTarget === 'prowlarr'
-          ? '/admin/prowlarr'
-          : '/admin';
+      const target = req.query.settingsSearchTarget;
+      const targets = [
+        [/^prowlarr(?:-|$)/, 'prowlarr'],
+        [/^download-clients-/, 'download-clients'],
+        [/^slskdn-/, 'soulseek'],
+        [/^tunerr-/, 'tunerr'],
+        [/^reader-/, 'reader-delivery'],
+        [/^readmeabook-/, 'readmeabook'],
+        [/^steamApiKey$/, 'software-acquisition'],
+      ] as const;
+      const service =
+        typeof target === 'string'
+          ? targets.find(([pattern]) => pattern.test(target))?.[1]
+          : undefined;
+      destination = service ? `/admin/${service}` : '/admin';
     } else if (!section || section === 'main' || section === 'users') {
       const target = req.query.settingsSearchTarget;
       destination =

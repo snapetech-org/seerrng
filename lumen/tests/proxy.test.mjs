@@ -224,6 +224,18 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/plex', '/admin/media-libraries'],
       ['/settings/jellyfin/', '/admin/media-libraries'],
       ['/settings/services?settingsSearchTarget=prowlarr', '/admin/prowlarr'],
+      ...[
+        ['prowlarr-settings-title', 'prowlarr'],
+        ['download-clients-settings-title', 'download-clients'],
+        ['slskdn-settings-title', 'soulseek'],
+        ['tunerr-settings-title', 'tunerr'],
+        ['reader-settings-title', 'reader-delivery'],
+        ['readmeabook-settings-title', 'readmeabook'],
+        ['steamApiKey', 'software-acquisition'],
+      ].map(([searchTarget, service]) => [
+        `/settings/services?settingsSearchTarget=${searchTarget}`,
+        `/admin/${service}`,
+      ]),
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);
