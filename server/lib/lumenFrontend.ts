@@ -550,7 +550,8 @@ function workflowDeepLink(
       type === 'tv' ||
       type === 'comic' ||
       type === 'author' ||
-      type === 'magazine'
+      type === 'magazine' ||
+      type === 'sports'
     ) {
       query.set('f', type);
       if (type === 'movie' || type === 'tv') {

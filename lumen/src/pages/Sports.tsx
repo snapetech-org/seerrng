@@ -32,6 +32,20 @@ const leagueStat = (l: League): Stat =>
       ? { k: 'wait', word: 'Requested', ico: 'clock' }
       : null);
 
+export function LeagueCard({ league: l }: { league: League }) {
+  return (
+    <ExtraCard
+      href={`/sportarr/${encodeURIComponent(l.id)}`}
+      img={l.posterPath}
+      title={l.title}
+      shape="sq"
+      icon="trophy"
+      stat={leagueStat(l)}
+      meta={[l.sport, l.country].filter(Boolean).join(' · ')}
+    />
+  );
+}
+
 function useSearchBox() {
   const [p, setP] = useSearchParams();
   const query = p.get('q') || '';
@@ -93,16 +107,7 @@ export function Sports() {
       )}
       <div className="sqg grid">
         {list.items.map((l) => (
-          <ExtraCard
-            key={l.id}
-            href={`/sportarr/${encodeURIComponent(l.id)}`}
-            img={l.posterPath}
-            title={l.title}
-            shape="sq"
-            icon="trophy"
-            stat={leagueStat(l)}
-            meta={[l.sport, l.country].filter(Boolean).join(' · ')}
-          />
+          <LeagueCard key={l.id} league={l} />
         ))}
       </div>
       <MoreOnScroll

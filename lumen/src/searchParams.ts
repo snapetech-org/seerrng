@@ -12,7 +12,8 @@ export function normalizeSearchParams(params: URLSearchParams) {
       type === 'tv' ||
       type === 'comic' ||
       type === 'author' ||
-      type === 'magazine'
+      type === 'magazine' ||
+      type === 'sports'
     )
       normalized.set('f', type);
     if (type === 'music' || type === 'album') normalized.set('f', 'music');
@@ -94,6 +95,8 @@ export function scopedSearchPath(
   term: string
 ) {
   const page = String(searchResultPage(params));
+  if (scope === 'sports')
+    return '/discover/sports?' + new URLSearchParams({ query: term, page });
   if (scope === 'movie' || scope === 'tv') {
     const filters = readFilters(params, videoFilterKeys);
     if (filters.size) {

@@ -7163,3 +7163,38 @@ test('Classic magazine bookmarks keep the search scope and link to magazine deta
     page.getByRole('link', { name: 'Fixture Magazine' })
   ).toHaveAttribute('href', '/magazine/Fixture%20Magazine');
 });
+
+test('Classic sports search bookmarks open the requested page of Sportarr leagues', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/sports?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    expect(query.get('query')).toBe('Fixture');
+    expect(query.get('page')).toBe('2');
+    return route.fulfill({
+      json: {
+        ...paged([
+          {
+            mediaType: 'sports',
+            id: '42',
+            title: 'Fixture League',
+            libraryState: 'monitored',
+          },
+        ]),
+        page: 2,
+        totalPages: 2,
+      },
+    });
+  });
+  await page.goto('/search?query=Fixture&type=sports&page=2');
+  await expect(
+    page.getByRole('button', { name: 'Sports', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    page.getByRole('link', { name: 'Fixture League' })
+  ).toHaveAttribute('href', '/sportarr/42');
+  await expect(
+    page.getByRole('navigation', { name: 'Search Result Pages' })
+  ).toContainText('Page 2');
+});

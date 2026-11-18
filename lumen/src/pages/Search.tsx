@@ -27,6 +27,7 @@ import {
   useExtras,
   type Album,
   type ComicWork,
+  type League,
   type Magazine,
 } from '../extras';
 import { cachedApi, useApi } from '../hooks';
@@ -47,6 +48,7 @@ import {
 import { usePrefs } from '../settings';
 import { AlbumCard } from './Music';
 import { PersonCard } from './People';
+import { LeagueCard } from './Sports';
 
 const SCOPES = {
   all: 'All',
@@ -58,11 +60,12 @@ const SCOPES = {
   author: 'Authors',
   music: 'Music',
   magazine: 'Magazines',
+  sports: 'Sports',
 } as const;
 type AuthorResult = { mediaType: 'author'; id: string; name: string };
 type ArtistResult = { mediaType: 'artist'; id: string; name: string };
 type SearchResult =
-  VideoSearchResult | AuthorResult | ArtistResult | Album | Magazine;
+  VideoSearchResult | AuthorResult | ArtistResult | Album | Magazine | League;
 type Scope = keyof typeof SCOPES;
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
@@ -91,6 +94,7 @@ export default function Search() {
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const musicOn = extras.list.some((e) => e.key === 'music');
   const magazinesOn = extras.list.some((e) => e.key === 'magazine');
+  const sportsOn = extras.list.some((e) => e.key === 'sports');
   const term0 = (p.get('q') || '').trim();
   const titlePath = scopedSearchPath(p, f, term0);
   const hasVideoFilters =
@@ -106,7 +110,8 @@ export default function Search() {
       f === 'tv' ||
       f === 'author' ||
       f === 'music' ||
-      f === 'magazine');
+      f === 'magazine' ||
+      f === 'sports');
   const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
@@ -138,7 +143,8 @@ export default function Search() {
       (prefs.showBooks || (s !== 'ebook' && s !== 'audio' && s !== 'author')) &&
       (comicsOn || s !== 'comic' || f === 'comic') &&
       (musicOn || s !== 'music' || f === 'music') &&
-      (magazinesOn || s !== 'magazine' || f === 'magazine')
+      (magazinesOn || s !== 'magazine' || f === 'magazine') &&
+      (sportsOn || s !== 'sports' || f === 'sports')
   );
 
   // The box follows the address only when something else changed it (Back, a recent search,
@@ -203,7 +209,7 @@ export default function Search() {
       const foundTitles = (tr?.results || []).filter(({ mediaType }) => {
         if (f === 'music')
           return mediaType === 'album' || mediaType === 'artist';
-        if (f === 'author' || f === 'tv' || f === 'magazine')
+        if (f === 'author' || f === 'tv' || f === 'magazine' || f === 'sports')
           return mediaType === f;
         if (f === 'movie')
           return mediaType === 'movie' || mediaType === 'collection';
@@ -325,6 +331,9 @@ export default function Search() {
   const magazines = (titles || []).filter(
     (item): item is Magazine => item.mediaType === 'magazine'
   );
+  const leagues = (titles || []).filter(
+    (item): item is League => item.mediaType === 'sports'
+  );
   const bookCards = books || [];
   const comicCards = comics || [];
   const nothing =
@@ -339,6 +348,7 @@ export default function Search() {
     !albums.length &&
     !artists.length &&
     !magazines.length &&
+    !leagues.length &&
     !bookCards.length &&
     !comicCards.length;
 
@@ -616,6 +626,15 @@ export default function Search() {
             <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
               {bookCards.map((b) => (
                 <BookCard key={`${b.id}:${b.bookFormat ?? ''}`} b={b} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!leagues.length && (
+          <Section title="Leagues">
+            <div className="sqg grid">
+              {leagues.map((league) => (
+                <LeagueCard key={league.id} league={league} />
               ))}
             </div>
           </Section>
