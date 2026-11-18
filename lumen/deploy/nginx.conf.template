@@ -145,7 +145,7 @@ server {
   location ~ ^/profile/settings/client-tokens/?$ {
     return 302 /me/account/client-tokens;
   }
-  location ~ ^/profile/settings/notifications/email/?$ {
+  location ~ ^/profile/settings/notifications/(email|telegram)/?$ {
     return 302 /me/account/notifications;
   }
   location ~ ^/profile/settings/(main|password)/?$ {

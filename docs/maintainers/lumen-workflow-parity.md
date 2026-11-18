@@ -677,3 +677,14 @@ and asks for confirmation before removal.
 Standalone Chrome verified a synthetic armored public-key save and confirmed
 removal through a fixture that accepted only key changes. Live encryption
 and delivery, native comparison, mobile and bundled checks remain open.
+
+### Personal Telegram notifications increment
+
+Notification Settings supports Telegram chat and forum topic IDs, silent
+delivery, and notification events when Telegram is enabled on the server.
+The Telegram form sends only Telegram settings.
+
+Standalone Chrome verified a negative group chat ID, a topic, silent
+delivery and Media available preferences against a synthetic endpoint.
+Live bot delivery, native visual comparison, mobile and bundled checks
+remain open.

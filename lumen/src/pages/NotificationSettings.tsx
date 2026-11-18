@@ -8,7 +8,7 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-const emailEvents = [
+const notificationEvents = [
   [2, 'Request awaiting approval'],
   [4, 'Request approved'],
   [8, 'Media available'],
@@ -28,10 +28,41 @@ const emailEvents = [
 interface Preferences {
   emailEnabled?: boolean;
   pgpKey?: string | null;
-  notificationTypes: { email?: number };
+  telegramEnabled?: boolean;
+  telegramBotUsername?: string;
+  telegramChatId?: string | null;
+  telegramMessageThreadId?: string | null;
+  telegramSendSilently?: boolean | null;
+  notificationTypes: { email?: number; telegram?: number };
 }
 
 const defaultMask = 65534; // Native default includes all current bits and the test bit.
+
+function EventChoices({
+  mask,
+  disabled,
+  change,
+}: {
+  mask: number;
+  disabled: boolean;
+  change: (mask: number) => void;
+}) {
+  return (
+    <div className="setlist">
+      {notificationEvents.map(([bit, label]) => (
+        <label key={bit} className="set cfg-row">
+          <b>{label}</b>
+          <input
+            type="checkbox"
+            disabled={disabled}
+            checked={(BigInt(mask) & BigInt(bit)) !== 0n}
+            onChange={() => change(Number(BigInt(mask) ^ BigInt(bit)))}
+          />
+        </label>
+      ))}
+    </div>
+  );
+}
 
 function EmailForm({ path, mask }: { path: string; mask: number }) {
   const [saved, setSaved] = useState(mask);
@@ -78,21 +109,7 @@ function EmailForm({ path, mask }: { path: string; mask: number }) {
       }}
     >
       <p className="note">Choose which events SeerrNG can email you about.</p>
-      <div className="setlist">
-        {emailEvents.map(([bit, label]) => (
-          <label key={bit} className="set cfg-row">
-            <b>{label}</b>
-            <input
-              type="checkbox"
-              disabled={busy}
-              checked={(BigInt(draft) & BigInt(bit)) !== 0n}
-              onChange={() =>
-                setDraft((current) => Number(BigInt(current) ^ BigInt(bit)))
-              }
-            />
-          </label>
-        ))}
-      </div>
+      <EventChoices mask={draft} disabled={busy} change={setDraft} />
       {notice && (
         <p className="note" role="status">
           {notice}
@@ -261,6 +278,173 @@ function OpenPgpForm({
   );
 }
 
+function telegramValues(data: Preferences) {
+  return {
+    chatId: data.telegramChatId ?? '',
+    threadId: data.telegramMessageThreadId ?? '',
+    silent: data.telegramSendSilently === true,
+    mask: data.notificationTypes?.telegram ?? 0,
+  };
+}
+
+function TelegramForm({ path, data }: { path: string; data: Preferences }) {
+  const [saved, setSaved] = useState(() => telegramValues(data));
+  const [draft, setDraft] = useState(saved);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+  const chatId = draft.chatId.trim();
+  const threadId = draft.threadId.trim();
+  const changed =
+    chatId !== saved.chatId ||
+    threadId !== saved.threadId ||
+    draft.silent !== saved.silent ||
+    draft.mask !== saved.mask;
+
+  async function save() {
+    if (pending.current || !changed) return;
+    setNotice('');
+    if ((chatId || draft.mask !== 0) && !/^-?\d+$/.test(chatId)) {
+      setError('Enter a numeric Telegram chat ID.');
+      return;
+    }
+    if (threadId && !/^\d+$/.test(threadId)) {
+      setError('Enter a numeric topic ID or leave it blank.');
+      return;
+    }
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      const result = await api<Preferences>(path, {
+        method: 'POST',
+        body: JSON.stringify({
+          telegramChatId: chatId || null,
+          telegramMessageThreadId: threadId || null,
+          telegramSendSilently: draft.silent,
+          notificationTypes: { telegram: draft.mask },
+        }),
+      });
+      if (generation !== sessionGeneration()) return;
+      const confirmed = telegramValues(result);
+      if (
+        confirmed.chatId !== chatId ||
+        confirmed.threadId !== threadId ||
+        confirmed.silent !== draft.silent ||
+        result.notificationTypes?.telegram !== draft.mask
+      ) {
+        setError('Could not confirm the saved Telegram settings. Try again.');
+        return;
+      }
+      forget(path);
+      setSaved(confirmed);
+      setDraft(confirmed);
+      setNotice('Telegram settings saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setError('Could not save Telegram settings. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  const bot = data.telegramBotUsername;
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <p className="note">
+        Start a conversation with the configured Telegram bot before enabling
+        notifications.
+        {bot && /^[A-Za-z0-9_]+$/.test(bot) && (
+          <>
+            {' '}
+            <a
+              className="go"
+              href={`https://t.me/${bot}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open @{bot}
+            </a>
+          </>
+        )}
+      </p>
+      <div className="setlist">
+        <label className="set cfg-row">
+          <b>Chat ID</b>
+          <input
+            className="cfg-input"
+            type="text"
+            maxLength={128}
+            value={draft.chatId}
+            disabled={busy}
+            onChange={(event) =>
+              setDraft({ ...draft, chatId: event.target.value })
+            }
+          />
+        </label>
+        <label className="set cfg-row">
+          <span>
+            <b>Topic ID</b>
+            <small>Optional for forum topics.</small>
+          </span>
+          <input
+            className="cfg-input"
+            type="text"
+            inputMode="numeric"
+            aria-label="Topic ID"
+            maxLength={128}
+            value={draft.threadId}
+            disabled={busy}
+            onChange={(event) =>
+              setDraft({ ...draft, threadId: event.target.value })
+            }
+          />
+        </label>
+        <label className="set cfg-row">
+          <b>Send Silently</b>
+          <input
+            type="checkbox"
+            checked={draft.silent}
+            disabled={busy}
+            onChange={(event) =>
+              setDraft({ ...draft, silent: event.target.checked })
+            }
+          />
+        </label>
+      </div>
+      <p className="note">Choose the events to send to Telegram.</p>
+      <EventChoices
+        mask={draft.mask}
+        disabled={busy}
+        change={(mask) => setDraft({ ...draft, mask })}
+      />
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="toolbar">
+        <button className="btn btn-tonal" disabled={busy || !changed}>
+          {busy ? 'Saving…' : 'Save Telegram Settings'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function UserNotifications({ id }: { id: number }) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -272,31 +456,46 @@ function UserNotifications({ id }: { id: number }) {
       ? emailMask
       : defaultMask;
   return (
-    <Section title="Email">
-      <ServiceNote error={error} what="notification settings" retry={reload} />
-      {!data && !error && (
-        <p className="note" role="status">
-          Loading notification settings…
-        </p>
-      )}
-      {data &&
-        (data.emailEnabled ? (
-          <>
-            <EmailForm key={mask} path={path} mask={mask} />
-            <Section title="OpenPGP">
-              <OpenPgpForm
-                path={path}
-                configured={!!data.pgpKey}
-                key={String(!!data.pgpKey)}
-              />
-            </Section>
-          </>
-        ) : (
-          <p className="note">
-            Email notifications are disabled on this server.
+    <>
+      <Section title="Email">
+        <ServiceNote
+          error={error}
+          what="notification settings"
+          retry={reload}
+        />
+        {!data && !error && (
+          <p className="note" role="status">
+            Loading notification settings…
           </p>
-        ))}
-    </Section>
+        )}
+        {data &&
+          (data.emailEnabled ? (
+            <>
+              <EmailForm key={mask} path={path} mask={mask} />
+              <Section title="OpenPGP">
+                <OpenPgpForm
+                  path={path}
+                  configured={!!data.pgpKey}
+                  key={String(!!data.pgpKey)}
+                />
+              </Section>
+            </>
+          ) : (
+            <p className="note">
+              Email notifications are disabled on this server.
+            </p>
+          ))}
+      </Section>
+      {data?.telegramEnabled && (
+        <Section title="Telegram">
+          <TelegramForm
+            key={JSON.stringify(telegramValues(data))}
+            path={path}
+            data={data}
+          />
+        </Section>
+      )}
+    </>
   );
 }
 
