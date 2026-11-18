@@ -9,6 +9,7 @@ import ImportMediaServerUsers from '../components/ImportMediaServerUsers';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
+import ManagedPassword from '../components/ManagedPassword';
 import ManagedPermissions from '../components/ManagedPermissions';
 import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
@@ -283,6 +284,7 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
+  const [passwordUser, setPasswordUser] = useState<number>();
   const [profileUser, setProfileUser] = useState<number>();
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
@@ -332,14 +334,29 @@ export default function AdminUsers() {
     );
   }
 
-  function canEditUserEmail(target: DirectoryUser) {
+  function canManageAuthentication(target: DirectoryUser) {
     return (
       !!actor &&
-      target.userType !== undefined &&
-      target.userType !== 1 &&
       (actor.id === target.id ||
         (actor.permissions & 2) !== 0 ||
         (BigInt(target.permissions) & ~BigInt(actor.permissions)) === 0n)
+    );
+  }
+
+  function canEditUserEmail(target: DirectoryUser) {
+    return (
+      target.userType !== undefined &&
+      target.userType !== 1 &&
+      canManageAuthentication(target)
+    );
+  }
+
+  function canSetUserPassword(target: DirectoryUser) {
+    return (
+      actor?.id !== target.id &&
+      target.id !== 1 &&
+      (target.permissions & 2) === 0 &&
+      canManageAuthentication(target)
     );
   }
 
@@ -625,6 +642,24 @@ export default function AdminUsers() {
                     )}
                   </>
                 )}
+              {canSetUserPassword(user) && (
+                <>
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    aria-expanded={passwordUser === user.id}
+                    onClick={() =>
+                      setPasswordUser(
+                        passwordUser === user.id ? undefined : user.id
+                      )
+                    }
+                  >
+                    Set Local Password
+                  </button>
+                  {passwordUser === user.id && (
+                    <ManagedPassword id={user.id} name={user.displayName} />
+                  )}
+                </>
+              )}
               {canDelete(user) && (
                 <button
                   className="btn btn-quiet btn-sm"

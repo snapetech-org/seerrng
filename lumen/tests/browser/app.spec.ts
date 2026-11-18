@@ -5042,3 +5042,53 @@ test('Users edits local email and keeps Plex email provider-managed', async ({
     local.getByText('new@example.test', { exact: true })
   ).toBeVisible();
 });
+
+test('Users confirms a managed local password and clears the form after saving', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [
+          { id: 19, displayName: 'Viewer', permissions: 32 },
+          { id: 20, displayName: 'Admin', permissions: 2 },
+        ],
+      },
+    })
+  );
+  let saves = 0;
+  await page.route('**/api/v1/user/19/settings/password', (route) => {
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON()).toEqual({
+      newPassword: 'fixture-password',
+    });
+    saves++;
+    return route.fulfill({ status: 204 });
+  });
+  const action = page.getByRole('button', {
+    name: 'Set Local Password',
+    exact: true,
+  });
+  await page.goto('/admin/users');
+  await expect(action).toHaveCount(1);
+  await action.click();
+  const password = page.getByLabel('New Local Password', { exact: true });
+  const confirm = page.getByLabel('Confirm New Local Password', {
+    exact: true,
+  });
+  await password.fill('fixture-password');
+  await confirm.fill('mismatch-password');
+  await page.getByRole('button', { name: 'Save Local Password' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Enter matching passwords'
+  );
+  expect(saves).toBe(0);
+  await confirm.fill('fixture-password');
+  await page.getByRole('button', { name: 'Save Local Password' }).click();
+  await expect(page.getByText('Local password saved.')).toBeVisible();
+  await expect(password).toHaveValue('');
+  await expect(confirm).toHaveValue('');
+  expect(saves).toBe(1);
+});
