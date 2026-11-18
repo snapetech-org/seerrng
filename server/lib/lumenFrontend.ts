@@ -674,7 +674,7 @@ export const mountLumenFrontend = (
     }
   );
   server.get(
-    /^\/(?:discover|movie|tv|person|collection|collections|book|book-series|series|author|comic|magazine|adult|music|artist|sportarr|associations|franchise)\//,
+    /^\/(?:discover|movie|tv|person|collection|collections|book|book-series|series|author|comic|magazine|adult|music|artist|sportarr|associations|franchise|profile|users|following|library|games|software|calendar|swipe|recordings|coming-soon|downloads|indexer-search|blocklist|issues|search|share|track-requests|identify)(?:\/|$)/,
     (req, res, next) => {
       if (
         !isInitialized() ||
@@ -683,9 +683,11 @@ export const mountLumenFrontend = (
       ) {
         return next();
       }
-      const destination = req.path.startsWith('/discover/')
-        ? (discoveryDeepLink(req) ?? workflowDeepLink(req))
-        : detailDeepLink(req);
+      const destination =
+        discoveryDeepLink(req) ??
+        detailDeepLink(req) ??
+        workflowDeepLink(req) ??
+        managedUserSettingsPath(req.path);
       if (!destination) return next();
       return res.set('Cache-Control', 'no-store').redirect(302, destination);
     }

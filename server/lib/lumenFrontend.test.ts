@@ -42,6 +42,8 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         '/watch-sessions/:id',
         '/movie/:id',
         '/discover/movies',
+        '/profile/settings/linked-accounts',
+        '/calendar',
       ],
       (_req, res) => res.send('Native interface')
     );
@@ -226,6 +228,22 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'Native interface'
     );
     for (const [bookmark, destination] of [
+      ['/calendar', '/lumen/calendar'],
+      [
+        '/profile/settings/linked-accounts',
+        '/lumen/me/account/linked-accounts',
+      ],
+      ['/users/19/settings/maturity', '/lumen/admin/users/19/maturity'],
+      [
+        '/profile/watchlist?search=example&page=2',
+        '/lumen/watchlist?search=example&page=2',
+      ],
+      [
+        '/users/19/requests?filter=pending',
+        '/lumen/requests?requestedBy=19&show=pending',
+      ],
+      ['/search?query=Example&type=book', '/lumen/search?q=Example&f=ebook'],
+      ['/book-series?format=audiobook', '/lumen/book-series?format=audiobook'],
       ['/movie/550', '/lumen/movie/550'],
       ['/tv/12/crew', '/lumen/tv/12/crew'],
       ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
@@ -262,6 +280,11 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal((await companion.get('/movie/550')).text, 'Native interface');
     assert.equal(
       (await companion.get('/discover/movies')).text,
+      'Native interface'
+    );
+    assert.equal((await companion.get('/calendar')).text, 'Native interface');
+    assert.equal(
+      (await companion.get('/profile/settings/linked-accounts')).text,
       'Native interface'
     );
     const browser = request.agent(app);
