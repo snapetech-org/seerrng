@@ -2946,3 +2946,11 @@ browser checks passed across standalone and bundled Lumen. The trailer
 fixtures verify the valid YouTube destination and omission when metadata
 contains only an invalid candidate. Matched visual comparison remains
 unverified.
+
+Movie, curated TV, and music collections now expose Collection
+Associations through the existing per-title API. The panel loads on
+expansion, excludes the collection's own members, keeps the strongest
+relationship per related title, and allows relationship filtering.
+Forty browser checks passed across standalone and bundled Lumen. The
+curated fixtures verify deduplication and exact related-person links.
+Live data and matched visual comparison remain unverified.

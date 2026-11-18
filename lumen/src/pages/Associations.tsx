@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ExtraHeader, ServiceNote } from '../components/extra';
-import { useApi } from '../hooks';
+import { cachedApi, useApi } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 
 const labels = {
   similar: 'Similar',
@@ -25,6 +26,7 @@ interface AssociationGraph {
   edges: {
     type: EdgeType;
     reason: string;
+    weight?: number;
     node: {
       id: number | string;
       mediaType: MediaType;
@@ -181,6 +183,123 @@ export function AssociationLink({
     >
       Explore Associations
     </Link>
+  );
+}
+
+export function CollectionAssociations({
+  mediaType,
+  parts,
+}: {
+  mediaType: 'movie' | 'tv' | 'album';
+  parts: { id: string | number }[];
+}) {
+  const [edges, setEdges] = useState<AssociationEdge[]>();
+  const [partial, setPartial] = useState(false);
+  const [filter, setFilter] = useState('');
+  const pending = useRef(false);
+  const ids = [...new Set(parts.map(({ id }) => String(id)))].filter((id) =>
+    validIdentity(mediaType, id)
+  );
+  if (!ids.length) return null;
+
+  async function load() {
+    if (pending.current) return;
+    pending.current = true;
+    setEdges(undefined);
+    setPartial(false);
+    const generation = sessionGeneration();
+    const memberIds = new Set(ids);
+    const related = new Map<string, AssociationEdge>();
+    let failed = false;
+    try {
+      for (let offset = 0; offset < ids.length; offset += 5) {
+        if (generation !== sessionGeneration()) return;
+        const results = await Promise.allSettled(
+          ids
+            .slice(offset, offset + 5)
+            .map((id) =>
+              cachedApi<AssociationGraph>(
+                `/association/${mediaType}/${encodeURIComponent(id)}?includeWeak=true`
+              )
+            )
+        );
+        for (const result of results) {
+          if (result.status === 'rejected') {
+            failed = true;
+            continue;
+          }
+          for (const edge of result.value.edges ?? []) {
+            const id = String(edge.node.id);
+            if (edge.node.mediaType === mediaType && memberIds.has(id))
+              continue;
+            const key = `${edge.node.mediaType}:${id}`;
+            const existing = related.get(key);
+            if (!existing || (edge.weight ?? 0) > (existing.weight ?? 0))
+              related.set(key, edge);
+          }
+        }
+      }
+      if (generation === sessionGeneration()) {
+        setEdges(
+          [...related.values()].sort(
+            (a, b) => (b.weight ?? 0) - (a.weight ?? 0)
+          )
+        );
+        setPartial(failed);
+      }
+    } finally {
+      pending.current = false;
+    }
+  }
+
+  const visible = edges?.filter((edge) => !filter || edge.type === filter);
+  return (
+    <details
+      className="adv"
+      onToggle={(event) => {
+        if (event.currentTarget.open && !edges) void load();
+      }}
+    >
+      <summary>Collection Associations</summary>
+      {!edges && (
+        <p className="note" role="status">
+          Loading associations…
+        </p>
+      )}
+      {partial && (
+        <ServiceNote
+          what="collection associations"
+          error="Some member associations could not be loaded."
+          retry={() => void load()}
+        />
+      )}
+      {!!edges?.length && (
+        <label className="sel">
+          <span className="lbl">Relationship</span>
+          <select
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          >
+            <option value="">All Relationships</option>
+            {Object.entries(labels).map(([key, label]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {visible?.length === 0 && !partial && (
+        <p className="note">No associations found.</p>
+      )}
+      <ul className="setlist">
+        {visible?.map((edge) => (
+          <li className="set" key={edgeKey(edge)}>
+            <EdgeDetails edge={edge} />
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 

@@ -330,6 +330,7 @@ for (const kind of ['tv', 'music']) {
     const blockedId =
       kind === 'tv' ? '43' : '60a8e15d-a5f1-4213-a794-e10e0150e946';
     let writes = 0;
+    let associationReads = 0;
     await page.route('**/api/v1/**', (route) => {
       const path = new URL(route.request().url()).pathname.slice(7);
       if (path === '/auth/me')
@@ -366,6 +367,29 @@ for (const kind of ['tv', 'music']) {
             ],
           },
         });
+      if (path.startsWith('/association/')) {
+        associationReads++;
+        const type = kind === 'music' ? 'album' : 'tv';
+        const stronger = path.endsWith(`/${blockedId}`);
+        return route.fulfill({
+          json: {
+            edges: [
+              {
+                type: 'similar',
+                reason: 'Same collection',
+                weight: 100,
+                node: { mediaType: type, id, title: 'Internal Member' },
+              },
+              {
+                type: 'shared-person',
+                reason: stronger ? 'Strongest match' : 'Weaker match',
+                weight: stronger ? 5 : 1,
+                node: { mediaType: 'person', id: 91, name: 'Related Person' },
+              },
+            ],
+          },
+        });
+      }
       if (path === `/collection-catalog/${kind}/19`)
         return route.fulfill({
           json: {
@@ -388,6 +412,13 @@ for (const kind of ['tv', 'music']) {
       return route.fulfill({ json: { count: 0 } });
     });
     await page.goto(`${mount}/collections/${kind}/19`);
+    expect(associationReads).toBe(0);
+    await page.getByText('Collection Associations', { exact: true }).click();
+    const related = page.getByRole('link', { name: 'Related Person' });
+    await expect(related).toHaveAttribute('href', `${mount}/person/91`);
+    await expect(page.getByText('Strongest match')).toBeVisible();
+    await expect(page.getByText('Internal Member')).toHaveCount(0);
+    expect(associationReads).toBe(2);
     const trailer = page.getByRole('link', { name: 'Watch Trailer' });
     if (kind === 'tv') {
       await expect(trailer).toHaveAttribute(

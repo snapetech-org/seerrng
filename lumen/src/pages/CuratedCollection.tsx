@@ -26,6 +26,7 @@ import TvCollectionRequests from '../components/TvCollectionRequests';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { sessionGeneration } from '../sessionState';
+import { CollectionAssociations } from './Associations';
 
 type Kind = 'tv' | 'music';
 interface Collection {
@@ -443,6 +444,11 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         line={[`${members.length} ${noun}`]}
       />
       <div className="dbody">
+        <CollectionAssociations
+          key={members.map(({ id }) => id).join(',')}
+          mediaType={music ? 'album' : 'tv'}
+          parts={members}
+        />
         {trailer && (
           <a
             className="btn btn-quiet btn-sm"

@@ -20,6 +20,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { useApi, usePublicSettings } from '../hooks';
+import { CollectionAssociations } from './Associations';
 
 function CollectionContent({ id }: { id: number }) {
   const { user } = useAuth();
@@ -111,6 +112,11 @@ function CollectionContent({ id }: { id: number }) {
         ]}
       />
       <div className="dbody">
+        <CollectionAssociations
+          key={data.parts.map(({ id }) => id).join(',')}
+          mediaType="movie"
+          parts={data.parts}
+        />
         {data.parts.length > 0 && (
           <div className="dstatus">
             {playableQualities.length > 0 && (
