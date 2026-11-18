@@ -124,10 +124,13 @@ async function requestList(path: string): Promise<RequestListPage> {
   };
 }
 async function requestListOnce(path: string): Promise<RequestListPage> {
-  const filter = new URLSearchParams(path.split('?')[1]).get('filter');
+  const params = new URLSearchParams(path.split('?')[1]);
+  const filter = params.get('filter');
+  const requiresTimeline = params.has('timeFrame');
   if (
-    statusFilterSupported &&
-    (filter === 'available' || filter === 'processing')
+    requiresTimeline ||
+    (statusFilterSupported &&
+      (filter === 'available' || filter === 'processing'))
   ) {
     try {
       // The legacy list filter follows aggregate media/coarse request flags.
@@ -135,7 +138,9 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
       const stages =
         filter === 'available'
           ? ['available']
-          : ['searching', 'downloading', 'importing', 'library'];
+          : filter === 'processing'
+            ? ['searching', 'downloading', 'importing', 'library']
+            : null;
       const data = await api<{
         pageInfo: { pages: number; results: number };
         results: {
@@ -152,7 +157,8 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
             !item.request ||
             !Number.isSafeInteger(item.request.id) ||
             item.request.id <= 0 ||
-            !stages.includes(item.status?.stage)
+            typeof item.status?.stage !== 'string' ||
+            (stages !== null && !stages.includes(item.status.stage))
         )
       ) {
         throw new Error('Invalid request status response');
@@ -166,7 +172,11 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
         })),
       };
     } catch (error) {
-      if (!(error instanceof ApiError) || ![400, 404].includes(error.status))
+      if (
+        requiresTimeline ||
+        !(error instanceof ApiError) ||
+        ![400, 404].includes(error.status)
+      )
         throw error;
       statusFilterSupported = false;
     }
@@ -865,6 +875,14 @@ function gameRow(g: SoftwareRequest): Row {
   };
 }
 
+const REQUEST_TIME_FRAMES = [
+  ['all', 'All time'],
+  ['7d', 'Last 7 days'],
+  ['14d', 'Last 14 days'],
+  ['30d', 'Last 30 days'],
+  ['6m', 'Last 6 months'],
+] as const;
+
 const REQUEST_MEDIA_TYPES = [
   ['all', 'All media'],
   ['movie', 'Movies'],
@@ -1061,8 +1079,15 @@ export default function Requests() {
   );
   const mediaType =
     mediaTypes.find(([type]) => type === p.get('mediaType'))?.[0] ?? 'all';
+  const timeFrameParam =
+    p.get('timeFrame') === '1m' ? '30d' : p.get('timeFrame');
+  const timeFrame =
+    REQUEST_TIME_FRAMES.find(([value]) => value === timeFrameParam)?.[0] ??
+    'all';
   const mediaQuery =
-    requesterQuery + (mediaType === 'all' ? '' : `&mediaType=${mediaType}`);
+    requesterQuery +
+    (mediaType === 'all' ? '' : `&mediaType=${mediaType}`) +
+    (timeFrame === 'all' ? '' : `&timeFrame=${timeFrame}`);
   const setRequestFilter = (key: string, value: string) => {
     const next = new URLSearchParams(p);
     if (value === 'all') next.delete(key);
@@ -1076,7 +1101,15 @@ export default function Requests() {
   useEffect(() => {
     setPages(1);
     setOthers(null);
-  }, [show, everyone, softwareCategory, softwareStatus, requester, mediaType]);
+  }, [
+    show,
+    everyone,
+    softwareCategory,
+    softwareStatus,
+    requester,
+    mediaType,
+    timeFrame,
+  ]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
@@ -1505,6 +1538,21 @@ export default function Requests() {
               }
             >
               {mediaTypes.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="sel">
+            <span className="lbl">Date Added</span>
+            <select
+              value={timeFrame}
+              onChange={(event) =>
+                setRequestFilter('timeFrame', event.target.value)
+              }
+            >
+              {REQUEST_TIME_FRAMES.map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>

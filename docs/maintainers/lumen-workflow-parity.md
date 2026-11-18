@@ -572,3 +572,14 @@ requester, switched Movies to Series by keyboard, and checked the resulting
 series view. The read-only fixture showed neither Adult nor moderation
 controls. Native visual comparison, mobile, bundled and live providers
 remain open.
+
+### Request date filter increment
+
+Everyone media requests support the native date ranges of 7, 14, and 30
+days and six months. Scoped lists and progress use the lifecycle endpoint.
+If that endpoint is unavailable, Lumen shows an error and preserves the
+selected date range.
+
+Standalone Chrome at 1440 × 1000 verified a bookmarked seven-day Waiting
+and Movies view and a date-specific backend error after selecting 14 days.
+Mobile, bundled and native visual comparison remain open.
