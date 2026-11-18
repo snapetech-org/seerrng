@@ -7369,43 +7369,69 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   ).toHaveCount(0);
 });
 
-test('magazine discovery requests an unlisted title after confirmation', async ({
-  page,
-}) => {
-  await fixtures(page);
-  await page.route('**/api/v1/auth/me', (route) =>
-    route.fulfill({
-      json: { id: 1, displayName: 'Subscriber', permissions: 2199023255552 },
-    })
-  );
-  await page.route('**/api/v1/settings/public', (route) =>
-    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
-  );
-  await page.route('**/api/v1/user/1/settings/main', (route) =>
-    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
-  );
-  await page.route('**/api/v1/discover/magazines?*', (route) =>
-    route.fulfill({ json: paged([]) })
-  );
-  const posts: unknown[] = [];
-  await page.route('**/api/v1/request', (route) => {
-    expect(route.request().method()).toBe('POST');
-    posts.push(route.request().postDataJSON());
-    return route.fulfill({ json: { id: 123, status: 1 } });
+for (const advanced of [false, true]) {
+  test(`magazine discovery requests an unlisted title with ${advanced ? 'a selected service' : 'the default service'}`, async ({
+    page,
+  }) => {
+    await fixtures(page);
+    await page.route('**/api/v1/auth/me', (route) =>
+      route.fulfill({
+        json: {
+          id: 1,
+          displayName: 'Subscriber',
+          permissions: 2199023255552 + (advanced ? 8192 : 0),
+        },
+      })
+    );
+    await page.route('**/api/v1/settings/public', (route) =>
+      route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+    );
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+    );
+    await page.route('**/api/v1/discover/magazines?*', (route) =>
+      route.fulfill({ json: paged([]) })
+    );
+    let serviceReads = 0;
+    await page.route('**/api/v1/service/magazine', (route) => {
+      serviceReads += 1;
+      return route.fulfill({
+        json: [
+          { id: 3, name: 'Default Library', isDefault: true },
+          { id: 7, name: 'Alternate Library', isDefault: false },
+        ],
+      });
+    });
+    const posts: unknown[] = [];
+    await page.route('**/api/v1/request', (route) => {
+      expect(route.request().method()).toBe('POST');
+      posts.push(route.request().postDataJSON());
+      return route.fulfill({ json: { id: 123, status: 1 } });
+    });
+    await page.goto('/magazines?query=Unlisted');
+    await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
+    const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
+    await expect(sheet).toContainText('Unlisted');
+    await sheet.getByRole('button', { name: 'Cancel' }).click();
+    expect(posts).toHaveLength(0);
+    await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
+    const service = sheet.getByRole('combobox', { name: 'Magazine Service' });
+    if (advanced) await service.selectOption('7');
+    else await expect(service).toHaveCount(0);
+    await sheet.getByRole('button', { name: 'Send Request' }).click();
+    await expect(
+      page.getByRole('button', { name: 'Requested Unlisted' })
+    ).toBeDisabled();
+    expect(posts).toEqual([
+      {
+        mediaType: 'magazine',
+        mediaId: 'Unlisted',
+        ...(advanced ? { serverId: 7 } : {}),
+      },
+    ]);
+    expect(serviceReads > 0).toBe(advanced);
   });
-  await page.goto('/magazines?query=Unlisted');
-  await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
-  const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
-  await expect(sheet).toContainText('Unlisted');
-  await sheet.getByRole('button', { name: 'Cancel' }).click();
-  expect(posts).toHaveLength(0);
-  await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
-  await sheet.getByRole('button', { name: 'Send Request' }).click();
-  await expect(
-    page.getByRole('button', { name: 'Requested Unlisted' })
-  ).toBeDisabled();
-  expect(posts).toEqual([{ mediaType: 'magazine', mediaId: 'Unlisted' }]);
-});
+}
 
 test('magazine discovery bookmarks keep the catalogue when editing a search', async ({
   page,

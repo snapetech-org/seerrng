@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useDialog } from './useDialog';
 
@@ -10,6 +10,8 @@ export function ConfirmSheet({
   confirm,
   cancel = 'Keep it',
   busy,
+  confirmDisabled,
+  children,
   onConfirm,
   onClose,
 }: {
@@ -18,6 +20,8 @@ export function ConfirmSheet({
   confirm: string;
   cancel?: string;
   busy?: boolean;
+  confirmDisabled?: boolean;
+  children?: ReactNode;
   onConfirm: () => void;
   onClose: () => void;
 }) {
@@ -41,10 +45,11 @@ export function ConfirmSheet({
               <span className="sub">{body}</span>
             </div>
           </div>
+          {children}
           <div className="pk-foot">
             <button
               className="btn btn-primary"
-              disabled={busy}
+              disabled={busy || confirmDisabled}
               onClick={onConfirm}
             >
               {confirm}

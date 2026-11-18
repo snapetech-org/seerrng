@@ -17,7 +17,12 @@ import {
   requestComicEdition,
 } from '../components/comics';
 import { ConfirmSheet } from '../components/ConfirmSheet';
-import { DetailTop, Facts, Pill } from '../components/detail';
+import {
+  canChooseRequestOptions,
+  DetailTop,
+  Facts,
+  Pill,
+} from '../components/detail';
 import {
   comicState,
   ExtraGate,
@@ -1003,6 +1008,16 @@ export function Magazines() {
     Number.isSafeInteger(permissions) &&
     permissions >= 0 &&
     (BigInt(permissions) & (2n | 32n | 2199023255552n)) !== 0n;
+  const advanced = canChooseRequestOptions(permissions);
+  const [serviceId, setServiceId] = useState<number>();
+  const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
+    requestTitle && advanced ? '/service/magazine' : null,
+    { currentPathOnly: true }
+  );
+  const selectedService =
+    advanced && services.data?.some(({ id }) => id === serviceId)
+      ? serviceId
+      : undefined;
   const title = q.trim();
   const mode = params.get('catalog');
   const catalog =
@@ -1104,7 +1119,10 @@ export function Magazines() {
             className="btn btn-tonal btn-sm"
             type="button"
             disabled={title === requested}
-            onClick={() => setRequestTitle(title)}
+            onClick={() => {
+              setServiceId(undefined);
+              setRequestTitle(title);
+            }}
           >
             {title === requested ? `Requested ${title}` : `Request “${title}”`}
           </button>
@@ -1117,6 +1135,7 @@ export function Magazines() {
           confirm="Send Request"
           cancel="Cancel"
           busy={sending}
+          confirmDisabled={advanced && services.data?.length === 0}
           onClose={() => {
             if (!activeRequest.current) setRequestTitle('');
           }}
@@ -1125,7 +1144,11 @@ export function Magazines() {
             activeRequest.current = true;
             setSending(true);
             try {
-              const result = await requestExtra('magazine', requestTitle);
+              const result = await requestExtra(
+                'magazine',
+                requestTitle,
+                selectedService
+              );
               if ((result as { status?: number } | null)?.status === 4)
                 throw new Error('The magazine request failed.');
               setRequested(requestTitle);
@@ -1138,7 +1161,37 @@ export function Magazines() {
               setSending(false);
             }
           }}
-        />
+        >
+          {advanced && !!services.data?.length && (
+            <div className="toolbar">
+              <label className="sel">
+                <span className="lbl">Magazine Service</span>
+                <select
+                  value={selectedService ?? ''}
+                  disabled={sending}
+                  onChange={(event) =>
+                    setServiceId(
+                      event.target.value
+                        ? Number(event.target.value)
+                        : undefined
+                    )
+                  }
+                >
+                  <option value="">Default Service</option>
+                  {services.data.map(({ id, name, isDefault }) => (
+                    <option key={id} value={id}>
+                      {name}
+                      {isDefault ? ' (default)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          )}
+          {advanced && services.data?.length === 0 && (
+            <p role="status">No magazine service is configured.</p>
+          )}
+        </ConfirmSheet>
       )}
       <ServiceNote
         error={list.items.length ? null : list.error}
