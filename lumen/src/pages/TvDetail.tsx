@@ -746,6 +746,11 @@ export default function TvDetail() {
                   key={String(is4k)}
                   tvId={t.id}
                   seasons={episodeSeasons}
+                  initialSeason={
+                    seasonAnchor === undefined
+                      ? undefined
+                      : Number(seasonAnchor)
+                  }
                   pending={pendingEpisodes}
                   is4k={is4k}
                   approval={episodeApproval}

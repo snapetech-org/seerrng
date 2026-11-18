@@ -16,6 +16,7 @@ interface Episode {
 export default function TvEpisodeRequestSheet({
   tvId,
   seasons,
+  initialSeason,
   pending,
   is4k,
   approval,
@@ -27,6 +28,7 @@ export default function TvEpisodeRequestSheet({
 }: {
   tvId: number;
   seasons: Season[];
+  initialSeason?: number;
   pending: ReadonlyMap<number, Set<number>>;
   is4k: boolean;
   approval: boolean;
@@ -36,7 +38,11 @@ export default function TvEpisodeRequestSheet({
   submit: (selection: SeasonRequestSelection) => Promise<void>;
   close: () => void;
 }) {
-  const [season, selectSeason] = useState(seasons[0].seasonNumber);
+  const [season, selectSeason] = useState(
+    () =>
+      seasons.find(({ seasonNumber }) => seasonNumber === initialSeason)
+        ?.seasonNumber ?? seasons[0].seasonNumber
+  );
   const [picked, setPicked] = useState(new Set<number>());
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, close);

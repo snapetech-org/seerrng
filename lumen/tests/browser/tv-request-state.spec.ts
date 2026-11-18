@@ -604,3 +604,25 @@ test('a permitted streaming override retries only the selected seasons', async (
     .toEqual([original, { ...original, bypassStreamingRequestPolicy: true }]);
   await expect(confirm).toHaveCount(0);
 });
+
+test('the episode picker starts at the eligible bookmarked season', async ({
+  page,
+}) => {
+  await show(page, {}, [], 32, undefined, { partialRequestsEnabled: true });
+  await page.route('**/api/v1/tv/84773/season/2', (route) =>
+    route.fulfill({
+      json: { episodes: [{ episodeNumber: 3, name: 'Bookmarked Season' }] },
+    })
+  );
+  await page.goto('/tv/84773#season-2');
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(sheet.getByRole('combobox', { name: 'Season' })).toHaveValue(
+    '2'
+  );
+  await expect(
+    sheet.getByRole('checkbox', { name: 'E3 Bookmarked Season' })
+  ).toBeVisible();
+});
