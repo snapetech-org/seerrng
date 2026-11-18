@@ -22,6 +22,7 @@ import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
 import { seriesRequestSummary } from '../seriesRequestSummary';
+import { useVideoAvailability } from '../videoAvailability';
 
 const MONTHS = [
   'January',
@@ -41,6 +42,7 @@ const MONTHS = [
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
   const serverName = useMediaServerName();
+  const availability = useVideoAvailability();
   const [params] = useSearchParams();
   const scope = params.get('media');
   const showMovies = scope !== 'tv';
@@ -189,6 +191,10 @@ export default function Soon() {
                 (asked.has(it.mediaType + it.id)
                   ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
                   : null);
+              const visible =
+                s?.k === 'ok'
+                  ? statusOf(it.mediaInfo, false, serverName, availability)
+                  : s;
               return (
                 <div className="si" key={it.mediaType + it.id}>
                   <div className="date">
@@ -219,9 +225,11 @@ export default function Soon() {
                     </div>
                     <div className="act">
                       {s ? (
-                        <Pill k={s.k} icon={s.ico}>
-                          {s.word}
-                        </Pill>
+                        visible && (
+                          <Pill k={visible.k} icon={visible.ico}>
+                            {visible.word}
+                          </Pill>
+                        )
                       ) : (
                         <button
                           className="btn btn-sm btn-tonal"

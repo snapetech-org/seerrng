@@ -1903,6 +1903,52 @@ test('featured series can retry a watch-rule rejection and confirm accepted seas
   expect(writes).toEqual([expected, expected]);
 });
 
+test('Coming Soon applies shared availability without reopening requests', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.clock.install();
+  let mode = 'distinguish';
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { otherUsersAvailability: mode } })
+  );
+  await page.route('**/api/v1/discover/movies/upcoming', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          releaseDate: '2099-01-01',
+          mediaInfo: {
+            ...available,
+            viewerRequestCoverage: { standard: false },
+          },
+        },
+        {
+          ...movie,
+          id: 102,
+          title: 'Unrequested Film',
+          releaseDate: '2099-01-02',
+        },
+      ]),
+    })
+  );
+  await page.goto('/soon?media=movie');
+  const row = page
+    .locator('.si')
+    .filter({ has: page.getByRole('link', { name: movie.title }) });
+  await expect(row.getByText('Available to Other Users')).toBeVisible();
+  await expect(row.getByRole('button', { name: 'Request' })).toHaveCount(0);
+  mode = 'hide';
+  await page.clock.fastForward(16_000);
+  await page.reload();
+  await expect(row.getByRole('link', { name: movie.title })).toBeVisible();
+  await expect(row.getByText('Available to Other Users')).toHaveCount(0);
+  await expect(row.getByRole('button', { name: 'Request' })).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toBeVisible();
+});
+
 test('Coming Soon retries a failed series feed without dropping movies', async ({
   page,
 }) => {

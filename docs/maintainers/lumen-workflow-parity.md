@@ -1751,3 +1751,9 @@ The on-demand episode panel now applies the selected season’s viewer
 coverage separately to HD and 4K source reports. Eight standalone browser
 checks verified mixed-quality reports, source-label hiding, and the
 existing on-demand season switch. Matched visual acceptance remains open.
+
+Coming Soon now marks or hides shared availability while keeping actual
+acquisition state responsible for the Request action. Twenty-four
+standalone browser checks covered Coming Soon across four presets,
+including shared status and request eligibility. Matched native visual
+acceptance remains open.
