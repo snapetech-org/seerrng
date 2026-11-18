@@ -63,6 +63,20 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       '/lumen/admin/notifications/webhook'
     );
     assert.equal(notificationSettings.headers['cache-control'], 'no-store');
+    for (const [bookmark, destination] of [
+      ['/discover/movies?libraryView=missing', '/movies?show=not'],
+      [
+        '/discover/tv/network/213?availability=4k',
+        '/series?network=213&show=have&quality=4k',
+      ],
+      ['/discover/list/12345/?page=2', '/list/12345?page=2'],
+      ['/discover/watchlist?page=3', '/watchlist/discover?page=3'],
+    ]) {
+      const response = await request(app).get(`/lumen${bookmark}`);
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.location, `/lumen${destination}`);
+      assert.equal(response.headers['cache-control'], 'no-store');
+    }
     const userDirectory = await request(app).get('/lumen/users/');
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');

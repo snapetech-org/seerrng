@@ -132,8 +132,11 @@ const discoveryFilters = [
   'network',
 ];
 
-function discoveryDeepLink(req: Request): string | undefined {
-  const listId = /^\/discover\/list\/([1-9]\d{0,9})\/?$/.exec(req.path)?.[1];
+function discoveryDeepLink(
+  req: Request,
+  pathname = req.path
+): string | undefined {
+  const listId = /^\/discover\/list\/([1-9]\d{0,9})\/?$/.exec(pathname)?.[1];
   if (isTmdbPublicListId(listId)) {
     const page = req.query.page;
     const suffix =
@@ -143,17 +146,17 @@ function discoveryDeepLink(req: Request): string | undefined {
     return `/lumen/list/${listId}${suffix}`;
   }
 
-  const genres = /^\/discover\/(movies|tv)\/genres\/?$/.exec(req.path);
+  const genres = /^\/discover\/(movies|tv)\/genres\/?$/.exec(pathname);
   if (genres)
     return `/lumen/${genres[1] === 'movies' ? 'movies' : 'series'}/genres`;
 
-  const upcoming = /^\/discover\/(movies|tv)\/upcoming\/?$/.exec(req.path);
+  const upcoming = /^\/discover\/(movies|tv)\/upcoming\/?$/.exec(pathname);
   if (upcoming)
     return `/lumen/soon?media=${upcoming[1] === 'movies' ? 'movie' : 'tv'}`;
 
   const route =
     /^\/discover\/(movies|tv)(?:\/(keyword|genre|language|network|studio)(?:\/([a-zA-Z0-9]+))?)?\/?$/.exec(
-      req.path
+      pathname
     );
   if (!route) return;
   const [, kind, dimension, id] = route;
@@ -670,6 +673,13 @@ export const mountLumenFrontend = (
       return res.set('Cache-Control', 'no-store').redirect(302, target);
     }
   );
+  server.get(/^\/lumen\/discover(?:\/|$)/, (req, res, next) => {
+    const pathname = req.path.slice('/lumen'.length);
+    const destination =
+      discoveryDeepLink(req, pathname) ?? workflowDeepLink(req, pathname);
+    if (!destination) return next();
+    return res.set('Cache-Control', 'no-store').redirect(302, destination);
+  });
   server.get(/^\/lumen\/users\//, (req, res, next) => {
     const pathname = req.path.slice('/lumen'.length);
     const destination =
