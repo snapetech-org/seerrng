@@ -22,6 +22,24 @@ const readWorkflow = (name) =>
 const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
+test('trusted image publishers and their scans do not restore shared caches', () => {
+  for (const [workflowName, scanJob] of [
+    ['ci.yml', 'scan-main-image'],
+    ['release.yml', 'scan-release-image'],
+  ]) {
+    const workflow = readWorkflow(workflowName);
+    const publisher = workflow.jobs.publish;
+    const scanner = workflow.jobs[scanJob];
+    assert.ok(publisher && scanner, workflowName);
+    const source = JSON.stringify([publisher, scanner]);
+    assert.doesNotMatch(
+      source,
+      /--cache-(?:from|to) type=gha|actions\/cache@/u,
+      workflowName
+    );
+  }
+});
+
 test('release workflows use GitHub-hosted runners, including Windows packaging', () => {
   for (const workflowName of ['release.yml', 'release-assets.yml']) {
     const source = fs.readFileSync(
