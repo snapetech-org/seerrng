@@ -5,6 +5,7 @@ for (const administrator of [true, false]) {
     page,
   }) => {
     const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+    let enabledMediaCategories = { ebook: true, music: false };
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
     );
@@ -14,7 +15,11 @@ for (const administrator of [true, false]) {
       );
       if (path === '/settings/public')
         return route.fulfill({
-          json: { initialized: true, mediaServerType: 4 },
+          json: {
+            initialized: true,
+            mediaServerType: 4,
+            enabledMediaCategories,
+          },
         });
       if (path === '/auth/me')
         return route.fulfill({
@@ -34,6 +39,16 @@ for (const administrator of [true, false]) {
         return route.fulfill({
           json: { pollIntervalSeconds: 15, clients: [] },
         });
+      }
+      if (path === '/settings/main') {
+        if (route.request().method() === 'POST') {
+          expect(administrator).toBe(true);
+          expect(route.request().postDataJSON()).toEqual({
+            enabledMediaCategories: { music: true },
+          });
+          enabledMediaCategories = { ...enabledMediaCategories, music: true };
+        }
+        return route.fulfill({ json: { enabledMediaCategories } });
       }
       expect(route.request().method()).toBe('GET');
       if (path === '/settings/prowlarr')
@@ -70,6 +85,20 @@ for (const administrator of [true, false]) {
     ).toBeVisible();
     await expect(page.getByText('Configure Media Categories')).toBeVisible();
     await page.getByText('Configure Request Services', { exact: true }).click();
+    const providerPanels = page
+      .getByText('Configure Request Services', { exact: true })
+      .locator('..')
+      .locator(':scope > details > summary');
+    await expect(providerPanels.first()).toHaveText(
+      'Book and Audiobook Services'
+    );
+    await expect(providerPanels.nth(1)).toHaveText('LazyLibrarian');
+    await page.getByText('Configure Media Categories', { exact: true }).click();
+    await page.getByRole('checkbox', { name: 'Music', exact: true }).check();
+    await page
+      .getByRole('button', { name: 'Save Categories', exact: true })
+      .click();
+    await expect(providerPanels.nth(2)).toHaveText('Lidarr');
     for (const provider of [
       'LazyLibrarian',
       'Mylar',

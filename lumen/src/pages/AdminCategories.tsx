@@ -24,9 +24,11 @@ interface CategorySettings {
 function CategoryForm({
   initial,
   field,
+  onSaved,
 }: {
   initial: Record<string, boolean>;
   field: 'enabledMediaCategories' | 'defaultEnabledMediaCategories';
+  onSaved?: () => void;
 }) {
   const defaults = field === 'defaultEnabledMediaCategories';
   const [categories, setCategories] = useState(initial);
@@ -59,6 +61,7 @@ function CategoryForm({
       }
       setCategories(saved);
       setDraft({});
+      onSaved?.();
       setNotice(
         defaults ? 'Default categories saved.' : 'Category settings saved.'
       );
@@ -124,7 +127,8 @@ function CategoryForm({
 
 export default function AdminCategories({
   inSetup = false,
-}: { inSetup?: boolean } = {}) {
+  onAvailableCategoriesSaved,
+}: { inSetup?: boolean; onAvailableCategoriesSaved?: () => void } = {}) {
   const { data, error, reload } = useApi<CategorySettings>(path);
 
   return (
@@ -154,6 +158,7 @@ export default function AdminCategories({
           <CategoryForm
             initial={data.enabledMediaCategories}
             field="enabledMediaCategories"
+            onSaved={onAvailableCategoriesSaved}
           />
         ) : (
           data && <p className="note">Category settings are unavailable.</p>

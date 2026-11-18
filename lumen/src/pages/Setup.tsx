@@ -134,17 +134,44 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
   );
 }
 const requestServices = [
-  ['radarr', 'Radarr'],
-  ['sonarr', 'Sonarr'],
-  ['readarr', 'Book and Audiobook Services'],
-  ['lazylibrarian', 'LazyLibrarian'],
-  ['lidarr', 'Lidarr'],
-  ['mylar', 'Mylar'],
-  ['kapowarr', 'Kapowarr'],
-  ['backissue', 'BackIssue'],
-  ['sportarr', 'Sportarr'],
-  ['whisparr', 'Whisparr'],
+  ['radarr', 'Radarr', ['movie']],
+  ['sonarr', 'Sonarr', ['tv']],
+  ['readarr', 'Book and Audiobook Services', ['ebook', 'audiobook']],
+  ['lazylibrarian', 'LazyLibrarian', ['ebook', 'audiobook', 'magazine']],
+  ['lidarr', 'Lidarr', ['music']],
+  ['mylar', 'Mylar', ['comic']],
+  ['kapowarr', 'Kapowarr', ['comic']],
+  ['backissue', 'BackIssue', ['comic']],
+  ['sportarr', 'Sportarr', ['sports']],
+  ['whisparr', 'Whisparr', ['adult']],
 ] as const;
+
+function SetupRequestServices({
+  categories,
+}: {
+  categories?: PublicSettings['enabledMediaCategories'];
+}) {
+  const recommended = requestServices.filter(([, , keys]) =>
+    keys.some((key) => categories?.[key] === true)
+  );
+  return (
+    <>
+      {recommended.length > 0 && (
+        <p className="note">
+          Services for your enabled categories appear first.
+        </p>
+      )}
+      {[
+        ...recommended,
+        ...requestServices.filter((service) => !recommended.includes(service)),
+      ].map(([provider, label]) => (
+        <SetupEditor key={provider} label={label}>
+          <AdminServarr provider={provider} inSetup />
+        </SetupEditor>
+      ))}
+    </>
+  );
+}
 
 function RequestServiceReview({
   provider,
@@ -223,7 +250,9 @@ function SetupEditor({
 
 export default function Setup() {
   const { user, refresh } = useAuth();
-  const settings = useApi<PublicSettings>('/settings/public');
+  const settings = useApi<PublicSettings>('/settings/public', {
+    keepDuringRefresh: true,
+  });
   const [query] = useSearchParams();
   const stepIndex = setupSteps.findIndex(([id]) => id === query.get('step'));
   const activeStep = setupSteps[stepIndex]?.[0];
@@ -389,7 +418,10 @@ export default function Setup() {
           open={activeStep === 'categories' || undefined}
         >
           <summary>Configure Media Categories</summary>
-          <AdminCategories inSetup />
+          <AdminCategories
+            inSetup
+            onAvailableCategoriesSaved={settings.reload}
+          />
         </details>
         <details
           className="adv"
@@ -397,11 +429,9 @@ export default function Setup() {
           open={activeStep === 'services' || undefined}
         >
           <summary>Configure Request Services</summary>
-          {requestServices.map(([provider, label]) => (
-            <SetupEditor key={provider} label={label}>
-              <AdminServarr provider={provider} inSetup />
-            </SetupEditor>
-          ))}
+          <SetupRequestServices
+            categories={settings.data.enabledMediaCategories}
+          />
         </details>
         <SetupEditor
           label="Configure Download Clients"

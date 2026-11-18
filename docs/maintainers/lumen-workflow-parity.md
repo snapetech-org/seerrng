@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. Category-specific orientation remains open. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It prioritizes service editors for enabled categories. Native service-group walkthroughs and matched visual acceptance remain open. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.
@@ -2827,3 +2827,10 @@ loading, empty, and error states independently. Forty setup browser cases
 passed across both deployments and four viewport presets. Jellyfin and
 Emby fixtures save a Radarr service and verify its name in Review before
 initialization. Matched visual acceptance remains unverified.
+
+Setup lists service editors for enabled media categories first and keeps
+all existing editors available. Saving instance category changes updates
+the ordering without discarding the mounted forms. Forty browser cases
+passed across both deployments and four viewport presets. The reopened
+guide fixture enables Music and checks that Lidarr moves up without a
+page reload. Matched visual acceptance remains unverified.
