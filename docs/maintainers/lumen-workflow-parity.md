@@ -2732,3 +2732,8 @@ open and keeps its draft when collapsed. The production build and four
 standalone browser checks passed, including opening Radarr and retaining
 its unsaved draft. Live service testing and saving, bundled browser
 coverage for this panel, and matched visual acceptance remain open.
+
+The expanded setup fixture verifies testing a Radarr connection,
+selecting its returned quality profile and root folder, and saving
+the service before initialization. Four standalone and four bundled
+browser checks passed. The service responses were stubbed.

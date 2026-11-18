@@ -10,6 +10,7 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
   let attempts = 0;
   let booksEnabled = false;
   let radarrReads = 0;
+  let radarrServices: Record<string, unknown>[] = [];
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -57,9 +58,32 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
             defaultEnabledMediaCategories: { ebook: booksEnabled },
           },
         });
+      case '/settings/radarr/test':
+        expect(route.request().postDataJSON()).toMatchObject({
+          hostname: 'radarr.internal',
+          apiKey: 'fixture-key',
+        });
+        return route.fulfill({
+          json: {
+            profiles: [{ id: 2, name: 'HD' }],
+            rootFolders: [{ id: 1, path: '/movies' }],
+            tags: [],
+          },
+        });
       case '/settings/radarr':
+        if (route.request().method() === 'POST') {
+          const body = route.request().postDataJSON();
+          expect(body).toMatchObject({
+            name: 'Fixture Radarr',
+            activeProfileId: 2,
+            activeDirectory: '/movies',
+          });
+          const saved = { ...body, id: 0, apiKey: '[REDACTED]' };
+          radarrServices = [saved];
+          return route.fulfill({ json: saved });
+        }
         radarrReads += 1;
-        return route.fulfill({ json: [] });
+        return route.fulfill({ json: radarrServices });
       case '/settings/initialize':
         attempts += 1;
         initialized = true;
@@ -104,6 +128,23 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
     'Fixture Radarr'
   );
   expect(radarrReads).toBe(1);
+  const editor = page
+    .getByLabel('Service Name', { exact: true })
+    .locator('xpath=ancestor::form');
+  await editor.getByLabel('Hostname', { exact: true }).fill('radarr.internal');
+  await page.getByLabel('API Key', { exact: true }).fill('fixture-key');
+  await page.getByRole('button', { name: 'Test Radarr' }).click();
+  await page
+    .getByRole('combobox', { name: 'Quality Profile', exact: true })
+    .selectOption('2');
+  await page
+    .getByRole('combobox', { name: 'Root Folder', exact: true })
+    .selectOption('/movies');
+  await page.getByRole('button', { name: 'Save Radarr' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Edit Fixture Radarr' })
+  ).toBeVisible();
+  expect(initialized).toBe(false);
   await finish.click();
   await expect(page).toHaveURL(bundled ? '/lumen/' : '/');
   expect(attempts).toBe(1);
