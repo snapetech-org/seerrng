@@ -6,6 +6,7 @@ for (const permissions of [2, 32]) {
   test(`release calendar uses the selected interval and authorized scope for ${permissions}`, async ({
     page,
   }) => {
+    let marchRequests = 0;
     const queries: URLSearchParams[] = [];
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
@@ -14,6 +15,16 @@ for (const permissions of [2, 32]) {
       if (path === '/calendar') {
         queries.push(url.searchParams);
         if (queries.length === 1) return route.fulfill({ json: {} });
+        if (url.searchParams.get('start') === '2026-03-01') {
+          return route.fulfill({
+            json: {
+              results: [],
+              partialSources:
+                ++marchRequests === 1 ? [{ source: 'radarr' }] : [],
+              truncated: false,
+            },
+          });
+        }
         return route.fulfill({
           json: {
             partialSources: [{ source: 'radarr' }],
@@ -166,6 +177,13 @@ for (const permissions of [2, 32]) {
     await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
       '2026-03'
     );
+    await expect(
+      page.getByText('No releases were returned by the sources that responded.')
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Retry' }).click();
+    await expect(
+      page.getByText('No releases were returned by the sources that responded.')
+    ).toHaveCount(0);
     await page.goBack();
     await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
       '2026-02'

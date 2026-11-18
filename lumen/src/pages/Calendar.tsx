@@ -154,10 +154,11 @@ function CalendarResults({ path }: { path: string }) {
   return (
     <>
       {!!data.partialSources.length && (
-        <p className="note" role="status">
-          Some release sources could not be reached. Their releases may be
-          missing.
-        </p>
+        <ServiceNote
+          error="Some release sources could not be reached. Their releases may be missing."
+          what="all release sources"
+          retry={reload}
+        />
       )}
       {data.truncated && (
         <p className="note" role="status">
@@ -165,7 +166,11 @@ function CalendarResults({ path }: { path: string }) {
         </p>
       )}
       {!data.results.length ? (
-        <p className="note">No releases match this month and scope.</p>
+        <p className="note">
+          {data.partialSources.length
+            ? 'No releases were returned by the sources that responded.'
+            : 'No releases match this month and scope.'}
+        </p>
       ) : (
         <ol className="setlist">
           {data.results.slice(0, limit).map((release) => {
