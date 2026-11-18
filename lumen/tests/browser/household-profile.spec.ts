@@ -153,9 +153,10 @@ for (const permissions of [2, 24, 16, 32]) {
   });
 }
 
-test('playback activity explains when recent plays have no catalog links', async ({
+test('playback activity recovers without hiding the profile or losing the play count', async ({
   page,
 }) => {
+  let attempts = 0;
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     switch (path) {
@@ -168,6 +169,7 @@ test('playback activity explains when recent plays have no catalog links', async
           json: { id: 19, displayName: 'Household Member', userType: 1 },
         });
       case '/api/v1/user/19/watch_data':
+        if (++attempts === 1) return route.fulfill({ json: {} });
         return route.fulfill({
           json: {
             playCount: 3,
@@ -182,6 +184,14 @@ test('playback activity explains when recent plays have no catalog links', async
     }
   });
   await page.goto('/household/19');
+  await expect(
+    page.getByRole('heading', { name: 'Household Member' })
+  ).toBeVisible();
+  const error = page.getByRole('alert').filter({
+    hasText: 'Invalid playback activity response.',
+  });
+  await expect(error).toBeVisible();
+  await error.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByText('Total plays: 3')).toBeVisible();
   await expect(
     page.getByText('No recently watched titles to display.')

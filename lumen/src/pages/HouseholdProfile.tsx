@@ -138,7 +138,17 @@ function PlaybackActivity({ id }: { id: number }) {
 
   if (activity.errorStatus === 404) return null;
 
-  const watched = activity.data?.recentlyWatched.filter(
+  const data =
+    activity.data &&
+    Number.isSafeInteger(activity.data.playCount) &&
+    activity.data.playCount >= 0 &&
+    Array.isArray(activity.data.recentlyWatched)
+      ? activity.data
+      : null;
+  const error =
+    activity.error ||
+    (activity.data && !data ? 'Invalid playback activity response.' : null);
+  const watched = data?.recentlyWatched.filter(
     ({ mediaType, tmdbId }) =>
       (mediaType === 'movie' || mediaType === 'tv') &&
       Number.isSafeInteger(tmdbId) &&
@@ -148,20 +158,18 @@ function PlaybackActivity({ id }: { id: number }) {
   return (
     <Section title="Playback Activity">
       <ServiceNote
-        error={activity.error}
+        error={error}
         what="playback activity"
         retry={activity.reload}
       />
-      {!activity.data && !activity.error && (
+      {!data && !error && (
         <p className="note" role="status">
           Loading playback activity…
         </p>
       )}
-      {activity.data && (
+      {data && (
         <>
-          <p className="note">
-            Total plays: {activity.data.playCount.toLocaleString()}
-          </p>
+          <p className="note">Total plays: {data.playCount.toLocaleString()}</p>
           {watched?.length ? (
             <div className="rail" aria-label="Recently watched">
               {watched.map(
