@@ -4614,3 +4614,49 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
     { musicQuotaLimit: null, musicQuotaDays: null },
   ]);
 });
+
+test('Users changes a media category and restores inheritance', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  const writes: unknown[] = [];
+  let override: Record<string, boolean> | null = null;
+  await page.route('**/api/v1/user/19/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      override = body.enabledMediaCategories;
+    }
+    return route.fulfill({
+      json: {
+        enabledMediaCategories: { movie: true, tv: true, ...override },
+        usesDefaultEnabledMediaCategories: override === null,
+      },
+    });
+  });
+  await page.goto('/admin/users');
+  await page
+    .getByRole('button', { name: 'Media Categories', exact: true })
+    .click();
+  await expect(page.getByText('Using server defaults.')).toBeVisible();
+  const movies = page.getByRole('checkbox', { name: 'Movies', exact: true });
+  await movies.uncheck();
+  await page.getByRole('button', { name: 'Save Categories' }).click();
+  await expect(page.getByText('Using account overrides.')).toBeVisible();
+  await expect(movies).not.toBeChecked();
+  await page.getByRole('button', { name: 'Restore Server Defaults' }).click();
+  await expect(page.getByText('Using server defaults.')).toBeVisible();
+  await expect(movies).toBeChecked();
+  expect(writes).toEqual([
+    { enabledMediaCategories: { movie: false } },
+    { enabledMediaCategories: null },
+  ]);
+});

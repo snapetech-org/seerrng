@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
+import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -152,6 +153,7 @@ function CreateLocalUser({
 export default function AdminUsers() {
   const { user: actor } = useAuth();
   const [quotaUser, setQuotaUser] = useState<number>();
+  const [categoryUser, setCategoryUser] = useState<number>();
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
   const [queueUser, setQueueUser] = useState<number>();
@@ -331,6 +333,24 @@ export default function AdminUsers() {
                     {quotaUser === user.id && <ManagedQuotas id={user.id} />}
                   </>
                 )}
+              {(user.permissions & 2) === 0 && (
+                <>
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    aria-expanded={categoryUser === user.id}
+                    onClick={() =>
+                      setCategoryUser(
+                        categoryUser === user.id ? undefined : user.id
+                      )
+                    }
+                  >
+                    Media Categories
+                  </button>
+                  {categoryUser === user.id && (
+                    <ManagedMediaCategories id={user.id} />
+                  )}
+                </>
+              )}
             </li>
           ))}
         </ul>
