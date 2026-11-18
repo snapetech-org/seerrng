@@ -4,8 +4,13 @@ test('Swipe records decisions and restores or clears history', async ({
   page,
 }, info) => {
   const cards = [
-    { id: '7', title: 'First Film', overview: 'A fixture recommendation.' },
-    { id: '8', title: 'Second Film' },
+    {
+      id: '7',
+      title: 'First Film',
+      overview: 'A fixture recommendation.',
+      imageUrl: '/imageproxy/tmdb/t/p/w342/cover.png?v=1',
+    },
+    { id: '8', title: 'Second Film', imageUrl: '/imageproxy/\tcover.png' },
   ];
   let decisions = [
     { mediaType: 'movie', id: '7', title: 'First Film', decision: 'want' },
@@ -14,6 +19,12 @@ test('Swipe records decisions and restores or clears history', async ({
   ];
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="64"><rect width="48" height="64" fill="#456"/></svg>',
+    })
+  );
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -54,12 +65,18 @@ test('Swipe records decisions and restores or clears history', async ({
   });
   await page.goto('/swipe');
   await expect(page.getByRole('heading', { name: 'First Film' })).toBeVisible();
+  await expect(page.locator('.gesture-surface img')).toHaveAttribute(
+    'src',
+    '/imageproxy/tmdb/t/p/w342/cover.png?v=1'
+  );
   await page.screenshot({ path: info.outputPath('swipe.png'), fullPage: true });
   const shortcuts = page.getByRole('application', { name: 'Swipe shortcuts' });
   await shortcuts.press('ArrowRight');
   await expect(
     page.getByRole('heading', { name: 'Second Film' })
   ).toBeVisible();
+  await expect(page.locator('.gesture-surface img')).toHaveCount(0);
+  await page.screenshot({ path: info.outputPath('swipe-malformed-art.png') });
   if (await page.evaluate(() => navigator.maxTouchPoints > 0)) {
     const title = page.getByRole('heading', { name: 'Second Film' });
     await title.scrollIntoViewIfNeeded();

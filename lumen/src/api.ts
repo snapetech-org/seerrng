@@ -257,7 +257,8 @@ export interface Genre {
 const TMDB_IMAGE_SIZES = new Set(['w185', 'w342', 'w500', 'w780', 'w1280']);
 const THEAUDIODB_IMAGE_HOST = 'theaudiodb.com';
 // eslint-disable-next-line no-control-regex -- Reject control characters in provider URL paths.
-const UNSAFE_IMAGE_PATH_CHARACTERS = /[\u0000-\u001f\u007f?#]/;
+const IMAGE_URL_CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
+const UNSAFE_IMAGE_PATH_CHARACTERS = /[?#]/;
 const isSafeImagePath = (path: string) => {
   if (
     path.length > 2048 ||
@@ -265,6 +266,7 @@ const isSafeImagePath = (path: string) => {
     path.startsWith('//') ||
     path.includes('//') ||
     path.includes('\\') ||
+    IMAGE_URL_CONTROL_CHARACTERS.test(path) ||
     UNSAFE_IMAGE_PATH_CHARACTERS.test(path)
   ) {
     return false;
@@ -290,6 +292,7 @@ const isSafeImagePath = (path: string) => {
           decoded === '..' ||
           decoded.includes('/') ||
           decoded.includes('\\') ||
+          IMAGE_URL_CONTROL_CHARACTERS.test(decoded) ||
           UNSAFE_IMAGE_PATH_CHARACTERS.test(decoded)
         ) {
           return false;
@@ -378,10 +381,13 @@ export function proxiedArtPath(raw: string, host: string): string | undefined {
   return u.pathname.slice(1) || undefined;
 }
 export const artUrl = (url?: string | null) => {
-  if (!url) return undefined;
-  // already on this site (SeerrNG's own proxy paths)
-  if (url.startsWith('/') && !url.startsWith('//') && !url.includes('\\'))
-    return url;
+  if (typeof url !== 'string' || !url || IMAGE_URL_CONTROL_CHARACTERS.test(url))
+    return undefined;
+  // Preserve the query string on valid same-origin proxy paths.
+  if (url.startsWith('/')) {
+    const path = url.split(/[?#]/, 1)[0];
+    return !url.includes('\\') && isSafeImagePath(path) ? url : undefined;
+  }
   const u = httpsArt(url);
   if (!u) return undefined;
   const to = Object.hasOwn(PROXIED_ART, u.hostname)

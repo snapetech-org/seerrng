@@ -2551,3 +2551,12 @@ Live provider delivery was outside the check. Evidence is retained under
 `seerrng-lumen-swipe-series-confirmation-20261118/`, and
 `seerrng-lumen-share-series-confirmation-20261118/` in
 `/mnt/disks/scratch/task-deliverables/`.
+
+The shared artwork URL helper validates raw same-origin paths before the
+browser can normalize them. Valid proxy URLs keep their query strings.
+The production build and 28 Swipe and curated collection browser checks
+passed. Compared Swipe cards on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11 and verified that a control character in an artwork path causes
+the image to be omitted. A regular proxy image still renders. GitHub
+alert 690 remains open pending disposition. Evidence is retained under
+`seerrng-lumen-art-url*` in `/mnt/disks/scratch/task-deliverables/`.
