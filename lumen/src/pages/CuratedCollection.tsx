@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api, artUrl, MediaStatus, tmdbImg, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
@@ -11,6 +11,7 @@ import {
   ServiceNote,
 } from '../components/extra';
 import MusicCollectionRequests from '../components/MusicCollectionRequests';
+import TvCollectionRequests from '../components/TvCollectionRequests';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 
@@ -224,18 +225,19 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
   }, [path, id, supportsSync]);
   // Use the catalog GET's authorized membership. The availability response
   // from older servers can include series omitted by the viewer's policy.
-  const updates = new Map(latest?.map((part) => [part.id, part]));
-  const parts = data?.parts ?? [];
-  const members = parts.map((part) => {
-    const updated = updates.get(part.id);
-    return updated
-      ? {
-          ...part,
-          mediaInfo: updated.mediaInfo,
-          availableQualities: updated.availableQualities,
-        }
-      : part;
-  });
+  const members = useMemo(() => {
+    const updates = new Map(latest?.map((part) => [part.id, part]));
+    return (data?.parts ?? []).map((part) => {
+      const updated = updates.get(part.id);
+      return updated
+        ? {
+            ...part,
+            mediaInfo: updated.mediaInfo,
+            availableQualities: updated.availableQualities,
+          }
+        : part;
+    });
+  }, [data?.parts, latest]);
   const hasMembers = members.length > 0;
   const shouldPoll =
     isAdministrator(user?.permissions) ||
@@ -336,7 +338,15 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         {music ? (
           <MusicReleases members={members} refresh={collection.reload} />
         ) : (
-          <Section title="Series in This Collection">
+          <Section
+            title="Series in This Collection"
+            action={
+              <TvCollectionRequests
+                members={members}
+                refresh={collection.reload}
+              />
+            }
+          >
             {members.length ? (
               <div className="grid">
                 {members.map((part) => (

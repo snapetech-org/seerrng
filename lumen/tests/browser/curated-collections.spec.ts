@@ -7,12 +7,18 @@ test('series and album details reach their curated collections', async ({
   const seriesReads: string[] = [];
   let checks = 0;
   const requests: unknown[] = [];
+  const tvRequests: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/request') {
+      expect(route.request().method()).toBe('POST');
+      tvRequests.push(route.request().postDataJSON());
+      return route.fulfill({ json: { id: 2 } });
+    }
     if (path === '/request/bulk') {
       expect(route.request().method()).toBe('POST');
       requests.push(route.request().postDataJSON());
@@ -29,10 +35,34 @@ test('series and album details reach their curated collections', async ({
       '/auth/me': { id: 1, permissions: 32 },
       '/settings/public': {
         musicEnabled: true,
+        partialRequestsEnabled: true,
         mediaServerType: 1,
         enabledMediaCategories: { music: true },
       },
-      '/tv/42': { id: 42, name: 'Fixture Series', seasons: [], genres: [] },
+      '/user/1/quota': { tv: { limit: 2, remaining: 2, restricted: false } },
+      '/tv/42': {
+        id: 42,
+        name: 'Fixture Series',
+        externalIds: { tvdbId: 200 },
+        seasons: [
+          { seasonNumber: 0, episodeCount: 1 },
+          { seasonNumber: 1, episodeCount: 3 },
+          { seasonNumber: 2, episodeCount: 2 },
+        ],
+        genres: [],
+        mediaInfo: {
+          id: 62,
+          requests: [
+            {
+              id: 3,
+              status: 2,
+              seasons: [{ seasonNumber: 1, episodeNumbers: [2] }],
+            },
+          ],
+          seasons: [{ seasonNumber: 2, status: 5 }],
+        },
+      },
+      '/playback/media/62': { groups: [{ index: 1, items: [{ index: 1 }] }] },
       '/collection-catalog/tv/for-series/42': {
         collections: [{ id: 19, name: 'Fixture Series Collection' }],
       },
@@ -120,6 +150,26 @@ test('series and album details reach their curated collections', async ({
   ).toHaveCount(0);
   expect(checks).toBe(2);
   await page.screenshot({ path: info.outputPath('series-collection.png') });
+  await page.getByRole('button', { name: 'Request Series' }).click();
+  const tvSheet = page.getByRole('dialog', { name: 'Request Series' });
+  await tvSheet.getByRole('checkbox', { name: /Fixture Series/ }).check();
+  await expect(tvSheet.getByText('1 season selected')).toBeVisible();
+  await page.screenshot({ path: info.outputPath('series-requests.png') });
+  await tvSheet
+    .getByRole('button', { name: 'Request Selected Series' })
+    .click();
+  await expect(tvSheet.getByText('1 requested, 0 failed.')).toBeVisible();
+  expect(tvRequests).toEqual([
+    {
+      mediaType: 'tv',
+      mediaId: 42,
+      tvdbId: 200,
+      is4k: false,
+      seasons: [1],
+      seasonRequests: [{ seasonNumber: 1, episodeNumbers: [3] }],
+    },
+  ]);
+  await tvSheet.getByRole('button', { name: 'Close' }).click();
   await page.goto(`/music/${album}`);
   await page.getByRole('link', { name: 'View Discography' }).click();
   await expect(

@@ -2309,3 +2309,19 @@ and iPad Pro 11. The fixture verified FLAC routing and exclusion of an
 owned FLAC release. Live Lidarr delivery remains unverified. Evidence is
 retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-collection-requests-20261118/`.
+
+Curated TV collections can submit requests for selected series in HD or
+4K as permitted by the server and account. The sheet checks the requester's
+season quota, uses the existing Sonarr destination controls, and excludes
+covered seasons and episodes when calculating partial requests. It reports
+results per series and offers a retry when details fail to load. Series
+without a TVDB match still use the individual request flow.
+
+The production build and 28 browser checks passed. The HD fixture verifies
+that the payload excludes specials, an owned season, an owned episode, and
+an actively requested episode. Compared the prior and updated collections
+and inspected the open request sheet on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. Live Sonarr, alternate requesters and 4K submissions remain
+unverified. Native video collection filters and additional request
+overrides still need parity review. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-collection-requests-20261118/`.

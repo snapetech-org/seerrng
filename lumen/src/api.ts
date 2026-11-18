@@ -121,7 +121,11 @@ export interface MediaInfo {
     is4k?: boolean;
     createdAt?: string;
     requestedBy?: { displayName?: string };
-    seasons?: { seasonNumber: number; status?: number }[];
+    seasons?: {
+      seasonNumber: number;
+      status?: number;
+      episodeNumbers?: number[] | null;
+    }[];
   }[];
   hasPlexAudiobookFile?: boolean;
   availableEbookServiceIds?: number[] | null;
@@ -401,6 +405,11 @@ export const yearOf = (r: TitleResult) =>
   (r.releaseDate || r.firstAirDate || '').slice(0, 4);
 
 // ---- requests ----
+export interface SeasonRequestSelection {
+  seasonNumber: number;
+  episodeNumbers?: number[];
+}
+
 export interface RequestOptions {
   is4k?: boolean;
   serverId?: number;
@@ -420,7 +429,10 @@ export const requestMovie = (id: number, o: RequestOptions = {}) =>
 export const requestSeries = (
   id: number,
   seasons: number[] | 'all' = 'all',
-  o: RequestOptions = {}
+  o: RequestOptions & {
+    tvdbId?: number;
+    seasonRequests?: SeasonRequestSelection[];
+  } = {}
 ) =>
   post<{ id: number; seasons?: { seasonNumber: number }[] }>({
     mediaType: 'tv',
@@ -698,6 +710,7 @@ export interface Season {
   name: string;
 }
 export interface TvDetails extends TitleResult {
+  externalIds?: { tvdbId?: number | null };
   originalName?: string;
   onUserWatchlist?: boolean;
   overview?: string;
