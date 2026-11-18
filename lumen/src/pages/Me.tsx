@@ -8,11 +8,12 @@ import {
   canChooseRequestOptions,
   canRequestMovies,
 } from '../components/detail';
+import RequestLimits from '../components/RequestLimits';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { canManageDownloads } from '../downloadPermissions';
 import { canViewFollowing } from '../followPermissions';
-import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
+import { CAN_HOVER, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { canReadIssues } from '../issuePermissions';
 import { useLiveTvStatus } from '../liveTv';
@@ -25,11 +26,6 @@ import {
 } from '../settings';
 import { AdminLinks } from './AdminHome';
 import { canSeeRecent } from './Discover';
-
-type Quota = Record<
-  string,
-  { limit: number; used: number; days?: number; restricted: boolean }
->;
 
 function Toggle({
   path,
@@ -75,39 +71,10 @@ export default function Me() {
   const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const [askReset, setAskReset] = useState(false);
-  const quota = useApi<Quota>(user ? `/user/${user.id}/quota` : null).data;
   const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = isAdministrator(user?.permissions);
   const publicSettings = usePublicSettings();
   const lockedToLumen = publicSettings?.lockLumenForNonAdmins && !isAdmin;
-  const q = (k: string, label: string) => {
-    const x = quota?.[k];
-    if (!x) return null;
-    const unlimited = !x.limit;
-    return (
-      <div className="qbox" key={k}>
-        <span>{label}</span>
-        <b>
-          {unlimited ? (
-            'No limit'
-          ) : (
-            <>
-              {Math.max(0, x.limit - x.used)} <small>of {x.limit} left</small>
-            </>
-          )}
-        </b>
-        {!unlimited && (
-          <div className="progress">
-            <i
-              style={{ width: `${Math.min(100, (x.used / x.limit) * 100)}%` }}
-            />
-          </div>
-        )}
-        {!unlimited && x.days ? <span>Every {x.days} days</span> : null}
-      </div>
-    );
-  };
-
   return (
     <>
       <header className="ph">
@@ -287,13 +254,14 @@ export default function Me() {
           </div>
         </div>
       </Section>
-      <Section title="Request limits">
-        <div className="quota">
-          {q('movie', 'Movies')}
-          {q('tv', 'Seasons')}
-          {prefs.showBooks && q('book', 'Books')}
-        </div>
-      </Section>
+      {user && (
+        <RequestLimits
+          id={user.id}
+          categories={
+            prefs.showBooks ? ['movie', 'tv', 'book'] : ['movie', 'tv']
+          }
+        />
+      )}
 
       <Section title="Appearance">
         <div className="setlist">

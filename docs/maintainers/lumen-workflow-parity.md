@@ -2685,3 +2685,10 @@ companion tests, and eight browser checks passed. The browser tests
 verify preview links and that an unprivileged viewer makes neither
 private data request. Quota and playback activity panels, live providers,
 and matched visual acceptance remain open.
+
+Household profiles now show request limits to the member, administrators,
+and delegated viewers who can manage both users and requests. The panel
+reuses the Account quota cards. The production build and twelve browser
+checks passed, including the case where request management alone cannot
+read quota data. Matched visual acceptance and playback activity remain
+open.

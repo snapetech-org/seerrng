@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canViewAllRequests } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import RequestLimits from '../components/RequestLimits';
 import { useApi } from '../hooks';
 import { describeAll } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
@@ -133,6 +134,9 @@ export default function HouseholdProfile() {
     { currentPathOnly: true }
   );
   const own = user?.id === id;
+  const permissions = user?.permissions ?? 0;
+  const canViewQuota =
+    own || ((permissions & (2 | 8)) !== 0 && (permissions & (2 | 16)) !== 0);
   const loaded = profile.data?.id === id;
   return (
     <>
@@ -150,6 +154,7 @@ export default function HouseholdProfile() {
       )}
       {loaded && (
         <>
+          {canViewQuota && <RequestLimits key={id} id={id} />}
           {(own || canViewAllRequests(user?.permissions)) && (
             <RecentRequests key={id} id={id} own={own} />
           )}
