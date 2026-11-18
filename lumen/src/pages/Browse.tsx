@@ -8,6 +8,7 @@ import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
+import { StudioFilter } from '../components/StudioFilter';
 import { SubjectTagFilter } from '../components/SubjectTagFilter';
 import { tvNetworks } from '../discoverNetworks';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
@@ -200,6 +201,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const validRatingRange =
     !minRating || !maxRating || Number(minRating) <= Number(maxRating);
   const publicSettings = usePublicSettings();
+  const [showStudios, setShowStudios] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showProviders, setShowProviders] = useState(false);
   const rawRegion = p.get('watchRegion') ?? '';
@@ -225,6 +227,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     Number(studioParam) <= 1_000_000_000
       ? studioParam
       : '';
+  const excludeStudio = p.get('excludeStudio') === 'true';
   const studioInfo = useApi<{ id: number; name: string }>(
     studio ? `/studio/${studio}` : null
   );
@@ -285,7 +288,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
-    ...(studio ? { studio } : {}),
+    ...(studio
+      ? { studio, ...(excludeStudio ? { excludeStudio: 'true' } : {}) }
+      : {}),
     ...(network ? { network } : {}),
     ...(country ? { country } : {}),
     ...(language ? { language } : {}),
@@ -423,9 +428,34 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <button
             className="chip"
             type="button"
-            onClick={() => upd('studio', '')}
+            onClick={() => {
+              const next = new URLSearchParams(p);
+              next.delete('studio');
+              next.delete('excludeStudio');
+              setP(next, { replace: true });
+            }}
           >
             Clear Studio {studioLabel}
+          </button>
+        )}
+        {kind === 'movie' && (
+          <button
+            className="chip"
+            type="button"
+            aria-expanded={showStudios}
+            onClick={() => setShowStudios(!showStudios)}
+          >
+            Production Studios
+          </button>
+        )}
+        {studio && (
+          <button
+            className="chip"
+            type="button"
+            aria-pressed={excludeStudio}
+            onClick={() => upd('excludeStudio', excludeStudio ? '' : 'true')}
+          >
+            Exclude Studio
           </button>
         )}
         <CardTitleToggle kinds={[kind]} />
@@ -637,6 +667,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         what="countries"
         retry={countries.reload}
       />
+      {kind === 'movie' && showStudios && (
+        <StudioFilter studio={studio} select={(id) => upd('studio', id)} />
+      )}
       <RangeFilter
         kind="dates"
         key={`dates:${start}:${end}`}

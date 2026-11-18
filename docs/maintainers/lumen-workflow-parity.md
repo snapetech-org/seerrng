@@ -1082,3 +1082,8 @@ Movie production studios link to matching discovery results and can be
 cleared from the Movies grid. Standalone checks covered the exact query
 and reset, alongside series network links, at four viewport presets.
 Interactive studio selection and bundled and native visuals remain open.
+
+Movies now has a production studio picker backed by company search.
+Selection and exclusion use the native query contract. Standalone checks
+verified searching, selection, exclusion, reload, reset and detail links
+across four presets. Bundled and native visual comparisons remain open.

@@ -2104,3 +2104,44 @@ test('movie studio details open the matching discovery query', async ({
     .click();
   await expect(page).toHaveURL(/\/movies$/);
 });
+
+test('movie studio search can select and exclude a studio', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/search/company?query=fixture&page=1', (route) =>
+    route.fulfill({
+      json: { results: [{ id: 42, name: 'Fixture Studio' }], total_pages: 1 },
+    })
+  );
+  await page.route('**/api/v1/studio/42', (route) =>
+    route.fulfill({ json: { id: 42, name: 'Fixture Studio' } })
+  );
+  await page.goto('/movies?genre=18');
+  await page.getByRole('button', { name: 'Production Studios' }).click();
+  await page.getByLabel('Find Production Studios').fill('fixture');
+  await page.getByRole('button', { name: 'Find Studios' }).click();
+  await page
+    .getByRole('button', { name: 'Fixture Studio', exact: true })
+    .click();
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('studio') === '42' &&
+      url.searchParams.get('excludeStudio') === 'true'
+    );
+  });
+  await page
+    .getByRole('button', { name: 'Exclude Studio', exact: true })
+    .click();
+  await query;
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'Exclude Studio', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await page
+    .getByRole('button', { name: 'Clear Studio Fixture Studio' })
+    .click();
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});
