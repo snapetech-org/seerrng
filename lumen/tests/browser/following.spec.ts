@@ -685,6 +685,12 @@ for (const [type, catalogId, href] of [
 test('unmatched AniList discovery titles can open the exact franchise', async ({
   page,
 }) => {
+  await page.route('**/imageproxy/anilist/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="45"/>',
+    })
+  );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(7);
     if (path === '/auth/me')
@@ -693,7 +699,13 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
       return route.fulfill({
         json: {
           page: 1,
-          items: [{ id: 'anilist:713', title: 'Fixture Anime' }],
+          items: [
+            {
+              id: 'anilist:713',
+              title: 'Fixture Anime',
+              imageUrl: 'https://s4.anilist.co/file/fixture.jpg',
+            },
+          ],
         },
       });
     if (path === '/franchise/anime/713')
@@ -703,6 +715,11 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto('./providers?unmatched=1');
+  const cover = page.locator('img[src="/imageproxy/anilist/file/fixture.jpg"]');
+  await expect(cover).toBeVisible();
+  await expect
+    .poll(() => cover.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBe(30);
   await page
     .getByRole('link', { name: 'Explore Franchise: Fixture Anime' })
     .click();

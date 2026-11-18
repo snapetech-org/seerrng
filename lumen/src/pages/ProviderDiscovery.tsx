@@ -1,4 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom';
+import { artUrl } from '../api';
+import { Cover } from '../components/cards';
 import { ExtraHeader } from '../components/extra';
 import IdentityMapping, {
   type MappingCandidate,
@@ -30,7 +32,7 @@ interface FeedPage {
   page: number;
   hasMore: boolean;
   missingMappings?: number;
-  items: MappingCandidate[];
+  items: (MappingCandidate & { imageUrl?: string })[];
 }
 
 export default function ProviderDiscovery() {
@@ -171,6 +173,7 @@ export default function ProviderDiscovery() {
             const animeId = feed.startsWith('anilist/')
               ? /^anilist:([1-9]\d{0,9})$/.exec(item.id)?.[1]
               : undefined;
+            const cover = animeId ? artUrl(item.imageUrl) : undefined;
             const matchDescription =
               item.identityResolution &&
               Object.hasOwn(matchDescriptions, item.identityResolution)
@@ -180,6 +183,13 @@ export default function ProviderDiscovery() {
                   : undefined;
             return (
               <li className="set" key={item.id}>
+                {!href && cover?.startsWith('/imageproxy/anilist/') && (
+                  <div className="poster" aria-hidden="true">
+                    <div className="art">
+                      <Cover src={cover} title={item.title} icon="tv" />
+                    </div>
+                  </div>
+                )}
                 <div>
                   {href ? (
                     <Link className="go" to={href}>
