@@ -4570,3 +4570,47 @@ test('Users sets an Episode Queue default for the selected account', async ({
     page.getByRole('button', { name: 'Save Default', exact: true })
   ).toBeDisabled();
 });
+
+test('Users saves and resets a selected media quota', async ({ page }) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  const writes: unknown[] = [];
+  let quotas: Record<string, number | null> = {
+    globalMusicQuotaLimit: 4,
+    globalMusicQuotaDays: 7,
+  };
+  await page.route('**/api/v1/user/19/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      quotas = { ...quotas, ...body };
+    }
+    return route.fulfill({ json: quotas });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Request Quotas' }).click();
+  await page.getByLabel('Media Type').selectOption('music');
+  await expect(
+    page.getByText('Server default 4 requests per 7 days')
+  ).toBeVisible();
+  await page.getByLabel('Request Limit').fill('2');
+  await page.getByLabel('Quota Days').fill('14');
+  await page.getByRole('button', { name: 'Save Quota' }).click();
+  await expect(page.getByText('Request quota saved.')).toBeVisible();
+  await expect(page.getByLabel('Request Limit')).toHaveValue('2');
+  await page.getByLabel('Request Limit').fill('');
+  await page.getByLabel('Quota Days').fill('');
+  await page.getByRole('button', { name: 'Save Quota' }).click();
+  await expect(page.getByText('Request quota saved.')).toBeVisible();
+  expect(writes).toEqual([
+    { musicQuotaLimit: 2, musicQuotaDays: 14 },
+    { musicQuotaLimit: null, musicQuotaDays: null },
+  ]);
+});

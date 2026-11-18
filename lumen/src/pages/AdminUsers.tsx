@@ -1,9 +1,11 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
+import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
+import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 
@@ -148,6 +150,8 @@ function CreateLocalUser({
 }
 
 export default function AdminUsers() {
+  const { user: actor } = useAuth();
+  const [quotaUser, setQuotaUser] = useState<number>();
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
   const [queueUser, setQueueUser] = useState<number>();
@@ -309,6 +313,24 @@ export default function AdminUsers() {
               {queueUser === user.id && (
                 <ManagedEpisodeQueue id={user.id} name={user.displayName} />
               )}
+              {actor &&
+                actor.id !== user.id &&
+                (actor.id === 1 || (user.permissions & 2) === 0) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={quotaUser === user.id}
+                      onClick={() =>
+                        setQuotaUser(
+                          quotaUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Request Quotas
+                    </button>
+                    {quotaUser === user.id && <ManagedQuotas id={user.id} />}
+                  </>
+                )}
             </li>
           ))}
         </ul>
