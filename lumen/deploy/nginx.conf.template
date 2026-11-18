@@ -177,7 +177,7 @@ server {
     return 302 /book-series/$1;
   }
   location ~ ^/discover/book-recommendations/?$ {
-    return 302 /books/recommendations;
+    return 302 /books/recommendations$is_args$args;
   }
   location ~ ^/discover/collectors/?$ {
     return 302 /music/collectors;

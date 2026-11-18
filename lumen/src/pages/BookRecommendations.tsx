@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, bookArt } from '../api';
 import { Cover, Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
@@ -51,6 +51,11 @@ export default function BookRecommendations() {
   );
   const toast = useToast();
   const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+  const feedId = params.get('feed');
+  const bookmarkedFeed = feeds.data?.results?.find(
+    ({ id }) => String(id) === feedId
+  );
   const [selected, select] = useState<Feed>();
   const [books, setBooks] = useState<Books>();
   const [busy, setBusy] = useState(false);
@@ -117,6 +122,21 @@ export default function BookRecommendations() {
       setBusy(false);
     }
   }
+
+  const loadBookmarkedFeed = useEffectEvent((feed: Feed) => {
+    void load(feed, {});
+  });
+  useEffect(() => {
+    if (busy) return;
+    if (bookmarkedFeed && bookmarkedFeed.id !== selected?.id) {
+      loadBookmarkedFeed(bookmarkedFeed);
+    } else if (!feedId && selected) {
+      select(undefined);
+      setBooks(undefined);
+      setFeedback({});
+      setFeedError(undefined);
+    }
+  }, [bookmarkedFeed, busy, feedId, selected]);
 
   async function openBook(book: Book) {
     setBusy(true);
@@ -219,7 +239,13 @@ export default function BookRecommendations() {
                     className="btn btn-quiet btn-sm"
                     disabled={busy}
                     onClick={() => {
-                      void load(feed, {});
+                      if (feedId === String(feed.id)) {
+                        void load(feed, {});
+                      } else {
+                        const next = new URLSearchParams(params);
+                        next.set('feed', String(feed.id));
+                        setParams(next, { preventScrollReset: true });
+                      }
                     }}
                     aria-label={`Show Books: ${feed.title}`}
                   >
@@ -228,6 +254,11 @@ export default function BookRecommendations() {
                 </li>
               ))}
             </ul>
+            {feedId && !bookmarkedFeed && (
+              <p className="note" role="status">
+                This recommendation feed is unavailable.
+              </p>
+            )}
             {!feeds.data.results?.length && (
               <p className="note">No recommendation feeds found.</p>
             )}

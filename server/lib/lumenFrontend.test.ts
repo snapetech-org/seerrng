@@ -687,6 +687,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/discover/book-recommendations/', '/lumen/books/recommendations'],
       [
+        '/discover/book-recommendations?feed=11&extra=1',
+        '/lumen/books/recommendations?feed=11',
+      ],
+      [
         '/discover/music?genre=jazz&sortBy=release_date.asc&search=Jazz&releaseType=ep&artist=Artist&artistId=fixture&availability=flac&primaryReleaseDateGte=1990-01-01&primaryReleaseDateLte=2000-12-31&extra=1',
         '/lumen/music?genre=jazz&sortBy=release_date.asc&search=Jazz&releaseType=ep&artist=Artist&artistId=fixture&availability=flac&primaryReleaseDateGte=1990-01-01&primaryReleaseDateLte=2000-12-31',
       ],

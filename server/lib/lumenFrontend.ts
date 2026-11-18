@@ -478,6 +478,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
     'minRating',
     'sortBy',
   ],
+  '/books/recommendations': ['feed'],
   '/music': [
     'genre',
     'sortBy',

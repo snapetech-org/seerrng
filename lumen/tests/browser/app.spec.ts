@@ -5438,6 +5438,9 @@ test('book recommendations preserve results when a feedback refresh fails', asyn
   });
   await page.goto('/books/recommendations');
   await page.getByRole('button', { name: 'Show Books: Fixture Feed' }).click();
+  await expect(page).toHaveURL(/feed=11$/);
+  await page.reload();
+  await expect(page.getByText('Fixture Book', { exact: true })).toBeVisible();
   const vote = page.getByRole('button', { name: 'More Like This' });
   await vote.click();
   await expect(page.getByRole('alert')).toHaveText(

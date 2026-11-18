@@ -184,6 +184,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/trending?mediaType=tv', '/trending?mediaType=tv'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
       ['/discover/book-recommendations/', '/books/recommendations'],
+      [
+        '/discover/book-recommendations?feed=11',
+        '/books/recommendations?feed=11',
+      ],
       ['/discover/collectors/', '/music/collectors'],
       ['/discover/providers', '/providers'],
       ['/discover/movies/genres/', '/movies/genres'],
