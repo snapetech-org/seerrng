@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Season, SeasonRequestSelection } from '../api';
 import { useApi } from '../hooks';
@@ -21,6 +21,7 @@ export default function TvEpisodeRequestSheet({
   approval,
   busy,
   error,
+  streamingOverride,
   submit,
   close,
 }: {
@@ -31,6 +32,7 @@ export default function TvEpisodeRequestSheet({
   approval: boolean;
   busy: boolean;
   error?: string;
+  streamingOverride?: { message: string; confirm: () => Promise<void> };
   submit: (selection: SeasonRequestSelection) => Promise<void>;
   close: () => void;
 }) {
@@ -39,6 +41,10 @@ export default function TvEpisodeRequestSheet({
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, close);
   useBackCloses(close);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (streamingOverride) closeButton.current?.focus();
+  }, [streamingOverride]);
   const {
     data,
     error: loadError,
@@ -77,7 +83,7 @@ export default function TvEpisodeRequestSheet({
             <span className="lbl">Season</span>
             <select
               value={season}
-              disabled={busy}
+              disabled={busy || !!streamingOverride}
               onChange={(event) => {
                 selectSeason(Number(event.target.value));
                 setPicked(new Set());
@@ -116,7 +122,7 @@ export default function TvEpisodeRequestSheet({
                   </span>
                   <input
                     type="checkbox"
-                    disabled={busy || !available}
+                    disabled={busy || !!streamingOverride || !available}
                     checked={available && picked.has(number)}
                     onChange={(event) => {
                       const checked = event.target.checked;
@@ -132,6 +138,11 @@ export default function TvEpisodeRequestSheet({
               );
             })}
           </div>
+          {streamingOverride && (
+            <p className="note" role="alert">
+              {streamingOverride.message}
+            </p>
+          )}
           {error && (
             <p className="note" role="alert">
               {error}
@@ -143,17 +154,24 @@ export default function TvEpisodeRequestSheet({
               className="btn btn-primary"
               disabled={busy || !eligibleSeason || !episodeNumbers.length}
               onClick={() =>
-                void submit({ seasonNumber: season, episodeNumbers })
+                streamingOverride
+                  ? void streamingOverride.confirm()
+                  : void submit({ seasonNumber: season, episodeNumbers })
               }
             >
               {busy
                 ? 'Requesting…'
-                : approval
-                  ? 'Request Approval'
-                  : 'Request Selected Episodes'}
+                : streamingOverride
+                  ? approval
+                    ? 'Request Approval Anyway'
+                    : 'Request Anyway'
+                  : approval
+                    ? 'Request Approval'
+                    : 'Request Selected Episodes'}
             </button>
             <button
               type="button"
+              ref={closeButton}
               className="btn btn-quiet"
               disabled={busy}
               onClick={close}

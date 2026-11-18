@@ -95,6 +95,10 @@ export default function TvDetail() {
   const episodeSubmission = useRef(false);
   const [episodesOpen, setEpisodesOpen] = useState(false);
   const [episodeError, setEpisodeError] = useState<string>();
+  const [episodeOverride, setEpisodeOverride] = useState<{
+    message: string;
+    confirm: () => Promise<void>;
+  }>();
   const [streamingOverride, setStreamingOverride] = useState<{
     seriesId: number;
     seasons: number[] | 'all';
@@ -283,18 +287,25 @@ export default function TvDetail() {
   const episodeApproval =
     quota.status?.restricted === true ||
     (!!quota.status?.limit && (quota.status.remaining ?? 0) < 1);
-  const submitEpisodes = async (selection: SeasonRequestSelection) => {
+  const submitEpisodes = async (
+    selection: SeasonRequestSelection,
+    options: RequestOptions & { seasonRequests: SeasonRequestSelection[] } = {
+      ...opts,
+      is4k,
+      seasonRequests: [selection],
+      requestQuotaApproval: episodeApproval || undefined,
+    }
+  ) => {
     if (busy || episodeSubmission.current || !canPickEpisodes) return;
     episodeSubmission.current = true;
     setBusy(true);
     setEpisodeError(undefined);
     try {
-      const result = await requestSeries(t.id, [selection.seasonNumber], {
-        ...opts,
-        is4k,
-        seasonRequests: [selection],
-        requestQuotaApproval: episodeApproval || undefined,
-      });
+      const result = await requestSeries(
+        t.id,
+        [selection.seasonNumber],
+        options
+      );
       toast(
         result.quotaException
           ? `Approval requested for ${t.name || 'this series'}`
@@ -304,7 +315,23 @@ export default function TvDetail() {
       refresh();
       quota.refresh();
     } catch (error) {
-      setEpisodeError(friendlyError(error, 'Could not request episodes'));
+      if (
+        !options.bypassStreamingRequestPolicy &&
+        error instanceof ApiError &&
+        error.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+        error.allowOverride
+      ) {
+        setEpisodeOverride({
+          message: error.message,
+          confirm: () =>
+            submitEpisodes(selection, {
+              ...options,
+              bypassStreamingRequestPolicy: true,
+            }),
+        });
+      } else {
+        setEpisodeError(friendlyError(error, 'Could not request episodes'));
+      }
       if (error instanceof ApiError && error.code === 'REQUEST_NOT_CONFIRMED')
         refresh();
     } finally {
@@ -659,6 +686,7 @@ export default function TvDetail() {
                     disabled={busy}
                     onClick={() => {
                       setEpisodeError(undefined);
+                      setEpisodeOverride(undefined);
                       setEpisodesOpen(true);
                     }}
                   >
@@ -676,6 +704,7 @@ export default function TvDetail() {
                   approval={episodeApproval}
                   busy={busy}
                   error={episodeError}
+                  streamingOverride={episodeOverride}
                   close={() => {
                     if (!busy) setEpisodesOpen(false);
                   }}

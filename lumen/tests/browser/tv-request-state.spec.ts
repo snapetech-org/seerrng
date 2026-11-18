@@ -453,6 +453,15 @@ test('TV detail can request missing episodes from a partly requested season', as
   await page.route('**/api/v1/request', (route) => {
     if (route.request().method() !== 'POST') return route.fallback();
     posts.push({ path: '/request', body: route.request().postDataJSON() });
+    if (posts.length === 2)
+      return route.fulfill({
+        status: 403,
+        json: {
+          code: 'STREAMING_REQUEST_POLICY_REJECTED',
+          allowOverride: true,
+          message: 'This episode is available on your streaming service.',
+        },
+      });
     return route.fulfill(
       posts.length === 1
         ? { status: 202, json: { message: 'No episodes available.' } }
@@ -499,12 +508,18 @@ test('TV detail can request missing episodes from a partly requested season', as
   await sheet
     .getByRole('button', { name: 'Request Selected Episodes' })
     .click();
+  await expect(sheet.getByRole('alert')).toHaveText(
+    'This episode is available on your streaming service.'
+  );
+  await expect(sheet.getByRole('button', { name: 'Close' })).toBeFocused();
+  expect(posts).toHaveLength(2);
+  await sheet.getByRole('button', { name: 'Request Anyway' }).click();
   await expect(
     page.getByText('Episodes requested for The Rings of Power')
   ).toBeVisible();
-  expect(posts).toHaveLength(2);
+  expect(posts).toHaveLength(3);
   expect(posts[0]).toEqual(posts[1]);
-  expect(posts.slice(1)).toEqual([
+  expect(posts.slice(2)).toEqual([
     {
       path: '/request',
       body: {
@@ -513,6 +528,7 @@ test('TV detail can request missing episodes from a partly requested season', as
         is4k: false,
         seasons: [1],
         seasonRequests: [{ seasonNumber: 1, episodeNumbers: [3] }],
+        bypassStreamingRequestPolicy: true,
       },
     },
   ]);
