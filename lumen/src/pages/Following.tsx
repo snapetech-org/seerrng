@@ -14,6 +14,9 @@ interface Subscription {
   id: number;
   kind: string;
   subjectLabel: string;
+  conditions?: {
+    ref?: { tmdbId?: unknown; genreId?: unknown; mediaType?: unknown };
+  } | null;
   notify: boolean;
   autoRequest: boolean;
 }
@@ -74,6 +77,29 @@ function eventReason(event: FollowEvent) {
   );
 }
 
+function tmdbSourceHref(subscription: Subscription) {
+  const ref = subscription.conditions?.ref;
+  const id = subscription.kind === 'tmdb-genre' ? ref?.genreId : ref?.tmdbId;
+  if (
+    typeof id !== 'number' ||
+    !Number.isSafeInteger(id) ||
+    id < 1 ||
+    id > 1_000_000_000
+  )
+    return undefined;
+
+  switch (subscription.kind) {
+    case 'tmdb-person':
+      return `/person/${id}`;
+    case 'tmdb-studio':
+      return `/movies?studio=${id}`;
+    case 'tmdb-network':
+      return `/series?network=${id}`;
+    case 'tmdb-genre':
+      if (ref?.mediaType === 'movie') return `/movies?genre=${id}`;
+      if (ref?.mediaType === 'tv') return `/series?genre=${id}`;
+  }
+}
 function eventHref({ target, title }: FollowEvent) {
   if (target?.mediaType === 'patch') {
     const patch = patchHref(target.id, target.variantKey);
@@ -253,9 +279,16 @@ export default function Following() {
               <ul className="setlist">
                 {subscriptions.data.results.map((subscription) => {
                   const path = `/follow/${subscription.id}`;
+                  const sourceHref = tmdbSourceHref(subscription);
                   return (
                     <li className="set" key={subscription.id}>
-                      <b>{subscription.subjectLabel}</b>
+                      {sourceHref ? (
+                        <Link className="go" to={sourceHref}>
+                          {subscription.subjectLabel}
+                        </Link>
+                      ) : (
+                        <b>{subscription.subjectLabel}</b>
+                      )}
                       <label>
                         <input
                           type="checkbox"

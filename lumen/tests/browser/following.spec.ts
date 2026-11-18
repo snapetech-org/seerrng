@@ -77,6 +77,7 @@ test('household users can open Following and manage their own updates', async ({
               id: 2,
               kind: 'tmdb-person',
               subjectLabel: 'Example Director',
+              conditions: { ref: { tmdbId: 77 } },
               notify,
               autoRequest: false,
             },
@@ -114,6 +115,9 @@ test('household users can open Following and manage their own updates', async ({
   await expect(
     page.getByRole('button', { name: 'Mark Seen: A New Film' })
   ).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Example Director' })
+  ).toHaveAttribute('href', new URL('./person/77', baseURL).pathname);
   const notification = page.getByRole('checkbox', { name: 'Notify Me' });
   await expect(notification).toBeChecked();
   await notification.click();
