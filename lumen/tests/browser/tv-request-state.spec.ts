@@ -605,14 +605,16 @@ test('a permitted streaming override retries only the selected seasons', async (
   await expect(confirm).toHaveCount(0);
 });
 
-for (const available of [false, true]) {
-  const expected = available ? 1 : 2;
-  test(`the episode picker opens season ${expected} when the bookmark is ${available ? 'owned' : 'eligible'}`, async ({
+for (const scenario of ['eligible', 'owned season', 'owned episode']) {
+  const expected = scenario === 'owned season' ? 1 : 2;
+  test(`the episode picker respects the bookmark for an ${scenario}`, async ({
     page,
   }) => {
     await show(
       page,
-      available ? { seasons: [{ seasonNumber: 2, status: 5 }] } : {},
+      scenario === 'owned season'
+        ? { seasons: [{ seasonNumber: 2, status: 5 }] }
+        : {},
       [],
       32,
       undefined,
@@ -620,7 +622,18 @@ for (const available of [false, true]) {
     );
     await page.route(`**/api/v1/tv/84773/season/${expected}`, (route) =>
       route.fulfill({
-        json: { episodes: [{ episodeNumber: 3, name: 'Bookmarked Season' }] },
+        json: {
+          episodes: [
+            {
+              episodeNumber: 3,
+              name: 'Bookmarked Episode',
+              sonarrAvailability: {
+                hd: scenario === 'owned episode',
+                fourK: false,
+              },
+            },
+          ],
+        },
       })
     );
     await page.goto('/tv/84773?episode=3#season-2');
@@ -632,9 +645,15 @@ for (const available of [false, true]) {
       String(expected)
     );
     const episode = sheet.getByRole('checkbox', {
-      name: 'E3 Bookmarked Season',
+      name: /E3 Bookmarked Episode/,
     });
-    if (available) await expect(episode).not.toBeChecked();
-    else await expect(episode).toBeChecked();
+    if (scenario === 'eligible') await expect(episode).toBeChecked();
+    else await expect(episode).not.toBeChecked();
+    if (scenario === 'owned episode') {
+      await expect(episode).toBeDisabled();
+      await expect(
+        sheet.getByRole('button', { name: 'Request Selected Episodes' })
+      ).toBeDisabled();
+    }
   });
 }
