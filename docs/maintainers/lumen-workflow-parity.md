@@ -2173,3 +2173,17 @@ same routes with and without usable reader addresses on desktop, iPhone 13,
 Pixel 7, and iPad Pro 11. Fixtures verify the destination and new-tab
 behavior. Live provider playback was outside this check. Evidence is retained
 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-links-20261118/`.
+
+Lumen Administration now exposes Tunerr connection settings, separate deck
+and XMLTV guide diagnostics, and Sportarr feed status and synchronization.
+Sportarr writes use saved settings and require a reachable service with
+Tunerr sports automation enabled. Saved deck passwords stay out of unrelated
+save and test payloads. The live TV guide and recording workflows remain
+separate parity work.
+
+The production build, eight Tunerr server tests, and 36 browser fixture
+checks passed. Compared against Lumen's existing provider settings form
+on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Fixtures checked partial
+diagnostics, password preservation, and feed-link readback. Real Tunerr and
+Sportarr connections were outside the check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tunerr-20261118/`.

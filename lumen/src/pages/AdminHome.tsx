@@ -15,6 +15,7 @@ const destinations = [
   ['Mylar Services', '/admin/mylar'],
   ['Kapowarr Services', '/admin/kapowarr'],
   ['BackIssue Services', '/admin/backissue'],
+  ['Tunerr Settings', '/admin/tunerr'],
   ['Sportarr Services', '/admin/sportarr'],
   ['Soulseek Settings', '/admin/soulseek'],
   ['Reader Delivery', '/admin/reader-delivery'],

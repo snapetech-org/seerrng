@@ -404,7 +404,8 @@ tunerrRoutes.post(
       result.guideErrorOrigin = 'app';
     }
 
-    return res.status(result.deck && result.guide ? 200 : 502).json(result);
+    if (result.deck && result.guide) return res.status(200).json(result);
+    return res.status(502).json({ ...result, tests: result });
   })
 );
 
