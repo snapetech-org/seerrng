@@ -1020,3 +1020,8 @@ through SeerrNG's keyword endpoint. Users can include, exclude, move and
 remove tags while preserving other filters. Standalone browser checks
 verified the Movies interaction and shared links at four viewport presets.
 Live keyword results and bundled and native visual comparisons remain open.
+
+Subject-tag search follows the native keyword endpoint's pagination contract.
+Standalone browser checks verified reaching page two, returning to page
+one, and retaining selected tags across pages. Live searches and bundled
+and native visual comparisons remain open.

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type Paged, type SubjectTag } from '../api';
+import { type SubjectTag } from '../api';
 import { useApi } from '../hooks';
 import { ServiceNote } from './extra';
 
@@ -14,14 +14,10 @@ export function SubjectTagFilter({
 }) {
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
   const [exclude, setExclude] = useState(false);
   const [names, setNames] = useState<Record<string, string>>({});
-  const path = query
-    ? `/search/keyword?query=${encodeURIComponent(query)}`
-    : null;
-  const results = useApi<Paged<SubjectTag>>(path);
   const selected = exclude ? excluded : included;
-  const tags = path ? (results.data?.results ?? []) : [];
 
   function toggle(tag: SubjectTag) {
     const id = String(tag.id);
@@ -47,8 +43,8 @@ export function SubjectTagFilter({
         className="toolbar"
         onSubmit={(event) => {
           event.preventDefault();
-          if (input.trim() === query) results.reload();
-          else setQuery(input.trim());
+          setQuery(input.trim());
+          setPage(1);
         }}
       >
         <label className="sel">
@@ -107,42 +103,96 @@ export function SubjectTagFilter({
           </button>
         ))}
       </div>
-      {path && (
-        <ServiceNote
-          error={results.error}
-          what="subject tags"
-          retry={results.reload}
+      {query && (
+        <KeywordResults
+          key={JSON.stringify([query, page])}
+          query={query}
+          page={page}
+          selected={selected}
+          toggle={toggle}
+          setPage={setPage}
         />
       )}
-      {path && !results.data && !results.error && (
+    </>
+  );
+}
+
+function KeywordResults({
+  query,
+  page,
+  selected,
+  toggle,
+  setPage,
+}: {
+  query: string;
+  page: number;
+  selected: string[];
+  toggle: (tag: SubjectTag) => void;
+  setPage: (page: number) => void;
+}) {
+  const suffix = page > 1 ? `&page=${page}` : '';
+  const results = useApi<{ results: SubjectTag[]; total_pages: number }>(
+    `/search/keyword?query=${encodeURIComponent(query)}${suffix}`
+  );
+  const tags = (results.data?.results ?? []).filter(
+    ({ id }) => Number.isSafeInteger(id) && id > 0 && id <= 1_000_000_000
+  );
+  const total = Math.min(500, results.data?.total_pages ?? page);
+  return (
+    <>
+      <ServiceNote
+        error={results.error}
+        what="subject tags"
+        retry={results.reload}
+      />
+      {!results.data && !results.error && (
         <p className="note" role="status">
           Finding subject tags…
         </p>
       )}
-      {path && results.data && !tags.length && (
+      {results.data && !tags.length && (
         <p className="note">No matching subject tags.</p>
       )}
       {!!tags.length && (
-        <div className="toolbar" aria-label="Subject Tag Results">
-          {tags
-            .filter(
-              ({ id }) =>
-                Number.isSafeInteger(id) && id > 0 && id <= 1_000_000_000
-            )
-            .map((tag) => (
-              <button
-                className="chip"
-                type="button"
-                key={tag.id}
-                aria-pressed={selected.includes(String(tag.id))}
-                disabled={
-                  selected.length >= 20 && !selected.includes(String(tag.id))
-                }
-                onClick={() => toggle(tag)}
-              >
-                {tag.name}
-              </button>
-            ))}
+        <div className="toolbar" role="group" aria-label="Subject Tag Results">
+          {tags.map((tag) => (
+            <button
+              className="chip"
+              type="button"
+              key={tag.id}
+              aria-pressed={selected.includes(String(tag.id))}
+              disabled={
+                selected.length >= 20 && !selected.includes(String(tag.id))
+              }
+              onClick={() => toggle(tag)}
+            >
+              {tag.name}
+            </button>
+          ))}
+        </div>
+      )}
+      {(page > 1 || total > 1) && (
+        <div className="toolbar" role="group" aria-label="Subject Tag Pages">
+          <button
+            className="btn btn-tonal btn-sm"
+            type="button"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Previous Tag Page
+          </button>
+          <span className="note" role="status">
+            Tag page {page}
+            {results.data ? ` of ${total}` : ''}
+          </span>
+          <button
+            className="btn btn-tonal btn-sm"
+            type="button"
+            disabled={page >= total}
+            onClick={() => setPage(page + 1)}
+          >
+            Next Tag Page
+          </button>
         </div>
       )}
     </>

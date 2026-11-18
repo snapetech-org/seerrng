@@ -1789,7 +1789,14 @@ test('discovery searches for subject tags and moves a tag between include and ex
 }) => {
   await fixtures(page);
   await page.route('**/api/v1/search/keyword?query=space', (route) =>
-    route.fulfill({ json: paged([{ id: 73, name: 'Space travel' }]) })
+    route.fulfill({
+      json: { results: [{ id: 73, name: 'Space travel' }], total_pages: 2 },
+    })
+  );
+  await page.route('**/api/v1/search/keyword?query=space&page=2', (route) =>
+    route.fulfill({
+      json: { results: [{ id: 84, name: 'Space station' }], total_pages: 2 },
+    })
   );
   await page.goto('/movies?genre=18');
   await page.getByRole('button', { name: 'Subject Tags', exact: true }).click();
@@ -1798,6 +1805,15 @@ test('discovery searches for subject tags and moves a tag between include and ex
   const tag = page.getByRole('button', { name: 'Space travel', exact: true });
   await tag.click();
   await expect(page).toHaveURL(/keywords=73/);
+  await expect(tag).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Next Tag Page' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Space station' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Remove included Space travel' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Previous Tag Page' }).click();
   await expect(tag).toHaveAttribute('aria-pressed', 'true');
   await page.getByLabel('Tag Match').selectOption('exclude');
   await tag.click();
