@@ -1583,9 +1583,13 @@ Administrators can inspect scheduled jobs and next execution times, run or
 cancel a job, toggle schedules, and edit cron expressions for configurable
 jobs. The page uses the existing admin endpoints and refreshes job state.
 TypeScript, the production build, and four standalone browser fixtures passed
-for run confirmation and schedule save readback. Cache controls, guided
-interval editing, live jobs, bundled rendering, and native visual comparison
-remain open.
+for run confirmation and schedule save readback. System Caches displays API,
+DNS, and image cache statistics and offers confirmed API and DNS flushes.
+The schedule picker preserves loaded cron expressions and describes its
+presets according to the scheduler's actual cadence. Twelve standalone
+browser cases passed across the four viewport presets for guided schedule
+editing, run confirmation, and DNS flush. Live jobs, bundled rendering,
+and native visual comparison remain open.
 
 ### Managed users
 

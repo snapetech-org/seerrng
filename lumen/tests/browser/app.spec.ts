@@ -4337,6 +4337,44 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
 });
 
+test('Scheduled Jobs describes calendar presets and preserves existing custom schedules', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/jobs', (route) =>
+    route.fulfill({
+      json: [
+        ['Seconds Job', 'seconds', '*/45 * * * * *'],
+        ['Hours Job', 'hours', '0 0 */48 * * *'],
+        ['Days Job', 'days', '0 0 1 */7 * *'],
+      ].map(([name, interval, cronSchedule]) => ({
+        id: interval,
+        name,
+        type: 'process',
+        interval,
+        cronSchedule,
+        enabled: true,
+        running: false,
+      })),
+    })
+  );
+  await page.goto('/admin/jobs');
+  for (const [name, label, schedule] of [
+    ['Seconds Job', 'At Seconds 0 and 45 Each Minute', '*/45 * * * * *'],
+    ['Hours Job', 'Custom Schedule', '0 0 */48 * * *'],
+    ['Days Job', 'Every 7 Days of the Month', '0 0 1 */7 * *'],
+  ]) {
+    const row = page.getByRole('listitem').filter({ hasText: name });
+    await row.getByRole('button', { name: 'Edit Schedule' }).click();
+    await expect(row.locator('select option:checked')).toHaveText(label);
+    await expect(row.getByLabel('Cron Schedule')).toHaveValue(schedule);
+    await expect(
+      row.getByRole('button', { name: 'Save Schedule' })
+    ).toBeDisabled();
+    await row.getByRole('button', { name: 'Cancel Editing' }).click();
+  }
+});
+
 test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await fixtures(page);
   let flushed = false;

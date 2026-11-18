@@ -27,7 +27,7 @@ const frequencies: Record<
     cron: (value) => `0 */${value} * * * *`,
   },
   hours: {
-    values: [1, 2, 3, 4, 6, 8, 12, 24, 48, 72],
+    values: [1, 2, 3, 4, 6, 8, 12, 24],
     cron: (value) => `0 0 */${value} * * *`,
   },
   days: {
@@ -35,6 +35,16 @@ const frequencies: Record<
     cron: (value) => `0 0 1 */${value} * *`,
   },
 };
+
+function frequencyLabel(interval: string, value: number) {
+  if (interval === 'seconds' && value === 45) {
+    return 'At Seconds 0 and 45 Each Minute';
+  }
+  if (interval === 'days') {
+    return value === 1 ? 'Daily at 01:00' : `Every ${value} Days of the Month`;
+  }
+  return `Every ${value} ${value === 1 ? interval.slice(0, -1) : interval}`;
+}
 
 function ScheduleFrequency({
   interval,
@@ -67,7 +77,7 @@ function ScheduleFrequency({
         </option>
         {values.map((value) => (
           <option key={value} value={value}>
-            Every {value} {value === 1 ? interval.slice(0, -1) : interval}
+            {frequencyLabel(interval, value)}
           </option>
         ))}
       </select>
