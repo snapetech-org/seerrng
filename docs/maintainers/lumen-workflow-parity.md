@@ -194,3 +194,18 @@ comment submission, and resolution against synthetic data. Mobile, bundled,
 and equivalent rendered native comparisons remain open. Creation, editing and
 deletion of reports or comments, advanced filters and title metadata, and
 Blocklist remain open.
+
+### Issue reporting increment
+
+Lumen media details can create reports for movies, series, books, albums,
+comic editions, and magazines. The action uses the internal media ID of the
+displayed item and the signed-in reporter. The form follows native media
+availability, issue type, subtype, and quality rules. Series reports can
+scope multiple seasons to whole seasons or selected episodes. Confirmed
+submissions open the new discussion.
+
+Headed Chrome at 1440 × 1000 rendered the standalone movie sheet and confirmed
+a report with a synthetic API that accepted only the exact internal media ID,
+type, quality, and description. The native comparison, mobile and bundled
+layouts, and other media branches remain visually unverified. Reporting on
+behalf of another user and editing or deleting reports and comments remain open.

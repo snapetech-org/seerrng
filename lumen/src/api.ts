@@ -63,6 +63,7 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
+  id?: number;
   requests?: {
     id: number;
     status: number;

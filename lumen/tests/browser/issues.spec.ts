@@ -80,3 +80,57 @@ for (const permissions of [4194304, 2097152, 32]) {
     ).toBeVisible();
   });
 }
+
+test('reporting uses the internal media row and opens the confirmed report', async ({
+  page,
+}) => {
+  const posts: unknown[] = [];
+  const issue = {
+    id: 8,
+    status: 1,
+    issueType: 1,
+    createdBy: { id: 2 },
+    createdAt: '2026-11-12T00:00:00Z',
+    comments: [
+      { id: 1, message: 'Video stutters', createdAt: '2026-11-12T00:00:00Z' },
+    ],
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 4194304 } });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: {
+          id: 20,
+          title: 'Example Movie',
+          genres: [],
+          mediaInfo: { id: 654, status: 5 },
+        },
+      });
+    if (path === '/issue' && route.request().method() === 'POST') {
+      posts.push(route.request().postDataJSON());
+      return route.fulfill({ json: issue });
+    }
+    if (path === '/issue/8') return route.fulfill({ json: issue });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/movie/20');
+  await page.getByRole('button', { name: 'Report an Issue' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Report an Issue' });
+  const submit = dialog.getByRole('button', { name: 'Submit Report' });
+  await expect(submit).toBeDisabled();
+  await dialog.getByRole('combobox', { name: 'Issue Type' }).selectOption('1');
+  await dialog
+    .getByRole('textbox', { name: 'Issue Description' })
+    .fill('  Video stutters  ');
+  await submit.click();
+  await expect(page.getByRole('heading', { name: 'Issue #8' })).toBeVisible();
+  await expect(page.getByText('Video stutters')).toBeVisible();
+  expect(posts).toEqual([
+    { mediaId: 654, issueType: 1, message: 'Video stutters', is4k: false },
+  ]);
+});

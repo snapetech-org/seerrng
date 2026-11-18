@@ -29,6 +29,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReportIssueButton from '../components/ReportIssueButton';
 import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
@@ -301,6 +302,13 @@ export default function TvDetail() {
             </Pill>
           )}
           <IndexerSearchLink category="tv" title={t.name} />
+          <ReportIssueButton
+            type="tv"
+            title={t.name}
+            media={t.mediaInfo}
+            allow4k={offers4k}
+            tvId={t.id}
+          />
           <WatchlistButton key={t.id} mediaType="tv" detail={t} />
         </div>
         <div className="dacts pc">

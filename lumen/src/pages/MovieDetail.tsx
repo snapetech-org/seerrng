@@ -30,6 +30,7 @@ import {
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReportIssueButton from '../components/ReportIssueButton';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
@@ -198,6 +199,12 @@ export default function MovieDetail() {
             </Pill>
           )}
           <IndexerSearchLink category="movie" title={m.title} />
+          <ReportIssueButton
+            type="movie"
+            title={m.title}
+            media={m.mediaInfo}
+            allow4k={!!pub?.movie4kEnabled && can4k}
+          />
           <WatchlistButton key={m.id} mediaType="movie" detail={m} />
         </div>
         <div className="dacts pc">

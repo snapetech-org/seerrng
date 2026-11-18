@@ -28,6 +28,7 @@ import {
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReportIssueButton from '../components/ReportIssueButton';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
@@ -599,6 +600,12 @@ export function ComicDetail() {
               category="comic"
               title={chosen?.title || work.title}
             />
+            <ReportIssueButton
+              key={chosen?.id}
+              type="comic"
+              title={c?.title ?? work.title}
+              media={c?.mediaInfo}
+            />
             {c && chosen && (
               <WatchlistButton
                 key={chosen.id}
@@ -905,6 +912,11 @@ export function MagazineDetail() {
               </Pill>
             )}
             <IndexerSearchLink category="magazine" title={m.title} />
+            <ReportIssueButton
+              type="magazine"
+              title={m.title}
+              media={m.mediaInfo}
+            />
             <WatchlistButton
               mediaType="magazine"
               detail={m}

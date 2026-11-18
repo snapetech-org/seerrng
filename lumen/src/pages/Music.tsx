@@ -13,6 +13,7 @@ import {
   StatPill,
 } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import ReportIssueButton from '../components/ReportIssueButton';
 import WatchlistButton from '../components/WatchlistButton';
 import {
   artistOf,
@@ -205,6 +206,11 @@ export function AlbumDetail() {
               </Pill>
             )}
             <IndexerSearchLink category="music" title={a.title} />
+            <ReportIssueButton
+              type="music"
+              title={a.title}
+              media={a.mediaInfo}
+            />
             <WatchlistButton mediaType="music" detail={a} requestedId={id} />
           </div>
           <div className="dacts pc">{main}</div>
