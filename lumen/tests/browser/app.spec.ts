@@ -4615,7 +4615,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   ]);
 });
 
-test('Users changes a media category and restores inheritance', async ({
+test('Users changes media categories and indexer visibility independently', async ({
   page,
 }) => {
   await fixtures(page);
@@ -4628,17 +4628,23 @@ test('Users changes a media category and restores inheritance', async ({
     })
   );
   const writes: unknown[] = [];
+  let indexer: boolean | null = null;
   let override: Record<string, boolean> | null = null;
   await page.route('**/api/v1/user/19/settings/main', (route) => {
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
       writes.push(body);
-      override = body.enabledMediaCategories;
+      if ('enabledMediaCategories' in body)
+        override = body.enabledMediaCategories;
+      if ('showIndexerDetails' in body) indexer = body.showIndexerDetails;
     }
     return route.fulfill({
       json: {
         enabledMediaCategories: { movie: true, tv: true, ...override },
         usesDefaultEnabledMediaCategories: override === null,
+        defaultShowIndexerDetails: true,
+        usesDefaultShowIndexerDetails: indexer === null,
+        showIndexerDetails: indexer ?? true,
       },
     });
   });
@@ -4655,8 +4661,19 @@ test('Users changes a media category and restores inheritance', async ({
   await page.getByRole('button', { name: 'Restore Server Defaults' }).click();
   await expect(page.getByText('Using server defaults.')).toBeVisible();
   await expect(movies).toBeChecked();
+  const indexerDetails = page.getByLabel('Indexer Details');
+  await expect(indexerDetails).toHaveValue('default');
+  await movies.uncheck();
+  await indexerDetails.selectOption('hide');
+  await expect(page.getByText('Indexer visibility saved.')).toBeVisible();
+  await expect(indexerDetails).toHaveValue('hide');
+  await expect(movies).not.toBeChecked();
+  await indexerDetails.selectOption('default');
+  await expect(indexerDetails).toHaveValue('default');
   expect(writes).toEqual([
     { enabledMediaCategories: { movie: false } },
     { enabledMediaCategories: null },
+    { showIndexerDetails: false },
+    { showIndexerDetails: null },
   ]);
 });
