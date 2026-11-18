@@ -396,7 +396,10 @@ function detailDeepLink(req: Request): string | undefined {
     req.path
   );
   if (!match || Number(match[2]) > 1_000_000_000) return;
-  return `/lumen/${match[1]}/${match[2]}`;
+  const [, kind, id] = match;
+  const quality =
+    kind === 'tv' && req.query.quality === '4k' ? '?quality=4k' : '';
+  return `/lumen/${kind}/${id}${quality}`;
 }
 
 const workflowDestinations = new Map([

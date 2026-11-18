@@ -566,6 +566,9 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz',
       ],
       ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
+      ['/tv/42?quality=4k&extra=discard', '/lumen/tv/42?quality=4k'],
+      ['/tv/42?quality=4k&quality=hd', '/lumen/tv/42'],
+      ['/movie/42?quality=4k', '/lumen/movie/42'],
       [
         '/book/bookshelf%3A1%3AaGM6MTIz?format=audiobook&lookupTitle=Fixture+Book',
         '/lumen/book/bookshelf%3A1%3AaGM6MTIz?f=audio&lookupTitle=Fixture+Book',
