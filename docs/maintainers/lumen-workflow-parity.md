@@ -2992,7 +2992,7 @@ Live metadata and matched visual acceptance remain unverified.
 | Personal and administrator bookmarks | `c057b5047`, `a58961631`, `0e8994380` | Bundled routing cases cover calendar, account, watchlist, search, settings, and dotted magazine titles. They also check Classic opt-in and unsupported settings fallthrough. | End-to-end sign-in and access-denial checks reached through the redirected administration bookmarks. |
 | Request bookmarks and My Software | `41b4302b7`, `709e83136`, `698c1568f`, `c6b2863f0`, `a8a136a1e` | Bundled routing, actual standalone nginx redirects, and standalone browser fixtures cover the requester, status, media, format and sort translations. My Software sends only the signed-in user's ID. Matched request renders were inspected at 390 and 1440 pixels. | Repeat the owner-scoped workflow against the bundled production server and isolated software requests populated through the normal API. |
 | Coming Soon pagination | `6d9bf45a2` | Browser fixtures cover an additional page, media-specific network requests, failure and retry, title wrapping, and the existing tablet layout. | Matched renders of the new pagination controls and real-server paging in both deployments. |
-| One-time sign-in links | `ed08e9ee9`, `df8b19237`, `ae0cda171` | Standalone browser fixtures cover administrator creation and revocation, explicit redemption, address-bar cleanup, restoration of the requested title, and opening a link into an existing session. | The real session and SQLite API tests verify expiry, revocation, single use, and conflict with an existing session. Click a generated link into a fresh browser against both production deployments. Compare the expanded administrator panel and sign-in confirmation at matching desktop and mobile widths. |
+| One-time sign-in links | `ed08e9ee9`, `df8b19237`, `ae0cda171` | Standalone browser fixtures cover administrator creation and revocation, explicit redemption, address-bar cleanup, restoration of the requested title, and opening a link into an existing session. | The real session and SQLite API tests verify expiry, revocation, single use, and conflict with an existing session. Compare the expanded administrator panel and sign-in confirmation at matching desktop and mobile widths. |
 
 The older increment notes describe the state at delivery. Use the table above for
 these workflows and current route, permission, and browser evidence when
@@ -3009,3 +3009,12 @@ after redemption. A second redemption was rejected in each run. The
 bundled build used the real Express Lumen mount. The companion build
 used an isolated Express static mount, so this run does not verify nginx
 forwarding or the production CSRF configuration.
+
+
+A follow-up used SeerrNG's production CSRF middleware with loopback HTTP
+cookies, the Express bundled mount, and the built standalone nginx
+container. Fresh Chromium sessions at 390 and 1440 pixels redeemed a
+generated link in each deployment. Subsequent redemption attempts passed
+through the same deployment and were denied. The fixture used synthetic
+users and exercised the real API, session validation, and SQLite storage.
+An external TLS terminator and PostgreSQL were outside this run.
