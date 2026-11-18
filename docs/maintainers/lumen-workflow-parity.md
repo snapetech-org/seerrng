@@ -1795,3 +1795,8 @@ Whisparr request rows now look up and link to the saved destination.
 Cached rows with a different destination are resolved again. Eight
 standalone request and scene checks passed. Live provider behavior
 and matched visual acceptance remain open.
+
+Issue details now link to books, albums, comics, and magazines through
+the affected media's catalog identifier. The 24 standalone issue browser
+checks passed, including encoded Bookshelf and magazine identifiers.
+Matched native visual acceptance remains open.

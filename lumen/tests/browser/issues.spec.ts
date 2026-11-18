@@ -199,3 +199,62 @@ test('a reporter can edit their description and confirm removal of their own rep
   await expect(page.getByText('My reply', { exact: true })).toHaveCount(0);
   expect(writes).toEqual(['edit', 'delete']);
 });
+
+test('issue details link to exact non-video catalog titles', async ({
+  page,
+}) => {
+  const titles = [
+    {
+      mediaType: 'book',
+      provider: 'bookshelf',
+      value: 'bookshelf:2:aGM6NA',
+      label: 'Book',
+    },
+    {
+      mediaType: 'music',
+      provider: 'musicbrainz',
+      value: 'album-42',
+      label: 'Album',
+    },
+    { mediaType: 'comic', provider: 'comicvine', value: '456', label: 'Comic' },
+    {
+      mediaType: 'magazine',
+      provider: 'lazylibrarian',
+      value: 'Science Vol. 2',
+      label: 'Magazine',
+    },
+  ];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 2097152 } });
+    const id = /^\/issue\/(\d+)$/.exec(path)?.[1];
+    const title = id && titles[Number(id) - 1];
+    if (!title) return route.fulfill({ json: {} });
+    return route.fulfill({
+      json: {
+        id: Number(id),
+        status: 1,
+        issueType: 1,
+        createdAt: '2026-11-12T00:00:00Z',
+        createdBy: { id: 2 },
+        media: {
+          mediaType: title.mediaType,
+          identifiers: [{ provider: title.provider, value: title.value }],
+        },
+      },
+    });
+  });
+  for (const [index, title] of titles.entries()) {
+    await page.goto(`/issues/${index + 1}`);
+    await expect(
+      page.getByRole('link', { name: `Open ${title.label}` })
+    ).toHaveAttribute(
+      'href',
+      `/${title.mediaType}/${encodeURIComponent(title.value)}`
+    );
+  }
+});

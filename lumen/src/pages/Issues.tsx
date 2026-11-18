@@ -21,6 +21,50 @@ interface Reporter {
   id: number;
   displayName?: string;
 }
+interface IssueMedia {
+  mediaType: string;
+  tmdbId?: number;
+  mbId?: string | null;
+  identifiers?: { provider: string; value: string }[];
+}
+
+function issueTitleLink(media?: IssueMedia) {
+  if (!media) return;
+  const { mediaType, tmdbId } = media;
+  if (mediaType === 'movie' || mediaType === 'tv') {
+    if (!tmdbId || !Number.isSafeInteger(tmdbId) || tmdbId < 1) return;
+    return {
+      path: `/${mediaType}/${tmdbId}`,
+      label: mediaType === 'tv' ? 'Series' : 'Movie',
+    };
+  }
+  const idFor = (provider: string) =>
+    media.identifiers?.find((id) => id.provider === provider)?.value;
+  const openLibrary = idFor('openlibrary');
+  const bookshelf = idFor('bookshelf');
+  const id =
+    mediaType === 'book'
+      ? openLibrary || bookshelf
+      : mediaType === 'music'
+        ? media.mbId || idFor('musicbrainz')
+        : mediaType === 'comic'
+          ? idFor('comicvine')
+          : mediaType === 'magazine'
+            ? idFor('lazylibrarian')
+            : undefined;
+  if (!id || id === '.' || id === '..') return;
+  const labels: Record<string, string> = {
+    book: 'Book',
+    music: 'Album',
+    comic: 'Comic',
+    magazine: 'Magazine',
+  };
+  return {
+    path: `/${mediaType}/${encodeURIComponent(id)}`,
+    label: labels[mediaType],
+  };
+}
+
 interface Issue {
   id: number;
   status: number;
@@ -28,7 +72,7 @@ interface Issue {
   issueSubtype?: string;
   createdAt: string;
   createdBy: Reporter;
-  media?: { mediaType: string; tmdbId?: number };
+  media?: IssueMedia;
   is4k?: boolean;
   problemSeason?: number;
   problemEpisode?: number;
@@ -267,14 +311,7 @@ function Discussion({ id }: { id: number }) {
     }
   }
 
-  const media = data?.media;
-  const mediaPath =
-    media &&
-    (media.mediaType === 'movie' || media.mediaType === 'tv') &&
-    Number.isSafeInteger(media.tmdbId) &&
-    (media.tmdbId ?? 0) > 0
-      ? `/${media.mediaType}/${media.tmdbId}`
-      : undefined;
+  const titleLink = issueTitleLink(data?.media);
 
   return (
     <>
@@ -329,9 +366,9 @@ function Discussion({ id }: { id: number }) {
                 : ''}
               {data.is4k ? ' · 4K' : ''}
             </span>
-            {mediaPath && (
-              <Link className="btn btn-quiet btn-sm" to={mediaPath}>
-                Open {media?.mediaType === 'tv' ? 'Series' : 'Movie'}
+            {titleLink && (
+              <Link className="btn btn-quiet btn-sm" to={titleLink.path}>
+                Open {titleLink.label}
               </Link>
             )}
             {editable && (
