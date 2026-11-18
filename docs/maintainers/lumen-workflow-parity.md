@@ -1009,3 +1009,8 @@ region, with US as the fallback. The standalone Series fixture verified
 multiple provider IDs, region normalization, exclusion, reload and reset
 across four viewport presets. Live provider results and bundled and native
 visual comparisons remain open.
+
+Shared movie and series discovery URLs now preserve included and excluded
+subject-tag lists. Clearing the tag filter keeps adjacent filters intact.
+Eight standalone browser checks covered both shared lists and the existing
+detail-to-discovery tag link. Interactive keyword selection remains open.

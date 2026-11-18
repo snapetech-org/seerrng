@@ -12,6 +12,18 @@ import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
 import { usePrefs } from '../settings';
 
+function keywordIds(value: string | null) {
+  const ids = value?.split(',').map((part) => part.trim()) ?? [];
+  if (
+    ids.length > 20 ||
+    ids.some(
+      (id) => !/^[1-9][0-9]{0,9}$/.test(id) || Number(id) > 1_000_000_000
+    )
+  )
+    return '';
+  return [...new Set(ids)].join(',');
+}
+
 function ratingBound(value: string | null) {
   return value && /^(?:[0-9](?:\.[0-9]0*)?|10(?:\.0+)?|\.[0-9]0*)$/.test(value)
     ? value
@@ -108,8 +120,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const asks = useAsksRequestOptions();
   // "plex" is the old name for "have", kept so saved links still work
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
-  const keywordParam = p.get('keywords') ?? '';
-  const keyword = /^[1-9][0-9]{0,9}$/.test(keywordParam) ? keywordParam : '';
+  const keywords = keywordIds(p.get('keywords'));
+  const excludeKeywords = keywordIds(p.get('excludeKeywords'));
   const minRating = ratingBound(p.get('voteAverageGte'));
   const maxRating = ratingBound(p.get('voteAverageLte'));
   const validRatingRange =
@@ -148,7 +160,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       : {}),
     ...(validRatingRange && minRating ? { voteAverageGte: minRating } : {}),
     ...(validRatingRange && maxRating ? { voteAverageLte: maxRating } : {}),
-    ...(keyword ? { keywords: keyword } : {}),
+    ...(keywords ? { keywords } : {}),
+    ...(excludeKeywords ? { excludeKeywords } : {}),
     ...(genre
       ? { genre, ...(excludeGenre ? { excludeGenre: 'true' } : {}) }
       : {}),
@@ -232,11 +245,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       </header>
       <div className="toolbar">
         <CardTitleToggle kinds={[kind]} />
-        {keyword && (
+        {(keywords || excludeKeywords) && (
           <button
             className="chip"
             type="button"
-            onClick={() => upd('keywords', '')}
+            onClick={() => {
+              const next = new URLSearchParams(p);
+              next.delete('keywords');
+              next.delete('excludeKeywords');
+              setP(next, { replace: true });
+            }}
           >
             Clear Subject Tag
           </button>

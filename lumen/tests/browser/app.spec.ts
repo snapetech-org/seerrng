@@ -1765,3 +1765,21 @@ test('series streaming exclusion sends the selected providers and region', async
   await page.getByRole('button', { name: 'Clear Streaming Filter' }).click();
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
+
+test('shared discovery links retain multiple included and excluded subject tags', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const filtered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('keywords') === '73,84' &&
+      url.searchParams.get('excludeKeywords') === '99'
+    );
+  });
+  await page.goto('/movies?keywords=73,84,73&excludeKeywords=99&genre=18');
+  await filtered;
+  await page.getByRole('button', { name: 'Clear Subject Tag' }).click();
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});
