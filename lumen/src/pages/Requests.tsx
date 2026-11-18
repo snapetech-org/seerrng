@@ -5,6 +5,7 @@ import {
   ApiError,
   artUrl,
   bookArt,
+  bookDetailPath,
   bookMediaForFormat,
   cancelRequest,
   mediaLink,
@@ -604,18 +605,29 @@ const saveDescribed = () => {
 };
 // lookups that failed for a passing reason (rate limit, outage): not kept, tried again next visit
 const retryLater = new Set<number>();
+function cachedRow(r: RequestItem, known: Omit<Row, 'r'>): Row {
+  return {
+    ...known,
+    r,
+    href:
+      r.type === 'book'
+        ? requestBookPath(r, known.title === 'Book' ? undefined : known.title)
+        : known.href,
+  };
+}
+
 async function describe(r: RequestItem): Promise<Row> {
   const generation = sessionGeneration();
   const known = described.get(r.id);
   // series kept before seasons were remembered get looked up once more
-  if (known && isDescribed(r)) return { ...known, r };
+  if (known && isDescribed(r)) return cachedRow(r, known);
   const row = await describeOnce(r);
   if (generation !== sessionGeneration()) return row;
   const { r: _ignored, ...rest } = row;
   void _ignored;
   if (!retryLater.delete(r.id)) described.set(r.id, rest);
   else if (known && (r.type !== 'adult' || known.href === row.href))
-    return { ...known, r }; // keep the old name until a lookup works
+    return cachedRow(r, known); // keep the old name until a lookup works
   return row;
 }
 const isDescribed = (r: RequestItem) =>
@@ -664,7 +676,7 @@ export async function describeAll(
   limited = false;
   const first = list.map((r): Row | null =>
     described.has(r.id)
-      ? { ...described.get(r.id)!, r }
+      ? cachedRow(r, described.get(r.id)!)
       : r.type === 'book'
         ? bookPlaceholder(r)
         : r.type === 'movie' || r.type === 'tv'
@@ -714,6 +726,13 @@ const bookId = (r: RequestItem) =>
   r.media.identifiers?.find((i) => i.provider === 'bookshelf')?.value ||
   r.media.identifiers?.[0]?.value ||
   '';
+function requestBookPath(r: RequestItem, title?: string) {
+  return bookDetailPath(
+    bookId(r),
+    r.bookFormat === 'audiobook' ? 'audiobook' : 'ebook',
+    title
+  );
+}
 function titlePlaceholder(r: RequestItem): Row {
   const kind = r.type === 'tv' ? 'tv' : 'movie';
   return {
@@ -724,13 +743,12 @@ function titlePlaceholder(r: RequestItem): Row {
   };
 }
 function bookPlaceholder(r: RequestItem): Row {
-  const id = bookId(r);
   const audio = r.bookFormat === 'audiobook';
   return {
     r,
     title: 'Book',
     cover: true,
-    href: `/book/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`,
+    href: requestBookPath(r),
     sub: audio ? 'Audiobook' : 'Ebook',
   };
 }
@@ -765,7 +783,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
       title: b?.title || 'Book',
       art: bookArt(b?.posterPath),
       cover: true,
-      href: `/book/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`,
+      href: requestBookPath(r, b?.title),
       sub: audio ? 'Audiobook' : 'Ebook',
     };
   }
