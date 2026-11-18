@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import type { RequestItem } from '../api';
 import { useApi } from '../hooks';
 import { RequestFiles } from './RequestFiles';
 import { ServiceNote } from './extra';
@@ -17,6 +18,7 @@ interface StatusEvent extends Status {
 }
 
 interface CurrentStatus extends Status {
+  retryable?: boolean;
   percent?: number | null;
   size?: number | null;
   sizeLeft?: number | null;
@@ -32,7 +34,7 @@ interface CurrentStatus extends Status {
 }
 
 interface RequestHistory {
-  request: { type: string };
+  request: RequestItem;
   current: CurrentStatus;
   history: { results: StatusEvent[]; total: number };
 }
@@ -138,10 +140,12 @@ export default function RequestHistorySheet({
   id,
   title,
   close,
+  renderActions,
 }: {
   id: number;
   title?: string;
   close: () => void;
+  renderActions?: (request: RequestItem, title: string) => ReactNode;
 }) {
   const [showFiles, setShowFiles] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -175,6 +179,19 @@ export default function RequestHistorySheet({
           {data && (
             <>
               <RequestProgress current={data.current} />
+              {data.request?.id === id &&
+                renderActions?.(
+                  {
+                    ...data.request,
+                    currentStatus: {
+                      ...data.current,
+                      percent: data.current.percent ?? null,
+                      message: data.current.message ?? undefined,
+                    },
+                  },
+                  title ?? `Request #${id}`
+                )}
+
               {data.current.stage === 'available' &&
                 downloadableTypes.has(data.request?.type) &&
                 (showFiles ? (

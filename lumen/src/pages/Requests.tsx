@@ -15,6 +15,7 @@ import {
   type RequestItem,
   type TvDetails,
 } from '../api';
+import { forget } from '../apiCache';
 import { useAuth, useMediaServerName } from '../auth';
 import { Cover, shortDate } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -1163,6 +1164,7 @@ export default function Requests() {
     sortMode,
   ]);
   const mutationInFlight = useRef(false);
+  const [historyRevision, setHistoryRevision] = useState(0);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
@@ -1449,6 +1451,11 @@ export default function Requests() {
           remove: 'Request removed',
         }[how]
       );
+      forget(`/request/status/${id}`);
+      if (requestKey === 'requestId' && focusedId === id) {
+        if (how === 'remove') closeHistory();
+        else setHistoryRevision((value) => value + 1);
+      }
       setTick((t) => t + 1);
     } catch (e) {
       toast(friendlyError(e, 'Couldn’t update the request'));
@@ -1468,7 +1475,9 @@ export default function Requests() {
           method: 'POST',
         });
       else await cancelRequest(id);
+      if (id > 0) forget(`/request/status/${id}`);
       toast('Request cancelled');
+      if (requestKey === 'requestId' && focusedId === id) closeHistory();
       // gone now, not after the list has refreshed
       setRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
@@ -1478,6 +1487,113 @@ export default function Requests() {
       mutationInFlight.current = false;
       setActing(null);
     }
+  };
+
+  const renderRequestActions = (x: Row, moderate: boolean) => {
+    const st = state(x, serverName);
+    return (
+      <>
+        {canEditEpisodeQueue(x.r, user?.permissions) && (
+          <button
+            className="btn btn-sm btn-quiet"
+            disabled={acting !== null}
+            onClick={() => setQueueEdit(x)}
+          >
+            Episode Queue
+          </button>
+        )}
+        {canRetryRequest(x.r, user, manage) && (
+          <button
+            className="btn btn-sm btn-tonal"
+            disabled={acting !== null}
+            onClick={() => decide(x.r.id, 'retry')}
+          >
+            <Icon name="refresh" size="sm" />
+            Retry
+          </button>
+        )}
+        {moderate && x.r.id > 0 ? (
+          <>
+            {x.r.status === 1 && (
+              <>
+                <button
+                  className="btn btn-sm btn-ok"
+                  disabled={acting !== null}
+                  onClick={() => decide(x.r.id, 'approve')}
+                >
+                  <Icon name="check" size="sm" />
+                  Approve
+                </button>
+                <button
+                  className="btn btn-sm btn-quiet"
+                  disabled={acting !== null}
+                  onClick={() =>
+                    setConfirming({
+                      id: x.r.id,
+                      how: 'decline',
+                      title: x.title,
+                    })
+                  }
+                >
+                  <Icon name="x" size="sm" />
+                  Decline
+                </button>
+              </>
+            )}
+            {(x.r.status === 1 || x.r.status === 4) &&
+              (x.r.type === 'movie' || x.r.type === 'tv') && (
+                <button
+                  className="btn btn-sm btn-quiet"
+                  disabled={acting !== null}
+                  onClick={() => setEditing(x)}
+                >
+                  Change
+                </button>
+              )}
+            <button
+              className="btn btn-sm btn-quiet"
+              disabled={acting !== null}
+              onClick={() =>
+                setConfirming({
+                  id: x.r.id,
+                  how: 'remove',
+                  title: x.title,
+                })
+              }
+            >
+              Remove
+            </button>
+          </>
+        ) : st.k === 'ok' &&
+          x.r.type !== 'book' &&
+          plexUrl(x.r.media, x.r.is4k) ? (
+          <a
+            className="btn btn-sm btn-ok"
+            {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}
+          >
+            <Icon name="play" size="sm" />
+            {x.r.type === 'music'
+              ? `Listen on ${serverName}`
+              : `Watch on ${serverName}`}
+          </a>
+        ) : (x.r.id < 0 ? !everyone : x.r.requestedBy?.id === user?.id) &&
+          x.r.status === 1 ? (
+          <button
+            className="btn btn-sm btn-quiet"
+            disabled={acting !== null}
+            onClick={() =>
+              setConfirming({
+                id: x.r.id,
+                how: 'cancel',
+                title: x.title,
+              })
+            }
+          >
+            Cancel
+          </button>
+        ) : null}
+      </>
+    );
   };
 
   return (
@@ -1809,104 +1925,7 @@ export default function Requests() {
                       History
                     </button>
                   )}
-                  {canEditEpisodeQueue(x.r, user?.permissions) && (
-                    <button
-                      className="btn btn-sm btn-quiet"
-                      disabled={acting !== null}
-                      onClick={() => setQueueEdit(x)}
-                    >
-                      Episode Queue
-                    </button>
-                  )}
-                  {canRetryRequest(x.r, user, manage) && (
-                    <button
-                      className="btn btn-sm btn-tonal"
-                      disabled={acting !== null}
-                      onClick={() => decide(x.r.id, 'retry')}
-                    >
-                      <Icon name="refresh" size="sm" />
-                      Retry
-                    </button>
-                  )}
-                  {everyone && manage && x.r.id > 0 ? (
-                    <>
-                      {x.r.status === 1 && (
-                        <>
-                          <button
-                            className="btn btn-sm btn-ok"
-                            disabled={acting !== null}
-                            onClick={() => decide(x.r.id, 'approve')}
-                          >
-                            <Icon name="check" size="sm" />
-                            Approve
-                          </button>
-                          <button
-                            className="btn btn-sm btn-quiet"
-                            disabled={acting !== null}
-                            onClick={() =>
-                              setConfirming({
-                                id: x.r.id,
-                                how: 'decline',
-                                title: x.title,
-                              })
-                            }
-                          >
-                            <Icon name="x" size="sm" />
-                            Decline
-                          </button>
-                        </>
-                      )}
-                      {(x.r.status === 1 || x.r.status === 4) &&
-                        (x.r.type === 'movie' || x.r.type === 'tv') && (
-                          <button
-                            className="btn btn-sm btn-quiet"
-                            disabled={acting !== null}
-                            onClick={() => setEditing(x)}
-                          >
-                            Change
-                          </button>
-                        )}
-                      <button
-                        className="btn btn-sm btn-quiet"
-                        disabled={acting !== null}
-                        onClick={() =>
-                          setConfirming({
-                            id: x.r.id,
-                            how: 'remove',
-                            title: x.title,
-                          })
-                        }
-                      >
-                        Remove
-                      </button>
-                    </>
-                  ) : st.k === 'ok' &&
-                    x.r.type !== 'book' &&
-                    plexUrl(x.r.media, x.r.is4k) ? (
-                    <a
-                      className="btn btn-sm btn-ok"
-                      {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}
-                    >
-                      <Icon name="play" size="sm" />
-                      {x.r.type === 'music'
-                        ? `Listen on ${serverName}`
-                        : `Watch on ${serverName}`}
-                    </a>
-                  ) : !everyone && x.r.status === 1 ? (
-                    <button
-                      className="btn btn-sm btn-quiet"
-                      disabled={acting !== null}
-                      onClick={() =>
-                        setConfirming({
-                          id: x.r.id,
-                          how: 'cancel',
-                          title: x.title,
-                        })
-                      }
-                    >
-                      Cancel
-                    </button>
-                  ) : null}
+                  {renderRequestActions(x, everyone && manage)}
                 </div>
               </div>
             </div>
@@ -1972,20 +1991,40 @@ export default function Requests() {
           close={closeHistory}
         />
       )}
-      {validRequestLink && requestKey === 'requestId' && (
-        <RequestHistorySheet
-          key={focusedId}
-          id={focusedId}
-          title={list.find(({ r }) => r.id === focusedId)?.title}
-          close={closeHistory}
-        />
-      )}
+      {validRequestLink &&
+        requestKey === 'requestId' &&
+        !confirming &&
+        !editing &&
+        !queueEdit && (
+          <RequestHistorySheet
+            key={`${focusedId}:${historyRevision}`}
+            id={focusedId}
+            title={list.find(({ r }) => r.id === focusedId)?.title}
+            renderActions={(request, title) => (
+              <div className="rqa">
+                {renderRequestActions(
+                  {
+                    href: '',
+                    sub: '',
+                    ...list.find(({ r }) => r.id === request.id),
+                    r: request,
+                    title,
+                  },
+                  manage
+                )}
+              </div>
+            )}
+
+            close={closeHistory}
+          />
+        )}
       {queueEdit && (
         <RequestEpisodeQueueSheet
           request={queueEdit.r}
           title={queueEdit.title}
           close={() => setQueueEdit(null)}
           saved={({ episodeCount, usesUserDefault }) => {
+            forget(`/request/status/${queueEdit.r.id}`);
             const patch = (previous: Row[] | null) =>
               previous?.map((row) =>
                 row.r.id === queueEdit.r.id
@@ -2014,6 +2053,7 @@ export default function Requests() {
           art={editing.art}
           onClose={() => setEditing(null)}
           onDone={(message) => {
+            forget(`/request/status/${editing.r.id}`);
             setEditing(null);
             toast(message);
             setTick((t) => t + 1);

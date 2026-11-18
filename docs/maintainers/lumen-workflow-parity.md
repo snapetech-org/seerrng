@@ -635,3 +635,14 @@ the exact request supplies those values. Refresh Status reloads the snapshot.
 Standalone Chrome at 1440 × 1000 verified the ebook import retry details
 and a refresh from 50% to 75% and 1 GiB to 1.5 GiB of a 2 GiB download.
 Native visual comparison, mobile, bundled and live providers remain open.
+
+### Focused request action increment
+
+The media history dialog reuses request row actions with the exact request
+and current lifecycle snapshot from the server. Direct links work even
+when the request is absent from the list. Confirmations and edit sheets
+replace the history dialog while open and completed actions refresh it.
+
+Standalone Chrome verified a delegated manager declining a request absent
+from the list, including confirmation and a refreshed Declined state.
+Other actions, mobile, bundled and native visual comparison remain open.
