@@ -65,7 +65,7 @@ function useSearchBox() {
   useEffect(() => {
     setQ(query);
   }, [query]);
-  return { q, setQ, query };
+  return { q, setQ, query, p, setP };
 }
 
 // ---- sports: Sportarr leagues; requesting one follows the league's events ----
@@ -276,12 +276,24 @@ export function LeagueDetail() {
 // ---- adult: Whisparr scenes. Off unless the admin enables it, and SeerrNG checks each
 // person's adult-content permission on every call ----
 export function Adult() {
-  const { q, setQ, query } = useSearchBox();
-  const list = usePaged<Scene>(
-    `/adult/search${query ? `?query=${encodeURIComponent(query)}` : ''}`
-  );
   return (
     <ExtraGate k="adult">
+      <AdultCatalogue />
+    </ExtraGate>
+  );
+}
+
+function AdultCatalogue() {
+  const { q, setQ, query, p, setP } = useSearchBox();
+  const serviceId = p.get('serverId') ?? '';
+  const { data: services } =
+    useApi<{ id: number; name: string }[]>('/service/whisparr');
+  const filters = new URLSearchParams();
+  if (query) filters.set('query', query);
+  if (serviceId) filters.set('serverId', serviceId);
+  const list = usePaged<Scene>(`/adult/search?${filters}`);
+  return (
+    <>
       <ExtraHeader
         title="Adult"
         sub={
@@ -296,6 +308,34 @@ export function Adult() {
           placeholder="Search scenes, studios, performers…"
         />
       </ExtraHeader>
+      {((services?.length ?? 0) > 1 || serviceId) && (
+        <div className="toolbar">
+          <label className="sel">
+            <span className="lbl">Whisparr Service</span>
+            <select
+              value={serviceId}
+              onChange={(event) => {
+                const next = new URLSearchParams(p);
+                const value = event.target.value;
+                if (value) next.set('serverId', value);
+                else next.delete('serverId');
+                setP(next, { replace: true });
+              }}
+            >
+              <option value="">All Services</option>
+              {serviceId &&
+                !services?.some(({ id }) => String(id) === serviceId) && (
+                  <option value={serviceId}>Bookmarked Service</option>
+                )}
+              {services?.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="this section"
@@ -326,7 +366,7 @@ export function Adult() {
         error={list.error}
         retry={list.retry}
       />
-    </ExtraGate>
+    </>
   );
 }
 

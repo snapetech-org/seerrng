@@ -7603,6 +7603,39 @@ test('Classic magazine bookmarks keep the search scope and link to magazine deta
   ).toHaveAttribute('href', '/magazine/Fixture%20Magazine');
 });
 
+test('adult discovery bookmarks retain the selected Whisparr service', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { adultEnabled: true, enabledMediaCategories: { adult: true } },
+    })
+  );
+  await page.route('**/api/v1/service/whisparr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, name: 'First Service' },
+        { id: 2, name: 'Second Service' },
+      ],
+    })
+  );
+  const reads: URLSearchParams[] = [];
+  await page.route('**/api/v1/adult/search?*', (route) => {
+    reads.push(new URL(route.request().url()).searchParams);
+    return route.fulfill({ json: paged([]) });
+  });
+  await page.goto('/adult?query=Fixture&serverId=2');
+  const service = page.getByRole('combobox', { name: 'Whisparr Service' });
+  await expect(service).toHaveValue('2');
+  await expect
+    .poll(() => Object.fromEntries(reads.at(-1) ?? []))
+    .toMatchObject({ query: 'Fixture', serverId: '2' });
+  await service.selectOption('');
+  await expect.poll(() => reads.at(-1)?.has('serverId')).toBe(false);
+  expect(reads.at(-1)?.get('query')).toBe('Fixture');
+});
+
 test('Classic sports discovery bookmarks preserve the editable league search', async ({
   page,
 }) => {

@@ -649,7 +649,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/sports?query=Premier+League&extra=1',
         '/lumen/sports?query=Premier+League',
       ],
-      ['/discover/adult?query=Fixture&extra=1', '/lumen/adult?query=Fixture'],
+      [
+        '/discover/adult?query=Fixture&serverId=2&extra=1',
+        '/lumen/adult?query=Fixture&serverId=2',
+      ],
       ['/discover/collectors/', '/lumen/music/collectors'],
       ['/discover/providers', '/lumen/providers'],
       ['/discover/movies/genres', '/lumen/movies/genres'],
