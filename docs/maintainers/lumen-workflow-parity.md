@@ -2297,3 +2297,15 @@ filtered discography layouts in four viewports. The fixtures verified
 secondary release types, combined filters, no matches, and clearing.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-collection-filters-20261118/`.
+
+Music collections and artist discographies can request selected releases in
+MP3 or FLAC through the configured Lidarr service. The request sheet uses
+the current filters, excludes blocklisted releases and releases already
+available in the selected quality, and reports individual failures.
+
+The production build and 28 browser checks passed. Compared the request
+sheet with the existing book request sheet on desktop, iPhone 13, Pixel 7,
+and iPad Pro 11. The fixture verified FLAC routing and exclusion of an
+owned FLAC release. Live Lidarr delivery remains unverified. Evidence is
+retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-collection-requests-20261118/`.

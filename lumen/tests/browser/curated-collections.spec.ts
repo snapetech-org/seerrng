@@ -6,13 +6,26 @@ test('series and album details reach their curated collections', async ({
   const album = '62a8e15d-a5f1-4213-a794-e10e0150e945';
   const seriesReads: string[] = [];
   let checks = 0;
+  const requests: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/request/bulk') {
+      expect(route.request().method()).toBe('POST');
+      requests.push(route.request().postDataJSON());
+      return route.fulfill({
+        status: 207,
+        json: { created: [{ id: 1 }], skipped: [], failed: [] },
+      });
+    }
     const entries: Record<string, unknown> = {
+      '/service/lidarr': [
+        { id: 1, name: 'MP3', musicQuality: 'mp3', isDefault: true },
+        { id: 2, name: 'Lossless' },
+      ],
       '/auth/me': { id: 1, permissions: 32 },
       '/settings/public': {
         musicEnabled: true,
@@ -147,4 +160,25 @@ test('series and album details reach their curated collections', async ({
     page.getByRole('link', { name: 'Fixture Album', exact: true })
   ).toBeVisible();
   await page.screenshot({ path: info.outputPath('discography.png') });
+  await page.getByRole('button', { name: 'Request Releases' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Request Releases' });
+  await sheet.getByRole('combobox', { name: 'Quality' }).selectOption('flac');
+  await expect(
+    sheet.getByRole('checkbox', { name: /Fixture Album/ })
+  ).toBeDisabled();
+  await sheet.getByRole('checkbox', { name: 'Fixture Live' }).check();
+  await page.screenshot({ path: info.outputPath('music-requests.png') });
+  await sheet
+    .getByRole('button', { name: 'Request Selected Releases' })
+    .click();
+  await expect(
+    sheet.getByText('1 requested, 0 skipped, 0 failed.')
+  ).toBeVisible();
+  expect(requests).toEqual([
+    {
+      mediaType: 'music',
+      serverId: 2,
+      items: [{ mediaId: 'live-album', title: 'Fixture Live' }],
+    },
+  ]);
 });

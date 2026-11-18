@@ -10,6 +10,7 @@ import {
   extraStat,
   ServiceNote,
 } from '../components/extra';
+import MusicCollectionRequests from '../components/MusicCollectionRequests';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 
@@ -44,7 +45,13 @@ function releaseTypes(part: Collection['parts'][number]) {
   };
 }
 
-function MusicReleases({ members }: { members: Collection['parts'] }) {
+function MusicReleases({
+  members,
+  refresh,
+}: {
+  members: Collection['parts'];
+  refresh: () => void;
+}) {
   const [filters, setFilters] = useState({
     ...emptyMusicFilters,
     type: 'album',
@@ -126,6 +133,7 @@ function MusicReleases({ members }: { members: Collection['parts'] }) {
               </select>
             </label>
           ))}
+          <MusicCollectionRequests releases={visible} refresh={refresh} />
           {Object.values(filters).some(Boolean) && (
             <button
               className="btn btn-quiet btn-sm"
@@ -326,7 +334,7 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
         {music ? (
-          <MusicReleases members={members} />
+          <MusicReleases members={members} refresh={collection.reload} />
         ) : (
           <Section title="Series in This Collection">
             {members.length ? (
