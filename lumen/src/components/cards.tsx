@@ -78,6 +78,7 @@ export function Cover({
         loading="lazy"
         decoding="async"
         src={artwork}
+        referrerPolicy="no-referrer"
         alt=""
         onError={() => setFailed(true)}
       />

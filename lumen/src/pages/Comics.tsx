@@ -739,6 +739,7 @@ export function ComicDetail() {
                             {e.posterPath ? (
                               <img
                                 src={artUrl(e.posterPath)}
+                                referrerPolicy="no-referrer"
                                 alt=""
                                 loading="lazy"
                               />

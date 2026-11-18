@@ -577,6 +577,7 @@ export default function BookDetail() {
                             {b.posterPath ? (
                               <img
                                 src={bookArt(b.posterPath)}
+                                referrerPolicy="no-referrer"
                                 alt=""
                                 loading="lazy"
                               />
@@ -646,6 +647,7 @@ export default function BookDetail() {
                           {b.posterPath ? (
                             <img
                               src={bookArt(b.posterPath)}
+                              referrerPolicy="no-referrer"
                               alt=""
                               loading="lazy"
                             />

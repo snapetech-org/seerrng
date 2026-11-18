@@ -1912,6 +1912,7 @@ export default function Requests() {
                   <img
                     className="art-fill"
                     src={artwork}
+                    referrerPolicy="no-referrer"
                     alt=""
                     aria-hidden="true"
                     loading="lazy"

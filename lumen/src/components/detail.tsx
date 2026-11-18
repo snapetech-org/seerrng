@@ -369,14 +369,26 @@ export function DetailTop({
   return (
     <>
       <div className={`dhero ${safeBackdrop ? '' : 'blur'}`}>
-        {hero && <img src={hero} alt="" onError={drop(hero)} />}
+        {hero && (
+          <img
+            src={hero}
+            referrerPolicy="no-referrer"
+            alt=""
+            onError={drop(hero)}
+          />
+        )}
       </div>
       <div className="dtop">
         <div
           className={`dposter ${square ? 'sq' : ''} ${whole ? 'whole' : ''}`}
         >
           {safePoster && (
-            <img src={safePoster} alt="" onError={drop(safePoster)} />
+            <img
+              src={safePoster}
+              referrerPolicy="no-referrer"
+              alt=""
+              onError={drop(safePoster)}
+            />
           )}
           <Glyph s={status ?? null} />
         </div>

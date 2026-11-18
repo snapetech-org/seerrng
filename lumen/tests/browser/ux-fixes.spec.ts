@@ -182,6 +182,7 @@ test('request covers reject untrusted artwork and keep valid proxy images', asyn
     '/imageproxy/coverartarchive/release/valid.jpg',
     'http://art.example/unsafe.jpg',
     '/api/v1/user/settings',
+    'https://art.example/approved-cover.svg',
   ];
   await page.route('**/imageproxy/coverartarchive/**', (route) =>
     route.fulfill({
@@ -211,16 +212,25 @@ test('request covers reject untrusted artwork and keep valid proxy images', asyn
         },
       };
   });
+  await page.route(requests[3], (route) => {
+    expect(route.request().headers().referer).toBeUndefined();
+    return route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"/>',
+    });
+  });
   const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
   await page.goto(`${mount}/requests?tab=all`);
-  await expect(page.locator('.rq .art img')).toHaveCount(2);
+  await expect(page.locator('.rq .art img')).toHaveCount(4);
   await expect(page.locator('.rq .art img').first()).toHaveAttribute(
     'src',
     requests[0]
   );
-  await expect(page.locator('.rq .art img').last()).toHaveAttribute(
-    'src',
-    requests[0]
+  const external = page.locator(`.rq .art img[src="${requests[3]}"]`);
+  await expect(external).toHaveCount(2);
+  await expect(external.first()).toHaveAttribute(
+    'referrerpolicy',
+    'no-referrer'
   );
   await expect(page.locator('.rq .art .nocover')).toHaveCount(2);
 });

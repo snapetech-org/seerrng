@@ -123,7 +123,12 @@ export function ExtraCard({
     >
       <div className="art">
         {safeImage ? (
-          <img loading="lazy" src={safeImage} alt="" />
+          <img
+            loading="lazy"
+            src={safeImage}
+            referrerPolicy="no-referrer"
+            alt=""
+          />
         ) : (
           <span className="art-ph">
             <Icon name={icon} />

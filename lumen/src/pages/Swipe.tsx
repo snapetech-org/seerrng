@@ -787,7 +787,12 @@ function Deck({
             {image && (
               <div className="poster">
                 <div className="art">
-                  <img src={image} alt="" draggable={false} />
+                  <img
+                    src={image}
+                    referrerPolicy="no-referrer"
+                    alt=""
+                    draggable={false}
+                  />
                 </div>
               </div>
             )}
