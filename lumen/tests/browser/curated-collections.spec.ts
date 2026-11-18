@@ -446,3 +446,95 @@ for (const kind of ['tv', 'music']) {
     expect(writes).toBe(1);
   });
 }
+
+test('collection server sync adds visible verified IDs and removes the confirmed remote library', async ({
+  page,
+}) => {
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  const removalToken = 'a'.repeat(64);
+  const parts = [{ id: '42', title: 'Fixture Series' }];
+  let exists = false;
+  function sync() {
+    return {
+      supported: true,
+      destinations: [
+        {
+          libraryId: 'library-1',
+          libraryName: 'Fixture Library',
+          state: exists ? 'exists' : 'missing',
+          availableIds: ['42', '99'],
+          removalToken: exists ? removalToken : undefined,
+        },
+      ],
+    };
+  }
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const pathname = new URL(request.url()).pathname.slice(7);
+    switch (pathname) {
+      case '/auth/me':
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      case '/settings/public':
+        return route.fulfill({
+          json: { initialized: true, mediaServerType: 1 },
+        });
+      case '/collection-catalog/tv/19':
+        return route.fulfill({
+          json: { id: '19', name: 'Fixture Collection', parts },
+        });
+      case '/collection-catalog/tv/19/availability':
+        return route.fulfill({
+          json: {
+            collection: {
+              id: '19',
+              parts: [...parts, { id: '99', title: 'Restricted Series' }],
+            },
+            sync: sync(),
+          },
+        });
+      case '/collection-catalog/tv/19/server':
+        if (request.method() === 'POST') {
+          expect(request.postDataJSON()).toEqual({
+            libraryIds: ['library-1'],
+            selectedIds: ['42'],
+          });
+          exists = true;
+        } else {
+          expect(request.method()).toBe('DELETE');
+          expect(request.postDataJSON()).toEqual({
+            destinations: [{ libraryId: 'library-1', removalToken }],
+          });
+          exists = false;
+        }
+        return route.fulfill({ json: sync() });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+  await page.goto(`${mount}/collections/tv/19`);
+  await page.getByRole('button', { name: 'Add to Media Server' }).click();
+  const add = page.getByRole('dialog', {
+    name: 'Add Collection to Media Server',
+  });
+  await expect(
+    add.getByRole('checkbox', { name: 'Fixture Library · 1 available' })
+  ).toBeChecked();
+  await add
+    .getByRole('button', { name: 'Add Collection to Media Server' })
+    .click();
+  await expect(add.getByRole('status')).toHaveText(
+    '1 of 1 libraries verified.'
+  );
+  await add.getByRole('button', { name: 'Done' }).click();
+  await page.getByRole('button', { name: 'Remove from Media Server' }).click();
+  const remove = page.getByRole('dialog', {
+    name: 'Remove Collection from Media Server',
+  });
+  await remove
+    .getByRole('button', { name: 'Remove Collection from Media Server' })
+    .click();
+  await expect(remove.getByRole('status')).toHaveText(
+    '1 of 1 libraries verified.'
+  );
+  expect(exists).toBe(false);
+});

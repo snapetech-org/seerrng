@@ -2954,3 +2954,11 @@ relationship per related title, and allows relationship filtering.
 Forty browser checks passed across standalone and bundled Lumen. The
 curated fixtures verify deduplication and exact related-person links.
 Live data and matched visual comparison remain unverified.
+
+Administrators can add and remove curated TV and music collections on the
+media server. Additions use only verified destinations and visible
+members. Removals keep the server's verification token from the selected
+library. Twenty standalone and four bundled browser cases passed. The TV
+fixture verifies the narrowed add payload and the confirmed removal
+token. Live media-server writes and matched visual acceptance remain
+unverified.

@@ -12,6 +12,9 @@ import {
 import { isAdministrator, useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
+import CollectionServerActions, {
+  type CollectionSync,
+} from '../components/CollectionServerSheet';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { DetailTop } from '../components/detail';
 import {
@@ -322,6 +325,7 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
     [1, 2, 3].includes(server ?? 0);
   const pending = useRef(false);
   const [latest, setLatest] = useState<Collection['parts']>();
+  const [sync, setSync] = useState<CollectionSync>();
   const [checking, setChecking] = useState(false);
   const [syncError, setSyncError] = useState<string>();
   const lastRead = useRef(0);
@@ -332,15 +336,19 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
     setChecking(true);
     setSyncError(undefined);
     try {
-      const result = await api<{ collection: Collection }>(
-        path + '/availability',
-        {
-          method: 'POST',
-          invalidateCache: false,
-        }
-      );
-      if (result.collection.id === id) setLatest(result.collection.parts);
+      const result = await api<{
+        collection: Collection;
+        sync?: CollectionSync;
+      }>(path + '/availability', {
+        method: 'POST',
+        invalidateCache: false,
+      });
+      if (result.collection.id === id) {
+        setLatest(result.collection.parts);
+        setSync(result.sync);
+      }
     } catch (failure) {
+      setSync(undefined);
       setSyncError(
         friendlyError(failure, 'Could not refresh collection availability.')
       );
@@ -490,6 +498,14 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
               </p>
             )}
           </>
+        )}
+        {supportsSync && isAdministrator(user?.permissions) && sync && (
+          <CollectionServerActions
+            endpoint={path + '/server'}
+            sync={sync}
+            visibleIds={members.map(({ id }) => id)}
+            onComplete={() => void refreshAvailability()}
+          />
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
         {music ? (
