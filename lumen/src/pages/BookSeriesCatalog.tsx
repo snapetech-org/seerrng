@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api, readerServiceUrl, type BookResult } from '../api';
+import { api, bookDetailPath, readerServiceUrl, type BookResult } from '../api';
 import { useAuth } from '../auth';
 import BulkBookRequest from '../components/BulkBookRequest';
 import { Section } from '../components/cards';
@@ -301,7 +301,11 @@ export default function BookSeriesCatalog() {
                 {entry.matchStatus === 'matched' && entry.book?.id ? (
                   <Link
                     className="go"
-                    to={`/book/${encodeURIComponent(entry.book.id)}${data.format === 'audiobook' ? '?f=audio' : ''}`}
+                    to={bookDetailPath(
+                      entry.book.id,
+                      data.format,
+                      entry.book.title || entry.title
+                    )}
                   >
                     View Book
                   </Link>

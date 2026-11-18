@@ -8413,6 +8413,40 @@ test('audiobook search includes exact series matches and a format-preserving res
   );
 });
 
+test('book series catalog preserves matched Bookshelf lookup titles', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/book-series/catalog?*', (route) =>
+    route.fulfill({
+      json: {
+        title: 'Fixture Series',
+        serverName: 'Fixture Bookshelf',
+        format: 'audiobook',
+        bookCount: 1,
+        resolutionTruncated: false,
+        entries: [
+          {
+            title: 'Series Listing Title',
+            matchStatus: 'matched',
+            book: { id: 'bookshelf:1:fixture', title: 'Matched Book Title' },
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/book-series/watch?*', (route) =>
+    route.fulfill({ json: { supported: false } })
+  );
+  await page.goto(
+    '/book-series/catalog?serverId=1&scope=series&providerId=hc:42'
+  );
+  await expect(page.getByRole('link', { name: 'View Book' })).toHaveAttribute(
+    'href',
+    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Matched+Book+Title'
+  );
+});
+
 test('audiobook discovery bookmarks apply search, author and narrator and show series matches', async ({
   page,
 }) => {

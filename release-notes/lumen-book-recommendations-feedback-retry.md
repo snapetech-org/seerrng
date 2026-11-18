@@ -8,3 +8,5 @@
 - Switching between ebook and audiobook details preserves the Bookshelf lookup title.
 - Opening a Bookshelf result from Share preserves the resolved title and edition format.
 - Bookshelf cards in search and discovery carry the title needed to open the matching edition.
+
+Book Series catalog links also retain the matched Bookshelf title and selected format.
