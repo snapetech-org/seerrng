@@ -34,7 +34,7 @@ function watchSessionDeepLink(pathname: string): string | undefined {
 function requestDeepLink(req: Request, userId?: string): string | undefined {
   if (!userId && !/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
   const query = new URLSearchParams();
-  const requester = userId ?? req.query.userId ?? req.query.requestedBy;
+  const requester = userId ?? req.query.requestedBy ?? req.query.userId;
   if (
     typeof requester === 'string' &&
     /^[1-9]\d{0,9}$/.test(requester) &&
@@ -46,7 +46,7 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
     ['filter', 'show'],
     ['mediaType', 'mediaType'],
   ]) {
-    const value = req.query[source] ?? req.query[target];
+    const value = req.query[target] ?? req.query[source];
     if (
       typeof value === 'string' &&
       /^[a-z]+$/.test(value) &&
@@ -70,6 +70,33 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
       query.set('softwareStatus', status);
     }
   }
+  if (query.get('show') === 'software' || req.query.tab === 'software') {
+    const status = req.query.softwareStatus;
+    if (
+      typeof status === 'string' &&
+      /^(all|active|pending|approved|searching|downloading|importing|available|attention|failed|declined|cancelled)$/.test(
+        status
+      )
+    )
+      query.set('softwareStatus', status);
+    const category = req.query.category;
+    if (
+      category === 'all' ||
+      category === 'game' ||
+      category === 'retro' ||
+      category === 'modern'
+    )
+      query.set('category', category);
+  }
+  const tab = req.query.tab;
+  if (
+    tab === 'active' ||
+    tab === 'ready' ||
+    tab === 'all' ||
+    tab === 'everyone' ||
+    tab === 'software'
+  )
+    query.set('tab', tab);
   if (mediaType === 'audiobook') {
     query.set('mediaType', 'book');
     query.set('bookFormat', 'audiobook');
@@ -84,18 +111,29 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
     const search = req.query.search.trim().slice(0, 200);
     if (search) query.set('search', search);
   }
-  const { timeFrame, sort, sortDirection } = req.query;
+  const { timeFrame, sort, sortDirection, order } = req.query;
   if (
     typeof timeFrame === 'string' &&
     /^(all|7d|14d|30d|1m|6m)$/.test(timeFrame)
   ) {
     query.set('timeFrame', timeFrame);
   }
-  if (sort === 'added' && (sortDirection === 'asc' || sortDirection === 'desc'))
+  if (
+    typeof order === 'string' &&
+    /^(priority|newest|oldest|updated|title-asc|title-desc)$/.test(order)
+  )
+    query.set('order', order);
+  else if (
+    sort === 'added' &&
+    (sortDirection === 'asc' || sortDirection === 'desc')
+  )
     query.set('order', sortDirection === 'asc' ? 'oldest' : 'newest');
-  if (sort === 'modified' && sortDirection === 'desc')
+  else if (sort === 'modified' && sortDirection === 'desc')
     query.set('order', 'updated');
-  if (sort === 'title' && (sortDirection === 'asc' || sortDirection === 'desc'))
+  else if (
+    sort === 'title' &&
+    (sortDirection === 'asc' || sortDirection === 'desc')
+  )
     query.set('order', `title-${sortDirection}`);
 
   const key =

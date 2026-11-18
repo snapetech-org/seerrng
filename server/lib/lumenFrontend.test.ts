@@ -258,6 +258,22 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       softwareList.headers.location,
       '/lumen/requests?requestedBy=19&show=software&category=retro&softwareStatus=downloading'
     );
+    const modernFilters = await request(app).get(
+      '/requests/status?requestedBy=19&userId=11&show=software&filter=pending&category=modern&softwareStatus=failed&tab=everyone&order=oldest&sort=title&sortDirection=desc'
+    );
+    const modernLocation = new URL(
+      modernFilters.headers.location,
+      'http://localhost'
+    );
+    assert.equal(modernLocation.pathname, '/lumen/requests');
+    assert.deepEqual(Object.fromEntries(modernLocation.searchParams), {
+      requestedBy: '19',
+      show: 'software',
+      category: 'modern',
+      softwareStatus: 'failed',
+      tab: 'everyone',
+      order: 'oldest',
+    });
     const softwareLink = await request(app).get(
       '/requests/status?softwareRequestId=42'
     );
