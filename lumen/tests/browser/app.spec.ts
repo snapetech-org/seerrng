@@ -3427,7 +3427,7 @@ test('music and Open Library book details open Associations with exact identity'
     'href',
     `/associations/artist/${artist}`
   );
-  await page.goto('/book/OL123W?f=audio');
+  await page.goto('/book/OL123W?format=audiobook');
   await association.click();
   await expect(
     page.getByRole('heading', { name: 'Associations for Fixture Book' })

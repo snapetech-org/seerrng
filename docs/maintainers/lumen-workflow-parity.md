@@ -1767,3 +1767,9 @@ Watchlist pagination now reconciles out-of-range pages after the server
 reports a smaller result set. This keeps active filters when removal
 empties the final page. All 36 standalone watchlist browser cases passed.
 Matched native visual acceptance remains open.
+
+The bundled frontend lock now redirects supported book, comic, album, and
+artist ID bookmarks. The Book page understands the native audiobook
+parameter directly in both deployments. Two server routing tests and four
+standalone browser cases passed, including audiobook association return
+links. Provider-specific encoded IDs remain outside this redirect check.

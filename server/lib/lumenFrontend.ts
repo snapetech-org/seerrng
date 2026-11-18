@@ -141,6 +141,15 @@ function detailDeepLink(req: Request): string | undefined {
     const separator = page === 'cast' || page === 'crew' ? '#' : '/';
     return `/lumen/${media}/${id}${separator}${page}`;
   }
+  const catalog =
+    /^\/(book|comic|music|artist)\/([A-Za-z0-9_-]{1,128})\/?$/.exec(req.path);
+  if (catalog) {
+    const [, media, id] = catalog;
+    const audio =
+      media === 'book' &&
+      (req.query.f === 'audio' || req.query.format === 'audiobook');
+    return `/lumen/${media}/${id}${audio ? '?f=audio' : ''}`;
+  }
   const match = /^\/(movie|tv|collection|person)\/([1-9]\d{0,9})\/?$/.exec(
     req.path
   );

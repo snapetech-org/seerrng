@@ -272,6 +272,13 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/requests', '/lumen/requests'],
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
+      ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
+      [
+        '/music/5b36cb67-befa-41ca-a91d-a6dcf1f68062/',
+        '/lumen/music/5b36cb67-befa-41ca-a91d-a6dcf1f68062',
+      ],
+      ['/artist/artist-42', '/lumen/artist/artist-42'],
+      ['/comic/4050-12345', '/lumen/comic/4050-12345'],
       ['/users/', '/lumen/admin/users'],
       ['/games', '/lumen/game-library'],
       ['/games?steam=connected', '/lumen/game-library?steam=connected'],

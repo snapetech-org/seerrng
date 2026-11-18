@@ -130,7 +130,9 @@ export default function BookDetail() {
   const { id = '' } = useParams();
   const [p] = useSearchParams();
   const f: 'ebook' | 'audiobook' =
-    p.get('f') === 'audio' ? 'audiobook' : 'ebook';
+    p.get('f') === 'audio' || p.get('format') === 'audiobook'
+      ? 'audiobook'
+      : 'ebook';
   const { prefs, audiobookshelfUrl } = usePrefs();
   const toast = useToast();
   const { user } = useAuth();
