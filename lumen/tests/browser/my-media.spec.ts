@@ -431,3 +431,76 @@ test('My Media saves and resets a private catalog match', async ({ page }) => {
   ).toBeVisible();
   expect(mutations).toEqual(['PUT', 'DELETE']);
 });
+
+test('My Media gates provider tracking and recovers a confirmed update without repeating it', async ({
+  page,
+}) => {
+  let allowWrites = false;
+  let watched = false;
+  let actionId = '';
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32 } });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: { accounts: [{ provider: 'trakt' }], mediaServer: null },
+      });
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json: {
+          items: [
+            {
+              id: 'trakt:movie:123',
+              title: 'Tracked Movie',
+              tmdbId: 21,
+              mediaType: 'movie',
+              status: watched ? 'watched' : 'planning',
+            },
+          ],
+          allowWrites,
+          hasMore: false,
+        },
+      });
+    if (path === '/integrations/discovery/tracking/trakt') {
+      expect(request.method()).toBe('POST');
+      const body = request.postDataJSON();
+      expect(body).toMatchObject({
+        action: 'watched',
+        value: true,
+        mediaType: 'movie',
+        tmdbId: 21,
+      });
+      expect(body.requestId).toMatch(/^[0-9a-f-]{36}$/);
+      actionId = body.requestId;
+      watched = true;
+      writes++;
+      return route.abort();
+    }
+    if (
+      actionId &&
+      path === '/integrations/discovery/tracking/actions/' + actionId
+    )
+      return route.fulfill({ json: { state: 'succeeded' } });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await expect(page.getByRole('link', { name: 'Tracked Movie' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Update Tracking' })
+  ).toHaveCount(0);
+  allowWrites = true;
+  await page.reload();
+  await page.getByRole('button', { name: 'Update Tracking' }).click();
+  await page.getByRole('button', { name: 'Mark Watched', exact: true }).click();
+  await expect(page.getByText('Provider tracking updated.')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Mark Unwatched', exact: true })
+    .click();
+  await expect(page.getByRole('alertdialog')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  expect(writes).toBe(1);
+});

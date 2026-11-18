@@ -11,3 +11,5 @@ You can stop after a batch and continue from the next page.
 My Media also imports and exports private title-match files.
 Library links remember the selected source, shelf, and filters.
 You can also search for, save, or reset an individual title match in My Media.
+With tracking writes enabled, you can update watched status and ratings, and
+save episode progress on AniList.

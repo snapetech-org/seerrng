@@ -5,6 +5,7 @@ import IdentityMapping, {
   videoHref,
 } from '../components/IdentityMapping';
 import LibraryRepair from '../components/LibraryRepair';
+import LibraryTracking from '../components/LibraryTracking';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -28,6 +29,7 @@ interface Connections {
 }
 
 interface LibraryItem extends MappingCandidate {
+  sourceId?: string;
   status?: string;
   rating?: number;
   progress?: number;
@@ -35,6 +37,7 @@ interface LibraryItem extends MappingCandidate {
 }
 
 interface LibraryResult {
+  allowWrites?: boolean;
   items: LibraryItem[];
   libraries?: { id: string; name: string }[];
   hasMore: boolean;
@@ -60,7 +63,9 @@ const isNative = (source: Source): source is NativeSource =>
 function LibraryRows({
   data,
   updated,
+  provider,
 }: {
+  provider?: TrackingSource;
   data: LibraryResult;
   updated: () => void;
 }) {
@@ -93,6 +98,13 @@ function LibraryRows({
               {summary && <small>{summary}</small>}
             </div>
             <IdentityMapping item={item} updated={updated} />
+            {provider && data.allowWrites === true && (
+              <LibraryTracking
+                item={item}
+                provider={provider}
+                updated={updated}
+              />
+            )}
           </li>
         );
       })}
@@ -203,6 +215,7 @@ function LibraryShelf({
         matchRevision={matchRevision}
         page={page}
         native={native}
+        trackingProvider={isNative(source) ? undefined : source}
         repairPath={native ? undefined : `${BASE}/library/${source}/repair`}
         shelf={shelf}
         mediaType={mediaType}
@@ -220,6 +233,7 @@ function LibraryPage({
   matchRevision,
   page,
   native,
+  trackingProvider,
   repairPath,
   shelf,
   mediaType,
@@ -232,6 +246,7 @@ function LibraryPage({
   matchRevision: number;
   page: number;
   native: boolean;
+  trackingProvider?: TrackingSource;
   repairPath?: string;
   shelf: Shelf;
   mediaType: string;
@@ -298,6 +313,15 @@ function LibraryPage({
       )}
       {data && !choosingLibrary && (
         <>
+          {trackingProvider && data.allowWrites === false && (
+            <p className="note">
+              Want to update tracking from My Media?{' '}
+              <Link to="/me/account/linked-accounts">
+                Enable writes in Linked Accounts
+              </Link>
+              .
+            </p>
+          )}
           {!!data.missingMappings && (
             <p className="note">
               Some titles do not have a confirmed catalog match.
@@ -308,7 +332,11 @@ function LibraryPage({
               This library reached its result limit.
             </p>
           )}
-          <LibraryRows data={data} updated={refresh} />
+          <LibraryRows
+            data={data}
+            provider={trackingProvider}
+            updated={refresh}
+          />
         </>
       )}
       <nav className="toolbar" aria-label="Library Pages">
