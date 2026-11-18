@@ -40,7 +40,11 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
 test('account settings preserve failed profile edits and save only changes and password fields', async ({
   page,
 }) => {
-  const profile = { username: 'Viewer', email: 'viewer@example.test' };
+  const profile = {
+    username: 'Viewer',
+    email: 'viewer@example.test',
+    preferredLanguages: { all: 'en', movie: 'fr', tv: null, book: 'zz' },
+  };
   const writes: unknown[] = [];
   let reject = true;
   await page.route('https://**/*', (route) => route.abort());
@@ -55,6 +59,13 @@ test('account settings preserve failed profile edits and save only changes and p
           permissions: 32,
           userType: 2,
         },
+      });
+    if (path === '/languages')
+      return route.fulfill({
+        json: [
+          { iso_639_1: 'en', english_name: 'English' },
+          { iso_639_1: 'fr', english_name: 'French' },
+        ],
       });
     if (path === '/user/2/settings/main') {
       if (request.method() === 'POST') {
@@ -93,6 +104,20 @@ test('account settings preserve failed profile edits and save only changes and p
     { username: 'Updated Viewer' },
     { username: 'Updated Viewer' },
   ]);
+  const movieLanguage = page.getByLabel('Movie Language Override');
+  const seriesLanguage = page.getByLabel('Series Language Override');
+  await expect(movieLanguage).toHaveValue('fr');
+  await expect(seriesLanguage).toHaveValue('');
+  await expect(page.getByLabel('Book Language Override')).toHaveValue('zz');
+  await movieLanguage.selectOption('inherit');
+  await seriesLanguage.selectOption('fr');
+  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Save Profile' })
+  ).toBeDisabled();
+  expect(writes.at(-1)).toEqual({
+    preferredLanguages: { all: 'en', tv: 'fr', book: 'zz' },
+  });
   const savePassword = page.getByRole('button', { name: 'Save Password' });
   await page.getByLabel('Current Password').fill('synthetic-current');
   await page.getByLabel('New Password').fill('synthetic-new');

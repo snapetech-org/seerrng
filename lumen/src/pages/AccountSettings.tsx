@@ -52,10 +52,32 @@ const watchlistFields = [
 
 type WatchlistField = (typeof watchlistFields)[number]['key'];
 
+const preferredLanguageFields = [
+  ['all', 'Preferred Language for All Media'],
+  ['movie', 'Movie Language Override'],
+  ['tv', 'Series Language Override'],
+  ['music', 'Music Language Override'],
+  ['book', 'Book Language Override'],
+] as const;
+
+type PreferredLanguage = (typeof preferredLanguageFields)[number][0];
+type PreferredLanguages = Partial<Record<PreferredLanguage, string | null>>;
+
+function languageDraft(preferences?: PreferredLanguages | null) {
+  return Object.fromEntries(
+    preferredLanguageFields.map(([key]) => [
+      key,
+      preferences?.[key] ??
+        (key === 'all' || preferences?.[key] === null ? '' : 'inherit'),
+    ])
+  ) as Record<PreferredLanguage, string>;
+}
+
 interface Profile extends Partial<Record<WatchlistField, boolean | null>> {
   username?: string | null;
   email?: string | null;
   metadataLocale?: string | null;
+  preferredLanguages?: PreferredLanguages | null;
   formatRegion?: string | null;
   discoverRegion?: string | null;
   streamingRegion?: string | null;
@@ -74,6 +96,7 @@ function profileDraft(profile: Profile) {
     username: profile.username ?? '',
     email: profile.email ?? '',
     metadataLocale: profile.metadataLocale ?? '',
+    preferredLanguages: languageDraft(profile.preferredLanguages),
     formatRegion: profile.formatRegion ?? '',
     discoverRegion: normalizeRegion(profile.discoverRegion ?? ''),
     streamingRegion: normalizeRegion(profile.streamingRegion ?? ''),
@@ -98,6 +121,11 @@ function ProfileForm({
   onSaved: () => void;
 }) {
   const { refresh, user } = useAuth();
+  const languages =
+    useApi<{ iso_639_1: string; english_name: string }[]>('/languages');
+  const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
+    .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
+    .sort((left, right) => left.english_name.localeCompare(right.english_name));
   const [saved, setSaved] = useState(() => profileDraft(profile));
   const [draft, setDraft] = useState(saved);
   const [busy, setBusy] = useState(false);
@@ -166,23 +194,34 @@ function ProfileForm({
     originalLanguage: draft.originalLanguage.trim().toLowerCase(),
   };
   const changes = editable.filter(({ key }) => normalized[key] !== saved[key]);
+  const languageChanged = preferredLanguageFields.some(
+    ([key]) => draft.preferredLanguages[key] !== saved.preferredLanguages[key]
+  );
   const invalid = changes.some(
     ({ key }) => (key === 'username' || key === 'email') && !normalized[key]
   );
 
   async function save() {
-    if (working.current || !changes.length || invalid) return;
+    if (working.current || (!changes.length && !languageChanged) || invalid)
+      return;
     working.current = true;
     setBusy(true);
     setNotice('');
     setFailure('');
     const generation = sessionGeneration();
-    const body = Object.fromEntries(
+    const body: Record<string, unknown> = Object.fromEntries(
       changes.map(({ key }) => [
         key,
         normalized[key] === '' ? null : normalized[key],
       ])
     );
+    if (languageChanged)
+      body.preferredLanguages = Object.fromEntries(
+        preferredLanguageFields.flatMap(([key]) => {
+          const value = draft.preferredLanguages[key];
+          return value === 'inherit' ? [] : [[key, value || null]];
+        })
+      );
     try {
       await api<Profile>(path, { method: 'POST', body: JSON.stringify(body) });
       if (generation !== sessionGeneration()) return;
@@ -194,7 +233,15 @@ function ProfileForm({
         setSaved(confirmed);
         setDraft(confirmed);
         onSaved();
-        if (changes.every(({ key }) => confirmed[key] === normalized[key])) {
+        if (
+          changes.every(({ key }) => confirmed[key] === normalized[key]) &&
+          (!languageChanged ||
+            preferredLanguageFields.every(
+              ([key]) =>
+                confirmed.preferredLanguages[key] ===
+                draft.preferredLanguages[key]
+            ))
+        ) {
           setNotice('Profile saved.');
         } else {
           setFailure(
@@ -249,6 +296,49 @@ function ProfileForm({
             />
           </label>
         ))}
+        <ServiceNote
+          error={languages.error}
+          what="media languages"
+          retry={languages.reload}
+        />
+        {preferredLanguageFields.map(([key, label]) => {
+          const value = draft.preferredLanguages[key];
+          return (
+            <label className="set cfg-row" key={key}>
+              <b>{label}</b>
+              <select
+                className="cfg-input"
+                value={value}
+                disabled={busy || !Array.isArray(languages.data)}
+                onChange={(event) => {
+                  const language = event.target.value;
+                  setDraft((current) => ({
+                    ...current,
+                    preferredLanguages: {
+                      ...current.preferredLanguages,
+                      [key]: language,
+                    },
+                  }));
+                }}
+              >
+                {key !== 'all' && (
+                  <option value="inherit">Use All-Media Preference</option>
+                )}
+                <option value="">Any Language</option>
+                {value &&
+                  value !== 'inherit' &&
+                  !languageOptions.some(
+                    ({ iso_639_1 }) => iso_639_1 === value
+                  ) && <option value={value}>{value}</option>}
+                {languageOptions.map(({ iso_639_1, english_name }) => (
+                  <option key={iso_639_1} value={iso_639_1}>
+                    {english_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          );
+        })}
         {visibleWatchlists.map(({ key, label, source }) => (
           <label className="set cfg-row" key={key}>
             <span>
@@ -280,7 +370,7 @@ function ProfileForm({
       <div className="toolbar">
         <button
           className="btn btn-primary btn-sm"
-          disabled={busy || !changes.length || invalid}
+          disabled={busy || (!changes.length && !languageChanged) || invalid}
         >
           Save Profile
         </button>
