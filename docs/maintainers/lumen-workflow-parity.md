@@ -1835,3 +1835,13 @@ history, preference editing, and Swipe administration remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-20261118/`.
+
+Swipe preferences now save series season defaults, book format, recommendation
+sources, and taste notes. The active deck uses the saved profile immediately.
+Compared collapsed and expanded settings across desktop, iPhone 13, Pixel 7,
+and iPad Pro 11. The build and eight synthetic browser checks passed,
+including an all-seasons request from the active deck after saving.
+Favorite selection and live provider behavior remain open.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-prefs-20261118/`.

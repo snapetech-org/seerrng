@@ -24,22 +24,168 @@ interface Status {
 }
 interface Profile {
   seriesRequest: 'first-season' | 'all-seasons';
-  bookFormat: string;
+  bookFormat: 'ebook' | 'audiobook';
+  tasteNotes?: string;
+  seedScope?: 'full' | 'rated' | 'favorites';
+}
+
+function Preferences({
+  profile,
+  onSave,
+}: {
+  profile: Profile;
+  onSave: (profile: Profile) => void;
+}) {
+  const [draft, setDraft] = useState(profile);
+  const [busy, setBusy] = useState(false);
+  const [feedback, setFeedback] = useState<{ text: string; error?: boolean }>();
+  const pending = useRef(false);
+  const dirty = JSON.stringify(draft) !== JSON.stringify(profile);
+
+  function update(patch: Partial<Profile>) {
+    setDraft((current) => ({ ...current, ...patch }));
+    setFeedback(undefined);
+  }
+
+  async function save() {
+    if (pending.current || !dirty) return;
+    pending.current = true;
+    setBusy(true);
+    setFeedback(undefined);
+    const generation = sessionGeneration();
+    try {
+      const { seriesRequest, bookFormat, tasteNotes, seedScope } = draft;
+      const saved = await api<Profile>('/swipe/profile', {
+        method: 'PUT',
+        body: JSON.stringify({
+          seriesRequest,
+          bookFormat,
+          tasteNotes,
+          seedScope,
+        }),
+      });
+      if (generation !== sessionGeneration()) return;
+      setDraft(saved);
+      onSave(saved);
+      setFeedback({ text: 'Swipe preferences saved.' });
+    } catch (failure) {
+      if (generation === sessionGeneration())
+        setFeedback({
+          text:
+            failure instanceof ApiError
+              ? failure.message
+              : 'Could not save Swipe preferences.',
+          error: true,
+        });
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <details className="adv">
+      <summary>Swipe Preferences</summary>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void save();
+        }}
+      >
+        <div className="setlist">
+          <label className="set cfg-row">
+            <span>Series Request Default</span>
+            <select
+              className="cfg-select"
+              disabled={busy}
+              value={draft.seriesRequest}
+              onChange={(event) =>
+                update({
+                  seriesRequest: event.target.value as Profile['seriesRequest'],
+                })
+              }
+            >
+              <option value="first-season">First Season</option>
+              <option value="all-seasons">All Seasons</option>
+            </select>
+          </label>
+          <label className="set cfg-row">
+            <span>Book Request Format</span>
+            <select
+              className="cfg-select"
+              disabled={busy}
+              value={draft.bookFormat}
+              onChange={(event) =>
+                update({
+                  bookFormat: event.target.value as Profile['bookFormat'],
+                })
+              }
+            >
+              <option value="ebook">Ebook</option>
+              <option value="audiobook">Audiobook</option>
+            </select>
+          </label>
+          <label className="set cfg-row">
+            <span>Recommendation Sources</span>
+            <select
+              className="cfg-select"
+              disabled={busy}
+              value={draft.seedScope ?? 'full'}
+              onChange={(event) =>
+                update({
+                  seedScope: event.target.value as Profile['seedScope'],
+                })
+              }
+            >
+              <option value="full">Full History</option>
+              <option value="rated">Rated Titles</option>
+              <option value="favorites">Selected Favorites</option>
+            </select>
+          </label>
+          <label className="set cfg-row">
+            <span>Taste Notes</span>
+            <textarea
+              className="cfg-json"
+              maxLength={1000}
+              disabled={busy}
+              value={draft.tasteNotes ?? ''}
+              onChange={(event) => update({ tasteNotes: event.target.value })}
+            />
+          </label>
+        </div>
+        {feedback && (
+          <p className="note" role={feedback.error ? 'alert' : 'status'}>
+            {feedback.text}
+          </p>
+        )}
+        <div className="toolbar">
+          <button
+            type="submit"
+            className="btn btn-primary btn-sm"
+            disabled={busy || !dirty}
+          >
+            Save Swipe Preferences
+          </button>
+        </div>
+      </form>
+    </details>
+  );
 }
 
 function Deck({
   category,
   formats,
+  profile,
 }: {
   category: Category;
   formats: string[];
+  profile: Profile | null;
 }) {
   const [refresh, setRefresh] = useState(false);
   const deck = useApi<{ cards: Card[]; remaining: number }>(
     `/swipe/deck?mediaType=${category}${refresh ? '&refresh=true' : ''}`,
     { currentPathOnly: true }
   );
-  const profile = useApi<Profile>('/swipe/profile');
   const [handled, setHandled] = useState<string[]>([]);
   const [restored, setRestored] = useState<Card>();
   const [busy, setBusy] = useState(false);
@@ -48,8 +194,8 @@ function Deck({
   const pending = useRef(false);
   const card =
     restored ?? deck.data?.cards.find(({ id }) => !handled.includes(id));
-  const format = formats.includes(profile.data?.bookFormat ?? '')
-    ? profile.data?.bookFormat
+  const format = formats.includes(profile?.bookFormat ?? '')
+    ? profile?.bookFormat
     : formats[0];
 
   function nextDeck(regenerate: boolean) {
@@ -83,7 +229,7 @@ function Deck({
       }
       if (!card) return;
       if (decision === 'want') {
-        if (!profile.data || (category === 'book' && !format)) return;
+        if (!profile || (category === 'book' && !format)) return;
         await api(
           '/request',
           body({
@@ -92,7 +238,7 @@ function Deck({
             ...(category === 'tv'
               ? {
                   seasons:
-                    profile.data.seriesRequest === 'all-seasons' ? 'all' : [1],
+                    profile.seriesRequest === 'all-seasons' ? 'all' : [1],
                 }
               : {}),
             ...(category === 'book' ? { authorId: card.authorId, format } : {}),
@@ -138,11 +284,6 @@ function Deck({
         error={deck.error}
         retry={deck.reload}
       />
-      <ServiceNote
-        what="request preferences"
-        error={profile.error}
-        retry={profile.reload}
-      />
       {error && (
         <p className="note" role="alert">
           {error}
@@ -174,9 +315,7 @@ function Deck({
             <button
               type="button"
               className="btn btn-primary btn-sm"
-              disabled={
-                busy || !profile.data || (category === 'book' && !format)
-              }
+              disabled={busy || !profile || (category === 'book' && !format)}
               onClick={() => void act('want')}
             >
               Request
@@ -234,6 +373,9 @@ function Deck({
 
 export default function Swipe() {
   const status = useApi<Status>('/swipe/status');
+  const profile = useApi<Profile>(status.data ? '/swipe/profile' : null);
+  const [savedProfile, setSavedProfile] = useState<Profile>();
+  const currentProfile = savedProfile ?? profile.data;
   const [selected, setSelected] = useState<Category>();
   const available = (Object.keys(categories) as Category[]).filter((category) =>
     status.data?.mediaTypes.includes(category)
@@ -255,6 +397,14 @@ export default function Swipe() {
       )}
       {status.data && !category && (
         <p className="note">No recommendation categories are available.</p>
+      )}
+      <ServiceNote
+        what="request preferences"
+        error={profile.error}
+        retry={profile.reload}
+      />
+      {currentProfile && (
+        <Preferences profile={currentProfile} onSave={setSavedProfile} />
       )}
       {category && (
         <>
@@ -280,6 +430,7 @@ export default function Swipe() {
             key={category}
             category={category}
             formats={status.data?.bookFormats ?? []}
+            profile={currentProfile}
           />
         </>
       )}
