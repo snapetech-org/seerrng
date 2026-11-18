@@ -126,6 +126,7 @@ export interface PublicSettings {
   romarrEnabled?: boolean;
   emailEnabled?: boolean;
   streamingRegion?: string;
+  discoverRegion?: string;
   applicationTitle: string;
   movie4kEnabled: boolean;
   personMovieBulkRequestsEnabled?: boolean;

@@ -6,6 +6,15 @@ function countryCode(value?: string | null) {
   return code && /^[A-Z]{2}$/.test(code) ? code : undefined;
 }
 
+function useRegionPreferences(userId: number | undefined, enabled: boolean) {
+  const path = enabled && userId ? `/user/${userId}/settings/main` : null;
+  const { data, error } = useApi<{
+    streamingRegion?: string | null;
+    discoverRegion?: string | null;
+  }>(path, { currentPathOnly: true });
+  return { data: path ? data : null, pending: !!path && !data && !error };
+}
+
 export function useStreamingRegion(
   userId: number | undefined,
   serverRegion: string | undefined,
@@ -13,36 +22,45 @@ export function useStreamingRegion(
   urlRegion?: string | null
 ) {
   const explicitRegion = countryCode(urlRegion);
-  const path =
-    enabled && userId && !explicitRegion
-      ? `/user/${userId}/settings/main`
-      : null;
-  const { data, error } = useApi<{ streamingRegion?: string | null }>(path, {
-    currentPathOnly: true,
-  });
+  const { data, pending } = useRegionPreferences(
+    userId,
+    enabled && !explicitRegion
+  );
   return {
-    pending: !!path && !data && !error,
+    pending,
     region:
       explicitRegion ??
-      countryCode(path ? data?.streamingRegion : undefined) ??
+      countryCode(data?.streamingRegion) ??
       countryCode(serverRegion) ??
       'US',
   };
 }
 
-export function useStreamingProviderNames(
+export function useTitleRegions(
   providers: WatchProviderRegion[] | undefined,
+  hasRatings: boolean,
   userId?: number,
-  serverRegion?: string
+  server?: { streamingRegion?: string; discoverRegion?: string } | null
 ) {
-  const { region, pending } = useStreamingRegion(
+  const { data, pending } = useRegionPreferences(
     userId,
-    serverRegion,
-    !!providers?.length
+    !!providers?.length || hasRatings
   );
-  if (pending) return '';
-  return providers
-    ?.find((entry) => entry.iso_3166_1 === region)
-    ?.flatrate?.map(({ name }) => name)
-    .join(', ');
+  const streamingRegion =
+    countryCode(data?.streamingRegion) ??
+    countryCode(server?.streamingRegion) ??
+    'US';
+  const discover = data?.discoverRegion || server?.discoverRegion;
+  return {
+    ratingRegion:
+      pending || discover?.toLowerCase() === 'all'
+        ? undefined
+        : (countryCode(discover) ?? 'US'),
+    streamingProviders: pending
+      ? undefined
+      : providers
+          ?.find((entry) => entry.iso_3166_1 === streamingRegion)
+          ?.flatrate?.map(({ name }) => name)
+          .join(', '),
+  };
 }

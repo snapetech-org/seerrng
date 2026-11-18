@@ -47,15 +47,10 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
-import { useStreamingProviderNames } from '../streamingRegion';
+import { useTitleRegions } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
-
-const cert = (m: MovieDetails) =>
-  m.releases?.results
-    .find((r) => r.iso_3166_1 === 'US')
-    ?.release_dates.find((d) => d.certification)?.certification || '';
 
 export default function MovieDetail() {
   const serverName = useMediaServerName();
@@ -69,10 +64,11 @@ export default function MovieDetail() {
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
-  const streamingProviders = useStreamingProviderNames(
+  const { ratingRegion, streamingProviders } = useTitleRegions(
     m?.watchProviders,
+    !!m?.releases?.results.length,
     user?.id,
-    pub?.streamingRegion
+    pub
   );
 
   const progressMedia = useLiveMediaProgress(
@@ -95,6 +91,10 @@ export default function MovieDetail() {
   if (error)
     return <ServiceNote error={error} what="this movie" retry={reload} />;
   if (!m) return <div className="detail-loading" aria-busy="true" />;
+
+  const certification = m.releases?.results
+    .find((release) => release.iso_3166_1 === ratingRegion)
+    ?.release_dates.find((release) => release.certification)?.certification;
 
   // A pending 4K copy must not make the independent HD request look requested.
   const requestMedia = withoutPending4k(progressMedia);
@@ -232,7 +232,7 @@ export default function MovieDetail() {
         title={m.title || ''}
         line={[
           unreleased ? 'In theaters ' + shortDate(date) : date.slice(0, 4),
-          cert(m) && <span className="cert">{cert(m)}</span>,
+          certification && <span className="cert">{certification}</span>,
           fmtRun(m.runtime),
           m.genres
             .filter((g) => g.id)
@@ -366,7 +366,7 @@ export default function MovieDetail() {
                   date ? `${shortDate(date, false)}, ${date.slice(0, 4)}` : '',
                 ],
                 ['Director', director],
-                ['Rated', cert(m)],
+                ['Rated', certification],
                 [
                   'Collection',
                   m.collection && (
@@ -410,7 +410,7 @@ export default function MovieDetail() {
       </div>
       <ActionBar
         title={m.title || ''}
-        meta={[fmtRun(m.runtime), cert(m)].filter(Boolean).join(' · ')}
+        meta={[fmtRun(m.runtime), certification].filter(Boolean).join(' · ')}
       >
         {main}
       </ActionBar>

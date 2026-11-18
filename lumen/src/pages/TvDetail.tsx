@@ -53,7 +53,7 @@ import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
-import { useStreamingProviderNames } from '../streamingRegion';
+import { useTitleRegions } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import {
   isSharedVideoCopy,
@@ -88,10 +88,11 @@ export default function TvDetail() {
     isAdministrator(user?.permissions)
   );
   const pub = usePublicSettings();
-  const streamingProviders = useStreamingProviderNames(
+  const { ratingRegion, streamingProviders } = useTitleRegions(
     t?.watchProviders,
+    !!t?.contentRatings?.results.length,
     user?.id,
-    pub?.streamingRegion
+    pub
   );
   const { prefs } = usePrefs();
   const toast = useToast();
@@ -420,7 +421,7 @@ export default function TvDetail() {
       : '',
   ].filter(Boolean);
   const rating = t.contentRatings?.results.find(
-    (r) => r.iso_3166_1 === 'US'
+    (r) => r.iso_3166_1 === ratingRegion
   )?.rating;
   const statusLine = have
     ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on ${serverName}`

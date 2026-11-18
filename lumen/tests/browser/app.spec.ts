@@ -6726,20 +6726,36 @@ test('Streaming Request Policy preserves edits across a failed save', async ({
   });
 });
 
-test('movie and series details show subscription providers in the account region', async ({
+test('movie and series details use separate account regions for providers and ratings', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   const watchProviders = [
     { iso_3166_1: 'US', flatrate: [{ id: 3, name: 'US Stream' }] },
     { iso_3166_1: 'CA', flatrate: [{ id: 7, name: 'Canada Stream' }] },
   ];
   await page.route('**/api/v1/user/*/settings/main', (route) =>
-    route.fulfill({ json: { streamingRegion: 'CA' } })
+    route.fulfill({ json: { streamingRegion: 'CA', discoverRegion: 'GB' } })
   );
   await page.route('**/api/v1/movie/101', (route) =>
     route.fulfill({
-      json: { ...movie, genres: [], watchProviders },
+      json: {
+        ...movie,
+        genres: [],
+        watchProviders,
+        releases: {
+          results: [
+            {
+              iso_3166_1: 'US',
+              release_dates: [{ certification: 'PG-13', type: 3 }],
+            },
+            {
+              iso_3166_1: 'GB',
+              release_dates: [{ certification: '12A', type: 3 }],
+            },
+          ],
+        },
+      },
     })
   );
   await page.route('**/api/v1/tv/202', (route) =>
@@ -6750,10 +6766,19 @@ test('movie and series details show subscription providers in the account region
         genres: [],
         seasons: [],
         watchProviders,
+        contentRatings: {
+          results: [
+            { iso_3166_1: 'US', rating: 'TV-MA' },
+            { iso_3166_1: 'GB', rating: '15' },
+          ],
+        },
       },
     })
   );
-  for (const path of ['/movie/101', '/tv/202']) {
+  for (const [path, rating, wrongRating, capture] of [
+    ['/movie/101', '12A', 'PG-13', 'movie'],
+    ['/tv/202', '15', 'TV-MA', 'series'],
+  ]) {
     await page.goto(path);
     await expect(
       page.getByText('Streaming Providers', { exact: true })
@@ -6762,5 +6787,10 @@ test('movie and series details show subscription providers in the account region
       page.getByText('Canada Stream', { exact: true })
     ).toBeVisible();
     await expect(page.getByText('US Stream', { exact: true })).toHaveCount(0);
+    await expect(page.locator('.cert')).toHaveText(rating);
+    await expect(page.getByText(wrongRating, { exact: true })).toHaveCount(0);
+    await page.screenshot({
+      path: info.outputPath(capture + '-regional-details.png'),
+    });
   }
 });
