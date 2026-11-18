@@ -254,7 +254,14 @@ function detailDeepLink(req: Request): string | undefined {
     return `/lumen/adult/${sceneId}${server}`;
   }
   const league = /^\/sportarr\/(lg-\d{6,8})\/?$/.exec(req.path)?.[1];
-  if (isSportarrLeagueExternalId(league)) return `/lumen/sportarr/${league}`;
+  if (isSportarrLeagueExternalId(league)) {
+    const { eventPage } = req.query;
+    const page =
+      typeof eventPage === 'string' && /^[1-9][0-9]{0,3}$/.test(eventPage)
+        ? Math.min(Number(eventPage), 1000)
+        : 1;
+    return `/lumen/sportarr/${league}${page > 1 ? `?eventPage=${page}` : ''}`;
+  }
   const magazine = magazineTitle(req.path);
   if (magazine) return `/lumen/magazine/${encodeURIComponent(magazine)}`;
   const book = catalogSegment(req.path, 'book');

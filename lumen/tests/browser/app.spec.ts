@@ -2099,6 +2099,11 @@ test('Sportarr league details show paginated event availability', async ({
   await page.getByRole('button', { name: 'Next Page' }).click();
   await expect(page.getByText('Final', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
+  await expect(page).toHaveURL(/eventPage=2$/);
+  await page.reload();
+  await expect(page.getByText('Final', { exact: true })).toBeVisible();
+  await page.goBack();
+  await expect(page.getByText('Opening Match')).toBeVisible();
 });
 
 test('Coming Soon retries a failed series feed without dropping movies', async ({

@@ -151,7 +151,17 @@ function leagueEventDate(value?: string, timeZone?: string) {
 }
 
 function LeagueEvents({ id }: { id: string }) {
-  const [page, setPage] = useState(1);
+  const [params, setParams] = useSearchParams();
+  const requestedPage = params.get('eventPage') ?? '';
+  const page = /^[1-9][0-9]{0,3}$/.test(requestedPage)
+    ? Math.min(Number(requestedPage), 1000)
+    : 1;
+  function setPage(nextPage: number) {
+    const next = new URLSearchParams(params);
+    if (nextPage === 1) next.delete('eventPage');
+    else next.set('eventPage', String(nextPage));
+    setParams(next, { preventScrollReset: true });
+  }
   const { data, error, reload } = useApi<{
     eventsAvailable: boolean;
     totalPages: number;

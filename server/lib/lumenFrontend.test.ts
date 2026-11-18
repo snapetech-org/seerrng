@@ -531,6 +531,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/comic/4050-12345', '/lumen/comic/4050-12345'],
       ['/sportarr/lg-000123/', '/lumen/sportarr/lg-000123'],
       [
+        '/sportarr/lg-123456?eventPage=2&extra=discard',
+        '/lumen/sportarr/lg-123456?eventPage=2',
+      ],
+      [
         '/adult/12345678-1234-4123-8123-123456789abc?serverId=0',
         '/lumen/adult/12345678-1234-4123-8123-123456789abc?serverId=0',
       ],
