@@ -2286,3 +2286,14 @@ Pro 11. The fixture verified failure recovery, updated availability, and
 exclusion of a title absent from the authorized catalog. Live provider
 refresh remains unverified. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-availability-20261118/`.
+
+Music collections and artist discographies now filter releases by type,
+genre, or year. The initial Album view excludes secondary types such as
+Live releases. The filters combine, distinguish unknown years, and can
+be cleared to show the full catalog.
+
+The production build and 28 browser checks passed. Compared the prior and
+filtered discography layouts in four viewports. The fixtures verified
+secondary release types, combined filters, no matches, and clearing.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-collection-filters-20261118/`.

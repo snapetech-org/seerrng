@@ -40,7 +40,21 @@ test('series and album details reach their curated collections', async ({
         id: 'artist-42',
         name: 'Fixture Discography',
         parts: [
-          { id: album, title: 'Fixture Album', availableQualities: ['FLAC'] },
+          {
+            id: album,
+            title: 'Fixture Album',
+            availableQualities: ['FLAC'],
+            primaryType: 'Album',
+            releaseDate: '2020-02-22',
+            genres: ['Rock'],
+          },
+          {
+            id: 'live-album',
+            title: 'Fixture Live',
+            primaryType: 'Album',
+            secondaryTypes: ['Live'],
+            genres: ['Jazz'],
+          },
         ],
       },
     };
@@ -105,5 +119,32 @@ test('series and album details reach their curated collections', async ({
   await expect(
     page.getByRole('button', { name: 'Refresh Availability' })
   ).toHaveCount(0);
+  const filters = page.getByRole('group', { name: 'Collection Filters' });
+  await expect(
+    page.getByRole('link', { name: 'Fixture Live', exact: true })
+  ).toHaveCount(0);
+  await filters
+    .getByRole('combobox', { name: 'Release Type' })
+    .selectOption('live');
+  await filters.getByRole('combobox', { name: 'Genre' }).selectOption('jazz');
+  await filters
+    .getByRole('combobox', { name: 'Release Year' })
+    .selectOption('unknown');
+  await expect(
+    page.getByRole('link', { name: 'Fixture Live', exact: true })
+  ).toBeVisible();
+  await filters
+    .getByRole('combobox', { name: 'Release Year' })
+    .selectOption('2020');
+  await expect(
+    page.getByText('No releases match these filters.')
+  ).toBeVisible();
+  await filters.getByRole('button', { name: 'Clear Filters' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Live', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Album', exact: true })
+  ).toBeVisible();
   await page.screenshot({ path: info.outputPath('discography.png') });
 });

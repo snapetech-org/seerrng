@@ -26,9 +26,151 @@ interface Collection {
     releaseDate?: string;
     posterPath?: string;
     primaryType?: string;
+    secondaryTypes?: string[];
+    subtitle?: string;
+    genres?: string[];
     mediaInfo?: MediaInfo;
     availableQualities?: ('MP3' | 'FLAC')[];
   }[];
+}
+
+const emptyMusicFilters = { type: '', genre: '', year: '' };
+
+function releaseTypes(part: Collection['parts'][number]) {
+  const fallback = part.subtitle?.split(' · ') ?? [];
+  return {
+    primary: part.primaryType || fallback[0] || 'Album',
+    secondary: part.secondaryTypes ?? fallback.slice(1),
+  };
+}
+
+function MusicReleases({ members }: { members: Collection['parts'] }) {
+  const [filters, setFilters] = useState({
+    ...emptyMusicFilters,
+    type: 'album',
+  });
+  const options = (values: string[]) =>
+    [
+      ...new Map(
+        values.map((name) => [name.trim().toLowerCase(), name.trim()])
+      ).entries(),
+    ]
+      .filter(([key]) => key)
+      .sort((left, right) => left[1].localeCompare(right[1]));
+  const year = (part: Collection['parts'][number]) =>
+    /^\d{4}/.exec(part.releaseDate ?? '')?.[0] ?? 'unknown';
+  const types = options([
+    'Album',
+    ...members.flatMap((part) => {
+      const { primary, secondary } = releaseTypes(part);
+      return [primary, ...secondary];
+    }),
+  ]);
+  const genres = options(members.flatMap((part) => part.genres ?? []));
+  const years = [...new Set(members.map(year))]
+    .filter((value) => value !== 'unknown')
+    .sort()
+    .reverse();
+  const controls = [
+    ['type', 'Release Type', types],
+    ['genre', 'Genre', genres],
+    [
+      'year',
+      'Release Year',
+      [
+        ...years.map((value) => [value, value]),
+        ...(members.some((part) => year(part) === 'unknown')
+          ? [['unknown', 'Unknown']]
+          : []),
+      ],
+    ],
+  ] as const;
+
+  const visible = members.filter((part) => {
+    const { primary, secondary } = releaseTypes(part);
+    const matchesType =
+      filters.type === 'album'
+        ? primary.toLowerCase() === 'album' && !secondary.length
+        : [primary, ...secondary].some(
+            (type) => type.toLowerCase() === filters.type
+          );
+    return (
+      (!filters.type || matchesType) &&
+      (!filters.genre ||
+        part.genres?.some(
+          (genre) => genre.trim().toLowerCase() === filters.genre
+        )) &&
+      (!filters.year || year(part) === filters.year)
+    );
+  });
+  return (
+    <Section title="Releases">
+      {!!members.length && (
+        <div className="toolbar" role="group" aria-label="Collection Filters">
+          {controls.map(([key, label, choices]) => (
+            <label className="sel" key={key}>
+              <span className="lbl">{label}</span>
+              <select
+                value={filters[key]}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setFilters((previous) => ({ ...previous, [key]: value }));
+                }}
+              >
+                <option value="">Any</option>
+                {choices.map(([value, name]) => (
+                  <option key={value} value={value}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ))}
+          {Object.values(filters).some(Boolean) && (
+            <button
+              className="btn btn-quiet btn-sm"
+              type="button"
+              onClick={() => setFilters(emptyMusicFilters)}
+            >
+              Clear Filters
+            </button>
+          )}
+        </div>
+      )}
+      {!visible.length ? (
+        <p className="note">
+          {members.length
+            ? 'No releases match these filters.'
+            : 'No releases are available in this collection.'}
+        </p>
+      ) : (
+        <div className="sqg grid">
+          {visible.map((part) => {
+            const { primary, secondary } = releaseTypes(part);
+            const type =
+              primary.toLowerCase() === 'album' && secondary.length
+                ? secondary.join(' · ')
+                : [primary, ...secondary].join(' · ');
+            return (
+              <ExtraCard
+                key={part.id}
+                title={part.title}
+                href={`/music/${encodeURIComponent(part.id)}`}
+                img={artUrl(part.posterPath)}
+                shape="sq"
+                icon="music"
+                stat={extraStat(part.mediaInfo)}
+                meta={[part.releaseDate?.slice(0, 4), type]
+                  .filter(Boolean)
+                  .join(' · ')}
+                note={part.availableQualities?.join(' · ')}
+              />
+            );
+          })}
+        </div>
+      )}
+    </Section>
+  );
 }
 
 function Content({ kind, id }: { kind: Kind; id: string }) {
@@ -183,25 +325,13 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
           </>
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
-        <Section title={music ? 'Releases' : 'Series in This Collection'}>
-          {members.length ? (
-            <div className={music ? 'sqg grid' : 'grid'}>
-              {members.map((part) =>
-                music ? (
-                  <ExtraCard
-                    key={part.id}
-                    title={part.title}
-                    href={`/music/${encodeURIComponent(part.id)}`}
-                    img={artUrl(part.posterPath)}
-                    shape="sq"
-                    icon="music"
-                    stat={extraStat(part.mediaInfo)}
-                    meta={[part.releaseDate?.slice(0, 4), part.primaryType]
-                      .filter(Boolean)
-                      .join(' · ')}
-                    note={part.availableQualities?.join(' · ')}
-                  />
-                ) : (
+        {music ? (
+          <MusicReleases members={members} />
+        ) : (
+          <Section title="Series in This Collection">
+            {members.length ? (
+              <div className="grid">
+                {members.map((part) => (
                   <TitleCard
                     key={part.id}
                     it={{
@@ -213,13 +343,15 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
                       mediaInfo: part.mediaInfo,
                     }}
                   />
-                )
-              )}
-            </div>
-          ) : (
-            <p className="note">No titles are available in this collection.</p>
-          )}
-        </Section>
+                ))}
+              </div>
+            ) : (
+              <p className="note">
+                No titles are available in this collection.
+              </p>
+            )}
+          </Section>
+        )}
       </div>
     </article>
   );
