@@ -6861,3 +6861,30 @@ test('discovery sort displays Classic bookmark orders and sends changes to the c
     await expect(sort).toHaveValue(next);
   }
 });
+
+test('discovery content ratings preserve Classic filters and apply exact ratings', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto(
+    '/movies?nativeFilters=1&certificationGte=PG&certificationLte=R&certificationCountry=US&genre=18'
+  );
+  const select = page.getByRole('combobox', { name: 'Content Rating' });
+  await expect(select).toHaveValue('range');
+  const exact = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/movies' &&
+      url.searchParams.get('certification') === 'PG-13' &&
+      url.searchParams.get('certificationCountry') === 'US' &&
+      !url.searchParams.has('certificationGte') &&
+      url.searchParams.get('genre') === '18'
+    );
+  });
+  await select.selectOption('PG-13');
+  await exact;
+  await page.reload();
+  await expect(select).toHaveValue('PG-13');
+  await select.selectOption('');
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});

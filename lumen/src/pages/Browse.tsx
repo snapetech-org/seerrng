@@ -19,6 +19,7 @@ import {
 } from '../discoveryVisibility';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { serverName } from '../mediaServer';
 import { usePrefs } from '../settings';
 import { useStreamingRegion } from '../streamingRegion';
@@ -191,6 +192,11 @@ const BROWSE_FILTER_PARAMS = [
   'network',
   'country',
   'language',
+  'certification',
+  'certificationCountry',
+  'certificationGte',
+  'certificationLte',
+  'certificationMode',
 ] as const;
 
 const SERIES_STATUSES = [
@@ -389,6 +395,24 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
+  const ratingOptions = [
+    'NR',
+    ...(kind === 'movie' ? movieCertifications : tvCertifications),
+  ];
+  const certification = p.get('certification') ?? '';
+  const certificationCountry = (
+    p.get('certificationCountry') ?? ''
+  ).toUpperCase();
+  const certificationFilters = Object.fromEntries(
+    ['certification', 'certificationGte', 'certificationLte'].flatMap((key) => {
+      const value = p.get(key);
+      return value && value.length <= 32 ? [[key, value]] : [];
+    })
+  );
+  const certificationRange =
+    !certification &&
+    (certificationFilters.certificationGte ||
+      certificationFilters.certificationLte);
   const requestedSort = p.get('sort');
   const sort =
     SORTS[kind].find(([value]) => value === requestedSort)?.[0] ??
@@ -422,6 +446,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     ...(network ? { network } : {}),
     ...(country ? { country } : {}),
     ...(language ? { language } : {}),
+    ...certificationFilters,
+    ...(Object.keys(certificationFilters).length
+      ? {
+          certificationCountry: /^[A-Z]{2}$/.test(certificationCountry)
+            ? certificationCountry
+            : 'US',
+        }
+      : {}),
     ...(validRuntime && minRuntime ? { withRuntimeGte: minRuntime } : {}),
     ...(validRuntime && maxRuntime ? { withRuntimeLte: maxRuntime } : {}),
     ...(validDates && start ? { [startKey]: start } : {}),
@@ -730,6 +762,58 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             </button>
           </>
         )}
+        <label className="sel">
+          <span className="lbl">Content Rating</span>
+          <select
+            value={certificationRange ? 'range' : certification}
+            onChange={(event) => {
+              const next = new URLSearchParams(p);
+              for (const key of [
+                'certification',
+                'certificationGte',
+                'certificationLte',
+                'certificationCountry',
+                'certificationMode',
+              ])
+                next.delete(key);
+              if (event.target.value) {
+                next.set('certification', event.target.value);
+                next.set('certificationCountry', 'US');
+              }
+              setP(next, { replace: true });
+            }}
+          >
+            <option value="">Any Rating</option>
+            {certificationRange && (
+              <option value="range" disabled>
+                {certificationFilters.certificationGte || 'Any'} to{' '}
+                {certificationFilters.certificationLte || 'Any'}
+              </option>
+            )}
+            {certification &&
+              (!ratingOptions.includes(certification) ||
+                (certificationCountry && certificationCountry !== 'US')) && (
+                <option value={certification}>
+                  {certification}
+                  {certificationCountry
+                    ? ' (' + certificationCountry + ')'
+                    : ''}
+                </option>
+              )}
+            {ratingOptions
+              .filter(
+                (value) =>
+                  value !== certification ||
+                  !certificationCountry ||
+                  certificationCountry === 'US'
+              )
+              .map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+          </select>
+        </label>
         <label className="sel">
           <span className="lbl">Original Language</span>
           <select

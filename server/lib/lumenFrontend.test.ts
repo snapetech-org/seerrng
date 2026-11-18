@@ -647,6 +647,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/movies?libraryView=missing&genre=18',
         '/lumen/movies?genre=18&show=not',
       ],
+      [
+        '/discover/tv?certification=TV-PG&certificationCountry=US&certificationMode=exact',
+        '/lumen/series?certification=TV-PG&certificationCountry=US&certificationMode=exact',
+      ],
       ['/discover/tv?libraryView=available', '/lumen/series?show=have'],
       [
         '/discover/tv?libraryView=missing&availability=4k',

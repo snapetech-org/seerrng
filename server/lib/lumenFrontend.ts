@@ -107,6 +107,11 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
 }
 
 const discoveryFilters = [
+  'certification',
+  'certificationCountry',
+  'certificationGte',
+  'certificationLte',
+  'certificationMode',
   'country',
   'language',
   'keywords',
