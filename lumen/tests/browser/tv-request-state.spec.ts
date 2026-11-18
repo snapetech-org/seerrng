@@ -543,3 +543,48 @@ test('an unconfirmed season request keeps the selection without a success messag
     animations: 'disabled',
   });
 });
+
+test('a permitted streaming override retries only the selected seasons', async ({
+  page,
+}) => {
+  await show(page, { status: 2, requests: [req([1])], seasons: [] });
+  const submissions: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    const body = route.request().postDataJSON();
+    submissions.push(body);
+    if (body.bypassStreamingRequestPolicy === true)
+      return route.fulfill({
+        json: { id: 45, seasons: [{ seasonNumber: 2 }] },
+      });
+    return route.fulfill({
+      status: 403,
+      json: {
+        code: 'STREAMING_REQUEST_POLICY_REJECTED',
+        allowOverride: true,
+        message: 'This series is available on your streaming service.',
+      },
+    });
+  });
+  await page.getByRole('button', { name: 'All missing (2)' }).click();
+  await page.getByText('Season 3', { exact: true }).click();
+  await expect(
+    page.getByRole('checkbox', { name: /Season 2/ })
+  ).toHaveAttribute('aria-checked', 'true');
+  await page
+    .getByRole('button', { name: /^Request 1 (more )?season$/ })
+    .click();
+  const confirm = page.getByRole('alertdialog', {
+    name: 'Streaming Request Policy',
+  });
+  await expect(
+    confirm.getByText('This series is available on your streaming service.')
+  ).toBeVisible();
+  const original = { mediaType: 'tv', mediaId: 84773, seasons: [2] };
+  expect(submissions).toEqual([original]);
+  await confirm.getByRole('button', { name: 'Request Anyway' }).click();
+  await expect
+    .poll(() => submissions)
+    .toEqual([original, { ...original, bypassStreamingRequestPolicy: true }]);
+  await expect(confirm).toHaveCount(0);
+});

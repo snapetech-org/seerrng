@@ -22,6 +22,7 @@ import {
   statusOf,
   TitleCard,
 } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   ActionBar,
   AdvancedOptions,
@@ -94,6 +95,12 @@ export default function TvDetail() {
   const episodeSubmission = useRef(false);
   const [episodesOpen, setEpisodesOpen] = useState(false);
   const [episodeError, setEpisodeError] = useState<string>();
+  const [streamingOverride, setStreamingOverride] = useState<{
+    seriesId: number;
+    seasons: number[] | 'all';
+    options: RequestOptions;
+    message: string;
+  }>();
   const [watchFailure, setWatchFailure] = useState<{
     selection: string;
     message: string;
@@ -305,30 +312,41 @@ export default function TvDetail() {
       setBusy(false);
     }
   };
-  const request = async () => {
-    if (!n || blocklisted || busy) return;
+  const submitSeasons = async (
+    requestedSeasons: number[] | 'all',
+    options: RequestOptions
+  ) => {
+    if (busy) return;
+    setStreamingOverride(undefined);
     setWatchFailure(undefined);
     setBusy(true);
     try {
-      const whole = !partialOk || n === seasons.length;
-      const result = await requestSeries(
-        t.id,
-        whole ? 'all' : selectedSeasons,
-        {
-          ...opts,
-          ...(is4k ? { is4k: true } : {}),
-          requestQuotaApproval: requireApproval || undefined,
-        }
-      );
+      const result = await requestSeries(t.id, requestedSeasons, options);
       toast(
         result.quotaException
           ? `Approval requested for ${t.name || 'this series'}`
-          : seriesRequestSummary(t.name || 'this series', result, is4k)
+          : seriesRequestSummary(
+              t.name || 'this series',
+              result,
+              !!options.is4k
+            )
       );
       refresh();
       quota.refresh();
     } catch (e) {
-      if (e instanceof ApiError && e.code === 'TV_SEASON_WATCH_GATE') {
+      if (
+        !options.bypassStreamingRequestPolicy &&
+        e instanceof ApiError &&
+        e.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+        e.allowOverride
+      ) {
+        setStreamingOverride({
+          seriesId: t.id,
+          seasons: requestedSeasons,
+          options,
+          message: e.message,
+        });
+      } else if (e instanceof ApiError && e.code === 'TV_SEASON_WATCH_GATE') {
         setWatchFailure({
           selection: selectionKey,
           message: friendlyError(
@@ -348,6 +366,16 @@ export default function TvDetail() {
     } finally {
       setBusy(false);
     }
+  };
+
+  const request = () => {
+    if (!n || blocklisted) return;
+    const whole = !partialOk || n === seasons.length;
+    return submitSeasons(whole ? 'all' : selectedSeasons, {
+      ...opts,
+      ...(is4k ? { is4k: true } : {}),
+      requestQuotaApproval: requireApproval || undefined,
+    });
   };
 
   const today = localToday();
@@ -844,6 +872,21 @@ export default function TvDetail() {
         )}
         {main}
       </ActionBar>
+      {streamingOverride?.seriesId === t.id && (
+        <ConfirmSheet
+          title="Streaming Request Policy"
+          body={streamingOverride.message}
+          confirm="Request Anyway"
+          cancel="Cancel"
+          onClose={() => setStreamingOverride(undefined)}
+          onConfirm={() =>
+            submitSeasons(streamingOverride.seasons, {
+              ...streamingOverride.options,
+              bypassStreamingRequestPolicy: true,
+            })
+          }
+        />
+      )}
     </article>
   );
 }
