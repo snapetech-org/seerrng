@@ -47,6 +47,7 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { useStreamingProviderNames } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
@@ -68,6 +69,12 @@ export default function MovieDetail() {
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
+  const streamingProviders = useStreamingProviderNames(
+    m?.watchProviders,
+    user?.id,
+    pub?.streamingRegion
+  );
+
   const progressMedia = useLiveMediaProgress(
     m?.mediaInfo,
     isAdministrator(user?.permissions)
@@ -331,6 +338,7 @@ export default function MovieDetail() {
           <aside>
             <Facts
               rows={[
+                ['Streaming Providers', streamingProviders],
                 [
                   'Production Countries',
                   productionCountryLinks(m.productionCountries, '/movies'),

@@ -778,7 +778,13 @@ export interface ProductionCountry {
   name: string;
 }
 
+export interface WatchProviderRegion {
+  iso_3166_1: string;
+  flatrate?: { id: number; name: string }[];
+}
+
 export interface MovieDetails extends TitleResult {
+  watchProviders?: WatchProviderRegion[];
   originalTitle?: string;
   onUserWatchlist?: boolean;
   runtime?: number;
@@ -805,6 +811,7 @@ export interface Season {
   name: string;
 }
 export interface TvDetails extends TitleResult {
+  watchProviders?: WatchProviderRegion[];
   relatedVideos?: RelatedVideo[];
   externalIds?: { tvdbId?: number | null };
   originalName?: string;

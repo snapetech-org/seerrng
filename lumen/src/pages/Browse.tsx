@@ -21,6 +21,7 @@ import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
 import { usePrefs } from '../settings';
+import { useStreamingRegion } from '../streamingRegion';
 
 function keywordIds(value: string | null) {
   const ids = value?.split(',').map((part) => part.trim()) ?? [];
@@ -308,31 +309,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [showStudios, setShowStudios] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showProviders, setShowProviders] = useState(false);
-  const rawRegion = (p.get('watchRegion') ?? '').toUpperCase();
-  const explicitRegion = /^[A-Z]{2}$/.test(rawRegion) ? rawRegion : '';
   const providerParam = p.get('watchProviders') ?? '';
   const providers = /^\d{1,10}(?:[|,]\d{1,10}){0,49}$/.test(providerParam)
     ? [...new Set(providerParam.split(/[|,]/))]
     : [];
-  const regionProfilePath =
-    user?.id && !explicitRegion && (showProviders || providers.length)
-      ? `/user/${user.id}/settings/main`
-      : null;
-  const regionProfile = useApi<{ streamingRegion?: string | null }>(
-    regionProfilePath,
-    { currentPathOnly: true }
+  const { region, pending: regionPending } = useStreamingRegion(
+    user?.id,
+    publicSettings?.streamingRegion,
+    showProviders || providers.length > 0,
+    p.get('watchRegion')
   );
-  const regionPending =
-    !!regionProfilePath && !regionProfile.data && !regionProfile.error;
-  const region =
-    [
-      explicitRegion,
-      regionProfilePath ? regionProfile.data?.streamingRegion : undefined,
-      publicSettings?.streamingRegion,
-      'US',
-    ]
-      .map((value) => value?.toUpperCase() ?? '')
-      .find((value) => /^[A-Z]{2}$/.test(value)) ?? 'US';
   const excludeProviders = p.get('watchProviderMode') === 'exclude';
   const statusParam = p.get('status') ?? '';
   const status =

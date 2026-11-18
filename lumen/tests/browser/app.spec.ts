@@ -6725,3 +6725,42 @@ test('Streaming Request Policy preserves edits across a failed save', async ({
     path: info.outputPath('streaming-request-policy.png'),
   });
 });
+
+test('movie and series details show subscription providers in the account region', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const watchProviders = [
+    { iso_3166_1: 'US', flatrate: [{ id: 3, name: 'US Stream' }] },
+    { iso_3166_1: 'CA', flatrate: [{ id: 7, name: 'Canada Stream' }] },
+  ];
+  await page.route('**/api/v1/user/*/settings/main', (route) =>
+    route.fulfill({ json: { streamingRegion: 'CA' } })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: { ...movie, genres: [], watchProviders },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        id: 202,
+        name: 'Series Fixture',
+        genres: [],
+        seasons: [],
+        watchProviders,
+      },
+    })
+  );
+  for (const path of ['/movie/101', '/tv/202']) {
+    await page.goto(path);
+    await expect(
+      page.getByText('Streaming Providers', { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText('Canada Stream', { exact: true })
+    ).toBeVisible();
+    await expect(page.getByText('US Stream', { exact: true })).toHaveCount(0);
+  }
+});

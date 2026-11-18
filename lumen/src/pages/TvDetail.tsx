@@ -53,6 +53,7 @@ import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
+import { useStreamingProviderNames } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import {
   isSharedVideoCopy,
@@ -77,6 +78,7 @@ const live = (status?: number) => status === 1 || status === 2;
 export default function TvDetail() {
   const serverName = useMediaServerName();
   const { user } = useAuth();
+
   const { id } = useParams();
   const loc = useLocation();
   const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
@@ -86,6 +88,11 @@ export default function TvDetail() {
     isAdministrator(user?.permissions)
   );
   const pub = usePublicSettings();
+  const streamingProviders = useStreamingProviderNames(
+    t?.watchProviders,
+    user?.id,
+    pub?.streamingRegion
+  );
   const { prefs } = usePrefs();
   const toast = useToast();
   const [sel, setSel] = useState<Set<number>>(new Set());
@@ -820,6 +827,7 @@ export default function TvDetail() {
           <aside>
             <Facts
               rows={[
+                ['Streaming Providers', streamingProviders],
                 [
                   'Production Countries',
                   productionCountryLinks(t.productionCountries, '/series'),
