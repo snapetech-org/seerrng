@@ -1,1 +1,2 @@
 - Lumen preserves Classic Music discovery bookmarks, including search, artist, release type, audio quality, release dates, and ascending sort orders.
+- Edit genre, artist, audio quality, and release date filters directly in Lumen Music.

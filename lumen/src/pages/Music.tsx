@@ -51,6 +51,13 @@ const TYPES = [
   ['ep', 'EPs'],
   ['single', 'Singles'],
 ] as const;
+const MUSIC_FILTERS = [
+  { key: 'genre', label: 'Genre', type: 'search' },
+  { key: 'artist', label: 'Artist', type: 'search' },
+  { key: 'primaryReleaseDateGte', label: 'Released From', type: 'date' },
+  { key: 'primaryReleaseDateLte', label: 'Released Through', type: 'date' },
+] as const;
+
 const big = (n?: number) =>
   !n
     ? ''
@@ -83,40 +90,41 @@ export function Music() {
   const requestedSort = p.get('sort') || p.get('sortBy');
   const sort =
     SORTS.find(([value]) => value === requestedSort)?.[0] ?? 'ranked';
-  const rawGenre = p.get('genre')?.trim() ?? '';
-  const genre = rawGenre.length <= 512 ? rawGenre : '';
   const type = p.get('type') || p.get('releaseType') || '';
-  const qs = new URLSearchParams({
-    sortBy: sort,
-    ...(query ? { query } : {}),
-    ...(type ? { releaseType: type } : {}),
-    ...(genre ? { genre } : {}),
-  });
+  const filters = new URLSearchParams();
   for (const name of [
-    'artist',
+    ...MUSIC_FILTERS.map(({ key }) => key),
     'artistId',
     'availability',
-    'primaryReleaseDateGte',
-    'primaryReleaseDateLte',
   ]) {
-    const value = p.get(name);
-    if (value) qs.set(name, value);
+    const value = p.get(name)?.trim();
+    if (value) filters.set(name, value);
   }
+  const qs = new URLSearchParams(filters);
+  qs.set('sortBy', sort);
+  if (query) qs.set('query', query);
+  if (type) qs.set('releaseType', type);
   const list = usePaged<Album>(`/discover/music?${qs}`);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (k === 'sort') n.delete('sortBy');
     if (k === 'type') n.delete('releaseType');
-    if (k === 'q') n.delete('search');
     if (!v || (k === 'sort' && v === 'ranked')) n.delete(k);
     else n.set(k, v);
     setP(n, { replace: true });
   };
   useEffect(() => {
-    const t = setTimeout(() => q.trim() !== query && upd('q', q.trim()), 350);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
+    const value = q.trim();
+    if (value === query) return;
+    const timer = setTimeout(() => {
+      const next = new URLSearchParams(p);
+      next.delete('search');
+      if (value) next.set('q', value);
+      else next.delete('q');
+      setP(next, { replace: true });
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [p, q, query, setP]);
   useEffect(() => {
     setQ((value) => (value.trim() === query ? value : query));
   }, [query]);
@@ -145,15 +153,6 @@ export function Music() {
         <Link className="btn btn-quiet btn-sm" to="/music/collectors">
           Collector Picks
         </Link>
-        {genre && (
-          <button
-            className="chip"
-            type="button"
-            onClick={() => upd('genre', '')}
-          >
-            Clear Genre: {genre}
-          </button>
-        )}
         <label className="sel">
           <span className="lbl">Sort</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
@@ -176,6 +175,85 @@ export function Music() {
           ))}
         </div>
       </div>
+      <form
+        className="toolbar"
+        aria-label="Music Discovery Filters"
+        key={filters.toString()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          const form = new FormData(event.currentTarget);
+          const next = new URLSearchParams(p);
+          for (const key of [
+            ...MUSIC_FILTERS.map((field) => field.key),
+            'availability',
+          ]) {
+            const value = String(form.get(key) ?? '').trim();
+            if (value) next.set(key, value);
+            else next.delete(key);
+          }
+          if ((next.get('artist') ?? '') !== (filters.get('artist') ?? ''))
+            next.delete('artistId');
+          setP(next, { replace: true });
+        }}
+      >
+        {MUSIC_FILTERS.map(({ key, label, type }) => (
+          <label className="sel" key={key}>
+            <span className="lbl">{label}</span>
+            <input
+              className="cfg-input"
+              type={type}
+              name={key}
+              defaultValue={filters.get(key) ?? ''}
+              maxLength={type === 'search' ? 256 : undefined}
+            />
+          </label>
+        ))}
+        <label className="sel">
+          <span className="lbl">In Library</span>
+          <select
+            name="availability"
+            defaultValue={filters.get('availability') ?? ''}
+          >
+            <option value="">Any Quality</option>
+            <option value="mp3">MP3</option>
+            <option value="flac">FLAC</option>
+          </select>
+        </label>
+        <button className="btn btn-tonal btn-sm" type="submit">
+          Apply Music Filters
+        </button>
+        {filters.has('genre') && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => upd('genre', '')}
+          >
+            Clear Genre: {filters.get('genre')}
+          </button>
+        )}
+        {filters.has('artistId') && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => upd('artistId', '')}
+          >
+            Clear Exact Artist
+          </button>
+        )}
+        {filters.size > 0 && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => {
+              const next = new URLSearchParams(p);
+              for (const key of filters.keys()) next.delete(key);
+              setP(next, { replace: true });
+            }}
+          >
+            Clear Music Filters
+          </button>
+        )}
+      </form>
       <ServiceNote error={list.items.length ? null : list.error} what="music" />
       {!list.error && !items.length && !list.loading && (
         <div className="empty">

@@ -3425,6 +3425,31 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
     .toBe(true);
   await page.getByRole('button', { name: 'Any', exact: true }).click();
   await expect.poll(() => observed.at(-1)?.get('releaseType')).toBeNull();
+  const form = page.getByRole('form', { name: 'Music Discovery Filters' });
+  await expect(form.getByRole('searchbox', { name: 'Artist' })).toHaveValue(
+    filters.artist
+  );
+  await expect(form.getByRole('combobox', { name: 'In Library' })).toHaveValue(
+    'flac'
+  );
+  await form.getByRole('searchbox', { name: 'Artist' }).fill('New Artist');
+  await form.getByLabel('Released From').fill('2001-01-01');
+  await form.getByLabel('Released Through').fill('2010-12-31');
+  await form.getByRole('combobox', { name: 'In Library' }).selectOption('mp3');
+  await form.getByRole('button', { name: 'Apply Music Filters' }).click();
+  await expect
+    .poll(() => Object.fromEntries(observed.at(-1) ?? []))
+    .toMatchObject({
+      artist: 'New Artist',
+      availability: 'mp3',
+      primaryReleaseDateGte: '2001-01-01',
+      primaryReleaseDateLte: '2010-12-31',
+      query,
+    });
+  expect(observed.at(-1)?.has('artistId')).toBe(false);
+  await form.getByRole('button', { name: 'Clear Music Filters' }).click();
+  await expect.poll(() => observed.at(-1)?.has('availability')).toBe(false);
+  expect(observed.at(-1)?.get('query')).toBe(query);
 });
 
 test('configured music shelves preserve genre and yearly chart in Music', async ({
