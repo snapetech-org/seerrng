@@ -789,3 +789,15 @@ Standalone Chrome verified region-scoped catalog loading, provider search,
 and saving a new selection while retaining an existing ID absent from the
 fixture. Bulk selection, live policy effects, mobile, bundled and native
 visual comparison remain open.
+
+### Streaming subscription bulk actions increment
+
+Select Shown and Clear Shown update the visible providers in the subscription
+draft. The search limits both actions and hidden selections stay intact
+until changed explicitly. They use the same save and provider count limit
+as individual selections.
+
+Standalone Chrome verified both actions with a search active. The fixture
+readback confirmed the new matches and retained both a hidden provider and
+an existing ID missing from the source catalog. Mobile, bundled and native
+visual comparison remain open.

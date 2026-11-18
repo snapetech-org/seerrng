@@ -57,6 +57,20 @@ export function StreamingSubscriptions({
         Number(draft.has(b.id)) - Number(draft.has(a.id)) ||
         a.name.localeCompare(b.name)
     );
+  const visibleIds = visible.map(({ id }) => id);
+  const selectedVisible = visibleIds.filter((id) => draft.has(id)).length;
+  function changeVisible(select: boolean) {
+    setDraft((current) => {
+      const next = new Set(current);
+      for (const id of visibleIds) {
+        if (select) next.add(id);
+        else next.delete(id);
+      }
+      return next;
+    });
+    setNotice('');
+  }
+
   const changed = !sameSelection(saved, draft);
 
   async function save() {
@@ -127,6 +141,22 @@ export function StreamingSubscriptions({
               onChange={(event) => setSearch(event.target.value)}
             />
           </label>
+          <button
+            type="button"
+            className="btn btn-quiet btn-sm"
+            disabled={busy || selectedVisible === visibleIds.length}
+            onClick={() => changeVisible(true)}
+          >
+            Select Shown
+          </button>
+          <button
+            type="button"
+            className="btn btn-quiet btn-sm"
+            disabled={busy || selectedVisible === 0}
+            onClick={() => changeVisible(false)}
+          >
+            Clear Shown
+          </button>
         </div>
         {visible.length > 0 ? (
           <div className="setlist">
