@@ -405,6 +405,7 @@ export class ImageDiskCacheBudget {
 
   private assertChildPath(candidate: string): string {
     const root = path.resolve(this.rootDirectory);
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- the resolved path must pass the root-relative containment check below
     const resolved = path.resolve(candidate);
     const relative = path.relative(root, resolved);
     if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
@@ -572,6 +573,7 @@ export const writePrivateImageCacheFile = async (
   });
   await chmodImageCacheDirectoryBestEffort(directory);
 
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- filename is checked as a single basename before any filesystem operations
   const filePath = path.join(directory, filename);
   await promises.writeFile(filePath, buffer, {
     flag: 'wx',
@@ -684,6 +686,7 @@ export const getBoundedDirectorySize = async (
         throw new Error('Directory exceeds the inspection entry limit.');
       }
 
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- the name comes from readdir Dirent entries under the current directory
       const entryPath = path.join(directory, entry.name);
       if (entry.isDirectory() && !entry.isSymbolicLink()) {
         pendingDirectories.push(entryPath);
@@ -706,6 +709,7 @@ export const pruneStaleImageCacheEntries = async (
   const files = await promises.readdir(cacheDirectory);
 
   for (const file of files) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- the name comes from readdir and lstat rejects symlink entries before descent
     const filePath = path.join(cacheDirectory, file);
     const stat = await promises.lstat(filePath);
     if (!stat.isDirectory()) {
@@ -1025,6 +1029,7 @@ class ImageProxy {
       const files = await promises.readdir(directory);
 
       for (const file of files) {
+        // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- readdir supplies the basename and assertCachePath enforces cache-root containment
         const filePath = assertCachePath(path.join(directory, file));
         const metadata = parseImageCacheFileMetadata(file, now);
         if (!metadata) {

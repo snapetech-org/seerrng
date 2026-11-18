@@ -118,3 +118,9 @@ descriptor checks still reject symlinks at the file itself and reject
 non-regular or multiply linked files. The stale-entry pruner enumerates
 directory names and checks each entry with lstat before descending.
 All 53 focused image proxy tests passed.
+
+Reviewed nine Semgrep matches for cache path joins and resolution. The
+five affected callsites use cache-root containment, a checked filename
+basename, or names supplied directly by filesystem enumeration. Added
+rule-specific explanations at those callsites. The targeted Semgrep
+scan returned zero unsuppressed findings.
