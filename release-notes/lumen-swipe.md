@@ -4,3 +4,4 @@ Swipe users can select favorite titles from their library and request history to
 Swipe History can restore individual passed or seen titles and clear decisions by category.
 Administrators can enable Swipe and configure and test its ranking provider in Lumen.
 Swipe recommendation decks support keyboard shortcuts and directional touch gestures.
+Swipe adds catalog decks for audiobooks, comics, magazines, music, sports, and adult media.

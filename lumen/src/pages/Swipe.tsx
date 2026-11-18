@@ -4,10 +4,30 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
+import { normalizeSwipeCatalogCards, swipeCatalogUrl } from '../swipeCatalog';
 import SwipeHistory from './SwipeHistory';
 
-const categories = { movie: 'Movies', tv: 'Series', book: 'Books' };
-type Category = keyof typeof categories;
+const recommendations = { movie: 'Movies', tv: 'Series', book: 'Books' };
+type Category = keyof typeof recommendations;
+const categories = {
+  ...recommendations,
+  audiobook: 'Audiobooks',
+  comic: 'Comics',
+  magazine: 'Magazines',
+  music: 'Music',
+  sports: 'Sports',
+  adult: 'Adult',
+};
+type DeckCategory = keyof typeof categories;
+const catalogDefaults = {
+  query: '',
+  genre: '',
+  yearFrom: '',
+  yearTo: '',
+  minimumRating: '',
+  publisher: '',
+  magazineCatalog: 'tracked',
+} as const;
 type Decision = 'want' | 'pass' | 'seen';
 interface Card {
   id: string;
@@ -18,6 +38,7 @@ interface Card {
   imageUrl?: string;
   authorId?: string;
   reason?: string;
+  serviceId?: number;
 }
 interface Status {
   mediaTypes: string[];
@@ -291,14 +312,25 @@ function Deck({
   formats,
   profile,
 }: {
-  category: Category;
+  category: DeckCategory;
   formats: string[];
   profile: Profile | null;
 }) {
+  const catalog = !Object.hasOwn(recommendations, category);
   const [refresh, setRefresh] = useState(false);
-  const deck = useApi<{ cards: Card[]; remaining: number }>(
-    `/swipe/deck?mediaType=${category}${refresh ? '&refresh=true' : ''}`,
-    { currentPathOnly: true }
+  const [page, setPage] = useState(1);
+  const deckPath = catalog
+    ? swipeCatalogUrl(category, catalogDefaults, page, 'first').slice(
+        '/api/v1'.length
+      )
+    : `/swipe/deck?mediaType=${category}${refresh ? '&refresh=true' : ''}`;
+  const deck = useApi<{
+    cards?: Card[];
+    remaining?: number;
+    totalPages?: number;
+  }>(deckPath, { currentPathOnly: true });
+  const history = useApi<{ decisions: { id: string }[] }>(
+    catalog ? `/swipe/decisions?mediaType=${category}` : null
   );
   const [handled, setHandled] = useState<string[]>([]);
   const [restored, setRestored] = useState<Card>();
@@ -306,8 +338,19 @@ function Deck({
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const pending = useRef(false);
+  const catalogCards = catalog
+    ? normalizeSwipeCatalogCards(category, deck.data)
+    : [];
   const card =
-    restored ?? deck.data?.cards.find(({ id }) => !handled.includes(id));
+    restored ??
+    (catalog
+      ? history.data &&
+        catalogCards.find(
+          ({ id }) =>
+            !handled.includes(id) &&
+            !history.data?.decisions.some((item) => item.id === id)
+        )
+      : deck.data?.cards?.find(({ id }) => !handled.includes(id)));
   const format = formats.includes(profile?.bookFormat ?? '')
     ? profile?.bookFormat
     : formats[0];
@@ -368,6 +411,10 @@ function Deck({
   }
 
   function nextDeck(regenerate: boolean) {
+    if (catalog) {
+      setPage((value) => value + 1);
+      return;
+    }
     setHandled([]);
     setRestored(undefined);
     if (refresh === regenerate) deck.reload();
@@ -398,6 +445,7 @@ function Deck({
           body({ mediaType: category })
         );
         if (generation !== sessionGeneration()) return;
+        if (catalog) history.reload();
         setRestored(result.card);
         return;
       }
@@ -407,15 +455,27 @@ function Deck({
         await api(
           '/request',
           body({
-            mediaType: category,
-            mediaId: category === 'book' ? card.id : Number(card.id),
+            mediaType: category === 'audiobook' ? 'book' : category,
+            mediaId:
+              category === 'movie' || category === 'tv' || category === 'comic'
+                ? Number(card.id)
+                : card.id,
             ...(category === 'tv'
               ? {
                   seasons:
                     profile.seriesRequest === 'all-seasons' ? 'all' : [1],
                 }
               : {}),
-            ...(category === 'book' ? { authorId: card.authorId, format } : {}),
+            ...(category === 'book' || category === 'audiobook'
+              ? {
+                  authorId: card.authorId,
+                  format: category === 'audiobook' ? 'audiobook' : format,
+                }
+              : {}),
+            ...(card.serviceId !== undefined &&
+            ['magazine', 'sports', 'adult'].includes(category)
+              ? { serverId: card.serviceId }
+              : {}),
           })
         );
         requested = true;
@@ -423,7 +483,12 @@ function Deck({
       if (generation !== sessionGeneration()) return;
       await api(
         '/swipe/decisions',
-        body({ mediaType: category, id: card.id, decision })
+        body({
+          mediaType: category,
+          id: card.id,
+          decision,
+          ...(catalog ? { card } : {}),
+        })
       );
       if (generation !== sessionGeneration()) return;
       if (requested) setNotice(`${card.title} requested.`);
@@ -453,6 +518,11 @@ function Deck({
   const image = artUrl(card?.imageUrl);
   return (
     <Section title={categories[category]}>
+      <ServiceNote
+        what="previous decisions"
+        error={history.error}
+        retry={history.reload}
+      />
       <ServiceNote
         what="recommendations"
         error={deck.error}
@@ -530,14 +600,17 @@ function Deck({
               disabled={busy}
               onClick={() => void act('seen')}
             >
-              {category === 'book' ? 'Already Read' : 'Already Seen'}
+              {['book', 'audiobook', 'comic', 'magazine'].includes(category)
+                ? 'Already Read'
+                : 'Already Seen'}
             </button>
           </div>
         </>
-      ) : deck.data ? (
+      ) : deck.data && (!catalog || history.data) ? (
         <p className="note">No more recommendations in this deck.</p>
       ) : (
-        !deck.error && (
+        !deck.error &&
+        !history.error && (
           <p className="note" role="status">
             Loading recommendations…
           </p>
@@ -552,16 +625,20 @@ function Deck({
         >
           Undo Last Decision
         </button>
-        {!card && deck.data && (
-          <button
-            type="button"
-            className="btn btn-quiet btn-sm"
-            disabled={busy}
-            onClick={() => nextDeck(deck.data!.remaining <= handled.length)}
-          >
-            Load More Recommendations
-          </button>
-        )}
+        {!card &&
+          deck.data &&
+          (!catalog || (deck.data.totalPages ?? 0) > page) && (
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy}
+              onClick={() =>
+                nextDeck((deck.data?.remaining ?? 0) <= handled.length)
+              }
+            >
+              Load More Recommendations
+            </button>
+          )}
       </div>
     </Section>
   );
@@ -573,9 +650,9 @@ export default function Swipe() {
   const [savedProfile, setSavedProfile] = useState<Profile>();
   const currentProfile = savedProfile ?? profile.data;
   const [showHistory, setShowHistory] = useState(false);
-  const [selected, setSelected] = useState<Category>();
-  const available = (Object.keys(categories) as Category[]).filter((category) =>
-    status.data?.mediaTypes.includes(category)
+  const [selected, setSelected] = useState<DeckCategory>();
+  const available = (Object.keys(categories) as DeckCategory[]).filter(
+    (category) => status.data?.mediaTypes.includes(category)
   );
   const category =
     selected && available.includes(selected) ? selected : available[0];
@@ -604,7 +681,9 @@ export default function Swipe() {
         <Preferences
           profile={currentProfile}
           onSave={setSavedProfile}
-          available={available}
+          available={available.filter((key): key is Category =>
+            Object.hasOwn(recommendations, key)
+          )}
         />
       )}
       {status.data && (
@@ -630,7 +709,7 @@ export default function Swipe() {
                 className="cfg-select"
                 value={category}
                 onChange={(event) =>
-                  setSelected(event.target.value as Category)
+                  setSelected(event.target.value as DeckCategory)
                 }
               >
                 {available.map((key) => (

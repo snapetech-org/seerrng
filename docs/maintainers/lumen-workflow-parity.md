@@ -1876,3 +1876,14 @@ touch pass in the three emulated touch viewports.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-input-20261118/`.
+
+Swipe adds catalog decks for audiobooks, comics, magazines, music, sports, and
+adult media when the server allows those categories. Native and Lumen share
+catalog normalization. Compared the magazine deck with the movie deck at
+desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build, 29
+native catalog tests, and 16 browser checks passed. The browser fixture covered
+prior-decision filtering, magazine destination, and pagination. Software decks,
+catalog filters, and live catalog verification remain open.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-catalog-20261118/`.

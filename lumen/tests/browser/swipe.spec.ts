@@ -189,3 +189,72 @@ test('saved Swipe preferences apply to the active series deck', async ({
     { mediaType: 'tv', mediaId: 42, seasons: 'all' },
   ]);
 });
+
+test('Swipe catalog decisions preserve magazine identity and destination', async ({
+  page,
+}, info) => {
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/swipe/status'))
+      return route.fulfill({
+        json: { mediaTypes: ['magazine'], bookFormats: [] },
+      });
+    if (path.endsWith('/swipe/profile'))
+      return route.fulfill({
+        json: { seriesRequest: 'first-season', bookFormat: 'ebook' },
+      });
+    if (path.endsWith('/discover/magazines'))
+      return route.fulfill({
+        json: {
+          results:
+            url.searchParams.get('page') === '1'
+              ? [
+                  { id: 7, title: 'Old Issue' },
+                  { id: 8, title: 'New Issue', serviceId: 2 },
+                ]
+              : [{ id: 9, title: 'Next Issue' }],
+          totalPages: 2,
+        },
+      });
+    if (path.endsWith('/swipe/decisions') && request.method() === 'GET')
+      return route.fulfill({
+        json: { decisions: [{ id: 'Old Issue', decision: 'pass' }] },
+      });
+    if (request.method() === 'POST') writes.push(request.postDataJSON());
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/swipe');
+  await expect(page.getByRole('heading', { name: 'New Issue' })).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('swipe-catalog.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect(page.getByText('New Issue requested.')).toBeVisible();
+  await page.getByRole('button', { name: 'Load More Recommendations' }).click();
+  await expect(page.getByRole('heading', { name: 'Next Issue' })).toBeVisible();
+  expect(writes).toEqual([
+    { mediaType: 'magazine', mediaId: 'New Issue', serverId: 2 },
+    {
+      mediaType: 'magazine',
+      id: 'New Issue',
+      decision: 'want',
+      card: {
+        mediaType: 'magazine',
+        id: 'New Issue',
+        title: 'New Issue',
+        serviceId: 2,
+        tags: [],
+      },
+    },
+  ]);
+});
