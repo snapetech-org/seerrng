@@ -122,3 +122,11 @@ Administrators can open `/admin/prowlarr` from `/me` to configure or test a conn
 Compared the rendered connection form with Network Settings at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected field widths, wrapping and action placement. The Lumen production build and four browser cases passed with synthetic settings and indexer responses.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-prowlarr-20261118/`.
+
+## Prowlarr indexer routing follow-up — 2026-11-18
+
+`/admin/prowlarr` now edits category mappings, category-specific indexer assignments, and per-indexer limits. Empty assignments and cleared overrides retain their distinct server meanings. Existing Prowlarr settings bookmarks within bundled or standalone Lumen redirect to this page.
+
+Compared the connection area with the preceding Prowlarr baseline and inspected category, assignment and override rows at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. The production build, eight browser, ten proxy, and six server tests passed. Indexer responses were synthetic.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-prowlarr-mappings-20261118/`.

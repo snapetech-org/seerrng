@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import { mediaCategoryLabels } from '../components/MediaCategorySwitches';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -16,6 +17,9 @@ interface Settings {
   apiKeyConfigured: boolean;
   searchLimitPerUserPerMinute?: number;
   showIndexerDetails?: boolean;
+  categoryMappings?: Record<string, number[]>;
+  indexerIdsByCategory?: Record<string, number[]>;
+  searchLimitByIndexer?: Record<number, number>;
 }
 
 interface Coverage {
@@ -24,6 +28,7 @@ interface Coverage {
   totalIndexers?: number;
   enabledSearchableIndexers?: number;
   categories?: Record<string, number>;
+  categoryCatalog?: { id: number; name: string; indexerCount: number }[];
   indexers?: {
     id: number;
     name: string;
@@ -58,6 +63,18 @@ function formSettings(settings: Settings) {
     showIndexerDetails: settings.showIndexerDetails ?? false,
     apiKey: '',
     clearApiKey: false,
+    categoryMappings: Object.fromEntries(
+      Object.entries(settings.categoryMappings ?? {}).map(([key, ids]) => [
+        key,
+        ids.join(', '),
+      ])
+    ),
+    indexerIdsByCategory: settings.indexerIdsByCategory ?? {},
+    searchLimitByIndexer: Object.fromEntries(
+      Object.entries(settings.searchLimitByIndexer ?? {}).map(
+        ([key, value]) => [key, String(value)]
+      )
+    ),
   };
 }
 
@@ -105,10 +122,32 @@ function Diagnostics({ coverage }: { coverage: Coverage }) {
   );
 }
 
+function categoryIds(text: string) {
+  return text.split(',').map((part) => part.trim());
+}
+
+function validCategoryIds(text: string) {
+  const ids = categoryIds(text);
+  return (
+    ids.length <= 32 &&
+    ids.every(
+      (id) => /^\d{1,7}$/.test(id) && Number(id) >= 1 && Number(id) <= 1_000_000
+    )
+  );
+}
+
+function validLimit(value: string) {
+  const limit = Number(value);
+  return Number.isInteger(limit) && limit >= 1 && limit <= 60;
+}
+
 function ConnectionForm({ initial }: { initial: Settings }) {
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(() => formSettings(initial));
   const [result, setResult] = useState<Coverage>();
+  const [openAssignments, setOpenAssignments] = useState<
+    Record<string, boolean>
+  >({});
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
@@ -118,7 +157,39 @@ function ConnectionForm({ initial }: { initial: Settings }) {
   );
   const port = Number(draft.port);
   const limit = Number(draft.searchLimitPerUserPerMinute);
+  const usingSavedConnection =
+    draft.hostname === saved.hostname &&
+    port === saved.port &&
+    draft.baseUrl === saved.baseUrl &&
+    draft.useSsl === saved.useSsl &&
+    !draft.apiKey &&
+    !draft.clearApiKey;
+  const inventory =
+    result ?? (usingSavedConnection ? coverage.data : undefined);
+  const indexers = inventory?.indexers ?? [];
+  const defaultIndexerIds = indexers
+    .filter((item) => item.enabled && item.supportsSearch)
+    .map(({ id }) => id);
+  const names = new Map(indexers.map(({ id, name }) => [id, name]));
+  const limitIds = [
+    ...new Set([
+      ...names.keys(),
+      ...Object.keys(draft.searchLimitByIndexer).map(Number),
+    ]),
+  ].sort((a, b) => a - b);
+  const mappingsValid = Object.values(draft.categoryMappings).every(
+    validCategoryIds
+  );
+  const assignmentsValid = Object.values(draft.indexerIdsByCategory).every(
+    (ids) => ids.length <= 100
+  );
+  const limitsValid =
+    Object.keys(draft.searchLimitByIndexer).length <= 500 &&
+    Object.values(draft.searchLimitByIndexer).every(validLimit);
   const valid =
+    mappingsValid &&
+    assignmentsValid &&
+    limitsValid &&
     Number.isInteger(port) &&
     port >= 1 &&
     port <= 65535 &&
@@ -134,7 +205,12 @@ function ConnectionForm({ initial }: { initial: Settings }) {
 
   function change(patch: Partial<typeof draft>) {
     setDraft((previous) => ({ ...previous, ...patch }));
-    setResult(undefined);
+    if (
+      ['hostname', 'port', 'baseUrl', 'useSsl', 'apiKey', 'clearApiKey'].some(
+        (key) => key in patch
+      )
+    )
+      setResult(undefined);
     setNotice('');
     setFailure('');
   }
@@ -148,9 +224,37 @@ function ConnectionForm({ initial }: { initial: Settings }) {
     setNotice('');
     try {
       const payload = {
-        ...draft,
+        hostname: draft.hostname,
+        baseUrl: draft.baseUrl,
+        useSsl: draft.useSsl,
+        showIndexerDetails: draft.showIndexerDetails,
+        apiKey: draft.apiKey,
+        clearApiKey: draft.clearApiKey,
         port,
         searchLimitPerUserPerMinute: limit,
+        ...(Object.keys(draft.categoryMappings).length
+          ? {
+              categoryMappings: Object.fromEntries(
+                Object.entries(draft.categoryMappings).map(([key, text]) => [
+                  key,
+                  [...new Set(categoryIds(text).map(Number))],
+                ])
+              ),
+            }
+          : {}),
+        ...(Object.keys(draft.indexerIdsByCategory).length
+          ? { indexerIdsByCategory: draft.indexerIdsByCategory }
+          : {}),
+        ...(Object.keys(draft.searchLimitByIndexer).length ||
+        Object.keys(saved.searchLimitByIndexer ?? {}).length
+          ? {
+              searchLimitByIndexer: Object.fromEntries(
+                Object.entries(draft.searchLimitByIndexer).map(
+                  ([id, value]) => [id, Number(value)]
+                )
+              ),
+            }
+          : {}),
       };
       const body = JSON.stringify(payload);
       if (test) {
@@ -252,9 +356,142 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               </label>
             ))}
           </div>
+          <Section title="Category Mappings">
+            <p className="note">
+              Enter comma-separated Prowlarr category IDs for each media type.
+            </p>
+            {!!inventory?.categoryCatalog?.length && (
+              <details className="adv">
+                <summary>Available Prowlarr Categories</summary>
+                <div className="setlist">
+                  {inventory.categoryCatalog.map(
+                    ({ id, name, indexerCount }) => (
+                      <div className="set" key={id}>
+                        <b>
+                          {id} · {name}
+                        </b>
+                        <small>{indexerCount} indexers</small>
+                      </div>
+                    )
+                  )}
+                </div>
+              </details>
+            )}
+            <div className="setlist">
+              {Object.entries(mediaCategoryLabels).map(([key, label]) => (
+                <label className="set cfg-row" key={key}>
+                  <span>{label} Category IDs</span>
+                  <input
+                    className="cfg-input"
+                    disabled={busy}
+                    value={draft.categoryMappings[key] ?? ''}
+                    onChange={(event) =>
+                      change({
+                        categoryMappings: {
+                          ...draft.categoryMappings,
+                          [key]: event.target.value,
+                        },
+                      })
+                    }
+                  />
+                </label>
+              ))}
+            </div>
+          </Section>
+          <Section title="Indexer Assignments">
+            <p className="note">
+              Choose which indexers can search each media type. With no saved
+              assignment, all enabled searchable indexers are used.
+            </p>
+            {Object.entries(mediaCategoryLabels).map(([key, label]) => {
+              const chosen =
+                draft.indexerIdsByCategory[key] ?? defaultIndexerIds;
+              const ids = [...new Set([...names.keys(), ...chosen])];
+              if (!ids.length) return null;
+              return (
+                <details
+                  className="adv"
+                  key={key}
+                  onToggle={(event) => {
+                    const open = event.currentTarget.open;
+                    setOpenAssignments((previous) => ({
+                      ...previous,
+                      [key]: open,
+                    }));
+                  }}
+                >
+                  <summary>
+                    {label} · {chosen.length} assigned
+                  </summary>
+                  {openAssignments[key] && (
+                    <div
+                      className="setlist"
+                      role="group"
+                      aria-label={`${label} Indexers`}
+                    >
+                      {ids.map((id) => (
+                        <label className="set cfg-row" key={id}>
+                          <span>{names.get(id) ?? `Indexer ${id}`}</span>
+                          <input
+                            type="checkbox"
+                            checked={chosen.includes(id)}
+                            disabled={busy}
+                            onChange={(event) =>
+                              change({
+                                indexerIdsByCategory: {
+                                  ...draft.indexerIdsByCategory,
+                                  [key]: event.target.checked
+                                    ? [...chosen, id]
+                                    : chosen.filter((item) => item !== id),
+                                },
+                              })
+                            }
+                          />
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </details>
+              );
+            })}
+            {indexers.length === 0 && (
+              <p className="note">
+                Test or save a connection to load indexer names.
+              </p>
+            )}
+          </Section>
+          <Section title="Per-Indexer Search Limits">
+            <p className="note">
+              Leave a limit blank to use the default. Overrides accept 1–60
+              searches per user per minute.
+            </p>
+            <div className="setlist">
+              {limitIds.map((id) => (
+                <label className="set cfg-row" key={id}>
+                  <span>{names.get(id) ?? `Indexer ${id}`} Search Limit</span>
+                  <input
+                    className="cfg-input"
+                    type="number"
+                    min={1}
+                    max={60}
+                    disabled={busy}
+                    placeholder={draft.searchLimitPerUserPerMinute}
+                    value={draft.searchLimitByIndexer[id] ?? ''}
+                    onChange={(event) => {
+                      const next = { ...draft.searchLimitByIndexer };
+                      if (event.target.value) next[id] = event.target.value;
+                      else delete next[id];
+                      change({ searchLimitByIndexer: next });
+                    }}
+                  />
+                </label>
+              ))}
+            </div>
+          </Section>
           {!valid && (
             <p className="note">
-              Use a port from 1 to 65535 and a search limit from 1 to 60.
+              Check the port, search limits, category IDs and indexer
+              assignments.
             </p>
           )}
           {failure && (

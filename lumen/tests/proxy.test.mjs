@@ -203,6 +203,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/notifications/', '/admin/notifications'],
       ['/settings/notifications/webhook/', '/admin/notifications/webhook'],
       ['/settings/library-migration', '/admin/library-migration'],
+      ['/settings/prowlarr', '/admin/prowlarr'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);

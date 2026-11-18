@@ -1,4 +1,4 @@
-const categories = {
+export const mediaCategoryLabels = {
   movie: 'Movies',
   tv: 'Series',
   music: 'Music',
@@ -26,7 +26,7 @@ export default function MediaCategorySwitches({
 }) {
   return (
     <div className="setlist" role="group" aria-label="Enabled Media Categories">
-      {Object.entries(categories).map(([key, label]) => (
+      {Object.entries(mediaCategoryLabels).map(([key, label]) => (
         <label className="set" key={key}>
           <span>{label}</span>
           <input

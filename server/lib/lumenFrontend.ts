@@ -553,7 +553,7 @@ export const mountLumenFrontend = (
     }
   );
   server.get(
-    /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration))?\/?$/,
+    /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr))?\/?$/,
     (req, res) => {
       const page = req.params[0];
       const destination =

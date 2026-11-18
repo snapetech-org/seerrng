@@ -46,6 +46,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'discovery',
       'metadata',
       'library-migration',
+      'prowlarr',
     ]) {
       const response = await request(app).get(`/lumen/settings/${page}/`);
       assert.equal(response.status, 302);

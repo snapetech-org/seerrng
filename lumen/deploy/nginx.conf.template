@@ -237,7 +237,7 @@ server {
   location ~ ^/settings/notifications(/(?:email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?/?$ {
     return 302 /admin/notifications$1;
   }
-  location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration)/?$ {
+  location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)/?$ {
     return 302 /admin/$1;
   }
   location ~ ^/settings(/(main|users))?/?$ {
