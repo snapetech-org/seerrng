@@ -27,6 +27,7 @@ const emailEvents = [
 
 interface Preferences {
   emailEnabled?: boolean;
+  pgpKey?: string | null;
   notificationTypes: { email?: number };
 }
 
@@ -111,6 +112,155 @@ function EmailForm({ path, mask }: { path: string; mask: number }) {
   );
 }
 
+function OpenPgpForm({
+  path,
+  configured,
+}: {
+  path: string;
+  configured: boolean;
+}) {
+  const [draft, setDraft] = useState('');
+  const [hasKey, setHasKey] = useState(configured);
+  const [busy, setBusy] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+  const key = draft.trim();
+
+  async function save(value: string | null) {
+    if (pending.current) return;
+    setNotice('');
+    if (value !== null) {
+      const lines = value.split(/\r?\n/);
+      if (
+        lines[0] !== '-----BEGIN PGP PUBLIC KEY BLOCK-----' ||
+        lines.at(-1) !== '-----END PGP PUBLIC KEY BLOCK-----' ||
+        !lines.slice(1, -1).some((line) => line.trim()) ||
+        value.includes('-----BEGIN PGP PRIVATE KEY BLOCK-----')
+      ) {
+        setError('Paste an armored OpenPGP public key.');
+        return;
+      }
+    }
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      const result = await api<Preferences>(path, {
+        method: 'POST',
+        body: JSON.stringify({ pgpKey: value }),
+      });
+      if (generation !== sessionGeneration()) return;
+      if (
+        value === null
+          ? result.pgpKey !== null
+          : result.pgpKey !== value && result.pgpKey !== '[REDACTED]'
+      ) {
+        setError(
+          'Could not confirm the saved key. Reload settings and try again.'
+        );
+        return;
+      }
+      forget(path);
+      setHasKey(value !== null);
+      setConfirmRemove(false);
+      setDraft('');
+      setNotice(value === null ? 'Public key removed.' : 'Public key saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setError('Could not save the public key. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (key && !confirmRemove) void save(key);
+      }}
+    >
+      <p className="note">
+        {hasKey
+          ? 'A public key is configured for notification email.'
+          : 'Add a public key to encrypt notification email.'}
+      </p>
+      <label>
+        <span className="note">
+          {hasKey ? 'Replacement OpenPGP Public Key' : 'OpenPGP Public Key'}
+        </span>
+        <textarea
+          className="cfg-json"
+          rows={5}
+          maxLength={65536}
+          autoComplete="off"
+          spellCheck={false}
+          disabled={busy || confirmRemove}
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+        />
+      </label>
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      {confirmRemove && (
+        <p className="note">
+          Remove the key and turn off OpenPGP encryption for your notifications?
+        </p>
+      )}
+      <div className="toolbar">
+        {confirmRemove ? (
+          <>
+            <button
+              className="btn btn-tonal"
+              type="button"
+              disabled={busy}
+              onClick={() => void save(null)}
+            >
+              Confirm Remove Key
+            </button>
+            <button
+              className="btn btn-quiet"
+              type="button"
+              disabled={busy}
+              onClick={() => setConfirmRemove(false)}
+            >
+              Keep Key
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="btn btn-tonal" disabled={busy || !key}>
+              Save Public Key
+            </button>
+            {hasKey && (
+              <button
+                className="btn btn-quiet"
+                type="button"
+                disabled={busy}
+                onClick={() => setConfirmRemove(true)}
+              >
+                Remove Public Key
+              </button>
+            )}
+          </>
+        )}
+      </div>
+    </form>
+  );
+}
+
 function UserNotifications({ id }: { id: number }) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -131,7 +281,16 @@ function UserNotifications({ id }: { id: number }) {
       )}
       {data &&
         (data.emailEnabled ? (
-          <EmailForm key={mask} path={path} mask={mask} />
+          <>
+            <EmailForm key={mask} path={path} mask={mask} />
+            <Section title="OpenPGP">
+              <OpenPgpForm
+                path={path}
+                configured={!!data.pgpKey}
+                key={String(!!data.pgpKey)}
+              />
+            </Section>
+          </>
         ) : (
           <p className="note">
             Email notifications are disabled on this server.

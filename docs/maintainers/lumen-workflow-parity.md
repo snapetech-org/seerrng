@@ -667,3 +667,13 @@ Standalone Chrome at 1440 × 1000 verified opting out of Media available,
 the email-only write, and persisted readback after navigation. OpenPGP,
 other channels, live delivery, mobile, bundled and native visual checks
 remain open.
+
+### Personal OpenPGP settings increment
+
+Notification Settings lets users add, replace, or remove the armored public
+key for notification email. The independent form saves only the public key
+and asks for confirmation before removal.
+
+Standalone Chrome verified a synthetic armored public-key save and confirmed
+removal through a fixture that accepted only key changes. Live encryption
+and delivery, native comparison, mobile and bundled checks remain open.
