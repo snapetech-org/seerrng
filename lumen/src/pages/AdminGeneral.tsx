@@ -8,6 +8,9 @@ import DefaultRequestQuotas, {
   type DefaultQuotas,
 } from '../components/DefaultRequestQuotas';
 import DefaultUserPermissions from '../components/DefaultUserPermissions';
+import DownloadPathMappings, {
+  type DownloadPathMapping,
+} from '../components/DownloadPathMappings';
 import { ServiceNote } from '../components/extra';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import SpotifyCredentials from '../components/SpotifyCredentials';
@@ -312,6 +315,7 @@ export default function AdminGeneral() {
       defaultQuotas?: DefaultQuotas;
       defaultPermissions?: number;
       apiKey?: string;
+      downloadPathMappings?: DownloadPathMapping[];
       spotifyClientId?: string;
       spotifyClientSecret?: string;
     }
@@ -370,6 +374,11 @@ export default function AdminGeneral() {
         <ApplicationApiKey initial={settings.data.apiKey} />
       )}
       {settings.data && <SpotifyCredentials initial={settings.data} />}
+      {settings.data && (
+        <DownloadPathMappings
+          initial={settings.data.downloadPathMappings ?? []}
+        />
+      )}
       <InstanceRequestSettings
         anchorReady={Boolean(settings.data || settings.error)}
       />

@@ -6333,3 +6333,59 @@ test('General Settings shortcuts scroll to their controls after settings load', 
     await page.screenshot({ path: info.outputPath(`settings-${anchor}.png`) });
   }
 });
+
+test('Library Path Mappings retains rejected edits and uses the server-normalized mappings', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  const writes: unknown[] = [];
+  const mapping = {
+    serviceType: 'radarr',
+    serviceId: 1,
+    remoteRoot: '/movies',
+    localRoot: '/mnt/media/movies',
+  };
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'GET')
+      return route.fulfill({
+        json: { applicationTitle: 'SeerrNG', downloadPathMappings: [] },
+      });
+    const body = route.request().postDataJSON();
+    writes.push(body);
+    if (writes.length === 1)
+      return route.fulfill({
+        status: 400,
+        json: { message: 'The selected library path is invalid.' },
+      });
+    return route.fulfill({ json: { downloadPathMappings: [mapping] } });
+  });
+
+  await page.goto('/admin/general');
+  const editor = page.getByLabel('Library Path Mappings', { exact: true });
+  const save = page.getByRole('button', { name: 'Save Library Path Mappings' });
+  await editor.fill('{');
+  await save.click();
+  await expect(
+    page.getByText('Enter a JSON array of path mappings.')
+  ).toBeVisible();
+  expect(writes).toHaveLength(0);
+
+  const draft = [{ ...mapping, remoteRoot: '/movies/' }];
+  await editor.fill(JSON.stringify(draft));
+  await save.click();
+  await expect(
+    page.getByText('The selected library path is invalid.')
+  ).toBeVisible();
+  await expect(editor).toHaveValue(JSON.stringify(draft));
+  await save.click();
+  await expect(page.getByText('Library path mappings saved.')).toBeVisible();
+  await expect(editor).toHaveValue(JSON.stringify([mapping], null, 2));
+  await expect(save).toBeDisabled();
+  expect(writes).toEqual([
+    { downloadPathMappings: draft },
+    { downloadPathMappings: draft },
+  ]);
+  await page.screenshot({
+    path: info.outputPath('download-path-mappings.png'),
+  });
+});
