@@ -999,3 +999,13 @@ The applied bounds use server discovery queries and persist in the URL.
 Standalone series checks covered reversed bounds, exact query parameters,
 reload, and clearing the bounds while preserving genre exclusion. Four
 viewport presets passed. Bundled and native visual comparison remains open.
+
+### Streaming provider discovery filters
+
+Movie and series grids support including or excluding selected streaming
+providers by region. The filter uses SeerrNG discovery queries and retains
+the selection and region in the URL. It defaults to the instance streaming
+region, with US as the fallback. The standalone Series fixture verified
+multiple provider IDs, region normalization, exclusion, reload and reset
+across four viewport presets. Live provider results and bundled and native
+visual comparisons remain open.

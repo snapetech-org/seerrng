@@ -1726,3 +1726,42 @@ test('series discovery applies and clears decimal rating bounds', async ({
   await page.getByRole('button', { name: 'Clear Rating' }).click();
   await expect(page).toHaveURL(/\/series\?genre=18&excludeGenre=true$/);
 });
+
+test('series streaming exclusion sends the selected providers and region', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/watchproviders/tv?watchRegion=CA', (route) =>
+    route.fulfill({
+      json: [
+        { id: 8, name: 'Fixture Stream' },
+        { id: 9, name: 'Second Stream' },
+      ],
+    })
+  );
+  await page.goto('/series?genre=18');
+  await page
+    .getByRole('button', { name: 'Streaming Services', exact: true })
+    .click();
+  await page.getByLabel('Streaming Region').fill('ca');
+  await page
+    .getByLabel('Streaming Services', { exact: true })
+    .selectOption(['8', '9']);
+  await page.getByLabel('Provider Match').selectOption('exclude');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('watchProviders') === '8|9' &&
+      url.searchParams.get('watchRegion') === 'CA' &&
+      url.searchParams.get('watchProviderMode') === 'exclude'
+    );
+  });
+  await page.getByRole('button', { name: 'Apply Streaming Filter' }).click();
+  await query;
+  await page.reload();
+  await page.getByRole('button', { name: 'Streaming Services (2)' }).click();
+  await expect(page.getByLabel('Provider Match')).toHaveValue('exclude');
+  await page.getByRole('button', { name: 'Clear Streaming Filter' }).click();
+  await expect(page).toHaveURL(/\/series\?genre=18$/);
+});

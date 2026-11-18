@@ -6,7 +6,8 @@ import { CardTitleToggle } from '../components/CardTitleToggle';
 import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
-import { CAN_HOVER, useApi, usePaged } from '../hooks';
+import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
+import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
 import { usePrefs } from '../settings';
@@ -113,6 +114,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const maxRating = ratingBound(p.get('voteAverageLte'));
   const validRatingRange =
     !minRating || !maxRating || Number(minRating) <= Number(maxRating);
+  const publicSettings = usePublicSettings();
+  const [showProviders, setShowProviders] = useState(false);
+  const rawRegion = p.get('watchRegion') ?? '';
+  const defaultRegion = publicSettings?.streamingRegion?.toUpperCase() ?? '';
+  const region = /^[A-Z]{2}$/.test(rawRegion)
+    ? rawRegion
+    : /^[A-Z]{2}$/.test(defaultRegion)
+      ? defaultRegion
+      : 'US';
+  const providerParam = p.get('watchProviders') ?? '';
+  const providers = /^\d{1,10}(?:[|,]\d{1,10}){0,49}$/.test(providerParam)
+    ? [...new Set(providerParam.split(/[|,]/))]
+    : [];
+  const excludeProviders = p.get('watchProviderMode') === 'exclude';
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -124,6 +139,13 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(providers.length
+      ? {
+          watchProviders: providers.join('|'),
+          watchRegion: region,
+          watchProviderMode: excludeProviders ? 'exclude' : 'include',
+        }
+      : {}),
     ...(validRatingRange && minRating ? { voteAverageGte: minRating } : {}),
     ...(validRatingRange && maxRating ? { voteAverageLte: maxRating } : {}),
     ...(keyword ? { keywords: keyword } : {}),
@@ -265,6 +287,37 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           }}
         />
       </div>
+      <div className="toolbar">
+        <button
+          type="button"
+          className="chip"
+          aria-expanded={showProviders}
+          onClick={() => setShowProviders(!showProviders)}
+        >
+          Streaming Services{providers.length ? ` (${providers.length})` : ''}
+        </button>
+      </div>
+      {showProviders && (
+        <StreamingDiscoveryFilter
+          key={`${region}:${providers.join('|')}:${excludeProviders}`}
+          kind={kind}
+          region={region}
+          providers={providers}
+          exclude={excludeProviders}
+          apply={(nextRegion, ids, exclude) => {
+            const next = new URLSearchParams(p);
+            next.delete('watchProviders');
+            next.delete('watchRegion');
+            next.delete('watchProviderMode');
+            if (ids.length) {
+              next.set('watchProviders', ids.join('|'));
+              next.set('watchRegion', nextRegion);
+              next.set('watchProviderMode', exclude ? 'exclude' : 'include');
+            }
+            setP(next, { replace: true });
+          }}
+        />
+      )}
       <RatingFilter
         key={`${minRating}:${maxRating}`}
         min={minRating}
