@@ -30,6 +30,7 @@ import {
 } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { scrollBehavior } from '../motion';
+import { seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
@@ -259,17 +260,22 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     .join(' · ');
   const go = async () => {
     try {
-      await (tv ? requestSeries(it.id) : requestMovie(it.id));
+      let message = `Requested ${titleOf(it)}`;
+      if (tv)
+        message = seriesRequestSummary(titleOf(it), await requestSeries(it.id));
+      else await requestMovie(it.id);
       markRequested();
-      toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+      toast(message);
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     }
   };
-  const quick = useQuickRequest(it, go, (is4k) => {
+  const quick = useQuickRequest(it, go, (is4k, series) => {
     markRequested(is4k ? '4K Requested' : 'Requested');
     toast(
-      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+      tv
+        ? seriesRequestSummary(titleOf(it), series, is4k)
+        : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
     );
   });
   const [request, busy] = useBusy(quick.request);
@@ -564,17 +570,22 @@ export function FeatCard({
     .join(' · ');
   const go = async () => {
     try {
-      await (tv ? requestSeries(it.id) : requestMovie(it.id));
+      let message = `Requested ${titleOf(it)}`;
+      if (tv)
+        message = seriesRequestSummary(titleOf(it), await requestSeries(it.id));
+      else await requestMovie(it.id);
       setDone('Requested');
-      toast(`Requested ${titleOf(it)}${tv ? ' · entire series' : ''}`);
+      toast(message);
     } catch (e) {
       toast(friendlyError(e, 'Request failed'));
     }
   };
-  const quick = useQuickRequest(it, go, (is4k) => {
+  const quick = useQuickRequest(it, go, (is4k, series) => {
     setDone(is4k ? '4K Requested' : 'Requested');
     toast(
-      `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}${tv ? ' · entire series' : ''}`
+      tv
+        ? seriesRequestSummary(titleOf(it), series, is4k)
+        : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
     );
   });
   const [request, busy] = useBusy(quick.request);

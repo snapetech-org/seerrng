@@ -960,3 +960,10 @@ partial requests, even when some seasons are already available. The
 confirmation reports the seasons returned by SeerrNG. Standalone browser
 fixtures verified the exact request and confirmation on desktop and three
 touch presets. Live playback and bundled and native visual checks remain open.
+
+Quick series requests from posters, featured cards, the options sheet and
+Coming Soon share the details confirmation formatter. It lists the server's
+accepted seasons and gives a neutral submission message when none are
+returned. Standalone browser fixtures verified poster and detail requests
+on desktop and three touch presets. Featured, Coming Soon, options-sheet
+and bundled visual checks remain open.

@@ -21,6 +21,7 @@ import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
+import { seriesRequestSummary } from '../seriesRequestSummary';
 
 const MONTHS = [
   'January',
@@ -82,10 +83,13 @@ export default function Soon() {
       });
     setAsked((a) => new Set(a).add(key));
     try {
-      await (it.mediaType === 'tv'
-        ? requestSeries(it.id)
-        : requestMovie(it.id));
-      toast(`Requested ${it.title || it.name}. It downloads when it’s out.`);
+      const title = it.title || it.name || 'this title';
+      if (it.mediaType === 'tv') {
+        toast(seriesRequestSummary(title, await requestSeries(it.id)));
+      } else {
+        await requestMovie(it.id);
+        toast(`Requested ${title}. It downloads when it’s out.`);
+      }
     } catch (e) {
       unask();
       toast(friendlyError(e, 'Request failed'));
@@ -116,10 +120,16 @@ export default function Soon() {
         <RequestSheet
           it={choosing}
           onClose={() => setChoosing(null)}
-          onDone={() => {
+          onDone={(is4k, series) => {
             setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
             toast(
-              `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
+              choosing.mediaType === 'tv'
+                ? seriesRequestSummary(
+                    choosing.name || 'this series',
+                    series,
+                    is4k
+                  )
+                : `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
             );
             setChoosing(null);
           }}

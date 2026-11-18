@@ -74,6 +74,8 @@ export function useBackCloses(onClose: () => void) {
   }, []);
 }
 
+type SeriesRequest = Awaited<ReturnType<typeof requestSeries>>;
+
 export function RequestSheet({
   it,
   onClose,
@@ -81,7 +83,7 @@ export function RequestSheet({
 }: {
   it: TitleResult;
   onClose: () => void;
-  onDone: (is4k: boolean) => void; // request sent
+  onDone: (is4k: boolean, series?: SeriesRequest) => void; // request sent
 }) {
   const tv = it.mediaType === 'tv';
   const asks = useAsksRequestOptions();
@@ -104,10 +106,9 @@ export function RequestSheet({
     const base = asks ? opts : {};
     const body = offers4k && fourK ? { ...base, is4k: true } : base;
     try {
-      await (tv
-        ? requestSeries(it.id, 'all', body)
-        : requestMovie(it.id, body));
-      onDone(!!body.is4k);
+      const series = tv ? await requestSeries(it.id, 'all', body) : undefined;
+      if (!tv) await requestMovie(it.id, body);
+      onDone(!!body.is4k, series);
     } catch (e) {
       setErr(friendlyError(e, 'Request failed'));
       setBusy(false);
@@ -205,7 +206,7 @@ export function RequestSheet({
 export function useQuickRequest(
   it: TitleResult,
   oneClick: () => void | Promise<void>,
-  done: (is4k: boolean) => void
+  done: (is4k: boolean, series?: SeriesRequest) => void
 ) {
   const choosesOptions = useAsksRequestOptions();
   const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
@@ -221,9 +222,9 @@ export function useQuickRequest(
       <RequestSheet
         it={it}
         onClose={close}
-        onDone={(is4k) => {
+        onDone={(is4k, series) => {
           setOpen(false);
-          done(is4k);
+          done(is4k, series);
         }}
       />
     ) : null,

@@ -42,6 +42,7 @@ import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
+import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
@@ -56,18 +57,6 @@ const stateOf = (status?: number): SeasonState =>
 
 // request status: 1 waiting for approval, 2 approved (3 declined, 4 failed, 5 completed)
 const live = (status?: number) => status === 1 || status === 2;
-
-const seasonList = (n: number[]) => {
-  const a = [...n].sort((x, y) => x - y);
-  const runs: string[] = [];
-  for (let i = 0; i < a.length;) {
-    let j = i;
-    while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++;
-    runs.push(j > i ? `${a[i]}–${a[j]}` : `${a[i]}`);
-    i = j + 1;
-  }
-  return (a.length === 1 ? 'Season ' : 'Seasons ') + runs.join(', ');
-};
 
 export default function TvDetail() {
   const serverName = useMediaServerName();
@@ -218,23 +207,7 @@ export default function TvDetail() {
         whole ? 'all' : selectedSeasons,
         is4k ? { ...opts, is4k: true } : opts
       );
-      const accepted = [
-        ...new Set(
-          result.seasons
-            ?.map(({ seasonNumber }) => seasonNumber)
-            .filter((number) => Number.isSafeInteger(number) && number >= 0)
-        ),
-      ];
-      const scope = accepted.length
-        ? seasonList(accepted)
-        : !whole
-          ? seasonList(selectedSeasons)
-          : '';
-      toast(
-        scope
-          ? `Requested ${t.name} · ${scope}`
-          : `Request submitted for ${t.name}`
-      );
+      toast(seriesRequestSummary(t.name || 'this series', result, is4k));
       refresh();
     } catch (e) {
       if (e instanceof ApiError && e.code === 'TV_SEASON_WATCH_GATE') {

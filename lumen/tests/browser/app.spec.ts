@@ -1448,3 +1448,45 @@ test('whole-series confirmation reports the seasons SeerrNG accepted', async ({
   ).toBeVisible();
   expect(body).toMatchObject({ mediaType: 'tv', mediaId: 202, seasons: 'all' });
 });
+
+test('quick series requests report accepted seasons', async ({ page }) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 3, displayName: 'Viewer', permissions: 32 } })
+  );
+  await page.route('**/api/v1/discover/tv?*', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 202,
+          title: undefined,
+          name: 'Fixture Series',
+          mediaType: 'tv',
+        },
+      ]),
+    })
+  );
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    expect(route.request().postDataJSON()).toMatchObject({
+      mediaId: 202,
+      seasons: 'all',
+    });
+    return route.fulfill({
+      status: 201,
+      json: { id: 77, seasons: [{ seasonNumber: 1 }] },
+    });
+  });
+  await page.goto('/series');
+  const card = page.locator('.poster', { hasText: 'Fixture Series' }).first();
+  await card.hover();
+  const overlay = card.getByRole('button', { name: 'Request', exact: true });
+  const touch = card.getByRole('button', {
+    name: 'Request Fixture Series (entire series)',
+  });
+  await ((await overlay.isVisible()) ? overlay : touch).click();
+  await expect(
+    page.getByText('Requested Fixture Series · Season 1')
+  ).toBeVisible();
+});
