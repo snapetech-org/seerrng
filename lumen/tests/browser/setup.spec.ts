@@ -1,5 +1,125 @@
 import { expect, test } from '@playwright/test';
 
+test('first-run Plex setup exchanges the PIN and configures a discovered server', async ({
+  context,
+  page,
+}) => {
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  const connection = { ip: 'plex.example.test', port: 32400, useSsl: true };
+  const library = { id: '1', name: 'Films', type: 'movie', enabled: false };
+  let signedIn = false;
+  let connected = false;
+  let initialized = false;
+  await context.route('https://app.plex.tv/auth', (route) =>
+    route.fulfill({ body: 'Plex authorization fixture' })
+  );
+  await page.route('https://plex.tv/api/v2/pins**', (route) => {
+    const request = route.request();
+    if (request.method() === 'OPTIONS') {
+      return route.fulfill({
+        headers: {
+          'access-control-allow-origin': '*',
+          'access-control-allow-headers': '*',
+          'access-control-allow-methods': 'GET, POST',
+        },
+      });
+    }
+    expect(request.headers()['x-plex-client-identifier']).toBeTruthy();
+    return route.fulfill({
+      headers: { 'access-control-allow-origin': '*' },
+      json:
+        request.method() === 'POST'
+          ? { id: 123, code: 'fixture-pin' }
+          : { authToken: 'fixture-plex-token' },
+    });
+  });
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    switch (path) {
+      case '/settings/public':
+        return route.fulfill({
+          json: { initialized, mediaServerType: signedIn ? 1 : 4 },
+        });
+      case '/auth/me':
+        return signedIn
+          ? route.fulfill({
+              json: { id: 1, permissions: 2, displayName: 'Owner' },
+            })
+          : route.fulfill({ status: 401, json: {} });
+      case '/auth/plex':
+        expect(request.postDataJSON()).toEqual({
+          authToken: 'fixture-plex-token',
+        });
+        signedIn = true;
+        return route.fulfill({ json: { id: 1 } });
+      case '/settings/plex/devices/servers':
+        return route.fulfill({
+          json: [
+            {
+              name: 'Fixture Plex',
+              clientIdentifier: 'fixture-server',
+              connection: [
+                {
+                  address: connection.ip,
+                  port: connection.port,
+                  protocol: 'https',
+                  local: true,
+                  status: 200,
+                },
+              ],
+            },
+          ],
+        });
+      case '/settings/plex':
+        if (request.method() === 'POST') {
+          expect(request.postDataJSON()).toMatchObject(connection);
+          connected = true;
+        }
+        return route.fulfill({
+          json: connected
+            ? { ...connection, libraries: [library] }
+            : { libraries: [] },
+        });
+      case '/settings/plex/library':
+        expect(request.postDataJSON()).toEqual({ enable: '1' });
+        library.enabled = true;
+        return route.fulfill({ json: [library] });
+      case '/settings/initialize':
+        expect(connected && library.enabled).toBe(true);
+        initialized = true;
+        return route.fulfill({ json: { initialized } });
+      default:
+        return route.fulfill({ json: { results: [], totalPages: 1 } });
+    }
+  });
+  await page.goto(`${mount}/setup`);
+  await page.getByRole('combobox', { name: 'Media server' }).selectOption('1');
+  const popup = page.waitForEvent('popup');
+  await page.getByRole('button', { name: 'Sign in with Plex' }).click();
+  await expect(await popup).toHaveURL(/app\.plex\.tv\/auth.*code=fixture-pin/);
+  await page.getByRole('button', { name: 'Discover Plex Servers' }).click();
+  await page
+    .getByLabel('Discovered Plex Connection')
+    .selectOption('fixture-server|0');
+  await page.getByRole('button', { name: 'Save Plex Connection' }).click();
+  const finish = page.getByRole('button', { name: 'Finish Setup' });
+  const films = page.getByRole('checkbox', { name: 'Enable Films' });
+  await expect(films).toBeVisible();
+  await finish.click();
+  await expect(
+    page.getByText('Enable at least one media library before finishing setup.')
+  ).toBeVisible();
+  await films.click();
+  await expect(films).toBeChecked();
+  await finish.click();
+  await expect(page).toHaveURL(`${mount}/`);
+  expect(initialized).toBe(true);
+});
+
 for (const [provider, serverType] of [
   ['Jellyfin', 2],
   ['Emby', 3],

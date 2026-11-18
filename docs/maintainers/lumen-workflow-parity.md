@@ -2772,5 +2772,10 @@ visual acceptance remain unverified.
 First-run browser fixtures now cover both Jellyfin and Emby server
 identities, including HTTPS and a configured URL base. Eight checks
 passed in each deployment. The fixtures verify the provider-specific
-auth payload and completion with the shared library editor. Plex and
-live provider sign-in remain unverified.
+auth payload and completion with the shared library editor.
+
+Plex first-run setup passed with fixtures at desktop, iPhone, Android,
+and tablet viewports in each deployment. The checks covered the PIN popup
+and credential exchange, server discovery, saving the connection, and
+enabling a library before initialization. Live provider sign-in remains
+unverified.
