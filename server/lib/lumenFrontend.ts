@@ -109,6 +109,73 @@ function detailDeepLink(req: Request): string | undefined {
   return `/lumen/${match[1]}/${match[2]}`;
 }
 
+const workflowDestinations = new Map([
+  ['/requests', '/requests'],
+  ['/requests/status', '/requests'],
+  ['/following', '/following'],
+  ['/library', '/library'],
+  ['/calendar', '/calendar'],
+  ['/coming-soon', '/soon'],
+  ['/profile', '/me'],
+  ['/profile/settings', '/me/account'],
+  ['/profile/settings/main', '/me/account'],
+  ['/profile/settings/password', '/me/account'],
+  ['/profile/settings/client-tokens', '/me/account/client-tokens'],
+  ['/profile/settings/linked-accounts', '/me/account/linked-accounts'],
+  ['/profile/settings/tv-request-access', '/me/account/tv-requests'],
+  ['/profile/settings/episode-queue', '/me/account/tv-requests'],
+  ['/profile/watchlist', '/watchlist'],
+  ['/downloads', '/downloads'],
+  ['/indexer-search', '/indexer-search'],
+  ['/blocklist', '/blocklist'],
+  ['/issues', '/issues'],
+  ['/search', '/search'],
+  ['/discover/adult', '/adult'],
+  ['/discover/audiobooks', '/audiobooks'],
+  ['/discover/books', '/books'],
+  ['/discover/comics', '/comics'],
+  ['/discover/games', '/games'],
+  ['/discover/magazines', '/magazines'],
+  ['/discover/music', '/music'],
+  ['/discover/sports', '/sports'],
+]);
+
+const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
+  '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
+  '/indexer-search': ['query', 'category'],
+  '/issues': ['issue'],
+};
+
+function workflowDeepLink(req: Request): string | undefined {
+  const nativePath = req.path.replace(/\/$/, '');
+  const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
+  if (issue && Number.isSafeInteger(Number(issue))) {
+    return `/lumen/issues/${issue}`;
+  }
+
+  const destination = workflowDestinations.get(nativePath);
+  if (!destination) return;
+  const query = new URLSearchParams();
+
+  for (const key of workflowQueryKeys[destination] ?? []) {
+    const value = req.query[key];
+    if (typeof value === 'string' && value.length <= 256) query.set(key, value);
+  }
+
+  if (destination === '/search') {
+    const { query: term, type, format } = req.query;
+    if (typeof term === 'string' && term.length <= 256) query.set('q', term);
+    if (type === 'movie' || type === 'tv' || type === 'comic') {
+      query.set('f', type);
+    } else if (type === 'book') {
+      query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
+    }
+  }
+
+  const suffix = query.toString();
+  return `/lumen${destination}${suffix ? `?${suffix}` : ''}`;
+}
+
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
   res,
@@ -134,6 +201,7 @@ export const redirectLockedNativeFrontend: RequestHandler = (
           : (requestDeepLink(req) ??
               discoveryDeepLink(req) ??
               detailDeepLink(req) ??
+              workflowDeepLink(req) ??
               '/lumen/')
       );
     return;

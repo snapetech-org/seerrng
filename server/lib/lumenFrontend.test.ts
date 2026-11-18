@@ -174,6 +174,9 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       '/seerrng',
       '/movie/123/cast/extra',
       '/person/123/crew',
+      '/issues/9007199254740992',
+      '/discover/watchlist',
+      '/games',
       '/tv/1000000001/cast',
       '/?interface=classic',
     ]) {
@@ -190,6 +193,32 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .set('X-Test-Role', 'user');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     for (const [route, destination] of [
+      ['/requests', '/lumen/requests'],
+      ['/following/', '/lumen/following'],
+      ['/library', '/lumen/library'],
+      ['/calendar', '/lumen/calendar'],
+      ['/coming-soon', '/lumen/soon'],
+      ['/profile/settings/password', '/lumen/me/account'],
+      ['/profile/settings/episode-queue', '/lumen/me/account/tv-requests'],
+      ['/profile/settings/client-tokens', '/lumen/me/account/client-tokens'],
+      [
+        '/profile/watchlist?search=A%26B&mediaType=movie&page=2&userId=17',
+        '/lumen/watchlist?search=A%26B&mediaType=movie&page=2',
+      ],
+      ['/issues/71', '/lumen/issues/71'],
+      ['/issues?issue=71', '/lumen/issues?issue=71'],
+      ['/downloads', '/lumen/downloads'],
+      [
+        '/indexer-search?query=A%26B&category=movie',
+        '/lumen/indexer-search?query=A%26B&category=movie',
+      ],
+      [
+        '/search?query=A%2FB&type=book&format=audiobook',
+        '/lumen/search?q=A%2FB&f=audio',
+      ],
+      ['/search?query=a&query=b&type=movie', '/lumen/search?f=movie'],
+      ['/discover/games', '/lumen/games'],
+      ['/discover/audiobooks', '/lumen/audiobooks'],
       ['/movie/123/cast', '/lumen/movie/123#cast'],
       ['/movie/123/crew/', '/lumen/movie/123#crew'],
       ['/tv/456/cast/', '/lumen/tv/456#cast'],

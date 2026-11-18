@@ -1163,3 +1163,16 @@ Server redirect tests and standalone desktop, iPhone, Android, and tablet
 fixtures passed. Browser coverage includes navigation from movie details,
 direct series URLs, correct media links, and retry after a failed second
 page. Live provider results and matched visual comparisons remain open.
+
+### Native links to existing Lumen workflows
+
+The bundled frontend lock preserves native links to requests, library,
+following, calendar, Coming Soon, profile and supported account settings,
+personal watchlist, issues, acquisition tools, search, and supported media
+browsing categories. It translates the native search term and supported
+search scopes and retains supported personal watchlist and indexer inputs.
+
+Server integration tests cover representative routes, issue ID bounds,
+repeated search parameters, and unsupported routes. The native Games
+library and Discover Watchlist still need distinct Lumen workflows. Live
+browser validation of the bundled redirects remains open.
