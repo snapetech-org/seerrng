@@ -1544,6 +1544,12 @@ The production build and standalone Provider Discovery browser checks passed
 across the four configured viewport presets. Live provider accounts and
 matched native visual comparisons remain open.
 
+AniList feed rows open the exact anime franchise even when no TMDB match
+exists. Four standalone cases and the 44-case bundled Following suite
+passed. The targeted cases opened an unmatched title from the feed and
+verified the AniList route and franchise heading using API fixtures.
+Live AniList data and matched visual verification remain open.
+
 ### TV request access review
 
 TV Request Settings lets user managers approve or decline pending
