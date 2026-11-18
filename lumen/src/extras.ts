@@ -489,6 +489,7 @@ export const gameState = (g: Game) =>
 export interface SoftwareRequest {
   request: {
     id: number;
+    requestedBy?: { id: number; displayName: string } | null;
     category: GameCategory;
     status: string;
     title: string;

@@ -525,3 +525,14 @@ Standalone Chrome at 1440 × 1000 verified that an owner retry waited for
 explicit confirmation after a synthetic 409 and refreshed to Searching after
 the confirmed retry. Native visual comparison, mobile, bundled, delegated
 roles, other actions, and live provider behavior remain unverified.
+
+### Household software requests increment
+
+Everyone has a paginated Software filter for viewers with household request
+visibility. Rows show requester, platform, and lifecycle status and open
+the software-specific history and management controls.
+
+Standalone Chrome at 1440 × 1000 verified requester attribution, loading
+page two, reaching moderation as a delegated request manager, and preserving
+the Software filter after closing history. Native and mobile visual comparison,
+bundled browser execution, view-only roles and live providers remain open.

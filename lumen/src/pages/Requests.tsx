@@ -81,6 +81,7 @@ const EVERYONE_FILTERS = [
   ['processing', 'Downloading', 'processing'],
   ['failed', 'Failed', 'failed'],
   ['available', 'Available', 'available'],
+  ['software', 'Software', 'software'],
 ] as const;
 const PAGE = 20;
 
@@ -834,7 +835,12 @@ function gameRow(g: SoftwareRequest): Row {
     is4k: false,
     createdAt: q.createdAt,
     seasons: [],
-    requestedBy: { id: 0, displayName: '' },
+    requestedBy: q.requestedBy ?? { id: 0, displayName: '' },
+    currentStatus: {
+      stage: st === 'pending' ? 'requested' : st,
+      percent: q.percent,
+      message: q.error ?? undefined,
+    },
     media: {
       mediaType: 'game',
       tmdbId: 0,
@@ -852,9 +858,26 @@ function gameRow(g: SoftwareRequest): Row {
     title: q.title,
     art: q.coverUrl || undefined,
     cover: true,
-    href: `/game/${q.category}/${encodeURIComponent(String(id))}${q.catalogProvider === 'dat' ? '?dat=1' : ''}`,
+    href: id
+      ? `/game/${q.category}/${encodeURIComponent(String(id))}${q.catalogProvider === 'dat' ? '?dat=1' : ''}`
+      : '',
     sub: [GAME_LABEL[q.category], q.platform?.name].filter(Boolean).join(' · '),
   };
+}
+
+async function householdSoftwareRequests(pages: number) {
+  const rows: Row[] = [];
+  let more = false;
+  for (let page = 0; page < pages; page++) {
+    const data = await api<{
+      results: SoftwareRequest[];
+      pageInfo: { pages: number };
+    }>(`/request/software/status?take=${PAGE}&skip=${page * PAGE}`);
+    rows.push(...data.results.map(gameRow));
+    more = data.pageInfo.pages > page + 1;
+    if (!more) break;
+  }
+  return { rows, more };
 }
 
 export default function Requests() {
@@ -869,6 +892,13 @@ export default function Requests() {
   const focusedId =
     requestParam && /^\d+$/.test(requestParam) ? Number(requestParam) : 0;
   const validRequestLink = Number.isSafeInteger(focusedId) && focusedId > 0;
+  const historyParams = (id: number) => {
+    const next = new URLSearchParams(p);
+    next.delete('requestId');
+    next.delete('softwareRequestId');
+    next.set(id < 0 ? 'softwareRequestId' : 'requestId', String(Math.abs(id)));
+    return next;
+  };
   const closeHistory = () => {
     const next = new URLSearchParams(p);
     next.delete(requestKey);
@@ -974,26 +1004,35 @@ export default function Requests() {
     const take = PAGE * pages;
     // All: waiting for approval, then downloads that have started (furthest along first), then
     // the newest of the rest. Downloading: started ones first too. Others: newest first.
-    const started =
-      show === 'all' || show === 'processing'
-        ? startedDownloads()
-            .then((x) => x.sort((a, b) => progress(b) - progress(a)))
-            .catch(() => [])
-        : Promise.resolve([]);
-    const pending =
-      show === 'all'
-        ? list('pending', 50).then((x) => x.results)
-        : Promise.resolve([]);
+    const load = async () => {
+      if (show === 'software') return householdSoftwareRequests(pages);
+      const started =
+        show === 'all' || show === 'processing'
+          ? startedDownloads()
+              .then((x) => x.sort((a, b) => progress(b) - progress(a)))
+              .catch(() => [])
+          : Promise.resolve([]);
+      const pending =
+        show === 'all'
+          ? list('pending', 50).then((x) => x.results)
+          : Promise.resolve([]);
+      const [waitingList, startedList, rest] = await Promise.all([
+        pending,
+        started,
+        list(show, take),
+      ]);
+      const rows = await describeAll(
+        merge(waitingList, startedList, rest.results),
+        (early) => live && setOthers(early)
+      );
+      return { rows, more: rest.more };
+    };
     loads.current++;
-    Promise.all([pending, started, list(show, take)])
-      .then(async ([waitingList, startedList, rest]) => {
-        const rows = await describeAll(
-          merge(waitingList, startedList, rest.results),
-          (early) => live && setOthers(early)
-        );
+    load()
+      .then(({ rows, more }) => {
         if (!live) return;
         setOthers(rows);
-        setHasMore(rest.more);
+        setHasMore(more);
       })
       .catch(() => {
         if (!live) return;
@@ -1103,6 +1142,10 @@ export default function Requests() {
   useEffect(() => {
     // a full load still on its way would land over the poll's newer numbers: skip this one
     if (!poll || !user || loads.current) return;
+    if (everyone && show === 'software') {
+      setTick((n) => n + 1);
+      return;
+    }
     let live = true;
     const current = shown || [];
     const ids = new Set(current.map((x) => x.r.id));
@@ -1207,9 +1250,11 @@ export default function Requests() {
         </div>
         <p className="sub">
           {everyone
-            ? show === 'all'
-              ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
-              : 'Everyone’s requests, newest first.'
+            ? show === 'software'
+              ? 'Software and game requests from everyone, newest first.'
+              : show === 'all'
+                ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+                : 'Everyone’s requests, newest first.'
             : 'Everything you’ve asked for, newest first.'}
         </p>
       </header>
@@ -1354,7 +1399,9 @@ export default function Requests() {
               </div>
               <div style={{ minWidth: 0 }}>
                 <div className="tt">
-                  <Link to={x.href}>{x.title}</Link>
+                  <Link to={x.href || `?${historyParams(x.r.id)}`}>
+                    {x.title}
+                  </Link>
                 </div>
                 <div className="sub">
                   {everyone && x.r.requestedBy?.displayName
@@ -1379,16 +1426,7 @@ export default function Requests() {
                   {x.r.id !== 0 && (
                     <button
                       className="btn btn-sm btn-quiet"
-                      onClick={() => {
-                        const next = new URLSearchParams(p);
-                        next.delete('requestId');
-                        next.delete('softwareRequestId');
-                        next.set(
-                          x.r.id < 0 ? 'softwareRequestId' : 'requestId',
-                          String(Math.abs(x.r.id))
-                        );
-                        setP(next);
-                      }}
+                      onClick={() => setP(historyParams(x.r.id))}
                     >
                       History
                     </button>
@@ -1412,7 +1450,7 @@ export default function Requests() {
                       Retry
                     </button>
                   )}
-                  {everyone && manage ? (
+                  {everyone && manage && x.r.id > 0 ? (
                     <>
                       {x.r.status === 1 && (
                         <>
