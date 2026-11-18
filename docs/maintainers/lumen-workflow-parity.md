@@ -1795,7 +1795,11 @@ downloads the renderer when a release is expanded and renders HTTPS
 links without raw HTML or embedded images. Four browser cases passed
 in each production deployment, covering Markdown headings, links,
 deferred loading, retry, and long-text wrapping. These runs used
-fixtures. Matched visual review with live Markdown notes remains open.
+fixtures. Matched standalone Chromium screenshots using live GitHub
+notes for v3.72.38 showed headings, lists, and working HTTPS links.
+At 390 and 1440 pixels the Markdown content retained the plain-text
+baseline width and fit without horizontal overflow. The browser used a
+fixture administrator and default Lumen theme.
 
 ### Instance General Settings
 
