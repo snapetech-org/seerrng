@@ -149,7 +149,7 @@ const pagedSnap = new Map<
 const pageItemId = (item: unknown) => String((item as { id?: unknown }).id);
 
 export function usePaged<T>(
-  base: string,
+  base: string | null,
   idOf: (item: T) => string = pageItemId
 ) {
   const entry = useLocation().key;
@@ -189,7 +189,7 @@ export function usePaged<T>(
   // page after each request, back to back; the pages between keep their rows.
   useEffect(() => {
     const s = pagedSnap.get(snapKey);
-    if (!s || s.gen === cacheGeneration()) return;
+    if (!base || !s || s.gen === cacheGeneration()) return;
     let live = true;
     const gen = cacheGeneration();
     const sep = base.includes('?') ? '&' : '?';
@@ -249,6 +249,7 @@ export function usePaged<T>(
     async (retrying: boolean) => {
       // after a failure only Retry asks again: retrying by itself would hammer the rate limit
       if (
+        !base ||
         loadedBase !== base ||
         loading ||
         page >= total ||

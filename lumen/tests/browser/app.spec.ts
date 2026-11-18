@@ -647,15 +647,17 @@ test('Coming soon says when its lists fail and retries them', async ({
 }) => {
   const fixture = await fixtures(page);
   let fail = true;
-  await page.route(/\/api\/v1\/discover\/(movies|tv)\/upcoming$/, (route) =>
-    fail
-      ? route.fulfill({
-          status: 503,
-          json: { message: 'Provider unavailable' },
-        })
-      : route.fulfill({
-          json: paged([{ ...movie, releaseDate: '2099-03-04' }]),
-        })
+  await page.route(
+    /\/api\/v1\/discover\/(movies|tv)\/upcoming\?page=/,
+    (route) =>
+      fail
+        ? route.fulfill({
+            status: 503,
+            json: { message: 'Provider unavailable' },
+          })
+        : route.fulfill({
+            json: paged([{ ...movie, releaseDate: '2099-03-04' }]),
+          })
   );
   await page.goto('/soon');
   const movies = page
@@ -1788,7 +1790,7 @@ for (const use4k of [false, true]) {
         json: { applicationTitle: 'SeerrNG', series4kEnabled: use4k },
       })
     );
-    await page.route('**/api/v1/discover/tv/upcoming', (route) =>
+    await page.route('**/api/v1/discover/tv/upcoming?page=*', (route) =>
       route.fulfill({
         json: paged([
           {
@@ -1912,7 +1914,7 @@ test('Coming Soon applies shared availability without reopening requests', async
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({ json: { otherUsersAvailability: mode } })
   );
-  await page.route('**/api/v1/discover/movies/upcoming', (route) =>
+  await page.route('**/api/v1/discover/movies/upcoming?page=*', (route) =>
     route.fulfill({
       json: paged([
         {
@@ -2102,11 +2104,11 @@ test('Coming Soon retries a failed series feed without dropping movies', async (
   await fixtures(page);
   let seriesReads = 0;
   let movieReads = 0;
-  await page.route('**/api/v1/discover/movies/upcoming', (route) => {
+  await page.route('**/api/v1/discover/movies/upcoming?page=*', (route) => {
     movieReads++;
     return route.fulfill({ json: paged([movie]) });
   });
-  await page.route('**/api/v1/discover/tv/upcoming', (route) => {
+  await page.route('**/api/v1/discover/tv/upcoming?page=*', (route) => {
     seriesReads++;
     return seriesReads === 1
       ? route.fulfill({
@@ -2942,13 +2944,13 @@ test('Coming soon scopes results and network requests by media', async ({
 }) => {
   await fixtures(page);
   let movieLoads = 0;
-  await page.route('**/api/v1/discover/movies/upcoming', (route) => {
+  await page.route('**/api/v1/discover/movies/upcoming?page=*', (route) => {
     movieLoads++;
     return route.fulfill({
       json: paged([{ ...movie, title: 'Upcoming Film' }]),
     });
   });
-  await page.route('**/api/v1/discover/tv/upcoming', (route) =>
+  await page.route('**/api/v1/discover/tv/upcoming?page=*', (route) =>
     route.fulfill({
       json: paged([
         { id: 202, name: 'Upcoming Series', firstAirDate: '2030-01-01' },

@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import {
-  requestMovie,
-  requestSeries,
-  tmdbImg,
-  type Paged,
-  type TitleResult,
-} from '../api';
+import { requestMovie, requestSeries, tmdbImg, type TitleResult } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
 import { statusOf } from '../components/cards';
 import { canManageRequests, Pill } from '../components/detail';
@@ -20,7 +14,7 @@ import {
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { useApi } from '../hooks';
+import { usePaged } from '../hooks';
 import { Icon } from '../icons';
 import { seriesRequestSummary } from '../seriesRequestSummary';
 import { useVideoAvailability } from '../videoAvailability';
@@ -49,18 +43,16 @@ export default function Soon() {
   const scope = params.get('media');
   const showMovies = scope !== 'tv';
   const showTv = scope !== 'movie';
-  const movieList = useApi<Paged<TitleResult>>(
+  const movieList = usePaged<TitleResult>(
     showMovies ? '/discover/movies/upcoming' : null
   );
-  const tvList = useApi<Paged<TitleResult>>(
-    showTv ? '/discover/tv/upcoming' : null
-  );
-  const movies = showMovies ? movieList.data : null;
-  const tv = showTv ? tvList.data : null;
-  const loading =
-    (showMovies && !movies && !movieList.error) ||
-    (showTv && !tv && !tvList.error);
-  const allSelectedListsLoaded = (!showMovies || !!movies) && (!showTv || !!tv);
+  const tvList = usePaged<TitleResult>(showTv ? '/discover/tv/upcoming' : null);
+  const lists = [
+    { label: 'upcoming movies', visible: showMovies, list: movieList },
+    { label: 'upcoming series', visible: showTv, list: tvList },
+  ].filter(({ visible }) => visible);
+  const loading = lists.some(({ list }) => !list.page && !list.error);
+  const allSelectedListsLoaded = lists.every(({ list }) => list.page > 0);
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
@@ -72,12 +64,12 @@ export default function Soon() {
   }>();
   const choosing = choice?.title;
   const items = [
-    ...(movies?.results || []).map((m) => ({
+    ...(showMovies ? movieList.items : []).map((m) => ({
       ...m,
       mediaType: 'movie' as const,
       date: m.releaseDate || '',
     })),
-    ...(tv?.results || []).map((t) => ({
+    ...(showTv ? tvList.items : []).map((t) => ({
       ...t,
       mediaType: 'tv' as const,
       date: t.firstAirDate || '',
@@ -155,16 +147,14 @@ export default function Soon() {
           Loading upcoming titles…
         </p>
       )}
-      <ServiceNote
-        error={showMovies ? movieList.error : null}
-        what="upcoming movies"
-        retry={movieList.reload}
-      />
-      <ServiceNote
-        error={showTv ? tvList.error : null}
-        what="upcoming series"
-        retry={tvList.reload}
-      />
+      {lists.map(({ label, list }) => (
+        <ServiceNote
+          key={label}
+          error={list.error}
+          what={label}
+          retry={list.retry}
+        />
+      ))}
       {allSelectedListsLoaded && !months.size && (
         <p className="note">No upcoming titles found.</p>
       )}
@@ -264,6 +254,19 @@ export default function Soon() {
           </div>
         </section>
       ))}
+      {lists.map(({ label, list }) =>
+        list.page > 0 && !list.done ? (
+          <div className="more-scroll" key={label}>
+            <button
+              className="btn btn-tonal"
+              disabled={list.loading}
+              onClick={list.more}
+            >
+              {list.loading ? 'Loading…' : `Show more ${label}`}
+            </button>
+          </div>
+        ) : null
+      )}
     </>
   );
 }

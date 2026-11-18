@@ -66,3 +66,47 @@ test('Coming soon titles wrap to two lines instead of cutting to a few letters',
     expect(bad, `at ${width}px`).toEqual([]);
   }
 });
+
+test('Coming Soon loads subsequent pages for the selected media only', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const pages: string[] = [];
+  await page.route(/\/api\/v1\/discover\/(movies|tv)\/upcoming\?/, (route) => {
+    const url = new URL(route.request().url());
+    const number = Number(url.searchParams.get('page'));
+    pages.push(`${url.pathname}:${number}`);
+    return route.fulfill({
+      json: {
+        page: number,
+        totalPages: 2,
+        totalResults: 2,
+        results: [
+          {
+            id: 900 + number,
+            title: `Upcoming movie ${number}`,
+            mediaType: 'movie',
+            releaseDate: `2027-03-${10 + number}`,
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/soon?media=movie');
+  await expect(
+    page.getByText('Upcoming movie 1', { exact: true })
+  ).toBeVisible();
+  const more = page.getByRole('button', { name: 'Show more upcoming movies' });
+  await more.click();
+  await expect(
+    page.getByText('Upcoming movie 2', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText('Upcoming movie 1', { exact: true })
+  ).toBeVisible();
+  await expect(more).toHaveCount(0);
+  expect(pages).toEqual([
+    '/api/v1/discover/movies/upcoming:1',
+    '/api/v1/discover/movies/upcoming:2',
+  ]);
+});
