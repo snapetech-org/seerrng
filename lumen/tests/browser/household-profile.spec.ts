@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-for (const permissions of [24, 16, 32]) {
+for (const permissions of [2, 24, 16, 32]) {
   const authorized = permissions !== 32;
   test(`household profile permissions ${permissions} gate each preview`, async ({
     page,
@@ -25,7 +25,21 @@ for (const permissions of [24, 16, 32]) {
           });
         case '/user/19':
           return route.fulfill({
-            json: { id: 19, displayName: 'Household Member' },
+            json: { id: 19, displayName: 'Household Member', userType: 1 },
+          });
+        case '/user/19/watch_data':
+          return route.fulfill({
+            json: {
+              playCount: 3,
+              recentlyWatched: [
+                {
+                  id: 7,
+                  tmdbId: 25,
+                  mediaType: 'tv',
+                  searchMetadata: { title: 'Watched Series' },
+                },
+              ],
+            },
           });
         case '/user/19/quota':
           return route.fulfill({
@@ -68,7 +82,18 @@ for (const permissions of [24, 16, 32]) {
     await expect(
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
-    if (permissions === 24) {
+    if (permissions === 2) {
+      await expect(page.getByText('Total plays: 3')).toBeVisible();
+      await expect(
+        page.getByRole('link', { name: 'Watched Series' })
+      ).toHaveAttribute('href', '/tv/25');
+    } else {
+      await expect(
+        page.getByRole('heading', { name: 'Playback Activity' })
+      ).toHaveCount(0);
+      expect(fetched).not.toContain('/user/19/watch_data');
+    }
+    if (permissions === 24 || permissions === 2) {
       await expect(
         page.getByRole('heading', { name: 'Request limits' })
       ).toBeVisible();

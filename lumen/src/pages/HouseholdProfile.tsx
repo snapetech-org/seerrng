@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { RequestItem } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canViewAllRequests } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
@@ -124,15 +124,72 @@ function WatchlistPreview({ id, own }: { id: number; own: boolean }) {
   );
 }
 
+function PlaybackActivity({ id }: { id: number }) {
+  const activity = useApi<{
+    playCount: number;
+    recentlyWatched: {
+      id: number;
+      tmdbId: number;
+      mediaType: 'movie' | 'tv';
+      searchMetadata?: { title?: string | null };
+    }[];
+  }>(`/user/${id}/watch_data`, { currentPathOnly: true });
+
+  if (activity.errorStatus === 404) return null;
+
+  return (
+    <Section title="Playback Activity">
+      <ServiceNote
+        error={activity.error}
+        what="playback activity"
+        retry={activity.reload}
+      />
+      {!activity.data && !activity.error && (
+        <p className="note" role="status">
+          Loading playback activity…
+        </p>
+      )}
+      {activity.data && (
+        <>
+          <p className="note">
+            Total plays: {activity.data.playCount.toLocaleString()}
+          </p>
+          <ul className="setlist" aria-label="Recently watched">
+            {activity.data.recentlyWatched
+              .filter(
+                ({ mediaType, tmdbId }) =>
+                  (mediaType === 'movie' || mediaType === 'tv') &&
+                  Number.isSafeInteger(tmdbId) &&
+                  tmdbId > 0
+              )
+              .map(({ id: mediaId, tmdbId, mediaType, searchMetadata }) => (
+                <li className="set" key={mediaId}>
+                  <Link className="go" to={`/${mediaType}/${tmdbId}`}>
+                    {searchMetadata?.title ||
+                      (mediaType === 'movie' ? 'Movie' : 'Series')}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          {activity.data.recentlyWatched.length === 0 && (
+            <p className="note">No recently watched titles.</p>
+          )}
+        </>
+      )}
+    </Section>
+  );
+}
+
 export default function HouseholdProfile() {
   const { id: rawId = '' } = useParams();
   const { user } = useAuth();
   const id = /^[1-9]\d{0,9}$/.test(rawId) ? Number(rawId) : 0;
   const valid = id > 0 && id <= 1_000_000_000;
-  const profile = useApi<{ id: number; displayName: string }>(
-    valid ? `/user/${id}` : null,
-    { currentPathOnly: true }
-  );
+  const profile = useApi<{
+    id: number;
+    displayName: string;
+    userType?: number;
+  }>(valid ? `/user/${id}` : null, { currentPathOnly: true });
   const own = user?.id === id;
   const permissions = user?.permissions ?? 0;
   const canViewQuota =
@@ -155,6 +212,10 @@ export default function HouseholdProfile() {
       {loaded && (
         <>
           {canViewQuota && <RequestLimits key={id} id={id} />}
+          {profile.data?.userType === 1 &&
+            (own || isAdministrator(permissions)) && (
+              <PlaybackActivity key={id} id={id} />
+            )}
           {(own || canViewAllRequests(user?.permissions)) && (
             <RecentRequests key={id} id={id} own={own} />
           )}

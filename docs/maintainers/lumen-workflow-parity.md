@@ -2692,3 +2692,10 @@ reuses the Account quota cards. The production build and twelve browser
 checks passed, including the case where request management alone cannot
 read quota data. Matched visual acceptance and playback activity remain
 open.
+
+Plex household profiles now show total plays and links to recently
+watched titles when viewed by the account owner or an administrator.
+Playback responses bypass Lumen's browser cache. A missing Tautulli
+integration leaves the panel hidden. The production build, 16 household
+browser checks, and 14 cache tests passed. Live Tautulli responses,
+playback artwork, and matched visual acceptance remain unverified.
