@@ -6835,3 +6835,29 @@ test('movie and series details use separate account regions for providers and ra
     });
   }
 });
+
+test('discovery sort displays Classic bookmark orders and sends changes to the catalog', async ({
+  page,
+}) => {
+  await fixtures(page);
+  for (const [route, apiPath, initial, next] of [
+    ['/movies', '/discover/movies', 'original_title.asc', 'release_date.asc'],
+    ['/series', '/discover/tv', 'original_name.asc', 'first_air_date.asc'],
+  ]) {
+    await page.goto(`${route}?nativeFilters=1&sortBy=${initial}&language=fr`);
+    const sort = page.getByRole('combobox', { name: 'Sort', exact: true });
+    await expect(sort).toHaveValue(initial);
+    const request = page.waitForRequest((item) => {
+      const url = new URL(item.url());
+      return (
+        url.pathname === '/api/v1' + apiPath &&
+        url.searchParams.get('sortBy') === next &&
+        url.searchParams.get('language') === 'fr'
+      );
+    });
+    await sort.selectOption(next);
+    await request;
+    await page.reload();
+    await expect(sort).toHaveValue(next);
+  }
+});

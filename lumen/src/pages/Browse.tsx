@@ -202,16 +202,33 @@ const SERIES_STATUSES = [
   'Pilot',
 ];
 
+const commonSorts = [
+  ['popularity.desc', 'Popular'],
+  ['popularity.asc', 'Least Popular'],
+  ['vote_average.desc', 'Top rated'],
+  ['vote_average.asc', 'Lowest Rated'],
+  ['vote_count.desc', 'Most Votes'],
+  ['vote_count.asc', 'Fewest Votes'],
+] as const;
+
 const SORTS = {
   movie: [
-    ['popularity.desc', 'Popular'],
+    ...commonSorts,
     ['primary_release_date.desc', 'Newest'],
-    ['vote_average.desc', 'Top rated'],
+    ['primary_release_date.asc', 'Oldest'],
+    ['release_date.desc', 'Latest Release Date'],
+    ['release_date.asc', 'Earliest Release Date'],
+    ['original_title.asc', 'Original Title A–Z'],
+    ['original_title.desc', 'Original Title Z–A'],
+    ['revenue.desc', 'Highest Revenue'],
+    ['revenue.asc', 'Lowest Revenue'],
   ],
   tv: [
-    ['popularity.desc', 'Popular'],
+    ...commonSorts,
     ['first_air_date.desc', 'Newest'],
-    ['vote_average.desc', 'Top rated'],
+    ['first_air_date.asc', 'Oldest'],
+    ['original_name.asc', 'Original Title A–Z'],
+    ['original_name.desc', 'Original Title Z–A'],
   ],
 } as const;
 
@@ -372,7 +389,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
-  const sort = p.get('sort') || 'popularity.desc';
+  const requestedSort = p.get('sort');
+  const sort =
+    SORTS[kind].find(([value]) => value === requestedSort)?.[0] ??
+    'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
   const matchAll = p.get('match') === 'all';
@@ -381,7 +401,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const genres =
     useApi<{ id: number; name: string }[]>(`/genres/${kind}`).data || [];
   const defaultVotes =
-    sort === 'vote_average.desc' ? (kind === 'movie' ? '500' : '200') : '';
+    sort === 'vote_average.desc' || sort === 'vote_average.asc'
+      ? kind === 'movie'
+        ? '500'
+        : '200'
+      : '';
   const minVotes = integerBound(p.get('voteCountGte'));
   const maxVotes = integerBound(p.get('voteCountLte'));
   const effectiveMinVotes = minVotes || (maxVotes ? '' : defaultVotes);
