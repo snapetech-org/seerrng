@@ -14,6 +14,7 @@ import {
   type TvDetails,
 } from '../api';
 import { isAdministrator, useAuth, useMediaServerName } from '../auth';
+import AnimeContinuation from '../components/AnimeContinuation';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -927,6 +928,14 @@ export default function TvDetail() {
             />
           </aside>
         </div>
+        {t.originalLanguage === 'ja' &&
+          t.genres?.some(({ id }) => id === 16) && (
+            <AnimeContinuation
+              key={id}
+              tvId={t.id}
+              seasons={seasons.filter(({ seasonNumber }) => seasonNumber > 0)}
+            />
+          )}
         <Section
           title="Related Titles"
           link={['Recommendations', `/tv/${id}/recommendations`]}

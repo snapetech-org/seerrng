@@ -380,3 +380,94 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(cast).toBeChecked();
 });
+
+test('anime continuation loads on demand and follows the novel in its language', async ({
+  page,
+}) => {
+  const subject = {
+    kind: 'series-language',
+    subjectKey: 'ranobedb:81:en',
+    subjectLabel: 'Fixture Novel',
+    conditions: { language: 'en', ref: { ranobedbId: 81 } },
+  };
+  const lookups: string[] = [];
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/tv/92')
+      return route.fulfill({
+        json: {
+          id: 92,
+          name: 'Fixture Anime',
+          originalLanguage: 'ja',
+          genres: [{ id: 16, name: 'Animation' }],
+          seasons: [
+            { id: 1, seasonNumber: 1, name: 'First Season', episodeCount: 12 },
+          ],
+        },
+      });
+    if (path === '/continuation/tv/92') {
+      lookups.push(url.search);
+      return route.fulfill({
+        json: {
+          available: true,
+          sources: [
+            {
+              anilistId: 42,
+              kind: 'novel',
+              title: 'Fixture Novel',
+              confidence: 'moderate',
+              evidence: ['Publisher match'],
+              continuation: { volume: 4 },
+              continuationBasis: 'derived',
+              novel: {
+                ranobedbId: 81,
+                language: 'en',
+                translationPending: true,
+                continuationVolume: { title: 'Volume Four' },
+              },
+              targets: [
+                {
+                  label: 'continuation',
+                  exact: true,
+                  href: '/book/OL42W',
+                  title: 'Volume Four',
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+    if (path === '/follow' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual(subject);
+      return route.fulfill({ json: { ...subject, id: 9 } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('./tv/92');
+  const find = page.getByRole('button', { name: 'Find Sources' });
+  await expect(find).toBeVisible();
+  expect(lookups).toEqual([]);
+  await find.click();
+  await expect(
+    page.getByText('Volume Four · Translation pending in English')
+  ).toBeVisible();
+  await page
+    .getByRole('combobox', { name: 'Continuation season' })
+    .selectOption('1');
+  await expect
+    .poll(() => lookups)
+    .toEqual(['?language=en', '?language=en&season=1']);
+  await expect(
+    page.getByRole('link', { name: 'Open Continuation Volume' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Follow Future Volumes' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Following', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+});

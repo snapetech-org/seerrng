@@ -115,6 +115,13 @@ Android, and tablet. API fixtures verify author follow and unfollow,
 narrator identity, and preservation of an explicitly selected edition.
 Matched visual and live provider verification remain open.
 
+Anime series details now open the manga and novel continuation lookup on
+demand. Users can change seasons, inspect match evidence, open mapped volumes
+or search, and follow future novels in the selected lookup language. Four
+standalone browser cases verified deferred lookup, season selection,
+translation status, the volume link, and the follow payload with API
+fixtures. Bundled, live provider, and matched visual checks remain open.
+
 ### Release Calendar increment
 
 Lumen now serves `/calendar` in both deployments. The Release Calendar uses

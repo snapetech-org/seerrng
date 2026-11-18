@@ -8,7 +8,10 @@ interface FollowIdentity {
   kind: string;
   subjectKey: string;
   subjectLabel: string;
-  conditions?: { ref: Record<string, string | number | boolean> };
+  conditions?: {
+    language?: string;
+    ref: Record<string, string | number | boolean>;
+  };
 }
 
 interface FollowRecord {
