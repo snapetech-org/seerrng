@@ -270,7 +270,17 @@ test('TV collection quota override enables otherwise restricted requests', async
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(7);
     if (path === '/request' && route.request().method() === 'POST') {
-      requests.push(route.request().postDataJSON());
+      const body = route.request().postDataJSON();
+      requests.push(body);
+      if (!body.bypassStreamingRequestPolicy)
+        return route.fulfill({
+          status: 403,
+          json: {
+            code: 'STREAMING_REQUEST_POLICY_REJECTED',
+            allowOverride: true,
+            message: 'Available on your streaming service.',
+          },
+        });
       return route.fulfill({ json: { id: 4 } });
     }
     const responses: Record<string, unknown> = {
@@ -311,6 +321,11 @@ test('TV collection quota override enables otherwise restricted requests', async
     path: info.outputPath('tv-collection-quota-override.png'),
   });
   await submit.click();
+  await expect(
+    sheet.getByText('Fixture Series · Available on your streaming service.')
+  ).toBeVisible();
+  expect(requests).toHaveLength(1);
+  await sheet.getByRole('button', { name: 'Request Anyway (1)' }).click();
   await expect(sheet.getByText('1 requested, 0 failed.')).toBeVisible();
   expect(requests).toEqual([
     expect.objectContaining({
@@ -318,6 +333,7 @@ test('TV collection quota override enables otherwise restricted requests', async
       mediaType: 'tv',
       ignoreQuota: true,
     }),
+    { ...(requests[0] as object), bypassStreamingRequestPolicy: true },
   ]);
 });
 

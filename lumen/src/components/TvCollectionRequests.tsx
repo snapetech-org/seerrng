@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 import {
   requestableCollectionSeasons,
   type TvPlaybackCatalog,
@@ -16,6 +17,7 @@ import {
 import { AdvancedOptions } from './detail';
 import { ServiceNote } from './extra';
 import {
+  streamingOverrideMessage,
   useAsksRequestOptions,
   useBackCloses,
   useOffers4k,
@@ -35,6 +37,19 @@ interface Member extends VideoFilterMetadata {
 interface Quota {
   tv: { limit: number; remaining: number; restricted: boolean };
 }
+
+type SeriesSubmission = {
+  title: string;
+  id: number;
+  seasons: number[];
+  options: NonNullable<Parameters<typeof requestSeries>[2]>;
+};
+
+type SeriesResult = {
+  title: string;
+  error?: string;
+  override?: SeriesSubmission;
+};
 
 async function mapSeries<T, R>(items: T[], visit: (item: T) => Promise<R>) {
   let next = 0;
@@ -79,7 +94,7 @@ function Sheet({
   });
   const [filters, setFilters] = useState(emptyVideoFilters);
   const [checked, setChecked] = useState(new Set<string>());
-  const [results, setResults] = useState<{ title: string; error?: string }[]>();
+  const [results, setResults] = useState<SeriesResult[]>();
   const [revision, setRevision] = useState(0);
   const [busy, setBusy] = useState(false);
   const active = useRef(false);
@@ -179,35 +194,63 @@ function Sheet({
   useDialog(dialog, finish);
   useBackCloses(finish);
 
-  async function submit() {
-    if (!canSubmit || active.current || results) return;
+  const overrides = (results ?? []).flatMap(({ override }, index) =>
+    override ? [{ index, submission: override }] : []
+  );
+
+  async function submit(retry = false) {
+    if (active.current || (retry ? !overrides.length : !canSubmit || results))
+      return;
+    const generation = sessionGeneration();
+    const requests = retry
+      ? overrides
+      : selected.map(({ member, detail, selections }, index) => ({
+          index,
+          submission: {
+            title: member.title,
+            id: Number(member.id),
+            seasons: selections.map(({ seasonNumber }) => seasonNumber),
+            options: {
+              ...(advanced ? options : {}),
+              is4k: fourK,
+              tvdbId: detail?.externalIds?.tvdbId ?? undefined,
+              seasonRequests: settings?.partialRequestsEnabled
+                ? selections
+                : undefined,
+            },
+          },
+        }));
     active.current = true;
     setBusy(true);
     try {
-      setResults(
-        await mapSeries(selected, async ({ member, detail, selections }) => {
-          try {
-            await requestSeries(
-              Number(member.id),
-              selections.map(({ seasonNumber }) => seasonNumber),
-              {
-                ...(advanced ? options : {}),
-                is4k: fourK,
-                tvdbId: detail?.externalIds?.tvdbId ?? undefined,
-                seasonRequests: settings?.partialRequestsEnabled
-                  ? selections
-                  : undefined,
-              }
-            );
-            return { title: member.title };
-          } catch (error) {
-            return {
-              title: member.title,
-              error: friendlyError(error, 'Request failed'),
-            };
-          }
-        })
-      );
+      const updates = await mapSeries(requests, async ({ submission }) => {
+        const { title, id, seasons, options } = submission;
+        if (sessionGeneration() !== generation)
+          return { title, error: 'Session changed' };
+        try {
+          await requestSeries(
+            id,
+            seasons,
+            retry ? { ...options, bypassStreamingRequestPolicy: true } : options
+          );
+          return { title };
+        } catch (error) {
+          const message = retry ? undefined : streamingOverrideMessage(error);
+          return {
+            title,
+            error: message ?? friendlyError(error, 'Request failed'),
+            override: message === undefined ? undefined : submission,
+          };
+        }
+      });
+      if (sessionGeneration() !== generation) return;
+      if (retry && results) {
+        const combined = [...results];
+        requests.forEach(({ index }, position) => {
+          combined[index] = updates[position];
+        });
+        setResults(combined);
+      } else setResults(updates);
     } finally {
       active.current = false;
       setBusy(false);
@@ -374,6 +417,16 @@ function Sheet({
             </>
           )}
           <div className="pk-foot">
+            {overrides.length > 0 && (
+              <button
+                className="btn btn-primary"
+                type="button"
+                disabled={busy}
+                onClick={() => void submit(true)}
+              >
+                {busy ? 'Requesting…' : `Request Anyway (${overrides.length})`}
+              </button>
+            )}
             {!results && (
               <button
                 className="btn btn-primary"
