@@ -507,6 +507,9 @@ test('a bookmarked TV request shows its season and episode selection', async ({
     history.getByText('Invalid request history response.')
   ).toBeVisible();
   await history.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    history.getByRole('link', { name: 'Open Title' })
+  ).toHaveAttribute('href', '/tv/22?quality=4k');
   const seasons = history.getByRole('list', { name: 'Requested seasons' });
   await expect(seasons.getByRole('listitem')).toHaveText([
     /Specials.*Episodes 2 · Declined/,

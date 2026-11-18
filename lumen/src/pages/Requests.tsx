@@ -633,7 +633,9 @@ function cachedRow(r: RequestItem, known: Omit<Row, 'r'>): Row {
     href:
       r.type === 'book'
         ? requestBookPath(r, known.title === 'Book' ? undefined : known.title)
-        : known.href,
+        : r.type === 'tv'
+          ? videoRequestPath(r, 'tv')
+          : known.href,
   };
 }
 
@@ -754,12 +756,16 @@ function requestBookPath(r: RequestItem, title?: string) {
     title
   );
 }
+function videoRequestPath(r: RequestItem, kind: 'movie' | 'tv') {
+  return `/${kind}/${r.media.tmdbId}${kind === 'tv' && r.is4k ? '?quality=4k' : ''}`;
+}
+
 function titlePlaceholder(r: RequestItem): Row {
   const kind = r.type === 'tv' ? 'tv' : 'movie';
   return {
     r,
     title: kind === 'tv' ? 'Series' : 'Movie',
-    href: `/${kind}/${r.media.tmdbId}`,
+    href: videoRequestPath(r, kind),
     sub: [kind === 'tv' ? 'Series' : 'Movie', r.is4k ? '4K' : '']
       .filter(Boolean)
       .join(' · '),
@@ -824,7 +830,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
     r,
     title: t ? t.title || t.name || '' : kind === 'tv' ? 'Series' : 'Movie',
     art: tmdbImg(t?.backdropPath || t?.posterPath, 'w500'),
-    href: `/${kind}/${r.media.tmdbId}`,
+    href: videoRequestPath(r, kind),
     sub: [kind === 'tv' ? 'Series' : 'Movie', seasons, r.is4k ? '4K' : '']
       .filter(Boolean)
       .join(' · '),

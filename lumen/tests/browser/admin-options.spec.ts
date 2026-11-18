@@ -2655,11 +2655,12 @@ test('4K series selection uses 4K season ownership even when every HD season is 
       },
     })
   );
-  await page.goto('/tv/400');
-  await page
-    .getByRole('group', { name: 'Quality' })
-    .getByRole('button', { name: '4K' })
-    .click();
+  await page.goto('/tv/400?quality=4k');
+  await expect(
+    page
+      .getByRole('group', { name: 'Quality' })
+      .getByRole('button', { name: '4K' })
+  ).toHaveAttribute('aria-pressed', 'true');
   await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Server')).toHaveValue('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');
