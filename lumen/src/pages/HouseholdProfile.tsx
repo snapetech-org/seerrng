@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import type { RequestItem } from '../api';
+import { tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { canViewAllRequests } from '../components/detail';
-import { ExtraHeader, ServiceNote } from '../components/extra';
+import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { useApi } from '../hooks';
 import { describeAll } from './Requests';
@@ -131,7 +131,7 @@ function PlaybackActivity({ id }: { id: number }) {
       id: number;
       tmdbId: number;
       mediaType: 'movie' | 'tv';
-      searchMetadata?: { title?: string | null };
+      searchMetadata?: { title?: string | null; posterPath?: string | null };
     }[];
   }>(`/user/${id}/watch_data`, { currentPathOnly: true });
 
@@ -154,7 +154,7 @@ function PlaybackActivity({ id }: { id: number }) {
           <p className="note">
             Total plays: {activity.data.playCount.toLocaleString()}
           </p>
-          <ul className="setlist" aria-label="Recently watched">
+          <div className="rail" aria-label="Recently watched">
             {activity.data.recentlyWatched
               .filter(
                 ({ mediaType, tmdbId }) =>
@@ -163,14 +163,19 @@ function PlaybackActivity({ id }: { id: number }) {
                   tmdbId > 0
               )
               .map(({ id: mediaId, tmdbId, mediaType, searchMetadata }) => (
-                <li className="set" key={mediaId}>
-                  <Link className="go" to={`/${mediaType}/${tmdbId}`}>
-                    {searchMetadata?.title ||
-                      (mediaType === 'movie' ? 'Movie' : 'Series')}
-                  </Link>
-                </li>
+                <ExtraCard
+                  key={mediaId}
+                  href={`/${mediaType}/${tmdbId}`}
+                  img={tmdbImg(searchMetadata?.posterPath)}
+                  title={
+                    searchMetadata?.title ||
+                    (mediaType === 'movie' ? 'Movie' : 'Series')
+                  }
+                  icon={mediaType === 'movie' ? 'film' : 'tv'}
+                  titleKind={mediaType}
+                />
               ))}
-          </ul>
+          </div>
           {activity.data.recentlyWatched.length === 0 && (
             <p className="note">No recently watched titles.</p>
           )}

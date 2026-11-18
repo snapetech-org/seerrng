@@ -2743,3 +2743,9 @@ demand. Both reuse the administrator forms. Four standalone and four
 bundled browser fixtures verified that the panels open before
 initialization. Saving live download-client or indexer settings and
 matched visual acceptance remain unverified.
+
+Household playback activity now uses the shared Lumen poster shelf
+with validated TMDB artwork. The production build and 16 profile browser
+fixtures passed. The administrator case verifies both the proxied
+image address and the linked watched series. Live artwork and matched
+visual comparison remain unverified.

@@ -36,7 +36,10 @@ for (const permissions of [2, 24, 16, 32]) {
                   id: 7,
                   tmdbId: 25,
                   mediaType: 'tv',
-                  searchMetadata: { title: 'Watched Series' },
+                  searchMetadata: {
+                    title: 'Watched Series',
+                    posterPath: '/watched.jpg',
+                  },
                 },
               ],
             },
@@ -87,6 +90,10 @@ for (const permissions of [2, 24, 16, 32]) {
       await expect(
         page.getByRole('link', { name: 'Watched Series' })
       ).toHaveAttribute('href', '/tv/25');
+      await expect(page.locator('.rail img')).toHaveAttribute(
+        'src',
+        '/imageproxy/tmdb/t/p/w342/watched.jpg'
+      );
     } else {
       await expect(
         page.getByRole('heading', { name: 'Playback Activity' })
