@@ -7,7 +7,9 @@ import {
 } from 'react-router-dom';
 import { api, ApiError, requestSeries } from '../api';
 import { Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
+import { streamingOverrideMessage } from '../components/requestSheet';
 import { embedded } from '../deployment';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -35,6 +37,12 @@ interface ResolveResponse {
     candidates: ResolveCandidate[];
   }[];
 }
+
+type SelectedRequest = {
+  index: number;
+  body: NonNullable<ReturnType<typeof requestBodyForCandidate>>;
+  title: string;
+};
 
 function candidatePath(candidate: ResolveCandidate, format: ShareFormat) {
   const id = encodeURIComponent(candidate.id);
@@ -78,6 +86,9 @@ export default function Share() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [streamingOverrides, setStreamingOverrides] = useState<
+    (SelectedRequest & { message: string })[]
+  >([]);
   const working = useRef(false);
   const caps = useApi<{
     enabled: boolean;
@@ -240,28 +251,46 @@ export default function Share() {
     }
   }
 
-  async function requestSelected() {
-    if (working.current || !selected.length) return;
+  async function requestSelected(
+    requests: SelectedRequest[] = selected,
+    bypassStreamingRequestPolicy = false
+  ) {
+    if (working.current || !requests.length) return;
     working.current = true;
     setBusy(true);
     setError('');
     setNotice('');
+    setStreamingOverrides([]);
     const failures: string[] = [];
+    const overrides: typeof streamingOverrides = [];
+    const options = bypassStreamingRequestPolicy
+      ? { bypassStreamingRequestPolicy: true }
+      : {};
     let count = 0;
     try {
-      for (const { index, body, title } of selected) {
+      for (const { index, body, title } of requests) {
         try {
           if (body.mediaType === 'tv')
-            await requestSeries(body.mediaId, body.seasons);
+            await requestSeries(body.mediaId, body.seasons, options);
           else
             await api('/request', {
               method: 'POST',
-              body: JSON.stringify(body),
+              body: JSON.stringify({ ...body, ...options }),
             });
           setSubmitted((current) => [...current, index]);
           count++;
         } catch (failure) {
-          failures.push(friendlyError(failure, `Could not request ${title}.`));
+          const message = streamingOverrideMessage(failure);
+          if (
+            !bypassStreamingRequestPolicy &&
+            (body.mediaType === 'movie' || body.mediaType === 'tv') &&
+            message !== undefined
+          )
+            overrides.push({ index, body, title, message });
+          else
+            failures.push(
+              friendlyError(failure, `Could not request ${title}.`)
+            );
         }
       }
       if (count)
@@ -269,6 +298,7 @@ export default function Share() {
           `Submitted ${count} ${count === 1 ? 'request' : 'requests'}.`
         );
       if (failures.length) setError(failures.join(' '));
+      setStreamingOverrides(overrides);
     } finally {
       working.current = false;
       setBusy(false);
@@ -277,6 +307,18 @@ export default function Share() {
 
   return (
     <>
+      {streamingOverrides.length > 0 && (
+        <ConfirmSheet
+          title="Streaming Request Policy"
+          body={streamingOverrides
+            .map(({ title, message }) => `${title}: ${message}`)
+            .join(' ')}
+          confirm="Request Anyway"
+          cancel="Cancel"
+          onClose={() => setStreamingOverrides([])}
+          onConfirm={() => void requestSelected(streamingOverrides, true)}
+        />
+      )}
       <header className="ph">
         <h1>Share</h1>
       </header>
