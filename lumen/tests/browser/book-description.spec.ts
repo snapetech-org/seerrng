@@ -15,7 +15,7 @@ const book = (id: string, description?: string) => ({
   ...(description ? { description } : {}),
 });
 
-async function mocks(page: Page, bare: unknown, hc: unknown) {
+async function mocks(page: Page, bare: unknown, hc: unknown, rating?: unknown) {
   const lookups: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -35,6 +35,10 @@ async function mocks(page: Page, bare: unknown, hc: unknown) {
           enabledMediaCategories: { ebook: true, audiobook: true },
         },
       });
+    if (path.endsWith('/ratings'))
+      return rating
+        ? route.fulfill({ json: rating })
+        : route.fulfill({ status: 503, json: {} });
     if (path.startsWith('/book/bookshelf')) {
       lookups.push(decodeURIComponent(path.slice(6)));
       const body = path.endsWith(encodeURIComponent(hcId)) ? hc : bare;
@@ -46,6 +50,27 @@ async function mocks(page: Page, bare: unknown, hc: unknown) {
   });
   return lookups;
 }
+
+test('an unrecognized rating source cannot be shown as Bookshelf', async ({
+  page,
+}) => {
+  await mocks(
+    page,
+    {
+      ...book(bareId, blurb),
+      provider: 'bookshelf',
+      ratingsAverage: 0,
+      ratingsCount: 2,
+    },
+    null,
+    { average: 4.5, count: 90, source: 'unknown' }
+  );
+  await page.goto(`/book/${encodeURIComponent(bareId)}`);
+  await expect(page.getByText('0.0/5 · Bookshelf')).toBeVisible();
+  await page.waitForLoadState('networkidle');
+  await expect(page.getByText('4.5/5 · Bookshelf')).toHaveCount(0);
+  await expect(page.getByText('0.0/5 · Bookshelf')).toBeVisible();
+});
 
 test('a book stored under a bare Hardcover id gets its description from the hc: form', async ({
   page,

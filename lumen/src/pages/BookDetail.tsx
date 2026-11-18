@@ -59,7 +59,11 @@ function ratingLabel(rating: BookRating | null, book: BookDetails) {
   const score = rating?.average;
   const localScore = book.ratingsAverage;
   const localCount = book.ratingsCount ?? 0;
-  if (rating && valid(score, rating.count)) {
+  if (
+    rating &&
+    (rating.source === 'openlibrary' || rating.source === 'bookshelf') &&
+    valid(score, rating.count)
+  ) {
     const library = rating.source === 'openlibrary';
     const source = library ? 'Open Library' : 'Bookshelf';
     const label = `${score.toFixed(1)}/5 · ${source}`;
