@@ -4886,6 +4886,7 @@ requestRoutes.put<{ requestId: string }>(
                       );
                     }
                   } else if (request.type === MediaType.BOOK) {
+                    // nosemgrep: javascript.express.security.express-data-exfiltration.express-data-exfiltration -- the edit planner returns only explicit book destination fields after validation
                     Object.assign(
                       request,
                       await planBookRequestEdit(request, body)
