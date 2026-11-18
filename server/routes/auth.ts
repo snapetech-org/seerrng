@@ -2277,7 +2277,12 @@ const getOidcRedirectUrl = (req: Request) => {
   // returnUrl (e.g. "https://evil.example" or "//evil.example") would
   // otherwise turn the login flow into an open redirect / authorization-code
   // leak whenever the provider's redirect allowlist is permissive.
-  const allowedPaths = new Set(['/login', '/profile/settings/linked-accounts']);
+  const allowedPaths = new Set([
+    '/login',
+    '/profile/settings/linked-accounts',
+    '/me/account/linked-accounts',
+    '/lumen/me/account/linked-accounts',
+  ]);
   if (
     resolved.origin !== baseUrl.origin ||
     !allowedPaths.has(resolved.pathname) ||

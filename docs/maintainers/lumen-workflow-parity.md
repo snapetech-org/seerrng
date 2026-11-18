@@ -366,3 +366,18 @@ Headed Chrome at 1440 × 1000 verified the standalone Quick Connect-only
 branch and account readback against synthetic data. Plex popup completion,
 live integrations, OIDC linking, and mobile, bundled and native visual
 comparisons remain open.
+
+### OpenID Connect linking increment
+
+Linked Accounts can initiate authorization with a configured identity
+provider and complete the link under the same signed-in account. The server
+admits the exact standalone and bundled Lumen callback paths on the
+configured Application URL origin. Lumen matches the provider response to
+the tab's attempt and removes callback parameters before processing.
+
+Headed Chrome at 1440 × 1000 verified a standalone synthetic provider
+round trip, one callback submission, clean URL, and linked account readback.
+The native route test verifies same-origin admission for both exact Lumen
+callback paths and continued rejection of unrelated destinations. Live
+providers, Apple form-post completion, mobile, bundled browser execution,
+and Lumen's unauthenticated OIDC sign-in remain open.

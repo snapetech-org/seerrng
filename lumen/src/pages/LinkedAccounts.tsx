@@ -11,12 +11,17 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi, usePublicSettings } from '../hooks';
+import {
+  completeOidcLink,
+  readOidcLinkCallback,
+  startOidcLink,
+} from '../oidcLink';
 import { sessionGeneration } from '../sessionState';
 
 interface Account {
   id: number;
   username: string;
-  provider: { name: string };
+  provider: { name: string; slug: string };
 }
 
 function Accounts({ user }: { user: User }) {
@@ -38,6 +43,58 @@ function Accounts({ user }: { user: User }) {
   const [code, setCode] = useState('');
   const [authorizing, setAuthorizing] = useState(false);
   useEffect(() => () => authorization.current?.abort(), []);
+
+  const [callback] = useState(readOidcLinkCallback);
+  const callbackWork = useRef<Promise<void> | undefined>(undefined);
+  const accountId = user.id;
+  const refreshLinks = linked.refresh;
+  useEffect(() => {
+    if (!callback) return;
+    let active = true;
+    if (!callbackWork.current) {
+      window.history.replaceState(window.history.state, '', callback.pathname);
+      callbackWork.current = completeOidcLink(callback, accountId);
+    }
+    working.current = true;
+    setBusy(true);
+    void callbackWork.current
+      .then(() => {
+        if (!active) return;
+        setNotice('Account linked.');
+        refreshLinks();
+      })
+      .catch(() => {
+        if (active)
+          setFailure(
+            'Could not complete the identity provider link. Start again from Linked Accounts.'
+          );
+      })
+      .finally(() => {
+        if (active) {
+          working.current = false;
+          setBusy(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [callback, accountId, refreshLinks]);
+
+  async function linkIdentity(slug: string) {
+    if (working.current) return;
+    working.current = true;
+    setBusy(true);
+    setFailure('');
+    try {
+      await startOidcLink(slug, user.id);
+    } catch {
+      setFailure(
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.'
+      );
+      working.current = false;
+      setBusy(false);
+    }
+  }
 
   const accounts = linked.data?.filter(
     (account) => !removed.includes(String(account.id))
@@ -290,6 +347,30 @@ function Accounts({ user }: { user: User }) {
                 linking.
               </p>
             )}
+          </Section>
+        )}
+      {accounts &&
+        !!settings?.openIdProviders?.some(
+          ({ slug }) => !accounts.some(({ provider }) => provider.slug === slug)
+        ) && (
+          <Section title="Link an Identity Provider">
+            <div className="toolbar">
+              {settings.openIdProviders
+                .filter(
+                  ({ slug }) =>
+                    !accounts.some(({ provider }) => provider.slug === slug)
+                )
+                .map(({ slug, name }) => (
+                  <button
+                    className="btn btn-tonal btn-sm"
+                    key={slug}
+                    disabled={busy}
+                    onClick={() => void linkIdentity(slug)}
+                  >
+                    Link {name}
+                  </button>
+                ))}
+            </div>
           </Section>
         )}
       {canLink && (

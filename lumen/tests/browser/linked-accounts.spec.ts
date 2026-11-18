@@ -54,3 +54,76 @@ test('Quick Connect links the signed-in account without calling login', async ({
     '/user/2/settings/linked-accounts/jellyfin/quickconnect',
   ]);
 });
+
+test('OIDC linking validates the round trip and consumes the callback once', async ({
+  page,
+}) => {
+  const state = 'synthetic-state-012345';
+  let linked = false;
+  let callbacks = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/fixture-oidc?*', (route) => {
+    const url = new URL(route.request().url());
+    const callback = new URL(url.searchParams.get('redirect_uri')!);
+    callback.search = new URLSearchParams({
+      code: 'synthetic-code',
+      state,
+    }).toString();
+    return route.fulfill({ status: 302, headers: { location: callback.href } });
+  });
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          openIdProviders: [{ slug: 'fixture', name: 'Fixture Identity' }],
+        },
+      });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({
+        json: linked
+          ? [
+              {
+                id: 9,
+                username: 'Viewer',
+                provider: { slug: 'fixture', name: 'Fixture Identity' },
+              },
+            ]
+          : [],
+      });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/auth/oidc/login/fixture') {
+      const callbackPath = '/me/account/linked-accounts';
+      expect(url.searchParams.get('returnUrl')).toBe(callbackPath);
+      const provider = new URL('/fixture-oidc', url);
+      provider.search = new URLSearchParams({
+        redirect_uri: new URL(callbackPath, url).href,
+        state,
+      }).toString();
+      return route.fulfill({ json: { redirectUrl: provider.href } });
+    }
+    if (path === '/auth/oidc/callback/fixture') {
+      callbacks++;
+      expect(
+        new URL(request.postDataJSON().callbackUrl).searchParams.get('code')
+      ).toBe('synthetic-code');
+      linked = true;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/me/account/linked-accounts');
+  await page
+    .getByRole('button', { name: 'Link Fixture Identity', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Unlink Fixture Identity' })
+  ).toBeVisible();
+  await expect(page).toHaveURL(/\/me\/account\/linked-accounts$/);
+  expect(callbacks).toBe(1);
+});

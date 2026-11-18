@@ -3404,6 +3404,16 @@ describe('OpenID Connect', () => {
       const rejectedPath = await request(app)
         .get('/auth/oidc/login/test')
         .query({ returnUrl: '/settings/main' });
+      for (const prefix of ['', '/lumen']) {
+        const callback = `${prefix}/me/account/linked-accounts`;
+        const result = await request(app)
+          .get('/auth/oidc/login/test')
+          .query({ returnUrl: callback });
+        assert.strictEqual(
+          new URL(result.body.redirectUrl).searchParams.get('redirect_uri'),
+          `https://jellyseerr.example.com${callback}`
+        );
+      }
       const rejectedOrigin = await request(app)
         .get('/auth/oidc/login/test')
         .query({ returnUrl: 'https://attacker.example/callback' });

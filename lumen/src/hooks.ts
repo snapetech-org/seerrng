@@ -93,6 +93,7 @@ export async function cachedApi<T>(path: string): Promise<T> {
 }
 
 export interface PublicSettings {
+  openIdProviders?: { slug: string; name: string }[];
   mediaServerType?: number;
   jellyfinQuickConnectOnly?: boolean;
   otherUsersAvailability?: 'show' | 'distinguish' | 'hide';
