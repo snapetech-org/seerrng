@@ -2709,3 +2709,10 @@ enabled library and waits for the server to confirm initialization.
 Four Jellyfin fixture checks and both deployment routing suites passed.
 Live provider sign-in, advanced guided setup, and matched visual
 acceptance remain open.
+
+Setup now invalidates the short-lived public settings snapshot after
+provider sign-in and passes the refreshed provider to the library
+editor. The expanded fixture checks the actual Enable Library mutation
+before finishing setup. It passed on four viewport presets against both
+the standalone build and an embedded build mounted at `/lumen/`. The
+browser fixtures stub provider responses.

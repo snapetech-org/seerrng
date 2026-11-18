@@ -7,6 +7,7 @@ import Shell from '../components/Shell';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi, type PublicSettings } from '../hooks';
+import { invalidatePublicSettings } from '../mediaServer';
 import AdminMediaLibraries from './AdminMediaLibraries';
 import Login from './Login';
 
@@ -51,6 +52,7 @@ export default function Setup() {
         }),
       });
       await refresh();
+      invalidatePublicSettings();
       settings.reload();
     });
   }
@@ -101,7 +103,7 @@ export default function Setup() {
     return (
       <Shell>
         <ExtraHeader title="Finish Setup" />
-        <AdminMediaLibraries />
+        <AdminMediaLibraries mediaServerType={settings.data.mediaServerType} />
         <ServiceNote error={error || null} what="setup" />
         <button
           className="btn btn-primary"
@@ -146,6 +148,7 @@ export default function Setup() {
               void run(async () => {
                 await signInWithPlex();
                 await refresh();
+                invalidatePublicSettings();
                 settings.reload();
               })
             }

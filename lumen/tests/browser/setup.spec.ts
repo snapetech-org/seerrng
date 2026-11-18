@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 test('first-run Jellyfin setup confirms the session and requires an enabled library', async ({
   page,
 }) => {
+  const bundled = process.env.LUMEN_TEST_MOUNT === '/lumen';
   let signedIn = false;
   let initialized = false;
   let enabled = false;
@@ -37,6 +38,10 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
         return route.fulfill({
           json: { libraries: [{ id: '1', name: 'Films', enabled }] },
         });
+      case '/settings/jellyfin/library':
+        expect(route.request().postDataJSON()).toEqual({ enable: '1' });
+        enabled = true;
+        return route.fulfill({ json: [{ id: '1', name: 'Films', enabled }] });
       case '/settings/initialize':
         attempts += 1;
         initialized = true;
@@ -45,8 +50,8 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
         return route.fulfill({ json: { results: [], totalPages: 1 } });
     }
   });
-  await page.goto('/');
-  await expect(page).toHaveURL('/setup');
+  await page.goto(bundled ? '/lumen/setup' : '/');
+  await expect(page).toHaveURL(bundled ? '/lumen/setup' : '/setup');
   await page.getByRole('combobox', { name: 'Media server' }).selectOption('2');
   await page.getByLabel('Hostname').fill('media.example');
   await page.getByLabel('Username').fill('owner');
@@ -58,8 +63,10 @@ test('first-run Jellyfin setup confirms the session and requires an enabled libr
     page.getByText('Enable at least one media library before finishing setup.')
   ).toBeVisible();
   expect(attempts).toBe(0);
-  enabled = true;
+  const library = page.getByRole('checkbox', { name: 'Enable Films' });
+  await library.click();
+  await expect(library).toBeChecked();
   await finish.click();
-  await expect(page).toHaveURL('/');
+  await expect(page).toHaveURL(bundled ? '/lumen/' : '/');
   expect(attempts).toBe(1);
 });

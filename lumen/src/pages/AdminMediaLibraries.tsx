@@ -333,9 +333,13 @@ function MediaLibraries({
   );
 }
 
-export default function AdminMediaLibraries() {
-  const settings = useApi<{ mediaServerType?: number }>('/settings/public');
-  const type = settings.data?.mediaServerType;
+export default function AdminMediaLibraries({
+  mediaServerType,
+}: { mediaServerType?: number } = {}) {
+  const settings = useApi<{ mediaServerType?: number }>(
+    mediaServerType === undefined ? '/settings/public' : null
+  );
+  const type = mediaServerType ?? settings.data?.mediaServerType;
   const name = type === 1 || type === 2 || type === 3 ? names[type] : undefined;
   return (
     <>
@@ -358,7 +362,7 @@ export default function AdminMediaLibraries() {
           name={name}
           provider={name === 'Plex' ? 'plex' : 'jellyfin'}
         />
-      ) : settings.data ? (
+      ) : mediaServerType !== undefined || settings.data ? (
         <p className="note">
           Configure a media server to manage its libraries.
         </p>
