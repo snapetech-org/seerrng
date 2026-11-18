@@ -164,6 +164,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/trending?mediaType=tv', '/trending?mediaType=tv'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
       ['/discover/providers', '/providers'],
+      ['/settings/jobs/', '/admin/jobs'],
+      ['/settings/logs', '/admin/logs'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);

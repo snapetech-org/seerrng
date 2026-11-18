@@ -205,6 +205,10 @@ server {
     return 302 /watchlist/discover$is_args$args;
   }
 
+  location ~ ^/settings/(jobs|logs)/?$ {
+    return 302 /admin/$1;
+  }
+
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG
   location ~ ^/(settings|users|profile|discover|setup|swipe|recordings|book-series|author|software|collections)(/|$) {
     return 302 ${SEERR_FULL_URL}$request_uri;
