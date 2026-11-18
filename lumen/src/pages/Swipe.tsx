@@ -1,7 +1,9 @@
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { api, ApiError, artUrl, requestSeries } from '../api';
 import { Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
+import { streamingOverrideMessage } from '../components/requestSheet';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 import {
@@ -503,6 +505,12 @@ function Deck({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [streamingOverride, setStreamingOverride] = useState<{
+    cardId: string;
+    generation: number;
+    seasons: 'all' | number[];
+    message: string;
+  }>();
   const pending = useRef(false);
   const catalogCards = catalog
     ? filterSwipeCards(normalizeSwipeCatalogCards(category, deck.data), filters)
@@ -631,9 +639,15 @@ function Deck({
     else setRefresh(regenerate);
   }
 
-  async function act(decision: Decision | 'undo') {
+  async function act(
+    decision: Decision | 'undo',
+    override?: NonNullable<typeof streamingOverride>
+  ) {
     if (
       pending.current ||
+      (override &&
+        (override.cardId !== card?.id ||
+          override.generation !== sessionGeneration())) ||
       (decision === 'undo' ? !deck.data : !card) ||
       (decision === 'want' && !canRequest)
     )
@@ -643,6 +657,13 @@ function Deck({
     setBusy(true);
     setError('');
     setNotice('');
+    setStreamingOverride(undefined);
+    const seasons =
+      override?.seasons ??
+      (profile?.seriesRequest === 'all-seasons' ? 'all' : [1]);
+    const requestOptions = override
+      ? { bypassStreamingRequestPolicy: true }
+      : {};
     let requested = false;
     const body = (values: object) => ({
       method: 'POST',
@@ -663,16 +684,14 @@ function Deck({
       if (!card) return;
       if (decision === 'want') {
         if (category === 'tv')
-          await requestSeries(
-            Number(card.id),
-            profile?.seriesRequest === 'all-seasons' ? 'all' : [1]
-          );
+          await requestSeries(Number(card.id), seasons, requestOptions);
         else
           await api(
             software ? '/request/software' : '/request',
             body(
               softwareBody || {
                 mediaType: category === 'audiobook' ? 'book' : category,
+                ...requestOptions,
                 mediaId:
                   category === 'movie' || category === 'comic'
                     ? Number(card.id)
@@ -708,7 +727,17 @@ function Deck({
       setRestored(undefined);
     } catch (failure) {
       if (generation !== sessionGeneration()) return;
-      if (requested && card) {
+      const message = streamingOverrideMessage(failure);
+      if (
+        !requested &&
+        !override &&
+        decision === 'want' &&
+        card &&
+        (category === 'movie' || category === 'tv') &&
+        message !== undefined
+      ) {
+        setStreamingOverride({ cardId: card.id, generation, seasons, message });
+      } else if (requested && card) {
         setHandled((ids) => [...ids, card.id]);
         setRestored(undefined);
         setError(
@@ -730,6 +759,18 @@ function Deck({
   const image = artUrl(card?.imageUrl);
   return (
     <Section title={categories[category]}>
+      {streamingOverride &&
+        streamingOverride.cardId === card?.id &&
+        streamingOverride.generation === sessionGeneration() && (
+          <ConfirmSheet
+            title="Streaming Request Policy"
+            body={streamingOverride.message}
+            confirm="Request Anyway"
+            cancel="Cancel"
+            onClose={() => setStreamingOverride(undefined)}
+            onConfirm={() => void act('want', streamingOverride)}
+          />
+        )}
       <DeckFilters
         category={category}
         disabled={busy}

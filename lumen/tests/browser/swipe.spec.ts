@@ -178,8 +178,18 @@ test('saved Swipe preferences apply to the active series deck', async ({
       return route.fulfill({ json: { cards: [series], remaining: 1 } });
     if (path.endsWith('/request')) {
       calls.push(request.postDataJSON());
+      attempts++;
+      if (attempts === 2)
+        return route.fulfill({
+          status: 403,
+          json: {
+            code: 'STREAMING_REQUEST_POLICY_REJECTED',
+            allowOverride: true,
+            message: 'Available on your streaming service.',
+          },
+        });
       return route.fulfill(
-        ++attempts === 1
+        attempts === 1
           ? { status: 202, json: { message: 'No seasons available.' } }
           : { status: 201, json: { id: 19 } }
       );
@@ -212,6 +222,14 @@ test('saved Swipe preferences apply to the active series deck', async ({
     animations: 'disabled',
   });
   await page.getByRole('button', { name: 'Request', exact: true }).click();
+  const confirmation = page.getByRole('alertdialog', {
+    name: 'Streaming Request Policy',
+  });
+  await expect(
+    confirmation.getByText('Available on your streaming service.')
+  ).toBeVisible();
+  expect(decisions).toEqual([]);
+  await confirmation.getByRole('button', { name: 'Request Anyway' }).click();
   await expect(page.getByText('Fixture Series requested.')).toBeVisible();
   expect(decisions).toHaveLength(1);
   expect(calls).toEqual([
@@ -224,6 +242,12 @@ test('saved Swipe preferences apply to the active series deck', async ({
     },
     { mediaType: 'tv', mediaId: 42, seasons: 'all' },
     { mediaType: 'tv', mediaId: 42, seasons: 'all' },
+    {
+      mediaType: 'tv',
+      mediaId: 42,
+      seasons: 'all',
+      bypassStreamingRequestPolicy: true,
+    },
   ]);
 });
 
