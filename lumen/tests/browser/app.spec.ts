@@ -3411,3 +3411,76 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
   ).toBeVisible();
   expect(requests.at(-1)?.get('page')).toBe('2');
 });
+
+test('Provider Discovery saves and resets an exact viewer title match', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let matched = false;
+  let writes = 0;
+  await page.route(
+    /\/api\/v1\/integrations\/discovery\/feeds\/anilist\/trending\?/,
+    (route) =>
+      route.fulfill({
+        json: {
+          page: 1,
+          hasMore: false,
+          items: [
+            {
+              id: 'anilist:42',
+              title: 'Provider Fixture',
+              mappingAvailable: true,
+              ...(matched
+                ? { mediaType: 'tv', tmdbId: 202, identityMapped: true }
+                : {}),
+            },
+          ],
+        },
+      })
+  );
+  await page.route(/\/api\/v1\/search\?/, (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    expect(params.get('query')).toBe('Provider Fixture');
+    expect(params.get('type')).toBe('tv');
+    return route.fulfill({
+      json: paged([{ id: 202, mediaType: 'tv', name: 'Catalogue Series' }]),
+    });
+  });
+  await page.route('**/api/v1/integrations/discovery/mappings', (route) => {
+    expect(route.request().method()).toBe('PUT');
+    expect(route.request().postDataJSON()).toEqual({
+      identity: 'anilist:42',
+      tmdbId: 202,
+      mediaType: 'tv',
+    });
+    matched = true;
+    writes++;
+    return route.fulfill({ json: {} });
+  });
+  await page.route(
+    '**/api/v1/integrations/discovery/mappings/anilist%3A42',
+    (route) => {
+      expect(route.request().method()).toBe('DELETE');
+      matched = false;
+      writes++;
+      return route.fulfill({ status: 204 });
+    }
+  );
+
+  await page.goto('/providers');
+  await page.getByRole('button', { name: 'Match Title', exact: true }).click();
+  await page.getByLabel('Match Media Type').selectOption('tv');
+  await page.getByRole('button', { name: 'Search Matches' }).click();
+  await page.getByRole('button', { name: 'Match Catalogue Series' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Provider Fixture' })
+  ).toHaveAttribute('href', '/tv/202');
+  await page.getByRole('button', { name: 'Reset Match' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Provider Fixture' })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Match Title', exact: true })
+  ).toBeVisible();
+  expect(writes).toBe(2);
+});

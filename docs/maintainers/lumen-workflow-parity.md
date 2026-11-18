@@ -1454,3 +1454,9 @@ The production build, bundled and companion redirects, and four
 standalone browser checks passed. Identity mapping controls,
 provider-specific retry timing, live accounts, and matched visual
 comparisons remain open.
+
+Provider Discovery now supports finding, changing, and resetting personal
+title mappings where the server exposes a stable provider identity.
+Selecting a catalogue result saves its exact TMDB ID and media type.
+Eight standalone checks passed for mapping, reset, and feed browsing.
+Live accounts and matched visual verification remain open.
