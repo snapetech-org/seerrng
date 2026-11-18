@@ -21,6 +21,7 @@ import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
 import { GameDetail, Games } from './pages/Games';
+import Library from './pages/Library';
 import Login from './pages/Login';
 import LumenSettings from './pages/LumenSettings';
 import Me from './pages/Me';
@@ -85,6 +86,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />
           <Route path="/me" element={<Me />} />

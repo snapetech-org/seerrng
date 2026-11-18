@@ -154,6 +154,12 @@ export default function Me() {
       <Section title="Library">
         <div className="setlist">
           <div className="set">
+            <b>My Media</b>
+            <Link className="go" to="/library" aria-label="Open My Media">
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+          <div className="set">
             <b>Release Calendar</b>
             <Link
               className="go"

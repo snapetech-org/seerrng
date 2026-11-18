@@ -160,6 +160,20 @@ test('person details and credits never reuse cached data from a prior policy', (
   assert.deepEqual(cache.cached('/movie/1'), { title: 'Still cached' });
 });
 
+test('personal library responses are always read under the current account policy', (t) => {
+  session.resetSessionState(9);
+  t.after(() => session.resetSessionState(null));
+  for (const path of [
+    '/integrations/discovery/accounts',
+    '/integrations/discovery/library/plex?shelf=all&page=1',
+    '/integrations/discovery/library/anilist?shelf=all&page=1',
+  ]) {
+    cache.remember(path, { items: ['previously visible'] });
+    assert.equal(cache.cached(path), undefined);
+    assert.equal(cache.isFresh(path), false);
+  }
+});
+
 test('the saved copy stays small and leaves out big lists', async (t) => {
   session.resetSessionState(5);
   t.after(() => session.resetSessionState(null));

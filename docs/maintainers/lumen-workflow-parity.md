@@ -78,3 +78,20 @@ episode, an all-day audiobook, and a partial-source warning. Next Month moved th
 fixture query from November to December 2026. The isolated desktop could not
 reach the preview, so verification used a dedicated Agent GUI VM session.
 Narrow and bundled visual acceptance remains open.
+
+### My Media browse increment
+
+Lumen serves `/library` in both deployments and exposes My Media in desktop
+navigation and under You. It lists libraries from connected Plex, Jellyfin,
+Emby, Trakt, AniList, and Simkl accounts, preserves server cursors, and opens
+only confirmed catalog identities. Linking accounts, identity repair and
+mapping packs, provider tracking writes, library sharing, and the standalone
+watchlist workflows remain open. Narrow and bundled visual acceptance remains
+open.
+
+Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
+Plex connection. It selected the first visible library, linked the matched
+movie, showed the unmatched title without a link, and loaded page two with the
+fixture's cursor. Checks used a dedicated Agent GUI VM session because the
+isolated desktop pool could not reach the fixture network in the prior two
+increments. Tracking-provider and narrow layouts still need rendered evidence.
