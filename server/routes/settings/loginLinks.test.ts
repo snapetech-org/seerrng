@@ -116,6 +116,33 @@ describe('admin-generated sign-in links', () => {
     assert.equal(replay.status, 403);
   });
 
+  it('leaves a link unused when opened within an existing session', async () => {
+    const { admin, target, response } = await createForFriend();
+    const token = response.body.token as string;
+    const activeSession = await admin.get('/api/v1/auth/me');
+    assert.equal(activeSession.status, 200);
+
+    assert.equal(
+      (await admin.post('/api/v1/auth/login-link').send({ token })).status,
+      409
+    );
+    assert.equal(
+      (await admin.get('/api/v1/auth/me')).body.id,
+      activeSession.body.id
+    );
+
+    const freshSession = request.agent(app);
+    assert.equal(
+      (await freshSession.post('/api/v1/auth/login-link').send({ token }))
+        .status,
+      200
+    );
+    assert.equal(
+      (await freshSession.get('/api/v1/auth/me')).body.id,
+      target.id
+    );
+  });
+
   it('rejects revoked and expired links and prevents non-admin creation', async () => {
     const requester = await loginAs('friend@seerr.dev');
     const unauthorized = await requester
