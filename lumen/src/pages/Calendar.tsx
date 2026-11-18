@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { bookDetailPath } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -105,7 +106,7 @@ function releaseHref(item: Release) {
       return item.mbId ? `/music/${encode(item.mbId)}` : undefined;
     case 'book':
       return item.bookId
-        ? `/book/${encode(item.bookId)}${item.bookFormat === 'audiobook' ? '?f=audio' : ''}`
+        ? bookDetailPath(item.bookId, item.bookFormat ?? 'ebook', item.title)
         : undefined;
     case 'comic':
       return item.comicId ? `/comic/${encode(item.comicId)}` : undefined;

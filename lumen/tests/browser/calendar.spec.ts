@@ -17,6 +17,17 @@ for (const permissions of [2, 32]) {
             truncated: false,
             results: [
               {
+                id: 'readarr:1:11',
+                title: 'Local Audiobook',
+                bookId: 'bookshelf:1:fixture',
+                bookFormat: 'audiobook',
+                mediaType: 'book',
+                dateType: 'book',
+                allDay: true,
+                available: false,
+                startsAt: '2026-01-12T00:00:00.000Z',
+              },
+              {
                 id: 'book:10',
                 title: 'Fixture Audiobook',
                 bookId: 'hc:10',
@@ -46,6 +57,12 @@ for (const permissions of [2, 32]) {
     await expect(
       page.getByRole('link', { name: 'Fixture Audiobook' })
     ).toHaveAttribute('href', '/book/hc%3A10?f=audio');
+    await expect(
+      page.getByRole('link', { name: 'Local Audiobook' })
+    ).toHaveAttribute(
+      'href',
+      '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Audiobook'
+    );
     await expect(
       page.getByText('Some release sources could not be reached.', {
         exact: false,

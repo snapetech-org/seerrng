@@ -10,3 +10,5 @@
 - Bookshelf cards in search and discovery carry the title needed to open the matching edition.
 
 Book Series catalog links also retain the matched Bookshelf title and selected format.
+
+Release Calendar links preserve the Bookshelf title for local book releases.
