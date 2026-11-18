@@ -2695,6 +2695,7 @@ describe('POST /request', () => {
     });
     assert.strictEqual(blocked.status, 403);
     assert.match(blocked.body.message, /movie quota exceeded/i);
+    assert.strictEqual(blocked.body.code, 'REQUEST_QUOTA_EXCEEDED');
 
     const submitted = await owner.post('/request').send({
       mediaType: MediaType.MOVIE,

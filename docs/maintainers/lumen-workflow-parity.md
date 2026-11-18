@@ -2453,3 +2453,17 @@ iPhone 13, Pixel 7, and iPad Pro 11. The manager fixture verifies both
 labels and the existing approve and decline actions. Live moderation
 was outside the check. Evidence is retained under
 `seerrng-lumen-quota-review*` in `/mnt/disks/scratch/task-deliverables/`.
+
+Movie and TV poster quick requests now open an approval sheet after a
+quota denial. Successful requests retain the one-click flow. The user
+must confirm the exception before Lumen submits it. The request API
+returns a machine-readable quota code, and Lumen also recognizes the
+existing movie and series quota messages from older server versions.
+
+The production build, 16 focused browser checks, and two server quota
+contract checks passed. Compared the approval sheet with the existing
+quick-request sheet on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
+The fixture checks that only the explicitly confirmed write carries
+the approval flag. Live provider delivery and moderation were outside
+the check. Evidence is retained under `seerrng-lumen-poster-quota*`
+in `/mnt/disks/scratch/task-deliverables/`.

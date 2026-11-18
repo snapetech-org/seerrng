@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
+  ApiError,
   requestMovie,
   requestSeries,
   titleOf,
@@ -18,6 +19,7 @@ import {
   canManageRequests,
   canRequest4k,
 } from './detail';
+import { useToast } from './toast';
 import { useDialog } from './useDialog';
 
 // Poster quick requests are one click for most people. People who may choose the
@@ -94,17 +96,39 @@ export function useBackCloses(onClose: () => void) {
   }, []);
 }
 
+function isQuotaDenial(error: unknown) {
+  return (
+    error instanceof ApiError &&
+    error.status === 403 &&
+    (error.code === 'REQUEST_QUOTA_EXCEEDED' ||
+      error.message === 'Movie Quota exceeded.' ||
+      error.message === 'Series Quota exceeded.')
+  );
+}
+
+type RequestDone = (
+  is4k: boolean,
+  series?: SeriesRequest,
+  quotaException?: boolean
+) => void;
+
 type SeriesRequest = Awaited<ReturnType<typeof requestSeries>>;
 
 export function RequestSheet({
   it,
   onClose,
   onDone,
+  quotaDenied = false,
 }: {
   it: TitleResult;
   onClose: () => void;
-  onDone: (is4k: boolean, series?: SeriesRequest) => void; // request sent
+  onDone: RequestDone;
+  quotaDenied?: boolean;
 }) {
+  const { user } = useAuth();
+  const canAskApproval = !!user && !canManageRequests(user.permissions);
+  const [denied, setDenied] = useState(quotaDenied);
+  const approval = canAskApproval && denied;
   const tv = it.mediaType === 'tv';
   const asks = useAsksRequestOptions();
   const offers4k = useOffers4k(tv ? 'tv' : 'movie');
@@ -126,11 +150,23 @@ export function RequestSheet({
     const base = asks ? opts : {};
     const body = offers4k && fourK ? { ...base, is4k: true } : base;
     try {
-      const series = tv ? await requestSeries(it.id, 'all', body) : undefined;
-      if (!tv) await requestMovie(it.id, body);
-      onDone(!!body.is4k, series);
+      const options =
+        approval && !body.userId
+          ? { ...body, requestQuotaApproval: true }
+          : body;
+      const series = tv
+        ? await requestSeries(it.id, 'all', options)
+        : undefined;
+      const movie = tv ? undefined : await requestMovie(it.id, options);
+      onDone(
+        !!body.is4k,
+        series,
+        series?.quotaException ?? movie?.quotaException
+      );
     } catch (e) {
-      setErr(friendlyError(e, 'Request failed'));
+      if (!denied && canAskApproval && !body.userId && isQuotaDenial(e))
+        setDenied(true);
+      else setErr(friendlyError(e, 'Request failed'));
       setBusy(false);
     }
   };
@@ -153,8 +189,16 @@ export function RequestSheet({
             <div>
               <h3>Request {titleOf(it)}</h3>
               <span className="sub">
-                {tv ? 'Entire series · ' : ''}
-                {asks ? 'Choose where it goes' : 'Choose the quality'}
+                {tv && (asks || offers4k)
+                  ? 'Entire series · '
+                  : tv
+                    ? 'Entire series'
+                    : null}
+                {asks
+                  ? 'Choose where it goes'
+                  : offers4k
+                    ? 'Choose the quality'
+                    : null}
               </span>
             </div>
           </div>
@@ -194,6 +238,12 @@ export function RequestSheet({
               onReady={setReady}
             />
           )}
+          {approval && (
+            <p className="note">
+              This request exceeds your quota. You can ask a request manager to
+              approve it.
+            </p>
+          )}
           {err && (
             <p className="note" role="alert">
               {err}
@@ -207,9 +257,11 @@ export function RequestSheet({
             >
               {busy
                 ? 'Requesting…'
-                : offers4k && fourK
-                  ? 'Request in 4K'
-                  : 'Request'}
+                : approval
+                  ? 'Request Approval'
+                  : offers4k && fourK
+                    ? 'Request in 4K'
+                    : 'Request'}
             </button>
             <button className="btn btn-tonal" onClick={onClose}>
               Cancel
@@ -224,28 +276,42 @@ export function RequestSheet({
 
 // Wraps a card's one-click request: people who may choose options or request 4K get the
 // sheet, everyone else keeps the one-click request. `done` runs after the sheet's request.
-export function useQuickRequest(
-  it: TitleResult,
-  oneClick: () => void | Promise<void>,
-  done: (is4k: boolean, series?: SeriesRequest) => void
-) {
+export function useQuickRequest(it: TitleResult, done: RequestDone) {
+  const { user } = useAuth();
+  const toast = useToast();
   const choosesOptions = useAsksRequestOptions();
   const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
-  const asks = choosesOptions || offers4k;
-  const [open, setOpen] = useState(false);
-  const close = useCallback(() => setOpen(false), []);
+  const [sheet, setSheet] = useState<'options' | 'approval'>();
+  const close = useCallback(() => setSheet(undefined), []);
   return {
     request: async () => {
-      if (asks) setOpen(true);
-      else await oneClick();
+      if (choosesOptions || offers4k) {
+        setSheet('options');
+        return;
+      }
+      try {
+        const series =
+          it.mediaType === 'tv' ? await requestSeries(it.id) : undefined;
+        if (it.mediaType === 'movie') await requestMovie(it.id);
+        done(false, series);
+      } catch (error) {
+        if (
+          user &&
+          !canManageRequests(user.permissions) &&
+          isQuotaDenial(error)
+        )
+          setSheet('approval');
+        else toast(friendlyError(error, 'Request failed'));
+      }
     },
-    sheet: open ? (
+    sheet: sheet ? (
       <RequestSheet
         it={it}
+        quotaDenied={sheet === 'approval'}
         onClose={close}
-        onDone={(is4k, series) => {
-          setOpen(false);
-          done(is4k, series);
+        onDone={(is4k, series, quotaException) => {
+          close();
+          done(is4k, series, quotaException);
         }}
       />
     ) : null,

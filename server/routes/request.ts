@@ -3281,8 +3281,12 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
       switch (error.constructor) {
         case UserMutationActorUnauthorizedError:
         case RequestPermissionError:
-        case QuotaRestrictedError:
           return next({ status: 403, message: error.message });
+        case QuotaRestrictedError:
+          return res.status(403).json({
+            code: 'REQUEST_QUOTA_EXCEEDED',
+            message: error.message,
+          });
         case QuotaExceptionAlreadyPendingError:
           return next({ status: 409, message: error.message });
         case DuplicateMediaRequestError:

@@ -164,16 +164,18 @@ export default function Soon() {
         <RequestSheet
           it={choosing}
           onClose={() => setChoosing(null)}
-          onDone={(is4k, series) => {
+          onDone={(is4k, series, quotaException) => {
             setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
             toast(
-              choosing.mediaType === 'tv'
-                ? seriesRequestSummary(
-                    choosing.name || 'this series',
-                    series,
-                    is4k
-                  )
-                : `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
+              quotaException
+                ? `Approval requested for ${choosing.title || choosing.name}`
+                : choosing.mediaType === 'tv'
+                  ? seriesRequestSummary(
+                      choosing.name || 'this series',
+                      series,
+                      is4k
+                    )
+                  : `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
             );
             setChoosing(null);
           }}

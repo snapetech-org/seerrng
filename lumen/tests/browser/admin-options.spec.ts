@@ -2830,3 +2830,41 @@ test('a movie over quota offers approval on its detail page', async ({
     },
   ]);
 });
+
+test('a poster quota denial offers an explicit approval request', async ({
+  page,
+}, info) => {
+  await fixtures(page, { permissions: 32 });
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    const body = route.request().postDataJSON();
+    writes.push(body);
+    return route.fulfill(
+      body.requestQuotaApproval
+        ? { status: 201, json: { id: 30, quotaException: true } }
+        : {
+            status: 403,
+            json: {
+              code: 'REQUEST_QUOTA_EXCEEDED',
+              message: 'Movie Quota exceeded.',
+            },
+          }
+    );
+  });
+  await page.goto('/movies');
+  await quickRequest(page, 'Fresh Pick');
+  const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
+  const approve = sheet.getByRole('button', { name: 'Request Approval' });
+  await expect(approve).toBeVisible();
+  expect(writes).toEqual([{ mediaType: 'movie', mediaId: 302 }]);
+  await settleVisuals(page);
+  await page.screenshot({ path: info.outputPath('poster-quota-approval.png') });
+  await approve.click();
+  await expect(
+    page.getByText('Approval requested for Fresh Pick')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { mediaType: 'movie', mediaId: 302 },
+    { mediaType: 'movie', mediaId: 302, requestQuotaApproval: true },
+  ]);
+});

@@ -14,8 +14,6 @@ import {
   MediaStatus,
   plexUrl,
   requestBook,
-  requestMovie,
-  requestSeries,
   titleOf,
   tmdbImg,
   yearOf,
@@ -314,24 +312,14 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   ]
     .filter(Boolean)
     .join(' · ');
-  const go = async () => {
-    try {
-      let message = `Requested ${titleOf(it)}`;
-      if (tv)
-        message = seriesRequestSummary(titleOf(it), await requestSeries(it.id));
-      else await requestMovie(it.id);
-      markRequested();
-      toast(message);
-    } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
-    }
-  };
-  const quick = useQuickRequest(it, go, (is4k, series) => {
+  const quick = useQuickRequest(it, (is4k, series, quotaException) => {
     markRequested(is4k ? '4K Requested' : 'Requested');
     toast(
-      tv
-        ? seriesRequestSummary(titleOf(it), series, is4k)
-        : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
+      quotaException
+        ? `Approval requested for ${titleOf(it)}`
+        : tv
+          ? seriesRequestSummary(titleOf(it), series, is4k)
+          : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
     );
   });
   const [request, busy] = useBusy(quick.request);
@@ -629,24 +617,14 @@ export function FeatCard({
   ]
     .filter(Boolean)
     .join(' · ');
-  const go = async () => {
-    try {
-      let message = `Requested ${titleOf(it)}`;
-      if (tv)
-        message = seriesRequestSummary(titleOf(it), await requestSeries(it.id));
-      else await requestMovie(it.id);
-      setDone('Requested');
-      toast(message);
-    } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
-    }
-  };
-  const quick = useQuickRequest(it, go, (is4k, series) => {
+  const quick = useQuickRequest(it, (is4k, series, quotaException) => {
     setDone(is4k ? '4K Requested' : 'Requested');
     toast(
-      tv
-        ? seriesRequestSummary(titleOf(it), series, is4k)
-        : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
+      quotaException
+        ? `Approval requested for ${titleOf(it)}`
+        : tv
+          ? seriesRequestSummary(titleOf(it), series, is4k)
+          : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
     );
   });
   const [request, busy] = useBusy(quick.request);
