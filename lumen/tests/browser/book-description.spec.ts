@@ -65,7 +65,7 @@ test('an unrecognized rating source cannot be shown as Bookshelf', async ({
     null,
     { average: 4.5, count: 90, source: 'unknown' }
   );
-  await page.goto(`/book/${encodeURIComponent(bareId)}`);
+  await page.goto(`./book/${encodeURIComponent(bareId)}`);
   await expect(page.getByText('0.0/5 · Bookshelf')).toBeVisible();
   await page.waitForLoadState('networkidle');
   await expect(page.getByText('4.5/5 · Bookshelf')).toHaveCount(0);
@@ -76,7 +76,7 @@ test('a book stored under a bare Hardcover id gets its description from the hc: 
   page,
 }) => {
   const lookups = await mocks(page, book(bareId), book(hcId, blurb));
-  await page.goto(`/book/${encodeURIComponent(bareId)}`);
+  await page.goto(`./book/${encodeURIComponent(bareId)}`);
   await expect(page.locator('h1')).toContainText('Wool');
   await expect(page.getByText(blurb)).toBeVisible();
   // exactly one extra lookup, and the page keeps addressing the original id
@@ -92,7 +92,7 @@ test('a book that already has a description makes no second lookup', async ({
     book(bareId, 'Own blurb.'),
     book(hcId, blurb)
   );
-  await page.goto(`/book/${encodeURIComponent(bareId)}`);
+  await page.goto(`./book/${encodeURIComponent(bareId)}`);
   await expect(page.getByText('Own blurb.')).toBeVisible();
   await expect(page.getByText(blurb)).toHaveCount(0);
   expect(lookups).toEqual([bareId]);
@@ -102,13 +102,13 @@ test('an hc: id or a failing second lookup does not retry or break the page', as
   page,
 }) => {
   const lookups = await mocks(page, book(bareId), null);
-  await page.goto(`/book/${encodeURIComponent(bareId)}`);
+  await page.goto(`./book/${encodeURIComponent(bareId)}`);
   await expect(page.locator('h1')).toContainText('Wool');
   await expect(page.locator('p.ov.long')).toHaveCount(0);
   expect(lookups.filter((l) => l === hcId)).toHaveLength(1);
 
   const again = await mocks(page, book(hcId), book(hcId));
-  await page.goto(`/book/${encodeURIComponent(hcId)}`);
+  await page.goto(`./book/${encodeURIComponent(hcId)}`);
   await expect(page.locator('h1')).toContainText('Wool');
   expect(again).toEqual([hcId]);
 });

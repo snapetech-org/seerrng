@@ -1782,6 +1782,12 @@ GitHub API through their content security policy. A separate live request
 returned 20 releases and allowed cross-origin reads. Live browser loading
 and matched visual review remain open.
 
+Live GitHub notes exposed horizontal overflow at 390 pixels. The shared
+long-prose style now wraps long links. A repeat live browser check passed
+at 390 and 1440 pixels. The bundled build passed 20 fixture cases across
+release history and book descriptions. Matched visual review of person
+biographies and the standalone nginx build remains open for the fix.
+
 ### Instance General Settings
 
 The administration menu opens a Lumen General Settings page for the
