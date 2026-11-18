@@ -207,8 +207,9 @@ export default function MovieDetail() {
   };
 
   const playback = videoPlaybackMedia(m.mediaInfo, mode);
+  const selected4k = quality.get('quality') === '4k';
   const fourKPlayback =
-    quality.get('quality') === '4k' && visible4k && !shared4k
+    selected4k && visible4k && !shared4k
       ? mediaLink(
           {
             mediaUrl4k: playback?.mediaUrl4k,
@@ -286,6 +287,11 @@ export default function MovieDetail() {
         ]}
       />
       <div className="dbody">
+        {selected4k && !fourKPlayback?.href && (
+          <p className="note" role="status">
+            4K playback is unavailable.
+          </p>
+        )}
         <div className="dstatus">
           {visibleStatus && (
             <Pill k={visibleStatus.k} icon={visibleStatus.ico}>

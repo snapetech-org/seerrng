@@ -15,3 +15,5 @@ Changing series quality keeps the bookmark’s season anchor and other query par
 Bundled redirects preserve an explicit 4K series selection.
 
 Movie request links prefer the 4K playback copy when it is available to the viewer, including through bundled redirects.
+
+A 4K movie bookmark explains when 4K playback is unavailable while retaining other available playback controls.

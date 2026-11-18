@@ -182,18 +182,18 @@ test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
   const hd = 'https://app.plex.tv/desktop/#!/server/s/details?key=hd';
   const uhd = 'https://app.plex.tv/desktop/#!/server/s/details?key=uhd';
   await fixtures(page, (path) => {
-    if (path === '/movie/60')
+    if (path === '/movie/60' || path === '/movie/61')
       return {
         json: {
-          id: 60,
+          id: Number(path.split('/').at(-1)),
           title: 'Two Copies',
           genres: [],
           mediaInfo: {
             id: 3,
             status: 5,
-            status4k: 5,
+            status4k: path.endsWith('/60') ? 5 : 1,
             mediaUrl: hd,
-            mediaUrl4k: uhd,
+            mediaUrl4k: path.endsWith('/60') ? uhd : undefined,
           },
         },
       };
@@ -203,6 +203,14 @@ test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
     page.getByRole('link', { name: 'Watch 4K on Plex' }).first()
   ).toHaveAttribute('href', uhd);
   await page.goto('/movie/60');
+  await expect(
+    page.getByRole('link', { name: 'Watch on Plex' }).first()
+  ).toHaveAttribute('href', hd);
+  await page.goto('/movie/61?quality=4k');
+  await expect(page.getByText('4K playback is unavailable.')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Watch 4K on Plex' })
+  ).toHaveCount(0);
   await expect(
     page.getByRole('link', { name: 'Watch on Plex' }).first()
   ).toHaveAttribute('href', hd);
