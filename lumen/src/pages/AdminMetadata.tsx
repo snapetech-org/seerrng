@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import MetadataCredentials from '../components/MetadataCredentials';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
@@ -313,6 +314,7 @@ export default function AdminMetadata() {
       {configurations.map((config) => (
         <MetadataSection config={config} key={config.endpoint} />
       ))}
+      <MetadataCredentials />
       <Section title="Bookshelf Catalog">
         <p className="note">
           Hardcover access is configured on the connected BookshelfNG or

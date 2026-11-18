@@ -6389,3 +6389,58 @@ test('Library Path Mappings retains rejected edits and uses the server-normalize
     path: info.outputPath('download-path-mappings.png'),
   });
 });
+
+test('Metadata Credentials preserves untouched credentials and retries replacements', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  const saved = {
+    comicVineApiKey: '********',
+    metronToken: '********',
+    googleBooksApiKey: '',
+    youtubeApiKey: '********',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Metadata settings are temporarily unavailable.' },
+        });
+      if (body.comicVineApiKey) saved.comicVineApiKey = '********';
+      if (body.metronToken === '') saved.metronToken = '';
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/metadata');
+  const comicVine = page.getByLabel('ComicVine API Key', { exact: true });
+  const metron = page.getByLabel('Metron API Token', { exact: true });
+  const youtube = page.getByLabel('YouTube Data API Key', { exact: true });
+  const save = page.getByRole('button', { name: 'Save Metadata Credentials' });
+  await expect(comicVine).toHaveValue('');
+  await expect(metron).toHaveValue('');
+  await expect(youtube).toHaveValue('');
+  await comicVine.fill('fixture-new-key');
+  await page.getByLabel('Remove saved Metron API Token').check();
+  await save.click();
+  await expect(
+    page.getByText('Metadata settings are temporarily unavailable.')
+  ).toBeVisible();
+  await expect(comicVine).toHaveValue('fixture-new-key');
+  await expect(page.getByLabel('Remove saved Metron API Token')).toBeChecked();
+  await save.click();
+  await expect(page.getByText('Metadata credentials saved.')).toBeVisible();
+  await expect(comicVine).toHaveValue('');
+  await expect(page.getByLabel('Remove saved Metron API Token')).toHaveCount(0);
+  await expect(
+    page.getByLabel('Remove saved YouTube Data API Key')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { comicVineApiKey: 'fixture-new-key', metronToken: '' },
+    { comicVineApiKey: 'fixture-new-key', metronToken: '' },
+  ]);
+  await page.screenshot({ path: info.outputPath('metadata-credentials.png') });
+});
