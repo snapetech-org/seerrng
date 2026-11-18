@@ -217,7 +217,25 @@ export default function Following() {
                   return (
                     <li className="set" key={event.id}>
                       <span>
-                        <Link className="go" to={eventHref(event)}>
+                        <Link
+                          className="go"
+                          to={eventHref(event)}
+                          onClick={(click) => {
+                            if (
+                              !event.seen &&
+                              !click.defaultPrevented &&
+                              click.button === 0 &&
+                              !click.metaKey &&
+                              !click.altKey &&
+                              !click.ctrlKey &&
+                              !click.shiftKey
+                            ) {
+                              void save('/follow/events/seen', 'POST', {
+                                ids: [event.id],
+                              });
+                            }
+                          }}
+                        >
                           {event.title}
                         </Link>
                         <small>From {event.follow.subjectLabel}</small>

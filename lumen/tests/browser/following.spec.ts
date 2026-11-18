@@ -5,6 +5,7 @@ test('household users can open Following and manage their own updates', async ({
   baseURL,
 }) => {
   let seen = false;
+  let patchSeen = false;
   let notify = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -14,8 +15,14 @@ test('household users can open Following and manage their own updates', async ({
         json: { id: 1, displayName: 'Reader', permissions: 32 },
       });
     if (path === '/follow/events/seen') {
-      expect(route.request().postDataJSON()).toEqual({ ids: [1] });
-      seen = true;
+      const payload = route.request().postDataJSON();
+      if (payload.ids[0] === 4) {
+        expect(payload).toEqual({ ids: [4] });
+        patchSeen = true;
+      } else {
+        expect(payload).toEqual({ ids: [1] });
+        seen = true;
+      }
       return route.fulfill({ status: 204 });
     }
     if (path === '/follow/2' && route.request().method() === 'PATCH') {
@@ -24,7 +31,9 @@ test('household users can open Following and manage their own updates', async ({
       return route.fulfill({ status: 204 });
     }
     if (path === '/follow/events/count')
-      return route.fulfill({ json: { unseen: seen ? 0 : 1 } });
+      return route.fulfill({
+        json: { unseen: Number(!seen) + Number(!patchSeen) },
+      });
     if (path === '/follow/events')
       return route.fulfill({
         json: {
@@ -49,7 +58,7 @@ test('household users can open Following and manage their own updates', async ({
             {
               id: 4,
               title: 'Translation Patch 2',
-              seen: true,
+              seen: patchSeen,
               follow: {
                 subjectLabel: 'Translation Patch',
                 kind: 'patch-project',
@@ -128,6 +137,11 @@ test('household users can open Following and manage their own updates', async ({
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  await page
+    .getByRole('link', { name: 'Translation Patch 2', exact: true })
+    .click();
+  await expect(page).toHaveURL('./patches/translation?version=v2');
+  await expect.poll(() => patchSeen).toBe(true);
 });
 
 test('direct navigation without request access does not fetch follows', async ({
