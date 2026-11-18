@@ -359,3 +359,75 @@ test('My Media recovers from malformed connected accounts and shelf responses', 
   await error.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByText('Recovered Film')).toBeVisible();
 });
+
+test('My Media saves and resets a private catalog match', async ({ page }) => {
+  let matched = false;
+  const identity = 'trakt:movie:123';
+  const mutations: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const req = route.request();
+    const url = new URL(req.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32 } });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: { accounts: [{ provider: 'trakt' }], mediaServer: null },
+      });
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        json: {
+          items: [
+            {
+              id: identity,
+              title: 'Provider Film',
+              mediaType: 'movie',
+              identityMapped: matched,
+              ...(matched ? { tmdbId: 21 } : {}),
+            },
+          ],
+          hasMore: false,
+        },
+      });
+    if (path === '/search') {
+      expect(url.searchParams.get('query')).toBe('Provider Film');
+      return route.fulfill({
+        json: {
+          results: [{ id: 21, mediaType: 'movie', title: 'Catalog Film' }],
+        },
+      });
+    }
+    if (path === '/integrations/discovery/mappings') {
+      expect(req.postDataJSON()).toEqual({
+        identity,
+        tmdbId: 21,
+        mediaType: 'movie',
+      });
+      mutations.push(req.method());
+      matched = true;
+      return route.fulfill({ json: {} });
+    }
+    if (
+      path ===
+      '/integrations/discovery/mappings/' + encodeURIComponent(identity)
+    ) {
+      mutations.push(req.method());
+      matched = false;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await page.getByRole('button', { name: 'Match Title', exact: true }).click();
+  await page.getByRole('button', { name: 'Search Matches' }).click();
+  await page.getByRole('button', { name: 'Match Catalog Film' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Provider Film' })
+  ).toHaveAttribute('href', '/movie/21');
+  await page.getByRole('button', { name: 'Reset Match' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Match Title', exact: true })
+  ).toBeVisible();
+  expect(mutations).toEqual(['PUT', 'DELETE']);
+});

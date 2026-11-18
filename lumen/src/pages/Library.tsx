@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import IdentityMapping, {
+  type MappingCandidate,
+  videoHref,
+} from '../components/IdentityMapping';
 import LibraryRepair from '../components/LibraryRepair';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import { ServiceNote } from '../components/extra';
@@ -23,12 +27,7 @@ interface Connections {
   mediaServer: { provider: NativeSource; connected: boolean } | null;
 }
 
-interface LibraryItem {
-  id: string;
-  title: string;
-  year?: number;
-  mediaType?: 'movie' | 'tv';
-  tmdbId?: number;
+interface LibraryItem extends MappingCandidate {
   status?: string;
   rating?: number;
   progress?: number;
@@ -58,16 +57,19 @@ type Shelf = keyof typeof SHELF_LABELS;
 const isNative = (source: Source): source is NativeSource =>
   source === 'plex' || source === 'jellyfin' || source === 'emby';
 
-function LibraryRows({ data }: { data: LibraryResult }) {
+function LibraryRows({
+  data,
+  updated,
+}: {
+  data: LibraryResult;
+  updated: () => void;
+}) {
   if (!data.items.length)
     return <p className="note">No titles match this shelf.</p>;
   return (
     <ul className="setlist">
       {data.items.map((item) => {
-        const mapped =
-          (item.mediaType === 'movie' || item.mediaType === 'tv') &&
-          Number.isSafeInteger(item.tmdbId) &&
-          (item.tmdbId ?? 0) > 0;
+        const href = videoHref(item);
         const summary = [
           item.year,
           item.status,
@@ -81,8 +83,8 @@ function LibraryRows({ data }: { data: LibraryResult }) {
         return (
           <li className="set" key={item.id}>
             <div>
-              {mapped ? (
-                <Link className="go" to={`/${item.mediaType}/${item.tmdbId}`}>
+              {href ? (
+                <Link className="go" to={href}>
                   {item.title}
                 </Link>
               ) : (
@@ -90,6 +92,7 @@ function LibraryRows({ data }: { data: LibraryResult }) {
               )}
               {summary && <small>{summary}</small>}
             </div>
+            <IdentityMapping item={item} updated={updated} />
           </li>
         );
       })}
@@ -305,7 +308,7 @@ function LibraryPage({
               This library reached its result limit.
             </p>
           )}
-          <LibraryRows data={data} />
+          <LibraryRows data={data} updated={refresh} />
         </>
       )}
       <nav className="toolbar" aria-label="Library Pages">
