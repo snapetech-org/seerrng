@@ -138,7 +138,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['tunerr-settings-title', 'tunerr'],
       ['reader-settings-title', 'reader-delivery'],
       ['readmeabook-settings-title', 'readmeabook'],
-      ['steamApiKey', 'software-acquisition'],
+      ['steamApiKey', 'software-acquisition#steam-library-import'],
     ]) {
       const bookmark = await request(app).get(
         `/lumen/settings/services?settingsSearchTarget=${target}`

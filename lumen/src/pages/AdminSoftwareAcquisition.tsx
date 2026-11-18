@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
@@ -74,6 +74,13 @@ interface Preview {
 }
 
 function Editor({ initial }: { initial: Settings }) {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash === '#steam-library-import')
+      document
+        .getElementById('steam-library-import')
+        ?.scrollIntoView({ block: 'start' });
+  }, [hash]);
   const [saved, setSaved] = useState(initial);
   const [connections, setConnections] = useState(() => ({
     romarr: draftFor(initial.romarr),
@@ -459,7 +466,7 @@ function Editor({ initial }: { initial: Settings }) {
           </div>
         )}
       </Section>
-      <Section title="Steam Library Import">
+      <Section title="Steam Library Import" id="steam-library-import">
         <div className="setlist">
           <label className="set cfg-row">
             <span>Steam Web API Key</span>

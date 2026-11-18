@@ -5362,6 +5362,28 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('Steam settings bookmark brings the key field into view', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/software-acquisition', (route) =>
+    route.fulfill({
+      json: {
+        romarr: { hostname: '', port: 8080, useSsl: false, baseUrl: '' },
+        questarr: { hostname: '', port: 8080, useSsl: false, baseUrl: '' },
+        steamApiKeyConfigured: true,
+      },
+    })
+  );
+  await page.goto('/admin/software-acquisition#steam-library-import');
+  await expect(
+    page.getByRole('heading', { name: 'Steam Library Import' })
+  ).toBeInViewport();
+  const key = page.getByLabel('Steam Web API Key', { exact: true });
+  await expect(key).toBeInViewport();
+  await expect(key).toHaveValue('');
+});
+
 test('General Settings saves default request quotas without changing other media drafts', async ({
   page,
 }) => {

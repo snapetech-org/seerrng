@@ -853,7 +853,7 @@ export const mountLumenFrontend = (
         [/^tunerr-/, 'tunerr'],
         [/^reader-/, 'reader-delivery'],
         [/^readmeabook-/, 'readmeabook'],
-        [/^steamApiKey$/, 'software-acquisition'],
+        [/^steamApiKey$/, 'software-acquisition#steam-library-import'],
       ] as const;
       const service =
         typeof target === 'string'

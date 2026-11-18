@@ -231,7 +231,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         ['tunerr-settings-title', 'tunerr'],
         ['reader-settings-title', 'reader-delivery'],
         ['readmeabook-settings-title', 'readmeabook'],
-        ['steamApiKey', 'software-acquisition'],
+        ['steamApiKey', 'software-acquisition#steam-library-import'],
       ].map(([searchTarget, service]) => [
         `/settings/services?settingsSearchTarget=${searchTarget}`,
         `/admin/${service}`,
