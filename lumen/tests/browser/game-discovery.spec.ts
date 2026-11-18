@@ -5,6 +5,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
 }) => {
   const discovery: Record<string, unknown>[] = [];
   let saved: Record<string, unknown> | undefined;
+  let invalidSaved = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -40,6 +41,10 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
       saved = { ...request.postDataJSON(), id: 7 };
       return route.fulfill({ json: saved });
     }
+    if (path === '/game-content/saved' && invalidSaved) {
+      invalidSaved = false;
+      return route.fulfill({ json: { results: [null] } });
+    }
     if (path === '/game-content/saved')
       return route.fulfill({ json: { results: saved ? [saved] : [] } });
     if (path === '/game-content/saved/7') {
@@ -51,6 +56,12 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   });
 
   await page.goto('/games/discovery');
+  const invalid = page
+    .getByRole('alert')
+    .filter({ hasText: 'Invalid saved searches response.' });
+  await expect(invalid).toBeVisible();
+  await invalid.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('No saved searches yet.')).toBeVisible();
   await page.getByLabel('Keywords').fill('crafting');
   await page.getByLabel('Themes', { exact: true }).fill('Survival');
   await page.getByLabel('Exclude Themes').fill('Horror');

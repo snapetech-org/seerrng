@@ -56,6 +56,29 @@ export default function GameDiscovery() {
   const saved = useApi<{ results: SavedSearch[] }>(
     canSave ? base + '/saved' : null
   );
+  const savedRows =
+    Array.isArray(saved.data?.results) &&
+    saved.data.results.every(
+      (entry) =>
+        Number.isSafeInteger(entry?.id) &&
+        entry.id > 0 &&
+        typeof entry.name === 'string' &&
+        typeof entry.notify === 'boolean' &&
+        !!entry.filters &&
+        typeof entry.filters === 'object' &&
+        facets.every(
+          ([key]) =>
+            entry.filters[key] === undefined ||
+            Array.isArray(entry.filters[key])
+        ) &&
+        (entry.exclusions?.themes === undefined ||
+          Array.isArray(entry.exclusions.themes))
+    )
+      ? saved.data.results
+      : undefined;
+  const savedError =
+    saved.error ||
+    (saved.data && !savedRows ? 'Invalid saved searches response.' : null);
   const pending = useRef(false);
   const [draft, setDraft] = useState<Draft>({});
   const [name, setName] = useState('');
@@ -344,16 +367,21 @@ export default function GameDiscovery() {
       {canSave && (
         <Section title="Saved Searches">
           <ServiceNote
-            error={saved.error}
+            error={savedError}
             what="saved searches"
             retry={saved.reload}
           />
-          {saved.data?.results?.length === 0 && (
+          {!savedRows && !savedError && (
+            <p className="note" role="status">
+              Loading saved searches…
+            </p>
+          )}
+          {savedRows?.length === 0 && (
             <p className="note">No saved searches yet.</p>
           )}
-          {!!saved.data?.results?.length && (
+          {!!savedRows?.length && (
             <ul className="setlist">
-              {saved.data.results.map((entry) => (
+              {savedRows.map((entry) => (
                 <li className="set" key={entry.id}>
                   <b>{entry.name}</b>
                   <button
