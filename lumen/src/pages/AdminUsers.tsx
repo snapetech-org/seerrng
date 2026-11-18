@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef, useState, type FormEvent } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canViewAllRequests } from '../components/detail';
@@ -9,6 +9,7 @@ import { ServiceNote } from '../components/extra';
 import ImportMediaServerUsers from '../components/ImportMediaServerUsers';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import ManagedLinkedAccounts from '../components/ManagedLinkedAccounts';
+import ManagedLoginLinks from '../components/ManagedLoginLinks';
 import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedPassword from '../components/ManagedPassword';
@@ -318,6 +319,7 @@ export default function AdminUsers() {
   const [profileUser, setProfileUser] = useState<number | undefined>(
     panel === 'main' ? target : undefined
   );
+  const [loginLinksUser, setLoginLinksUser] = useState<number>();
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState('');
@@ -714,6 +716,24 @@ export default function AdminUsers() {
                       )}
                     </>
                   )}
+                {isAdministrator(actor?.permissions) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={loginLinksUser === user.id}
+                      onClick={() =>
+                        setLoginLinksUser((current) =>
+                          current === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Sign-in Links
+                    </button>
+                    {loginLinksUser === user.id && (
+                      <ManagedLoginLinks key={user.id} id={user.id} />
+                    )}
+                  </>
+                )}
                 {canSetUserPassword(user) && (
                   <>
                     <button

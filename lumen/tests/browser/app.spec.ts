@@ -6174,3 +6174,50 @@ test('Managed notifications save for the selected user without touching browser 
   ).toHaveCount(0);
   expect(deviceReads).toBe(0);
 });
+
+test('administrators create and revoke a one-time Lumen sign-in link for a selected user', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let link: { id: number; status: string; expiresAt: string } | undefined;
+  const token = 'A'.repeat(43);
+  await page.route('**/api/v1/settings/login-links?userId=19', (route) =>
+    route.fulfill({ json: link ? [link] : [] })
+  );
+  await page.route('**/api/v1/settings/login-links', (route) => {
+    expect(route.request().postDataJSON()).toEqual({ userId: 19 });
+    link = { id: 42, status: 'active', expiresAt: '2027-03-01T12:30:00Z' };
+    return route.fulfill({ status: 201, json: { ...link, token } });
+  });
+  await page.route('**/api/v1/settings/login-links/42/revoke', (route) => {
+    expect(route.request().method()).toBe('POST');
+    link = { id: 42, status: 'revoked', expiresAt: '2027-03-01T12:30:00Z' };
+    return route.fulfill({ json: link });
+  });
+
+  await page.goto('/admin/users/19');
+  await page
+    .getByRole('button', { name: 'Sign-in Links', exact: true })
+    .click();
+  await expect(page.getByText('No sign-in links yet.')).toBeVisible();
+  await page.getByRole('button', { name: 'Create Sign-in Link' }).click();
+  await expect(page.getByLabel('New sign-in link')).toHaveValue(
+    `${new URL(page.url()).origin}/#loginToken=${token}`
+  );
+  await expect(page.getByRole('button', { name: 'Revoke Link' })).toBeVisible();
+  await page.screenshot({ path: info.outputPath('managed-login-link.png') });
+  await page.getByRole('button', { name: 'Revoke Link' }).click();
+  await expect(
+    page.getByText('Sign-in link revoked.', { exact: true })
+  ).toBeVisible();
+  await expect(page.getByLabel('New sign-in link')).toHaveCount(0);
+  await expect(page.getByText('Revoked', { exact: true })).toBeVisible();
+});
