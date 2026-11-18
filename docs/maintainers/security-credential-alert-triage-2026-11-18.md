@@ -37,4 +37,7 @@ through the comic work JSON response to React paragraph text in Lumen.
 The regular expressions format descriptions for display. Native
 ComicVine detail descriptions pass through the API adapter's DOMPurify
 allowlist before the separate native markup renderer uses them.
-Alert 646 covers the Visual Lab production renderer and remains open.
+Dismissed alert 646 after tracing the Visual Lab iframe document to
+checked-in templates. The expression protects authored script blocks
+from localization changes and restores them afterward. Localized text
+and attributes are HTML-escaped before insertion.
