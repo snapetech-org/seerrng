@@ -72,3 +72,9 @@ calendar items to the corresponding Lumen title screens and distinguishes
 partial results, truncation, and empty months. Coming Soon still serves the
 separate discovery workflow. Calendar presentation and title-link behavior
 need rendered qualification on both deployments.
+
+Headed Chrome at 1440 × 1000 rendered the standalone calendar with a timed TV
+episode, an all-day audiobook, and a partial-source warning. Next Month moved the
+fixture query from November to December 2026. The isolated desktop could not
+reach the preview, so verification used a dedicated Agent GUI VM session.
+Narrow and bundled visual acceptance remains open.
