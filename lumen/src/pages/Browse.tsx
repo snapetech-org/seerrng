@@ -308,17 +308,31 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [showStudios, setShowStudios] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showProviders, setShowProviders] = useState(false);
-  const rawRegion = p.get('watchRegion') ?? '';
-  const defaultRegion = publicSettings?.streamingRegion?.toUpperCase() ?? '';
-  const region = /^[A-Z]{2}$/.test(rawRegion)
-    ? rawRegion
-    : /^[A-Z]{2}$/.test(defaultRegion)
-      ? defaultRegion
-      : 'US';
+  const rawRegion = (p.get('watchRegion') ?? '').toUpperCase();
+  const explicitRegion = /^[A-Z]{2}$/.test(rawRegion) ? rawRegion : '';
   const providerParam = p.get('watchProviders') ?? '';
   const providers = /^\d{1,10}(?:[|,]\d{1,10}){0,49}$/.test(providerParam)
     ? [...new Set(providerParam.split(/[|,]/))]
     : [];
+  const regionProfilePath =
+    user?.id && !explicitRegion && (showProviders || providers.length)
+      ? `/user/${user.id}/settings/main`
+      : null;
+  const regionProfile = useApi<{ streamingRegion?: string | null }>(
+    regionProfilePath,
+    { currentPathOnly: true }
+  );
+  const regionPending =
+    !!regionProfilePath && !regionProfile.data && !regionProfile.error;
+  const region =
+    [
+      explicitRegion,
+      regionProfilePath ? regionProfile.data?.streamingRegion : undefined,
+      publicSettings?.streamingRegion,
+      'US',
+    ]
+      .map((value) => value?.toUpperCase() ?? '')
+      .find((value) => /^[A-Z]{2}$/.test(value)) ?? 'US';
   const excludeProviders = p.get('watchProviderMode') === 'exclude';
   const statusParam = p.get('status') ?? '';
   const status =
@@ -446,7 +460,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     );
   if (libraryFirst) q.set('availability', quality);
   const list = usePaged<TitleResult>(
-    `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
+    regionPending && providers.length
+      ? null
+      : `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
   const filterCatalogRows =
     !libraryFirst && (show === 'have' || show === 'not');
@@ -786,7 +802,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           Streaming Services{providers.length ? ` (${providers.length})` : ''}
         </button>
       </div>
-      {showProviders && (
+      {showProviders && regionPending && (
+        <p className="note" role="status">
+          Loading streaming region…
+        </p>
+      )}
+      {showProviders && !regionPending && (
         <StreamingDiscoveryFilter
           key={`${region}:${providers.join('|')}:${excludeProviders}`}
           kind={kind}

@@ -2204,6 +2204,9 @@ test('series streaming exclusion sends the selected providers and region', async
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/user/*/settings/main', (route) =>
+    route.fulfill({ json: { streamingRegion: 'GB' } })
+  );
   await page.route('**/api/v1/watchproviders/tv?watchRegion=CA', (route) =>
     route.fulfill({
       json: [
@@ -2216,6 +2219,7 @@ test('series streaming exclusion sends the selected providers and region', async
   await page
     .getByRole('button', { name: 'Streaming Services', exact: true })
     .click();
+  await expect(page.getByLabel('Streaming Region')).toHaveValue('GB');
   await page.getByLabel('Streaming Region').fill('ca');
   await page
     .getByLabel('Streaming Services', { exact: true })
@@ -2234,6 +2238,7 @@ test('series streaming exclusion sends the selected providers and region', async
   await query;
   await page.reload();
   await page.getByRole('button', { name: 'Streaming Services (2)' }).click();
+  await expect(page.getByLabel('Streaming Region')).toHaveValue('CA');
   await expect(page.getByLabel('Provider Match')).toHaveValue('exclude');
   await page.getByRole('button', { name: 'Clear Streaming Filter' }).click();
   await expect(page).toHaveURL(/\/series\?genre=18$/);
