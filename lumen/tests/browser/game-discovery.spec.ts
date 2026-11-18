@@ -18,6 +18,8 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
     if (path === '/game-content/discover') {
       const body = request.postDataJSON();
       discovery.push(body);
+      if (discovery.length === 2)
+        return route.fulfill({ json: { available: false, results: [] } });
       return route.fulfill({
         json: {
           available: true,
@@ -59,12 +61,19 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   );
   await page.getByLabel('Keywords').fill('different draft');
   await page.getByRole('button', { name: 'Load More Matches' }).click();
+  await expect(page.getByRole('link', { name: 'First Game' })).toBeVisible();
+  const failure = page
+    .getByRole('alert')
+    .filter({ hasText: 'Game Finder could not reach QuestarrNG.' });
+  await expect(failure).toBeVisible();
+  await failure.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByRole('link', { name: 'Second Game' })).toBeVisible();
   expect(discovery[1]).toEqual({
     filters: { text: 'crafting', themes: ['Survival'] },
     exclusions: { themes: ['Horror'] },
     cursor: 'page-two',
   });
+  expect(discovery[2]).toEqual(discovery[1]);
   await page.getByLabel('Search Name').fill('My Search');
   await page.getByLabel('Notify Me of New Matches').uncheck();
   await page.getByRole('button', { name: 'Save Search' }).click();
@@ -77,7 +86,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   await page.getByLabel('Keywords').fill('changed again');
   await page.getByRole('button', { name: 'Run My Search' }).click();
   await expect(page.getByLabel('Keywords')).toHaveValue('different draft');
-  await expect.poll(() => discovery.length).toBe(3);
+  await expect.poll(() => discovery.length).toBe(4);
   await page.getByRole('button', { name: 'Delete My Search' }).click();
   await page
     .getByRole('alertdialog')

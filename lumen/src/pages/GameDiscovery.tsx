@@ -65,6 +65,10 @@ export default function GameDiscovery() {
   const [notice, setNotice] = useState('');
   const [result, setResult] = useState<Response>();
   const [submitted, setSubmitted] = useState<Search>();
+  const [failedSearch, setFailedSearch] = useState<{
+    criteria: Search;
+    cursor?: string;
+  }>();
   const [remove, setRemove] = useState<SavedSearch>();
   const filters: Filters = { text: draft.text?.trim() || undefined };
   for (const [key] of facets) filters[key] = split(draft[key]);
@@ -87,7 +91,8 @@ export default function GameDiscovery() {
   async function act<T>(
     work: () => Promise<T>,
     done: (value: T) => void,
-    fallback: string
+    fallback: string,
+    onFailure?: () => void
   ) {
     if (pending.current) return;
     const generation = sessionGeneration();
@@ -95,12 +100,15 @@ export default function GameDiscovery() {
     setBusy(true);
     setFailure('');
     setNotice('');
+    setFailedSearch(undefined);
     try {
       const value = await work();
       if (generation === sessionGeneration()) done(value);
     } catch (error) {
-      if (generation === sessionGeneration())
+      if (generation === sessionGeneration()) {
         setFailure(friendlyError(error, fallback));
+        onFailure?.();
+      }
     } finally {
       pending.current = false;
       if (generation === sessionGeneration()) setBusy(false);
@@ -119,7 +127,15 @@ export default function GameDiscovery() {
             cursor,
           }),
         });
-        if (!Array.isArray(response.results))
+        if (response?.available === false)
+          throw new Error('Game Finder could not reach QuestarrNG.');
+        if (
+          response?.available !== true ||
+          !Array.isArray(response.results) ||
+          !response.results.every(
+            (item) => typeof item?.game?.title === 'string'
+          )
+        )
           throw new Error('Invalid game discovery response.');
         return response;
       },
@@ -134,7 +150,8 @@ export default function GameDiscovery() {
             : response
         );
       },
-      'Could not run game discovery.'
+      'Could not run game discovery.',
+      () => setFailedSearch({ criteria, cursor })
     );
   }
 
@@ -266,19 +283,22 @@ export default function GameDiscovery() {
           </div>
         )}
       </form>
-      {failure && (
-        <p className="note" role="alert">
-          {failure}
-        </p>
+      {failure && failedSearch ? (
+        <ServiceNote
+          error={result ? `${failure} Showing the previous matches.` : failure}
+          what={failedSearch.cursor ? 'more games' : 'matching games'}
+          retry={() => void run(failedSearch.criteria, failedSearch.cursor)}
+        />
+      ) : (
+        failure && (
+          <p className="note" role="alert">
+            {failure}
+          </p>
+        )
       )}
       {notice && (
         <p className="note" role="status">
           {notice}
-        </p>
-      )}
-      {result?.available === false && (
-        <p className="note">
-          Game Finder needs a connected QuestarrNG service.
         </p>
       )}
       {result?.available && (
