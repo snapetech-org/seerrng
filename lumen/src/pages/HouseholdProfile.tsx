@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section, shortDate } from '../components/cards';
-import { canViewAllRequests } from '../components/detail';
+import { canManageRequests, canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { useApi } from '../hooks';
@@ -217,6 +217,7 @@ export default function HouseholdProfile() {
     id: number;
     displayName: string;
     createdAt?: string;
+    email?: string;
     userType?: number;
   }>(valid ? `/user/${id}` : null, { currentPathOnly: true });
   const own = user?.id === id;
@@ -226,11 +227,24 @@ export default function HouseholdProfile() {
   const loaded = profile.data?.id === id;
   const joined = loaded ? shortDate(profile.data?.createdAt) : '';
   const canEdit = own || (id !== 1 && (permissions & (2 | 8)) !== 0);
+  const email =
+    loaded && (own || (permissions & (2 | 8)) !== 0)
+      ? profile.data?.email
+      : undefined;
+  const subtitle = [
+    email &&
+      email.toLowerCase() !== profile.data?.displayName.toLowerCase() &&
+      email,
+    joined && `Joined ${joined}`,
+    loaded && canManageRequests(permissions) && `User ID: ${id}`,
+  ]
+    .filter(Boolean)
+    .join(' · ');
   return (
     <>
       <ExtraHeader
         title={loaded ? profile.data!.displayName : 'Household Profile'}
-        sub={joined ? `Joined ${joined}` : undefined}
+        sub={subtitle}
       >
         {loaded && canEdit && (
           <Link

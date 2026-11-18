@@ -13,3 +13,5 @@ Recent Requests also offers its own retry when the profile API returns an incomp
 The You menu links directly to My Profile, including for members without administrative access.
 
 Classic profile bookmarks open My Profile in bundled and standalone Lumen.
+
+Household profiles show account email to the owner and authorized user managers, and show user IDs to request managers.

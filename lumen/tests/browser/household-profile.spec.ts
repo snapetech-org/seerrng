@@ -30,6 +30,7 @@ for (const permissions of [2, 24, 16, 32]) {
               displayName: 'Household Member',
               userType: 1,
               createdAt: '2020-06-15T12:00:00.000Z',
+              email: 'member@example.test',
             },
           });
         case '/user/19/watch_data':
@@ -97,7 +98,13 @@ for (const permissions of [2, 24, 16, 32]) {
     await expect(
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
-    await expect(page.getByText('Joined Jun 15, 2020')).toBeVisible();
+    await expect(page.getByText(/Joined Jun 15, 2020/)).toBeVisible();
+    await expect(page.getByText(/member@example\.test/)).toHaveCount(
+      permissions === 2 || permissions === 24 ? 1 : 0
+    );
+    await expect(page.getByText(/User ID: 19/)).toHaveCount(
+      permissions === 32 ? 0 : 1
+    );
     const edit = page.getByRole('link', { name: 'Edit Settings' });
     if (permissions === 2 || permissions === 24)
       await expect(edit).toHaveAttribute('href', '/admin/users/19');
