@@ -583,3 +583,14 @@ selected date range.
 Standalone Chrome at 1440 × 1000 verified a bookmarked seven-day Waiting
 and Movies view and a date-specific backend error after selecting 14 days.
 Mobile, bundled and native visual comparison remain open.
+
+### Household book format filter increment
+
+The Everyone media list filters Books and audiobooks by Ebook or Audiobook.
+The lifecycle API provides pagination and includes requests covering both
+formats in either selection. The format is bookmarkable and clears when
+switching to a non-book media type.
+
+Standalone Chrome at 1440 × 1000 verified a bookmarked audiobook filter
+and a keyboard switch to ebooks against synthetic data. Native visual
+comparison, mobile, bundled and live providers remain open.

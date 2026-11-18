@@ -126,7 +126,7 @@ async function requestList(path: string): Promise<RequestListPage> {
 async function requestListOnce(path: string): Promise<RequestListPage> {
   const params = new URLSearchParams(path.split('?')[1]);
   const filter = params.get('filter');
-  const requiresTimeline = params.has('timeFrame');
+  const requiresTimeline = params.has('timeFrame') || params.has('bookFormat');
   if (
     requiresTimeline ||
     (statusFilterSupported &&
@@ -1077,8 +1077,15 @@ export default function Requests() {
   const mediaTypes = REQUEST_MEDIA_TYPES.filter(
     ([type]) => type !== 'adult' || canViewAdult
   );
+  const formatParam = p.get('bookFormat');
+  const selectedBookFormat =
+    formatParam === 'ebook' || formatParam === 'audiobook'
+      ? formatParam
+      : 'all';
   const mediaType =
-    mediaTypes.find(([type]) => type === p.get('mediaType'))?.[0] ?? 'all';
+    mediaTypes.find(([type]) => type === p.get('mediaType'))?.[0] ??
+    (selectedBookFormat === 'all' ? 'all' : 'book');
+  const bookFormat = mediaType === 'book' ? selectedBookFormat : 'all';
   const timeFrameParam =
     p.get('timeFrame') === '1m' ? '30d' : p.get('timeFrame');
   const timeFrame =
@@ -1087,9 +1094,12 @@ export default function Requests() {
   const mediaQuery =
     requesterQuery +
     (mediaType === 'all' ? '' : `&mediaType=${mediaType}`) +
-    (timeFrame === 'all' ? '' : `&timeFrame=${timeFrame}`);
+    (timeFrame === 'all' ? '' : `&timeFrame=${timeFrame}`) +
+    (bookFormat === 'all' ? '' : `&bookFormat=${bookFormat}`);
   const setRequestFilter = (key: string, value: string) => {
     const next = new URLSearchParams(p);
+    if (key === 'mediaType' && value !== 'book') next.delete('bookFormat');
+    if (key === 'bookFormat') next.set('mediaType', 'book');
     if (value === 'all') next.delete(key);
     else next.set(key, value);
     setPages(1);
@@ -1108,6 +1118,7 @@ export default function Requests() {
     softwareStatus,
     requester,
     mediaType,
+    bookFormat,
     timeFrame,
   ]);
   const mutationInFlight = useRef(false);
@@ -1544,6 +1555,21 @@ export default function Requests() {
               ))}
             </select>
           </label>
+          {mediaType === 'book' && (
+            <label className="sel">
+              <span className="lbl">Book Format</span>
+              <select
+                value={bookFormat}
+                onChange={(event) =>
+                  setRequestFilter('bookFormat', event.target.value)
+                }
+              >
+                <option value="all">All formats</option>
+                <option value="ebook">Ebook</option>
+                <option value="audiobook">Audiobook</option>
+              </select>
+            </label>
+          )}
           <label className="sel">
             <span className="lbl">Date Added</span>
             <select
