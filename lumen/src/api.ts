@@ -652,7 +652,9 @@ export interface RequestItem {
   watchAheadParentRequestId?: number | null;
   watchAheadEpisodeCount?: number;
   watchAheadUsesUserDefault?: boolean;
+  failureReason?: string | null;
   currentStatus?: {
+    retryable?: boolean;
     stage: string;
     percent: number | null;
     message?: string;
@@ -664,7 +666,11 @@ export interface RequestItem {
   createdAt: string;
   bookFormat?: string;
   preferredEditionId?: string | null;
-  seasons: { seasonNumber: number }[];
+  seasons: {
+    seasonNumber: number;
+    status?: number;
+    episodeNumbers?: number[] | null;
+  }[];
   requestedBy: { id: number; displayName: string };
   media: MediaInfo & {
     mediaType: string;

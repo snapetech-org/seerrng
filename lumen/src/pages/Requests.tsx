@@ -43,6 +43,7 @@ import {
 } from '../extras';
 import { usePullToRefresh } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { canRetryRequest, requestFailureMessage } from '../requestRetry';
 import {
   onSessionReset,
   sessionGeneration,
@@ -894,6 +895,7 @@ export default function Requests() {
     setPages(1);
     setOthers(null);
   }, [show, everyone]);
+  const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
@@ -1134,6 +1136,8 @@ export default function Requests() {
     id: number,
     how: 'approve' | 'decline' | 'retry' | 'remove'
   ) => {
+    if (mutationInFlight.current) return;
+    mutationInFlight.current = true;
     setActing(id);
     try {
       if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
@@ -1150,12 +1154,13 @@ export default function Requests() {
     } catch (e) {
       toast(friendlyError(e, 'Couldn’t update the request'));
     } finally {
+      mutationInFlight.current = false;
       setActing(null);
     }
   };
   const cancel = async (id: number) => {
-    // a second tap while the first is on its way would fail ("not found") after it worked
-    if (acting === id) return;
+    if (mutationInFlight.current) return;
+    mutationInFlight.current = true;
     setActing(id);
     try {
       // game requests (negative ids here) are withdrawn through their own endpoint
@@ -1171,6 +1176,7 @@ export default function Requests() {
     } catch (e) {
       toast(friendlyError(e, 'Couldn’t cancel'));
     } finally {
+      mutationInFlight.current = false;
       setActing(null);
     }
   };
@@ -1299,6 +1305,7 @@ export default function Requests() {
       <div className="rqlist">
         {list.map((x) => {
           const st = state(x, serverName);
+          const detail = requestFailureMessage(x.r) ?? st.detail;
           return (
             <div className="rq" key={x.r.id}>
               <div className={`art ${x.cover ? 'cover' : ''}`}>
@@ -1351,16 +1358,26 @@ export default function Requests() {
                       Episode Queue · {x.r.watchAheadEpisodeCount} ahead
                     </span>
                   ) : null}
-                  {st.detail && <span className="d">{st.detail}</span>}
+                  {detail && <span className="d">{detail}</span>}
                 </div>
                 <div className="rqa">
                   {canEditEpisodeQueue(x.r, user?.permissions) && (
                     <button
                       className="btn btn-sm btn-quiet"
-                      disabled={acting === x.r.id}
+                      disabled={acting !== null}
                       onClick={() => setQueueEdit(x)}
                     >
                       Episode Queue
+                    </button>
+                  )}
+                  {canRetryRequest(x.r, user, manage) && (
+                    <button
+                      className="btn btn-sm btn-tonal"
+                      disabled={acting !== null}
+                      onClick={() => decide(x.r.id, 'retry')}
+                    >
+                      <Icon name="refresh" size="sm" />
+                      Retry
                     </button>
                   )}
                   {everyone && manage ? (
@@ -1369,7 +1386,7 @@ export default function Requests() {
                         <>
                           <button
                             className="btn btn-sm btn-ok"
-                            disabled={acting === x.r.id}
+                            disabled={acting !== null}
                             onClick={() => decide(x.r.id, 'approve')}
                           >
                             <Icon name="check" size="sm" />
@@ -1377,7 +1394,7 @@ export default function Requests() {
                           </button>
                           <button
                             className="btn btn-sm btn-quiet"
-                            disabled={acting === x.r.id}
+                            disabled={acting !== null}
                             onClick={() =>
                               setConfirming({
                                 id: x.r.id,
@@ -1391,21 +1408,11 @@ export default function Requests() {
                           </button>
                         </>
                       )}
-                      {x.r.status === 4 && (
-                        <button
-                          className="btn btn-sm btn-tonal"
-                          disabled={acting === x.r.id}
-                          onClick={() => decide(x.r.id, 'retry')}
-                        >
-                          <Icon name="refresh" size="sm" />
-                          Retry
-                        </button>
-                      )}
                       {(x.r.status === 1 || x.r.status === 4) &&
                         (x.r.type === 'movie' || x.r.type === 'tv') && (
                           <button
                             className="btn btn-sm btn-quiet"
-                            disabled={acting === x.r.id}
+                            disabled={acting !== null}
                             onClick={() => setEditing(x)}
                           >
                             Change
@@ -1413,7 +1420,7 @@ export default function Requests() {
                         )}
                       <button
                         className="btn btn-sm btn-quiet"
-                        disabled={acting === x.r.id}
+                        disabled={acting !== null}
                         onClick={() =>
                           setConfirming({
                             id: x.r.id,
@@ -1440,7 +1447,7 @@ export default function Requests() {
                   ) : !everyone && x.r.status === 1 ? (
                     <button
                       className="btn btn-sm btn-quiet"
-                      disabled={acting === x.r.id}
+                      disabled={acting !== null}
                       onClick={() =>
                         setConfirming({
                           id: x.r.id,

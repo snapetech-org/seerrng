@@ -433,3 +433,17 @@ a synthetic API, including mismatched confirmation and successful POSTs.
 The server tests verified bundled link routing and native and external
 fallback. Live SMTP, mobile and bundled browser rendering, and native
 visual comparison remain open.
+
+### Request retry increment
+
+Lumen offers retry on personal and Everyone request rows using the current
+lifecycle stage, requester identity, media permission, and retry eligibility.
+Request managers can also reapply an eligible Episode Queue start. Failed
+rows explain the server's bounded dispatch and TVDB failure reasons. A
+TVDB season mismatch requires manual recovery in native SeerrNG.
+
+Headed Chrome at 1440 × 1000 verified the standalone personal request list
+using a synthetic API. An eligible TV request changed from Failed to
+Searching after Retry. An owner season mismatch and another user's request
+both lacked the Retry action. Native baseline comparison, mobile, bundled,
+other media and quality combinations, and live service checks remain open.
