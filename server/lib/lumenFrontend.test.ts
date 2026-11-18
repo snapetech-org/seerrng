@@ -265,6 +265,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/share?title=A%26B&text=Example%0ATitle&url=https%3A%2F%2Fexample.com&ignored=1',
         '/lumen/share?title=A%26B&text=Example%0ATitle&url=https%3A%2F%2Fexample.com',
       ],
+      ['/share?text=Example&image=1', '/lumen/share?text=Example&image=1'],
       ['/share?title=one&title=two&text=three', '/lumen/share?text=three'],
 
       ['/discover/games', '/lumen/games'],

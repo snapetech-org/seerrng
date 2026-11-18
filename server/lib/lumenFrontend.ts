@@ -234,6 +234,10 @@ function workflowDeepLink(req: Request): string | undefined {
     if (value.length <= limit) query.set(key, value);
   }
 
+  if (destination === '/share' && req.query.image === '1') {
+    query.set('image', '1');
+  }
+
   if (
     destination === '/game-library' &&
     (req.query.steam === 'connected' || req.query.steam === 'error')

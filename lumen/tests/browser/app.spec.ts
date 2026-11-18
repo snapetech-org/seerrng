@@ -3876,3 +3876,34 @@ test('installed Share Target hands text and image to Share once', async ({
     )
   ).toBe(0);
 });
+
+test('bundled Share consumes a native image handoff', async ({ page }) => {
+  const base = process.env.LUMEN_TEST_SHARE_BASE;
+  test.skip(base !== '/lumen/', 'Native shares use the bundled deployment');
+  await fixtures(page);
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true, image: true, maxImageBytes: 100 } })
+  );
+  await page.goto('/lumen/share');
+  await page.evaluate(async () => {
+    const cache = await caches.open('seerrng-share-inbox');
+    await cache.put(
+      '/__share-inbox/image',
+      new Response('fixture', {
+        headers: { 'Content-Type': 'image/png' },
+      })
+    );
+  });
+  await page.goto('/lumen/share?text=Native+share&image=1');
+  await expect(page.getByLabel('Titles, links, or ISBNs')).toHaveValue(
+    'Native share'
+  );
+  await expect(page.getByText('shared-image', { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/lumen\/share\?text=Native\+share$/);
+  expect(
+    await page.evaluate(
+      async () =>
+        (await (await caches.open('seerrng-share-inbox')).keys()).length
+    )
+  ).toBe(0);
+});

@@ -8,10 +8,11 @@ import {
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { embedded } from '../deployment';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { canDetectBarcodes, detectBarcodes } from '../shareBarcode';
-import { takeSharedForm } from '../shareInbox';
+import { takeNativeSharedImage, takeSharedForm } from '../shareInbox';
 
 import {
   requestBodyForCandidate,
@@ -128,9 +129,11 @@ export default function Share() {
     }
   }
 
-  const receiveShare = useEffectEvent(async (id: string) => {
+  const receiveShare = useEffectEvent(async (id: string, native: boolean) => {
     try {
-      const form = await takeSharedForm(id);
+      const form = await (native
+        ? takeNativeSharedImage()
+        : takeSharedForm(id));
       if (!form) {
         setError(
           'This share could not be opened. Try sharing again or paste it here.'
@@ -163,17 +166,16 @@ export default function Share() {
   });
 
   useEffect(() => {
-    if (
-      !hash.startsWith('#share=') ||
-      !caps.data ||
-      busy ||
-      consumed.current === hash
-    )
-      return;
-    consumed.current = hash;
-    navigate({ pathname, search }, { replace: true });
-    void receiveShare(hash.slice('#share='.length));
-  }, [hash, pathname, search, navigate, caps.data, busy]);
+    const shareTarget = hash.startsWith('#share=');
+    const native = embedded && params.get('image') === '1';
+    const handoff = shareTarget ? hash : native ? search : '';
+    if (!handoff || !caps.data || busy || consumed.current === handoff) return;
+    consumed.current = handoff;
+    const next = new URLSearchParams(params);
+    if (native) next.delete('image');
+    navigate({ pathname, search: next.toString() }, { replace: true });
+    void receiveShare(hash.slice('#share='.length), !shareTarget && native);
+  }, [hash, pathname, params, search, navigate, caps.data, busy]);
 
   const selected = (result?.groups ?? []).flatMap((group, index) => {
     const candidate = group.candidates[choices[index]];
