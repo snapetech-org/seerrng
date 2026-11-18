@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
@@ -147,6 +148,20 @@ function App() {
                 }
               >
                 <Blocklist />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/collection/:id"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading collection…
+                  </p>
+                }
+              >
+                <CollectionDetail />
               </Suspense>
             }
           />

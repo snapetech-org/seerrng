@@ -254,3 +254,18 @@ previous build. The synthetic API confirmed an empty 201 add response and
 204 removal, and the UI switched both the request button and navigation after
 readback. Other media, mobile, and bundled visual acceptance remain open.
 Collection actions and automatic rule setup remain open.
+
+### Movie collection and collection Blocklist increment
+
+Movie details and All or Movies search results open a Lumen collection page
+in both route configurations. The page uses native collection membership and
+release ordering. Member cards retain individual request and Blocklist
+state. Managers can confirm collection-wide Blocklist changes using the
+existing batch endpoint, with a warning that unblocking also removes
+individual member entries.
+
+Headed Chrome at 1440 × 1000 verified standalone search, collection entry,
+both confirmed batch actions, and member and navigation state readback
+against synthetic data. The rendered native comparison, mobile and bundled
+acceptance, bulk requests, progressive collection queue, and collection
+playback controls remain open.

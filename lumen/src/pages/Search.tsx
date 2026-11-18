@@ -8,11 +8,12 @@ import {
 import {
   ApiError,
   api,
+  tmdbImg,
   type BookResult,
   type Paged,
   type TitleResult,
 } from '../api';
-import { BookCard, Section, TitleCard } from '../components/cards';
+import { BookCard, Cover, Section, TitleCard } from '../components/cards';
 import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
@@ -36,6 +37,13 @@ const SCOPES = {
   comic: 'Comics/Manga',
 } as const;
 type Scope = keyof typeof SCOPES;
+type CollectionResult = {
+  id: number;
+  mediaType: 'collection';
+  title: string;
+  posterPath?: string;
+};
+type VideoSearchResult = TitleResult | CollectionResult;
 
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
@@ -43,7 +51,7 @@ export default function Search() {
   const { prefs } = usePrefs();
   const [q, setQ] = useState(p.get('q') || '');
   const f = ((p.get('f') as Scope) in SCOPES ? p.get('f') : 'all') as Scope;
-  const [titles, setTitles] = useState<TitleResult[] | null>(null);
+  const [titles, setTitles] = useState<VideoSearchResult[] | null>(null);
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [comics, setComics] = useState<ComicWork[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
@@ -133,7 +141,7 @@ export default function Search() {
         : null;
       const [tr, ...brs] = await Promise.all([
         wantTitles
-          ? api<Paged<TitleResult>>(
+          ? api<Paged<VideoSearchResult>>(
               `/search?query=${encodeURIComponent(term)}&page=1`
             ).catch(failure)
           : null,
@@ -155,12 +163,13 @@ export default function Search() {
       const foundComics = cr?.results || [];
       const foundTitles = (tr?.results || []).filter((r) =>
         f === 'movie'
-          ? r.mediaType === 'movie'
+          ? r.mediaType === 'movie' || r.mediaType === 'collection'
           : f === 'tv'
             ? r.mediaType === 'tv'
             : r.mediaType === 'movie' ||
               r.mediaType === 'tv' ||
-              r.mediaType === 'person'
+              r.mediaType === 'person' ||
+              r.mediaType === 'collection'
       );
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
@@ -223,9 +232,18 @@ export default function Search() {
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
   const people =
-    f === 'all' ? (titles || []).filter((t) => t.mediaType === 'person') : [];
-  const movies = (titles || []).filter((t) => t.mediaType === 'movie');
-  const shows = (titles || []).filter((t) => t.mediaType === 'tv');
+    f === 'all'
+      ? (titles || []).filter((t): t is TitleResult => t.mediaType === 'person')
+      : [];
+  const collections = (titles || []).filter(
+    (t) => t.mediaType === 'collection'
+  );
+  const movies = (titles || []).filter(
+    (t): t is TitleResult => t.mediaType === 'movie'
+  );
+  const shows = (titles || []).filter(
+    (t): t is TitleResult => t.mediaType === 'tv'
+  );
   const bookCards = books || [];
   const comicCards = comics || [];
   const nothing =
@@ -233,6 +251,7 @@ export default function Search() {
     books !== null &&
     comics !== null &&
     !movies.length &&
+    !collections.length &&
     !shows.length &&
     !people.length &&
     !bookCards.length &&
@@ -395,6 +414,36 @@ export default function Search() {
             <div className="grid">
               {movies.map((m) => (
                 <TitleCard key={m.id} it={m} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!collections.length && (
+          <Section title="Collections">
+            <div className="grid">
+              {collections.map((collection) => (
+                <div className="poster" key={collection.id}>
+                  <div className="art">
+                    <Cover
+                      src={tmdbImg(collection.posterPath)}
+                      title={collection.title}
+                      icon="film"
+                    />
+                    <Link
+                      className="hit"
+                      to={`/collection/${collection.id}`}
+                      aria-label={collection.title}
+                    />
+                  </div>
+                  <Link
+                    className="t"
+                    to={`/collection/${collection.id}`}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    {collection.title}
+                  </Link>
+                </div>
               ))}
             </div>
           </Section>

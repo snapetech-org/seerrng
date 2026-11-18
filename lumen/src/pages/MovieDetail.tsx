@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   mediaLink,
   MediaStatus,
@@ -257,7 +257,14 @@ export default function MovieDetail() {
                 ],
                 ['Director', director],
                 ['Rated', cert(m)],
-                ['Collection', m.collection?.name],
+                [
+                  'Collection',
+                  m.collection && (
+                    <Link to={`/collection/${m.collection.id}`}>
+                      {m.collection.name}
+                    </Link>
+                  ),
+                ],
                 [
                   '4K',
                   pub?.movie4kEnabled

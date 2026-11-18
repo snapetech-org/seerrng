@@ -107,7 +107,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =
-    /^\/(movie|tv|book|music|artist|comic|magazine|game|sportarr|adult)\/./.test(
+    /^\/(movie|tv|book|music|artist|comic|magazine|game|sportarr|adult|collection)\/./.test(
       loc.pathname
     );
   // the top search stays in the section you're in (Audiobooks searches audiobooks), like the phone pages

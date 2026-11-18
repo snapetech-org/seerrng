@@ -144,7 +144,7 @@ server {
   }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG
-  location ~ ^/(settings|users|profile|collection|discover|setup|swipe|recordings|share|identify|track-requests|book-series|author|software|franchise|collections|associations|resetpassword)(/|$) {
+  location ~ ^/(settings|users|profile|discover|setup|swipe|recordings|share|identify|track-requests|book-series|author|software|franchise|collections|associations|resetpassword)(/|$) {
     return 302 ${SEERR_FULL_URL}$request_uri;
   }
 
