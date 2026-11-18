@@ -294,7 +294,7 @@ function requestDownloads(r: RequestItem) {
   );
 }
 
-function state(
+export function requestRowStatus(
   x: Row,
   serverName = 'Plex',
   live?: ReadonlyMap<string, LiveDownload>,
@@ -1446,18 +1446,20 @@ export default function Requests() {
   }, [user, browseRequests, tick, extras.games.length]);
 
   const all = rows || [];
-  const act = all.filter((x) => state(x, serverName).active);
+  const act = all.filter((x) => requestRowStatus(x, serverName).active);
   const ready = all.filter(
-    (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
+    (x) =>
+      requestRowStatus(x, serverName).k === 'ok' &&
+      !requestRowStatus(x, serverName).active
   );
   const list = ownSoftware
     ? others || []
     : everyone
       ? (others || []).filter((row) =>
           show === 'available'
-            ? state(row, serverName).k === 'ok' &&
-              !state(row, serverName).active
-            : show !== 'processing' || state(row, serverName).active
+            ? requestRowStatus(row, serverName).k === 'ok' &&
+              !requestRowStatus(row, serverName).active
+            : show !== 'processing' || requestRowStatus(row, serverName).active
         )
       : tab === 'ready'
         ? ready
@@ -1476,7 +1478,7 @@ export default function Requests() {
   const shown = browseRequests ? others : rows;
 
   // keep download percentages moving while anything shown is downloading
-  const busy = list.some((x) => state(x, serverName).pct != null);
+  const busy = list.some((x) => requestRowStatus(x, serverName).pct != null);
   const [poll, setPoll] = useState(0);
   useEffect(() => {
     if (!busy) return;
@@ -1515,7 +1517,9 @@ export default function Requests() {
       !everyone || (priorityOrder && (show === 'all' || show === 'processing'));
     const gameBusy =
       !everyone &&
-      current.some((x) => x.r.id < 0 && state(x, serverName).pct != null);
+      current.some(
+        (x) => x.r.id < 0 && requestRowStatus(x, serverName).pct != null
+      );
     Promise.all([
       processingRequests(everyone ? mediaQuery : `&requestedBy=${user.id}`),
       gameBusy
@@ -1530,7 +1534,9 @@ export default function Requests() {
         const gameById = new Map(games.map((g) => [g.r.id, g]));
         const finished = current.some(
           (x) =>
-            x.r.id > 0 && state(x, serverName).pct != null && !byId.has(x.r.id)
+            x.r.id > 0 &&
+            requestRowStatus(x, serverName).pct != null &&
+            !byId.has(x.r.id)
         );
         const started =
           withStarted &&
@@ -1610,7 +1616,7 @@ export default function Requests() {
   };
 
   const renderRequestActions = (x: Row, moderate: boolean) => {
-    const st = state(x, serverName, liveDownloads, allowRawHashes);
+    const st = requestRowStatus(x, serverName, liveDownloads, allowRawHashes);
     return (
       <>
         {canEditEpisodeQueue(x.r, user?.permissions) && (
@@ -2000,7 +2006,12 @@ export default function Requests() {
       )}
       <div className="rqlist">
         {list.map((x) => {
-          const st = state(x, serverName, liveDownloads, allowRawHashes);
+          const st = requestRowStatus(
+            x,
+            serverName,
+            liveDownloads,
+            allowRawHashes
+          );
           const detail = requestFailureMessage(x.r) ?? st.detail;
           const artwork = artUrl(x.art);
           return (

@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, tmdbImg, type RequestItem } from '../api';
-import { isAdministrator, useAuth } from '../auth';
+import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import AvatarContent from '../components/AvatarContent';
 import { Section, shortDate } from '../components/cards';
-import { canManageRequests, canViewAllRequests } from '../components/detail';
+import {
+  canManageRequests,
+  canViewAllRequests,
+  Pill,
+} from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-import { describeAll } from './Requests';
+import { describeAll, requestRowStatus } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
 
 const avatarTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -88,6 +92,7 @@ function ProfilePictureUpload({
 }
 
 function RecentRequests({ id, own }: { id: number; own: boolean }) {
+  const serverName = useMediaServerName();
   const requestScope = own ? 'tab=all' : `requestedBy=${id}`;
   const requests = useApi<{ results: RequestItem[] }>(
     `/user/${id}/requests?take=10&skip=0`,
@@ -137,16 +142,23 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
       )}
       {results && !!rows?.length && (
         <ul className="setlist">
-          {rows.map(({ r, title }) => (
-            <li className="set" key={r.id}>
-              <Link
-                className="go"
-                to={`/requests?${requestScope}&requestId=${r.id}`}
-              >
-                {title}
-              </Link>
-            </li>
-          ))}
+          {rows.map((row) => {
+            const { r, title } = row;
+            const status = requestRowStatus(row, serverName);
+            return (
+              <li className="set" key={r.id}>
+                <Link
+                  className="go"
+                  to={`/requests?${requestScope}&requestId=${r.id}`}
+                >
+                  {title}
+                </Link>
+                <Pill k={status.k} icon={status.ico}>
+                  {status.word}
+                </Pill>
+              </li>
+            );
+          })}
         </ul>
       )}
       <Link className="btn btn-quiet btn-sm" to={`/requests?${requestScope}`}>

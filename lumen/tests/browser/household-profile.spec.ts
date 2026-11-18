@@ -91,6 +91,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
                 {
                   id: 3,
                   type: 'movie',
+                  status: 1,
                   media: { tmdbId: 24, mediaType: 'movie' },
                 },
               ],
@@ -168,6 +169,9 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
       expect(fetched).not.toContain('/user/19/watchlist');
     }
     if (canReadRequests) {
+      await expect(
+        page.getByText('Waiting for approval', { exact: true })
+      ).toBeVisible();
       await page.getByRole('link', { name: 'Requested Film' }).click();
       await expect(page).toHaveURL('/requests?requestedBy=19&requestId=3');
       const history = page.getByRole('dialog', { name: 'Request history' });

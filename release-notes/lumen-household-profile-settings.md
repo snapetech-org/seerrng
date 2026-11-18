@@ -21,3 +21,5 @@ Household profiles show supported profile pictures through the SeerrNG avatar pr
 Local account owners can upload a JPEG, PNG, or WebP profile picture from My Profile.
 
 The signed-in account picture also appears in Lumen navigation and refreshes after an upload.
+
+Recent Requests on household profiles shows each request’s status before opening its history.
