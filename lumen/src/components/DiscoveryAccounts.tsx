@@ -296,6 +296,12 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
     );
   }
 
+  const startConnection = {
+    trakt: startTrakt,
+    anilist: startAniList,
+    simkl: startSimkl,
+  };
+
   return (
     <Section title="Tracking Accounts">
       <ServiceNote
@@ -333,16 +339,26 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
                 <input
                   type="checkbox"
                   checked={allowWrites}
-                  disabled={busy || !!simkl}
+                  disabled={busy || !!simkl || !!authorization}
                   onChange={(event) =>
                     void update(provider, event.target.checked)
                   }
                 />
                 Allow writes to {providerNames[provider]}
               </label>
+              {config.data?.[provider]?.configured &&
+                reconnect !== provider && (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    disabled={busy || !!simkl || !!authorization}
+                    onClick={() => void startConnection[provider]()}
+                  >
+                    Reconnect {providerNames[provider]}
+                  </button>
+                )}
               <button
                 className="btn btn-quiet btn-sm"
-                disabled={busy || !!simkl}
+                disabled={busy || !!simkl || !!authorization}
                 onClick={() => {
                   setFailure('');
                   setDisconnect(provider);
@@ -354,7 +370,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
           ))}
         </ul>
       )}
-      {canConnect('anilist') &&
+      {(authorization || canConnect('anilist')) &&
         !simkl &&
         (authorization ? (
           <form

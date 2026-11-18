@@ -9,3 +9,5 @@ breaking: false
 Open Linked Accounts in Lumen to connect or disconnect Trakt, AniList, and
 Simkl, and choose whether SeerrNG may write to each account. Trakt connections
 use the configured HTTPS application address.
+You can reconnect a provider from its account row. The existing connection is
+replaced after authorization succeeds.

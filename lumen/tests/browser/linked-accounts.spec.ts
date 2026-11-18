@@ -194,7 +194,7 @@ test('AniList connects through a code submitted in the request body', async ({
   page,
 }) => {
   const base = '/integrations/discovery';
-  let connected = false;
+  let username = '';
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -208,11 +208,11 @@ test('AniList connects through a code submitted in the request body', async ({
     if (path === base + '/accounts')
       return route.fulfill({
         json: {
-          accounts: connected
+          accounts: username
             ? [
                 {
                   provider: 'anilist',
-                  username: 'Ani Viewer',
+                  username,
                   allowWrites: false,
                 },
               ]
@@ -229,7 +229,7 @@ test('AniList connects through a code submitted in the request body', async ({
     if (path === base + '/accounts/anilist/complete') {
       expect(request.method()).toBe('POST');
       expect(request.postDataJSON()).toEqual({ code: 'fixture-code' });
-      connected = true;
+      username = username ? 'Replacement Viewer' : 'Ani Viewer';
       return route.fulfill({ json: { status: 'authorized' } });
     }
     return route.fulfill({ json: {} });
@@ -254,6 +254,14 @@ test('AniList connects through a code submitted in the request body', async ({
   await expect(page.getByText('Ani Viewer')).toBeVisible();
   await expect(code).toHaveCount(0);
   expect(new URL(page.url()).search).toBe('');
+  await page.getByRole('button', { name: 'Reconnect AniList' }).click();
+  await expect(page.getByText('Ani Viewer')).toBeVisible();
+  await code.fill('fixture-code');
+  await page
+    .getByRole('button', { name: 'Complete AniList Connection' })
+    .click();
+  await expect(page.getByText('Replacement Viewer')).toBeVisible();
+  await expect(code).toHaveCount(0);
 });
 
 test('Simkl stops polling on cancel and links after provider approval', async ({
