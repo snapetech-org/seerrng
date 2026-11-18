@@ -43,6 +43,7 @@ export function GenrePicker({
   exclusion,
   max,
   defaultOpen = false,
+  labels,
 }: {
   options: GenreOption[];
   picked: string[];
@@ -51,6 +52,7 @@ export function GenrePicker({
   exclusion?: { active: boolean; toggle: () => void };
   max?: number;
   defaultOpen?: boolean;
+  labels?: { title: string; all: string };
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const phone = usePhone();
@@ -59,7 +61,9 @@ export function GenrePicker({
   const pop = useRef<HTMLDivElement>(null);
   const refocus = useRef(false);
   const [alignRight, setAlignRight] = useState(false);
-  const summary = genreSummary(picked, options);
+  const title = labels?.title ?? 'Genres';
+  const allLabel = labels?.all ?? 'All genres';
+  const summary = picked.length ? genreSummary(picked, options) : allLabel;
   const text =
     exclusion?.active && picked.length ? `Exclude ${summary}` : summary;
   const close = (focusButton: boolean) => {
@@ -116,7 +120,7 @@ export function GenrePicker({
   const body = (
     <>
       <div className="gp-head">
-        <h3>Genres</h3>
+        <h3>{title}</h3>
         {/* always in place: a line appearing after the first tick moved the list under the finger */}
         {
           <span className="gp-count" aria-hidden={!picked.length}>
@@ -156,9 +160,9 @@ export function GenrePicker({
           </button>
         </div>
       )}
-      <div className="gp-list" role="group" aria-label="Genres">
+      <div className="gp-list" role="group" aria-label={title}>
         <Opt on={!picked.length} onClick={() => onChange([])} all>
-          All genres
+          {allLabel}
         </Opt>
         {options.map((o) => {
           const on = picked.includes(o.value);
@@ -194,7 +198,7 @@ export function GenrePicker({
         className={`sel gp-btn ${picked.length ? 'on' : ''}`}
         aria-haspopup="dialog"
         aria-expanded={open}
-        aria-label={`Genres: ${text}`}
+        aria-label={`${title}: ${text}`}
         onClick={() => (open ? close(false) : setOpen(true))}
       >
         <span className="gp-text">{text}</span>
@@ -204,13 +208,15 @@ export function GenrePicker({
           ref={pop}
           className={`gp-pop ${alignRight ? 'right' : ''}`}
           role="dialog"
-          aria-label="Genres"
+          aria-label={title}
         >
           {body}
         </div>
       )}
       {open && phone && (
-        <GenreSheet onClose={() => close(true)}>{body}</GenreSheet>
+        <GenreSheet title={title} onClose={() => close(true)}>
+          {body}
+        </GenreSheet>
       )}
     </div>
   );
@@ -248,9 +254,11 @@ function Opt({
 // the phone sheet: the same sheet the request dialogs use (focus kept inside, Escape and the
 // scrim close it)
 function GenreSheet({
+  title,
   onClose,
   children,
 }: {
+  title: string;
   onClose: () => void;
   children: ReactNode;
 }) {
@@ -264,7 +272,7 @@ function GenreSheet({
         className="sheet gp-sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Genres"
+        aria-label={title}
       >
         <div className="grab" />
         <div className="gp-body">{children}</div>

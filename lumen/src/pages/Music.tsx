@@ -15,6 +15,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
 import WatchlistButton from '../components/WatchlistButton';
@@ -45,12 +46,26 @@ const SORTS = [
   ['popular.month.asc', 'This month (ascending)'],
   ['popular.year.asc', 'This year (ascending)'],
 ] as const;
-const TYPES = [
-  ['', 'Any'],
-  ['album', 'Albums'],
-  ['ep', 'EPs'],
-  ['single', 'Singles'],
-] as const;
+// Keep these MusicBrainz labels aligned with the server's release type filters.
+const RELEASE_TYPES = [
+  'Album',
+  'Single',
+  'EP',
+  'Broadcast',
+  'Other',
+  'Compilation',
+  'Soundtrack',
+  'Spokenword',
+  'Interview',
+  'Audiobook',
+  'Audio drama',
+  'Live',
+  'Remix',
+  'DJ-mix',
+  'Mixtape/Street',
+  'Demo',
+  'Field recording',
+].map((label) => ({ value: label.toLowerCase(), label }));
 const MUSIC_FILTERS = [
   { key: 'genre', label: 'Genre', type: 'search' },
   { key: 'artist', label: 'Artist', type: 'search' },
@@ -90,7 +105,12 @@ export function Music() {
   const requestedSort = p.get('sort') || p.get('sortBy');
   const sort =
     SORTS.find(([value]) => value === requestedSort)?.[0] ?? 'ranked';
-  const type = p.get('type') || p.get('releaseType') || '';
+  const requestedTypes = (p.get('type') || p.get('releaseType') || '')
+    .split(',')
+    .map((type) => type.trim().toLowerCase());
+  const types = [...new Set(requestedTypes)].filter((type) =>
+    RELEASE_TYPES.some(({ value }) => type === value)
+  );
   const filters = new URLSearchParams();
   for (const name of [
     ...MUSIC_FILTERS.map(({ key }) => key),
@@ -103,7 +123,7 @@ export function Music() {
   const qs = new URLSearchParams(filters);
   qs.set('sortBy', sort);
   if (query) qs.set('query', query);
-  if (type) qs.set('releaseType', type);
+  if (types.length) qs.set('releaseType', types.join(','));
   const list = usePaged<Album>(`/discover/music?${qs}`);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
@@ -163,17 +183,12 @@ export function Music() {
             ))}
           </select>
         </label>
-        <div className="seg" role="group" aria-label="Release type">
-          {TYPES.map(([v, t]) => (
-            <button
-              key={v}
-              aria-pressed={type === v}
-              onClick={() => upd('type', v)}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+        <GenrePicker
+          labels={{ title: 'Release Types', all: 'Any Release Type' }}
+          options={RELEASE_TYPES}
+          picked={types}
+          onChange={(value) => upd('type', value.join(','))}
+        />
       </div>
       <form
         className="toolbar"

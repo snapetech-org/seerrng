@@ -3399,7 +3399,7 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
   const params = new URLSearchParams({
     ...bookmark,
     search: query,
-    releaseType: 'ep',
+    releaseType: 'EP,Soundtrack',
   });
   await page.goto('/music?' + params);
   await expect(page.getByPlaceholder('Search albums and artists…')).toHaveValue(
@@ -3408,23 +3408,38 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
   await expect(
     page.getByRole('combobox', { name: 'Sort', exact: true })
   ).toHaveValue(filters.sortBy);
-  await expect(page.getByRole('button', { name: 'EPs' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
-  );
   await expect
     .poll(() =>
       observed.some(
         (read) =>
-          read.get('releaseType') === 'ep' &&
+          read.get('releaseType') === 'ep,soundtrack' &&
           Object.entries(filters).every(
             ([key, value]) => read.get(key) === value
           )
       )
     )
     .toBe(true);
-  await page.getByRole('button', { name: 'Any', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Release Types: EP + 1', exact: true })
+    .click();
+  const releaseTypes = page.getByRole('dialog', { name: 'Release Types' });
+  await expect(
+    releaseTypes.getByRole('button', { name: 'EP', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    releaseTypes.getByRole('button', { name: 'Soundtrack', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  await releaseTypes
+    .getByRole('button', { name: 'Compilation', exact: true })
+    .click();
+  await expect
+    .poll(() => observed.at(-1)?.get('releaseType'))
+    .toBe('ep,soundtrack,compilation');
+  await releaseTypes
+    .getByRole('button', { name: 'Any Release Type', exact: true })
+    .click();
   await expect.poll(() => observed.at(-1)?.get('releaseType')).toBeNull();
+  await releaseTypes.getByRole('button', { name: 'Done', exact: true }).click();
   const form = page.getByRole('form', { name: 'Music Discovery Filters' });
   await expect(form.getByRole('searchbox', { name: 'Artist' })).toHaveValue(
     filters.artist
