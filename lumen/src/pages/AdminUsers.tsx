@@ -7,6 +7,7 @@ import { ServiceNote } from '../components/extra';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
+import ManagedPermissions from '../components/ManagedPermissions';
 import ManagedQuotas from '../components/ManagedQuotas';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -156,6 +157,7 @@ export default function AdminUsers() {
   const [quotaUser, setQuotaUser] = useState<number>();
   const [categoryUser, setCategoryUser] = useState<number>();
   const [maturityUser, setMaturityUser] = useState<number>();
+  const [permissionsUser, setPermissionsUser] = useState<number>();
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
   const [queueUser, setQueueUser] = useState<number>();
@@ -371,6 +373,33 @@ export default function AdminUsers() {
                     </button>
                     {maturityUser === user.id && (
                       <ManagedMaturity id={user.id} />
+                    )}
+                  </>
+                )}
+              {actor &&
+                user.id !== 1 &&
+                actor.id !== user.id &&
+                (actor.id === 1 || (user.permissions & 2) === 0) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={permissionsUser === user.id}
+                      onClick={() =>
+                        setPermissionsUser(
+                          permissionsUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Permissions
+                    </button>
+                    {permissionsUser === user.id && (
+                      <ManagedPermissions
+                        id={user.id}
+                        name={user.displayName}
+                        actorId={actor.id}
+                        actorPermissions={actor.permissions}
+                        onSaved={reload}
+                      />
                     )}
                   </>
                 )}

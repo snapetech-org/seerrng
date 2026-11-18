@@ -4717,3 +4717,53 @@ test('Users clears one maturity limit and preserves the other', async ({
     page.getByRole('button', { name: 'Save Maturity Limits' })
   ).toBeDisabled();
 });
+
+test('Users delegates only held permissions and preserves high permission bits', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requestMusic = 4294967296;
+  const target = { id: 19, displayName: 'Viewer', permissions: 32 };
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: {
+        id: 8,
+        displayName: 'Manager',
+        permissions: 8 + 32 + requestMusic,
+      },
+    })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({ json: { pageInfo: { pages: 1 }, results: [target] } })
+  );
+  await page.route('**/api/v1/user/19/settings/permissions', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        permissions: 32 + requestMusic,
+      });
+      target.permissions = 32 + requestMusic;
+    }
+    return route.fulfill({ json: { permissions: target.permissions } });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Permissions', exact: true }).click();
+  await expect(
+    page.getByRole('checkbox', { name: 'Manage Settings', exact: true })
+  ).toBeDisabled();
+  const music = page.getByRole('checkbox', {
+    name: 'Request Music',
+    exact: true,
+  });
+  await music.check();
+  await page
+    .getByRole('button', { name: 'Save Permissions', exact: true })
+    .click();
+  expect(target.permissions).toBe(32);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Save Permissions' })
+    .click();
+  await expect(page.getByText('Permissions saved.')).toBeVisible();
+  await expect(music).toBeChecked();
+  expect(target.permissions).toBe(32 + requestMusic);
+});
