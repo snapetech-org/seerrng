@@ -3823,15 +3823,31 @@ test('installed Share Target hands text and image to Share once', async ({
   await page.route('**/api/v1/resolve/capabilities', (route) =>
     route.fulfill({ json: { enabled: true, image: true, maxImageBytes: 100 } })
   );
-  await page.goto('/share');
+  const base = process.env.LUMEN_TEST_SHARE_BASE ?? '/';
+  await page.goto(base + 'share');
+  const href = await page.locator('link[rel="manifest"]').getAttribute('href');
+  expect(href).toBe(base + 'manifest.webmanifest');
+  const manifestUrl = new URL(href!, page.url());
+  const response = await page.request.get(manifestUrl.href);
+  expect(response.ok()).toBe(true);
+  const { share_target: target } = await response.json();
+  expect(target.method).toBe('POST');
+  expect(target.enctype).toBe('multipart/form-data');
+  const action = new URL(target.action, manifestUrl);
+  expect(action.pathname).toBe(base + 'share-target');
   await expect
     .poll(() =>
-      page.evaluate(() => Boolean(navigator.serviceWorker.controller))
+      page.evaluate(
+        () =>
+          new URL(
+            navigator.serviceWorker.controller?.scriptURL ?? location.href
+          ).pathname
+      )
     )
-    .toBe(true);
-  await page.evaluate(() => {
+    .toBe(base + 'share-worker.js');
+  await page.evaluate((actionUrl) => {
     const form = document.createElement('form');
-    form.action = '/share-target';
+    form.action = actionUrl;
     form.method = 'post';
     form.enctype = 'multipart/form-data';
     const text = document.createElement('input');
@@ -3848,12 +3864,12 @@ test('installed Share Target hands text and image to Share once', async ({
     form.append(text, image);
     document.body.append(form);
     form.submit();
-  });
+  }, action.href);
   await expect(page.getByLabel('Titles, links, or ISBNs')).toHaveValue(
     'From the OS'
   );
   await expect(page.getByText('from-os.png', { exact: true })).toBeVisible();
-  await expect(page).toHaveURL(/\/share$/);
+  await expect(page).toHaveURL(new URL(base + 'share', manifestUrl).href);
   expect(
     await page.evaluate(
       async () => (await (await caches.open('lumen-share-inbox')).keys()).length

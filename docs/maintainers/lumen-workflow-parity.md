@@ -1523,3 +1523,11 @@ TypeScript, the production build, and 16 standalone browser checks passed.
 The handoff fixture uses a real service worker and a browser-submitted form
 across four viewport presets. Installed OS share sheets, the bundled server
 handoff, and matched native visual comparison remain unverified.
+
+The Share Target fixture now reads the built manifest and posts to its
+declared action. It verified the controlling worker, text and image delivery,
+and inbox removal at both `/` and `/lumen/` across all four browser presets.
+The Express route test also verified the no-worker redirect, no-store
+header, and bundled Share page entry. Browser checks used production builds
+served by Vite preview. Physical OS share sheets and matched native visual
+comparisons remain open.

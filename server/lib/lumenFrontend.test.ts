@@ -37,6 +37,17 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     app.get(['/', '/resetpassword/:guid', '/requests/status'], (_req, res) =>
       res.send('Native interface')
     );
+    const shareFallback = await request(app).post('/lumen/share-target');
+    assert.equal(shareFallback.status, 303);
+    assert.equal(
+      shareFallback.headers.location,
+      '/lumen/share#share=unavailable'
+    );
+    assert.equal(shareFallback.headers['cache-control'], 'no-store');
+    assert.equal(
+      (await request(app).get('/lumen/share')).text,
+      '<html>Lumen</html>'
+    );
     const recovery = await request(app).get('/resetpassword/example');
     assert.equal(recovery.headers.location, '/lumen/resetpassword/example');
     assert.equal(recovery.headers['cache-control'], 'no-store');
