@@ -30,6 +30,14 @@ test('trusted image publishers and their scans do not restore shared caches', ()
     ['trivy-scan.yml', ['trivy']],
   ]) {
     const workflow = readWorkflow(workflowName);
+    for (const { steps = [] } of Object.values(workflow.jobs)) {
+      for (const step of steps) {
+        if (step.uses?.startsWith('docker/setup-buildx-action@'))
+          assert.equal(step.with?.['cache-binary'], false, workflowName);
+        if (step.uses?.startsWith('docker/setup-qemu-action@'))
+          assert.equal(step.with?.['cache-image'], false, workflowName);
+      }
+    }
     for (const job of jobs) {
       const source = workflow.jobs[job];
       assert.ok(source, `${workflowName}: ${job}`);

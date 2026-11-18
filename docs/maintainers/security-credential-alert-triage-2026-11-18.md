@@ -143,3 +143,8 @@ from main and release publishing and shared database caches from their
 Trivy jobs. The preview publisher and standalone Trivy scanner now use
 the same cache isolation. All 49 release-workflow tests passed. The
 historical GitHub findings remain open.
+
+The pinned Docker setup actions default to caching their Buildx binary
+and QEMU image. The trusted main, release, and preview workflows now
+disable those defaults explicitly. The release-workflow tests check the
+inputs as well as the absence of shared layer and scanner caches.
