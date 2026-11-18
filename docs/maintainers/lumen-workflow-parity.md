@@ -2227,3 +2227,16 @@ Pro 11. Fixtures verified rejection recovery, exact follow identity, and
 follow and unfollow readback. Live Tunerr scheduling was outside the check.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-team-follows-20261118/`.
+
+Lumen Administration now includes Software Acquisition. Administrators can
+test and save ROMarrNG and QuestarrNG connections, choose the emulation
+catalog, assign Retro and Modern groups, preview and override IGDB platform
+matches, and configure the Steam Web API key. A failed save preserves the
+draft, and existing keys stay out of unrelated requests.
+
+Compared the provider form with Lumen's existing service settings on
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build, three
+focused server tests, and 36 browser fixture checks passed. Fixtures verified
+the connection test, rejected-save recovery, and platform settings payload.
+Live provider connections were outside the check. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-software-admin-20261118/`.

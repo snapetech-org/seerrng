@@ -69,6 +69,9 @@ const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
 const AdminDownloadClients = lazy(() => import('./pages/AdminDownloadClients'));
 const AdminReaderDelivery = lazy(() => import('./pages/AdminReaderDelivery'));
+const AdminSoftwareAcquisition = lazy(
+  () => import('./pages/AdminSoftwareAcquisition')
+);
 const AdminTunerr = lazy(() => import('./pages/AdminTunerr'));
 const AdminRecognition = lazy(() => import('./pages/AdminRecognition'));
 const AdminSwipe = lazy(() => import('./pages/AdminSwipe'));
@@ -746,6 +749,24 @@ function App() {
                   }
                 >
                   <AdminReaderDelivery />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/software-acquisition"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading software acquisition settings…
+                    </p>
+                  }
+                >
+                  <AdminSoftwareAcquisition />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
