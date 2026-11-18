@@ -24,6 +24,9 @@ import {
   Pill,
 } from '../components/detail';
 import { RequestEditSheet } from '../components/requestEdit';
+import RequestEpisodeQueueSheet, {
+  canEditEpisodeQueue,
+} from '../components/RequestEpisodeQueueSheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { localToday } from '../dates';
@@ -892,6 +895,7 @@ export default function Requests() {
     setOthers(null);
   }, [show, everyone]);
   const [acting, setActing] = useState<number | null>(null);
+  const [queueEdit, setQueueEdit] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
   // a decline, a cancel or a remove waits for a yes; none can be taken back
   const [confirming, setConfirming] = useState<{
@@ -1340,9 +1344,25 @@ export default function Requests() {
                   <Pill k={st.k} icon={st.ico}>
                     {st.word}
                   </Pill>
+                  {x.r.watchAheadParentRequestId ? (
+                    <span className="d">Auto-Queued</span>
+                  ) : (x.r.watchAheadEpisodeCount ?? 0) > 0 ? (
+                    <span className="d">
+                      Episode Queue · {x.r.watchAheadEpisodeCount} ahead
+                    </span>
+                  ) : null}
                   {st.detail && <span className="d">{st.detail}</span>}
                 </div>
                 <div className="rqa">
+                  {canEditEpisodeQueue(x.r, user?.permissions) && (
+                    <button
+                      className="btn btn-sm btn-quiet"
+                      disabled={acting === x.r.id}
+                      onClick={() => setQueueEdit(x)}
+                    >
+                      Episode Queue
+                    </button>
+                  )}
                   {everyone && manage ? (
                     <>
                       {x.r.status === 1 && (
@@ -1481,6 +1501,33 @@ export default function Requests() {
             setConfirming(null);
             if (how === 'cancel') void cancel(id);
             else void decide(id, how);
+          }}
+        />
+      )}
+      {queueEdit && (
+        <RequestEpisodeQueueSheet
+          request={queueEdit.r}
+          title={queueEdit.title}
+          close={() => setQueueEdit(null)}
+          saved={({ episodeCount, usesUserDefault }) => {
+            const patch = (previous: Row[] | null) =>
+              previous?.map((row) =>
+                row.r.id === queueEdit.r.id
+                  ? {
+                      ...row,
+                      r: {
+                        ...row.r,
+                        watchAheadEpisodeCount: episodeCount,
+                        watchAheadUsesUserDefault: usesUserDefault,
+                      },
+                    }
+                  : row
+              ) ?? null;
+            setRows(patch);
+            setOthers(patch);
+            setQueueEdit(null);
+            toast('Episode Queue saved.');
+            setTick((t) => t + 1);
           }}
         />
       )}

@@ -648,6 +648,10 @@ export interface DownloadItem {
   status?: string;
 }
 export interface RequestItem {
+  isAutoRequest?: boolean;
+  watchAheadParentRequestId?: number | null;
+  watchAheadEpisodeCount?: number;
+  watchAheadUsesUserDefault?: boolean;
   currentStatus?: {
     stage: string;
     percent: number | null;

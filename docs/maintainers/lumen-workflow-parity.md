@@ -406,3 +406,14 @@ Headed Chrome at 1440 × 1000 verified a standalone approval request and a
 two-episode default save with synthetic readback. Delegated user management,
 per-request Episode Queue, live playback, and native, mobile and bundled
 visual checks remain open.
+
+### Per-request Episode Queue increment
+
+User managers can set an individual eligible TV request to inherit its owner's
+default, turn the queue off, or queue one through five episodes ahead. Request
+rows identify active queues and automatically queued child requests.
+
+Headed Chrome at 1440 × 1000 verified a pending TV request in the standalone
+Everyone tab with synthetic API data, including a save from the owner's default
+to two episodes ahead and readback after navigation. Native visual comparison,
+mobile, bundled, delegated-role and live playback checks remain open.
