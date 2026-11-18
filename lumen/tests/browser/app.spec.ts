@@ -7369,8 +7369,12 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   ).toHaveCount(0);
 });
 
-for (const advanced of [false, true]) {
-  test(`magazine discovery requests an unlisted title with ${advanced ? 'a selected service' : 'the default service'}`, async ({
+for (const { advanced, detail } of [
+  { advanced: false, detail: false },
+  { advanced: true, detail: false },
+  { advanced: true, detail: true },
+]) {
+  test(`magazine ${detail ? 'detail' : 'discovery'} requests a title with ${advanced ? 'a selected service' : 'the default service'}`, async ({
     page,
   }) => {
     await fixtures(page);
@@ -7408,19 +7412,39 @@ for (const advanced of [false, true]) {
       posts.push(route.request().postDataJSON());
       return route.fulfill({ json: { id: 123, status: 1 } });
     });
-    await page.goto('/magazines?query=Unlisted');
-    await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
+    await page.route('**/api/v1/magazine/Unlisted', (route) =>
+      route.fulfill({
+        json: {
+          id: 'Unlisted',
+          title: 'Unlisted',
+          mediaType: 'magazine',
+          provider: 'googlebooks',
+          requestable: true,
+        },
+      })
+    );
+    await page.goto(
+      detail ? '/magazine/Unlisted' : '/magazines?query=Unlisted'
+    );
+    const request = page.getByRole('button', {
+      name: detail ? 'Request magazine' : 'Request “Unlisted”',
+      exact: true,
+    });
+    await request.click();
     const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
     await expect(sheet).toContainText('Unlisted');
     await sheet.getByRole('button', { name: 'Cancel' }).click();
     expect(posts).toHaveLength(0);
-    await page.getByRole('button', { name: 'Request “Unlisted”' }).click();
+    await request.click();
     const service = sheet.getByRole('combobox', { name: 'Magazine Service' });
     if (advanced) await service.selectOption('7');
     else await expect(service).toHaveCount(0);
     await sheet.getByRole('button', { name: 'Send Request' }).click();
     await expect(
-      page.getByRole('button', { name: 'Requested Unlisted' })
+      page.getByRole('button', {
+        name: detail ? 'Requested' : 'Requested Unlisted',
+        exact: true,
+      })
     ).toBeDisabled();
     expect(posts).toEqual([
       {

@@ -30,7 +30,6 @@ import {
   ExtraSearch,
   extraStat,
   MagazineCard,
-  RequestButton,
   ServiceNote,
   StatPill,
 } from '../components/extra';
@@ -992,32 +991,111 @@ const MAGAZINE_SEARCH_SUGGESTIONS = [
   'Wired',
 ];
 
-export function Magazines() {
-  const [params, setParams] = useSearchParams();
-  const query = params.get('q') ?? params.get('query') ?? '';
-  const [q, setQ] = useState(query);
-  const { user } = useAuth();
-  const toast = useToast();
-  const [requestTitle, setRequestTitle] = useState('');
-  const [requested, setRequested] = useState('');
-  const [sending, setSending] = useState(false);
-  const activeRequest = useRef(false);
+function canRequestMagazines(permissions = 0) {
   // Admin, Request, or Request Magazines. The category-specific bit exceeds 32 bits.
-  const permissions = user?.permissions ?? 0;
-  const mayRequest =
+  return (
     Number.isSafeInteger(permissions) &&
     permissions >= 0 &&
-    (BigInt(permissions) & (2n | 32n | 2199023255552n)) !== 0n;
+    (BigInt(permissions) & (2n | 32n | 2199023255552n)) !== 0n
+  );
+}
+
+function MagazineRequestSheet({
+  requestTitle,
+  onClose,
+  onRequested,
+}: {
+  requestTitle: string;
+  onClose: () => void;
+  onRequested: () => void;
+}) {
+  const { user } = useAuth();
+  const toast = useToast();
+  const [sending, setSending] = useState(false);
+  const activeRequest = useRef(false);
+  const permissions = user?.permissions ?? 0;
   const advanced = canChooseRequestOptions(permissions);
   const [serviceId, setServiceId] = useState<number>();
   const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
-    requestTitle && advanced ? '/service/magazine' : null,
+    advanced ? '/service/magazine' : null,
     { currentPathOnly: true }
   );
   const selectedService =
     advanced && services.data?.some(({ id }) => id === serviceId)
       ? serviceId
       : undefined;
+  return (
+    <ConfirmSheet
+      title="Request Magazine"
+      body={requestTitle}
+      confirm="Send Request"
+      cancel="Cancel"
+      busy={sending}
+      confirmDisabled={advanced && services.data?.length === 0}
+      onClose={() => {
+        if (!activeRequest.current) onClose();
+      }}
+      onConfirm={async () => {
+        if (activeRequest.current) return;
+        activeRequest.current = true;
+        setSending(true);
+        try {
+          const result = await requestExtra(
+            'magazine',
+            requestTitle,
+            selectedService
+          );
+          if ((result as { status?: number } | null)?.status === 4)
+            throw new Error('The magazine request failed.');
+          onRequested();
+          toast('Magazine requested');
+        } catch (error) {
+          toast(friendlyError(error, 'Request failed'));
+        } finally {
+          activeRequest.current = false;
+          setSending(false);
+        }
+      }}
+    >
+      {advanced && !!services.data?.length && (
+        <div className="toolbar">
+          <label className="sel">
+            <span className="lbl">Magazine Service</span>
+            <select
+              value={selectedService ?? ''}
+              disabled={sending}
+              onChange={(event) =>
+                setServiceId(
+                  event.target.value ? Number(event.target.value) : undefined
+                )
+              }
+            >
+              <option value="">Default Service</option>
+              {services.data.map(({ id, name, isDefault }) => (
+                <option key={id} value={id}>
+                  {name}
+                  {isDefault ? ' (default)' : ''}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
+      {advanced && services.data?.length === 0 && (
+        <p role="status">No magazine service is configured.</p>
+      )}
+    </ConfirmSheet>
+  );
+}
+
+export function Magazines() {
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') ?? params.get('query') ?? '';
+  const [q, setQ] = useState(query);
+  const { user } = useAuth();
+  const [requestTitle, setRequestTitle] = useState('');
+  const [requested, setRequested] = useState('');
+  const mayRequest = canRequestMagazines(user?.permissions);
   const title = q.trim();
   const mode = params.get('catalog');
   const catalog =
@@ -1119,79 +1197,21 @@ export function Magazines() {
             className="btn btn-tonal btn-sm"
             type="button"
             disabled={title === requested}
-            onClick={() => {
-              setServiceId(undefined);
-              setRequestTitle(title);
-            }}
+            onClick={() => setRequestTitle(title)}
           >
             {title === requested ? `Requested ${title}` : `Request “${title}”`}
           </button>
         </div>
       )}
       {mayRequest && requestTitle && (
-        <ConfirmSheet
-          title="Request Magazine"
-          body={requestTitle}
-          confirm="Send Request"
-          cancel="Cancel"
-          busy={sending}
-          confirmDisabled={advanced && services.data?.length === 0}
-          onClose={() => {
-            if (!activeRequest.current) setRequestTitle('');
+        <MagazineRequestSheet
+          requestTitle={requestTitle}
+          onClose={() => setRequestTitle('')}
+          onRequested={() => {
+            setRequested(requestTitle);
+            setRequestTitle('');
           }}
-          onConfirm={async () => {
-            if (activeRequest.current) return;
-            activeRequest.current = true;
-            setSending(true);
-            try {
-              const result = await requestExtra(
-                'magazine',
-                requestTitle,
-                selectedService
-              );
-              if ((result as { status?: number } | null)?.status === 4)
-                throw new Error('The magazine request failed.');
-              setRequested(requestTitle);
-              setRequestTitle('');
-              toast('Magazine requested');
-            } catch (error) {
-              toast(friendlyError(error, 'Request failed'));
-            } finally {
-              activeRequest.current = false;
-              setSending(false);
-            }
-          }}
-        >
-          {advanced && !!services.data?.length && (
-            <div className="toolbar">
-              <label className="sel">
-                <span className="lbl">Magazine Service</span>
-                <select
-                  value={selectedService ?? ''}
-                  disabled={sending}
-                  onChange={(event) =>
-                    setServiceId(
-                      event.target.value
-                        ? Number(event.target.value)
-                        : undefined
-                    )
-                  }
-                >
-                  <option value="">Default Service</option>
-                  {services.data.map(({ id, name, isDefault }) => (
-                    <option key={id} value={id}>
-                      {name}
-                      {isDefault ? ' (default)' : ''}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          )}
-          {advanced && services.data?.length === 0 && (
-            <p role="status">No magazine service is configured.</p>
-          )}
-        </ConfirmSheet>
+        />
       )}
       <ServiceNote
         error={list.items.length ? null : list.error}
@@ -1227,6 +1247,10 @@ export function Magazines() {
 
 export function MagazineDetail() {
   const { title = '' } = useParams();
+  const { user } = useAuth();
+  const [requestTitle, setRequestTitle] = useState('');
+  const [requested, setRequested] = useState('');
+  const mayRequest = canRequestMagazines(user?.permissions);
   const {
     data: m,
     error,
@@ -1243,15 +1267,33 @@ export function MagazineDetail() {
   const s = extraStat(m.mediaInfo);
   const have = (m.issues || []).filter((i) => i.available).length;
   const main =
-    m.requestable === false ? null : (
-      <RequestButton
-        stat={s}
-        label="Request magazine"
-        request={() => requestExtra('magazine', m.title)}
-      />
-    );
+    m.requestable === false ? null : s || requested === m.title ? (
+      <button className="btn btn-tonal" disabled>
+        <Icon name={s?.ico || 'clock'} />
+        {s?.word || 'Requested'}
+      </button>
+    ) : mayRequest ? (
+      <button
+        className="btn btn-primary"
+        onClick={() => setRequestTitle(m.title)}
+      >
+        <Icon name="plus" />
+        Request magazine
+      </button>
+    ) : null;
   return (
     <ExtraGate k="magazine">
+      {mayRequest && requestTitle === m.title && (
+        <MagazineRequestSheet
+          requestTitle={requestTitle}
+          onClose={() => setRequestTitle('')}
+          onRequested={() => {
+            setRequested(requestTitle);
+            setRequestTitle('');
+            refresh();
+          }}
+        />
+      )}
       <article className="detail">
         <DetailTop
           status={s}
