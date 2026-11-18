@@ -263,9 +263,17 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     initialized = false;
     assert.equal((await request(app).get('/')).text, 'Native interface');
     assert.equal(
-      (await request(app).get('/lumen/')).headers.location,
-      '/setup'
+      (await request(app).get('/lumen')).headers.location,
+      '/lumen/'
     );
+    for (const url of ['/lumen/', '/lumen/movie/123']) {
+      const response = await request(app).get(url);
+      assert.equal(response.status, 302, url);
+      assert.equal(response.headers.location, '/lumen/setup', url);
+      assert.equal(response.headers['cache-control'], 'no-store', url);
+    }
+    assert.equal((await request(app).get('/lumen/app.js')).status, 200);
+    assert.equal((await request(app).get('/lumen/missing.js')).status, 404);
     assert.equal((await request(app).get('/lumen/setup')).status, 200);
   } finally {
     await fs.rm(root, { recursive: true, force: true });

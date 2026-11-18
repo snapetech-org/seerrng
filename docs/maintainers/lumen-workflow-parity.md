@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | First-run setup and initial configuration. The bundled server redirects uninitialized requests to native setup, and the companion delegates setup to the configured SeerrNG URL. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. The resumable guide and administrator reopening flow still need parity. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.

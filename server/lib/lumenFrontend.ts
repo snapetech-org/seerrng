@@ -634,12 +634,14 @@ export const mountLumenFrontend = (
     /^\/lumen(?:\/|$)/i,
     (req, res, next) => {
       if (req.method !== 'GET') return next('route');
-      if (!isInitialized() && !/^\/lumen\/setup\/?$/.test(req.path))
-        return res.redirect(302, '/setup');
       const pathname = req.path.slice('/lumen'.length);
       // Missing assets must not become successful HTML responses or consume the shell budget.
       if (path.extname(pathname) && !magazineTitle(pathname))
         return res.sendStatus(404);
+      if (!isInitialized() && !/^\/setup\/?$/.test(pathname))
+        return res
+          .set('Cache-Control', 'no-store')
+          .redirect(302, '/lumen/setup');
       return next();
     },
     rateLimit({
