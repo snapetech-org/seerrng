@@ -4953,3 +4953,35 @@ test('Users sends exact Plex selections and confirms the all-account sync', asyn
   await expect(page.getByText('Imported 0, refreshed 1.')).toBeVisible();
   expect(writes).toEqual([{ plexIds: ['42'] }, { plexIds: [] }]);
 });
+
+test('Users edits a username without writing other profile settings', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let username = 'Existing Viewer';
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: username, permissions: 32 }],
+      },
+    })
+  );
+  await page.route('**/api/v1/user/19/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        username: 'Renamed Viewer',
+      });
+      username = 'Renamed Viewer';
+    }
+    return route.fulfill({ json: { username } });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Edit Username' }).click();
+  await expect(page.getByLabel('Username')).toHaveValue('Existing Viewer');
+  await page.getByLabel('Username').fill(' Renamed Viewer ');
+  await page.getByRole('button', { name: 'Save Username' }).click();
+  await expect(page.getByText('Username saved.')).toBeVisible();
+  await expect(page.getByText('Renamed Viewer', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Username')).toHaveValue('Renamed Viewer');
+});

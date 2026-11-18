@@ -154,6 +154,87 @@ function CreateLocalUser({
   );
 }
 
+function EditUsername({ id, onSaved }: { id: number; onSaved: () => void }) {
+  const path = `/user/${id}/settings/main`;
+  const profile = useApi<{ username?: string | null }>(path);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const working = useRef(false);
+
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!profile.data || working.current) return;
+    const username = String(
+      new FormData(event.currentTarget).get('username') ?? ''
+    ).trim();
+    if (!username) {
+      setError('Enter a username.');
+      return;
+    }
+    if (username === profile.data.username) return;
+    working.current = true;
+    setBusy(true);
+    setError('');
+    setNotice('');
+    try {
+      await api(path, { method: 'POST', body: JSON.stringify({ username }) });
+      setNotice('Username saved.');
+      profile.reload();
+      onSaved();
+    } catch (failure) {
+      setError(friendlyError(failure, 'Could not save the username.'));
+    } finally {
+      working.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <ServiceNote
+        error={profile.error}
+        what="username"
+        retry={profile.reload}
+      />
+      {!profile.data && !profile.error && (
+        <p className="note" role="status">
+          Loading username…
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {profile.data && (
+        <form className="toolbar" onSubmit={save}>
+          <label className="sel">
+            <span className="lbl">Username</span>
+            <input
+              className="cfg-json"
+              name="username"
+              key={profile.data.username ?? ''}
+              defaultValue={profile.data.username ?? ''}
+              maxLength={100}
+              required
+              disabled={busy}
+            />
+          </label>
+          <button className="btn btn-tonal btn-sm" disabled={busy}>
+            Save Username
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
 export default function AdminUsers() {
   const { user: actor, signOut } = useAuth();
   const serverType = usePublicSettings()?.mediaServerType;
@@ -167,6 +248,7 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
+  const [usernameUser, setUsernameUser] = useState<number>();
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState('');
@@ -469,6 +551,27 @@ export default function AdminUsers() {
                         actorPermissions={actor.permissions}
                         onSaved={reload}
                       />
+                    )}
+                  </>
+                )}
+              {actor &&
+                (actor.id === user.id ||
+                  actor.id === 1 ||
+                  (user.permissions & 2) === 0) && (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={usernameUser === user.id}
+                      onClick={() =>
+                        setUsernameUser(
+                          usernameUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Edit Username
+                    </button>
+                    {usernameUser === user.id && (
+                      <EditUsername id={user.id} onSaved={reload} />
                     )}
                   </>
                 )}
