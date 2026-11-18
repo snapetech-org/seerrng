@@ -148,3 +148,69 @@ test('shared pack replacement requires acknowledgement and deletion requires con
     { method: 'DELETE', body: null },
   ]);
 });
+
+test('automatic blocklist settings preserve stored genres and save only changed fields', async ({
+  page,
+}) => {
+  const writes: unknown[] = [];
+  let settings = {
+    blocklistedTags: '42',
+    blocklistedGenresMovie: '99',
+    blocklistedGenresTv: '',
+    blocklistedTagsLimit: 50,
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/integrations/discovery/configuration')
+      return route.fulfill({
+        json: { trakt: {}, anilist: {}, simkl: {}, mdblist: {} },
+      });
+    if (path === '/integrations/discovery/mappings/packs')
+      return route.fulfill({ json: { packs: [] } });
+    if (path === '/genres/movie')
+      return route.fulfill({ json: [{ id: 18, name: 'Drama' }] });
+    if (path === '/genres/tv')
+      return route.fulfill({ json: [{ id: 10765, name: 'Sci-Fi & Fantasy' }] });
+    if (path === '/settings/main') {
+      if (request.method() === 'POST') {
+        const patch = request.postDataJSON();
+        writes.push(patch);
+        settings = { ...settings, ...patch };
+      }
+      return route.fulfill({ json: settings });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/admin/discovery');
+  const movies = page.getByLabel('Blocklisted Movie Genres');
+  await expect(movies).toHaveValues(['99']);
+  await expect(movies.getByRole('option', { name: 'Genre #99' })).toHaveCount(
+    1
+  );
+  const tags = page.getByLabel('Blocklisted TMDB Keyword IDs');
+  await tags.fill('42, bad');
+  const save = page.getByRole('button', {
+    name: 'Save Automatic Blocklist Settings',
+  });
+  await expect(save).toBeDisabled();
+  await tags.fill('42, 73, 42');
+  await page.getByLabel('Blocklisted TV Genres').selectOption('10765');
+  await page.getByLabel('Limit Pages per Blocklist Tag or Genre').fill('0');
+  await save.click();
+  await expect(
+    page.getByText('Automatic blocklist settings saved.')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    {
+      blocklistedTags: '42,73',
+      blocklistedGenresTv: '10765',
+      blocklistedTagsLimit: 0,
+    },
+  ]);
+  await expect(movies).toHaveValues(['99']);
+});

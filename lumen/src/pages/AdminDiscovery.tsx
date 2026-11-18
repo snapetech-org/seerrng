@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
+import AutomaticBlocklistSettings from '../components/AutomaticBlocklistSettings';
 import CuratedIdentityPacks from '../components/CuratedIdentityPacks';
 import DiscoveryRegionSettings from '../components/DiscoveryRegionSettings';
 import StreamingRequestPolicy from '../components/StreamingRequestPolicy';
@@ -192,6 +193,7 @@ export default function AdminDiscovery() {
         )
       )}
       <DiscoveryRegionSettings />
+      <AutomaticBlocklistSettings />
       <StreamingRequestPolicy />
       <CuratedIdentityPacks />
     </>
