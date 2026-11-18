@@ -1801,6 +1801,12 @@ At 390 and 1440 pixels the Markdown content retained the plain-text
 baseline width and fit without horizontal overflow. The browser used a
 fixture administrator and default Lumen theme.
 
+About links update status to release history, main branch history, or
+the installed development commit comparison. It also includes lawful-use
+guidance. Eight browser cases passed in each production deployment with
+fixtures, including the development comparison destination. Matched
+visual review of the update link and guidance remains open.
+
 ### Instance General Settings
 
 The administration menu opens a Lumen General Settings page for the
