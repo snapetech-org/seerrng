@@ -163,6 +163,8 @@ test('active watch sessions save and revise ballots and show matches', async ({
     title: 'Fixture Match',
     overview: 'A movie to watch together.',
   };
+  const playbackUrl =
+    'https://jf.example.com/web/index.html#!/details?id=fixture';
   let decision: string | undefined;
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -174,6 +176,26 @@ test('active watch sessions save and revise ballots and show matches', async ({
     const url = new URL(request.url()).pathname;
     if (url.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 2, permissions: 2 } });
+    if (url.endsWith('/settings/public'))
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          mediaServerType: 2,
+          jellyfinExternalHost: 'https://jf.example.com',
+        },
+      });
+    if (url.endsWith('/movie/84'))
+      return route.fulfill({
+        json: {
+          ...movie,
+          genres: [],
+          releases: { results: [] },
+          credits: { cast: [], crew: [] },
+          mediaInfo: { id: 10, status: 5, mediaUrl: playbackUrl },
+        },
+      });
+    if (url.endsWith('/movie/84/recommendations'))
+      return route.fulfill({ json: { results: [], totalPages: 0 } });
     if (url === path)
       return route.fulfill({
         json: {
@@ -221,65 +243,89 @@ test('active watch sessions save and revise ballots and show matches', async ({
     path: info.outputPath('watch-ballots.png'),
     fullPage: true,
   });
+  await match.click();
+  await expect(
+    page.getByRole('link', { name: 'Watch on Jellyfin' })
+  ).toHaveAttribute('href', playbackUrl);
+  await page.goBack();
   await page.getByRole('button', { name: 'Pass on Fixture Match' }).click();
   await expect(match).toHaveCount(0);
   await expect(page.getByText('Passed', { exact: true })).toBeVisible();
   expect(writes).toEqual([{ decision: 'want' }, { decision: 'pass' }]);
 });
 
-test('host removal handles the server closing the watch session', async ({
-  page,
-}, info) => {
-  const path = '/api/v1/watch-sessions';
-  const deletes: string[] = [];
-  await page.route('https://**/*', (route) => route.abort());
-  await page.route('**/lumen-config.json', (route) =>
-    route.fulfill({ json: {} })
-  );
-  await page.route('**/api/v1/**', (route) => {
-    const request = route.request();
-    const url = new URL(request.url()).pathname;
-    if (url.endsWith('/auth/me'))
-      return route.fulfill({ json: { id: 1, permissions: 2 } });
-    if (url === path) return route.fulfill({ json: { sessions: [] } });
-    if (url === path + '/9')
-      return route.fulfill({
-        json: {
-          session: {
-            id: 9,
-            title: 'Movie Night',
-            status: 'draft',
-            ownerId: 1,
-            memberCount: 2,
-            members: [
-              { id: 1, displayName: 'Host', isOwner: true },
-              { id: 2, displayName: 'Guest' },
-            ],
-            ownPreferences: { includeWatchlistContributions: false },
+for (const action of [
+  {
+    label: 'Remove Guest',
+    user: 1,
+    suffix: '/members/2',
+    warning: 'fewer than two members remain',
+  },
+  {
+    label: 'End Session',
+    user: 1,
+    suffix: '',
+    warning: 'End this session for everyone?',
+  },
+  {
+    label: 'Leave Session',
+    user: 2,
+    suffix: '/members/me',
+    warning: 'Your votes will be removed',
+  },
+]) {
+  test(`watch session action requires confirmation: ${action.label}`, async ({
+    page,
+  }, info) => {
+    const path = '/api/v1/watch-sessions';
+    const deletes: string[] = [];
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const url = new URL(request.url()).pathname;
+      if (url.endsWith('/auth/me'))
+        return route.fulfill({ json: { id: action.user, permissions: 2 } });
+      if (request.method() === 'DELETE') {
+        deletes.push(url);
+        return route.fulfill({ json: { closed: true } });
+      }
+      if (url === path) return route.fulfill({ json: { sessions: [] } });
+      if (url === path + '/9')
+        return route.fulfill({
+          json: {
+            session: {
+              id: 9,
+              title: 'Movie Night',
+              status: 'draft',
+              ownerId: 1,
+              memberCount: 2,
+              members: [
+                { id: 1, displayName: 'Host', isOwner: true },
+                { id: 2, displayName: 'Guest' },
+              ],
+              ownPreferences: { includeWatchlistContributions: false },
+            },
           },
-        },
-      });
-    if (url === path + '/9/invites')
-      return route.fulfill({ json: { invites: [] } });
-    if (request.method() === 'DELETE') {
-      deletes.push(url);
-      return route.fulfill({ json: { closed: true } });
-    }
-    return route.fulfill({ json: {} });
+        });
+      if (url === path + '/9/invites')
+        return route.fulfill({ json: { invites: [] } });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto('/watch-sessions/9');
+    await page.getByRole('button', { name: action.label }).click();
+    await expect(page.getByRole('alert')).toContainText(action.warning);
+    await page.screenshot({
+      path: info.outputPath('watch-members.png'),
+      fullPage: true,
+    });
+    await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+    expect(deletes).toHaveLength(0);
+    await page.getByRole('button', { name: action.label }).click();
+    await page.getByRole('button', { name: 'Confirm', exact: true }).click();
+    await expect(page).toHaveURL(/\/watch-sessions$/);
+    expect(deletes).toEqual([path + '/9' + action.suffix]);
   });
-  await page.goto('/watch-sessions/9');
-  await page.getByRole('button', { name: 'Remove Guest' }).click();
-  await expect(page.getByRole('alert')).toContainText(
-    'fewer than two members remain'
-  );
-  await page.screenshot({
-    path: info.outputPath('watch-members.png'),
-    fullPage: true,
-  });
-  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
-  expect(deletes).toHaveLength(0);
-  await page.getByRole('button', { name: 'Remove Guest' }).click();
-  await page.getByRole('button', { name: 'Confirm', exact: true }).click();
-  await expect(page).toHaveURL(/\/watch-sessions$/);
-  expect(deletes).toEqual([path + '/9/members/2']);
-});
+}

@@ -1961,3 +1961,14 @@ and saving the genre selection.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-genres-20261118/`.
+
+The watch-session browser suite now covers removing a guest, ending the room,
+and leaving as a guest. It verifies canceling before each mutation and the
+return to the session list after success. It also follows a group match to the
+movie page and checks the Jellyfin playback link. All 20 synthetic browser
+checks passed across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production
+build and all 15 isolated watch-session server tests passed. Live provider
+playback and cross-device use remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-verify-20261118/`.
