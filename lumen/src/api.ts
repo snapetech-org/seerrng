@@ -648,7 +648,7 @@ export interface TvDetails extends TitleResult {
   seasons: Season[];
   numberOfSeasons: number;
   episodeRunTime?: number[];
-  networks?: { name: string }[];
+  networks?: { id?: number; name: string }[];
   status?: string;
   credits?: Credits;
   keywords?: SubjectTag[];

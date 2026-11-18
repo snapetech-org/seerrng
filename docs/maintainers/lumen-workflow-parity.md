@@ -1066,3 +1066,9 @@ Movie and series facts list production countries and link them to the
 matching discovery grid. Standalone browser checks verified both link
 targets and the existing country filter on four viewport presets. Bundled
 and native visual comparison remains open.
+
+Series network facts now link to the matching discovery query when a
+network has an ID. The grid identifies the active network and can clear
+it independently. Standalone checks covered the link, exact query and
+reset on four viewport presets. A network catalog picker and bundled and
+native visual comparisons remain open.

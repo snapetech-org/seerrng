@@ -587,7 +587,24 @@ export default function TvDetail() {
                   'Production Countries',
                   productionCountryLinks(t.productionCountries, '/series'),
                 ],
-                ['Network', t.networks?.map((x) => x.name).join(', ')],
+                [
+                  'Network',
+                  t.networks?.length
+                    ? t.networks.map(({ id, name }, index) => (
+                        <span key={`${id ?? name}:${index}`}>
+                          {index > 0 && ', '}
+                          {id &&
+                          Number.isSafeInteger(id) &&
+                          id > 0 &&
+                          id <= 1_000_000_000 ? (
+                            <Link to={`/series?network=${id}`}>{name}</Link>
+                          ) : (
+                            name
+                          )}
+                        </span>
+                      ))
+                    : null,
+                ],
                 [
                   'Status',
                   t.status === 'Returning Series' ? 'Still airing' : t.status,

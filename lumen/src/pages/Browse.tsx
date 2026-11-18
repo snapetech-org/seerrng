@@ -213,6 +213,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const status =
     kind === 'tv' && /^[0-5]$/.test(statusParam) ? statusParam : '';
   const excludeStatus = p.get('excludeStatus') === 'true';
+  const networkParam = p.get('network') ?? '';
+  const network =
+    kind === 'tv' &&
+    /^[1-9][0-9]{0,9}$/.test(networkParam) &&
+    Number(networkParam) <= 1_000_000_000
+      ? networkParam
+      : '';
+  const networkInfo = useApi<{ id: number; name: string }>(
+    network ? `/network/${network}` : null
+  );
+  const networkLabel =
+    networkInfo.data?.id === Number(network)
+      ? networkInfo.data?.name
+      : `#${network}`;
   const countryParam = (p.get('country') ?? '').toUpperCase();
   const country = /^[A-Z]{2}$/.test(countryParam) ? countryParam : '';
   const countries = useApi<{ iso_3166_1: string; english_name: string }[]>(
@@ -250,6 +264,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(network ? { network } : {}),
     ...(country ? { country } : {}),
     ...(language ? { language } : {}),
     ...(validRuntime && minRuntime ? { withRuntimeGte: minRuntime } : {}),
@@ -353,6 +368,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </Link>
       </header>
       <div className="toolbar">
+        {network && (
+          <button
+            className="chip"
+            type="button"
+            onClick={() => upd('network', '')}
+          >
+            Clear Network {networkLabel}
+          </button>
+        )}
         <CardTitleToggle kinds={[kind]} />
         {(keywords || excludeKeywords) && (
           <button

@@ -2006,3 +2006,47 @@ test('production country links open the matching movie and series filters', asyn
   await page.getByRole('link', { name: 'Japan', exact: true }).click();
   await expect(page).toHaveURL(/\/series\?country=JP$/);
 });
+
+test('series network details open the matching discovery query', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [],
+        networks: [
+          { id: 42, name: 'Fixture Network' },
+          { name: 'Unmapped Network' },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/network/42', (route) =>
+    route.fulfill({ json: { id: 42, name: 'Fixture Network' } })
+  );
+  await page.goto('/tv/202');
+  await expect(
+    page.getByText('Unmapped Network', { exact: false })
+  ).toBeVisible();
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('network') === '42'
+    );
+  });
+  await page
+    .getByRole('link', { name: 'Fixture Network', exact: true })
+    .click();
+  await query;
+  await expect(page).toHaveURL(/\/series\?network=42$/);
+  await page
+    .getByRole('button', { name: 'Clear Network Fixture Network' })
+    .click();
+  await expect(page).toHaveURL(/\/series$/);
+});
