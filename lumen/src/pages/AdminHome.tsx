@@ -3,6 +3,7 @@ import { Section } from '../components/cards';
 import { Icon } from '../icons';
 
 const destinations = [
+  ['Setup Guide', '/setup?guide=1'],
   ['General Settings', '/admin/general'],
   ['Network Settings', '/admin/network'],
   ['Connection Hosts', '/admin/connection-hosts'],

@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. The resumable guide and administrator reopening flow still need parity. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen the setup controls from Administration. The native guided sequence and saved progress still need parity. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.
@@ -2779,3 +2779,10 @@ and tablet viewports in each deployment. The checks covered the PIN popup
 and credential exchange, server discovery, saving the connection, and
 enabling a library before initialization. Live provider sign-in remains
 unverified.
+
+On initialized instances, administrators can reopen setup from
+Administration and return without running initialization. Members opening
+the guide URL are denied access. Twenty setup browser checks passed per
+deployment across desktop, iPhone, Android, and tablet, including the
+three first-run providers and both guide access levels. Baseline and
+candidate visual comparison remains unverified.

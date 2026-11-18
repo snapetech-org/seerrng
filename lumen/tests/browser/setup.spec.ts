@@ -1,5 +1,51 @@
 import { expect, test } from '@playwright/test';
 
+for (const administrator of [true, false]) {
+  test(`initialized setup guide enforces access for ${administrator ? 'administrators' : 'members'}`, async ({
+    page,
+  }) => {
+    const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname.slice(
+        '/api/v1'.length
+      );
+      if (path === '/settings/public')
+        return route.fulfill({
+          json: { initialized: true, mediaServerType: 4 },
+        });
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, permissions: administrator ? 2 : 0 },
+        });
+      expect(route.request().method()).toBe('GET');
+      return route.fulfill({ json: { results: [], totalPages: 1 } });
+    });
+    if (!administrator) {
+      await page.goto(`${mount}/setup?guide=1`);
+      await expect(page.getByRole('alert')).toHaveText(
+        'Only administrators can open the setup guide.'
+      );
+      await expect(page.getByText('Configure Media Categories')).toHaveCount(0);
+      return;
+    }
+    await page.goto(`${mount}/admin`);
+    await page.getByRole('link', { name: 'Open Setup Guide' }).click();
+    await expect(page).toHaveURL(`${mount}/setup?guide=1`);
+    await expect(
+      page.getByRole('heading', { name: 'Setup Guide' })
+    ).toBeVisible();
+    await expect(page.getByText('Configure Media Categories')).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Finish Setup' })
+    ).toHaveCount(0);
+    await page.getByRole('link', { name: 'Return to Administration' }).click();
+    await expect(page).toHaveURL(`${mount}/admin`);
+  });
+}
+
 test('first-run Plex setup exchanges the PIN and configures a discovered server', async ({
   context,
   page,

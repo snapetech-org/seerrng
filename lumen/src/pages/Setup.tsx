@@ -6,7 +6,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { isAdministrator, signInWithPlex, useAuth } from '../auth';
@@ -63,6 +63,9 @@ function SetupEditor({
 export default function Setup() {
   const { user, refresh } = useAuth();
   const settings = useApi<PublicSettings>('/settings/public');
+  const [query] = useSearchParams();
+  const reopening =
+    settings.data?.initialized === true && query.get('guide') === '1';
   const [provider, setProvider] = useState(1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -125,7 +128,8 @@ export default function Setup() {
     window.location.replace(import.meta.env.BASE_URL);
   }
 
-  if (settings.data?.initialized === true) return <Navigate to="/" replace />;
+  if (settings.data?.initialized === true && !reopening)
+    return <Navigate to="/" replace />;
   if (!settings.data || user === undefined) {
     return (
       <div className="login">
@@ -145,13 +149,15 @@ export default function Setup() {
     if (!isAdministrator(user.permissions)) {
       return (
         <p className="note" role="alert">
-          An administrator must finish setup.
+          {reopening
+            ? 'Only administrators can open the setup guide.'
+            : 'An administrator must finish setup.'}
         </p>
       );
     }
     return (
       <Shell>
-        <ExtraHeader title="Finish Setup" />
+        <ExtraHeader title={reopening ? 'Setup Guide' : 'Finish Setup'} />
         <AdminMediaLibraries mediaServerType={settings.data.mediaServerType} />
         <details className="adv">
           <summary>Configure Media Categories</summary>
@@ -172,16 +178,24 @@ export default function Setup() {
           <AdminProwlarr inSetup />
         </SetupEditor>
         <ServiceNote error={error || null} what="setup" />
-        <button
-          className="btn btn-primary"
-          disabled={busy}
-          onClick={() => void run(finish)}
-        >
-          Finish Setup
-        </button>
+        {reopening ? (
+          <Link className="btn btn-primary" to="/admin">
+            Return to Administration
+          </Link>
+        ) : (
+          <button
+            className="btn btn-primary"
+            disabled={busy}
+            onClick={() => void run(finish)}
+          >
+            Finish Setup
+          </button>
+        )}
       </Shell>
     );
   }
+
+  if (reopening && !user) return <Login />;
 
   if (settings.data.mediaServerType && settings.data.mediaServerType < 4)
     return <Login />;
