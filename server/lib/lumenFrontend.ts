@@ -181,6 +181,7 @@ const workflowDestinations = new Map([
   ['/discover/providers', '/providers'],
   ['/share', '/share'],
   ['/track-requests', '/track-requests'],
+  ['/identify', '/identify'],
   ['/discover/adult', '/adult'],
   ['/discover/audiobooks', '/audiobooks'],
   ['/discover/books', '/books'],
@@ -198,6 +199,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/trending': ['mediaType', 'timeWindow'],
   '/providers': ['feed', 'page', 'list', 'unmatched'],
   '/share': ['title', 'text', 'url'],
+  '/identify': ['source'],
   '/books': ['subject'],
   '/music': ['genre', 'sortBy'],
   '/audiobooks': ['subject'],
@@ -231,7 +233,11 @@ function workflowDeepLink(req: Request): string | undefined {
       continue;
     }
     const limit =
-      key === 'list' ? 2048 : key === 'subject' || key === 'genre' ? 512 : 256;
+      key === 'list' || key === 'source'
+        ? 2048
+        : key === 'subject' || key === 'genre'
+          ? 512
+          : 256;
     if (value.length <= limit) query.set(key, value);
   }
 

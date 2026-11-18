@@ -3956,3 +3956,65 @@ test('Track Requests scopes the queue and confirms manager approval', async ({
   await expect(page.getByText('Searches: 1 · Last matches: 2')).toBeVisible();
   expect(approved).toBe(true);
 });
+
+test('Song identification polls and requests the exact recording', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const empty = { id: 'run-1', albums: [], tracks: [] };
+  let submitted: unknown;
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: true, canRequest: true } })
+  );
+  await page.route('**/api/v1/soulseek/songid', (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      source: 'A song description',
+    });
+    return route.fulfill({
+      status: 202,
+      json: { ...empty, status: 'queued', queuePosition: 2 },
+    });
+  });
+  await page.route('**/api/v1/soulseek/songid/run-1', (route) =>
+    route.fulfill({
+      json: {
+        ...empty,
+        status: 'completed',
+        tracks: [
+          {
+            recordingId: 'exact-id',
+            title: 'A track',
+            artist: 'An artist',
+            isExact: true,
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/soulseek/track-requests', (route) => {
+    submitted = route.request().postDataJSON();
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/identify?source=A+song+description');
+  await expect(page.getByLabel('Link or Description')).toHaveValue(
+    'A song description'
+  );
+  await page.getByRole('button', { name: 'Identify', exact: true }).click();
+  await expect(page.getByText('Waiting in queue (position 2)')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Request Track', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Track Requested' })
+  ).toBeDisabled();
+  expect(submitted).toEqual({
+    tracks: [
+      {
+        artist: 'An artist',
+        title: 'A track',
+        recordingMbid: 'exact-id',
+        source: 'songid',
+      },
+    ],
+  });
+});

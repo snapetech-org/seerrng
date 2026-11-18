@@ -1544,3 +1544,13 @@ passed for scope selection, approval confirmation, and search readback.
 Live Soulseek, decline and cancellation checks, bundled rendering, matched
 native visual comparison, and track creation from playlist import or song
 identification remain open.
+
+### Song identification
+
+Track Requests links to Identify a Song. Lumen restores the source from
+recognition bookmarks, shows queued and running progress, and offers
+matched album links and exact recording requests through the existing
+SongID and Soulseek endpoints. Eight standalone browser fixtures passed
+for identification and the track queue across four viewport presets.
+Live services, bundled rendering, and matched native visual comparison
+remain open.

@@ -99,6 +99,9 @@ export default function TrackRequests() {
         <Link className="btn btn-quiet btn-sm" to="/music">
           Back to Music
         </Link>
+        <Link className="btn btn-quiet btn-sm" to="/identify">
+          Identify a Song
+        </Link>
       </div>
       <ServiceNote
         error={service.error}
