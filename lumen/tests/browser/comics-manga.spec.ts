@@ -597,8 +597,10 @@ test('filters and sort ask for the matching list', async ({ page }) => {
     .click();
   await expect.poll(() => browsed.at(-1)).toContain('type=comic');
   await expect(picker).toHaveCount(0);
-  await page.getByLabel('Publisher').selectOption('Image');
-  await expect.poll(() => browsed.at(-1)).toContain('publisher=Image');
+  await page
+    .getByRole('combobox', { name: 'Publisher', exact: true })
+    .selectOption('Marvel');
+  await expect.poll(() => browsed.at(-1)).toContain('publisher=Marvel');
   // library state
   await page
     .getByRole('group', { name: 'Library' })

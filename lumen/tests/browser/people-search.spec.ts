@@ -187,8 +187,10 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await expect(personHeading).toBeVisible();
   await expect(personHeading).toBeInViewport();
   await expect(page.getByText('Performer and director.')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Known For' })).toBeVisible();
-  await expect(page.locator('.grid .poster')).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Credits' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Example Film', exact: true })
+  ).toHaveCount(2);
   await expect(page.locator('.portrait .art-ph')).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.mouse.move(0, 0);
@@ -196,7 +198,7 @@ test('All search shows People and opens an internal Lumen person page', async ({
   await page.screenshot({
     path: info.outputPath('person-detail-candidate-top.png'),
   });
-  const creditsHeading = page.getByRole('heading', { name: 'Known For' });
+  const creditsHeading = page.getByRole('heading', { name: 'Credits' });
   await creditsHeading.scrollIntoViewIfNeeded();
   await page.mouse.move(0, 0);
   await page.screenshot({
@@ -249,8 +251,7 @@ test('person credits refetch after a category or maturity policy tightens', asyn
     page.getByRole('heading', { name: 'Jane Example' })
   ).toBeVisible();
   const visibleCreditTitle = page.locator('.grid .poster > a.t');
-  await expect(visibleCreditTitle).toHaveText('Example Film');
-  await expect(visibleCreditTitle).toBeVisible();
+  await expect(visibleCreditTitle).toHaveText(['Example Film', 'Example Film']);
   await expect.poll(() => creditRequests).toBe(1);
   await page.waitForTimeout(500);
 

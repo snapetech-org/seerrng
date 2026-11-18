@@ -42,8 +42,12 @@ test('client tokens display the secret once and revoke after confirmation', asyn
   await page.goto('/me/account');
   await page.getByRole('link', { name: 'Client Tokens' }).click();
   await page.getByLabel('Token Name').fill('Fixture Client');
-  await page.getByLabel('Access', { exact: true }).selectOption('discover');
-  await page.getByLabel('Expires After').selectOption('7');
+  await page
+    .getByRole('combobox', { name: 'Access', exact: true })
+    .selectOption('discover');
+  await page
+    .getByRole('combobox', { name: 'Expires After', exact: true })
+    .selectOption('7');
   await page.getByRole('button', { name: 'Create Token' }).click();
   await expect(
     page.getByRole('textbox', { name: 'New Client Token' })

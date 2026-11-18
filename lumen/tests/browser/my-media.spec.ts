@@ -55,7 +55,9 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
   await expect(
     page.getByRole('link', { name: 'Matched Movie' })
   ).toHaveAttribute('href', '/movie/20');
-  await page.getByLabel('Library', { exact: true }).selectOption('2');
+  await page
+    .getByRole('combobox', { name: 'Library', exact: true })
+    .selectOption('2');
   await page.getByRole('button', { name: 'Next Page' }).click();
   await expect(page.getByText('Unmatched', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Unmatched' })).toHaveCount(0);
@@ -64,7 +66,9 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
     cursor: '37',
     libraryId: '2',
   });
-  await page.getByLabel('Shelf').selectOption('watched');
+  await page
+    .getByRole('combobox', { name: 'Shelf', exact: true })
+    .selectOption('watched');
   await expect(page.getByRole('link', { name: 'Matched Movie' })).toBeVisible();
   expect(Object.fromEntries(requests.at(-1) ?? [])).toMatchObject({
     page: '1',
