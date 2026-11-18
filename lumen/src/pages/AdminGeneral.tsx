@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { Section } from '../components/cards';
+import DefaultRequestQuotas, {
+  type DefaultQuotas,
+} from '../components/DefaultRequestQuotas';
 import { ServiceNote } from '../components/extra';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { friendlyError } from '../errors';
@@ -266,9 +269,12 @@ function ApplicationForm({
 }
 
 export default function AdminGeneral() {
-  const settings = useApi<ApplicationSettings & { mediaServerType?: number }>(
-    path
-  );
+  const settings = useApi<
+    ApplicationSettings & {
+      mediaServerType?: number;
+      defaultQuotas?: DefaultQuotas;
+    }
+  >(path);
   return (
     <>
       <header className="ph">
@@ -314,6 +320,9 @@ export default function AdminGeneral() {
         )}
       </Section>
       <InstanceRequestSettings />
+      {settings.data?.defaultQuotas && (
+        <DefaultRequestQuotas initial={settings.data.defaultQuotas} />
+      )}
     </>
   );
 }

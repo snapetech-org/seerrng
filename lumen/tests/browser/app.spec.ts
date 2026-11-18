@@ -4615,6 +4615,48 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(quick).toBeChecked();
 });
 
+test('General Settings saves default request quotas without changing other media drafts', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const defaultQuotas = {
+    movie: { quotaLimit: 4, quotaDays: 7 },
+    adult: { quotaLimit: 1, quotaDays: 14 },
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(defaultQuotas.adult, body.defaultQuotas.adult);
+    }
+    return route.fulfill({
+      json: { applicationTitle: 'SeerrNG', defaultQuotas },
+    });
+  });
+  await page.goto('/admin/general');
+  const category = page.getByLabel('Quota Media Type');
+  const limit = page.getByLabel('Request Limit', { exact: true });
+  const days = page.getByLabel('Quota Days');
+  const save = page.getByRole('button', { name: 'Save Default Quota' });
+  await limit.fill('5');
+  await category.selectOption('adult');
+  await expect(days).toHaveValue('14');
+  await limit.fill('10001');
+  await expect(save).toBeDisabled();
+  await limit.fill('0');
+  await save.click();
+  await expect(page.getByText('Default request quota saved.')).toBeVisible();
+  expect(writes).toEqual([{ defaultQuotas: { adult: { quotaLimit: 0 } } }]);
+  await category.selectOption('movie');
+  await expect(limit).toHaveValue('5');
+  await page.reload();
+  await expect(limit).toHaveValue('4');
+  await category.selectOption('adult');
+  await expect(limit).toHaveValue('0');
+  await expect(days).toHaveValue('14');
+});
+
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   page,
 }) => {

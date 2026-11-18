@@ -2,17 +2,9 @@ import { useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { quotaCategories as categories } from '../quotaCategories';
 import { ServiceNote } from './extra';
 
-const categories = {
-  movie: 'Movies',
-  tv: 'Series',
-  music: 'Music',
-  book: 'Books',
-  comic: 'Comics',
-  magazine: 'Magazines',
-  software: 'Software',
-};
 type Category = keyof typeof categories;
 
 export default function ManagedQuotas({ id }: { id: number }) {

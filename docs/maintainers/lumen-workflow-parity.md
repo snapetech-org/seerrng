@@ -1694,3 +1694,10 @@ of instance availability and the Age Gate. Twelve standalone browser cases
 covered changed-only default saves, reload readback, separate category drafts,
 and Age Gate recovery. Live inheritance and matched native visual acceptance
 remain open.
+
+General Settings now edits inherited request limits and quota windows
+for each server quota category. Saves send only changed fields for the
+selected category and preserve drafts for other categories. TypeScript,
+the production build, and 20 standalone browser cases passed, including
+per-user quota regression checks. Live quota enforcement and matched
+native visual acceptance remain open.
