@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
+import { useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   GridSkeleton,
@@ -15,6 +16,7 @@ import {
   editionLabel,
   requestComicEdition,
 } from '../components/comics';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { DetailTop, Facts, Pill } from '../components/detail';
 import {
   comicState,
@@ -980,6 +982,19 @@ export function Magazines() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? params.get('query') ?? '';
   const [q, setQ] = useState(query);
+  const { user } = useAuth();
+  const toast = useToast();
+  const [requestTitle, setRequestTitle] = useState('');
+  const [requested, setRequested] = useState('');
+  const [sending, setSending] = useState(false);
+  const activeRequest = useRef(false);
+  // Admin, Request, or Request Magazines. The category-specific bit exceeds 32 bits.
+  const permissions = user?.permissions ?? 0;
+  const mayRequest =
+    Number.isSafeInteger(permissions) &&
+    permissions >= 0 &&
+    (BigInt(permissions) & (2n | 32n | 2199023255552n)) !== 0n;
+  const title = q.trim();
   const mode = params.get('catalog');
   const catalog =
     mode === 'tracked' || mode === 'public'
@@ -1047,6 +1062,48 @@ export function Magazines() {
           ))}
         </div>
       </div>
+      {mayRequest && title && title.length <= 256 && (
+        <div className="toolbar">
+          <button
+            className="btn btn-tonal btn-sm"
+            type="button"
+            disabled={title === requested}
+            onClick={() => setRequestTitle(title)}
+          >
+            {title === requested ? `Requested ${title}` : `Request “${title}”`}
+          </button>
+        </div>
+      )}
+      {mayRequest && requestTitle && (
+        <ConfirmSheet
+          title="Request Magazine"
+          body={requestTitle}
+          confirm="Send Request"
+          cancel="Cancel"
+          busy={sending}
+          onClose={() => {
+            if (!activeRequest.current) setRequestTitle('');
+          }}
+          onConfirm={async () => {
+            if (activeRequest.current) return;
+            activeRequest.current = true;
+            setSending(true);
+            try {
+              const result = await requestExtra('magazine', requestTitle);
+              if ((result as { status?: number } | null)?.status === 4)
+                throw new Error('The magazine request failed.');
+              setRequested(requestTitle);
+              setRequestTitle('');
+              toast('Magazine requested');
+            } catch (error) {
+              toast(friendlyError(error, 'Request failed'));
+            } finally {
+              activeRequest.current = false;
+              setSending(false);
+            }
+          }}
+        />
+      )}
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="magazines"
