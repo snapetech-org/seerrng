@@ -61,6 +61,7 @@ const AdminDiscovery = lazy(() => import('./pages/AdminDiscovery'));
 const AdminLibraryMigration = lazy(
   () => import('./pages/AdminLibraryMigration')
 );
+const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
@@ -462,6 +463,24 @@ function App() {
                   }
                 >
                   <AdminMetadata />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/notifications"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading notification settings…
+                    </p>
+                  }
+                >
+                  <AdminNotifications />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

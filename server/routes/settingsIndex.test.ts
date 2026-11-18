@@ -3046,6 +3046,7 @@ describe('Settings route input validation', () => {
           authPass: 'smtp-password',
           allowSelfSigned: false,
           senderName: 'Seerr',
+          usePublicLogo: true,
           pgpPrivateKey: '',
           pgpPassword: '',
         },
@@ -3069,6 +3070,7 @@ describe('Settings route input validation', () => {
       });
 
     assert.strictEqual(accepted.status, 200);
+    assert.strictEqual(accepted.body.options.usePublicLogo, true);
     assert.strictEqual(invalidTypes.status, 400);
     assert.match(invalidTypes.body.message, /Notification types must be valid/);
     assert.strictEqual(

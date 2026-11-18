@@ -135,6 +135,7 @@ type GenericNotificationBody = {
 };
 
 type GenericNotificationSchema = {
+  optionalBooleanOptions?: readonly string[];
   booleanOptions?: readonly string[];
   numberOptions?: readonly string[];
   optionalStringOptions?: readonly {
@@ -638,6 +639,19 @@ const parseGenericNotificationBody = (
   }
   for (const option of schema.booleanOptions ?? []) {
     const optionValue = rawOptions[option];
+    if (typeof optionValue !== 'boolean') {
+      return {
+        error: {
+          status: 400,
+          message: `${label} ${option} must be a boolean.`,
+        },
+      };
+    }
+    options[option] = optionValue;
+  }
+  for (const option of schema.optionalBooleanOptions ?? []) {
+    const optionValue = rawOptions[option];
+    if (optionValue === undefined) continue;
     if (typeof optionValue !== 'boolean') {
       return {
         error: {
@@ -1207,6 +1221,7 @@ adminPost('/email', async (req, res) => {
       'requireTls',
       'allowSelfSigned',
     ],
+    optionalBooleanOptions: ['usePublicLogo'],
     numberOptions: ['smtpPort'],
     typesRequired: false,
   });
@@ -1246,6 +1261,7 @@ adminPost('/email/test', async (req, res, next) => {
       'requireTls',
       'allowSelfSigned',
     ],
+    optionalBooleanOptions: ['usePublicLogo'],
     numberOptions: ['smtpPort'],
     typesRequired: false,
   });

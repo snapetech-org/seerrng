@@ -175,6 +175,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Instance Notifications</b>
+              <Link
+                className="go"
+                to="/admin/notifications"
+                aria-label="Open Instance Notifications"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Library Migration</b>
               <Link
                 className="go"

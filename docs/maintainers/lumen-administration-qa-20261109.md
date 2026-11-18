@@ -66,3 +66,11 @@ Administrators open `/admin/library-migration` from `/me` or the bundled and sta
 Compared the configuration and expanded file preview with the established Network Settings form controls at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. The first comparison exposed side-by-side disclosure content on wide screens. The final comparison uses the shared disclosure owner and shows detail rows beneath the author heading. The final production build and four browser checks passed. Ten standalone proxy tests and eight native routing/API tests passed. Validation used isolated synthetic authors and commands. No live library was moved.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-migration-20261118/`.
+
+## Instance email and Web Push follow-up — 2026-11-18
+
+Administrators can open `/admin/notifications` from `/me` and save or test email and Web Push independently. Stored SMTP and PGP credentials remain redacted, and a test uses the draft without saving it. The email API now persists the existing Use the Public Logo option.
+
+Compared the form with shared Network Settings controls at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected control and action wrapping, long heading and credential notices, and horizontal overflow. The Lumen production build, four browser checks, and the focused server API case passed. Test deliveries were mocked. Other instance notification channels and their old bookmarks still use native settings.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-notifications-20261118/`.
