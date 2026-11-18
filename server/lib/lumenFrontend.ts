@@ -31,19 +31,64 @@ function watchSessionDeepLink(pathname: string): string | undefined {
   return `/lumen/watch-sessions${destination ? `/${destination}` : ''}`;
 }
 
-function requestDeepLink(req: Request): string | undefined {
-  if (!/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
+function requestDeepLink(req: Request, userId?: string): string | undefined {
+  if (!userId && !/^\/requests(?:\/status)?\/?$/i.test(req.path)) return;
+  const query = new URLSearchParams();
+  const requester = userId ?? req.query.userId ?? req.query.requestedBy;
+  if (
+    typeof requester === 'string' &&
+    /^[1-9]\d{0,9}$/.test(requester) &&
+    Number(requester) <= 1_000_000_000
+  ) {
+    query.set('requestedBy', requester);
+  }
+  for (const [source, target] of [
+    ['filter', 'show'],
+    ['mediaType', 'mediaType'],
+  ]) {
+    const value = req.query[source] ?? req.query[target];
+    if (
+      typeof value === 'string' &&
+      /^[a-z]+$/.test(value) &&
+      value.length <= 20
+    ) {
+      query.set(target, value);
+    }
+  }
+  if (query.get('mediaType') === 'audiobook') {
+    query.set('mediaType', 'book');
+    query.set('bookFormat', 'audiobook');
+  }
+  const { timeFrame, sort, sortDirection } = req.query;
+  if (
+    typeof timeFrame === 'string' &&
+    /^(all|7d|14d|30d|1m|6m)$/.test(timeFrame)
+  ) {
+    query.set('timeFrame', timeFrame);
+  }
+  if (sort === 'added' && (sortDirection === 'asc' || sortDirection === 'desc'))
+    query.set('order', sortDirection === 'asc' ? 'oldest' : 'newest');
+  if (sort === 'modified' && sortDirection === 'desc')
+    query.set('order', 'updated');
+  if (sort === 'title' && (sortDirection === 'asc' || sortDirection === 'desc'))
+    query.set('order', `title-${sortDirection}`);
+
   const key =
     'softwareRequestId' in req.query ? 'softwareRequestId' : 'requestId';
-  const id = req.query[key];
-  if (
-    typeof id === 'string' &&
-    /^\d+$/.test(id) &&
-    Number.isSafeInteger(Number(id)) &&
-    Number(id) > 0
-  ) {
-    return `/lumen/requests?${key}=${Number(id)}`;
+  if (!userId && key in req.query) {
+    const id = req.query[key];
+    if (
+      typeof id !== 'string' ||
+      !/^\d+$/.test(id) ||
+      !Number.isSafeInteger(Number(id)) ||
+      Number(id) <= 0
+    ) {
+      return;
+    }
+    query.set(key, String(Number(id)));
   }
+  const suffix = query.toString();
+  return `/lumen/requests${suffix ? `?${suffix}` : ''}`;
 }
 
 const discoveryFilters = [
@@ -269,8 +314,6 @@ function detailDeepLink(req: Request): string | undefined {
 }
 
 const workflowDestinations = new Map([
-  ['/requests', '/requests'],
-  ['/requests/status', '/requests'],
   ['/following', '/following'],
   ['/library', '/library'],
   ['/games', '/game-library'],
@@ -430,30 +473,7 @@ function workflowDeepLink(
     nativePath === '/requests/status' ||
     (userDestination && userWorkflow === 'requests')
   ) {
-    const query = new URLSearchParams();
-    const requester = userId ?? req.query.userId ?? req.query.requestedBy;
-    if (
-      typeof requester === 'string' &&
-      /^[1-9]\d{0,9}$/.test(requester) &&
-      Number(requester) <= 1_000_000_000
-    ) {
-      query.set('requestedBy', requester);
-    }
-    for (const [source, target] of [
-      ['filter', 'show'],
-      ['mediaType', 'mediaType'],
-    ]) {
-      const value = req.query[source] ?? req.query[target];
-      if (
-        typeof value === 'string' &&
-        /^[a-z]+$/.test(value) &&
-        value.length <= 20
-      ) {
-        query.set(target, value);
-      }
-    }
-    const suffix = query.toString();
-    return `/lumen/requests${suffix ? `?${suffix}` : ''}`;
+    return requestDeepLink(req, userId) ?? '/lumen/requests';
   }
 
   const userWatchlist = userDestination && userWorkflow === 'watchlist';

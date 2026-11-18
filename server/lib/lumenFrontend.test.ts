@@ -165,6 +165,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const requestLink = await request(app).get('/requests/status?requestId=21');
     assert.equal(requestLink.headers.location, '/lumen/requests?requestId=21');
     assert.equal(requestLink.headers['cache-control'], 'no-store');
+    const filteredRequests = await request(app).get(
+      '/requests/status?userId=19&filter=pending&mediaType=audiobook&timeFrame=7d&sort=added&sortDirection=asc&requestId=21&extra=1'
+    );
+    assert.equal(
+      filteredRequests.headers.location,
+      '/lumen/requests?requestedBy=19&show=pending&mediaType=book&bookFormat=audiobook&timeFrame=7d&order=oldest&requestId=21'
+    );
     const softwareLink = await request(app).get(
       '/requests/status?softwareRequestId=42'
     );
