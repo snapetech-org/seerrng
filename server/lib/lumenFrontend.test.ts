@@ -244,6 +244,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       filteredRequests.headers.location,
       '/lumen/requests?requestedBy=19&show=pending&mediaType=book&bookFormat=audiobook&timeFrame=7d&order=oldest&requestId=21'
     );
+    const filteredBooks = await request(app).get(
+      '/requests/status?mediaType=book&bookFormat=ebook&search=Night+%26+Day'
+    );
+    assert.equal(
+      filteredBooks.headers.location,
+      '/lumen/requests?mediaType=book&bookFormat=ebook&search=Night+%26+Day'
+    );
     const softwareList = await request(app).get(
       '/requests?mediaType=retro&filter=downloading&userId=19'
     );

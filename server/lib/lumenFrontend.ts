@@ -74,6 +74,16 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
     query.set('mediaType', 'book');
     query.set('bookFormat', 'audiobook');
   }
+  if (
+    mediaType === 'book' &&
+    (req.query.bookFormat === 'ebook' || req.query.bookFormat === 'audiobook')
+  ) {
+    query.set('bookFormat', req.query.bookFormat);
+  }
+  if (typeof req.query.search === 'string') {
+    const search = req.query.search.trim().slice(0, 200);
+    if (search) query.set('search', search);
+  }
   const { timeFrame, sort, sortDirection } = req.query;
   if (
     typeof timeFrame === 'string' &&

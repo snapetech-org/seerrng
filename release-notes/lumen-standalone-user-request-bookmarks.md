@@ -1,1 +1,2 @@
 - Standalone Lumen preserves the requester from the path of a Classic user request bookmark, even if the link contains conflicting requester filters.
+- Bundled request bookmarks retain title searches and explicit book formats when opening Lumen.
