@@ -26,7 +26,13 @@ const requestServices = [
   ['radarr', 'Radarr'],
   ['sonarr', 'Sonarr'],
   ['readarr', 'Book and Audiobook Services'],
+  ['lazylibrarian', 'LazyLibrarian'],
   ['lidarr', 'Lidarr'],
+  ['mylar', 'Mylar'],
+  ['kapowarr', 'Kapowarr'],
+  ['backissue', 'BackIssue'],
+  ['sportarr', 'Sportarr'],
+  ['whisparr', 'Whisparr'],
 ] as const;
 
 function SetupEditor({

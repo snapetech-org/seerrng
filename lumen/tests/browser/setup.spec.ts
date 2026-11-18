@@ -21,6 +21,12 @@ for (const administrator of [true, false]) {
           json: { id: 1, permissions: administrator ? 2 : 0 },
         });
       expect(route.request().method()).toBe('GET');
+      if (
+        /^\/settings\/(lazylibrarian|mylar|kapowarr|backissue|sportarr|whisparr)$/.test(
+          path
+        )
+      )
+        return route.fulfill({ json: [] });
       return route.fulfill({ json: { results: [], totalPages: 1 } });
     });
     if (!administrator) {
@@ -38,6 +44,22 @@ for (const administrator of [true, false]) {
       page.getByRole('heading', { name: 'Setup Guide' })
     ).toBeVisible();
     await expect(page.getByText('Configure Media Categories')).toBeVisible();
+    await page.getByText('Configure Request Services', { exact: true }).click();
+    for (const provider of [
+      'LazyLibrarian',
+      'Mylar',
+      'Kapowarr',
+      'BackIssue',
+      'Sportarr',
+      'Whisparr',
+    ]) {
+      const panel = page.getByText(provider, { exact: true });
+      await panel.click();
+      await expect(
+        page.getByRole('button', { name: `Add ${provider}`, exact: true })
+      ).toBeVisible();
+      await panel.click();
+    }
     await expect(
       page.getByRole('button', { name: 'Finish Setup' })
     ).toHaveCount(0);

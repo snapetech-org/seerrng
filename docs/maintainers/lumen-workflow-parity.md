@@ -2786,3 +2786,9 @@ the guide URL are denied access. Twenty setup browser checks passed per
 deployment across desktop, iPhone, Android, and tablet, including the
 three first-run providers and both guide access levels. Baseline and
 candidate visual comparison remains unverified.
+
+Setup also opens the existing LazyLibrarian, Mylar, Kapowarr, BackIssue,
+Sportarr, and Whisparr service editors on demand. Sixteen browser checks
+covered administrator entry, service controls, and member denial across
+both deployments and four viewport presets. Provider saves and matched
+visual acceptance for these setup panels remain unverified.
