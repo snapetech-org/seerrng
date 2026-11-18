@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth } from '../auth';
-import { Section } from '../components/cards';
+import { Section, shortDate } from '../components/cards';
 import { canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
@@ -193,6 +193,7 @@ export default function HouseholdProfile() {
   const profile = useApi<{
     id: number;
     displayName: string;
+    createdAt?: string;
     userType?: number;
   }>(valid ? `/user/${id}` : null, { currentPathOnly: true });
   const own = user?.id === id;
@@ -200,11 +201,23 @@ export default function HouseholdProfile() {
   const canViewQuota =
     own || ((permissions & (2 | 8)) !== 0 && (permissions & (2 | 16)) !== 0);
   const loaded = profile.data?.id === id;
+  const joined = loaded ? shortDate(profile.data?.createdAt) : '';
+  const canEdit = own || (id !== 1 && (permissions & (2 | 8)) !== 0);
   return (
     <>
       <ExtraHeader
         title={loaded ? profile.data!.displayName : 'Household Profile'}
-      />
+        sub={joined ? `Joined ${joined}` : undefined}
+      >
+        {loaded && canEdit && (
+          <Link
+            className="btn btn-quiet btn-sm"
+            to={own ? '/me/account' : `/admin/users/${id}`}
+          >
+            Edit Settings
+          </Link>
+        )}
+      </ExtraHeader>
       {!valid && <p className="note">Invalid user ID.</p>}
       <ServiceNote
         error={profile.error}

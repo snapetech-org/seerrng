@@ -25,7 +25,12 @@ for (const permissions of [2, 24, 16, 32]) {
           });
         case '/user/19':
           return route.fulfill({
-            json: { id: 19, displayName: 'Household Member', userType: 1 },
+            json: {
+              id: 19,
+              displayName: 'Household Member',
+              userType: 1,
+              createdAt: '2020-06-15T12:00:00.000Z',
+            },
           });
         case '/user/19/watch_data':
           return route.fulfill({
@@ -85,6 +90,11 @@ for (const permissions of [2, 24, 16, 32]) {
     await expect(
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
+    await expect(page.getByText('Joined Jun 15, 2020')).toBeVisible();
+    const edit = page.getByRole('link', { name: 'Edit Settings' });
+    if (permissions === 2 || permissions === 24)
+      await expect(edit).toHaveAttribute('href', '/admin/users/19');
+    else await expect(edit).toHaveCount(0);
     if (permissions === 2) {
       await expect(page.getByText('Total plays: 3')).toBeVisible();
       await expect(
