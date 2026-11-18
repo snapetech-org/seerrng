@@ -75,6 +75,26 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
     cursor: '0',
     shelf: 'watched',
   });
+  await page.reload();
+  await expect(
+    page.getByRole('combobox', { name: 'Library', exact: true })
+  ).toHaveValue('2');
+  await expect(
+    page.getByRole('combobox', { name: 'Shelf', exact: true })
+  ).toHaveValue('watched');
+  await page.goto('/library?source=anilist&shelf=rated&libraryId=unknown');
+  await expect(
+    page.getByRole('combobox', { name: 'Library Source' })
+  ).toHaveValue('plex');
+  await expect(
+    page.getByRole('combobox', { name: 'Library', exact: true })
+  ).toHaveValue('1');
+  await expect(
+    page.getByRole('combobox', { name: 'Shelf', exact: true })
+  ).toHaveValue('all');
+  expect(requests.some((query) => query.get('libraryId') === 'unknown')).toBe(
+    false
+  );
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);

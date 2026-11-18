@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import LibraryRepair from '../components/LibraryRepair';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import { ServiceNote } from '../components/extra';
@@ -110,15 +110,23 @@ function LibraryShelf({
     : source === 'trakt'
       ? ['watched', 'watchlist', 'rated']
       : ['all', 'watchlist', 'in-progress', 'completed', 'rated'];
-  const [shelf, setShelf] = useState<Shelf>(
-    source === 'trakt' ? 'watched' : 'all'
-  );
-  const [mediaType, setMediaType] = useState('');
-  const [libraryId, setLibraryId] = useState('');
-  const [cursors, setCursors] = useState([0]);
-  const page = cursors.length;
+  const [bookmark, setBookmark] = useSearchParams();
+  const shelf =
+    shelves.find((value) => value === bookmark.get('shelf')) ?? shelves[0];
+  const requestedType = bookmark.get('mediaType');
+  const mediaType =
+    !native && (requestedType === 'movie' || requestedType === 'tv')
+      ? requestedType
+      : '';
+  const libraryId = bookmark.get('libraryId');
   const [libraries, setLibraries] = useState<LibraryResult['libraries']>();
-  const selectedLibrary = libraryId || libraries?.[0]?.id;
+  const selectedLibrary = native
+    ? (libraries?.find(({ id }) => id === libraryId) ?? libraries?.[0])?.id
+    : undefined;
+  const scope = JSON.stringify([shelf, mediaType, selectedLibrary]);
+  const [paging, setPaging] = useState({ scope, cursors: [0] });
+  const cursors = paging.scope === scope ? paging.cursors : [0];
+  const page = cursors.length;
   const params = new URLSearchParams({ shelf, page: String(page) });
   if (native) {
     params.set('cursor', String(cursors[page - 1]));
@@ -128,9 +136,13 @@ function LibraryShelf({
   }
   const path = `${BASE}/library/${source}?${params}`;
 
-  function changeFilter(update: () => void) {
-    update();
-    setCursors([0]);
+  function changeFilter(key: string, value: string) {
+    const next = new URLSearchParams(bookmark);
+    next.set('source', source);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setPaging({ scope, cursors: [0] });
+    setBookmark(next);
   }
 
   return (
@@ -140,9 +152,7 @@ function LibraryShelf({
           <span className="lbl">Shelf</span>
           <select
             value={shelf}
-            onChange={(event) =>
-              changeFilter(() => setShelf(event.target.value as Shelf))
-            }
+            onChange={(event) => changeFilter('shelf', event.target.value)}
           >
             {shelves.map((value) => (
               <option key={value} value={value}>
@@ -158,7 +168,7 @@ function LibraryShelf({
               <select
                 value={selectedLibrary}
                 onChange={(event) =>
-                  changeFilter(() => setLibraryId(event.target.value))
+                  changeFilter('libraryId', event.target.value)
                 }
               >
                 {libraries.map(({ id, name }) => (
@@ -175,7 +185,7 @@ function LibraryShelf({
             <select
               value={mediaType}
               onChange={(event) =>
-                changeFilter(() => setMediaType(event.target.value))
+                changeFilter('mediaType', event.target.value)
               }
             >
               <option value="">Movies and Series</option>
@@ -195,8 +205,8 @@ function LibraryShelf({
         mediaType={mediaType}
         setLibraries={setLibraries}
         choosingLibrary={native && !selectedLibrary}
-        previous={() => setCursors(cursors.slice(0, -1))}
-        next={(cursor) => setCursors([...cursors, cursor])}
+        previous={() => setPaging({ scope, cursors: cursors.slice(0, -1) })}
+        next={(cursor) => setPaging({ scope, cursors: [...cursors, cursor] })}
       />
     </>
   );
@@ -306,13 +316,14 @@ function LibraryPage({
 export default function Library() {
   const connections = useApi<Connections>(`${BASE}/accounts`);
   const [matchRevision, setMatchRevision] = useState(0);
-  const [source, setSource] = useState<Source>();
+  const [bookmark, setBookmark] = useSearchParams();
   const nativeSource = connections.data?.mediaServer;
   const sources = [
     ...(nativeSource?.connected ? [nativeSource.provider] : []),
     ...(connections.data?.accounts ?? []).map((account) => account.provider),
   ];
-  const current = source && sources.includes(source) ? source : sources[0];
+  const current =
+    sources.find((source) => source === bookmark.get('source')) ?? sources[0];
   return (
     <>
       <header className="ph">
@@ -351,7 +362,14 @@ export default function Library() {
               <span className="lbl">Library Source</span>
               <select
                 value={current}
-                onChange={(event) => setSource(event.target.value as Source)}
+                onChange={(event) => {
+                  const next = new URLSearchParams(bookmark);
+                  next.set('source', event.target.value);
+                  next.delete('shelf');
+                  next.delete('mediaType');
+                  next.delete('libraryId');
+                  setBookmark(next);
+                }}
               >
                 {sources.map((value) => (
                   <option key={value} value={value}>
