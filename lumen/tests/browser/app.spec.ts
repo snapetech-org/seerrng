@@ -5160,3 +5160,49 @@ test('Managed Linked Accounts preserves a last sign-in method', async ({
     page.getByRole('button', { name: 'Unlink Provider Two' })
   ).toHaveCount(0);
 });
+
+test('Managed notifications save for the selected user without touching browser devices', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let mask = 0;
+  await page.route('**/api/v1/user/19/settings/notifications', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        notificationTypes: { email: 4 },
+      });
+      mask = 4;
+    }
+    return route.fulfill({
+      json: {
+        emailEnabled: true,
+        webPushEnabled: true,
+        notificationTypes: { email: mask, webpush: 0 },
+      },
+    });
+  });
+  let deviceReads = 0;
+  await page.route('**/api/v1/user/19/pushSubscriptions', (route) => {
+    deviceReads++;
+    return route.fulfill({ json: [] });
+  });
+  await page.goto('/admin/users/19/notifications');
+  await page
+    .getByRole('checkbox', { name: 'Request approved', exact: true })
+    .first()
+    .check();
+  await page.getByRole('button', { name: 'Save Email Preferences' }).click();
+  await expect(page.getByText('Email preferences saved.')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Registered Browser Devices' })
+  ).toHaveCount(0);
+  expect(deviceReads).toBe(0);
+});

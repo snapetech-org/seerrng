@@ -211,11 +211,11 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
 
 function managedUserSettingsPath(path: string): string | undefined {
   const match =
-    /^\/users\/([1-9]\d{0,9})\/settings(?:\/(main|episode-queue|maturity|permissions|password|tv-request-access|linked-accounts))?\/?$/.exec(
+    /^\/users\/([1-9]\d{0,9})\/settings(?:\/(main|episode-queue|maturity|permissions|password|tv-request-access|linked-accounts|notifications(?:\/(?:email|discord|telegram|pushbullet|pushover|webpush))?))?\/?$/.exec(
       path
     );
   if (!match || Number(match[1]) > 1_000_000_000) return;
-  return `/lumen/admin/users/${match[1]}/${match[2] ?? 'main'}`;
+  return `/lumen/admin/users/${match[1]}/${match[2]?.startsWith('notifications') ? 'notifications' : (match[2] ?? 'main')}`;
 }
 
 function workflowDeepLink(req: Request): string | undefined {

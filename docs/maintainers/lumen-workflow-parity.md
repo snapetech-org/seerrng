@@ -1597,9 +1597,10 @@ defaults. Administrators can also import and sync accounts through the
 configured Plex, Jellyfin, or Emby provider. Deletion uses the existing
 server protections and requires confirmation.
 
-The directory accepts the native list bookmark in the companion and bundled
-Lumen deployments. Account settings bookmarks open the selected user and the corresponding
-profile, password, permissions, maturity, or Episode Queue panel. Linked
-accounts, notifications, and TV request access bookmarks remain open. Standalone fixtures cover the managed settings actions.
-Live providers, full bundled user workflows, and matched native visual
-comparison remain unverified.
+The directory accepts native list and account settings bookmarks in the
+companion and bundled deployments. Profile, password, permissions, maturity,
+Episode Queue, linked accounts, TV request access, and notification bookmarks
+open the matching panel for the selected user. Delegated notification settings
+reuse the personal forms. Browser registration stays with the signed-in user.
+Standalone fixtures cover the managed settings actions. Live providers, full
+bundled user workflows, and matched native visual comparison remain unverified.

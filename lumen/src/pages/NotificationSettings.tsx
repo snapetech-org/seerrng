@@ -946,7 +946,13 @@ function PushoverForm({
   );
 }
 
-function UserNotifications({ id }: { id: number }) {
+export function UserNotifications({
+  id,
+  manageBrowser = true,
+}: {
+  id: number;
+  manageBrowser?: boolean;
+}) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
   const emailMask = data?.notificationTypes?.email;
@@ -1051,7 +1057,7 @@ function UserNotifications({ id }: { id: number }) {
             channel="webpush"
             label="Browser Push"
           />
-          <PushDevices id={id} />
+          {manageBrowser && <PushDevices id={id} />}
         </Section>
       )}
     </>

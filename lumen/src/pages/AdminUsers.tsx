@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { lazy, Suspense, useRef, useState, type FormEvent } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
@@ -16,6 +16,12 @@ import ManagedQuotas from '../components/ManagedQuotas';
 import ManagedTvAccess from '../components/ManagedTvAccess';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+
+const UserNotifications = lazy(() =>
+  import('./NotificationSettings').then(({ UserNotifications }) => ({
+    default: UserNotifications,
+  }))
+);
 
 interface DirectoryUser {
   id: number;
@@ -295,6 +301,9 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
+  const [notificationUser, setNotificationUser] = useState<number | undefined>(
+    panel === 'notifications' ? target : undefined
+  );
   const [linkedUser, setLinkedUser] = useState<number | undefined>(
     panel === 'linked-accounts' ? target : undefined
   );
@@ -751,6 +760,40 @@ export default function AdminUsers() {
                     onSaved={reload}
                   />
                 )}
+                {actor &&
+                  (actor.id === user.id ||
+                    actor.id === 1 ||
+                    (user.permissions & 2) === 0) && (
+                    <>
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        aria-expanded={notificationUser === user.id}
+                        onClick={() =>
+                          setNotificationUser(
+                            notificationUser === user.id ? undefined : user.id
+                          )
+                        }
+                      >
+                        Notification Settings
+                      </button>
+                      {notificationUser === user.id && (
+                        <div>
+                          <Suspense
+                            fallback={
+                              <p className="note" role="status">
+                                Loading notification settings…
+                              </p>
+                            }
+                          >
+                            <UserNotifications
+                              id={user.id}
+                              manageBrowser={actor.id === user.id}
+                            />
+                          </Suspense>
+                        </div>
+                      )}
+                    </>
+                  )}
                 {canDelete(user) && (
                   <button
                     className="btn btn-quiet btn-sm"
