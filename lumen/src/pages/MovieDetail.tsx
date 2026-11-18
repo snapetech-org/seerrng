@@ -23,10 +23,10 @@ import {
   ActionBar,
   AdvancedOptions,
   canRequest4k,
+  CreditsDisclosure,
   DetailTop,
   Facts,
   fmtRun,
-  People,
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -234,11 +234,21 @@ export default function MovieDetail() {
           <div style={{ display: 'grid', gap: 22 }}>
             {m.tagline && <p className="tagline">{m.tagline}</p>}
             <p className="ov">{m.overview}</p>
-            {!!m.credits?.cast.length && (
-              <div>
-                <div className="h2">Starring</div>
-                <People list={m.credits.cast.slice(0, 10)} />
-              </div>
+            {!!m.credits?.cast?.length && (
+              <CreditsDisclosure
+                key={`cast-${m.id}`}
+                media="movie"
+                credit="cast"
+                people={m.credits.cast}
+              />
+            )}
+            {!!m.credits?.crew?.length && (
+              <CreditsDisclosure
+                key={`crew-${m.id}`}
+                media="movie"
+                credit="crew"
+                people={m.credits.crew}
+              />
             )}
             {(fourK || trailerBtn) && (
               <div className="ph-only-row">

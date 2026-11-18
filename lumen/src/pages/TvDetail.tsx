@@ -22,10 +22,10 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
+  CreditsDisclosure,
   DetailTop,
   Facts,
   fmtRun,
-  People,
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -499,11 +499,21 @@ export default function TvDetail() {
                 })}
               </div>
             </div>
-            {!!t.credits?.cast.length && (
-              <div>
-                <div className="h2">Starring</div>
-                <People list={t.credits.cast.slice(0, 10)} />
-              </div>
+            {!!t.credits?.cast?.length && (
+              <CreditsDisclosure
+                key={`cast-${t.id}`}
+                media="tv"
+                credit="cast"
+                people={t.credits.cast}
+              />
+            )}
+            {!!t.credits?.crew?.length && (
+              <CreditsDisclosure
+                key={`crew-${t.id}`}
+                media="tv"
+                credit="crew"
+                people={t.credits.crew}
+              />
             )}
           </div>
           <aside>

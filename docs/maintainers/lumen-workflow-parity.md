@@ -842,3 +842,16 @@ The standalone Movies fixture verified a saved change, a failed toggle that
 keeps the current value, and a successful retry that applies without a page
 reload. Desktop and touch viewport presets passed. The remaining screens
 need rendered checks, along with bundled and native visual comparisons.
+
+### Video credits disclosure increment
+
+Movie and series details expose cast and crew through the shared disclosure
+surface. These panels follow SeerrNG's per-media pins and honor legacy
+movie pins when a scoped value is absent. A save changes only the chosen
+pin. Opening or closing a panel by hand does not change the saved pin.
+
+Standalone browser fixtures verified a scoped false override, a failed
+movie cast save and retry, persisted open state after reload, independent
+series state, and access to crew credits. The checks ran at desktop,
+iPhone, Android, and tablet presets. Bundled and native visual comparison
+and the remaining detail disclosures are open.

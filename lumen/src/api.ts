@@ -159,6 +159,8 @@ export const defaultCardTitleModes = {
   book: 'always',
 } satisfies Record<CardTitleKind, CardTitleMode>;
 
+export type VideoCreditPins = Partial<Record<'cast' | 'crew', boolean>>;
+
 export interface User {
   plexUsername?: string | null;
   jellyfinUsername?: string | null;
@@ -169,6 +171,9 @@ export interface User {
   userType?: 1 | 2 | 3 | 4;
   warnings?: string[];
   settings?: {
+    detailDisclosureCastPinned?: boolean;
+    detailDisclosureCrewPinned?: boolean;
+    detailDisclosurePins?: Partial<Record<'movie' | 'tv', VideoCreditPins>>;
     cardTextVisibilityMovie?: CardTitleMode;
     cardTextVisibilityTv?: CardTitleMode;
     cardTextVisibilityAlbum?: CardTitleMode;

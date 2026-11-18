@@ -856,3 +856,77 @@ test('card title preferences save only changed categories and apply to posters',
   if (hoverCapable) await expect(title).toBeHidden();
   else await expect(title).toBeVisible();
 });
+
+test('video credits remember scoped pins and leave failed saves retryable', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const cast = [{ id: 10, name: 'Fixture Actor', character: 'Lead' }];
+  const crew = [{ id: 11, name: 'Fixture Director', job: 'Director' }];
+  const settings = {
+    detailDisclosureCastPinned: true,
+    detailDisclosurePins: {
+      movie: { cast: false },
+      tv: { cast: false },
+    },
+  };
+  const writes: unknown[] = [];
+  let reject = true;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: 2, settings },
+    })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({ json: { ...movie, credits: { cast, crew } } })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        title: undefined,
+        name: 'Fixture Series',
+        mediaType: 'tv',
+        seasons: [],
+        credits: { cast, crew },
+      },
+    })
+  );
+  await page.route(
+    '**/api/v1/user/1/settings/detail-disclosures/movie',
+    (route) => {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (reject) return route.fulfill({ status: 503, json: {} });
+      Object.assign(settings.detailDisclosurePins.movie, body);
+      return route.fulfill({ json: settings.detailDisclosurePins.movie });
+    }
+  );
+
+  await page.goto('/movie/101');
+  const actor = page.locator('.person').filter({ hasText: 'Fixture Actor' });
+  await expect(actor).toBeHidden();
+  await page.getByText('Starring', { exact: true }).click();
+  await expect(actor).toBeVisible();
+  const pin = page.getByRole('button', { name: 'Keep Starring Open' });
+  await pin.click();
+  await expect(
+    page.getByText('Could not save the credit preference. Try again.')
+  ).toBeVisible();
+  await expect(pin).toHaveAttribute('aria-pressed', 'false');
+  reject = false;
+  await pin.click();
+  await expect(pin).toHaveAttribute('aria-pressed', 'true');
+  expect(writes).toEqual([{ cast: true }, { cast: true }]);
+  await page.reload();
+  await expect(actor).toBeVisible();
+  await page.getByText('Crew', { exact: true }).click();
+  await expect(
+    page.locator('.person').filter({ hasText: 'Fixture Director' })
+  ).toBeVisible();
+
+  await page.goto('/tv/202');
+  await expect(page.getByText('Starring', { exact: true })).toBeVisible();
+  await expect(actor).toBeHidden();
+});

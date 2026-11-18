@@ -1,9 +1,16 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { api, type Person, type RequestOptions } from '../api';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  api,
+  type Person,
+  type RequestOptions,
+  type VideoCreditPins,
+} from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { Icon, type IconName } from '../icons';
+import { sessionGeneration } from '../sessionState';
 import { Glyph, type Stat } from './cards';
+import { useToast } from './toast';
 
 const hue = (s: string) =>
   [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 0);
@@ -65,6 +72,77 @@ export function People({ list }: { list: Person[] }) {
         </span>
       ))}
     </div>
+  );
+}
+
+export function CreditsDisclosure({
+  media,
+  credit,
+  people,
+}: {
+  media: 'movie' | 'tv';
+  credit: 'cast' | 'crew';
+  people: Person[];
+}) {
+  const { user, refresh } = useAuth();
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
+  const legacy =
+    credit === 'cast'
+      ? user?.settings?.detailDisclosureCastPinned
+      : user?.settings?.detailDisclosureCrewPinned;
+  const pinned =
+    user?.settings?.detailDisclosurePins?.[media]?.[credit] ??
+    (media === 'movie' && legacy === true);
+  const label = credit === 'cast' ? 'Starring' : 'Crew';
+
+  async function togglePin() {
+    if (!user || pending.current) return;
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    try {
+      const result = await api<VideoCreditPins>(
+        `/user/${user.id}/settings/detail-disclosures/${media}`,
+        { method: 'POST', body: JSON.stringify({ [credit]: !pinned }) }
+      );
+      if (generation !== sessionGeneration()) return;
+      if (result[credit] !== !pinned) {
+        toast('Could not confirm the saved credit preference.');
+        return;
+      }
+      await refresh();
+    } catch {
+      if (generation === sessionGeneration())
+        toast('Could not save the credit preference. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <details className="adv" open={pinned}>
+      <summary>
+        <Icon name="chev" size="sm" />
+        {label}
+      </summary>
+      <People list={people.slice(0, 10)} />
+      {user && (
+        <div className="toolbar">
+          <button
+            className="chip"
+            type="button"
+            aria-pressed={pinned}
+            disabled={busy}
+            onClick={() => void togglePin()}
+          >
+            Keep {label} Open
+          </button>
+        </div>
+      )}
+    </details>
   );
 }
 
