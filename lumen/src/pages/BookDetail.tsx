@@ -29,6 +29,7 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import FollowButton from '../components/FollowButton';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -36,6 +37,7 @@ import { ReaderDownloads } from '../components/RequestFiles';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
+import { canViewFollowing } from '../followPermissions';
 import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
@@ -531,6 +533,18 @@ export default function BookDetail() {
           <ReaderDeliveryLink target={f} />
           <ReaderDownloads mediaId={b.mediaInfo?.id} type="book" format={f} />
           <ReportIssueButton type="book" title={b.title} media={b.mediaInfo} />
+          {canViewFollowing(user?.permissions) && b.authorId && b.author && (
+            <FollowButton
+              key={b.authorId}
+              label="Follow New Releases"
+              subject={{
+                kind: 'author',
+                subjectKey: `author:${b.authorId}`,
+                subjectLabel: b.author,
+                conditions: { ref: { authorId: b.authorId } },
+              }}
+            />
+          )}
           <WatchlistButton mediaType="book" detail={b} requestedId={plainId} />
         </div>
         {/* phones: the action bar holds only the request, so the owned copy's link goes here */}

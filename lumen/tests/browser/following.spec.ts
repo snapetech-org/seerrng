@@ -263,3 +263,50 @@ test('filtered discovery follows the exact genre, studio, and network', async ({
     },
   ]);
 });
+
+test('book details follow the author by catalog identity', async ({ page }) => {
+  const subject = {
+    kind: 'author',
+    subjectKey: 'author:OL7A',
+    subjectLabel: 'Fixture Author',
+    conditions: { ref: { authorId: 'OL7A' } },
+  };
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { booksEnabled: true, ebookServiceEnabled: true },
+      });
+    if (path === '/book/OL42W')
+      return route.fulfill({
+        json: {
+          id: 'OL42W',
+          title: 'Fixture Book',
+          authorId: 'OL7A',
+          author: 'Fixture Author',
+          mediaType: 'book',
+          bookFormat: 'ebook',
+        },
+      });
+    if (path === '/follow' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual(subject);
+      return route.fulfill({ json: { ...subject, id: 6 } });
+    }
+    if (path === '/follow/6' && request.method() === 'DELETE')
+      return route.fulfill({ status: 204 });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('./book/OL42W');
+  const follow = page.getByRole('button', { name: 'Follow New Releases' });
+  await follow.click();
+  const following = page.getByRole('button', {
+    name: 'Following',
+    exact: true,
+  });
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  await following.click();
+  await expect(follow).toHaveAttribute('aria-pressed', 'false');
+});
