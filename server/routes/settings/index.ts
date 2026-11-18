@@ -3257,6 +3257,7 @@ settingsRoutes.post(
 );
 
 settingsRoutes.get('/about', async (req, res) => {
+  res.set('Cache-Control', 'no-store');
   const mediaRepository = getRepository(Media);
   const mediaRequestRepository = getRepository(MediaRequest);
 

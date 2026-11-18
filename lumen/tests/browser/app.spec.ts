@@ -4389,3 +4389,46 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await expect(page.getByText('No DNS cache entries.')).toBeVisible();
   expect(flushed).toBe(true);
 });
+
+test('About SeerrNG shows installed version and respects disabled update checks', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let checks = 0;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { applicationTitle: 'SeerrNG', versionCheck: false },
+    })
+  );
+  await page.route('**/api/v1/status', (route) => {
+    checks++;
+    return route.fulfill({ json: {} });
+  });
+  await page.route('**/api/v1/settings/about', (route) =>
+    route.fulfill({
+      json: {
+        version: 'v3.72.38',
+        totalMediaItems: 32,
+        totalRequests: 7,
+        tz: 'UTC',
+        appDataPath: '/fixture/config',
+      },
+    })
+  );
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open About SeerrNG' }).click();
+  await expect(page.getByText('v3.72.38', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('/fixture/config', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText('Version check disabled', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Release Notes' })
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/snapetech-org/seerrng/releases'
+  );
+  expect(checks).toBe(0);
+});

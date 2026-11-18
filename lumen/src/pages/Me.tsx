@@ -147,6 +147,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>About SeerrNG</b>
+              <Link
+                className="go"
+                to="/admin/about"
+                aria-label="Open About SeerrNG"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>System Logs</b>
               <Link
                 className="go"

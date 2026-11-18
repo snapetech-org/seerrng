@@ -387,8 +387,8 @@ export const mountLumenFrontend = (
     }
     return res.set('Cache-Control', 'no-store').redirect(302, target);
   });
-  server.get(/^\/lumen\/settings\/(jobs|logs)\/?$/, (req, res) => {
-    const destination = req.params[0] === 'jobs' ? 'jobs' : 'logs';
+  server.get(/^\/lumen\/settings\/(jobs|logs|about)\/?$/, (req, res) => {
+    const destination = req.params[0];
     return res
       .set('Cache-Control', 'no-store')
       .redirect(302, `/lumen/admin/${destination}`);
