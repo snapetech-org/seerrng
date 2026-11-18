@@ -6576,3 +6576,65 @@ test('Discover and Movies apply visibility defaults while the library view still
   await page.getByRole('button', { name: /^On / }).click();
   await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
 });
+
+test('Trending and Coming Soon apply discovery visibility and keep later pages reachable', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { hideRequested: true } })
+  );
+  const seen: string[] = [];
+  await page.route(
+    /\/api\/v1\/discover\/(trending|movies\/upcoming)\?/,
+    (route) => {
+      const url = new URL(route.request().url());
+      const number = Number(url.searchParams.get('page'));
+      seen.push(`${url.pathname}:${number}`);
+      return route.fulfill({
+        json: {
+          page: number,
+          totalPages: 2,
+          totalResults: 2,
+          results: [
+            number === 1
+              ? {
+                  ...movie,
+                  title: 'Requested fixture',
+                  releaseDate: '2099-01-01',
+                  mediaInfo: { hasActiveRequest: true },
+                }
+              : {
+                  ...movie,
+                  id: movie.id + 1,
+                  title: 'Later fixture',
+                  releaseDate: '2099-01-02',
+                },
+          ],
+        },
+      });
+    }
+  );
+  for (const [path, button] of [
+    ['/trending?mediaType=movie', 'Show more trending titles'],
+    ['/soon?media=movie', 'Show more upcoming movies'],
+  ] as const) {
+    await page.goto(path);
+    const more = page.getByRole('button', { name: button });
+    await expect(more).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Requested fixture' })
+    ).toHaveCount(0);
+    await expect(page.getByText('No upcoming titles found.')).toHaveCount(0);
+    await more.click();
+    await expect(
+      page.getByRole('link', { name: 'Later fixture' })
+    ).toBeVisible();
+  }
+  expect(seen).toEqual([
+    '/api/v1/discover/trending:1',
+    '/api/v1/discover/trending:2',
+    '/api/v1/discover/movies/upcoming:1',
+    '/api/v1/discover/movies/upcoming:2',
+  ]);
+});

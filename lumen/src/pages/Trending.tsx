@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import type { VideoSearchResult } from '../api';
+import { useAuth } from '../auth';
 import {
   CollectionCard,
   GridSkeleton,
@@ -8,7 +9,11 @@ import {
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ExtraHeader, ServiceNote } from '../components/extra';
-import { usePaged } from '../hooks';
+import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
+import { usePaged, usePublicSettings } from '../hooks';
 import { PersonCard } from './People';
 
 const mediaOptions = [
@@ -32,7 +37,19 @@ export default function Trending() {
     `/discover/trending?${query}`,
     identity
   );
-  const empty = list.items.length === 0;
+  const { user } = useAuth();
+  const visibility = discoveryVisibility(
+    usePublicSettings(),
+    user?.permissions
+  );
+  const items = list.items.filter(
+    (item) =>
+      item.mediaType === 'collection' ||
+      item.mediaType === 'person' ||
+      showDiscoveryTitle(item, visibility)
+  );
+  const empty = items.length === 0;
+  const filtered = items.length < list.items.length;
   function select(key: string, value: string) {
     const next = new URLSearchParams(params);
     next.set(key, value);
@@ -84,7 +101,7 @@ export default function Trending() {
         <p className="note">No trending titles found.</p>
       )}
       <div className="grid">
-        {list.items.map((item) =>
+        {items.map((item) =>
           item.mediaType === 'person' ? (
             <PersonCard key={identity(item)} person={item} />
           ) : item.mediaType === 'collection' ? (
@@ -94,8 +111,19 @@ export default function Trending() {
           )
         )}
       </div>
+      {filtered && !list.done && (
+        <div className="more-scroll">
+          <button
+            className="btn btn-tonal"
+            disabled={list.loading}
+            onClick={list.more}
+          >
+            {list.loading ? 'Loading…' : 'Show more trending titles'}
+          </button>
+        </div>
+      )}
       <MoreOnScroll
-        done={list.done}
+        done={list.done || filtered}
         loading={list.loading}
         more={list.more}
         error={empty ? null : list.error}

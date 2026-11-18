@@ -13,8 +13,12 @@ import {
 } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { useToast } from '../components/toast';
+import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
 import { friendlyError } from '../errors';
-import { usePaged } from '../hooks';
+import { usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { seriesRequestSummary } from '../seriesRequestSummary';
 import { useVideoAvailability } from '../videoAvailability';
@@ -52,7 +56,13 @@ export default function Soon() {
     { label: 'upcoming series', visible: showTv, list: tvList },
   ].filter(({ visible }) => visible);
   const loading = lists.some(({ list }) => !list.page && !list.error);
-  const allSelectedListsLoaded = lists.every(({ list }) => list.page > 0);
+  const allSelectedListsLoaded = lists.every(
+    ({ list }) => list.page > 0 && list.done && !list.error
+  );
+  const visibility = discoveryVisibility(
+    usePublicSettings(),
+    user?.permissions
+  );
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
@@ -75,7 +85,7 @@ export default function Soon() {
       date: t.firstAirDate || '',
     })),
   ]
-    .filter((x) => x.date)
+    .filter((x) => x.date && showDiscoveryTitle(x, visibility))
     .sort((a, b) => a.date.localeCompare(b.date));
   const months = new Map<string, typeof items>();
   for (const it of items) {
