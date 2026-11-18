@@ -159,7 +159,7 @@ server {
   location ~ ^/profile/watchlist/?$ {
     return 302 /watchlist$is_args$args;
   }
-  location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|sports)/?$ {
+  location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|patches|sports)/?$ {
     return 302 /$1$is_args$args;
   }
   location ~ ^/coming-soon/?$ {

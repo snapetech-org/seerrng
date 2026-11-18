@@ -31,6 +31,7 @@ import LumenSettings from './pages/LumenSettings';
 import Me from './pages/Me';
 import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
+import Patches from './pages/Patches';
 import PersonDetail from './pages/People';
 import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
@@ -130,6 +131,7 @@ function App() {
           <Route path="/magazines" element={<Magazines />} />
           <Route path="/magazine/:title" element={<MagazineDetail />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/patches" element={<Patches />} />
           <Route path="/game-library" element={<GameLibrary />} />
           <Route path="/game/:category/:id" element={<GameDetail />} />
           <Route path="/sports" element={<Sports />} />

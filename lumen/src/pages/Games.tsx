@@ -142,6 +142,9 @@ export function Games() {
         }
       >
         <div className="toolbar">
+          <Link className="chip" to="/patches">
+            Translations and Hacks
+          </Link>
           <Link className="chip" to="/game-library">
             My Games
           </Link>

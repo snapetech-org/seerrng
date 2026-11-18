@@ -143,6 +143,7 @@ const workflowDestinations = new Map([
   ['/discover/books', '/books'],
   ['/discover/comics', '/comics'],
   ['/discover/games', '/games'],
+  ['/discover/patches', '/patches'],
   ['/discover/magazines', '/magazines'],
   ['/discover/music', '/music'],
   ['/discover/sports', '/sports'],
@@ -151,6 +152,7 @@ const workflowDestinations = new Map([
 const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
   '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
+  '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
   '/indexer-search': ['query', 'category'],
   '/issues': ['issue'],
 };

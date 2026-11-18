@@ -230,6 +230,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/search?query=a&query=b&type=movie', '/lumen/search?f=movie'],
       ['/discover/games', '/lumen/games'],
+      ['/discover/patches?kind=hack', '/lumen/patches?kind=hack'],
       ['/discover/audiobooks', '/lumen/audiobooks'],
       ['/movie/123/cast', '/lumen/movie/123#cast'],
       ['/movie/123/crew/', '/lumen/movie/123#crew'],

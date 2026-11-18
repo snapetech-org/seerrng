@@ -1248,3 +1248,17 @@ The companion production image test verified redirect status, destination,
 query and fragment handling, and the handoff for Discover Patches.
 Bundled server tests verified notification routing. These changes reuse
 existing screen owners and do not change their layout.
+
+### Patch catalogue discovery
+
+Games links to Translations and Hacks. The Lumen catalogue uses SeerrNG's
+ROMarrNG-backed search, with title, kind, language, completion and cursor
+filters. It can follow an exact patch project and open the associated
+retro game when the catalogue supplies a supported identity. Native patch
+discovery bookmarks redirect into both Lumen deployments.
+
+Four standalone viewport checks covered filters, cursor navigation, the
+exact follow identity and DAT game links. Bundled redirect and production
+companion proxy checks passed. Patch version selection and requests,
+exact Following event links, live provider results and matched visual
+comparisons remain open.
