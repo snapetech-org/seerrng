@@ -5398,17 +5398,28 @@ test('General Settings saves default request quotas without changing other media
   await expect(days).toHaveValue('14');
   await limit.fill('10001');
   await expect(save).toBeDisabled();
+  await limit.fill('1');
+  await days.fill('0');
+  await expect(
+    page.getByText('counts requests across all time', { exact: false })
+  ).toBeVisible();
+  await save.click();
+  await expect(page.getByText('Default request quota saved.')).toBeVisible();
+  expect(writes).toEqual([{ defaultQuotas: { adult: { quotaDays: 0 } } }]);
   await limit.fill('0');
   await save.click();
   await expect(page.getByText('Default request quota saved.')).toBeVisible();
-  expect(writes).toEqual([{ defaultQuotas: { adult: { quotaLimit: 0 } } }]);
+  expect(writes).toEqual([
+    { defaultQuotas: { adult: { quotaDays: 0 } } },
+    { defaultQuotas: { adult: { quotaLimit: 0 } } },
+  ]);
   await category.selectOption('movie');
   await expect(limit).toHaveValue('5');
   await page.reload();
   await expect(limit).toHaveValue('4');
   await category.selectOption('adult');
   await expect(limit).toHaveValue('0');
-  await expect(days).toHaveValue('14');
+  await expect(days).toHaveValue('0');
   await page.getByRole('link', { name: 'Default User Categories' }).click();
   await expect(page).toHaveURL(/\/admin\/categories#default-user-categories$/);
   await expect(

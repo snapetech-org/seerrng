@@ -106,8 +106,9 @@ export default function DefaultRequestQuotas({
       ]}
     >
       <p className="note">
-        Default limits apply to accounts without a quota override. Use 0 for an
-        unlimited request limit.
+        Default quotas apply to accounts without an override. A request limit of
+        0 allows unlimited requests. With a positive limit, 0 quota days counts
+        requests across all time.
       </p>
       <form
         className="toolbar"
