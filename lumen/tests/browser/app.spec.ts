@@ -2914,3 +2914,81 @@ test('configured book shelves carry an arbitrary subject into both book formats'
   await page.getByRole('button', { name: 'Clear Subject' }).click();
   await expect(page).toHaveURL(/\/audiobooks\?sort=ranked$/);
 });
+
+test('configured music shelves preserve genre and yearly chart in Music', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/settings/discover', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 25,
+          type: 25,
+          order: 1,
+          enabled: true,
+          title: 'Music Genre Shelf',
+          data: 'drum & bass',
+        },
+        {
+          id: 26,
+          type: 26,
+          order: 2,
+          enabled: true,
+          title: 'Yearly Chart Shelf',
+          data: 'popular.year',
+        },
+      ],
+    })
+  );
+  const reads: URLSearchParams[] = [];
+  await page.route(/\/api\/v1\/discover\/music\?/, (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    reads.push(query);
+    return route.fulfill({
+      json: paged([
+        {
+          id: 'album-fixture',
+          mediaType: 'album',
+          title: query.has('genre') ? 'Genre Fixture' : 'Chart Fixture',
+        },
+      ]),
+    });
+  });
+  await page.goto('/');
+  const genre = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Music Genre Shelf' }) });
+  const chart = page
+    .locator('section')
+    .filter({ has: page.getByRole('heading', { name: 'Yearly Chart Shelf' }) });
+  await genre.scrollIntoViewIfNeeded();
+  await expect(
+    genre.getByRole('link', { name: 'Genre Fixture' })
+  ).toBeVisible();
+  await chart.scrollIntoViewIfNeeded();
+  await expect(
+    chart.getByRole('link', { name: 'Chart Fixture' })
+  ).toBeVisible();
+  expect(reads.some((q) => q.get('sortBy') === 'popular.year')).toBe(true);
+  await expect(chart.getByRole('link', { name: 'See all' })).toHaveAttribute(
+    'href',
+    '/music?sort=popular.year'
+  );
+  await genre.getByRole('link', { name: 'See all' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Clear Genre: drum & bass' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Genre Fixture' })).toBeVisible();
+  await page.getByRole('button', { name: 'Clear Genre: drum & bass' }).click();
+  await expect(page).toHaveURL(/\/music\?sort=ranked$/);
+  await expect(page.getByRole('link', { name: 'Chart Fixture' })).toBeVisible();
+});

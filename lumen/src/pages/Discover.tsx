@@ -375,7 +375,10 @@ export default function Discover() {
         </Section>
       )}
 
-      <ConfiguredDiscoverShelves showBooks={books_} />
+      <ConfiguredDiscoverShelves
+        showBooks={books_}
+        showMusic={extras.list.some((entry) => entry.key === 'music')}
+      />
 
       {on.genres && genres.data && (
         <Section title="Browse by genre">

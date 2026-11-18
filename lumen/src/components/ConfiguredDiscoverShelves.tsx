@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { BookResult, Paged, VideoSearchResult } from '../api';
+import type { Album } from '../extras';
 import { useApi, usePublicSettings } from '../hooks';
+import { AlbumCard } from '../pages/Music';
 import { PersonCard } from '../pages/People';
 import {
   BookCard,
@@ -26,6 +28,9 @@ const videoFilters = new Map<number, { media: 'movie' | 'tv'; filter: string }>(
 );
 const TMDB_SEARCH = 17;
 const BOOK_SUBJECT = 24;
+const MUSIC_GENRE = 25;
+const MUSIC_CHART = 26;
+const chartSorts = new Set(['popular.week', 'popular.month', 'popular.year']);
 const TMDB_LIST = 28;
 const positiveId = (value: string, max = 1_000_000_000) =>
   /^[1-9]\d{0,9}$/.test(value) && Number(value) <= max;
@@ -39,20 +44,21 @@ interface DiscoverSlider {
   data?: string;
 }
 
-interface ShelfPage extends Paged<VideoSearchResult | BookResult> {
+interface ShelfPage extends Paged<VideoSearchResult | BookResult | Album> {
   list?: { name: string };
 }
 
 interface ShelfDestination {
   endpoint: string;
   href: string;
-  books?: boolean;
+  kind?: 'books' | 'music';
 }
 
 function shelfDestination(
   slider: DiscoverSlider,
   categories: Record<string, boolean> | undefined,
-  bookFormat: 'ebook' | 'audiobook' | undefined
+  bookFormat: 'ebook' | 'audiobook' | undefined,
+  showMusic: boolean
 ): ShelfDestination | undefined {
   const value = slider.data;
   if (typeof value !== 'string') return;
@@ -63,7 +69,30 @@ function shelfDestination(
     return {
       endpoint: `/discover/books?${query}&sortBy=ranked&page=1`,
       href: `/${bookFormat === 'ebook' ? 'books' : 'audiobooks'}?${query}`,
-      books: true,
+      kind: 'books',
+    };
+  }
+
+  if (slider.type === MUSIC_GENRE || slider.type === MUSIC_CHART) {
+    if (!showMusic) return;
+    const valueForShelf = value.trim();
+    const query = new URLSearchParams();
+    if (slider.type === MUSIC_GENRE) {
+      if (!valueForShelf || valueForShelf.length > 512) return;
+      query.set('genre', valueForShelf);
+      query.set('sort', 'ranked');
+    } else {
+      if (!chartSorts.has(valueForShelf)) return;
+      query.set('sort', valueForShelf);
+    }
+    const endpoint = new URLSearchParams(query);
+    endpoint.set('sortBy', endpoint.get('sort') ?? 'ranked');
+    endpoint.delete('sort');
+    endpoint.set('page', '1');
+    return {
+      endpoint: `/discover/music?${endpoint}`,
+      href: `/music?${query}`,
+      kind: 'music',
     };
   }
 
@@ -113,7 +142,7 @@ function DiscoverShelf({
   title,
   endpoint,
   href,
-  books,
+  kind,
 }: ShelfDestination & { id: number; title?: string }) {
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -136,12 +165,14 @@ function DiscoverShelf({
   }, [visible]);
 
   const items = data?.results.filter(({ mediaType }) =>
-    books
-      ? mediaType === 'book'
-      : mediaType === 'movie' ||
-        mediaType === 'tv' ||
-        mediaType === 'person' ||
-        mediaType === 'collection'
+    kind === 'music'
+      ? mediaType === 'album'
+      : kind === 'books'
+        ? mediaType === 'book'
+        : mediaType === 'movie' ||
+          mediaType === 'tv' ||
+          mediaType === 'person' ||
+          mediaType === 'collection'
   );
   if (items?.length === 0) return null;
 
@@ -155,6 +186,8 @@ function DiscoverShelf({
           <Rail restoreId={`configured-video-${id}`}>
             {items.map((item) => {
               const key = `${item.mediaType}:${item.id}`;
+              if (item.mediaType === 'album')
+                return <AlbumCard key={key} a={item} />;
               if (item.mediaType === 'book')
                 return (
                   <BookCard
@@ -190,8 +223,10 @@ function DiscoverShelf({
 
 export function ConfiguredDiscoverShelves({
   showBooks,
+  showMusic,
 }: {
   showBooks: boolean;
+  showMusic: boolean;
 }) {
   const settings = usePublicSettings();
   const categories = settings?.enabledMediaCategories;
@@ -205,7 +240,10 @@ export function ConfiguredDiscoverShelves({
     (settings?.audiobookServiceEnabled ?? settings?.booksEnabled);
   const bookFormat = ebook ? 'ebook' : audio ? 'audiobook' : undefined;
   const visible =
-    !!bookFormat || categories?.movie !== false || categories?.tv !== false;
+    showMusic ||
+    !!bookFormat ||
+    categories?.movie !== false ||
+    categories?.tv !== false;
   const { data } = useApi<DiscoverSlider[]>(
     visible ? '/settings/discover' : null
   );
@@ -215,7 +253,12 @@ export function ConfiguredDiscoverShelves({
     .filter((slider) => slider.enabled)
     .sort((a, b) => a.order - b.order)
     .map((slider) => {
-      const destination = shelfDestination(slider, categories, bookFormat);
+      const destination = shelfDestination(
+        slider,
+        categories,
+        bookFormat,
+        showMusic
+      );
       return destination ? (
         <DiscoverShelf
           key={`${slider.id}:${destination.endpoint}`}
