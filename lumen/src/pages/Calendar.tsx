@@ -132,7 +132,7 @@ function CalendarResults({ path }: { path: string }) {
     data: response,
     error: loadError,
     reload,
-  } = useApi<CalendarResult>(path);
+  } = useApi<CalendarResult>(path, { keepDuringRefresh: true });
   const [limit, setLimit] = useState(PAGE_SIZE);
   const data =
     Array.isArray(response?.results) && Array.isArray(response?.partialSources)
@@ -153,9 +153,13 @@ function CalendarResults({ path }: { path: string }) {
 
   return (
     <>
-      {!!data.partialSources.length && (
+      {(loadError || !!data.partialSources.length) && (
         <ServiceNote
-          error="Some release sources could not be reached. Their releases may be missing."
+          error={
+            loadError
+              ? `Retry failed: ${loadError} Showing the previous results.`
+              : 'Some release sources could not be reached. Their releases may be missing.'
+          }
           what="all release sources"
           retry={reload}
         />

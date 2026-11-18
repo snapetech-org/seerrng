@@ -16,11 +16,14 @@ for (const permissions of [2, 32]) {
         queries.push(url.searchParams);
         if (queries.length === 1) return route.fulfill({ json: {} });
         if (url.searchParams.get('start') === '2026-03-01') {
+          marchRequests += 1;
+          if (marchRequests === 2) {
+            return route.fulfill({ status: 503, json: {} });
+          }
           return route.fulfill({
             json: {
               results: [],
-              partialSources:
-                ++marchRequests === 1 ? [{ source: 'radarr' }] : [],
+              partialSources: marchRequests === 1 ? [{ source: 'radarr' }] : [],
               truncated: false,
             },
           });
@@ -182,8 +185,15 @@ for (const permissions of [2, 32]) {
     ).toBeVisible();
     await page.getByRole('button', { name: 'Retry' }).click();
     await expect(
+      page.getByRole('alert').getByText(/Retry failed:/)
+    ).toBeVisible();
+    await expect(
       page.getByText('No releases were returned by the sources that responded.')
-    ).toHaveCount(0);
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Retry' }).click();
+    await expect(
+      page.getByText('No releases match this month and scope.')
+    ).toBeVisible();
     await page.goBack();
     await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
       '2026-02'

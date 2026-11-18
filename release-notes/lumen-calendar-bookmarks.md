@@ -2,4 +2,4 @@ Release Calendar saves the selected month and filters in the URL. Shared links s
 
 Bundled Lumen keeps calendar filters when redirecting older calendar links.
 
-Incomplete release responses show a Retry button while keeping the calendar filters available.
+Incomplete release responses show a Retry button. A failed retry keeps the prior results visible and explains the failure.
