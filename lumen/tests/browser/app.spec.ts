@@ -4977,11 +4977,68 @@ test('Users edits a username without writing other profile settings', async ({
     return route.fulfill({ json: { username } });
   });
   await page.goto('/admin/users');
-  await page.getByRole('button', { name: 'Edit Username' }).click();
+  await page.getByRole('button', { name: 'Edit Profile' }).click();
   await expect(page.getByLabel('Username')).toHaveValue('Existing Viewer');
   await page.getByLabel('Username').fill(' Renamed Viewer ');
-  await page.getByRole('button', { name: 'Save Username' }).click();
-  await expect(page.getByText('Username saved.')).toBeVisible();
+  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(page.getByText('Profile saved.')).toBeVisible();
   await expect(page.getByText('Renamed Viewer', { exact: true })).toBeVisible();
   await expect(page.getByLabel('Username')).toHaveValue('Renamed Viewer');
+});
+
+test('Users edits local email and keeps Plex email provider-managed', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let email = 'old@example.test';
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [
+          {
+            id: 19,
+            displayName: 'Local Viewer',
+            email,
+            permissions: 32,
+            userType: 2,
+          },
+          {
+            id: 20,
+            displayName: 'Plex Viewer',
+            email: 'plex@example.test',
+            permissions: 32,
+            userType: 1,
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/user/19/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        email: 'new@example.test',
+      });
+      email = 'new@example.test';
+    }
+    return route.fulfill({ json: { username: 'Local Viewer', email } });
+  });
+  await page.route('**/api/v1/user/20/settings/main', (route) =>
+    route.fulfill({
+      json: { username: 'Plex Viewer', email: 'plex@example.test' },
+    })
+  );
+  await page.goto('/admin/users');
+  const plex = page.getByRole('listitem').filter({ hasText: 'Plex Viewer' });
+  await plex.getByRole('button', { name: 'Edit Profile' }).click();
+  await expect(plex.getByLabel('Username')).toHaveValue('Plex Viewer');
+  await expect(plex.getByLabel('Email', { exact: true })).toHaveCount(0);
+  const local = page.getByRole('listitem').filter({ hasText: 'Local Viewer' });
+  await local.getByRole('button', { name: 'Edit Profile' }).click();
+  await local.getByLabel('Email', { exact: true }).fill('new@example.test');
+  await local.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(local.getByText('Profile saved.')).toBeVisible();
+  await expect(
+    local.getByText('new@example.test', { exact: true })
+  ).toBeVisible();
 });

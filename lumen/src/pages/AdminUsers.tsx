@@ -20,6 +20,7 @@ interface DirectoryUser {
   email?: string;
   permissions: number;
   requestCount?: number;
+  userType?: number;
 }
 
 const pageSize = 25;
@@ -154,9 +155,19 @@ function CreateLocalUser({
   );
 }
 
-function EditUsername({ id, onSaved }: { id: number; onSaved: () => void }) {
+function EditProfile({
+  id,
+  canEditEmail,
+  onSaved,
+}: {
+  id: number;
+  canEditEmail: boolean;
+  onSaved: () => void;
+}) {
   const path = `/user/${id}/settings/main`;
-  const profile = useApi<{ username?: string | null }>(path);
+  const profile = useApi<{ username?: string | null; email?: string | null }>(
+    path
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -165,25 +176,36 @@ function EditUsername({ id, onSaved }: { id: number; onSaved: () => void }) {
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!profile.data || working.current) return;
-    const username = String(
-      new FormData(event.currentTarget).get('username') ?? ''
-    ).trim();
-    if (!username) {
-      setError('Enter a username.');
-      return;
+    const fields = new FormData(event.currentTarget);
+    const username = String(fields.get('username') ?? '').trim();
+    const email = String(fields.get('email') ?? '').trim();
+    const update: { username?: string; email?: string } = {};
+    if (username !== (profile.data.username ?? '')) {
+      if (!username) {
+        setError('Enter a username.');
+        return;
+      }
+      update.username = username;
     }
-    if (username === profile.data.username) return;
+    if (canEditEmail && email !== (profile.data.email ?? '')) {
+      if (!email) {
+        setError('Enter an email address.');
+        return;
+      }
+      update.email = email;
+    }
+    if (!Object.keys(update).length) return;
     working.current = true;
     setBusy(true);
     setError('');
     setNotice('');
     try {
-      await api(path, { method: 'POST', body: JSON.stringify({ username }) });
-      setNotice('Username saved.');
+      await api(path, { method: 'POST', body: JSON.stringify(update) });
+      setNotice('Profile saved.');
       profile.reload();
       onSaved();
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not save the username.'));
+      setError(friendlyError(failure, 'Could not save the profile.'));
     } finally {
       working.current = false;
       setBusy(false);
@@ -194,12 +216,12 @@ function EditUsername({ id, onSaved }: { id: number; onSaved: () => void }) {
     <div>
       <ServiceNote
         error={profile.error}
-        what="username"
+        what="profile"
         retry={profile.reload}
       />
       {!profile.data && !profile.error && (
         <p className="note" role="status">
-          Loading username…
+          Loading profile…
         </p>
       )}
       {error && (
@@ -222,12 +244,25 @@ function EditUsername({ id, onSaved }: { id: number; onSaved: () => void }) {
               key={profile.data.username ?? ''}
               defaultValue={profile.data.username ?? ''}
               maxLength={100}
-              required
               disabled={busy}
             />
           </label>
+          {canEditEmail && (
+            <label className="sel">
+              <span className="lbl">Email</span>
+              <input
+                className="cfg-json"
+                name="email"
+                type="email"
+                key={profile.data.email ?? 'email'}
+                defaultValue={profile.data.email ?? ''}
+                maxLength={254}
+                disabled={busy}
+              />
+            </label>
+          )}
           <button className="btn btn-tonal btn-sm" disabled={busy}>
-            Save Username
+            Save Profile
           </button>
         </form>
       )}
@@ -248,7 +283,7 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
-  const [usernameUser, setUsernameUser] = useState<number>();
+  const [profileUser, setProfileUser] = useState<number>();
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
   const [removeError, setRemoveError] = useState('');
@@ -294,6 +329,17 @@ export default function AdminUsers() {
       !!actor &&
       target.id !== 1 &&
       (actor.id === 1 || (target.permissions & 2) === 0)
+    );
+  }
+
+  function canEditUserEmail(target: DirectoryUser) {
+    return (
+      !!actor &&
+      target.userType !== undefined &&
+      target.userType !== 1 &&
+      (actor.id === target.id ||
+        (actor.permissions & 2) !== 0 ||
+        (BigInt(target.permissions) & ~BigInt(actor.permissions)) === 0n)
     );
   }
 
@@ -561,17 +607,21 @@ export default function AdminUsers() {
                   <>
                     <button
                       className="btn btn-quiet btn-sm"
-                      aria-expanded={usernameUser === user.id}
+                      aria-expanded={profileUser === user.id}
                       onClick={() =>
-                        setUsernameUser(
-                          usernameUser === user.id ? undefined : user.id
+                        setProfileUser(
+                          profileUser === user.id ? undefined : user.id
                         )
                       }
                     >
-                      Edit Username
+                      Edit Profile
                     </button>
-                    {usernameUser === user.id && (
-                      <EditUsername id={user.id} onSaved={reload} />
+                    {profileUser === user.id && (
+                      <EditProfile
+                        id={user.id}
+                        canEditEmail={canEditUserEmail(user)}
+                        onSaved={reload}
+                      />
                     )}
                   </>
                 )}
