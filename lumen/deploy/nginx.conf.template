@@ -240,6 +240,9 @@ server {
   location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)/?$ {
     return 302 /admin/$1;
   }
+  location ~ ^/settings/(plex|jellyfin)/?$ {
+    return 302 /admin/media-libraries;
+  }
   location ~ ^/settings/services/?$ {
     if ($arg_settingsSearchTarget = prowlarr) { return 302 /admin/prowlarr; }
     return 302 /admin;

@@ -71,6 +71,12 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(services.status, 302);
     assert.equal(services.headers.location, '/lumen/admin');
     assert.equal(services.headers['cache-control'], 'no-store');
+    for (const provider of ['plex', 'jellyfin']) {
+      const bookmark = await request(app).get(`/lumen/settings/${provider}/`);
+      assert.equal(bookmark.status, 302);
+      assert.equal(bookmark.headers.location, '/lumen/admin/media-libraries');
+      assert.equal(bookmark.headers['cache-control'], 'no-store');
+    }
     const legacyProwlarr = await request(app).get(
       '/lumen/settings/services?settingsSearchTarget=prowlarr'
     );

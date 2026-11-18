@@ -582,6 +582,11 @@ export const mountLumenFrontend = (
         );
     }
   );
+  server.get(/^\/lumen\/settings\/(?:plex|jellyfin)\/?$/, (_req, res) => {
+    res
+      .set('Cache-Control', 'no-store')
+      .redirect(302, '/lumen/admin/media-libraries');
+  });
   server.get(/^\/lumen\/settings\/services\/?$/, (req, res) => {
     const destination =
       req.query.settingsSearchTarget === 'prowlarr' ? '/prowlarr' : '';

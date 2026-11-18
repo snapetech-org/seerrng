@@ -2620,3 +2620,8 @@ Lumen, matching bundled Lumen. The legacy Prowlarr search target opens
 Prowlarr Settings directly in either deployment. The existing screen
 routes retain their permission checks. Both Express tests and all ten
 companion production-image tests passed, including the redirect checks.
+
+Plex and Jellyfin/Emby settings bookmarks now open Media Server
+Libraries in both deployments. The existing screen selects the
+active provider. The Express and companion production-image suites
+verify the redirects.
