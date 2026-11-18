@@ -2999,3 +2999,13 @@ these workflows and current route, permission, and browser evidence when
 rechecking the original inventory. A continuation audit must include both
 deployments and a real authorization decision wherever a fixture stood in for
 the server.
+
+The one-time sign-in flow also passed against real SQLite users and the
+SeerrNG session API using production Lumen builds at both base paths.
+At 390 and 1440 pixels, each fresh browser opened a generated link to
+the account page, kept the user signed out before confirmation, removed
+the token from the address bar, and stayed on the requested account page
+after redemption. A second redemption was rejected in each run. The
+bundled build used the real Express Lumen mount. The companion build
+used an isolated Express static mount, so this run does not verify nginx
+forwarding or the production CSRF configuration.
