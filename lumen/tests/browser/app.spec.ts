@@ -4202,3 +4202,25 @@ test('Track Requests can browse history beyond the first page', async ({
     0
   );
 });
+
+test('Provider Discovery clears feed rows when the next feed needs a list', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(
+    /\/api\/v1\/integrations\/discovery\/feeds\/anilist\/trending\?/,
+    (route) =>
+      route.fulfill({
+        json: {
+          page: 1,
+          hasMore: false,
+          items: [{ id: 'one', title: 'Prior Feed Title' }],
+        },
+      })
+  );
+  await page.goto('/providers');
+  await expect(page.getByText('Prior Feed Title')).toBeVisible();
+  await page.getByLabel('Provider Feed').selectOption('mdblist/list');
+  await expect(page.getByText('Prior Feed Title')).toHaveCount(0);
+  await expect(page.getByText('Loading feed…')).toHaveCount(0);
+});

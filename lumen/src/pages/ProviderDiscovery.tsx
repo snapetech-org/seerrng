@@ -290,7 +290,8 @@ export default function ProviderDiscovery() {
   if (needsList && list.length <= 2048) query.set('list', list);
   const enabled = !needsList || (!!list && list.length <= 2048);
   const { data, error, errorStatus, apiError, reload } = useApi<FeedPage>(
-    enabled ? `/integrations/discovery/feeds/${feed}?${query}` : null
+    enabled ? `/integrations/discovery/feeds/${feed}?${query}` : null,
+    { currentPathOnly: true }
   );
   const current = data?.page === page ? data : null;
   const items = current?.items.filter((item) => !unmatched || !videoHref(item));
