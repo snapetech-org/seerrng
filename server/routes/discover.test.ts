@@ -32,6 +32,7 @@ import MediaIdentifier, {
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { MediaSearchMetadata } from '@server/entity/MediaSearchMetadata';
 import { User } from '@server/entity/User';
+import { UserSettings } from '@server/entity/UserSettings';
 import { Watchlist } from '@server/entity/Watchlist';
 import {
   getSettings,
@@ -1928,6 +1929,30 @@ describe('GET /discover/tv', () => {
     );
 
     assert.strictEqual(res.status, 200);
+  });
+
+  it('prefers the personal Discover region and keeps the previous streaming fallback', async () => {
+    const agent = await login();
+    const user = await getRepository(User).findOneOrFail({
+      where: { email: 'admin@seerr.dev' },
+      relations: { settings: true },
+    });
+    const preferences = user.settings ?? new UserSettings({ user });
+    preferences.streamingRegion = 'US';
+    const observed: unknown[] = [];
+    mockPrivate(ExternalAPI.prototype, 'get', async (endpoint, options) => {
+      assert.strictEqual(endpoint, '/discover/tv');
+      observed.push((options as { params: { region: unknown } }).params.region);
+      return { page: 1, total_pages: 1, total_results: 0, results: [] };
+    });
+
+    for (const region of ['CA', 'all', '']) {
+      preferences.discoverRegion = region;
+      await getRepository(UserSettings).save(preferences);
+      assert.strictEqual((await agent.get('/discover/tv')).status, 200);
+    }
+
+    assert.deepEqual(observed, ['CA', '', 'US']);
   });
 
   it('forwards fractional series thresholds and provider exclusions to TMDB', async () => {

@@ -765,3 +765,15 @@ Standalone Chrome verified normalization, clearing a region and API readback.
 The current discovery backend uses Streaming Region and Original Language
 in its query. Runtime use of the separate Discover Region field, native
 visual comparison, mobile and bundled verification remain open.
+
+### Discover Region query correction
+
+An explicit personal Discover Region now determines the region in Discover
+queries used by Lumen and native SeerrNG. All regions removes the region
+constraint. With no override the previous Streaming Region fallback and
+server default still apply. Movie feed cache keys use the same region as
+the query, and Discover Home revisions include the preference.
+
+The route regression test verified the exact TMDB region for an override,
+All regions and the streaming fallback. Live TMDB and rendered comparison
+remain unverified.

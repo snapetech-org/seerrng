@@ -93,6 +93,7 @@ const getUserStateRevision = async (user: User): Promise<string> => {
     permissions: user.permissions,
     locale: user.settings?.locale,
     metadataLocale: user.settings?.metadataLocale,
+    discoverRegion: user.settings?.discoverRegion,
     streamingRegion: user.settings?.streamingRegion,
     originalLanguage: user.settings?.originalLanguage,
     requestState,

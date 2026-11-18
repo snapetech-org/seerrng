@@ -187,15 +187,17 @@ import { In } from 'typeorm';
 import { z } from 'zod';
 import discoverHomeRoutes from './discoverHome';
 
+function resolveDiscoverRegion(user?: User) {
+  // Preserve the previous streaming-region fallback for accounts without
+  // an explicit Discover override.
+  const region =
+    user?.settings?.discoverRegion || user?.settings?.streamingRegion;
+  return region === 'all' ? '' : region || getSettings().main.discoverRegion;
+}
+
 export const createTmdbWithRegionLanguage = (user?: User): TheMovieDb => {
   const settings = getSettings();
-
-  const discoverRegion =
-    user?.settings?.streamingRegion === 'all'
-      ? ''
-      : user?.settings?.streamingRegion
-        ? user?.settings?.streamingRegion
-        : settings.main.discoverRegion;
+  const discoverRegion = resolveDiscoverRegion(user);
 
   const originalLanguage =
     user?.settings?.originalLanguage === 'all'
@@ -1808,7 +1810,6 @@ discoverRoutes.get('/movies', async (req, res, next) => {
     }
     const feedShelf = getMovieFeedShelf(query);
     const settings = getSettings();
-    const userRegion = req.user?.settings?.streamingRegion;
     const userOriginalLanguage = req.user?.settings?.originalLanguage;
     const feedCacheKey =
       feedShelf && page <= 5 && !currentContentRestriction()
@@ -1816,10 +1817,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
             shelf: feedShelf,
             page,
             language: req.metadataLocale ?? query.language ?? '',
-            region:
-              userRegion === 'all'
-                ? ''
-                : userRegion || settings.main.discoverRegion,
+            region: resolveDiscoverRegion(req.user),
             originalLanguage:
               query.language === 'all'
                 ? ''
