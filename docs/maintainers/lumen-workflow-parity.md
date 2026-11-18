@@ -1757,3 +1757,8 @@ acquisition state responsible for the Request action. Twenty-four
 standalone browser checks covered Coming Soon across four presets,
 including shared status and request eligibility. Matched native visual
 acceptance remains open.
+
+Combined watchlists now identify SeerrNG and Plex rows. Lumen can remove
+a confirmed local entry and reload the list so any matching Plex entry
+stays visible. Thirty-two standalone watchlist cases and nine server
+watchlist cases passed. Live Plex and matched visual acceptance remain open.

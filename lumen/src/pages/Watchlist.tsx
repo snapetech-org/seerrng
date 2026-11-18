@@ -21,6 +21,7 @@ const SORT_LABELS = {
   'title-desc': 'Title (Z to A)',
 };
 interface WatchlistItem {
+  source?: 'local' | 'plex';
   id: number;
   ratingKey: string;
   mediaType: keyof typeof MEDIA_LABELS;
@@ -77,8 +78,17 @@ function WatchlistPage({
     if (data) setFiltersSupported(data.filtersSupported);
   }, [data, setFiltersSupported]);
 
-  async function remove(mediaType: WatchlistItem['mediaType'], id: string) {
-    if (!canRemove || pending.current || !data?.filtersSupported) return;
+  function canRemoveItem(item: WatchlistItem) {
+    return (
+      canRemove &&
+      (item.source === 'local' ||
+        (item.source === undefined && data?.filtersSupported))
+    );
+  }
+
+  async function remove(item: WatchlistItem, id: string) {
+    if (!canRemoveItem(item) || pending.current) return;
+    const { mediaType } = item;
     const key = `${mediaType}:${id}`;
     pending.current = true;
     setRemoving(key);
@@ -86,7 +96,7 @@ function WatchlistPage({
       await api(`/watchlist/${encodeURIComponent(id)}?mediaType=${mediaType}`, {
         method: 'DELETE',
       });
-      setRemoved((previous) => [...previous, key]);
+      if (data?.filtersSupported) setRemoved((previous) => [...previous, key]);
       refresh();
     } catch (error) {
       toast(friendlyError(error, 'Couldn’t remove this title'));
@@ -130,13 +140,13 @@ function WatchlistPage({
                   )}
                   <small>{MEDIA_LABELS[item.mediaType]}</small>
                 </div>
-                {id && canRemove && data?.filtersSupported && (
+                {id && canRemoveItem(item) && (
                   <button
                     className="btn btn-quiet btn-sm"
                     type="button"
                     aria-label={`Remove ${item.title} from Watchlist`}
                     disabled={Boolean(removing)}
-                    onClick={() => void remove(item.mediaType, id)}
+                    onClick={() => void remove(item, id)}
                   >
                     {removing === `${item.mediaType}:${id}`
                       ? 'Removing…'
@@ -277,7 +287,7 @@ export default function Watchlist({
       {filtersSupported === false && (
         <p className="note">
           Plex and SeerrNG items share this list. Filters are unavailable in
-          this view.{!targetUserId && ' Local removal is also unavailable.'}
+          this view.
         </p>
       )}
       {filtersSupported && (

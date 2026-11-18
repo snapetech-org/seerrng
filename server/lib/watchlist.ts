@@ -17,6 +17,7 @@ import { escapeSqlLikePattern } from '@server/utils/sqlLike';
 import type { SelectQueryBuilder } from 'typeorm';
 
 const mapLocalWatchlistItem = (item: Watchlist): WatchlistItem => ({
+  source: 'local',
   id: item.id,
   ratingKey:
     item.ratingKey || item.mbId || item.externalId || item.id.toString(),
@@ -211,6 +212,7 @@ export const getCombinedWatchlist = async ({
   const plexItems = plexWatchlist.items
     .slice(0, remainingItems)
     .map<WatchlistItem>((item) => ({
+      source: 'plex',
       id: item.tmdbId,
       ratingKey: item.ratingKey,
       title: item.title,

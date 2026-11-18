@@ -187,6 +187,56 @@ for (const combined of [false, true]) {
   });
 }
 
+test('combined Watchlist removes the SeerrNG entry and retains its Plex match', async ({
+  page,
+}) => {
+  let removed = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    if (pathname.endsWith('/user/1/watchlist')) {
+      return route.fulfill({
+        json: {
+          filtersSupported: false,
+          totalPages: 1,
+          results: [
+            {
+              id: 20,
+              tmdbId: 20,
+              ratingKey: removed ? 'plex20' : 'local20',
+              mediaType: 'movie',
+              title: 'Example Movie',
+              source: removed ? 'plex' : 'local',
+            },
+          ],
+        },
+      });
+    }
+    if (
+      pathname.endsWith('/watchlist/20') &&
+      route.request().method() === 'DELETE'
+    ) {
+      removed = true;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({
+      json: pathname.endsWith('/auth/me')
+        ? { id: 1, displayName: 'Viewer', permissions: 32 }
+        : {},
+    });
+  });
+  await page.goto('/watchlist');
+  const remove = page.getByRole('button', {
+    name: 'Remove Example Movie from Watchlist',
+  });
+  await remove.click();
+  await expect(remove).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Example Movie' })
+  ).toHaveAttribute('href', '/movie/20');
+  expect(removed).toBe(true);
+});
+
 test('video Watchlist action confirms the current title and server response', async ({
   page,
 }) => {

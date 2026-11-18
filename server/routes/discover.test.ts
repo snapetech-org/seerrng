@@ -6630,8 +6630,14 @@ describe('GET /discover/watchlist', () => {
     assert.equal(response.status, 200);
     assert.equal(response.body.filtersSupported, false);
     assert.deepEqual(
-      response.body.results.map((item: { title: string }) => item.title),
-      ['Local Book', 'Plex Movie']
+      response.body.results.map((item: { title: string; source: string }) => [
+        item.title,
+        item.source,
+      ]),
+      [
+        ['Local Book', 'local'],
+        ['Plex Movie', 'plex'],
+      ]
     );
   });
 

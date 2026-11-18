@@ -5,6 +5,7 @@ export interface GenreSliderItem {
 }
 
 export interface WatchlistItem {
+  source?: 'local' | 'plex';
   id: number;
   ratingKey: string;
   tmdbId?: number;
