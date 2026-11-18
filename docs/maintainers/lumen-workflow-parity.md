@@ -84,8 +84,10 @@ requests, and removals. The standalone proxy serves this route directly.
 Person details offer Follow and Unfollow using the native TMDB person
 identity. Updates include Classic’s explanation when the API supplies the
 required fields. Game updates link by catalog ID and patch updates preserve
-the version when present. Updates without a supported detail target link to
-search by title. Twelve browser cases passed per deployment using API
+the version when present. Search updates preserve the server’s query and
+fall back to the update title if the query is absent. Opening an unread
+update marks it seen. TMDB subscriptions link to the source person, studio,
+network, or genre. Twelve browser cases passed per deployment using API
 fixtures at desktop, iPhone, Android, and tablet sizes. The bundled cases
 served the production build through Express at `/lumen/`. The suites verify
 expansion and patch explanations, game and version-specific patch links, and

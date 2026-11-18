@@ -37,7 +37,7 @@ test('household users can open Following and manage their own updates', async ({
     if (path === '/follow/events')
       return route.fulfill({
         json: {
-          total: 3,
+          total: 4,
           results: [
             {
               id: 1,
@@ -74,6 +74,16 @@ test('household users can open Following and manage their own updates', async ({
                 id: 'translation',
                 variantKey: 'v2',
               },
+            },
+            {
+              id: 5,
+              title: 'Next Volume Announced',
+              seen: true,
+              follow: {
+                subjectLabel: 'Fixture Novel',
+                kind: 'series-language',
+              },
+              target: { mediaType: 'search', id: 'Fixture Novel Volume 4' },
             },
           ],
         },
@@ -119,6 +129,12 @@ test('household users can open Following and manage their own updates', async ({
   ).toHaveAttribute(
     'href',
     new URL('./patches/translation', baseURL).pathname + '?version=v2'
+  );
+  await expect(
+    page.getByRole('link', { name: 'Next Volume Announced', exact: true })
+  ).toHaveAttribute(
+    'href',
+    new URL('./search', baseURL).pathname + '?q=Fixture%20Novel%20Volume%204'
   );
   await page.getByRole('button', { name: 'Mark Seen: A New Film' }).click();
   await expect(

@@ -133,7 +133,8 @@ function eventHref({ target, title }: FollowEvent) {
     if (target.id && target.id !== '.' && target.id !== '..')
       return `/${kind}/${encodeURIComponent(target.id)}${format}`;
   }
-  return `/search?q=${encodeURIComponent(title)}`;
+  const query = target?.mediaType === 'search' ? target.id || title : title;
+  return `/search?q=${encodeURIComponent(query)}`;
 }
 
 export default function Following() {
