@@ -276,6 +276,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Swipe Settings</b>
+              <Link
+                className="go"
+                to="/admin/swipe"
+                aria-label="Open Swipe Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>ReadMeABook Settings</b>
               <Link
                 className="go"

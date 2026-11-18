@@ -66,6 +66,7 @@ const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
+const AdminSwipe = lazy(() => import('./pages/AdminSwipe'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
@@ -665,6 +666,24 @@ function App() {
                   }
                 >
                   <AdminRequestService key="slskdn" provider="slskdn" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/swipe"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Swipe settings…
+                    </p>
+                  }
+                >
+                  <AdminSwipe />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

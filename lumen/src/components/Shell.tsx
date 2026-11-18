@@ -12,7 +12,12 @@ import { useBlocklistNavigation } from '../blocklist';
 import { canManageDownloads } from '../downloadPermissions';
 import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
-import { useBack, usePublicSettings } from '../hooks';
+import {
+  useApi,
+  useBack,
+  usePublicSettings,
+  type PublicSettings,
+} from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { canSearchIndexers } from '../indexerPermissions';
 import { canReadIssues } from '../issuePermissions';
@@ -83,7 +88,19 @@ export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { prefs, seerrPublicUrl } = usePrefs();
   const extras = useExtras();
-  const swipeEnabled = usePublicSettings()?.swipeEnabled;
+  const swipeSettings = useApi<PublicSettings>('/settings/public', {
+    keepDuringRefresh: true,
+  });
+  const swipeEnabled = swipeSettings.data?.swipeEnabled;
+  const refreshPublicSettings = swipeSettings.refresh;
+  useEffect(() => {
+    window.addEventListener('lumen-settings-updated', refreshPublicSettings);
+    return () =>
+      window.removeEventListener(
+        'lumen-settings-updated',
+        refreshPublicSettings
+      );
+  }, [refreshPublicSettings]);
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
   const showBlocklist = useBlocklistNavigation();

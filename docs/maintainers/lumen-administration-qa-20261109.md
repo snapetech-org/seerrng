@@ -332,3 +332,14 @@ forms, with the media-server suite covering existing connection behavior.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-pickers-20261118/`.
+
+### Swipe administration
+
+Administrators can enable Swipe, configure and test ranking, and manage its
+saved API key from You. Compared the tested form with ReadMeABook on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. The production build and 12 browser checks
+passed with synthetic responses, including navigation refresh after save.
+Live ranking providers were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-swipe-20261118/`.
