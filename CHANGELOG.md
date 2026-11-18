@@ -1621,6 +1621,9 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 
 ### User-facing changes
 
+- **Lumen:** Movie and series browsing can exclude selected genres. SeerrNG independently adapted ideas suggested upstream by [@sveinbjornpalsson](https://github.com/sveinbjornpalsson) in [Seerr issue #3090](https://github.com/seerr-team/seerr/issues/3090) and [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
+
+
 #### Added
 
 - **Lumen:** Person pages show complete cast and crew filmographies with media filters and sorting. SeerrNG independently adapted the sorting idea suggested upstream by [@zjgoodman](https://github.com/zjgoodman) in [Seerr PR #3342](https://github.com/seerr-team/seerr/pull/3342).

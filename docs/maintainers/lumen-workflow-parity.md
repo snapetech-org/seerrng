@@ -984,3 +984,10 @@ Coming Soon now identifies failed movie or series feeds independently and
 retries the affected feed while keeping successful results visible. The
 standalone browser fixture verified a series-only failure and recovery on
 four viewport presets. Bundled and native visual comparisons remain open.
+
+### Video genre exclusion
+
+Movie and series grids expose genre exclusion through SeerrNG's discovery
+query. The selection is shareable through the URL and clears with All genres.
+Standalone movie fixtures verified the query, reload and reset across four
+viewport presets. Series-specific, bundled and native comparisons remain open.

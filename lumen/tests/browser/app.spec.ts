@@ -1671,3 +1671,31 @@ test('Coming Soon retries a failed series feed without dropping movies', async (
   await expect(alert).toHaveCount(0);
   expect(movieReads).toBe(1);
 });
+
+test('movie genre exclusion survives reload and clears with All genres', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/genres/movie', (route) =>
+    route.fulfill({ json: [{ id: 18, name: 'Drama' }] })
+  );
+  await page.goto('/movies?genre=18');
+  await page.getByRole('button', { name: 'Genres: Drama' }).click();
+  const exclude = page.getByRole('button', { name: 'Exclude Selected Genres' });
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('excludeGenre') === 'true' &&
+      url.searchParams.get('genre') === '18'
+    );
+  });
+  await exclude.click();
+  await query;
+  await page.reload();
+  await page.getByRole('button', { name: 'Genres: Exclude Drama' }).click();
+  await expect(exclude).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'All genres', exact: true }).click();
+  await expect(exclude).toBeDisabled();
+  await expect(page).toHaveURL(/\/movies$/);
+});

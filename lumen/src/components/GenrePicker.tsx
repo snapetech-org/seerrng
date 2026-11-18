@@ -40,6 +40,7 @@ export function GenrePicker({
   picked,
   onChange,
   match,
+  exclusion,
   max,
   defaultOpen = false,
 }: {
@@ -47,6 +48,7 @@ export function GenrePicker({
   picked: string[];
   onChange: (next: string[]) => void;
   match?: { all: boolean; set: (all: boolean) => void };
+  exclusion?: { active: boolean; toggle: () => void };
   max?: number;
   defaultOpen?: boolean;
 }) {
@@ -57,7 +59,9 @@ export function GenrePicker({
   const pop = useRef<HTMLDivElement>(null);
   const refocus = useRef(false);
   const [alignRight, setAlignRight] = useState(false);
-  const text = genreSummary(picked, options);
+  const summary = genreSummary(picked, options);
+  const text =
+    exclusion?.active && picked.length ? `Exclude ${summary}` : summary;
   const close = (focusButton: boolean) => {
     refocus.current = focusButton;
     setOpen(false);
@@ -136,6 +140,19 @@ export function GenrePicker({
             onClick={() => match.set(true)}
           >
             Match all
+          </button>
+        </div>
+      )}
+      {exclusion && (
+        <div className="toolbar">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={exclusion.active && !!picked.length}
+            disabled={!picked.length}
+            onClick={exclusion.toggle}
+          >
+            Exclude Selected Genres
           </button>
         </div>
       )}
@@ -241,7 +258,7 @@ function GenreSheet({
   useDialog(box, onClose);
   return createPortal(
     <div className="sheet-wrap open">
-      <div className="sheet-scrim" onClick={onClose} />
+      <div className="sheet-scrim" aria-hidden="true" onClick={onClose} />
       <div
         ref={box}
         className="sheet gp-sheet"

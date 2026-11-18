@@ -37,6 +37,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
   const matchAll = p.get('match') === 'all';
+  const excludeGenre = p.get('excludeGenre') === 'true';
   const genre = picked.join(matchAll ? ',' : '|');
   const genres =
     useApi<{ id: number; name: string }[]>(`/genres/${kind}`).data || [];
@@ -44,7 +45,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const q = new URLSearchParams({
     sortBy: sort,
     ...(keyword ? { keywords: keyword } : {}),
-    ...(genre ? { genre } : {}),
+    ...(genre
+      ? { genre, ...(excludeGenre ? { excludeGenre: 'true' } : {}) }
+      : {}),
     ...(sort === 'vote_average.desc'
       ? { voteCountGte: kind === 'movie' ? '500' : '200' }
       : {}),
@@ -167,10 +170,17 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             if (next.length) n.set('genre', next.join(','));
             else n.delete('genre');
             // All genres starts over: the match switch goes back to any
-            if (!next.length) n.delete('match');
+            if (!next.length) {
+              n.delete('match');
+              n.delete('excludeGenre');
+            }
             setP(n, { replace: true });
           }}
           match={{ all: matchAll, set: setMatch }}
+          exclusion={{
+            active: excludeGenre,
+            toggle: () => upd('excludeGenre', excludeGenre ? '' : 'true'),
+          }}
         />
       </div>
       {list.error && !items.length && (
