@@ -499,10 +499,10 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
             )}
           </>
         )}
-        {supportsSync && isAdministrator(user?.permissions) && sync && (
+        {supportsSync && isAdministrator(user?.permissions) && (
           <CollectionServerActions
             endpoint={path + '/server'}
-            sync={sync}
+            sync={checking ? undefined : sync}
             visibleIds={members.map(({ id }) => id)}
             onComplete={() => void refreshAvailability()}
           />

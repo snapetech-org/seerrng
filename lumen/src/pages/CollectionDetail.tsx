@@ -180,14 +180,12 @@ function CollectionContent({ id }: { id: number }) {
                 This media server does not support collection changes.
               </p>
             )}
-            {serverSync && (
-              <CollectionServerActions
-                endpoint={`/collection/${id}/server`}
-                sync={serverSync}
-                visibleIds={data.parts.map(({ id }) => String(id))}
-                onComplete={() => void checkServer()}
-              />
-            )}
+            <CollectionServerActions
+              endpoint={`/collection/${id}/server`}
+              sync={serverBusy ? undefined : serverSync}
+              visibleIds={data.parts.map(({ id }) => String(id))}
+              onComplete={() => void checkServer()}
+            />
           </details>
         )}
         <CollectionAssociations

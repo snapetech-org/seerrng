@@ -28,14 +28,14 @@ export default function CollectionServerActions({
   onComplete,
 }: {
   endpoint: string;
-  sync: CollectionSync;
+  sync?: CollectionSync;
   visibleIds: string[];
   onComplete: () => void;
 }) {
   const [selection, setSelection] = useState<Selection>();
-  if (!sync.supported) return null;
   const visible = new Set(visibleIds);
-  const add = sync.destinations.flatMap((destination) => {
+  const destinations = sync?.supported ? sync.destinations : [];
+  const add = destinations.flatMap((destination) => {
     const availableIds = destination.availableIds?.filter((id) =>
       visible.has(id)
     );
@@ -43,33 +43,35 @@ export default function CollectionServerActions({
       ? [{ ...destination, availableIds }]
       : [];
   });
-  const remove = sync.destinations.filter(
+  const remove = destinations.filter(
     ({ state, removalToken }) =>
       state === 'exists' && /^[a-f0-9]{64}$/.test(removalToken ?? '')
   );
 
   return (
     <>
-      <div className="toolbar">
-        <button
-          className="btn btn-quiet btn-sm"
-          type="button"
-          disabled={!add.length}
-          onClick={() => setSelection({ action: 'add', destinations: add })}
-        >
-          Add to Media Server
-        </button>
-        <button
-          className="btn btn-quiet btn-sm"
-          type="button"
-          disabled={!remove.length}
-          onClick={() =>
-            setSelection({ action: 'remove', destinations: remove })
-          }
-        >
-          Remove from Media Server
-        </button>
-      </div>
+      {sync?.supported && (
+        <div className="toolbar">
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={!add.length}
+            onClick={() => setSelection({ action: 'add', destinations: add })}
+          >
+            Add to Media Server
+          </button>
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={!remove.length}
+            onClick={() =>
+              setSelection({ action: 'remove', destinations: remove })
+            }
+          >
+            Remove from Media Server
+          </button>
+        </div>
+      )}
       {selection && (
         <CollectionServerSheet
           endpoint={endpoint}

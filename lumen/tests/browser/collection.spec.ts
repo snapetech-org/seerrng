@@ -361,6 +361,11 @@ test('movie media-server collection sync checks on demand and adds visible verif
       case '/collection/19/availability':
         checks++;
         expect(request.method()).toBe('POST');
+        if (checks === 2)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Library readback unavailable.' },
+          });
         return route.fulfill({
           json: {
             collection: { id: 19, parts },
@@ -400,10 +405,18 @@ test('movie media-server collection sync checks on demand and adds visible verif
   await expect(dialog.getByRole('status')).toHaveText(
     '1 of 1 libraries verified.'
   );
+  await expect(page.getByText('Library readback unavailable.')).toBeVisible();
+  await expect(dialog.getByRole('status')).toHaveText(
+    '1 of 1 libraries verified.'
+  );
   await dialog.getByRole('button', { name: 'Done' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Add to Media Server' })
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Retry' }).click();
   await expect(
     page.getByRole('button', { name: 'Add to Media Server' })
   ).toBeDisabled();
   expect(writes).toBe(1);
-  expect(checks).toBe(2);
+  expect(checks).toBe(3);
 });

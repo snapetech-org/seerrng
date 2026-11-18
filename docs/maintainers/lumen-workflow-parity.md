@@ -2969,3 +2969,10 @@ shared collection confirmation sheet for adds and removals. Twenty
 standalone and four bundled browser checks passed. The movie fixture
 verifies on-demand loading, visible member IDs, and status readback.
 Live provider writes and matched visual comparison remain unverified.
+
+Media-server collection dialogs retain the write result if the following
+library check fails. The page hides actions until it can verify the
+destinations again. Forty standalone collection cases and four bundled
+movie collection cases passed, including a failed post-write check,
+retrying the read, and issuing only one write. Matched visual acceptance
+remains unverified.
