@@ -60,7 +60,7 @@ export function GenrePicker({
   const btn = useRef<HTMLButtonElement>(null);
   const pop = useRef<HTMLDivElement>(null);
   const refocus = useRef(false);
-  const [alignRight, setAlignRight] = useState(false);
+  const [popoverOffset, setPopoverOffset] = useState(0);
   const title = labels?.title ?? 'Genres';
   const allLabel = labels?.all ?? 'All genres';
   const summary = picked.length ? genreSummary(picked, options) : allLabel;
@@ -83,9 +83,18 @@ export function GenrePicker({
   useLayoutEffect(() => {
     if (!open || phone) return;
     const box = pop.current;
-    const b = btn.current?.getBoundingClientRect();
-    if (box && b)
-      setAlignRight(b.left + box.offsetWidth > window.innerWidth - 16);
+    const position = () => {
+      const anchor = wrap.current?.getBoundingClientRect();
+      if (!box || !anchor) return;
+      const maxLeft = window.innerWidth - 16 - box.offsetWidth;
+      const preferred =
+        anchor.left > maxLeft ? anchor.right - box.offsetWidth : anchor.left;
+      setPopoverOffset(
+        Math.max(16, Math.min(preferred, maxLeft)) - anchor.left
+      );
+    };
+    position();
+    window.addEventListener('resize', position);
     (
       box?.querySelector<HTMLElement>('.gp-opt[aria-pressed="true"]') ||
       box?.querySelector<HTMLElement>('.gp-opt')
@@ -106,6 +115,7 @@ export function GenrePicker({
     document.addEventListener('focusin', outside);
     document.addEventListener('keydown', onKey);
     return () => {
+      window.removeEventListener('resize', position);
       document.removeEventListener('pointerdown', outside);
       document.removeEventListener('focusin', outside);
       document.removeEventListener('keydown', onKey);
@@ -206,7 +216,8 @@ export function GenrePicker({
       {open && !phone && (
         <div
           ref={pop}
-          className={`gp-pop ${alignRight ? 'right' : ''}`}
+          className="gp-pop"
+          style={{ left: popoverOffset }}
           role="dialog"
           aria-label={title}
         >

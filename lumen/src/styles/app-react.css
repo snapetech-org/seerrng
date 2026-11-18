@@ -305,10 +305,6 @@
   box-shadow: var(--shadow-float);
   animation: fade 0.15s var(--ease);
 }
-.gp-pop.right {
-  left: auto;
-  right: 0;
-}
 .gp-head {
   display: flex;
   align-items: baseline;

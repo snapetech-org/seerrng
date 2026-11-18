@@ -88,6 +88,17 @@ async function fixtures(page: Page) {
       body = paged(path === '/discover/tv' ? [] : [movie]);
     else if (path === '/discover/books') body = paged([]);
     else if (path === '/media') body = paged([]);
+    else if (path === '/live-tv/status')
+      body = { configured: false, guideReady: false, canRequest: false };
+    else if (path === '/blocklist/count') body = { count: 0 };
+    else if (
+      /^\/blocklist\/(101|202)$/.test(path) &&
+      request.method() === 'GET'
+    ) {
+      status = 404;
+      body = { message: 'Title is not blocklisted' };
+    } else if (path === '/request/status/users')
+      body = { pageInfo: { page: 1, pages: 1 }, results: [] };
     else if (path === '/request')
       body = { pageInfo: { pages: 1, results: 0 }, results: [] };
     else if (path === '/request/count')
