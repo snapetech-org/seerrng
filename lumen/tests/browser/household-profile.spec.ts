@@ -93,6 +93,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
                   type: 'movie',
                   status: 1,
                   quotaException: true,
+                  is4k: true,
                   media: { tmdbId: 24, mediaType: 'movie' },
                 },
               ],
@@ -174,6 +175,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
         page.getByText('Waiting for approval', { exact: true })
       ).toBeVisible();
       await expect(page.getByText('Over Quota', { exact: true })).toBeVisible();
+      await expect(page.getByText('Movie · 4K', { exact: true })).toBeVisible();
       await page.getByRole('link', { name: 'Requested Film' }).click();
       await expect(page).toHaveURL('/requests?requestedBy=19&requestId=3');
       const history = page.getByRole('dialog', { name: 'Request history' });

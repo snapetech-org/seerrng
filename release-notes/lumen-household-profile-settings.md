@@ -25,3 +25,5 @@ The signed-in account picture also appears in Lumen navigation and refreshes aft
 Recent Requests on household profiles shows each request’s status before opening its history.
 
 Pending requests over quota show the same Over Quota label in household previews and on the Requests page.
+
+Recent Requests shows the same media and quality labels as the main Requests page.

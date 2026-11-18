@@ -139,16 +139,19 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
       {results && !!rows?.length && (
         <ul className="setlist">
           {rows.map((row) => {
-            const { r, title } = row;
+            const { r, title, sub } = row;
             const status = requestRowStatus(row, serverName);
             return (
               <li className="set" key={r.id}>
-                <Link
-                  className="go"
-                  to={`/requests?${requestScope}&requestId=${r.id}`}
-                >
-                  {title}
-                </Link>
+                <div>
+                  <Link
+                    className="go"
+                    to={`/requests?${requestScope}&requestId=${r.id}`}
+                  >
+                    {title}
+                  </Link>
+                  {sub && <small>{sub}</small>}
+                </div>
                 <RequestStatusPills request={r} status={status} />
               </li>
             );

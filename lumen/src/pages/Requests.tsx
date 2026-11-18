@@ -758,7 +758,9 @@ function titlePlaceholder(r: RequestItem): Row {
     r,
     title: kind === 'tv' ? 'Series' : 'Movie',
     href: `/${kind}/${r.media.tmdbId}`,
-    sub: kind === 'tv' ? 'Series' : 'Movie',
+    sub: [kind === 'tv' ? 'Series' : 'Movie', r.is4k ? '4K' : '']
+      .filter(Boolean)
+      .join(' · '),
   };
 }
 function bookPlaceholder(r: RequestItem): Row {
