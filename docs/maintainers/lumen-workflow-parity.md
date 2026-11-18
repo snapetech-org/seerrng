@@ -2664,3 +2664,14 @@ tests, ten companion image tests, and 20 collector-related browser tests
 passed. The new fixture covered the matched album and follow response on
 desktop, iPhone 13, Pixel 7, and iPad Pro 11. Native cover artwork, live
 federation, and matched visual comparison remain unverified.
+
+Books and Audiobooks now link to Hardcover Book Recommendations.
+Lumen opens feeds, applies author and series filters and ranking
+feedback, resolves results to book details in the chosen format, and
+creates personalized feeds through the existing Hardcover API. Legacy
+bookmarks route to the page in the companion and under bundled frontend
+lock. The build, two Express tests, ten companion image tests, and four
+browser fixtures passed. Browser coverage includes opening a feed,
+sending tuning feedback, and confirming creation on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. Live Hardcover, resolving a book in the browser,
+artwork parity, and matched visual acceptance remain unverified.

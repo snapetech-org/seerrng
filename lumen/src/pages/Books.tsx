@@ -126,6 +126,9 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
+        <Link className="btn btn-quiet btn-sm" to="/books/recommendations">
+          Book Recommendations
+        </Link>
         <div className="seg wide" role="group" aria-label="Format">
           <Link
             to={`/books${formatQuery}`}

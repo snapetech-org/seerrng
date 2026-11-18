@@ -311,6 +311,7 @@ const workflowDestinations = new Map([
   ['/discover/adult', '/adult'],
   ['/discover/audiobooks', '/audiobooks'],
   ['/discover/books', '/books'],
+  ['/discover/book-recommendations', '/books/recommendations'],
   ['/discover/comics', '/comics'],
   ['/discover/collectors', '/music/collectors'],
   ['/discover/games', '/games'],

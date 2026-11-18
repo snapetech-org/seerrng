@@ -19,6 +19,7 @@ import { MediaServerProvider } from './mediaServer';
 import AdminHome from './pages/AdminHome';
 import Associations from './pages/Associations';
 import BookDetail from './pages/BookDetail';
+import BookRecommendations from './pages/BookRecommendations';
 import Books from './pages/Books';
 import Browse, { GenreDirectory } from './pages/Browse';
 import Calendar from './pages/Calendar';
@@ -180,6 +181,10 @@ function App() {
             }
           />
           <Route path="/series" element={<Browse key="tv" kind="tv" />} />
+          <Route
+            path="/books/recommendations"
+            element={<BookRecommendations />}
+          />
           <Route path="/books" element={<Books key="ebook" format="ebook" />} />
           <Route
             path="/audiobooks"

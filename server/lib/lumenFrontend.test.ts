@@ -412,6 +412,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/music?genre=folk&sortBy=popular.year',
         '/lumen/music?genre=folk&sortBy=popular.year',
       ],
+      ['/discover/book-recommendations/', '/lumen/books/recommendations'],
       ['/discover/collectors/', '/lumen/music/collectors'],
       ['/discover/providers', '/lumen/providers'],
       ['/discover/movies/genres', '/lumen/movies/genres'],
