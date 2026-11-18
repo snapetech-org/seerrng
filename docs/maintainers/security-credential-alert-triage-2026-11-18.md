@@ -92,3 +92,20 @@ requests to that origin. The private media-server avatar proxy also
 rejects cross-origin redirects. Remote Plex avatars continue to use
 their separate URL validation and cache path. All 52 focused image
 proxy tests passed. The historical code-scanning alert remains open.
+
+## Open findings with fixes on main
+
+GitHub still lists these findings against older analyzed revisions.
+
+| Alerts | Fix on main | Verification |
+| --- | --- | --- |
+| 647 | `b918a42ba` decodes ComicVine entities once | Lumen production build and seven browser checks |
+| 653 | `022c66b66` and `cc541a5c5` encrypt OIDC correlation state and require a full authentication tag | 156 authentication tests and staged scan |
+| 611 | `a97bd3203` removes the nested repetition from API catalog scanning | Both catalog source tests and regenerated catalog checks |
+| 662 | `b3a87a7db` validates both the shared cover and request-card fill | Production build and 48 browser checks |
+| 669, 667, 666, 690 | `2b074db5f` validates raw same-origin artwork paths, including the shared book cover helper | Production build and 28 Swipe and curated collection browser checks |
+| 663, 691, 692 | `153349b31` validates artwork at shared detail and extra-category render points | Production build and 40 browser checks |
+
+Dismissed alert 648 after tracing the ComicVine description formatter
+to its sole consumer. Lumen renders the resulting strings as React
+paragraph text.
