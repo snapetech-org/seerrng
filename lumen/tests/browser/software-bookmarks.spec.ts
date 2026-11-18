@@ -5,6 +5,8 @@ test('software bookmarks open catalog titles by provider and preserve search', a
 }, info) => {
   const datKey = 'dat-' + 'a'.repeat(64);
   const reads: string[] = [];
+  const requests: unknown[] = [];
+  let failSecond = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -22,8 +24,22 @@ test('software bookmarks open catalog titles by provider and preserve search', a
           enabledMediaCategories: { game: true, retro: true },
         },
       });
+    if (path === '/request/software' && route.request().method() === 'POST') {
+      requests.push(route.request().postDataJSON());
+      return route.fulfill({
+        status: 201,
+        json: { request: { status: 'pending' } },
+      });
+    }
+    if (path === '/request/software/catalog/games/43' && failSecond) {
+      failSecond = false;
+      return route.fulfill({
+        status: 503,
+        json: { error: 'Catalog temporarily unavailable.' },
+      });
+    }
     if (
-      path === '/request/software/catalog/games/42' ||
+      /^\/request\/software\/catalog\/games\/4[23]$/.test(path) ||
       path.endsWith('/' + datKey)
     ) {
       reads.push(path + url.search);
@@ -32,7 +48,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
           game: {
             title: path.endsWith('/42')
               ? 'Fixture PC Game'
-              : 'Fixture DAT Game',
+              : path.endsWith('/43')
+                ? 'Second PC Game'
+                : 'Fixture DAT Game',
+            igdbId: path.endsWith('/42') ? 42 : 43,
             genres: [],
             platforms: [],
             emulationSystems: [{ slug: 'nes', name: 'NES', group: 'retro' }],
@@ -48,6 +67,41 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     page.getByRole('heading', { name: 'Fixture PC Game' })
   ).toBeVisible();
   await page.screenshot({ path: info.outputPath('pc-bookmark.png') });
+  await page.getByRole('combobox', { name: 'System' }).selectOption('windows');
+  await page.getByRole('combobox', { name: 'Build' }).selectOption('x64');
+  await page.evaluate(() => {
+    history.pushState(history.state, '', '/game/game/43');
+    window.dispatchEvent(
+      new PopStateEvent('popstate', { state: history.state })
+    );
+  });
+  await expect(page.getByRole('alert')).toContainText(
+    'Catalog temporarily unavailable.'
+  );
+  await page.screenshot({ path: info.outputPath('game-retry.png') });
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Second PC Game' })
+  ).toBeVisible();
+  const request = page
+    .getByRole('button', { name: 'Request', exact: true })
+    .filter({ visible: true });
+  await expect(request).toBeDisabled();
+  await page.getByRole('combobox', { name: 'System' }).selectOption('linux');
+  await page.getByRole('combobox', { name: 'Build' }).selectOption('arm64');
+  await request.click();
+  await expect(
+    page
+      .getByRole('button', { name: 'Waiting for approval', exact: true })
+      .filter({ visible: true })
+  ).toBeDisabled();
+  expect(requests).toEqual([
+    {
+      category: 'game',
+      catalogId: 43,
+      variant: { operatingSystem: 'linux', architecture: 'arm64' },
+    },
+  ]);
   await page.goto(
     `/software?category=retro&catalogProvider=dat&game=${datKey}`
   );
@@ -61,9 +115,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   await page.screenshot({ path: info.outputPath('dat-bookmark.png') });
   expect(reads).toEqual([
     '/request/software/catalog/games/42?category=game',
+    '/request/software/catalog/games/43?category=game',
     `/request/software/catalog/games/${datKey}?category=retro&catalogProvider=dat`,
   ]);
   await page.goto('/software?category=retro&game=bad&q=Fixture+Search&extra=1');
   await expect(page).toHaveURL('/games?c=retro&q=Fixture+Search');
-  expect(reads).toHaveLength(2);
+  expect(reads).toHaveLength(3);
 });

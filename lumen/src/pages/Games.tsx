@@ -252,8 +252,27 @@ export function GameDetail() {
   const [p] = useSearchParams();
   const cat = category as GameCategory;
   const dat = p.get('dat') === '1';
-  const { data, error } = useApi<Game | { game: Game }>(
-    `/request/software/catalog/games/${encodeURIComponent(id)}?category=${cat}${dat ? '&catalogProvider=dat' : ''}`
+  return (
+    <GameDetailView
+      key={JSON.stringify([cat, id, dat])}
+      id={id}
+      cat={cat}
+      dat={dat}
+    />
+  );
+}
+
+function GameDetailView({
+  id,
+  cat,
+  dat,
+}: {
+  id: string;
+  cat: GameCategory;
+  dat: boolean;
+}) {
+  const { data, error, reload } = useApi<Game | { game: Game }>(
+    `/request/software/catalog/games/${encodeURIComponent(id)}?category=${encodeURIComponent(cat)}${dat ? '&catalogProvider=dat' : ''}`
   );
   const g = data && ('game' in data ? data.game : data);
   const toast = useToast();
@@ -261,22 +280,23 @@ export function GameDetail() {
   const [arch, setArch] = useState('');
   const [system, setSystem] = useState('');
   const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
   const [done, setDone] = useState('');
   if (error)
     return (
       <ExtraGate k="game">
-        <div className="empty">
-          <b>Couldn’t load this game</b>
-          {error}
-        </div>
+        <ServiceNote what="this game" error={error} retry={reload} />
       </ExtraGate>
     );
   if (!g) return <div className="detail-loading" aria-busy="true" />;
   const s = statOf(g);
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
-  const sys = system || systems[0]?.slug || '';
+  const sys =
+    systems.find(({ slug }) => slug === system)?.slug ?? systems[0]?.slug ?? '';
   const ready = cat === 'game' ? !!os && !!arch : !!sys;
   const go = async () => {
+    if (!ready || pending.current) return;
+    pending.current = true;
     setBusy(true);
     try {
       const r = await requestGame(cat, g, { os, arch, system: sys });
@@ -292,6 +312,7 @@ export function GameDetail() {
           : m || 'Request failed'
       );
     } finally {
+      pending.current = false;
       setBusy(false);
     }
   };

@@ -2250,3 +2250,13 @@ routing tests, and ten built-image proxy tests. Inspected IGDB and DAT game
 details at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. Live catalog
 providers were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-software-bookmarks-20261118/`.
+
+Game detail state now follows the exact category, catalog, and title.
+Changing any of those clears old request selections and status. A failed
+catalog lookup can be retried on the same page. The production build and
+12 browser checks passed. The browser fixture moved between two PC titles
+in the same session, retried the second lookup, and verified the second
+title's requested variant. Inspected the new retry state against the
+existing Lumen service-error layout in four viewports. Live provider writes
+were outside the check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-identity-20261118/`.
