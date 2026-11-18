@@ -41,6 +41,13 @@ interface RequestHistory {
 }
 
 const downloadableTypes = new Set(['movie', 'tv', 'book', 'comic', 'magazine']);
+const seasonStatus = new Map([
+  [1, 'Waiting for approval'],
+  [2, 'Approved'],
+  [3, 'Declined'],
+  [4, 'Failed'],
+  [5, 'Completed'],
+]);
 
 const stages = new Map([
   ['requested', 'Requested'],
@@ -211,20 +218,25 @@ export default function RequestHistorySheet({
               <RequestProgress current={data.current} />
               {request?.type === 'tv' && !!request.seasons?.length && (
                 <ul className="setlist" aria-label="Requested seasons">
-                  {request.seasons.map(({ seasonNumber, episodeNumbers }) => (
-                    <li className="set" key={seasonNumber}>
-                      <b>
-                        {seasonNumber === 0
-                          ? 'Specials'
-                          : `Season ${seasonNumber}`}
-                      </b>
-                      <small>
-                        {episodeNumbers?.length
-                          ? `Episodes ${episodeNumbers.join(', ')}`
-                          : 'All episodes'}
-                      </small>
-                    </li>
-                  ))}
+                  {request.seasons.map(
+                    ({ seasonNumber, episodeNumbers, status }) => (
+                      <li className="set" key={seasonNumber}>
+                        <b>
+                          {seasonNumber === 0
+                            ? 'Specials'
+                            : `Season ${seasonNumber}`}
+                        </b>
+                        <small>
+                          {episodeNumbers?.length
+                            ? `Episodes ${episodeNumbers.join(', ')}`
+                            : 'All episodes'}
+                          {status !== undefined &&
+                            seasonStatus.has(status) &&
+                            ` · ${seasonStatus.get(status)}`}
+                        </small>
+                      </li>
+                    )
+                  )}
                 </ul>
               )}
               {data.request?.status === 1 && data.request.quotaException && (

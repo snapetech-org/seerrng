@@ -489,9 +489,9 @@ test('a bookmarked TV request shows its season and episode selection', async ({
           requestedBy: { id: 1, displayName: 'Reader' },
           media: { mediaType: 'tv', tmdbId: 22, status: 1 },
           seasons: [
-            { seasonNumber: 0, episodeNumbers: [2] },
-            { seasonNumber: 2, episodeNumbers: [3, 5] },
-            { seasonNumber: 4 },
+            { seasonNumber: 0, episodeNumbers: [2], status: 3 },
+            { seasonNumber: 2, episodeNumbers: [3, 5], status: 2 },
+            { seasonNumber: 4, status: 1 },
           ],
         },
         current: { stage: 'requested', attempt: 1 },
@@ -502,8 +502,8 @@ test('a bookmarked TV request shows its season and episode selection', async ({
   await page.goto('/requests?requestId=615');
   const seasons = page.getByRole('list', { name: 'Requested seasons' });
   await expect(seasons.getByRole('listitem')).toHaveText([
-    /Specials.*Episodes 2/,
-    /Season 2.*Episodes 3, 5/,
-    /Season 4.*All episodes/,
+    /Specials.*Episodes 2 · Declined/,
+    /Season 2.*Episodes 3, 5 · Approved/,
+    /Season 4.*All episodes · Waiting for approval/,
   ]);
 });
