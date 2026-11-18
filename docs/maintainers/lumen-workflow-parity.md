@@ -1565,8 +1565,10 @@ Matched visual and live provider checks remain open.
 Unmatched AniList titles display their cover using the shared poster and
 the AniList image proxy URL. Four standalone cases and 20 bundled cases
 passed. The browser fixture verified the image request path, decoded
-image, and franchise navigation. Live image proxy and matched visual
-verification remain open.
+image, and franchise navigation. The real Express proxy fetched a public
+AniList cover and returned a 230 × 325 WebP. The repeated request returned
+the same bytes with a cache hit. Browser-to-provider verification through
+a complete deployment and matched visual review remain open.
 
 ### TV request access review
 
