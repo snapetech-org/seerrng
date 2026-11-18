@@ -482,6 +482,10 @@ export type PatchSelection = {
   keepOriginal: boolean;
 };
 
+export type GameContentSelection =
+  | { kind: 'game-content'; mode: 'edition'; editionId: number; addonIds: [] }
+  | { kind: 'game-content'; mode: 'missing-selected'; addonIds: number[] };
+
 export const requestGame = (
   category: GameCategory,
   g: Game,
@@ -489,7 +493,7 @@ export const requestGame = (
     os?: string;
     arch?: string;
     system?: string;
-    selection?: PatchSelection;
+    selection?: PatchSelection | GameContentSelection;
   }
 ) =>
   api<{ request: { status: string; id?: number } }>('/request/software', {

@@ -164,3 +164,96 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   await expect(page).toHaveURL('/games?c=retro&q=Fixture+Search');
   expect(reads).toHaveLength(3);
 });
+
+test('an owned PC game can request only the selected add-ons', async ({
+  page,
+}) => {
+  const submitted: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { softwareEnabled: true, enabledMediaCategories: { game: true } },
+      });
+    if (path === '/request/software/catalog/games/42')
+      return route.fulfill({
+        json: {
+          game: {
+            title: 'Owned PC Game',
+            igdbId: 42,
+            catalogProvider: 'igdb',
+            availability: 'owned',
+            genres: [],
+            platforms: [],
+          },
+        },
+      });
+    if (path === '/game-content/42/editions')
+      return route.fulfill({
+        json: {
+          available: true,
+          editions: [
+            {
+              igdbId: 51,
+              title: 'Deluxe Edition',
+              owned: false,
+              contentKnown: false,
+            },
+          ],
+          addons: [
+            {
+              igdbId: 52,
+              title: 'Owned Add-on',
+              owned: true,
+              storyContent: false,
+            },
+            {
+              igdbId: 53,
+              title: 'New Expansion',
+              owned: false,
+              storyContent: true,
+            },
+          ],
+        },
+      });
+    if (path === '/request/software' && request.method() === 'POST') {
+      submitted.push(request.postDataJSON());
+      return route.fulfill({ json: { request: { status: 'pending' } } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/game/game/42');
+  const content = page.getByRole('combobox', { name: 'Content to Request' });
+  await content.selectOption('edition');
+  await expect(page.getByText('Edition contents are unknown.')).toBeVisible();
+  await page.getByRole('radio', { name: 'Deluxe Edition' }).check();
+  await content.selectOption('missing-selected');
+  await expect(
+    page.getByRole('checkbox', { name: 'Owned Add-on' })
+  ).toBeDisabled();
+  const request = page
+    .getByRole('button', { name: 'Request', exact: true })
+    .filter({ visible: true });
+  await page.getByRole('combobox', { name: 'System' }).selectOption('linux');
+  await page.getByRole('combobox', { name: 'Build' }).selectOption('arm64');
+  await expect(request).toBeDisabled();
+  await page.getByRole('checkbox', { name: 'New Expansion' }).check();
+  await request.click();
+  expect(submitted).toEqual([
+    {
+      category: 'game',
+      catalogProvider: 'igdb',
+      catalogId: 42,
+      variant: { operatingSystem: 'linux', architecture: 'arm64' },
+      selection: {
+        kind: 'game-content',
+        mode: 'missing-selected',
+        addonIds: [53],
+      },
+    },
+  ]);
+});

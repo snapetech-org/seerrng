@@ -13,6 +13,7 @@ import {
   StatPill,
 } from '../components/extra';
 import FollowButton from '../components/FollowButton';
+import GameContentPicker from '../components/GameContentPicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import {
@@ -24,6 +25,7 @@ import {
   useExtras,
   type Game,
   type GameCategory,
+  type GameContentSelection,
   type GamePage,
 } from '../extras';
 import { canViewFollowing } from '../followPermissions';
@@ -286,6 +288,9 @@ function GameDetailView({
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const [done, setDone] = useState('');
+  const [selection, setSelection] = useState<
+    GameContentSelection | null | undefined
+  >(null);
   if (error)
     return (
       <ExtraGate k="game">
@@ -297,13 +302,28 @@ function GameDetailView({
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
   const sys =
     systems.find(({ slug }) => slug === system)?.slug ?? systems[0]?.slug ?? '';
-  const ready = cat === 'game' ? !!os && !!arch : !!sys;
+  const contentId =
+    cat === 'game' &&
+    !dat &&
+    typeof g.igdbId === 'number' &&
+    Number.isSafeInteger(g.igdbId) &&
+    g.igdbId > 0
+      ? g.igdbId
+      : undefined;
+  const baseBlocked = !!s && selection === null;
+  const ready =
+    cat === 'game' ? !!os && !!arch && selection !== undefined : !!sys;
   const go = async () => {
-    if (!ready || pending.current) return;
+    if (!ready || baseBlocked || pending.current) return;
     pending.current = true;
     setBusy(true);
     try {
-      const r = await requestGame(cat, g, { os, arch, system: sys });
+      const r = await requestGame(cat, g, {
+        os,
+        arch,
+        system: sys,
+        selection: selection ?? undefined,
+      });
       setDone(
         r.request.status === 'pending' ? 'Waiting for approval' : 'Requested'
       );
@@ -321,10 +341,10 @@ function GameDetailView({
     }
   };
   const main =
-    s || done ? (
+    baseBlocked || done ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s?.ico || 'clock'} />
-        {s?.word || done}
+        {done || s?.word}
       </button>
     ) : (
       <button
@@ -384,7 +404,14 @@ function GameDetailView({
               </Pill>
             )}
           </div>
-          {!s && !done && (
+          {contentId && canViewFollowing(user?.permissions) && (
+            <GameContentPicker
+              id={contentId}
+              disabled={busy || !!done}
+              onChange={setSelection}
+            />
+          )}
+          {!baseBlocked && !done && (
             <div className="adv-grid game-pick">
               {cat === 'game' ? (
                 <>
