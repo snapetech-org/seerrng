@@ -16,7 +16,7 @@ import {
   type Edition,
   type EditionList,
 } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { statusOf } from '../components/cards';
 import {
@@ -37,6 +37,7 @@ import { friendlyError } from '../errors';
 import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { AssociationLink } from './Associations';
 
 const english = (e: Edition) =>
@@ -164,6 +165,10 @@ export default function BookDetail() {
     [first.data, alt.data, altId]
   );
   const error = first.error;
+  const progressMedia = useLiveMediaProgress(
+    bookMediaForFormat(b?.mediaInfo, f),
+    isAdministrator(user?.permissions)
+  );
   const reload = first.reload;
   const work = hardcoverWorkId(bookId);
   const showNarr = f === 'audiobook' && prefs.narratorChoice;
@@ -224,7 +229,7 @@ export default function BookDetail() {
     );
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 
-  const s = statusOf(bookMediaForFormat(b.mediaInfo, f), true);
+  const s = statusOf(progressMedia, true);
   // copies in the library that the English list leaves out (another language)
   const unlisted = (eds.data?.editions || []).filter(
     (e) => e.format === 'audiobook' && e.owned && !english(e)

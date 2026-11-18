@@ -129,6 +129,7 @@ export interface MediaInfo {
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
   downloadStatus?: DownloadItem[];
+  audiobookDownloadStatus?: DownloadItem[];
   downloadStatus4k?: DownloadItem[];
   // comics: issues/volumes in the library out of those known (BackIssue)
   comicProgress?: { owned: number; total: number };
@@ -571,6 +572,9 @@ export const bookMediaForFormat = (
   format: 'ebook' | 'audiobook'
 ): MediaInfo | undefined => {
   if (!media || media.status === MediaStatus.BLOCKLISTED) return media;
+  if (format === 'audiobook') {
+    media = { ...media, downloadStatus: media.audiobookDownloadStatus };
+  }
   const hasRequests = Array.isArray((media as { requests?: unknown }).requests);
   if (
     media.status !== MediaStatus.AVAILABLE &&

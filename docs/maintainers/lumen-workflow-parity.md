@@ -1993,3 +1993,13 @@ with synthetic streams. Real download-client connections remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-details-20261118/`.
+
+Ebook and audiobook details subscribe to the selected format's download queue.
+The existing status badge and request button show scheduled progress until the
+live stream provides an update. Audiobook details use the audiobook queue for
+both states. The production build and 72 browser fixture checks passed.
+Compared scheduled and live states on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. Real client connections remain unverified.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-progress-20261118/`.

@@ -97,3 +97,75 @@ for (const kind of ['movie', 'tv']) {
     });
   });
 }
+
+for (const format of ['ebook', 'audiobook']) {
+  test(`${format} detail subscribes only to its own queue`, async ({
+    page,
+  }, info) => {
+    const ebook = 'ld1_' + 'c'.repeat(32);
+    const audio = 'ld1_' + 'd'.repeat(32);
+    const isAudio = format === 'audiobook';
+    const id = isAudio ? audio : ebook;
+    let send: () => void = () => {};
+    const ready = new Promise<void>((resolve) => {
+      send = resolve;
+    });
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', async (route) => {
+      const url = new URL(route.request().url());
+      if (url.pathname.endsWith('/auth/me'))
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (url.pathname.includes('/book/'))
+        return route.fulfill({
+          json: {
+            id: 'OL700W',
+            title: 'Fixture Book',
+            author: 'Fixture Author',
+            description: 'A book with two downloads.',
+            mediaInfo: {
+              id: 1,
+              status: 3,
+              downloadStatus: [
+                { size: 100, sizeLeft: 90, liveDownloadToken: ebook },
+              ],
+              audiobookDownloadStatus: [
+                { size: 100, sizeLeft: 70, liveDownloadToken: audio },
+              ],
+            },
+          },
+        });
+      if (url.pathname.endsWith('/live/downloads')) {
+        expect(url.searchParams.get('ids')).toBe(id);
+        await ready;
+        const update = {
+          id,
+          size: 100,
+          sizeLeft: 45,
+          progress: 0.55,
+          state: 'downloading',
+        };
+        return route.fulfill({
+          contentType: 'text/event-stream',
+          body: `event: downloads\ndata: ${JSON.stringify([update])}\n\n`,
+        });
+      }
+      return route.fulfill({ json: {} });
+    });
+    await page.goto(`/book/OL700W${isAudio ? '?f=audio' : ''}`);
+    const status = page.locator('.dstatus');
+    await expect(
+      status.getByText(isAudio ? 'Downloading 30%' : 'Downloading 10%', {
+        exact: true,
+      })
+    ).toBeVisible();
+    await page.screenshot({ path: info.outputPath('scheduled.png') });
+    send();
+    await expect(
+      status.getByText('Downloading 55%', { exact: true })
+    ).toBeVisible();
+    await page.screenshot({ path: info.outputPath('live.png') });
+  });
+}
