@@ -841,6 +841,7 @@ body.is-detail .tabbar {
   object-fit: contain;
 }
 .ov.long {
+  overflow-wrap: anywhere;
   white-space: pre-line;
 }
 .dtitle h1 {
