@@ -1025,3 +1025,9 @@ Subject-tag search follows the native keyword endpoint's pagination contract.
 Standalone browser checks verified reaching page two, returning to page
 one, and retaining selected tags across pages. Live searches and bundled
 and native visual comparisons remain open.
+
+Series discovery can filter by status or exclude the chosen status. The
+standalone browser fixture verified the returning-series status, the exact
+exclusion query, reload persistence, and reset while preserving the genre
+filter across four viewport presets. Bundled and native visual comparison
+remains open.

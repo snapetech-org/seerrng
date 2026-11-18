@@ -1823,3 +1823,30 @@ test('discovery searches for subject tags and moves a tag between include and ex
     .click();
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('series status can be excluded and cleared without removing genre filters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/series?genre=18');
+  const status = page.getByLabel('Series Status', { exact: true });
+  await expect(status).toBeVisible();
+  const exclude = page.getByRole('button', { name: 'Exclude Status' });
+  await expect(exclude).toBeDisabled();
+  await status.selectOption('0');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('status') === '0' &&
+      url.searchParams.get('excludeStatus') === 'true' &&
+      url.searchParams.get('genre') === '18'
+    );
+  });
+  await exclude.click();
+  await query;
+  await page.reload();
+  await expect(exclude).toHaveAttribute('aria-pressed', 'true');
+  await status.selectOption('');
+  await expect(page).toHaveURL(/\/series\?genre=18$/);
+});

@@ -101,6 +101,15 @@ function RatingFilter({
   );
 }
 
+const SERIES_STATUSES = [
+  'Returning Series',
+  'Planned',
+  'In Production',
+  'Ended',
+  'Canceled',
+  'Pilot',
+];
+
 const SORTS = {
   movie: [
     ['popularity.desc', 'Popular'],
@@ -142,6 +151,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     ? [...new Set(providerParam.split(/[|,]/))]
     : [];
   const excludeProviders = p.get('watchProviderMode') === 'exclude';
+  const statusParam = p.get('status') ?? '';
+  const status =
+    kind === 'tv' && /^[0-5]$/.test(statusParam) ? statusParam : '';
+  const excludeStatus = p.get('excludeStatus') === 'true';
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -153,6 +166,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(status
+      ? { status, ...(excludeStatus ? { excludeStatus: 'true' } : {}) }
+      : {}),
     ...(providers.length
       ? {
           watchProviders: providers.join('|'),
@@ -286,6 +302,43 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             ))}
           </select>
         </label>
+        {kind === 'tv' && (
+          <>
+            <label className="sel">
+              <span className="lbl">Series Status</span>
+              <select
+                aria-label="Series Status"
+                value={status}
+                onChange={(event) => {
+                  const next = new URLSearchParams(p);
+                  if (event.target.value)
+                    next.set('status', event.target.value);
+                  else {
+                    next.delete('status');
+                    next.delete('excludeStatus');
+                  }
+                  setP(next, { replace: true });
+                }}
+              >
+                <option value="">Any Status</option>
+                {SERIES_STATUSES.map((label, index) => (
+                  <option key={label} value={index}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              className="chip"
+              disabled={!status}
+              aria-pressed={!!status && excludeStatus}
+              onClick={() => upd('excludeStatus', excludeStatus ? '' : 'true')}
+            >
+              Exclude Status
+            </button>
+          </>
+        )}
         <GenrePicker
           options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
           picked={picked}
