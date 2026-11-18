@@ -2856,3 +2856,10 @@ the current state. Sixteen browser checks covered manager approval and
 member visibility across both deployments. The Express routing suite
 passed. Catalog search and preview, exact links to catalog targets, live
 service interactions, and matched visual acceptance remain open.
+
+Book Series Requests now opens the exact Hardcover catalog preview from
+each supported monitoring target. The preview preserves the server and
+scope, distinguishes uncertain matches, and links confirmed books in
+the catalog format. Sixteen browser checks and two Express routing tests
+passed. Goodreads search, starting monitoring from a preview, bulk
+requests, and matched visual acceptance remain open.

@@ -338,6 +338,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/book-series/requests', '/lumen/book-series/requests'],
       [
+        '/book-series/catalog?serverId=0&scope=audio%3Amain&providerId=hc%3A42&ignored=1',
+        '/lumen/book-series/catalog?serverId=0&scope=audio%3Amain&providerId=hc%3A42',
+      ],
+      [
         '/book-series/bookshelf-series%3A1%3AU2VyaWVz',
         '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz',
       ],

@@ -7,6 +7,7 @@ import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
+import { bookSeriesCatalogQuery } from './BookSeriesCatalog';
 
 const endpoint = '/book-series/watch/requests';
 const actions = [
@@ -27,6 +28,7 @@ type RequestRow = {
   includeExtras: boolean;
   serverName?: string;
   destination?: string;
+  target?: { serverId: number; scope: string; providerId: string };
 };
 
 export default function BookSeriesRequests() {
@@ -86,45 +88,54 @@ export default function BookSeriesRequests() {
         <p className="note">No book series requests.</p>
       )}
       <ul className="setlist">
-        {requests.data?.map((row) => (
-          <li className="set" key={row.id}>
-            <div>
-              <b>{row.title}</b>
-              <p className="note">
-                {row.serverName ? `${row.serverName} · ` : ''}
-                {row.format} · {row.status}
-              </p>
-              <p className="note">
-                {row.includeExtras ? 'Includes extras' : 'Primary books only'}
-              </p>
-              {manage && (
+        {requests.data?.map((row) => {
+          const catalog = row.target && bookSeriesCatalogQuery(row.target);
+          return (
+            <li className="set" key={row.id}>
+              <div>
+                {catalog ? (
+                  <Link to={`/book-series/catalog?${catalog}`}>
+                    <b>{row.title}</b>
+                  </Link>
+                ) : (
+                  <b>{row.title}</b>
+                )}
                 <p className="note">
-                  {row.destination ||
-                    'The original service destination is unavailable.'}
+                  {row.serverName ? `${row.serverName} · ` : ''}
+                  {row.format} · {row.status}
                 </p>
-              )}
-            </div>
-            {manage && (
-              <div className="toolbar">
-                {actions
-                  .filter(({ states }) =>
-                    states.some((state) => state === row.status)
-                  )
-                  .map(({ id, label }) => (
-                    <button
-                      key={id}
-                      className="btn btn-quiet btn-sm"
-                      type="button"
-                      disabled={busy}
-                      onClick={() => void update(row.id, id)}
-                    >
-                      {label}
-                    </button>
-                  ))}
+                <p className="note">
+                  {row.includeExtras ? 'Includes extras' : 'Primary books only'}
+                </p>
+                {manage && (
+                  <p className="note">
+                    {row.destination ||
+                      'The original service destination is unavailable.'}
+                  </p>
+                )}
               </div>
-            )}
-          </li>
-        ))}
+              {manage && (
+                <div className="toolbar">
+                  {actions
+                    .filter(({ states }) =>
+                      states.some((state) => state === row.status)
+                    )
+                    .map(({ id, label }) => (
+                      <button
+                        key={id}
+                        className="btn btn-quiet btn-sm"
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void update(row.id, id)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </>
   );

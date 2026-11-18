@@ -369,6 +369,15 @@ function workflowDeepLink(
   const nativePath = pathname.replace(/\/$/, '');
   if (nativePath === '/book-series/requests')
     return '/lumen/book-series/requests';
+  if (nativePath === '/book-series/catalog') {
+    const query = new URLSearchParams();
+    for (const key of ['serverId', 'scope', 'providerId']) {
+      const value = req.query[key];
+      if (typeof value === 'string') query.set(key, value);
+    }
+    const suffix = query.toString();
+    return `/lumen/book-series/catalog${suffix ? `?${suffix}` : ''}`;
+  }
   const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
   if (issue && Number.isSafeInteger(Number(issue))) {
     return `/lumen/issues/${issue}`;

@@ -32,9 +32,36 @@ for (const manager of [true, false]) {
               status,
               includeExtras: true,
               destination: 'HD · /books',
+              target: { serverId: 0, scope: 'audio:main', providerId: 'hc:42' },
             },
           ],
         });
+      if (path === '/book-series/catalog') {
+        expect(
+          Object.fromEntries(new URL(route.request().url()).searchParams)
+        ).toEqual({
+          serverId: '0',
+          scope: 'audio:main',
+          providerId: 'hc:42',
+        });
+        return route.fulfill({
+          json: {
+            title: 'Fixture Catalog',
+            serverName: 'Book service',
+            format: 'audiobook',
+            bookCount: 2,
+            resolutionTruncated: true,
+            books: [
+              {
+                title: 'First Book',
+                matchStatus: 'matched',
+                book: { id: 'OL123W' },
+              },
+              { title: 'Second Book', matchStatus: 'ambiguous' },
+            ],
+          },
+        });
+      }
       return route.fulfill({ json: {} });
     });
     await page.goto(`${mount}/book-series/requests`);
@@ -54,5 +81,14 @@ for (const manager of [true, false]) {
       await expect(row.getByRole('button')).toHaveCount(0);
       await expect(row).not.toContainText('/books');
     }
+    await row.getByRole('link', { name: 'Fixture Series' }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Fixture Catalog' })
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'View Book' })).toHaveAttribute(
+      'href',
+      `${mount}/book/OL123W?f=audio`
+    );
+    await expect(page.getByText('Multiple Possible Matches')).toBeVisible();
   });
 }

@@ -60,6 +60,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const BookSeriesCatalog = lazy(() => import('./pages/BookSeriesCatalog'));
 const BookSeriesRequests = lazy(() => import('./pages/BookSeriesRequests'));
 const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
@@ -182,6 +183,16 @@ function App() {
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
                 <BookGrouping kind="author" />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/book-series/catalog"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <BookSeriesCatalog />
               </Suspense>
             }
           />
