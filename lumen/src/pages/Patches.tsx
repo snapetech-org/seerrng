@@ -47,6 +47,25 @@ interface PatchProject {
   }[];
 }
 
+function isPatchProject(
+  project: PatchProject | null | undefined
+): project is PatchProject {
+  return (
+    !!project &&
+    typeof project.id === 'string' &&
+    typeof project.name === 'string' &&
+    typeof project.game?.title === 'string' &&
+    (project.game.catalogKey == null ||
+      typeof project.game.catalogKey === 'string') &&
+    (project.language == null || typeof project.language === 'string') &&
+    Array.isArray(project.versions) &&
+    project.versions.every(
+      (version) =>
+        typeof version?.id === 'string' && typeof version.version === 'string'
+    )
+  );
+}
+
 function gameLink(key?: string, category = 'retro', platform?: string | null) {
   if (!key) return;
   const dat = /^dat-[0-9a-f]{64}$/.test(key);
@@ -82,13 +101,28 @@ export default function Patches() {
   if (language) query.set('language', language);
   if (completeOnly) query.set('completeOnly', 'true');
   if (cursor) query.set('cursor', cursor);
-  const { data, error, reload } = useApi<{
+  const {
+    data: response,
+    error: loadError,
+    reload,
+  } = useApi<{
     available: boolean;
     results: PatchProject[];
     nextCursor?: string | null;
   }>(`/patches/search?${query}`, { currentPathOnly: true });
 
-  const nextCursor = data?.nextCursor;
+  const data =
+    response &&
+    typeof response.available === 'boolean' &&
+    Array.isArray(response.results) &&
+    response.results.every(isPatchProject)
+      ? response
+      : null;
+  const error =
+    loadError ||
+    (response && !data ? 'Invalid patch catalogue response.' : null);
+  const nextCursor =
+    typeof data?.nextCursor === 'string' ? data.nextCursor : undefined;
 
   return (
     <>
@@ -241,7 +275,7 @@ export default function Patches() {
           })}
         </ul>
       )}
-      {(cursor || data?.nextCursor) && (
+      {(cursor || nextCursor) && (
         <nav className="toolbar" aria-label="Patch Catalogue Pages">
           {cursor && (
             <button
@@ -284,11 +318,7 @@ export function PatchDetail() {
     PATCH_ID.test(id) ? `/patches/projects/${encodeURIComponent(id)}` : null
   );
   const project =
-    patch.data?.id === id &&
-    patch.data.game &&
-    Array.isArray(patch.data.versions)
-      ? patch.data
-      : null;
+    isPatchProject(patch.data) && patch.data.id === id ? patch.data : null;
   const patchError =
     patch.error ||
     (patch.data && !project ? 'Invalid patch project response.' : null);

@@ -26,6 +26,8 @@ test('Patch discovery filters, follows the exact project and pages through resul
         });
       case '/patches/search':
         searches.push(Object.fromEntries(url.searchParams));
+        if (searches.length === 1)
+          return route.fulfill({ json: { available: true, results: [null] } });
         return route.fulfill({
           json: {
             available: true,
@@ -96,8 +98,14 @@ test('Patch discovery filters, follows the exact project and pages through resul
     }
   });
   await page.goto('/patches');
+  const searchError = page
+    .getByRole('alert')
+    .filter({ hasText: 'Invalid patch catalogue response.' });
+  await expect(searchError).toBeVisible();
+  await searchError.getByRole('button', { name: 'Retry' }).click();
   await expect(page.getByText('Fixture Translation')).toBeVisible();
   expect(searches[0]).toEqual({ language: 'en', completeOnly: 'true' });
+  expect(searches[1]).toEqual(searches[0]);
   await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
     'href',
     `/game/retro/${key}?dat=1`
