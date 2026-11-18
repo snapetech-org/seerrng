@@ -73,13 +73,17 @@ export default function BookRecommendations() {
   const format = params.get('format') === 'audiobook' ? 'audiobook' : 'ebook';
   const [title, setTitle] = useState('');
   const [mood, setMood] = useState('');
-  const [createFirst, setCreateFirst] = useState(false);
+  const [description, setDescription] = useState('');
+  const [genres, setGenres] = useState('');
+  const [avoidGenres, setAvoidGenres] = useState('');
+  const [seriesPosition, setSeriesPosition] = useState('');
+  const [createLessPopular, setCreateLessPopular] = useState(false);
   const [createError, setCreateError] = useState<string>();
   const votes = (value: 'more' | 'less', source = feedback) =>
     Object.keys(source)
       .filter((id) => source[Number(id)] === value)
       .map(Number);
-  const authors = (value: string) =>
+  const names = (value: string) =>
     value
       .split(',')
       .map((name) => name.trim())
@@ -103,8 +107,8 @@ export default function BookRecommendations() {
           body: JSON.stringify({
             tuning: {
               ...flags,
-              includeAuthors: authors(include),
-              excludeAuthors: authors(exclude),
+              includeAuthors: names(include),
+              excludeAuthors: names(exclude),
               moreLike: votes('more', next),
               lessLike: votes('less', next),
             },
@@ -183,8 +187,11 @@ export default function BookRecommendations() {
           body: JSON.stringify({
             title: title.trim(),
             mood: mood.trim() || undefined,
-            seriesPosition: createFirst ? 'first_or_standalone' : undefined,
-            lessPopular: flags.lessPopular,
+            description: description.trim() || undefined,
+            genres: names(genres),
+            avoidGenres: names(avoidGenres),
+            seriesPosition: seriesPosition || undefined,
+            lessPopular: createLessPopular,
             likeBookIds: votes('more'),
             dislikeBookIds: votes('less'),
           }),
@@ -193,7 +200,11 @@ export default function BookRecommendations() {
       if (!result.id) throw new Error(unavailable(result.code));
       setTitle('');
       setMood('');
-      setCreateFirst(false);
+      setDescription('');
+      setGenres('');
+      setAvoidGenres('');
+      setSeriesPosition('');
+      setCreateLessPopular(false);
       const next = new URLSearchParams(params);
       next.set('feed', String(result.id));
       setParams(next);
@@ -425,11 +436,50 @@ export default function BookRecommendations() {
                 />
               </label>
               <label className="set">
-                Standalones and first books
+                Description (optional)
+                <textarea
+                  value={description}
+                  maxLength={500}
+                  onChange={(event) => setDescription(event.target.value)}
+                />
+              </label>
+              <label className="set">
+                Genres to Include
+                <input
+                  value={genres}
+                  onChange={(event) => setGenres(event.target.value)}
+                  placeholder="Comma-separated genres"
+                />
+              </label>
+              <label className="set">
+                Genres to Avoid
+                <input
+                  value={avoidGenres}
+                  onChange={(event) => setAvoidGenres(event.target.value)}
+                  placeholder="Comma-separated genres"
+                />
+              </label>
+              <label className="set">
+                Series Position
+                <select
+                  value={seriesPosition}
+                  onChange={(event) => setSeriesPosition(event.target.value)}
+                >
+                  <option value="">Any position</option>
+                  <option value="standalone">Standalones only</option>
+                  <option value="first_or_standalone">
+                    Standalones and first books
+                  </option>
+                </select>
+              </label>
+              <label className="set">
+                Prefer Less Popular Books
                 <input
                   type="checkbox"
-                  checked={createFirst}
-                  onChange={(event) => setCreateFirst(event.target.checked)}
+                  checked={createLessPopular}
+                  onChange={(event) =>
+                    setCreateLessPopular(event.target.checked)
+                  }
                 />
               </label>
               <button

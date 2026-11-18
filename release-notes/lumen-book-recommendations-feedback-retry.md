@@ -2,3 +2,4 @@
 - Opening a recommendation feed updates the URL so it can be bookmarked and restored on reload.
 - Recommendation bookmarks also restore the selected ebook or audiobook format.
 - Lumen opens a newly created recommendation feed and keeps the form available for retry if Hardcover rejects creation.
+- Lumen’s recommendation feed form supports descriptions, preferred and avoided genres, series position, and a preference for less popular books.

@@ -5442,6 +5442,11 @@ test('book recommendations open a newly created feed', async ({ page }) => {
   const title = page.getByRole('textbox', { name: 'Title', exact: true });
   const create = page.getByRole('button', { name: 'Create on Hardcover' });
   await title.fill('Personal Picks');
+  await page.getByLabel('Description (optional)').fill('My reading list');
+  await page.getByLabel('Genres to Include').fill('Fantasy, History');
+  await page.getByLabel('Genres to Avoid').fill('Horror');
+  await page.getByLabel('Series Position').selectOption('standalone');
+  await page.getByLabel('Prefer Less Popular Books').check();
   await create.click();
   await expect(page.getByRole('alert')).toHaveText(
     'Hardcover rejected your API token.'
@@ -5453,6 +5458,14 @@ test('book recommendations open a newly created feed', async ({ page }) => {
     page.getByText('Recommended Book', { exact: true })
   ).toBeVisible();
   expect(posts).toHaveLength(2);
+  expect(posts[1]).toMatchObject({
+    title: 'Personal Picks',
+    description: 'My reading list',
+    genres: ['Fantasy', 'History'],
+    avoidGenres: ['Horror'],
+    seriesPosition: 'standalone',
+    lessPopular: true,
+  });
 });
 
 test('book recommendations preserve results when a feedback refresh fails', async ({
