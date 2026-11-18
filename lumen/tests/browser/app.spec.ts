@@ -790,6 +790,57 @@ test('movie posters distinguish or hide shared copies without offering duplicate
   await expect(poster.getByRole('button', { name: /request/i })).toHaveCount(0);
 });
 
+test('featured video cards distinguish and hide shared availability', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.clock.install();
+  let mode = 'distinguish';
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { otherUsersAvailability: mode } })
+  );
+  await page.route('**/api/v1/discover/trending', (route) =>
+    route.fulfill({
+      json: {
+        totalPages: 1,
+        results: [
+          {
+            id: 90,
+            title: 'Shared Feature',
+            mediaType: 'movie',
+            backdropPath: '/qa-backdrop.png',
+            mediaInfo: {
+              status: 5,
+              viewerRequestCoverage: { standard: false },
+              mediaUrl: 'https://plex.example.test/shared',
+            },
+          },
+        ],
+      },
+    })
+  );
+  await page.goto('/');
+  const feature = page.locator('.feat').filter({
+    has: page.getByRole('heading', { name: 'Shared Feature' }),
+  });
+  await expect(feature.getByText('Available to Other Users')).toBeVisible();
+  await expect(feature.getByRole('link', { name: 'Watch' })).toHaveCount(0);
+  await expect(feature.getByRole('button', { name: /request/i })).toHaveCount(
+    0
+  );
+  mode = 'hide';
+  await page.clock.fastForward(16_000);
+  await page.reload();
+  await expect(
+    feature.getByRole('link', { name: 'Shared Feature' })
+  ).toHaveAttribute('href', '/movie/90');
+  await expect(feature.getByText('Available to Other Users')).toHaveCount(0);
+  await expect(feature.getByRole('link', { name: 'Watch' })).toHaveCount(0);
+  await expect(feature.getByRole('button', { name: /request/i })).toHaveCount(
+    0
+  );
+});
+
 test('a category page says when SeerrNG’s settings fail and retries', async ({
   page,
 }) => {

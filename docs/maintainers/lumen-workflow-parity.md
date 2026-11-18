@@ -1728,5 +1728,7 @@ The policy is read once per page through the shared settings cache. Shared
 copies can be marked or hidden, and poster playback and quick requests
 respect the difference between display status and actual acquisition state.
 Eight standalone browser cases passed for poster status and settings-error
-recovery. Featured cards, title details, and matched native visual
-acceptance remain open.
+recovery. Featured cards now use the same availability presentation and
+playback link filtering. Eight standalone cases verified poster and
+featured-card behavior across the four viewport presets. Title details
+and matched native visual acceptance remain open.

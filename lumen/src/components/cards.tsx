@@ -43,6 +43,7 @@ import { usePrefs } from '../settings';
 import {
   isSharedVideoCopy,
   useVideoAvailability,
+  videoPlaybackMedia,
   type AvailabilityMode,
 } from '../videoAvailability';
 import { useQuickRequest } from './requestSheet';
@@ -298,18 +299,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   );
   const visibleRequestStatus =
     s?.k === 'ok' ? statusOf(requestMedia, false, serverName, availability) : s;
-  const sharedHD = isSharedVideoCopy(media, false, availability);
-  const shared4K = isSharedVideoCopy(media, true, availability);
-  const playbackMedia =
-    media && (sharedHD || shared4K)
-      ? {
-          ...media,
-          mediaUrl: sharedHD ? undefined : media.mediaUrl,
-          iOSPlexUrl: sharedHD ? undefined : media.iOSPlexUrl,
-          mediaUrl4k: shared4K ? undefined : media.mediaUrl4k,
-          iOSPlexUrl4k: shared4K ? undefined : media.iOSPlexUrl4k,
-        }
-      : media;
+  const playbackMedia = videoPlaybackMedia(media, availability);
   const date = it.releaseDate || it.firstAirDate;
   const unreleased = !!date && date > localToday();
   const href = `/${tv ? 'tv' : 'movie'}/${it.id}`;
@@ -624,7 +614,11 @@ export function FeatCard({
 }) {
   const serverName = useMediaServerName();
   const tv = it.mediaType === 'tv';
-  const s = statusOf(withoutPending4k(it.mediaInfo), false, serverName);
+  const availability = useVideoAvailability();
+  const requestMedia = withoutPending4k(it.mediaInfo);
+  const s = statusOf(requestMedia, false, serverName);
+  const shown = statusOf(requestMedia, false, serverName, availability);
+  const playbackMedia = videoPlaybackMedia(it.mediaInfo, availability);
   const toast = useToast();
   const { prefs } = usePrefs();
   const [done, setDone] = useState('');
@@ -674,12 +668,12 @@ export function FeatCard({
         <h3>{titleOf(it)}</h3>
         <span className="row">
           <span className="mm">{mm}</span>
-          {s?.k === 'ok' ? (
+          {s?.k === 'ok' && shown?.k === 'ok' ? (
             // this button used to do nothing: open Plex when we have a link, else the title page
-            plexUrl(it.mediaInfo) ? (
+            plexUrl(playbackMedia) ? (
               <a
                 className="btn go"
-                {...mediaLink(it.mediaInfo, false, tv ? 'tv' : 'movie')}
+                {...mediaLink(playbackMedia, false, tv ? 'tv' : 'movie')}
               >
                 <Icon name="play" size="sm" />
                 Watch
@@ -691,10 +685,12 @@ export function FeatCard({
               </Link>
             )
           ) : s || done ? (
-            <span className="btn go done">
-              <Icon name={s?.ico || 'clock'} size="sm" />
-              {s?.word || done}
-            </span>
+            (shown || done) && (
+              <span className="btn go done">
+                <Icon name={shown?.ico || 'clock'} size="sm" />
+                {shown?.word || done}
+              </span>
+            )
           ) : tv && !prefs.wholeSeriesDefault ? (
             <Link className="btn go" to={`/tv/${it.id}#seasons`}>
               <Icon name="list" size="sm" />

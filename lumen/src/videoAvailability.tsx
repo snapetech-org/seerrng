@@ -33,4 +33,20 @@ export function isSharedVideoCopy(
   );
 }
 
+export function videoPlaybackMedia(
+  media: MediaInfo | undefined,
+  mode: AvailabilityMode
+) {
+  const sharedHD = isSharedVideoCopy(media, false, mode);
+  const shared4K = isSharedVideoCopy(media, true, mode);
+  if (!media || (!sharedHD && !shared4K)) return media;
+  return {
+    ...media,
+    mediaUrl: sharedHD ? undefined : media.mediaUrl,
+    iOSPlexUrl: sharedHD ? undefined : media.iOSPlexUrl,
+    mediaUrl4k: shared4K ? undefined : media.mediaUrl4k,
+    iOSPlexUrl4k: shared4K ? undefined : media.iOSPlexUrl4k,
+  };
+}
+
 export type { AvailabilityMode };
