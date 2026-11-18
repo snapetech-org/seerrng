@@ -181,3 +181,98 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
       fullPage: true,
     });
 });
+
+test('Plex discovery selects reachable addresses without saving automatically', async ({
+  page,
+}, info) => {
+  const writes: unknown[] = [];
+  let discoveryCalls = 0;
+  const path = '/api/v1/settings/plex';
+  const initial = {
+    ip: 'manual.internal',
+    port: 32400,
+    useSsl: false,
+    libraries: [],
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const endpoint = new URL(request.url()).pathname;
+    if (endpoint.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (endpoint.endsWith('/settings/public'))
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (endpoint === path + '/sync')
+      return route.fulfill({ json: { running: false } });
+    if (endpoint === path + '/devices/servers') {
+      discoveryCalls++;
+      return route.fulfill({
+        json: [
+          {
+            name: 'Household Plex',
+            clientIdentifier: 'fixture-plex',
+            connection: [
+              {
+                address: 'unreachable.internal',
+                port: 32400,
+                protocol: 'http',
+                local: true,
+                status: 500,
+              },
+              {
+                address: 'plex.internal',
+                port: 32443,
+                protocol: 'https',
+                local: true,
+                status: 200,
+              },
+            ],
+          },
+        ],
+      });
+    }
+    if (endpoint !== path) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') return route.fulfill({ json: initial });
+    const body = request.postDataJSON();
+    writes.push(body);
+    return route.fulfill({ json: { ...initial, ...body } });
+  });
+  await page.goto('/admin/media-libraries');
+  const hostname = page.getByLabel('Server Hostname');
+  await expect(hostname).toHaveValue('manual.internal');
+  expect(discoveryCalls).toBe(0);
+  await page.getByRole('button', { name: 'Discover Plex Servers' }).click();
+  const picker = page.getByLabel('Discovered Plex Connection');
+  await expect(
+    picker.getByRole('option', { name: /Unreachable/ })
+  ).toHaveAttribute('disabled', '');
+  await expect(hostname).toHaveValue('manual.internal');
+  await picker.selectOption({
+    label: 'Local HTTPS · plex.internal:32443 · Recommended',
+  });
+  await expect(hostname).toHaveValue('plex.internal');
+  await expect(page.getByLabel('Use HTTPS')).toBeChecked();
+  expect(writes).toEqual([]);
+  await page.getByRole('button', { name: 'Save Plex Connection' }).click();
+  await expect(page.getByText('Connection settings saved.')).toBeVisible();
+  expect(writes).toEqual([
+    {
+      ip: 'plex.internal',
+      port: 32443,
+      useSsl: true,
+      webAppUrl: '',
+      analyzeOnPlayback: false,
+    },
+  ]);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('plex-discovery.png'),
+      fullPage: true,
+    });
+});

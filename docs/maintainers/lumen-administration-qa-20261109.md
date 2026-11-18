@@ -146,3 +146,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the shared field and toggle controls with the previous Media Server Libraries baseline at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production Lumen build and sixteen browser checks passed with mocked connection and library data. Tautulli settings and Plex device discovery still use the native interface.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-media-connections-20261118/`.
+
+## Plex server discovery follow-up — 2026-11-18
+
+The Plex connection form in `/admin/media-libraries` can discover owned servers and show advertised connections. Unreachable entries are unavailable. Choosing a reachable connection fills the draft address, port and HTTPS setting. The administrator explicitly saves the draft.
+
+Compared the discovered selection against the previous Plex connection form at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The Lumen production build and twenty browser checks passed with synthetic discovery and connection responses. No live Plex account was queried.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-plex-discovery-20261118/`.

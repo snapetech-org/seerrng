@@ -20,6 +20,18 @@ export interface ConnectionSettings {
   bridgeLoginEnabled?: boolean;
 }
 
+type PlexDevice = {
+  name: string;
+  clientIdentifier: string;
+  connection: {
+    address: string;
+    port: number;
+    protocol: string;
+    local?: boolean;
+    status?: number;
+  }[];
+};
+
 type Provider = 'plex' | 'jellyfin';
 
 function toDraft(settings: ConnectionSettings, provider: Provider) {
@@ -68,6 +80,7 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   const [draft, setDraft] = useState(() => toDraft(initial, provider));
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
+  const [devices, setDevices] = useState<PlexDevice[]>();
   const path = `/settings/${provider}`;
   const plex = provider === 'plex';
   const configuredKey = Boolean(saved.apiKey);
@@ -153,6 +166,51 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
     }, 'Could not change bridge sign-in. Check that Jellyfin is connected and media-server sign-in is enabled.');
   }
 
+  const serverOptions = (devices ?? []).map((device) => {
+    const seen = new Set<string>();
+    const connections = device.connection
+      .filter((connection) => {
+        const key = `${connection.protocol}|${connection.address}|${connection.port}`;
+        if (seen.has(key) || !['http', 'https'].includes(connection.protocol))
+          return false;
+        seen.add(key);
+        return true;
+      })
+      .sort(
+        (left, right) =>
+          Number(right.status === 200) - Number(left.status === 200) ||
+          Number(!!right.local) - Number(!!left.local) ||
+          Number(right.protocol === 'https') - Number(left.protocol === 'https')
+      );
+    return {
+      ...device,
+      connections: connections.map((connection, index) => ({
+        ...connection,
+        id: `${device.clientIdentifier}|${index}`,
+      })),
+    };
+  });
+  const discoveredConnections = serverOptions.flatMap(
+    ({ connections }) => connections
+  );
+  const selectedConnection = discoveredConnections.find(
+    ({ address, port, protocol, status }) =>
+      status === 200 &&
+      address === draft.ip &&
+      port === Number(draft.port) &&
+      (protocol === 'https') === draft.useSsl
+  );
+  async function discoverPlex() {
+    const generation = sessionGeneration();
+    await perform(async () => {
+      const result = await api<PlexDevice[]>('/settings/plex/devices/servers', {
+        cache: 'no-store',
+      });
+      if (generation !== sessionGeneration()) return;
+      setDevices(result);
+    }, 'Could not discover Plex servers. Retry or enter the address manually.');
+  }
+
   const fields = [
     ...addressFields,
     ...(plex
@@ -161,6 +219,75 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   ];
   return (
     <Section title={`${name} Connection`}>
+      {plex && (
+        <>
+          <div className="toolbar">
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy}
+              onClick={() => void discoverPlex()}
+            >
+              Discover Plex Servers
+            </button>
+          </div>
+          {devices && (
+            <>
+              {devices.length > 0 && (
+                <div className="setlist">
+                  <label className="set cfg-row">
+                    <span>Discovered Plex Connection</span>
+                    <select
+                      className="cfg-select"
+                      value={selectedConnection?.id ?? ''}
+                      disabled={busy}
+                      onChange={(event) => {
+                        const connection = discoveredConnections.find(
+                          ({ id }) => id === event.target.value
+                        );
+                        if (connection?.status !== 200) return;
+                        change({
+                          ip: connection.address,
+                          port: String(connection.port),
+                          useSsl: connection.protocol === 'https',
+                        });
+                      }}
+                    >
+                      <option value="" disabled>
+                        Choose a Connection
+                      </option>
+                      {serverOptions.map((server) => (
+                        <optgroup
+                          key={server.clientIdentifier}
+                          label={server.name}
+                        >
+                          {server.connections.map((connection, index) => (
+                            <option
+                              key={connection.id}
+                              value={connection.id}
+                              disabled={connection.status !== 200}
+                            >
+                              {`${connection.local ? 'Local' : 'Remote'} ${connection.protocol.toUpperCase()} · ${connection.address}:${connection.port}${connection.status !== 200 ? ' · Unreachable' : index === 0 ? ' · Recommended' : ''}`}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
+              {!discoveredConnections.some(({ status }) => status === 200) && (
+                <p className="note">
+                  {devices.length
+                    ? 'No discovered Plex connection is reachable.'
+                    : 'No Plex servers were found.'}{' '}
+                  Enter the address manually or retry discovery.
+                </p>
+              )}
+            </>
+          )}
+        </>
+      )}
       <form
         onSubmit={(event) => {
           event.preventDefault();
