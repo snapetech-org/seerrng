@@ -213,3 +213,63 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
     await page.screenshot({ path: info.outputPath('live.png') });
   });
 }
+
+test('movie trailers use a valid YouTube video ID', async ({ page }, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/movie/42' || path === '/movie/43') {
+      const valid = path.endsWith('/42');
+      return route.fulfill({
+        json: {
+          id: valid ? 42 : 43,
+          title: 'Fixture Movie',
+          genres: [],
+          relatedVideos: [
+            {
+              site: 'YouTube',
+              type: 'Trailer',
+              key: 'invalid',
+              url: 'https://example.invalid/trailer',
+            },
+            ...(valid
+              ? [
+                  {
+                    site: 'YouTube',
+                    type: 'Trailer',
+                    key: 'fixture1234',
+                    url: 'https://example.invalid/other',
+                  },
+                ]
+              : []),
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/movie/42');
+  const trailer = page.getByRole('link', { name: 'Trailer', exact: true });
+  await expect(trailer).toHaveAttribute(
+    'href',
+    'https://www.youtube.com/watch?v=fixture1234'
+  );
+  await page.screenshot({
+    path: info.outputPath('movie-trailer-valid.png'),
+    animations: 'disabled',
+  });
+  await page.goto('/movie/43');
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Movie' })
+  ).toBeVisible();
+  await expect(trailer).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('movie-trailer-invalid.png'),
+    animations: 'disabled',
+  });
+});

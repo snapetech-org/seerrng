@@ -736,7 +736,7 @@ export interface MovieDetails extends TitleResult {
   keywords?: SubjectTag[];
   productionCompanies?: { id: number; name: string }[];
   productionCountries?: ProductionCountry[];
-  relatedVideos?: { site: string; key: string; type: string; url: string }[];
+  relatedVideos?: { site: string; key: string; type: string }[];
   releases?: {
     results: {
       iso_3166_1: string;

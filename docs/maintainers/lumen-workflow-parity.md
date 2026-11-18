@@ -2560,3 +2560,12 @@ Pro 11 and verified that a control character in an artwork path causes
 the image to be omitted. A regular proxy image still renders. GitHub
 alert 690 remains open pending disposition. Evidence is retained under
 `seerrng-lumen-art-url*` in `/mnt/disks/scratch/task-deliverables/`.
+
+Movie trailers now use a fixed YouTube watch origin and a validated
+video ID. If a trailer has no valid ID, Lumen checks the next trailer
+candidate. Compared movie detail pages before and after on desktop,
+iPhone 13, Pixel 7, and iPad Pro 11. The production build and 28 detail
+browser checks passed. The trailer fixture verifies the generated
+destination and omission of invalid candidates. GitHub alert 670 is
+still open. Evidence is retained under `seerrng-lumen-trailer-url*`
+in `/mnt/disks/scratch/task-deliverables/`.

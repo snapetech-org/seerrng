@@ -115,7 +115,11 @@ export default function MovieDetail() {
     .map((c) => c.name)
     .join(', ');
   const trailer = m.relatedVideos?.find(
-    (v) => v.type === 'Trailer' && v.site === 'YouTube'
+    (v) =>
+      v?.type === 'Trailer' &&
+      v.site === 'YouTube' &&
+      typeof v.key === 'string' &&
+      /^[a-zA-Z0-9_-]{11}$/.test(v.key)
   );
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
@@ -199,7 +203,7 @@ export default function MovieDetail() {
   const trailerBtn = trailer ? (
     <a
       className="btn btn-quiet"
-      href={trailer.url}
+      href={`https://www.youtube.com/watch?v=${trailer.key}`}
       target="_blank"
       rel="noreferrer"
     >
