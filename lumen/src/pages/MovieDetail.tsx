@@ -29,6 +29,7 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
@@ -196,6 +197,7 @@ export default function MovieDetail() {
               {m.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
+          <IndexerSearchLink category="movie" title={m.title} />
           <WatchlistButton key={m.id} mediaType="movie" detail={m} />
         </div>
         <div className="dacts pc">

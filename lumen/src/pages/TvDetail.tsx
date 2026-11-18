@@ -28,6 +28,7 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useOffers4k } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
@@ -299,6 +300,7 @@ export default function TvDetail() {
               {t.voteAverage.toFixed(1)} / 10
             </Pill>
           )}
+          <IndexerSearchLink category="tv" title={t.name} />
           <WatchlistButton key={t.id} mediaType="tv" detail={t} />
         </div>
         <div className="dacts pc">

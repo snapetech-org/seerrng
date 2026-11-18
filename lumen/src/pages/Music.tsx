@@ -12,6 +12,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import WatchlistButton from '../components/WatchlistButton';
 import {
   artistOf,
@@ -203,6 +204,7 @@ export function AlbumDetail() {
                 {big(a.stats.totalListenCount)} plays
               </Pill>
             )}
+            <IndexerSearchLink category="music" title={a.title} />
             <WatchlistButton mediaType="music" detail={a} requestedId={id} />
           </div>
           <div className="dacts pc">{main}</div>
@@ -292,6 +294,11 @@ export function Artist() {
           ]}
         />
         <div className="dbody">
+          <IndexerSearchLink
+            category="music"
+            title={a.artist.name}
+            standalone
+          />
           {a.wikipedia?.extract && <p className="ov">{a.wikipedia.extract}</p>}
           {groups.map(([k, t]) => {
             const list = a.releaseGroups.filter(

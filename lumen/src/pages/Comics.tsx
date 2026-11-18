@@ -27,6 +27,7 @@ import {
   StatPill,
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
@@ -594,6 +595,10 @@ export function ComicDetail() {
                 {g}
               </Pill>
             ))}
+            <IndexerSearchLink
+              category="comic"
+              title={chosen?.title || work.title}
+            />
             {c && chosen && (
               <WatchlistButton
                 key={chosen.id}
@@ -899,6 +904,7 @@ export function MagazineDetail() {
                 {have} issue{have === 1 ? '' : 's'} in library
               </Pill>
             )}
+            <IndexerSearchLink category="magazine" title={m.title} />
             <WatchlistButton
               mediaType="magazine"
               detail={m}

@@ -11,6 +11,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import {
   GAME_LABEL,
@@ -295,6 +296,7 @@ export function GameDetail() {
         <div className="dbody">
           <div className="dstatus">
             <StatPill s={s} />
+            <IndexerSearchLink category={cat} title={g.title} />
             {g.rating != null && (
               <Pill k="neutral" icon="star">
                 {Math.round(g.rating)} / 100

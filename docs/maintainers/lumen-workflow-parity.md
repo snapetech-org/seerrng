@@ -166,5 +166,15 @@ builds against synthetic responses. Standalone testing covered a disabled
 prefilled category, search, pagination, hidden indexer details, and handoff.
 The bundled build rendered the form and results. The route reuses Lumen's
 existing page header, search, toolbar, and list roles. Mobile visual acceptance,
-comparison against rendered native workflows, detail-page entry points, and
-an end-to-end live service check remain open.
+comparison against rendered native workflows, and an end-to-end live service
+check remain open.
+
+The same Manage Requests permission now exposes a Search Prowlarr shortcut in
+movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
+The shortcut prefills the media category and title without submitting a search.
+Both clients use the same title normalization and URL encoding.
+Headed Chrome at 1440 × 1000 compared the standalone movie detail before and
+after the change against the same fixture and followed the shortcut to the
+encoded movie category and title. The request control kept its existing
+dimensions. Other detail layouts, mobile, and bundled visual acceptance remain
+open.

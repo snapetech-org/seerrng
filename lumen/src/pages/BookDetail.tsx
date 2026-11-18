@@ -27,6 +27,7 @@ import {
   Pill,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
@@ -440,6 +441,10 @@ export default function BookDetail() {
               {s.word}
             </Pill>
           )}
+          <IndexerSearchLink
+            category={audio ? 'audiobook' : 'ebook'}
+            title={b.title}
+          />
           <WatchlistButton mediaType="book" detail={b} requestedId={plainId} />
         </div>
         {/* phones: the action bar holds only the request, so the owned copy's link goes here */}
