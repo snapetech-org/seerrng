@@ -4262,6 +4262,22 @@ test('System Logs filters server entries and excludes non-admins', async ({
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
     'Filtered result'
   );
+  let releaseRefresh!: () => void;
+  const holdRefresh = new Promise<void>((resolve) => {
+    releaseRefresh = resolve;
+  });
+  await page.route(/\/api\/v1\/settings\/logs\?/, async (route) => {
+    reads++;
+    await holdRefresh;
+    return route.fulfill({ status: 403, json: { message: 'Access denied.' } });
+  });
+  const refreshing = page.waitForRequest(/\/api\/v1\/settings\/logs\?/);
+  await page.getByRole('button', { name: 'Refresh', exact: true }).click();
+  await refreshing;
+  await expect(page.getByText('Filtered result')).toBeVisible();
+  releaseRefresh();
+  await expect(page.getByRole('alert')).toContainText('Access denied');
+  await expect(page.getByText('Filtered result')).toHaveCount(0);
   const adminReads = reads;
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ json: { id: 1, displayName: 'Member', permissions: 32 } })

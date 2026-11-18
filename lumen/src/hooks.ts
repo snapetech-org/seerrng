@@ -30,9 +30,10 @@ const PUBLIC_PATH = '/settings/public';
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(
   path: string | null,
-  { currentPathOnly = false } = {}
+  { currentPathOnly = false, keepDuringRefresh = false } = {}
 ) {
   const [responsePath, setResponsePath] = useState(path);
+  const lastRequestedPath = useRef<string | null>(null);
   const [data, setData] = useState<T | null>(
     path ? (cached<T>(path) ?? null) : null
   );
@@ -43,11 +44,13 @@ export function useApi<T>(
     if (!path) return;
     let live = true;
     const generation = sessionGeneration();
+    const keep = keepDuringRefresh && lastRequestedPath.current === path;
+    lastRequestedPath.current = path;
     setResponsePath(path);
     setError(null);
     setApiError(undefined);
     const saved = cached<T>(path);
-    setData(saved ?? null);
+    if (!keep || saved !== undefined) setData(saved ?? null);
     if (saved !== undefined && isFresh(path)) return;
     fetchShared<T>(path)
       .then((d) => {
@@ -56,7 +59,9 @@ export function useApi<T>(
       })
       .catch((e) => {
         // a saved answer stays up if refreshing it fails
-        if (live && saved === undefined) {
+        if (live && generation === sessionGeneration() && saved === undefined) {
+          if (e instanceof ApiError && (e.status === 401 || e.status === 403))
+            setData(null);
           setError(friendlyError(e, 'Failed to load'));
           setApiError(e instanceof ApiError ? e : undefined);
         }
@@ -64,7 +69,7 @@ export function useApi<T>(
     return () => {
       live = false;
     };
-  }, [path, tick]);
+  }, [path, tick, keepDuringRefresh]);
   const reload = useCallback(() => {
     if (path) forget(path);
     setTick((t) => t + 1);

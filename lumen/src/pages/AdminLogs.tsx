@@ -35,7 +35,10 @@ export default function AdminLogs() {
   const { data, error, reload } = useApi<{
     pageInfo: { pages: number };
     results: LogEntry[];
-  }>(`/settings/logs?${query}`, { currentPathOnly: true });
+  }>(`/settings/logs?${query}`, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
 
   useEffect(() => {
     if (!live || error) return;
