@@ -192,7 +192,7 @@ export interface Genre {
 // TMDB artwork goes through SeerrNG's image proxy, the same as SeerrNG's own UI.
 // Treat provider paths as untrusted input: accepting an arbitrary absolute URL here
 // would turn metadata into a browser-side tracking/request primitive.
-const TMDB_IMAGE_SIZES = new Set(['w342', 'w500', 'w780', 'w1280']);
+const TMDB_IMAGE_SIZES = new Set(['w185', 'w342', 'w500', 'w780', 'w1280']);
 const THEAUDIODB_IMAGE_HOST = 'theaudiodb.com';
 // eslint-disable-next-line no-control-regex -- Reject control characters in provider URL paths.
 const UNSAFE_IMAGE_PATH_CHARACTERS = /[\u0000-\u001f\u007f?#]/;

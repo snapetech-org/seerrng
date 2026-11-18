@@ -1,10 +1,11 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import type { SubjectTag } from '../api';
 import {
   api,
+  tmdbImg,
   type Person,
   type RequestOptions,
+  type SubjectTag,
   type VideoDetailPins,
 } from '../api';
 import { useAuth } from '../auth';
@@ -50,30 +51,64 @@ export function Pill({
   );
 }
 
-export function People({ list }: { list: Person[] }) {
+function People({ list }: { list: Person[] }) {
+  const listId = useId();
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? list : list.slice(0, 10);
   return (
-    <div className="people">
-      {list.map((p) => (
-        <span
-          className="person"
-          key={p.id + (p.character || p.job || '')}
-          title={p.character || p.job}
-        >
-          <i style={{ background: `hsl(${hue(p.name)} 40% 40%)` }}>
-            {p.profilePath ? (
-              <img
-                src={`/imageproxy/tmdb/t/p/w185${p.profilePath}`}
-                alt=""
-                loading="lazy"
-              />
-            ) : (
-              initials(p.name)
-            )}
-          </i>
-          {p.name}
-        </span>
-      ))}
-    </div>
+    <>
+      <div id={listId} className="people">
+        {visible.map((person, index) => {
+          const role = person.character || person.job;
+          const portrait = tmdbImg(person.profilePath, 'w185');
+          const content = (
+            <>
+              <i
+                aria-hidden="true"
+                style={{ background: `hsl(${hue(person.name)} 40% 40%)` }}
+              >
+                {portrait ? (
+                  <img src={portrait} alt="" loading="lazy" />
+                ) : (
+                  initials(person.name)
+                )}
+              </i>
+              <span>
+                {person.name}
+                {role && <small>{role}</small>}
+              </span>
+            </>
+          );
+          const key = `${person.id}:${role ?? ''}:${index}`;
+          return Number.isSafeInteger(person.id) &&
+            person.id > 0 &&
+            person.id <= 1_000_000_000 ? (
+            <Link className="person" key={key} to={`/person/${person.id}`}>
+              {content}
+            </Link>
+          ) : (
+            <span className="person" key={key}>
+              {content}
+            </span>
+          );
+        })}
+      </div>
+      {list.length > 10 && (
+        <div className="toolbar">
+          <button
+            className="chip"
+            type="button"
+            aria-controls={listId}
+            aria-expanded={expanded}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded
+              ? 'Show Fewer Credits'
+              : `Show All ${list.length} Credits`}
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -92,7 +127,7 @@ export function CreditsDisclosure({
       panel={credit}
       label={credit === 'cast' ? 'Starring' : 'Crew'}
     >
-      <People list={people.slice(0, 10)} />
+      <People list={people} />
     </VideoDisclosure>
   );
 }

@@ -861,7 +861,14 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   page,
 }) => {
   await fixtures(page);
-  const cast = [{ id: 10, name: 'Fixture Actor', character: 'Lead' }];
+  const cast = [
+    { id: 10, name: 'Fixture Actor', character: 'Lead' },
+    ...Array.from({ length: 10 }, (_, index) => ({
+      id: 30 + index,
+      name: `Supporting Actor ${index + 1}`,
+      character: 'Pilot',
+    })),
+  ];
   const crew = [{ id: 11, name: 'Fixture Director', job: 'Director' }];
   const settings = {
     detailDisclosureCastPinned: true,
@@ -904,6 +911,13 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     }
   );
 
+  await page.route('**/api/v1/person/39', (route) =>
+    route.fulfill({ json: { id: 39, name: 'Supporting Actor 10' } })
+  );
+  await page.route('**/api/v1/person/39/combined_credits', (route) =>
+    route.fulfill({ json: { cast: [], crew: [] } })
+  );
+
   await page.goto('/movie/101');
   const actor = page.locator('.person').filter({ hasText: 'Fixture Actor' });
   await expect(actor).toBeHidden();
@@ -924,6 +938,21 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   await page.getByText('Crew', { exact: true }).click();
   await expect(
     page.locator('.person').filter({ hasText: 'Fixture Director' })
+  ).toBeVisible();
+
+  const lastCredit = page.getByRole('link', {
+    name: 'Supporting Actor 10 Pilot',
+  });
+  await expect(lastCredit).toHaveCount(0);
+  await page.getByRole('button', { name: 'Show All 11 Credits' }).click();
+  await expect(lastCredit).toBeVisible();
+  await page.getByRole('button', { name: 'Show Fewer Credits' }).click();
+  await expect(lastCredit).toHaveCount(0);
+  await page.getByRole('button', { name: 'Show All 11 Credits' }).click();
+  await lastCredit.click();
+  await expect(page).toHaveURL(/\/person\/39$/);
+  await expect(
+    page.getByRole('heading', { name: 'Supporting Actor 10' })
   ).toBeVisible();
 
   await page.goto('/tv/202');

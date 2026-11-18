@@ -867,3 +867,14 @@ Standalone desktop, iPhone, Android and tablet fixtures verified movie to
 series visibility persistence, the exact filtered discovery query, clearing
 the filter, and the existing credit pin behavior. Bundled and native visual
 comparison and live provider results remain open.
+
+### Complete video credit lists increment
+
+Movie and series credit panels show character and job names and link
+confirmed TMDB people to Lumen's person pages. The first ten credits are
+shown initially. The remaining credits can be expanded or collapsed.
+
+Standalone desktop, iPhone, Android and tablet fixtures verified the
+eleventh credit, visible character name, collapse, navigation to the
+matching person page, and retained pin and subject-tag behavior. Bundled
+and native visual comparisons remain open.
