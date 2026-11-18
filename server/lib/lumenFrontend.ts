@@ -2,6 +2,7 @@ import { isTmdbPublicListId } from '@server/constants/discover';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
+import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
 import path from 'node:path';
@@ -107,7 +108,48 @@ function discoveryDeepLink(req: Request): string | undefined {
   return `/lumen/${kind === 'movies' ? 'movies' : 'series'}${suffix ? `?${suffix}` : ''}`;
 }
 
+function catalogSegment(pathname: string, kind: 'book' | 'magazine') {
+  const prefix = `/${kind}/`;
+  if (!pathname.startsWith(prefix)) return;
+  const segment = pathname.slice(prefix.length).replace(/\/$/, '');
+  if (!segment || segment.length > 3072 || segment.includes('/')) return;
+  try {
+    const value = decodeURIComponent(segment);
+    if (
+      value !== '.' &&
+      value !== '..' &&
+      !Array.from(value).some((char) => {
+        const code = char.charCodeAt(0);
+        return code < 32 || code === 127;
+      })
+    ) {
+      return value;
+    }
+  } catch {
+    // Malformed percent escapes are not catalog identities.
+  }
+}
+
+function magazineTitle(pathname: string) {
+  const title = catalogSegment(pathname, 'magazine');
+  if (title?.trim() && title.length <= 256) return title;
+}
+
 function detailDeepLink(req: Request): string | undefined {
+  const magazine = magazineTitle(req.path);
+  if (magazine) return `/lumen/magazine/${encodeURIComponent(magazine)}`;
+  const book = catalogSegment(req.path, 'book');
+  if (book && parseBookshelfBookId(book)) {
+    const query = new URLSearchParams();
+    if (req.query.f === 'audio' || req.query.format === 'audiobook')
+      query.set('f', 'audio');
+    const { lookupTitle } = req.query;
+    if (typeof lookupTitle === 'string' && lookupTitle.length <= 512) {
+      query.set('lookupTitle', lookupTitle);
+    }
+    const suffix = query.toString();
+    return `/lumen/book/${encodeURIComponent(book)}${suffix ? `?${suffix}` : ''}`;
+  }
   const franchise = /^\/franchise\/(tv|anime)\/(\d{1,10})\/?$/.exec(req.path);
   if (franchise) return `/lumen/franchise/${franchise[1]}/${franchise[2]}`;
   const association =
@@ -347,7 +389,7 @@ export const redirectLockedNativeFrontend: RequestHandler = (
     !req.path.startsWith('/lumen') &&
     !req.path.startsWith('/_next') &&
     !req.path.startsWith('/api') &&
-    !path.extname(req.path)
+    (!path.extname(req.path) || magazineTitle(req.path))
   ) {
     res
       .set('Cache-Control', 'no-store')
@@ -490,7 +532,8 @@ export const mountLumenFrontend = (
       if (req.method !== 'GET') return next();
       if (!isInitialized()) return res.redirect(302, '/setup');
       // Missing assets must not become successful HTML responses.
-      if (path.extname(req.path)) return res.sendStatus(404);
+      if (path.extname(req.path) && !magazineTitle(req.path))
+        return res.sendStatus(404);
       res.clearCookie(classicCookie, { path: '/' });
       res.set('Cache-Control', 'no-store');
       res.set(

@@ -138,14 +138,23 @@ export default function BookDetail() {
   const { user } = useAuth();
   // useParams has already decoded it (decoding again breaks on a literal %)
   const plainId = bookIdFor(id, f);
-  const first = useApi<BookDetails>(`/book/${encodeURIComponent(plainId)}`);
+  const lookupTitle = plainId.startsWith('bookshelf:')
+    ? p.get('lookupTitle')
+    : null;
+  const lookup =
+    lookupTitle && lookupTitle.length <= 512
+      ? `?${new URLSearchParams({ lookupTitle })}`
+      : '';
+  const first = useApi<BookDetails>(
+    `/book/${encodeURIComponent(plainId)}${lookup}`
+  );
   const bookId = plainId;
   // Books stored under a bare Hardcover id can come back without a description while the
   // "hc:" form of the same work has one: ask for that form once, and only to fill the blurb.
   const altId =
     first.data && !first.data.description ? hcFormId(plainId) : null;
   const alt = useApi<BookDetails>(
-    altId ? `/book/${encodeURIComponent(altId)}` : null
+    altId ? `/book/${encodeURIComponent(altId)}${lookup}` : null
   );
   const b = useMemo(
     () =>

@@ -1773,3 +1773,8 @@ artist ID bookmarks. The Book page understands the native audiobook
 parameter directly in both deployments. Two server routing tests and four
 standalone browser cases passed, including audiobook association return
 links. Provider-specific encoded IDs remain outside this redirect check.
+
+The bundled lock now preserves scoped Bookshelf IDs, their lookup-title
+hint, and encoded magazine titles. Express serves dotted magazine
+titles while missing asset URLs still return 404. Two routing tests
+and four standalone book detail cases passed.

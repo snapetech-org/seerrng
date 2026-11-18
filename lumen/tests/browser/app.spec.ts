@@ -3401,14 +3401,16 @@ test('music and Open Library book details open Associations with exact identity'
       json: { id: 'OL123W', title: 'Fixture Book', description: 'Description' },
     })
   );
-  await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
-    route.fulfill({
-      json: {
-        id: 'bookshelf:1:fixture',
-        title: 'Local Book',
-        description: 'Description',
-      },
-    })
+  await page.route(
+    '**/api/v1/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book',
+    (route) =>
+      route.fulfill({
+        json: {
+          id: 'bookshelf:1:fixture',
+          title: 'Local Book',
+          description: 'Description',
+        },
+      })
   );
   await page.route(
     '**/api/v1/association/book/OL123W?includeWeak=true',
@@ -3436,7 +3438,7 @@ test('music and Open Library book details open Associations with exact identity'
   await expect(
     page.getByRole('link', { name: 'Back to Details' })
   ).toHaveAttribute('href', '/book/OL123W?f=audio');
-  await page.goto('/book/bookshelf%3A1%3Afixture');
+  await page.goto('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book');
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
   await expect(association).toHaveCount(0);
 });

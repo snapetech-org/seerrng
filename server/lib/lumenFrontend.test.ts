@@ -176,6 +176,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal((await browser.get('/')).headers.location, '/lumen/');
     assert.equal((await request(app).get('/lumen/app.js')).status, 200);
     assert.equal((await request(app).get('/lumen/missing.js')).status, 404);
+    assert.equal(
+      (await request(app).get('/lumen/magazine/Science%20Vol.%202')).status,
+      200
+    );
     frontend = 'native';
     assert.equal((await request(app).get('/')).text, 'Native interface');
     frontend = 'external';
@@ -273,6 +277,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
       ['/book/OL123W?format=audiobook', '/lumen/book/OL123W?f=audio'],
+      [
+        '/book/bookshelf%3A1%3AaGM6MTIz?format=audiobook&lookupTitle=Fixture+Book',
+        '/lumen/book/bookshelf%3A1%3AaGM6MTIz?f=audio&lookupTitle=Fixture+Book',
+      ],
+      ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
       [
         '/music/5b36cb67-befa-41ca-a91d-a6dcf1f68062/',
         '/lumen/music/5b36cb67-befa-41ca-a91d-a6dcf1f68062',
