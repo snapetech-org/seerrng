@@ -3164,6 +3164,7 @@ settingsRoutes.post<{ jobId: JobId }>(
 );
 
 settingsRoutes.get('/cache', async (_req, res) => {
+  res.set('Cache-Control', 'no-store');
   const cacheManagerCaches = cacheManager.getAllCaches();
 
   const apiCaches = Object.values(cacheManagerCaches).map((cache) => ({

@@ -74,6 +74,9 @@ export default function AdminJobs() {
         <Link className="btn btn-quiet btn-sm" to="/me">
           Back to Account
         </Link>
+        <Link className="btn btn-quiet btn-sm" to="/admin/caches">
+          System Caches
+        </Link>
         <button
           className="btn btn-quiet btn-sm"
           disabled={busy}

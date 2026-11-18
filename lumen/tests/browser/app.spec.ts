@@ -4334,3 +4334,56 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   await page.getByRole('button', { name: 'Save Schedule' }).click();
   await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
 });
+
+test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
+  await fixtures(page);
+  let flushed = false;
+  await page.route('**/api/v1/settings/cache', (route) =>
+    route.fulfill({
+      json: {
+        apiCaches: [
+          {
+            id: 'tmdb',
+            name: 'TMDB',
+            stats: { hits: 1, misses: 2, keys: 3, ksize: 4, vsize: 5 },
+          },
+        ],
+        imageCache: {
+          tmdb: { imageCount: 1, size: 42 },
+          avatar: { imageCount: 0, size: 0 },
+        },
+        dnsCache: {
+          entries: flushed
+            ? {}
+            : {
+                'cache.example': {
+                  activeAddress: '192.0.2.1',
+                  hits: 2,
+                  misses: 1,
+                  age: 3000,
+                },
+              },
+        },
+      },
+    })
+  );
+  await page.route(
+    '**/api/v1/settings/cache/dns/cache.example/flush',
+    (route) => {
+      expect(route.request().method()).toBe('POST');
+      flushed = true;
+      return route.fulfill({ status: 204 });
+    }
+  );
+  await page.goto('/admin/caches');
+  await expect(page.getByText('cache.example', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Flush DNS Entry' }).click();
+  expect(flushed).toBe(false);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Flush', exact: true })
+    .click();
+  await expect(page.getByText('Flushed cache.example.')).toBeVisible();
+  await expect(page.getByText('No DNS cache entries.')).toBeVisible();
+  expect(flushed).toBe(true);
+});
