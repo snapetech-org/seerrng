@@ -625,3 +625,13 @@ including its treatment of partially available series with ongoing downloads.
 Standalone Chrome at 1440 × 1000 showed a partially available series
 downloading in Incomplete and confirmed the Unavailable and Completed
 responses against fixtures. Mobile, bundled and native comparison remain open.
+
+### Focused request progress increment
+
+Request History shows the current service, download percentage and size,
+download count, estimated completion, and pending book import attempts when
+the exact request supplies those values. Refresh Status reloads the snapshot.
+
+Standalone Chrome at 1440 × 1000 verified the ebook import retry details
+and a refresh from 50% to 75% and 1 GiB to 1.5 GiB of a 2 GiB download.
+Native visual comparison, mobile, bundled and live providers remain open.

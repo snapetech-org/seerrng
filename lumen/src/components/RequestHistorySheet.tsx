@@ -16,9 +16,24 @@ interface StatusEvent extends Status {
   createdAt: string;
 }
 
+interface CurrentStatus extends Status {
+  percent?: number | null;
+  size?: number | null;
+  sizeLeft?: number | null;
+  downloadCount?: number;
+  service?: string | null;
+  estimatedCompletionTime?: string | null;
+  bookImportProgresses?: {
+    format: 'ebook' | 'audiobook';
+    attemptCount?: number;
+    maxAttempts?: number;
+    nextAttemptAt?: string | null;
+  }[];
+}
+
 interface RequestHistory {
   request: { type: string };
-  current: Status;
+  current: CurrentStatus;
   history: { results: StatusEvent[]; total: number };
 }
 
@@ -37,6 +52,87 @@ const stages = new Map([
   ['declined', 'Declined'],
   ['cancelled', 'Cancelled'],
 ]);
+
+function formatSize(bytes: number) {
+  const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+  const scale = Math.min(
+    units.length - 1,
+    bytes > 0 ? Math.floor(Math.log2(bytes) / 10) : 0
+  );
+  return `${(bytes / 1024 ** scale).toLocaleString(undefined, { maximumFractionDigits: 1 })} ${units[scale]}`;
+}
+
+function StatusTime({ value }: { value: string }) {
+  const time = new Date(value);
+  if (!Number.isFinite(time.valueOf())) return null;
+  return <time dateTime={value}>{time.toLocaleString()}</time>;
+}
+
+function RequestProgress({ current }: { current: CurrentStatus }) {
+  const {
+    percent,
+    size,
+    sizeLeft,
+    downloadCount,
+    service,
+    estimatedCompletionTime,
+  } = current;
+  const hasSize =
+    typeof size === 'number' &&
+    Number.isFinite(size) &&
+    size > 0 &&
+    typeof sizeLeft === 'number' &&
+    Number.isFinite(sizeLeft) &&
+    sizeLeft >= 0 &&
+    sizeLeft <= size;
+  return (
+    <>
+      <p className="note">
+        Current status: {stages.get(current.stage) ?? 'Unknown'}
+        {typeof percent === 'number' &&
+          Number.isFinite(percent) &&
+          percent >= 0 &&
+          percent <= 100 &&
+          ` · ${Math.round(percent)}%`}
+        {service && ` · ${service}`}
+      </p>
+      {current.message && <p className="note">{current.message}</p>}
+      {hasSize && (
+        <p className="note">
+          {formatSize(size - sizeLeft)} of {formatSize(size)} downloaded
+        </p>
+      )}
+      {!!downloadCount && downloadCount > 0 && (
+        <p className="note">
+          {downloadCount} {downloadCount === 1 ? 'download' : 'downloads'}
+        </p>
+      )}
+      {estimatedCompletionTime &&
+        Number.isFinite(Date.parse(estimatedCompletionTime)) && (
+          <p className="note">
+            Estimated completion <StatusTime value={estimatedCompletionTime} />
+          </p>
+        )}
+      {current.bookImportProgresses?.map((item) => (
+        <p className="note" key={item.format}>
+          {item.format === 'ebook' ? 'Ebook' : 'Audiobook'} import pending
+          {typeof item.attemptCount === 'number' &&
+            ` · Attempt ${item.attemptCount}`}
+          {typeof item.maxAttempts === 'number' &&
+            typeof item.attemptCount === 'number' &&
+            ` of ${item.maxAttempts}`}
+          {item.nextAttemptAt &&
+            Number.isFinite(Date.parse(item.nextAttemptAt)) && (
+              <>
+                {' '}
+                · Next attempt <StatusTime value={item.nextAttemptAt} />
+              </>
+            )}
+        </p>
+      ))}
+    </>
+  );
+}
 
 export default function RequestHistorySheet({
   id,
@@ -78,9 +174,7 @@ export default function RequestHistorySheet({
           )}
           {data && (
             <>
-              <p className="note">
-                Current status: {stages.get(data.current.stage) ?? 'Unknown'}
-              </p>
+              <RequestProgress current={data.current} />
               {data.current.stage === 'available' &&
                 downloadableTypes.has(data.request?.type) &&
                 (showFiles ? (
@@ -96,17 +190,12 @@ export default function RequestHistorySheet({
               {data.history.results.length ? (
                 <ol className="setlist">
                   {data.history.results.map((event) => {
-                    const timestamp = new Date(event.createdAt);
                     return (
                       <li className="set" key={event.id}>
                         <div>
                           <b>{stages.get(event.stage) ?? 'Status updated'}</b>
                           <div className="note">
-                            {Number.isFinite(timestamp.valueOf()) && (
-                              <time dateTime={event.createdAt}>
-                                {timestamp.toLocaleString()}
-                              </time>
-                            )}
+                            <StatusTime value={event.createdAt} />
                             {event.attempt > 1 && ` · Attempt ${event.attempt}`}
                           </div>
                           {event.message && (
@@ -131,6 +220,11 @@ export default function RequestHistorySheet({
             </>
           )}
           <div className="pk-foot">
+            {data && (
+              <button className="btn btn-tonal" onClick={reload}>
+                Refresh Status
+              </button>
+            )}
             <button className="btn btn-quiet" onClick={close}>
               Close
             </button>
