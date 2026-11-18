@@ -2436,7 +2436,9 @@ const getOidcCorrelationKey = () =>
 
 const sealOidcCorrelation = (name: string, correlation: OidcCorrelation) => {
   const iv = randomBytes(OIDC_CORRELATION_IV_BYTES);
-  const cipher = createCipheriv('aes-256-gcm', getOidcCorrelationKey(), iv);
+  const cipher = createCipheriv('aes-256-gcm', getOidcCorrelationKey(), iv, {
+    authTagLength: OIDC_CORRELATION_TAG_BYTES,
+  });
   cipher.setAAD(Buffer.from(name));
   const ciphertext = Buffer.concat([
     cipher.update(JSON.stringify(correlation), 'utf8'),
@@ -2468,7 +2470,8 @@ const parseOidcCorrelation = (
       const decipher = createDecipheriv(
         'aes-256-gcm',
         getOidcCorrelationKey(),
-        packed.subarray(0, OIDC_CORRELATION_IV_BYTES)
+        packed.subarray(0, OIDC_CORRELATION_IV_BYTES),
+        { authTagLength: OIDC_CORRELATION_TAG_BYTES }
       );
       decipher.setAAD(Buffer.from(name));
       decipher.setAuthTag(packed.subarray(OIDC_CORRELATION_IV_BYTES, tagEnd));
