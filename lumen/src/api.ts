@@ -31,7 +31,10 @@ export class ApiError extends Error {
 
 export async function api<T>(
   path: string,
-  init: RequestInit = {},
+  {
+    invalidateCache = true,
+    ...init
+  }: RequestInit & { invalidateCache?: boolean } = {},
   response: 'json' | 'empty' = 'json'
 ): Promise<T> {
   const res = await fetch('/api/v1' + path, {
@@ -88,7 +91,7 @@ export async function api<T>(
     );
   }
   // a request or other change: saved answers may now be out of date
-  if (init.method && init.method !== 'GET') markAllStale();
+  if (invalidateCache && init.method && init.method !== 'GET') markAllStale();
   return response === 'empty' || res.status === 204
     ? (undefined as T)
     : res.json();

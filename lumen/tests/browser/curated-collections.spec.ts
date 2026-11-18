@@ -5,6 +5,7 @@ test('series and album details reach their curated collections', async ({
 }, info) => {
   const album = '62a8e15d-a5f1-4213-a794-e10e0150e945';
   const seriesReads: string[] = [];
+  let checks = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -15,6 +16,7 @@ test('series and album details reach their curated collections', async ({
       '/auth/me': { id: 1, permissions: 32 },
       '/settings/public': {
         musicEnabled: true,
+        mediaServerType: 1,
         enabledMediaCategories: { music: true },
       },
       '/tv/42': { id: 42, name: 'Fixture Series', seasons: [], genres: [] },
@@ -42,6 +44,30 @@ test('series and album details reach their curated collections', async ({
         ],
       },
     };
+    if (path === '/collection-catalog/tv/19/availability') {
+      expect(route.request().method()).toBe('POST');
+      checks++;
+      if (checks === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Provider unavailable.' },
+        });
+      return route.fulfill({
+        json: {
+          collection: {
+            id: '19',
+            parts: [
+              { id: '42', title: 'Fixture Series', mediaInfo: { status: 5 } },
+              {
+                id: '99',
+                title: 'Restricted Series',
+                mediaInfo: { status: 5 },
+              },
+            ],
+          },
+        },
+      });
+    }
     if (path.startsWith('/collection-catalog/tv/for-series/'))
       seriesReads.push(path);
     return route.fulfill({ json: entries[path] ?? { results: [] } });
@@ -59,6 +85,13 @@ test('series and album details reach their curated collections', async ({
   await expect(
     page.getByRole('link', { name: 'Fixture Series', exact: true })
   ).toHaveAttribute('href', '/tv/42');
+  await expect(page.getByRole('alert')).toHaveText('Provider unavailable.');
+  await page.getByRole('button', { name: 'Refresh Availability' }).click();
+  await expect(page.getByTitle('On Plex')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Restricted Series' })
+  ).toHaveCount(0);
+  expect(checks).toBe(2);
   await page.screenshot({ path: info.outputPath('series-collection.png') });
   await page.goto(`/music/${album}`);
   await page.getByRole('link', { name: 'View Discography' }).click();
@@ -69,5 +102,8 @@ test('series and album details reach their curated collections', async ({
     page.getByRole('link', { name: 'Back to Album' })
   ).toHaveAttribute('href', `/music/${album}`);
   await expect(page.getByText('FLAC', { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Refresh Availability' })
+  ).toHaveCount(0);
   await page.screenshot({ path: info.outputPath('discography.png') });
 });

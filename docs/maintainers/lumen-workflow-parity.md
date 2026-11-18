@@ -2272,3 +2272,17 @@ ten built-image proxy tests passed. Inspected series and discography grids
 using shared Lumen detail and card layouts across four viewports. Live
 catalog providers were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-collections-20261118/`.
+
+Curated collections now check availability while visible and online on
+supported media servers. Pending collections recheck on a one-minute
+cadence and offer a manual refresh after failures. The result updates only
+members already authorized by the catalog read. Artist discographies keep
+their existing read-only availability behavior. The refresh leaves unrelated
+frontend caches intact.
+
+The production build and 28 browser fixture checks passed. Compared the
+series collection before and after on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. The fixture verified failure recovery, updated availability, and
+exclusion of a title absent from the authorized catalog. Live provider
+refresh remains unverified. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-availability-20261118/`.

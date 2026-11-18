@@ -1,5 +1,7 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { artUrl, tmdbImg, type MediaInfo } from '../api';
+import { api, artUrl, MediaStatus, tmdbImg, type MediaInfo } from '../api';
+import { isAdministrator, useAuth } from '../auth';
 import { Section, TitleCard } from '../components/cards';
 import { DetailTop } from '../components/detail';
 import {
@@ -8,7 +10,8 @@ import {
   extraStat,
   ServiceNote,
 } from '../components/extra';
-import { useApi } from '../hooks';
+import { friendlyError } from '../errors';
+import { useApi, usePublicSettings } from '../hooks';
 
 type Kind = 'tv' | 'music';
 interface Collection {
@@ -30,11 +33,89 @@ interface Collection {
 
 function Content({ kind, id }: { kind: Kind; id: string }) {
   const [params] = useSearchParams();
-  const collection = useApi<Collection>(
-    `/collection-catalog/${kind}/${encodeURIComponent(id)}`
-  );
+  const path = `/collection-catalog/${kind}/${encodeURIComponent(id)}`;
+  const collection = useApi<Collection>(path);
   const data = collection.data;
   const music = kind === 'music';
+  const { user } = useAuth();
+  const settings = usePublicSettings();
+  const server = settings?.mediaServerType;
+  const supportsSync =
+    !(music && params.get('view') === 'discography') &&
+    [1, 2, 3].includes(server ?? 0);
+  const pending = useRef(false);
+  const [latest, setLatest] = useState<Collection['parts']>();
+  const [checking, setChecking] = useState(false);
+  const [syncError, setSyncError] = useState<string>();
+  const lastRead = useRef(0);
+  const refreshAvailability = useCallback(async () => {
+    if (pending.current || !supportsSync) return;
+    pending.current = true;
+    lastRead.current = Date.now();
+    setChecking(true);
+    setSyncError(undefined);
+    try {
+      const result = await api<{ collection: Collection }>(
+        path + '/availability',
+        {
+          method: 'POST',
+          invalidateCache: false,
+        }
+      );
+      if (result.collection.id === id) setLatest(result.collection.parts);
+    } catch (failure) {
+      setSyncError(
+        friendlyError(failure, 'Could not refresh collection availability.')
+      );
+    } finally {
+      pending.current = false;
+      setChecking(false);
+    }
+  }, [path, id, supportsSync]);
+  // Use the catalog GET's authorized membership. The availability response
+  // from older servers can include series omitted by the viewer's policy.
+  const updates = new Map(latest?.map((part) => [part.id, part]));
+  const parts = data?.parts ?? [];
+  const members = parts.map((part) => {
+    const updated = updates.get(part.id);
+    return updated
+      ? {
+          ...part,
+          mediaInfo: updated.mediaInfo,
+          availableQualities: updated.availableQualities,
+        }
+      : part;
+  });
+  const hasMembers = members.length > 0;
+  const shouldPoll =
+    isAdministrator(user?.permissions) ||
+    members.some(
+      (part) =>
+        part.mediaInfo?.status !== MediaStatus.AVAILABLE ||
+        (!music &&
+          settings?.series4kEnabled &&
+          part.mediaInfo?.status4k !== MediaStatus.AVAILABLE)
+    );
+  useEffect(() => {
+    if (!supportsSync || !hasMembers || !shouldPoll) return;
+    const refresh = () => {
+      if (
+        document.visibilityState === 'visible' &&
+        navigator.onLine &&
+        Date.now() - lastRead.current >= 60_000
+      )
+        void refreshAvailability();
+    };
+    refresh();
+    const timer = window.setInterval(refresh, 60_000);
+    document.addEventListener('visibilitychange', refresh);
+    window.addEventListener('online', refresh);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', refresh);
+      window.removeEventListener('online', refresh);
+    };
+  }, [supportsSync, hasMembers, shouldPoll, refreshAvailability]);
   const returnAlbum = params.get('albumId');
   const albumId =
     returnAlbum &&
@@ -60,7 +141,6 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
       </>
     );
 
-  const members = data.parts;
   const noun = music ? 'releases' : 'series';
   return (
     <article className="detail">
@@ -82,6 +162,25 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
           <Link className="btn btn-quiet btn-sm" to={`/music/${albumId}`}>
             Back to Album
           </Link>
+        )}
+        {supportsSync && hasMembers && (
+          <>
+            <div className="toolbar">
+              <button
+                className="btn btn-tonal btn-sm"
+                type="button"
+                disabled={checking}
+                onClick={() => void refreshAvailability()}
+              >
+                {checking ? 'Checking Availability…' : 'Refresh Availability'}
+              </button>
+            </div>
+            {syncError && (
+              <p className="note" role="alert">
+                {syncError}
+              </p>
+            )}
+          </>
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
         <Section title={music ? 'Releases' : 'Series in This Collection'}>
