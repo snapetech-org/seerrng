@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-for (const permissions of [2, 24, 16, 32]) {
-  const authorized = permissions !== 32;
+for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
+  const canManageRequests = [2, 24, 16].includes(permissions);
+  const canReadRequests = canManageRequests || permissions === 16384;
+  const canReadWatchlist = canManageRequests || permissions === 134217728;
   test(`household profile permissions ${permissions} gate each preview`, async ({
     page,
   }) => {
@@ -123,7 +125,7 @@ for (const permissions of [2, 24, 16, 32]) {
       permissions === 2 || permissions === 24 ? 1 : 0
     );
     await expect(page.getByText(/User ID: 19/)).toHaveCount(
-      permissions === 32 ? 0 : 1
+      canManageRequests ? 1 : 0
     );
     const edit = page.getByRole('link', { name: 'Edit Settings' });
     if (permissions === 2 || permissions === 24)
@@ -155,10 +157,17 @@ for (const permissions of [2, 24, 16, 32]) {
       ).toHaveCount(0);
       expect(fetched).not.toContain('/user/19/quota');
     }
-    if (authorized) {
+    if (canReadWatchlist) {
       await expect(
         page.getByRole('link', { name: 'Saved Film' })
       ).toHaveAttribute('href', '/movie/23');
+    } else {
+      await expect(
+        page.getByRole('link', { name: 'View Watchlist' })
+      ).toHaveCount(0);
+      expect(fetched).not.toContain('/user/19/watchlist');
+    }
+    if (canReadRequests) {
       await page.getByRole('link', { name: 'Requested Film' }).click();
       await expect(page).toHaveURL('/requests?requestedBy=19&requestId=3');
       const history = page.getByRole('dialog', { name: 'Request history' });
@@ -171,11 +180,7 @@ for (const permissions of [2, 24, 16, 32]) {
       await expect(
         page.getByRole('link', { name: 'View Requests' })
       ).toHaveCount(0);
-      await expect(
-        page.getByRole('link', { name: 'View Watchlist' })
-      ).toHaveCount(0);
       expect(fetched).not.toContain('/user/19/requests');
-      expect(fetched).not.toContain('/user/19/watchlist');
     }
   });
 }
