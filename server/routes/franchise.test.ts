@@ -1,3 +1,5 @@
+import AnilistAPI from '@server/api/anilist';
+import type { AnilistMediaWithRelations } from '@server/api/anilist/interfaces';
 import { getRepository } from '@server/datasource';
 import MediaRelation from '@server/entity/MediaRelation';
 import { getSettings } from '@server/lib/settings';
@@ -7,7 +9,7 @@ import express from 'express';
 import session from 'express-session';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
-import { before, it } from 'node:test';
+import { before, it, mock } from 'node:test';
 import request from 'supertest';
 import authRoutes from './auth';
 import franchiseRoutes from './franchise';
@@ -77,4 +79,38 @@ it('persists exact Lumen links for an authorized franchise curator', async () =>
     assert.equal(persisted.data?.href, href);
     assert.equal(persisted.verified, true);
   }
+});
+
+it('returns the exact AniList identity alongside the title search link', async (t) => {
+  getSettings().main.localLogin = true;
+  const viewer = await signIn('friend@seerr.dev');
+  const lookup = mock.method(
+    AnilistAPI.prototype,
+    'getMediaWithRelations',
+    async (id: number): Promise<AnilistMediaWithRelations> => {
+      assert.equal(id, 712);
+      return {
+        id,
+        title: { english: 'Fixture Original' },
+        relations: {
+          edges: [
+            {
+              relationType: 'SEQUEL',
+              node: {
+                id: 713,
+                type: 'ANIME',
+                title: { english: 'Fixture Sequel' },
+              },
+            },
+          ],
+        },
+      };
+    }
+  );
+  t.after(() => lookup.mock.restore());
+  const response = await viewer.get('/franchise/anime/712').expect(200);
+  assert.equal(lookup.mock.callCount(), 1);
+  assert.equal(response.body.items.length, 1);
+  assert.equal(response.body.items[0].anilistId, 713);
+  assert.equal(response.body.items[0].href, '/search?query=Fixture%20Sequel');
 });
