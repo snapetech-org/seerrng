@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { MoreOnScroll, type Stat } from '../components/cards';
+import { MoreOnScroll, Section, type Stat } from '../components/cards';
 import { DetailTop, Facts } from '../components/detail';
 import {
   ExtraCard,
@@ -100,6 +100,88 @@ export function Sports() {
   );
 }
 
+function LeagueEvents({ id }: { id: string }) {
+  const [page, setPage] = useState(1);
+  const { data, error, reload } = useApi<{
+    eventsAvailable: boolean;
+    totalPages: number;
+    results: {
+      id: number;
+      title: string;
+      eventDate?: string;
+      broadcastDate?: string;
+      broadcastTimezone?: string;
+      monitored: boolean;
+      hasFile: boolean;
+      quality?: string;
+    }[];
+  }>(`/sportarr/${encodeURIComponent(id)}/events?page=${page}&pageSize=50`, {
+    currentPathOnly: true,
+  });
+
+  return (
+    <Section title="Events">
+      <ServiceNote error={error} what="Sportarr events" retry={reload} />
+      {!data && !error && (
+        <p className="note" role="status">
+          Loading events…
+        </p>
+      )}
+      {data && !data.results.length && (
+        <p className="note">
+          {data.eventsAvailable
+            ? 'Sportarr has no events on this page.'
+            : 'Events appear once this league is monitored in Sportarr.'}
+        </p>
+      )}
+      {!!data?.results.length && (
+        <ul className="setlist">
+          {data.results.map((event) => (
+            <li className="set" key={event.id}>
+              <div>
+                <b>{event.title}</b>
+                <small>
+                  {event.broadcastDate
+                    ? [event.broadcastDate, event.broadcastTimezone]
+                        .filter(Boolean)
+                        .join(' ')
+                    : event.eventDate}
+                </small>
+              </div>
+              <small>
+                {event.hasFile
+                  ? ['In Library', event.quality].filter(Boolean).join(' · ')
+                  : event.monitored
+                    ? 'Monitored'
+                    : 'Unmonitored'}
+              </small>
+            </li>
+          ))}
+        </ul>
+      )}
+      {(page > 1 || (data?.totalPages ?? 0) > 1) && (
+        <nav className="toolbar" aria-label="Event Pages">
+          <button
+            className="btn btn-quiet btn-sm"
+            disabled={page <= 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Previous Page
+          </button>
+          <span className="note">Page {page}</span>
+          <button
+            className="btn btn-quiet btn-sm"
+            disabled={!data || page >= Math.min(data.totalPages, 1000)}
+            onClick={() => setPage(page + 1)}
+          >
+            Next Page
+          </button>
+        </nav>
+      )}
+    </Section>
+  );
+}
+
 export function LeagueDetail() {
   const { id = '' } = useParams();
   const { data: l, error } = useApi<League>(
@@ -146,11 +228,11 @@ export function LeagueDetail() {
                 rows={[
                   ['Sport', l.sport],
                   ['Country', l.country],
-                  ['Events', l.eventsAvailable ? 'Some in library' : ''],
                 ]}
               />
             </aside>
           </div>
+          {l.eventsAvailable && <LeagueEvents key={l.id} id={l.id} />}
         </div>
         {main && (
           <div className="actionbar">

@@ -6,6 +6,7 @@ import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
 import path from 'node:path';
+import { isSportarrLeagueExternalId } from './sportarrIdentity';
 
 const classicCookie = 'seerrng-frontend';
 const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
@@ -136,6 +137,8 @@ function magazineTitle(pathname: string) {
 }
 
 function detailDeepLink(req: Request): string | undefined {
+  const league = /^\/sportarr\/(lg-\d{6,8})\/?$/.exec(req.path)?.[1];
+  if (isSportarrLeagueExternalId(league)) return `/lumen/sportarr/${league}`;
   const magazine = magazineTitle(req.path);
   if (magazine) return `/lumen/magazine/${encodeURIComponent(magazine)}`;
   const book = catalogSegment(req.path, 'book');

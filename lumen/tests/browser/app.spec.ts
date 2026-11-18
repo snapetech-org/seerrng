@@ -1949,6 +1949,56 @@ test('Coming Soon applies shared availability without reopening requests', async
   ).toBeVisible();
 });
 
+test('Sportarr league details show paginated event availability', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { sportsEnabled: true, enabledMediaCategories: { sports: true } },
+    })
+  );
+  await page.route('**/api/v1/sportarr/lg-000123', (route) =>
+    route.fulfill({
+      json: {
+        id: 'lg-000123',
+        title: 'Fixture League',
+        mediaType: 'sports',
+        libraryState: 'monitored',
+        eventsAvailable: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/sportarr/lg-000123/events?*', (route) => {
+    const second =
+      new URL(route.request().url()).searchParams.get('page') === '2';
+    return route.fulfill({
+      json: {
+        eventsAvailable: true,
+        totalPages: 2,
+        results: [
+          {
+            id: second ? 2 : 1,
+            title: second ? 'Final' : 'Opening Match',
+            monitored: true,
+            hasFile: !second,
+            quality: second ? undefined : 'HDTV',
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/sportarr/lg-000123');
+  await expect(
+    page.getByRole('heading', { name: 'Fixture League' })
+  ).toBeVisible();
+  await expect(page.getByText('Opening Match')).toBeVisible();
+  await expect(page.getByText('In Library · HDTV')).toBeVisible();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page.getByText('Final', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
+});
+
 test('Coming Soon retries a failed series feed without dropping movies', async ({
   page,
 }) => {

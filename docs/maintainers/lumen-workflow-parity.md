@@ -1778,3 +1778,9 @@ The bundled lock now preserves scoped Bookshelf IDs, their lookup-title
 hint, and encoded magazine titles. Express serves dotted magazine
 titles while missing asset URLs still return 404. Two routing tests
 and four standalone book detail cases passed.
+
+Sportarr league details now show paginated events, broadcast dates, and
+file and monitoring states through the existing server endpoint.
+Bundled Lumen also redirects native league bookmarks. Two routing tests
+and four standalone browser cases passed. Live Sportarr and matched
+native visual acceptance remain open.
