@@ -1784,9 +1784,9 @@ and matched visual review remain open.
 
 Live GitHub notes exposed horizontal overflow at 390 pixels. The shared
 long-prose style now wraps long links. A repeat live browser check passed
-at 390 and 1440 pixels. The bundled build passed 20 fixture cases across
-release history and book descriptions. Matched visual review of person
-biographies and the standalone nginx build remains open for the fix.
+at 390 and 1440 pixels. Each production deployment passed 20 fixture cases across release
+history and book descriptions. Matched visual review of person
+biographies remains open for the shared style change.
 
 ### Instance General Settings
 
