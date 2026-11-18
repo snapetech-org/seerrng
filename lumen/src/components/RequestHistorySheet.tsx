@@ -193,6 +193,12 @@ export default function RequestHistorySheet({
             {request?.type === 'book' && (
               <p className="note">{bookRequestLabel(request.bookFormat)}</p>
             )}
+            {request?.is4k &&
+              (request.type === 'movie' || request.type === 'tv') && (
+                <p className="note">
+                  {request.type === 'movie' ? 'Movie' : 'Series'} · 4K
+                </p>
+              )}
           </header>
           <ServiceNote error={error} what="request history" retry={reload} />
           {!data && !error && (
