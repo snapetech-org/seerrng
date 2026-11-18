@@ -5,3 +5,5 @@ Opening and closing request history from a household profile keeps the request l
 Playback activity explains when recent plays have no catalog titles to display while keeping the total play count visible.
 
 An incomplete playback activity response now stays within that panel, where it can be retried without interrupting the profile.
+
+An incomplete watchlist preview can be retried independently of other profile panels.

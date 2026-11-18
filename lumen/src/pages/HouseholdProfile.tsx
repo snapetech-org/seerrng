@@ -79,24 +79,26 @@ function WatchlistPreview({ id, own }: { id: number; own: boolean }) {
   const watchlist = useApi<WatchlistData>(`/user/${id}/watchlist`, {
     currentPathOnly: true,
   });
+  const items = Array.isArray(watchlist.data?.results)
+    ? watchlist.data.results
+    : undefined;
+  const error =
+    watchlist.error ||
+    (watchlist.data && !items ? 'Invalid watchlist response.' : null);
   return (
     <Section title="Watchlist">
-      <ServiceNote
-        error={watchlist.error}
-        what="watchlist"
-        retry={watchlist.reload}
-      />
-      {!watchlist.error && !watchlist.data && (
+      <ServiceNote error={error} what="watchlist" retry={watchlist.reload} />
+      {!error && !items && (
         <p className="note" role="status">
           Loading watchlist…
         </p>
       )}
-      {watchlist.data?.results.length === 0 && (
+      {items?.length === 0 && (
         <p className="note">No titles on this watchlist.</p>
       )}
-      {!!watchlist.data?.results.length && (
+      {!!items?.length && (
         <ul className="setlist">
-          {watchlist.data.results.slice(0, 10).map((item) => {
+          {items.slice(0, 10).map((item) => {
             const key = itemId(item);
             return (
               <li className="set" key={`${item.mediaType}:${item.ratingKey}`}>

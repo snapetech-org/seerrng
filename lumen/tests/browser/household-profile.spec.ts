@@ -153,10 +153,11 @@ for (const permissions of [2, 24, 16, 32]) {
   });
 }
 
-test('playback activity recovers without hiding the profile or losing the play count', async ({
+test('incomplete playback and watchlist responses recover independently', async ({
   page,
 }) => {
   let attempts = 0;
+  let watchlistAttempts = 0;
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     switch (path) {
@@ -177,6 +178,9 @@ test('playback activity recovers without hiding the profile or losing the play c
           },
         });
       case '/api/v1/user/19/watchlist':
+        return route.fulfill({
+          json: ++watchlistAttempts === 1 ? {} : { results: [] },
+        });
       case '/api/v1/user/19/requests':
         return route.fulfill({ json: { results: [] } });
       default:
@@ -197,4 +201,10 @@ test('playback activity recovers without hiding the profile or losing the play c
     page.getByText('No recently watched titles to display.')
   ).toBeVisible();
   await expect(page.locator('[aria-label="Recently watched"]')).toHaveCount(0);
+  const watchlistError = page.getByRole('alert').filter({
+    hasText: 'Invalid watchlist response.',
+  });
+  await watchlistError.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByText('No titles on this watchlist.')).toBeVisible();
+  await expect(page.getByText('Total plays: 3')).toBeVisible();
 });
