@@ -146,3 +146,45 @@ test('a personal viewer stays on their own requests', async ({ page }) => {
   await expect(page.getByText('No active requests')).toBeVisible();
   await expect(page.getByText('Title 1000')).toHaveCount(0);
 });
+
+test('software bookmarks use the signed-in requester without household access', async ({
+  page,
+}) => {
+  await fixture(page, 0, { permissions: 32, requesterId: 1 });
+  const queries: URLSearchParams[] = [];
+  await page.route('**/api/v1/request/software/status?*', (route) => {
+    const { searchParams } = new URL(route.request().url());
+    queries.push(searchParams);
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: [
+          {
+            request: {
+              id: 31,
+              title: 'Retro request',
+              category: 'retro',
+              status: 'downloading',
+              percent: 49,
+              createdAt: '2026-11-18T15:00:00Z',
+              requestedBy: { id: 1, displayName: 'viewer' },
+            },
+          },
+        ],
+      },
+    });
+  });
+  await page.goto(
+    '/requests?show=software&category=retro&softwareStatus=downloading&requestedBy=19'
+  );
+  await expect(
+    page.getByRole('button', { name: 'My Software' })
+  ).toHaveAttribute('aria-pressed', 'true');
+  const filters = page.getByRole('group', { name: 'Software request filters' });
+  await expect(filters.getByLabel('Category')).toHaveValue('retro');
+  await expect(filters.getByLabel('Status')).toHaveValue('downloading');
+  await expect(page.getByText('Retro request', { exact: true })).toBeVisible();
+  expect(queries.map((query) => query.get('requestedBy'))).toEqual(['1']);
+  expect(queries[0].get('category')).toBe('retro');
+  expect(queries[0].get('filter')).toBe('downloading');
+});

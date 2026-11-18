@@ -1031,7 +1031,7 @@ function RequesterFilter({
   );
 }
 
-async function householdSoftwareRequests(
+async function loadSoftwareRequests(
   pages: number,
   category: string,
   status: string,
@@ -1126,6 +1126,12 @@ export default function Requests() {
       ? requesterParam
       : 'all';
   const requesterQuery = requester === 'all' ? '' : `&requestedBy=${requester}`;
+  const ownSoftware =
+    !everyone && (tab === 'software' || (!requestedTab && show === 'software'));
+  const browseRequests = everyone || ownSoftware;
+  const softwareView = ownSoftware || (everyone && show === 'software');
+  const softwareRequester = ownSoftware ? String(user?.id ?? '') : requester;
+
   const permissions = user?.permissions ?? 0;
   const canViewAdult =
     manage ||
@@ -1185,7 +1191,8 @@ export default function Requests() {
     setOthers(null);
   }, [
     show,
-    everyone,
+    browseRequests,
+    softwareRequester,
     softwareCategory,
     softwareStatus,
     requester,
@@ -1233,7 +1240,7 @@ export default function Requests() {
   }, [viewAll, tick]);
 
   useEffect(() => {
-    if (!everyone) return;
+    if (!browseRequests || !softwareRequester) return;
     let live = true;
     setOthersError(false);
     // the newest `take` requests of one filter, in SeerrNG's pages of up to 100
@@ -1262,12 +1269,12 @@ export default function Requests() {
     // All: waiting for approval, then downloads that have started (furthest along first), then
     // the newest of the rest. Downloading: started ones first too. Others: newest first.
     const load = async () => {
-      if (show === 'software')
-        return householdSoftwareRequests(
+      if (softwareView)
+        return loadSoftwareRequests(
           pages,
           softwareCategory,
           softwareStatus,
-          requester
+          softwareRequester
         );
       const started =
         priorityOrder && (show === 'all' || show === 'processing')
@@ -1312,7 +1319,9 @@ export default function Requests() {
       live = false;
     };
   }, [
-    everyone,
+    browseRequests,
+    softwareView,
+    softwareRequester,
     show,
     pages,
     tick,
@@ -1325,7 +1334,7 @@ export default function Requests() {
   ]);
 
   useEffect(() => {
-    if (!user || everyone) return;
+    if (!user || browseRequests) return;
     let live = true;
     setOwnError(false);
     loads.current++;
@@ -1368,24 +1377,27 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [user, everyone, tick, extras.games.length]);
+  }, [user, browseRequests, tick, extras.games.length]);
 
   const all = rows || [];
   const act = all.filter((x) => state(x, serverName).active);
   const ready = all.filter(
     (x) => state(x, serverName).k === 'ok' && !state(x, serverName).active
   );
-  const list = everyone
-    ? (others || []).filter((row) =>
-        show === 'available'
-          ? state(row, serverName).k === 'ok' && !state(row, serverName).active
-          : show !== 'processing' || state(row, serverName).active
-      )
-    : tab === 'ready'
-      ? ready
-      : tab === 'all'
-        ? all
-        : act;
+  const list = ownSoftware
+    ? others || []
+    : everyone
+      ? (others || []).filter((row) =>
+          show === 'available'
+            ? state(row, serverName).k === 'ok' &&
+              !state(row, serverName).active
+            : show !== 'processing' || state(row, serverName).active
+        )
+      : tab === 'ready'
+        ? ready
+        : tab === 'all'
+          ? all
+          : act;
   const allowRawHashes = isAdministrator(user?.permissions);
   const liveDownloads = useLiveDownloadProgress(
     list.flatMap(({ r }) =>
@@ -1395,7 +1407,7 @@ export default function Requests() {
     )
   );
 
-  const shown = everyone ? others : rows;
+  const shown = browseRequests ? others : rows;
 
   // keep download percentages moving while anything shown is downloading
   const busy = list.some((x) => state(x, serverName).pct != null);
@@ -1425,7 +1437,7 @@ export default function Requests() {
   useEffect(() => {
     // a full load still on its way would land over the poll's newer numbers: skip this one
     if (!poll || !user || loads.current) return;
-    if (everyone && (show === 'software' || sortMode === 'updated')) {
+    if (softwareView || (everyone && sortMode === 'updated')) {
       setTick((n) => n + 1);
       return;
     }
@@ -1520,7 +1532,8 @@ export default function Requests() {
       toast('Request cancelled');
       if (requestKey === 'requestId' && focusedId === id) closeHistory();
       // gone now, not after the list has refreshed
-      setRows((list) => list && list.filter((x) => x.r.id !== id));
+      const updateRows = ownSoftware ? setOthers : setRows;
+      updateRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
     } catch (e) {
       toast(friendlyError(e, 'Couldn’t cancel'));
@@ -1650,15 +1663,17 @@ export default function Requests() {
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <p className="sub">
-          {everyone
-            ? show === 'software'
-              ? 'Software and game requests from everyone, newest first.'
-              : !priorityOrder
-                ? 'Everyone’s requests in the selected order.'
-                : show === 'all'
-                  ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
-                  : 'Everyone’s requests, newest first.'
-            : 'Everything you’ve asked for, newest first.'}
+          {ownSoftware
+            ? 'Your software and game requests, newest first.'
+            : everyone
+              ? show === 'software'
+                ? 'Software and game requests from everyone, newest first.'
+                : !priorityOrder
+                  ? 'Everyone’s requests in the selected order.'
+                  : show === 'all'
+                    ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+                    : 'Everyone’s requests, newest first.'
+              : 'Everything you’ve asked for, newest first.'}
         </p>
       </header>
       {/* pull-to-refresh pill: fixed, so it never shifts the page layout */}
@@ -1686,7 +1701,7 @@ export default function Requests() {
         ].map(([v, t, n]) => (
           <button
             key={v as string}
-            aria-pressed={tab === v}
+            aria-pressed={!ownSoftware && tab === v}
             onClick={() =>
               setP(v === defaultTab ? {} : { tab: v as string }, {
                 replace: true,
@@ -1700,12 +1715,25 @@ export default function Requests() {
           </button>
         ))}
       </div>
-      {!shown && !(everyone ? othersError : ownError) && (
+      {(extras.games.length > 0 || ownSoftware) && (
+        <div className="chips wrap">
+          <button
+            className="chip"
+            aria-pressed={ownSoftware}
+            onClick={() =>
+              setP(ownSoftware ? {} : { tab: 'software' }, { replace: true })
+            }
+          >
+            My Software
+          </button>
+        </div>
+      )}
+      {!shown && !(browseRequests ? othersError : ownError) && (
         <p className="note">
           {everyone ? 'Loading everyone’s requests…' : 'Loading your requests…'}
         </p>
       )}
-      {(everyone ? othersError : ownError) && (
+      {(browseRequests ? othersError : ownError) && (
         <div className="empty" role="alert">
           <b>Couldn’t load requests</b>
           <p>
@@ -1844,7 +1872,7 @@ export default function Requests() {
           )}
         </form>
       )}
-      {everyone && show === 'software' && (
+      {softwareView && (
         <div
           className="toolbar"
           role="group"
@@ -1882,15 +1910,19 @@ export default function Requests() {
           </label>
         </div>
       )}
-      {shown && !list.length && everyone && (
+      {shown && !list.length && browseRequests && (
         <div className="empty">
-          <b>{show === 'all' ? 'No requests yet' : 'Nothing here'}</b>
-          {show === 'all'
+          <b>
+            {!softwareView && show === 'all'
+              ? 'No requests yet'
+              : 'Nothing here'}
+          </b>
+          {!softwareView && show === 'all'
             ? 'Nobody has asked for anything.'
             : 'No requests match this filter right now.'}
         </div>
       )}
-      {shown && !list.length && !everyone && (
+      {shown && !list.length && !browseRequests && (
         <div className="empty">
           <b>{tab === 'ready' ? 'Nothing ready yet' : 'No active requests'}</b>
           Find something on{' '}
@@ -1981,7 +2013,7 @@ export default function Requests() {
           );
         })}
       </div>
-      {everyone && hasMore && shown && (
+      {browseRequests && hasMore && shown && (
         <div className="more-scroll">
           <button
             className="btn btn-tonal"
