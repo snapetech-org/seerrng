@@ -8,6 +8,7 @@ import {
   tmdbImg,
   type Paged,
   type RequestOptions,
+  type SeasonRequestSelection,
   type TitleResult,
   type TvDetails,
 } from '../api';
@@ -23,6 +24,7 @@ import {
 import {
   ActionBar,
   AdvancedOptions,
+  canRequestSeries,
   CreditsDisclosure,
   DetailTop,
   Facts,
@@ -39,6 +41,7 @@ import ReportIssueButton from '../components/ReportIssueButton';
 import { useOffers4k, useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import TvCollectionLinks from '../components/TvCollectionLinks';
+import TvEpisodeRequestSheet from '../components/TvEpisodeRequestSheet';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -86,6 +89,8 @@ export default function TvDetail() {
   const quota = useVideoRequestQuota('tv');
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
+  const [episodesOpen, setEpisodesOpen] = useState(false);
+  const [episodeError, setEpisodeError] = useState<string>();
   const [watchFailure, setWatchFailure] = useState<{
     selection: string;
     message: string;
@@ -231,6 +236,67 @@ export default function TvDetail() {
     });
   };
   const blocklisted = t.mediaInfo?.status === MediaStatus.BLOCKLISTED;
+  const pendingEpisodes = new Map<number, Set<number>>();
+  const wholeRequests = new Set<number>();
+  for (const request of t.mediaInfo?.requests ?? []) {
+    if (!!request.is4k !== is4k || !live(request.status)) continue;
+    for (const season of request.seasons ?? []) {
+      if (!live(season.status ?? request.status)) continue;
+      if (season.episodeNumbers == null) wholeRequests.add(season.seasonNumber);
+      else {
+        const covered =
+          pendingEpisodes.get(season.seasonNumber) ?? new Set<number>();
+        season.episodeNumbers.forEach((episode) => covered.add(episode));
+        pendingEpisodes.set(season.seasonNumber, covered);
+      }
+    }
+  }
+  const episodeSeasons = seasons.filter(({ seasonNumber, episodeCount }) => {
+    const media = t.mediaInfo?.seasons?.find(
+      (item) => item.seasonNumber === seasonNumber
+    );
+    const status = is4k ? media?.status4k : media?.status;
+    return (
+      episodeCount > 0 &&
+      !wholeRequests.has(seasonNumber) &&
+      status !== MediaStatus.AVAILABLE &&
+      status !== MediaStatus.BLOCKLISTED &&
+      (status !== MediaStatus.PROCESSING || pendingEpisodes.has(seasonNumber))
+    );
+  });
+  const canPickEpisodes =
+    pub?.partialRequestsEnabled === true &&
+    !blocklisted &&
+    !!episodeSeasons.length &&
+    (is4k || canRequestSeries(user?.permissions));
+  const episodeApproval =
+    quota.status?.restricted === true ||
+    (!!quota.status?.limit && (quota.status.remaining ?? 0) < 1);
+  const submitEpisodes = async (selection: SeasonRequestSelection) => {
+    if (busy || !canPickEpisodes) return;
+    setBusy(true);
+    setEpisodeError(undefined);
+    try {
+      const result = await requestSeries(t.id, [selection.seasonNumber], {
+        ...opts,
+        is4k,
+        seasonRequests: [selection],
+        requestQuotaApproval: episodeApproval || undefined,
+      });
+      toast(
+        result.quotaException
+          ? `Approval requested for ${t.name || 'this series'}`
+          : `Episodes requested for ${t.name || 'this series'}`
+      );
+      setEpisodesOpen(false);
+      refresh();
+      quota.refresh();
+    } catch (error) {
+      setEpisodeError(friendlyError(error, 'Could not request episodes'));
+    } finally {
+      setBusy(false);
+    }
+  };
   const request = async () => {
     if (!n || blocklisted || busy) return;
     setWatchFailure(undefined);
@@ -544,6 +610,37 @@ export default function TvDetail() {
                     Clear
                   </button>
                 </div>
+              )}
+              {canPickEpisodes && (
+                <div className="toolbar">
+                  <button
+                    className="btn btn-tonal btn-sm"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      setEpisodeError(undefined);
+                      setEpisodesOpen(true);
+                    }}
+                  >
+                    Request Episodes
+                  </button>
+                </div>
+              )}
+              {episodesOpen && canPickEpisodes && (
+                <TvEpisodeRequestSheet
+                  key={String(is4k)}
+                  tvId={t.id}
+                  seasons={episodeSeasons}
+                  pending={pendingEpisodes}
+                  is4k={is4k}
+                  approval={episodeApproval}
+                  busy={busy}
+                  error={episodeError}
+                  close={() => {
+                    if (!busy) setEpisodesOpen(false);
+                  }}
+                  submit={submitEpisodes}
+                />
               )}
               <div className="slist" role="group" aria-label="Seasons">
                 {seasons.map((s) => {

@@ -48,7 +48,8 @@ async function show(
   mediaInfo: Record<string, unknown>,
   posts: RecordedPost[] = [],
   permissions = 2,
-  quota?: { limit: number; remaining: number; restricted: boolean }
+  quota?: { limit: number; remaining: number; restricted: boolean },
+  settings: Record<string, unknown> = {}
 ) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -60,7 +61,7 @@ async function show(
       return r.fulfill({
         json: { id: 1, displayName: 'alex', permissions },
       });
-    if (path === '/settings/public') return r.fulfill({ json: {} });
+    if (path === '/settings/public') return r.fulfill({ json: settings });
     if (quota && path === '/user/1/quota')
       return r.fulfill({ json: { tv: quota } });
     if (quota && path === '/request' && r.request().method() === 'POST')
@@ -411,6 +412,81 @@ test('requesters can ask for approval for TV seasons over quota', async ({
         mediaId: 84773,
         seasons: 'all',
         requestQuotaApproval: true,
+      },
+    },
+  ]);
+});
+
+test('TV detail can request missing episodes from a partly requested season', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  await show(
+    page,
+    {
+      requests: [
+        { ...req([1]), seasons: [{ seasonNumber: 1, episodeNumbers: [2] }] },
+      ],
+    },
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true }
+  );
+  await page.route('**/api/v1/tv/84773/season/1', (route) =>
+    route.fulfill({
+      json: {
+        episodes: [
+          {
+            episodeNumber: 1,
+            name: 'Owned',
+            availabilitySources: [{ hd: true, fourK: false }],
+          },
+          { episodeNumber: 2, name: 'Pending' },
+          { episodeNumber: 3, name: 'Missing' },
+        ],
+      },
+    })
+  );
+  const action = page.getByRole('button', {
+    name: 'Request Episodes',
+    exact: true,
+  });
+  await action.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('tv-episodes-entry.png'),
+    animations: 'disabled',
+  });
+  await action.click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(
+    sheet.getByRole('checkbox', { name: /E1 Owned/ })
+  ).toBeDisabled();
+  await expect(
+    sheet.getByRole('checkbox', { name: /E2 Pending/ })
+  ).toBeDisabled();
+  await sheet
+    .getByRole('checkbox', { name: 'E3 Missing', exact: true })
+    .check();
+  await page.screenshot({
+    path: info.outputPath('tv-episode-request.png'),
+    animations: 'disabled',
+  });
+  await sheet
+    .getByRole('button', { name: 'Request Selected Episodes' })
+    .click();
+  await expect(
+    page.getByText('Episodes requested for The Rings of Power')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [1],
+        seasonRequests: [{ seasonNumber: 1, episodeNumbers: [3] }],
       },
     },
   ]);

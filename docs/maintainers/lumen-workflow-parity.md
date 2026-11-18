@@ -2490,3 +2490,16 @@ edit sheet before and after on desktop, iPhone 13, Pixel 7, and iPad Pro
 the existing episode IDs in the same payload. Live Sonarr delivery was
 outside the check. Evidence is retained under
 `seerrng-lumen-preserve-episodes*` in `/mnt/disks/scratch/task-deliverables/`.
+
+TV detail pages now offer an episode request sheet when partial requests
+are enabled. The sheet submits exact episode IDs for one season, including
+eligible episodes in a season with an existing partial request. It checks
+the current quality, known availability, and active requests before
+submission. The existing season request flow remains available.
+
+The production build and 36 browser checks passed. Compared the Seasons
+section and inspected the new sheet on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. The fixture verifies that an owned episode and a pending
+episode cannot be selected, and the exact missing episode is submitted.
+Live provider delivery was outside the check. Evidence is retained under
+`seerrng-lumen-episode-request*` in `/mnt/disks/scratch/task-deliverables/`.
