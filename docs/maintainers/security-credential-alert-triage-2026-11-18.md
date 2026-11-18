@@ -152,3 +152,24 @@ inputs as well as the absence of shared layer and scanner caches.
 The standalone Lumen manifest and stable alias jobs and the manual
 container-alias promotion job also disable the Buildx binary cache.
 The same workflow test now covers those jobs.
+
+
+### Reanalysis after cache isolation
+
+GitHub's most recent instances for alerts 590–610 point to `89e26779f`,
+which contains both the publishing cache isolation and the Docker tool
+cache changes. The alert locations are validation steps in CI. They
+flag the workflow-dispatch expression that can select a PR head, so
+removing publishing caches did not clear these findings.
+
+The PR validation dispatch requires the owner to label a PR authored
+by that same owner in the same repository, with main as the base.
+The validation jobs accept PR inputs only from the GitHub Actions bot,
+use GitHub-hosted runners, and set `persist-credentials: false`.
+Node package-manager caching is disabled in these jobs. The pinned
+[pnpm setup action](https://github.com/pnpm/action-setup/blob/73e46992e05b19abd31f2f3c20e0e7370d762115/action.yml)
+and [.NET setup action](https://github.com/actions/setup-dotnet/blob/a98b56852c35b8e3190ac28c8c2271da59106c68/action.yml)
+disable their package caches by default, and the jobs do not enable
+them. The release publisher and scanner cache checks remain separate.
+GitHub's default CodeQL setup is disabled. The alerts remain open for
+review of the dispatch trust boundary.
