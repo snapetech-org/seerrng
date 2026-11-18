@@ -313,7 +313,12 @@ function IssueList() {
           {data.results.map((issue) => (
             <li className="set" key={issue.id}>
               <div>
-                <Link to={`/issues/${issue.id}`}>
+                <Link
+                  to={{
+                    pathname: `/issues/${issue.id}`,
+                    search: bookmark.toString(),
+                  }}
+                >
                   <b>
                     {TYPES[issue.issueType] ?? 'Issue'} #{issue.id}
                   </b>
@@ -361,6 +366,11 @@ type IssueAction =
 function Discussion({ id }: { id: number }) {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const listParams = new URLSearchParams(params);
+  listParams.delete('issue');
+  const listSearch = listParams.toString();
+  const issueList = { pathname: '/issues', search: listSearch };
   const path = '/issue/' + id;
   const { data, error, reload, refresh } = useApi<Issue>(path);
   const [message, setMessage] = useState('');
@@ -433,7 +443,7 @@ function Discussion({ id }: { id: number }) {
     try {
       await api(endpoint, init);
       if (action.kind === 'delete-issue') {
-        navigate('/issues', { replace: true });
+        navigate(issueList, { replace: true });
         return;
       }
       if (action.kind === 'comment') setMessage('');
@@ -456,8 +466,8 @@ function Discussion({ id }: { id: number }) {
   return (
     <>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/issues">
-          All Issues
+        <Link className="btn btn-quiet btn-sm" to={issueList}>
+          {listSearch ? 'Back to Issues' : 'All Issues'}
         </Link>
       </div>
       <ServiceNote error={error} what="the issue" retry={reload} />

@@ -263,6 +263,13 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   page,
 }) => {
   const queries: URLSearchParams[] = [];
+  const issue = {
+    id: 7,
+    status: 1,
+    issueType: 1,
+    createdBy: { id: 2 },
+    createdAt: '2026-11-12T00:00:00Z',
+  };
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
@@ -271,9 +278,11 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
     if (url.pathname.endsWith('/issue')) {
       queries.push(url.searchParams);
       return route.fulfill({
-        json: { results: [], pageInfo: { page: 1, pages: 3 } },
+        json: { results: [issue], pageInfo: { page: 1, pages: 3 } },
       });
     }
+    if (url.pathname.endsWith('/issue/7'))
+      return route.fulfill({ json: issue });
     return route.fulfill({ json: {} });
   });
   await page.goto('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2');
@@ -281,6 +290,12 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await expect.poll(() => queries.at(-1)?.get('skip')).toBe('10');
   expect(queries.at(-1)?.get('issueType')).toBe('audio');
   expect(queries.at(-1)?.get('timeFrame')).toBe('7d');
+  await page.getByRole('link', { name: 'Video #7' }).click();
+  await expect(page.getByRole('heading', { name: 'Issue #7' })).toBeVisible();
+  await page.getByRole('link', { name: 'Back to Issues' }).click();
+  await expect(page).toHaveURL(
+    /\/issues\?mediaType=book&issueType=audio&timeFrame=7d&page=2$/
+  );
   await page.getByLabel('Issue Type').selectOption('subtitle');
   await expect.poll(() => queries.at(-1)?.get('issueType')).toBe('subtitle');
   expect(queries.at(-1)?.get('skip')).toBe('0');

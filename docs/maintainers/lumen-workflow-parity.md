@@ -1812,3 +1812,7 @@ album type filters along with sort order. The metadata controls use text
 entry for genre, studio, and network. The bundled lock preserves these
 parameters on native bookmarks. All 28 issue browser checks and two
 server routing cases passed. Matched native visual acceptance remains open.
+
+Issue discussions preserve list parameters on their return link and when
+returning after deletion. All 28 standalone issue browser checks passed,
+including the filtered page round trip. Matched visual acceptance remains open.
