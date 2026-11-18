@@ -320,3 +320,15 @@ synthetic settings responses. Other connection editors were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-hosts-20261118/`.
+
+### Shared saved-host picker
+
+The picker also serves Prowlarr, Audiobookshelf, Kavita, Soulseek, ReadMeABook,
+Plex, Jellyfin, and Tautulli. Selecting a host changes the draft connection.
+Compared picker placement in Radarr, Kavita, Prowlarr, and ReadMeABook across
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and 48
+browser checks passed. Direct picker selection was checked in those four
+forms, with the media-server suite covering existing connection behavior.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-pickers-20261118/`.

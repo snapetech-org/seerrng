@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { mediaCategoryLabels } from '../components/MediaCategorySwitches';
+import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -299,6 +300,10 @@ function ConnectionForm({ initial }: { initial: Settings }) {
           }}
         >
           <div className="setlist">
+            <SavedConnectionHost
+              disabled={busy}
+              onSelect={(hostname) => change({ hostname })}
+            />
             {fields.map(([key, label, type]) => (
               <label key={key} className="set cfg-row">
                 <span>{label}</span>

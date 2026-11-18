@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { sessionGeneration } from '../sessionState';
 
 type Provider = 'audiobookshelf' | 'kavita';
@@ -155,6 +156,10 @@ function Connection({
         }}
       >
         <div className="setlist">
+          <SavedConnectionHost
+            disabled={busy}
+            onSelect={(hostname) => updateConnection({ hostname })}
+          />
           {audio && (
             <label className="set cfg-row">
               <span>Service Name</span>

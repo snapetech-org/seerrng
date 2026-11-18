@@ -4,6 +4,7 @@ import { forget } from '../apiCache';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
+import { SavedConnectionHost } from './SavedConnectionHost';
 
 const redacted = '[REDACTED]';
 
@@ -323,6 +324,10 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
         }}
       >
         <div className="setlist">
+          <SavedConnectionHost
+            disabled={busy}
+            onSelect={(hostname) => change({ ip: hostname })}
+          />
           {fields.map(([key, label, type]) => (
             <label className="set cfg-row" key={key}>
               <span>{label}</span>

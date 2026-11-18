@@ -18,6 +18,21 @@ test('a saved connection host can populate a service form', async ({
       if (request.method() === 'PUT') hosts = request.postDataJSON().hosts;
       return route.fulfill({ json: hosts });
     }
+    if (url.endsWith('/settings/kavita'))
+      return route.fulfill({ body: 'null', contentType: 'application/json' });
+    if (
+      url.endsWith('/settings/readmeabook') ||
+      url.endsWith('/settings/prowlarr')
+    )
+      return route.fulfill({
+        json: {
+          hostname: '',
+          port: 3030,
+          baseUrl: '',
+          useSsl: false,
+          apiKeyConfigured: false,
+        },
+      });
     return route.fulfill({ json: url.endsWith('/settings/radarr') ? [] : {} });
   });
   await page.goto('/me');
@@ -42,4 +57,22 @@ test('a saved connection host can populate a service form', async ({
     path: info.outputPath('picker.png'),
     fullPage: true,
   });
+  for (const [route, label] of [
+    ['kavita', 'Hostname'],
+    ['prowlarr', 'Hostname'],
+    ['readmeabook', 'Hostname or IP Address'],
+  ]) {
+    await page.goto(`/admin/${route}`);
+    await page
+      .getByRole('combobox', { name: 'Saved Connection Host' })
+      .selectOption('media.internal');
+    await expect(page.getByLabel(label, { exact: true })).toHaveValue(
+      'media.internal'
+    );
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.screenshot({
+      path: info.outputPath(`${route}-picker.png`),
+      fullPage: true,
+    });
+  }
 });

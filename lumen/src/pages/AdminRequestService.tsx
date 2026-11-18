@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
@@ -282,6 +283,10 @@ function Connection({
             </p>
           )}
           <div className="setlist">
+            <SavedConnectionHost
+              disabled={busy}
+              onSelect={(hostname) => update({ hostname })}
+            />
             <label className="set cfg-row">
               <span>Enable {name} Requests</span>
               <input
