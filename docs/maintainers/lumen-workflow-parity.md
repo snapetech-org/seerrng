@@ -2768,3 +2768,9 @@ proxy path. The production build and 16 browser checks passed, with
 eight viewport-specific skips. The fixture verifies movie artwork and
 Series navigation during an artwork outage. Live metadata and matched
 visual acceptance remain unverified.
+
+First-run browser fixtures now cover both Jellyfin and Emby server
+identities, including HTTPS and a configured URL base. Eight checks
+passed in each deployment. The fixtures verify the provider-specific
+auth payload and completion with the shared library editor. Plex and
+live provider sign-in remain unverified.
