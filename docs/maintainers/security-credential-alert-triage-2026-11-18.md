@@ -75,3 +75,12 @@ configured service roots and scoped API paths. Both clients validate
 the URL and disable redirects before sending authentication headers.
 Private hosts are supported for self-hosted services. All 12 focused
 client and settings tests passed.
+
+## Bindery, Kavita, Navidrome, slskdN, and Tunerr destinations
+
+Dismissed alerts 613 and 615–621. Service settings and connection tests
+require administrator permission. Runtime calls use the configured service
+addresses and scoped API operations. Tunerr also supports a separately
+configured guide URL and adds no deck credentials to that request. All
+five clients validate the destination and disable redirects. The 31
+focused Bindery, Kavita, and Navidrome tests passed.
