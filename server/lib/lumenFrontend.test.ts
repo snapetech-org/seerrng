@@ -337,6 +337,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz%3A42',
       ],
       ['/book-series/requests', '/lumen/book-series/requests'],
+      ['/book-series/42', '/lumen/book-series/42'],
+      [
+        '/book-series?query=Fixture+Series&format=ebook',
+        '/lumen/book-series?query=Fixture+Series&format=ebook',
+      ],
       [
         '/book-series/catalog?serverId=0&scope=audio%3Amain&providerId=hc%3A42&ignored=1',
         '/lumen/book-series/catalog?serverId=0&scope=audio%3Amain&providerId=hc%3A42',

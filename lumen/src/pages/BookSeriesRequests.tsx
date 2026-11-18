@@ -65,6 +65,9 @@ export default function BookSeriesRequests() {
         <Link className="chip" to="/requests">
           Back to Requests
         </Link>
+        <Link className="chip" to="/book-series">
+          Find a Book Series
+        </Link>
       </ExtraHeader>
       <p className="note">
         Stopping monitoring keeps books already added to the service.

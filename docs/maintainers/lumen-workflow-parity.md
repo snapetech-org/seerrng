@@ -2869,3 +2869,11 @@ request ongoing monitoring for the exact catalog identity, with optional
 companion books. Sixteen fixture checks passed across both deployments,
 including request permission and pending status. Live Chaptarr outcomes
 and matched visual acceptance remain unverified.
+
+Book Series Requests links to a series search with shareable title and
+format filters. Search preserves distinct service variants and opens
+backend library results through their numeric series API. The bundled
+frontend lock preserves search parameters and numeric detail bookmarks.
+Twenty-four browser checks passed across both deployments, plus two
+Express routing tests. Live catalog search, bulk requests, and matched
+visual acceptance remain unverified.

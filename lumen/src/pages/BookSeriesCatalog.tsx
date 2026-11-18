@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
@@ -154,19 +154,32 @@ function CatalogMonitoring({ query }: { query: string }) {
 }
 
 export default function BookSeriesCatalog() {
+  const { id } = useParams();
   const [params] = useSearchParams();
   const query = bookSeriesCatalogQuery({
     serverId: params.get('serverId') ?? '',
     scope: params.get('scope') ?? '',
     providerId: params.get('providerId') ?? '',
   });
-  const catalog = useApi<Catalog>(
-    query ? `/book-series/catalog?${query}` : null,
-    {
-      currentPathOnly: true,
+  const path =
+    id && /^[1-9]\d*$/.test(id) && Number.isSafeInteger(Number(id))
+      ? `/book-series/${id}`
+      : query
+        ? `/book-series/catalog?${query}`
+        : null;
+  const catalog = useApi<
+    Catalog & {
+      entries?: Catalog['books'];
+      truncated?: boolean;
+      watchTarget?: Parameters<typeof bookSeriesCatalogQuery>[0];
     }
-  );
+  >(path, {
+    currentPathOnly: true,
+  });
   const data = catalog.data;
+  const books = data?.entries ?? data?.books ?? [];
+  const monitoringQuery =
+    query ?? (data?.watchTarget && bookSeriesCatalogQuery(data.watchTarget));
   return (
     <>
       <ExtraHeader
@@ -177,7 +190,7 @@ export default function BookSeriesCatalog() {
           Book Series Requests
         </Link>
       </ExtraHeader>
-      {!query && (
+      {!path && (
         <p className="note" role="alert">
           The series catalog link is incomplete or invalid.
         </p>
@@ -187,7 +200,7 @@ export default function BookSeriesCatalog() {
         what="book series catalog"
         retry={catalog.reload}
       />
-      {query && !data && !catalog.error && (
+      {path && !data && !catalog.error && (
         <p className="note" role="status">
           Loading series catalog…
         </p>
@@ -196,20 +209,20 @@ export default function BookSeriesCatalog() {
         <>
           <p className="note">
             {data.format === 'audiobook' ? 'Audiobooks' : 'Ebooks'} ·{' '}
-            {data.bookCount} catalog entries
+            {data.bookCount ?? books.length} series entries
           </p>
           {data.description && <p>{data.description}</p>}
-          {query && <CatalogMonitoring key={query} query={query} />}
-          {data.resolutionTruncated && (
+          {monitoringQuery && (
+            <CatalogMonitoring key={monitoringQuery} query={monitoringQuery} />
+          )}
+          {(data.resolutionTruncated || data.truncated) && (
             <p className="note">
               Only part of this catalog could be checked for matches.
             </p>
           )}
-          {!data.books.length && (
-            <p className="note">No books in this preview.</p>
-          )}
+          {!books.length && <p className="note">No books in this preview.</p>}
           <ul className="setlist">
-            {data.books.map((entry, index) => (
+            {books.map((entry, index) => (
               <li className="set" key={index}>
                 <div>
                   <b>

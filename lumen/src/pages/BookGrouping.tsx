@@ -12,6 +12,7 @@ import { DetailTop } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import ReaderShelf from '../components/ReaderShelf';
 import { useApi } from '../hooks';
+import BookSeriesCatalog from './BookSeriesCatalog';
 
 interface Author {
   id: string;
@@ -383,6 +384,8 @@ export default function BookGrouping({ kind }: { kind: 'author' | 'series' }) {
   const { id = '' } = useParams();
   return kind === 'author' ? (
     <AuthorDetail key={id} id={id} />
+  ) : /^[1-9]\d*$/.test(id) ? (
+    <BookSeriesCatalog key={id} />
   ) : (
     <SeriesDetail key={id} id={id} />
   );

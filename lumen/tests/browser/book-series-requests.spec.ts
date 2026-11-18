@@ -123,3 +123,89 @@ for (const manager of [true, false]) {
     }
   });
 }
+
+test('series search preserves format and opens the exact local variant', async ({
+  page,
+}) => {
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    switch (url.pathname.slice('/api/v1'.length)) {
+      case '/auth/me':
+        return route.fulfill({ json: { id: 1, permissions: 32 } });
+      case '/settings/public':
+        return route.fulfill({ json: { initialized: true } });
+      case '/book-series/search': {
+        expect(Object.fromEntries(url.searchParams)).toEqual({
+          query: 'Fixture Series',
+          format: 'ebook',
+        });
+        const library = {
+          key: 'local',
+          title: 'Fixture Series',
+          serverName: 'Local Service',
+          source: 'library',
+          format: 'ebook',
+          href: '/book-series/42',
+        };
+        const catalog = {
+          ...library,
+          key: 'catalog',
+          serverName: 'Catalog Service',
+          source: 'catalog',
+          href: '/book-series/catalog?serverId=0&scope=ebook%3Amain&providerId=hc%3A42',
+        };
+        return route.fulfill({
+          json: {
+            results: [
+              { ...catalog, key: 'group', variants: [catalog, library] },
+            ],
+            status: 'partial',
+          },
+        });
+      }
+      case '/book-series/42':
+        return route.fulfill({
+          json: {
+            title: 'Local Fixture Series',
+            serverName: 'Local Service',
+            format: 'ebook',
+            entries: [
+              {
+                title: 'Local Book',
+                matchStatus: 'matched',
+                book: { id: 'OL123W' },
+              },
+            ],
+          },
+        });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+  await page.goto(`${mount}/book-series`);
+  await page
+    .getByRole('searchbox', { name: 'Series Name' })
+    .fill('Fixture Series');
+  await page.getByRole('combobox', { name: 'Format' }).selectOption('ebook');
+  await page.getByRole('button', { name: 'Search Series' }).click();
+  await expect(page).toHaveURL(
+    `${mount}/book-series?query=Fixture+Series&format=ebook`
+  );
+  await expect(
+    page.getByText('Some book services could not be searched.')
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Fixture Series from Catalog Service' })
+  ).toHaveCount(1);
+  await page
+    .getByRole('link', { name: 'Open Fixture Series from Local Service' })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'Local Fixture Series' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'View Book' })).toHaveAttribute(
+    'href',
+    `${mount}/book/OL123W`
+  );
+});
