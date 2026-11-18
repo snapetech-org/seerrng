@@ -424,6 +424,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
     'firstPublishYear',
     'language',
     'minRating',
+    'sortBy',
   ],
   '/music': ['genre', 'sortBy'],
   '/audiobooks': [
@@ -434,6 +435,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
     'firstPublishYear',
     'language',
     'minRating',
+    'sortBy',
   ],
   '/software': ['category', 'q', 'game', 'catalogProvider'],
   '/patches': ['q', 'kind', 'language', 'completeOnly', 'cursor'],
@@ -522,10 +524,14 @@ function workflowDeepLink(
   }
 
   const userWatchlist = userDestination && userWorkflow === 'watchlist';
-  const destination = userWatchlist
+  let destination = userWatchlist
     ? `/watchlist/user/${userId}`
     : workflowDestinations.get(nativePath);
   if (!destination) return;
+  if (destination === '/books' || destination === '/audiobooks') {
+    if (req.query.format === 'audiobook') destination = '/audiobooks';
+    if (req.query.format === 'ebook') destination = '/books';
+  }
   const query = new URLSearchParams();
 
   for (const key of workflowQueryKeys[

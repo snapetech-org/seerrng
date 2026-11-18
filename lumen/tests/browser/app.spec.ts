@@ -7269,13 +7269,15 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
       url.searchParams.get('narrator') === 'Reader' &&
       url.searchParams.get('firstPublishYear') === 'before-1970' &&
       url.searchParams.get('language') === 'eng' &&
-      url.searchParams.get('minRating') === '3.5'
+      url.searchParams.get('minRating') === '3.5' &&
+      url.searchParams.get('sortBy') === 'oldest'
     );
   });
   await page.goto(
-    '/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5'
+    '/books?format=audiobook&sortBy=oldest&search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5'
   );
   await filtered;
+  await expect(page).toHaveURL(/\/audiobooks\?sortBy=oldest/);
   await expect(
     page.getByRole('link', { name: 'View All Series Results' })
   ).toHaveAttribute(

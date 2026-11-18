@@ -283,6 +283,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         '/discover/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5',
         '/lumen/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5',
       ],
+      [
+        '/discover/books?format=audiobook&sortBy=oldest&narrator=Reader',
+        '/lumen/audiobooks?narrator=Reader&sortBy=oldest',
+      ],
       ['/discover/books?subject=History', '/lumen/books?subject=History'],
     ]) {
       const response = await request(app).get(bookmark);

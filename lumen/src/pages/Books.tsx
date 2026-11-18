@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type BookResult, type Paged } from '../api';
 import {
   BookCard,
@@ -30,6 +30,12 @@ const SORTS = [
   ['trending', 'Trending'],
   ['newest', 'Newest'],
   ['rating.desc', 'Rating'],
+  ['rating.asc', 'Lowest Rated'],
+  ['oldest', 'Oldest'],
+  ['ranked.asc', 'Least Popular'],
+  ['editions', 'Most Editions'],
+  ['editions.asc', 'Fewest Editions'],
+  ['random', 'Random'],
 ] as const;
 // what the full list of each sort is called ("Trending" + "fantasy" + "ebooks")
 const SORT_TITLES: Record<string, string> = {
@@ -37,6 +43,12 @@ const SORT_TITLES: Record<string, string> = {
   trending: 'Trending',
   newest: 'New',
   'rating.desc': 'Top rated',
+  'rating.asc': 'Lowest rated',
+  oldest: 'Oldest',
+  'ranked.asc': 'Least popular',
+  editions: 'Most editions',
+  'editions.asc': 'Fewest editions',
+  random: 'Random',
 };
 // genres that work for both catalogues: SeerrNG sends the genre to Open Library as a
 // subject: clause (ebooks) and matches it, case-insensitively, against each ChaptarrNG
@@ -104,9 +116,29 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p] = useSearchParams();
   const { prefs } = usePrefs();
   const audio = format === 'audiobook';
+  const requestedFormat = p.get('format');
+  if (
+    requestedFormat &&
+    requestedFormat !== format &&
+    (requestedFormat === 'ebook' || requestedFormat === 'audiobook')
+  ) {
+    const search = new URLSearchParams(p);
+    search.delete('format');
+    if (requestedFormat === 'ebook') search.delete('narrator');
+    return (
+      <Navigate
+        replace
+        to={{
+          pathname: requestedFormat === 'audiobook' ? '/audiobooks' : '/books',
+          search: search.toString(),
+        }}
+      />
+    );
+  }
   const grid = [
     'show',
     'sort',
+    'sortBy',
     'genre',
     'subject',
     'search',
@@ -406,7 +438,8 @@ function BooksGrid({
   const [p, setP] = useSearchParams();
   const location = useLocation();
   const show = p.get('show') || 'all';
-  const sortParam = p.get('sort');
+  const rawSort = p.get('sort') || p.get('sortBy');
+  const sortParam = rawSort === 'rating' ? 'rating.desc' : rawSort;
   const sort = SORTS.some(([v]) => v === sortParam) ? sortParam! : 'ranked';
   // the library list has no sort of its own, so the menu only applies to the catalogue
   const sorted = show !== 'have' && sort !== 'ranked';
@@ -529,6 +562,7 @@ function BooksGrid({
   const noun = audio ? 'audiobooks' : 'ebooks';
   const setSort = (v: string) => {
     const n = new URLSearchParams(p);
+    n.delete('sortBy');
     n.set('sort', v);
     setP(n, { replace: true });
   };
