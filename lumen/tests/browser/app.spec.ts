@@ -2414,3 +2414,72 @@ test('Discover restores a movie shelf offset after browser Back', async ({
     .poll(() => rail.evaluate((element) => element.scrollLeft))
     .toBeCloseTo(offset, 0);
 });
+
+test('related video lists preserve media type, paginate, and retry', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({ json: { id: 202, name: 'Fixture Series', seasons: [] } })
+  );
+  let pageTwoAttempts = 0;
+  await page.route(
+    /\/api\/v1\/(movie\/101|tv\/202)\/(similar|recommendations)(?:\?|$)/,
+    (route) => {
+      const url = new URL(route.request().url());
+      const tv = url.pathname.includes('/tv/');
+      const relation = url.pathname.endsWith('/similar')
+        ? 'Similar'
+        : 'Recommended';
+      const number = Number(url.searchParams.get('page') || 1);
+      if (
+        !tv &&
+        relation === 'Similar' &&
+        number === 2 &&
+        ++pageTwoAttempts === 1
+      ) {
+        return route.fulfill({ status: 503, json: {} });
+      }
+      const label = `${relation} ${tv ? 'Series' : 'Film'} ${number}`;
+      return route.fulfill({
+        json: {
+          ...paged([
+            { id: 300 + number, ...(tv ? { name: label } : { title: label }) },
+          ]),
+          page: number,
+          totalPages: !tv && relation === 'Similar' ? 2 : 1,
+        },
+      });
+    }
+  );
+
+  await page.goto('/movie/101');
+  await page.getByRole('link', { name: 'Similar Movies' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Similar Movies' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Similar Film 1' })
+  ).toHaveAttribute('href', '/movie/301');
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(
+    page.getByRole('link', { name: 'Similar Film 2' })
+  ).toBeVisible();
+  expect(pageTwoAttempts).toBe(2);
+  await page.getByRole('link', { name: 'Back to Details' }).click();
+  await page
+    .getByRole('link', { name: 'Recommendations', exact: true })
+    .click();
+  await expect(
+    page.getByRole('link', { name: 'Recommended Film 1' })
+  ).toBeVisible();
+
+  await page.goto('/tv/202/recommendations');
+  await expect(
+    page.getByRole('link', { name: 'Recommended Series 1' })
+  ).toHaveAttribute('href', '/tv/301');
+  await page.goto('/tv/202/similar');
+  await expect(
+    page.getByRole('link', { name: 'Similar Series 1' })
+  ).toHaveAttribute('href', '/tv/301');
+});

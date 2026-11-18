@@ -93,11 +93,14 @@ function discoveryDeepLink(req: Request): string | undefined {
 }
 
 function detailDeepLink(req: Request): string | undefined {
-  const credits = /^\/(movie|tv)\/([1-9]\d{0,9})\/(cast|crew)\/?$/.exec(
-    req.path
-  );
-  if (credits && Number(credits[2]) <= 1_000_000_000) {
-    return `/lumen/${credits[1]}/${credits[2]}#${credits[3]}`;
+  const subpage =
+    /^\/(movie|tv)\/([1-9]\d{0,9})\/(cast|crew|recommendations|similar)\/?$/.exec(
+      req.path
+    );
+  if (subpage && Number(subpage[2]) <= 1_000_000_000) {
+    const [, media, id, page] = subpage;
+    const separator = page === 'cast' || page === 'crew' ? '#' : '/';
+    return `/lumen/${media}/${id}${separator}${page}`;
   }
   const match = /^\/(movie|tv|collection|person)\/([1-9]\d{0,9})\/?$/.exec(
     req.path

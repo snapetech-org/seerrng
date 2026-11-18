@@ -194,6 +194,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/movie/123/crew/', '/lumen/movie/123#crew'],
       ['/tv/456/cast/', '/lumen/tv/456#cast'],
       ['/tv/456/crew', '/lumen/tv/456#crew'],
+      ['/movie/123/recommendations', '/lumen/movie/123/recommendations'],
+      ['/movie/123/similar', '/lumen/movie/123/similar'],
+      ['/tv/456/recommendations', '/lumen/tv/456/recommendations'],
+      ['/tv/456/similar', '/lumen/tv/456/similar'],
       [
         '/discover/movies/studio/42?excludeStudio=true&sortBy=vote_average.desc&ignored=1',
         '/lumen/movies?excludeStudio=true&sort=vote_average.desc&studio=42',

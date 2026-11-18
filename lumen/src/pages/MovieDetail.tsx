@@ -313,15 +313,19 @@ export default function MovieDetail() {
             />
           </aside>
         </div>
-        {!!like?.results.length && (
-          <Section title="More like this">
+        <Section
+          title="Related Titles"
+          link={['Recommendations', `/movie/${id}/recommendations`]}
+          action={<Link to={`/movie/${id}/similar`}>Similar Movies</Link>}
+        >
+          {!!like?.results.length && (
             <Rail>
               {like.results.map((x) => (
                 <TitleCard key={x.id} it={{ ...x, mediaType: 'movie' }} />
               ))}
             </Rail>
-          </Section>
-        )}
+          )}
+        </Section>
       </div>
       <ActionBar
         title={m.title || ''}

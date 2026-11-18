@@ -623,15 +623,19 @@ export default function TvDetail() {
             />
           </aside>
         </div>
-        {!!like?.results.length && (
-          <Section title="More like this">
+        <Section
+          title="Related Titles"
+          link={['Recommendations', `/tv/${id}/recommendations`]}
+          action={<Link to={`/tv/${id}/similar`}>Similar Series</Link>}
+        >
+          {!!like?.results.length && (
             <Rail>
               {like.results.map((x) => (
                 <TitleCard key={x.id} it={{ ...x, mediaType: 'tv' }} />
               ))}
             </Rail>
-          </Section>
-        )}
+          )}
+        </Section>
       </div>
       <ActionBar
         title={t.name || ''}

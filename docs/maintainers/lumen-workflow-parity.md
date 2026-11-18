@@ -1151,3 +1151,15 @@ out-of-range IDs. Standalone desktop, iPhone, Android, and tablet fixtures
 verified anchored scrolling, open and close behavior, and preservation of
 the saved pin. The bundled sign-in round trip and live visual comparison
 remain unverified.
+
+### Related movie and series lists
+
+Movie and series details link to full Recommendations and Similar lists.
+Both lists use the corresponding viewer-scoped SeerrNG endpoint and reuse
+Lumen's poster grid, pagination, and retry controls. Bundled frontend lock
+preserves all four native subpage URLs.
+
+Server redirect tests and standalone desktop, iPhone, Android, and tablet
+fixtures passed. Browser coverage includes navigation from movie details,
+direct series URLs, correct media links, and retry after a failed second
+page. Live provider results and matched visual comparisons remain open.

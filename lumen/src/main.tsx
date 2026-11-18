@@ -31,6 +31,7 @@ import Me from './pages/Me';
 import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
 import PersonDetail from './pages/People';
+import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
 import Search from './pages/Search';
 import Soon from './pages/Soon';
@@ -101,8 +102,24 @@ function App() {
             element={<Books key="audiobook" format="audiobook" />}
           />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route
+            path="/movie/:id/similar"
+            element={<RelatedVideo media="movie" relation="similar" />}
+          />
+          <Route
+            path="/movie/:id/recommendations"
+            element={<RelatedVideo media="movie" relation="recommendations" />}
+          />
           <Route path="/person/:id" element={<PersonDetail />} />
           <Route path="/tv/:id" element={<TvDetail />} />
+          <Route
+            path="/tv/:id/similar"
+            element={<RelatedVideo media="tv" relation="similar" />}
+          />
+          <Route
+            path="/tv/:id/recommendations"
+            element={<RelatedVideo media="tv" relation="recommendations" />}
+          />
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/music" element={<Music />} />
           <Route path="/music/:id" element={<AlbumDetail />} />
