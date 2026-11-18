@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const ClientTokens = lazy(() => import('./pages/ClientTokens'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail'));
 const Blocklist = lazy(() => import('./pages/Blocklist'));
@@ -182,6 +183,20 @@ function App() {
                 }
               >
                 <AccountSettings />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/me/account/client-tokens"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Client Tokens…
+                  </p>
+                }
+              >
+                <ClientTokens />
               </Suspense>
             }
           />

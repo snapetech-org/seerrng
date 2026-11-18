@@ -327,3 +327,16 @@ edit with its draft retained, successful retry and name readback, and a
 password change with synthetic credentials. Native baseline, mobile and
 bundled visual acceptance, live password and provider paths, interface
 localization, linked accounts, tokens, and other account settings remain open.
+
+### Client token increment
+
+Account Settings links to Client Tokens. The page uses the existing signed-in
+session endpoints to list token metadata, create Discover and/or Request
+tokens with a selected expiry, and revoke after confirmation. The creation
+secret stays in component state and disappears when dismissed or when the
+user leaves the page.
+
+Headed Chrome at 1440 × 1000 verified standalone list loading, creation of
+a seven-day Discover token, one-time display, and revocation with synthetic
+data. Clipboard use, native comparison, mobile and bundled visual checks,
+and an external client round trip remain open.
