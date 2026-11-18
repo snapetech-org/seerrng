@@ -163,7 +163,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/list/12345/?page=2', '/list/12345?page=2'],
       ['/discover/trending?mediaType=tv', '/trending?mediaType=tv'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
-      ['/discover/providers', 'https://seerr.example.test/discover/providers'],
+      ['/discover/providers', '/providers'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);

@@ -102,6 +102,7 @@ const CHIPS: [IconName, string, string][] = [
   ['book', 'Books', '/books'],
   ['headphones', 'Audiobooks', '/audiobooks'],
   ['cal', 'Coming soon', '/soon'],
+  ['list', 'Provider Discovery', '/providers'],
 ];
 
 export default function Discover() {

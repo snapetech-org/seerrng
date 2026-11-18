@@ -3360,3 +3360,54 @@ test('Following opens the exact anime franchise from a relationship update', asy
     page.getByRole('heading', { name: 'Franchise for Anime Side Story' })
   ).toBeVisible();
 });
+
+test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList feed', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requests: URLSearchParams[] = [];
+  await page.route(
+    /\/api\/v1\/integrations\/discovery\/feeds\/mdblist\/list\?/,
+    (route) => {
+      const query = new URL(route.request().url()).searchParams;
+      requests.push(query);
+      const number = Number(query.get('page'));
+      return route.fulfill({
+        json: {
+          page: number,
+          hasMore: number === 1,
+          missingMappings: 1,
+          items:
+            number === 1
+              ? [
+                  {
+                    id: 'matched',
+                    title: 'Matched Fixture',
+                    mediaType: 'movie',
+                    tmdbId: 101,
+                  },
+                  { id: 'unmatched', title: 'Unmatched Fixture' },
+                ]
+              : [],
+        },
+      });
+    }
+  );
+  await page.goto('/providers?feed=mdblist%2Flist&list=viewer%2Ffixture');
+  await expect(
+    page.getByRole('link', { name: 'Matched Fixture' })
+  ).toHaveAttribute('href', '/movie/101');
+  expect(requests[0].get('list')).toBe('viewer/fixture');
+  const unmatched = page.getByRole('checkbox', { name: 'Unmatched Only' });
+  await unmatched.click();
+  await expect(unmatched).toBeChecked();
+  await expect(page.getByText('Unmatched Fixture')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Matched Fixture' })).toHaveCount(
+    0
+  );
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(
+    page.getByText('No unmatched titles on this page.')
+  ).toBeVisible();
+  expect(requests.at(-1)?.get('page')).toBe('2');
+});

@@ -245,6 +245,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/music?genre=folk&sortBy=popular.year',
         '/lumen/music?genre=folk&sortBy=popular.year',
       ],
+      ['/discover/providers', '/lumen/providers'],
       ['/discover/games', '/lumen/games'],
       ['/discover/patches?kind=hack', '/lumen/patches?kind=hack'],
       ['/discover/audiobooks', '/lumen/audiobooks'],

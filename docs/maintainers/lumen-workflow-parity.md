@@ -1441,3 +1441,16 @@ destination and displays the relationship type. Updates for supported
 person, artist, comic and collection targets also open their detail
 routes. Eight standalone browser checks passed for franchise and patch
 event links across four viewport presets.
+
+### Provider Discovery
+
+Discover links to Lumen's Trakt, AniList, and MDBList feeds. Feed and
+page selection, list references, and unmatched-only filtering are URL
+backed. Confirmed movie and series identities open their exact detail
+pages. The feeds bypass persistent browser caching. Both deployments
+accept the native Provider Discovery bookmark.
+
+The production build, bundled and companion redirects, and four
+standalone browser checks passed. Identity mapping controls,
+provider-specific retry timing, live accounts, and matched visual
+comparisons remain open.

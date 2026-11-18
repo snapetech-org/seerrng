@@ -35,6 +35,7 @@ import MovieDetail from './pages/MovieDetail';
 import { AlbumDetail, Artist, Music } from './pages/Music';
 import Patches, { PatchDetail } from './pages/Patches';
 import PersonDetail from './pages/People';
+import ProviderDiscovery from './pages/ProviderDiscovery';
 import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
 import Search from './pages/Search';
@@ -100,6 +101,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
+          <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/trending" element={<Trending />} />
           <Route
             path="/associations/:mediaType/:id"
