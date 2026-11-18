@@ -2863,3 +2863,9 @@ scope, distinguishes uncertain matches, and links confirmed books in
 the catalog format. Sixteen browser checks and two Express routing tests
 passed. Goodreads search, starting monitoring from a preview, bulk
 requests, and matched visual acceptance remain open.
+
+Hardcover previews now check monitoring support and let eligible users
+request ongoing monitoring for the exact catalog identity, with optional
+companion books. Sixteen fixture checks passed across both deployments,
+including request permission and pending status. Live Chaptarr outcomes
+and matched visual acceptance remain unverified.

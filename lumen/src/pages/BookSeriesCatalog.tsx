@@ -1,6 +1,12 @@
+import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { api } from '../api';
+import { useAuth } from '../auth';
+import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 
 type Catalog = {
   title: string;
@@ -35,6 +41,116 @@ export function bookSeriesCatalogQuery(target: {
   )
     return null;
   return new URLSearchParams({ serverId: id, scope, providerId }).toString();
+}
+
+function CatalogMonitoring({ query }: { query: string }) {
+  const { user } = useAuth();
+  const permissions = user?.permissions;
+  const canRequest =
+    typeof permissions === 'number' &&
+    Number.isSafeInteger(permissions) &&
+    permissions >= 0 &&
+    (BigInt(permissions) & (2n | 32n | 34359738368n)) !== 0n;
+  const watch = useApi<{
+    supported: boolean;
+    enabled?: boolean;
+    request?: { status: string };
+  }>(`/book-series/watch?${query}`, { keepDuringRefresh: true });
+  const [includeExtras, setIncludeExtras] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [failure, setFailure] = useState('');
+  const [submittedStatus, setSubmittedStatus] = useState<string>();
+  const pending = useRef(false);
+  const status = watch.data?.enabled
+    ? 'active'
+    : (submittedStatus ?? watch.data?.request?.status);
+
+  async function submit() {
+    if (pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    setFailure('');
+    const generation = sessionGeneration();
+    const params = new URLSearchParams(query);
+    try {
+      const result = await api<{ status: string }>('/book-series/watch', {
+        method: 'POST',
+        body: JSON.stringify({
+          serverId: Number(params.get('serverId')),
+          scope: params.get('scope'),
+          providerId: params.get('providerId'),
+          includeExtras,
+        }),
+      });
+      if (generation === sessionGeneration()) setSubmittedStatus(result.status);
+    } catch (error) {
+      if (generation === sessionGeneration())
+        setFailure(
+          friendlyError(error, 'Could not request series monitoring.')
+        );
+    } finally {
+      pending.current = false;
+      if (generation === sessionGeneration()) {
+        watch.reload();
+        setBusy(false);
+      }
+    }
+  }
+
+  return (
+    <Section title="Series Monitoring">
+      <ServiceNote
+        error={watch.error}
+        what="series monitoring"
+        retry={watch.reload}
+      />
+      {failure && (
+        <p className="note" role="alert">
+          {failure}
+        </p>
+      )}
+      {watch.data && !watch.data.supported && (
+        <p className="note">
+          This book service does not support series monitoring.
+        </p>
+      )}
+      {watch.data?.supported && (
+        <>
+          {status && (
+            <p className="note" role="status">
+              Monitoring status: {status}
+            </p>
+          )}
+          {canRequest &&
+            !['active', 'pending', 'failed'].includes(status ?? '') && (
+              <>
+                <p className="note">
+                  Request ongoing monitoring for current and future books in
+                  this catalog. Approval may be required.
+                </p>
+                <label className="set">
+                  Include Companion Books and Extras
+                  <input
+                    type="checkbox"
+                    checked={includeExtras}
+                    disabled={busy}
+                    onChange={(event) => setIncludeExtras(event.target.checked)}
+                  />
+                </label>
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void submit()}
+                >
+                  Request Monitoring
+                </button>
+              </>
+            )}
+        </>
+      )}
+    </Section>
+  );
 }
 
 export default function BookSeriesCatalog() {
@@ -83,6 +199,7 @@ export default function BookSeriesCatalog() {
             {data.bookCount} catalog entries
           </p>
           {data.description && <p>{data.description}</p>}
+          {query && <CatalogMonitoring key={query} query={query} />}
           {data.resolutionTruncated && (
             <p className="note">
               Only part of this catalog could be checked for matches.

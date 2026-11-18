@@ -6,6 +6,7 @@ for (const manager of [true, false]) {
   }) => {
     const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
     let status = 'pending';
+    let requested = false;
     await page.route('**/api/v1/**', (route) => {
       const path = new URL(route.request().url()).pathname.slice(
         '/api/v1'.length
@@ -62,6 +63,25 @@ for (const manager of [true, false]) {
           },
         });
       }
+      if (path === '/book-series/watch') {
+        if (route.request().method() === 'POST') {
+          expect(manager).toBe(false);
+          expect(route.request().postDataJSON()).toEqual({
+            serverId: 0,
+            scope: 'audio:main',
+            providerId: 'hc:42',
+            includeExtras: true,
+          });
+          requested = true;
+          return route.fulfill({ json: { status: 'pending' } });
+        }
+        return route.fulfill({
+          json: {
+            supported: true,
+            request: requested ? { status: 'pending' } : undefined,
+          },
+        });
+      }
       return route.fulfill({ json: {} });
     });
     await page.goto(`${mount}/book-series/requests`);
@@ -90,5 +110,16 @@ for (const manager of [true, false]) {
       `${mount}/book/OL123W?f=audio`
     );
     await expect(page.getByText('Multiple Possible Matches')).toBeVisible();
+    const monitor = page.getByRole('button', { name: 'Request Monitoring' });
+    if (manager) {
+      await expect(monitor).toHaveCount(0);
+    } else {
+      await page
+        .getByRole('checkbox', { name: 'Include Companion Books and Extras' })
+        .check();
+      await monitor.click();
+      await expect(page.getByText('Monitoring status: pending')).toBeVisible();
+      await expect(monitor).toHaveCount(0);
+    }
   });
 }
