@@ -23,3 +23,57 @@ export function normalizeSearchParams(params: URLSearchParams) {
   normalized.delete('format');
   return normalized;
 }
+
+export const videoFilterKeys = [
+  'availability',
+  'excludeGenre',
+  'excludeStudio',
+  'excludeStatus',
+  'voteCountGte',
+  'voteCountLte',
+  'country',
+  'language',
+  'genre',
+  'keywords',
+  'excludeKeywords',
+  'certification',
+  'certificationCountry',
+  'certificationGte',
+  'certificationLte',
+  'primaryReleaseDateGte',
+  'primaryReleaseDateLte',
+  'firstAirDateGte',
+  'firstAirDateLte',
+  'withRuntimeGte',
+  'withRuntimeLte',
+  'voteAverageGte',
+  'voteAverageLte',
+  'watchProviders',
+  'watchRegion',
+  'watchProviderMode',
+  'sortBy',
+  'status',
+  'studio',
+  'network',
+] as const;
+
+export function scopedVideoSearchPath(
+  params: URLSearchParams,
+  scope: string,
+  term: string
+) {
+  if (scope === 'movie' || scope === 'tv') {
+    const filters = new URLSearchParams();
+    for (const key of videoFilterKeys) {
+      const values = params.getAll(key);
+      if (values.length === 1 && values[0] && values[0].length <= 512)
+        filters.set(key, values[0]);
+    }
+    if (filters.size) {
+      filters.set('search', term);
+      filters.set('page', '1');
+      return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
+    }
+  }
+  return `/search?query=${encodeURIComponent(term)}&page=1`;
+}

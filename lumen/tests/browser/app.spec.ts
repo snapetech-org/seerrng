@@ -6888,3 +6888,30 @@ test('discovery content ratings preserve Classic filters and apply exact ratings
   await select.selectOption('');
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('Classic video search bookmarks apply discovery constraints until cleared', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const filtered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/movies' &&
+      url.searchParams.get('search') === 'Test' &&
+      url.searchParams.get('genre') === '18' &&
+      url.searchParams.get('language') === 'fr'
+    );
+  });
+  await page.goto('/search?query=Test&type=movie&genre=18&language=fr');
+  await filtered;
+  const unfiltered = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/search' &&
+      url.searchParams.get('query') === 'Test'
+    );
+  });
+  await page.getByRole('button', { name: 'Clear Discovery Filters' }).click();
+  await unfiltered;
+  await expect(page).toHaveURL(/\/search\?q=Test&f=movie$/);
+});

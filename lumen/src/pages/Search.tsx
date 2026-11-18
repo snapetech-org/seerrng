@@ -31,7 +31,11 @@ import {
   readRecentSearches,
   saveRecentSearches,
 } from '../recentSearches';
-import { normalizeSearchParams } from '../searchParams';
+import {
+  normalizeSearchParams,
+  scopedVideoSearchPath,
+  videoFilterKeys,
+} from '../searchParams';
 import { usePrefs } from '../settings';
 import { PersonCard } from './People';
 
@@ -145,7 +149,7 @@ export default function Search() {
       const [tr, ...brs] = await Promise.all([
         wantTitles
           ? api<Paged<VideoSearchResult>>(
-              `/search?query=${encodeURIComponent(term)}&page=1`
+              scopedVideoSearchPath(p, f, term)
             ).catch(failure)
           : null,
         ...formats.map((fmt) =>
@@ -310,6 +314,23 @@ export default function Search() {
             </button>
           ))}
         </div>
+        {term0 &&
+          scopedVideoSearchPath(p, f, term0).startsWith('/discover/') && (
+            <div className="toolbar">
+              <button
+                type="button"
+                className="chip"
+                onClick={() => {
+                  const next = new URLSearchParams(p);
+                  for (const key of videoFilterKeys) next.delete(key);
+                  next.delete('certificationMode');
+                  setP(next, { replace: true });
+                }}
+              >
+                Clear Discovery Filters
+              </button>
+            </div>
+          )}
         {p.get('q') &&
           (f === 'all' ||
             f === 'movie' ||

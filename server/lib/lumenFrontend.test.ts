@@ -577,6 +577,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/search?query=A%2FB&type=book&format=audiobook',
         '/lumen/search?q=A%2FB&f=audio',
       ],
+      [
+        '/search?query=Test&type=tv&genre=18&language=fr&ignored=1',
+        '/lumen/search?q=Test&f=tv&language=fr&genre=18',
+      ],
       ['/search?query=a&query=b&type=movie', '/lumen/search?f=movie'],
       [
         '/discover/trending?mediaType=tv&timeWindow=week',

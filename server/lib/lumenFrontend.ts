@@ -547,6 +547,18 @@ function workflowDeepLink(
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
     if (type === 'movie' || type === 'tv' || type === 'comic') {
       query.set('f', type);
+      if (type !== 'comic') {
+        for (const key of [
+          ...discoveryFilters,
+          'availability',
+          'genre',
+          'sortBy',
+        ]) {
+          const value = req.query[key];
+          if (typeof value === 'string' && value.length <= 512)
+            query.set(key, value);
+        }
+      }
     } else if (type === 'book') {
       query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
     }
