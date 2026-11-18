@@ -3207,6 +3207,7 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
 }) => {
   await fixtures(page);
   let verified = false;
+  let additions = 0;
   await page.route('**/api/v1/tv/202', (route) =>
     route.fulfill({
       json: {
@@ -3236,6 +3237,19 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
             verified,
             relationId: 9,
           },
+          ...(additions > 1
+            ? [
+                {
+                  group: 'soundtrack',
+                  title: 'Fixture Soundtrack',
+                  mediaType: 'album',
+                  href: '/music/album-22',
+                  confidence: 'high',
+                  verified: true,
+                  relationId: 10,
+                },
+              ]
+            : []),
         ],
       },
     })
@@ -3245,6 +3259,24 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
     expect(route.request().postDataJSON()).toEqual({ verified: true });
     verified = true;
     return route.fulfill({ json: {} });
+  });
+  await page.route('**/api/v1/franchise/relations', (route) => {
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON()).toEqual({
+      fromType: 'tv',
+      fromId: '202',
+      toType: 'album',
+      toId: 'album-22',
+      title: 'Fixture Soundtrack',
+      relation: 'soundtrack',
+      href: '/music/album-22',
+    });
+    if (++additions === 1)
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Relationship save unavailable.' },
+      });
+    return route.fulfill({ status: 201, json: { ok: true } });
   });
   await page.route('**/api/v1/follow', (route) =>
     route.fulfill({ json: { results: [] } })
@@ -3262,4 +3294,22 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
   await expect(
     page.getByRole('button', { name: 'Confirm', exact: true })
   ).toHaveCount(0);
+  await page
+    .getByRole('button', { name: 'Add Relationship', exact: true })
+    .click();
+  await page.getByLabel('Related Title').fill('Fixture Soundtrack');
+  await page.getByLabel('Catalogue ID').fill('album-22');
+  await page.getByLabel('Media Type').selectOption('album');
+  await page
+    .getByLabel('Relationship', { exact: true })
+    .selectOption('soundtrack');
+  const save = page.getByRole('button', { name: 'Save Relationship' });
+  await save.click();
+  await expect(page.getByText('Relationship save unavailable.')).toBeVisible();
+  await expect(page.getByLabel('Catalogue ID')).toHaveValue('album-22');
+  await save.click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Soundtrack' })
+  ).toHaveAttribute('href', '/music/album-22');
+  expect(additions).toBe(2);
 });

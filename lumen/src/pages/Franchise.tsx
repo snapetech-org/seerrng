@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
@@ -18,6 +18,33 @@ const groups = {
   'side-story': 'Side Stories',
   soundtrack: 'Soundtracks',
   related: 'Related Titles',
+};
+
+const relations = {
+  'source-material': 'Source Material',
+  adaptation: 'Adaptation',
+  prequel: 'Prequel',
+  sequel: 'Sequel',
+  'side-story': 'Side Story',
+  soundtrack: 'Soundtrack',
+  'same-franchise': 'Same Franchise',
+};
+const targetTypes = {
+  anime: 'Anime',
+  manga: 'Manga',
+  novel: 'Novel',
+  movie: 'Movie',
+  tv: 'Series',
+  game: 'Game',
+  album: 'Album',
+  book: 'Book',
+};
+const targetRoutes: Record<string, string> = {
+  movie: '/movie',
+  tv: '/tv',
+  anime: '/franchise/anime',
+  album: '/music',
+  book: '/book',
 };
 
 interface FranchiseItem {
@@ -60,6 +87,7 @@ export default function Franchise() {
     valid ? `/franchise/${mediaType}/${id}` : null
   );
   const [busy, setBusy] = useState(false);
+  const [adding, setAdding] = useState(false);
   const pending = useRef(false);
   const toast = useToast();
 
@@ -81,6 +109,59 @@ export default function Franchise() {
     }
   }
 
+  async function addRelationship(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending.current || !data?.canCurate || !valid) return;
+    const form = new FormData(event.currentTarget);
+    const toType = String(form.get('toType') ?? '');
+    const toId = String(form.get('toId') ?? '').trim();
+    const relation = String(form.get('relation') ?? '');
+    const title = String(form.get('title') ?? '').trim();
+    const evidence = String(form.get('evidence') ?? '').trim();
+    if (
+      !Object.hasOwn(targetTypes, toType) ||
+      !Object.hasOwn(relations, relation) ||
+      !toId ||
+      !title
+    ) {
+      toast(
+        'Choose a relationship and enter the related title and catalogue ID.'
+      );
+      return;
+    }
+    const route = Object.hasOwn(targetRoutes, toType)
+      ? targetRoutes[toType]
+      : '';
+    const href =
+      route && /^[A-Za-z0-9_-]{1,128}$/.test(toId)
+        ? `${route}/${toId}`
+        : undefined;
+    pending.current = true;
+    setBusy(true);
+    try {
+      await api('/franchise/relations', {
+        method: 'POST',
+        body: JSON.stringify({
+          fromType: mediaType,
+          fromId: id,
+          toType,
+          toId,
+          relation,
+          title,
+          evidence: evidence || undefined,
+          href,
+        }),
+      });
+      setAdding(false);
+      reload();
+    } catch (cause) {
+      toast(friendlyError(cause, 'Couldn’t add the relationship'));
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
   return (
     <>
       <ExtraHeader
@@ -95,6 +176,16 @@ export default function Franchise() {
             <Link className="chip" to={`/tv/${id}`}>
               Back to Series
             </Link>
+          )}
+          {data?.canCurate && !adding && (
+            <button
+              type="button"
+              className="chip"
+              disabled={busy}
+              onClick={() => setAdding(true)}
+            >
+              Add Relationship
+            </button>
           )}
           {data && canViewFollowing(user?.permissions) && (
             <FollowButton
@@ -118,6 +209,62 @@ export default function Franchise() {
         <p className="note" role="status">
           Loading franchise…
         </p>
+      )}
+      {data?.canCurate && adding && (
+        <Section title="Add a Relationship">
+          <form onSubmit={(event) => void addRelationship(event)}>
+            <fieldset className="setlist" disabled={busy}>
+              <label className="set cfg-row">
+                <b>Related Title</b>
+                <input name="title" required maxLength={255} />
+              </label>
+              <label className="set cfg-row">
+                <b>Catalogue ID</b>
+                <input name="toId" required maxLength={128} />
+              </label>
+              <label className="set cfg-row">
+                <b>Media Type</b>
+                <select name="toType" aria-label="Media Type" defaultValue="tv">
+                  {Object.entries(targetTypes).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="set cfg-row">
+                <b>Relationship</b>
+                <select
+                  name="relation"
+                  aria-label="Relationship"
+                  defaultValue="sequel"
+                >
+                  {Object.entries(relations).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="set cfg-row">
+                <b>Evidence</b>
+                <input name="evidence" maxLength={512} />
+              </label>
+              <div className="toolbar">
+                <button className="btn btn-tonal btn-sm" type="submit">
+                  Save Relationship
+                </button>
+                <button
+                  className="btn btn-quiet btn-sm"
+                  type="button"
+                  onClick={() => setAdding(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </Section>
       )}
       {data?.notes.includes('no-anilist-match') && (
         <p className="note">

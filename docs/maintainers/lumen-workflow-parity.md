@@ -1429,3 +1429,9 @@ Four standalone browser checks verified the series entry point, linked
 identity and curator confirmation. Bundled redirect and companion route
 inventory checks passed. Live AniList results, creation of curated
 relationships, and matched visual comparisons remain open.
+
+Authorized franchise curators can now add a relationship using the
+related title's media type and catalogue ID, with optional evidence.
+Lumen uses the existing curator endpoint and keeps form values when the
+request fails. Four standalone checks passed, including confirmation,
+creation and retry. Live provider and matched visual checks remain open.
