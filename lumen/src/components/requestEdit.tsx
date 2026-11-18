@@ -45,6 +45,8 @@ export function RequestEditSheet({
     serverId: d.serverId ?? undefined,
     profileId: d.profileId ?? undefined,
     rootFolder: d.rootFolder ?? undefined,
+    languageProfileId: r.languageProfileId ?? undefined,
+    metadataLanguageId: r.metadataLanguageId ?? undefined,
     userId: r.requestedBy?.id,
   }));
   const [opts, setOpts] = useState<RequestOptions>({});

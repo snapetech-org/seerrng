@@ -2341,3 +2341,18 @@ Live metadata providers were outside the comparison. Evidence is retained
 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-video-filters-20261118/`,
 `seerrng-lumen-video-filters-baseline-20261118/`, and
 `seerrng-lumen-tv-filters-20261118/` in the same scratch directory.
+
+Lumen's shared advanced TV request controls now show legacy language
+profiles or metadata languages when the selected Sonarr server advertises
+them. Changing servers resets server-specific selections. The request
+editor restores supported saved values and can reset metadata language
+to the Sonarr default.
+
+The Lumen production build and 48 browser checks passed. Compared the
+expanded series detail controls before and after on desktop, iPhone 13,
+Pixel 7, and iPad Pro 11. The request fixture switches between servers
+with different capabilities, verifies the metadata language payload,
+and checks that the legacy profile does not leak into that payload.
+Live Sonarr delivery and persisted edits were outside the check.
+Evidence is retained in the `seerrng-lumen-sonarr-language*` outputs
+under `/mnt/disks/scratch/task-deliverables/`.

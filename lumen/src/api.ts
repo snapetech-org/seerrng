@@ -416,6 +416,8 @@ export interface RequestOptions {
   serverId?: number;
   profileId?: number;
   rootFolder?: string;
+  languageProfileId?: number;
+  metadataLanguageId?: number | null;
   userId?: number; // request on someone else's behalf (admins)
 }
 const post = <T = { id: number }>(body: object) =>
@@ -777,6 +779,8 @@ export interface DownloadItem {
 }
 export interface RequestItem {
   serverId?: number | null;
+  languageProfileId?: number | null;
+  metadataLanguageId?: number | null;
   isAutoRequest?: boolean;
   watchAheadParentRequestId?: number | null;
   watchAheadEpisodeCount?: number;

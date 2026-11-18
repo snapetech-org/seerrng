@@ -403,7 +403,13 @@ interface Server {
 interface ServerDetail {
   profiles: { id: number; name: string }[];
   rootFolders: { id: number; path: string }[];
-  server: { activeProfileId: number; activeDirectory: string };
+  languageProfiles?: { id: number; name: string }[] | null;
+  metadataLanguages?: { id: number; name: string }[];
+  server: {
+    activeProfileId: number;
+    activeDirectory: string;
+    activeLanguageProfileId?: number;
+  };
 }
 
 const permissionBits = (permissions?: number) =>
@@ -520,6 +526,24 @@ export function AdvancedOptions({
                   d.rootFolders.some((r) => r.path === initial?.rootFolder)
                     ? initial?.rootFolder
                     : d.server.activeDirectory),
+                languageProfileId:
+                  serverId === initial?.serverId &&
+                  d.languageProfiles?.some(
+                    ({ id }) => id === initial.languageProfileId
+                  )
+                    ? initial.languageProfileId
+                    : d.languageProfiles?.find(
+                        ({ id }) => id === d.server.activeLanguageProfileId
+                      )?.id,
+                metadataLanguageId:
+                  serverId === initial?.serverId &&
+                  d.metadataLanguages?.some(
+                    ({ id }) => id === initial.metadataLanguageId
+                  )
+                    ? initial.metadataLanguageId
+                    : initial?.metadataLanguageId == null
+                      ? undefined
+                      : null,
               }
         );
       })
@@ -597,7 +621,10 @@ export function AdvancedOptions({
             <span className="lbl">Server</span>
             <select
               value={o.serverId ?? ''}
-              onChange={(e) => setO({ serverId: +e.target.value })}
+              onChange={(e) => {
+                setDetail(null);
+                setO({ serverId: +e.target.value });
+              }}
             >
               {servers.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -640,6 +667,53 @@ export function AdvancedOptions({
                   ))}
                 </select>
               </label>
+              {kind === 'tv' && !!detail.languageProfiles?.length && (
+                <label className="sel">
+                  <span className="lbl">Language Profile</span>
+                  <select
+                    value={o.languageProfileId ?? ''}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setO((previous) => ({
+                        ...previous,
+                        languageProfileId:
+                          value === '' ? undefined : Number(value),
+                      }));
+                    }}
+                  >
+                    <option value="" disabled>
+                      Sonarr Default
+                    </option>
+                    {detail.languageProfiles.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {kind === 'tv' && !!detail.metadataLanguages?.length && (
+                <label className="sel">
+                  <span className="lbl">Metadata Language</span>
+                  <select
+                    value={o.metadataLanguageId ?? ''}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setO((previous) => ({
+                        ...previous,
+                        metadataLanguageId: value === '' ? null : Number(value),
+                      }));
+                    }}
+                  >
+                    <option value="">Sonarr Default</option>
+                    {detail.metadataLanguages.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
             </>
           )}
         </div>

@@ -231,3 +231,73 @@ test('a fully available series says so and offers no request', async ({
   await expect(page.locator('.srow').first()).toContainText('On Plex');
   await expect(page.locator('.rinfo')).toHaveCount(0);
 });
+
+test('Sonarr request language choices follow the selected destination', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  await show(page, { status: 1 }, posts);
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, name: 'Sonarr v3', isDefault: true, is4k: false },
+        { id: 2, name: 'Sonarr v5', isDefault: false, is4k: false },
+      ],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr/*', (route) => {
+    const legacy = route.request().url().endsWith('/1');
+    return route.fulfill({
+      json: {
+        server: {
+          activeProfileId: 1,
+          activeDirectory: '/shows',
+          activeLanguageProfileId: legacy ? 8 : undefined,
+        },
+        profiles: [{ id: 1, name: 'HD' }],
+        rootFolders: [{ id: 1, path: '/shows' }],
+        languageProfiles: legacy
+          ? [
+              { id: 8, name: 'English' },
+              { id: 9, name: 'French' },
+            ]
+          : null,
+        metadataLanguages: legacy ? [] : [{ id: 4, name: 'French' }],
+      },
+    });
+  });
+  await page.getByText('Advanced (admins)', { exact: true }).click();
+  const profile = page.getByRole('combobox', { name: 'Language Profile' });
+  await expect(profile).toHaveValue('8');
+  await profile.selectOption('9');
+  await profile.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('sonarr-language-profile.png'),
+  });
+  await page
+    .getByRole('combobox', { name: 'Server', exact: true })
+    .selectOption('2');
+  await expect(profile).toHaveCount(0);
+  const metadata = page.getByRole('combobox', { name: 'Metadata Language' });
+  await metadata.selectOption('4');
+  await metadata.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('sonarr-metadata-language.png'),
+  });
+  const request = page.getByRole('button', { name: /^Request (entire|\d)/ });
+  if (!(await request.count()))
+    await page.getByText('Season 1', { exact: true }).click();
+  await request.click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: expect.objectContaining({
+        mediaType: 'tv',
+        serverId: 2,
+        metadataLanguageId: 4,
+      }),
+    },
+  ]);
+  expect(posts[0].body).not.toHaveProperty('languageProfileId');
+});
