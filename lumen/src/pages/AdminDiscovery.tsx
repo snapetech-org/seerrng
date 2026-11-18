@@ -7,6 +7,8 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
+import DiscoveryRegionSettings from '../components/DiscoveryRegionSettings';
+
 const path = '/integrations/discovery/configuration';
 const providers = [
   { id: 'trakt', name: 'Trakt', fields: ['clientId'] },
@@ -189,6 +191,7 @@ export default function AdminDiscovery() {
           </p>
         )
       )}
+      <DiscoveryRegionSettings />
       <CuratedIdentityPacks />
     </>
   );

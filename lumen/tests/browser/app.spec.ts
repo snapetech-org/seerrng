@@ -6444,3 +6444,72 @@ test('Metadata Credentials preserves untouched credentials and retries replaceme
   ]);
   await page.screenshot({ path: info.outputPath('metadata-credentials.png') });
 });
+
+test('Discovery region settings preserve legacy values and retry only changed fields', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/regions', (route) =>
+    route.fulfill({
+      json: [
+        { iso_3166_1: 'CA', english_name: 'Canada' },
+        { iso_3166_1: 'US', english_name: 'United States' },
+      ],
+    })
+  );
+  await page.route('**/api/v1/languages', (route) =>
+    route.fulfill({
+      json: [
+        { iso_639_1: 'en', english_name: 'English' },
+        { iso_639_1: 'fr', english_name: 'French' },
+      ],
+    })
+  );
+  const saved = {
+    discoverRegion: 'ZZ',
+    streamingRegion: 'US',
+    originalLanguage: 'en',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Could not save regions.' },
+        });
+      Object.assign(saved, body);
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/discovery');
+  const discover = page.getByLabel('Discover Region', { exact: true });
+  const streaming = page.getByLabel('Streaming Region', { exact: true });
+  const language = page.getByLabel('Original Language', { exact: true });
+  const save = page.getByRole('button', {
+    name: 'Save Discovery Region Settings',
+  });
+  await expect(discover).toHaveValue('ZZ');
+  await discover.selectOption('CA');
+  await discover.selectOption('ZZ');
+  await expect(save).toBeDisabled();
+  await streaming.selectOption('CA');
+  await language.selectOption('fr');
+  await save.click();
+  await expect(page.getByText('Could not save regions.')).toBeVisible();
+  await expect(streaming).toHaveValue('CA');
+  await expect(language).toHaveValue('fr');
+  await save.click();
+  await expect(
+    page.getByText('Discovery region settings saved.')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { streamingRegion: 'CA', originalLanguage: 'fr' },
+    { streamingRegion: 'CA', originalLanguage: 'fr' },
+  ]);
+  await page.screenshot({
+    path: info.outputPath('discovery-region-settings.png'),
+  });
+});
