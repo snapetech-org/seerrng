@@ -7048,3 +7048,33 @@ test('scoped book and comic searches retain their catalogue page in the URL', as
     ).toContainText('Page 2');
   }
 });
+
+test('Classic author search bookmarks open the Authors scope and link to author details', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requests: string[] = [];
+  await page.route('**/api/v1/search?*', (route) => {
+    const type = new URL(route.request().url()).searchParams.get('type');
+    requests.push(type ?? '');
+    return route.fulfill({
+      json: paged([
+        { mediaType: 'author', id: 'OL123A', name: 'Fixture Author' },
+      ]),
+    });
+  });
+  await page.goto('/search?query=Fixture&type=author');
+  await expect(page.getByRole('button', { name: 'Authors' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  await expect(
+    page.getByRole('link', { name: 'Fixture Author' })
+  ).toHaveAttribute('href', '/author/OL123A');
+  expect(requests).toEqual(['author']);
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+  await expect.poll(() => requests.at(-1)).toBe('');
+  await expect(
+    page.getByRole('link', { name: 'Fixture Author' })
+  ).toBeVisible();
+});

@@ -545,9 +545,14 @@ function workflowDeepLink(
   if (destination === '/search') {
     const { query: term, type, format } = req.query;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
-    if (type === 'movie' || type === 'tv' || type === 'comic') {
+    if (
+      type === 'movie' ||
+      type === 'tv' ||
+      type === 'comic' ||
+      type === 'author'
+    ) {
       query.set('f', type);
-      if (type !== 'comic') {
+      if (type === 'movie' || type === 'tv') {
         for (const key of [
           ...discoveryFilters,
           'availability',

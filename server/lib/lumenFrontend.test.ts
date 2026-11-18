@@ -581,6 +581,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/search?query=Test&type=tv&genre=18&language=fr&page=2&ignored=1',
         '/lumen/search?q=Test&f=tv&language=fr&genre=18&page=2',
       ],
+      [
+        '/search?query=Fixture&type=author&page=2',
+        '/lumen/search?q=Fixture&f=author&page=2',
+      ],
       ['/search?query=Test&page=2', '/lumen/search?q=Test&page=2'],
       [
         '/search?query=Test&type=movie&page=2',

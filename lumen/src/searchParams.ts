@@ -7,7 +7,12 @@ export function normalizeSearchParams(params: URLSearchParams) {
     normalized.set('q', term);
   const [type, ...extraTypes] = params.getAll('type');
   if (!params.has('f') && !extraTypes.length) {
-    if (type === 'movie' || type === 'tv' || type === 'comic')
+    if (
+      type === 'movie' ||
+      type === 'tv' ||
+      type === 'comic' ||
+      type === 'author'
+    )
       normalized.set('f', type);
     if (type === 'book')
       normalized.set(
@@ -80,5 +85,5 @@ export function scopedVideoSearchPath(
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
   }
-  return `/search?query=${encodeURIComponent(term)}&page=${searchResultPage(params)}`;
+  return `/search?query=${encodeURIComponent(term)}&page=${searchResultPage(params)}${scope === 'author' ? '&type=author' : ''}`;
 }

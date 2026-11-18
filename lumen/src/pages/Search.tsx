@@ -47,7 +47,10 @@ const SCOPES = {
   ebook: 'Books',
   audio: 'Audiobooks',
   comic: 'Comics/Manga',
+  author: 'Authors',
 } as const;
+type AuthorResult = { mediaType: 'author'; id: string; name: string };
+type SearchResult = VideoSearchResult | AuthorResult;
 type Scope = keyof typeof SCOPES;
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
@@ -59,7 +62,7 @@ export default function Search() {
   const f = Object.hasOwn(SCOPES, requestedScope)
     ? (requestedScope as Scope)
     : 'all';
-  const [titles, setTitles] = useState<VideoSearchResult[] | null>(null);
+  const [titles, setTitles] = useState<SearchResult[] | null>(null);
   const [books, setBooks] = useState<BookResult[] | null>(null);
   const [comics, setComics] = useState<ComicWork[] | null>(null);
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
@@ -79,7 +82,8 @@ export default function Search() {
   const hasVideoFilters = videoPath.startsWith('/discover/');
   const resultPage = searchResultPage(p);
   const hasSearch = !!term0 || hasVideoFilters;
-  const wantsVideo = hasSearch && (f === 'all' || f === 'movie' || f === 'tv');
+  const wantsTitles =
+    hasSearch && (f === 'all' || f === 'movie' || f === 'tv' || f === 'author');
   const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
@@ -108,7 +112,7 @@ export default function Search() {
   }, [entryKey]);
   const scopes = (Object.keys(SCOPES) as Scope[]).filter(
     (s) =>
-      (prefs.showBooks || (s !== 'ebook' && s !== 'audio')) &&
+      (prefs.showBooks || (s !== 'ebook' && s !== 'audio' && s !== 'author')) &&
       (comicsOn || s !== 'comic' || f === 'comic')
   );
 
@@ -154,9 +158,7 @@ export default function Search() {
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
-        wantsVideo
-          ? api<Paged<VideoSearchResult>>(videoPath).catch(failure)
-          : null,
+        wantsTitles ? api<Paged<SearchResult>>(videoPath).catch(failure) : null,
         ...formats.map((fmt) =>
           wantBooks
             ? cachedApi<Paged<BookResult>>(
@@ -174,14 +176,17 @@ export default function Search() {
       if (!live) return;
       const foundComics = cr?.results || [];
       const foundTitles = (tr?.results || []).filter((r) =>
-        f === 'movie'
-          ? r.mediaType === 'movie' || r.mediaType === 'collection'
-          : f === 'tv'
-            ? r.mediaType === 'tv'
-            : r.mediaType === 'movie' ||
-              r.mediaType === 'tv' ||
-              r.mediaType === 'person' ||
-              r.mediaType === 'collection'
+        f === 'author'
+          ? r.mediaType === 'author'
+          : f === 'movie'
+            ? r.mediaType === 'movie' || r.mediaType === 'collection'
+            : f === 'tv'
+              ? r.mediaType === 'tv'
+              : r.mediaType === 'movie' ||
+                r.mediaType === 'tv' ||
+                r.mediaType === 'person' ||
+                r.mediaType === 'collection' ||
+                (prefs.showBooks && r.mediaType === 'author')
       );
       let foundBooks = brs.flatMap((r, i) =>
         (r?.results || [])
@@ -209,7 +214,7 @@ export default function Search() {
           .filter((b) => b.mediaType === 'book' && /^OL[1-9]\d*W$/.test(b.id))
           .map((b) => ({ ...b, bookFormat: 'audiobook' }));
       }
-      const pagedResults = wantsVideo ? tr : f === 'comic' ? cr : br;
+      const pagedResults = wantsTitles ? tr : f === 'comic' ? cr : br;
       setTotalPages(Math.min(500, pagedResults?.totalPages ?? 1));
       setTitles(foundTitles);
       setBooks(foundBooks);
@@ -231,7 +236,7 @@ export default function Search() {
     f,
     term0,
     hasSearch,
-    wantsVideo,
+    wantsTitles,
     cataloguePage,
     prefs.showBooks,
     attempt,
@@ -277,6 +282,9 @@ export default function Search() {
   const shows = (titles || []).filter(
     (t): t is TitleResult => t.mediaType === 'tv'
   );
+  const authors = (titles || []).filter(
+    (item): item is AuthorResult => item.mediaType === 'author'
+  );
   const bookCards = books || [];
   const comicCards = comics || [];
   const nothing =
@@ -287,6 +295,7 @@ export default function Search() {
     !collections.length &&
     !shows.length &&
     !people.length &&
+    !authors.length &&
     !bookCards.length &&
     !comicCards.length;
 
@@ -505,6 +514,21 @@ export default function Search() {
             <div className="grid">
               {people.map((person) => (
                 <PersonCard key={person.id} person={person} />
+              ))}
+            </div>
+          </Section>
+        )}
+        {!!authors.length && (
+          <Section title="Authors">
+            <div className="chips wrap">
+              {authors.map(({ id, name }) => (
+                <Link
+                  key={id}
+                  className="chip"
+                  to={'/author/' + encodeURIComponent(id)}
+                >
+                  {name}
+                </Link>
               ))}
             </div>
           </Section>
