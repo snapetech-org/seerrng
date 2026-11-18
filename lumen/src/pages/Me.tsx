@@ -10,6 +10,7 @@ import { canManageDownloads } from '../downloadPermissions';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { canReadIssues } from '../issuePermissions';
 import { mediaServer, services } from '../mediaServer';
 import {
   DISCOVER_ROWS,
@@ -197,6 +198,19 @@ export default function Me() {
                 to="/downloads"
                 aria-label="Open Download Inbox"
               >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {canReadIssues(user?.permissions) && (
+        <Section title="Support">
+          <div className="setlist">
+            <div className="set">
+              <b>Issues</b>
+              <Link className="go" to="/issues" aria-label="Open Issues">
                 Open <Icon name="chev" size="sm" />
               </Link>
             </div>

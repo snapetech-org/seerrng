@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
 
 function App() {
@@ -117,6 +118,20 @@ function App() {
                 }
               >
                 <IndexerSearch allowed={canSearchIndexers(user.permissions)} />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/issues/:issueId?"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Issues…
+                  </p>
+                }
+              >
+                <Issues />
               </Suspense>
             }
           />

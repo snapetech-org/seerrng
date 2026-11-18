@@ -178,3 +178,19 @@ after the change against the same fixture and followed the shortcut to the
 encoded movie category and title. The request control kept its existing
 dimensions. Other detail layouts, mobile, and bundled visual acceptance remain
 open.
+
+### Issue list and discussion increment
+
+Lumen serves `/issues`, `/issues/:issueId`, and the `?issue=` focused link.
+Authorized accounts can browse, search, filter by status, and page through
+reports with the native API's visibility rules. Issue details show comments,
+resolution, quality, and affected seasons or episodes. Managers and owners
+with Create Issues can comment, resolve, or reopen. View-only accounts get
+the discussion without write controls. The You page exposes the same route
+for narrow navigation.
+
+Headed Chrome at 1440 × 1000 checked the standalone list, TV episode scope,
+comment submission, and resolution against synthetic data. Mobile, bundled,
+and equivalent rendered native comparisons remain open. Creation, editing and
+deletion of reports or comments, advanced filters and title metadata, and
+Blocklist remain open.
