@@ -24,7 +24,7 @@ import { ComicCard } from '../components/comics';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useExtras, type ComicWork } from '../extras';
-import { useApi } from '../hooks';
+import { cachedApi, useApi } from '../hooks';
 import { Icon } from '../icons';
 import {
   clearRecentSearches,
@@ -79,6 +79,7 @@ export default function Search() {
   const hasVideoFilters = videoPath.startsWith('/discover/');
   const videoPage = videoSearchPage(p);
   const hasSearch = !!term0 || hasVideoFilters;
+  const wantsVideo = hasSearch && (f === 'all' || f === 'movie' || f === 'tv');
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
     hasSearch ? null : '/discover/trending'
@@ -133,7 +134,6 @@ export default function Search() {
     let live = true;
     setSearching(true);
     const t = setTimeout(async () => {
-      const wantTitles = f === 'all' || f === 'movie' || f === 'tv';
       const wantBooks =
         prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
       // one card per work, editions inside (AniList finds the manga)
@@ -148,17 +148,17 @@ export default function Search() {
         return null;
       };
       const comicsAsk = wantComics
-        ? api<Paged<ComicWork>>(
+        ? cachedApi<Paged<ComicWork>>(
             `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=1`
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
-        wantTitles
+        wantsVideo
           ? api<Paged<VideoSearchResult>>(videoPath).catch(failure)
           : null,
         ...formats.map((fmt) =>
           wantBooks
-            ? api<Paged<BookResult>>(
+            ? cachedApi<Paged<BookResult>>(
                 `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=1`
               ).catch((e: unknown) => {
                 catalogueUnavailable ||=
@@ -223,7 +223,16 @@ export default function Search() {
       clearTimeout(t);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoPath, f, term0, hasSearch, prefs.showBooks, attempt, comicsOn]);
+  }, [
+    videoPath,
+    f,
+    term0,
+    hasSearch,
+    wantsVideo,
+    prefs.showBooks,
+    attempt,
+    comicsOn,
+  ]);
 
   const setParam = (k: string, v: string) => {
     const n = new URLSearchParams(p);
@@ -523,8 +532,8 @@ export default function Search() {
           </Section>
         )}
       </div>
-      {hasVideoFilters && (videoPage > 1 || videoTotalPages > 1) && (
-        <nav className="toolbar" aria-label="Discovery Search Pages">
+      {wantsVideo && (videoPage > 1 || videoTotalPages > 1) && (
+        <nav className="toolbar" aria-label="Video Search Pages">
           <button
             className="btn btn-quiet btn-sm"
             type="button"

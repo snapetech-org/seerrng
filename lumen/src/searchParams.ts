@@ -80,5 +80,5 @@ export function scopedVideoSearchPath(
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
   }
-  return `/search?query=${encodeURIComponent(term)}&page=1`;
+  return `/search?query=${encodeURIComponent(term)}&page=${videoSearchPage(params)}`;
 }

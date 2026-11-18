@@ -561,7 +561,7 @@ function workflowDeepLink(
         }
         const page = req.query.page;
         if (
-          query.size > baseSize &&
+          (query.size > baseSize || Boolean(query.get('q'))) &&
           typeof page === 'string' &&
           /^[1-9]\d{0,2}$/.test(page)
         )
@@ -569,6 +569,12 @@ function workflowDeepLink(
       }
     } else if (type === 'book') {
       query.set('f', format === 'audiobook' ? 'audio' : 'ebook');
+    } else if (
+      query.get('q') &&
+      typeof req.query.page === 'string' &&
+      /^[1-9]\d{0,2}$/.test(req.query.page)
+    ) {
+      query.set('page', String(Math.min(Number(req.query.page), 500)));
     }
   }
 

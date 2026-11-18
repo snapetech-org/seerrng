@@ -6961,3 +6961,46 @@ test('a filter-only Classic series bookmark shows matching titles without a sear
   ).toHaveCount(0);
   await expect(page).toHaveURL(/\/search\?f=tv$/);
 });
+
+test('regular video search links to later pages and resets on scope change', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/search?**', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    const second = query.get('page') === '2';
+    return route.fulfill({
+      json: {
+        ...paged([
+          {
+            ...movie,
+            id: second ? 102 : 101,
+            title: second ? 'Second Page Film' : 'First Page Film',
+          },
+        ]),
+        totalPages: 2,
+      },
+    });
+  });
+  await page.goto('/search?q=Test');
+  await expect(
+    page.getByRole('link', { name: 'First Page Film' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Second Page Film' })
+  ).toBeVisible();
+  await expect(page).toHaveURL(/page=2$/);
+  await page.reload();
+  await expect(
+    page.getByRole('link', { name: 'Second Page Film' })
+  ).toBeVisible();
+  await page
+    .getByRole('group', { name: 'Search in' })
+    .getByRole('button', { name: 'Movies' })
+    .click();
+  await expect(
+    page.getByRole('link', { name: 'First Page Film' })
+  ).toBeVisible();
+  await expect(page).toHaveURL(/q=Test&f=movie$/);
+});
