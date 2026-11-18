@@ -1039,6 +1039,58 @@ describe('GET /discover/movies', () => {
     );
   });
 
+  it('attaches availability by media type when trending titles share a TMDB ID', async () => {
+    const tmdbId = 710003;
+    await getRepository(Media).save([
+      new Media({
+        tmdbId,
+        mediaType: MediaType.MOVIE,
+        status: MediaStatus.AVAILABLE,
+      }),
+      new Media({
+        tmdbId,
+        mediaType: MediaType.TV,
+        status: MediaStatus.PROCESSING,
+      }),
+    ]);
+    mockPrivate(ExternalAPI.prototype, 'get', async () => ({
+      page: 1,
+      total_pages: 1,
+      total_results: 2,
+      results: [
+        {
+          id: tmdbId,
+          media_type: 'movie',
+          title: 'Trending Film',
+          genre_ids: [],
+        },
+        {
+          id: tmdbId,
+          media_type: 'tv',
+          name: 'Trending Series',
+          genre_ids: [],
+        },
+      ],
+    }));
+
+    const agent = await login();
+    const response = await agent.get('/discover/trending');
+    assert.equal(response.status, 200);
+    assert.deepEqual(
+      response.body.results.map(
+        (item: { mediaType: string; mediaInfo: Media }) => [
+          item.mediaType,
+          item.mediaInfo.mediaType,
+          item.mediaInfo.status,
+        ]
+      ),
+      [
+        [MediaType.MOVIE, MediaType.MOVIE, MediaStatus.AVAILABLE],
+        [MediaType.TV, MediaType.TV, MediaStatus.PROCESSING],
+      ]
+    );
+  });
+
   it('rejects malformed trending query enums before provider lookup', async () => {
     const tmdbGet = mockPrivate(ExternalAPI.prototype, 'get', async () => {
       throw new Error('TMDB should not be called for malformed trending enums');

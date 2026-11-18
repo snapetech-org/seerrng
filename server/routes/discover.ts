@@ -2899,12 +2899,10 @@ discoverRoutes.get('/trending', async (req, res, next) => {
       movie: async () => ({
         data: await tmdb.getMovieTrending({ page, language, timeWindow }),
         mapper: mapMovieResult,
-        type: MediaType.MOVIE,
       }),
       tv: async () => ({
         data: await tmdb.getTvTrending({ page, language, timeWindow }),
         mapper: mapTvResult,
-        type: MediaType.TV,
       }),
       all: async () => ({
         data: await tmdb.getAllTrending({ page, language, timeWindow }),
@@ -2926,11 +2924,10 @@ discoverRoutes.get('/trending', async (req, res, next) => {
             return mapTvResult(result, media);
           }
         },
-        type: null,
       }),
     } as const;
 
-    const { data, mapper, type } = await trendingFetchers[mediaType]();
+    const { data, mapper } = await trendingFetchers[mediaType]();
     const mapTrendingResult = mapper as (
       result: (typeof data.results)[number],
       media?: Media
@@ -2988,18 +2985,20 @@ discoverRoutes.get('/trending', async (req, res, next) => {
       { includeActiveRequest: true }
     );
 
+    const mediaByIdentity = new Map(
+      media.map((entry) => [`${entry.mediaType}:${entry.tmdbId}`, entry])
+    );
+
     return res.status(200).json({
       page: data.page,
       totalPages: data.total_pages,
       totalResults: data.total_results,
       results: maturityFilteredTrendingResults.map((result) => {
-        // - If "type" is set (case: "movie" or "tv"), the mediaType must also match.
-        // - If "type" is not set (case: "all"), only filter by tmdbId.
-        const selectedMedia = media.find(
-          (med) =>
-            med.tmdbId === result.id && (type ? med.mediaType === type : true)
-        );
-
+        const type = isMovie(result) ? MediaType.MOVIE : MediaType.TV;
+        const selectedMedia =
+          isPerson(result) || isCollection(result)
+            ? undefined
+            : mediaByIdentity.get(`${type}:${result.id}`);
         return mapTrendingResult(result, selectedMedia);
       }),
     });

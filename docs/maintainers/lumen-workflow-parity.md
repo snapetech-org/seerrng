@@ -1309,3 +1309,8 @@ checks passed across desktop, iPhone, Android and tablet. The browser
 fixtures cover mixed identities, filter queries, and shared pagination
 in related video lists. Live results and matched visual comparisons
 remain open.
+
+The Trending API attaches availability and active request metadata by
+media type and TMDB ID. The route fixture verifies that an available
+movie and an in-progress series with the same ID retain distinct server
+records in the mixed feed.
