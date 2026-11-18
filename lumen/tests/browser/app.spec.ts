@@ -3908,11 +3908,12 @@ test('bundled Share consumes a native image handoff', async ({ page }) => {
   ).toBe(0);
 });
 
-test('Track Requests scopes the queue and confirms manager approval', async ({
+test('Track Requests scopes the queue and confirms manager approval and cancellation', async ({
   page,
 }) => {
   await fixtures(page);
   let approved = false;
+  let cancelled = false;
   await page.route('**/api/v1/soulseek/status', (route) =>
     route.fulfill({ json: { configured: true } })
   );
@@ -3920,6 +3921,7 @@ test('Track Requests scopes the queue and confirms manager approval', async ({
     route.fulfill({
       json: {
         results:
+          !cancelled &&
           new URL(route.request().url()).searchParams.get('scope') === 'all'
             ? [
                 {
@@ -3941,7 +3943,16 @@ test('Track Requests scopes the queue and confirms manager approval', async ({
     approved = true;
     return route.fulfill({ json: { status: 'searching' } });
   });
-  await page.goto('/track-requests');
+  await page.route('**/api/v1/soulseek/track-requests/7', (route) => {
+    expect(route.request().method()).toBe('DELETE');
+    cancelled = true;
+    return route.fulfill({ json: { status: 'cancelled' } });
+  });
+  const base = process.env.LUMEN_TEST_SHARE_BASE ?? '/';
+  await page.goto(base + 'track-requests');
+  await expect(
+    page.getByRole('link', { name: 'Identify a Song' })
+  ).toHaveAttribute('href', base + 'identify');
   await expect(
     page.getByText('No track requests match these filters.')
   ).toBeVisible();
@@ -3955,6 +3966,18 @@ test('Track Requests scopes the queue and confirms manager approval', async ({
     .click();
   await expect(page.getByText('Searches: 1 · Last matches: 2')).toBeVisible();
   expect(approved).toBe(true);
+  await page
+    .getByRole('button', { name: 'Cancel Request', exact: true })
+    .click();
+  expect(cancelled).toBe(false);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Cancel Request' })
+    .click();
+  await expect(
+    page.getByText('No track requests match these filters.')
+  ).toBeVisible();
+  expect(cancelled).toBe(true);
 });
 
 test('Song identification polls and requests the exact recording', async ({
