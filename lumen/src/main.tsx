@@ -22,6 +22,7 @@ import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
 import Browse, { GenreDirectory } from './pages/Browse';
 import Calendar from './pages/Calendar';
+import Collectors from './pages/Collectors';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
@@ -205,6 +206,7 @@ function App() {
           />
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/music" element={<Music />} />
+          <Route path="/music/collectors" element={<Collectors />} />
           <Route path="/music/:id" element={<AlbumDetail />} />
           <Route path="/artist/:id" element={<Artist />} />
           <Route path="/comics" element={<Comics />} />

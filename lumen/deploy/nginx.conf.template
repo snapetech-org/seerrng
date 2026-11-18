@@ -173,6 +173,9 @@ server {
   location ~ "^/series/(bookshelf-series:[0-9]{1,10}:[A-Za-z0-9_-]{1,2048}(?::[0-9]{1,10})?)/?$" {
     return 302 /book-series/$1;
   }
+  location ~ ^/discover/collectors/?$ {
+    return 302 /music/collectors;
+  }
   location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|patches|providers|sports)/?$ {
     return 302 /$1$is_args$args;
   }

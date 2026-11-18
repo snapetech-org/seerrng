@@ -2641,7 +2641,7 @@ behavior checks.
 | Native entry point | Behavior still to cover |
 | --- | --- |
 | `/users/[userId]` | Household profile with visible request activity and permitted watchlist previews. The managed-user editor and delegated request and watchlist links cover separate actions. |
-| `/discover/collectors` | Trusted collector picks, catalog album links, and starting release follows from a matched artist. The native screen uses `/collectors` and `/collectors/radar`. |
+| `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. Cover artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
 | `/setup` | First-run setup and initial configuration. The bundled server redirects uninitialized requests to native setup, and the companion delegates setup to the configured SeerrNG URL. |
@@ -2656,3 +2656,11 @@ companion image tests passed. Browser fixtures opened both directories
 and followed a genre to its filtered results on desktop, iPhone 13,
 Pixel 7, and iPad Pro 11. Matched visual comparison and live provider
 states remain unverified.
+
+Music now links to Collector Picks. Lumen reuses the music category gate
+and shows recommendation reasons, trusted collector counts, matched
+albums, and confirmed artist follows. The production build, two Express
+tests, ten companion image tests, and 20 collector-related browser tests
+passed. The new fixture covered the matched album and follow response on
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. Native cover artwork, live
+federation, and matched visual comparison remain unverified.
