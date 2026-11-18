@@ -2720,6 +2720,8 @@ browser fixtures stub provider responses.
 First-run setup now includes an optional Media Categories panel for
 instance availability and default user categories. It reuses the
 administration forms and preserves drafts when collapsed. The production
-build and four standalone browser fixtures passed. The fixture verifies
-saving a default category before initialization. Bundled rendering and
-matched visual acceptance for this section remain unverified.
+build and four browser fixtures per deployment passed. The fixture verifies
+saving a default category before initialization in both the standalone
+build and the embedded build mounted at `/lumen/`. The two suites used
+desktop, iPhone 13, Pixel 7, and iPad Pro 11 presets. Matched visual
+acceptance and live settings writes remain unverified.
