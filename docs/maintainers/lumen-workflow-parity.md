@@ -719,3 +719,14 @@ Standalone Chrome selected a sound and enabled an event. The synthetic
 endpoint accepted only the sound and event fields and returned the saved
 values on readback. Live delivery, mobile, bundled and native comparison
 remain open.
+
+### Browser push settings increment
+
+When enabled on the server, Notification Settings supports browser push event
+preferences and listing and removing registered devices. Removal is scoped to
+the current account and confirmed before the server subscription is deleted.
+New browser registration and Lumen service-worker delivery remain open.
+
+Standalone Chrome verified device removal against a synthetic API, with an
+empty device list on API readback. Mobile, bundled and native visual checks
+remain open.

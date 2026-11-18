@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { useAuth } from '../auth';
+import { PushDevices } from '../components/PushDevices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -27,6 +28,7 @@ const notificationEvents = [
 
 interface Preferences {
   emailEnabled?: boolean;
+  webPushEnabled?: boolean;
   pgpKey?: string | null;
   pushoverApplicationToken?: string | null;
   pushoverUserKey?: string | null;
@@ -46,6 +48,7 @@ interface Preferences {
     discord?: number;
     pushbullet?: number;
     pushover?: number;
+    webpush?: number;
   };
 }
 
@@ -81,7 +84,17 @@ function EventChoices({
   );
 }
 
-function EmailForm({ path, mask }: { path: string; mask: number }) {
+function EventForm({
+  path,
+  mask,
+  channel,
+  label,
+}: {
+  path: string;
+  mask: number;
+  channel: 'email' | 'webpush';
+  label: string;
+}) {
   const [saved, setSaved] = useState(mask);
   const [draft, setDraft] = useState(mask);
   const [busy, setBusy] = useState(false);
@@ -99,19 +112,19 @@ function EmailForm({ path, mask }: { path: string; mask: number }) {
     try {
       const result = await api<Preferences>(path, {
         method: 'POST',
-        body: JSON.stringify({ notificationTypes: { email: draft } }),
+        body: JSON.stringify({ notificationTypes: { [channel]: draft } }),
       });
       if (generation !== sessionGeneration()) return;
-      if (result.notificationTypes?.email !== draft) {
+      if (result.notificationTypes?.[channel] !== draft) {
         setError('Could not confirm the saved preferences. Try again.');
         return;
       }
       forget(path);
       setSaved(draft);
-      setNotice('Email preferences saved.');
+      setNotice(`${label} preferences saved.`);
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save email preferences. Try again.');
+        setError(`Could not save ${label} preferences. Try again.`);
     } finally {
       pending.current = false;
       setBusy(false);
@@ -125,7 +138,7 @@ function EmailForm({ path, mask }: { path: string; mask: number }) {
         void save();
       }}
     >
-      <p className="note">Choose which events SeerrNG can email you about.</p>
+      <p className="note">Choose which events send notifications.</p>
       <EventChoices mask={draft} disabled={busy} change={setDraft} />
       {notice && (
         <p className="note" role="status">
@@ -139,7 +152,7 @@ function EmailForm({ path, mask }: { path: string; mask: number }) {
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || draft === saved}>
-          {busy ? 'Saving…' : 'Save Email Preferences'}
+          {busy ? 'Saving…' : `Save ${label} Preferences`}
         </button>
       </div>
     </form>
@@ -959,7 +972,13 @@ function UserNotifications({ id }: { id: number }) {
         {data &&
           (data.emailEnabled ? (
             <>
-              <EmailForm key={mask} path={path} mask={mask} />
+              <EventForm
+                key={mask}
+                path={path}
+                mask={mask}
+                channel="email"
+                label="Email"
+              />
               <Section title="OpenPGP">
                 <OpenPgpForm
                   path={path}
@@ -1021,6 +1040,18 @@ function UserNotifications({ id }: { id: number }) {
             id={id}
             data={data}
           />
+        </Section>
+      )}
+      {data?.webPushEnabled && (
+        <Section title="Browser Push">
+          <EventForm
+            key={data.notificationTypes?.webpush ?? defaultMask}
+            path={path}
+            mask={data.notificationTypes?.webpush ?? defaultMask}
+            channel="webpush"
+            label="Browser Push"
+          />
+          <PushDevices id={id} />
         </Section>
       )}
     </>
