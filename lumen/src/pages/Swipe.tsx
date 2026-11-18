@@ -22,19 +22,117 @@ interface Status {
   mediaTypes: string[];
   bookFormats: string[];
 }
+interface Favorite {
+  mediaType: Category;
+  id: string;
+  title: string;
+}
+
+const sameFavorite = (a: Favorite, b: Favorite) =>
+  a.mediaType === b.mediaType && a.id === b.id;
+
+function FavoritePicker({
+  available,
+  selected,
+  disabled,
+  onChange,
+}: {
+  available: Category[];
+  selected: Favorite[];
+  disabled: boolean;
+  onChange: (favorites: Favorite[]) => void;
+}) {
+  const [preferred, setPreferred] = useState<Category>();
+  const category =
+    preferred && available.includes(preferred) ? preferred : available[0];
+  const favorites = useApi<Favorite[]>(
+    category ? `/swipe/favorites?mediaType=${category}` : null,
+    { currentPathOnly: true }
+  );
+  const options = [
+    ...(favorites.data ?? []),
+    ...selected.filter(
+      (seed) =>
+        seed.mediaType === category &&
+        !favorites.data?.some((option) => sameFavorite(seed, option))
+    ),
+  ];
+
+  return (
+    <fieldset className="setlist">
+      <legend>Favorite Titles ({selected.length} of 25)</legend>
+      {category && (
+        <label className="set cfg-row">
+          <span>Favorite Category</span>
+          <select
+            className="cfg-select"
+            value={category}
+            disabled={disabled}
+            onChange={(event) => setPreferred(event.target.value as Category)}
+          >
+            {available.map((key) => (
+              <option key={key} value={key}>
+                {categories[key]}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      <ServiceNote
+        what="favorite titles"
+        error={favorites.error}
+        retry={favorites.reload}
+      />
+      {category && !favorites.data && !favorites.error && (
+        <p className="note" role="status">
+          Loading favorite titles…
+        </p>
+      )}
+      {favorites.data && !options.length && (
+        <p className="note">
+          No titles are available from your library or requests.
+        </p>
+      )}
+      {options.map((seed) => {
+        const checked = selected.some((item) => sameFavorite(seed, item));
+        return (
+          <label className="set cfg-row" key={`${seed.mediaType}:${seed.id}`}>
+            <span>{seed.title}</span>
+            <input
+              type="checkbox"
+              checked={checked}
+              disabled={disabled || (!checked && selected.length >= 25)}
+              onChange={(event) =>
+                onChange(
+                  event.target.checked
+                    ? [...selected, seed]
+                    : selected.filter((item) => !sameFavorite(seed, item))
+                )
+              }
+            />
+          </label>
+        );
+      })}
+    </fieldset>
+  );
+}
+
 interface Profile {
   seriesRequest: 'first-season' | 'all-seasons';
   bookFormat: 'ebook' | 'audiobook';
   tasteNotes?: string;
   seedScope?: 'full' | 'rated' | 'favorites';
+  favoriteSeeds?: Favorite[];
 }
 
 function Preferences({
   profile,
   onSave,
+  available,
 }: {
   profile: Profile;
   onSave: (profile: Profile) => void;
+  available: Category[];
 }) {
   const [draft, setDraft] = useState(profile);
   const [busy, setBusy] = useState(false);
@@ -54,7 +152,13 @@ function Preferences({
     setFeedback(undefined);
     const generation = sessionGeneration();
     try {
-      const { seriesRequest, bookFormat, tasteNotes, seedScope } = draft;
+      const {
+        seriesRequest,
+        bookFormat,
+        tasteNotes,
+        seedScope,
+        favoriteSeeds,
+      } = draft;
       const saved = await api<Profile>('/swipe/profile', {
         method: 'PUT',
         body: JSON.stringify({
@@ -62,6 +166,7 @@ function Preferences({
           bookFormat,
           tasteNotes,
           seedScope,
+          ...(favoriteSeeds !== profile.favoriteSeeds ? { favoriteSeeds } : {}),
         }),
       });
       if (generation !== sessionGeneration()) return;
@@ -153,6 +258,14 @@ function Preferences({
             />
           </label>
         </div>
+        {draft.seedScope === 'favorites' && (
+          <FavoritePicker
+            available={available}
+            selected={draft.favoriteSeeds ?? []}
+            disabled={busy}
+            onChange={(favoriteSeeds) => update({ favoriteSeeds })}
+          />
+        )}
         {feedback && (
           <p className="note" role={feedback.error ? 'alert' : 'status'}>
             {feedback.text}
@@ -404,7 +517,11 @@ export default function Swipe() {
         retry={profile.reload}
       />
       {currentProfile && (
-        <Preferences profile={currentProfile} onSave={setSavedProfile} />
+        <Preferences
+          profile={currentProfile}
+          onSave={setSavedProfile}
+          available={available}
+        />
       )}
       {category && (
         <>

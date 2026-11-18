@@ -1845,3 +1845,14 @@ Favorite selection and live provider behavior remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-prefs-20261118/`.
+
+Selected Favorites now loads account-scoped movie, series, and book candidates
+and saves a selection of up to 25 titles. Previously saved titles remain
+selectable in their eligible categories even when absent from the options.
+The production build and eight browser checks passed using synthetic
+responses. Compared the favorite picker with the previous preferences form
+on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The check verified the selected
+series identity in the save payload. Live library ranking was outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-favorites-20261118/`.

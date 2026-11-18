@@ -85,6 +85,8 @@ test('saved Swipe preferences apply to the active series deck', async ({
       calls.push(body);
       return route.fulfill({ json: { ...profile, ...body } });
     }
+    if (path.endsWith('/swipe/favorites'))
+      return route.fulfill({ json: [{ ...series, mediaType: 'tv' }] });
     if (path.endsWith('/swipe/deck'))
       return route.fulfill({ json: { cards: [series], remaining: 1 } });
     if (path.endsWith('/request')) calls.push(request.postDataJSON());
@@ -95,6 +97,10 @@ test('saved Swipe preferences apply to the active series deck', async ({
   await page
     .getByRole('combobox', { name: 'Series Request Default' })
     .selectOption('all-seasons');
+  await page
+    .getByRole('combobox', { name: 'Recommendation Sources' })
+    .selectOption('favorites');
+  await page.getByRole('checkbox', { name: 'Fixture Series' }).check();
   await page.getByLabel('Taste Notes').fill('Slow mysteries');
   await page.getByRole('button', { name: 'Save Swipe Preferences' }).click();
   await expect(page.getByText('Swipe preferences saved.')).toBeVisible();
@@ -109,7 +115,8 @@ test('saved Swipe preferences apply to the active series deck', async ({
       seriesRequest: 'all-seasons',
       bookFormat: 'ebook',
       tasteNotes: 'Slow mysteries',
-      seedScope: 'full',
+      seedScope: 'favorites',
+      favoriteSeeds: [{ ...series, mediaType: 'tv' }],
     },
     { mediaType: 'tv', mediaId: 42, seasons: 'all' },
   ]);
