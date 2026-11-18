@@ -118,6 +118,19 @@ export default function Me() {
         </div>
       </div>
 
+      {((user?.permissions ?? 0) & (2 | 8)) !== 0 && (
+        <Section title="User Management">
+          <div className="setlist">
+            <div className="set">
+              <b>Users</b>
+              <Link className="go" to="/admin/users" aria-label="Open Users">
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          </div>
+        </Section>
+      )}
+
       {isAdmin && (
         <Section title="Administration">
           <div className="setlist">

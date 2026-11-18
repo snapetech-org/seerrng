@@ -4432,3 +4432,48 @@ test('About SeerrNG shows installed version and respects disabled update checks'
   );
   expect(checks).toBe(0);
 });
+
+test('Users lets delegated managers search without exposing the directory to members', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let permissions = 8;
+  let reads = 0;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 9, displayName: 'Viewer', permissions } })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) => {
+    reads++;
+    const query = new URL(route.request().url()).searchParams;
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: [
+          {
+            id: 1,
+            displayName:
+              query.get('q') === 'Owner & admin'
+                ? 'Owner Match'
+                : 'Owner Initial',
+            permissions: 2,
+            requestCount: 3,
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open Users', exact: true }).click();
+  await expect(page.getByText('Owner Initial')).toBeVisible();
+  await page.getByLabel('Search Users').fill('Owner & admin');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await expect(page.getByText('Owner Match')).toBeVisible();
+  expect(reads).toBe(2);
+  permissions = 32;
+  await page.goto('/admin/users');
+  await expect(page).toHaveURL(/\/me$/);
+  await expect(
+    page.getByRole('link', { name: 'Open Users', exact: true })
+  ).toHaveCount(0);
+  expect(reads).toBe(2);
+});

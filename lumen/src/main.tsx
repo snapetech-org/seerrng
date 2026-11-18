@@ -55,6 +55,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const AdminUsers = lazy(() => import('./pages/AdminUsers'));
 const AdminAbout = lazy(() => import('./pages/AdminAbout'));
 const AdminCaches = lazy(() => import('./pages/AdminCaches'));
 const AdminJobs = lazy(() => import('./pages/AdminJobs'));
@@ -380,6 +381,24 @@ function App() {
                   }
                 >
                   <AdminAbout />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              (user.permissions & (2 | 8)) !== 0 ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading users…
+                    </p>
+                  }
+                >
+                  <AdminUsers />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
