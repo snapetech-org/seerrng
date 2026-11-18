@@ -40,6 +40,8 @@ const targetTypes = {
   book: 'Book',
 };
 const bookshelfId = /^bookshelf:\d+:[A-Za-z0-9_-]+$/;
+const validGameId = (id: string) =>
+  /^[1-9]\d{0,15}$/.test(id) && Number.isSafeInteger(Number(id));
 const targetRoutes: Record<string, string> = {
   movie: '/movie',
   tv: '/tv',
@@ -69,6 +71,10 @@ interface FranchiseData {
 }
 
 function itemHref(item: FranchiseItem) {
+  if (item.mediaType === 'game' && item.href.startsWith('/game/game/')) {
+    const id = item.href.slice('/game/game/'.length);
+    if (validGameId(id)) return item.href;
+  }
   if (item.href.startsWith('/search?')) {
     const query = new URLSearchParams(item.href.slice('/search?'.length));
     return `/search?${new URLSearchParams({ q: query.get('q') || query.get('query') || item.title })}`;
@@ -144,11 +150,15 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       ? targetRoutes[toType]
       : '';
     const href =
-      route &&
-      (/^[A-Za-z0-9_-]{1,128}$/.test(toId) ||
-        (toType === 'book' && toId.length <= 128 && bookshelfId.test(toId)))
-        ? `${route}/${encodeURIComponent(toId)}`
-        : undefined;
+      toType === 'game' && validGameId(toId)
+        ? `/game/game/${toId}`
+        : route &&
+            (/^[A-Za-z0-9_-]{1,128}$/.test(toId) ||
+              (toType === 'book' &&
+                toId.length <= 128 &&
+                bookshelfId.test(toId)))
+          ? `${route}/${encodeURIComponent(toId)}`
+          : undefined;
     pending.current = true;
     setBusy(true);
     try {
