@@ -342,6 +342,24 @@ describe('sendImage disk boundaries', () => {
 });
 
 describe('readPrivateImageCacheFile', () => {
+  posixIt(
+    'rejects a regular file reached through a symlinked directory',
+    async () => {
+      const root = await fs.mkdtemp(path.join(os.tmpdir(), 'seerr-images-'));
+      temporaryDirectories.push(root);
+      const directory = path.join(root, 'directory');
+      const link = path.join(root, 'link');
+      await fs.mkdir(directory);
+      await fs.writeFile(path.join(directory, 'image.webp'), 'image');
+      await fs.symlink(directory, link);
+
+      await assert.rejects(
+        readPrivateImageCacheFile(path.join(link, 'image.webp')),
+        /symlink/i
+      );
+    }
+  );
+
   it('reads regular files through a bounded no-follow descriptor', async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'seerr-read-image-'));
     temporaryDirectories.push(root);

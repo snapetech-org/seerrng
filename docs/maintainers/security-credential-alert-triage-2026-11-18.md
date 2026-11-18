@@ -109,3 +109,12 @@ GitHub still lists these findings against older analyzed revisions.
 Dismissed alert 648 after tracing the ComicVine description formatter
 to its sole consumer. Lumen renders the resulting strings as React
 paragraph text.
+
+## Image cache filesystem paths
+
+Cache reads now check directory components before scanning entries or
+opening files for buffered or streamed responses. The existing
+descriptor checks still reject symlinks at the file itself and reject
+non-regular or multiply linked files. The stale-entry pruner enumerates
+directory names and checks each entry with lstat before descending.
+All 53 focused image proxy tests passed.

@@ -588,6 +588,7 @@ export const readPrivateImageCacheFile = async (
     throw new Error('Image cache read limit must be positive.');
   }
 
+  assertNoSymlinkDirectoryComponents(path.dirname(filePath));
   const handle = await promises.open(
     filePath,
     constants.O_RDONLY | constants.O_NOFOLLOW
@@ -752,6 +753,7 @@ export async function sendImage(
   let handle: Awaited<ReturnType<typeof promises.open>> | undefined;
   let streamOwnsHandle = false;
   try {
+    assertNoSymlinkDirectoryComponents(path.dirname(imageData.filePath));
     handle = await promises.open(
       imageData.filePath,
       constants.O_RDONLY | constants.O_NOFOLLOW
@@ -1019,6 +1021,7 @@ class ImageProxy {
 
     try {
       const directory = resolveCachePath(this.key, cacheKey);
+      assertNoSymlinkDirectoryComponents(directory);
       const files = await promises.readdir(directory);
 
       for (const file of files) {
