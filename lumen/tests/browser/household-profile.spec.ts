@@ -251,3 +251,52 @@ test('incomplete household preview responses recover independently', async ({
   await expect(page.getByText('No requests yet.')).toBeVisible();
   await expect(page.getByText('Total plays: 3')).toBeVisible();
 });
+
+test('a local account can upload a profile picture through Lumen', async ({
+  page,
+}) => {
+  const avatar = '/avatarproxy/local/19?v=' + 'a'.repeat(64);
+  let uploaded = false;
+  await page.route('**/avatarproxy/local/19?*', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"/>',
+    })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    switch (new URL(request.url()).pathname) {
+      case '/api/v1/auth/me':
+        return route.fulfill({ json: { id: 19, permissions: 32 } });
+      case '/api/v1/user/19':
+        return route.fulfill({
+          json: {
+            id: 19,
+            displayName: 'Local Member',
+            userType: 2,
+            ...(uploaded ? { avatar } : {}),
+          },
+        });
+      case '/api/v1/user/19/avatar':
+        expect(request.method()).toBe('PUT');
+        expect(request.headers()['content-type']).toBe('image/png');
+        expect(request.postDataBuffer()?.toString()).toBe('picture bytes');
+        uploaded = true;
+        return route.fulfill({ json: { id: 19, avatar } });
+      default:
+        return route.fulfill({ json: { results: [] } });
+    }
+  });
+  await page.goto('/household/me');
+  const button = page.getByRole('button', { name: 'Change Profile Picture' });
+  const chooser = page.waitForEvent('filechooser');
+  await button.click();
+  await (
+    await chooser
+  ).setFiles({
+    name: 'profile.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from('picture bytes'),
+  });
+  await expect(page.locator('.ph .avatar img')).toHaveAttribute('src', avatar);
+});

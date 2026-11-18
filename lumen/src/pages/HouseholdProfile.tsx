@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { tmdbImg, type RequestItem } from '../api';
+import { api, tmdbImg, type RequestItem } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section, shortDate } from '../components/cards';
 import { canManageRequests, canViewAllRequests } from '../components/detail';
 import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { initials } from '../components/Shell';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { sessionGeneration } from '../sessionState';
 import { describeAll } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
 
@@ -44,6 +46,80 @@ function ProfilePicture({ name, avatar }: { name: string; avatar?: string }) {
         initials(name)
       )}
     </span>
+  );
+}
+
+const avatarTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+function ProfilePictureUpload({
+  id,
+  saved,
+}: {
+  id: number;
+  saved: () => void;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  const pending = useRef(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function upload(file?: File) {
+    if (!file || pending.current) return;
+    if (!avatarTypes.includes(file.type)) {
+      setError('Choose a JPEG, PNG, or WebP image.');
+      return;
+    }
+    if (!file.size || file.size > 5 * 1024 * 1024) {
+      setError('Choose a nonempty picture no larger than 5 MB.');
+      return;
+    }
+    const generation = sessionGeneration();
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await api(`/user/${id}/avatar`, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      });
+      if (generation === sessionGeneration()) saved();
+    } catch (cause) {
+      if (generation === sessionGeneration())
+        setError(friendlyError(cause, 'Could not update profile picture.'));
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <input
+        ref={input}
+        type="file"
+        accept={avatarTypes.join(',')}
+        hidden
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = '';
+          void upload(file);
+        }}
+      />
+      <button
+        type="button"
+        className="btn btn-quiet btn-sm"
+        disabled={busy}
+        onClick={() => input.current?.click()}
+      >
+        {busy ? 'Uploading Picture…' : 'Change Profile Picture'}
+      </button>
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+    </>
   );
 }
 
@@ -293,6 +369,9 @@ export default function HouseholdProfile() {
           )
         }
       >
+        {loaded && own && profile.data?.userType === 2 && (
+          <ProfilePictureUpload key={id} id={id} saved={profile.reload} />
+        )}
         {loaded && canEdit && (
           <Link
             className="btn btn-quiet btn-sm"
