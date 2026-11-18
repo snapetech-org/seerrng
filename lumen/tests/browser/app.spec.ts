@@ -7279,6 +7279,21 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
     'href',
     '/book-series?query=Fixture+Series&format=audiobook'
   );
+  const form = page.getByRole('form', { name: 'Book Discovery Search' });
+  await expect(form.getByLabel('Narrator')).toHaveValue('Reader');
+  await form.getByLabel('Narrator').fill('Another Reader');
+  const edited = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/books' &&
+      url.searchParams.get('narrator') === 'Another Reader' &&
+      url.searchParams.get('author') === 'Author'
+    );
+  });
+  await form.getByRole('button', { name: 'Search Books' }).click();
+  await edited;
+  await page.reload();
+  await expect(form.getByLabel('Narrator')).toHaveValue('Another Reader');
   await page.getByRole('button', { name: 'Clear Book Search' }).click();
   await expect(page).not.toHaveURL(/search=|author=|narrator=/);
 });

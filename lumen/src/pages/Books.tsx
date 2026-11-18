@@ -403,19 +403,17 @@ function BooksGrid({
   const genres = show === 'have' ? [] : genresOf(p);
   const rawSubject = p.get('subject')?.trim() ?? '';
   const subject = show !== 'have' && rawSubject.length <= 512 ? rawSubject : '';
+  const searchFields = [
+    { key: 'search', apiKey: 'query', label: 'Title' },
+    { key: 'author', apiKey: 'author', label: 'Author' },
+    ...(format === 'audiobook'
+      ? [{ key: 'narrator', apiKey: 'narrator', label: 'Narrator' }]
+      : []),
+  ];
   const filters = new URLSearchParams();
-  for (const [key, apiKey] of [
-    ['search', 'query'],
-    ['author', 'author'],
-    ['narrator', 'narrator'],
-  ]) {
+  for (const { key, apiKey } of searchFields) {
     const value = p.get(key)?.trim();
-    if (
-      show !== 'have' &&
-      value &&
-      value.length <= 256 &&
-      (key !== 'narrator' || format === 'audiobook')
-    )
+    if (show !== 'have' && value && value.length <= 256)
       filters.set(apiKey, value);
   }
   const search = filters.get('query') ?? '';
@@ -518,22 +516,52 @@ function BooksGrid({
           <BookSeriesResults query={search} format={format} limit={6} />
         </Section>
       )}
-      {filters.size > 0 && (
-        <div className="toolbar">
-          <span className="note">{[...filters.values()].join(' · ')}</span>
-          <button
-            type="button"
-            className="chip"
-            onClick={() => {
-              const next = new URLSearchParams(p);
-              for (const key of ['search', 'author', 'narrator'])
-                next.delete(key);
-              keepList(next);
-            }}
-          >
-            Clear Book Search
+      {show !== 'have' && (
+        <form
+          className="toolbar"
+          aria-label="Book Discovery Search"
+          key={format + ':' + filters}
+          onSubmit={(event) => {
+            event.preventDefault();
+            const form = new FormData(event.currentTarget);
+            const next = new URLSearchParams(p);
+            for (const { key } of searchFields) {
+              const value = String(form.get(key) ?? '').trim();
+              if (value) next.set(key, value);
+              else next.delete(key);
+            }
+            keepList(next);
+          }}
+        >
+          {searchFields.map(({ key, apiKey, label }) => (
+            <label className="sel" key={key}>
+              <span className="lbl">{label}</span>
+              <input
+                className="cfg-input"
+                type="search"
+                name={key}
+                defaultValue={filters.get(apiKey) ?? ''}
+                maxLength={256}
+              />
+            </label>
+          ))}
+          <button className="btn btn-tonal btn-sm" type="submit">
+            Search Books
           </button>
-        </div>
+          {filters.size > 0 && (
+            <button
+              type="button"
+              className="chip"
+              onClick={() => {
+                const next = new URLSearchParams(p);
+                for (const { key } of searchFields) next.delete(key);
+                keepList(next);
+              }}
+            >
+              Clear Book Search
+            </button>
+          )}
+        </form>
       )}
       <div className="toolbar">
         {subject && (
