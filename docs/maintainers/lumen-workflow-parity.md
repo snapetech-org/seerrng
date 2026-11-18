@@ -2976,3 +2976,9 @@ destinations again. Forty standalone collection cases and four bundled
 movie collection cases passed, including a failed post-write check,
 retrying the read, and issuing only one write. Matched visual acceptance
 remains unverified.
+
+Movie collections now offer Watch Trailer for the first visible member in
+release order, using the same YouTube validation as title details.
+Twenty standalone and four bundled collection checks passed. The fixture
+verifies that an invalid trailer ID is skipped in favor of a valid one.
+Live metadata and matched visual acceptance remain unverified.

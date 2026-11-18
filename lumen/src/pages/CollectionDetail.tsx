@@ -1,6 +1,12 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api, MediaStatus, tmdbImg } from '../api';
+import {
+  api,
+  MediaStatus,
+  tmdbImg,
+  youtubeTrailerUrl,
+  type MovieDetails,
+} from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
@@ -33,6 +39,17 @@ function CollectionContent({ id }: { id: number }) {
   const { data, error, reload, refresh } = useApi<MovieCollection>(
     `/collection/${id}`
   );
+  const firstMovie = data?.id === id ? data.parts[0] : undefined;
+  const firstMovieDetails = useApi<MovieDetails>(
+    firstMovie &&
+      Number.isSafeInteger(firstMovie.id) &&
+      firstMovie.id > 0 &&
+      firstMovie.id <= 1_000_000_000
+      ? `/movie/${firstMovie.id}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const trailer = youtubeTrailerUrl(firstMovieDetails.data?.relatedVideos);
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
   const settings = usePublicSettings();
   const [requestOpen, setRequestOpen] = useState(false);
@@ -195,6 +212,16 @@ function CollectionContent({ id }: { id: number }) {
         />
         {data.parts.length > 0 && (
           <div className="dstatus">
+            {trailer && (
+              <a
+                className="btn btn-quiet btn-sm"
+                href={trailer}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Watch Trailer
+              </a>
+            )}
             {playableQualities.length > 0 && (
               <button
                 className="btn btn-tonal btn-sm"

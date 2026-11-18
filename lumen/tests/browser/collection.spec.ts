@@ -358,6 +358,15 @@ test('movie media-server collection sync checks on demand and adds visible verif
         return route.fulfill({
           json: { id: 19, name: 'Fixture Collection', parts },
         });
+      case '/movie/42':
+        return route.fulfill({
+          json: {
+            relatedVideos: [
+              { type: 'Trailer', site: 'YouTube', key: 'invalid' },
+              { type: 'Trailer', site: 'YouTube', key: 'AbCdEf12345' },
+            ],
+          },
+        });
       case '/collection/19/availability':
         checks++;
         expect(request.method()).toBe('POST');
@@ -391,6 +400,9 @@ test('movie media-server collection sync checks on demand and adds visible verif
     page.getByRole('heading', { name: 'Fixture Collection' })
   ).toBeVisible();
   expect(checks).toBe(0);
+  await expect(
+    page.getByRole('link', { name: 'Watch Trailer' })
+  ).toHaveAttribute('href', 'https://www.youtube.com/watch?v=AbCdEf12345');
   await page.getByText('Media Server Collection', { exact: true }).click();
   await page.getByRole('button', { name: 'Add to Media Server' }).click();
   const dialog = page.getByRole('dialog', {
