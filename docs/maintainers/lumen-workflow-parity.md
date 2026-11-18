@@ -134,6 +134,11 @@ AniList lookup also returned season options and manga source material
 for Naruto using isolated SQLite. Live browser navigation and matched
 visual review remain open.
 
+Continuation results explain when the next position was estimated from
+the end of a season and flag unconfirmed volume numbers. Eight targeted
+fixture-based browser checks passed per deployment, covering the wording,
+source links, and season selection. Matched visual review remains open.
+
 ### Release Calendar increment
 
 Lumen now serves `/calendar` in both deployments. The Release Calendar uses
