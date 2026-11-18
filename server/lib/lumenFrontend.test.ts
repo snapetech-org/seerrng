@@ -647,6 +647,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/watchlist/discover?search=Example&mediaType=book&page=2',
       ],
       ['/issues/71', '/lumen/issues/71'],
+      [
+        '/issues/71/?search=A%26B&mediaType=book&page=2&issue=72&ignored=1',
+        '/lumen/issues/71?mediaType=book&search=A%26B&page=2',
+      ],
       ['/issues?issue=71', '/lumen/issues?issue=71'],
       ['/downloads', '/lumen/downloads'],
       [

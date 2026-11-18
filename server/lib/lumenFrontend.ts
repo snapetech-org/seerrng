@@ -587,10 +587,8 @@ function workflowDeepLink(
     const suffix = query.toString();
     return `/lumen/book-series/catalog${suffix ? `?${suffix}` : ''}`;
   }
-  const issue = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
-  if (issue && Number.isSafeInteger(Number(issue))) {
-    return `/lumen/issues/${issue}`;
-  }
+  const issueId = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
+  const issueDetail = issueId && Number.isSafeInteger(Number(issueId));
 
   if (nativePath === '/discover/trending') {
     if (req.query.mediaType === 'music') return '/lumen/music';
@@ -613,9 +611,9 @@ function workflowDeepLink(
   }
 
   const userWatchlist = userDestination && userWorkflow === 'watchlist';
-  let destination = userWatchlist
-    ? `/watchlist/user/${userId}`
-    : workflowDestinations.get(nativePath);
+  let destination = workflowDestinations.get(nativePath);
+  if (userWatchlist) destination = `/watchlist/user/${userId}`;
+  if (issueDetail) destination = `/issues/${issueId}`;
   if (!destination) return;
   if (destination === '/books' || destination === '/audiobooks') {
     if (req.query.format === 'audiobook') destination = '/audiobooks';
@@ -624,8 +622,9 @@ function workflowDeepLink(
   const query = new URLSearchParams();
 
   for (const key of workflowQueryKeys[
-    userWatchlist ? '/watchlist' : destination
+    userWatchlist ? '/watchlist' : issueDetail ? '/issues' : destination
   ] ?? []) {
+    if (issueDetail && key === 'issue') continue;
     const value = req.query[key];
     if (typeof value !== 'string') continue;
     if (destination === '/share') {
