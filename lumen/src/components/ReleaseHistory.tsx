@@ -1,9 +1,21 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Section } from './cards';
 
 const releasesUrl =
   'https://api.github.com/repos/snapetech-org/seerrng/releases?per_page=20';
 const releasePage = 'https://github.com/snapetech-org/seerrng/releases/tag/';
+const Markdown = lazy(() => import('react-markdown'));
+
+function releaseLink(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password
+      ? url.href
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 interface Release {
   tag: string;
@@ -30,6 +42,49 @@ function readReleases(value: unknown): Release[] {
       },
     ];
   });
+}
+
+function ReleaseRow({
+  release,
+  latest,
+  installed,
+}: {
+  release: Release;
+  latest: boolean;
+  installed: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const { tag, title, notes } = release;
+
+  return (
+    <li className="set">
+      <details onToggle={(event) => setExpanded(event.currentTarget.open)}>
+        <summary>
+          {title}
+          {latest ? ' · Latest' : ''}
+          {tag.replace(/^v/, '') === installed.replace(/^v/, '')
+            ? ' · Installed'
+            : ''}
+        </summary>
+        {expanded && notes && (
+          <div className="ov long">
+            <Suspense fallback={<p role="status">Loading release notes…</p>}>
+              <Markdown
+                skipHtml
+                disallowedElements={['img']}
+                urlTransform={releaseLink}
+              >
+                {notes}
+              </Markdown>
+            </Suspense>
+          </div>
+        )}
+        <a className="go" href={releasePage + encodeURIComponent(tag)}>
+          View on GitHub
+        </a>
+      </details>
+    </li>
+  );
 }
 
 export default function ReleaseHistory({ installed }: { installed: string }) {
@@ -87,25 +142,13 @@ export default function ReleaseHistory({ installed }: { installed: string }) {
             <p className="note">No releases available.</p>
           ) : (
             <ul className="setlist">
-              {releases.map(({ tag, title, notes }, index) => (
-                <li className="set" key={tag}>
-                  <details>
-                    <summary>
-                      {title}
-                      {index === 0 ? ' · Latest' : ''}
-                      {tag.replace(/^v/, '') === installed.replace(/^v/, '')
-                        ? ' · Installed'
-                        : ''}
-                    </summary>
-                    {notes && <p className="ov long">{notes}</p>}
-                    <a
-                      className="go"
-                      href={releasePage + encodeURIComponent(tag)}
-                    >
-                      View on GitHub
-                    </a>
-                  </details>
-                </li>
+              {releases.map((release, index) => (
+                <ReleaseRow
+                  key={release.tag}
+                  release={release}
+                  latest={index === 0}
+                  installed={installed}
+                />
               ))}
             </ul>
           )}

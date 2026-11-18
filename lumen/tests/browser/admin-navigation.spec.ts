@@ -141,7 +141,8 @@ test('About opens release history on demand and retries a failed lookup', async 
     })
   );
   let lookups = 0;
-  const notes = 'Fixture release notes.\nhttps://github.com/' + 'a'.repeat(200);
+  const longWord = 'a'.repeat(200);
+  const notes = `### Fixes\n\n- **Fixture release notes.** ${longWord}\n- [Compare versions](https://github.com/snapetech-org/seerrng/compare/v3.72.37...v3.72.38)`;
   await page.route(
     'https://api.github.com/repos/snapetech-org/seerrng/releases?per_page=20',
     (route) =>
@@ -169,7 +170,17 @@ test('About opens release history on demand and retries a failed lookup', async 
   await page
     .getByText('Fixture Release · Latest · Installed', { exact: true })
     .click();
-  const releaseNotes = page.getByText(notes);
+  await expect(page.getByRole('heading', { name: 'Fixes' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Compare versions' })
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/snapetech-org/seerrng/compare/v3.72.37...v3.72.38'
+  );
+  const releaseNotes = page
+    .getByRole('listitem')
+    .filter({ hasText: longWord })
+    .last();
   await expect(releaseNotes).toBeVisible();
   expect(
     await releaseNotes.evaluate((element) => {
