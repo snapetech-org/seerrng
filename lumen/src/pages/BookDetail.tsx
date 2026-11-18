@@ -141,17 +141,15 @@ export default function BookDetail() {
   const { user } = useAuth();
   // useParams has already decoded it (decoding again breaks on a literal %)
   const plainId = bookIdFor(id, f);
-  const lookupTitle = plainId.startsWith('bookshelf:')
-    ? p.get('lookupTitle')
-    : null;
-  const lookup =
-    lookupTitle && lookupTitle.length <= 512
-      ? `?${new URLSearchParams({ lookupTitle })}`
-      : '';
-  const formatHref = (format: 'ebook' | 'audiobook') =>
-    bookDetailPath(id, format, lookupTitle);
+  const rawLookupTitle = plainId.startsWith('bookshelf:')
+    ? p.get('lookupTitle')?.trim()
+    : undefined;
+  const lookupTitle =
+    rawLookupTitle && rawLookupTitle.length <= 512 ? rawLookupTitle : undefined;
+  const lookup = lookupTitle ? `?${new URLSearchParams({ lookupTitle })}` : '';
   const first = useApi<BookDetails>(
-    `/book/${encodeURIComponent(plainId)}${lookup}`
+    `/book/${encodeURIComponent(plainId)}${lookup}`,
+    { currentPathOnly: true }
   );
   const bookId = plainId;
   // Books stored under a bare Hardcover id can come back without a description while the
@@ -168,6 +166,8 @@ export default function BookDetail() {
         : first.data,
     [first.data, alt.data, altId]
   );
+  const formatHref = (format: 'ebook' | 'audiobook') =>
+    bookDetailPath(id, format, lookupTitle ?? first.data?.title);
   const error = first.error;
   const progressMedia = useLiveMediaProgress(
     bookMediaForFormat(b?.mediaInfo, f),

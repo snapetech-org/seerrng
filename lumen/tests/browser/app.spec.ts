@@ -3936,6 +3936,20 @@ test('music and Open Library book details open Associations with exact identity'
   await expect(
     page.getByRole('link', { name: 'Back to Details' })
   ).toHaveAttribute('href', '/book/OL123W?f=audio');
+  await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
+    route.fulfill({
+      json: {
+        id: 'bookshelf:1:fixture',
+        title: 'Local Book',
+        description: 'Description',
+      },
+    })
+  );
+  await page.goto('/book/bookshelf%3A1%3Afixture');
+  await expect(page.getByRole('link', { name: /^Audiobook / })).toHaveAttribute(
+    'href',
+    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Book'
+  );
   await page.goto('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book');
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
   await expect(association).toHaveCount(0);
