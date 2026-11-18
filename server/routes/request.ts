@@ -3111,6 +3111,7 @@ requestRoutes.get<
 type MediaRequestCreationResponse =
   | MediaRequest
   | StreamingRequestPolicyRejectionResponse
+  | { code: 'REQUEST_QUOTA_EXCEEDED'; message: string }
   | {
       status: TvSeasonWatchGateError['status'];
       code: 'TV_SEASON_WATCH_GATE';
