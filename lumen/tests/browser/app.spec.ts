@@ -4815,3 +4815,46 @@ test('Users delegates only held permissions and preserves high permission bits',
   expect(target.requestServices).toEqual(['radarr:4', 'sonarr:3']);
   expect(target.contentRestricted).toBe(true);
 });
+
+test('Users protects administrators and confirms deletion of the selected member', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 8, displayName: 'Manager', permissions: 8 } })
+  );
+  const people = [
+    { id: 1, displayName: 'Owner', permissions: 2 },
+    { id: 2, displayName: 'Second Admin', permissions: 2 },
+    { id: 19, displayName: 'Viewer', permissions: 32 },
+  ];
+  let deleted = false;
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: deleted ? people.slice(0, 2) : people,
+      },
+    })
+  );
+  await page.route('**/api/v1/user/19', (route) => {
+    expect(route.request().method()).toBe('DELETE');
+    deleted = true;
+    return route.fulfill({ status: 200, json: people[2] });
+  });
+  await page.goto('/admin/users');
+  await expect(page.getByText('Second Admin')).toBeVisible();
+  const remove = page.getByRole('button', { name: 'Delete User', exact: true });
+  await expect(remove).toHaveCount(1);
+  await remove.click();
+  const dialog = page.getByRole('alertdialog', { name: 'Delete Viewer?' });
+  await dialog.getByRole('button', { name: 'Keep User' }).click();
+  expect(deleted).toBe(false);
+  await remove.click();
+  await dialog.getByRole('button', { name: 'Delete User' }).click();
+  await expect(page.getByText('Deleted Viewer.')).toBeVisible();
+  await expect(
+    page.getByRole('listitem').filter({ hasText: 'Viewer' })
+  ).toHaveCount(0);
+  expect(deleted).toBe(true);
+});

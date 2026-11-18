@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import ManagedMaturity from '../components/ManagedMaturity';
@@ -153,7 +154,11 @@ function CreateLocalUser({
 }
 
 export default function AdminUsers() {
-  const { user: actor } = useAuth();
+  const { user: actor, signOut } = useAuth();
+  const [remove, setRemove] = useState<DirectoryUser>();
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState('');
+  const deleting = useRef(false);
   const [quotaUser, setQuotaUser] = useState<number>();
   const [categoryUser, setCategoryUser] = useState<number>();
   const [maturityUser, setMaturityUser] = useState<number>();
@@ -190,6 +195,37 @@ export default function AdminUsers() {
     setParams(next);
   }
 
+  function canDelete(target: DirectoryUser) {
+    return (
+      !!actor &&
+      target.id !== 1 &&
+      (actor.id === 1 || (target.permissions & 2) === 0)
+    );
+  }
+
+  async function deleteUser() {
+    if (!remove || !canDelete(remove) || deleting.current) return;
+    deleting.current = true;
+    setRemoving(true);
+    setRemoveError('');
+    try {
+      await api(`/user/${remove.id}`, { method: 'DELETE' }, 'empty');
+      setRemove(undefined);
+      setNotice(`Deleted ${remove.displayName}.`);
+      if (remove.id === actor?.id) await signOut();
+      else if (page > 1 && data?.results.length === 1)
+        update('page', page === 2 ? '' : String(page - 1));
+      else reload();
+    } catch (failure) {
+      setRemoveError(friendlyError(failure, 'Could not delete the account.'));
+      setRemove(undefined);
+      reload();
+    } finally {
+      deleting.current = false;
+      setRemoving(false);
+    }
+  }
+
   return (
     <>
       <header className="ph">
@@ -223,6 +259,11 @@ export default function AdminUsers() {
           }}
           onClose={() => setCreating(false)}
         />
+      )}
+      {removeError && (
+        <p className="note" role="alert">
+          {removeError}
+        </p>
       )}
       {notice && (
         <p className="note" role="status">
@@ -403,6 +444,19 @@ export default function AdminUsers() {
                     )}
                   </>
                 )}
+              {canDelete(user) && (
+                <button
+                  className="btn btn-quiet btn-sm"
+                  disabled={removing}
+                  onClick={() => {
+                    setNotice('');
+                    setRemoveError('');
+                    setRemove(user);
+                  }}
+                >
+                  Delete User
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -425,6 +479,19 @@ export default function AdminUsers() {
             Next Page
           </button>
         </div>
+      )}
+      {remove && (
+        <ConfirmSheet
+          title={`Delete ${remove.displayName}?`}
+          body="This permanently deletes the account and its request history."
+          confirm="Delete User"
+          cancel="Keep User"
+          busy={removing}
+          onConfirm={() => void deleteUser()}
+          onClose={() => {
+            if (!deleting.current) setRemove(undefined);
+          }}
+        />
       )}
     </>
   );
