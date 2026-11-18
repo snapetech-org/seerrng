@@ -221,3 +221,14 @@ destination. Live magazine downloads and library scans were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-lazylibrarian-20261118/`.
+
+### Mylar, Kapowarr, and BackIssue services
+
+Lumen administrators can manage these services from You. The editor preserves
+each service's scan and search options, and requires a root folder for Kapowarr.
+Compared the tested add forms with LazyLibrarian on desktop, iPhone 13, Pixel 7,
+and iPad Pro 11. The production build and 28 browser checks passed with synthetic
+responses. Live provider connections and acquisition were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-collectors-20261118/`.

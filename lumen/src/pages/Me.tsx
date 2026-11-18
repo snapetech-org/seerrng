@@ -215,6 +215,36 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Mylar Services</b>
+              <Link
+                className="go"
+                to="/admin/mylar"
+                aria-label="Open Mylar Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
+              <b>Kapowarr Services</b>
+              <Link
+                className="go"
+                to="/admin/kapowarr"
+                aria-label="Open Kapowarr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
+              <b>BackIssue Services</b>
+              <Link
+                className="go"
+                to="/admin/backissue"
+                aria-label="Open BackIssue Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"

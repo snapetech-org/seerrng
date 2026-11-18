@@ -7,7 +7,15 @@ import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
 type Provider =
-  'radarr' | 'sonarr' | 'lidarr' | 'whisparr' | 'readarr' | 'lazylibrarian';
+  | 'radarr'
+  | 'sonarr'
+  | 'lidarr'
+  | 'whisparr'
+  | 'readarr'
+  | 'lazylibrarian'
+  | 'mylar'
+  | 'kapowarr'
+  | 'backissue';
 const names = {
   radarr: 'Radarr',
   sonarr: 'Sonarr',
@@ -15,6 +23,9 @@ const names = {
   whisparr: 'Whisparr',
   readarr: 'Book and Audiobook',
   lazylibrarian: 'LazyLibrarian',
+  mylar: 'Mylar',
+  kapowarr: 'Kapowarr',
+  backissue: 'BackIssue',
 };
 const ports = {
   radarr: 7878,
@@ -23,6 +34,9 @@ const ports = {
   whisparr: 6969,
   readarr: 8787,
   lazylibrarian: 5299,
+  mylar: 8090,
+  kapowarr: 5656,
+  backissue: 8787,
 };
 interface Service {
   id?: number;
@@ -36,6 +50,7 @@ interface Service {
   activeProfileId: number;
   activeProfileName?: string;
   activeDirectory: string;
+  rootFolder?: string;
   isDefault?: boolean;
   is4k?: boolean;
   syncEnabled?: boolean;
@@ -126,6 +141,9 @@ function ServiceForm({
   const video = isSonarr || provider === 'radarr';
   const isBook = provider === 'readarr';
   const isLazyLibrarian = provider === 'lazylibrarian';
+  const comicCollector = provider === 'mylar' || provider === 'kapowarr';
+  const collector =
+    isLazyLibrarian || comicCollector || provider === 'backissue';
   const hasMetadata = provider === 'lidarr' || isBook;
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
@@ -135,7 +153,7 @@ function ServiceForm({
   );
   const backend = draft.backend ?? 'readarr';
   const managed = isBook && backend !== 'readarr';
-  const usesProfiles = !managed && !isLazyLibrarian;
+  const usesProfiles = !managed && !collector;
   const bookorbit = backend === 'bookorbit';
   let mappings: Record<string, number> | undefined;
   if (backend === 'bindery') {
@@ -201,7 +219,8 @@ function ServiceForm({
   const configurationValid =
     !!draft.name.trim() &&
     (!usesProfiles
-      ? backend !== 'bindery' || mappings !== undefined
+      ? (backend !== 'bindery' || mappings !== undefined) &&
+        (provider !== 'kapowarr' || !!draft.rootFolder?.trim())
       : draft.activeProfileId > 0 &&
         !!draft.activeDirectory &&
         (!hasMetadata ||
@@ -305,12 +324,15 @@ function ServiceForm({
       await api(path, {
         method: initial.id === undefined ? 'POST' : 'PUT',
         body: JSON.stringify(
-          isLazyLibrarian
+          collector
             ? {
                 ...connection,
                 name: draft.name,
                 externalUrl: draft.externalUrl,
-                tags: [],
+                tags: draft.tags ?? [],
+                rootFolder: comicCollector
+                  ? draft.rootFolder?.trim() || undefined
+                  : undefined,
                 isDefault: draft.isDefault ?? false,
                 syncEnabled: draft.syncEnabled ?? false,
                 preventSearch: draft.preventSearch ?? false,
@@ -496,21 +518,34 @@ function ServiceForm({
               />
             </label>
           ))}
+          {comicCollector && (
+            <label className="set cfg-row">
+              <span>Root Folder</span>
+              <input
+                className="cfg-input"
+                value={draft.rootFolder ?? ''}
+                required={provider === 'kapowarr'}
+                disabled={busy}
+                onChange={(event) => change({ rootFolder: event.target.value })}
+              />
+            </label>
+          )}
           {flags
             .filter(
               ([field]) =>
                 video ||
                 (field !== 'is4k' &&
                   field !== 'requestButtonAnimeOnly' &&
-                  (!(isBook || isLazyLibrarian) || field !== 'tagRequests') &&
-                  (!managed || field !== 'preventSearch'))
+                  (!(isBook || collector) || field !== 'tagRequests') &&
+                  (!(managed || provider === 'backissue') ||
+                    field !== 'preventSearch'))
             )
             .map(([field, label]) => (
               <label className="set cfg-row" key={field}>
                 <span>
-                  {isLazyLibrarian && field === 'syncEnabled'
+                  {collector && field === 'syncEnabled'
                     ? 'Enable Library Scan'
-                    : isLazyLibrarian && field === 'preventSearch'
+                    : collector && field === 'preventSearch'
                       ? 'Search on Approval'
                       : label}
                 </span>
@@ -518,14 +553,14 @@ function ServiceForm({
                   type="checkbox"
                   disabled={busy}
                   checked={
-                    isLazyLibrarian && field === 'preventSearch'
+                    collector && field === 'preventSearch'
                       ? !draft.preventSearch
                       : draft[field] === true
                   }
                   onChange={(event) =>
                     change({
                       [field]:
-                        isLazyLibrarian && field === 'preventSearch'
+                        collector && field === 'preventSearch'
                           ? !event.target.checked
                           : event.target.checked,
                     })
@@ -625,7 +660,7 @@ function ServiceForm({
               </select>
             </label>
           ) : null}
-          {!isLazyLibrarian && (
+          {!collector && (
             <label className="set cfg-row">
               <span>Download Queue Size</span>
               <input

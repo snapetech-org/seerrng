@@ -545,6 +545,60 @@ function App() {
             }
           />
           <Route
+            path="/admin/mylar"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Mylar services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="mylar" provider="mylar" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/kapowarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Kapowarr services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="kapowarr" provider="kapowarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/backissue"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading BackIssue services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="backissue" provider="backissue" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
             path="/admin/whisparr"
             element={
               isAdministrator(user.permissions) ? (
