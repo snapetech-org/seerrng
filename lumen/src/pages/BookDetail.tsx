@@ -147,6 +147,12 @@ export default function BookDetail() {
     lookupTitle && lookupTitle.length <= 512
       ? `?${new URLSearchParams({ lookupTitle })}`
       : '';
+  function formatHref(format: 'ebook' | 'audiobook') {
+    const params = new URLSearchParams(lookup);
+    if (format === 'audiobook') params.set('f', 'audio');
+    const suffix = params.toString();
+    return `/book/${encodeURIComponent(bookIdFor(id, format))}${suffix ? `?${suffix}` : ''}`;
+  }
   const first = useApi<BookDetails>(
     `/book/${encodeURIComponent(plainId)}${lookup}`
   );
@@ -218,10 +224,7 @@ export default function BookDetail() {
       <div className="empty">
         <b>No ebook edition found</b>ChaptarrNG only knows this book as an
         audiobook.{' '}
-        <Link
-          to={`/book/${encodeURIComponent(bookIdFor(bookId, 'audiobook'))}?f=audio`}
-          style={{ color: 'var(--accent)' }}
-        >
+        <Link to={formatHref('audiobook')} style={{ color: 'var(--accent)' }}>
           See the audiobook
         </Link>
       </div>
@@ -444,7 +447,7 @@ export default function BookDetail() {
         <div className="fmt">
           <Link
             replace
-            to={`/book/${encodeURIComponent(bookIdFor(bookId, 'ebook'))}`}
+            to={formatHref('ebook')}
             aria-current={!audio ? 'page' : undefined}
           >
             <b>
@@ -455,7 +458,7 @@ export default function BookDetail() {
           </Link>
           <Link
             replace
-            to={`/book/${encodeURIComponent(bookIdFor(bookId, 'audiobook'))}?f=audio`}
+            to={formatHref('audiobook')}
             aria-current={audio ? 'page' : undefined}
           >
             <b>

@@ -3895,6 +3895,15 @@ test('music and Open Library book details open Associations with exact identity'
   await page.goto('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book');
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
   await expect(association).toHaveCount(0);
+  await page.getByRole('link', { name: /^Audiobook / }).click();
+  const audio = new URL(page.url());
+  expect(audio.searchParams.get('f')).toBe('audio');
+  expect(audio.searchParams.get('lookupTitle')).toBe('Local Book');
+  await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
+  await page.getByRole('link', { name: /Ebook.*EPUB/i }).click();
+  const ebook = new URL(page.url());
+  expect(ebook.searchParams.has('f')).toBe(false);
+  expect(ebook.searchParams.get('lookupTitle')).toBe('Local Book');
 });
 
 test('native companion discovery filters retain genre matching and clear without reapplying aliases', async ({
