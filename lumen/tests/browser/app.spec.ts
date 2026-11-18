@@ -4519,6 +4519,54 @@ test('General Settings selects bundled or standalone Lumen and scopes the native
   );
 });
 
+test('General Settings preserves a sign-in method and saves Jellyfin Quick Connect policy', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const saved = {
+    applicationTitle: 'SeerrNG',
+    mediaServerType: 2,
+    localLogin: true,
+    mediaServerLogin: true,
+    jellyfinQuickConnectOnly: false,
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(saved, body);
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/general');
+  const local = page.getByRole('checkbox', { name: 'Local Sign-In' });
+  const media = page.getByRole('checkbox', { name: 'Media Server Sign-In' });
+  const quick = page.getByRole('checkbox', {
+    name: 'Require Jellyfin Quick Connect',
+  });
+  const save = page.getByRole('button', { name: 'Save Application Settings' });
+  await local.uncheck();
+  await media.uncheck();
+  await expect(save).toBeDisabled();
+  await expect(page.getByRole('alert')).toContainText(
+    'Keep at least one sign-in method enabled.'
+  );
+  await expect(quick).toHaveCount(0);
+  expect(writes).toEqual([]);
+  await media.check();
+  await quick.check();
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  expect(writes).toEqual([
+    { localLogin: false, jellyfinQuickConnectOnly: true },
+  ]);
+  await page.reload();
+  await expect(local).not.toBeChecked();
+  await expect(media).toBeChecked();
+  await expect(quick).toBeChecked();
+});
+
 test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   page,
 }) => {

@@ -1681,3 +1681,10 @@ the bundled-only non-administrator lock. Eight standalone browser checks
 verified mode selection, companion URL requirements, lock clearing when
 leaving bundled mode, and readback. Live mode switching and matched native
 visual acceptance remain open.
+
+General Settings also manages local and media-server sign-in. Jellyfin
+instances expose the Quick Connect-only switch while media-server sign-in
+is enabled. The form rejects disabling both sign-in methods. Twelve
+standalone General Settings browser checks covered save and readback,
+including the Jellyfin fixture and the validation state. Live sign-in,
+bundled rendering, and matched native visual acceptance remain open.

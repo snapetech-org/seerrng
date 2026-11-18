@@ -22,6 +22,9 @@ interface ApplicationSettings {
   enforceDefaultFrontend: boolean;
   lockLumenForNonAdmins: boolean;
   lumenPublicUrl: string;
+  localLogin: boolean;
+  mediaServerLogin: boolean;
+  jellyfinQuickConnectOnly: boolean;
 }
 
 const textFields = [
@@ -49,9 +52,30 @@ const switches = [
     label: 'Keep Non-Administrators in Lumen',
     help: 'Redirect signed-in non-administrators from native pages to bundled Lumen.',
   },
+  {
+    key: 'localLogin',
+    label: 'Local Sign-In',
+    help: 'Allow users to sign in with their SeerrNG email and password.',
+  },
+  {
+    key: 'mediaServerLogin',
+    label: 'Media Server Sign-In',
+    help: 'Allow users to sign in with their linked media server account.',
+  },
+  {
+    key: 'jellyfinQuickConnectOnly',
+    label: 'Require Jellyfin Quick Connect',
+    help: 'Use Quick Connect for Jellyfin sign-in and disable Jellyfin password and plugin sign-in.',
+  },
 ] as const;
 
-function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
+function ApplicationForm({
+  initial,
+  jellyfin,
+}: {
+  initial: ApplicationSettings;
+  jellyfin: boolean;
+}) {
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -72,9 +96,14 @@ function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
   const changed = (Object.keys(values) as (keyof ApplicationSettings)[]).filter(
     (key) => values[key] !== saved[key]
   );
+  const loginChanged =
+    changed.includes('localLogin') || changed.includes('mediaServerLogin');
+  const loginValid =
+    !loginChanged || values.localLogin || values.mediaServerLogin;
   const valid =
     Boolean(values.applicationTitle) &&
-    (values.defaultFrontend !== 'external' || Boolean(values.lumenPublicUrl));
+    (values.defaultFrontend !== 'external' || Boolean(values.lumenPublicUrl)) &&
+    loginValid;
 
   function change<Key extends keyof ApplicationSettings>(
     key: Key,
@@ -180,11 +209,13 @@ function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
           </label>
         )}
         {switches
-          .filter(
-            ({ key }) =>
-              key !== 'lockLumenForNonAdmins' ||
-              draft.defaultFrontend === 'lumen'
-          )
+          .filter(({ key }) => {
+            if (key === 'lockLumenForNonAdmins')
+              return draft.defaultFrontend === 'lumen';
+            if (key === 'jellyfinQuickConnectOnly')
+              return jellyfin && draft.mediaServerLogin;
+            return true;
+          })
           .map(({ key, label, help }) => (
             <label className="set cfg-row" key={key}>
               <span>
@@ -201,6 +232,17 @@ function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
             </label>
           ))}
       </div>
+      {!loginValid && (
+        <p className="note" role="alert">
+          Keep at least one sign-in method enabled.
+        </p>
+      )}
+      {loginChanged && !draft.mediaServerLogin && draft.localLogin && (
+        <p className="note">
+          Users who rely on media server sign-in need a SeerrNG password to sign
+          in.
+        </p>
+      )}
       {failure && (
         <p className="note" role="alert">
           {failure}
@@ -224,7 +266,9 @@ function ApplicationForm({ initial }: { initial: ApplicationSettings }) {
 }
 
 export default function AdminGeneral() {
-  const settings = useApi<ApplicationSettings>(path);
+  const settings = useApi<ApplicationSettings & { mediaServerType?: number }>(
+    path
+  );
   return (
     <>
       <header className="ph">
@@ -243,6 +287,7 @@ export default function AdminGeneral() {
         />
         {settings.data ? (
           <ApplicationForm
+            jellyfin={settings.data.mediaServerType === 2}
             initial={{
               applicationTitle: settings.data.applicationTitle ?? '',
               applicationUrl: settings.data.applicationUrl ?? '',
@@ -254,6 +299,10 @@ export default function AdminGeneral() {
               lockLumenForNonAdmins:
                 settings.data.lockLumenForNonAdmins === true,
               lumenPublicUrl: settings.data.lumenPublicUrl ?? '',
+              localLogin: settings.data.localLogin !== false,
+              mediaServerLogin: settings.data.mediaServerLogin !== false,
+              jellyfinQuickConnectOnly:
+                settings.data.jellyfinQuickConnectOnly === true,
             }}
           />
         ) : (
