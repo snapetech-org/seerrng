@@ -80,6 +80,12 @@ function itemHref(item: FranchiseItem) {
 
 export default function Franchise() {
   const { mediaType = '', id = '' } = useParams();
+  return (
+    <FranchiseTitle key={`${mediaType}:${id}`} mediaType={mediaType} id={id} />
+  );
+}
+
+function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
   const { user } = useAuth();
   const valid =
     (mediaType === 'tv' || mediaType === 'anime') && /^\d{1,10}$/.test(id);

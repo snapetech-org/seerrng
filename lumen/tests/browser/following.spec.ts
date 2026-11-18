@@ -514,3 +514,72 @@ test('anime continuation loads on demand and follows the novel in its language',
     page.getByRole('button', { name: 'Following', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
 });
+
+test('switching franchise titles keeps the follow identity and state separate', async ({
+  page,
+}) => {
+  const subjects: unknown[] = [];
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/franchise/anime/10')
+      return route.fulfill({
+        json: {
+          anchor: { title: 'Fixture Original' },
+          notes: [],
+          items: [
+            {
+              group: 'sequel',
+              title: 'Fixture Sequel',
+              mediaType: 'anime',
+              href: '/franchise/anime/11',
+              confidence: 'high',
+              verified: true,
+            },
+          ],
+        },
+      });
+    if (path === '/franchise/anime/11')
+      return route.fulfill({
+        json: { anchor: { title: 'Fixture Sequel' }, notes: [], items: [] },
+      });
+    if (path === '/follow' && request.method() === 'POST') {
+      const subject = request.postDataJSON();
+      subjects.push(subject);
+      return route.fulfill({ json: { ...subject, id: subjects.length } });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('./franchise/anime/10');
+  const follow = page.getByRole('button', { name: 'Follow', exact: true });
+  const following = page.getByRole('button', {
+    name: 'Following',
+    exact: true,
+  });
+  await follow.click();
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('link', { name: 'Fixture Sequel', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Franchise for Fixture Sequel' })
+  ).toBeVisible();
+  await expect(follow).toHaveAttribute('aria-pressed', 'false');
+  await follow.click();
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  expect(subjects).toEqual([
+    {
+      kind: 'franchise',
+      subjectKey: 'anime:10',
+      subjectLabel: 'Fixture Original',
+      conditions: { ref: { anchorId: '10', anchorType: 'anime' } },
+    },
+    {
+      kind: 'franchise',
+      subjectKey: 'anime:11',
+      subjectLabel: 'Fixture Sequel',
+      conditions: { ref: { anchorId: '11', anchorType: 'anime' } },
+    },
+  ]);
+});
