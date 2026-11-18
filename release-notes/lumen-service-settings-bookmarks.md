@@ -1,8 +1,9 @@
-- Classic service settings search links open the matching administration page in bundled and standalone Lumen.
-- Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings.
-- Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.
-- Default Request Quotas explains the difference between unlimited requests and a quota that counts requests across all time.
-- The user-defaults bookmark also links directly to the default permission editor.
-- Classic Steam API key search links jump to Steam Library Import in Lumen.
-- Classic service category bookmarks open the corresponding group of Lumen administration pages.
-- Lumen Administration lets administrators switch between service categories and the full settings list.
+---
+category: changed
+audience: operators
+area: lumen
+action: none
+breaking: false
+---
+
+Classic service settings search links open the matching administration page in bundled and standalone Lumen. Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings. Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.

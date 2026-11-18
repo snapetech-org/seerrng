@@ -1,12 +1,9 @@
-- Lumen preserves Classic league and adult discovery search text when opening bookmarks.
-- Adult discovery preserves bookmarked Whisparr service filters and offers a service selector for multi-service installations.
-- Adult discovery identifies incomplete Whisparr results while keeping available matches visible.
-- Lumen confirms league follows and lets eligible users choose their Sportarr service.
-- League follow confirmations show the shared TV request quota and disable submission when it has been reached.
-- Eligible users can choose another Sportarr service when the default service already follows the league.
-- League follow confirmations explain whether the request is automatically approved or requires approval.
-- League details explain when events are unavailable and show season and local broadcast time for scheduled events.
-- Lumen league schedules show the total number of events and identify recordings split across multiple files.
-- Failed league follow requests show the error in the confirmation and keep the selected service available for retry.
-- Lumen preserves the selected page of a league schedule in the address so it can be bookmarked and reopened.
-- If a bookmarked event page no longer exists, Lumen opens the last available page.
+---
+category: changed
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+
+Lumen preserves Classic league and adult discovery search text when opening bookmarks. Adult discovery preserves bookmarked Whisparr service filters and offers a service selector for multi-service installations. Adult discovery identifies incomplete Whisparr results while keeping available matches visible. Lumen confirms league follows and lets eligible users choose their Sportarr service.
