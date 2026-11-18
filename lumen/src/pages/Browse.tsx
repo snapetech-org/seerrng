@@ -776,11 +776,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           setP(next, { replace: true });
         }}
       />
-      {list.error && !items.length && (
-        <div className="empty">
-          <b>Couldn’t load {word.toLowerCase()}</b>
-          {list.error}
-        </div>
+      {!items.length && (
+        <ServiceNote
+          error={list.error}
+          what={word.toLowerCase()}
+          retry={list.retry}
+        />
       )}
       {!list.error && !items.length && !list.loading && !capped && (
         <div className="empty">
@@ -813,7 +814,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         done={list.done || capped}
         loading={list.loading}
         more={list.more}
-        error={list.error}
+        error={items.length ? list.error : null}
         retry={list.retry}
       />
     </>

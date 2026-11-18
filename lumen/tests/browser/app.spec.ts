@@ -2163,3 +2163,33 @@ test('clearing discovery resets applied filters and unapplied range edits', asyn
   await expect(page.getByLabel('Released On or After')).toHaveValue('');
   await expect(rating).toHaveValue('');
 });
+
+test('movie discovery gives a single retry for a failed initial page', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let reads = 0;
+  await page.route('**/api/v1/discover/movies?*', (route) => {
+    reads++;
+    return reads === 1
+      ? route.fulfill({
+          status: 503,
+          json: { message: 'Discovery is temporarily unavailable.' },
+        })
+      : route.fulfill({ json: paged([movie]) });
+  });
+  await page.goto('/movies?genre=18');
+  const alert = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load movies' });
+  await expect(alert).toBeVisible();
+  await expect(
+    page.getByText('Couldn’t load more.', { exact: false })
+  ).toHaveCount(0);
+  await alert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('link', { name: 'The Test Film', exact: true })
+  ).toBeVisible();
+  await expect(alert).toHaveCount(0);
+  expect(reads).toBe(2);
+});

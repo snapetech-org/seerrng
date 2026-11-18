@@ -1092,3 +1092,8 @@ Movies and Series now have one reset action for applied discovery filters.
 It preserves unrelated URL parameters, discards range drafts and closes
 filter pickers. Standalone browser checks covered reset and adjacent
 streaming and studio flows. Bundled and native visual comparisons remain open.
+
+Movie and series discovery now show one retry action when a failed page
+leaves the grid empty. Standalone Movies fixtures verified recovery and
+retained filter state across four viewport presets. Visual comparisons
+with bundled Lumen and native remain open.
