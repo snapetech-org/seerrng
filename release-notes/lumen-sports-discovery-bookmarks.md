@@ -3,3 +3,4 @@
 - Adult discovery identifies incomplete Whisparr results while keeping available matches visible.
 - Lumen confirms league follows and lets eligible users choose their Sportarr service.
 - League follow confirmations show the shared TV request quota and disable submission when it has been reached.
+- Eligible users can choose another Sportarr service when the default service already follows the league.

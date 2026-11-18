@@ -7697,8 +7697,9 @@ test('Sportarr league follow checks the selected destination before submitting',
         id: 'lg-123456',
         title: 'Fixture League',
         mediaType: 'sports',
-        requestable: source !== '1',
-        libraryState: source === '1' ? 'monitored' : 'not-added',
+        requestable: source === '2',
+        libraryState: source === '2' ? 'not-added' : 'monitored',
+        mediaInfo: { status: 5 },
       },
     });
   });
@@ -7709,14 +7710,14 @@ test('Sportarr league follow checks the selected destination before submitting',
   });
   await page.goto('/sportarr/lg-123456');
   await page
-    .getByRole('button', { name: 'Follow league', exact: true })
+    .getByRole('button', { name: 'Choose Sportarr Service', exact: true })
     .click();
   const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
   const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
   await choice.selectOption('1');
   await expect(
-    sheet.getByRole('status').filter({ hasText: 'Followed' })
-  ).toHaveText('Followed');
+    sheet.getByRole('status').filter({ hasText: /In library|Followed/i })
+  ).toBeVisible();
   await expect(
     sheet.getByRole('button', { name: 'Send Request' })
   ).toBeDisabled();

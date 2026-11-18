@@ -240,7 +240,7 @@ function LeagueRequestSheet({
   );
   const target =
     advanced && serviceId !== undefined ? destination.data : league;
-  const status = target && leagueStat(target);
+  const status = target && !target.requestable ? leagueStat(target) : null;
   const quota = useVideoRequestQuota('tv');
   const restricted = quota.status?.restricted;
   const unavailable = services.data?.length === 0;
@@ -252,11 +252,7 @@ function LeagueRequestSheet({
       cancel="Cancel"
       busy={busy}
       confirmDisabled={
-        quota.loading ||
-        restricted ||
-        !target?.requestable ||
-        !!status ||
-        unavailable
+        quota.loading || restricted || !target?.requestable || unavailable
       }
       onClose={() => {
         if (!busy) close();
@@ -361,18 +357,19 @@ export function LeagueDetail() {
     );
   if (!l) return <div className="detail-loading" aria-busy="true" />;
   const s = leagueStat(l);
+  const choosingService = canChooseRequestOptions(user?.permissions);
   const main =
-    s || requested === id ? (
-      <button className="btn btn-tonal" disabled>
-        {s?.word ?? 'Requested'}
-      </button>
-    ) : l.requestable !== false && mayRequest ? (
+    mayRequest && requested !== id && (l.requestable || choosingService) ? (
       <button
         className="btn btn-primary"
         type="button"
         onClick={() => setRequesting(true)}
       >
-        Follow league
+        {l.requestable ? 'Follow league' : 'Choose Sportarr Service'}
+      </button>
+    ) : s || requested === id ? (
+      <button className="btn btn-tonal" disabled>
+        {s?.word ?? 'Requested'}
       </button>
     ) : null;
   return (
