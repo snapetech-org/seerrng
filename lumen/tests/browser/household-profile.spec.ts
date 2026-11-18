@@ -252,10 +252,12 @@ test('incomplete household preview responses recover independently', async ({
   await expect(page.getByText('Total plays: 3')).toBeVisible();
 });
 
-test('a local account can upload a profile picture through Lumen', async ({
+test('a local account can retry a picture upload without losing its current avatar', async ({
   page,
 }) => {
   const avatar = '/avatarproxy/local/19?v=' + 'a'.repeat(64);
+  const oldAvatar = '/avatarproxy/local/19?v=' + 'b'.repeat(64);
+  let attempts = 0;
   let uploaded = false;
   await page.route('**/avatarproxy/local/19?*', (route) =>
     route.fulfill({
@@ -274,13 +276,18 @@ test('a local account can upload a profile picture through Lumen', async ({
             id: 19,
             displayName: 'Local Member',
             userType: 2,
-            ...(uploaded ? { avatar } : {}),
+            avatar: uploaded ? avatar : oldAvatar,
           },
         });
       case '/api/v1/user/19/avatar':
         expect(request.method()).toBe('PUT');
         expect(request.headers()['content-type']).toBe('image/png');
         expect(request.postDataBuffer()?.toString()).toBe('picture bytes');
+        if (++attempts === 1)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Picture service temporarily unavailable.' },
+          });
         uploaded = true;
         return route.fulfill({ json: { id: 19, avatar } });
       default:
@@ -289,14 +296,27 @@ test('a local account can upload a profile picture through Lumen', async ({
   });
   await page.goto('/household/me');
   const button = page.getByRole('button', { name: 'Change Profile Picture' });
-  const chooser = page.waitForEvent('filechooser');
-  await button.click();
-  await (
-    await chooser
-  ).setFiles({
-    name: 'profile.png',
-    mimeType: 'image/png',
-    buffer: Buffer.from('picture bytes'),
-  });
-  await expect(page.locator('.ph .avatar img')).toHaveAttribute('src', avatar);
+  const picture = page.locator('.ph .avatar img');
+  async function selectPicture() {
+    const chooser = page.waitForEvent('filechooser');
+    await button.click();
+    await (
+      await chooser
+    ).setFiles({
+      name: 'profile.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from('picture bytes'),
+    });
+  }
+  await expect(picture).toHaveAttribute('src', oldAvatar);
+  await selectPicture();
+  await expect(
+    page.getByRole('alert').filter({
+      hasText: 'Picture service temporarily unavailable.',
+    })
+  ).toBeVisible();
+  await expect(picture).toHaveAttribute('src', oldAvatar);
+  await selectPicture();
+  await expect(picture).toHaveAttribute('src', avatar);
+  expect(attempts).toBe(2);
 });
