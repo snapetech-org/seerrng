@@ -211,7 +211,7 @@ const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
 
 function managedUserSettingsPath(path: string): string | undefined {
   const match =
-    /^\/users\/([1-9]\d{0,9})\/settings(?:\/(main|episode-queue|maturity|permissions|password))?\/?$/.exec(
+    /^\/users\/([1-9]\d{0,9})\/settings(?:\/(main|episode-queue|maturity|permissions|password|tv-request-access))?\/?$/.exec(
       path
     );
   if (!match || Number(match[1]) > 1_000_000_000) return;

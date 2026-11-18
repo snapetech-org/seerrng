@@ -55,6 +55,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       userSettings.headers.location,
       '/lumen/admin/users/19/maturity'
     );
+    const tvAccess = await request(app).get(
+      '/lumen/users/19/settings/tv-request-access'
+    );
+    assert.equal(
+      tvAccess.headers.location,
+      '/lumen/admin/users/19/tv-request-access'
+    );
     const shareFallback = await request(app).post('/lumen/share-target');
     assert.equal(shareFallback.status, 303);
     assert.equal(

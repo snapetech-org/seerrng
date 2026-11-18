@@ -12,6 +12,7 @@ import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedPassword from '../components/ManagedPassword';
 import ManagedPermissions from '../components/ManagedPermissions';
 import ManagedQuotas from '../components/ManagedQuotas';
+import ManagedTvAccess from '../components/ManagedTvAccess';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 
@@ -289,6 +290,9 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
+  const [tvAccessUser, setTvAccessUser] = useState<number | undefined>(
+    panel === 'tv-request-access' ? target : undefined
+  );
   const [passwordUser, setPasswordUser] = useState<number | undefined>(
     panel === 'password' ? target : undefined
   );
@@ -689,6 +693,18 @@ export default function AdminUsers() {
                     )}
                   </>
                 )}
+                <button
+                  className="btn btn-quiet btn-sm"
+                  aria-expanded={tvAccessUser === user.id}
+                  onClick={() =>
+                    setTvAccessUser(
+                      tvAccessUser === user.id ? undefined : user.id
+                    )
+                  }
+                >
+                  TV Request Access
+                </button>
+                {tvAccessUser === user.id && <ManagedTvAccess id={user.id} />}
                 {canDelete(user) && (
                   <button
                     className="btn btn-quiet btn-sm"

@@ -5092,3 +5092,30 @@ test('Users confirms a managed local password and clears the form after saving',
   await expect(confirm).toHaveValue('');
   expect(saves).toBe(1);
 });
+
+test('Managed TV access bookmark opens the selected user and the review queue', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) => {
+    expect(new URL(route.request().url()).searchParams.get('includeIds')).toBe(
+      '19'
+    );
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    });
+  });
+  await page.route('**/api/v1/user/19/settings/tv-season-watch-gate', (route) =>
+    route.fulfill({
+      json: { status: 'pending', globallyEnabled: false, requestedAt: null },
+    })
+  );
+  await page.goto('/admin/users/19/tv-request-access');
+  await expect(page.getByText('Waiting for approval')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Review TV Access Requests' })
+  ).toHaveAttribute('href', '/me/account/tv-requests');
+});
