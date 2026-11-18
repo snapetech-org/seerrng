@@ -2479,3 +2479,14 @@ the older quota-error response, explicit approval, and the row's
 requested state after success. Live approval remains unverified.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-soon-quota-20261118/`.
+
+The TV request editor preserves saved episode selections when changing
+a destination or adding a season. Declined seasons start unselected.
+Specials appear when enabled or already included in the request.
+
+The production build and 12 focused browser checks passed. Compared the
+edit sheet before and after on desktop, iPhone 13, Pixel 7, and iPad Pro
+11. The fixture verifies that saving a newly selected season retains
+the existing episode IDs in the same payload. Live Sonarr delivery was
+outside the check. Evidence is retained under
+`seerrng-lumen-preserve-episodes*` in `/mnt/disks/scratch/task-deliverables/`.

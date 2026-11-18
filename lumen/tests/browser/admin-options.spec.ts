@@ -1895,14 +1895,17 @@ test('admins change a waiting request, then approve it', async ({ page }) => {
   });
 });
 
-test('changing a series request picks its seasons', async ({ page }) => {
+test('changing a series request picks its seasons', async ({ page }, info) => {
   await fixtures(page, { permissions: 2 });
   await requestRoutes(page);
   const series = {
     ...waitingRequest,
     id: 79,
     type: 'tv',
-    seasons: [{ seasonNumber: 1 }],
+    seasons: [
+      { seasonNumber: 1, episodeNumbers: [2, 5] },
+      { seasonNumber: 2, status: 3 },
+    ],
     media: { mediaType: 'tv', tmdbId: 400, status: 2 },
   };
   const calls = await adminActionRoutes(page, [series]);
@@ -1946,14 +1949,28 @@ test('changing a series request picks its seasons', async ({ page }) => {
   await expect(
     seasons.getByRole('checkbox', { name: /Season 1/ })
   ).toHaveAttribute('aria-checked', 'true');
-  await seasons.getByRole('checkbox', { name: /Season 2/ }).click();
+  await expect(
+    seasons.getByRole('checkbox', { name: /Season 1/ })
+  ).toContainText('2 requested episodes');
+  const season2 = seasons.getByRole('checkbox', { name: /Season 2/ });
+  await expect(season2).toHaveAttribute('aria-checked', 'false');
+  await settleVisuals(page);
+  await page.screenshot({ path: info.outputPath('edit-series-episodes.png') });
+  await season2.click();
   await expect(sheet.getByLabel('Folder')).toBeVisible();
   await sheet.getByRole('button', { name: 'Save' }).click();
   await expect(sheet).toHaveCount(0);
   expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
     'PUT /request/79',
   ]);
-  expect(calls[0].body).toMatchObject({ mediaType: 'tv', seasons: [1, 2] });
+  expect(calls[0].body).toMatchObject({
+    mediaType: 'tv',
+    seasons: [1, 2],
+    seasonRequests: [
+      { seasonNumber: 1, episodeNumbers: [2, 5] },
+      { seasonNumber: 2 },
+    ],
+  });
 });
 
 test('failed requests can be retried, and Remove asks in a dialog', async ({
