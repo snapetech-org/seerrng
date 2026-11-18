@@ -155,6 +155,36 @@ const NETWORK_OPTIONS = tvNetworks.map(({ name, url }) => ({
   name,
   id: url.slice(url.lastIndexOf('/') + 1),
 }));
+const BROWSE_FILTER_PARAMS = [
+  'show',
+  'sort',
+  'genre',
+  'match',
+  'excludeGenre',
+  'keywords',
+  'excludeKeywords',
+  'primaryReleaseDateGte',
+  'primaryReleaseDateLte',
+  'firstAirDateGte',
+  'firstAirDateLte',
+  'withRuntimeGte',
+  'withRuntimeLte',
+  'voteAverageGte',
+  'voteAverageLte',
+  'voteCountGte',
+  'voteCountLte',
+  'watchProviders',
+  'watchRegion',
+  'watchProviderMode',
+  'status',
+  'excludeStatus',
+  'studio',
+  'excludeStudio',
+  'network',
+  'country',
+  'language',
+] as const;
+
 const SERIES_STATUSES = [
   'Returning Series',
   'Planned',
@@ -180,6 +210,7 @@ const SORTS = {
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const [p, setP] = useSearchParams();
+  const [filterReset, setFilterReset] = useState(0);
   const { prefs } = usePrefs();
   const asks = useAsksRequestOptions();
   // "plex" is the old name for "have", kept so saved links still work
@@ -371,6 +402,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     else n.delete('match');
     setP(n, { replace: true });
   };
+  const hasFilters = BROWSE_FILTER_PARAMS.some((param) => p.has(param));
+  const clearFilters = () => {
+    const next = new URLSearchParams(p);
+    for (const param of BROWSE_FILTER_PARAMS) next.delete(param);
+    setFilterReset((value) => value + 1);
+    setShowTags(false);
+    setShowStudios(false);
+    setShowProviders(false);
+    setP(next, { replace: true });
+  };
   const word = kind === 'movie' ? 'Movies' : 'Series';
 
   return (
@@ -395,6 +436,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </Link>
       </header>
       <div className="toolbar">
+        <button
+          className="btn btn-tonal btn-sm"
+          type="button"
+          aria-disabled={!hasFilters}
+          onClick={() => {
+            if (hasFilters) clearFilters();
+          }}
+        >
+          Clear Discovery Filters
+        </button>
         {kind === 'tv' && (
           <label className="sel">
             <span className="lbl">Network</span>
@@ -672,7 +723,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       )}
       <RangeFilter
         kind="dates"
-        key={`dates:${start}:${end}`}
+        key={`${filterReset}:dates:${start}:${end}`}
         min={start}
         max={end}
         apply={(min, max) => {
@@ -685,7 +736,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         }}
       />
       <RangeFilter
-        key={`${minRating}:${maxRating}`}
+        key={`${filterReset}:rating:${minRating}:${maxRating}`}
         min={minRating}
         max={maxRating}
         apply={(min, max) => {
@@ -699,7 +750,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       />
       <RangeFilter
         kind="runtime"
-        key={`runtime:${minRuntime}:${maxRuntime}`}
+        key={`${filterReset}:runtime:${minRuntime}:${maxRuntime}`}
         min={minRuntime}
         max={maxRuntime}
         apply={(min, max) => {
@@ -713,7 +764,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       />
       <RangeFilter
         kind="votes"
-        key={`votes:${minVotes}:${maxVotes}`}
+        key={`${filterReset}:votes:${minVotes}:${maxVotes}`}
         min={minVotes}
         max={maxVotes}
         apply={(min, max) => {

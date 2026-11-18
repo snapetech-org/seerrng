@@ -1087,3 +1087,8 @@ Movies now has a production studio picker backed by company search.
 Selection and exclusion use the native query contract. Standalone checks
 verified searching, selection, exclusion, reload, reset and detail links
 across four presets. Bundled and native visual comparisons remain open.
+
+Movies and Series now have one reset action for applied discovery filters.
+It preserves unrelated URL parameters, discards range drafts and closes
+filter pickers. Standalone browser checks covered reset and adjacent
+streaming and studio flows. Bundled and native visual comparisons remain open.

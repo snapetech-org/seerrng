@@ -2145,3 +2145,21 @@ test('movie studio search can select and exclude a studio', async ({
     .click();
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('clearing discovery resets applied filters and unapplied range edits', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto(
+    '/series?genre=18&excludeGenre=true&network=213&status=3&excludeStatus=true&sort=vote_average.desc&watchProviders=8&watchRegion=CA&watchProviderMode=exclude&firstAirDateGte=2024-01-01&keep=1'
+  );
+  const rating = page.getByLabel('Minimum Rating');
+  await rating.fill('7.1');
+  const clear = page.getByRole('button', { name: 'Clear Discovery Filters' });
+  await clear.click();
+  await expect(page).toHaveURL(/\/series\?keep=1$/);
+  await expect(clear).toHaveAttribute('aria-disabled', 'true');
+  await expect(page.getByLabel('Network', { exact: true })).toHaveValue('');
+  await expect(page.getByLabel('Released On or After')).toHaveValue('');
+  await expect(rating).toHaveValue('');
+});
