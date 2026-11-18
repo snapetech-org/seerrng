@@ -42,6 +42,26 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
    Include direct-link denial for unauthorized actions and both deployments.
    Track retired gaps here with the version and evidence that closed them.
 
+### Open gap in personal discovery accounts
+
+Lumen's Linked Accounts page manages sign-in methods. My Media can read
+libraries from already linked tracking accounts. Classic's personal discovery
+integration controls still own connection, disconnection, and write preferences
+for Trakt, AniList, and Simkl. The Lumen administrator Discovery page manages
+instance credentials. Personal connections need an account-owner entry point.
+
+| Workflow | Existing API and acceptance |
+| --- | --- |
+| Read, disconnect, and allow writes | Use the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Verify account isolation, readback after successful writes, and recovery after denied or failed writes. |
+| Trakt | Start through the provider connect endpoint, complete through the existing server-verified callback and completion endpoint, and show denied and expired results. The server currently returns to `/settings/discovery` with result parameters, and the bundled and standalone settings redirects discard those parameters. Verify the normal Classic flow and Lumen account-owner callback, with and without administrator permissions. |
+| AniList | Open the provider authorization URL and submit the returned code through the completion endpoint. Keep the code out of bookmark URLs and clear it on success or cancellation. |
+| Simkl | Display the device code and expiry, then poll at the server's interval. Stop polling on expiry, cancellation, account change, or unmount. |
+
+The shared server routes live in `server/routes/discoveryIntegrations.ts`.
+Classic's account controls are in `src/components/DiscoveryIntegrations/Accounts.tsx`.
+Browser fixtures can verify behavior on both deployments before live provider
+verification. This inventory records the gap and its acceptance criteria.
+
 ### Following feed increment
 
 Lumen has a Following route, with a desktop sidebar link and a Library entry
