@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { Section } from '../components/cards';
+import { embedded } from '../deployment';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 
@@ -22,6 +23,8 @@ interface Playlist {
 }
 
 export default function PlaylistImport() {
+  const [params, setParams] = useSearchParams();
+  const [spotifyNotice, setSpotifyNotice] = useState('');
   const [url, setUrl] = useState('');
   const [playlist, setPlaylist] = useState<Playlist>();
   const [selected, setSelected] = useState<number[]>([]);
@@ -36,6 +39,27 @@ export default function PlaylistImport() {
   const spotify = useApi<{ connected: boolean; displayName: string | null }>(
     '/playlist/spotify/status'
   );
+
+  async function disconnectSpotify() {
+    if (working.current || !spotify.data?.connected) return;
+    working.current = true;
+    setBusy(true);
+    setError('');
+    setSpotifyNotice('');
+    try {
+      await api('/playlist/spotify/disconnect', { method: 'POST' });
+      spotify.reload();
+      const next = new URLSearchParams(params);
+      next.delete('playlist');
+      setParams(next, { replace: true });
+      setSpotifyNotice('Spotify disconnected.');
+    } catch (failure) {
+      setError(friendlyError(failure, 'Spotify could not be disconnected.'));
+    } finally {
+      setBusy(false);
+      working.current = false;
+    }
+  }
 
   function requestable(item: PlaylistItem) {
     return (
@@ -123,12 +147,36 @@ export default function PlaylistImport() {
         </Link>
         <a
           className="btn btn-quiet btn-sm"
-          href="/api/v1/playlist/spotify/connect"
+          href={`/api/v1/playlist/spotify/connect?frontend=${embedded ? 'bundled' : 'companion'}`}
         >
           {spotify.data?.connected ? 'Reconnect Spotify' : 'Connect Spotify'}
         </a>
+        {spotify.data?.connected && (
+          <button
+            className="btn btn-quiet btn-sm"
+            disabled={busy}
+            onClick={() => void disconnectSpotify()}
+          >
+            Disconnect Spotify
+          </button>
+        )}
         {spotify.data?.displayName && <span>{spotify.data.displayName}</span>}
       </div>
+      {spotifyNotice && (
+        <p className="note" role="status">
+          {spotifyNotice}
+        </p>
+      )}
+      {params.get('playlist') === 'connected' && spotify.data?.connected && (
+        <p className="note" role="status">
+          Spotify connected.
+        </p>
+      )}
+      {params.get('playlist') === 'error' && (
+        <p className="note" role="alert">
+          Spotify could not be connected.
+        </p>
+      )}
       <form
         onSubmit={(event) => {
           event.preventDefault();

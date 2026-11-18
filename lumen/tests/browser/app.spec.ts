@@ -4079,3 +4079,41 @@ test('Playlist Import reviews album and track matches before submitting', async 
     },
   ]);
 });
+
+test('Playlist Import reflects Spotify callback and disconnects the account', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let connected = true;
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: false } })
+  );
+  await page.route('**/api/v1/playlist/spotify/status', (route) =>
+    route.fulfill({
+      json: { connected, displayName: connected ? 'Spotify Member' : null },
+    })
+  );
+  await page.route('**/api/v1/playlist/spotify/disconnect', (route) => {
+    expect(route.request().method()).toBe('POST');
+    connected = false;
+    return route.fulfill({ status: 204 });
+  });
+  await page.goto('/music/playlist-import?playlist=connected');
+  await expect(
+    page.getByText('Spotify connected.', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Reconnect Spotify' })
+  ).toHaveAttribute(
+    'href',
+    '/api/v1/playlist/spotify/connect?frontend=companion'
+  );
+  await page.getByRole('button', { name: 'Disconnect Spotify' }).click();
+  await expect(
+    page.getByText('Spotify disconnected.', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Connect Spotify', exact: true })
+  ).toBeVisible();
+  await expect(page).toHaveURL(/\/music\/playlist-import$/);
+});

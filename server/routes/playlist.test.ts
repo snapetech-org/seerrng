@@ -283,6 +283,45 @@ describe('playlist routes behind the OpenAPI validator', () => {
     assert.match(res.headers.location, /\/discover\/music/);
   });
 
+  it('returns cancelled Spotify authorization to the initiating Lumen deployment', async () => {
+    const agent = await loginAsAdmin();
+    const main = getSettings().main;
+    const prior = {
+      spotifyClientId: main.spotifyClientId,
+      spotifyClientSecret: main.spotifyClientSecret,
+      applicationUrl: main.applicationUrl,
+    };
+    Object.assign(main, {
+      spotifyClientId: 'fixture-client',
+      spotifyClientSecret: 'fixture-secret',
+      applicationUrl: 'https://seerr.example',
+    });
+    try {
+      for (const [frontend, destination] of [
+        ['bundled', '/lumen/music/playlist-import'],
+        ['companion', '/music/playlist-import'],
+      ]) {
+        const start = await agent.get(
+          `/api/v1/playlist/spotify/connect?frontend=${frontend}`
+        );
+        assert.equal(start.status, 302);
+        const authorization = new URL(start.headers.location);
+        const state = authorization.searchParams.get('state');
+        assert.ok(state);
+        const callback = await agent.get(
+          `/api/v1/playlist/spotify/callback?state=${state}`
+        );
+        assert.equal(callback.status, 302);
+        assert.equal(
+          callback.headers.location,
+          `https://seerr.example${destination}?playlist=error`
+        );
+      }
+    } finally {
+      Object.assign(main, prior);
+    }
+  });
+
   it('POST /playlist/resolve reaches the handler', async () => {
     const agent = await loginAsAdmin();
 

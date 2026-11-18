@@ -28041,6 +28041,13 @@ paths:
         signed-in user can grant SeerrNG read access to their playlists.
       tags:
         - playlist
+      parameters:
+        - in: query
+          name: frontend
+          description: Lumen deployment to return to after Spotify authorization.
+          schema:
+            type: string
+            enum: [bundled, companion]
       responses:
         '302':
           description: Redirect to Spotify's authorization page.

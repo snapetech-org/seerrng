@@ -28,7 +28,7 @@ const ALWAYS_CHECK = /^\/(request|auth|user\/\d+\/quota|settings\/public)/;
 // These answers depend on current account category and maturity policies.
 // Never serve cached person details, watchlists, or personal library data after those settings tighten.
 const NEVER_CACHE =
-  /^\/(?:person\/\d+(?:\/combined_credits)?|soulseek\/track-requests|downloads\/interventions|game-library(?:\/shared|\/steam\/status)?|user\/(?:\d+\/watchlist|tv-season-watch-gate-requests)|integrations\/discovery\/(?:accounts|library\/[a-z]+|feeds\/[a-z]+\/[a-z-]+))(?:\?|$)/;
+  /^\/(?:person\/\d+(?:\/combined_credits)?|playlist\/spotify\/status|soulseek\/track-requests|downloads\/interventions|game-library(?:\/shared|\/steam\/status)?|user\/(?:\d+\/watchlist|tv-season-watch-gate-requests)|integrations\/discovery\/(?:accounts|library\/[a-z]+|feeds\/[a-z]+\/[a-z-]+))(?:\?|$)/;
 
 type Entry = { at: number; data: unknown };
 let entries = new Map<string, Entry>();

@@ -28,6 +28,7 @@ declare module 'express-session' {
         nextPollAt: number;
       };
     };
+    spotifyOAuthFrontend?: 'bundled' | 'companion';
     spotifyOAuthState?: string;
     spotifyOAuthStateCreatedAt?: number;
     steamOpenIdFrontend?: 'native' | 'bundled-lumen' | 'companion-lumen';

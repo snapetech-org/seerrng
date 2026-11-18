@@ -131,12 +131,19 @@ const getSpotifyRedirectUri = (): string | null => {
     : null;
 };
 
-const redirectToMusic = (result: 'connected' | 'error'): string => {
+const spotifyReturnPaths = {
+  bundled: '/lumen/music/playlist-import',
+  companion: '/music/playlist-import',
+} as const;
+
+const redirectToMusic = (
+  result: 'connected' | 'error',
+  frontend?: keyof typeof spotifyReturnPaths
+): string => {
+  const path = frontend ? spotifyReturnPaths[frontend] : '/discover/music';
   const applicationUrl = getApplicationUrl();
-  if (!applicationUrl) {
-    return '/discover/music';
-  }
-  const url = new URL('/discover/music', applicationUrl);
+  if (!applicationUrl) return `${path}?playlist=${result}`;
+  const url = new URL(path, applicationUrl);
   url.searchParams.set('playlist', result);
   return url.toString();
 };
@@ -454,6 +461,9 @@ playlistRoutes.get('/spotify/connect', async (req, res, next) => {
     }
 
     const state = randomBytes(32).toString('hex');
+    const frontend = req.query.frontend;
+    req.session.spotifyOAuthFrontend =
+      frontend === 'bundled' || frontend === 'companion' ? frontend : undefined;
     req.session.spotifyOAuthState = state;
     req.session.spotifyOAuthStateCreatedAt = Date.now();
 
@@ -478,6 +488,8 @@ playlistRoutes.get('/spotify/callback', async (req, res) => {
     typeof req.query.code === 'string' ? req.query.code.slice(0, 2_048) : '';
   const expectedState = req.session.spotifyOAuthState;
   const stateCreatedAt = req.session.spotifyOAuthStateCreatedAt ?? 0;
+  const frontend = req.session.spotifyOAuthFrontend;
+  req.session.spotifyOAuthFrontend = undefined;
   req.session.spotifyOAuthState = undefined;
   req.session.spotifyOAuthStateCreatedAt = undefined;
 
@@ -490,14 +502,14 @@ playlistRoutes.get('/spotify/callback', async (req, res) => {
     Date.now() - stateCreatedAt > SPOTIFY_OAUTH_STATE_TTL_MS ||
     !code
   ) {
-    return res.redirect(redirectToMusic('error'));
+    return res.redirect(redirectToMusic('error', frontend));
   }
 
   try {
     const config = getSpotifyConfig();
     const redirectUri = getSpotifyRedirectUri();
     if (!config || !redirectUri) {
-      return res.redirect(redirectToMusic('error'));
+      return res.redirect(redirectToMusic('error', frontend));
     }
     const token = await SpotifyAPI.exchangeAuthorizationCode({
       code,
@@ -514,14 +526,14 @@ playlistRoutes.get('/spotify/callback', async (req, res) => {
     settings.spotifyUserId = profile.id;
     settings.spotifyDisplayName = profile.displayName;
     await getRepository(UserSettings).save(settings);
-    return res.redirect(redirectToMusic('connected'));
+    return res.redirect(redirectToMusic('connected', frontend));
   } catch (error) {
     logger.warn('Spotify playlist connection failed', {
       label: 'Playlist API',
       errorMessage: error instanceof Error ? error.message : 'Unknown error',
       userId: req.user.id,
     });
-    return res.redirect(redirectToMusic('error'));
+    return res.redirect(redirectToMusic('error', frontend));
   }
 });
 
