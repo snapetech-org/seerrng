@@ -199,6 +199,14 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/calendar', '/lumen/calendar'],
       ['/coming-soon', '/lumen/soon'],
       ['/profile/settings/password', '/lumen/me/account'],
+      [
+        '/profile/settings/notifications/webpush',
+        '/lumen/me/account/notifications',
+      ],
+      [
+        '/profile/settings/notifications/discord',
+        '/lumen/me/account/notifications',
+      ],
       ['/profile/settings/episode-queue', '/lumen/me/account/tv-requests'],
       ['/profile/settings/client-tokens', '/lumen/me/account/client-tokens'],
       [

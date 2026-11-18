@@ -28,6 +28,8 @@ server {
   listen 80;
   root /usr/share/nginx/html;
   server_tokens off;
+  # Keep local redirects on the browser-facing origin behind TLS or mapped ports.
+  absolute_redirect off;
   set $lumen_runtime_uid "${LUMEN_RUNTIME_UID}";
   set $lumen_runtime_gid "${LUMEN_RUNTIME_GID}";
 
@@ -136,6 +138,9 @@ server {
     return 302 ${SEERR_FULL_URL}/?interface=classic;
   }
 
+  location ~ ^/profile/?$ {
+    return 302 /me;
+  }
   location ~ ^/profile/settings/(episode-queue|tv-request-access)/?$ {
     return 302 /me/account/tv-requests;
   }
@@ -145,17 +150,23 @@ server {
   location ~ ^/profile/settings/client-tokens/?$ {
     return 302 /me/account/client-tokens;
   }
-  location ~ ^/profile/settings/notifications/(email|telegram|discord|pushbullet|pushover)/?$ {
+  location ~ ^/profile/settings/notifications/(email|telegram|discord|pushbullet|pushover|webpush)/?$ {
     return 302 /me/account/notifications;
   }
-  location ~ ^/profile/settings/(main|password)/?$ {
+  location ~ ^/profile/settings(/(main|password))?/?$ {
     return 302 /me/account;
   }
-  location = /profile/watchlist {
+  location ~ ^/profile/watchlist/?$ {
     return 302 /watchlist$is_args$args;
   }
-  location ~ ^/discover/games/?$ {
-    return 302 /games$is_args$args;
+  location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|sports)/?$ {
+    return 302 /$1$is_args$args;
+  }
+  location ~ ^/coming-soon/?$ {
+    return 302 /soon;
+  }
+  location ~ "^/(movie|tv)/([1-9][0-9]{0,8}|1000000000)/(cast|crew)/?$" {
+    return 302 "/$1/$2#$3";
   }
   location ~ ^/discover/watchlist/?$ {
     return 302 /watchlist/discover$is_args$args;

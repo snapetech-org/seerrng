@@ -131,6 +131,26 @@ async function check(settings, clientIp, scheme, headers = {}) {
       full.headers.get('location'),
       'https://seerr.example.test/?interface=classic'
     );
+    for (const [path, target] of [
+      ['/profile/', '/me'],
+      ['/profile/settings/', '/me/account'],
+      ['/profile/settings/notifications/webpush', '/me/account/notifications'],
+      ['/profile/watchlist/?page=2', '/watchlist?page=2'],
+      ['/discover/comics?q=Example', '/comics?q=Example'],
+      ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
+      ['/coming-soon/', '/soon'],
+      ['/movie/12/cast', '/movie/12#cast'],
+      ['/tv/1000000000/crew/', '/tv/1000000000#crew'],
+      ['/discover/patches', 'https://seerr.example.test/discover/patches'],
+    ]) {
+      const response = await fetch(base + path, { redirect: 'manual' });
+      assert.equal(response.status, 302, path);
+      assert.equal(
+        new URL(response.headers.get('location'), base).href,
+        new URL(target, base).href,
+        path
+      );
+    }
     const frontend = await fetch(base + '/');
     assert.equal(frontend.status, 200);
     assert.match(await frontend.text(), /<div id="root"><\/div>/);

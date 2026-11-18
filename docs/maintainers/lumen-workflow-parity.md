@@ -1234,3 +1234,17 @@ and companion callbacks and rejected an arbitrary frontend value. Twelve
 standalone browser checks across desktop, iPhone, Android and tablet
 covered the simulated link return, sync, unlink and existing library
 workflows. Live Steam linking and matched visual comparisons remain open.
+
+### Companion bookmarks and account notifications
+
+The companion routes existing native profile, notification, media
+discovery, Coming Soon, and video credit bookmarks into Lumen. Local
+redirects preserve the browser-facing scheme and port. Native bookmarks
+for the supported notification channels also work with bundled frontend
+lock. Unsupported native workflows continue through the companion's
+existing full SeerrNG handoff.
+
+The companion production image test verified redirect status, destination,
+query and fragment handling, and the handoff for Discover Patches.
+Bundled server tests verified notification routing. These changes reuse
+existing screen owners and do not change their layout.
