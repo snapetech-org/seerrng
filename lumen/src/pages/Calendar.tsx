@@ -100,7 +100,13 @@ function releaseHref(item: Release) {
     case 'movie':
     case 'tv':
       return item.tmdbId
-        ? videoDetailPath(item.mediaType, item.tmdbId, item.is4k)
+        ? videoDetailPath(item.mediaType, item.tmdbId, item.is4k) +
+            (item.mediaType === 'tv' &&
+            item.seasonNumber !== undefined &&
+            Number.isSafeInteger(item.seasonNumber) &&
+            item.seasonNumber >= 0
+              ? `#season-${item.seasonNumber}`
+              : '')
         : undefined;
     case 'music':
       return item.mbId ? `/music/${encode(item.mbId)}` : undefined;

@@ -2659,19 +2659,20 @@ test('4K series selection uses 4K season ownership even when every HD season is 
       },
     })
   );
-  await page.goto('/tv/400?quality=4k&source=request#seasons');
+  await page.goto('/tv/400?quality=4k&source=request#season-2');
   const quality = page.getByRole('group', { name: 'Quality' });
   await expect(quality.getByRole('button', { name: '4K' })).toHaveAttribute(
     'aria-pressed',
     'true'
   );
+  await expect(page.locator('#season-2')).toBeInViewport();
   ready = true;
   await page.clock.fastForward(30_100);
   await expect.poll(() => detailReads).toBe(2);
   await quality.getByRole('button', { name: '1080p' }).click();
-  await expect(page).toHaveURL('/tv/400?source=request#seasons');
+  await expect(page).toHaveURL('/tv/400?source=request#season-2');
   await quality.getByRole('button', { name: '4K' }).click();
-  await expect(page).toHaveURL('/tv/400?source=request&quality=4k#seasons');
+  await expect(page).toHaveURL('/tv/400?source=request&quality=4k#season-2');
   await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Server')).toHaveValue('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');

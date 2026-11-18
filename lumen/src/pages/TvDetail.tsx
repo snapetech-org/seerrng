@@ -243,12 +243,20 @@ export default function TvDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [missingKey]);
   const loaded = !!t;
+  const seasonAnchor = /^#season-(0|[1-9]\d*)$/.exec(loc.hash)?.[1];
+  const anchor =
+    seasonAnchor !== undefined &&
+    seasons.some(({ seasonNumber }) => String(seasonNumber) === seasonAnchor)
+      ? `season-${seasonAnchor}`
+      : loc.hash === '#seasons' || seasonAnchor !== undefined
+        ? 'seasons'
+        : undefined;
   useEffect(() => {
-    if (loaded && loc.hash === '#seasons')
+    if (loaded && anchor)
       document
-        .getElementById('seasons')
+        .getElementById(anchor)
         ?.scrollIntoView({ behavior: scrollBehavior() });
-  }, [loaded, id, loc.hash]);
+  }, [loaded, id, anchor]);
 
   if (error && !t)
     return <ServiceNote error={error} what="this series" retry={reload} />;
@@ -766,6 +774,7 @@ export default function TvDetail() {
                   return (
                     <div
                       key={s.seasonNumber}
+                      id={`season-${s.seasonNumber}`}
                       className={`srow ${locked ? 'locked' : ''}`}
                       role="checkbox"
                       aria-checked={on}
