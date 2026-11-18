@@ -138,6 +138,13 @@ function PlaybackActivity({ id }: { id: number }) {
 
   if (activity.errorStatus === 404) return null;
 
+  const watched = activity.data?.recentlyWatched.filter(
+    ({ mediaType, tmdbId }) =>
+      (mediaType === 'movie' || mediaType === 'tv') &&
+      Number.isSafeInteger(tmdbId) &&
+      tmdbId > 0
+  );
+
   return (
     <Section title="Playback Activity">
       <ServiceNote
@@ -155,30 +162,26 @@ function PlaybackActivity({ id }: { id: number }) {
           <p className="note">
             Total plays: {activity.data.playCount.toLocaleString()}
           </p>
-          <div className="rail" aria-label="Recently watched">
-            {activity.data.recentlyWatched
-              .filter(
-                ({ mediaType, tmdbId }) =>
-                  (mediaType === 'movie' || mediaType === 'tv') &&
-                  Number.isSafeInteger(tmdbId) &&
-                  tmdbId > 0
-              )
-              .map(({ id: mediaId, tmdbId, mediaType, searchMetadata }) => (
-                <ExtraCard
-                  key={mediaId}
-                  href={`/${mediaType}/${tmdbId}`}
-                  img={tmdbImg(searchMetadata?.posterPath)}
-                  title={
-                    searchMetadata?.title ||
-                    (mediaType === 'movie' ? 'Movie' : 'Series')
-                  }
-                  icon={mediaType === 'movie' ? 'film' : 'tv'}
-                  titleKind={mediaType}
-                />
-              ))}
-          </div>
-          {activity.data.recentlyWatched.length === 0 && (
-            <p className="note">No recently watched titles.</p>
+          {watched?.length ? (
+            <div className="rail" aria-label="Recently watched">
+              {watched.map(
+                ({ id: mediaId, tmdbId, mediaType, searchMetadata }) => (
+                  <ExtraCard
+                    key={mediaId}
+                    href={`/${mediaType}/${tmdbId}`}
+                    img={tmdbImg(searchMetadata?.posterPath)}
+                    title={
+                      searchMetadata?.title ||
+                      (mediaType === 'movie' ? 'Movie' : 'Series')
+                    }
+                    icon={mediaType === 'movie' ? 'film' : 'tv'}
+                    titleKind={mediaType}
+                  />
+                )
+              )}
+            </div>
+          ) : (
+            <p className="note">No recently watched titles to display.</p>
           )}
         </>
       )}

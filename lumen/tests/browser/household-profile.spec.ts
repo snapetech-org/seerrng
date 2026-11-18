@@ -152,3 +152,39 @@ for (const permissions of [2, 24, 16, 32]) {
     }
   });
 }
+
+test('playback activity explains when recent plays have no catalog links', async ({
+  page,
+}) => {
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname;
+    switch (path) {
+      case '/api/v1/auth/me':
+        return route.fulfill({
+          json: { id: 9, displayName: 'Viewer', permissions: 2 },
+        });
+      case '/api/v1/user/19':
+        return route.fulfill({
+          json: { id: 19, displayName: 'Household Member', userType: 1 },
+        });
+      case '/api/v1/user/19/watch_data':
+        return route.fulfill({
+          json: {
+            playCount: 3,
+            recentlyWatched: [{ id: 7, tmdbId: 0, mediaType: 'tv' }],
+          },
+        });
+      case '/api/v1/user/19/watchlist':
+      case '/api/v1/user/19/requests':
+        return route.fulfill({ json: { results: [] } });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+  await page.goto('/household/19');
+  await expect(page.getByText('Total plays: 3')).toBeVisible();
+  await expect(
+    page.getByText('No recently watched titles to display.')
+  ).toBeVisible();
+  await expect(page.locator('[aria-label="Recently watched"]')).toHaveCount(0);
+});
