@@ -15,6 +15,12 @@ map "$lumen_via_proxy:$http_x_forwarded_proto" $lumen_forwarded_proto {
   "1:http" http;
 }
 
+map "$uri:$arg_steam" $legacy_steam {
+  default "";
+  ~^/games/?:connected$ connected;
+  ~^/games/?:error$ error;
+}
+
 # The same protections full SeerrNG sends with its pages: no framing (clickjacking), scripts only
 # from this origin. Outside hosts: Google Fonts, Plex sign-in, and cover art from many CDNs.
 # saves "Lumen settings for everyone" from the admin page (see lumen-config.js)
@@ -323,6 +329,9 @@ server {
   }
   # client-side routes (/movie/123, /books, ...) all load the app
   location / {
+    if ($legacy_steam != "") {
+      return 302 /game-library?steam=$legacy_steam;
+    }
     add_header Cache-Control "no-cache" always;
     add_header Content-Security-Policy $lumen_csp always;
     add_header X-Frame-Options DENY always;
