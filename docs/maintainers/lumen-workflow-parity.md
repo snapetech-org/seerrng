@@ -1561,5 +1561,8 @@ Music opens a Lumen playlist preview using the Spotify and YouTube
 resolver. Users select matched albums or eligible unmatched tracks before
 submitting. Successful items remain marked while failed selections remain
 available to retry. TypeScript, the production build, and four standalone
-browser fixtures passed. Live providers, Spotify disconnect and callback
-return, bundled rendering, and matched native visual comparison remain open.
+browser fixtures initially passed for mixed playlist submission. Subsequent
+browser fixtures verified retry after a partial failure and Spotify disconnect.
+Server fixtures verified the cancelled Spotify callback return path for bundled
+and companion deployments. Live providers, bundled rendering, and matched
+native visual comparison remain open.

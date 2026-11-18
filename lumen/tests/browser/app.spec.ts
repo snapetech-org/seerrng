@@ -4019,11 +4019,12 @@ test('Song identification polls and requests the exact recording', async ({
   });
 });
 
-test('Playlist Import reviews album and track matches before submitting', async ({
+test('Playlist Import reviews matches and retries only failed requests', async ({
   page,
 }) => {
   await fixtures(page);
   const submitted: unknown[] = [];
+  let trackAttempts = 0;
   await page.route('**/api/v1/playlist/spotify/status', (route) =>
     route.fulfill({ json: { connected: false } })
   );
@@ -4057,6 +4058,15 @@ test('Playlist Import reviews album and track matches before submitting', async 
     /\/api\/v1\/(request|soulseek\/track-requests)$/,
     (route) => {
       submitted.push(route.request().postDataJSON());
+      if (
+        route.request().url().endsWith('/track-requests') &&
+        ++trackAttempts === 1
+      ) {
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Track service temporarily unavailable.' },
+        });
+      }
       return route.fulfill({ json: {} });
     }
   );
@@ -4069,7 +4079,16 @@ test('Playlist Import reviews album and track matches before submitting', async 
   await page.getByRole('checkbox', { name: 'Request Track' }).check();
   expect(submitted).toEqual([]);
   await page.getByRole('button', { name: 'Request Selected (2)' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Track service temporarily unavailable.'
+  );
+  await expect(page.getByText('Requested', { exact: true })).toHaveCount(1);
+  await expect(
+    page.getByRole('checkbox', { name: 'Request Track' })
+  ).toBeChecked();
+  await page.getByRole('button', { name: 'Request Selected (1)' }).click();
   await expect(page.getByText('Requested', { exact: true })).toHaveCount(2);
+  await expect(page.getByRole('alert')).toHaveCount(0);
   expect(submitted).toEqual([
     { mediaType: 'music', mediaId: 'album-id' },
     {
@@ -4077,6 +4096,7 @@ test('Playlist Import reviews album and track matches before submitting', async 
         { title: 'Unmatched Track', artist: 'Artist', source: 'playlist' },
       ],
     },
+    submitted[1],
   ]);
 });
 
