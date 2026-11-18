@@ -69,6 +69,7 @@ export const MediaStatus = {
 } as const;
 
 export interface MediaInfo {
+  viewerRequestCoverage?: { standard?: boolean; fourK?: boolean };
   id?: number;
   requests?: {
     id: number;

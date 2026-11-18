@@ -298,3 +298,17 @@ Headed Chrome at 1440 × 1000 verified a standalone batch with one acceptance,
 one rejection, and one blocked movie that was excluded. The fixture accepted
 only the two eligible IDs. Mobile, bundled and native comparisons, live
 authorization and destination branches, and collection playback remain open.
+
+### Collection playback increment
+
+Collection details expose Play Collection for playable HD and eligible 4K
+copies. The picker retains collection order, sends internal media IDs,
+omits copies with shared-only playback restrictions, and uses the existing
+authorized device and playlist endpoints. The playlist action explains
+that it replaces Current Selection and offers a validated link after creation.
+
+Headed Chrome at 1440 × 1000 verified standalone device selection, ordered
+playback dispatch, exclusion of a shared copy, and a playlist link for a
+changed selection against synthetic data. Mobile and bundled visual
+acceptance, comparison against rendered native workflows, and live provider
+playback remain open.

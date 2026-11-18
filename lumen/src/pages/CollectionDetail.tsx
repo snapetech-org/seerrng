@@ -4,6 +4,9 @@ import { api, MediaStatus, tmdbImg } from '../api';
 import { useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
+import CollectionPlaybackSheet, {
+  collectionPlaybackQualities,
+} from '../components/CollectionPlaybackSheet';
 import CollectionQueueSheet from '../components/CollectionQueueSheet';
 import CollectionRequestSheet, {
   type MovieCollection,
@@ -27,6 +30,7 @@ function CollectionContent({ id }: { id: number }) {
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
   const settings = usePublicSettings();
   const [requestOpen, setRequestOpen] = useState(false);
+  const [playOpen, setPlayOpen] = useState(false);
   const [queueOpen, setQueueOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
@@ -86,6 +90,13 @@ function CollectionContent({ id }: { id: number }) {
       </p>
     );
   if (data.id !== id) return <p className="note">Collection not found.</p>;
+  const playableQualities = canRequestMovies(user?.permissions)
+    ? collectionPlaybackQualities(
+        data.parts,
+        !!settings?.movie4kEnabled && canRequest4k(user?.permissions, 'movie'),
+        settings?.otherUsersAvailability
+      )
+    : [];
   const title =
     action === 'add' ? 'Blocklist Collection' : 'Unblock Collection';
 
@@ -102,6 +113,14 @@ function CollectionContent({ id }: { id: number }) {
       <div className="dbody">
         {data.parts.length > 0 && (
           <div className="dstatus">
+            {playableQualities.length > 0 && (
+              <button
+                className="btn btn-tonal btn-sm"
+                onClick={() => setPlayOpen(true)}
+              >
+                Play Collection
+              </button>
+            )}
             {qualities.length > 0 && (
               <button
                 className="btn btn-tonal btn-sm"
@@ -154,6 +173,15 @@ function CollectionContent({ id }: { id: number }) {
             setRequestOpen(false);
             if (submitted) reload();
           }}
+        />
+      )}
+      {playOpen && playableQualities.length > 0 && (
+        <CollectionPlaybackSheet
+          title={data.name}
+          parts={data.parts}
+          qualities={playableQualities}
+          visibility={settings?.otherUsersAvailability}
+          close={() => setPlayOpen(false)}
         />
       )}
       {queueOpen && (

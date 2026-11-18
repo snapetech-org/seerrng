@@ -203,3 +203,81 @@ test('bulk collection requests exclude blocked titles and show partial results',
     { mediaId: 21, mediaType: 'movie', is4k: false },
   ]);
 });
+
+test('collection playback uses ordered internal IDs, skips shared copies, and opens a safe playlist link', async ({
+  page,
+}) => {
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { otherUsersAvailability: 'distinguish' } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Example Collection',
+          parts: [
+            {
+              id: 20,
+              mediaType: 'movie',
+              title: 'First Movie',
+              mediaInfo: { id: 99, status: 5 },
+            },
+            {
+              id: 21,
+              mediaType: 'movie',
+              title: 'Shared Movie',
+              mediaInfo: {
+                id: 100,
+                status: 5,
+                viewerRequestCoverage: { standard: false },
+              },
+            },
+            {
+              id: 22,
+              mediaType: 'movie',
+              title: 'Last Movie',
+              mediaInfo: { id: 70, status: 5 },
+            },
+          ],
+        },
+      });
+    if (path === '/playback/devices')
+      return route.fulfill({
+        json: [{ id: 'player-1', name: 'TV', client: 'Plex' }],
+      });
+    if (
+      path === '/playback/collection/play' ||
+      path === '/playback/collection/playlist'
+    ) {
+      writes.push(request.postDataJSON());
+      return path.endsWith('/playlist')
+        ? route.fulfill({ json: { url: 'https://example.test/playlist' } })
+        : route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/collection/30');
+  await page.getByRole('button', { name: 'Play Collection' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Play Collection' });
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Shared Movie' })
+  ).toHaveCount(0);
+  await sheet.getByLabel('Playback Device').selectOption('player-1');
+  await sheet.getByRole('button', { name: 'Play on Device' }).click();
+  await expect(sheet.getByText('Playback started on TV.')).toBeVisible();
+  await sheet.getByRole('checkbox', { name: 'First Movie' }).uncheck();
+  await sheet.getByRole('button', { name: 'Create Playback Playlist' }).click();
+  await expect(
+    sheet.getByRole('link', { name: 'Open Playlist' })
+  ).toHaveAttribute('href', 'https://example.test/playlist');
+  expect(writes).toEqual([
+    { mediaIds: [99, 70], is4k: false, deviceId: 'player-1' },
+    { mediaIds: [70], is4k: false },
+  ]);
+});

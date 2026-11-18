@@ -93,6 +93,7 @@ export async function cachedApi<T>(path: string): Promise<T> {
 }
 
 export interface PublicSettings {
+  otherUsersAvailability?: 'show' | 'distinguish' | 'hide';
   lockLumenForNonAdmins?: boolean;
   softwareEnabled?: boolean;
   romarrEnabled?: boolean;
