@@ -66,14 +66,6 @@ jobs:
       - name: Typecheck Cypress fixtures and commands
         run: pnpm cypress:typecheck
 
-      - name: Cache Cypress binary
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ${{ runner.temp }}/seerrng-cypress-cache
-          key: ${{ runner.os }}-cypress-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-store-
-
       - name: Install Cypress binary
         env:
           CYPRESS_CACHE_FOLDER: ${{ runner.temp }}/seerrng-cypress-cache

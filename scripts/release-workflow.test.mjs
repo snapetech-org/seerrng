@@ -1844,7 +1844,6 @@ test('containerized CI test jobs use pinned Debian images with Git available', (
 test('Cypress uses Cloud-only grouping metadata only when recording', () => {
   const workflow = readWorkflow('cypress.yml');
   const steps = workflow.jobs['cypress-run'].steps;
-  const cache = steps.find((step) => step.name === 'Cache Cypress binary');
   const install = steps.find((step) => step.name === 'Install Cypress binary');
   const recordedRun = steps.find(
     (step) => step.name === 'Run Cypress suite with Cypress Cloud'
@@ -1854,7 +1853,10 @@ test('Cypress uses Cloud-only grouping metadata only when recording', () => {
   );
   const cacheDirectory = '${{ runner.temp }}/seerrng-cypress-cache';
 
-  assert.equal(cache?.with?.path, cacheDirectory);
+  assert.equal(
+    steps.some((step) => step.uses?.startsWith('actions/cache')),
+    false
+  );
   assert.equal(install?.env?.CYPRESS_CACHE_FOLDER, cacheDirectory);
   assert.match(
     install?.run ?? '',
