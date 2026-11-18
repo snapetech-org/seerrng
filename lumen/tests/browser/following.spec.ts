@@ -371,11 +371,12 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
   await expect(
     page.getByRole('button', { name: 'Follow Full Cast' })
   ).toHaveCount(0);
-  const selected = narrations.getByRole('radio', { checked: true });
-  const selection = await selected.allTextContents();
+  const cast = narrations.getByRole('radio', { name: /Full Cast/ });
+  await cast.click();
+  await expect(cast).toBeChecked();
   await page.getByRole('button', { name: 'Follow Fixture Reader' }).click();
   await expect(
     page.getByRole('button', { name: 'Following', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
-  expect(await selected.allTextContents()).toEqual(selection);
+  await expect(cast).toBeChecked();
 });

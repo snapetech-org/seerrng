@@ -108,6 +108,13 @@ rows with the existing You screen. The isolated desktop could not reach the
 fixture, so this check used a dedicated session on the persistent Agent GUI VM.
 Narrow and embedded-browser visual acceptance remains open.
 
+Book details offer Follow New Releases for an identified author. Audiobook
+details offer Follow for each listed solo narrator in the narration picker.
+Twenty-four browser cases passed per deployment across desktop, iPhone,
+Android, and tablet. API fixtures verify author follow and unfollow,
+narrator identity, and preservation of an explicitly selected edition.
+Matched visual and live provider verification remain open.
+
 ### Release Calendar increment
 
 Lumen now serves `/calendar` in both deployments. The Release Calendar uses
