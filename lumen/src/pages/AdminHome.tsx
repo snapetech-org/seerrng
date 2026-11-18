@@ -17,6 +17,7 @@ const destinations = [
   ['BackIssue Services', '/admin/backissue'],
   ['Sportarr Services', '/admin/sportarr'],
   ['Soulseek Settings', '/admin/soulseek'],
+  ['Reader Delivery', '/admin/reader-delivery'],
   ['Share and Image Recognition', '/admin/recognition'],
   ['Swipe Settings', '/admin/swipe'],
   ['Download Client Settings', '/admin/download-clients'],

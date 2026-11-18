@@ -2081,3 +2081,16 @@ iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and 44 browser
 fixture checks passed, including permission denial and rejected-save recovery.
 No real image or credential was sent. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-recognition-20261118/`.
+
+Lumen Administration now has Reader Delivery settings for Grimmory and
+BookOrbit, including credentials, preferred reader, OPDS and Komga addresses,
+and tests against saved connections. Administrators can inspect managed shelf
+status and remove a shelf after confirmation. Book and comic detail actions
+for creating managed shelves remain separate work.
+
+Compared the configured form with the existing Lumen provider form on
+desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and 44
+browser fixture checks passed, including failed-save recovery, secret
+preservation, connection testing, and canceling and confirming shelf removal.
+Real reader connections were outside this check. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-delivery-20261118/`.
