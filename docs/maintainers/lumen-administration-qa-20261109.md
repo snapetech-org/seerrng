@@ -178,3 +178,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the Sonarr form against the Radarr baseline at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. Inspected the shared controls and the additional Sonarr selections. The production build and eight targeted browser checks passed with synthetic Radarr and Sonarr responses.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sonarr-20261118/`.
+
+## Lidarr and Whisparr service administration follow-up — 2026-11-18
+
+`/admin/lidarr` and `/admin/whisparr` reuse the request destination editor for connection tests and service management. Lidarr selects metadata profiles returned by its connection test. Both use their service defaults and omit video-only 4K and request-button controls.
+
+Compared both forms with the established Radarr layout at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and sixteen browser checks passed with synthetic service responses across Radarr, Sonarr, Lidarr, and Whisparr.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-lidarr-whisparr-20261118/`.

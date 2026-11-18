@@ -491,6 +491,42 @@ function App() {
             }
           />
           <Route
+            path="/admin/lidarr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Lidarr services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="lidarr" provider="lidarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/whisparr"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Whisparr services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="whisparr" provider="whisparr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
             path="/admin/discovery"
             element={
               isAdministrator(user.permissions) ? (

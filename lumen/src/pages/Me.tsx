@@ -185,6 +185,26 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Lidarr Services</b>
+              <Link
+                className="go"
+                to="/admin/lidarr"
+                aria-label="Open Lidarr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
+              <b>Whisparr Services</b>
+              <Link
+                className="go"
+                to="/admin/whisparr"
+                aria-label="Open Whisparr Services"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Discovery Integrations</b>
               <Link
                 className="go"

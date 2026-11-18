@@ -6,8 +6,14 @@ import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
-type Provider = 'radarr' | 'sonarr';
-const names = { radarr: 'Radarr', sonarr: 'Sonarr' };
+type Provider = 'radarr' | 'sonarr' | 'lidarr' | 'whisparr';
+const names = {
+  radarr: 'Radarr',
+  sonarr: 'Sonarr',
+  lidarr: 'Lidarr',
+  whisparr: 'Whisparr',
+};
+const ports = { radarr: 7878, sonarr: 8989, lidarr: 8686, whisparr: 6969 };
 interface Service {
   id?: number;
   name: string;
@@ -29,6 +35,8 @@ interface Service {
   requestButtonLabel?: string;
   downloadQueueSize?: number;
   minimumAvailability?: string;
+  activeMetadataProfileId?: number;
+  activeMetadataProfileName?: string;
   seriesType?: string;
   animeSeriesType?: string;
   activeAnimeProfileId?: number;
@@ -49,6 +57,7 @@ interface Options {
   rootFolders: { id: number; path: string }[];
   tags: { id: number; label: string }[];
   languageProfiles?: { id: number; name: string }[] | null;
+  metadataProfiles?: { id: number; name: string }[];
   metadataLanguages?: { id: number; name: string }[] | null;
 }
 
@@ -90,6 +99,8 @@ function ServiceForm({
 }) {
   const name = names[provider];
   const isSonarr = provider === 'sonarr';
+  const video = isSonarr || provider === 'radarr';
+  const isLidarr = provider === 'lidarr';
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
   const [options, setOptions] = useState<Options>();
@@ -112,6 +123,11 @@ function ServiceForm({
     !!draft.name.trim() &&
     draft.activeProfileId > 0 &&
     !!draft.activeDirectory &&
+    (!isLidarr ||
+      !options?.metadataProfiles?.length ||
+      options.metadataProfiles.some(
+        ({ id }) => id === draft.activeMetadataProfileId
+      )) &&
     (!options ||
       (options.profiles.some(({ id }) => id === draft.activeProfileId) &&
         options.rootFolders.some(
@@ -192,7 +208,20 @@ function ServiceForm({
                         ({ id }) => id === draft.activeAnimeProfileId
                       )?.name ?? draft.activeAnimeProfileName),
               }
-            : { minimumAvailability: draft.minimumAvailability ?? 'released' }),
+            : provider === 'radarr'
+              ? { minimumAvailability: draft.minimumAvailability ?? 'released' }
+              : {
+                  is4k: false,
+                  ...(isLidarr
+                    ? {
+                        activeMetadataProfileId: draft.activeMetadataProfileId,
+                        activeMetadataProfileName:
+                          options?.metadataProfiles?.find(
+                            ({ id }) => id === draft.activeMetadataProfileId
+                          )?.name ?? draft.activeMetadataProfileName,
+                      }
+                    : {}),
+                }),
           apiKey: key,
           activeProfileName:
             options?.profiles.find(({ id }) => id === draft.activeProfileId)
@@ -250,17 +279,25 @@ function ServiceForm({
               />
             </label>
           ))}
-          {flags.map(([field, label]) => (
-            <label className="set cfg-row" key={field}>
-              <span>{label}</span>
-              <input
-                type="checkbox"
-                disabled={busy}
-                checked={draft[field] === true}
-                onChange={(event) => change({ [field]: event.target.checked })}
-              />
-            </label>
-          ))}
+          {flags
+            .filter(
+              ([field]) =>
+                video ||
+                (field !== 'is4k' && field !== 'requestButtonAnimeOnly')
+            )
+            .map(([field, label]) => (
+              <label className="set cfg-row" key={field}>
+                <span>{label}</span>
+                <input
+                  type="checkbox"
+                  disabled={busy}
+                  checked={draft[field] === true}
+                  onChange={(event) =>
+                    change({ [field]: event.target.checked })
+                  }
+                />
+              </label>
+            ))}
           {isSonarr ? (
             <>
               {(
@@ -336,7 +373,7 @@ function ServiceForm({
                 />
               </label>
             </>
-          ) : (
+          ) : provider === 'radarr' ? (
             <label className="set cfg-row">
               <span>Minimum Availability</span>
               <select
@@ -352,7 +389,7 @@ function ServiceForm({
                 <option value="released">Released</option>
               </select>
             </label>
-          )}
+          ) : null}
           <label className="set cfg-row">
             <span>Download Queue Size</span>
             <input
@@ -365,17 +402,19 @@ function ServiceForm({
               }
             />
           </label>
-          <label className="set cfg-row">
-            <span>Request Button Label</span>
-            <input
-              className="cfg-input"
-              value={draft.requestButtonLabel ?? ''}
-              disabled={busy}
-              onChange={(event) =>
-                change({ requestButtonLabel: event.target.value })
-              }
-            />
-          </label>
+          {video && (
+            <label className="set cfg-row">
+              <span>Request Button Label</span>
+              <input
+                className="cfg-input"
+                value={draft.requestButtonLabel ?? ''}
+                disabled={busy}
+                onChange={(event) =>
+                  change({ requestButtonLabel: event.target.value })
+                }
+              />
+            </label>
+          )}
         </div>
         <div className="toolbar">
           <button
@@ -430,6 +469,33 @@ function ServiceForm({
                 </select>
               </label>
             </div>
+            {isLidarr && options.metadataProfiles && (
+              <div className="setlist">
+                <label className="set cfg-row">
+                  <span>Metadata Profile</span>
+                  <select
+                    className="cfg-select"
+                    value={draft.activeMetadataProfileId ?? ''}
+                    disabled={busy}
+                    onChange={(event) =>
+                      change({
+                        activeMetadataProfileId: event.target.value
+                          ? Number(event.target.value)
+                          : undefined,
+                        activeMetadataProfileName: undefined,
+                      })
+                    }
+                  >
+                    <option value="">Choose a Metadata Profile</option>
+                    {options.metadataProfiles.map(({ id, name: title }) => (
+                      <option key={id} value={id}>
+                        {title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            )}
             {isSonarr && (
               <div className="setlist">
                 <label className="set cfg-row">
@@ -511,7 +577,7 @@ function ServiceForm({
             {(
               [
                 'tags',
-                'syncExcludedTags',
+                ...(video ? (['syncExcludedTags'] as const) : []),
                 ...(isSonarr ? (['animeTags'] as const) : []),
               ] as const
             ).map((field) => (
@@ -650,9 +716,11 @@ export default function AdminServarr({ provider }: { provider: Provider }) {
             <button
               className="btn btn-primary btn-sm"
               onClick={() =>
-                setEditing(
-                  provider === 'sonarr' ? { ...empty, port: 8989 } : empty
-                )
+                setEditing({
+                  ...empty,
+                  port: ports[provider],
+                  ...(provider === 'whisparr' ? { isDefault: true } : {}),
+                })
               }
             >
               Add {name}
