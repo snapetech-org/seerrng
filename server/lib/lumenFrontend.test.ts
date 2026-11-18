@@ -637,6 +637,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/discover/music?genre=jazz&sortBy=release_date.asc&search=Jazz&releaseType=ep&artist=Artist&artistId=fixture&availability=flac&primaryReleaseDateGte=1990-01-01&primaryReleaseDateLte=2000-12-31&extra=1',
         '/lumen/music?genre=jazz&sortBy=release_date.asc&search=Jazz&releaseType=ep&artist=Artist&artistId=fixture&availability=flac&primaryReleaseDateGte=1990-01-01&primaryReleaseDateLte=2000-12-31',
       ],
+      [
+        '/discover/comics?query=Night&publisher=Image&startYear=2010&minIssues=1&maxIssues=12&extra=1',
+        '/lumen/comics?query=Night&publisher=Image&startYear=2010&minIssues=1&maxIssues=12',
+      ],
       ['/discover/collectors/', '/lumen/music/collectors'],
       ['/discover/providers', '/lumen/providers'],
       ['/discover/movies/genres', '/lumen/movies/genres'],

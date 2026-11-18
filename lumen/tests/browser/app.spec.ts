@@ -3367,6 +3367,94 @@ test('configured book shelves carry an arbitrary subject into both book formats'
   await expect(page).toHaveURL(/\/audiobooks\?sort=ranked$/);
 });
 
+test('Classic comic discovery bookmarks restore catalogue filters and results', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  const reads: URLSearchParams[] = [];
+  await page.route('**/api/v1/discover/comics?*', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    reads.push(params);
+    if (params.get('group') === 'works') {
+      return route.fulfill({
+        json: paged([
+          {
+            id: 'al-42',
+            mediaType: 'comic',
+            kind: 'manga',
+            title: 'Fixture Manga',
+            editions: [],
+            editionsResolved: false,
+          },
+        ]),
+      });
+    }
+    return route.fulfill({
+      json: paged([
+        {
+          id: '1234',
+          mediaType: 'comic',
+          title: 'Night Tales',
+          publisher: 'Image',
+        },
+      ]),
+    });
+  });
+  await page.goto(
+    '/comics?query=Night&publisher=Image&startYear=2010&minIssues=1&maxIssues=12'
+  );
+  const filterForm = page.getByRole('form', {
+    name: 'Comics Catalogue Filters',
+  });
+  await expect(page.getByRole('link', { name: 'Night Tales' })).toHaveAttribute(
+    'href',
+    '/comic/1234'
+  );
+  await expect(
+    filterForm.getByRole('searchbox', { name: 'Publisher' })
+  ).toHaveValue('Image');
+  expect(Object.fromEntries(reads[0])).toMatchObject({
+    query: 'Night',
+    publisher: 'Image',
+    startYear: '2010',
+    minIssues: '1',
+    maxIssues: '12',
+  });
+  await filterForm
+    .getByRole('spinbutton', { name: 'Maximum Issues' })
+    .fill('20');
+  await filterForm
+    .getByRole('button', { name: 'Search Comics Catalogue' })
+    .click();
+  await expect.poll(() => reads.at(-1)?.get('maxIssues')).toBe('20');
+  await filterForm
+    .getByRole('button', { name: 'Back to Comics and Manga' })
+    .click();
+  await expect(page).toHaveURL(/\/comics$/);
+  await expect(
+    filterForm.getByRole('searchbox', { name: 'Publisher' })
+  ).toHaveValue('');
+  await expect(
+    page.getByRole('heading', { name: 'Comics Catalogue', exact: true })
+  ).toHaveCount(0);
+  await filterForm
+    .getByRole('searchbox', { name: 'Title', exact: true })
+    .fill('Fixture Manga');
+  await filterForm
+    .getByRole('button', { name: 'Search Comics Catalogue' })
+    .click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Manga' })
+  ).toHaveAttribute('href', '/comic/al-42');
+  expect(reads.at(-1)?.get('group')).toBe('works');
+});
+
 test('Classic music discovery bookmarks retain catalogue filters', async ({
   page,
 }) => {

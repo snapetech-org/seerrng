@@ -135,6 +135,26 @@ const inLibrary = (w: ComicWork) =>
   w.mediaInfo?.status === MediaStatus.AVAILABLE ||
   w.mediaInfo?.status === MediaStatus.PARTIAL;
 
+const COMIC_CATALOG_FIELDS = [
+  { key: 'query', label: 'Title', maxLength: 256 },
+  { key: 'publisher', label: 'Publisher', maxLength: 128 },
+  { key: 'startYear', label: 'Start Year', min: 1800, max: 2200 },
+  { key: 'minIssues', label: 'Minimum Issues', min: 0, max: 100000 },
+  { key: 'maxIssues', label: 'Maximum Issues', min: 0, max: 100000 },
+] as const;
+
+function catalogComicWork(volume: Comic | ComicWork): ComicWork {
+  if ('editions' in volume) return volume;
+  return {
+    ...volume,
+    kind: volume.manga ? 'manga' : 'comic',
+    editions: [volume],
+    editionsResolved: true,
+    recommendedId: String(volume.id),
+    id: String(volume.id),
+  };
+}
+
 // ---- comics and manga: manga from AniList, Western comics from ComicVine; one card per
 // work with its editions inside; searching is the top search bar's job ----
 export function Comics() {
@@ -144,9 +164,34 @@ export function Comics() {
   const show = (['library', 'not'] as const).find((s) => s === p.get('show'));
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
   const status = p.get('status') || '';
+  const catalogFilters = new URLSearchParams();
+  for (const { key } of COMIC_CATALOG_FIELDS) {
+    const value = p.get(key)?.trim();
+    if (value) catalogFilters.set(key, value);
+  }
+  // The Western browse publisher dropdown uses the curated browse endpoint.
+  const catalogMode =
+    p.has('catalog') ||
+    COMIC_CATALOG_FIELDS.some(
+      ({ key }) => key !== 'publisher' && catalogFilters.has(key)
+    ) ||
+    (!type && catalogFilters.has('publisher'));
+  const catalogQuery = new URLSearchParams(catalogFilters);
+  if (catalogQuery.size === 1 && catalogQuery.has('query'))
+    catalogQuery.set('group', 'works');
+  const catalog = usePaged<Comic | ComicWork>(
+    catalogMode ? `/discover/comics?${catalogQuery}` : null
+  );
   const publisher = p.get('publisher') || '';
   const sort = p.get('sort') || '';
-  const filtered = !!(type || show || picked.length || status || sort);
+  const filtered = !!(
+    catalogMode ||
+    type ||
+    show ||
+    picked.length ||
+    status ||
+    sort
+  );
   const landing = useApi<ComicLanding>('/discover/comics/landing');
   const genres = landing.data?.genres?.length
     ? landing.data.genres
@@ -162,14 +207,22 @@ export function Comics() {
   if (kind === 'manga' && picked.length) q.set('genre', picked.join(','));
   if (kind === 'manga' && status) q.set('status', status);
   if (kind === 'comic' && publisher) q.set('publisher', publisher);
-  const list = usePaged<ComicWork>(`/discover/comics/browse?${q}`);
+  const browse = usePaged<ComicWork>(
+    catalogMode ? null : `/discover/comics/browse?${q}`
+  );
+  const list = catalogMode
+    ? { ...catalog, items: catalog.items.map(catalogComicWork) }
+    : browse;
   // a work can come back on a later page too
   const seen = new Set<string>();
   const items = list.items.filter((w) =>
-    seen.has(w.id) ? false : (seen.add(w.id), !(show === 'not' && inLibrary(w)))
+    seen.has(w.id)
+      ? false
+      : (seen.add(w.id), !(!catalogMode && show === 'not' && inLibrary(w)))
   );
   // Not yet: a page can be all owned works; fetch on until something shows or the feed ends
   const hiddenPage =
+    !catalogMode &&
     show === 'not' &&
     !items.length &&
     list.page > 0 &&
@@ -192,8 +245,9 @@ export function Comics() {
     upd({ ...changes, ...(type ? {} : { type: 'manga' }) });
   const noKey = landing.data?.comicVineConfigured === false;
   const sorts = kind === 'comic' ? COMIC_SORTS : MANGA_SORTS;
-  const gridTitle =
-    show === 'library'
+  const gridTitle = catalogMode
+    ? 'Comics Catalogue'
+    : show === 'library'
       ? 'In your library'
       : show === 'not'
         ? 'Not in your library yet'
@@ -220,117 +274,162 @@ export function Comics() {
           under Settings › General. You can still browse manga.
         </div>
       )}
-      <div className="toolbar">
-        <div className="seg" role="group" aria-label="Type">
-          {(
-            [
-              ['', 'All'],
-              ['manga', 'Manga'],
-              ['comic', 'Comics'],
-            ] as const
-          ).map(([v, t]) => (
-            <button
-              key={v || 'all'}
-              aria-pressed={(type || '') === v}
-              onClick={() =>
-                upd({
-                  type: v || null,
-                  sort: null,
-                  // manga filters don't apply to Western comics and back
-                  ...(v === 'comic' ? { genre: null, status: null } : {}),
-                  ...(v !== 'comic' ? { publisher: null } : {}),
-                })
+      <form
+        className="toolbar"
+        aria-label="Comics Catalogue Filters"
+        key={catalogFilters.toString()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          const data = new FormData(event.currentTarget);
+          const next = new URLSearchParams({ catalog: '1' });
+          for (const { key } of COMIC_CATALOG_FIELDS) {
+            const value = String(data.get(key) ?? '').trim();
+            if (value) next.set(key, value);
+          }
+          setP(next, { replace: true });
+        }}
+      >
+        {COMIC_CATALOG_FIELDS.map((field) => (
+          <label className="sel" key={field.key}>
+            <span className="lbl">{field.label}</span>
+            <input
+              className="cfg-input"
+              type={'min' in field ? 'number' : 'search'}
+              name={field.key}
+              defaultValue={catalogFilters.get(field.key) ?? ''}
+              min={'min' in field ? field.min : undefined}
+              max={'max' in field ? field.max : undefined}
+              maxLength={'maxLength' in field ? field.maxLength : undefined}
+            />
+          </label>
+        ))}
+        <button type="submit" className="btn btn-tonal btn-sm">
+          Search Comics Catalogue
+        </button>
+        {catalogMode && (
+          <button
+            type="button"
+            className="chip"
+            onClick={() => setP({}, { replace: true })}
+          >
+            Back to Comics and Manga
+          </button>
+        )}
+      </form>
+      {!catalogMode && (
+        <div className="toolbar">
+          <div className="seg" role="group" aria-label="Type">
+            {(
+              [
+                ['', 'All'],
+                ['manga', 'Manga'],
+                ['comic', 'Comics'],
+              ] as const
+            ).map(([v, t]) => (
+              <button
+                key={v || 'all'}
+                aria-pressed={(type || '') === v}
+                onClick={() =>
+                  upd({
+                    type: v || null,
+                    sort: null,
+                    // manga filters don't apply to Western comics and back
+                    ...(v === 'comic' ? { genre: null, status: null } : {}),
+                    ...(v !== 'comic' ? { publisher: null } : {}),
+                  })
+                }
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <div className="seg" role="group" aria-label="Library">
+            {(
+              [
+                ['', 'All'],
+                ['library', 'In library'],
+                ['not', 'Not yet'],
+              ] as const
+            ).map(([v, t]) => (
+              <button
+                key={v || 'all'}
+                aria-pressed={(show || '') === v}
+                onClick={() => upd({ show: v || null })}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          {show !== 'library' && (
+            <label className="sel">
+              <span className="lbl">Sort</span>
+              <select
+                value={sort || sorts[0][0]}
+                onChange={(e) =>
+                  kind === 'comic'
+                    ? upd({
+                        sort:
+                          e.target.value === 'issues' ? null : e.target.value,
+                      })
+                    : mangaOnly({
+                        sort:
+                          e.target.value === 'popular' && type
+                            ? null
+                            : e.target.value,
+                      })
+                }
+              >
+                {sorts.map(([v, t]) => (
+                  <option key={v} value={v}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          {kind === 'manga' && show !== 'library' && (
+            <label className="sel">
+              <span className="lbl">Status</span>
+              <select
+                value={status}
+                onChange={(e) => mangaOnly({ status: e.target.value || null })}
+              >
+                <option value="">Any</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="finished">Finished</option>
+              </select>
+            </label>
+          )}
+          {kind === 'comic' && !!publishers.length && (
+            <label className="sel">
+              <span className="lbl">Publisher</span>
+              <select
+                value={publisher}
+                onChange={(e) => upd({ publisher: e.target.value || null })}
+              >
+                <option value="">All</option>
+                {publishers.map((x) => (
+                  <option key={x} value={x}>
+                    {x}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          {kind === 'manga' && (
+            <GenrePicker
+              options={genres.map((g) => ({ value: g, label: g }))}
+              picked={picked}
+              // a genre narrows All to manga; All genres only clears the genres
+              onChange={(next) =>
+                next.length
+                  ? mangaOnly({ genre: next.join(',') })
+                  : upd({ genre: null })
               }
-            >
-              {t}
-            </button>
-          ))}
+            />
+          )}
         </div>
-        <div className="seg" role="group" aria-label="Library">
-          {(
-            [
-              ['', 'All'],
-              ['library', 'In library'],
-              ['not', 'Not yet'],
-            ] as const
-          ).map(([v, t]) => (
-            <button
-              key={v || 'all'}
-              aria-pressed={(show || '') === v}
-              onClick={() => upd({ show: v || null })}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        {show !== 'library' && (
-          <label className="sel">
-            <span className="lbl">Sort</span>
-            <select
-              value={sort || sorts[0][0]}
-              onChange={(e) =>
-                kind === 'comic'
-                  ? upd({
-                      sort: e.target.value === 'issues' ? null : e.target.value,
-                    })
-                  : mangaOnly({
-                      sort:
-                        e.target.value === 'popular' && type
-                          ? null
-                          : e.target.value,
-                    })
-              }
-            >
-              {sorts.map(([v, t]) => (
-                <option key={v} value={v}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        {kind === 'manga' && show !== 'library' && (
-          <label className="sel">
-            <span className="lbl">Status</span>
-            <select
-              value={status}
-              onChange={(e) => mangaOnly({ status: e.target.value || null })}
-            >
-              <option value="">Any</option>
-              <option value="ongoing">Ongoing</option>
-              <option value="finished">Finished</option>
-            </select>
-          </label>
-        )}
-        {kind === 'comic' && !!publishers.length && (
-          <label className="sel">
-            <span className="lbl">Publisher</span>
-            <select
-              value={publisher}
-              onChange={(e) => upd({ publisher: e.target.value || null })}
-            >
-              <option value="">All</option>
-              {publishers.map((x) => (
-                <option key={x} value={x}>
-                  {x}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        {kind === 'manga' && (
-          <GenrePicker
-            options={genres.map((g) => ({ value: g, label: g }))}
-            picked={picked}
-            // a genre narrows All to manga; All genres only clears the genres
-            onChange={(next) =>
-              next.length
-                ? mangaOnly({ genre: next.join(',') })
-                : upd({ genre: null })
-            }
-          />
-        )}
-      </div>
+      )}
       {!filtered && (
         <>
           <ComicRail
@@ -370,9 +469,14 @@ export function Comics() {
           !items.length &&
           !list.loading &&
           list.page > 0 &&
-          (show !== 'not' || list.done) && (
+          (catalogMode || show !== 'not' || list.done) && (
             <div className="empty">
-              {show === 'library' ? (
+              {catalogMode ? (
+                <>
+                  <b>No comics found</b>Try different filters or check whether
+                  the catalogue has finished indexing.
+                </>
+              ) : show === 'library' ? (
                 <>
                   <b>Nothing in the library yet</b>
                   Request a series and it shows up here.
