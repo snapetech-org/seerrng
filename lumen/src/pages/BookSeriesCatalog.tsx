@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api, type BookResult } from '../api';
+import { api, readerServiceUrl, type BookResult } from '../api';
 import { useAuth } from '../auth';
 import BulkBookRequest from '../components/BulkBookRequest';
 import { Section } from '../components/cards';
+import { canManageRequests } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -13,6 +14,7 @@ type Catalog = {
   title: string;
   description?: string;
   serverName: string;
+  managementUrl?: string;
   format: 'ebook' | 'audiobook';
   bookCount: number;
   resolutionTruncated: boolean;
@@ -169,6 +171,7 @@ function CatalogMonitoring({ query }: { query: string }) {
 }
 
 export default function BookSeriesCatalog() {
+  const { user } = useAuth();
   const { id } = useParams();
   const [params] = useSearchParams();
   const query = bookSeriesCatalogQuery({
@@ -192,6 +195,13 @@ export default function BookSeriesCatalog() {
     currentPathOnly: true,
   });
   const data = catalog.data;
+  const managementUrl =
+    canManageRequests(user?.permissions) && data?.managementUrl
+      ? readerServiceUrl(data.managementUrl)
+      : null;
+  const seriesSearch = data
+    ? new URLSearchParams({ query: data.title, format: data.format }).toString()
+    : '';
   const books = data?.entries ?? data?.books ?? [];
   const matchedBooks = [
     ...new Map(
@@ -222,6 +232,22 @@ export default function BookSeriesCatalog() {
         <Link className="chip" to="/book-series/requests">
           Book Series Requests
         </Link>
+        <Link
+          className="chip"
+          to={`/book-series${seriesSearch ? `?${seriesSearch}` : ''}`}
+        >
+          Find a Book Series
+        </Link>
+        {managementUrl && (
+          <a
+            className="chip"
+            href={managementUrl.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Manage Series in {data?.serverName}
+          </a>
+        )}
         {data && path && (
           <BulkBookRequest
             key={path}

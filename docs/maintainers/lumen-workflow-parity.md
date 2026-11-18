@@ -2893,3 +2893,11 @@ The request includes all linked books as required by the backend.
 Twenty-four browser checks passed across both deployments and four
 viewport presets. Live provider behavior and matched visual acceptance
 remain unverified.
+
+Series previews and backend library series details now offer a validated
+management link to request managers when the API supplies a service URL.
+They also link back to a search for the same series title and format.
+Twenty-four browser checks passed across both deployments. Fixtures
+covered management-link visibility and destination for managers and
+members. Live service navigation and matched visual acceptance remain
+unverified.

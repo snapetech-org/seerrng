@@ -68,6 +68,7 @@ for (const manager of [true, false]) {
           json: {
             title: 'Fixture Catalog',
             serverName: 'Book service',
+            managementUrl: 'https://books.example.test/series/42',
             format: 'audiobook',
             bookCount: 2,
             resolutionTruncated: true,
@@ -133,6 +134,18 @@ for (const manager of [true, false]) {
       `${mount}/book/OL123W?f=audio`
     );
     await expect(page.getByText('Multiple Possible Matches')).toBeVisible();
+    const management = page.getByRole('link', {
+      name: 'Manage Series in Book service',
+    });
+    if (manager) {
+      await expect(management).toHaveAttribute(
+        'href',
+        'https://books.example.test/series/42'
+      );
+      await expect(management).toHaveAttribute('rel', 'noopener noreferrer');
+    } else {
+      await expect(management).toHaveCount(0);
+    }
     const monitor = page.getByRole('button', { name: 'Request Monitoring' });
     if (manager) {
       await expect(monitor).toHaveCount(0);
