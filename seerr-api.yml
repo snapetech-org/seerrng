@@ -14418,8 +14418,10 @@ paths:
                     type: array
                     items:
                       type: object
-                      required: [category, categoryIds]
+                      required: [category, categoryIds, enabled]
                       properties:
+                        enabled:
+                          type: boolean
                         category:
                           type: string
                           enum:

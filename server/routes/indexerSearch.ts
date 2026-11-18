@@ -74,6 +74,7 @@ indexerSearchRoutes.get('/configuration', (_req, res) => {
     categories: MEDIA_CATEGORY_KEYS.map((category) => ({
       category,
       categoryIds: settings.categoryMappings[category],
+      enabled: isUserMediaCategoryEnabled(_req.user, category),
     })),
   });
 });

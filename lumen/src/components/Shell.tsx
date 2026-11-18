@@ -13,6 +13,7 @@ import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useBack, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import { canSearchIndexers } from '../indexerPermissions';
 import { scrollBehavior } from '../motion';
 import { usePrefs } from '../settings';
 import { BrandMark, brandName } from './brand';
@@ -307,6 +308,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/downloads">
               <Icon name="down" />
               Download Inbox
+            </NavLink>
+          )}
+          {canSearchIndexers(user?.permissions) && (
+            <NavLink to="/indexer-search">
+              <Icon name="search" />
+              Indexer Search
             </NavLink>
           )}
           <NavLink to="/watchlist">

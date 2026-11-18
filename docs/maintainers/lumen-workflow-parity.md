@@ -148,5 +148,23 @@ confirmed library target, and preview fingerprint. Rejection offers distinct
 blocklist and client-removal controls, with client removal off by default.
 Both actions re-read the inbox after submission or an uncertain result.
 Headed Chrome at 1440 × 1000 verified the manual import and rejection flows
-against synthetic data. Mobile and bundled visual checks, indexer search,
-and indexer handoff remain open.
+against synthetic data. Mobile and bundled visual checks for the Download Inbox
+remain open.
+
+### Indexer Search increment
+
+Lumen's Indexer Search uses the existing Manage Requests permission and
+Prowlarr configuration, search, and handoff endpoints. Configuration now
+identifies which media categories the server allows for the account. The
+search form excludes disabled or unmapped categories, accepts prefilled
+category and query links, preserves the submitted search when paginating,
+and shows indexer name and details only when allowed. The handoff uses the
+server's single-use result handle.
+
+Headed Chrome at 1440 × 1000 loaded the standalone and bundled production
+builds against synthetic responses. Standalone testing covered a disabled
+prefilled category, search, pagination, hidden indexer details, and handoff.
+The bundled build rendered the form and results. The route reuses Lumen's
+existing page header, search, toolbar, and list roles. Mobile visual acceptance,
+comparison against rendered native workflows, detail-page entry points, and
+an end-to-end live service check remain open.

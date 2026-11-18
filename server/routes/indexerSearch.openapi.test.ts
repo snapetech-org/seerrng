@@ -202,8 +202,8 @@ describe('Prowlarr manual search routes', () => {
     assert.deepEqual(
       configuration.body.categories.find(
         (item: { category: string }) => item.category === 'ebook'
-      )?.categoryIds,
-      [7020]
+      ),
+      { category: 'ebook', categoryIds: [7020], enabled: true }
     );
 
     const response = await request(app)

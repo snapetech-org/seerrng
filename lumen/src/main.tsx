@@ -13,6 +13,7 @@ import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
+import { canSearchIndexers } from './indexerPermissions';
 import { MediaServerProvider } from './mediaServer';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
@@ -41,6 +42,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
 const Downloads = lazy(() => import('./pages/Downloads'));
 
 function App() {
@@ -101,6 +103,20 @@ function App() {
                 }
               >
                 <Downloads allowed={canManageDownloads(user.permissions)} />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/indexer-search"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Indexer Search…
+                  </p>
+                }
+              >
+                <IndexerSearch allowed={canSearchIndexers(user.permissions)} />
               </Suspense>
             }
           />
