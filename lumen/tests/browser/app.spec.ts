@@ -2019,49 +2019,56 @@ test('adult scene details keep the catalog and default request sources distinct'
   expect(reads.sort()).toEqual(['1', '2']);
 });
 
-test('book requests reopen the Bookshelf title and format', async ({
-  page,
-}) => {
-  await fixtures(page);
-  await page.route('**/api/v1/request?*', (route) =>
-    route.fulfill({
-      json: {
-        pageInfo: { pages: 1, results: 1 },
-        results: [
-          {
-            id: 615,
-            type: 'book',
-            status: 1,
-            bookFormat: 'audiobook',
-            is4k: false,
-            seasons: [],
-            createdAt: '2026-11-08T12:00:00Z',
-            requestedBy: { id: 1, displayName: 'Owner' },
-            media: {
-              mediaType: 'book',
+for (const format of ['audiobook', 'both'] as const) {
+  test(`book requests reopen the Bookshelf title for ${format}`, async ({
+    page,
+  }) => {
+    await fixtures(page);
+    await page.route('**/api/v1/request?*', (route) =>
+      route.fulfill({
+        json: {
+          pageInfo: { pages: 1, results: 1 },
+          results: [
+            {
+              id: 615,
+              type: 'book',
               status: 1,
-              identifiers: [
-                { provider: 'bookshelf', value: 'bookshelf:1:fixture' },
-              ],
+              bookFormat: format,
+              is4k: false,
+              seasons: [],
+              createdAt: '2026-11-08T12:00:00Z',
+              requestedBy: { id: 1, displayName: 'Owner' },
+              media: {
+                mediaType: 'book',
+                status: 1,
+                identifiers: [
+                  { provider: 'bookshelf', value: 'bookshelf:1:fixture' },
+                ],
+              },
             },
-          },
-        ],
-      },
-    })
-  );
-  await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
-    route.fulfill({
-      json: { id: 'bookshelf:1:fixture', title: 'Requested Audiobook' },
-    })
-  );
-  await page.goto('/requests?tab=active');
-  await expect(
-    page.getByRole('link', { name: 'Requested Audiobook', exact: true })
-  ).toHaveAttribute(
-    'href',
-    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Requested+Audiobook'
-  );
-});
+          ],
+        },
+      })
+    );
+    await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
+      route.fulfill({
+        json: { id: 'bookshelf:1:fixture', title: 'Requested Audiobook' },
+      })
+    );
+    await page.goto('/requests?tab=active');
+    await expect(
+      page.getByText(
+        format === 'both' ? /^Ebook and Audiobook · / : /^Audiobook · /
+      )
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Requested Audiobook', exact: true })
+    ).toHaveAttribute(
+      'href',
+      `/book/bookshelf%3A1%3Afixture?${format === 'audiobook' ? 'f=audio&' : ''}lookupTitle=Requested+Audiobook`
+    );
+  });
+}
 
 test('adult request links use the saved Whisparr destination', async ({
   page,

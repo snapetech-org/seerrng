@@ -628,6 +628,7 @@ function cachedRow(r: RequestItem, known: Omit<Row, 'r'>): Row {
   return {
     ...known,
     r,
+    sub: r.type === 'book' ? bookRequestLabel(r.bookFormat) : known.sub,
     href:
       r.type === 'book'
         ? requestBookPath(r, known.title === 'Book' ? undefined : known.title)
@@ -763,14 +764,18 @@ function titlePlaceholder(r: RequestItem): Row {
       .join(' · '),
   };
 }
+function bookRequestLabel(format?: string) {
+  if (format === 'both') return 'Ebook and Audiobook';
+  return format === 'audiobook' ? 'Audiobook' : 'Ebook';
+}
+
 function bookPlaceholder(r: RequestItem): Row {
-  const audio = r.bookFormat === 'audiobook';
   return {
     r,
     title: 'Book',
     cover: true,
     href: requestBookPath(r),
-    sub: audio ? 'Audiobook' : 'Ebook',
+    sub: bookRequestLabel(r.bookFormat),
   };
 }
 const keepUnless404 = (r: RequestItem) => {
@@ -787,7 +792,6 @@ async function describeOnce(r: RequestItem): Promise<Row> {
   const generation = sessionGeneration();
   if (r.type === 'book') {
     const id = bookId(r);
-    const audio = r.bookFormat === 'audiobook';
     // a 404 is permanent (kept, so it isn't asked again); a 429 or outage is retried next visit
     const look = async (bid: string) => {
       const { b, st } = await fetchBook(bid);
@@ -805,7 +809,7 @@ async function describeOnce(r: RequestItem): Promise<Row> {
       art: bookArt(b?.posterPath),
       cover: true,
       href: requestBookPath(r, b?.title),
-      sub: audio ? 'Audiobook' : 'Ebook',
+      sub: bookRequestLabel(r.bookFormat),
     };
   }
   const extra = await describeExtra(r);
