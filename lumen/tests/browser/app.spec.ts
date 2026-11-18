@@ -1949,6 +1949,63 @@ test('Coming Soon applies shared availability without reopening requests', async
   ).toBeVisible();
 });
 
+test('adult scene details keep the catalog and default request sources distinct', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const scene = '12345678-1234-4123-8123-123456789abc';
+  const writes: unknown[] = [];
+  const reads: string[] = [];
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 3, displayName: 'Viewer', permissions: 140737488355328 },
+    })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { adultEnabled: true, enabledMediaCategories: { adult: true } },
+    })
+  );
+  await page.route('**/api/v1/service/whisparr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, isDefault: true },
+        { id: 2, isDefault: false },
+      ],
+    })
+  );
+  await page.route(`**/api/v1/adult/${scene}?*`, (route) => {
+    const source =
+      new URL(route.request().url()).searchParams.get('serverId') ?? '';
+    reads.push(source);
+    return route.fulfill({
+      json: {
+        id: scene,
+        mediaType: 'adult',
+        title: source === '2' ? 'Catalog Scene' : 'Default Scene',
+        serviceId: Number(source),
+        performers: [],
+        mediaInfo: source === '2' ? { status: 5 } : undefined,
+      },
+    });
+  });
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    writes.push(route.request().postDataJSON());
+    return route.fulfill({ json: { id: 4 } });
+  });
+  await page.goto(`/adult/${scene}?serverId=2`);
+  await expect(
+    page.getByRole('heading', { name: 'Catalog Scene' })
+  ).toBeVisible();
+  const actions = page.getByRole('button', { name: 'Request', exact: true });
+  await actions.filter({ visible: true }).click();
+  await expect
+    .poll(() => writes)
+    .toEqual([{ mediaType: 'adult', mediaId: scene }]);
+  expect(reads.sort()).toEqual(['1', '2']);
+});
+
 test('Sportarr league details show paginated event availability', async ({
   page,
 }) => {

@@ -1784,3 +1784,9 @@ file and monitoring states through the existing server endpoint.
 Bundled Lumen also redirects native league bookmarks. Two routing tests
 and four standalone browser cases passed. Live Sportarr and matched
 native visual acceptance remain open.
+
+Whisparr scene bookmarks and catalog links now preserve the service ID.
+Scene display and default-destination request state are loaded separately
+where needed. Eight standalone scene and Sportarr browser cases and two
+routing tests passed. Live provider behavior and matched visual acceptance
+remain open.

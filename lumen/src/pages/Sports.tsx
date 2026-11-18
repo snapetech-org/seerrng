@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../auth';
 import { MoreOnScroll, Section, type Stat } from '../components/cards';
 import { DetailTop, Facts } from '../components/detail';
 import {
@@ -284,7 +285,7 @@ export function Adult() {
         {list.items.map((x) => (
           <ExtraCard
             key={x.id}
-            href={`/adult/${encodeURIComponent(x.id)}`}
+            href={`/adult/${encodeURIComponent(x.id)}${Number.isSafeInteger(x.serviceId) ? `?serverId=${x.serviceId}` : ''}`}
             img={x.posterPath}
             title={x.title}
             shape="wide"
@@ -307,7 +308,32 @@ export function Adult() {
 
 export function SceneDetail() {
   const { id = '' } = useParams();
-  const { data: x, error } = useApi<Scene>(`/adult/${encodeURIComponent(id)}`);
+  const [params] = useSearchParams();
+  const { user } = useAuth();
+  const rawServer = params.get('serverId');
+  const serverId =
+    rawServer &&
+    /^\d{1,10}$/.test(rawServer) &&
+    Number(rawServer) <= 1_000_000_000
+      ? Number(rawServer)
+      : undefined;
+  const canChoose = ((user?.permissions ?? 0) & (2 | 16 | 8192)) !== 0;
+  const path = `/adult/${encodeURIComponent(id)}`;
+  const detail = useApi<Scene>(
+    serverId === undefined ? path : `${path}?serverId=${serverId}`,
+    { currentPathOnly: true }
+  );
+  const services = useApi<{ id: number; isDefault?: boolean }[]>(
+    serverId !== undefined && !canChoose ? '/service/whisparr' : null
+  );
+  const defaultId = services.data?.find(({ isDefault }) => isDefault)?.id;
+  const requestDetail = useApi<Scene>(
+    !canChoose && defaultId !== undefined && defaultId !== serverId
+      ? `${path}?serverId=${defaultId}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const { data: x, error } = detail;
   if (error)
     return (
       <ExtraGate k="adult">
@@ -319,8 +345,18 @@ export function SceneDetail() {
     );
   if (!x) return <div className="detail-loading" aria-busy="true" />;
   const s = extraStat(x.mediaInfo);
-  const main = (
-    <RequestButton stat={s} request={() => requestExtra('adult', x.id)} />
+  const destination =
+    canChoose || serverId === undefined || serverId === defaultId
+      ? x
+      : requestDetail.data;
+  const main = destination && (
+    <RequestButton
+      key={destination.serviceId}
+      stat={extraStat(destination.mediaInfo)}
+      request={() =>
+        requestExtra('adult', destination.id, canChoose ? serverId : undefined)
+      }
+    />
   );
   return (
     <ExtraGate k="adult">

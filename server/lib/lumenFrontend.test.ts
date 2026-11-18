@@ -289,6 +289,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/artist/artist-42', '/lumen/artist/artist-42'],
       ['/comic/4050-12345', '/lumen/comic/4050-12345'],
       ['/sportarr/lg-000123/', '/lumen/sportarr/lg-000123'],
+      [
+        '/adult/12345678-1234-4123-8123-123456789abc?serverId=0',
+        '/lumen/adult/12345678-1234-4123-8123-123456789abc?serverId=0',
+      ],
       ['/users/', '/lumen/admin/users'],
       ['/games', '/lumen/game-library'],
       ['/games?steam=connected', '/lumen/game-library?steam=connected'],

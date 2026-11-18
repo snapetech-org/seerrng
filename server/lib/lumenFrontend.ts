@@ -7,6 +7,7 @@ import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
 import path from 'node:path';
 import { isSportarrLeagueExternalId } from './sportarrIdentity';
+import { normalizeStashDbId } from './stashdbIdentity';
 
 const classicCookie = 'seerrng-frontend';
 const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
@@ -137,6 +138,18 @@ function magazineTitle(pathname: string) {
 }
 
 function detailDeepLink(req: Request): string | undefined {
+  const adult = /^\/adult\/([0-9a-f-]{36})\/?$/i.exec(req.path);
+  const sceneId = normalizeStashDbId(adult?.[1]);
+  if (sceneId) {
+    const { serverId } = req.query;
+    const server =
+      typeof serverId === 'string' &&
+      /^\d{1,10}$/.test(serverId) &&
+      Number(serverId) <= 1_000_000_000
+        ? `?serverId=${Number(serverId)}`
+        : '';
+    return `/lumen/adult/${sceneId}${server}`;
+  }
   const league = /^\/sportarr\/(lg-\d{6,8})\/?$/.exec(req.path)?.[1];
   if (isSportarrLeagueExternalId(league)) return `/lumen/sportarr/${league}`;
   const magazine = magazineTitle(req.path);
