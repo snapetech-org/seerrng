@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
+  ApiError,
   mediaLink,
   MediaStatus,
   requestMovie,
@@ -21,6 +22,7 @@ import {
   TitleCard,
   withoutPending4k,
 } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   ActionBar,
   AdvancedOptions,
@@ -76,6 +78,11 @@ export default function MovieDetail() {
   const requireApproval = quota.status?.restricted === true;
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
+  const [override, setOverride] = useState<{
+    movieId: number;
+    options: RequestOptions;
+    message: string;
+  }>();
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
 
   if (error)
@@ -120,33 +127,44 @@ export default function MovieDetail() {
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
     !!s4k && s4k >= MediaStatus.PENDING && s4k <= MediaStatus.AVAILABLE;
-  const request = async (force4k = false) => {
-    // Advanced options may have picked a 4K server; the Request 4K button always means 4K
-    const is4k = force4k || !!opts.is4k;
+  const submit = async (options: RequestOptions) => {
+    if (busy) return;
     setBusy(true);
+    setOverride(undefined);
     try {
-      // the Request 4K button ignores options chosen for an HD server and keeps only who
-      // it's for, so SeerrNG uses the 4K server's own defaults
-      const destination =
-        force4k && !opts.is4k
-          ? { is4k: true, userId: opts.userId }
-          : { ...opts, is4k };
-      const result = await requestMovie(m.id, {
-        ...destination,
-        requestQuotaApproval: requireApproval || undefined,
-      });
+      const result = await requestMovie(m.id, options);
       toast(
         result.quotaException
           ? `Approval requested for ${m.title}`
-          : `Requested ${m.title}${is4k ? ' in 4K' : ''}`
+          : `Requested ${m.title}${options.is4k ? ' in 4K' : ''}`
       );
       refresh();
       quota.refresh();
-    } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+    } catch (error) {
+      if (
+        !options.bypassStreamingRequestPolicy &&
+        error instanceof ApiError &&
+        error.code === 'STREAMING_REQUEST_POLICY_REJECTED' &&
+        error.allowOverride
+      ) {
+        setOverride({ movieId: m.id, options, message: error.message });
+      } else {
+        toast(friendlyError(error, 'Request failed'));
+      }
     } finally {
       setBusy(false);
     }
+  };
+  const request = (force4k = false) => {
+    // A dedicated 4K request must use the 4K server's defaults.
+    const destination =
+      force4k && !opts.is4k
+        ? { is4k: true, userId: opts.userId }
+        : { ...opts, is4k: force4k || !!opts.is4k };
+    return submit({
+      ...destination,
+      requestQuotaApproval: requireApproval || undefined,
+    });
   };
 
   const main =
@@ -388,6 +406,18 @@ export default function MovieDetail() {
       >
         {main}
       </ActionBar>
+      {override?.movieId === m.id && (
+        <ConfirmSheet
+          title="Streaming Request Policy"
+          body={override.message}
+          confirm="Request Anyway"
+          cancel="Cancel"
+          onClose={() => setOverride(undefined)}
+          onConfirm={() =>
+            submit({ ...override.options, bypassStreamingRequestPolicy: true })
+          }
+        />
+      )}
     </article>
   );
 }
