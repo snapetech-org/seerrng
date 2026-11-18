@@ -176,6 +176,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/movies?nativeFilters=1&keywords=17',
       ],
       ['/coming-soon/', '/soon'],
+      ['/coming-soon/?media=tv&extra=1', '/soon?media=tv'],
       ['/discover/movies/upcoming/', '/soon?media=movie'],
       ['/discover/tv/upcoming', '/soon?media=tv'],
       ['/discover/trending?mediaType=audiobook', '/audiobooks'],

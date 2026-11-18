@@ -1,0 +1,1 @@
+- Coming Soon bookmarks keep their movie or TV scope when redirected to Lumen.

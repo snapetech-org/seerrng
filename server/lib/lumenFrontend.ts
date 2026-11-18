@@ -358,7 +358,6 @@ const workflowDestinations = new Map([
   ['/calendar', '/calendar'],
   ['/swipe', '/swipe'],
   ['/recordings', '/recordings'],
-  ['/coming-soon', '/soon'],
   ['/profile', '/me'],
   ['/users', '/admin/users'],
   ['/profile/settings', '/me/account'],
@@ -497,6 +496,12 @@ function workflowDeepLink(
   const nativePath = pathname.replace(/\/$/, '');
   const watchSession = watchSessionDeepLink(nativePath);
   if (watchSession) return watchSession;
+  if (nativePath === '/coming-soon') {
+    const scope = req.query.media;
+    return scope === 'movie' || scope === 'tv'
+      ? `/lumen/soon?media=${scope}`
+      : '/lumen/soon';
+  }
   if (nativePath === '/book-series/requests')
     return '/lumen/book-series/requests';
   const localBookSeries = /^\/book-series\/([1-9]\d{0,15})$/.exec(nativePath);

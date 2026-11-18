@@ -579,6 +579,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/collections/music/artist-42?view=discography',
       ],
       ['/coming-soon', '/lumen/soon'],
+      ['/coming-soon/?media=tv&extra=1', '/lumen/soon?media=tv'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],
       ['/profile/settings/password', '/lumen/me/account#password'],

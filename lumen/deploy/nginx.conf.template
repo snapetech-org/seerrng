@@ -225,6 +225,7 @@ server {
     return 302 /series?nativeFilters=1&$args;
   }
   location ~ ^/coming-soon/?$ {
+    if ($arg_media ~ ^(movie|tv)$) { return 302 /soon?media=$arg_media; }
     return 302 /soon;
   }
   location ~ ^/discover/watchlist/?$ {
