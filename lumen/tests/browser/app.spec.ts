@@ -1925,3 +1925,29 @@ test('explicit series vote counts override the Top rated default and reset clean
   await page.getByRole('button', { name: 'Clear Vote Count' }).click();
   await expect(page).toHaveURL(/\/series\?sort=vote_average.desc$/);
 });
+
+test('original language distinguishes all languages from the saved default', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/languages', (route) =>
+    route.fulfill({ json: [{ iso_639_1: 'ja', english_name: 'Japanese' }] })
+  );
+  await page.goto('/series?genre=18');
+  const language = page.getByLabel('Original Language', { exact: true });
+  await language.selectOption({ label: 'Japanese' });
+  await expect(page).toHaveURL(/language=ja/);
+  await page.reload();
+  await expect(language).toHaveValue('ja');
+  const all = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('language') === 'all'
+    );
+  });
+  await language.selectOption('all');
+  await all;
+  await language.selectOption('');
+  await expect(page).toHaveURL(/\/series\?genre=18$/);
+});

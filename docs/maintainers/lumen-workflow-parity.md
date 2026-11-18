@@ -1048,3 +1048,9 @@ override the Top rated default and clearing them restores that default.
 Standalone checks covered the Series query, reload, reset and adjacent
 range filters across four viewport presets. Bundled and native visual
 comparisons remain open.
+
+Movies and Series now expose original-language filtering using SeerrNG's
+language catalog. An explicit All Languages selection differs from leaving
+the parameter unset for the saved default. Four standalone Series checks
+covered selection, reload, the explicit All Languages query, and reset.
+Live provider and bundled and native visual comparisons remain open.

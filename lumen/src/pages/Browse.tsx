@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type TitleResult } from '../api';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
+import { ServiceNote } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
@@ -212,6 +213,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const status =
     kind === 'tv' && /^[0-5]$/.test(statusParam) ? statusParam : '';
   const excludeStatus = p.get('excludeStatus') === 'true';
+  const languageParam = p.get('language') ?? '';
+  const language = /^(?:all|[a-z]{2})$/.test(languageParam)
+    ? languageParam
+    : '';
+  const languages =
+    useApi<{ iso_639_1: string; english_name: string }[]>('/languages');
+  const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
+    .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
+    .sort((a, b) => a.english_name.localeCompare(b.english_name));
   const sort = p.get('sort') || 'popularity.desc';
   // several genres can be picked; "any" (default) or "all" of them
   const picked = (p.get('genre') || '').split(',').filter(Boolean);
@@ -232,6 +242,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(language ? { language } : {}),
     ...(validRuntime && minRuntime ? { withRuntimeGte: minRuntime } : {}),
     ...(validRuntime && maxRuntime ? { withRuntimeLte: maxRuntime } : {}),
     ...(validDates && start ? { [startKey]: start } : {}),
@@ -410,6 +421,32 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             </button>
           </>
         )}
+        <label className="sel">
+          <span className="lbl">Original Language</span>
+          <select
+            aria-label="Original Language"
+            value={language}
+            onChange={(event) => {
+              const next = new URLSearchParams(p);
+              if (event.target.value) next.set('language', event.target.value);
+              else next.delete('language');
+              setP(next, { replace: true });
+            }}
+          >
+            <option value="">Use Saved Default</option>
+            <option value="all">All Languages</option>
+            {language &&
+              language !== 'all' &&
+              !languageOptions.some(
+                (option) => option.iso_639_1 === language
+              ) && <option value={language}>{language}</option>}
+            {languageOptions.map(({ iso_639_1, english_name }) => (
+              <option key={iso_639_1} value={iso_639_1}>
+                {english_name}
+              </option>
+            ))}
+          </select>
+        </label>
         <GenrePicker
           options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
           picked={picked}
@@ -487,6 +524,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           }}
         />
       )}
+      <ServiceNote
+        error={languages.error}
+        what="original languages"
+        retry={languages.reload}
+      />
       <RangeFilter
         kind="dates"
         key={`dates:${start}:${end}`}
