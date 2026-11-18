@@ -9,6 +9,7 @@ import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
 import { SubjectTagFilter } from '../components/SubjectTagFilter';
+import { tvNetworks } from '../discoverNetworks';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
@@ -149,6 +150,10 @@ function RangeFilter({
   );
 }
 
+const NETWORK_OPTIONS = tvNetworks.map(({ name, url }) => ({
+  name,
+  id: url.slice(url.lastIndexOf('/') + 1),
+}));
 const SERIES_STATUSES = [
   'Returning Series',
   'Planned',
@@ -220,13 +225,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     Number(networkParam) <= 1_000_000_000
       ? networkParam
       : '';
+  const knownNetwork = NETWORK_OPTIONS.find(({ id }) => id === network);
   const networkInfo = useApi<{ id: number; name: string }>(
-    network ? `/network/${network}` : null
+    network && !knownNetwork ? `/network/${network}` : null
   );
   const networkLabel =
-    networkInfo.data?.id === Number(network)
+    knownNetwork?.name ??
+    (networkInfo.data?.id === Number(network)
       ? networkInfo.data?.name
-      : `#${network}`;
+      : `#${network}`);
   const countryParam = (p.get('country') ?? '').toUpperCase();
   const country = /^[A-Z]{2}$/.test(countryParam) ? countryParam : '';
   const countries = useApi<{ iso_3166_1: string; english_name: string }[]>(
@@ -368,6 +375,26 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </Link>
       </header>
       <div className="toolbar">
+        {kind === 'tv' && (
+          <label className="sel">
+            <span className="lbl">Network</span>
+            <select
+              aria-label="Network"
+              value={network}
+              onChange={(event) => upd('network', event.target.value)}
+            >
+              <option value="">Any Network</option>
+              {network && !knownNetwork && (
+                <option value={network}>{networkLabel}</option>
+              )}
+              {NETWORK_OPTIONS.map(({ id, name }) => (
+                <option value={id} key={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         {network && (
           <button
             className="chip"

@@ -1072,3 +1072,8 @@ network has an ID. The grid identifies the active network and can clear
 it independently. Standalone checks covered the link, exact query and
 reset on four viewport presets. A network catalog picker and bundled and
 native visual comparisons remain open.
+
+The Series network picker reuses the native default catalog and retains
+network links outside the catalog. Standalone checks covered catalog
+selection, exact query, reload, reset and detail links at four viewport
+presets. Bundled and native visual comparisons remain open.

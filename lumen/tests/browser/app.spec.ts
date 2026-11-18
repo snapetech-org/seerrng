@@ -2050,3 +2050,25 @@ test('series network details open the matching discovery query', async ({
     .click();
   await expect(page).toHaveURL(/\/series$/);
 });
+
+test('series discovery selects a network from the native catalog', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/series?genre=18');
+  const network = page.getByLabel('Network', { exact: true });
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('network') === '213' &&
+      url.searchParams.get('genre') === '18'
+    );
+  });
+  await network.selectOption({ label: 'Netflix' });
+  await query;
+  await page.reload();
+  await expect(network).toHaveValue('213');
+  await network.selectOption('');
+  await expect(page).toHaveURL(/\/series\?genre=18$/);
+});
