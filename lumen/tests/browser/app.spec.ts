@@ -6221,3 +6221,52 @@ test('administrators create and revoke a one-time Lumen sign-in link for a selec
   await expect(page.getByLabel('New sign-in link')).toHaveCount(0);
   await expect(page.getByText('Revoked', { exact: true })).toBeVisible();
 });
+
+test('Spotify credentials retain a saved secret on ID changes and allow explicit removal', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  const saved = {
+    applicationTitle: 'SeerrNG',
+    applicationUrl: 'https://seerr.example.test',
+    spotifyClientId: 'previous-client',
+    spotifyClientSecret: '********',
+  };
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (writes.length === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary Spotify settings error.' },
+        });
+      Object.assign(saved, body);
+    }
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/general#spotifyClientId');
+  const id = page.getByLabel('Spotify Client ID', { exact: true });
+  const secret = page.getByLabel('Spotify Client Secret');
+  const save = page.getByRole('button', { name: 'Save Spotify Credentials' });
+  await expect(secret).toHaveValue('');
+  await id.fill('replacement-client');
+  await save.click();
+  await expect(
+    page.getByText('Temporary Spotify settings error.')
+  ).toBeVisible();
+  await expect(id).toHaveValue('replacement-client');
+  await save.click();
+  await expect(page.getByText('Spotify credentials saved.')).toBeVisible();
+  expect(writes).toEqual([
+    { spotifyClientId: 'replacement-client' },
+    { spotifyClientId: 'replacement-client' },
+  ]);
+  await save.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('spotify-credentials.png') });
+  await page.getByLabel('Remove saved Spotify secret').check();
+  await save.click();
+  await expect(page.getByLabel('Remove saved Spotify secret')).toHaveCount(0);
+  expect(writes.at(-1)).toEqual({ spotifyClientSecret: '' });
+});

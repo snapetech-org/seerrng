@@ -9,6 +9,7 @@ import DefaultRequestQuotas, {
 import DefaultUserPermissions from '../components/DefaultUserPermissions';
 import { ServiceNote } from '../components/extra';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
+import SpotifyCredentials from '../components/SpotifyCredentials';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { invalidatePublicSettings } from '../mediaServer';
@@ -309,6 +310,8 @@ export default function AdminGeneral() {
       mediaServerType?: number;
       defaultQuotas?: DefaultQuotas;
       defaultPermissions?: number;
+      spotifyClientId?: string;
+      spotifyClientSecret?: string;
     }
   >(path);
   return (
@@ -361,6 +364,7 @@ export default function AdminGeneral() {
           )
         )}
       </Section>
+      {settings.data && <SpotifyCredentials initial={settings.data} />}
       <InstanceRequestSettings />
       {settings.data?.defaultQuotas && (
         <DefaultRequestQuotas initial={settings.data.defaultQuotas} />
