@@ -67,6 +67,10 @@ async function fixtures(
         movie(302, 'Fresh Pick'),
       ]);
     else if (path === '/discover/genreslider/movie') json = [];
+    else if (path === '/languages')
+      json = [{ iso_639_1: 'en', english_name: 'English' }];
+    else if (path === '/watchproviders/regions')
+      json = [{ iso_3166_1: 'US', english_name: 'United States' }];
     else if (/^\/discover\//.test(path) || path === '/media') json = paged([]);
     else if (path === '/service/radarr')
       json = [
@@ -501,8 +505,10 @@ test('admin settings page builds lumen-config.json', async ({ page }) => {
     permissions: 2,
     config: { seerrPublicUrl: 'https://seerr.example.com', custom: 1 },
   });
-  await page.goto('/me');
-  await page.getByRole('link', { name: /Open/ }).first().click();
+  await page.goto('/admin');
+  await page
+    .getByRole('link', { name: 'Open Lumen Settings', exact: true })
+    .click();
   await expect(
     page.getByRole('heading', { name: 'Lumen settings for everyone' })
   ).toBeVisible();
@@ -919,13 +925,17 @@ test('a failed page stops endless scrolling until Retry', async ({ page }) => {
   await page.goto('/movies');
   await expect(page.getByRole('link', { name: 'Popular 1-0' })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible();
+  const retry = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load more.' })
+    .getByRole('button', { name: 'Retry', exact: true });
+  await expect(retry).toBeVisible();
   await page.waitForTimeout(1500);
   // asked for page 2 once, not over and over
   expect(asked.filter((n) => n === 2)).toHaveLength(1);
-  await page.getByRole('button', { name: 'Retry' }).click();
+  await retry.click();
   await expect(page.getByRole('link', { name: 'Popular 2-0' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Retry' })).toHaveCount(0);
+  await expect(retry).toHaveCount(0);
   expect(asked.filter((n) => n === 2)).toHaveLength(2);
 });
 

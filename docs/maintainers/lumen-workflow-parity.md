@@ -2402,3 +2402,13 @@ exporting Lumen configuration, retrying a failed browse page, and changing
 filters after a stale browse failure, across four viewports. Baseline and
 candidate evidence is retained under `seerrng-lumen-advanced-permission*`
 in `/mnt/disks/scratch/task-deliverables/`.
+
+The Lumen configuration export and browse recovery failures reported
+above were caused by stale test setup. The export test now uses the named
+administration link. Browse fixtures serve language and country metadata,
+and the paging retry targets the result-list error. All 12 previously
+failing checks pass across the four viewports. This milestone changes only
+browser verification.
+The broader admin options, review pages, and TV request suite then passed
+with 441 checks and seven skips. The log is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browser-fixtures-suite-20261118.log`.
