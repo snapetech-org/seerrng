@@ -26,6 +26,10 @@ interface Collection {
     id: string;
     title: string;
     releaseDate?: string;
+    status?: string;
+    genreIds?: number[];
+    voteAverage?: number;
+    originalLanguage?: string;
     posterPath?: string;
     primaryType?: string;
     secondaryTypes?: string[];

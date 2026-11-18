@@ -21,8 +21,13 @@ import {
   useOffers4k,
 } from './requestSheet';
 import { useDialog } from './useDialog';
+import VideoCollectionFilters, {
+  emptyVideoFilters,
+  matchesVideoFilters,
+  type VideoFilterMetadata,
+} from './VideoCollectionFilters';
 
-interface Member {
+interface Member extends VideoFilterMetadata {
   id: string;
   title: string;
 }
@@ -72,6 +77,7 @@ function Sheet({
   const quota = useApi<Quota>(quotaId ? `/user/${quotaId}/quota` : null, {
     currentPathOnly: true,
   });
+  const [filters, setFilters] = useState(emptyVideoFilters);
   const [checked, setChecked] = useState(new Set<string>());
   const [results, setResults] = useState<{ title: string; error?: string }[]>();
   const [revision, setRevision] = useState(0);
@@ -112,18 +118,30 @@ function Sheet({
     loaded?.members === members &&
     loaded.fourK === fourK &&
     loaded.revision === revision
-      ? loaded.rows.map(({ member, detail, catalog }) => ({
-          member,
-          detail,
-          selections: detail
-            ? requestableCollectionSeasons(
-                detail,
-                fourK,
-                !!settings?.enableSpecialEpisodes,
-                catalog
-              )
-            : [],
-        }))
+      ? loaded.rows
+          .map(({ member, detail, catalog }) => ({
+            member,
+            detail,
+            selections: detail
+              ? requestableCollectionSeasons(
+                  detail,
+                  fourK,
+                  !!settings?.enableSpecialEpisodes,
+                  catalog
+                )
+              : [],
+          }))
+          .filter(({ member, detail }) =>
+            matchesVideoFilters(
+              {
+                ...member,
+                status: member.status ?? detail?.status,
+                originalLanguage:
+                  member.originalLanguage ?? detail?.originalLanguage,
+              },
+              filters
+            )
+          )
       : null;
   const selected =
     rows?.filter(
@@ -267,12 +285,21 @@ function Sheet({
                   Loading request quota…
                 </p>
               )}
+              <VideoCollectionFilters
+                kind="tv"
+                filters={filters}
+                onChange={setFilters}
+                disabled={busy}
+              />
               {!rows ? (
                 <p className="note" role="status">
                   Loading series…
                 </p>
               ) : (
                 <>
+                  {!rows.length && (
+                    <p className="note">No series match these filters.</p>
+                  )}
                   {!!eligible.length && (
                     <div className="toolbar">
                       <button

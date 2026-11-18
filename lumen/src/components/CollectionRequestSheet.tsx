@@ -12,6 +12,10 @@ import {
 import { sessionGeneration } from '../sessionState';
 import { AdvancedOptions, canChooseRequestOptions } from './detail';
 import { useDialog } from './useDialog';
+import VideoCollectionFilters, {
+  emptyVideoFilters,
+  matchesVideoFilters,
+} from './VideoCollectionFilters';
 
 export interface MovieCollection {
   id: number;
@@ -66,6 +70,7 @@ export default function CollectionRequestSheet({
   const [quality, setQuality] = useState(qualities[0]);
   const is4k = quality === '4k';
   const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [filters, setFilters] = useState(emptyVideoFilters);
   const [advanced, setAdvanced] = useState(false);
   const [options, setOptions] = useState<RequestOptions>({});
   const [ready, setReady] = useState(false);
@@ -84,7 +89,8 @@ export default function CollectionRequestSheet({
   const parts = [
     ...new Map(collection.parts.map((part) => [part.id, part])).values(),
   ];
-  const eligible = parts.filter((part) => !eligibility(part, is4k));
+  const visible = parts.filter((part) => matchesVideoFilters(part, filters));
+  const eligible = visible.filter((part) => !eligibility(part, is4k));
   const targets = eligible.filter((part) => selected.has(part.id));
   const canSubmit =
     qualities.includes(quality) &&
@@ -220,8 +226,19 @@ export default function CollectionRequestSheet({
               )}
             </>
           )}
+          {!outcomes && (
+            <VideoCollectionFilters
+              kind="movie"
+              filters={filters}
+              onChange={setFilters}
+              disabled={busy}
+            />
+          )}
+          {!visible.length && (
+            <p className="note">No movies match these filters.</p>
+          )}
           <ul className="setlist">
-            {parts.map((part) => {
+            {visible.map((part) => {
               const reason = eligibility(part, is4k);
               const outcome = outcomes?.find(({ id }) => id === part.id);
               return (

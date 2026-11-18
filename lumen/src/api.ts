@@ -163,6 +163,7 @@ export interface TitleResult {
   firstAirDate?: string;
   voteAverage?: number;
   genreIds?: number[];
+  originalLanguage?: string;
   mediaInfo?: MediaInfo;
 }
 export interface CollectionResult {

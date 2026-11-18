@@ -2325,3 +2325,19 @@ iPad Pro 11. Live Sonarr, alternate requesters and 4K submissions remain
 unverified. Native video collection filters and additional request
 overrides still need parity review. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-collection-requests-20261118/`.
+
+Movie and TV collection request sheets now filter by release year, genre,
+minimum rating, and original language. TV also filters by series status.
+Only visible, eligible selections are submitted. The curated TV catalog
+now includes status and language for both frontends. Lumen falls back
+to series details when connected to an older API.
+
+The production Lumen build, 20 browser fixture checks, and targeted
+collection provider and name tests passed. Compared movie and TV request
+sheets with their prior versions on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. The fixtures cover combined movie filters, no matches, clearing
+filters, TV status from series details, and the existing request payloads.
+Live metadata providers were outside the comparison. Evidence is retained
+under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-video-filters-20261118/`,
+`seerrng-lumen-video-filters-baseline-20261118/`, and
+`seerrng-lumen-tv-filters-20261118/` in the same scratch directory.

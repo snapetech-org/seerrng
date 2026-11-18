@@ -148,7 +148,7 @@ test('progressive requests start, stop, and restart the selected quality', async
 
 test('bulk collection requests exclude blocked titles and show partial results', async ({
   page,
-}) => {
+}, info) => {
   const submitted: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -156,14 +156,36 @@ test('bulk collection requests exclude blocked titles and show partial results',
     const path = new URL(request.url()).pathname.slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/genres/movie')
+      return route.fulfill({ json: [{ id: 18, name: 'Drama' }] });
+    if (path === '/languages')
+      return route.fulfill({
+        json: [{ iso_639_1: 'en', english_name: 'English' }],
+      });
     if (path === '/collection/30')
       return route.fulfill({
         json: {
           id: 30,
           name: 'Example Collection',
           parts: [
-            { id: 20, mediaType: 'movie', title: 'First Movie' },
-            { id: 21, mediaType: 'movie', title: 'Second Movie' },
+            {
+              id: 20,
+              mediaType: 'movie',
+              title: 'First Movie',
+              releaseDate: '1968-01-01',
+              genreIds: [18],
+              voteAverage: 8,
+              originalLanguage: 'en',
+            },
+            {
+              id: 21,
+              mediaType: 'movie',
+              title: 'Second Movie',
+              releaseDate: '2024-01-01',
+              genreIds: [18],
+              voteAverage: 7,
+              originalLanguage: 'en',
+            },
             {
               id: 22,
               mediaType: 'movie',
@@ -191,6 +213,31 @@ test('bulk collection requests exclude blocked titles and show partial results',
     sheet.getByRole('checkbox', { name: 'Blocked Movie Blocklisted' })
   ).toBeDisabled();
   await sheet.getByRole('button', { name: 'Select Eligible Movies' }).click();
+  const filters = sheet.getByRole('group', { name: 'Collection Filters' });
+  await filters
+    .getByRole('combobox', { name: 'Genre', exact: true })
+    .selectOption('18');
+  await filters
+    .getByRole('combobox', { name: 'Language', exact: true })
+    .selectOption('en');
+  await filters
+    .getByRole('combobox', { name: 'Release Year' })
+    .selectOption('before-1970');
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected (1)' })
+  ).toBeEnabled();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Second Movie' })
+  ).toHaveCount(0);
+  await page.screenshot({ path: info.outputPath('movie-request-filters.png') });
+  await filters
+    .getByRole('combobox', { name: 'Minimum Rating' })
+    .selectOption('9');
+  await expect(sheet.getByText('No movies match these filters.')).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected (0)' })
+  ).toBeDisabled();
+  await filters.getByRole('button', { name: 'Clear Filters' }).click();
   await sheet.getByRole('button', { name: 'Request Selected (2)' }).click();
   await expect(
     sheet.getByText('1 of 2 requests submitted.', { exact: false })

@@ -43,6 +43,8 @@ test('series and album details reach their curated collections', async ({
       '/tv/42': {
         id: 42,
         name: 'Fixture Series',
+        status: 'Ended',
+        originalLanguage: 'en',
         externalIds: { tvdbId: 200 },
         seasons: [
           { seasonNumber: 0, episodeCount: 1 },
@@ -70,7 +72,11 @@ test('series and album details reach their curated collections', async ({
         id: '19',
         name: 'Fixture Series Collection',
         parts: [
-          { id: '42', title: 'Fixture Series', releaseDate: '2024-09-07' },
+          {
+            id: '42',
+            title: 'Fixture Series',
+            releaseDate: '2024-09-07',
+          },
         ],
       },
       [`/music/${album}`]: {
@@ -152,6 +158,16 @@ test('series and album details reach their curated collections', async ({
   await page.screenshot({ path: info.outputPath('series-collection.png') });
   await page.getByRole('button', { name: 'Request Series' }).click();
   const tvSheet = page.getByRole('dialog', { name: 'Request Series' });
+  const tvFilters = tvSheet.getByRole('group', { name: 'Collection Filters' });
+  await tvFilters
+    .getByRole('combobox', { name: 'Series Status' })
+    .selectOption('Returning Series');
+  await expect(
+    tvSheet.getByText('No series match these filters.')
+  ).toBeVisible();
+  await tvFilters
+    .getByRole('combobox', { name: 'Series Status' })
+    .selectOption('Ended');
   await tvSheet.getByRole('checkbox', { name: /Fixture Series/ }).check();
   await expect(tvSheet.getByText('1 season selected')).toBeVisible();
   await page.screenshot({ path: info.outputPath('series-requests.png') });
