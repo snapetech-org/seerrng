@@ -7,7 +7,11 @@ for (const manager of [true, false]) {
     const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
     let status = 'pending';
     let requested = false;
-    await page.route('**/api/v1/**', (route) => {
+    let releaseReadback: () => void = () => {};
+    const declineReadback = new Promise<void>((resolve) => {
+      releaseReadback = resolve;
+    });
+    await page.route('**/api/v1/**', async (route) => {
       const path = new URL(route.request().url()).pathname.slice(
         '/api/v1'.length
       );
@@ -36,13 +40,23 @@ for (const manager of [true, false]) {
           json: { created: [{}], skipped: [], failed: [] },
         });
       }
-      if (path === '/book-series/watch/requests/7/approve') {
+      const action =
+        /^\/book-series\/watch\/requests\/7\/(approve|decline|stop)$/.exec(
+          path
+        )?.[1];
+      if (action) {
         expect(manager).toBe(true);
         expect(route.request().method()).toBe('POST');
-        status = 'active';
-        return route.fulfill({ json: {} });
+        status =
+          action === 'approve'
+            ? 'active'
+            : action === 'decline'
+              ? 'declined'
+              : 'stopped';
+        return route.fulfill({ json: { status } });
       }
-      if (path === '/book-series/watch/requests')
+      if (path === '/book-series/watch/requests') {
+        if (status === 'declined') await declineReadback;
         return route.fulfill({
           json: [
             {
@@ -56,6 +70,7 @@ for (const manager of [true, false]) {
             },
           ],
         });
+      }
       if (path === '/book-series/catalog') {
         expect(
           Object.fromEntries(new URL(route.request().url()).searchParams)
@@ -116,11 +131,29 @@ for (const manager of [true, false]) {
     await expect(row).toContainText('Includes extras');
     if (manager) {
       await expect(row).toContainText('HD · /books');
+      const readback = page.waitForRequest(
+        (request) =>
+          new URL(request.url()).pathname ===
+          '/api/v1/book-series/watch/requests'
+      );
+      await row.getByRole('button', { name: 'Decline' }).click();
+      try {
+        await readback;
+        await expect(
+          row.getByRole('button', { name: 'Approve' })
+        ).toBeDisabled();
+      } finally {
+        releaseReadback();
+      }
+      await expect(row).toContainText('declined');
+      await expect(row.getByRole('button', { name: 'Decline' })).toHaveCount(0);
       await row.getByRole('button', { name: 'Approve' }).click();
       await expect(row).toContainText('active');
+      await row.getByRole('button', { name: 'Stop Monitoring' }).click();
+      await expect(row).toContainText('stopped');
       await expect(
         row.getByRole('button', { name: 'Stop Monitoring' })
-      ).toBeVisible();
+      ).toHaveCount(0);
     } else {
       await expect(row.getByRole('button')).toHaveCount(0);
       await expect(row).not.toContainText('/books');

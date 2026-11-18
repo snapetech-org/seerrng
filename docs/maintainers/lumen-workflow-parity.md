@@ -2901,3 +2901,8 @@ Twenty-four browser checks passed across both deployments. Fixtures
 covered management-link visibility and destination for managers and
 members. Live service navigation and matched visual acceptance remain
 unverified.
+
+Series request actions now wait for server readback before re-enabling
+the queue controls. Twenty-four browser checks passed across both
+deployments, including decline, approval, stop, and a delayed readback.
+Live provider effects and matched visual acceptance remain unverified.

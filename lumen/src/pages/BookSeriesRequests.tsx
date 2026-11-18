@@ -38,9 +38,14 @@ export default function BookSeriesRequests() {
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
+  const [awaitingReadback, setAwaitingReadback] = useState<RequestRow[] | null>(
+    null
+  );
+  const actionsDisabled =
+    busy || (awaitingReadback !== null && awaitingReadback === requests.data);
 
   async function update(id: number, action: (typeof actions)[number]['id']) {
-    if (pending.current) return;
+    if (!manage || pending.current || actionsDisabled) return;
     pending.current = true;
     const generation = sessionGeneration();
     setBusy(true);
@@ -53,6 +58,7 @@ export default function BookSeriesRequests() {
     } finally {
       pending.current = false;
       if (generation === sessionGeneration()) {
+        setAwaitingReadback(requests.data);
         requests.reload();
         setBusy(false);
       }
@@ -139,7 +145,7 @@ export default function BookSeriesRequests() {
                         key={id}
                         className="btn btn-quiet btn-sm"
                         type="button"
-                        disabled={busy}
+                        disabled={actionsDisabled}
                         onClick={() => void update(row.id, id)}
                       >
                         {label}
