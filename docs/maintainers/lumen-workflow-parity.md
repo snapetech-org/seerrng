@@ -1625,3 +1625,9 @@ Requests screen with the selected requester. Supported status and media
 filters carry forward from native bookmarks. Express and nginx redirect
 checks and standalone browser fixtures at all four viewport presets verified
 requester scoping. Matched native visual acceptance remains unverified.
+
+Personal Password and Episode Queue bookmarks now scroll to the named
+section once settings load. Profile refreshes preserve the mounted form
+and the confirmed save feedback. Express and nginx bookmark checks and
+12 standalone account browser checks passed across the four viewport
+presets. Matched native visual acceptance remains unverified.

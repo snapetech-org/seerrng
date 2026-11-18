@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
@@ -417,12 +417,21 @@ function PasswordForm({
 }
 
 function Settings({ id, plex }: { id: number; plex: boolean }) {
+  const { hash } = useLocation();
   const base = `/user/${id}/settings`;
-  const profile = useApi<Profile>(base + '/main');
+  const profile = useApi<Profile>(base + '/main', { keepDuringRefresh: true });
   const publicSettings = usePublicSettings();
   const region =
     profile.data?.streamingRegion || publicSettings?.streamingRegion || 'US';
   const password = useApi<{ hasPassword: boolean }>(base + '/password');
+  const loaded = Boolean(
+    (profile.data || profile.error) && (password.data || password.error)
+  );
+  useEffect(() => {
+    if (loaded && hash === '#password') {
+      document.getElementById('password')?.scrollIntoView({ block: 'start' });
+    }
+  }, [hash, loaded]);
   return (
     <>
       <Section title="Profile">
@@ -454,7 +463,7 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
         />
       )}
       <CardTitlePreferences path={base + '/card-text'} />
-      <Section title="Password">
+      <Section title="Password" id="password">
         <ServiceNote
           error={password.error}
           what="password settings"

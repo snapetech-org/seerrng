@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { remember } from '../apiCache';
 import { useAuth } from '../auth';
@@ -191,6 +191,17 @@ function RequestSettings({
   const queuePath = base + '/episode-queue';
   const gate = useApi<GateAccess>(gatePath);
   const queue = useApi<QueueAccess>(queuePath);
+  const { hash } = useLocation();
+  const loaded = Boolean(
+    (gate.data || gate.error) && (queue.data || queue.error)
+  );
+  useEffect(() => {
+    if (loaded && hash === '#episode-queue') {
+      document
+        .getElementById('episode-queue')
+        ?.scrollIntoView({ block: 'start' });
+    }
+  }, [hash, loaded]);
   const [draft, setDraft] = useState<number>();
   const [confirmation, setConfirmation] = useState<Change>();
   const [notice, setNotice] = useState('');
@@ -326,7 +337,7 @@ function RequestSettings({
         </div>
       </Section>
       {canManageUsers && <AccessReview viewerId={id} />}
-      <Section title="Episode Queue">
+      <Section title="Episode Queue" id="episode-queue">
         <p className="note">
           Playback can keep upcoming episodes requested on interactive TV
           requests. User managers set the account default.

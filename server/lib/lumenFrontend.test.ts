@@ -49,6 +49,11 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
     for (const [bookmark, destination] of [
       ['/profile/', '/me'],
+      ['/profile/settings/password', '/me/account#password'],
+      [
+        '/profile/settings/episode-queue',
+        '/me/account/tv-requests#episode-queue',
+      ],
       [
         '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie',
         '/requests?requestedBy=19&show=pending&mediaType=movie',
@@ -270,7 +275,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/coming-soon', '/lumen/soon'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],
-      ['/profile/settings/password', '/lumen/me/account'],
+      ['/profile/settings/password', '/lumen/me/account#password'],
       [
         '/profile/settings/notifications/webpush',
         '/lumen/me/account/notifications#notification-webpush',
@@ -279,7 +284,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/profile/settings/notifications/discord',
         '/lumen/me/account/notifications#notification-discord',
       ],
-      ['/profile/settings/episode-queue', '/lumen/me/account/tv-requests'],
+      [
+        '/profile/settings/episode-queue',
+        '/lumen/me/account/tv-requests#episode-queue',
+      ],
       ['/profile/settings/client-tokens', '/lumen/me/account/client-tokens'],
       [
         '/profile/watchlist?search=A%26B&mediaType=movie&page=2&userId=17',

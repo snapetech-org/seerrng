@@ -160,11 +160,11 @@ const workflowDestinations = new Map([
   ['/users', '/admin/users'],
   ['/profile/settings', '/me/account'],
   ['/profile/settings/main', '/me/account'],
-  ['/profile/settings/password', '/me/account'],
+  ['/profile/settings/password', '/me/account#password'],
   ['/profile/settings/client-tokens', '/me/account/client-tokens'],
   ['/profile/settings/linked-accounts', '/me/account/linked-accounts'],
   ['/profile/settings/tv-request-access', '/me/account/tv-requests'],
-  ['/profile/settings/episode-queue', '/me/account/tv-requests'],
+  ['/profile/settings/episode-queue', '/me/account/tv-requests#episode-queue'],
   [
     '/profile/settings/notifications/email',
     '/me/account/notifications#notification-email',

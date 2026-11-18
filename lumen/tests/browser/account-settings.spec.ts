@@ -1,5 +1,42 @@
 import { expect, test } from '@playwright/test';
 
+test('password and Episode Queue bookmarks scroll to the selected section after loading', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    const responses: Record<string, object> = {
+      '/api/v1/auth/me': { id: 2, displayName: 'Viewer', permissions: 32 },
+      '/api/v1/user/2/settings/main': { username: 'Viewer' },
+      '/api/v1/user/2/settings/password': { hasPassword: true },
+      '/api/v1/user/2/settings/tv-season-watch-gate': {
+        status: 'off',
+        globallyEnabled: false,
+      },
+      '/api/v1/user/2/settings/episode-queue': { defaultEpisodeCount: 2 },
+    };
+    return route.fulfill({ json: responses[pathname] ?? {} });
+  });
+  await page.addInitScript(() => {
+    const scroll = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function (options) {
+      this.setAttribute('data-bookmark-target', 'true');
+      scroll.call(this, options);
+    };
+  });
+  for (const [path, id] of [
+    ['/me/account#password', 'password'],
+    ['/me/account/tv-requests#episode-queue', 'episode-queue'],
+  ]) {
+    await page.goto(path);
+    await expect(page.locator(`section#${id}`)).toHaveAttribute(
+      'data-bookmark-target',
+      'true'
+    );
+  }
+});
+
 test('account settings preserve failed profile edits and save only changes and password fields', async ({
   page,
 }) => {

@@ -134,6 +134,11 @@ async function check(settings, clientIp, scheme, headers = {}) {
     for (const [path, target] of [
       ['/profile/', '/me'],
       ['/profile/settings/', '/me/account'],
+      ['/profile/settings/password/', '/me/account#password'],
+      [
+        '/profile/settings/episode-queue/',
+        '/me/account/tv-requests#episode-queue',
+      ],
       [
         '/profile/settings/notifications/webpush',
         '/me/account/notifications#notification-webpush',
