@@ -77,35 +77,44 @@ export const musicSearchFilters = [
   'primaryReleaseDateLte',
 ] as const;
 
-export function scopedVideoSearchPath(
+function readFilters(params: URLSearchParams, keys: readonly string[]) {
+  const filters = new URLSearchParams();
+  for (const key of keys) {
+    const values = params.getAll(key);
+    if (values.length === 1 && values[0] && values[0].length <= 512)
+      filters.set(key, values[0]);
+  }
+  return filters;
+}
+
+export function scopedSearchPath(
   params: URLSearchParams,
   scope: string,
   term: string
 ) {
+  const page = String(searchResultPage(params));
   if (scope === 'movie' || scope === 'tv') {
-    const filters = new URLSearchParams();
-    for (const key of videoFilterKeys) {
-      const values = params.getAll(key);
-      if (values.length === 1 && values[0] && values[0].length <= 512)
-        filters.set(key, values[0]);
-    }
+    const filters = readFilters(params, videoFilterKeys);
     if (filters.size) {
       if (term) filters.set('search', term);
-      filters.set('page', String(searchResultPage(params)));
+      filters.set('page', page);
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
   }
-  const query = new URLSearchParams({
-    query: term,
-    page: String(searchResultPage(params)),
-  });
-  if (scope === 'author' || scope === 'music') query.set('type', scope);
   if (scope === 'music') {
-    for (const key of musicSearchFilters) {
-      const values = params.getAll(key);
-      if (values.length === 1 && values[0] && values[0].length <= 512)
-        query.set(key, values[0]);
+    const filters = readFilters(params, musicSearchFilters);
+    if (!term && filters.size) {
+      filters.set('page', page);
+      return `/discover/music?${filters}`;
     }
+    filters.set('query', term);
+    filters.set('page', page);
+    filters.set('type', 'music');
+    return `/search?${filters}`;
   }
-  return `/search?${query.toString().replaceAll('+', '%20')}`;
+  return `/search?query=${encodeURIComponent(term)}&page=${page}${scope === 'author' ? '&type=author' : ''}`;
+}
+
+export function activeMusicSearchFilters(params: URLSearchParams) {
+  return readFilters(params, musicSearchFilters).size > 0;
 }

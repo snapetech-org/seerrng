@@ -32,8 +32,10 @@ import {
   saveRecentSearches,
 } from '../recentSearches';
 import {
+  activeMusicSearchFilters,
+  musicSearchFilters,
   normalizeSearchParams,
-  scopedVideoSearchPath,
+  scopedSearchPath,
   searchResultPage,
   videoFilterKeys,
 } from '../searchParams';
@@ -82,10 +84,13 @@ export default function Search() {
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const musicOn = extras.list.some((e) => e.key === 'music');
   const term0 = (p.get('q') || '').trim();
-  const videoPath = scopedVideoSearchPath(p, f, term0);
-  const hasVideoFilters = videoPath.startsWith('/discover/');
+  const titlePath = scopedSearchPath(p, f, term0);
+  const hasVideoFilters =
+    (f === 'movie' || f === 'tv') && titlePath.startsWith('/discover/');
+  const hasMusicFilters = f === 'music' && activeMusicSearchFilters(p);
+  const hasDiscoveryFilters = hasVideoFilters || hasMusicFilters;
   const resultPage = searchResultPage(p);
-  const hasSearch = !!term0 || hasVideoFilters;
+  const hasSearch = !!term0 || hasDiscoveryFilters;
   const wantsTitles =
     hasSearch &&
     (f === 'all' ||
@@ -168,7 +173,7 @@ export default function Search() {
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
-        wantsTitles ? api<Paged<SearchResult>>(videoPath).catch(failure) : null,
+        wantsTitles ? api<Paged<SearchResult>>(titlePath).catch(failure) : null,
         ...formats.map((fmt) =>
           wantBooks
             ? cachedApi<Paged<BookResult>>(
@@ -246,7 +251,7 @@ export default function Search() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    videoPath,
+    titlePath,
     f,
     term0,
     hasSearch,
@@ -372,15 +377,18 @@ export default function Search() {
             </button>
           ))}
         </div>
-        {hasVideoFilters && (
+        {hasDiscoveryFilters && (
           <div className="toolbar">
             <button
               type="button"
               className="chip"
               onClick={() => {
                 const next = new URLSearchParams(p);
-                for (const key of videoFilterKeys) next.delete(key);
-                next.delete('certificationMode');
+                for (const key of f === 'music'
+                  ? musicSearchFilters
+                  : videoFilterKeys)
+                  next.delete(key);
+                if (f !== 'music') next.delete('certificationMode');
                 next.delete('page');
                 setP(next, { replace: true });
               }}

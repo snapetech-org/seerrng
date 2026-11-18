@@ -7106,4 +7106,28 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   await expect(
     page.getByRole('link', { name: 'Fixture Artist' })
   ).toHaveAttribute('href', '/artist/' + artistId);
+  await page.route('**/api/v1/discover/music?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    expect(query.get('genre')).toBe('jazz');
+    expect(query.get('page')).toBe('2');
+    expect(query.has('query')).toBe(false);
+    return route.fulfill({
+      json: {
+        ...paged([
+          { mediaType: 'album', id: albumId, title: 'Jazz Catalogue Album' },
+        ]),
+        page: 2,
+        totalPages: 2,
+      },
+    });
+  });
+  await page.goto('/search?type=music&genre=jazz&page=2');
+  await expect(
+    page.getByRole('link', { name: 'Jazz Catalogue Album' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Clear Discovery Filters' }).click();
+  await expect(page).toHaveURL(/\/search\?f=music$/);
+  await expect(
+    page.getByRole('link', { name: 'Jazz Catalogue Album' })
+  ).toHaveCount(0);
 });
