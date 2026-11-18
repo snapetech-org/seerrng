@@ -3034,3 +3034,14 @@ Live providers and the bundled deployment were outside this run.
 GitHub reported zero open code-scanning alerts and zero open Dependabot
 alerts at this checkpoint. The prior findings recorded above describe
 their state at the time of that audit.
+
+### Bundled browser regression checkpoint
+
+The production bundle from `670b2bcb1` passed 40 desktop and iPhone
+cases with the Express frontend mount serving `/lumen/`. Covered
+workflows include setup, book-series search and requests, video
+credits and trailers, collection blocklisting and media-server sync,
+installed and native share handoffs, Track Requests, and proxy artwork
+on request covers. The mount and static assets were real. Playwright
+intercepted API responses, so live authorization and provider writes
+remain outside this checkpoint.
