@@ -764,7 +764,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/share?text=Example&image=1', '/lumen/share?text=Example&image=1'],
       ['/share?title=one&title=two&text=three', '/lumen/share?text=three'],
 
-      ['/discover/games', '/lumen/games'],
+      ['/discover/games', '/lumen/games/discovery'],
       ['/discover/patches?kind=hack', '/lumen/patches?kind=hack'],
       ['/discover/audiobooks', '/lumen/audiobooks'],
       ['/discover/list/12345/?page=2&ignored=1', '/lumen/list/12345?page=2'],

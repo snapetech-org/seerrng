@@ -31,6 +31,7 @@ import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
 import Franchise from './pages/Franchise';
+import GameDiscovery from './pages/GameDiscovery';
 import GameLibrary from './pages/GameLibrary';
 import { GameDetail, Games, SoftwareBookmark } from './pages/Games';
 import HouseholdProfile from './pages/HouseholdProfile';
@@ -281,6 +282,7 @@ function App() {
           <Route path="/magazines" element={<Magazines />} />
           <Route path="/magazine/:title" element={<MagazineDetail />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/games/discovery" element={<GameDiscovery />} />
           <Route path="/software" element={<SoftwareBookmark />} />
           <Route path="/patches" element={<Patches />} />
           <Route path="/patches/:id" element={<PatchDetail />} />

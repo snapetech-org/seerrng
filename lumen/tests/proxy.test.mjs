@@ -177,6 +177,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/movies?nativeFilters=1&keywords=17',
       ],
       ['/coming-soon/', '/soon'],
+      ['/discover/games/', '/games/discovery'],
       ['/games?steam=connected', '/game-library?steam=connected'],
       ['/games/?steam=error&ignored=1', '/game-library?steam=error'],
       ['/coming-soon/?media=tv&extra=1', '/soon?media=tv'],

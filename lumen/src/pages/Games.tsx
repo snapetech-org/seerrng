@@ -174,6 +174,11 @@ export function Games() {
           <Link className="chip" to="/patches">
             Translations and Hacks
           </Link>
+          {x.games.includes('game') && (
+            <Link className="chip" to="/games/discovery">
+              Game Finder
+            </Link>
+          )}
           <Link className="chip" to="/game-library">
             My Games
           </Link>
