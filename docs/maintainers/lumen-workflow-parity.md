@@ -1762,3 +1762,8 @@ Combined watchlists now identify SeerrNG and Plex rows. Lumen can remove
 a confirmed local entry and reload the list so any matching Plex entry
 stays visible. Thirty-two standalone watchlist cases and nine server
 watchlist cases passed. Live Plex and matched visual acceptance remain open.
+
+Watchlist pagination now reconciles out-of-range pages after the server
+reports a smaller result set. This keeps active filters when removal
+empties the final page. All 36 standalone watchlist browser cases passed.
+Matched native visual acceptance remains open.

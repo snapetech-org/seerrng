@@ -187,6 +187,55 @@ for (const combined of [false, true]) {
   });
 }
 
+test('Watchlist returns to the last page after removing its final entry', async ({
+  page,
+}) => {
+  let removed = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith('/user/1/watchlist')) {
+      const first = url.searchParams.get('page') === '1';
+      return route.fulfill({
+        json: {
+          filtersSupported: true,
+          totalPages: removed ? 1 : 2,
+          results:
+            first || !removed
+              ? [
+                  {
+                    id: first ? 10 : 20,
+                    tmdbId: first ? 10 : 20,
+                    ratingKey: first ? 'first' : 'last',
+                    mediaType: 'movie',
+                    title: first ? 'First Movie' : 'Last Movie',
+                  },
+                ]
+              : [],
+        },
+      });
+    }
+    if (
+      url.pathname.endsWith('/watchlist/20') &&
+      route.request().method() === 'DELETE'
+    ) {
+      removed = true;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({
+      json: url.pathname.endsWith('/auth/me')
+        ? { id: 1, displayName: 'Viewer', permissions: 32 }
+        : {},
+    });
+  });
+  await page.goto('/watchlist?search=Movie&page=2');
+  await page
+    .getByRole('button', { name: 'Remove Last Movie from Watchlist' })
+    .click();
+  await expect(page).toHaveURL(/\/watchlist\?search=Movie$/);
+  await expect(page.getByRole('link', { name: 'First Movie' })).toBeVisible();
+});
+
 test('combined Watchlist removes the SeerrNG entry and retains its Plex match', async ({
   page,
 }) => {

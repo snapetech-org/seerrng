@@ -64,7 +64,7 @@ function WatchlistPage({
   label: string;
   mediaTypes: string[];
   page: number;
-  movePage: (page: number) => void;
+  movePage: (page: number, replace?: boolean) => void;
   setFiltersSupported: (supported: boolean) => void;
   canRemove: boolean;
 }) {
@@ -77,6 +77,11 @@ function WatchlistPage({
   useEffect(() => {
     if (data) setFiltersSupported(data.filtersSupported);
   }, [data, setFiltersSupported]);
+
+  useEffect(() => {
+    const lastPage = data?.totalPages;
+    if (!removing && lastPage && page > lastPage) movePage(lastPage, true);
+  }, [data?.totalPages, movePage, page, removing]);
 
   function canRemoveItem(item: WatchlistItem) {
     return (
@@ -352,10 +357,10 @@ export default function Watchlist({
         label={label}
         mediaTypes={mediaTypes}
         page={page}
-        movePage={(next) => {
+        movePage={(next, replace) => {
           const selected = new URLSearchParams(filterKey);
           if (next > 1) selected.set('page', String(next));
-          setParams(selected);
+          setParams(selected, { replace });
         }}
         setFiltersSupported={setFiltersSupported}
         canRemove={targetUserId === undefined}
