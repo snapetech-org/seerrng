@@ -242,6 +242,18 @@ export default function Me() {
 
       <Section title="Account">
         <div className="setlist">
+          {user && (
+            <div className="set">
+              <b>My Profile</b>
+              <Link
+                className="go"
+                to={`/household/${user.id}`}
+                aria-label="Open My Profile"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
           <div className="set">
             <b>Profile and Password</b>
             <Link

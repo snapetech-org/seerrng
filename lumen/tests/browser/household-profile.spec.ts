@@ -164,7 +164,7 @@ test('incomplete household preview responses recover independently', async ({
     switch (path) {
       case '/api/v1/auth/me':
         return route.fulfill({
-          json: { id: 9, displayName: 'Viewer', permissions: 2 },
+          json: { id: 19, displayName: 'Household Member', permissions: 32 },
         });
       case '/api/v1/user/19':
         return route.fulfill({
@@ -190,10 +190,18 @@ test('incomplete household preview responses recover independently', async ({
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto('/household/19');
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open My Profile' }).click();
+  await expect(page).toHaveURL('/household/19');
   await expect(
     page.getByRole('heading', { name: 'Household Member' })
   ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Edit Settings' })
+  ).toHaveAttribute('href', '/me/account');
+  await expect(
+    page.getByRole('link', { name: 'View Requests' })
+  ).toHaveAttribute('href', '/requests?tab=all');
   const error = page.getByRole('alert').filter({
     hasText: 'Invalid playback activity response.',
   });
