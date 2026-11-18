@@ -4,6 +4,7 @@ test('recommendation feeds apply feedback and create a personalized feed', async
   page,
 }) => {
   const submitted: unknown[] = [];
+  let resolveBody: unknown;
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -15,6 +16,25 @@ test('recommendation feeds apply feedback and create a personalized feed', async
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (path === '/settings/public')
       return route.fulfill({ json: { booksEnabled: true } });
+    if (path === '/resolve') {
+      resolveBody = route.request().postDataJSON();
+      return route.fulfill({
+        json: {
+          groups: [{ candidates: [{ id: 'OL42W', mediaType: 'book' }] }],
+        },
+      });
+    }
+    if (path === '/book/OL42W')
+      return route.fulfill({
+        json: {
+          id: 'OL42W',
+          title: 'Matched Fixture Audiobook',
+          author: 'Fixture Author',
+          description: 'Fixture description.',
+          mediaType: 'book',
+          bookFormat: 'audiobook',
+        },
+      });
     if (path === '/book-recommendations/7/books') {
       submitted.push(route.request().postDataJSON());
       return route.fulfill({
@@ -55,4 +75,17 @@ test('recommendation feeds apply feedback and create a personalized feed', async
     .poll(() => submitted[2])
     .toMatchObject({ title: 'My Fixture Feed', likeBookIds: [8] });
   await expect(page.getByText('Recommendation feed created.')).toBeVisible();
+  await page
+    .getByRole('combobox', { name: 'Format', exact: true })
+    .selectOption('audiobook');
+  await page.getByRole('button', { name: 'Open Book' }).click();
+  await expect(page).toHaveURL('/book/OL42W?f=audio');
+  await expect(
+    page.getByRole('heading', { name: 'Matched Fixture Audiobook' })
+  ).toBeVisible();
+  expect(resolveBody).toMatchObject({
+    text: 'Fixture Book',
+    types: ['book'],
+    formatHint: 'audiobook',
+  });
 });

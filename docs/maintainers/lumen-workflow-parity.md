@@ -2673,5 +2673,6 @@ bookmarks route to the page in the companion and under bundled frontend
 lock. The build, two Express tests, ten companion image tests, and four
 browser fixtures passed. Browser coverage includes opening a feed,
 sending tuning feedback, and confirming creation on desktop, iPhone 13,
-Pixel 7, and iPad Pro 11. Live Hardcover, resolving a book in the browser,
-artwork parity, and matched visual acceptance remain unverified.
+Pixel 7, and iPad Pro 11. The browser checks also verify resolving a book and opening the matched
+audiobook detail in the selected format. Live Hardcover, artwork parity,
+and matched visual acceptance remain unverified.
