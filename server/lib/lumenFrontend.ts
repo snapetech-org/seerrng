@@ -3,8 +3,10 @@ import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { buildContentSecurityPolicy } from '@server/middleware/securityHeaders';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
+import { getRateLimitKey } from '@server/utils/security';
 import type { Express, Request, RequestHandler } from 'express';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import path from 'node:path';
 import { isSportarrLeagueExternalId } from './sportarrIdentity';
 import { normalizeStashDbId } from './stashdbIdentity';
@@ -601,13 +603,27 @@ export const mountLumenFrontend = (
   });
   server.use(
     '/lumen',
-    express.static(directory, { index: false, fallthrough: true }),
+    express.static(directory, { index: false, fallthrough: true })
+  );
+  server.get(
+    /^\/lumen(?:\/|$)/i,
     (req, res, next) => {
-      if (req.method !== 'GET') return next();
+      if (req.method !== 'GET') return next('route');
       if (!isInitialized()) return res.redirect(302, '/setup');
-      // Missing assets must not become successful HTML responses.
-      if (path.extname(req.path) && !magazineTitle(req.path))
+      const pathname = req.path.slice('/lumen'.length);
+      // Missing assets must not become successful HTML responses or consume the shell budget.
+      if (path.extname(pathname) && !magazineTitle(pathname))
         return res.sendStatus(404);
+      return next();
+    },
+    rateLimit({
+      windowMs: 60 * 1000,
+      limit: 600,
+      standardHeaders: true,
+      legacyHeaders: false,
+      keyGenerator: getRateLimitKey,
+    }),
+    (_req, res) => {
       res.clearCookie(classicCookie, { path: '/' });
       res.set('Cache-Control', 'no-store');
       res.set(

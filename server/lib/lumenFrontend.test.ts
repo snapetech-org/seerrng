@@ -74,6 +74,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const admin = await request(app).get('/lumen/admin');
     assert.equal(admin.status, 200);
     assert.match(admin.text, /Lumen/);
+    assert.equal(admin.headers['ratelimit-limit'], '600');
     assert.equal(userDirectory.status, 302);
     assert.equal(userDirectory.headers.location, '/lumen/admin/users');
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
@@ -200,8 +201,12 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       '<html>Lumen</html>'
     );
     assert.equal((await browser.get('/')).headers.location, '/lumen/');
-    assert.equal((await request(app).get('/lumen/app.js')).status, 200);
-    assert.equal((await request(app).get('/lumen/missing.js')).status, 404);
+    const asset = await request(app).get('/lumen/app.js');
+    assert.equal(asset.status, 200);
+    assert.equal(asset.headers['ratelimit-limit'], undefined);
+    const missingAsset = await request(app).get('/lumen/missing.js');
+    assert.equal(missingAsset.status, 404);
+    assert.equal(missingAsset.headers['ratelimit-limit'], undefined);
     assert.equal(
       (await request(app).get('/lumen/magazine/Science%20Vol.%202')).status,
       200

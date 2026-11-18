@@ -2587,3 +2587,12 @@ software detail before and after on desktop, iPhone 13, Pixel 7, and iPad
 Pro 11. The fixture verifies valid proxy art and omission of unsupported
 image URLs. GitHub findings 654–657 remain open. Evidence is retained
 under `seerrng-lumen-rendered-art*` in `/mnt/disks/scratch/task-deliverables/`.
+
+Bundled Lumen HTML responses now share a per-client budget of 600
+requests per minute, matching the existing API budget. Static files,
+missing asset responses, and setup redirects do not consume the shell
+budget. The existing client IP helper respects the configured proxy
+trust boundary. Both frontend routing integration tests passed,
+including deep links and the distinction between shell and asset
+responses. GitHub alert 671 remains open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-shell-ratelimit-20261118.log`.
