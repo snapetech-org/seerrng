@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ExtraHeader, ServiceNote } from '../components/extra';
+import { ExtraHeader } from '../components/extra';
 import IdentityMapping, {
   type MappingCandidate,
   videoHref,
 } from '../components/IdentityMapping';
+import ProviderFailure from '../components/ProviderFailure';
 import { useApi } from '../hooks';
 
 const feeds = {
@@ -24,53 +24,6 @@ interface FeedPage {
   page: number;
   hasMore: boolean;
   items: MappingCandidate[];
-}
-
-function FeedFailure({
-  error,
-  code,
-  retryAt,
-  retry,
-}: {
-  error: string;
-  code?: string;
-  retryAt?: number;
-  retry: () => void;
-}) {
-  const remaining = () =>
-    Math.max(0, Math.ceil(((retryAt ?? 0) - Date.now()) / 1000));
-  const [seconds, setSeconds] = useState(remaining);
-  useEffect(() => {
-    if (!retryAt) return;
-    const timer = window.setInterval(() => {
-      const next = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
-      setSeconds(next);
-      if (!next) window.clearInterval(timer);
-    }, 250);
-    return () => window.clearInterval(timer);
-  }, [retryAt]);
-
-  const retryable =
-    code !== 'PROVIDER_LIST_NOT_FOUND' &&
-    code !== 'PROVIDER_SETUP_REQUIRED' &&
-    code !== 'RECONNECT_REQUIRED';
-  return (
-    <>
-      <ServiceNote
-        error={seconds ? `${error} Retry in ${seconds} seconds.` : error}
-        what="provider feed"
-        retry={retryable ? retry : undefined}
-        retryDisabled={seconds > 0}
-      />
-      {code === 'RECONNECT_REQUIRED' && (
-        <div className="toolbar">
-          <Link className="chip" to="/me/account/linked-accounts">
-            Reconnect Provider
-          </Link>
-        </div>
-      )}
-    </>
-  );
 }
 
 export default function ProviderDiscovery() {
@@ -170,9 +123,11 @@ export default function ProviderDiscovery() {
         </form>
       )}
       {error && (
-        <FeedFailure
+        <ProviderFailure
           key={`${feed}:${page}:${apiError?.retryAt ?? ''}`}
           error={error}
+          what="provider feed"
+          provider={feed.split('/')[0]}
           code={apiError?.code}
           retryAt={apiError?.retryAt}
           retry={reload}

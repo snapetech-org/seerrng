@@ -4441,7 +4441,7 @@ test('Provider Discovery waits for Retry-After and offers provider reconnect', a
   await page.getByLabel('Provider Feed').selectOption('trakt/watchlist');
   await expect(
     page.getByRole('link', { name: 'Reconnect Provider' })
-  ).toHaveAttribute('href', '/me/account/linked-accounts');
+  ).toHaveAttribute('href', '/me/account/linked-accounts?reconnect=trakt');
   await expect(retry).toHaveCount(0);
 });
 

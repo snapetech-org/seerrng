@@ -628,3 +628,45 @@ test('My Media tracks and removes a selected provider episode', async ({
   ).toBeVisible();
   expect(changes).toEqual([true, false]);
 });
+
+test('My Media opens reconnection for an expired provider account', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: {
+          accounts: [{ provider: 'trakt', username: 'Reader' }],
+          mediaServer: null,
+        },
+      });
+    if (path === '/integrations/discovery/configuration')
+      return route.fulfill({ json: { trakt: { configured: true } } });
+    if (path === '/integrations/discovery/library/trakt')
+      return route.fulfill({
+        status: 409,
+        json: {
+          code: 'RECONNECT_REQUIRED',
+          message: 'Reconnect your provider account under Linked Accounts.',
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/library');
+  await page.getByRole('link', { name: 'Reconnect Provider' }).click();
+  await expect(page).toHaveURL(/linked-accounts\?reconnect=trakt$/);
+  await expect(
+    page.getByRole('button', { name: 'Reconnect Trakt' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Disconnect Trakt' })
+  ).toBeVisible();
+});

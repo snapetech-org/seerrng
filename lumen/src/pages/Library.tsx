@@ -7,6 +7,7 @@ import IdentityMapping, {
 import LibraryRepair from '../components/LibraryRepair';
 import LibraryTracking from '../components/LibraryTracking';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
+import ProviderFailure from '../components/ProviderFailure';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -258,6 +259,7 @@ function LibraryPage({
   const {
     data: response,
     error: requestError,
+    apiError,
     reload,
     refresh,
   } = useApi<LibraryResult>(path, {
@@ -302,7 +304,17 @@ function LibraryPage({
           reload={refresh}
         />
       )}
-      <ServiceNote error={error} what="your library" retry={reload} />
+      {error && (
+        <ProviderFailure
+          key={`${path}:${apiError?.retryAt ?? ''}`}
+          error={error}
+          what="your library"
+          provider={trackingProvider}
+          code={apiError?.code}
+          retryAt={apiError?.retryAt}
+          retry={reload}
+        />
+      )}
       {!data && !error && (
         <p className="note" role="status">
           Loading your library…

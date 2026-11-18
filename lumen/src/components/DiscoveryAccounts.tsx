@@ -38,6 +38,22 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
   const [failure, setFailure] = useState('');
   const working = useRef(false);
   const reloadAccounts = accounts.reload;
+  const reconnect = params.get('reconnect');
+  const connected = (provider: Provider) =>
+    rows?.some((row) => row?.provider === provider);
+  const canConnect = (provider: Provider) =>
+    rows &&
+    config.data?.[provider]?.configured &&
+    (!connected(provider) || reconnect === provider);
+  function finishConnection() {
+    if (reconnect) {
+      const next = new URLSearchParams(params);
+      next.delete('reconnect');
+      setParams(next, { replace: true });
+    }
+    reloadAccounts();
+  }
+  const finishSimkl = useEffectEvent(finishConnection);
   const handleTraktReturn = useEffectEvent(() => {
     const completed = params.get('traktComplete') === '1';
     const error = params.get('traktError');
@@ -145,7 +161,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
         if (!active()) return;
         if (result.status === 'authorized') {
           setSimkl(undefined);
-          reloadAccounts();
+          finishSimkl();
         } else if (
           result.status === 'pending' ||
           result.status === 'slow_down'
@@ -165,7 +181,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [simkl, reloadAccounts]);
+  }, [simkl]);
 
   async function act<T>(
     work: () => Promise<T>,
@@ -274,7 +290,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
       () => {
         setCode('');
         setAuthorization('');
-        accounts.reload();
+        finishConnection();
       },
       'Could not connect AniList.'
     );
@@ -338,10 +354,8 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
           ))}
         </ul>
       )}
-      {rows &&
+      {canConnect('anilist') &&
         !simkl &&
-        config.data?.anilist?.configured &&
-        !rows.some(({ provider }) => provider === 'anilist') &&
         (authorization ? (
           <form
             className="toolbar"
@@ -394,7 +408,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
             disabled={busy}
             onClick={() => void startAniList()}
           >
-            Connect AniList
+            {connected('anilist') ? 'Reconnect AniList' : 'Connect AniList'}
           </button>
         ))}
       {simkl ? (
@@ -422,32 +436,26 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
           </button>
         </div>
       ) : (
-        rows &&
-        !authorization &&
-        config.data?.simkl?.configured &&
-        !rows.some(({ provider }) => provider === 'simkl') && (
+        canConnect('simkl') &&
+        !authorization && (
           <button
             className="btn btn-tonal btn-sm"
             disabled={busy}
             onClick={() => void startSimkl()}
           >
-            Connect Simkl
+            {connected('simkl') ? 'Reconnect Simkl' : 'Connect Simkl'}
           </button>
         )
       )}
-      {rows &&
-        !authorization &&
-        !simkl &&
-        config.data?.trakt?.configured &&
-        !rows.some(({ provider }) => provider === 'trakt') && (
-          <button
-            className="btn btn-tonal btn-sm"
-            disabled={busy}
-            onClick={() => void startTrakt()}
-          >
-            Connect Trakt
-          </button>
-        )}
+      {canConnect('trakt') && !authorization && !simkl && (
+        <button
+          className="btn btn-tonal btn-sm"
+          disabled={busy}
+          onClick={() => void startTrakt()}
+        >
+          {connected('trakt') ? 'Reconnect Trakt' : 'Connect Trakt'}
+        </button>
+      )}
       {disconnect && (
         <ConfirmSheet
           title={`Disconnect ${providerNames[disconnect]}?`}
