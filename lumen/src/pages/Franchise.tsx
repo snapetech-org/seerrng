@@ -68,11 +68,15 @@ interface FranchiseData {
 }
 
 function itemHref(item: FranchiseItem) {
+  if (item.href.startsWith('/search?')) {
+    const query = new URLSearchParams(item.href.slice('/search?'.length));
+    return `/search?${new URLSearchParams({ q: query.get('q') || query.get('query') || item.title })}`;
+  }
   if (
+    /^\/book\/bookshelf(?::|%3a)\d+(?::|%3a)[A-Za-z0-9_-]+$/i.test(item.href) ||
     /^\/(movie|tv|book|music|artist|comic|collection|franchise)(?:\/[A-Za-z0-9_-]+){1,2}$/.test(
       item.href
-    ) ||
-    /^\/search\?[^#]*$/.test(item.href)
+    )
   )
     return item.href;
   return `/search?${new URLSearchParams({ q: item.title })}`;

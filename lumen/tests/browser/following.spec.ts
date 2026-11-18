@@ -517,6 +517,7 @@ test('anime continuation loads on demand and follows the novel in its language',
 
 test('switching franchise titles keeps the follow identity and state separate', async ({
   page,
+  baseURL,
 }) => {
   const subjects: unknown[] = [];
   await page.route('**/api/v1/**', (route) => {
@@ -538,6 +539,22 @@ test('switching franchise titles keeps the follow identity and state separate', 
               confidence: 'high',
               verified: true,
             },
+            {
+              group: 'source',
+              title: 'Fixture Novel',
+              mediaType: 'novel',
+              href: '/search?query=Fixture%20Novel%20Volume%203',
+              confidence: 'high',
+              verified: true,
+            },
+            {
+              group: 'source',
+              title: 'Mapped Volume',
+              mediaType: 'book',
+              href: '/book/bookshelf%3A1%3AaGM6MjYwNDY4',
+              confidence: 'high',
+              verified: true,
+            },
           ],
         },
       });
@@ -554,6 +571,18 @@ test('switching franchise titles keeps the follow identity and state separate', 
   });
 
   await page.goto('./franchise/anime/10');
+  await expect(
+    page.getByRole('link', { name: 'Fixture Novel' })
+  ).toHaveAttribute(
+    'href',
+    new URL('./search', baseURL).pathname + '?q=Fixture+Novel+Volume+3'
+  );
+  await expect(
+    page.getByRole('link', { name: 'Mapped Volume' })
+  ).toHaveAttribute(
+    'href',
+    new URL('./book/bookshelf%3A1%3AaGM6MjYwNDY4', baseURL).pathname
+  );
   const follow = page.getByRole('button', { name: 'Follow', exact: true });
   const following = page.getByRole('button', {
     name: 'Following',
