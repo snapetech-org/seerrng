@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type Genre, type TitleResult } from '../api';
 import { useAuth } from '../auth';
-import { canManageBlocklist } from '../blocklist';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ServiceNote } from '../components/extra';
@@ -14,6 +13,10 @@ import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter
 import { StudioFilter } from '../components/StudioFilter';
 import { SubjectTagFilter } from '../components/SubjectTagFilter';
 import { tvNetworks } from '../discoverNetworks';
+import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
@@ -452,18 +455,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       quality === '4k' ? x.mediaInfo?.status4k : x.mediaInfo?.status;
     return status === MediaStatus.AVAILABLE || status === MediaStatus.PARTIAL;
   };
-  const hideAvailable =
-    show === 'all' && publicSettings?.hideAvailable === true;
-  const hideRequested = publicSettings?.hideRequested === true;
-  const hideBlocklisted =
-    publicSettings?.hideBlocklisted === true ||
-    !canManageBlocklist(user?.permissions);
+  const visibility = discoveryVisibility(publicSettings, user?.permissions);
+  if (show !== 'all') visibility.hideAvailable = false;
   const items = list.items.filter(
     (x) =>
       (!filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))) &&
-      (!hideAvailable || !onServer(x)) &&
-      (!hideRequested || x.mediaInfo?.hasActiveRequest !== true) &&
-      (!hideBlocklisted || x.mediaInfo?.status !== MediaStatus.BLOCKLISTED)
+      showDiscoveryTitle(x, visibility)
   );
   const locallyFiltered = filterCatalogRows || items.length < list.items.length;
   // Catalog availability views read TMDB’s list a
@@ -473,7 +470,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // finds less than a screenful stops and lets them ask for more.
   const PAGES_PER_LOOK = 5;
   const SCREENFUL = 18;
-  const filterKey = `${kind}|${show}|${quality}|${hideAvailable}|${hideRequested}|${hideBlocklisted}|${q}`;
+  const filterKey = `${kind}|${show}|${quality}|${visibility.hideAvailable}|${visibility.hideRequested}|${visibility.hideBlocklisted}|${q}`;
   const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
   if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
   else if (items.length - look.found >= SCREENFUL)

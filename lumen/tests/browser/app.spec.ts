@@ -6515,7 +6515,7 @@ test('Discovery region settings preserve legacy values and retry only changed fi
   });
 });
 
-test('Movies discovery applies visibility defaults while the library view still shows owned titles', async ({
+test('Discover and Movies apply visibility defaults while the library view still shows owned titles', async ({
   page,
 }) => {
   await fixtures(page);
@@ -6535,14 +6535,33 @@ test('Movies discovery applies visibility defaults while the library view still 
     { ...movie, id: 103, title: 'Blocked fixture', mediaInfo: { status: 6 } },
     { ...movie, id: 104, title: 'Visible fixture', mediaInfo: undefined },
   ];
-  await page.route(/\/api\/v1\/discover\/movies\?/, (route) => {
-    const library = new URL(route.request().url()).searchParams.has(
-      'availability'
-    );
-    return route.fulfill({
-      json: paged(library ? titles.slice(0, 1) : titles),
-    });
+  await page.route(
+    /\/api\/v1\/discover\/(movies|trending)(?:\?|$)/,
+    (route) => {
+      const library = new URL(route.request().url()).searchParams.has(
+        'availability'
+      );
+      return route.fulfill({
+        json: paged(library ? titles.slice(0, 1) : titles),
+      });
+    }
+  );
+  await page.goto('/');
+  const rail = page.getByRole('heading', {
+    name: 'Trending movies',
+    exact: true,
   });
+  await expect(rail).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Visible fixture' }).first()
+  ).toBeVisible();
+  for (const title of [
+    'Owned fixture',
+    'Requested fixture',
+    'Blocked fixture',
+  ]) {
+    await expect(page.getByRole('link', { name: title })).toHaveCount(0);
+  }
   await page.goto('/movies');
   await expect(
     page.getByRole('link', { name: 'Visible fixture' })

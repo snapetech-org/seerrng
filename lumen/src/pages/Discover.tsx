@@ -23,8 +23,12 @@ import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
 import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
+import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
 import { useExtras } from '../extras';
-import { cachedApi, useApi } from '../hooks';
+import { cachedApi, useApi, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import {
   enrichRecentMediaTitles,
@@ -127,12 +131,19 @@ export default function Discover() {
   const fresh = useNewOnPlex(on.newOnPlex && recentAllowed);
   const extras = useExtras();
 
+  const settings = usePublicSettings();
+  const visibility = discoveryVisibility(settings, user?.permissions);
+  const visible = (title: TitleResult) => showDiscoveryTitle(title, visibility);
+  const movieCards = movies.data?.results.filter(visible);
+  const seriesCards = series.data?.results.filter(visible);
+  const upcomingCards = soon.data?.results.filter(visible);
   const hero = (trending.data?.results || [])
     .filter(
       (r): r is TitleResult =>
         Boolean(r.backdropPath) &&
         (r.mediaType === 'movie' || r.mediaType === 'tv')
     )
+    .filter(visible)
     .slice(0, 6);
   const today = new Date().toLocaleDateString(undefined, {
     weekday: 'long',
@@ -258,15 +269,15 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.trendingMovies && !empty(movies.data?.results) && (
+      {on.trendingMovies && !empty(movieCards) && (
         <Section
           title="Trending movies"
           action={<CardTitleToggle kinds={['movie']} />}
           link={['See all', '/movies']}
         >
-          {movies.data ? (
+          {movieCards ? (
             <Rail restoreId="movies">
-              {movies.data.results.map((m) => (
+              {movieCards.map((m) => (
                 <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
               ))}
             </Rail>
@@ -278,15 +289,15 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.popularSeries && !empty(series.data?.results) && (
+      {on.popularSeries && !empty(seriesCards) && (
         <Section
           title="Popular series"
           action={<CardTitleToggle kinds={['tv']} />}
           link={['See all', '/series']}
         >
-          {series.data ? (
+          {seriesCards ? (
             <Rail restoreId="series">
-              {series.data.results.map((t) => (
+              {seriesCards.map((t) => (
                 <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
               ))}
             </Rail>
@@ -343,15 +354,15 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.comingSoon && !empty(soon.data?.results) && (
+      {on.comingSoon && !empty(upcomingCards) && (
         <Section
           title="Coming soon"
           action={<CardTitleToggle kinds={['movie']} />}
           link={['See all', '/soon']}
         >
-          {soon.data ? (
+          {upcomingCards ? (
             <Rail restoreId="coming-soon">
-              {soon.data.results.map((m) => (
+              {upcomingCards.map((m) => (
                 <TitleCard
                   key={m.id}
                   it={{ ...m, mediaType: 'movie' }}
