@@ -6,6 +6,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions } from '../components/detail';
 import { fullSeerrUrl, initials } from '../components/Shell';
 import { useToast } from '../components/toast';
+import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { mediaServer, services } from '../mediaServer';
@@ -145,6 +146,19 @@ export default function Me() {
               >
                 Open <Icon name="chev" size="sm" />
               </a>
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {canViewFollowing(user?.permissions) && (
+        <Section title="Library">
+          <div className="setlist">
+            <div className="set">
+              <b>Following</b>
+              <Link className="go" to="/following" aria-label="Open Following">
+                Open <Icon name="chev" size="sm" />
+              </Link>
             </div>
           </div>
         </Section>

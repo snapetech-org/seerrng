@@ -41,3 +41,15 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
    populated states, and authorized interactions against isolated fixtures.
    Include direct-link denial for unauthorized actions and both deployments.
    Track retired gaps here with the version and evidence that closed them.
+
+### Following feed increment
+
+Lumen has a Following route, with a desktop sidebar link and a Library entry
+under You on narrow screens. Users with request access can page through updates,
+mark them seen, and manage existing subscription notifications, automatic book
+requests, and removals. The standalone proxy serves this route directly.
+
+Following creation on source screens, detailed update reasons, and exact links
+for game and patch targets still need parity work. The current increment uses
+the source label for each update and searches by title when it has no Lumen
+detail route for the target.

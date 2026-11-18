@@ -9,6 +9,7 @@ import {
 import { api } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useExtras } from '../extras';
+import { canViewFollowing } from '../followPermissions';
 import { useBack, usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { scrollBehavior } from '../motion';
@@ -295,6 +296,12 @@ export default function Shell({ children }: { children: ReactNode }) {
               </span>
             )}
           </NavLink>
+          {canViewFollowing(user?.permissions) && (
+            <NavLink to="/following">
+              <Icon name="list" />
+              Following
+            </NavLink>
+          )}
           <NavLink to="/soon">
             <Icon name="cal" />
             Coming soon

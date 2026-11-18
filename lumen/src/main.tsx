@@ -18,6 +18,7 @@ import Books from './pages/Books';
 import Browse from './pages/Browse';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
+import Following from './pages/Following';
 import { GameDetail, Games } from './pages/Games';
 import Login from './pages/Login';
 import LumenSettings from './pages/LumenSettings';
@@ -82,6 +83,7 @@ function App() {
           <Route path="/adult/:id" element={<SceneDetail />} />
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
+          <Route path="/following" element={<Following />} />
           <Route path="/soon" element={<Soon />} />
           <Route path="/me" element={<Me />} />
           <Route path="/me/lumen" element={<LumenSettings />} />
