@@ -1,10 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Link,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   ApiError,
   mediaLink,
@@ -87,6 +82,7 @@ export default function TvDetail() {
 
   const { id } = useParams();
   const loc = useLocation();
+  const navigate = useNavigate();
   const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const progressMedia = useLiveMediaProgress(
@@ -127,13 +123,16 @@ export default function TvDetail() {
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
   // people who may request 4K series pick 1080p or 4K here, admins or not
   const offers4k = useOffers4k('tv');
-  const [params, setParams] = useSearchParams();
+  const params = new URLSearchParams(loc.search);
   const fourK = params.get('quality') === '4k';
   const setFourK = (selected: boolean) => {
     const next = new URLSearchParams(params);
     if (selected) next.set('quality', '4k');
     else next.delete('quality');
-    setParams(next, { replace: true, preventScrollReset: true });
+    navigate(
+      { search: next.toString(), hash: loc.hash },
+      { replace: true, preventScrollReset: true }
+    );
   };
   const is4k = offers4k && fourK;
 
