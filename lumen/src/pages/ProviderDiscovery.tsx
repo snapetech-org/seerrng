@@ -154,6 +154,9 @@ export default function ProviderDiscovery() {
         <ul className="setlist">
           {items.map((item) => {
             const href = videoHref(item);
+            const animeId = feed.startsWith('anilist/')
+              ? /^anilist:([1-9]\d{0,9})$/.exec(item.id)?.[1]
+              : undefined;
             return (
               <li className="set" key={item.id}>
                 <div>
@@ -176,6 +179,15 @@ export default function ProviderDiscovery() {
                       .filter(Boolean)
                       .join(' · ')}
                   </small>
+                  {animeId && (
+                    <Link
+                      className="btn btn-quiet btn-sm"
+                      to={`/franchise/anime/${animeId}`}
+                      aria-label={`Explore Franchise: ${item.title}`}
+                    >
+                      Explore Franchise
+                    </Link>
+                  )}
                 </div>
                 {(item.mappingAvailable ||
                   item.identityMapped ||

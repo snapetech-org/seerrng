@@ -681,3 +681,33 @@ for (const [type, catalogId, href] of [
     ).toHaveAttribute('href', new URL('.' + href, baseURL).pathname);
   });
 }
+
+test('unmatched AniList discovery titles can open the exact franchise', async ({
+  page,
+}) => {
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/integrations/discovery/feeds/anilist/trending')
+      return route.fulfill({
+        json: {
+          page: 1,
+          items: [{ id: 'anilist:713', title: 'Fixture Anime' }],
+        },
+      });
+    if (path === '/franchise/anime/713')
+      return route.fulfill({
+        json: { anchor: { title: 'Fixture Anime' }, notes: [], items: [] },
+      });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('./providers?unmatched=1');
+  await page
+    .getByRole('link', { name: 'Explore Franchise: Fixture Anime' })
+    .click();
+  await expect(page).toHaveURL('./franchise/anime/713');
+  await expect(
+    page.getByRole('heading', { name: 'Franchise for Fixture Anime' })
+  ).toBeVisible();
+});
