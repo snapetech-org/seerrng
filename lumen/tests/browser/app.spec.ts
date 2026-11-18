@@ -5413,6 +5413,14 @@ test('standalone user request bookmarks keep the user from the path', async ({
   page,
 }) => {
   await fixtures(page);
+  const pendingReads: URLSearchParams[] = [];
+  await page.route('**/api/v1/request?*', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    if (params.get('filter') === 'pending') pendingReads.push(params);
+    return route.fulfill({
+      json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+    });
+  });
   await page.goto(
     '/requests/by-user/19?userId=12&requestedBy=11&filter=pending'
   );
@@ -5421,6 +5429,11 @@ test('standalone user request bookmarks keep the user from the path', async ({
   expect(params.getAll('requestedBy')).toEqual(['19']);
   expect(params.has('userId')).toBe(false);
   expect(params.get('show') ?? params.get('filter')).toBe('pending');
+  await expect.poll(() => pendingReads.length).toBeGreaterThan(0);
+  for (const request of pendingReads) {
+    expect(request.getAll('requestedBy')).toEqual(['19']);
+    expect(request.has('userId')).toBe(false);
+  }
 });
 
 test('account permissions bookmarks show the signed-in users assigned permissions', async ({
