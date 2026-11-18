@@ -7,6 +7,7 @@ import { CardTitlePreferences } from '../components/CardTitlePreferences';
 import { ServiceNote } from '../components/extra';
 import { StreamingSubscriptions } from '../components/StreamingSubscriptions';
 import { useApi, usePublicSettings } from '../hooks';
+import { permissionOptions } from '../permissionOptions';
 import { sessionGeneration } from '../sessionState';
 
 const watchlistFields = [
@@ -507,6 +508,13 @@ function PasswordForm({
 }
 
 function Settings({ id, plex }: { id: number; plex: boolean }) {
+  const { user } = useAuth();
+  const mask = user?.permissions ?? 0;
+  const permissionBits =
+    Number.isSafeInteger(mask) && mask >= 0 ? BigInt(mask) : 0n;
+  const grants = permissionOptions.filter(
+    ([bit]) => (permissionBits & bit) !== 0n
+  );
   const { hash } = useLocation();
   const base = `/user/${id}/settings`;
   const profile = useApi<Profile>(base + '/main', { keepDuringRefresh: true });
@@ -518,8 +526,10 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
     (profile.data || profile.error) && (password.data || password.error)
   );
   useEffect(() => {
-    if (loaded && hash === '#password') {
-      document.getElementById('password')?.scrollIntoView({ block: 'start' });
+    if (loaded && (hash === '#password' || hash === '#account-permissions')) {
+      document
+        .getElementById(hash.slice(1))
+        ?.scrollIntoView({ block: 'start' });
     }
   }, [hash, loaded]);
   return (
@@ -572,6 +582,23 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           )
         )}
       </Section>
+      <Section title="Account Permissions" id="account-permissions">
+        {isAdministrator(mask) ? (
+          <p className="note">This account has administrator access.</p>
+        ) : grants.length ? (
+          <ul className="setlist">
+            {grants.map(([bit, label]) => (
+              <li className="set" key={String(bit)}>
+                {label}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="note">
+            No additional permissions are assigned to this account.
+          </p>
+        )}
+      </Section>
     </>
   );
 }
@@ -584,6 +611,9 @@ export default function AccountSettings() {
         <h1>Account Settings</h1>
       </header>
       <div className="toolbar">
+        <Link className="btn btn-quiet btn-sm" to="#account-permissions">
+          Account Permissions
+        </Link>
         <Link className="btn btn-quiet btn-sm" to="/me/account/tv-requests">
           TV Request Settings
         </Link>

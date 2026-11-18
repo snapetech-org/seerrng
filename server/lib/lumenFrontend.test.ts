@@ -163,6 +163,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     for (const [bookmark, destination] of [
       ['/users/19/', '/household/19'],
       ['/profile/', '/me'],
+      ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password', '/me/account#password'],
       [
         '/profile/settings/episode-queue',

@@ -161,6 +161,9 @@ server {
   location ~ ^/profile/settings/notifications/(email|telegram|discord|pushbullet|pushover|webpush)/?$ {
     return 302 "/me/account/notifications#notification-$1";
   }
+  location ~ ^/profile/settings/permissions/?$ {
+    return 302 "/me/account#account-permissions";
+  }
   location ~ ^/profile/settings/password/?$ {
     return 302 "/me/account#password";
   }

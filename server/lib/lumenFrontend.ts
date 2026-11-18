@@ -363,6 +363,7 @@ const workflowDestinations = new Map([
   ['/users', '/admin/users'],
   ['/profile/settings', '/me/account'],
   ['/profile/settings/main', '/me/account'],
+  ['/profile/settings/permissions', '/me/account#account-permissions'],
   ['/profile/settings/password', '/me/account#password'],
   ['/profile/settings/client-tokens', '/me/account/client-tokens'],
   ['/profile/settings/linked-accounts', '/me/account/linked-accounts'],

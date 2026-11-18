@@ -5362,6 +5362,27 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('account permissions bookmarks show the signed-in users assigned permissions', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: 2199023255552 },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/password', (route) =>
+    route.fulfill({ json: { hasPassword: true } })
+  );
+  await page.goto('/me/account#account-permissions');
+  const section = page.locator('#account-permissions');
+  await expect(section.getByRole('heading')).toBeInViewport();
+  await expect(
+    section.getByText('Request Magazine', { exact: true })
+  ).toBeVisible();
+  await expect(section.getByRole('checkbox')).toHaveCount(0);
+});
+
 test('Classic service category bookmarks filter the Lumen administration menu', async ({
   page,
 }) => {
