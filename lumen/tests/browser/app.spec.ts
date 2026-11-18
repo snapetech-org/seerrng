@@ -8420,6 +8420,18 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
   await page.route('**/api/v1/book-series/search?*', (route) =>
     route.fulfill({ json: { status: 'ok', results: [] } })
   );
+  await page.route('**/api/v1/discover/books?*', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          id: 'bookshelf:1:fixture',
+          title: 'Fixture Audiobook',
+          mediaType: 'book',
+          bookFormat: 'audiobook',
+        },
+      ]),
+    })
+  );
   const filtered = page.waitForRequest((request) => {
     const url = new URL(request.url());
     return (
@@ -8438,6 +8450,12 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
     '/books?format=audiobook&sortBy=oldest&search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5'
   );
   await filtered;
+  await expect(
+    page.getByRole('link', { name: 'Fixture Audiobook', exact: true })
+  ).toHaveAttribute(
+    'href',
+    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Fixture+Audiobook'
+  );
   await expect(page).toHaveURL(/\/audiobooks\?sortBy=oldest/);
   await expect(
     page.getByRole('link', { name: 'View All Series Results' })

@@ -9,6 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   artUrl,
   bookArt,
+  bookDetailPath,
   englishAudioEdition,
   hardcoverWorkId,
   mediaLink,
@@ -490,7 +491,7 @@ export function BookCard({ b }: { b: BookResult }) {
     }
   };
   const [request, busy] = useBusy(go);
-  const href = `/book/${encodeURIComponent(b.id)}${audio ? '?f=audio' : ''}`;
+  const href = bookDetailPath(b.id, format, b.title);
   const series = b.series?.[0];
   return (
     <div
