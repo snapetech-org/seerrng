@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { quotaCategories } from '../quotaCategories';
@@ -19,8 +19,10 @@ type Draft = Partial<Record<keyof Quota, string>>;
 
 export default function DefaultRequestQuotas({
   initial,
+  showPermissionsLink,
 }: {
   initial: DefaultQuotas;
+  showPermissionsLink: boolean;
 }) {
   const { hash } = useLocation();
   useEffect(() => {
@@ -110,6 +112,13 @@ export default function DefaultRequestQuotas({
         0 allows unlimited requests. With a positive limit, 0 quota days counts
         requests across all time.
       </p>
+      {showPermissionsLink && (
+        <div className="toolbar">
+          <Link className="btn btn-quiet btn-sm" to="#default-user-permissions">
+            Default User Permissions
+          </Link>
+        </div>
+      )}
       <form
         className="toolbar"
         onSubmit={(event) => {

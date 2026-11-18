@@ -5440,11 +5440,19 @@ test('General Settings confirms default permissions and preserves higher permiss
       defaultPermissions = body.defaultPermissions;
     }
     return route.fulfill({
-      json: { applicationTitle: 'SeerrNG', defaultPermissions },
+      json: {
+        applicationTitle: 'SeerrNG',
+        defaultPermissions,
+        defaultQuotas: { movie: { quotaLimit: 4, quotaDays: 7 } },
+      },
     });
   });
-  await page.goto('/admin/general');
-  await page.getByText('Edit Default Permissions', { exact: true }).click();
+  await page.goto('/admin/general#default-request-quotas');
+  await page.getByRole('link', { name: 'Default User Permissions' }).click();
+  await expect(page).toHaveURL(/#default-user-permissions$/);
+  await expect(
+    page.getByRole('heading', { name: 'Default User Permissions' })
+  ).toBeInViewport();
   await expect(
     page.getByRole('checkbox', { name: 'Admin', exact: true })
   ).toBeDisabled();
@@ -5465,7 +5473,6 @@ test('General Settings confirms default permissions and preserves higher permiss
     { defaultPermissions: 4398046511104 + 34359738368 + 32 },
   ]);
   await page.reload();
-  await page.getByText('Edit Default Permissions', { exact: true }).click();
   await expect(
     page.getByRole('checkbox', { name: 'Request Book', exact: true })
   ).toBeChecked();

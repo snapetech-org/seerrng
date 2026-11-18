@@ -393,7 +393,12 @@ export default function AdminGeneral() {
         anchorReady={Boolean(settings.data || settings.error)}
       />
       {settings.data?.defaultQuotas && (
-        <DefaultRequestQuotas initial={settings.data.defaultQuotas} />
+        <DefaultRequestQuotas
+          initial={settings.data.defaultQuotas}
+          showPermissionsLink={
+            typeof settings.data.defaultPermissions === 'number'
+          }
+        />
       )}
       {typeof settings.data?.defaultPermissions === 'number' &&
         Number.isSafeInteger(settings.data.defaultPermissions) &&

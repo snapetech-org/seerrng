@@ -2,3 +2,4 @@
 - Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings.
 - Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.
 - Default Request Quotas explains the difference between unlimited requests and a quota that counts requests across all time.
+- The user-defaults bookmark also links directly to the default permission editor.

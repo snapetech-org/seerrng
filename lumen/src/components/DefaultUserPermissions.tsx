@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { permissionOptions } from '../permissionOptions';
@@ -11,6 +12,15 @@ export default function DefaultUserPermissions({
 }: {
   initial: number;
 }) {
+  const { hash } = useLocation();
+  const editor = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (hash !== '#default-user-permissions' || !editor.current) return;
+    editor.current.open = true;
+    document
+      .getElementById('default-user-permissions')
+      ?.scrollIntoView({ block: 'start' });
+  }, [hash]);
   const [saved, setSaved] = useState(BigInt(initial));
   const [draft, setDraft] = useState(BigInt(initial));
   const [confirm, setConfirm] = useState(false);
@@ -54,8 +64,8 @@ export default function DefaultUserPermissions({
   }
 
   return (
-    <Section title="Default User Permissions">
-      <details>
+    <Section title="Default User Permissions" id="default-user-permissions">
+      <details ref={editor}>
         <summary>Edit Default Permissions</summary>
         <p className="note">
           SeerrNG assigns these permissions to new accounts that use the
