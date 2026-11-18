@@ -68,3 +68,80 @@ test('collections are reachable from search and blocklist as one collection', as
   await expect(page.getByText('1 of 1 blocklisted')).toHaveCount(0);
   expect(actions).toEqual(['POST', 'DELETE']);
 });
+
+test('progressive requests start, stop, and restart the selected quality', async ({
+  page,
+}) => {
+  let status: 'waiting' | 'stopped' | null = null;
+  const mutations: unknown[] = [];
+  const queue = () =>
+    status
+      ? {
+          collectionId: 30,
+          is4k: true,
+          bufferSize: 2,
+          status,
+          reason: status === 'waiting' ? 'provider-unavailable' : null,
+          requested: 0,
+          watched: 0,
+          total: 1,
+        }
+      : null;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2048 } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { movie4kEnabled: true } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Example Collection',
+          parts: [{ id: 20, mediaType: 'movie', title: 'Example Movie' }],
+        },
+      });
+    if (path === '/collection/30/queue') {
+      if (request.method() === 'POST') {
+        mutations.push(request.postDataJSON());
+        status = 'waiting';
+        return route.fulfill({ status: 202, json: { queue: queue() } });
+      }
+      if (request.method() === 'DELETE') {
+        mutations.push(url.search);
+        status = 'stopped';
+        return route.fulfill({ status: 204 });
+      }
+      return route.fulfill({
+        json: {
+          queue: url.searchParams.get('is4k') === 'true' ? queue() : null,
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/collection/30');
+  await page.getByRole('button', { name: 'Queue Collection' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Queue Collection' });
+  await expect(
+    sheet.getByRole('button', { name: 'Start Queue' })
+  ).toBeDisabled();
+  await sheet.getByLabel('Queue Quality').selectOption('4k');
+  await sheet.getByLabel('Movies Ahead').selectOption('2');
+  await sheet.getByRole('button', { name: 'Start Queue' }).click();
+  await expect(
+    sheet.getByText('Playback history is unavailable.', { exact: false })
+  ).toBeVisible();
+  await sheet.getByRole('button', { name: 'Stop Queue' }).click();
+  await expect(sheet.getByText('Queue Stopped')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Restart Queue' }).click();
+  await expect(sheet.getByText('Waiting', { exact: true })).toBeVisible();
+  expect(mutations).toEqual([
+    { bufferSize: 2, is4k: true },
+    '?is4k=true',
+    { bufferSize: 2, is4k: true },
+  ]);
+});

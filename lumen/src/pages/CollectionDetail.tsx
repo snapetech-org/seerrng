@@ -4,6 +4,7 @@ import { api, MediaStatus, tmdbImg, type TitleResult } from '../api';
 import { useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
+import CollectionQueueSheet from '../components/CollectionQueueSheet';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { DetailTop } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -26,6 +27,7 @@ function CollectionContent({ id }: { id: number }) {
     `/collection/${id}`
   );
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
+  const [queueOpen, setQueueOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const working = useRef(false);
   const manager = canManageBlocklist(user?.permissions);
@@ -94,8 +96,14 @@ function CollectionContent({ id }: { id: number }) {
         ]}
       />
       <div className="dbody">
-        {(manager || blocked > 0) && data.parts.length > 0 && (
+        {data.parts.length > 0 && (
           <div className="dstatus">
+            <button
+              className="btn btn-quiet btn-sm"
+              onClick={() => setQueueOpen(true)}
+            >
+              Queue Collection
+            </button>
             {blocked > 0 && (
               <span className="dnote">
                 {blocked} of {data.parts.length} blocklisted
@@ -125,6 +133,16 @@ function CollectionContent({ id }: { id: number }) {
           )}
         </Section>
       </div>
+      {queueOpen && (
+        <CollectionQueueSheet
+          id={id}
+          title={data.name}
+          close={() => {
+            setQueueOpen(false);
+            reload();
+          }}
+        />
+      )}
       {confirm && (
         <ConfirmSheet
           title={

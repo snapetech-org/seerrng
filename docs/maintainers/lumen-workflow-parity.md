@@ -269,3 +269,18 @@ both confirmed batch actions, and member and navigation state readback
 against synthetic data. The rendered native comparison, mobile and bundled
 acceptance, bulk requests, progressive collection queue, and collection
 playback controls remain open.
+
+### Progressive collection requests increment
+
+Collection details now offer Queue Collection. The existing account-scoped
+queue API starts or restarts a one- or two-movie buffer in HD or 4K, using
+the account's ordinary request defaults. Lumen polls the selected quality
+while the sheet is open and shows watched, requested, waiting, completed,
+and stopped states. Existing queues can be stopped after request access is
+lost or 4K is disabled. Stopping leaves current requests in place.
+
+Headed Chrome at 1440 × 1000 verified the standalone queue sheet with
+synthetic data. A 4K-only account selected a buffer of two, saw a playback
+history wait reason, stopped the queue, and restarted it with the same
+buffer. Native rendered comparison, bundled and mobile visual checks, live
+playback progression, bulk requests, and collection playback remain open.
