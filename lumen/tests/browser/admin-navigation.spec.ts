@@ -199,3 +199,39 @@ test('About opens release history on demand and retries a failed lookup', async 
   );
   expect(lookups).toBe(2);
 });
+
+test('About links a development update to the installed commit comparison', async ({
+  page,
+}) => {
+  await session(page, 2);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { versionCheck: true } })
+  );
+  await page.route('**/api/v1/settings/about', (route) =>
+    route.fulfill({
+      json: {
+        version: 'main-abcdef0',
+        totalMediaItems: 10,
+        totalRequests: 5,
+        appDataPath: '/config',
+      },
+    })
+  );
+  await page.route('**/api/v1/status', (route) =>
+    route.fulfill({
+      json: {
+        commitTag: 'abcdef0',
+        updateCheckSucceeded: true,
+        updateAvailable: true,
+      },
+    })
+  );
+  await page.goto('./admin/about');
+  await expect(
+    page.getByRole('link', { name: 'Update available' })
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/snapetech-org/seerrng/compare/abcdef0...main'
+  );
+  await expect(page.getByRole('heading', { name: 'Legal Use' })).toBeVisible();
+});
