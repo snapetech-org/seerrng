@@ -264,6 +264,7 @@ server {
     return 302 /admin;
   }
   location ~ ^/settings/main/?$ {
+    if ($arg_settingsSearchTarget = apiKey) { return 302 "/admin/general#apiKey"; }
     if ($arg_settingsSearchTarget = spotifyClientId) { return 302 "/admin/general#spotifyClientId"; }
     return 302 /admin/general;
   }

@@ -201,6 +201,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/settings/main?settingsSearchTarget=spotifyClientId',
         '/admin/general#spotifyClientId',
       ],
+      ['/settings/main?settingsSearchTarget=apiKey', '/admin/general#apiKey'],
       ['/settings/main', '/admin/general'],
       ['/settings/users/', '/admin/general'],
       ['/settings/categories', '/admin/categories'],
