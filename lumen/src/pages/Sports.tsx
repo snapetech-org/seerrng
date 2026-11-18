@@ -291,7 +291,10 @@ function AdultCatalogue() {
   const filters = new URLSearchParams();
   if (query) filters.set('query', query);
   if (serviceId) filters.set('serverId', serviceId);
-  const list = usePaged<Scene>(`/adult/search?${filters}`);
+  const list = usePaged<Scene, { partial?: boolean }>(
+    `/adult/search?${filters}`
+  );
+  const partial = list.firstPage?.partial === true;
   return (
     <>
       <ExtraHeader
@@ -340,7 +343,12 @@ function AdultCatalogue() {
         error={list.items.length ? null : list.error}
         what="this section"
       />
-      {!list.error && !list.items.length && !list.loading && (
+      {partial && (
+        <p className="note" role="status">
+          Whisparr returned partial results. Some matches may be missing.
+        </p>
+      )}
+      {!partial && !list.error && !list.items.length && !list.loading && (
         <div className="empty">
           <b>Nothing found</b>Try a studio or performer.
         </div>

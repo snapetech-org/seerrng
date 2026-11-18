@@ -7622,8 +7622,26 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   );
   const reads: URLSearchParams[] = [];
   await page.route('**/api/v1/adult/search?*', (route) => {
-    reads.push(new URL(route.request().url()).searchParams);
-    return route.fulfill({ json: paged([]) });
+    const params = new URL(route.request().url()).searchParams;
+    reads.push(params);
+    const partial = !params.has('serverId');
+    return route.fulfill({
+      json: {
+        ...paged(
+          partial
+            ? [
+                {
+                  id: '12345678-1234-4123-8123-123456789abc',
+                  mediaType: 'adult',
+                  title: 'Fixture Result',
+                  serviceId: 1,
+                },
+              ]
+            : []
+        ),
+        partial,
+      },
+    });
   });
   await page.goto('/adult?query=Fixture&serverId=2');
   const service = page.getByRole('combobox', { name: 'Whisparr Service' });
@@ -7634,6 +7652,16 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   await service.selectOption('');
   await expect.poll(() => reads.at(-1)?.has('serverId')).toBe(false);
   expect(reads.at(-1)?.get('query')).toBe('Fixture');
+  const notice = page.getByText('Whisparr returned partial results.', {
+    exact: false,
+  });
+  await expect(notice).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Result' })
+  ).toBeVisible();
+  await service.selectOption('2');
+  await expect(notice).toHaveCount(0);
+  await expect(page.getByText('Nothing found')).toBeVisible();
 });
 
 test('Classic sports discovery bookmarks preserve the editable league search', async ({
