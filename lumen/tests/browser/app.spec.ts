@@ -7266,11 +7266,14 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
       url.searchParams.get('format') === 'audiobook' &&
       url.searchParams.get('query') === 'Fixture Series' &&
       url.searchParams.get('author') === 'Author' &&
-      url.searchParams.get('narrator') === 'Reader'
+      url.searchParams.get('narrator') === 'Reader' &&
+      url.searchParams.get('firstPublishYear') === 'before-1970' &&
+      url.searchParams.get('language') === 'eng' &&
+      url.searchParams.get('minRating') === '3.5'
     );
   });
   await page.goto(
-    '/audiobooks?search=Fixture+Series&author=Author&narrator=Reader'
+    '/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5'
   );
   await filtered;
   await expect(
@@ -7282,11 +7285,13 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
   const form = page.getByRole('form', { name: 'Book Discovery Search' });
   await expect(form.getByLabel('Narrator')).toHaveValue('Reader');
   await form.getByLabel('Narrator').fill('Another Reader');
+  await form.getByLabel('Minimum Book Rating').fill('4.5');
   const edited = page.waitForRequest((request) => {
     const url = new URL(request.url());
     return (
       url.pathname === '/api/v1/discover/books' &&
       url.searchParams.get('narrator') === 'Another Reader' &&
+      url.searchParams.get('minRating') === '4.5' &&
       url.searchParams.get('author') === 'Author'
     );
   });
@@ -7295,5 +7300,7 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
   await page.reload();
   await expect(form.getByLabel('Narrator')).toHaveValue('Another Reader');
   await page.getByRole('button', { name: 'Clear Book Search' }).click();
-  await expect(page).not.toHaveURL(/search=|author=|narrator=/);
+  await expect(page).not.toHaveURL(
+    /search=|author=|narrator=|firstPublishYear=|language=|minRating=/
+  );
 });

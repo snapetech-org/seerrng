@@ -112,10 +112,21 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
     'search',
     'author',
     'narrator',
+    'firstPublishYear',
+    'language',
+    'minRating',
   ].some((key) => p.has(key));
   function formatQuery(target: 'ebook' | 'audiobook') {
     const query = new URLSearchParams();
-    for (const key of ['subject', 'search', 'author', 'narrator']) {
+    for (const key of [
+      'subject',
+      'search',
+      'author',
+      'narrator',
+      'firstPublishYear',
+      'language',
+      'minRating',
+    ]) {
       const value = p.get(key);
       if (value && (key !== 'narrator' || target === 'audiobook'))
         query.set(key, value);
@@ -409,11 +420,40 @@ function BooksGrid({
     ...(format === 'audiobook'
       ? [{ key: 'narrator', apiKey: 'narrator', label: 'Narrator' }]
       : []),
+    {
+      key: 'firstPublishYear',
+      apiKey: 'firstPublishYear',
+      label: 'First Publish Year',
+      pattern: '[0-9]{4}|before-1970',
+      maxLength: 11,
+      hint: 'Four digits or before-1970',
+    },
+    {
+      key: 'language',
+      apiKey: 'language',
+      label: 'Book Language Code',
+      pattern: '[a-z]{3}',
+      maxLength: 3,
+      hint: 'Three-letter code, such as eng',
+    },
+    {
+      key: 'minRating',
+      apiKey: 'minRating',
+      label: 'Minimum Book Rating',
+      pattern: '[1-4](\\.[05])?|5(\\.0)?',
+      maxLength: 3,
+      hint: '1 to 5 in half-star steps',
+    },
   ];
   const filters = new URLSearchParams();
-  for (const { key, apiKey } of searchFields) {
+  for (const { key, apiKey, maxLength, pattern } of searchFields) {
     const value = p.get(key)?.trim();
-    if (show !== 'have' && value && value.length <= 256)
+    if (
+      show !== 'have' &&
+      value &&
+      value.length <= (maxLength ?? 256) &&
+      (!pattern || new RegExp('^(?:' + pattern + ')$').test(value))
+    )
       filters.set(apiKey, value);
   }
   const search = filters.get('query') ?? '';
@@ -533,18 +573,22 @@ function BooksGrid({
             keepList(next);
           }}
         >
-          {searchFields.map(({ key, apiKey, label }) => (
-            <label className="sel" key={key}>
-              <span className="lbl">{label}</span>
-              <input
-                className="cfg-input"
-                type="search"
-                name={key}
-                defaultValue={filters.get(apiKey) ?? ''}
-                maxLength={256}
-              />
-            </label>
-          ))}
+          {searchFields.map(
+            ({ key, apiKey, label, pattern, maxLength, hint }) => (
+              <label className="sel" key={key}>
+                <span className="lbl">{label}</span>
+                <input
+                  className="cfg-input"
+                  type="search"
+                  name={key}
+                  defaultValue={filters.get(apiKey) ?? ''}
+                  maxLength={maxLength ?? 256}
+                  pattern={pattern}
+                  title={hint}
+                />
+              </label>
+            )
+          )}
           <button className="btn btn-tonal btn-sm" type="submit">
             Search Books
           </button>

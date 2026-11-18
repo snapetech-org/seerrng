@@ -280,8 +280,8 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['/magazine/Science%20Vol.%202', '/lumen/magazine/Science%20Vol.%202'],
       ['/discover/movies?libraryView=missing', '/lumen/movies?show=not'],
       [
-        '/discover/audiobooks?search=Fixture+Series&author=Author&narrator=Reader',
-        '/lumen/audiobooks?search=Fixture+Series&author=Author&narrator=Reader',
+        '/discover/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5',
+        '/lumen/audiobooks?search=Fixture+Series&author=Author&narrator=Reader&firstPublishYear=before-1970&language=eng&minRating=3.5',
       ],
       ['/discover/books?subject=History', '/lumen/books?subject=History'],
     ]) {
