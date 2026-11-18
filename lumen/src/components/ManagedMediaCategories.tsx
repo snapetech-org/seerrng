@@ -3,21 +3,7 @@ import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { ServiceNote } from './extra';
-
-const categories = {
-  movie: 'Movies',
-  tv: 'Series',
-  music: 'Music',
-  ebook: 'Ebooks',
-  audiobook: 'Audiobooks',
-  comic: 'Comics',
-  magazine: 'Magazines',
-  adult: 'Adult',
-  sports: 'Sports',
-  retro: 'Retro Software',
-  modern: 'Modern Software',
-  game: 'Games',
-};
+import MediaCategorySwitches from './MediaCategorySwitches';
 
 export default function ManagedMediaCategories({ id }: { id: number }) {
   const path = `/user/${id}/settings/main`;
@@ -97,35 +83,20 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
               ? 'Using server defaults.'
               : 'Using account overrides.'}
           </p>
-          <div
-            className="setlist"
-            role="group"
-            aria-label="Enabled media categories"
-          >
-            {Object.entries(categories).map(([key, label]) => (
-              <label className="set" key={key}>
-                <span>{label}</span>
-                <input
-                  type="checkbox"
-                  disabled={busy}
-                  checked={
-                    draft[key] ?? data.enabledMediaCategories[key] ?? false
-                  }
-                  onChange={(event) => {
-                    const checked = event.target.checked;
-                    setNotice('');
-                    setDraft((current) => {
-                      const next = { ...current };
-                      if (checked === data.enabledMediaCategories[key])
-                        delete next[key];
-                      else next[key] = checked;
-                      return next;
-                    });
-                  }}
-                />
-              </label>
-            ))}
-          </div>
+          <MediaCategorySwitches
+            values={{ ...data.enabledMediaCategories, ...draft }}
+            disabled={busy}
+            onChange={(key, checked) => {
+              setNotice('');
+              setDraft((current) => {
+                const next = { ...current };
+                if (checked === data.enabledMediaCategories[key])
+                  delete next[key];
+                else next[key] = checked;
+                return next;
+              });
+            }}
+          />
           <div className="toolbar">
             <button
               className="btn btn-tonal btn-sm"

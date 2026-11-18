@@ -1661,3 +1661,13 @@ switch used by both frontends. The 102 settings-route tests and eight
 standalone General Settings and About browser cases passed. The browser
 cases verified that false values remain selected after reloading and that
 About skips update checks when disabled.
+
+### Instance Media Categories
+
+Administrators can change the instance category switches in Lumen, with
+bookmarks in both deployments and a shared switch list with managed
+account settings. Eight standalone browser cases across the four
+viewport presets verified changed-only saves, reload readback, direct
+route denial, and the existing managed-user category and indexer controls.
+Express and nginx verified the redirects. Instance Age Gate settings,
+bundled workflow rendering, and matched native visual acceptance remain open.

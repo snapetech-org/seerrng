@@ -145,6 +145,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Media Categories</b>
+              <Link
+                className="go"
+                to="/admin/categories"
+                aria-label="Open Media Categories"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <span>
                 <b>Lumen Settings</b>
                 <small>

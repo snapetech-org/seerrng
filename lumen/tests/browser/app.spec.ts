@@ -4290,6 +4290,44 @@ test('System Logs filters server entries and excludes non-admins', async ({
   expect(reads).toBe(adminReads);
 });
 
+test('Media Categories saves only changed instance switches and excludes non-admins', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let permissions = 2;
+  let reads = 0;
+  const writes: unknown[] = [];
+  const categories = { movie: true, tv: true, adult: false };
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Viewer', permissions } })
+  );
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(categories, body.enabledMediaCategories);
+    } else reads++;
+    return route.fulfill({ json: { enabledMediaCategories: categories } });
+  });
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open Media Categories' }).click();
+  await page.getByRole('checkbox', { name: 'Movies', exact: true }).uncheck();
+  await page.getByRole('button', { name: 'Save Categories' }).click();
+  await expect(page.getByText('Category settings saved.')).toBeVisible();
+  expect(writes).toEqual([{ enabledMediaCategories: { movie: false } }]);
+  await expect(page.getByRole('checkbox', { name: 'Series' })).toBeChecked();
+  await page.reload();
+  await expect(
+    page.getByRole('checkbox', { name: 'Movies', exact: true })
+  ).not.toBeChecked();
+
+  const adminReads = reads;
+  permissions = 8;
+  await page.goto('/admin/categories');
+  await expect(page).toHaveURL(/\/me$/);
+  expect(reads).toBe(adminReads);
+});
+
 test('General Settings retains application edits after failure and saves only changed fields', async ({
   page,
 }) => {

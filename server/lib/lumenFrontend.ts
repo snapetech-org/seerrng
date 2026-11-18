@@ -459,7 +459,7 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(
-    /^\/lumen\/settings(?:\/(main|jobs|logs|about))?\/?$/,
+    /^\/lumen\/settings(?:\/(main|jobs|logs|about|categories))?\/?$/,
     (req, res) => {
       const page = req.params[0];
       const destination = !page || page === 'main' ? 'general' : page;
