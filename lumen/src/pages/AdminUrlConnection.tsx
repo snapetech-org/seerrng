@@ -5,12 +5,14 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { sessionGeneration } from '../sessionState';
 
-const endpoint = '/settings/navidrome';
+type Provider = 'navidrome' | 'jellystat';
+const names = { navidrome: 'Navidrome', jellystat: 'Jellystat' };
 interface Settings {
   url: string;
-  username: string;
-  password: string;
-  syncEnabled: boolean;
+  username?: string;
+  password?: string;
+  apiKey?: string;
+  syncEnabled?: boolean;
 }
 const empty: Settings = {
   url: '',
@@ -19,19 +21,38 @@ const empty: Settings = {
   syncEnabled: true,
 };
 
-function Connection({ initial }: { initial: Settings | null }) {
+function Connection({
+  provider,
+  initial,
+}: {
+  provider: Provider;
+  initial: Settings | null;
+}) {
+  const name = names[provider];
+  const endpoint = `/settings/${provider}`;
+  const navidrome = provider === 'navidrome';
+  const secretField = navidrome ? 'password' : 'apiKey';
+  const secretLabel = navidrome ? 'Password' : 'API Key';
   const [saved, setSaved] = useState(initial);
-  const [draft, setDraft] = useState({ ...(initial ?? empty), password: '' });
+  const [draft, setDraft] = useState({
+    ...(initial ?? empty),
+    [secretField]: '',
+  });
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const pending = useRef(false);
-  const password = draft.password || (saved?.password ? '[REDACTED]' : '');
-  const ready = !!(draft.url.trim() && draft.username.trim() && password);
+  const secret =
+    draft[secretField] || (saved?.[secretField] ? '[REDACTED]' : '');
+  const ready = !!(
+    draft.url.trim() &&
+    (!navidrome || draft.username?.trim()) &&
+    secret
+  );
   const dirty =
     JSON.stringify(draft) !==
-    JSON.stringify({ ...(saved ?? empty), password: '' });
+    JSON.stringify({ ...(saved ?? empty), [secretField]: '' });
 
   function update(patch: Partial<Settings>) {
     setDraft((value) => ({ ...value, ...patch }));
@@ -48,10 +69,11 @@ function Connection({ initial }: { initial: Settings | null }) {
     setNotice('');
     const generation = sessionGeneration();
     const body = JSON.stringify({
-      ...draft,
       url: draft.url.trim(),
-      username: draft.username.trim(),
-      password,
+      [secretField]: secret,
+      ...(navidrome
+        ? { username: draft.username?.trim(), syncEnabled: draft.syncEnabled }
+        : {}),
     });
     try {
       if (action === 'test') {
@@ -63,16 +85,16 @@ function Connection({ initial }: { initial: Settings | null }) {
         else await api(endpoint, { method: 'DELETE' }, 'empty');
         if (generation !== sessionGeneration()) return;
         setSaved(next);
-        setDraft({ ...(next ?? empty), password: '' });
+        setDraft({ ...(next ?? empty), [secretField]: '' });
         setConfirm(false);
       }
       if (generation === sessionGeneration()) {
         setNotice(
           action === 'test'
-            ? 'Navidrome connection verified.'
+            ? `${name} connection verified.`
             : action === 'save'
-              ? 'Navidrome settings saved.'
-              : 'Navidrome disconnected.'
+              ? `${name} settings saved.`
+              : `${name} disconnected.`
         );
       }
     } catch (failure) {
@@ -80,7 +102,7 @@ function Connection({ initial }: { initial: Settings | null }) {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not complete the Navidrome action.'
+            : `Could not complete the ${name} action.`
         );
     } finally {
       pending.current = false;
@@ -89,7 +111,7 @@ function Connection({ initial }: { initial: Settings | null }) {
   }
 
   return (
-    <Section title="Navidrome Connection">
+    <Section title={`${name} Connection`}>
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -108,40 +130,50 @@ function Connection({ initial }: { initial: Settings | null }) {
               onChange={(event) => update({ url: event.target.value })}
             />
           </label>
+          {navidrome && (
+            <label className="set cfg-row">
+              <span>Username</span>
+              <input
+                className="cfg-input"
+                maxLength={256}
+                disabled={busy}
+                value={draft.username}
+                onChange={(event) => update({ username: event.target.value })}
+              />
+            </label>
+          )}
           <label className="set cfg-row">
-            <span>Username</span>
-            <input
-              className="cfg-input"
-              maxLength={256}
-              disabled={busy}
-              value={draft.username}
-              onChange={(event) => update({ username: event.target.value })}
-            />
-          </label>
-          <label className="set cfg-row">
-            <span>Password</span>
+            <span>{secretLabel}</span>
             <input
               className="cfg-input"
               type="password"
               autoComplete="new-password"
               maxLength={512}
               disabled={busy}
-              value={draft.password}
-              placeholder={saved?.password ? 'Saved password' : undefined}
-              onChange={(event) => update({ password: event.target.value })}
-            />
-          </label>
-          <label className="set cfg-row">
-            <span>Enable Library Scan</span>
-            <input
-              type="checkbox"
-              disabled={busy}
-              checked={draft.syncEnabled}
+              value={draft[secretField] ?? ''}
+              placeholder={
+                saved?.[secretField]
+                  ? `Saved ${secretLabel.toLowerCase()}`
+                  : undefined
+              }
               onChange={(event) =>
-                update({ syncEnabled: event.target.checked })
+                update({ [secretField]: event.target.value })
               }
             />
           </label>
+          {navidrome && (
+            <label className="set cfg-row">
+              <span>Enable Library Scan</span>
+              <input
+                type="checkbox"
+                disabled={busy}
+                checked={draft.syncEnabled}
+                onChange={(event) =>
+                  update({ syncEnabled: event.target.checked })
+                }
+              />
+            </label>
+          )}
         </div>
         {notice && (
           <p className="note" role="status">
@@ -183,7 +215,8 @@ function Connection({ initial }: { initial: Settings | null }) {
         {confirm && (
           <>
             <p className="note">
-              Disconnect Navidrome and stop future library scans?
+              Disconnect {name}
+              {navidrome && ' and stop future library scans'}?
             </p>
             <div className="toolbar">
               <button
@@ -210,7 +243,13 @@ function Connection({ initial }: { initial: Settings | null }) {
   );
 }
 
-export default function AdminNavidrome() {
+export default function AdminUrlConnection({
+  provider,
+}: {
+  provider: Provider;
+}) {
+  const name = names[provider];
+  const endpoint = `/settings/${provider}`;
   const [settings, setSettings] = useState<Settings | null>();
   const [attempt, setAttempt] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -225,20 +264,20 @@ export default function AdminNavidrome() {
         if (current()) setSettings(value);
       })
       .catch(() => {
-        if (current()) setError('Could not load the Navidrome connection.');
+        if (current()) setError(`Could not load the ${name} connection.`);
       });
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, endpoint, name]);
   return (
     <>
-      <h1>Navidrome Settings</h1>
+      <h1>{name} Settings</h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
           Back to Account
         </Link>
       </div>
       <ServiceNote
-        what="Navidrome settings"
+        what={`${name} settings`}
         error={error}
         retry={() => {
           setError(null);
@@ -246,11 +285,11 @@ export default function AdminNavidrome() {
         }}
       />
       {settings !== undefined ? (
-        <Connection initial={settings} />
+        <Connection provider={provider} initial={settings} />
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading Navidrome settings…
+            Loading {name} settings…
           </p>
         )
       )}

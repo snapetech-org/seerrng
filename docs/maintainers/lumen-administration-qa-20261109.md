@@ -299,3 +299,13 @@ responses. Live requests and downloads were outside this check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-readmeabook-ops-20261118/`.
+
+### Jellystat connection
+
+Administrators can configure, test, and disconnect Jellystat from You.
+Compared the tested form with Navidrome on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. The production build and eight browser checks passed with
+synthetic responses. Live Jellystat statistics were outside this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-jellystat-20261118/`.

@@ -285,6 +285,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Jellystat Settings</b>
+              <Link
+                className="go"
+                to="/admin/jellystat"
+                aria-label="Open Jellystat Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Audiobookshelf Settings</b>
               <Link
                 className="go"

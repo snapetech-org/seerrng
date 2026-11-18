@@ -65,7 +65,7 @@ const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
-const AdminNavidrome = lazy(() => import('./pages/AdminNavidrome'));
+const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
@@ -669,7 +669,25 @@ function App() {
                     </p>
                   }
                 >
-                  <AdminNavidrome />
+                  <AdminUrlConnection key="navidrome" provider="navidrome" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/jellystat"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Jellystat settings…
+                    </p>
+                  }
+                >
+                  <AdminUrlConnection key="jellystat" provider="jellystat" />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
