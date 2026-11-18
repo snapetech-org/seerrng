@@ -16,6 +16,7 @@ import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
 import { canSearchIndexers } from './indexerPermissions';
 import { MediaServerProvider } from './mediaServer';
+import AdminHome from './pages/AdminHome';
 import Associations from './pages/Associations';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
@@ -362,6 +363,16 @@ function App() {
               >
                 <NotificationSettings />
               </Suspense>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              isAdministrator(user.permissions) ? (
+                <AdminHome />
+              ) : (
+                <Navigate to="/me" replace />
+              )
             }
           />
           <Route

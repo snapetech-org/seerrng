@@ -22,6 +22,7 @@ import {
   usePrefs,
   type DiscoverRow,
 } from '../settings';
+import { AdminLinks } from './AdminHome';
 import { canSeeRecent } from './Discover';
 
 type Quota = Record<
@@ -122,7 +123,7 @@ export default function Me() {
         </div>
       </div>
 
-      {((user?.permissions ?? 0) & (2 | 8)) !== 0 && (
+      {!isAdmin && ((user?.permissions ?? 0) & 8) !== 0 && (
         <Section title="User Management">
           <div className="setlist">
             <div className="set">
@@ -139,346 +140,17 @@ export default function Me() {
         <Section title="Administration">
           <div className="setlist">
             <div className="set">
-              <b>General Settings</b>
+              <b>SeerrNG Administration</b>
               <Link
                 className="go"
-                to="/admin/general"
-                aria-label="Open General Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Network Settings</b>
-              <Link
-                className="go"
-                to="/admin/network"
-                aria-label="Open Network Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Connection Hosts</b>
-              <Link
-                className="go"
-                to="/admin/connection-hosts"
-                aria-label="Open Connection Hosts"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Prowlarr Settings</b>
-              <Link
-                className="go"
-                to="/admin/prowlarr"
-                aria-label="Open Prowlarr Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Radarr Services</b>
-              <Link
-                className="go"
-                to="/admin/radarr"
-                aria-label="Open Radarr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Sonarr Services</b>
-              <Link
-                className="go"
-                to="/admin/sonarr"
-                aria-label="Open Sonarr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Lidarr Services</b>
-              <Link
-                className="go"
-                to="/admin/lidarr"
-                aria-label="Open Lidarr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Book and Audiobook Services</b>
-              <Link
-                className="go"
-                to="/admin/readarr"
-                aria-label="Open Book and Audiobook Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>LazyLibrarian Services</b>
-              <Link
-                className="go"
-                to="/admin/lazylibrarian"
-                aria-label="Open LazyLibrarian Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Mylar Services</b>
-              <Link
-                className="go"
-                to="/admin/mylar"
-                aria-label="Open Mylar Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Kapowarr Services</b>
-              <Link
-                className="go"
-                to="/admin/kapowarr"
-                aria-label="Open Kapowarr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>BackIssue Services</b>
-              <Link
-                className="go"
-                to="/admin/backissue"
-                aria-label="Open BackIssue Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Sportarr Services</b>
-              <Link
-                className="go"
-                to="/admin/sportarr"
-                aria-label="Open Sportarr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Soulseek Settings</b>
-              <Link
-                className="go"
-                to="/admin/soulseek"
-                aria-label="Open Soulseek Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Swipe Settings</b>
-              <Link
-                className="go"
-                to="/admin/swipe"
-                aria-label="Open Swipe Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Download Client Settings</b>
-              <Link
-                className="go"
-                to="/admin/download-clients"
-                aria-label="Open Download Client Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>ReadMeABook Settings</b>
-              <Link
-                className="go"
-                to="/admin/readmeabook"
-                aria-label="Open ReadMeABook Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Navidrome Settings</b>
-              <Link
-                className="go"
-                to="/admin/navidrome"
-                aria-label="Open Navidrome Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Jellystat Settings</b>
-              <Link
-                className="go"
-                to="/admin/jellystat"
-                aria-label="Open Jellystat Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Audiobookshelf Settings</b>
-              <Link
-                className="go"
-                to="/admin/audiobookshelf"
-                aria-label="Open Audiobookshelf Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Kavita Settings</b>
-              <Link
-                className="go"
-                to="/admin/kavita"
-                aria-label="Open Kavita Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Whisparr Services</b>
-              <Link
-                className="go"
-                to="/admin/whisparr"
-                aria-label="Open Whisparr Services"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Discovery Integrations</b>
-              <Link
-                className="go"
-                to="/admin/discovery"
-                aria-label="Open Discovery Integrations"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Metadata Providers</b>
-              <Link
-                className="go"
-                to="/admin/metadata"
-                aria-label="Open Metadata Providers"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Instance Notifications</b>
-              <Link
-                className="go"
-                to="/admin/notifications"
-                aria-label="Open Instance Notifications"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Library Migration</b>
-              <Link
-                className="go"
-                to="/admin/library-migration"
-                aria-label="Open Library Migration"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Media Server Libraries</b>
-              <Link
-                className="go"
-                to="/admin/media-libraries"
-                aria-label="Open Media Server Libraries"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Media Categories</b>
-              <Link
-                className="go"
-                to="/admin/categories"
-                aria-label="Open Media Categories"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <span>
-                <b>Lumen Settings</b>
-                <small>
-                  Defaults, locks, sign-in, media server, logo and tab icon
-                </small>
-              </span>
-              <Link
-                className="go"
-                to="/me/lumen"
-                aria-label="Open Lumen Settings"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>Scheduled Jobs</b>
-              <Link
-                className="go"
-                to="/admin/jobs"
-                aria-label="Open Scheduled Jobs"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>About SeerrNG</b>
-              <Link
-                className="go"
-                to="/admin/about"
-                aria-label="Open About SeerrNG"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <b>System Logs</b>
-              <Link
-                className="go"
-                to="/admin/logs"
-                aria-label="Open System Logs"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-            <div className="set">
-              <span>
-                <b>SeerrNG Administration</b>
-                <small>
-                  Full settings, users, services, logs and other admin tools
-                </small>
-              </span>
-              <a
-                className="go"
-                href={full}
+                to="/admin"
                 aria-label="Open SeerrNG Administration"
               >
                 Open <Icon name="chev" size="sm" />
-              </a>
+              </Link>
             </div>
           </div>
+          <AdminLinks />
         </Section>
       )}
 
@@ -736,7 +408,7 @@ export default function Me() {
                 <b>Full SeerrNG</b>
                 <small>Issues, watchlists, settings and admin tools</small>
               </span>
-              <a className="go" href={full}>
+              <a className="go" href={full} aria-label="Open Full SeerrNG">
                 Open <Icon name="chev" size="sm" />
               </a>
             </div>

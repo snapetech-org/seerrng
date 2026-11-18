@@ -86,7 +86,7 @@ export function Avatar({ className = 'avatar' }: { className?: string }) {
 
 export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const { prefs, seerrPublicUrl } = usePrefs();
+  const { prefs } = usePrefs();
   const extras = useExtras();
   const swipeSettings = useApi<PublicSettings>('/settings/public', {
     keepDuringRefresh: true,
@@ -304,10 +304,10 @@ export default function Shell({ children }: { children: ReactNode }) {
                 <Icon name="lock" />
                 Lumen Settings
               </Link>
-              <a href={fullSeerrUrl(seerrPublicUrl)}>
+              <Link to="/admin">
                 <Icon name="list" />
                 SeerrNG Administration
-              </a>
+              </Link>
             </>
           )}
           <div className="lbl">You</div>

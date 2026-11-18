@@ -2042,3 +2042,17 @@ completion without navigation. Real provider round trips are unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-refresh-20261118/`.
+
+The Administration entry in the sidebar and You now opens Lumen's own
+`/admin` directory. It lists every registered administrator tools page,
+including System Caches and Users. You shares the settings list and retains
+the Full SeerrNG link, including its configured companion destination.
+Delegated user managers retain their separate Users link. Direct access to
+the directory requires administrator permissions.
+
+Compared You and Discover before and after at desktop, iPhone 13, Pixel 7,
+and iPad Pro 11 sizes and inspected the new directory in those viewports.
+Both production builds passed, as did 48 candidate browser checks with
+synthetic responses. Published image routing was outside this check.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-entry-20261118/`.
