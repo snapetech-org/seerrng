@@ -162,7 +162,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
     for (const [bookmark, destination] of [
       ['/users/19/', '/household/19'],
-      ['/profile/', '/me'],
+      ['/profile/', '/household/me'],
       ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password', '/me/account#password'],
       [
@@ -609,6 +609,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/coming-soon/?media=tv&extra=1', '/lumen/soon?media=tv'],
       ['/discover/movies/upcoming/', '/lumen/soon?media=movie'],
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],
+      ['/profile', '/lumen/household/me'],
       ['/profile/settings/password', '/lumen/me/account#password'],
       [
         '/profile/settings/notifications/webpush',

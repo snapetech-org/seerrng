@@ -247,7 +247,7 @@ export default function Me() {
               <b>My Profile</b>
               <Link
                 className="go"
-                to={`/household/${user.id}`}
+                to="/household/me"
                 aria-label="Open My Profile"
               >
                 Open <Icon name="chev" size="sm" />

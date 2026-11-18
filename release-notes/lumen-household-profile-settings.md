@@ -11,3 +11,5 @@ An incomplete watchlist preview can be retried independently of other profile pa
 Recent Requests also offers its own retry when the profile API returns an incomplete list.
 
 The You menu links directly to My Profile, including for members without administrative access.
+
+Classic profile bookmarks open My Profile in bundled and standalone Lumen.

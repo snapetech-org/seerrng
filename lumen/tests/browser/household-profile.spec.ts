@@ -192,7 +192,7 @@ test('incomplete household preview responses recover independently', async ({
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open My Profile' }).click();
-  await expect(page).toHaveURL('/household/19');
+  await expect(page).toHaveURL('/household/me');
   await expect(
     page.getByRole('heading', { name: 'Household Member' })
   ).toBeVisible();

@@ -407,7 +407,7 @@ const workflowDestinations = new Map([
   ['/calendar', '/calendar'],
   ['/swipe', '/swipe'],
   ['/recordings', '/recordings'],
-  ['/profile', '/me'],
+  ['/profile', '/household/me'],
   ['/users', '/admin/users'],
   ['/profile/settings', '/me/account'],
   ['/profile/settings/main', '/me/account'],

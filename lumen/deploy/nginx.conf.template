@@ -144,7 +144,7 @@ server {
   }
 
   location ~ ^/profile/?$ {
-    return 302 /me;
+    return 302 /household/me;
   }
   location ~ ^/profile/settings/tv-request-access/?$ {
     return 302 /me/account/tv-requests;

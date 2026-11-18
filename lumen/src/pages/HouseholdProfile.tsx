@@ -206,7 +206,12 @@ function PlaybackActivity({ id }: { id: number }) {
 export default function HouseholdProfile() {
   const { id: rawId = '' } = useParams();
   const { user } = useAuth();
-  const id = /^[1-9]\d{0,9}$/.test(rawId) ? Number(rawId) : 0;
+  const id =
+    rawId === 'me'
+      ? (user?.id ?? 0)
+      : /^[1-9]\d{0,9}$/.test(rawId)
+        ? Number(rawId)
+        : 0;
   const valid = id > 0 && id <= 1_000_000_000;
   const profile = useApi<{
     id: number;

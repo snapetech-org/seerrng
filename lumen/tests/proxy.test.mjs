@@ -139,7 +139,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
     );
     for (const [path, target] of [
       ['/users/19/', '/household/19'],
-      ['/profile/', '/me'],
+      ['/profile/', '/household/me'],
       ['/profile/settings/', '/me/account'],
       ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password/', '/me/account#password'],
