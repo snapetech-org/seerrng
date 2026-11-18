@@ -7480,6 +7480,43 @@ for (const { advanced, detail } of [
   });
 }
 
+test('magazine discovery prevents duplicate title requests', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+  );
+  await page.route('**/api/v1/discover/magazines?*', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.route('**/api/v1/user/1/quota', (route) =>
+    route.fulfill({ json: { magazine: { restricted: false } } })
+  );
+  let reads = 0;
+  await page.route('**/api/v1/magazine/Existing', (route) => {
+    reads += 1;
+    return route.fulfill({
+      json: {
+        id: 'Existing',
+        title: 'Existing',
+        mediaType: 'magazine',
+        mediaInfo: { hasActiveRequest: true },
+      },
+    });
+  });
+  await page.goto('/magazines?query=Existing');
+  await page.getByRole('button', { name: 'Request “Existing”' }).click();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
+  await expect(sheet.getByRole('status')).toHaveText(
+    'This magazine has already been requested'
+  );
+  await expect(
+    sheet.getByRole('button', { name: 'Send Request' })
+  ).toBeDisabled();
+  expect(reads).toBe(1);
+});
+
 test('magazine discovery bookmarks keep the catalogue when editing a search', async ({
   page,
 }) => {

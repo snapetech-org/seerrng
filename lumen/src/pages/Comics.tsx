@@ -1026,6 +1026,30 @@ function MagazineRequestSheet({
       restricted: boolean;
     };
   }>(user?.id ? `/user/${user.id}/quota` : null, { currentPathOnly: true });
+  const existing = useApi<Magazine>(
+    `/magazine/${encodeURIComponent(requestTitle)}`,
+    { currentPathOnly: true }
+  );
+  const media = existing.data?.mediaInfo;
+  const available =
+    media?.status === MediaStatus.AVAILABLE ||
+    media?.status === MediaStatus.PARTIAL;
+  const blocked = media?.status === MediaStatus.BLOCKLISTED;
+  const covered =
+    media?.status === MediaStatus.PROCESSING ||
+    media?.status === MediaStatus.PENDING ||
+    media?.hasActiveRequest ||
+    media?.requests?.some(({ status }) => status === 1 || status === 2);
+  const unavailable = existing.data?.requestable === false;
+  const requestStatus = available
+    ? 'Already in the library'
+    : blocked
+      ? 'This magazine is blocklisted'
+      : covered
+        ? 'This magazine has already been requested'
+        : unavailable
+          ? 'This magazine is unavailable for requests'
+          : undefined;
   const magazineQuota = quota.data?.magazine;
   // Admin, Manage Requests, Auto Approve, or Auto Approve Magazines.
   const autoApprove = hasMagazinePermission(
@@ -1051,6 +1075,8 @@ function MagazineRequestSheet({
       busy={sending}
       confirmDisabled={
         (!quota.data && !quota.error) ||
+        (!existing.data && !existing.error) ||
+        !!requestStatus ||
         magazineQuota?.restricted ||
         (advanced && services.data?.length === 0)
       }
@@ -1079,9 +1105,15 @@ function MagazineRequestSheet({
         }
       }}
     >
-      <p className="sub">
-        {autoApprove ? 'Automatically approved' : 'Approval required'}
-      </p>
+      {requestStatus ? (
+        <p className="sub" role="status">
+          {requestStatus}
+        </p>
+      ) : (
+        <p className="sub">
+          {autoApprove ? 'Automatically approved' : 'Approval required'}
+        </p>
+      )}
       {!!magazineQuota?.limit && (
         <p
           className="sub"
