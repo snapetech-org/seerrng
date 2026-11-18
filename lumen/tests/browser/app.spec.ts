@@ -74,7 +74,8 @@ async function fixtures(page: Page) {
         ? 'owner'
         : 'friend';
       body = {};
-    } else if (path === '/settings/public')
+    } else if (path === '/settings/discover') body = [];
+    else if (path === '/settings/public')
       body = {
         applicationTitle: 'SeerrNG',
         enabledMediaCategories: {},
@@ -2629,4 +2630,74 @@ test('public TMDB lists show the named list and retain exact identities across p
   expect(secondPage).toBe(2);
   await page.getByRole('button', { name: 'Previous Page' }).click();
   await expect(page.getByRole('link', { name: 'List Series' })).toBeVisible();
+});
+
+test('Discover displays enabled TMDB list shelves in configured order', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requests: string[] = [];
+  await page.route('**/api/v1/settings/discover', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 2,
+          type: 28,
+          order: 20,
+          enabled: true,
+          title: 'Second Curated Shelf',
+          data: '22',
+        },
+        {
+          id: 3,
+          type: 28,
+          order: 5,
+          enabled: false,
+          title: 'Disabled Shelf',
+          data: '33',
+        },
+        {
+          id: 1,
+          type: 28,
+          order: 10,
+          enabled: true,
+          title: 'First Curated Shelf',
+          data: '11',
+        },
+      ],
+    })
+  );
+  await page.route(/\/api\/v1\/discover\/list\//, (route) => {
+    const listId = new URL(route.request().url()).pathname.split('/').at(-1)!;
+    requests.push(listId);
+    return route.fulfill({
+      json: {
+        ...paged([{ ...movie, title: `Curated Film ${listId}` }]),
+        list: { name: `Public List ${listId}`, description: '' },
+      },
+    });
+  });
+  await page.goto('/');
+  const first = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'First Curated Shelf' }),
+  });
+  const second = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Second Curated Shelf' }),
+  });
+  await first.scrollIntoViewIfNeeded();
+  await expect(
+    first.getByRole('link', { name: 'Curated Film 11' })
+  ).toBeVisible();
+  await second.scrollIntoViewIfNeeded();
+  await expect(
+    second.getByRole('link', { name: 'Curated Film 22' })
+  ).toBeVisible();
+  expect(
+    await page.getByRole('heading', { name: /Curated Shelf/ }).allTextContents()
+  ).toEqual(['First Curated Shelf', 'Second Curated Shelf']);
+  expect(requests).not.toContain('33');
+  await first.getByRole('link', { name: 'See all' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Public List 11' })
+  ).toBeVisible();
 });

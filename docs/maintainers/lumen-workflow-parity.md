@@ -1334,3 +1334,11 @@ Bundled and companion redirect checks and four standalone viewport tests
 passed. The browser fixture covers exact media links for a shared numeric
 ID, retry, and an empty page. Configured Discover shelves, live provider
 results and matched visual comparisons remain open.
+
+Configured public TMDB lists now appear as Discover shelves. Lumen reads
+the same enabled list definitions as native SeerrNG, preserves their
+order relative to one another, and loads each list as it approaches the
+viewport. Shelves reuse the standard rail and link to the full list page.
+Eight standalone checks passed across desktop, iPhone, Android, and
+tablet. Other configured shelf types, live provider coverage, and matched
+visual comparisons remain open.

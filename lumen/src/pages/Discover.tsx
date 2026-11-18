@@ -22,6 +22,7 @@ import {
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { Avatar } from '../components/Shell';
+import { TmdbListShelves } from '../components/TmdbListShelves';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
 import { Icon, type IconName } from '../icons';
@@ -373,6 +374,8 @@ export default function Discover() {
           )}
         </Section>
       )}
+
+      <TmdbListShelves />
 
       {on.genres && genres.data && (
         <Section title="Browse by genre">
