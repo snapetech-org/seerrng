@@ -250,6 +250,7 @@ body.is-detail .tabbar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  max-width: 100%;
   min-height: 36px;
   padding: 0 12px;
   border-radius: var(--r-full);
@@ -265,6 +266,7 @@ body.is-detail .tabbar {
   background: transparent;
   font: inherit;
   color: inherit;
+  min-width: 0;
   padding-right: 16px;
   cursor: pointer;
   outline: none;
