@@ -55,6 +55,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const AdminJobs = lazy(() => import('./pages/AdminJobs'));
 const AdminLogs = lazy(() => import('./pages/AdminLogs'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
@@ -323,6 +324,24 @@ function App() {
                   }
                 >
                   <AdminLogs />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/jobs"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading scheduled jobs…
+                    </p>
+                  }
+                >
+                  <AdminJobs />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

@@ -4289,3 +4289,48 @@ test('System Logs filters server entries and excludes non-admins', async ({
   ).toHaveCount(0);
   expect(reads).toBe(adminReads);
 });
+
+test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const job = {
+    id: 'sample',
+    name: 'Fixture Job',
+    type: 'process',
+    interval: 'minutes',
+    cronSchedule: '0 */15 * * * *',
+    enabled: true,
+    running: false,
+  };
+  let runs = 0;
+  await page.route('**/api/v1/settings/jobs', (route) =>
+    route.fulfill({ json: [job] })
+  );
+  await page.route('**/api/v1/settings/jobs/sample/run', (route) => {
+    expect(route.request().method()).toBe('POST');
+    runs++;
+    job.running = true;
+    return route.fulfill({ json: job });
+  });
+  await page.route('**/api/v1/settings/jobs/sample/schedule', (route) => {
+    const { schedule } = route.request().postDataJSON();
+    expect(schedule).toBe('0 */20 * * * *');
+    job.cronSchedule = schedule;
+    return route.fulfill({ json: job });
+  });
+  await page.goto('/me');
+  await page.getByRole('link', { name: 'Open Scheduled Jobs' }).click();
+  await page.getByRole('button', { name: 'Run Now' }).click();
+  expect(runs).toBe(0);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Run Now' })
+    .click();
+  await expect(page.getByRole('button', { name: 'Cancel Job' })).toBeVisible();
+  expect(runs).toBe(1);
+  await page.getByRole('button', { name: 'Edit Schedule' }).click();
+  await page.getByLabel('Cron Schedule').fill('0 */20 * * * *');
+  await page.getByRole('button', { name: 'Save Schedule' }).click();
+  await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
+});

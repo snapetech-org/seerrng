@@ -1576,3 +1576,13 @@ bypass persistent application and HTTP caches. TypeScript, the production
 build, and four standalone browser fixtures passed for search, details,
 and non-admin route denial. Live server logs, clipboard and refresh,
 bundled rendering, and native visual comparison remain unverified.
+
+### Administrator scheduled jobs
+
+Administrators can inspect scheduled jobs and next execution times, run or
+cancel a job, toggle schedules, and edit cron expressions for configurable
+jobs. The page uses the existing admin endpoints and refreshes job state.
+TypeScript, the production build, and four standalone browser fixtures passed
+for run confirmation and schedule save readback. Cache controls, guided
+interval editing, live jobs, bundled rendering, and native visual comparison
+remain open.
