@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const TvRequestSettings = lazy(() => import('./pages/TvRequestSettings'));
 const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
 const ClientTokens = lazy(() => import('./pages/ClientTokens'));
 const AccountSettings = lazy(() => import('./pages/AccountSettings'));
@@ -212,6 +213,20 @@ function App() {
                 }
               >
                 <LinkedAccounts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/me/account/tv-requests"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading TV Request Settings…
+                  </p>
+                }
+              >
+                <TvRequestSettings />
               </Suspense>
             }
           />

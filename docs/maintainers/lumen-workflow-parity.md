@@ -393,3 +393,16 @@ Headed Chrome at 1440 × 1000 verified the standalone synthetic sign-in
 round trip and restoration of a Requests deep link with query and fragment.
 The native route test verifies the bundled callback allowlist. Real
 providers, Apple form-post, and bundled and mobile browser checks remain open.
+
+### Personal TV request settings increment
+
+Account Settings exposes previous-season watch requirement approval,
+cancellation, and approved enable/disable transitions through the existing
+account endpoints. Episode Queue shows the current account default and
+lets user managers change it with confirmation. Global policy and manager
+bypass remain visible.
+
+Headed Chrome at 1440 × 1000 verified a standalone approval request and a
+two-episode default save with synthetic readback. Delegated user management,
+per-request Episode Queue, live playback, and native, mobile and bundled
+visual checks remain open.
