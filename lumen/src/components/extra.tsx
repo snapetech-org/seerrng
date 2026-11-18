@@ -290,10 +290,12 @@ export function ServiceNote({
   error,
   what,
   retry,
+  retryDisabled = false,
 }: {
   error: string | null;
   what: string;
   retry?: () => void;
+  retryDisabled?: boolean;
 }) {
   if (!error) return null;
   return (
@@ -301,7 +303,11 @@ export function ServiceNote({
       <b>Couldn’t load {what}</b>
       {retry ? <p>{error}</p> : error}
       {retry && (
-        <button className="btn btn-tonal" onClick={retry}>
+        <button
+          className="btn btn-tonal"
+          onClick={retry}
+          disabled={retryDisabled}
+        >
           Retry
         </button>
       )}

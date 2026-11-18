@@ -21,7 +21,8 @@ export class ApiError extends Error {
     message: string,
     public confirmationRequired?: string,
     public code?: string,
-    public reason?: string
+    public reason?: string,
+    public retryAt?: number
   ) {
     super(message);
   }
@@ -59,7 +60,28 @@ export async function api<T>(
     } catch {
       // body wasn't JSON
     }
-    throw new ApiError(res.status, msg, confirmationRequired, code, reason);
+    const retryAfter =
+      res.status === 429 ? res.headers.get('Retry-After') : null;
+    const now = Date.now();
+    const target =
+      retryAfter && /^\d+$/.test(retryAfter)
+        ? now + Number(retryAfter) * 1000
+        : retryAfter
+          ? Date.parse(retryAfter)
+          : NaN;
+    const retryAt = Number.isFinite(target)
+      ? Math.max(now, Math.min(target, now + 3_600_000))
+      : code === 'PROVIDER_RATE_LIMITED' && res.status === 429
+        ? now + 60_000
+        : undefined;
+    throw new ApiError(
+      res.status,
+      msg,
+      confirmationRequired,
+      code,
+      reason,
+      retryAt
+    );
   }
   // a request or other change: saved answers may now be out of date
   if (init.method && init.method !== 'GET') markAllStale();

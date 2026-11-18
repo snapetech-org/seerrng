@@ -1460,3 +1460,9 @@ title mappings where the server exposes a stable provider identity.
 Selecting a catalogue result saves its exact TMDB ID and media type.
 Eight standalone checks passed for mapping, reset, and feed browsing.
 Live accounts and matched visual verification remain open.
+
+Rate-limited feeds show a countdown and disable Retry until the server's
+bounded Retry-After expires. Expired authorization links to Linked Accounts.
+The production build and standalone Provider Discovery browser checks passed
+across the four configured viewport presets. Live provider accounts and
+matched native visual comparisons remain open.

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api, type Paged, type TitleResult } from '../api';
 import { ExtraHeader, ServiceNote } from '../components/extra';
@@ -226,6 +226,53 @@ function IdentityMapping({
   );
 }
 
+function FeedFailure({
+  error,
+  code,
+  retryAt,
+  retry,
+}: {
+  error: string;
+  code?: string;
+  retryAt?: number;
+  retry: () => void;
+}) {
+  const remaining = () =>
+    Math.max(0, Math.ceil(((retryAt ?? 0) - Date.now()) / 1000));
+  const [seconds, setSeconds] = useState(remaining);
+  useEffect(() => {
+    if (!retryAt) return;
+    const timer = window.setInterval(() => {
+      const next = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
+      setSeconds(next);
+      if (!next) window.clearInterval(timer);
+    }, 250);
+    return () => window.clearInterval(timer);
+  }, [retryAt]);
+
+  const retryable =
+    code !== 'PROVIDER_LIST_NOT_FOUND' &&
+    code !== 'PROVIDER_SETUP_REQUIRED' &&
+    code !== 'RECONNECT_REQUIRED';
+  return (
+    <>
+      <ServiceNote
+        error={seconds ? `${error} Retry in ${seconds} seconds.` : error}
+        what="provider feed"
+        retry={retryable ? retry : undefined}
+        retryDisabled={seconds > 0}
+      />
+      {code === 'RECONNECT_REQUIRED' && (
+        <div className="toolbar">
+          <Link className="chip" to="/me/account/linked-accounts">
+            Reconnect Provider
+          </Link>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function ProviderDiscovery() {
   const [params, setParams] = useSearchParams();
   const requestedFeed = params.get('feed') ?? '';
@@ -242,7 +289,7 @@ export default function ProviderDiscovery() {
   const needsList = feed === 'mdblist/list';
   if (needsList && list.length <= 2048) query.set('list', list);
   const enabled = !needsList || (!!list && list.length <= 2048);
-  const { data, error, errorStatus, reload } = useApi<FeedPage>(
+  const { data, error, errorStatus, apiError, reload } = useApi<FeedPage>(
     enabled ? `/integrations/discovery/feeds/${feed}?${query}` : null
   );
   const current = data?.page === page ? data : null;
@@ -321,7 +368,15 @@ export default function ProviderDiscovery() {
           </button>
         </form>
       )}
-      <ServiceNote error={error} what="provider feed" retry={reload} />
+      {error && (
+        <FeedFailure
+          key={`${feed}:${page}:${apiError?.retryAt ?? ''}`}
+          error={error}
+          code={apiError?.code}
+          retryAt={apiError?.retryAt}
+          retry={reload}
+        />
+      )}
       {(errorStatus === 401 || errorStatus === 403) && (
         <p className="note">
           Check that this provider is enabled and linked in your account.

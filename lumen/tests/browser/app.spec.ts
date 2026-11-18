@@ -3484,3 +3484,51 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
   ).toBeVisible();
   expect(writes).toBe(2);
 });
+
+test('Provider Discovery waits for Retry-After and offers provider reconnect', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let attempts = 0;
+  await page.route(
+    /\/api\/v1\/integrations\/discovery\/feeds\/anilist\/trending\?/,
+    (route) => {
+      if (++attempts === 1) {
+        return route.fulfill({
+          status: 429,
+          headers: { 'Retry-After': '2' },
+          json: {
+            code: 'PROVIDER_RATE_LIMITED',
+            message: 'The provider request limit was reached.',
+          },
+        });
+      }
+      return route.fulfill({ json: { page: 1, items: [], hasMore: false } });
+    }
+  );
+  await page.route(
+    /\/api\/v1\/integrations\/discovery\/feeds\/trakt\/watchlist\?/,
+    (route) =>
+      route.fulfill({
+        status: 409,
+        json: {
+          code: 'RECONNECT_REQUIRED',
+          message: 'Reconnect your provider account under Linked Accounts.',
+        },
+      })
+  );
+  await page.goto('/providers');
+  const retry = page.getByRole('button', { name: 'Retry', exact: true });
+  await expect(retry).toBeDisabled();
+  await expect(page.getByRole('alert')).toContainText('Retry in');
+  expect(attempts).toBe(1);
+  await expect(retry).toBeEnabled();
+  await retry.click();
+  await expect(page.getByText('No titles on this page.')).toBeVisible();
+  expect(attempts).toBe(2);
+  await page.getByLabel('Provider Feed').selectOption('trakt/watchlist');
+  await expect(
+    page.getByRole('link', { name: 'Reconnect Provider' })
+  ).toHaveAttribute('href', '/me/account/linked-accounts');
+  await expect(retry).toHaveCount(0);
+});

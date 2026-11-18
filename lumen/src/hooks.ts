@@ -33,15 +33,14 @@ export function useApi<T>(path: string | null) {
     path ? (cached<T>(path) ?? null) : null
   );
   const [error, setError] = useState<string | null>(null);
-  // the HTTP status of that error (0 when the server wasn't reached)
-  const [errorStatus, setErrorStatus] = useState(0);
+  const [apiError, setApiError] = useState<ApiError>();
   const [tick, setTick] = useState(0);
   useEffect(() => {
     if (!path) return;
     let live = true;
     const generation = sessionGeneration();
     setError(null);
-    setErrorStatus(0);
+    setApiError(undefined);
     const saved = cached<T>(path);
     setData(saved ?? null);
     if (saved !== undefined && isFresh(path)) return;
@@ -54,7 +53,7 @@ export function useApi<T>(path: string | null) {
         // a saved answer stays up if refreshing it fails
         if (live && saved === undefined) {
           setError(friendlyError(e, 'Failed to load'));
-          setErrorStatus(e instanceof ApiError ? e.status : 0);
+          setApiError(e instanceof ApiError ? e : undefined);
         }
       });
     return () => {
@@ -68,7 +67,14 @@ export function useApi<T>(path: string | null) {
   // ask again but keep what is on screen meanwhile (after a request the saved copy is already
   // marked stale, so the page updates in place instead of blanking)
   const refresh = useCallback(() => setTick((t) => t + 1), []);
-  return { data, error, errorStatus, reload, refresh };
+  return {
+    data,
+    error,
+    errorStatus: apiError?.status ?? 0,
+    apiError,
+    reload,
+    refresh,
+  };
 }
 
 // one call for everyone asking for the same path at once; the answer is saved
