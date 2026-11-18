@@ -90,7 +90,11 @@ export const resolveImageRequestUrl = (
     // URL rejects an empty base even when imagePath is already absolute.
     // Remote-avatar caching intentionally has no base because its route
     // validates and supplies a complete HTTPS URL.
-    return new URL(imagePath, baseUrl || undefined).href;
+    const target = new URL(imagePath, baseUrl || undefined);
+    if (baseUrl && target.origin !== new URL(baseUrl).origin) {
+      throw new Error('Image URL must use the configured origin.');
+    }
+    return target.href;
   } catch {
     throw new Error('Image URL is invalid.');
   }
@@ -879,7 +883,10 @@ class ImageProxy {
     this.axios = axios.create({
       baseURL: baseUrl,
       headers: options.headers,
-      ...createSafeHttpRequestOptions(options.allowPrivateAddresses ?? false),
+      ...createSafeHttpRequestOptions(
+        this.allowPrivateAddresses,
+        !this.allowPrivateAddresses
+      ),
       ...IMAGE_PROXY_HTTP_OPTIONS,
     });
     this.axios.interceptors.request.use((config) => {

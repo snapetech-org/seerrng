@@ -84,3 +84,11 @@ addresses and scoped API operations. Tunerr also supports a separately
 configured guide URL and adds no deck credentials to that request. All
 five clients validate the destination and disable redirects. The 31
 focused Bindery, Kavita, and Navidrome tests passed.
+
+## Image proxy destinations
+
+For alert 312, image proxies with a configured base now restrict initial
+requests to that origin. The private media-server avatar proxy also
+rejects cross-origin redirects. Remote Plex avatars continue to use
+their separate URL validation and cache path. All 52 focused image
+proxy tests passed. The historical code-scanning alert remains open.

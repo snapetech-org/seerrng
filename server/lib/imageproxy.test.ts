@@ -135,6 +135,19 @@ describe('ImageProxy cache scoping', () => {
 });
 
 describe('resolveImageRequestUrl', () => {
+  it('keeps image paths on the configured provider origin', () => {
+    const base = 'https://images.example.com';
+    assert.equal(
+      resolveImageRequestUrl('/poster.jpg', base),
+      base + '/poster.jpg'
+    );
+    assert.throws(
+      () =>
+        resolveImageRequestUrl('https://other.example.com/poster.jpg', base),
+      /Image URL is invalid/
+    );
+  });
+
   it('accepts an absolute remote image URL without a configured base URL', () => {
     assert.equal(
       resolveImageRequestUrl('https://plex.tv/users/example/avatar?c=123', ''),
