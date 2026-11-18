@@ -172,7 +172,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
     for (const route of [
       '/',
       '/seerrng',
-      '/movie/123',
+      '/movie/123/cast',
       '/?interface=classic',
     ]) {
       const response = await request(app).get(route).set('X-Test-Role', 'user');
@@ -201,6 +201,11 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/movies?keywords=73&genre=18%2C35',
       ],
       ['/discover/tv?genre=18,35', '/lumen/series?genre=18%2C35&match=all'],
+      ['/movie/123', '/lumen/movie/123'],
+      ['/tv/456/?ignored=1', '/lumen/tv/456'],
+      ['/collection/78', '/lumen/collection/78'],
+      ['/person/90', '/lumen/person/90'],
+      ['/person/1000000001', '/lumen/'],
       ['/discover/movies/studio/nope', '/lumen/'],
     ]) {
       const response = await request(app).get(route).set('X-Test-Role', 'user');
@@ -212,7 +217,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       .set('X-Test-Role', 'user')
       .set('Accept', 'application/json');
     assert.equal(nonHtmlRequest.status, 302);
-    assert.equal(nonHtmlRequest.headers.location, '/lumen/');
+    assert.equal(nonHtmlRequest.headers.location, '/lumen/movie/123');
     assert.equal(
       (await request(app).get('/movie/123').set('X-Test-Role', 'admin')).text,
       'Native interface'

@@ -1134,3 +1134,8 @@ filters, genre matching, and availability quality are carried forward.
 Server integration tests covered studio, network, keyword, genre matching,
 invalid identifiers, and existing frontend routing. Browser and companion
 deep-link verification remain open.
+
+Bundled Lumen's frontend lock now preserves native movie, series,
+collection and person detail links. Server integration coverage verifies
+the destinations, identifier bounds, and administrator access to the
+native interface. Native detail subpages and browser verification remain open.

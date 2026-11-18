@@ -92,6 +92,14 @@ function discoveryDeepLink(req: Request): string | undefined {
   return `/lumen/${kind === 'movies' ? 'movies' : 'series'}${suffix ? `?${suffix}` : ''}`;
 }
 
+function detailDeepLink(req: Request): string | undefined {
+  const match = /^\/(movie|tv|collection|person)\/([1-9]\d{0,9})\/?$/.exec(
+    req.path
+  );
+  if (!match || Number(match[2]) > 1_000_000_000) return;
+  return `/lumen/${match[1]}/${match[2]}`;
+}
+
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
   res,
@@ -114,7 +122,10 @@ export const redirectLockedNativeFrontend: RequestHandler = (
         302,
         passwordRecoveryPath.test(req.path)
           ? `/lumen${req.path}`
-          : (requestDeepLink(req) ?? discoveryDeepLink(req) ?? '/lumen/')
+          : (requestDeepLink(req) ??
+              discoveryDeepLink(req) ??
+              detailDeepLink(req) ??
+              '/lumen/')
       );
     return;
   }
