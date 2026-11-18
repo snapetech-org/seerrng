@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Lumen:** Discover Watchlist opens the viewer-filtered discovery list and supports local title search, media filtering, and sorting. SeerrNG independently extends the watchlist behavior [@JamyPatch44](https://github.com/JamyPatch44) contributed to upstream Seerr in [PR #3506](https://github.com/seerr-team/seerr/pull/3506).
+
 ## [3.72.38](https://github.com/snapetech-org/seerrng/compare/v3.72.37..v3.72.38) - 2026-11-17
 
 ### User-facing changes

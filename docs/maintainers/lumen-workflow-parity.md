@@ -1176,3 +1176,17 @@ Server integration tests cover representative routes, issue ID bounds,
 repeated search parameters, and unsupported routes. The native Games
 library and Discover Watchlist still need distinct Lumen workflows. Live
 browser validation of the bundled redirects remains open.
+
+### Discover Watchlist
+
+The personal watchlist links to a separate Discover Watchlist. Discovery
+uses the viewer-filtered discovery endpoint, applies the instance's media
+category settings, and shares the personal screen's filters, paging, and
+local removal. The bundled lock and companion redirect preserve the
+native Discover Watchlist link and its supported filters.
+
+Twenty standalone browser checks passed across desktop, iPhone, Android,
+and tablet. They cover both endpoint scopes, hidden media categories,
+filter paging, and existing personal watchlist actions. Server redirect
+tests and the companion redirect inventory check passed. Live bundled and
+companion browser checks and matched visual comparisons remain open.

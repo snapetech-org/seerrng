@@ -125,6 +125,7 @@ const workflowDestinations = new Map([
   ['/profile/settings/tv-request-access', '/me/account/tv-requests'],
   ['/profile/settings/episode-queue', '/me/account/tv-requests'],
   ['/profile/watchlist', '/watchlist'],
+  ['/discover/watchlist', '/watchlist/discover'],
   ['/downloads', '/downloads'],
   ['/indexer-search', '/indexer-search'],
   ['/blocklist', '/blocklist'],
@@ -142,6 +143,7 @@ const workflowDestinations = new Map([
 
 const workflowQueryKeys: Readonly<Record<string, readonly string[]>> = {
   '/watchlist': ['search', 'mediaType', 'sortBy', 'page'],
+  '/watchlist/discover': ['search', 'mediaType', 'sortBy', 'page'],
   '/indexer-search': ['query', 'category'],
   '/issues': ['issue'],
 };

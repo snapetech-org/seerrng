@@ -154,8 +154,8 @@ server {
   location = /profile/watchlist {
     return 302 /watchlist$is_args$args;
   }
-  location = /discover/watchlist {
-    return 302 /watchlist$is_args$args;
+  location ~ ^/discover/watchlist/?$ {
+    return 302 /watchlist/discover$is_args$args;
   }
 
   # SeerrNG pages Lumen doesn't have (links in emails, old bookmarks): open them in full SeerrNG

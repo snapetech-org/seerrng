@@ -211,3 +211,71 @@ test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf 
   await expect(add.or(remove)).toHaveCount(0);
   expect(writes).toBe(2);
 });
+
+test('Discover Watchlist uses the discovery endpoint and configured media categories', async ({
+  page,
+}) => {
+  const paths: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path.endsWith('/watchlist')) {
+      paths.push(path + url.search);
+      return route.fulfill({
+        json: {
+          filtersSupported: true,
+          totalPages: 2,
+          results: [
+            {
+              ratingKey: '1',
+              tmdbId: 20,
+              title: 'Movie Result',
+              mediaType: 'movie',
+            },
+            {
+              ratingKey: '2',
+              tmdbId: 21,
+              title: 'Series Result',
+              mediaType: 'tv',
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Reader', permissions: 32 }
+          : path === '/settings/public'
+            ? { enabledMediaCategories: { tv: false } }
+            : {},
+    });
+  });
+
+  await page.goto('/watchlist');
+  await expect(page.getByRole('link', { name: 'Series Result' })).toBeVisible();
+  await page.getByRole('link', { name: 'Discover Watchlist' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Discover Watchlist' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Movie Result' })
+  ).toHaveAttribute('href', '/movie/20');
+  await expect(page.getByRole('link', { name: 'Series Result' })).toHaveCount(
+    0
+  );
+  await expect(
+    page.getByLabel('Media Type').locator('option[value="tv"]')
+  ).toHaveCount(0);
+
+  await page.getByLabel('Search Titles').fill('Movie');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect
+    .poll(() => paths.at(-1))
+    .toBe('/discover/watchlist?search=Movie&page=2');
+  await page.getByRole('link', { name: 'Personal Watchlist' }).click();
+  await expect(page.getByRole('link', { name: 'Series Result' })).toBeVisible();
+  expect(paths[0]).toBe('/user/1/watchlist?page=1');
+});

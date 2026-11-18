@@ -5,7 +5,7 @@ import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { useApi } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 
 const MEDIA_LABELS = {
   movie: 'Movies',
@@ -48,11 +48,15 @@ function itemId(item: WatchlistItem) {
 
 function WatchlistPage({
   path,
+  label,
+  mediaTypes,
   page,
   movePage,
   setFiltersSupported,
 }: {
   path: string;
+  label: string;
+  mediaTypes: string[];
   page: number;
   movePage: (page: number) => void;
   setFiltersSupported: (supported: boolean) => void;
@@ -87,15 +91,17 @@ function WatchlistPage({
   }
 
   const rows = data?.results.filter(
-    (item) => !removed.includes(`${item.mediaType}:${itemId(item)}`)
+    (item) =>
+      mediaTypes.includes(item.mediaType) &&
+      !removed.includes(`${item.mediaType}:${itemId(item)}`)
   );
 
   return (
     <>
-      <ServiceNote error={error} what="your watchlist" retry={reload} />
+      <ServiceNote error={error} what={label.toLowerCase()} retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
-          Loading your watchlist…
+          Loading {label}…
         </p>
       )}
       {rows?.length === 0 && <p className="note">No titles on this page.</p>}
@@ -161,8 +167,13 @@ function WatchlistPage({
   );
 }
 
-export default function Watchlist() {
+export default function Watchlist({
+  discover = false,
+}: {
+  discover?: boolean;
+}) {
   const { user } = useAuth();
+  const settings = usePublicSettings();
   const [params, setParams] = useSearchParams();
   const [filtersSupported, setFiltersSupported] = useState<boolean>();
   if (!user) return null;
@@ -170,6 +181,14 @@ export default function Watchlist() {
   const search = params.get('search')?.trim().slice(0, 100) ?? '';
   const media = params.get('mediaType') ?? '';
   const sort = params.get('sortBy') ?? '';
+  const label = discover ? 'Discover Watchlist' : 'Watchlist';
+  const categories = discover ? settings?.enabledMediaCategories : undefined;
+  const mediaOptions = Object.entries(MEDIA_LABELS).filter(([type]) =>
+    type === 'book'
+      ? categories?.ebook !== false || categories?.audiobook !== false
+      : categories?.[type] !== false
+  );
+  const mediaTypes = mediaOptions.map(([type]) => type);
   const requestedPage = Number(params.get('page'));
   const page =
     Number.isSafeInteger(requestedPage) && requestedPage >= 1
@@ -190,17 +209,26 @@ export default function Watchlist() {
   const query = new URLSearchParams();
   if (filtersSupported !== false) {
     if (search) query.set('search', search);
-    if (Object.hasOwn(MEDIA_LABELS, media)) query.set('mediaType', media);
+    if (mediaTypes.includes(media)) query.set('mediaType', media);
     if (Object.hasOwn(SORT_LABELS, sort)) query.set('sortBy', sort);
   }
   const filterKey = query.toString();
   query.set('page', String(page));
-  const path = `/user/${user.id}/watchlist?${query}`;
+  const base = discover ? '/discover' : `/user/${user.id}`;
+  const path = `${base}/watchlist?${query}`;
 
   return (
     <>
       <header className="ph">
-        <h1>Watchlist</h1>
+        <h1>{label}</h1>
+        <div className="toolbar">
+          <Link
+            className="chip"
+            to={discover ? '/watchlist' : '/watchlist/discover'}
+          >
+            {discover ? 'Personal Watchlist' : 'Discover Watchlist'}
+          </Link>
+        </div>
       </header>
       {filtersSupported === false && (
         <p className="note">
@@ -232,10 +260,10 @@ export default function Watchlist() {
             <span className="lbl">Media Type</span>
             <select
               name="mediaType"
-              defaultValue={Object.hasOwn(MEDIA_LABELS, media) ? media : ''}
+              defaultValue={mediaTypes.includes(media) ? media : ''}
             >
               <option value="">All Types</option>
-              {Object.entries(MEDIA_LABELS).map(([value, label]) => (
+              {mediaOptions.map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -267,6 +295,8 @@ export default function Watchlist() {
       <WatchlistPage
         key={path}
         path={path}
+        label={label}
+        mediaTypes={mediaTypes}
         page={page}
         movePage={(next) => {
           const selected = new URLSearchParams(filterKey);

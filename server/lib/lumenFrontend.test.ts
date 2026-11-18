@@ -175,7 +175,6 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       '/movie/123/cast/extra',
       '/person/123/crew',
       '/issues/9007199254740992',
-      '/discover/watchlist',
       '/games',
       '/tv/1000000001/cast',
       '/?interface=classic',
@@ -204,6 +203,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       [
         '/profile/watchlist?search=A%26B&mediaType=movie&page=2&userId=17',
         '/lumen/watchlist?search=A%26B&mediaType=movie&page=2',
+      ],
+      [
+        '/discover/watchlist?search=Example&mediaType=book&page=2&userId=17',
+        '/lumen/watchlist/discover?search=Example&mediaType=book&page=2',
       ],
       ['/issues/71', '/lumen/issues/71'],
       ['/issues?issue=71', '/lumen/issues?issue=71'],

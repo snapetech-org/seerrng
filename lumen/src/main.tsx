@@ -209,6 +209,7 @@ function App() {
             }
           />
           <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/watchlist/discover" element={<Watchlist discover />} />
           <Route path="/library" element={<Library />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />
