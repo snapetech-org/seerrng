@@ -205,6 +205,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Media Server Libraries</b>
+              <Link
+                className="go"
+                to="/admin/media-libraries"
+                aria-label="Open Media Server Libraries"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Media Categories</b>
               <Link
                 className="go"

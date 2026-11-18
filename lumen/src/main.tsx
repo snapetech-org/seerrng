@@ -62,6 +62,7 @@ const AdminLibraryMigration = lazy(
   () => import('./pages/AdminLibraryMigration')
 );
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
+const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
@@ -482,6 +483,24 @@ function App() {
                   }
                 >
                   <AdminMetadata />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/media-libraries"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading media server libraries…
+                    </p>
+                  }
+                >
+                  <AdminMediaLibraries />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

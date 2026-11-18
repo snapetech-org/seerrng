@@ -130,3 +130,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the connection area with the preceding Prowlarr baseline and inspected category, assignment and override rows at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. The production build, eight browser, ten proxy, and six server tests passed. Indexer responses were synthetic.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-prowlarr-mappings-20261118/`.
+
+## Media server libraries follow-up — 2026-11-18
+
+Administrators open `/admin/media-libraries` from `/me`. The page uses the instance's actual media server selection to refresh libraries, enable or disable indexing, set series episode order, reclassify Plex audio libraries, and start, cancel, or monitor scans. Connection configuration remains in native settings.
+
+Compared the shared controls and library rows with Network Settings at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production Lumen build and twelve browser checks passed for Plex, Jellyfin, and Emby. Browser fixtures used synthetic libraries and scan commands. No live server configuration was modified.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-media-libraries-20261118/`.
