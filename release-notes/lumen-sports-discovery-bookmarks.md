@@ -6,3 +6,4 @@
 - Eligible users can choose another Sportarr service when the default service already follows the league.
 - League follow confirmations explain whether the request is automatically approved or requires approval.
 - League details explain when events are unavailable and show season and local broadcast time for scheduled events.
+- Lumen league schedules show the total number of events and identify recordings split across multiple files.

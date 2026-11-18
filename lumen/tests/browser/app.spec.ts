@@ -2075,12 +2075,14 @@ test('Sportarr league details show paginated event availability', async ({
       json: {
         eventsAvailable: true,
         totalPages: 2,
+        totalRecords: 51,
         results: [
           {
             id: second ? 2 : 1,
             title: second ? 'Final' : 'Opening Match',
             monitored: true,
             hasFile: !second,
+            fileCount: second ? 0 : 3,
             quality: second ? undefined : 'HDTV',
           },
         ],
@@ -2092,7 +2094,8 @@ test('Sportarr league details show paginated event availability', async ({
     page.getByRole('heading', { name: 'Fixture League' })
   ).toBeVisible();
   await expect(page.getByText('Opening Match')).toBeVisible();
-  await expect(page.getByText('In Library · HDTV')).toBeVisible();
+  await expect(page.getByText('In Library · 3 files · HDTV')).toBeVisible();
+  await expect(page.getByText('51 events', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Next Page' }).click();
   await expect(page.getByText('Final', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();

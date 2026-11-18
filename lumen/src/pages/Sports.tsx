@@ -155,15 +155,17 @@ function LeagueEvents({ id }: { id: string }) {
   const { data, error, reload } = useApi<{
     eventsAvailable: boolean;
     totalPages: number;
+    totalRecords: number;
     results: {
       id: number;
       title: string;
       eventDate?: string;
-      season?: number;
+      season?: string;
       broadcastDate?: string;
       broadcastTimezone?: string;
       monitored: boolean;
       hasFile: boolean;
+      fileCount: number;
       quality?: string;
     }[];
   }>(`/sportarr/${encodeURIComponent(id)}/events?page=${page}&pageSize=50`, {
@@ -171,7 +173,16 @@ function LeagueEvents({ id }: { id: string }) {
   });
 
   return (
-    <Section title="Events">
+    <Section
+      title="Events"
+      action={
+        data?.eventsAvailable && Number.isFinite(data.totalRecords) ? (
+          <span className="note">
+            {data.totalRecords} {data.totalRecords === 1 ? 'event' : 'events'}
+          </span>
+        ) : undefined
+      }
+    >
       <ServiceNote error={error} what="Sportarr events" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
@@ -203,7 +214,13 @@ function LeagueEvents({ id }: { id: string }) {
               </div>
               <small>
                 {event.hasFile
-                  ? ['In Library', event.quality].filter(Boolean).join(' · ')
+                  ? [
+                      'In Library',
+                      event.fileCount > 1 ? `${event.fileCount} files` : '',
+                      event.quality,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')
                   : event.monitored
                     ? 'Monitored'
                     : 'Unmonitored'}
