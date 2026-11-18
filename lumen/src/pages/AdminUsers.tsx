@@ -1,5 +1,9 @@
+import { useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { api } from '../api';
+import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 
 interface DirectoryUser {
@@ -20,8 +24,132 @@ const sorts = {
   role: 'Role',
 };
 
+function CreateLocalUser({
+  onCreated,
+  onClose,
+}: {
+  onCreated: (name: string) => void;
+  onClose: () => void;
+}) {
+  const [emailSetup, setEmailSetup] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const working = useRef(false);
+
+  async function create(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (working.current) return;
+    const fields = new FormData(event.currentTarget);
+    const username = String(fields.get('username') ?? '').trim();
+    const email = String(fields.get('email') ?? '').trim();
+    const password = String(fields.get('password') ?? '');
+    if (!username) {
+      setError('Enter a username.');
+      return;
+    }
+    working.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await api('/user', {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          ...(email ? { email } : {}),
+          ...(emailSetup ? {} : { password }),
+        }),
+      });
+      onCreated(username);
+    } catch (failure) {
+      setError(friendlyError(failure, 'Could not create the account.'));
+    } finally {
+      working.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Section title="Create Local User">
+      <form onSubmit={create} autoComplete="off">
+        <div className="setlist">
+          <label className="set">
+            <span>Username</span>
+            <input
+              className="cfg-json"
+              name="username"
+              maxLength={100}
+              required
+              disabled={busy}
+            />
+          </label>
+          <label className="set">
+            <span>Email</span>
+            <input
+              className="cfg-json"
+              name="email"
+              type="email"
+              maxLength={254}
+              required={emailSetup}
+              disabled={busy}
+            />
+          </label>
+          <label className="set">
+            <span>Email a password setup link</span>
+            <input
+              type="checkbox"
+              checked={emailSetup}
+              disabled={busy}
+              onChange={(event) => setEmailSetup(event.target.checked)}
+            />
+          </label>
+          {!emailSetup && (
+            <label className="set">
+              <span>Password</span>
+              <input
+                className="cfg-json"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                minLength={8}
+                maxLength={1024}
+                required
+                disabled={busy}
+              />
+            </label>
+          )}
+        </div>
+        {emailSetup && (
+          <p className="note">
+            Setup links require an application URL and email notifications.
+          </p>
+        )}
+        {error && (
+          <p className="note" role="alert">
+            {error}
+          </p>
+        )}
+        <div className="toolbar">
+          <button className="btn btn-tonal btn-sm" disabled={busy}>
+            {busy ? 'Creating…' : 'Create User'}
+          </button>
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={busy}
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </Section>
+  );
+}
+
 export default function AdminUsers() {
   const [params, setParams] = useSearchParams();
+  const [creating, setCreating] = useState(false);
+  const [notice, setNotice] = useState('');
   const search = (params.get('q') ?? '').slice(0, 200);
   const requestedSort = params.get('sort') ?? '';
   const sort = Object.hasOwn(sorts, requestedSort)
@@ -62,7 +190,33 @@ export default function AdminUsers() {
         <button className="btn btn-quiet btn-sm" onClick={reload}>
           Refresh
         </button>
+        {!creating && (
+          <button
+            className="btn btn-tonal btn-sm"
+            onClick={() => {
+              setNotice('');
+              setCreating(true);
+            }}
+          >
+            Create Local User
+          </button>
+        )}
       </div>
+      {creating && (
+        <CreateLocalUser
+          onCreated={(name) => {
+            setCreating(false);
+            setNotice(`Created ${name}.`);
+            reload();
+          }}
+          onClose={() => setCreating(false)}
+        />
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
       <form
         className="toolbar"
         onSubmit={(event) => {

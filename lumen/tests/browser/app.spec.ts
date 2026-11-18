@@ -4477,3 +4477,52 @@ test('Users lets delegated managers search without exposing the directory to mem
   ).toHaveCount(0);
   expect(reads).toBe(2);
 });
+
+test('Users creates a local account with a password setup link', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let attempts = 0;
+  const account = {
+    id: 9,
+    displayName: 'New Member',
+    email: 'member@example.test',
+    permissions: 32,
+  };
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: attempts === 2 ? [account] : [],
+      },
+    })
+  );
+  await page.route('**/api/v1/user', (route) => {
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON()).toEqual({
+      username: 'New Member',
+      email: 'member@example.test',
+    });
+    if (++attempts === 1)
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Email service unavailable.' },
+      });
+    return route.fulfill({ status: 201, json: account });
+  });
+  await page.goto('/admin/users');
+  await page.getByRole('button', { name: 'Create Local User' }).click();
+  await page.getByLabel('Username', { exact: true }).fill('New Member');
+  await page.getByLabel('Email', { exact: true }).fill('member@example.test');
+  await page.getByLabel('Email a password setup link').check();
+  await page.getByRole('button', { name: 'Create User', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Email service unavailable.'
+  );
+  await expect(page.getByLabel('Email', { exact: true })).toHaveValue(
+    'member@example.test'
+  );
+  await page.getByRole('button', { name: 'Create User', exact: true }).click();
+  await expect(page.getByText('Created New Member.')).toBeVisible();
+  await expect(page.getByText('New Member', { exact: true })).toBeVisible();
+});
