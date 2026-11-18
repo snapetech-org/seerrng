@@ -199,6 +199,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/categories', '/admin/categories'],
       ['/settings/network/', '/admin/network'],
       ['/settings/discovery', '/admin/discovery'],
+      ['/settings/metadata', '/admin/metadata'],
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);

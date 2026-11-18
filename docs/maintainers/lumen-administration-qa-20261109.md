@@ -50,3 +50,11 @@ Discovery Integrations now supports preview, acknowledgement, publish/replace, e
 Compared baseline `0d45bf7d8` Discovery Integrations against the populated replacement preview at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected form and row widths, action wrapping, and mobile navigation clearance. The first mobile captures exposed horizontal overflow from the unstyled file input. The final captures use the shared upload control and all eight browser checks passed on the production build. Ten standalone proxy tests and two bundled frontend tests passed. Synthetic packs only, with no changes to a household instance.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-packs-20261118/`.
+
+## Metadata providers follow-up — 2026-11-18
+
+The administrator's `/me` menu and bundled and standalone metadata bookmarks now open `/admin/metadata`. TV and anime, music provider limits, and book languages use separate forms backed by the existing metadata settings API. Connection errors preserve the results for individual providers and leave the draft available to retry.
+
+Compared the new form with the approved shared Network Settings controls at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected select and input wrapping, actions, and status rows. The production Lumen build, four browser cases, ten standalone proxy cases, and two bundled routing cases passed. The browser cases used synthetic provider responses and verified independent saves, normalized book-language codes, failed connection status, and horizontal overflow. Live provider connectivity was excluded.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-metadata-20261118/`.

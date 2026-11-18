@@ -22,7 +22,8 @@ export class ApiError extends Error {
     public confirmationRequired?: string,
     public code?: string,
     public reason?: string,
-    public retryAt?: number
+    public retryAt?: number,
+    public testResults?: unknown
   ) {
     super(message);
   }
@@ -50,9 +51,11 @@ export async function api<T>(
     let confirmationRequired: string | undefined;
     let code: string | undefined;
     let reason: string | undefined;
+    let testResults: unknown;
     try {
       const b = await res.json();
       msg = b.message || b.error || msg;
+      testResults = b.tests;
       if (typeof b.code === 'string') code = b.code;
       if (typeof b.reason === 'string') reason = b.reason;
       if (typeof b.confirmationRequired === 'string')
@@ -80,7 +83,8 @@ export async function api<T>(
       confirmationRequired,
       code,
       reason,
-      retryAt
+      retryAt,
+      testResults
     );
   }
   // a request or other change: saved answers may now be out of date

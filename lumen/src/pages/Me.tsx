@@ -165,6 +165,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Metadata Providers</b>
+              <Link
+                className="go"
+                to="/admin/metadata"
+                aria-label="Open Metadata Providers"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Media Categories</b>
               <Link
                 className="go"

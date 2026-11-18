@@ -44,6 +44,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'categories',
       'network',
       'discovery',
+      'metadata',
     ]) {
       const response = await request(app).get(`/lumen/settings/${page}/`);
       assert.equal(response.status, 302);
