@@ -117,18 +117,22 @@ export function SubjectTagFilter({
   );
 }
 
-function KeywordResults({
+export function KeywordResults({
   query,
   page,
   selected,
   toggle,
   setPage,
+  limit = 20,
+  disabled = false,
 }: {
   query: string;
   page: number;
   selected: string[];
   toggle: (tag: SubjectTag) => void;
   setPage: (page: number) => void;
+  limit?: number;
+  disabled?: boolean;
 }) {
   const suffix = page > 1 ? `&page=${page}` : '';
   const results = useApi<{ results: SubjectTag[]; total_pages: number }>(
@@ -162,7 +166,8 @@ function KeywordResults({
               key={tag.id}
               aria-pressed={selected.includes(String(tag.id))}
               disabled={
-                selected.length >= 20 && !selected.includes(String(tag.id))
+                disabled ||
+                (selected.length >= limit && !selected.includes(String(tag.id)))
               }
               onClick={() => toggle(tag)}
             >
@@ -176,7 +181,7 @@ function KeywordResults({
           <button
             className="btn btn-tonal btn-sm"
             type="button"
-            disabled={page === 1}
+            disabled={disabled || page === 1}
             onClick={() => setPage(page - 1)}
           >
             Previous Tag Page
@@ -188,7 +193,7 @@ function KeywordResults({
           <button
             className="btn btn-tonal btn-sm"
             type="button"
-            disabled={page >= total}
+            disabled={disabled || page >= total}
             onClick={() => setPage(page + 1)}
           >
             Next Tag Page

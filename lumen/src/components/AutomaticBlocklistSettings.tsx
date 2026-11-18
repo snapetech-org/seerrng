@@ -5,6 +5,7 @@ import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
+import { KeywordResults } from './SubjectTagFilter';
 
 const endpoint = '/settings/main';
 const defaults = {
@@ -79,6 +80,13 @@ function SettingsForm({ initial }: { initial: Settings }) {
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
+  const [keywordInput, setKeywordInput] = useState('');
+  const [keywordQuery, setKeywordQuery] = useState('');
+  const [keywordPage, setKeywordPage] = useState(1);
+  function findKeywords() {
+    setKeywordQuery(keywordInput.trim());
+    setKeywordPage(1);
+  }
   const tags = draft.blocklistedTags.trim()
     ? draft.blocklistedTags.split(',').map((tag) => tag.trim())
     : [];
@@ -90,10 +98,11 @@ function SettingsForm({ initial }: { initial: Settings }) {
         Number(tag) >= 1 &&
         Number(tag) <= 1_000_000_000
     );
+  const selectedTags = [...new Set(tags)];
   const validPages = /^\d+$/.test(pages) && Number(pages) <= 250;
   const values: Settings = {
     ...draft,
-    blocklistedTags: [...new Set(tags)].join(','),
+    blocklistedTags: selectedTags.join(','),
     blocklistedTagsLimit: Number(pages),
   };
   const changes = keys.filter((key) => values[key] !== saved[key]);
@@ -123,10 +132,9 @@ function SettingsForm({ initial }: { initial: Settings }) {
       });
       if (changes.some((key) => result[key] !== values[key]))
         throw new Error('Could not confirm the saved blocklist settings.');
-      const updated = { ...values, ...result };
-      setSaved(updated);
-      setDraft(updated);
-      setPages(String(updated.blocklistedTagsLimit));
+      setSaved(values);
+      setDraft(values);
+      setPages(String(values.blocklistedTagsLimit));
       forget(endpoint);
       setNotice('Automatic blocklist settings saved.');
     } catch (error) {
@@ -158,6 +166,51 @@ function SettingsForm({ initial }: { initial: Settings }) {
             onChange={(event) => change('blocklistedTags', event.target.value)}
           />
         </label>
+        <div className="toolbar">
+          <label className="sel">
+            <span className="lbl">Find Blocklist Keywords</span>
+            <input
+              className="cfg-input"
+              type="search"
+              maxLength={200}
+              value={keywordInput}
+              disabled={busy}
+              onChange={(event) => setKeywordInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
+                  event.preventDefault();
+                  findKeywords();
+                }
+              }}
+            />
+          </label>
+          <button
+            className="btn btn-tonal btn-sm"
+            type="button"
+            disabled={busy || !keywordInput.trim()}
+            onClick={findKeywords}
+          >
+            Find Keywords
+          </button>
+        </div>
+        {keywordQuery && (
+          <KeywordResults
+            key={JSON.stringify([keywordQuery, keywordPage])}
+            query={keywordQuery}
+            page={keywordPage}
+            selected={selectedTags}
+            limit={100}
+            disabled={busy || !validTags}
+            toggle={({ id }) => {
+              const key = String(id);
+              const next = selectedTags.includes(key)
+                ? selectedTags.filter((tag) => tag !== key)
+                : [...selectedTags, key];
+              change('blocklistedTags', next.join(','));
+            }}
+            setPage={setKeywordPage}
+          />
+        )}
         <GenreField
           kind="movie"
           value={draft.blocklistedGenresMovie}

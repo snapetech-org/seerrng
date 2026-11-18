@@ -171,6 +171,12 @@ test('automatic blocklist settings preserve stored genres and save only changed 
       });
     if (path === '/integrations/discovery/mappings/packs')
       return route.fulfill({ json: { packs: [] } });
+    if (path === '/search/keyword') {
+      expect(new URL(request.url()).searchParams.get('query')).toBe('magic');
+      return route.fulfill({
+        json: { results: [{ id: 74, name: 'Stage Magic' }], total_pages: 1 },
+      });
+    }
     if (path === '/genres/movie')
       return route.fulfill({ json: [{ id: 18, name: 'Drama' }] });
     if (path === '/genres/tv')
@@ -192,22 +198,37 @@ test('automatic blocklist settings preserve stored genres and save only changed 
   await expect(movies.getByRole('option', { name: 'Genre #99' })).toHaveCount(
     1
   );
-  const tags = page.getByLabel('Blocklisted TMDB Keyword IDs');
+  const tags = page.getByRole('textbox', {
+    name: 'Blocklisted TMDB Keyword IDs',
+  });
   await tags.fill('42, bad');
   const save = page.getByRole('button', {
     name: 'Save Automatic Blocklist Settings',
   });
   await expect(save).toBeDisabled();
   await tags.fill('42, 73, 42');
+  const search = page.getByRole('searchbox', {
+    name: 'Find Blocklist Keywords',
+  });
+  await search.fill('magic');
+  await search.press('Enter');
+  const keyword = page.getByRole('button', { name: 'Stage Magic' });
+  await expect(keyword).toHaveAttribute('aria-pressed', 'false');
+  await keyword.click();
+  await expect(tags).toHaveValue('42,73,74');
+  await expect(keyword).toHaveAttribute('aria-pressed', 'true');
+  expect(writes).toEqual([]);
   await page.getByLabel('Blocklisted TV Genres').selectOption('10765');
-  await page.getByLabel('Limit Pages per Blocklist Tag or Genre').fill('0');
+  await page
+    .getByRole('spinbutton', { name: 'Limit Pages per Blocklist Tag or Genre' })
+    .fill('0');
   await save.click();
   await expect(
     page.getByText('Automatic blocklist settings saved.')
   ).toBeVisible();
   expect(writes).toEqual([
     {
-      blocklistedTags: '42,73',
+      blocklistedTags: '42,73,74',
       blocklistedGenresTv: '10765',
       blocklistedTagsLimit: 0,
     },
