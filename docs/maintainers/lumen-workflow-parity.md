@@ -708,3 +708,14 @@ token explicitly clears the Pushbullet event selection.
 Standalone Chrome verified an event-only save with a redacted stored token
 and a separate removal write against a synthetic endpoint. Live delivery,
 native visual comparison, mobile and bundled checks remain open.
+
+### Personal Pushover notifications increment
+
+Notification Settings supports Pushover credentials, sounds and event choices.
+Sound and event changes omit untouched credentials. Explicit removal clears
+the credentials and disables Pushover events.
+
+Standalone Chrome selected a sound and enabled an event. The synthetic
+endpoint accepted only the sound and event fields and returned the saved
+values on readback. Live delivery, mobile, bundled and native comparison
+remain open.

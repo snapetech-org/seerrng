@@ -28,6 +28,9 @@ const notificationEvents = [
 interface Preferences {
   emailEnabled?: boolean;
   pgpKey?: string | null;
+  pushoverApplicationToken?: string | null;
+  pushoverUserKey?: string | null;
+  pushoverSound?: string | null;
   pushbulletAccessToken?: string | null;
   discordEnabled?: boolean;
   discordEnabledTypes?: number;
@@ -42,6 +45,7 @@ interface Preferences {
     telegram?: number;
     discord?: number;
     pushbullet?: number;
+    pushover?: number;
   };
 }
 
@@ -709,6 +713,226 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
   );
 }
 
+function PushoverForm({
+  path,
+  id,
+  data,
+}: {
+  path: string;
+  id: number;
+  data: Preferences;
+}) {
+  const [saved, setSaved] = useState(() => ({
+    application: !!data.pushoverApplicationToken,
+    user: !!data.pushoverUserKey,
+    sound: data.pushoverSound ?? '',
+    mask: data.notificationTypes?.pushover ?? 0,
+  }));
+  const [draft, setDraft] = useState({
+    application: '',
+    user: '',
+    sound: saved.sound,
+    mask: saved.mask,
+  });
+  const [remove, setRemove] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState('');
+  const [error, setError] = useState('');
+  const pending = useRef(false);
+  const soundPath = saved.application
+    ? `/settings/notifications/pushover/sounds?userId=${id}`
+    : null;
+  const sounds = useApi<{ name: string; description: string }[]>(soundPath);
+  const application = draft.application.trim();
+  const userKey = draft.user.trim();
+  const changed =
+    remove ||
+    application ||
+    userKey ||
+    draft.sound !== saved.sound ||
+    draft.mask !== saved.mask;
+
+  async function save() {
+    if (pending.current || !changed) return;
+    setNotice('');
+    if (
+      !remove &&
+      ([application, userKey].some(
+        (value) => value && !/^[a-z0-9]{30}$/i.test(value)
+      ) ||
+        (draft.mask !== 0 && !(saved.application || application)) ||
+        (draft.mask !== 0 && !(saved.user || userKey)))
+    ) {
+      setError(
+        'Enter a 30-character application token and user or group key to enable Pushover events.'
+      );
+      return;
+    }
+    const generation = sessionGeneration();
+    const next = {
+      application: !remove && (saved.application || !!application),
+      user: !remove && (saved.user || !!userKey),
+      sound: remove ? '' : draft.sound,
+      mask: remove ? 0 : draft.mask,
+    };
+    pending.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      const result = await api<Preferences>(path, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...(remove || application
+            ? { pushoverApplicationToken: remove ? null : application }
+            : {}),
+          ...(remove || userKey
+            ? { pushoverUserKey: remove ? null : userKey }
+            : {}),
+          pushoverSound: next.sound || null,
+          notificationTypes: { pushover: next.mask },
+        }),
+      });
+      if (generation !== sessionGeneration()) return;
+      if (
+        !!result.pushoverApplicationToken !== next.application ||
+        !!result.pushoverUserKey !== next.user ||
+        (result.pushoverSound ?? '') !== next.sound ||
+        result.notificationTypes?.pushover !== next.mask
+      ) {
+        setError('Could not confirm the saved Pushover settings. Try again.');
+        return;
+      }
+      forget(path);
+      setSaved(next);
+      setDraft({
+        application: '',
+        user: '',
+        sound: next.sound,
+        mask: next.mask,
+      });
+      setRemove(false);
+      if (application && soundPath) sounds.reload();
+      setNotice('Pushover settings saved.');
+    } catch {
+      if (generation === sessionGeneration())
+        setError('Could not save Pushover settings. Try again.');
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void save();
+      }}
+    >
+      <p className="note">
+        Leave the credential fields empty to keep configured credentials.
+      </p>
+      <div className="setlist">
+        <label className="set cfg-row">
+          <b>
+            {saved.application
+              ? 'Replacement Application Token'
+              : 'Application Token'}
+          </b>
+          <input
+            className="cfg-input"
+            type="password"
+            autoComplete="new-password"
+            maxLength={30}
+            value={draft.application}
+            disabled={busy || remove}
+            onChange={(event) =>
+              setDraft({ ...draft, application: event.target.value })
+            }
+          />
+        </label>
+        <label className="set cfg-row">
+          <b>
+            {saved.user ? 'Replacement User or Group Key' : 'User or Group Key'}
+          </b>
+          <input
+            className="cfg-input"
+            type="password"
+            autoComplete="new-password"
+            maxLength={30}
+            value={draft.user}
+            disabled={busy || remove}
+            onChange={(event) =>
+              setDraft({ ...draft, user: event.target.value })
+            }
+          />
+        </label>
+        {(saved.application || saved.user) && (
+          <label className="set cfg-row">
+            <b>Remove Credentials and Disable Pushover Events</b>
+            <input
+              type="checkbox"
+              checked={remove}
+              disabled={busy}
+              onChange={(event) => setRemove(event.target.checked)}
+            />
+          </label>
+        )}
+      </div>
+      <div className="toolbar">
+        <label className="sel">
+          <span className="lbl">Sound</span>
+          <select
+            value={remove ? '' : draft.sound}
+            disabled={busy || remove || (!sounds.data?.length && !draft.sound)}
+            onChange={(event) =>
+              setDraft({ ...draft, sound: event.target.value })
+            }
+          >
+            <option value="">Device default</option>
+            {draft.sound &&
+              !sounds.data?.some(({ name }) => name === draft.sound) && (
+                <option value={draft.sound}>{draft.sound}</option>
+              )}
+            {sounds.data?.map(({ name, description }) => (
+              <option key={name} value={name}>
+                {description}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {soundPath && (
+        <ServiceNote
+          error={sounds.error}
+          what="Pushover sounds"
+          retry={sounds.reload}
+        />
+      )}
+      <EventChoices
+        mask={remove ? 0 : draft.mask}
+        disabled={busy || remove}
+        change={(mask) => setDraft({ ...draft, mask })}
+      />
+      {notice && (
+        <p className="note" role="status">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="note" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="toolbar">
+        <button className="btn btn-tonal" disabled={busy || !changed}>
+          {busy ? 'Saving…' : 'Save Pushover Settings'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function UserNotifications({ id }: { id: number }) {
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -780,6 +1004,21 @@ function UserNotifications({ id }: { id: number }) {
               data.notificationTypes?.pushbullet,
             ])}
             path={path}
+            data={data}
+          />
+        </Section>
+      )}
+      {data && (
+        <Section title="Pushover">
+          <PushoverForm
+            key={JSON.stringify([
+              !!data.pushoverApplicationToken,
+              !!data.pushoverUserKey,
+              data.pushoverSound,
+              data.notificationTypes?.pushover,
+            ])}
+            path={path}
+            id={id}
             data={data}
           />
         </Section>
