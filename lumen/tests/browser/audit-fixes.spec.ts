@@ -247,6 +247,47 @@ test('an open 4K movie bookmark refreshes when the requested copy arrives', asyn
   ).toHaveAttribute('href', uhd);
 });
 
+test('a pending 4K refresh removes the cached title when access is revoked', async ({
+  page,
+}) => {
+  let denied = false;
+  await page.clock.install();
+  await fixtures(page, (path) => {
+    if (path !== '/movie/63') return;
+    if (denied) return { status: 403, json: { message: 'Access denied.' } };
+    return {
+      json: {
+        id: 63,
+        title: 'Restricted Copy',
+        genres: [],
+        mediaInfo: {
+          id: 3,
+          status: 5,
+          status4k: 3,
+          mediaUrl: 'https://app.plex.tv/desktop/#!/server/s/details?key=hd',
+        },
+      },
+    };
+  });
+  await page.goto('/movie/63?quality=4k');
+  const watch = page.getByRole('link', { name: 'Watch on Plex' }).first();
+  await expect(watch).toBeVisible();
+  denied = true;
+  await page.clock.fastForward(30_100);
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Access denied.' })
+  ).toBeVisible();
+  await expect(watch).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Restricted Copy' })
+  ).toHaveCount(0);
+  await page.reload();
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Access denied.' })
+  ).toBeVisible();
+  await expect(watch).toHaveCount(0);
+});
+
 test('the audiobooks page is titled Audiobooks', async ({ page }) => {
   await fixtures(page, (path) => {
     if (path === '/settings/public') return undefined;
