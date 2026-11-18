@@ -6497,6 +6497,7 @@ test('Discovery region settings preserve legacy values and retry only changed fi
   await expect(save).toBeDisabled();
   await streaming.selectOption('CA');
   await language.selectOption('fr');
+  await page.getByLabel('Hide Requested Titles', { exact: true }).check();
   await save.click();
   await expect(page.getByText('Could not save regions.')).toBeVisible();
   await expect(streaming).toHaveValue('CA');
@@ -6506,10 +6507,53 @@ test('Discovery region settings preserve legacy values and retry only changed fi
     page.getByText('Discovery region settings saved.')
   ).toBeVisible();
   expect(writes).toEqual([
-    { streamingRegion: 'CA', originalLanguage: 'fr' },
-    { streamingRegion: 'CA', originalLanguage: 'fr' },
+    { streamingRegion: 'CA', originalLanguage: 'fr', hideRequested: true },
+    { streamingRegion: 'CA', originalLanguage: 'fr', hideRequested: true },
   ]);
   await page.screenshot({
     path: info.outputPath('discovery-region-settings.png'),
   });
+});
+
+test('Movies discovery applies visibility defaults while the library view still shows owned titles', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { hideAvailable: true, hideRequested: true, hideBlocklisted: true },
+    })
+  );
+  const titles = [
+    { ...movie, id: 101, title: 'Owned fixture', mediaInfo: { status: 5 } },
+    {
+      ...movie,
+      id: 102,
+      title: 'Requested fixture',
+      mediaInfo: { hasActiveRequest: true },
+    },
+    { ...movie, id: 103, title: 'Blocked fixture', mediaInfo: { status: 6 } },
+    { ...movie, id: 104, title: 'Visible fixture', mediaInfo: undefined },
+  ];
+  await page.route(/\/api\/v1\/discover\/movies\?/, (route) => {
+    const library = new URL(route.request().url()).searchParams.has(
+      'availability'
+    );
+    return route.fulfill({
+      json: paged(library ? titles.slice(0, 1) : titles),
+    });
+  });
+  await page.goto('/movies');
+  await expect(
+    page.getByRole('link', { name: 'Visible fixture' })
+  ).toBeVisible();
+  for (const title of [
+    'Owned fixture',
+    'Requested fixture',
+    'Blocked fixture',
+  ]) {
+    await expect(page.getByRole('link', { name: title })).toHaveCount(0);
+  }
+  await page.getByRole('button', { name: /^On / }).click();
+  await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
 });

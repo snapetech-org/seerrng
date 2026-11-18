@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type Genre, type TitleResult } from '../api';
+import { useAuth } from '../auth';
+import { canManageBlocklist } from '../blocklist';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ServiceNote } from '../components/extra';
@@ -299,6 +301,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const validRatingRange =
     !minRating || !maxRating || Number(minRating) <= Number(maxRating);
   const publicSettings = usePublicSettings();
+  const { user } = useAuth();
   const [showStudios, setShowStudios] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showProviders, setShowProviders] = useState(false);
@@ -449,9 +452,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       quality === '4k' ? x.mediaInfo?.status4k : x.mediaInfo?.status;
     return status === MediaStatus.AVAILABLE || status === MediaStatus.PARTIAL;
   };
+  const hideAvailable =
+    show === 'all' && publicSettings?.hideAvailable === true;
+  const hideRequested = publicSettings?.hideRequested === true;
+  const hideBlocklisted =
+    publicSettings?.hideBlocklisted === true ||
+    !canManageBlocklist(user?.permissions);
   const items = list.items.filter(
-    (x) => !filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))
+    (x) =>
+      (!filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))) &&
+      (!hideAvailable || !onServer(x)) &&
+      (!hideRequested || x.mediaInfo?.hasActiveRequest !== true) &&
+      (!hideBlocklisted || x.mediaInfo?.status !== MediaStatus.BLOCKLISTED)
   );
+  const locallyFiltered = filterCatalogRows || items.length < list.items.length;
   // Catalog availability views read TMDB’s list a
   // page at a time. With a small library almost nothing matches, and an open-ended loop
   // would walk hundreds of pages and hit SeerrNG's rate limit for the whole account.
@@ -459,19 +473,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // finds less than a screenful stops and lets them ask for more.
   const PAGES_PER_LOOK = 5;
   const SCREENFUL = 18;
-  const filterKey = `${kind}|${show}|${quality}|${q}`;
+  const filterKey = `${kind}|${show}|${quality}|${hideAvailable}|${hideRequested}|${hideBlocklisted}|${q}`;
   const [look, setLook] = useState({ key: filterKey, page: 0, found: 0 });
   if (look.key !== filterKey) setLook({ key: filterKey, page: 0, found: 0 });
   else if (items.length - look.found >= SCREENFUL)
     setLook({ key: filterKey, page: list.page, found: items.length });
   const capped =
-    filterCatalogRows &&
+    locallyFiltered &&
     !list.done &&
     list.page - look.page >= PAGES_PER_LOOK &&
     items.length - look.found < SCREENFUL;
   useEffect(() => {
     if (
-      filterCatalogRows &&
+      locallyFiltered &&
       items.length < SCREENFUL &&
       !list.done &&
       !list.loading &&
@@ -480,7 +494,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       !capped
     )
       void list.more();
-  }, [filterCatalogRows, items.length, list, capped]);
+  }, [locallyFiltered, items.length, list, capped]);
   const upd = (k: string, v: string) => {
     const n = new URLSearchParams(p);
     if (!v || v === 'all' || v === 'popularity.desc') n.delete(k);

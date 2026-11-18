@@ -16,8 +16,15 @@ const fields = [
   ['blocklistLanguage', 'Blocklist Language', 'language'],
 ] as const;
 
+const visibility = [
+  ['hideAvailable', 'Hide Available Titles'],
+  ['hideRequested', 'Hide Requested Titles'],
+  ['hideBlocklisted', 'Hide Blocklisted Titles From Blocklist Managers'],
+] as const;
+
 type Field = (typeof fields)[number][0];
-type Values = Partial<Record<Field, string>>;
+type Visibility = (typeof visibility)[number][0];
+type Values = Partial<Record<Field, string> & Record<Visibility, boolean>>;
 type Region = { iso_3166_1: string; english_name: string };
 type Language = { iso_639_1: string; english_name: string };
 
@@ -30,9 +37,18 @@ function SettingsForm({ initial }: { initial: Values }) {
   const [notice, setNotice] = useState('');
   const [failure, setFailure] = useState('');
   const pending = useRef(false);
-  const changed = fields.filter(
-    ([key]) => (draft[key] ?? '') !== (saved[key] ?? '')
-  );
+  const changes = [
+    ...fields.flatMap(([key]) =>
+      (draft[key] ?? '') === (saved[key] ?? '')
+        ? []
+        : [[key, draft[key] ?? ''] as const]
+    ),
+    ...visibility.flatMap(([key]) =>
+      Boolean(draft[key]) === Boolean(saved[key])
+        ? []
+        : [[key, Boolean(draft[key])] as const]
+    ),
+  ];
   const byName = (a: readonly [string, string], b: readonly [string, string]) =>
     a[1].localeCompare(b[1]);
   const choices = {
@@ -48,7 +64,7 @@ function SettingsForm({ initial }: { initial: Values }) {
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending.current || !changed.length) return;
+    if (pending.current || !changes.length) return;
     pending.current = true;
     setBusy(true);
     setNotice('');
@@ -56,11 +72,9 @@ function SettingsForm({ initial }: { initial: Values }) {
     try {
       const result = await api<Values>(endpoint, {
         method: 'POST',
-        body: JSON.stringify(
-          Object.fromEntries(changed.map(([key]) => [key, draft[key] ?? '']))
-        ),
+        body: JSON.stringify(Object.fromEntries(changes)),
       });
-      if (changed.some(([key]) => (result[key] ?? '') !== (draft[key] ?? '')))
+      if (changes.some(([key, value]) => result[key] !== value))
         throw new Error('Could not confirm the saved discovery settings.');
       setSaved(result);
       setDraft(result);
@@ -125,11 +139,28 @@ function SettingsForm({ initial }: { initial: Values }) {
             </label>
           );
         })}
+        {visibility.map(([key, label]) => (
+          <label className="set cfg-row" key={key}>
+            <b>{label}</b>
+            <input
+              type="checkbox"
+              aria-label={label}
+              checked={draft[key] === true}
+              disabled={busy}
+              onChange={(event) => {
+                const checked = event.target.checked;
+                setDraft((current) => ({ ...current, [key]: checked }));
+                setNotice('');
+                setFailure('');
+              }}
+            />
+          </label>
+        ))}
       </div>
       <div className="toolbar">
         <button
           className="btn btn-tonal btn-sm"
-          disabled={busy || !changed.length}
+          disabled={busy || !changes.length}
         >
           Save Discovery Region Settings
         </button>

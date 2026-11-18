@@ -110,6 +110,9 @@ export async function cachedApi<T>(path: string): Promise<T> {
 }
 
 export interface PublicSettings {
+  hideAvailable?: boolean;
+  hideRequested?: boolean;
+  hideBlocklisted?: boolean;
   youtubeUrl?: string;
   initialized?: boolean;
   versionCheck?: boolean;

@@ -1337,6 +1337,7 @@ const parseMainSettingsBody = (
 
   for (const [key, fieldName] of [
     ['hideAvailable', 'hideAvailable'],
+    ['hideRequested', 'hideRequested'],
     ['hideBlocklisted', 'hideBlocklisted'],
     ['localLogin', 'localLogin'],
     ['mediaServerLogin', 'mediaServerLogin'],

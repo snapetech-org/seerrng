@@ -974,6 +974,22 @@ describe('Settings route input validation', () => {
     assert.strictEqual(saveMock.mock.callCount(), 0);
   });
 
+  it('persists the hide-requested discovery setting', async () => {
+    const settings = getSettings();
+    const original = settings.main.hideRequested;
+    mock.method(settings, 'save', async () => undefined);
+    try {
+      const updated = await request(app)
+        .post('/settings/main')
+        .send({ hideRequested: !original });
+      assert.strictEqual(updated.status, 200);
+      assert.strictEqual(updated.body.hideRequested, !original);
+      assert.strictEqual(settings.main.hideRequested, !original);
+    } finally {
+      settings.main.hideRequested = original;
+    }
+  });
+
   it('allows trailing slashes for YouTube URLs but not the application URL', async () => {
     const settings = getSettings();
     const originalUrls = {
