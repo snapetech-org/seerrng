@@ -1,7 +1,13 @@
 import { useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
@@ -164,44 +170,98 @@ function IssueList() {
   );
 }
 
+type IssueAction =
+  | { kind: 'comment' | 'resolved' | 'open' | 'delete-issue' }
+  | { kind: 'edit-comment' | 'delete-comment'; commentId: number };
+
 function Discussion({ id }: { id: number }) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const path = '/issue/' + id;
   const { data, error, reload, refresh } = useApi<Issue>(path);
   const [message, setMessage] = useState('');
+  const [edit, setEdit] = useState<{ id: number; message: string }>();
+  const [confirmation, setConfirmation] = useState<
+    { kind: 'delete-issue' } | { kind: 'delete-comment'; commentId: number }
+  >();
   const [failure, setFailure] = useState('');
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
+  const canCreate = canCreateIssues(user?.permissions);
+  const manager = canManageIssues(user?.permissions);
   const editable =
+    !!data && (manager || (canCreate && data.createdBy.id === user?.id));
+  const canDeleteIssue =
     !!data &&
-    (canManageIssues(user?.permissions) ||
-      (canCreateIssues(user?.permissions) && data.createdBy.id === user?.id));
+    (manager ||
+      (editable && Array.isArray(data.comments) && data.comments.length <= 1));
 
-  async function submit(action: 'comment' | 'resolved' | 'open') {
-    if (
-      !editable ||
-      submitting.current ||
-      (action === 'comment' && !message.trim())
-    )
-      return;
+  async function submit(action: IssueAction) {
+    if (!data || submitting.current) return;
+    let endpoint: string;
+    let init: RequestInit;
+    switch (action.kind) {
+      case 'comment':
+      case 'resolved':
+      case 'open':
+        if (!editable || (action.kind === 'comment' && !message.trim())) return;
+        endpoint = `${path}/${action.kind}`;
+        init = {
+          method: 'POST',
+          ...(action.kind === 'comment'
+            ? { body: JSON.stringify({ message: message.trim() }) }
+            : {}),
+        };
+        break;
+      case 'edit-comment':
+      case 'delete-comment': {
+        const commentIndex =
+          data.comments?.findIndex(
+            (comment) => comment.id === action.commentId
+          ) ?? -1;
+        const comment = data.comments?.[commentIndex];
+        if (!comment) return;
+        const author = canCreate && comment.user?.id === user?.id;
+        endpoint = `/issueComment/${comment.id}`;
+        if (action.kind === 'edit-comment') {
+          if (!author || edit?.id !== comment.id || !edit.message.trim())
+            return;
+          init = {
+            method: 'PUT',
+            body: JSON.stringify({ message: edit.message.trim() }),
+          };
+        } else {
+          if (commentIndex === 0 || (!author && !manager)) return;
+          init = { method: 'DELETE' };
+        }
+        break;
+      }
+      case 'delete-issue':
+        if (!canDeleteIssue) return;
+        endpoint = path;
+        init = { method: 'DELETE' };
+        break;
+    }
+
     submitting.current = true;
     setBusy(true);
     setFailure('');
     try {
-      await api<Issue>(`${path}/${action}`, {
-        method: 'POST',
-        ...(action === 'comment'
-          ? { body: JSON.stringify({ message: message.trim() }) }
-          : {}),
-      });
-      if (action === 'comment') setMessage('');
+      await api(endpoint, init);
+      if (action.kind === 'delete-issue') {
+        navigate('/issues', { replace: true });
+        return;
+      }
+      if (action.kind === 'comment') setMessage('');
+      if (action.kind === 'edit-comment') setEdit(undefined);
+      refresh();
     } catch {
       reload();
       setFailure(
         'Could not confirm the update. Check the discussion before trying again.'
       );
     } finally {
-      refresh();
+      setConfirmation(undefined);
       submitting.current = false;
       setBusy(false);
     }
@@ -229,6 +289,35 @@ function Discussion({ id }: { id: number }) {
           Loading issue…
         </p>
       )}
+      {failure && (
+        <p className="note" role="alert">
+          {failure}
+        </p>
+      )}
+      {confirmation && (
+        <ConfirmSheet
+          title={
+            confirmation.kind === 'delete-issue'
+              ? 'Delete this issue?'
+              : 'Delete this comment?'
+          }
+          body={
+            confirmation.kind === 'delete-issue'
+              ? 'The report and its discussion will be permanently removed.'
+              : 'This comment will be permanently removed.'
+          }
+          confirm={
+            confirmation.kind === 'delete-issue'
+              ? 'Delete Issue'
+              : 'Delete Comment'
+          }
+          busy={busy}
+          onConfirm={() => void submit(confirmation)}
+          onClose={() => {
+            if (!submitting.current) setConfirmation(undefined);
+          }}
+        />
+      )}
       {data && (
         <>
           <div className="toolbar">
@@ -250,10 +339,19 @@ function Discussion({ id }: { id: number }) {
                 className="btn btn-quiet btn-sm"
                 disabled={busy}
                 onClick={() =>
-                  void submit(data.status === 2 ? 'open' : 'resolved')
+                  void submit({ kind: data.status === 2 ? 'open' : 'resolved' })
                 }
               >
                 {data.status === 2 ? 'Reopen Issue' : 'Resolve Issue'}
+              </button>
+            )}
+            {canDeleteIssue && (
+              <button
+                className="btn btn-quiet btn-sm"
+                disabled={busy}
+                onClick={() => setConfirmation({ kind: 'delete-issue' })}
+              >
+                Delete Issue
               </button>
             )}
           </div>
@@ -287,26 +385,108 @@ function Discussion({ id }: { id: number }) {
             )
           )}
           <ul className="setlist" aria-label="Issue Discussion">
-            {data.comments?.map((comment) => (
-              <li className="set" key={comment.id}>
-                <div>
-                  <b>{comment.user?.displayName ?? 'Reporter'}</b>
-                  <small>{timestamp(comment.createdAt)}</small>
-                  <p>{comment.message}</p>
-                </div>
-              </li>
-            ))}
+            {data.comments?.map((comment, index) => {
+              const author = canCreate && comment.user?.id === user?.id;
+              const editing = author && edit?.id === comment.id;
+              return (
+                <li className="set" key={comment.id}>
+                  <div>
+                    <b>{comment.user?.displayName ?? 'Reporter'}</b>
+                    <small>{timestamp(comment.createdAt)}</small>
+                    {editing ? (
+                      <form
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          void submit({
+                            kind: 'edit-comment',
+                            commentId: comment.id,
+                          });
+                        }}
+                      >
+                        <textarea
+                          className="cfg-json"
+                          aria-label={
+                            index === 0
+                              ? 'Edit Issue Description'
+                              : 'Edit Comment'
+                          }
+                          rows={4}
+                          maxLength={10000}
+                          value={edit.message}
+                          disabled={busy}
+                          onChange={(event) =>
+                            setEdit({
+                              id: comment.id,
+                              message: event.target.value,
+                            })
+                          }
+                        />
+                        <div className="toolbar">
+                          <button
+                            type="button"
+                            className="btn btn-quiet btn-sm"
+                            disabled={busy}
+                            onClick={() => setEdit(undefined)}
+                          >
+                            Cancel Edit
+                          </button>
+                          <button
+                            className="btn btn-tonal btn-sm"
+                            disabled={
+                              busy ||
+                              !edit.message.trim() ||
+                              edit.message.trim() === comment.message
+                            }
+                          >
+                            Save Edit
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <p>{comment.message}</p>
+                    )}
+                  </div>
+                  {!editing && (author || (index > 0 && manager)) && (
+                    <div className="toolbar">
+                      {author && (
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          disabled={busy || !!edit}
+                          onClick={() =>
+                            setEdit({
+                              id: comment.id,
+                              message: comment.message,
+                            })
+                          }
+                        >
+                          {index === 0 ? 'Edit Description' : 'Edit Comment'}
+                        </button>
+                      )}
+                      {index > 0 && (author || manager) && (
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          disabled={busy || !!edit}
+                          onClick={() =>
+                            setConfirmation({
+                              kind: 'delete-comment',
+                              commentId: comment.id,
+                            })
+                          }
+                        >
+                          Delete Comment
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
-          {failure && (
-            <p className="note" role="alert">
-              {failure}
-            </p>
-          )}
           {editable && (
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                void submit('comment');
+                void submit({ kind: 'comment' });
               }}
             >
               <textarea

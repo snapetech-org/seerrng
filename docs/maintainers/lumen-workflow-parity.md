@@ -209,3 +209,19 @@ a report with a synthetic API that accepted only the exact internal media ID,
 type, quality, and description. The native comparison, mobile and bundled
 layouts, and other media branches remain visually unverified. Reporting on
 behalf of another user and editing or deleting reports and comments remain open.
+
+### Issue editing and deletion increment
+
+Authors with report permissions can edit their own descriptions and replies.
+Managers can remove replies from other users, and eligible authors can remove
+their own replies. The original description belongs to the report and is
+removed through the issue deletion action. Managers can delete any issue and
+reporters can delete their own issues when there are no replies. Both deletion
+actions use the shared confirmation sheet and existing client and server
+permission checks.
+
+Headed Chrome at 1440 × 1000 compared the baseline and candidate on the same
+standalone discussion fixture. Editing the description, confirming a manager's
+deletion of another account's reply, and confirming issue deletion all worked.
+Mobile and bundled visual checks remain open. Reporting on behalf of another
+user, advanced filters and title metadata, and Blocklist remain open.
