@@ -1878,3 +1878,27 @@ test('series release dates use first-air bounds and clear independently', async 
   await page.getByRole('button', { name: 'Clear Release Dates' }).click();
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
+
+test('movie runtime filters use minute bounds and clear independently', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/movies?genre=18');
+  await page.getByLabel('Minimum Runtime (Minutes)').fill('90');
+  await page.getByLabel('Maximum Runtime (Minutes)').fill('120');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('withRuntimeGte') === '90' &&
+      url.searchParams.get('withRuntimeLte') === '120' &&
+      url.searchParams.get('genre') === '18'
+    );
+  });
+  await page.getByRole('button', { name: 'Apply Runtime' }).click();
+  await query;
+  await page.reload();
+  await expect(page.getByLabel('Maximum Runtime (Minutes)')).toHaveValue('120');
+  await page.getByRole('button', { name: 'Clear Runtime' }).click();
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});

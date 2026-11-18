@@ -39,30 +39,47 @@ function dateBound(value: string | null) {
     : '';
 }
 
+function runtimeBound(value: string | null) {
+  return value && /^\d{1,9}$/.test(value) ? value : '';
+}
+
 function RangeFilter({
-  dates = false,
+  kind = 'rating',
   min,
   max,
   apply,
 }: {
-  dates?: boolean;
+  kind?: 'rating' | 'dates' | 'runtime';
   min: string;
   max: string;
   apply: (min: string, max: string) => void;
 }) {
   const [low, setLow] = useState(min);
   const [high, setHigh] = useState(max);
-  const normalize = dates ? dateBound : ratingBound;
+  const dates = kind === 'dates';
+  const runtime = kind === 'runtime';
+  const normalize = dates ? dateBound : runtime ? runtimeBound : ratingBound;
   const reversed =
     !!low && !!high && (dates ? low > high : Number(low) > Number(high));
-  const name = dates ? 'Release Dates' : 'Rating';
+  const name = dates ? 'Release Dates' : runtime ? 'Runtime' : 'Rating';
   const inputProps = dates
     ? { type: 'date' }
-    : { type: 'number', min: '0', max: '10', step: '0.1' };
+    : {
+        type: 'number',
+        min: '0',
+        max: runtime ? '999999999' : '10',
+        step: runtime ? '1' : '0.1',
+      };
   return (
     <form
       className="toolbar"
-      aria-label={dates ? 'Release Date Filter' : 'TMDB Rating Filter'}
+      aria-label={
+        dates
+          ? 'Release Date Filter'
+          : runtime
+            ? 'Runtime Filter'
+            : 'TMDB Rating Filter'
+      }
       onSubmit={(event) => {
         event.preventDefault();
         if (!reversed) apply(normalize(low), normalize(high));
@@ -70,7 +87,11 @@ function RangeFilter({
     >
       <label className="sel">
         <span className="lbl">
-          {dates ? 'Released On or After' : 'Minimum Rating'}
+          {dates
+            ? 'Released On or After'
+            : runtime
+              ? 'Minimum Runtime (Minutes)'
+              : 'Minimum Rating'}
         </span>
         <input
           className="cfg-input"
@@ -81,7 +102,11 @@ function RangeFilter({
       </label>
       <label className="sel">
         <span className="lbl">
-          {dates ? 'Released On or Before' : 'Maximum Rating'}
+          {dates
+            ? 'Released On or Before'
+            : runtime
+              ? 'Maximum Runtime (Minutes)'
+              : 'Maximum Rating'}
         </span>
         <input
           className="cfg-input"
@@ -110,7 +135,9 @@ function RangeFilter({
         <p className="note" role="alert">
           {dates
             ? 'Start date must be on or before the end date.'
-            : 'Minimum rating must be at or below maximum rating.'}
+            : runtime
+              ? 'Minimum runtime must be at or below maximum runtime.'
+              : 'Minimum rating must be at or below maximum rating.'}
         </p>
       )}
     </form>
@@ -154,6 +181,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const start = dateBound(p.get(startKey));
   const end = dateBound(p.get(endKey));
   const validDates = !start || !end || start <= end;
+  const minRuntime = runtimeBound(p.get('withRuntimeGte'));
+  const maxRuntime = runtimeBound(p.get('withRuntimeLte'));
+  const validRuntime =
+    !minRuntime || !maxRuntime || Number(minRuntime) <= Number(maxRuntime);
   const minRating = ratingBound(p.get('voteAverageGte'));
   const maxRating = ratingBound(p.get('voteAverageLte'));
   const validRatingRange =
@@ -188,6 +219,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(validRuntime && minRuntime ? { withRuntimeGte: minRuntime } : {}),
+    ...(validRuntime && maxRuntime ? { withRuntimeLte: maxRuntime } : {}),
     ...(validDates && start ? { [startKey]: start } : {}),
     ...(validDates && end ? { [endKey]: end } : {}),
     ...(status
@@ -441,7 +474,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         />
       )}
       <RangeFilter
-        dates
+        kind="dates"
         key={`dates:${start}:${end}`}
         min={start}
         max={end}
@@ -464,6 +497,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           else next.delete('voteAverageGte');
           if (max) next.set('voteAverageLte', max);
           else next.delete('voteAverageLte');
+          setP(next, { replace: true });
+        }}
+      />
+      <RangeFilter
+        kind="runtime"
+        key={`runtime:${minRuntime}:${maxRuntime}`}
+        min={minRuntime}
+        max={maxRuntime}
+        apply={(min, max) => {
+          const next = new URLSearchParams(p);
+          if (min) next.set('withRuntimeGte', min);
+          else next.delete('withRuntimeGte');
+          if (max) next.set('withRuntimeLte', max);
+          else next.delete('withRuntimeLte');
           setP(next, { replace: true });
         }}
       />

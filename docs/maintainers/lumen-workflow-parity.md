@@ -1037,3 +1037,8 @@ dates for movies and first-air dates for series. The standalone fixture
 verified reversed-range validation, exact Series query bounds, reload, and
 independent reset across four viewport presets. Movie live results and
 bundled and native visual comparisons remain open.
+
+Movies and Series now support runtime bounds in minutes. The standalone
+Movie fixture verified the exact server bounds, reload and independent
+reset across four viewport presets. Existing release-date and rating
+checks also passed. Live results and bundled and native visuals remain open.
