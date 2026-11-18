@@ -425,13 +425,25 @@ function workflowDeepLink(
   const profile = /^\/users\/([1-9]\d{0,9})$/.exec(nativePath)?.[1];
   if (profile && Number(profile) <= 1_000_000_000)
     return `/lumen/household/${profile}`;
-  if (userDestination && userWorkflow === 'requests') {
-    const query = new URLSearchParams({ requestedBy: userId });
+  if (
+    nativePath === '/requests' ||
+    nativePath === '/requests/status' ||
+    (userDestination && userWorkflow === 'requests')
+  ) {
+    const query = new URLSearchParams();
+    const requester = userId ?? req.query.userId ?? req.query.requestedBy;
+    if (
+      typeof requester === 'string' &&
+      /^[1-9]\d{0,9}$/.test(requester) &&
+      Number(requester) <= 1_000_000_000
+    ) {
+      query.set('requestedBy', requester);
+    }
     for (const [source, target] of [
       ['filter', 'show'],
       ['mediaType', 'mediaType'],
     ]) {
-      const value = req.query[source];
+      const value = req.query[source] ?? req.query[target];
       if (
         typeof value === 'string' &&
         /^[a-z]+$/.test(value) &&
@@ -440,7 +452,8 @@ function workflowDeepLink(
         query.set(target, value);
       }
     }
-    return `/lumen/requests?${query}`;
+    const suffix = query.toString();
+    return `/lumen/requests${suffix ? `?${suffix}` : ''}`;
   }
 
   const userWatchlist = userDestination && userWorkflow === 'watchlist';
