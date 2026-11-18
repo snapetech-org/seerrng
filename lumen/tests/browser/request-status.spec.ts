@@ -473,3 +473,37 @@ test('available request history finds download copies on demand and links the se
   await expect(file).toHaveAttribute('download', '');
   expect(lookups).toBe(1);
 });
+
+test('a bookmarked TV request shows its season and episode selection', async ({
+  page,
+}) => {
+  await fixture(page, undefined);
+  await page.route('**/api/v1/request/status/615', (route) =>
+    route.fulfill({
+      json: {
+        request: {
+          id: 615,
+          type: 'tv',
+          status: 1,
+          is4k: true,
+          requestedBy: { id: 1, displayName: 'Reader' },
+          media: { mediaType: 'tv', tmdbId: 22, status: 1 },
+          seasons: [
+            { seasonNumber: 0, episodeNumbers: [2] },
+            { seasonNumber: 2, episodeNumbers: [3, 5] },
+            { seasonNumber: 4 },
+          ],
+        },
+        current: { stage: 'requested', attempt: 1 },
+        history: { results: [], total: 0 },
+      },
+    })
+  );
+  await page.goto('/requests?requestId=615');
+  const seasons = page.getByRole('list', { name: 'Requested seasons' });
+  await expect(seasons.getByRole('listitem')).toHaveText([
+    /Specials.*Episodes 2/,
+    /Season 2.*Episodes 3, 5/,
+    /Season 4.*All episodes/,
+  ]);
+});

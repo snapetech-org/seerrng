@@ -209,6 +209,24 @@ export default function RequestHistorySheet({
           {data && (
             <>
               <RequestProgress current={data.current} />
+              {request?.type === 'tv' && !!request.seasons?.length && (
+                <ul className="setlist" aria-label="Requested seasons">
+                  {request.seasons.map(({ seasonNumber, episodeNumbers }) => (
+                    <li className="set" key={seasonNumber}>
+                      <b>
+                        {seasonNumber === 0
+                          ? 'Specials'
+                          : `Season ${seasonNumber}`}
+                      </b>
+                      <small>
+                        {episodeNumbers?.length
+                          ? `Episodes ${episodeNumbers.join(', ')}`
+                          : 'All episodes'}
+                      </small>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {data.request?.status === 1 && data.request.quotaException && (
                 <Pill k="wait">Over Quota</Pill>
               )}
