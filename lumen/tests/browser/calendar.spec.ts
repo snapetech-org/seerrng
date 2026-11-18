@@ -102,7 +102,12 @@ for (const permissions of [2, 32]) {
     await page.getByLabel('Media Type').selectOption('book');
     if (permissions === 2) {
       await page.getByLabel('Scope').selectOption('all');
-      await page.getByLabel('Include Unmonitored Titles').check();
+      await page
+        .getByRole('checkbox', { name: 'Include Unmonitored Titles' })
+        .click();
+      await expect(
+        page.getByRole('checkbox', { name: 'Include Unmonitored Titles' })
+      ).toBeChecked();
     } else {
       await expect(page.getByLabel('Scope')).toHaveCount(0);
       await expect(page.getByLabel('Include Unmonitored Titles')).toHaveCount(
@@ -118,6 +123,32 @@ for (const permissions of [2, 32]) {
         scope: permissions === 2 ? 'all' : 'mine',
         includeUnmonitored: String(permissions === 2),
       });
+    await page.goto(
+      '/calendar?month=2026-02&mediaType=tv&scope=all&includeUnmonitored=true'
+    );
+    await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
+      '2026-02'
+    );
+    await expect(
+      page.getByRole('combobox', { name: 'Media Type' })
+    ).toHaveValue('tv');
+    await expect
+      .poll(() => Object.fromEntries(queries.at(-1) ?? []))
+      .toMatchObject({
+        start: '2026-02-01',
+        end: '2026-03-01',
+        mediaType: 'tv',
+        scope: permissions === 2 ? 'all' : 'mine',
+        includeUnmonitored: String(permissions === 2),
+      });
+    await page.getByRole('button', { name: 'Next Month' }).click();
+    await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
+      '2026-03'
+    );
+    await page.goBack();
+    await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
+      '2026-02'
+    );
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);

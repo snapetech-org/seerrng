@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { bookDetailPath, videoDetailPath } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
@@ -231,16 +231,31 @@ export default function Calendar() {
   const { user } = useAuth();
   const admin = isAdministrator(user?.permissions);
   const canSeeAll = canViewAllRequests(user?.permissions);
-  const [month, setMonth] = useState(() => monthValue(new Date()));
-  const [scope, setScope] = useState('mine');
-  const [medium, setMedium] = useState('');
-  const [unmonitored, setUnmonitored] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const bookmarkedMonth = params.get('month') ?? '';
+  const month =
+    /^\d{4}-(0[1-9]|1[0-2])$/.test(bookmarkedMonth) &&
+    bookmarkedMonth >= FIRST_MONTH &&
+    bookmarkedMonth <= LAST_MONTH
+      ? bookmarkedMonth
+      : monthValue(new Date());
+  const scope = canSeeAll && params.get('scope') === 'all' ? 'all' : 'mine';
+  const medium =
+    MEDIA.find(([value]) => value === params.get('mediaType'))?.[0] ?? '';
+  const unmonitored = admin && params.get('includeUnmonitored') === 'true';
+  function update(key: string, value: string) {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next);
+  }
+  const setMonth = (value: string) => update('month', value);
   const query = new URLSearchParams({
     start: `${month}-01`,
     end: `${moveMonth(month, 1)}-01`,
-    scope: canSeeAll ? scope : 'mine',
+    scope,
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    includeUnmonitored: String(admin && unmonitored),
+    includeUnmonitored: String(unmonitored),
   });
   if (medium) query.set('mediaType', medium);
   const path = `/calendar?${query}`;
@@ -288,7 +303,9 @@ export default function Calendar() {
             <span className="lbl">Scope</span>
             <select
               value={scope}
-              onChange={(event) => setScope(event.target.value)}
+              onChange={(event) =>
+                update('scope', event.target.value === 'all' ? 'all' : '')
+              }
             >
               <option value="mine">My Requests</option>
               <option value="all">All Monitored Releases</option>
@@ -299,7 +316,7 @@ export default function Calendar() {
           <span className="lbl">Media Type</span>
           <select
             value={medium}
-            onChange={(event) => setMedium(event.target.value)}
+            onChange={(event) => update('mediaType', event.target.value)}
           >
             {MEDIA.map(([value, title]) => (
               <option key={value} value={value}>
@@ -313,7 +330,9 @@ export default function Calendar() {
             <input
               type="checkbox"
               checked={unmonitored}
-              onChange={(event) => setUnmonitored(event.target.checked)}
+              onChange={(event) =>
+                update('includeUnmonitored', event.target.checked ? 'true' : '')
+              }
             />
             Include Unmonitored Titles
           </label>
