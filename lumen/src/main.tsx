@@ -39,6 +39,7 @@ import ProviderDiscovery from './pages/ProviderDiscovery';
 import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
 import Search from './pages/Search';
+import Share from './pages/Share';
 import Soon from './pages/Soon';
 import { Adult, LeagueDetail, SceneDetail, Sports } from './pages/Sports';
 import TmdbList from './pages/TmdbList';
@@ -102,6 +103,7 @@ function App() {
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
+          <Route path="/share" element={<Share />} />
           <Route path="/trending" element={<Trending />} />
           <Route
             path="/associations/:mediaType/:id"

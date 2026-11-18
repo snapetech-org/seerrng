@@ -1479,3 +1479,16 @@ verified approval, decline, cancellation, recovery from concurrent review,
 self-review restrictions, and manager-only queue access on desktop, iPhone,
 Android, and tablet. Live accounts, bundled rendering, and matched native
 visual comparison remain open.
+
+### Share text and links
+
+Discover opens Lumen's Share page for pasted titles, links, and ISBNs.
+Text from Share bookmarks pre-fills the form. The existing recognition
+endpoint returns candidate groups, and confirmed requestable matches use
+the same request payloads as native SeerrNG. Successful rows stay marked
+when another selected request fails.
+
+TypeScript, the standalone build, and browser fixtures passed for bookmarked
+text, exact series navigation, explicit submission, and all-season selection
+across four presets. Image recognition, the OS Share Target, live recognition,
+bundled execution, and matched native visual comparison remain open.

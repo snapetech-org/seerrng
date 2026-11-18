@@ -3642,3 +3642,59 @@ test('TV access review confirms a decision and respects manager permissions', as
   ).toHaveCount(0);
   expect(reads).toBe(managerReads);
 });
+
+test('Share opens a recognized title and requests the selected seasons', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const requests: unknown[] = [];
+  await page.route('**/api/v1/resolve/capabilities', (route) =>
+    route.fulfill({ json: { enabled: true } })
+  );
+  await page.route('**/api/v1/resolve', (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      text: 'Example Series',
+      formatHint: 'ebook',
+    });
+    return route.fulfill({
+      json: {
+        groups: [
+          {
+            input: 'Example Series',
+            autoSelected: 0,
+            candidates: [
+              {
+                mediaType: 'tv',
+                id: '42',
+                title: 'Example Series',
+                evidence: 'Title match',
+              },
+            ],
+          },
+        ],
+      },
+    });
+  });
+  await page.route('**/api/v1/request', (route) => {
+    requests.push(route.request().postDataJSON());
+    return route.fulfill({ json: { id: 1 } });
+  });
+
+  await page.goto('/share?title=Example+Series');
+  await expect(page.getByLabel('Titles, links, or ISBNs')).toHaveValue(
+    'Example Series'
+  );
+  await page.getByRole('button', { name: 'Find Matches' }).click();
+  await expect(page.getByRole('link', { name: 'Open Title' })).toHaveAttribute(
+    'href',
+    '/tv/42'
+  );
+  await page.getByLabel('Series Seasons').selectOption('all');
+  expect(requests).toHaveLength(0);
+  await page.getByRole('button', { name: 'Request Selected (1)' }).click();
+  await expect(page.getByText('Submitted 1 request.')).toBeVisible();
+  expect(requests).toEqual([{ mediaType: 'tv', mediaId: 42, seasons: 'all' }]);
+  await expect(
+    page.getByRole('button', { name: 'Request Selected' })
+  ).toHaveCount(0);
+});
