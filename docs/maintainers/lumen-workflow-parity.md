@@ -1519,6 +1519,13 @@ after saving. Both browser runs used API fixtures. A separate route test
 verified that local sessions enforce curator access and that authorized
 writes persist both link types in SQLite. Live catalog lookup remains open.
 
+The Franchise explorer can browse a related anime by its AniList ID
+while keeping the catalog search available. Standalone and bundled
+browser fixtures verified the link. A separate live provider check
+resolved Naruto to its sequel and opened the sequel's franchise using
+the exact returned ID. The live check used isolated SQLite storage and
+exercised the server lookup directly. Matched visual review remains open.
+
 ### Provider Discovery
 
 Discover links to Lumen's Trakt, AniList, and MDBList feeds. Feed and
