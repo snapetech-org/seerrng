@@ -49,3 +49,11 @@ workspace checks to the outbound request. The callback requires HTTPS,
 the exact Slack webhook host, and an actions path. It rejects credentials
 and custom ports, validates the address on a direct connection, and
 disables redirects.
+
+## Swipe AI ranking
+
+Dismissed alert 626 after tracing the provider destination to persisted
+administrator settings and the administrator-only connection test.
+Member requests use the configured endpoint. Local inference servers
+are supported, and the runtime refuses redirects. All 13 focused
+ranking and settings tests passed, including the redirect check.
