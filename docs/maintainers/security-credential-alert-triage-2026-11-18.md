@@ -57,3 +57,12 @@ administrator settings and the administrator-only connection test.
 Member requests use the configured endpoint. Local inference servers
 are supported, and the runtime refuses redirects. All 13 focused
 ranking and settings tests passed, including the redirect check.
+
+## Configurable notification destinations
+
+Dismissed alerts 622–625 for Discord, Gotify, ntfy, and Slack.
+Saving and testing each destination requires administrator permission.
+The agents validate the URL and share request options that enforce
+guarded DNS on direct connections and reject cross-origin redirects.
+Private addresses require the operator's explicit environment opt-in.
+All 57 focused notification and security tests passed.
