@@ -17,7 +17,9 @@ type Channel =
   | 'pushover'
   | 'gotify'
   | 'ntfy'
-  | 'apprise';
+  | 'apprise'
+  | 'discord'
+  | 'slack';
 type Configuration = {
   enabled: boolean;
   embedPoster: boolean;
@@ -33,6 +35,8 @@ const titles = {
   gotify: 'Gotify',
   ntfy: 'ntfy',
   apprise: 'Apprise',
+  discord: 'Discord',
+  slack: 'Slack',
 };
 const redacted = '[REDACTED]';
 const emailFields = [
@@ -66,6 +70,21 @@ const tokenField = {
   label: 'Access Token',
   kind: 'password',
 } as const;
+
+const webhookField = {
+  key: 'webhookUrl',
+  label: 'Webhook URL',
+  kind: 'password',
+} as const;
+const slackActionFields = [
+  { key: 'workspaceId', label: 'Slack Workspace ID', kind: 'text' },
+  { key: 'signingSecret', label: 'Slack Signing Secret', kind: 'password' },
+  {
+    key: 'requestManagerMappings',
+    label: 'Request Manager Mappings',
+    kind: 'multiline',
+  },
+] as const;
 
 const fields = {
   email: emailFields,
@@ -102,6 +121,15 @@ const fields = {
     { key: 'tag', label: 'Tag', kind: 'text' },
     localeField,
   ],
+  discord: [
+    webhookField,
+    { key: 'botUsername', label: 'Bot Username', kind: 'text' },
+    { key: 'botAvatarUrl', label: 'Bot Avatar URL', kind: 'url' },
+    { key: 'webhookRoleId', label: 'Role ID', kind: 'text' },
+    { key: 'webhookThreadId', label: 'Thread ID', kind: 'text' },
+    localeField,
+  ],
+  slack: [webhookField, localeField],
 } as const;
 const required = {
   telegram: ['botAPI', 'chatId'],
@@ -110,6 +138,8 @@ const required = {
   gotify: ['url', 'token'],
   ntfy: ['url', 'topic'],
   apprise: ['url', 'configKey'],
+  discord: ['webhookUrl'],
+  slack: ['webhookUrl'],
 } as const;
 
 function AgentForm({
@@ -155,6 +185,15 @@ function AgentForm({
   const appriseKeyValid =
     channel !== 'apprise' ||
     /^[A-Za-z0-9_-]{1,64}$/.test(String(options.configKey ?? ''));
+  const slackActions =
+    channel === 'slack' && options.requestActionsEnabled === true;
+  const slackActionsValid =
+    !slackActions ||
+    Boolean(
+      options.workspaceId &&
+      options.signingSecret &&
+      options.requestManagerMappings
+    );
   const valid = eventChannel
     ? authValid &&
       priorityValid &&
@@ -191,7 +230,7 @@ function AgentForm({
   async function submit(test: boolean) {
     if (
       pending.current ||
-      (!test && !changed) ||
+      (!test && (!changed || !slackActionsValid)) ||
       (!valid && (test || draft.enabled)) ||
       (!test && draft.enabled && eventChannel && !draft.types)
     )
@@ -269,6 +308,7 @@ function AgentForm({
         ))}
         {[
           ...fields[channel],
+          ...(slackActions ? slackActionFields : []),
           ...(supportsAuth && authMode === 'password' ? userFields : []),
           ...(channel === 'ntfy' && authMode === 'token' ? [tokenField] : []),
         ].map(({ key, label, kind }) => {
@@ -292,12 +332,14 @@ function AgentForm({
                   </small>
                 )}
               </span>
-              {kind === 'secret-multiline' ? (
+              {kind === 'secret-multiline' || kind === 'multiline' ? (
                 <textarea
                   id={id}
                   className="cfg-input"
                   value={displayed}
-                  maxLength={128 * 1024}
+                  maxLength={
+                    kind === 'secret-multiline' ? 128 * 1024 : undefined
+                  }
                   disabled={busy}
                   onChange={(event) =>
                     setOptions({
@@ -372,6 +414,38 @@ function AgentForm({
               </label>
             ))}
           </>
+        )}
+        {channel === 'discord' &&
+          (
+            [
+              ['enableMentions', 'Enable Mentions'],
+              ['useUserLocale', 'Use the Recipient’s Locale'],
+            ] as const
+          ).map(([key, label]) => (
+            <label className="set cfg-row" key={key}>
+              <span>{label}</span>
+              <input
+                type="checkbox"
+                disabled={busy}
+                checked={options[key] === true}
+                onChange={(event) =>
+                  setOptions({ [key]: event.target.checked })
+                }
+              />
+            </label>
+          ))}
+        {channel === 'slack' && (
+          <label className="set cfg-row">
+            <span>Enable Request Approval Actions</span>
+            <input
+              type="checkbox"
+              disabled={busy}
+              checked={slackActions}
+              onChange={(event) =>
+                setOptions({ requestActionsEnabled: event.target.checked })
+              }
+            />
+          </label>
         )}
         {supportsAuth && (
           <label className="set cfg-row">
@@ -479,6 +553,13 @@ function AgentForm({
           )}
         </>
       )}
+      {slackActions && (
+        <p className="note">
+          Enter one Slack user ID=SeerrNG user ID mapping per line. Each mapped
+          user needs request management permission. Select Request awaiting
+          approval to include approval actions in notifications.
+        </p>
+      )}
       {!valid && channel === 'email' && (
         <p className="note">
           Enter a sender name and email, SMTP host, and port to enable or test
@@ -501,6 +582,7 @@ function AgentForm({
           disabled={
             busy ||
             !changed ||
+            !slackActionsValid ||
             (draft.enabled && (!valid || (eventChannel && !draft.types)))
           }
         >
@@ -566,6 +648,8 @@ export default function AdminNotifications() {
       <AgentSection channel="gotify" />
       <AgentSection channel="ntfy" />
       <AgentSection channel="apprise" />
+      <AgentSection channel="discord" />
+      <AgentSection channel="slack" />
       <AgentSection channel="webpush" />
     </>
   );

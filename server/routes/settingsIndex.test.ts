@@ -2642,6 +2642,7 @@ describe('Settings route input validation', () => {
         options: {
           webhookUrl: 'https://example.com/discord',
           botUsername: 'Seerr',
+          webhookThreadId: '123456789',
           enableMentions: false,
           locale: 'en',
           useUserLocale: false,
@@ -2673,6 +2674,7 @@ describe('Settings route input validation', () => {
     assert.deepStrictEqual(getSettings().notifications.agents.discord.options, {
       webhookUrl: 'https://example.com/discord',
       botUsername: 'Seerr',
+      webhookThreadId: '123456789',
       enableMentions: false,
       locale: 'en',
       useUserLocale: false,

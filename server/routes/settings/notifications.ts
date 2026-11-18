@@ -101,7 +101,13 @@ type WebhookUrlNotificationSchema = {
 };
 
 const DISCORD_NOTIFICATION_SCHEMA = {
-  stringOptions: ['botUsername', 'botAvatarUrl', 'webhookRoleId', 'locale'],
+  stringOptions: [
+    'botUsername',
+    'botAvatarUrl',
+    'webhookRoleId',
+    'webhookThreadId',
+    'locale',
+  ],
   booleanOptions: ['enableMentions', 'useUserLocale'],
 } as const satisfies WebhookUrlNotificationSchema;
 const SLACK_NOTIFICATION_SCHEMA = {

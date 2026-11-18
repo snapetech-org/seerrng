@@ -315,3 +315,100 @@ test('server notification channels save and test with their own options', async 
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await ntfy.screenshot({ path: info.outputPath('ntfy.png') });
 });
+
+test('Discord thread and Slack approval settings preserve saved secrets', async ({
+  page,
+}, info) => {
+  const calls: { path: string; body: unknown }[] = [];
+  const agents = {
+    discord: { webhookUrl: '[REDACTED]', locale: 'en', useUserLocale: true },
+    slack: {
+      webhookUrl: '[REDACTED]',
+      locale: 'en',
+      signingSecret: '[REDACTED]',
+    },
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    const prefix = '/settings/notifications/';
+    if (!path.startsWith(prefix)) return route.fulfill({ json: {} });
+    const name = path.slice(prefix.length);
+    const channel = name.split('/')[0] as keyof typeof agents;
+    if (request.method() === 'GET')
+      return route.fulfill({
+        json: {
+          enabled: false,
+          embedPoster: false,
+          types: 0,
+          options: agents[channel] ?? {},
+        },
+      });
+    const body = request.postDataJSON();
+    calls.push({ path: name, body });
+    return name.endsWith('/test')
+      ? route.fulfill({ status: 204 })
+      : route.fulfill({ json: body });
+  });
+  await page.goto('/admin/notifications');
+  const discord = page.locator('#discord');
+  await expect(discord.getByLabel('Webhook URL', { exact: true })).toHaveValue(
+    ''
+  );
+  await discord.getByLabel('Thread ID').fill('123456789');
+  await discord.getByRole('button', { name: 'Send Discord Test' }).click();
+  await expect(discord.getByText('Test notification sent.')).toBeVisible();
+  await discord.getByRole('button', { name: 'Save Discord' }).click();
+  await expect(discord.getByText('Notification settings saved.')).toBeVisible();
+
+  const slack = page.locator('#slack');
+  await slack.getByLabel('Enable Request Approval Actions').check();
+  const save = slack.getByRole('button', { name: 'Save Slack' });
+  await expect(save).toBeDisabled();
+  await expect(
+    slack.getByLabel('Slack Signing Secret', { exact: true })
+  ).toHaveValue('');
+  await slack.getByLabel('Slack Workspace ID').fill('T12345678');
+  await slack
+    .getByLabel('Request Manager Mappings')
+    .fill('U12345678=42\nU87654321=43');
+  await slack.getByLabel('Request awaiting approval').check();
+  await save.click();
+  await expect(slack.getByText('Notification settings saved.')).toBeVisible();
+
+  const discordPayload = {
+    enabled: false,
+    embedPoster: false,
+    types: 0,
+    options: { ...agents.discord, webhookThreadId: '123456789' },
+  };
+  expect(calls).toEqual([
+    { path: 'discord/test', body: { ...discordPayload, enabled: true } },
+    { path: 'discord', body: discordPayload },
+    {
+      path: 'slack',
+      body: {
+        enabled: false,
+        embedPoster: false,
+        types: 2,
+        options: {
+          ...agents.slack,
+          requestActionsEnabled: true,
+          workspaceId: 'T12345678',
+          requestManagerMappings: 'U12345678=42\nU87654321=43',
+        },
+      },
+    },
+  ]);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
+    await slack.screenshot({ path: info.outputPath('slack.png') });
+});

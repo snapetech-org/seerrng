@@ -90,3 +90,11 @@ Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliv
 Compared the new controls with the Telegram form at matching desktop, iPhone 13, Pixel 7, and iPad Pro 11 viewports. Inspected rows, credential masking, input and action wrapping, and horizontal overflow. The production build, twelve instance notification browser cases, and three native API cases passed. Browser deliveries used mocks.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-agents-20261118/`.
+
+## Discord and Slack follow-up — 2026-11-18
+
+`/admin/notifications` adds Discord and Slack configuration and draft tests, including Slack request approval actions. Saved webhook URLs and signing secrets remain redacted. The existing Discord API now retains thread IDs during save and test.
+
+Compared the rendered Slack form against the existing ntfy form on desktop, iPhone 13, Pixel 7, and iPad Pro 11, including credential rows, multiline settings, and event controls. The production build, 16 notification browser checks, and four Discord and Slack API tests passed. Delivery used mock endpoints, and no live Slack actions were invoked.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-chat-notifications-20261118/`.
