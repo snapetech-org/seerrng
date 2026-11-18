@@ -2885,3 +2885,11 @@ existing author and series bulk flow remains format-selectable. Thirty-six
 browser checks passed, including the exact audiobook edition payload and
 the existing bibliography bulk flow. Live service delivery and matched
 visual acceptance remain unverified.
+
+Books and Audiobooks link to series search with the current format
+selected. Goodreads monitoring entries link to a title search, and an
+exact Goodreads target returned by a library series can start monitoring.
+The request includes all linked books as required by the backend.
+Twenty-four browser checks passed across both deployments and four
+viewport presets. Live provider behavior and matched visual acceptance
+remain unverified.

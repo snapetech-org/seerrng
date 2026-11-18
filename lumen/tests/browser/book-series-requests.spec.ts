@@ -208,6 +208,11 @@ test('series search preserves format and opens the exact local variant', async (
             title: 'Local Fixture Series',
             serverName: 'Local Service',
             format: 'ebook',
+            watchTarget: {
+              serverId: 0,
+              scope: 'ebook:main',
+              providerId: 'gr:42',
+            },
             entries: [
               {
                 title: 'Local Book',
@@ -217,6 +222,18 @@ test('series search preserves format and opens the exact local variant', async (
             ],
           },
         });
+      case '/book-series/watch':
+        if (route.request().method() === 'POST') {
+          expect(route.request().postDataJSON()).toEqual({
+            serverId: 0,
+            scope: 'ebook:main',
+            providerId: 'gr:42',
+            includeExtras: true,
+          });
+          return route.fulfill({ json: { status: 'pending' } });
+        }
+        expect(url.searchParams.get('providerId')).toBe('gr:42');
+        return route.fulfill({ json: { supported: true } });
       default:
         return route.fulfill({ json: {} });
     }
@@ -246,4 +263,9 @@ test('series search preserves format and opens the exact local variant', async (
     'href',
     `${mount}/book/OL123W`
   );
+  await expect(
+    page.getByText(/Goodreads monitoring includes all linked books/)
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Request Monitoring' }).click();
+  await expect(page.getByText('Monitoring status: pending')).toBeVisible();
 });

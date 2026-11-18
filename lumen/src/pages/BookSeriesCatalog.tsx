@@ -25,11 +25,14 @@ type Catalog = {
   }[];
 };
 
-export function bookSeriesCatalogQuery(target: {
-  serverId: number | string;
-  scope: string;
-  providerId: string;
-}) {
+export function bookSeriesCatalogQuery(
+  target: {
+    serverId: number | string;
+    scope: string;
+    providerId: string;
+  },
+  monitoring = false
+) {
   const { serverId, scope, providerId } = target;
   const id = String(serverId);
   if (
@@ -37,14 +40,17 @@ export function bookSeriesCatalogQuery(target: {
     !Number.isSafeInteger(Number(id)) ||
     !scope ||
     scope.length > 256 ||
-    providerId.length > 128 ||
-    !/^hc:[1-9]\d*$/.test(providerId)
+    providerId.length > (monitoring ? 32 : 128) ||
+    (monitoring && Number(id) > 1_000_000_000) ||
+    !(monitoring ? /^(hc|gr):[1-9]\d*$/ : /^hc:[1-9]\d*$/).test(providerId)
   )
     return null;
   return new URLSearchParams({ serverId: id, scope, providerId }).toString();
 }
 
 function CatalogMonitoring({ query }: { query: string }) {
+  const params = new URLSearchParams(query);
+  const goodreads = params.get('providerId')?.startsWith('gr:') === true;
   const { user } = useAuth();
   const permissions = user?.permissions;
   const canRequest =
@@ -72,7 +78,6 @@ function CatalogMonitoring({ query }: { query: string }) {
     setBusy(true);
     setFailure('');
     const generation = sessionGeneration();
-    const params = new URLSearchParams(query);
     try {
       const result = await api<{ status: string }>('/book-series/watch', {
         method: 'POST',
@@ -80,7 +85,7 @@ function CatalogMonitoring({ query }: { query: string }) {
           serverId: Number(params.get('serverId')),
           scope: params.get('scope'),
           providerId: params.get('providerId'),
-          includeExtras,
+          includeExtras: goodreads || includeExtras,
         }),
       });
       if (generation === sessionGeneration()) setSubmittedStatus(result.status);
@@ -129,15 +134,24 @@ function CatalogMonitoring({ query }: { query: string }) {
                   Request ongoing monitoring for current and future books in
                   this catalog. Approval may be required.
                 </p>
-                <label className="set">
-                  Include Companion Books and Extras
-                  <input
-                    type="checkbox"
-                    checked={includeExtras}
-                    disabled={busy}
-                    onChange={(event) => setIncludeExtras(event.target.checked)}
-                  />
-                </label>
+                {goodreads ? (
+                  <p className="note">
+                    Goodreads monitoring includes all linked books because
+                    primary books are not classified.
+                  </p>
+                ) : (
+                  <label className="set">
+                    Include Companion Books and Extras
+                    <input
+                      type="checkbox"
+                      checked={includeExtras}
+                      disabled={busy}
+                      onChange={(event) =>
+                        setIncludeExtras(event.target.checked)
+                      }
+                    />
+                  </label>
+                )}
                 <button
                   className="btn btn-primary"
                   type="button"
@@ -188,8 +202,17 @@ export default function BookSeriesCatalog() {
       )
     ).values(),
   ];
+  const monitoringTarget =
+    data?.watchTarget ??
+    (query
+      ? {
+          serverId: params.get('serverId') ?? '',
+          scope: params.get('scope') ?? '',
+          providerId: params.get('providerId') ?? '',
+        }
+      : null);
   const monitoringQuery =
-    query ?? (data?.watchTarget && bookSeriesCatalogQuery(data.watchTarget));
+    monitoringTarget && bookSeriesCatalogQuery(monitoringTarget, true);
   return (
     <>
       <ExtraHeader

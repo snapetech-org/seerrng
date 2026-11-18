@@ -93,11 +93,22 @@ export default function BookSeriesRequests() {
       <ul className="setlist">
         {requests.data?.map((row) => {
           const catalog = row.target && bookSeriesCatalogQuery(row.target);
+          const search =
+            !catalog && row.target?.providerId.startsWith('gr:')
+              ? new URLSearchParams({
+                  query: row.title,
+                  format: row.format,
+                }).toString()
+              : null;
           return (
             <li className="set" key={row.id}>
               <div>
                 {catalog ? (
                   <Link to={`/book-series/catalog?${catalog}`}>
+                    <b>{row.title}</b>
+                  </Link>
+                ) : search ? (
+                  <Link to={`/book-series?${search}`}>
                     <b>{row.title}</b>
                   </Link>
                 ) : (
