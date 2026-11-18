@@ -2578,3 +2578,12 @@ iPhone 13, Pixel 7, and iPad Pro 11. Fixtures verify the mounted-series
 link, omission of a non-series destination, and Audiobookshelf and
 reader shelf behavior. Evidence is retained under
 `seerrng-lumen-reader-url*` in `/mnt/disks/scratch/task-deliverables/`.
+
+Shared detail headers, extra-category cards, and game screenshot galleries
+now pass artwork through the shared validator. A game can use its first
+valid screenshot as the backdrop even when the API's first entry is
+invalid. The production build and 40 browser checks passed. Compared
+software detail before and after on desktop, iPhone 13, Pixel 7, and iPad
+Pro 11. The fixture verifies valid proxy art and omission of unsupported
+image URLs. GitHub findings 654–657 remain open. Evidence is retained
+under `seerrng-lumen-rendered-art*` in `/mnt/disks/scratch/task-deliverables/`.

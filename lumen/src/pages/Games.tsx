@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, artUrl } from '../api';
 import { GridSkeleton, MoreOnScroll, type Stat } from '../components/cards';
 import { DetailTop, Facts, fmtHrs, Pill } from '../components/detail';
 import {
@@ -333,12 +333,19 @@ function GameDetailView({
       </button>
     );
 
+  const screenshots = [
+    ...new Set(
+      (Array.isArray(g.screenshots) ? g.screenshots : [])
+        .map(artUrl)
+        .filter((url): url is string => !!url)
+    ),
+  ].slice(0, 6);
   return (
     <ExtraGate k="game">
       <article className="detail">
         <DetailTop
           status={s}
-          backdrop={g.screenshots?.[0]}
+          backdrop={screenshots[0]}
           poster={g.coverUrl}
           title={g.title}
           line={[
@@ -414,9 +421,9 @@ function GameDetailView({
           <div className="dcols">
             <div style={{ display: 'grid', gap: 22 }}>
               {g.summary && <p className="ov">{g.summary}</p>}
-              {!!g.screenshots?.length && (
+              {!!screenshots.length && (
                 <div className="shots">
-                  {g.screenshots.slice(0, 6).map((u) => (
+                  {screenshots.map((u) => (
                     <img key={u} src={u} alt="" loading="lazy" />
                   ))}
                 </div>

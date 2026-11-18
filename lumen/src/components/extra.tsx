@@ -1,6 +1,11 @@
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { MediaStatus, type CardTitleKind, type MediaInfo } from '../api';
+import {
+  artUrl,
+  MediaStatus,
+  type CardTitleKind,
+  type MediaInfo,
+} from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useExtras, type Extra } from '../extras';
@@ -110,14 +115,15 @@ export function ExtraCard({
   pct?: number; // a download progress bar along the bottom of the art
 }) {
   const titleMode = useCardTitleMode(titleKind);
+  const safeImage = artUrl(img);
   return (
     <div
       className={`poster ${shape || ''}`}
-      data-title-mode={img ? titleMode : undefined}
+      data-title-mode={safeImage ? titleMode : undefined}
     >
       <div className="art">
-        {img ? (
-          <img loading="lazy" src={img} alt="" />
+        {safeImage ? (
+          <img loading="lazy" src={safeImage} alt="" />
         ) : (
           <span className="art-ph">
             <Icon name={icon} />

@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   api,
+  artUrl,
   tmdbImg,
   type Person,
   type ProductionCountry,
@@ -348,17 +349,21 @@ export function DetailTop({
   const [failed, setFailed] = useState<string[]>([]);
   const ok = (src?: string) => (src && !failed.includes(src) ? src : undefined);
   const drop = (src: string) => () => setFailed((f) => f.concat(src));
-  const hero = ok(backdrop) || ok(poster);
+  const safeBackdrop = artUrl(backdrop);
+  const safePoster = ok(artUrl(poster));
+  const hero = ok(safeBackdrop) || safePoster;
   return (
     <>
-      <div className={`dhero ${backdrop ? '' : 'blur'}`}>
+      <div className={`dhero ${safeBackdrop ? '' : 'blur'}`}>
         {hero && <img src={hero} alt="" onError={drop(hero)} />}
       </div>
       <div className="dtop">
         <div
           className={`dposter ${square ? 'sq' : ''} ${whole ? 'whole' : ''}`}
         >
-          {ok(poster) && <img src={poster} alt="" onError={drop(poster!)} />}
+          {safePoster && (
+            <img src={safePoster} alt="" onError={drop(safePoster)} />
+          )}
           <Glyph s={status ?? null} />
         </div>
         <div className="dtitle">

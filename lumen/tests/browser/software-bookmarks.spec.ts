@@ -8,6 +8,12 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   const requests: unknown[] = [];
   let failSecond = true;
   await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="48"><rect width="64" height="48" fill="#456"/></svg>',
+    })
+  );
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -52,6 +58,8 @@ test('software bookmarks open catalog titles by provider and preserve search', a
                 ? 'Second PC Game'
                 : 'Fixture DAT Game',
             igdbId: path.endsWith('/42') ? 42 : 43,
+            coverUrl: 'about:blank',
+            screenshots: ['about:blank', '/imageproxy/igdb/shot.png'],
             genres: [],
             platforms: [],
             emulationSystems: [{ slug: 'nes', name: 'NES', group: 'retro' }],
@@ -66,6 +74,16 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   await expect(
     page.getByRole('heading', { name: 'Fixture PC Game' })
   ).toBeVisible();
+  await expect(page.locator('.dposter img')).toHaveCount(0);
+  await expect(page.locator('.dhero img')).toHaveAttribute(
+    'src',
+    '/imageproxy/igdb/shot.png'
+  );
+  await expect(page.locator('.shots img')).toHaveCount(1);
+  await expect(page.locator('.shots img')).toHaveAttribute(
+    'src',
+    '/imageproxy/igdb/shot.png'
+  );
   await page.screenshot({ path: info.outputPath('pc-bookmark.png') });
   await page.getByRole('combobox', { name: 'System' }).selectOption('windows');
   await page.getByRole('combobox', { name: 'Build' }).selectOption('x64');
