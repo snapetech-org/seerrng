@@ -12,6 +12,9 @@ interface Profile {
   email?: string | null;
   metadataLocale?: string | null;
   formatRegion?: string | null;
+  discoverRegion?: string | null;
+  streamingRegion?: string | null;
+  originalLanguage?: string | null;
 }
 
 function profileDraft(profile: Profile) {
@@ -20,7 +23,15 @@ function profileDraft(profile: Profile) {
     email: profile.email ?? '',
     metadataLocale: profile.metadataLocale ?? '',
     formatRegion: profile.formatRegion ?? '',
+    discoverRegion: normalizeRegion(profile.discoverRegion ?? ''),
+    streamingRegion: normalizeRegion(profile.streamingRegion ?? ''),
+    originalLanguage: (profile.originalLanguage ?? '').trim().toLowerCase(),
   };
+}
+
+function normalizeRegion(value: string) {
+  const trimmed = value.trim();
+  return trimmed.toLowerCase() === 'all' ? 'all' : trimmed.toUpperCase();
 }
 
 function ProfileForm({
@@ -54,6 +65,24 @@ function ProfileForm({
       help: 'Use a two-letter region such as CA, or leave empty for the default.',
       max: 2,
     },
+    {
+      key: 'discoverRegion',
+      label: 'Discover Region',
+      help: 'Enter a two-letter region code, all, or leave empty for the server default.',
+      max: 16,
+    },
+    {
+      key: 'streamingRegion',
+      label: 'Streaming Region',
+      help: 'Enter a two-letter region code or leave empty for the server default.',
+      max: 16,
+    },
+    {
+      key: 'originalLanguage',
+      label: 'Original Language',
+      help: 'Enter a two-letter language code, all, or leave empty for the server default.',
+      max: 16,
+    },
   ] as const;
   const editable = fields.filter(({ key }) => key !== 'email' || !plex);
   const normalized = {
@@ -62,6 +91,9 @@ function ProfileForm({
     email: draft.email.trim(),
     metadataLocale: draft.metadataLocale.trim(),
     formatRegion: draft.formatRegion.trim().toUpperCase(),
+    discoverRegion: normalizeRegion(draft.discoverRegion),
+    streamingRegion: normalizeRegion(draft.streamingRegion),
+    originalLanguage: draft.originalLanguage.trim().toLowerCase(),
   };
   const changes = editable.filter(({ key }) => normalized[key] !== saved[key]);
   const invalid = changes.some(

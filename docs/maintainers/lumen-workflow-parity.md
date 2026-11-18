@@ -754,3 +754,14 @@ local browser only when its account, worker and endpoint match.
 An isolated test verified that disabling one browser does not unsubscribe a
 different endpoint, another account's worker or the native worker. Secure
 browser interaction, mobile installation and live delivery remain open.
+
+### Personal discovery preferences increment
+
+Account Settings exposes Discover Region, Streaming Region and Original
+Language through the existing profile endpoint. Clearing a field restores
+the server default preference. The form sends only changed fields.
+
+Standalone Chrome verified normalization, clearing a region and API readback.
+The current discovery backend uses Streaming Region and Original Language
+in its query. Runtime use of the separate Discover Region field, native
+visual comparison, mobile and bundled verification remain open.
