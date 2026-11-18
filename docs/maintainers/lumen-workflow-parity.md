@@ -3045,3 +3045,16 @@ installed and native share handoffs, Track Requests, and proxy artwork
 on request covers. The mount and static assets were real. Playwright
 intercepted API responses, so live authorization and provider writes
 remain outside this checkpoint.
+
+### Server authorization checkpoint
+
+On `f2040bfa5`, 331 Node route tests passed across requests, book
+series, blocklists, and Track Requests. They exercised the server's
+authorization and request handling with isolated fixtures, including
+SQLite-backed requests and synthetic accounts. Coverage included
+request ownership, delegated edits, book-series approval and
+visibility, and permission revalidation before blocklist reads.
+Collection playback and queue tests use Vitest. Both files passed all
+41 cases under that runner after the Node runner rejected their Vitest
+imports. These checks complement the browser fixtures. External
+provider interactions still used test doubles.
