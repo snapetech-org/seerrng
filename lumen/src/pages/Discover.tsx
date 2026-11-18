@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  tmdbImg,
   type BookResult,
   type Genre,
   type MediaRow,
@@ -22,6 +21,7 @@ import {
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
+import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
@@ -73,16 +73,6 @@ function useNewOnPlex(enabled: boolean) {
     };
   }, [enabled]);
   return items;
-}
-
-// big films sit in several genres, so give each tile the first backdrop no earlier tile used
-function genreArt(list: Genre[]): [Genre, string | undefined][] {
-  const used = new Set<string>();
-  return list.map((g) => {
-    const art = g.backdrops.find((b) => !used.has(b)) || g.backdrops[0];
-    if (art) used.add(art);
-    return [g, art];
-  });
 }
 
 // a row that failed says so instead of loading forever
@@ -384,16 +374,7 @@ export default function Discover() {
 
       {on.genres && genres.data && (
         <Section title="Browse by genre">
-          <div className="genres">
-            {genreArt(genres.data.slice(0, 12)).map(([g, art]) => (
-              <Link key={g.id} className="genre" to={`/movies?genre=${g.id}`}>
-                {art && (
-                  <img src={tmdbImg(art, 'w780')} alt="" loading="lazy" />
-                )}
-                <span>{g.name}</span>
-              </Link>
-            ))}
-          </div>
+          <GenreTiles genres={genres.data.slice(0, 12)} browse="/movies" />
         </Section>
       )}
     </>

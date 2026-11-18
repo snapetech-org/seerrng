@@ -2760,3 +2760,11 @@ the existing shared cover and image proxy. The cover uses the selected
 book format's shape. The production build and four browser fixtures
 passed, including the proxied cover and audiobook navigation. Live
 Hardcover artwork and matched visual acceptance remain unverified.
+
+Movie and Series genre directories now share Discover's backdrop tiles.
+The directory keeps every genre from the filter catalog and remains
+navigable when backdrop metadata fails. Images use the validated TMDB
+proxy path. The production build and 16 browser checks passed, with
+eight viewport-specific skips. The fixture verifies movie artwork and
+Series navigation during an artwork outage. Live metadata and matched
+visual acceptance remain unverified.

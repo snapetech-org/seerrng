@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { MediaStatus, type TitleResult } from '../api';
+import { MediaStatus, type Genre, type TitleResult } from '../api';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ServiceNote } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
+import GenreTiles from '../components/GenreTiles';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
@@ -237,6 +238,10 @@ function normalizeNativeFilters(params: URLSearchParams) {
 
 export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
+  const artwork = useApi<Genre[]>(`/discover/genreslider/${kind}`);
+  const backdrops = new Map(
+    artwork.data?.map((genre) => [genre.id, genre.backdrops])
+  );
   const browse = kind === 'movie' ? '/movies' : '/series';
   return (
     <>
@@ -246,20 +251,13 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
       <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
       {genres.data ? (
         genres.data.length ? (
-          <div className="setlist">
-            {genres.data.map(({ id, name }) => (
-              <div className="set" key={id}>
-                <b>{name}</b>
-                <Link
-                  className="go"
-                  to={`${browse}?genre=${id}`}
-                  aria-label={`Browse ${name}`}
-                >
-                  Browse <Icon name="chev" size="sm" />
-                </Link>
-              </div>
-            ))}
-          </div>
+          <GenreTiles
+            browse={browse}
+            genres={genres.data.map((genre) => ({
+              ...genre,
+              backdrops: backdrops.get(genre.id) ?? [],
+            }))}
+          />
         ) : (
           <p className="note">No genres found.</p>
         )

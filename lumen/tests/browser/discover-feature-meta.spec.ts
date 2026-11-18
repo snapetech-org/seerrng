@@ -90,6 +90,12 @@ test('movie and series genre directories open the matching filtered browse', asy
       });
     if (path.endsWith('/settings/public'))
       return route.fulfill({ json: { applicationTitle: 'SeerrNG' } });
+    if (path.endsWith('/discover/genreslider/movie'))
+      return route.fulfill({
+        json: [{ id: 28, name: 'Action', backdrops: ['/action.jpg'] }],
+      });
+    if (path.endsWith('/discover/genreslider/tv'))
+      return route.fulfill({ status: 503, json: {} });
     if (path.endsWith('/genres/movie'))
       return route.fulfill({ json: [{ id: 28, name: 'Action' }] });
     if (path.endsWith('/genres/tv'))
@@ -103,7 +109,16 @@ test('movie and series genre directories open the matching filtered browse', asy
     await page.goto(path);
     await page.getByRole('link', { name: 'Browse Genres' }).click();
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
-    await page.getByRole('link', { name: `Browse ${genre}` }).click();
+    const tile = page.getByRole('link', { name: `Browse ${genre}` });
+    if (path === '/movies') {
+      await expect(tile.locator('img')).toHaveAttribute(
+        'src',
+        '/imageproxy/tmdb/t/p/w780/action.jpg'
+      );
+    } else {
+      await expect(tile.locator('img')).toHaveCount(0);
+    }
+    await tile.click();
     await expect(page).toHaveURL(`${path}?genre=${id}`);
   }
 });
