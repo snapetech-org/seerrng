@@ -1567,7 +1567,10 @@ the AniList image proxy URL. Four standalone cases and 20 bundled cases
 passed. The browser fixture verified the image request path, decoded
 image, and franchise navigation. The real Express proxy fetched a public
 AniList cover and returned a 230 × 325 WebP. The repeated request returned
-the same bytes with a cache hit. Browser-to-provider verification through
+the same bytes with a cache hit. A separate run fetched the live trending
+feed with isolated SQLite mappings and passed the cover URL of an actual
+unmatched row to the Express image proxy. The response was a 230 × 324
+WebP. Browser-to-provider verification through
 a complete deployment and matched visual review remain open.
 
 ### TV request access review
