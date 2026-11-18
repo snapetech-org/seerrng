@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { csrfHeaders } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useToast } from '../components/toast';
 import { embedded, lumenAdminUrl } from '../deployment';
 import { Icon } from '../icons';
@@ -72,6 +73,7 @@ function Row({
       </span>
       <select
         className="cfg-select"
+        aria-label={title}
         value={value}
         onChange={(e) => {
           const v = e.target.value;
@@ -392,6 +394,8 @@ export default function LumenSettings() {
         )
       )}
 
+      <InstanceRequestSettings />
+
       <Section title="Sign-in and media server">
         <div className="setlist">
           <label className="set cfg-row">
@@ -407,6 +411,7 @@ export default function LumenSettings() {
             </span>
             <select
               className="cfg-select"
+              aria-label="Media server"
               value={cfg.mediaServer || 'auto'}
               onChange={(e) =>
                 setTop(
@@ -431,6 +436,7 @@ export default function LumenSettings() {
             </span>
             <input
               className="cfg-input"
+              aria-label="Media server name"
               placeholder={mediaServer().product}
               value={(cfg.mediaServerName as string) || ''}
               onChange={(e) => setTop('mediaServerName', e.target.value)}
@@ -447,6 +453,7 @@ export default function LumenSettings() {
             </span>
             <select
               className="cfg-select"
+              aria-label="Sign-in page"
               value={cfg.loginStyle || 'buttons'}
               onChange={(e) =>
                 setTop(
@@ -466,6 +473,7 @@ export default function LumenSettings() {
             </span>
             <input
               className="cfg-input"
+              aria-label="Full SeerrNG address"
               placeholder="https://seerr.example.com"
               value={(cfg.seerrPublicUrl as string) || ''}
               onChange={(e) => setTop('seerrPublicUrl', e.target.value)}
@@ -478,6 +486,7 @@ export default function LumenSettings() {
             </span>
             <input
               className="cfg-input"
+              aria-label="Audiobookshelf address"
               placeholder="https://books.example.com"
               value={(cfg.audiobookshelfUrl as string) || ''}
               onChange={(e) => setTop('audiobookshelfUrl', e.target.value)}
@@ -493,6 +502,7 @@ export default function LumenSettings() {
             </span>
             <input
               className="cfg-input"
+              aria-label="Kavita address"
               placeholder="https://manga.example.com"
               value={(cfg.kavitaUrl as string) || ''}
               onChange={(e) => setTop('kavitaUrl', e.target.value)}
@@ -513,6 +523,7 @@ export default function LumenSettings() {
             </span>
             <input
               className="cfg-input"
+              aria-label="Name"
               placeholder="SeerrNG"
               value={cfg.branding?.name ?? ''}
               onChange={(e) => setBrand('name', e.target.value)}

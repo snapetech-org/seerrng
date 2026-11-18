@@ -904,3 +904,16 @@ Standalone fixtures verified cancellation without writes, two exact
 duplicate, and stopping before the final batch on quota. Desktop, iPhone,
 Android and tablet presets passed. Instance-side configuration in Lumen,
 bundled and native visual comparison, and live writes remain open.
+
+### Person bulk request instance setting increment
+
+Lumen administrators can enable or disable person-page bulk movie requests
+under Instance Request Settings. The form reads the public flag, submits
+only the changed flag to SeerrNG's admin endpoint, and confirms the stored
+value. Its save is independent of Lumen appearance configuration.
+
+Standalone browser fixtures verified failed-save recovery, explicit true
+and false payloads, a second save without reloading, and non-admin denial.
+The adjacent bulk-request workflow also passed at desktop, iPhone,
+Android and tablet presets. Live instance writes, bundled and native
+visual comparisons, and the broader administration surface remain open.

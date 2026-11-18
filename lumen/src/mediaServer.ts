@@ -249,6 +249,9 @@ export const retryAfterMs = (
 // The answer the provider just fetched. The rest of the app asks for the same path through
 // useApi, and a sign-in clears the saved answers, so without this each page load asked twice.
 let lastPublic: { at: number; body: unknown } | null = null;
+export function invalidatePublicSettings() {
+  lastPublic = null;
+}
 export const recentPublicSettings = (maxAgeMs: number) =>
   lastPublic && Date.now() - lastPublic.at < maxAgeMs ? lastPublic.body : null;
 async function loadPublicSettings(signal: AbortSignal): Promise<unknown> {

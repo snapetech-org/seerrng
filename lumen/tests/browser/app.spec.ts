@@ -1139,3 +1139,68 @@ test('person bulk requests confirm the exact unique movie list and stop on quota
     movies.slice(100, 200).map(({ id }) => id),
   ]);
 });
+
+test('instance request settings save only the bulk movie flag and retain failed edits', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let enabled = false;
+  let admin = true;
+  let reject = true;
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: admin ? 2 : 32 },
+    })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        personMovieBulkRequestsEnabled: enabled,
+      },
+    })
+  );
+  await page.route('**/api/v1/settings/main', (route) => {
+    const body = route.request().postDataJSON();
+    writes.push(body);
+    if (reject) return route.fulfill({ status: 503, json: {} });
+    enabled = body.personMovieBulkRequestsEnabled;
+    return route.fulfill({ json: { personMovieBulkRequestsEnabled: enabled } });
+  });
+  await page.goto('/me/lumen');
+  const flag = page.getByRole('checkbox', {
+    name: 'Bulk Movie Requests From Person Pages',
+  });
+  const save = page.getByRole('button', {
+    name: 'Save Instance Request Settings',
+  });
+  await expect(flag).toBeVisible();
+  await expect(flag).not.toBeChecked();
+  await flag.check();
+  await save.click();
+  await expect(
+    page.getByText('Could not save the instance request setting. Try again.')
+  ).toBeVisible();
+  await expect(flag).toBeChecked();
+  reject = false;
+  await save.click();
+  await expect(
+    page.getByText('Instance request settings saved.')
+  ).toBeVisible();
+  await expect(save).toBeDisabled();
+  await flag.uncheck();
+  await save.click();
+  await expect(
+    page.getByText('Instance request settings saved.')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { personMovieBulkRequestsEnabled: true },
+    { personMovieBulkRequestsEnabled: true },
+    { personMovieBulkRequestsEnabled: false },
+  ]);
+  admin = false;
+  await page.reload();
+  await expect(page.getByText('Admins only', { exact: true })).toBeVisible();
+  await expect(flag).toHaveCount(0);
+});
