@@ -1031,3 +1031,9 @@ standalone browser fixture verified the returning-series status, the exact
 exclusion query, reload persistence, and reset while preserving the genre
 filter across four viewport presets. Bundled and native visual comparison
 remains open.
+
+Movies and Series now expose release-date bounds, using primary release
+dates for movies and first-air dates for series. The standalone fixture
+verified reversed-range validation, exact Series query bounds, reload, and
+independent reset across four viewport presets. Movie live results and
+bundled and native visual comparisons remain open.

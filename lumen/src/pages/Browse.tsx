@@ -31,53 +31,67 @@ function ratingBound(value: string | null) {
     : '';
 }
 
-function RatingFilter({
+function dateBound(value: string | null) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return '';
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) && date.toISOString().startsWith(value)
+    ? value
+    : '';
+}
+
+function RangeFilter({
+  dates = false,
   min,
   max,
   apply,
 }: {
+  dates?: boolean;
   min: string;
   max: string;
   apply: (min: string, max: string) => void;
 }) {
   const [low, setLow] = useState(min);
   const [high, setHigh] = useState(max);
-  const reversed = !!low && !!high && Number(low) > Number(high);
+  const normalize = dates ? dateBound : ratingBound;
+  const reversed =
+    !!low && !!high && (dates ? low > high : Number(low) > Number(high));
+  const name = dates ? 'Release Dates' : 'Rating';
+  const inputProps = dates
+    ? { type: 'date' }
+    : { type: 'number', min: '0', max: '10', step: '0.1' };
   return (
     <form
       className="toolbar"
-      aria-label="TMDB Rating Filter"
+      aria-label={dates ? 'Release Date Filter' : 'TMDB Rating Filter'}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!reversed) apply(ratingBound(low), ratingBound(high));
+        if (!reversed) apply(normalize(low), normalize(high));
       }}
     >
       <label className="sel">
-        <span className="lbl">Minimum Rating</span>
+        <span className="lbl">
+          {dates ? 'Released On or After' : 'Minimum Rating'}
+        </span>
         <input
           className="cfg-input"
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
+          {...inputProps}
           value={low}
           onChange={(event) => setLow(event.target.value)}
         />
       </label>
       <label className="sel">
-        <span className="lbl">Maximum Rating</span>
+        <span className="lbl">
+          {dates ? 'Released On or Before' : 'Maximum Rating'}
+        </span>
         <input
           className="cfg-input"
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
+          {...inputProps}
           value={high}
           onChange={(event) => setHigh(event.target.value)}
         />
       </label>
       <button className="btn btn-tonal btn-sm" disabled={reversed}>
-        Apply Rating
+        Apply {name}
       </button>
       {(min || max || low || high) && (
         <button
@@ -89,12 +103,14 @@ function RatingFilter({
             apply('', '');
           }}
         >
-          Clear Rating
+          Clear {name}
         </button>
       )}
       {reversed && (
         <p className="note" role="alert">
-          Minimum rating must be at or below maximum rating.
+          {dates
+            ? 'Start date must be on or before the end date.'
+            : 'Minimum rating must be at or below maximum rating.'}
         </p>
       )}
     </form>
@@ -132,6 +148,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
   const keywords = keywordIds(p.get('keywords'));
   const excludeKeywords = keywordIds(p.get('excludeKeywords'));
+  const startKey =
+    kind === 'movie' ? 'primaryReleaseDateGte' : 'firstAirDateGte';
+  const endKey = kind === 'movie' ? 'primaryReleaseDateLte' : 'firstAirDateLte';
+  const start = dateBound(p.get(startKey));
+  const end = dateBound(p.get(endKey));
+  const validDates = !start || !end || start <= end;
   const minRating = ratingBound(p.get('voteAverageGte'));
   const maxRating = ratingBound(p.get('voteAverageLte'));
   const validRatingRange =
@@ -166,6 +188,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(validDates && start ? { [startKey]: start } : {}),
+    ...(validDates && end ? { [endKey]: end } : {}),
     ...(status
       ? { status, ...(excludeStatus ? { excludeStatus: 'true' } : {}) }
       : {}),
@@ -416,7 +440,21 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           }}
         />
       )}
-      <RatingFilter
+      <RangeFilter
+        dates
+        key={`dates:${start}:${end}`}
+        min={start}
+        max={end}
+        apply={(min, max) => {
+          const next = new URLSearchParams(p);
+          if (min) next.set(startKey, min);
+          else next.delete(startKey);
+          if (max) next.set(endKey, max);
+          else next.delete(endKey);
+          setP(next, { replace: true });
+        }}
+      />
+      <RangeFilter
         key={`${minRating}:${maxRating}`}
         min={minRating}
         max={maxRating}

@@ -1850,3 +1850,31 @@ test('series status can be excluded and cleared without removing genre filters',
   await status.selectOption('');
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
+
+test('series release dates use first-air bounds and clear independently', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/series?genre=18');
+  await page.getByLabel('Released On or After').fill('2024-01-01');
+  await page.getByLabel('Released On or Before').fill('2023-12-31');
+  const apply = page.getByRole('button', { name: 'Apply Release Dates' });
+  await expect(apply).toBeDisabled();
+  await page.getByLabel('Released On or Before').fill('2024-12-31');
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('firstAirDateGte') === '2024-01-01' &&
+      url.searchParams.get('firstAirDateLte') === '2024-12-31'
+    );
+  });
+  await apply.click();
+  await query;
+  await page.reload();
+  await expect(page.getByLabel('Released On or After')).toHaveValue(
+    '2024-01-01'
+  );
+  await page.getByRole('button', { name: 'Clear Release Dates' }).click();
+  await expect(page).toHaveURL(/\/series\?genre=18$/);
+});
