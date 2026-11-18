@@ -890,3 +890,17 @@ names, a crew role, natural title ordering, missing vote counts, series
 filtering, and distinct movie and series links for the same numeric ID.
 Desktop, iPhone, Android and tablet presets passed. Bundled and native
 visual comparison and the native bulk-request action remain open.
+
+### Person bulk movie request increment
+
+Person pages expose Request All Movies when enabled by the instance and
+allowed for the signed-in user. The confirmation counts unique movie IDs
+across cast and crew and uses the native person-movies endpoint in batches
+of up to 100. It stops on a server stop or unconfirmed outcome and reports
+submitted, skipped, failed, unconfirmed and unsent counts as applicable.
+
+Standalone fixtures verified cancellation without writes, two exact
+100-title batches from 205 unique movies, exclusion of a TV credit and a
+duplicate, and stopping before the final batch on quota. Desktop, iPhone,
+Android and tablet presets passed. Instance-side configuration in Lumen,
+bundled and native visual comparison, and live writes remain open.

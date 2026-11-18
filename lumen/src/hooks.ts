@@ -104,6 +104,7 @@ export interface PublicSettings {
   streamingRegion?: string;
   applicationTitle: string;
   movie4kEnabled: boolean;
+  personMovieBulkRequestsEnabled?: boolean;
   series4kEnabled: boolean;
   partialRequestsEnabled: boolean;
   booksEnabled: boolean;

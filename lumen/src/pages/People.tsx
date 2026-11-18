@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { tmdbImg, type TitleResult } from '../api';
+import { api, tmdbImg, type TitleResult } from '../api';
+import { forget } from '../apiCache';
 import { useAuth } from '../auth';
 import { Section, TitleCard } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
+import { canRequestMovies } from '../components/detail';
 import { ExtraCard, ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
+import { useToast } from '../components/toast';
 import { canViewFollowing } from '../followPermissions';
-import { useApi } from '../hooks';
+import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { sessionGeneration } from '../sessionState';
 
 export function PersonCard({ person }: { person: TitleResult }) {
   const image = tmdbImg(person.profilePath);
@@ -206,9 +211,119 @@ function Filmography({
   );
 }
 
+function RequestPersonMovies({
+  name,
+  ids,
+  onSubmitted,
+}: {
+  name: string;
+  ids: number[];
+  onSubmitted: () => void;
+}) {
+  const [selection, setSelection] = useState<number[]>();
+  const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
+  const [summary, setSummary] = useState('');
+  const toast = useToast();
+
+  async function submit() {
+    if (!selection || pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    const generation = sessionGeneration();
+    let created = 0;
+    let skipped = 0;
+    let failed = 0;
+    let unconfirmed = 0;
+    let notSubmitted = 0;
+    try {
+      for (let offset = 0; offset < selection.length; offset += 100) {
+        if (generation !== sessionGeneration()) return;
+        const batch = selection.slice(offset, offset + 100);
+        try {
+          const result = await api<{
+            created: number[];
+            skipped: { movieId: number }[];
+            failed: { movieId: number }[];
+            stoppedReason?: string;
+          }>('/request/person-movies', {
+            method: 'POST',
+            body: JSON.stringify({ movieIds: batch }),
+          });
+          const skippedIds = result.skipped.map(({ movieId }) => movieId);
+          const failedIds = result.failed.map(({ movieId }) => movieId);
+          const remaining = new Set(batch);
+          const count = (ids: number[]) =>
+            ids.filter((id) => remaining.delete(id)).length;
+          created += count(result.created);
+          skipped += count(skippedIds);
+          failed += count(failedIds);
+          unconfirmed += remaining.size;
+          if (result.stoppedReason || remaining.size) {
+            notSubmitted = selection.length - offset - batch.length;
+            break;
+          }
+        } catch {
+          unconfirmed += batch.length;
+          notSubmitted = selection.length - offset - batch.length;
+          break;
+        }
+      }
+      if (generation !== sessionGeneration()) return;
+      const result = [
+        `${created} submitted`,
+        `${skipped} skipped`,
+        `${failed} failed`,
+        unconfirmed ? `${unconfirmed} unconfirmed` : '',
+        notSubmitted ? `${notSubmitted} not submitted` : '',
+      ]
+        .filter(Boolean)
+        .join(' · ');
+      setSummary(result);
+      setSelection(undefined);
+      toast(result);
+      forget('/request');
+      onSubmitted();
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div>
+      <div className="toolbar">
+        <button
+          className="btn btn-primary btn-sm"
+          type="button"
+          disabled={!ids.length}
+          onClick={() => setSelection(ids)}
+        >
+          Request All Movies
+        </button>
+      </div>
+      {summary && <p className="note">{summary}</p>}
+      {selection && (
+        <ConfirmSheet
+          title={`Request Movies by ${name}`}
+          body={`SeerrNG will check ${selection.length} credited movies for eligibility and request the eligible titles using your default movie settings.`}
+          confirm="Request All"
+          cancel="Cancel"
+          busy={busy}
+          onConfirm={() => void submit()}
+          onClose={() => {
+            if (!pending.current) setSelection(undefined);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function PersonDetail() {
   const { id: rawId } = useParams();
   const { user } = useAuth();
+  const settings = usePublicSettings();
   const id = Number(rawId);
   const path =
     Number.isInteger(id) && id > 0 && id <= 1_000_000_000
@@ -218,6 +333,20 @@ export default function PersonDetail() {
   const credits = useApi<PersonCredits>(
     path ? `${path}/combined_credits` : null
   );
+
+  const movieIds = [
+    ...new Set(
+      [...(credits.data?.cast ?? []), ...(credits.data?.crew ?? [])]
+        .filter(
+          ({ mediaType, id }) =>
+            mediaType === 'movie' &&
+            Number.isSafeInteger(id) &&
+            id > 0 &&
+            id <= 1_000_000_000
+        )
+        .map(({ id }) => id)
+    ),
+  ];
 
   if (!path) return <div className="empty">Person not found.</div>;
 
@@ -243,6 +372,18 @@ export default function PersonDetail() {
               />
             )}
         </div>
+        {settings?.personMovieBulkRequestsEnabled === true &&
+          settings.enabledMediaCategories?.movie !== false &&
+          canRequestMovies(user?.permissions) &&
+          person.data?.id === id &&
+          !!movieIds.length && (
+            <RequestPersonMovies
+              key={id}
+              name={person.data.name}
+              ids={movieIds}
+              onSubmitted={credits.refresh}
+            />
+          )}
       </header>
       <ServiceNote
         error={person.error}

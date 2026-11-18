@@ -1072,3 +1072,70 @@ test('person filmography keeps complete cast and crew groups and sorts before fi
     page.getByRole('heading', { name: 'Crew', exact: true })
   ).toHaveCount(0);
 });
+
+test('person bulk requests confirm the exact unique movie list and stop on quota', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const movies = Array.from({ length: 205 }, (_, index) => ({
+    id: index + 200,
+    title: `Film ${index + 1}`,
+    mediaType: 'movie',
+  }));
+  const writes: number[][] = [];
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        personMovieBulkRequestsEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/person/39', (route) =>
+    route.fulfill({ json: { id: 39, name: 'Fixture Person' } })
+  );
+  await page.route('**/api/v1/person/39/combined_credits', (route) =>
+    route.fulfill({
+      json: { cast: movies, crew: [movies[0], { id: 9999, mediaType: 'tv' }] },
+    })
+  );
+  await page.route('**/api/v1/request/person-movies', (route) => {
+    const { movieIds } = route.request().postDataJSON();
+    writes.push(movieIds);
+    return route.fulfill({
+      json:
+        writes.length === 1
+          ? {
+              created: movieIds.slice(0, 99),
+              skipped: [{ movieId: movieIds[99] }],
+              failed: [],
+            }
+          : {
+              created: [],
+              skipped: [],
+              failed: movieIds.map((movieId: number) => ({ movieId })),
+              stoppedReason: 'Quota exhausted',
+            },
+    });
+  });
+
+  await page.goto('/person/39');
+  const open = page.getByRole('button', { name: 'Request All Movies' });
+  await open.click();
+  await expect(page.getByRole('alertdialog')).toContainText(
+    '205 credited movies'
+  );
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  expect(writes).toHaveLength(0);
+  await open.click();
+  await page.getByRole('button', { name: 'Request All', exact: true }).click();
+  await expect(
+    page.locator('header .note').filter({
+      hasText: '99 submitted · 1 skipped · 100 failed · 5 not submitted',
+    })
+  ).toBeVisible();
+  expect(writes).toEqual([
+    movies.slice(0, 100).map(({ id }) => id),
+    movies.slice(100, 200).map(({ id }) => id),
+  ]);
+});

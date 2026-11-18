@@ -8,6 +8,7 @@ export function ConfirmSheet({
   title,
   body,
   confirm,
+  cancel = 'Keep it',
   busy,
   onConfirm,
   onClose,
@@ -15,6 +16,7 @@ export function ConfirmSheet({
   title: string;
   body: string;
   confirm: string;
+  cancel?: string;
   busy?: boolean;
   onConfirm: () => void;
   onClose: () => void;
@@ -23,7 +25,7 @@ export function ConfirmSheet({
   useDialog(box, onClose);
   return createPortal(
     <div className="sheet-wrap open">
-      <div className="sheet-scrim" onClick={onClose} />
+      <div className="sheet-scrim" aria-hidden="true" onClick={onClose} />
       <div
         ref={box}
         className="sheet"
@@ -48,8 +50,13 @@ export function ConfirmSheet({
               {confirm}
             </button>
             {/* focus starts here, not on the action that can't be undone */}
-            <button className="btn btn-tonal" data-autofocus onClick={onClose}>
-              Keep it
+            <button
+              className="btn btn-tonal"
+              data-autofocus
+              onClick={onClose}
+              disabled={busy}
+            >
+              {cancel}
             </button>
           </div>
         </div>
