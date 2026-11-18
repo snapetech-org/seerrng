@@ -245,7 +245,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       '/lumen/requests?requestedBy=19&show=pending&mediaType=book&bookFormat=audiobook&timeFrame=7d&order=oldest&requestId=21'
     );
     const filteredBooks = await request(app).get(
-      '/requests/status?mediaType=book&bookFormat=ebook&search=Night+%26+Day'
+      '/requests/status?mediaType=audiobook&bookFormat=ebook&search=Night+%26+Day'
     );
     assert.equal(
       filteredBooks.headers.location,

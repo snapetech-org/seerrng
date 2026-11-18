@@ -97,15 +97,12 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
     tab === 'software'
   )
     query.set('tab', tab);
-  if (mediaType === 'audiobook') {
-    query.set('mediaType', 'book');
-    query.set('bookFormat', 'audiobook');
-  }
-  if (
-    mediaType === 'book' &&
-    (req.query.bookFormat === 'ebook' || req.query.bookFormat === 'audiobook')
-  ) {
-    query.set('bookFormat', req.query.bookFormat);
+  if (mediaType === 'audiobook') query.set('mediaType', 'book');
+  if (mediaType === 'book' || mediaType === 'audiobook') {
+    const format = req.query.bookFormat;
+    if (format === 'ebook' || format === 'audiobook')
+      query.set('bookFormat', format);
+    else if (mediaType === 'audiobook') query.set('bookFormat', 'audiobook');
   }
   if (typeof req.query.search === 'string') {
     const search = req.query.search.trim().slice(0, 200);

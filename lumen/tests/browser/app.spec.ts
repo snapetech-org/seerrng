@@ -5422,7 +5422,7 @@ test('standalone user request bookmarks keep the user from the path', async ({
     });
   });
   await page.goto(
-    '/requests/by-user/19?userId=12&requestedBy=11&filter=pending&mediaType=book&bookFormat=ebook&search=Night+%26+Day'
+    '/requests/by-user/19?userId=12&requestedBy=11&filter=pending&mediaType=audiobook&bookFormat=ebook&search=Night+%26+Day'
   );
   await expect(page).toHaveURL(/\/requests\?/);
   const params = new URL(page.url()).searchParams;
@@ -5433,6 +5433,7 @@ test('standalone user request bookmarks keep the user from the path', async ({
   for (const request of pendingReads) {
     expect(request.getAll('requestedBy')).toEqual(['19']);
     expect(request.has('userId')).toBe(false);
+    expect(request.get('mediaType')).toBe('book');
     expect(request.get('bookFormat')).toBe('ebook');
     expect(request.get('search')).toBe('Night & Day');
   }

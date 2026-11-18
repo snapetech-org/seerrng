@@ -1072,7 +1072,9 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
   const type = next.get('mediaType');
   if (type === 'audiobook') {
     next.set('mediaType', 'book');
-    next.set('bookFormat', 'audiobook');
+    const format = next.get('bookFormat');
+    if (format !== 'ebook' && format !== 'audiobook')
+      next.set('bookFormat', 'audiobook');
   }
   if (type === 'game' || type === 'retro' || type === 'modern') {
     const status = next.get('show');
