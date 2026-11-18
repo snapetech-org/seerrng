@@ -31,19 +31,6 @@ export default function BookSeriesSearch() {
   const [params, setParams] = useSearchParams();
   const query = (params.get('query') ?? '').trim();
   const format = params.get('format') ?? '';
-  const path =
-    query.length >= 2 && query.length <= 200
-      ? '/book-series/search?' +
-        new URLSearchParams({
-          query,
-          ...(format === 'ebook' || format === 'audiobook' ? { format } : {}),
-        })
-      : null;
-  const search = useApi<{
-    results: Result[];
-    status: 'ok' | 'partial' | 'unavailable' | 'unsupported' | 'disabled';
-    truncated: boolean;
-  }>(path, { currentPathOnly: true });
   return (
     <>
       <ExtraHeader title="Find a Book Series">
@@ -89,6 +76,35 @@ export default function BookSeriesSearch() {
           Search Series
         </button>
       </form>
+      <BookSeriesResults query={query} format={format} />
+    </>
+  );
+}
+
+export function BookSeriesResults({
+  query,
+  format,
+  limit,
+}: {
+  query: string;
+  format?: string;
+  limit?: number;
+}) {
+  const path =
+    query.length >= 2 && query.length <= 200
+      ? '/book-series/search?' +
+        new URLSearchParams({
+          query,
+          ...(format === 'ebook' || format === 'audiobook' ? { format } : {}),
+        })
+      : null;
+  const search = useApi<{
+    results: Result[];
+    status: 'ok' | 'partial' | 'unavailable' | 'unsupported' | 'disabled';
+    truncated: boolean;
+  }>(path, { currentPathOnly: true });
+  return (
+    <>
       <ServiceNote
         error={
           search.error ||
@@ -128,6 +144,7 @@ export default function BookSeriesSearch() {
           .flatMap((result) =>
             result.variants?.length ? result.variants : [result]
           )
+          .slice(0, limit ?? Infinity)
           .map((result) => {
             const href = resultLink(result);
             return (

@@ -7206,3 +7206,48 @@ test('Classic Software search bookmarks open the matching Lumen catalog and quer
   await page.goto('/search?type=software&query=Fixture+Game&category=retro');
   await expect(page).toHaveURL(/\/games\?c=retro&q=Fixture\+Game$/);
 });
+
+test('audiobook search includes exact series matches and a format-preserving results link', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        initialized: true,
+        booksEnabled: true,
+        audiobookServiceEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/book-series/search?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    expect(query.get('format')).toBe('audiobook');
+    expect(query.get('query')).toBe('Fixture Series');
+    return route.fulfill({
+      json: {
+        status: 'ok',
+        results: [
+          {
+            key: 'fixture',
+            title: 'Fixture Series',
+            serverName: 'Book Service',
+            format: 'audiobook',
+            source: 'library',
+            href: '/book-series/42',
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/search?type=book&format=audiobook&query=Fixture+Series');
+  await expect(
+    page.getByRole('link', { name: 'Open Fixture Series from Book Service' })
+  ).toHaveAttribute('href', '/book-series/42');
+  await expect(
+    page.getByRole('link', { name: 'View All Series Results' })
+  ).toHaveAttribute(
+    'href',
+    '/book-series?query=Fixture+Series&format=audiobook'
+  );
+});

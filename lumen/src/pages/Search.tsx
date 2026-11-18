@@ -31,7 +31,7 @@ import {
   type League,
   type Magazine,
 } from '../extras';
-import { cachedApi, useApi } from '../hooks';
+import { cachedApi, useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import {
   clearRecentSearches,
@@ -47,6 +47,7 @@ import {
   videoFilterKeys,
 } from '../searchParams';
 import { usePrefs } from '../settings';
+import { BookSeriesResults } from './BookSeriesSearch';
 import { AlbumCard } from './Music';
 import { PersonCard } from './People';
 import { LeagueCard } from './Sports';
@@ -120,6 +121,21 @@ function SearchResults({
   const magazinesOn = extras.list.some((e) => e.key === 'magazine');
   const sportsOn = extras.list.some((e) => e.key === 'sports');
   const term0 = (p.get('q') || '').trim();
+  const publicSettings = usePublicSettings();
+  const seriesFormat =
+    f === 'ebook' ? 'ebook' : f === 'audio' ? 'audiobook' : undefined;
+  const showSeries =
+    prefs.showBooks &&
+    publicSettings?.booksEnabled === true &&
+    (f === 'all' || seriesFormat !== undefined) &&
+    term0.length >= 2 &&
+    term0.length <= 200;
+  const [seriesTerm, setSeriesTerm] = useState('');
+  useEffect(() => {
+    if (!showSeries) return;
+    const timer = setTimeout(() => setSeriesTerm(term0), 300);
+    return () => clearTimeout(timer);
+  }, [showSeries, term0]);
   const titlePath = scopedSearchPath(p, f, term0);
   const hasVideoFilters =
     (f === 'movie' || f === 'tv') && titlePath.startsWith('/discover/');
@@ -565,6 +581,21 @@ function SearchResults({
             'Try fewer words, an author or a narrator.'
           )}
         </div>
+      )}
+      {showSeries && seriesTerm === term0 && (
+        <Section
+          title="Book Series"
+          link={[
+            'View All Series Results',
+            '/book-series?' +
+              new URLSearchParams({
+                query: term0,
+                ...(seriesFormat ? { format: seriesFormat } : {}),
+              }),
+          ]}
+        >
+          <BookSeriesResults query={term0} format={seriesFormat} limit={6} />
+        </Section>
       )}
       <div
         className={`results ${searching ? 'stale' : ''}`}
