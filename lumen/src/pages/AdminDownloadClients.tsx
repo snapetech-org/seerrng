@@ -73,14 +73,17 @@ function payload(client: Draft) {
 function Editor({
   initial,
   onDirtyChange,
+  inSetup,
 }: {
   initial: Settings;
   onDirtyChange?: (dirty: boolean) => void;
+  inSetup: boolean;
 }) {
   const [interval, setInterval] = useState(initial.pollIntervalSeconds);
   const [clients, setClients] = useState(initial.clients.map(toDraft));
   const [saved, setSaved] = useState(initial);
   const [busy, setBusy] = useState(false);
+  const [profile, setProfile] = useState('both');
   const [feedback, setFeedback] = useState<{ text: string; error?: boolean }>();
   const health = useApi<{ clients: { clientId: number; ok: boolean }[] }>(
     endpoint + '/status'
@@ -103,6 +106,26 @@ function Editor({
       )
     );
     setFeedback(undefined);
+  }
+
+  function addClient(type: ClientType) {
+    const row = nextRow.current++;
+    setClients((current) => [
+      ...current,
+      toDraft(
+        {
+          type,
+          name: '',
+          hostname: '',
+          port: types[type][1],
+          enabled: true,
+          useSsl: false,
+          baseUrl: '',
+          username: '',
+        },
+        row
+      ),
+    ]);
   }
 
   function reset(settings: Settings) {
@@ -162,6 +185,19 @@ function Editor({
 
   return (
     <Section title="Live Download Progress">
+      {inSetup && (
+        <label className="sel">
+          Download Setup Profile
+          <select
+            value={profile}
+            onChange={(event) => setProfile(event.target.value)}
+          >
+            <option value="both">Usenet and Torrents</option>
+            <option value="usenet">Usenet</option>
+            <option value="torrent">Torrents</option>
+          </select>
+        </label>
+      )}
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -220,11 +256,21 @@ function Editor({
                       });
                     }}
                   >
-                    {Object.entries(types).map(([key, [label]]) => (
-                      <option key={key} value={key}>
-                        {label}
-                      </option>
-                    ))}
+                    {Object.entries(types)
+                      .filter(
+                        ([key]) =>
+                          !inSetup ||
+                          profile === 'both' ||
+                          key === type ||
+                          (profile === 'usenet'
+                            ? key === 'sabnzbd'
+                            : key !== 'sabnzbd')
+                      )
+                      .map(([key, [label]]) => (
+                        <option key={key} value={key}>
+                          {label}
+                        </option>
+                      ))}
                   </select>
                 </label>
                 <SavedConnectionHost
@@ -360,32 +406,26 @@ function Editor({
           </p>
         )}
         <div className="toolbar">
-          <button
-            type="button"
-            className="btn btn-quiet btn-sm"
-            disabled={busy || clients.length >= 8}
-            onClick={() => {
-              const row = nextRow.current++;
-              setClients([
-                ...clients,
-                toDraft(
-                  {
-                    type: 'qbittorrent',
-                    name: '',
-                    hostname: '',
-                    port: 8080,
-                    enabled: true,
-                    useSsl: false,
-                    baseUrl: '',
-                    username: '',
-                  },
-                  row
-                ),
-              ]);
-            }}
-          >
-            Add Download Client
-          </button>
+          {inSetup && profile !== 'torrent' && (
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy || clients.length >= 8}
+              onClick={() => addClient('sabnzbd')}
+            >
+              Add Usenet Client
+            </button>
+          )}
+          {(!inSetup || profile !== 'usenet') && (
+            <button
+              type="button"
+              className="btn btn-quiet btn-sm"
+              disabled={busy || clients.length >= 8}
+              onClick={() => addClient('qbittorrent')}
+            >
+              {inSetup ? 'Add Torrent Client' : 'Add Download Client'}
+            </button>
+          )}
           <button
             type="submit"
             className="btn btn-primary btn-sm"
@@ -430,7 +470,11 @@ export default function AdminDownloadClients({
         retry={settings.reload}
       />
       {settings.data ? (
-        <Editor initial={settings.data} onDirtyChange={onDirtyChange} />
+        <Editor
+          initial={settings.data}
+          onDirtyChange={onDirtyChange}
+          inSetup={inSetup}
+        />
       ) : (
         !settings.error && (
           <p className="note" role="status">

@@ -137,6 +137,26 @@ for (const administrator of [true, false]) {
       steps.getByRole('link', { name: 'Media Server Libraries' })
     ).toHaveAttribute('aria-current', 'step');
     await steps.getByRole('link', { name: 'Download Clients' }).click();
+    const profile = page.getByRole('combobox', {
+      name: 'Download Setup Profile',
+    });
+    await profile.selectOption('usenet');
+    await expect(
+      page.getByRole('button', { name: 'Add Torrent Client' })
+    ).toHaveCount(0);
+    await page.getByRole('button', { name: 'Add Usenet Client' }).click();
+    await page.getByText('New Download Client', { exact: true }).click();
+    await expect(
+      page.getByRole('combobox', { name: 'Client Type' })
+    ).toHaveValue('sabnzbd');
+    await profile.selectOption('torrent');
+    await expect(
+      page.getByRole('combobox', { name: 'Client Type' })
+    ).toHaveValue('sabnzbd');
+    await expect(
+      page.getByRole('button', { name: 'Add Usenet Client' })
+    ).toHaveCount(0);
+    await page.getByRole('button', { name: 'Discard Changes' }).click();
     const refreshInterval = page.getByLabel('Refresh Interval (Seconds)');
     await refreshInterval.fill('25');
     const next = page.getByRole('link', { name: 'Next Step' });
@@ -474,7 +494,7 @@ for (const [provider, serverType] of [
     ).toBeVisible();
     await page.getByText('Configure Download Clients', { exact: true }).click();
     await expect(
-      page.getByRole('button', { name: 'Add Download Client' })
+      page.getByRole('button', { name: 'Add Torrent Client' })
     ).toBeVisible();
     await page.getByText('Configure Prowlarr', { exact: true }).click();
     await expect(

@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It prioritizes service editors for enabled categories and can narrow them by service group. Native Usenet and torrent setup profiles and matched visual acceptance remain open. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.
@@ -2840,3 +2840,11 @@ and series, reading, music, or sports and adult categories. Returning to
 all services restores the complete list. Sixteen guide browser checks
 passed across both deployments and four viewport presets. Matched visual
 acceptance remains unverified.
+
+Download-client setup now offers Usenet, torrent, and combined profiles.
+Each profile adds the appropriate default client and keeps saved and draft
+clients available when switching profiles. Forty setup browser checks
+passed across both deployments and four viewport presets. The guide
+fixture adds a SABnzbd draft and verifies that switching to Torrents
+preserves it. Live provider tests and matched visual acceptance remain
+unverified.
