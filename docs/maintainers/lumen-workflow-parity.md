@@ -2069,3 +2069,15 @@ Native Plex and Jellyfin connection forms still need Lumen coverage before
 their legacy bookmarks can move. The classic Services page also includes
 software acquisition, reader delivery, recognition, Tunerr, override rules,
 and connection import controls that need separate coverage.
+
+Administration now includes Share and Image Recognition. The page uses the
+existing administrator API to configure Share to Request, local OCR, vision
+providers, and the image limit. Changing the provider or its URL asks for
+consent again. Saved API keys stay out of the form and unrelated save payloads,
+and can be removed explicitly. Rejected saves keep the draft.
+
+Compared the new form with the existing Swipe provider form at desktop,
+iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build and 44 browser
+fixture checks passed, including permission denial and rejected-save recovery.
+No real image or credential was sent. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-recognition-20261118/`.

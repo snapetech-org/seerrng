@@ -68,6 +68,7 @@ const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
 const AdminDownloadClients = lazy(() => import('./pages/AdminDownloadClients'));
+const AdminRecognition = lazy(() => import('./pages/AdminRecognition'));
 const AdminSwipe = lazy(() => import('./pages/AdminSwipe'));
 const AdminRequestService = lazy(() => import('./pages/AdminRequestService'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
@@ -693,6 +694,24 @@ function App() {
                   }
                 >
                   <AdminRequestService key="slskdn" provider="slskdn" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/recognition"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading recognition settings…
+                    </p>
+                  }
+                >
+                  <AdminRecognition />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
