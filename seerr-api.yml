@@ -28598,6 +28598,16 @@ paths:
       summary: Begin connecting your discovery account
       tags:
         - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frontend:
+                  description: Lumen deployment to return to after Trakt authorization.
+                  type: string
+                  enum: [bundled, standalone]
       responses:
         '200':
           description: Integration response

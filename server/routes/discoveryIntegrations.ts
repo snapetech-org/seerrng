@@ -75,6 +75,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto';
 
 const TRAKT_CALLBACK_PATH = '/api/v1/integrations/discovery/trakt/callback';
 const TRAKT_CALLBACK_COOKIE_PREFIX = 'trakt-discovery-oauth-callback-';
+const TRAKT_RETURN_COOKIE_PREFIX = 'trakt-discovery-return-';
 const TRAKT_AUTHORIZATION_TTL_MS = 10 * 60 * 1000;
 const MAX_ACTIVE_TRAKT_CALLBACK_COOKIES = 8;
 const traktCallbackRateLimit = rateLimit({
@@ -121,11 +122,18 @@ const traktSettingsUrl = (
     traktComplete?: boolean;
     traktConnected?: boolean;
     traktError?: string;
-  }
+  },
+  frontend?: 'bundled' | 'standalone'
 ): string => {
   const appUrl = new URL(applicationUrl);
   const basePath = appUrl.pathname.replace(/\/+$/u, '');
-  const destination = new URL(`${basePath}/settings/discovery`, appUrl.origin);
+  const page =
+    frontend === 'bundled'
+      ? '/lumen/me/account/linked-accounts'
+      : frontend === 'standalone'
+        ? '/me/account/linked-accounts'
+        : '/settings/discovery';
+  const destination = new URL(`${basePath}${page}`, appUrl.origin);
   if (result.traktComplete) destination.searchParams.set('traktComplete', '1');
   if (result.traktConnected)
     destination.searchParams.set('traktConnected', '1');
@@ -236,6 +244,20 @@ router.get('/trakt/callback', traktCallbackRateLimit, (req, res) => {
       .status(400)
       .send('Trakt authorization could not be completed. Return to SeerrNG.');
   const cookieName = getTraktCallbackCookieName(state);
+  const returnCookie = TRAKT_RETURN_COOKIE_PREFIX + state;
+  const savedFrontend = cookieName
+    ? req.signedCookies?.[returnCookie]
+    : undefined;
+  const frontend =
+    savedFrontend === 'bundled' || savedFrontend === 'standalone'
+      ? savedFrontend
+      : undefined;
+  if (frontend)
+    clearTraktCallbackCookie(
+      res,
+      returnCookie,
+      redirectContext.callbackCookiePath
+    );
   if (providerError || !code || !cookieName) {
     if (cookieName)
       clearTraktCallbackCookie(
@@ -245,9 +267,13 @@ router.get('/trakt/callback', traktCallbackRateLimit, (req, res) => {
       );
     return res.redirect(
       303,
-      traktSettingsUrl(redirectContext.applicationUrl, {
-        traktError: providerError ? 'denied' : 'expired',
-      })
+      traktSettingsUrl(
+        redirectContext.applicationUrl,
+        {
+          traktError: providerError ? 'denied' : 'expired',
+        },
+        frontend
+      )
     );
   }
 
@@ -271,7 +297,11 @@ router.get('/trakt/callback', traktCallbackRateLimit, (req, res) => {
   );
   return res.redirect(
     303,
-    traktSettingsUrl(redirectContext.applicationUrl, { traktComplete: true })
+    traktSettingsUrl(
+      redirectContext.applicationUrl,
+      { traktComplete: true },
+      frontend
+    )
   );
 });
 
@@ -668,6 +698,22 @@ router.post(
               previousCookieName,
               redirectContext.callbackCookiePath
             );
+          if (previousState)
+            clearTraktCallbackCookie(
+              res,
+              TRAKT_RETURN_COOKIE_PREFIX + previousState,
+              redirectContext.callbackCookiePath
+            );
+          const frontend = req.body?.frontend;
+          if (frontend === 'bundled' || frontend === 'standalone')
+            res.cookie(TRAKT_RETURN_COOKIE_PREFIX + state, frontend, {
+              httpOnly: true,
+              maxAge: TRAKT_AUTHORIZATION_TTL_MS,
+              path: redirectContext.callbackCookiePath,
+              sameSite: 'lax',
+              secure: true,
+              signed: true,
+            });
           req.session.discoveryAuth ??= {};
           req.session.discoveryAuth.trakt = {
             codeVerifier,

@@ -46,13 +46,13 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 Lumen's Linked Accounts page manages sign-in methods and personal tracking
 accounts. My Media can read libraries from linked tracking accounts. The
-Lumen administrator Discovery page manages instance credentials. Connecting
-Trakt still requires Classic.
+Lumen administrator Discovery page manages instance credentials. Lumen can
+connect Trakt, AniList, and Simkl from Linked Accounts.
 
 | Workflow | Existing API and acceptance |
 | --- | --- |
 | Read, disconnect, and allow writes | Lumen Linked Accounts uses the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Desktop and iPhone browser fixtures verify preference readback, a denied write, cancellation, and confirmed disconnection. Live provider and matched visual verification remain open. |
-| Trakt | Start through the provider connect endpoint, complete through the existing server-verified callback and completion endpoint, and show denied and expired results. The server currently returns to `/settings/discovery` with result parameters, and the bundled and standalone settings redirects discard those parameters. Verify the normal Classic flow and Lumen account-owner callback, with and without administrator permissions. |
+| Trakt | Lumen completes the existing server-verified callback from Linked Accounts. Use the configured HTTPS application origin so the browser can return with its session and callback cookies. Server tests cover Classic PKCE and bundled and standalone return routing. Desktop and iPhone fixtures cover account-owner linking and single-use completion. Live provider and matched visual verification remain open. |
 | AniList | Lumen opens the provider authorization URL and submits the returned code through the completion endpoint. Desktop and iPhone browser fixtures cover successful readback, clearing the code on cancellation, and keeping the code out of the URL. Live provider and matched visual verification remain open. |
 | Simkl | Lumen displays the device code and expiry, then polls at the server's interval. Polling stops on expiry, cancellation, account change, or unmount. Desktop and iPhone fixtures cover cancellation, a changed polling interval, and account readback after approval. Live provider and matched visual verification remain open. |
 

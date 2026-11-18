@@ -443,7 +443,9 @@ export default function LinkedAccounts() {
         </Link>
       </div>
       {user && <Accounts key={user.id} user={user} />}
-      {user && <DiscoveryAccounts key={`tracking-${user.id}`} />}
+      {user && (
+        <DiscoveryAccounts key={`tracking-${user.id}`} userId={user.id} />
+      )}
     </>
   );
 }

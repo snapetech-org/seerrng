@@ -513,6 +513,38 @@ describe('personal discovery account boundaries', () => {
   });
 });
 
+it('returns Trakt callbacks to the Lumen deployment that started authorization', async () => {
+  const agent = await login();
+  getSettings().main.applicationUrl = 'https://seerr.example/seerr';
+  getSettings().discoveryIntegrations.trakt.clientId = 'test-app';
+  for (const [frontend, base, result] of [
+    ['bundled', '/lumen', 'code=fixture-code'],
+    ['standalone', '', 'error=access_denied'],
+  ]) {
+    const begin = await agent
+      .post('/integrations/discovery/accounts/trakt/connect')
+      .send({ frontend });
+    assert.equal(begin.status, 200);
+    const state = new URL(begin.body.authorizeUrl).searchParams.get('state');
+    const cookie = cookieHeader(begin.headers['set-cookie'], [
+      `trakt-discovery-return-${state}`,
+    ]);
+    assert.ok(cookie);
+    const callback = await request(app)
+      .get(
+        `/seerr/api/v1/integrations/discovery/trakt/callback?${result}&state=${state}`
+      )
+      .set('Cookie', cookie);
+    assert.equal(callback.status, 303);
+    const query =
+      frontend === 'bundled' ? 'traktComplete=1' : 'traktError=denied';
+    assert.equal(
+      callback.headers.location,
+      `https://seerr.example/seerr${base}/me/account/linked-accounts?${query}`
+    );
+  }
+});
+
 it('exchanges a Trakt authorization code via PKCE and stores tokens server-side', async () => {
   const agent = await login();
   getSettings().main.applicationUrl = 'https://seerr.example/seerr';

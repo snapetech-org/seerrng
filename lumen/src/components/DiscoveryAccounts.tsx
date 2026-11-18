@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -10,12 +11,15 @@ import { ServiceNote } from './extra';
 const base = '/integrations/discovery/accounts';
 const aniListPath = base + '/anilist';
 const simklPath = base + '/simkl';
+const traktPath = base + '/trakt';
+const traktAttemptKey = 'lumen-trakt-attempt';
 const providerNames = { trakt: 'Trakt', anilist: 'AniList', simkl: 'Simkl' };
 type Provider = keyof typeof providerNames;
 type Account = { provider: Provider; username: string; allowWrites: boolean };
 type SimklAttempt = { userCode: string; expiresAt: number; interval: number };
 
-export default function DiscoveryAccounts() {
+export default function DiscoveryAccounts({ userId }: { userId: number }) {
+  const [params, setParams] = useSearchParams();
   const accounts = useApi<{ accounts: Account[] }>(base);
   const config = useApi<Partial<Record<Provider, { configured: boolean }>>>(
     '/integrations/discovery/configuration'
@@ -34,6 +38,78 @@ export default function DiscoveryAccounts() {
   const [failure, setFailure] = useState('');
   const working = useRef(false);
   const reloadAccounts = accounts.reload;
+  const handleTraktReturn = useEffectEvent(() => {
+    const completed = params.get('traktComplete') === '1';
+    const error = params.get('traktError');
+    if (!completed && !error) return;
+    const next = new URLSearchParams(params);
+    next.delete('traktComplete');
+    next.delete('traktError');
+    setParams(next, { replace: true });
+    if (sessionStorage.getItem(traktAttemptKey) !== String(userId)) return;
+    sessionStorage.removeItem(traktAttemptKey);
+    if (error) {
+      setFailure(
+        error === 'denied'
+          ? 'Trakt authorization was denied.'
+          : 'Trakt authorization expired. Start again.'
+      );
+      return;
+    }
+    void act(
+      async () => {
+        const result = await api<{ status: string }>(traktPath + '/complete', {
+          method: 'POST',
+          body: '{}',
+        });
+        if (result.status !== 'authorized')
+          throw new Error('Trakt authorization did not complete.');
+      },
+      reloadAccounts,
+      'Could not connect Trakt.'
+    );
+  });
+
+  useEffect(() => {
+    handleTraktReturn();
+  }, [params]);
+
+  function startTrakt() {
+    return act(
+      async () => {
+        const result = await api<{ authorizeUrl: string }>(
+          traktPath + '/connect',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              frontend: import.meta.env.BASE_URL.endsWith('/lumen/')
+                ? 'bundled'
+                : 'standalone',
+            }),
+          }
+        );
+        const link = new URL(result.authorizeUrl);
+        if (
+          link.origin !== 'https://auth.trakt.tv' ||
+          link.pathname !== '/oauth/authorize' ||
+          link.username ||
+          link.password
+        )
+          throw new Error('Invalid Trakt authorization link.');
+        const callback = new URL(link.searchParams.get('redirect_uri') ?? '');
+        if (callback.origin !== window.location.origin)
+          throw new Error(
+            'Open Lumen at the configured SeerrNG application URL to connect Trakt.'
+          );
+        return link.href;
+      },
+      (url) => {
+        sessionStorage.setItem(traktAttemptKey, String(userId));
+        window.location.assign(url);
+      },
+      'Could not start Trakt authorization.'
+    );
+  }
 
   useEffect(() => {
     if (!simkl) return;
@@ -359,6 +435,19 @@ export default function DiscoveryAccounts() {
           </button>
         )
       )}
+      {rows &&
+        !authorization &&
+        !simkl &&
+        config.data?.trakt?.configured &&
+        !rows.some(({ provider }) => provider === 'trakt') && (
+          <button
+            className="btn btn-tonal btn-sm"
+            disabled={busy}
+            onClick={() => void startTrakt()}
+          >
+            Connect Trakt
+          </button>
+        )}
       {disconnect && (
         <ConfirmSheet
           title={`Disconnect ${providerNames[disconnect]}?`}

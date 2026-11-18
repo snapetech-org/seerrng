@@ -325,3 +325,78 @@ test('Simkl stops polling on cancel and links after provider approval', async ({
   await page.clock.fastForward(1500);
   await expect(page.getByText('Simkl Viewer')).toBeVisible();
 });
+
+test('Trakt returns to Linked Accounts and completes once', async ({
+  page,
+}) => {
+  const base = '/integrations/discovery';
+  let connected = false;
+  let completions = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('https://auth.trakt.tv/oauth/authorize?*', (route) => {
+    const link = new URL(route.request().url());
+    const callback = new URL(link.searchParams.get('redirect_uri')!);
+    return route.fulfill({
+      status: 303,
+      headers: {
+        location: new URL(
+          '/me/account/linked-accounts?traktComplete=1',
+          callback
+        ).href,
+      },
+    });
+  });
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === base + '/configuration')
+      return route.fulfill({ json: { trakt: { configured: true } } });
+    if (path === base + '/accounts')
+      return route.fulfill({
+        json: {
+          accounts: connected
+            ? [
+                {
+                  provider: 'trakt',
+                  username: 'Trakt Viewer',
+                  allowWrites: false,
+                },
+              ]
+            : [],
+        },
+      });
+    if (path === base + '/accounts/trakt/connect') {
+      expect(request.postDataJSON()).toEqual({ frontend: 'standalone' });
+      const authorize = new URL('https://auth.trakt.tv/oauth/authorize');
+      authorize.searchParams.set(
+        'redirect_uri',
+        new URL(base + '/trakt/callback', url.origin).href
+      );
+      return route.fulfill({ json: { authorizeUrl: authorize.href } });
+    }
+    if (path === base + '/accounts/trakt/complete') {
+      expect(request.method()).toBe('POST');
+      expect(request.postDataJSON()).toEqual({});
+      completions++;
+      connected = true;
+      return route.fulfill({ json: { status: 'authorized' } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/me/account/linked-accounts?traktComplete=1');
+  await expect(page).toHaveURL(/linked-accounts$/);
+  expect(completions).toBe(0);
+  await page
+    .getByRole('button', { name: 'Connect Trakt', exact: true })
+    .click();
+  await expect(page.getByText('Trakt Viewer')).toBeVisible();
+  await expect(page).toHaveURL(/linked-accounts$/);
+  await page.reload();
+  await expect(page.getByText('Trakt Viewer')).toBeVisible();
+  expect(completions).toBe(1);
+});
