@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import type { Season } from '../api';
+import type { MediaInfo, Season } from '../api';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
+import {
+  isSharedVideoSeason,
+  useVideoAvailability,
+} from '../videoAvailability';
 import { Facts } from './detail';
 import { ServiceNote } from './extra';
 
@@ -24,11 +28,22 @@ interface Episode {
   sonarrAvailability?: QualityAvailability;
 }
 
-function EpisodeFiles({ tvId, season }: { tvId: number; season: number }) {
+function EpisodeFiles({
+  tvId,
+  season,
+  coverage,
+}: {
+  tvId: number;
+  season: number;
+  coverage?: MediaInfo['viewerRequestCoverage'];
+}) {
   const { data, error, reload } = useApi<{ episodes: Episode[] }>(
     `/tv/${tvId}/season/${season}`
   );
   const episodes = data?.episodes ?? [];
+  const mode = useVideoAvailability();
+  const sharedHd = isSharedVideoSeason(coverage, season, false, mode);
+  const shared4k = isSharedVideoSeason(coverage, season, true, mode);
   return (
     <>
       <ServiceNote error={error} what="episode availability" retry={reload} />
@@ -55,13 +70,22 @@ function EpisodeFiles({ tvId, season }: { tvId: number; season: number }) {
               const source = sources[sourceType];
               if (!source) return [];
               return [
-                ...(hd ? [`${source} HD`] : []),
-                ...(fourK ? [`${source} 4K`] : []),
+                ...(hd && !sharedHd ? [`${source} HD`] : []),
+                ...(fourK && !shared4k ? [`${source} 4K`] : []),
               ];
             });
+            if (mode === 'distinguish') {
+              if (sharedHd && reported.some(({ hd }) => hd))
+                labels.push('Shared HD');
+              if (shared4k && reported.some(({ fourK }) => fourK))
+                labels.push('Shared 4K');
+            }
             return [
               `E${episode.episodeNumber} ${episode.name}`,
-              labels.join(' · ') || 'No file reported',
+              labels.join(' · ') ||
+                (mode === 'hide'
+                  ? 'No visible file reported'
+                  : 'No file reported'),
             ];
           })}
         />
@@ -73,9 +97,11 @@ function EpisodeFiles({ tvId, season }: { tvId: number; season: number }) {
 export function EpisodeAvailabilityPanel({
   tvId,
   seasons,
+  coverage,
 }: {
   tvId: number;
   seasons: Season[];
+  coverage?: MediaInfo['viewerRequestCoverage'];
 }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number>();
@@ -117,6 +143,7 @@ export function EpisodeAvailabilityPanel({
             key={season.seasonNumber}
             tvId={tvId}
             season={season.seasonNumber}
+            coverage={coverage}
           />
         </>
       )}

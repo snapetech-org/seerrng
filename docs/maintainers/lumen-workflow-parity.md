@@ -1746,3 +1746,8 @@ whole-series playback shortcut when the entry also contains shared seasons.
 Twenty-eight standalone browser cases passed for series availability and
 request-state regressions. Episode-level presentation and matched native
 visual acceptance remain open.
+
+The on-demand episode panel now applies the selected season’s viewer
+coverage separately to HD and 4K source reports. Eight standalone browser
+checks verified mixed-quality reports, source-label hiding, and the
+existing on-demand season switch. Matched visual acceptance remains open.

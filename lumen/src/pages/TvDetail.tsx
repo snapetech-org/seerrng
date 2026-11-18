@@ -595,6 +595,7 @@ export default function TvDetail() {
                 key={t.id}
                 tvId={t.id}
                 seasons={seasons}
+                coverage={coverage}
               />
             )}
             <CreditsDisclosure

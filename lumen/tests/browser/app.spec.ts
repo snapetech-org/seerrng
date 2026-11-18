@@ -849,7 +849,9 @@ test('series details hide or mark shared seasons without reopening requests', as
   await page.clock.install();
   let mode = 'distinguish';
   await page.route('**/api/v1/settings/public', (route) =>
-    route.fulfill({ json: { otherUsersAvailability: mode } })
+    route.fulfill({
+      json: { otherUsersAvailability: mode, trackEpisodeAvailability: true },
+    })
   );
   await page.route('**/api/v1/tv/202', (route) =>
     route.fulfill({
@@ -872,9 +874,28 @@ test('series details hide or mark shared seasons without reopening requests', as
           ],
           viewerRequestCoverage: {
             standard: false,
-            seasons: [{ seasonNumber: 1, standard: true, fourK: false }],
+            seasons: [
+              { seasonNumber: 1, standard: true, fourK: false },
+              { seasonNumber: 2, standard: false, fourK: true },
+            ],
           },
         },
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202/season/*', (route) =>
+    route.fulfill({
+      json: {
+        episodes: [
+          {
+            episodeNumber: 1,
+            name: 'Fixture Episode',
+            availabilitySources: [
+              { sourceType: 'plex', hd: true, fourK: true },
+              { sourceType: 'sonarr', hd: true, fourK: false },
+            ],
+          },
+        ],
       },
     })
   );
@@ -889,6 +910,12 @@ test('series details hide or mark shared seasons without reopening requests', as
   await expect(page.getByRole('link', { name: 'Watch on Plex' })).toHaveCount(
     0
   );
+  const panel = page.getByText('Episode Availability', { exact: true });
+  await panel.click();
+  await page.getByLabel('Availability Season').selectOption('2');
+  await expect(
+    page.getByText('Plex 4K · Shared HD', { exact: true })
+  ).toBeVisible();
   mode = 'hide';
   await page.clock.fastForward(181_000);
   await page.reload();
@@ -896,6 +923,10 @@ test('series details hide or mark shared seasons without reopening requests', as
   await expect(shared.getByText('Available to Other Users')).toHaveCount(0);
   await expect(shared).toBeDisabled();
   await expect(missing).toBeEnabled();
+  await panel.click();
+  await page.getByLabel('Availability Season').selectOption('2');
+  await expect(page.getByText('Plex 4K', { exact: true })).toBeVisible();
+  await expect(page.getByText(/Shared HD|Plex HD|Sonarr HD/)).toHaveCount(0);
 });
 
 test('featured video cards distinguish and hide shared availability', async ({
