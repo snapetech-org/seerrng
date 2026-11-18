@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   requestMovie,
   requestSeries,
@@ -41,11 +41,22 @@ const MONTHS = [
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
   const serverName = useMediaServerName();
-  const movieList = useApi<Paged<TitleResult>>('/discover/movies/upcoming');
-  const tvList = useApi<Paged<TitleResult>>('/discover/tv/upcoming');
-  const movies = movieList.data;
-  const tv = tvList.data;
-  const loading = (!movies && !movieList.error) || (!tv && !tvList.error);
+  const [params] = useSearchParams();
+  const scope = params.get('media');
+  const showMovies = scope !== 'tv';
+  const showTv = scope !== 'movie';
+  const movieList = useApi<Paged<TitleResult>>(
+    showMovies ? '/discover/movies/upcoming' : null
+  );
+  const tvList = useApi<Paged<TitleResult>>(
+    showTv ? '/discover/tv/upcoming' : null
+  );
+  const movies = showMovies ? movieList.data : null;
+  const tv = showTv ? tvList.data : null;
+  const loading =
+    (showMovies && !movies && !movieList.error) ||
+    (showTv && !tv && !tvList.error);
+  const allSelectedListsLoaded = (!showMovies || !!movies) && (!showTv || !!tv);
   const toast = useToast();
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const asks = useAsksRequestOptions();
@@ -105,6 +116,29 @@ export default function Soon() {
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <p className="sub">Request ahead and it downloads the day it’s out.</p>
+        <nav className="toolbar" aria-label="Upcoming Media">
+          <Link
+            className="chip"
+            aria-current={showMovies && showTv ? 'page' : undefined}
+            to="/soon"
+          >
+            All
+          </Link>
+          <Link
+            className="chip"
+            aria-current={!showTv ? 'page' : undefined}
+            to="/soon?media=movie"
+          >
+            Movies
+          </Link>
+          <Link
+            className="chip"
+            aria-current={!showMovies ? 'page' : undefined}
+            to="/soon?media=tv"
+          >
+            Series
+          </Link>
+        </nav>
       </header>
       {loading && (
         <p className="note" role="status">
@@ -112,16 +146,16 @@ export default function Soon() {
         </p>
       )}
       <ServiceNote
-        error={movieList.error}
+        error={showMovies ? movieList.error : null}
         what="upcoming movies"
         retry={movieList.reload}
       />
       <ServiceNote
-        error={tvList.error}
+        error={showTv ? tvList.error : null}
         what="upcoming series"
         retry={tvList.reload}
       />
-      {movies && tv && !months.size && (
+      {allSelectedListsLoaded && !months.size && (
         <p className="note">No upcoming titles found.</p>
       )}
       {choosing && (

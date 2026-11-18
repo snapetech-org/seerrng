@@ -162,6 +162,12 @@ server {
   location ~ ^/discover/(adult|audiobooks|books|comics|games|magazines|music|patches|sports)/?$ {
     return 302 /$1$is_args$args;
   }
+  location ~ ^/discover/movies/upcoming/?$ {
+    return 302 /soon?media=movie;
+  }
+  location ~ ^/discover/tv/upcoming/?$ {
+    return 302 /soon?media=tv;
+  }
   location ~ ^/coming-soon/?$ {
     return 302 /soon;
   }

@@ -50,6 +50,10 @@ const discoveryFilters = [
 ];
 
 function discoveryDeepLink(req: Request): string | undefined {
+  const upcoming = /^\/discover\/(movies|tv)\/upcoming\/?$/.exec(req.path);
+  if (upcoming)
+    return `/lumen/soon?media=${upcoming[1] === 'movies' ? 'movie' : 'tv'}`;
+
   const route =
     /^\/discover\/(movies|tv)(?:\/(keyword|genre|language|network|studio)(?:\/([a-zA-Z0-9]+))?)?\/?$/.exec(
       req.path

@@ -657,11 +657,18 @@ test('Coming soon says when its lists fail and retries them', async ({
         })
   );
   await page.goto('/soon');
-  const alert = page.getByRole('alert');
-  await expect(alert).toContainText('Couldn’t load upcoming titles');
-  await expect(page.getByText('Loading…', { exact: true })).toHaveCount(0);
+  const movies = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load upcoming movies' });
+  const series = page
+    .getByRole('alert')
+    .filter({ hasText: 'Couldn’t load upcoming series' });
+  await expect(movies).toBeVisible();
+  await expect(series).toBeVisible();
+  await expect(page.getByText('Loading upcoming titles…')).toHaveCount(0);
   fail = false;
-  await alert.getByRole('button', { name: 'Retry' }).click();
+  await movies.getByRole('button', { name: 'Retry' }).click();
+  await series.getByRole('button', { name: 'Retry' }).click();
   await expect(
     page.getByRole('link', { name: 'The Test Film' }).first()
   ).toBeVisible();
@@ -2482,4 +2489,40 @@ test('related video lists preserve media type, paginate, and retry', async ({
   await expect(
     page.getByRole('link', { name: 'Similar Series 1' })
   ).toHaveAttribute('href', '/tv/301');
+});
+
+test('Coming soon scopes results and network requests by media', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let movieLoads = 0;
+  await page.route('**/api/v1/discover/movies/upcoming', (route) => {
+    movieLoads++;
+    return route.fulfill({
+      json: paged([{ ...movie, title: 'Upcoming Film' }]),
+    });
+  });
+  await page.route('**/api/v1/discover/tv/upcoming', (route) =>
+    route.fulfill({
+      json: paged([
+        { id: 202, name: 'Upcoming Series', firstAirDate: '2030-01-01' },
+      ]),
+    })
+  );
+  await page.goto('/soon?media=tv');
+  await expect(
+    page.getByRole('link', { name: 'Upcoming Series' })
+  ).toBeVisible();
+  expect(movieLoads).toBe(0);
+  const media = page.getByRole('navigation', { name: 'Upcoming Media' });
+  await media.getByRole('link', { name: 'Movies' }).click();
+  await expect(page.getByRole('link', { name: 'Upcoming Film' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Upcoming Series' })).toHaveCount(
+    0
+  );
+  await media.getByRole('link', { name: 'All' }).click();
+  await expect(page.getByRole('link', { name: 'Upcoming Film' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Upcoming Series' })
+  ).toBeVisible();
 });

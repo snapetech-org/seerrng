@@ -1286,3 +1286,12 @@ without claiming a specific saved version.
 The standalone patch fixtures passed on desktop, iPhone, Android, and
 tablet, including the round trip through software request history. Live
 provider history and matched visual comparisons remain open.
+
+### Upcoming movie and series bookmarks
+
+Coming Soon can show both feeds, movies only, or series only. Both
+deployments preserve native upcoming movie and series bookmarks. A scoped
+entry requests only its selected feed. Bundled route tests, companion
+container checks, and twelve standalone browser checks across desktop,
+iPhone, Android and tablet passed. Matched visual and live provider
+comparisons remain open.

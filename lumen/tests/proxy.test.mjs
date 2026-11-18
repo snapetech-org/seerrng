@@ -139,6 +139,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/discover/comics?q=Example', '/comics?q=Example'],
       ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
       ['/coming-soon/', '/soon'],
+      ['/discover/movies/upcoming/', '/soon?media=movie'],
+      ['/discover/tv/upcoming', '/soon?media=tv'],
       ['/movie/12/cast', '/movie/12#cast'],
       ['/tv/1000000000/crew/', '/tv/1000000000#crew'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
