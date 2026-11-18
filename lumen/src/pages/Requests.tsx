@@ -1058,11 +1058,56 @@ async function loadSoftwareRequests(
   return { rows, more };
 }
 
+function normalizeClassicRequestFilters(params: URLSearchParams) {
+  const next = new URLSearchParams(params);
+  for (const [classic, lumen] of [
+    ['filter', 'show'],
+    ['userId', 'requestedBy'],
+  ]) {
+    const value = next.get(classic);
+    if (value && !next.has(lumen) && next.getAll(classic).length === 1)
+      next.set(lumen, value);
+    next.delete(classic);
+  }
+  const type = next.get('mediaType');
+  if (type === 'audiobook') {
+    next.set('mediaType', 'book');
+    next.set('bookFormat', 'audiobook');
+  }
+  if (type === 'game' || type === 'retro' || type === 'modern') {
+    const status = next.get('show');
+    if (
+      status &&
+      !next.has('softwareStatus') &&
+      SOFTWARE_STATUSES.some(([value]) => value === status)
+    ) {
+      next.set('softwareStatus', status);
+    }
+    next.set('show', 'software');
+    next.set('category', type);
+    next.delete('mediaType');
+  }
+
+  const sort = next.get('sort');
+  const direction = next.get('sortDirection');
+  if (!next.has('order') && (direction === 'asc' || direction === 'desc')) {
+    if (sort === 'added')
+      next.set('order', direction === 'asc' ? 'oldest' : 'newest');
+    if (sort === 'modified' && direction === 'desc')
+      next.set('order', 'updated');
+    if (sort === 'title') next.set('order', `title-${direction}`);
+  }
+  next.delete('sort');
+  next.delete('sortDirection');
+  return next;
+}
+
 export default function Requests() {
   const serverName = useMediaServerName();
   const { user } = useAuth();
   const toast = useToast();
-  const [p, setP] = useSearchParams();
+  const [params, setP] = useSearchParams();
+  const p = normalizeClassicRequestFilters(params);
   const requestKey = p.has('softwareRequestId')
     ? 'softwareRequestId'
     : 'requestId';

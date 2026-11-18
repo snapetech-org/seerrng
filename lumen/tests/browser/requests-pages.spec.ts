@@ -147,7 +147,7 @@ test('a personal viewer stays on their own requests', async ({ page }) => {
   await expect(page.getByText('Title 1000')).toHaveCount(0);
 });
 
-test('software bookmarks use the signed-in requester without household access', async ({
+test('Classic software bookmarks use the signed-in requester without household access', async ({
   page,
 }) => {
   await fixture(page, 0, { permissions: 32, requesterId: 1 });
@@ -175,7 +175,7 @@ test('software bookmarks use the signed-in requester without household access', 
     });
   });
   await page.goto(
-    '/requests?show=software&category=retro&softwareStatus=downloading&requestedBy=19'
+    '/requests/status?mediaType=retro&filter=downloading&userId=19'
   );
   await expect(
     page.getByRole('button', { name: 'My Software' })
