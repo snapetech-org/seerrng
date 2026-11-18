@@ -560,3 +560,15 @@ Standalone Chrome at 1440 × 1000 verified loading the second user page,
 selecting a requester by keyboard, and retaining that requester when switching
 from Software to Waiting. Mobile, bundled, native visual comparison and
 live-provider checks remain open.
+
+### Household request media filter increment
+
+The Everyone tab can filter requests by media type alongside status and
+requester. The media filter is bookmarkable, applies to both list and progress
+queries, and only shows the Adult option to eligible viewers.
+
+Standalone Chrome at 1440 × 1000 checked an Available view scoped to one
+requester, switched Movies to Series by keyboard, and checked the resulting
+series view. The read-only fixture showed neither Adult nor moderation
+controls. Native visual comparison, mobile, bundled and live providers
+remain open.

@@ -865,6 +865,18 @@ function gameRow(g: SoftwareRequest): Row {
   };
 }
 
+const REQUEST_MEDIA_TYPES = [
+  ['all', 'All media'],
+  ['movie', 'Movies'],
+  ['tv', 'Series'],
+  ['music', 'Music'],
+  ['book', 'Books and audiobooks'],
+  ['comic', 'Comics'],
+  ['magazine', 'Magazines'],
+  ['sports', 'Sports'],
+  ['adult', 'Adult'],
+] as const;
+
 const SOFTWARE_CATEGORIES = [
   ['all', 'All categories'],
   ['game', 'PC games'],
@@ -1038,6 +1050,19 @@ export default function Requests() {
       ? requesterParam
       : 'all';
   const requesterQuery = requester === 'all' ? '' : `&requestedBy=${requester}`;
+  const permissions = user?.permissions ?? 0;
+  const canViewAdult =
+    manage ||
+    (Number.isSafeInteger(permissions) &&
+      permissions >= 0 &&
+      (BigInt(permissions) & 140737488355328n) !== 0n);
+  const mediaTypes = REQUEST_MEDIA_TYPES.filter(
+    ([type]) => type !== 'adult' || canViewAdult
+  );
+  const mediaType =
+    mediaTypes.find(([type]) => type === p.get('mediaType'))?.[0] ?? 'all';
+  const mediaQuery =
+    requesterQuery + (mediaType === 'all' ? '' : `&mediaType=${mediaType}`);
   const setRequestFilter = (key: string, value: string) => {
     const next = new URLSearchParams(p);
     if (value === 'all') next.delete(key);
@@ -1051,7 +1076,7 @@ export default function Requests() {
   useEffect(() => {
     setPages(1);
     setOthers(null);
-  }, [show, everyone, softwareCategory, softwareStatus, requester]);
+  }, [show, everyone, softwareCategory, softwareStatus, requester, mediaType]);
   const mutationInFlight = useRef(false);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
@@ -1098,12 +1123,12 @@ export default function Requests() {
       let total = 0;
       for (let skip = 0; skip < take; skip += 100) {
         const d = await requestList(
-          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added${requesterQuery}`
+          `/request?take=${Math.min(100, take - skip)}&skip=${skip}&filter=${filter}&sort=added${mediaQuery}`
         );
         total = d.pageInfo?.results ?? 0;
         if (
           live &&
-          !requesterQuery &&
+          !mediaQuery &&
           (filter === 'available' || filter === 'processing') &&
           d.authoritativeStatus
         ) {
@@ -1127,7 +1152,7 @@ export default function Requests() {
         );
       const started =
         show === 'all' || show === 'processing'
-          ? startedDownloads(requesterQuery)
+          ? startedDownloads(mediaQuery)
               .then((x) => x.sort((a, b) => progress(b) - progress(a)))
               .catch(() => [])
           : Promise.resolve([]);
@@ -1175,7 +1200,7 @@ export default function Requests() {
     softwareCategory,
     softwareStatus,
     requester,
-    requesterQuery,
+    mediaQuery,
   ]);
 
   useEffect(() => {
@@ -1283,7 +1308,7 @@ export default function Requests() {
       !everyone &&
       current.some((x) => x.r.id < 0 && state(x, serverName).pct != null);
     Promise.all([
-      processingRequests(everyone ? requesterQuery : `&requestedBy=${user.id}`),
+      processingRequests(everyone ? mediaQuery : `&requestedBy=${user.id}`),
       gameBusy
         ? api<{ results: SoftwareRequest[] }>(
             `/request/software/status?take=40&requestedBy=${user.id}`
@@ -1456,7 +1481,7 @@ export default function Requests() {
               onClick={() => setRequestFilter('show', v)}
             >
               {t}
-              {requester === 'all' && counts?.[key] != null && (
+              {!mediaQuery && counts?.[key] != null && (
                 <span className="n">{counts[key]}</span>
               )}
             </button>
@@ -1468,6 +1493,25 @@ export default function Requests() {
           value={requester}
           change={(value) => setRequestFilter('requestedBy', value)}
         />
+      )}
+      {everyone && show !== 'software' && (
+        <div className="toolbar">
+          <label className="sel">
+            <span className="lbl">Media Type</span>
+            <select
+              value={mediaType}
+              onChange={(event) =>
+                setRequestFilter('mediaType', event.target.value)
+              }
+            >
+              {mediaTypes.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       )}
       {everyone && show === 'software' && (
         <div
