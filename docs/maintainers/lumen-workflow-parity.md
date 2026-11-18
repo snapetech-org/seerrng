@@ -2644,7 +2644,7 @@ behavior checks.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Open and create recommendation lists, switch format, filter by series and popularity, and apply more or less feedback. The native screen uses `/book-recommendations` and its per-list book endpoint. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen the setup controls from Administration. The native guided sequence and saved progress still need parity. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has optional steps that resume from the URL. Native setup's category-specific orientation, connection review, and unsaved-download guard still need parity. |
 
 This is a route and source audit. Each workflow still needs permission,
 interaction, and rendered verification in both deployments.
@@ -2792,3 +2792,10 @@ Sportarr, and Whisparr service editors on demand. Sixteen browser checks
 covered administrator entry, service controls, and member denial across
 both deployments and four viewport presets. Provider saves and matched
 visual acceptance for these setup panels remain unverified.
+
+The optional Lumen guide now opens one setup area at a time. Step links
+preserve the selected area across reloads, and switching steps keeps
+mounted editors available. Forty browser checks passed across both
+deployments and four viewport presets. They include guide navigation,
+reload, permission checks, and the three first-run provider fixtures.
+Matched visual acceptance remains unverified.

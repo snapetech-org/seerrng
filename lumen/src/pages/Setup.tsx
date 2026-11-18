@@ -22,6 +22,13 @@ import Login from './Login';
 const AdminDownloadClients = lazy(() => import('./AdminDownloadClients'));
 const AdminProwlarr = lazy(() => import('./AdminProwlarr'));
 const AdminServarr = lazy(() => import('./AdminServarr'));
+const setupSteps = [
+  ['libraries', 'Media Server Libraries'],
+  ['categories', 'Media Categories'],
+  ['services', 'Request Services'],
+  ['downloads', 'Download Clients'],
+  ['indexer', 'Prowlarr'],
+] as const;
 const requestServices = [
   ['radarr', 'Radarr'],
   ['sonarr', 'Sonarr'],
@@ -38,20 +45,26 @@ const requestServices = [
 function SetupEditor({
   label,
   children,
+  active = false,
+  hidden = false,
 }: {
   label: string;
   children: ReactNode;
+  active?: boolean;
+  hidden?: boolean;
 }) {
   const [opened, setOpened] = useState(false);
   return (
     <details
       className="adv"
+      hidden={hidden}
+      open={active || undefined}
       onToggle={(event) => {
         if (event.currentTarget.open) setOpened(true);
       }}
     >
       <summary>{label}</summary>
-      {opened && (
+      {(active || opened) && (
         <Suspense
           fallback={
             <p className="note" role="status">
@@ -70,6 +83,8 @@ export default function Setup() {
   const { user, refresh } = useAuth();
   const settings = useApi<PublicSettings>('/settings/public');
   const [query] = useSearchParams();
+  const stepIndex = setupSteps.findIndex(([id]) => id === query.get('step'));
+  const activeStep = setupSteps[stepIndex]?.[0];
   const reopening =
     settings.data?.initialized === true && query.get('guide') === '1';
   const [provider, setProvider] = useState(1);
@@ -113,6 +128,13 @@ export default function Setup() {
       invalidatePublicSettings();
       settings.reload();
     });
+  }
+
+  function stepLink(step?: (typeof setupSteps)[number][0]) {
+    const params = new URLSearchParams();
+    if (reopening) params.set('guide', '1');
+    if (step) params.set('step', step);
+    return { pathname: '/setup', search: params.toString() };
   }
 
   async function finish() {
@@ -164,12 +186,50 @@ export default function Setup() {
     return (
       <Shell>
         <ExtraHeader title={reopening ? 'Setup Guide' : 'Finish Setup'} />
-        <AdminMediaLibraries mediaServerType={settings.data.mediaServerType} />
-        <details className="adv">
+        <nav className="toolbar" aria-label="Setup steps">
+          {activeStep ? (
+            setupSteps.map(([id, label]) => (
+              <Link
+                key={id}
+                className="btn btn-quiet btn-sm"
+                to={stepLink(id)}
+                aria-current={activeStep === id ? 'step' : undefined}
+              >
+                {label}
+              </Link>
+            ))
+          ) : (
+            <Link
+              className="btn btn-quiet btn-sm"
+              to={stepLink(setupSteps[0][0])}
+            >
+              Start Guided Setup
+            </Link>
+          )}
+          {activeStep && (
+            <Link className="btn btn-quiet btn-sm" to={stepLink()}>
+              Show All Setup Options
+            </Link>
+          )}
+        </nav>
+        <div hidden={!!activeStep && activeStep !== 'libraries'}>
+          <AdminMediaLibraries
+            mediaServerType={settings.data.mediaServerType}
+          />
+        </div>
+        <details
+          className="adv"
+          hidden={!!activeStep && activeStep !== 'categories'}
+          open={activeStep === 'categories' || undefined}
+        >
           <summary>Configure Media Categories</summary>
           <AdminCategories inSetup />
         </details>
-        <details className="adv">
+        <details
+          className="adv"
+          hidden={!!activeStep && activeStep !== 'services'}
+          open={activeStep === 'services' || undefined}
+        >
           <summary>Configure Request Services</summary>
           {requestServices.map(([provider, label]) => (
             <SetupEditor key={provider} label={label}>
@@ -177,13 +237,41 @@ export default function Setup() {
             </SetupEditor>
           ))}
         </details>
-        <SetupEditor label="Configure Download Clients">
+        <SetupEditor
+          label="Configure Download Clients"
+          active={activeStep === 'downloads'}
+          hidden={!!activeStep && activeStep !== 'downloads'}
+        >
           <AdminDownloadClients inSetup />
         </SetupEditor>
-        <SetupEditor label="Configure Prowlarr">
+        <SetupEditor
+          label="Configure Prowlarr"
+          active={activeStep === 'indexer'}
+          hidden={!!activeStep && activeStep !== 'indexer'}
+        >
           <AdminProwlarr inSetup />
         </SetupEditor>
         <ServiceNote error={error || null} what="setup" />
+        {activeStep && (
+          <div className="toolbar">
+            {stepIndex > 0 && (
+              <Link
+                className="btn btn-quiet"
+                to={stepLink(setupSteps[stepIndex - 1][0])}
+              >
+                Previous Step
+              </Link>
+            )}
+            {stepIndex < setupSteps.length - 1 && (
+              <Link
+                className="btn btn-primary"
+                to={stepLink(setupSteps[stepIndex + 1][0])}
+              >
+                Next Step
+              </Link>
+            )}
+          </div>
+        )}
         {reopening ? (
           <Link className="btn btn-primary" to="/admin">
             Return to Administration

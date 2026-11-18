@@ -63,6 +63,21 @@ for (const administrator of [true, false]) {
     await expect(
       page.getByRole('button', { name: 'Finish Setup' })
     ).toHaveCount(0);
+    await page.getByRole('link', { name: 'Start Guided Setup' }).click();
+    await page.getByRole('link', { name: 'Next Step' }).click();
+    await expect(page).toHaveURL(`${mount}/setup?guide=1&step=categories`);
+    await page.reload();
+    const steps = page.getByRole('navigation', { name: 'Setup steps' });
+    await expect(
+      steps.getByRole('link', { name: 'Media Categories' })
+    ).toHaveAttribute('aria-current', 'step');
+    await expect(page.getByText('Configure Request Services')).toBeHidden();
+    await page.getByRole('link', { name: 'Previous Step' }).click();
+    await expect(
+      steps.getByRole('link', { name: 'Media Server Libraries' })
+    ).toHaveAttribute('aria-current', 'step');
+    await page.getByRole('link', { name: 'Show All Setup Options' }).click();
+    await expect(page.getByText('Configure Request Services')).toBeVisible();
     await page.getByRole('link', { name: 'Return to Administration' }).click();
     await expect(page).toHaveURL(`${mount}/admin`);
   });
