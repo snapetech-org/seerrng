@@ -2503,3 +2503,15 @@ iPad Pro 11. The fixture verifies that an owned episode and a pending
 episode cannot be selected, and the exact missing episode is submitted.
 Live provider delivery was outside the check. Evidence is retained under
 `seerrng-lumen-episode-request*` in `/mnt/disks/scratch/task-deliverables/`.
+
+The episode picker confirms success only when the server returns a
+request ID. A no-episodes-added response keeps the selection and shows
+a retryable message. The picker prevents concurrent submissions and
+respects the 4K blocklist state.
+
+The production build and 36 browser checks passed. The fixture exercises
+the no-op response followed by a confirmed submission of the same episode
+IDs. Compared the sheet with and without the message on desktop, iPhone
+13, Pixel 7, and iPad Pro 11. Live Sonarr was outside the check. Evidence
+is retained under `seerrng-lumen-episode-confirmation*` in
+`/mnt/disks/scratch/task-deliverables/`.

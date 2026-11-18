@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import {
   ApiError,
@@ -89,6 +89,7 @@ export default function TvDetail() {
   const quota = useVideoRequestQuota('tv');
   const [opts, setOpts] = useState<RequestOptions>({});
   const [busy, setBusy] = useState(false);
+  const episodeSubmission = useRef(false);
   const [episodesOpen, setEpisodesOpen] = useState(false);
   const [episodeError, setEpisodeError] = useState<string>();
   const [watchFailure, setWatchFailure] = useState<{
@@ -267,13 +268,15 @@ export default function TvDetail() {
   const canPickEpisodes =
     pub?.partialRequestsEnabled === true &&
     !blocklisted &&
+    !(is4k && t.mediaInfo?.status4k === MediaStatus.BLOCKLISTED) &&
     !!episodeSeasons.length &&
     (is4k || canRequestSeries(user?.permissions));
   const episodeApproval =
     quota.status?.restricted === true ||
     (!!quota.status?.limit && (quota.status.remaining ?? 0) < 1);
   const submitEpisodes = async (selection: SeasonRequestSelection) => {
-    if (busy || !canPickEpisodes) return;
+    if (busy || episodeSubmission.current || !canPickEpisodes) return;
+    episodeSubmission.current = true;
     setBusy(true);
     setEpisodeError(undefined);
     try {
@@ -283,6 +286,13 @@ export default function TvDetail() {
         seasonRequests: [selection],
         requestQuotaApproval: episodeApproval || undefined,
       });
+      if (!Number.isSafeInteger(result?.id) || result.id <= 0) {
+        setEpisodeError(
+          'No selected episodes were added. Refresh the request options and try again.'
+        );
+        refresh();
+        return;
+      }
       toast(
         result.quotaException
           ? `Approval requested for ${t.name || 'this series'}`
@@ -294,6 +304,7 @@ export default function TvDetail() {
     } catch (error) {
       setEpisodeError(friendlyError(error, 'Could not request episodes'));
     } finally {
+      episodeSubmission.current = false;
       setBusy(false);
     }
   };

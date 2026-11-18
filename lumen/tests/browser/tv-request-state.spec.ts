@@ -448,6 +448,15 @@ test('TV detail can request missing episodes from a partly requested season', as
       },
     })
   );
+  await page.route('**/api/v1/request', (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    posts.push({ path: '/request', body: route.request().postDataJSON() });
+    return route.fulfill(
+      posts.length === 1
+        ? { status: 202, json: { message: 'No episodes available.' } }
+        : { status: 201, json: { id: 44 } }
+    );
+  });
   const action = page.getByRole('button', {
     name: 'Request Episodes',
     exact: true,
@@ -475,10 +484,25 @@ test('TV detail can request missing episodes from a partly requested season', as
   await sheet
     .getByRole('button', { name: 'Request Selected Episodes' })
     .click();
+  await expect(sheet.getByRole('alert')).toHaveText(
+    /No selected episodes were added/
+  );
+  await expect(
+    sheet.getByRole('checkbox', { name: 'E3 Missing', exact: true })
+  ).toBeChecked();
+  await page.screenshot({
+    path: info.outputPath('tv-episode-request-unconfirmed.png'),
+    animations: 'disabled',
+  });
+  await sheet
+    .getByRole('button', { name: 'Request Selected Episodes' })
+    .click();
   await expect(
     page.getByText('Episodes requested for The Rings of Power')
   ).toBeVisible();
-  expect(posts).toEqual([
+  expect(posts).toHaveLength(2);
+  expect(posts[0]).toEqual(posts[1]);
+  expect(posts.slice(1)).toEqual([
     {
       path: '/request',
       body: {
