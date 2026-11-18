@@ -755,7 +755,11 @@ export const mountLumenFrontend = (
           ? '/admin/prowlarr'
           : '/admin';
     } else if (!section || section === 'main' || section === 'users') {
-      destination = '/admin/general';
+      destination =
+        section === 'main' &&
+        req.query.settingsSearchTarget === 'spotifyClientId'
+          ? '/admin/general#spotifyClientId'
+          : '/admin/general';
     } else if (
       /^(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)$/.test(
         section

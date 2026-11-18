@@ -101,6 +101,16 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const userDirectory = await request(app).get('/lumen/users/');
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');
+    for (const prefix of ['', '/lumen']) {
+      const spotify = await request(app).get(
+        `${prefix}/settings/main?settingsSearchTarget=spotifyClientId`
+      );
+      assert.equal(
+        spotify.headers.location,
+        '/lumen/admin/general#spotifyClientId'
+      );
+      assert.equal(spotify.headers['cache-control'], 'no-store');
+    }
     const userDefaults = await request(app).get('/lumen/settings/users/');
     assert.equal(userDefaults.headers.location, '/lumen/admin/general');
     const services = await request(app).get('/lumen/settings/services/');

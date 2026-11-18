@@ -263,7 +263,11 @@ server {
     if ($arg_settingsSearchTarget = prowlarr) { return 302 /admin/prowlarr; }
     return 302 /admin;
   }
-  location ~ ^/settings(/(main|users))?/?$ {
+  location ~ ^/settings/main/?$ {
+    if ($arg_settingsSearchTarget = spotifyClientId) { return 302 "/admin/general#spotifyClientId"; }
+    return 302 /admin/general;
+  }
+  location ~ ^/settings(/users)?/?$ {
     return 302 /admin/general;
   }
 
