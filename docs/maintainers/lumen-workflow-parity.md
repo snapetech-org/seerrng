@@ -139,6 +139,11 @@ the end of a season and flag unconfirmed volume numbers. Eight targeted
 fixture-based browser checks passed per deployment, covering the wording,
 source links, and season selection. Matched visual review remains open.
 
+Continuation from a TMDB series starts with its latest listed season,
+matching Classic. AniList starts with the current anime entry. The eight
+targeted standalone cases and 44-case bundled Following suite passed
+with API fixtures. Matched visual review remains open.
+
 ### Release Calendar increment
 
 Lumen now serves `/calendar` in both deployments. The Release Calendar uses
