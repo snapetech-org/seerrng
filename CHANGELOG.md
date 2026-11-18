@@ -1621,6 +1621,7 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 
 ### User-facing changes
 
+- **Lumen:** Discover shelves remember their horizontal positions when you return from a title. SeerrNG independently adapted the behavior suggested upstream by [@simpat1zq](https://github.com/simpat1zq) in [Seerr issue #3591](https://github.com/seerr-team/seerr/issues/3591).
 - **Lumen:** Movies discovery now supports searching for and excluding production studios. SeerrNG independently adapted the exclusion idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
 - **Lumen:** Series discovery now supports including or excluding a series status. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
 - **Lumen:** Movies and Series can include or exclude streaming services by region. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).

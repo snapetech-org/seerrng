@@ -2355,3 +2355,44 @@ test('discovery retries a failed second page without replacing existing titles',
   await expect(first).toBeVisible();
   expect(reads).toEqual([1, 2, 2]);
 });
+
+test('Discover restores a movie shelf offset after browser Back', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const movies = Array.from({ length: 20 }, (_, index) => ({
+    ...movie,
+    id: 100 + index,
+    title: `Shelf Movie ${index}`,
+  }));
+  await page.route('**/api/v1/discover/movies', (route) =>
+    route.fulfill({ json: paged(movies) })
+  );
+  await page.goto('/');
+  const rail = page
+    .locator('section')
+    .filter({
+      has: page.getByRole('heading', { name: 'Trending movies', exact: true }),
+    })
+    .locator('.rail');
+  await expect(
+    rail.getByRole('link', { name: 'Shelf Movie 1', exact: true })
+  ).toBeVisible();
+  await rail.evaluate((element) => {
+    element.scrollLeft = 460;
+  });
+  await expect
+    .poll(() => rail.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(0);
+  const offset = await rail.evaluate((element) => element.scrollLeft);
+  await rail.evaluate((element) => {
+    element
+      .querySelector<HTMLAnchorElement>('a.hit[href="/movie/101"]')
+      ?.click();
+  });
+  await expect(page).toHaveURL(/\/movie\/101$/);
+  await page.goBack();
+  await expect
+    .poll(() => rail.evaluate((element) => element.scrollLeft))
+    .toBeCloseTo(offset, 0);
+});

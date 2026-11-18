@@ -186,7 +186,7 @@ export default function Discover() {
       {on.hero && (
         <Section title="Popular right now">
           {hero.length ? (
-            <Rail className="feat-rail">
+            <Rail className="feat-rail" restoreId="featured">
               {hero.map((it, i) => (
                 <FeatCard
                   key={it.mediaType + it.id}
@@ -241,7 +241,7 @@ export default function Discover() {
           }
         >
           {fresh ? (
-            <Rail>
+            <Rail restoreId="recent">
               {fresh.map((m) => (
                 <TitleCard
                   key={m.mediaType + m.id}
@@ -267,7 +267,7 @@ export default function Discover() {
           link={['See all', '/movies']}
         >
           {movies.data ? (
-            <Rail>
+            <Rail restoreId="movies">
               {movies.data.results.map((m) => (
                 <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
               ))}
@@ -287,7 +287,7 @@ export default function Discover() {
           link={['See all', '/series']}
         >
           {series.data ? (
-            <Rail>
+            <Rail restoreId="series">
               {series.data.results.map((t) => (
                 <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
               ))}
@@ -309,7 +309,7 @@ export default function Discover() {
             link={['See all', '/audiobooks']}
           >
             {audio.data ? (
-              <Rail>
+              <Rail restoreId="audiobooks">
                 {withCovers(audio.data).map((b) => (
                   <BookCard key={b.id} b={{ ...b, bookFormat: 'audiobook' }} />
                 ))}
@@ -329,7 +329,7 @@ export default function Discover() {
           link={['See all', '/books']}
         >
           {books.data ? (
-            <Rail>
+            <Rail restoreId="books">
               {ebookCards.map((b) => (
                 <BookCard
                   key={b.id}
@@ -352,7 +352,7 @@ export default function Discover() {
           link={['See all', '/soon']}
         >
           {soon.data ? (
-            <Rail>
+            <Rail restoreId="coming-soon">
               {soon.data.results.map((m) => (
                 <TitleCard
                   key={m.id}

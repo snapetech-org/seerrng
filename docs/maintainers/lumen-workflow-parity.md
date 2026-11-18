@@ -1121,3 +1121,9 @@ The shared pagination hook now retries the failed page directly on user
 action. It keeps previously loaded titles and no longer depends on the
 scroll marker to start the retry. Standalone Movies checks verified initial
 and second-page recovery across four viewport presets.
+
+Discover shelves now restore horizontal position per shelf and history entry.
+The position cache is bounded and cleared on account change. Standalone
+browser fixtures verified movie-shelf restoration after Back at four
+viewport presets. Other shelves and bundled and native visual comparisons
+remain open.

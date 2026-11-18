@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   bookArt,
   englishAudioEdition,
@@ -31,6 +37,7 @@ import {
 import { Icon, type IconName } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seriesRequestSummary } from '../seriesRequestSummary';
+import { onSessionReset, sessionGeneration } from '../sessionState';
 import { usePrefs } from '../settings';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
@@ -645,33 +652,58 @@ export function FeatCard({
   );
 }
 
+const railPositions = new Map<string, number>();
+onSessionReset(() => railPositions.clear());
+
 // a horizontal row with arrow buttons for mouse users (same behaviour as the mockup)
 export function Rail({
   children,
   className = '',
+  restoreId,
 }: {
   children: ReactNode;
   className?: string;
+  restoreId?: string;
 }) {
+  const location = useLocation();
+  const storageKey = restoreId
+    ? JSON.stringify([location.key, restoreId])
+    : undefined;
   const ref = useRef<HTMLDivElement>(null);
   const [edge, setEdge] = useState({ start: true, end: false });
-  useEffect(() => {
+  useLayoutEffect(() => {
     const r = ref.current;
     if (!r) return;
+    const generation = sessionGeneration();
+    if (storageKey) r.scrollLeft = railPositions.get(storageKey) ?? 0;
+    const save = () => {
+      if (!storageKey || generation !== sessionGeneration()) return;
+      railPositions.delete(storageKey);
+      railPositions.set(storageKey, r.scrollLeft);
+      if (railPositions.size > 200) {
+        const oldest = railPositions.keys().next().value;
+        if (oldest !== undefined) railPositions.delete(oldest);
+      }
+    };
     const upd = () =>
       setEdge({
         start: r.scrollLeft < 8,
         end: r.scrollLeft + r.clientWidth > r.scrollWidth - 8,
       });
     upd();
-    r.addEventListener('scroll', upd, { passive: true });
+    const onScroll = () => {
+      upd();
+      save();
+    };
+    r.addEventListener('scroll', onScroll, { passive: true });
     const ro = new ResizeObserver(upd);
     ro.observe(r);
     return () => {
-      r.removeEventListener('scroll', upd);
+      save();
+      r.removeEventListener('scroll', onScroll);
       ro.disconnect();
     };
-  }, []);
+  }, [storageKey]);
   const by = (d: number) =>
     ref.current?.scrollBy({
       left: d * ref.current.clientWidth * 0.85,
