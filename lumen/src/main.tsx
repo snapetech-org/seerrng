@@ -16,6 +16,7 @@ import { MediaServerProvider } from './mediaServer';
 import BookDetail from './pages/BookDetail';
 import Books from './pages/Books';
 import Browse from './pages/Browse';
+import Calendar from './pages/Calendar';
 import { ComicDetail, Comics, MagazineDetail, Magazines } from './pages/Comics';
 import Discover from './pages/Discover';
 import Following from './pages/Following';
@@ -84,6 +85,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/following" element={<Following />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/soon" element={<Soon />} />
           <Route path="/me" element={<Me />} />
           <Route path="/me/lumen" element={<LumenSettings />} />

@@ -1,0 +1,78 @@
+import { expect, test } from '@playwright/test';
+
+for (const permissions of [2, 32]) {
+  test(`release calendar uses the selected interval and authorized scope for ${permissions}`, async ({
+    page,
+  }) => {
+    const queries: URLSearchParams[] = [];
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const url = new URL(route.request().url());
+      const path = url.pathname.slice('/api/v1'.length);
+      if (path === '/calendar') {
+        queries.push(url.searchParams);
+        return route.fulfill({
+          json: {
+            partialSources: [{ source: 'radarr' }],
+            truncated: false,
+            results: [
+              {
+                id: 'book:10',
+                title: 'Fixture Audiobook',
+                bookId: 'hc:10',
+                bookFormat: 'audiobook',
+                mediaType: 'book',
+                dateType: 'book',
+                allDay: true,
+                available: false,
+                startsAt: '2026-01-12T00:00:00.000Z',
+              },
+            ],
+          },
+        });
+      }
+      return route.fulfill({
+        json:
+          path === '/auth/me'
+            ? { id: 1, displayName: 'Reader', permissions }
+            : {},
+      });
+    });
+    await page.goto('/me');
+    await page.getByRole('link', { name: 'Open Release Calendar' }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Release Calendar' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Fixture Audiobook' })
+    ).toHaveAttribute('href', '/book/hc%3A10?f=audio');
+    await expect(
+      page.getByText('Some release sources could not be reached.', {
+        exact: false,
+      })
+    ).toBeVisible();
+    await page.getByLabel('Month', { exact: true }).fill('2026-01');
+    await page.getByLabel('Media Type').selectOption('book');
+    if (permissions === 2) {
+      await page.getByLabel('Scope').selectOption('all');
+      await page.getByLabel('Include Unmonitored Titles').check();
+    } else {
+      await expect(page.getByLabel('Scope')).toHaveCount(0);
+      await expect(page.getByLabel('Include Unmonitored Titles')).toHaveCount(
+        0
+      );
+    }
+    await expect
+      .poll(() => Object.fromEntries(queries.at(-1) ?? []))
+      .toMatchObject({
+        start: '2026-01-01',
+        end: '2026-02-01',
+        mediaType: 'book',
+        scope: permissions === 2 ? 'all' : 'mine',
+        includeUnmonitored: String(permissions === 2),
+      });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  });
+}

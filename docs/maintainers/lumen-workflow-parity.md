@@ -62,3 +62,13 @@ indent. Resetting it in the shared list style aligned the update and subscriptio
 rows with the existing You screen. The isolated desktop could not reach the
 fixture, so this check used a dedicated session on the persistent Agent GUI VM.
 Narrow and embedded-browser visual acceptance remains open.
+
+### Release Calendar increment
+
+Lumen now serves `/calendar` in both deployments. The Release Calendar uses
+SeerrNG's calendar API for monthly windows, media filters, permission-gated
+scopes, and administrator-only unmonitored releases. It links normalized
+calendar items to the corresponding Lumen title screens and distinguishes
+partial results, truncation, and empty months. Coming Soon still serves the
+separate discovery workflow. Calendar presentation and title-link behavior
+need rendered qualification on both deployments.

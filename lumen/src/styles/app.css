@@ -269,7 +269,14 @@ body.is-detail .tabbar {
   cursor: pointer;
   outline: none;
 }
-.sel::after {
+.sel input[type='month'] {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.sel:has(select)::after {
   content: '';
   position: absolute;
   right: 12px;

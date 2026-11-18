@@ -302,6 +302,10 @@ export default function Shell({ children }: { children: ReactNode }) {
               Following
             </NavLink>
           )}
+          <NavLink to="/calendar">
+            <Icon name="cal" />
+            Release Calendar
+          </NavLink>
           <NavLink to="/soon">
             <Icon name="cal" />
             Coming soon

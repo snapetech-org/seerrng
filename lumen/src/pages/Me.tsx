@@ -151,18 +151,28 @@ export default function Me() {
         </Section>
       )}
 
-      {canViewFollowing(user?.permissions) && (
-        <Section title="Library">
-          <div className="setlist">
+      <Section title="Library">
+        <div className="setlist">
+          <div className="set">
+            <b>Release Calendar</b>
+            <Link
+              className="go"
+              to="/calendar"
+              aria-label="Open Release Calendar"
+            >
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+          {canViewFollowing(user?.permissions) && (
             <div className="set">
               <b>Following</b>
               <Link className="go" to="/following" aria-label="Open Following">
                 Open <Icon name="chev" size="sm" />
               </Link>
             </div>
-          </div>
-        </Section>
-      )}
+          )}
+        </div>
+      </Section>
 
       <Section title="Request limits">
         <div className="quota">
