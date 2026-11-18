@@ -45,6 +45,7 @@ import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
 import { usePrefs } from '../settings';
+import { AssociationLink } from './Associations';
 
 type SeasonState = 'have' | 'part' | 'asked' | 'none';
 const stateOf = (status?: number): SeasonState =>
@@ -629,9 +630,7 @@ export default function TvDetail() {
           action={<Link to={`/tv/${id}/similar`}>Similar Series</Link>}
         >
           <div className="toolbar">
-            <Link className="chip" to={`/associations/tv/${id}`}>
-              Explore Associations
-            </Link>
+            <AssociationLink mediaType="tv" id={id} />
           </div>
           {!!like?.results.length && (
             <Rail>

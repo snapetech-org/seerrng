@@ -37,16 +37,38 @@ interface AssociationGraph {
 function validIdentity(type: string, id: string) {
   if (type === 'movie' || type === 'tv' || type === 'person')
     return /^[1-9]\d{0,9}$/.test(id) && Number(id) <= 1_000_000_000;
-  if (type === 'book') return /^[A-Za-z0-9_-]{1,128}$/.test(id);
   return (
-    (type === 'artist' || type === 'album') &&
-    /^[a-f\d]{8}-(?:[a-f\d]{4}-){3}[a-f\d]{12}$/i.test(id)
+    (type === 'book' || type === 'artist' || type === 'album') &&
+    /^[A-Za-z0-9_-]{1,128}$/.test(id)
+  );
+}
+
+export function AssociationLink({
+  mediaType,
+  id,
+  audio = false,
+}: {
+  mediaType: Exclude<MediaType, 'person'>;
+  id?: string;
+  audio?: boolean;
+}) {
+  if (!id || !validIdentity(mediaType, id)) return null;
+  if (mediaType === 'book' && !/^OL\d+[WM]$/i.test(id)) return null;
+  return (
+    <Link
+      className="chip"
+      to={`/associations/${mediaType}/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`}
+    >
+      Explore Associations
+    </Link>
   );
 }
 
 export default function Associations() {
   const { mediaType = '', id = '' } = useParams();
   const [params, setParams] = useSearchParams();
+  const format =
+    mediaType === 'book' && params.get('f') === 'audio' ? '?f=audio' : '';
   const valid = mediaType !== 'person' && validIdentity(mediaType, id);
   const { data, error, reload } = useApi<AssociationGraph>(
     valid
@@ -69,7 +91,7 @@ export default function Associations() {
           <div className="toolbar">
             <Link
               className="chip"
-              to={`/${detailRoutes[mediaType as MediaType]}/${encodeURIComponent(id)}`}
+              to={`/${detailRoutes[mediaType as MediaType]}/${encodeURIComponent(id)}${format}`}
             >
               Back to Details
             </Link>
@@ -95,11 +117,12 @@ export default function Associations() {
               <select
                 aria-label="Relationship"
                 value={filter}
-                onChange={(event) =>
-                  setParams(
-                    event.target.value ? { type: event.target.value } : {}
-                  )
-                }
+                onChange={(event) => {
+                  const next = new URLSearchParams(params);
+                  if (event.target.value) next.set('type', event.target.value);
+                  else next.delete('type');
+                  setParams(next);
+                }}
               >
                 <option value="">All Relationships</option>
                 {Object.entries(labels).map(([key, label]) => (

@@ -40,6 +40,7 @@ import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { AssociationLink } from './Associations';
 
 const cert = (m: MovieDetails) =>
   m.releases?.results
@@ -319,9 +320,7 @@ export default function MovieDetail() {
           action={<Link to={`/movie/${id}/similar`}>Similar Movies</Link>}
         >
           <div className="toolbar">
-            <Link className="chip" to={`/associations/movie/${id}`}>
-              Explore Associations
-            </Link>
+            <AssociationLink mediaType="movie" id={id} />
           </div>
           {!!like?.results.length && (
             <Rail>

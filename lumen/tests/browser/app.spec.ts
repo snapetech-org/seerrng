@@ -3036,3 +3036,81 @@ test('movie associations preserve related identities and explanations', async ({
   await expect(page.getByText('Worked on the soundtrack')).toBeVisible();
   await expect(page).toHaveURL(/type=shared-person$/);
 });
+
+test('music and Open Library book details open Associations with exact identity', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
+  const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        musicEnabled: true,
+        booksEnabled: true,
+        enabledMediaCategories: { music: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { music: true } } })
+  );
+  await page.route(`**/api/v1/music/${album}`, (route) =>
+    route.fulfill({
+      json: {
+        id: album,
+        title: 'Fixture Album',
+        artist: { id: artist, name: 'Fixture Artist' },
+        tracks: [],
+      },
+    })
+  );
+  await page.route(`**/api/v1/artist/${artist}`, (route) =>
+    route.fulfill({
+      json: { artist: { name: 'Fixture Artist' }, releaseGroups: [] },
+    })
+  );
+  await page.route('**/api/v1/book/OL123W', (route) =>
+    route.fulfill({
+      json: { id: 'OL123W', title: 'Fixture Book', description: 'Description' },
+    })
+  );
+  await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
+    route.fulfill({
+      json: {
+        id: 'bookshelf:1:fixture',
+        title: 'Local Book',
+        description: 'Description',
+      },
+    })
+  );
+  await page.route(
+    '**/api/v1/association/book/OL123W?includeWeak=true',
+    (route) =>
+      route.fulfill({ json: { root: { title: 'Fixture Book' }, edges: [] } })
+  );
+
+  const association = page.getByRole('link', { name: 'Explore Associations' });
+  await page.goto(`/music/${album}`);
+  await expect(association).toHaveAttribute(
+    'href',
+    `/associations/album/${album}`
+  );
+  await page.goto(`/artist/${artist}`);
+  await expect(association).toHaveAttribute(
+    'href',
+    `/associations/artist/${artist}`
+  );
+  await page.goto('/book/OL123W?f=audio');
+  await association.click();
+  await expect(
+    page.getByRole('heading', { name: 'Associations for Fixture Book' })
+  ).toBeVisible();
+  await page.getByLabel('Relationship').selectOption('recommended');
+  await expect(
+    page.getByRole('link', { name: 'Back to Details' })
+  ).toHaveAttribute('href', '/book/OL123W?f=audio');
+  await page.goto('/book/bookshelf%3A1%3Afixture');
+  await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
+  await expect(association).toHaveCount(0);
+});

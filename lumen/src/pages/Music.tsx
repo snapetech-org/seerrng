@@ -27,6 +27,7 @@ import {
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
 import { Icon } from '../icons';
+import { AssociationLink } from './Associations';
 
 const SORTS = [
   ['ranked', 'Recommended'],
@@ -226,6 +227,7 @@ export function AlbumDetail() {
               </Pill>
             )}
             <IndexerSearchLink category="music" title={a.title} />
+            <AssociationLink mediaType="album" id={id} />
             <BlocklistButton
               mediaType="music"
               id={a.id}
@@ -327,11 +329,10 @@ export function Artist() {
           ]}
         />
         <div className="dbody">
-          <IndexerSearchLink
-            category="music"
-            title={a.artist.name}
-            standalone
-          />
+          <div className="dstatus">
+            <IndexerSearchLink category="music" title={a.artist.name} />
+            <AssociationLink mediaType="artist" id={id} />
+          </div>
           {a.wikipedia?.extract && <p className="ov">{a.wikipedia.extract}</p>}
           {groups.map(([k, t]) => {
             const list = a.releaseGroups.filter(

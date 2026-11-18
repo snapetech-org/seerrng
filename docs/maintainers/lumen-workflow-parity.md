@@ -1384,3 +1384,10 @@ Eight browser checks across four viewport presets, bundled redirects,
 and the companion route inventory passed. Graph presentation, entry
 links from music and books, live provider results, and matched visual
 comparisons remain open.
+
+MusicBrainz albums and artists and Open Library books now link to
+Associations from their detail pages. The book route preserves audiobook
+format through filtering and Back to Details. Bookshelf-only identities
+do not offer an Open Library association link. Eight browser checks
+across four presets passed. The graph view, live provider data, and
+matched visual comparisons remain open.

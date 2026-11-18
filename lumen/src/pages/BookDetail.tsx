@@ -37,6 +37,7 @@ import { friendlyError } from '../errors';
 import { dropBookStates, useApi } from '../hooks';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
+import { AssociationLink } from './Associations';
 
 const english = (e: Edition) =>
   !e.language || /^(en|eng|english|und)$/i.test(e.language);
@@ -453,6 +454,7 @@ export default function BookDetail() {
             category={audio ? 'audiobook' : 'ebook'}
             title={b.title}
           />
+          <AssociationLink mediaType="book" id={b.id} audio={audio} />
           <BlocklistButton
             mediaType="book"
             id={b.id}
