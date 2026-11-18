@@ -150,7 +150,7 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
   await page.goto('/admin/media-libraries');
   await expect(page.getByLabel('Server API Key')).toHaveValue('');
   await page.getByLabel('Server Port').fill('8920');
-  await page.getByLabel('Use HTTPS').check();
+  await page.getByLabel('Use HTTPS', { exact: true }).check();
   await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
   await expect(page.getByText('Connection settings saved.')).toBeVisible();
   await expect(page.getByText('Old Library', { exact: true })).toHaveCount(0);
@@ -254,7 +254,7 @@ test('Plex discovery selects reachable addresses without saving automatically', 
     label: 'Local HTTPS · plex.internal:32443 · Recommended',
   });
   await expect(hostname).toHaveValue('plex.internal');
-  await expect(page.getByLabel('Use HTTPS')).toBeChecked();
+  await expect(page.getByLabel('Use HTTPS', { exact: true })).toBeChecked();
   expect(writes).toEqual([]);
   await page.getByRole('button', { name: 'Save Plex Connection' }).click();
   await expect(page.getByText('Connection settings saved.')).toBeVisible();
@@ -275,4 +275,68 @@ test('Plex discovery selects reachable addresses without saving automatically', 
       path: info.outputPath('plex-discovery.png'),
       fullPage: true,
     });
+});
+
+test('Tautulli settings preserve saved keys and support disconnecting the service', async ({
+  page,
+}, info) => {
+  const writes: unknown[] = [];
+  const initial = {
+    hostname: 'tautulli.internal',
+    port: 8181,
+    useSsl: false,
+    urlBase: '',
+    externalUrl: '',
+    apiKey: '[REDACTED]',
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const endpoint = new URL(request.url()).pathname;
+    if (endpoint.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (endpoint.endsWith('/settings/public'))
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (endpoint.endsWith('/settings/plex'))
+      return route.fulfill({ json: { libraries: [] } });
+    if (endpoint.endsWith('/settings/plex/sync'))
+      return route.fulfill({ json: { running: false } });
+    if (!endpoint.endsWith('/settings/tautulli'))
+      return route.fulfill({ json: {} });
+    if (request.method() === 'GET') return route.fulfill({ json: initial });
+    const body = request.postDataJSON();
+    writes.push(body);
+    return route.fulfill({ json: { ...initial, ...body } });
+  });
+  await page.goto('/admin/media-libraries');
+  await expect(page.getByLabel('Tautulli API Key')).toHaveValue('');
+  await page
+    .getByLabel('Tautulli External URL')
+    .fill('https://tautulli.example.test');
+  const save = page.getByRole('button', { name: 'Save Tautulli Connection' });
+  await save.click();
+  await expect(page.getByText('Connection settings saved.')).toBeVisible();
+  expect(writes[0]).toEqual({
+    ...initial,
+    externalUrl: 'https://tautulli.example.test',
+  });
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('tautulli.png'),
+      fullPage: true,
+    });
+  await page.getByLabel('Tautulli Hostname').fill('');
+  await save.click();
+  await expect(page.getByText('Connection settings saved.')).toBeVisible();
+  expect(writes[1]).toEqual({
+    ...initial,
+    hostname: '',
+    externalUrl: 'https://tautulli.example.test',
+  });
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });

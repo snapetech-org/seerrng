@@ -40,6 +40,9 @@ function MediaLibraries({
 }) {
   const path = `/settings/${provider}`;
   const settings = useApi<ConnectionSettings & { libraries: Library[] }>(path);
+  const tautulli = useApi<ConnectionSettings>(
+    provider === 'plex' ? '/settings/tautulli' : null
+  );
   const scan = useApi<Scan>(`${path}/sync`, { keepDuringRefresh: true });
   const refreshScan = scan.refresh;
   const [updated, setUpdated] = useState<Library[]>();
@@ -299,6 +302,23 @@ function MediaLibraries({
           </>
         )}
       </Section>
+      {provider === 'plex' &&
+        (tautulli.data ? (
+          <MediaServerConnection
+            provider="tautulli"
+            name="Tautulli"
+            initial={tautulli.data}
+            busy={busy}
+            setBusy={setBusy}
+            pending={pending}
+          />
+        ) : (
+          <ServiceNote
+            error={tautulli.error}
+            what="Tautulli settings"
+            retry={tautulli.reload}
+          />
+        ))}
       {notice && (
         <p className="note" role="status">
           {notice}

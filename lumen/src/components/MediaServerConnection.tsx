@@ -9,6 +9,8 @@ const redacted = '[REDACTED]';
 
 export interface ConnectionSettings {
   ip?: string;
+  hostname?: string;
+  externalUrl?: string;
   port?: number;
   useSsl?: boolean;
   urlBase?: string;
@@ -32,15 +34,19 @@ type PlexDevice = {
   }[];
 };
 
-type Provider = 'plex' | 'jellyfin';
+type Provider = 'plex' | 'jellyfin' | 'tautulli';
+const defaultPorts = { plex: 32400, jellyfin: 8096, tautulli: 8181 };
 
 function toDraft(settings: ConnectionSettings, provider: Provider) {
   return {
-    ip: settings.ip ?? '',
-    port: String(settings.port || (provider === 'plex' ? 32400 : 8096)),
+    ip: (provider === 'tautulli' ? settings.hostname : settings.ip) ?? '',
+    port: String(settings.port || defaultPorts[provider]),
     useSsl: settings.useSsl ?? false,
     urlBase: settings.urlBase ?? '',
-    externalHostname: settings.externalHostname ?? '',
+    externalHostname:
+      (provider === 'tautulli'
+        ? settings.externalUrl
+        : settings.externalHostname) ?? '',
     jellyfinForgotPasswordUrl: settings.jellyfinForgotPasswordUrl ?? '',
     webAppUrl: settings.webAppUrl ?? '',
     analyzeOnPlayback: settings.analyzeOnPlayback ?? false,
@@ -71,7 +77,7 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   provider: Provider;
   name: string;
   initial: T;
-  onSaved: (settings: T) => void;
+  onSaved?: (settings: T) => void;
   busy: boolean;
   setBusy: (busy: boolean) => void;
   pending: RefObject<boolean>;
@@ -83,14 +89,16 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   const [devices, setDevices] = useState<PlexDevice[]>();
   const path = `/settings/${provider}`;
   const plex = provider === 'plex';
+  const tautulli = provider === 'tautulli';
   const configuredKey = Boolean(saved.apiKey);
   const port = Number(draft.port);
   const valid =
-    draft.ip.trim() &&
-    Number.isInteger(port) &&
-    port >= 1 &&
-    port <= 65535 &&
-    (plex || configuredKey || draft.apiKey.trim());
+    (tautulli && !draft.ip.trim()) ||
+    (draft.ip.trim() &&
+      Number.isInteger(port) &&
+      port >= 1 &&
+      port <= 65535 &&
+      (plex || configuredKey || draft.apiKey.trim()));
   const changed =
     JSON.stringify(draft) !== JSON.stringify(toDraft(saved, provider));
 
@@ -120,18 +128,28 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   async function save() {
     if (!valid || !changed) return;
     const generation = sessionGeneration();
-    const connection = { ip: draft.ip.trim(), port, useSsl: draft.useSsl };
+    const connection = {
+      ...(tautulli ? { hostname: draft.ip.trim() } : { ip: draft.ip.trim() }),
+      port: tautulli && !draft.port ? null : port,
+      useSsl: draft.useSsl,
+    };
     const options = plex
       ? {
           webAppUrl: draft.webAppUrl.trim(),
           analyzeOnPlayback: draft.analyzeOnPlayback,
         }
-      : {
-          urlBase: draft.urlBase.trim(),
-          externalHostname: draft.externalHostname.trim(),
-          jellyfinForgotPasswordUrl: draft.jellyfinForgotPasswordUrl.trim(),
-          apiKey: draft.apiKey || redacted,
-        };
+      : tautulli
+        ? {
+            urlBase: draft.urlBase.trim(),
+            externalUrl: draft.externalHostname.trim(),
+            apiKey: draft.apiKey || (configuredKey ? redacted : ''),
+          }
+        : {
+            urlBase: draft.urlBase.trim(),
+            externalHostname: draft.externalHostname.trim(),
+            jellyfinForgotPasswordUrl: draft.jellyfinForgotPasswordUrl.trim(),
+            apiKey: draft.apiKey || redacted,
+          };
     await perform(async () => {
       const result = await api<T>(path, {
         method: 'POST',
@@ -140,9 +158,11 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
       if (generation !== sessionGeneration()) return;
       setSaved(result);
       setDraft(toDraft(result, provider));
-      onSaved(result);
-      invalidatePublicSettings();
-      forget('/settings/public');
+      onSaved?.(result);
+      if (!tautulli) {
+        invalidatePublicSettings();
+        forget('/settings/public');
+      }
       setNotice('Connection settings saved.');
     }, `Could not save the ${name} connection. Check the address and credentials, then try again.`);
   }
@@ -211,12 +231,20 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
     }, 'Could not discover Plex servers. Retry or enter the address manually.');
   }
 
-  const fields = [
-    ...addressFields,
-    ...(plex
-      ? ([['webAppUrl', 'Plex Web App URL', 'url']] as const)
-      : jellyfinFields),
-  ];
+  const fields = tautulli
+    ? ([
+        ['ip', 'Tautulli Hostname', 'text'],
+        ['port', 'Tautulli Port', 'number'],
+        ['urlBase', 'Tautulli Base Path', 'text'],
+        ['externalHostname', 'Tautulli External URL', 'url'],
+        ['apiKey', 'Tautulli API Key', 'password'],
+      ] as const)
+    : [
+        ...addressFields,
+        ...(plex
+          ? ([['webAppUrl', 'Plex Web App URL', 'url']] as const)
+          : jellyfinFields),
+      ];
   return (
     <Section title={`${name} Connection`}>
       {plex && (
@@ -314,7 +342,7 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
             </label>
           ))}
           <label className="set cfg-row">
-            <span>Use HTTPS</span>
+            <span>{tautulli ? 'Use HTTPS for Tautulli' : 'Use HTTPS'}</span>
             <input
               type="checkbox"
               checked={draft.useSsl}

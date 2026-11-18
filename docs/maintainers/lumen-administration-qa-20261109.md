@@ -154,3 +154,11 @@ The Plex connection form in `/admin/media-libraries` can discover owned servers 
 Compared the discovered selection against the previous Plex connection form at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The Lumen production build and twenty browser checks passed with synthetic discovery and connection responses. No live Plex account was queried.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-plex-discovery-20261118/`.
+
+## Tautulli connection follow-up — 2026-11-18
+
+`/admin/media-libraries` now shows Tautulli configuration for Plex instances. It uses the existing Tautulli API to validate and save the connection, preserve a redacted key when unchanged, and disconnect when the hostname is cleared.
+
+Compared the new section with the shared Plex connection controls at desktop, iPhone 13, Pixel 7, and iPad Pro 11 sizes. The production build, 24 browser cases, and six Tautulli API cases passed. Browser responses and server connections used fixtures.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tautulli-20261118/`.
