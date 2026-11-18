@@ -2114,6 +2114,53 @@ test('Sportarr league details show paginated event availability', async ({
   await expect(page.getByText('Final', { exact: true })).toBeVisible();
 });
 
+test('Coming Soon restores its media scope and loads only the selected feeds', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: string[] = [];
+  await page.route('**/api/v1/discover/*/upcoming?page=*', (route) => {
+    const series = new URL(route.request().url()).pathname.includes('/tv/');
+    reads.push(series ? 'tv' : 'movie');
+    return route.fulfill({
+      json: paged(
+        series
+          ? [
+              {
+                ...movie,
+                id: 202,
+                title: undefined,
+                name: 'Upcoming Fixture Series',
+                firstAirDate: '2099-01-01',
+              },
+            ]
+          : [movie]
+      ),
+    });
+  });
+  await page.goto('/soon?media=tv');
+  const filters = page.getByRole('navigation', { name: 'Upcoming Media' });
+  const series = page.getByRole('link', { name: 'Upcoming Fixture Series' });
+  const film = page.getByRole('link', { name: 'The Test Film', exact: true });
+  await expect(series).toBeVisible();
+  await expect(filters.getByRole('link', { name: 'Series' })).toHaveAttribute(
+    'aria-current',
+    'page'
+  );
+  expect(reads).toEqual(['tv']);
+  await filters.getByRole('link', { name: 'Movies' }).click();
+  await expect(page).toHaveURL(/media=movie$/);
+  await expect(film).toBeVisible();
+  await expect(series).toHaveCount(0);
+  expect(reads).toEqual(['tv', 'movie']);
+  await page.goBack();
+  await expect(series).toBeVisible();
+  await expect(film).toHaveCount(0);
+  await filters.getByRole('link', { name: 'All', exact: true }).click();
+  await expect(film).toBeVisible();
+  await expect(series).toBeVisible();
+});
+
 test('Coming Soon retries a failed series feed without dropping movies', async ({
   page,
 }) => {
