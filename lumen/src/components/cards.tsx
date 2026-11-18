@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   bookArt,
+  defaultCardTitleModes,
   englishAudioEdition,
   hardcoverWorkId,
   mediaLink,
@@ -14,10 +15,11 @@ import {
   tmdbImg,
   yearOf,
   type BookResult,
+  type CardTitleKind,
   type MediaInfo,
   type TitleResult,
 } from '../api';
-import { useMediaServerName } from '../auth';
+import { useAuth, useMediaServerName } from '../auth';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
@@ -225,11 +227,25 @@ function useRequested(initial: Stat) {
   ] as const;
 }
 
+export function useCardTitleMode(kind?: CardTitleKind) {
+  const { user } = useAuth();
+  if (!kind) return;
+  const settings = user?.settings;
+  const modes = {
+    movie: settings?.cardTextVisibilityMovie,
+    tv: settings?.cardTextVisibilityTv,
+    album: settings?.cardTextVisibilityAlbum,
+    book: settings?.cardTextVisibilityBook,
+  };
+  return modes[kind] ?? defaultCardTitleModes[kind];
+}
+
 export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   const serverName = useMediaServerName();
   const toast = useToast();
   const { prefs } = usePrefs();
   const tv = it.mediaType === 'tv';
+  const titleMode = useCardTitleMode(tv ? 'tv' : 'movie');
   // the glyph still shows a 4K-only request; the request buttons follow HD alone
   const shown = statusOf(it.mediaInfo, false, serverName);
   const [s, markRequested] = useRequested(
@@ -333,7 +349,10 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
       </>
     );
   return (
-    <div className={hold ? 'poster hold' : 'poster'}>
+    <div
+      className={hold ? 'poster hold' : 'poster'}
+      data-title-mode={it.posterPath ? titleMode : undefined}
+    >
       <div className="art">
         <Cover
           src={it.posterPath ? tmdbImg(it.posterPath) : null}
@@ -368,6 +387,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
 }
 
 export function BookCard({ b }: { b: BookResult }) {
+  const titleMode = useCardTitleMode('book');
   const audio = b.bookFormat === 'audiobook';
   const { prefs } = usePrefs();
   const toast = useToast();
@@ -427,7 +447,10 @@ export function BookCard({ b }: { b: BookResult }) {
   const href = `/book/${encodeURIComponent(b.id)}${audio ? '?f=audio' : ''}`;
   const series = b.series?.[0];
   return (
-    <div className={`poster ${audio ? 'sq' : 'book'}`}>
+    <div
+      className={`poster ${audio ? 'sq' : 'book'}`}
+      data-title-mode={b.posterPath ? titleMode : undefined}
+    >
       <div className="art">
         <Cover
           src={bookArt(b.posterPath)}

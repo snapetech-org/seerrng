@@ -55,6 +55,7 @@ export const AlbumCard = ({ a }: { a: Album }) => (
     img={a.posterPath}
     title={a.title}
     shape="sq"
+    titleKind="album"
     icon="music"
     stat={extraStat(a.mediaInfo)}
     meta={[artistOf(a), (a['first-release-date'] || '').slice(0, 4)]

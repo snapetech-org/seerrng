@@ -816,3 +816,16 @@ The exact false value persisted through page reload at desktop, iPhone,
 Android and tablet viewport presets. The fixtures also surfaced a provider
 response shape that could crash Account Settings, which is now handled.
 Live automatic requests, bundled and native visual comparison remain open.
+
+### Personal card title preferences increment
+
+Account Settings uses SeerrNG's Card Titles endpoint for movie, series,
+album and book preferences. Shared posters consume the signed-in user's
+settings without a per-card request. On hover-capable devices, the hover
+mode reveals the title on pointer or keyboard focus and reserves its space
+in the grid. Touch devices and cards without artwork keep the title visible.
+
+Standalone browser fixtures cover default settings, a movie preference
+change, exact changed-category submission and poster rendering across desktop,
+iPhone, Android and tablet presets. The native per-list toggle, bundled
+verification and matching native visual comparison remain open.

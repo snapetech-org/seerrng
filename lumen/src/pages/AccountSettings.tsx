@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { CardTitlePreferences } from '../components/CardTitlePreferences';
 import { ServiceNote } from '../components/extra';
 import { StreamingSubscriptions } from '../components/StreamingSubscriptions';
 import { useApi, usePublicSettings } from '../hooks';
@@ -452,6 +453,7 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           initialIds={profile.data.streamingSubscriptionProviderIds ?? []}
         />
       )}
+      <CardTitlePreferences path={base + '/card-text'} />
       <Section title="Password">
         <ServiceNote
           error={password.error}

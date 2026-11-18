@@ -770,3 +770,65 @@ test('the companion sign-in screen offers native access before authentication', 
     page.getByText('Lumen companion', { exact: true })
   ).toBeVisible();
 });
+
+test('card title preferences save only changed categories and apply to posters', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const settings: { movie?: string } = {};
+  const writes: unknown[] = [];
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: {
+        id: 1,
+        displayName: 'Viewer',
+        permissions: 2,
+        settings: { cardTextVisibilityMovie: settings.movie },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/card-text', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(settings, body);
+    }
+    return route.fulfill({ json: settings });
+  });
+
+  await page.goto('/movies');
+  const artLink = page.getByRole('link', {
+    name: 'The Test Film',
+    exact: true,
+  });
+  const card = page.locator('.poster').filter({ has: artLink });
+  const title = card.locator('.t');
+  await expect(title).toHaveText('The Test Film');
+  const hoverCapable = await page.evaluate(
+    () => matchMedia('(hover: hover) and (pointer: fine)').matches
+  );
+  if (hoverCapable) {
+    await expect(title).toBeHidden();
+    await artLink.focus();
+    await expect(title).toBeVisible();
+  } else {
+    await expect(title).toBeVisible();
+  }
+
+  await page.goto('/me/account');
+  const movieSetting = page.getByRole('combobox', {
+    name: 'Movies',
+    exact: true,
+  });
+  await expect(movieSetting).toHaveValue('hover');
+  await expect(
+    page.getByRole('combobox', { name: 'Books', exact: true })
+  ).toHaveValue('always');
+  await movieSetting.selectOption('always');
+  await page.getByRole('button', { name: 'Save Card Titles' }).click();
+  await expect(page.getByText('Card title settings saved.')).toBeVisible();
+  expect(writes).toEqual([{ movie: 'always' }]);
+
+  await page.goto('/movies');
+  await expect(title).toBeVisible();
+});

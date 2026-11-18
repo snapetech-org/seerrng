@@ -467,6 +467,11 @@ h3 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+@media (hover: hover) and (pointer: fine) {
+  .poster[data-title-mode='hover']:not(:hover):not(:focus-within) > .t {
+    visibility: hidden;
+  }
+}
 .poster .m {
   margin-top: 2px;
   font-size: 12px;

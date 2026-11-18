@@ -1,13 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { MediaStatus, type MediaInfo } from '../api';
+import { MediaStatus, type CardTitleKind, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useExtras, type Extra } from '../extras';
 import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import { usePrefs } from '../settings';
-import { Glyph, statusOf, type Stat } from './cards';
+import { Glyph, statusOf, useCardTitleMode, type Stat } from './cards';
 import { Pill } from './detail';
 import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
@@ -85,6 +85,7 @@ export function ExtraCard({
   icon,
   note,
   pct,
+  titleKind,
 }: {
   href: string;
   img?: string;
@@ -94,10 +95,15 @@ export function ExtraCard({
   shape?: 'sq' | 'book' | 'wide';
   icon: IconName;
   note?: string; // a second, quieter line (e.g. the library state)
+  titleKind?: CardTitleKind;
   pct?: number; // a download progress bar along the bottom of the art
 }) {
+  const titleMode = useCardTitleMode(titleKind);
   return (
-    <div className={`poster ${shape || ''}`}>
+    <div
+      className={`poster ${shape || ''}`}
+      data-title-mode={img ? titleMode : undefined}
+    >
       <div className="art">
         {img ? (
           <img loading="lazy" src={img} alt="" />

@@ -149,6 +149,16 @@ export interface MediaRow {
   releaseDate?: string;
   mediaAddedAt?: string;
 }
+export type CardTitleMode = 'hover' | 'always';
+export type CardTitleKind = 'movie' | 'tv' | 'album' | 'book';
+export type CardTitleSettings = Partial<Record<CardTitleKind, CardTitleMode>>;
+export const defaultCardTitleModes = {
+  movie: 'hover',
+  tv: 'hover',
+  album: 'always',
+  book: 'always',
+} satisfies Record<CardTitleKind, CardTitleMode>;
+
 export interface User {
   plexUsername?: string | null;
   jellyfinUsername?: string | null;
@@ -158,6 +168,12 @@ export interface User {
   permissions: number;
   userType?: 1 | 2 | 3 | 4;
   warnings?: string[];
+  settings?: {
+    cardTextVisibilityMovie?: CardTitleMode;
+    cardTextVisibilityTv?: CardTitleMode;
+    cardTextVisibilityAlbum?: CardTitleMode;
+    cardTextVisibilityBook?: CardTitleMode;
+  };
 }
 export interface Genre {
   id: number;
