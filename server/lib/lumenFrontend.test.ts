@@ -146,6 +146,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       assert.equal(bookmark.status, 302);
       assert.equal(bookmark.headers.location, `/lumen/admin/${service}`);
     }
+    const musicServices = await request(app).get(
+      '/lumen/settings/services?serviceCategory=music'
+    );
+    assert.equal(
+      musicServices.headers.location,
+      '/lumen/admin?serviceCategory=music'
+    );
     const admin = await request(app).get('/lumen/admin');
     assert.equal(admin.status, 200);
     assert.match(admin.text, /Lumen/);

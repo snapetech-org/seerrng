@@ -859,7 +859,13 @@ export const mountLumenFrontend = (
         typeof target === 'string'
           ? targets.find(([pattern]) => pattern.test(target))?.[1]
           : undefined;
-      destination = service ? `/admin/${service}` : '/admin';
+      const category = req.query.serviceCategory;
+      destination = service
+        ? `/admin/${service}`
+        : typeof category === 'string' &&
+            /^(tv-movies|audiobooks-books|music|tools-other)$/.test(category)
+          ? `/admin?serviceCategory=${category}`
+          : '/admin';
     } else if (section === 'users') {
       destination = '/admin/general#default-request-quotas';
     } else if (!section || section === 'main') {

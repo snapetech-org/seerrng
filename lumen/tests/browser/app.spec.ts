@@ -5362,6 +5362,33 @@ test('General Settings preserves a sign-in method and saves Jellyfin Quick Conne
   await expect(admission).not.toBeChecked();
 });
 
+test('Classic service category bookmarks filter the Lumen administration menu', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/admin?serviceCategory=music');
+  await expect(
+    page.getByRole('heading', { name: 'Music', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Lidarr Services' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Radarr Services' })
+  ).toHaveCount(0);
+  await page.getByRole('link', { name: 'All Settings and Tools' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Open Radarr Services' })
+  ).toBeVisible();
+  await page.goto('/admin?serviceCategory=tv-movies');
+  await expect(
+    page.getByRole('link', { name: 'Open Jellystat Settings' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Lidarr Services' })
+  ).toHaveCount(0);
+});
+
 test('Steam settings bookmark brings the key field into view', async ({
   page,
 }) => {

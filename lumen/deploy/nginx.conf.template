@@ -267,6 +267,9 @@ server {
     if ($arg_settingsSearchTarget ~ ^reader-) { return 302 /admin/reader-delivery; }
     if ($arg_settingsSearchTarget ~ ^readmeabook-) { return 302 /admin/readmeabook; }
     if ($arg_settingsSearchTarget = steamApiKey) { return 302 "/admin/software-acquisition#steam-library-import"; }
+    if ($arg_serviceCategory ~ ^(tv-movies|audiobooks-books|music|tools-other)$) {
+      return 302 /admin?serviceCategory=$arg_serviceCategory;
+    }
     return 302 /admin;
   }
   location ~ ^/settings/main/?$ {

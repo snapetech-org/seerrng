@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Section } from '../components/cards';
 import { Icon } from '../icons';
 
@@ -44,29 +44,73 @@ const destinations = [
   ['Lumen Settings', '/me/lumen'],
 ] as const;
 
-export function AdminLinks() {
+const serviceGroups = {
+  'tv-movies': {
+    label: 'TV and Movies',
+    pages: ['radarr', 'sonarr', 'tunerr', 'sportarr', 'whisparr', 'jellystat'],
+  },
+  'audiobooks-books': {
+    label: 'Audiobooks and Books',
+    pages: [
+      'readarr',
+      'reader-delivery',
+      'readmeabook',
+      'audiobookshelf',
+      'lazylibrarian',
+      'mylar',
+      'kapowarr',
+      'backissue',
+      'kavita',
+    ],
+  },
+  music: { label: 'Music', pages: ['lidarr', 'soulseek', 'navidrome'] },
+  'tools-other': {
+    label: 'System Services',
+    pages: [
+      'connection-hosts',
+      'prowlarr',
+      'download-clients',
+      'software-acquisition',
+      'recognition',
+    ],
+  },
+} satisfies Record<string, { label: string; pages: string[] }>;
+
+export function AdminLinks({ pages }: { pages?: readonly string[] } = {}) {
   return (
     <div className="setlist">
-      {destinations.map(([label, path]) => (
-        <div className="set" key={path}>
-          <b>{label}</b>
-          <Link className="go" to={path} aria-label={`Open ${label}`}>
-            Open <Icon name="chev" size="sm" />
-          </Link>
-        </div>
-      ))}
+      {destinations
+        .filter(
+          ([, path]) => !pages || pages.includes(path.slice('/admin/'.length))
+        )
+        .map(([label, path]) => (
+          <div className="set" key={path}>
+            <b>{label}</b>
+            <Link className="go" to={path} aria-label={`Open ${label}`}>
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+        ))}
     </div>
   );
 }
 
 export default function AdminHome() {
+  const [params] = useSearchParams();
+  const category = params.get('serviceCategory') ?? '';
+  const group = Object.hasOwn(serviceGroups, category)
+    ? serviceGroups[category as keyof typeof serviceGroups]
+    : undefined;
   return (
     <>
       <header className="ph">
         <h1>Administration</h1>
       </header>
-      <Section title="Settings and Tools">
-        <AdminLinks />
+      <Section
+        title={group?.label ?? 'Settings and Tools'}
+        link={group ? ['All Settings and Tools', '/admin'] : undefined}
+      >
+        <AdminLinks pages={group?.pages} />
       </Section>
     </>
   );

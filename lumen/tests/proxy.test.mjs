@@ -218,6 +218,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/prowlarr', '/admin/prowlarr'],
       ['/settings/services/', '/admin'],
       [
+        '/settings/services?serviceCategory=music',
+        '/admin?serviceCategory=music',
+      ],
+      [
         '/series/bookshelf-series%3A1%3AU2VyaWVz%3A42/',
         '/book-series/bookshelf-series:1:U2VyaWVz:42',
       ],
