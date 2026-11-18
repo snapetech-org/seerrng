@@ -205,6 +205,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/library-migration', '/admin/library-migration'],
       ['/settings/prowlarr', '/admin/prowlarr'],
       ['/settings/services/', '/admin'],
+      [
+        '/series/bookshelf-series%3A1%3AU2VyaWVz%3A42/',
+        '/book-series/bookshelf-series:1:U2VyaWVz:42',
+      ],
       ['/settings/plex', '/admin/media-libraries'],
       ['/settings/jellyfin/', '/admin/media-libraries'],
       ['/settings/services?settingsSearchTarget=prowlarr', '/admin/prowlarr'],

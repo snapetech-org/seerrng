@@ -323,6 +323,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/author/OL42A/', '/lumen/author/OL42A'],
       [
+        '/series/bookshelf-series%3A1%3AU2VyaWVz%3A42/',
+        '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz%3A42',
+      ],
+      [
         '/book-series/bookshelf-series%3A1%3AU2VyaWVz',
         '/lumen/book-series/bookshelf-series%3A1%3AU2VyaWVz',
       ],

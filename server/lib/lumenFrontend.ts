@@ -201,6 +201,13 @@ function detailDeepLink(req: Request): string | undefined {
     const separator = page === 'cast' || page === 'crew' ? '#' : '/';
     return `/lumen/${media}/${id}${separator}${page}`;
   }
+  const legacyBookSeries =
+    /^\/series\/(bookshelf-series(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(
+      req.path
+    );
+  if (legacyBookSeries) {
+    return `/lumen/book-series/${legacyBookSeries[1]}`;
+  }
   const bookGrouping =
     /^\/(author|book-series)\/(OL\d{1,18}A|bookshelf-(?:author|series)(?:%3A|:)\d{1,10}(?:%3A|:)[A-Za-z0-9_-]{1,2048}(?:(?:%3A|:)\d{1,10})?)\/?$/i.exec(
       req.path

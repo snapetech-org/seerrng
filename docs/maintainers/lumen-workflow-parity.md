@@ -2625,3 +2625,9 @@ Plex and Jellyfin/Emby settings bookmarks now open Media Server
 Libraries in both deployments. The existing screen selects the
 active provider. The Express and companion production-image suites
 verify the redirects.
+
+Existing book series links under `/series/` now open the matching
+Lumen book series in the standalone companion and under the bundled
+frontend lock. The redirect retains the service, series, and optional
+author identity. Both Express tests and all ten production companion
+image tests passed, including the encoded bookmark.
