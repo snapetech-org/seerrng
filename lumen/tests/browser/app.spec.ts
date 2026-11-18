@@ -4330,7 +4330,9 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   await expect(page.getByRole('button', { name: 'Cancel Job' })).toBeVisible();
   expect(runs).toBe(1);
   await page.getByRole('button', { name: 'Edit Schedule' }).click();
-  await page.getByLabel('Cron Schedule').fill('0 */20 * * * *');
+  await expect(page.getByLabel('Frequency')).toHaveValue('15');
+  await page.getByLabel('Frequency').selectOption('20');
+  await expect(page.getByLabel('Cron Schedule')).toHaveValue('0 */20 * * * *');
   await page.getByRole('button', { name: 'Save Schedule' }).click();
   await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
 });

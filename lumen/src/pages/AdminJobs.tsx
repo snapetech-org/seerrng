@@ -17,6 +17,64 @@ interface Job {
   nextExecutionTime: string | null;
 }
 
+const frequencies: Record<
+  string,
+  { values: number[]; cron: (value: number) => string }
+> = {
+  seconds: { values: [30, 45, 60], cron: (value) => `*/${value} * * * * *` },
+  minutes: {
+    values: [3, 5, 10, 15, 20, 30, 60],
+    cron: (value) => `0 */${value} * * * *`,
+  },
+  hours: {
+    values: [1, 2, 3, 4, 6, 8, 12, 24, 48, 72],
+    cron: (value) => `0 0 */${value} * * *`,
+  },
+  days: {
+    values: [1, 2, 3, 4, 5, 6, 7, 10, 14, 21],
+    cron: (value) => `0 0 1 */${value} * *`,
+  },
+};
+
+function ScheduleFrequency({
+  interval,
+  schedule,
+  disabled,
+  onChange,
+}: {
+  interval: string;
+  schedule: string;
+  disabled: boolean;
+  onChange: (schedule: string) => void;
+}) {
+  if (!Object.hasOwn(frequencies, interval)) return null;
+  const { values, cron } = frequencies[interval];
+  const fields = schedule.trim().split(/\s+/);
+  const normalized = (fields.length === 5 ? ['0', ...fields] : fields).join(
+    ' '
+  );
+  const current = values.find((value) => cron(value) === normalized);
+  return (
+    <label className="sel">
+      <span className="lbl">Frequency</span>
+      <select
+        value={current ?? ''}
+        disabled={disabled}
+        onChange={(event) => onChange(cron(Number(event.target.value)))}
+      >
+        <option value="" disabled>
+          Custom Schedule
+        </option>
+        {values.map((value) => (
+          <option key={value} value={value}>
+            Every {value} {value === 1 ? interval.slice(0, -1) : interval}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 type Pending = { job: Job; action: 'run' | 'cancel' | 'enabled' };
 function actionLabel({ job, action }: Pending) {
   if (action === 'run') return 'Run Now';
@@ -126,6 +184,12 @@ export default function AdminJobs() {
                       });
                   }}
                 >
+                  <ScheduleFrequency
+                    interval={job.interval}
+                    schedule={edit.schedule}
+                    disabled={busy}
+                    onChange={(schedule) => setEdit({ job, schedule })}
+                  />
                   <label className="sel">
                     <span className="lbl">Cron Schedule</span>
                     <input
