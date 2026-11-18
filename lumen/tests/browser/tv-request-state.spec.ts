@@ -253,6 +253,7 @@ test('Sonarr request language choices follow the selected destination', async ({
           activeProfileId: 1,
           activeDirectory: '/shows',
           activeLanguageProfileId: legacy ? 8 : undefined,
+          activeTags: [legacy ? 17 : 23],
         },
         profiles: [{ id: 1, name: 'HD' }],
         rootFolders: [{ id: 1, path: '/shows' }],
@@ -263,6 +264,9 @@ test('Sonarr request language choices follow the selected destination', async ({
             ]
           : null,
         metadataLanguages: legacy ? [] : [{ id: 4, name: 'French' }],
+        tags: legacy
+          ? [{ id: 17, label: 'Legacy Shows' }]
+          : [{ id: 23, label: 'New Shows' }],
       },
     });
   });
@@ -270,6 +274,11 @@ test('Sonarr request language choices follow the selected destination', async ({
   const profile = page.getByRole('combobox', { name: 'Language Profile' });
   await expect(profile).toHaveValue('8');
   await profile.selectOption('9');
+  const tags = page.getByRole('group', { name: 'Request Tags' });
+  await expect(
+    tags.getByRole('checkbox', { name: 'Legacy Shows' })
+  ).toBeChecked();
+  await tags.getByRole('checkbox', { name: 'Legacy Shows' }).uncheck();
   await profile.scrollIntoViewIfNeeded();
   await page.screenshot({
     path: info.outputPath('sonarr-language-profile.png'),
@@ -280,6 +289,14 @@ test('Sonarr request language choices follow the selected destination', async ({
   await expect(profile).toHaveCount(0);
   const metadata = page.getByRole('combobox', { name: 'Metadata Language' });
   await metadata.selectOption('4');
+  await expect(
+    tags.getByRole('checkbox', { name: 'Legacy Shows' })
+  ).toHaveCount(0);
+  const newTag = tags.getByRole('checkbox', { name: 'New Shows' });
+  await expect(newTag).toBeChecked();
+  await newTag.uncheck();
+  await newTag.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('sonarr-request-tags.png') });
   await metadata.scrollIntoViewIfNeeded();
   await page.screenshot({
     path: info.outputPath('sonarr-metadata-language.png'),
@@ -296,6 +313,13 @@ test('Sonarr request language choices follow the selected destination', async ({
         mediaType: 'tv',
         serverId: 2,
         metadataLanguageId: 4,
+        tags: [],
+        requesterSelectedOptions: {
+          tags: true,
+          profile: true,
+          rootFolder: true,
+          languageProfile: false,
+        },
       }),
     },
   ]);

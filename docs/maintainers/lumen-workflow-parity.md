@@ -2356,3 +2356,18 @@ and checks that the legacy profile does not leak into that payload.
 Live Sonarr delivery and persisted edits were outside the check.
 Evidence is retained in the `seerrng-lumen-sonarr-language*` outputs
 under `/mnt/disks/scratch/task-deliverables/`.
+
+Lumen's advanced movie and TV request controls can customize Radarr and
+Sonarr destination tags. The picker shows the selected service's defaults,
+restores compatible saved tags for request edits, and resets when the
+destination changes. New requests distinguish explicit tag changes,
+including an empty list, from leaving destination rules in control.
+The edit payload omits the create-only options marker.
+
+The production build and 48 browser checks passed. Compared expanded TV
+request controls before and after on desktop, iPhone 13, Pixel 7, and
+iPad Pro 11. The fixture verified tag defaults, changing destinations,
+and explicitly removing all tags from a new request. Live Radarr and
+Sonarr delivery and persistence of edited tags remain unverified.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-tags-final-20261118/`.

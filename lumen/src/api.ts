@@ -418,6 +418,13 @@ export interface RequestOptions {
   rootFolder?: string;
   languageProfileId?: number;
   metadataLanguageId?: number | null;
+  tags?: number[] | null;
+  requesterSelectedOptions?: {
+    tags: boolean;
+    profile?: boolean;
+    rootFolder?: boolean;
+    languageProfile?: boolean;
+  };
   userId?: number; // request on someone else's behalf (admins)
 }
 const post = <T = { id: number }>(body: object) =>
@@ -781,6 +788,7 @@ export interface RequestItem {
   serverId?: number | null;
   languageProfileId?: number | null;
   metadataLanguageId?: number | null;
+  tags?: number[] | null;
   isAutoRequest?: boolean;
   watchAheadParentRequestId?: number | null;
   watchAheadEpisodeCount?: number;

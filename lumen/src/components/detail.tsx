@@ -405,10 +405,12 @@ interface ServerDetail {
   rootFolders: { id: number; path: string }[];
   languageProfiles?: { id: number; name: string }[] | null;
   metadataLanguages?: { id: number; name: string }[];
+  tags?: { id: number; label: string }[];
   server: {
     activeProfileId: number;
     activeDirectory: string;
     activeLanguageProfileId?: number;
+    activeTags?: number[];
   };
 }
 
@@ -544,6 +546,14 @@ export function AdvancedOptions({
                     : initial?.metadataLanguageId == null
                       ? undefined
                       : null,
+                tags:
+                  serverId === initial?.serverId && initial.tags != null
+                    ? initial.tags.filter((id) =>
+                        d.tags?.some((tag) => tag.id === id)
+                      )
+                    : initial?.tags != null
+                      ? null
+                      : undefined,
               }
         );
       })
@@ -564,7 +574,17 @@ export function AdvancedOptions({
     : undefined;
   useEffect(() => {
     if (!open) return onChange({});
-    const base = picked4k === undefined ? o : { ...o, is4k: picked4k };
+    const base = picked4k === undefined ? { ...o } : { ...o, is4k: picked4k };
+    if (!initial && o.tags) {
+      base.requesterSelectedOptions = {
+        tags: true,
+        profile: o.profileId !== undefined,
+        rootFolder: !!o.rootFolder,
+        ...(kind === 'tv'
+          ? { languageProfile: o.languageProfileId !== undefined }
+          : {}),
+      };
+    }
     onChange(
       // a new request is the admin's own unless someone else is picked; a request being
       // changed always says whose it is (picking "Me" moves it to the admin)
@@ -572,7 +592,7 @@ export function AdvancedOptions({
         ? { ...base, userId: asUser }
         : base
     );
-  }, [o, open, asUser, user?.id, initial?.userId, onChange, picked4k]);
+  }, [o, open, asUser, user?.id, initial, kind, onChange, picked4k]);
   // no server of this kind set up: nothing to choose, SeerrNG decides (as its own dialog does)
   const none = !!servers && !servers.length;
   useEffect(() => {
@@ -587,6 +607,11 @@ export function AdvancedOptions({
   }, [detail, err, o, onReady, none]);
 
   if (!allowed) return null;
+  const defaultTags =
+    detail?.server.activeTags?.filter((id) =>
+      detail.tags?.some((tag) => tag.id === id)
+    ) ?? [];
+  const selectedTags = o.tags ?? defaultTags;
   const body = (
     <>
       {err && <p className="note">{err}</p>}
@@ -716,6 +741,34 @@ export function AdvancedOptions({
               )}
             </>
           )}
+        </div>
+      )}
+      {!!detail?.tags?.length && (
+        <div role="group" aria-label="Request Tags">
+          <p className="note">Request Tags</p>
+          <div className="setlist">
+            {detail.tags.map(({ id, label }) => (
+              <label key={id} className="set cfg-row">
+                <span>{label}</span>
+                <input
+                  type="checkbox"
+                  checked={selectedTags.includes(id)}
+                  onChange={(event) => {
+                    const checked = event.target.checked;
+                    setO((previous) => {
+                      const tags = previous.tags ?? defaultTags;
+                      return {
+                        ...previous,
+                        tags: checked
+                          ? [...new Set([...tags, id])]
+                          : tags.filter((tag) => tag !== id),
+                      };
+                    });
+                  }}
+                />
+              </label>
+            ))}
+          </div>
         </div>
       )}
     </>
