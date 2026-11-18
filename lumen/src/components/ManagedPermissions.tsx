@@ -6,6 +6,13 @@ import { permissionOptions } from '../permissionOptions';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
 
+interface RequestService {
+  id: number;
+  name: string;
+  isDefault: boolean;
+  requestButtonLabel?: string;
+}
+
 export default function ManagedPermissions({
   id,
   name,
@@ -20,7 +27,17 @@ export default function ManagedPermissions({
   onSaved: () => void;
 }) {
   const path = `/user/${id}/settings/permissions`;
-  const { data, error, reload } = useApi<{ permissions: number }>(path);
+  const { data, error, reload } = useApi<{
+    permissions: number;
+    requestServices?: string[];
+    contentRestricted?: boolean | null;
+  }>(path);
+  const radarr = useApi<RequestService[]>('/service/radarr');
+  const sonarr = useApi<RequestService[]>('/service/sonarr');
+  const [services, setServices] = useState<string[]>();
+  const [restriction, setRestriction] = useState<
+    'default' | 'restricted' | 'unrestricted'
+  >();
   const [draft, setDraft] = useState<bigint>();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -34,8 +51,40 @@ export default function ManagedPermissions({
   const targetAdmin = (current & 2n) !== 0n;
   const editable = !!data && (admin || (saved & ~held) === 0n);
 
+  const configured = { radarr: radarr.data, sonarr: sonarr.data };
+  const serviceKeys = Object.entries(configured).flatMap(([type, entries]) =>
+    (entries ?? []).map((service) => `${type}:${service.id}`)
+  );
+  const available = Object.entries(configured).flatMap(([type, entries]) =>
+    (entries ?? [])
+      .filter((service) => service.requestButtonLabel && !service.isDefault)
+      .map((service) => ({
+        key: `${type}:${service.id}`,
+        label: `${service.requestButtonLabel} (${service.name})`,
+      }))
+  );
+  const savedServices = data?.requestServices ?? [];
+  const selectedServices = services ?? savedServices;
+  const servicesChanged =
+    !!radarr.data &&
+    !!sonarr.data &&
+    !!services &&
+    (services.length !== savedServices.length ||
+      services.some((service) => !savedServices.includes(service)));
+  const savedRestriction =
+    data?.contentRestricted == null
+      ? 'default'
+      : data.contentRestricted
+        ? 'restricted'
+        : 'unrestricted';
+  const selectedRestriction = restriction ?? savedRestriction;
+  const changed =
+    current !== saved ||
+    servicesChanged ||
+    selectedRestriction !== savedRestriction;
+
   async function save() {
-    if (!editable || current === saved || working.current) return;
+    if (!editable || !changed || working.current) return;
     working.current = true;
     setBusy(true);
     setFailure('');
@@ -43,9 +92,24 @@ export default function ManagedPermissions({
     try {
       await api(path, {
         method: 'POST',
-        body: JSON.stringify({ permissions: Number(current) }),
+        body: JSON.stringify({
+          permissions: Number(current),
+          ...(servicesChanged && {
+            requestServices: selectedServices
+              .filter((service) => serviceKeys.includes(service))
+              .sort(),
+          }),
+          ...(selectedRestriction !== savedRestriction && {
+            contentRestricted:
+              selectedRestriction === 'default'
+                ? null
+                : selectedRestriction === 'restricted',
+          }),
+        }),
       });
       setDraft(undefined);
+      setServices(undefined);
+      setRestriction(undefined);
       setNotice('Permissions saved.');
       reload();
       onSaved();
@@ -119,9 +183,62 @@ export default function ManagedPermissions({
             })}
           </div>
           <div className="toolbar">
+            <label className="sel">
+              <span className="lbl">Age Gate</span>
+              <select
+                value={selectedRestriction}
+                disabled={busy || !editable}
+                onChange={(event) =>
+                  setRestriction(
+                    event.target.value as typeof selectedRestriction
+                  )
+                }
+              >
+                <option value="default">Use Server Default</option>
+                <option value="restricted">Restricted</option>
+                <option value="unrestricted">Unrestricted</option>
+              </select>
+            </label>
+          </div>
+          <ServiceNote
+            error={radarr.error}
+            what="Radarr destinations"
+            retry={radarr.reload}
+          />
+          <ServiceNote
+            error={sonarr.error}
+            what="Sonarr destinations"
+            retry={sonarr.reload}
+          />
+          {!!radarr.data && !!sonarr.data && !!available.length && (
+            <div
+              className="setlist"
+              role="group"
+              aria-label="Request Destinations"
+            >
+              {available.map(({ key, label }) => (
+                <label className="set" key={key}>
+                  <span>{label}</span>
+                  <input
+                    type="checkbox"
+                    checked={selectedServices.includes(key)}
+                    disabled={busy || !editable}
+                    onChange={(event) => {
+                      setServices(
+                        event.target.checked
+                          ? [...selectedServices, key]
+                          : selectedServices.filter((entry) => entry !== key)
+                      );
+                    }}
+                  />
+                </label>
+              ))}
+            </div>
+          )}
+          <div className="toolbar">
             <button
               className="btn btn-tonal btn-sm"
-              disabled={busy || !editable || current === saved}
+              disabled={busy || !editable || !changed}
               onClick={() => setConfirm(true)}
             >
               Save Permissions

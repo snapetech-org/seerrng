@@ -4723,7 +4723,30 @@ test('Users delegates only held permissions and preserves high permission bits',
 }) => {
   await fixtures(page);
   const requestMusic = 4294967296;
-  const target = { id: 19, displayName: 'Viewer', permissions: 32 };
+  const target = {
+    id: 19,
+    displayName: 'Viewer',
+    permissions: 32,
+    requestServices: ['sonarr:3'],
+    contentRestricted: null as boolean | null,
+  };
+  await page.route('**/api/v1/service/radarr', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 4,
+          name: 'Movies West',
+          isDefault: false,
+          requestButtonLabel: 'West',
+        },
+      ],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [{ id: 3, name: 'Default Series', isDefault: true }],
+    })
+  );
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
       json: {
@@ -4738,12 +4761,19 @@ test('Users delegates only held permissions and preserves high permission bits',
   );
   await page.route('**/api/v1/user/19/settings/permissions', (route) => {
     if (route.request().method() === 'POST') {
-      expect(route.request().postDataJSON()).toEqual({
-        permissions: 32 + requestMusic,
-      });
-      target.permissions = 32 + requestMusic;
+      const body = route.request().postDataJSON();
+      expect(body).toEqual(
+        target.permissions === 32
+          ? { permissions: 32 + requestMusic }
+          : {
+              permissions: 32 + requestMusic,
+              requestServices: ['radarr:4', 'sonarr:3'],
+              contentRestricted: true,
+            }
+      );
+      Object.assign(target, body);
     }
-    return route.fulfill({ json: { permissions: target.permissions } });
+    return route.fulfill({ json: target });
   });
   await page.goto('/admin/users');
   await page.getByRole('button', { name: 'Permissions', exact: true }).click();
@@ -4766,4 +4796,22 @@ test('Users delegates only held permissions and preserves high permission bits',
   await expect(page.getByText('Permissions saved.')).toBeVisible();
   await expect(music).toBeChecked();
   expect(target.permissions).toBe(32 + requestMusic);
+  const west = page.getByRole('checkbox', {
+    name: 'West (Movies West)',
+    exact: true,
+  });
+  await west.check();
+  await page.getByLabel('Age Gate').selectOption('restricted');
+  await page
+    .getByRole('button', { name: 'Save Permissions', exact: true })
+    .click();
+  expect(target.contentRestricted).toBeNull();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Save Permissions' })
+    .click();
+  await expect(page.getByText('Permissions saved.')).toBeVisible();
+  await expect(west).toBeChecked();
+  expect(target.requestServices).toEqual(['radarr:4', 'sonarr:3']);
+  expect(target.contentRestricted).toBe(true);
 });
