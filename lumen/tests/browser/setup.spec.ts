@@ -210,6 +210,14 @@ test('first-run Plex setup exchanges the PIN and configures a discovered server'
         expect(request.postDataJSON()).toEqual({ enable: '1' });
         library.enabled = true;
         return route.fulfill({ json: [library] });
+      case '/settings/download-clients':
+        return route.fulfill({
+          json: { clients: [{ enabled: true }, { enabled: false }] },
+        });
+      case '/settings/prowlarr':
+        return route.fulfill({
+          json: { hostname: 'indexer.example.test', apiKeyConfigured: true },
+        });
       case '/settings/initialize':
         expect(connected && library.enabled).toBe(true);
         initialized = true;
@@ -246,6 +254,8 @@ test('first-run Plex setup exchanges the PIN and configures a discovered server'
     has: page.getByRole('heading', { name: 'Review Setup' }),
   });
   await expect(review.getByRole('listitem')).toHaveText('Films');
+  await expect(review.getByText('1 enabled', { exact: true })).toBeVisible();
+  await expect(review.getByText('Configured', { exact: true })).toBeVisible();
   await finish.click();
   await expect(page).toHaveURL(`${mount}/`);
   expect(initialized).toBe(true);

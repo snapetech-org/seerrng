@@ -49,6 +49,15 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
   const enabled = connection.data?.libraries?.filter(
     (library) => library.enabled
   );
+  const downloads = useApi<{ clients: { enabled: boolean }[] }>(
+    '/settings/download-clients'
+  );
+  const prowlarr = useApi<{ hostname: string; apiKeyConfigured: boolean }>(
+    '/settings/prowlarr'
+  );
+  const enabledClients = downloads.data?.clients.filter(
+    (client) => client.enabled
+  ).length;
   return (
     <Section title="Review Setup">
       <ServiceNote
@@ -76,6 +85,40 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
           Checking saved media libraries…
         </p>
       ) : null}
+      <dl className="setlist">
+        <div className="set">
+          <dt>Download Clients</dt>
+          <dd>
+            {enabledClients === undefined
+              ? downloads.error
+                ? 'Unavailable'
+                : 'Checking…'
+              : `${enabledClients} enabled`}
+          </dd>
+        </div>
+        <div className="set">
+          <dt>Prowlarr</dt>
+          <dd>
+            {prowlarr.data
+              ? prowlarr.data.hostname && prowlarr.data.apiKeyConfigured
+                ? 'Configured'
+                : 'Not configured'
+              : prowlarr.error
+                ? 'Unavailable'
+                : 'Checking…'}
+          </dd>
+        </div>
+      </dl>
+      <ServiceNote
+        what="saved download clients"
+        error={downloads.error}
+        retry={downloads.reload}
+      />
+      <ServiceNote
+        what="saved Prowlarr settings"
+        error={prowlarr.error}
+        retry={prowlarr.reload}
+      />
       <p className="note">
         Request services, download clients, and Prowlarr are optional.
       </p>

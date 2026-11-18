@@ -2813,3 +2813,10 @@ with the server before initializing. All forty setup browser cases passed
 across both deployments and four viewport presets. The Plex case verifies
 the saved library is shown in Review before initialization. Matched visual
 acceptance remains unverified.
+
+Setup Review now reads the saved download-client and Prowlarr settings.
+It shows the enabled client count and whether a Prowlarr host and API key
+are configured. Each read has independent error and retry handling.
+Eight Plex setup fixtures passed across both deployments and four
+viewport presets. Live integration health and matched visual acceptance
+remain unverified.
