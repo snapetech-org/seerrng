@@ -11,6 +11,7 @@ import { describeAll } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
 
 function RecentRequests({ id, own }: { id: number; own: boolean }) {
+  const requestScope = own ? 'tab=all' : `requestedBy=${id}`;
   const requests = useApi<{ results: RequestItem[] }>(
     `/user/${id}/requests?take=10&skip=0`,
     { currentPathOnly: true }
@@ -57,17 +58,17 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
         <ul className="setlist">
           {rows.map(({ r, title }) => (
             <li className="set" key={r.id}>
-              <Link className="go" to={`/requests?requestId=${r.id}`}>
+              <Link
+                className="go"
+                to={`/requests?${requestScope}&requestId=${r.id}`}
+              >
                 {title}
               </Link>
             </li>
           ))}
         </ul>
       )}
-      <Link
-        className="btn btn-quiet btn-sm"
-        to={own ? '/requests' : `/requests?requestedBy=${id}`}
-      >
+      <Link className="btn btn-quiet btn-sm" to={`/requests?${requestScope}`}>
         View Requests
       </Link>
     </Section>

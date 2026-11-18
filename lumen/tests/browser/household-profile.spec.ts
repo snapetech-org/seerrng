@@ -80,6 +80,13 @@ for (const permissions of [2, 24, 16, 32]) {
               ],
             },
           });
+        case '/request/status/3':
+          return route.fulfill({
+            json: {
+              current: { stage: 'requested', attempt: 1 },
+              history: { results: [], total: 0 },
+            },
+          });
         case '/movie/24':
           return route.fulfill({ json: { id: 24, title: 'Requested Film' } });
         default:
@@ -125,9 +132,14 @@ for (const permissions of [2, 24, 16, 32]) {
       await expect(
         page.getByRole('link', { name: 'Saved Film' })
       ).toHaveAttribute('href', '/movie/23');
+      await page.getByRole('link', { name: 'Requested Film' }).click();
+      await expect(page).toHaveURL('/requests?requestedBy=19&requestId=3');
+      const history = page.getByRole('dialog', { name: 'Request history' });
       await expect(
-        page.getByRole('link', { name: 'Requested Film' })
-      ).toHaveAttribute('href', '/requests?requestId=3');
+        history.getByText('Current status: Requested', { exact: true })
+      ).toBeVisible();
+      await history.getByRole('button', { name: 'Close', exact: true }).click();
+      await expect(page).toHaveURL('/requests?requestedBy=19');
     } else {
       await expect(
         page.getByRole('link', { name: 'View Requests' })
