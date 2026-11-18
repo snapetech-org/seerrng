@@ -213,6 +213,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const status =
     kind === 'tv' && /^[0-5]$/.test(statusParam) ? statusParam : '';
   const excludeStatus = p.get('excludeStatus') === 'true';
+  const countryParam = (p.get('country') ?? '').toUpperCase();
+  const country = /^[A-Z]{2}$/.test(countryParam) ? countryParam : '';
+  const countries = useApi<{ iso_3166_1: string; english_name: string }[]>(
+    '/watchproviders/regions'
+  );
+  const countryOptions = (Array.isArray(countries.data) ? countries.data : [])
+    .filter(({ iso_3166_1 }) => /^[A-Z]{2}$/.test(iso_3166_1))
+    .sort((a, b) => a.english_name.localeCompare(b.english_name));
   const languageParam = p.get('language') ?? '';
   const language = /^(?:all|[a-z]{2})$/.test(languageParam)
     ? languageParam
@@ -242,6 +250,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(country ? { country } : {}),
     ...(language ? { language } : {}),
     ...(validRuntime && minRuntime ? { withRuntimeGte: minRuntime } : {}),
     ...(validRuntime && maxRuntime ? { withRuntimeLte: maxRuntime } : {}),
@@ -447,6 +456,25 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             ))}
           </select>
         </label>
+        <label className="sel">
+          <span className="lbl">Country of Origin</span>
+          <select
+            aria-label="Country of Origin"
+            value={country}
+            onChange={(event) => upd('country', event.target.value)}
+          >
+            <option value="">Any Country</option>
+            {country &&
+              !countryOptions.some(
+                ({ iso_3166_1 }) => iso_3166_1 === country
+              ) && <option value={country}>{country}</option>}
+            {countryOptions.map(({ iso_3166_1, english_name }) => (
+              <option key={iso_3166_1} value={iso_3166_1}>
+                {english_name}
+              </option>
+            ))}
+          </select>
+        </label>
         <GenrePicker
           options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
           picked={picked}
@@ -528,6 +556,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         error={languages.error}
         what="original languages"
         retry={languages.reload}
+      />
+      <ServiceNote
+        error={countries.error}
+        what="countries"
+        retry={countries.reload}
       />
       <RangeFilter
         kind="dates"

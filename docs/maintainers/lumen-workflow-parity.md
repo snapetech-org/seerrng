@@ -1054,3 +1054,10 @@ language catalog. An explicit All Languages selection differs from leaving
 the parameter unset for the saved default. Four standalone Series checks
 covered selection, reload, the explicit All Languages query, and reset.
 Live provider and bundled and native visual comparisons remain open.
+
+Movies and Series accept a country-of-origin filter. The picker uses
+SeerrNG's streaming-region catalog and preserves a valid country code
+from a shared link even when absent from that list. Standalone Movies
+checks covered the request, reload and independent reset across four
+viewport presets. The production-country detail links, live results
+and bundled and native visual comparisons remain open.

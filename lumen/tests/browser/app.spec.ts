@@ -1951,3 +1951,27 @@ test('original language distinguishes all languages from the saved default', asy
   await language.selectOption('');
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
+
+test('movie origin country sends the server filter and clears independently', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/watchproviders/regions', (route) =>
+    route.fulfill({ json: [{ iso_3166_1: 'CA', english_name: 'Canada' }] })
+  );
+  await page.goto('/movies?genre=18');
+  const country = page.getByLabel('Country of Origin', { exact: true });
+  const query = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/movies') &&
+      url.searchParams.get('country') === 'CA'
+    );
+  });
+  await country.selectOption({ label: 'Canada' });
+  await query;
+  await page.reload();
+  await expect(country).toHaveValue('CA');
+  await country.selectOption('');
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});
