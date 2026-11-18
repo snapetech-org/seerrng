@@ -80,7 +80,7 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
 
-test('provider library scans keep filter scope and resume after a pause', async ({
+test('provider library scans keep filter scope while paging and resume after a pause', async ({
   page,
 }) => {
   const scans: unknown[] = [];
@@ -92,7 +92,8 @@ test('provider library scans keep filter scope and resume after a pause', async 
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
     if (path === '/integrations/discovery/library/trakt/repair') {
       expect(request.method()).toBe('POST');
       scans.push(request.postDataJSON());
@@ -116,12 +117,15 @@ test('provider library scans keep filter scope and resume after a pause', async 
           items: [
             {
               id: 'fixture',
-              title: 'Fixture Film',
+              title:
+                url.searchParams.get('page') === '2'
+                  ? 'Second Fixture Film'
+                  : 'Fixture Film',
               mediaType: 'movie',
               ...(matched ? { tmdbId: 20 } : {}),
             },
           ],
-          hasMore: false,
+          hasMore: url.searchParams.get('page') === '1',
           missingMappings: matched ? 0 : 1,
           truncated: false,
         },
@@ -143,11 +147,13 @@ test('provider library scans keep filter scope and resume after a pause', async 
   await expect(page.getByRole('link', { name: 'Fixture Film' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Scan Library', exact: true }).click();
   await expect.poll(() => scans.length).toBe(1);
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page.getByText('Second Fixture Film')).toBeVisible();
   await page.getByRole('button', { name: 'Stop After This Batch' }).click();
   releaseBatch();
   await expect(page.getByText('Scan paused at page 6.')).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Fixture Film' })
+    page.getByRole('link', { name: 'Second Fixture Film' })
   ).toHaveAttribute('href', '/movie/20');
   await page.getByRole('button', { name: 'Continue Scan' }).click();
   await expect(page.getByText('Library scan complete.')).toBeVisible();

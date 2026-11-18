@@ -179,7 +179,6 @@ function LibraryShelf({ source }: { source: Source }) {
         )}
       </div>
       <LibraryPage
-        key={path}
         path={path}
         page={page}
         native={native}
@@ -218,7 +217,10 @@ function LibraryPage({
   previous: () => void;
   next: (cursor: number) => void;
 }) {
-  const { data, error, reload } = useApi<LibraryResult>(path);
+  const { data, error, reload, refresh } = useApi<LibraryResult>(path, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
   useEffect(() => {
     if (data) setLibraries(data.libraries);
   }, [data, setLibraries]);
@@ -227,10 +229,11 @@ function LibraryPage({
     <>
       {repairPath && (
         <LibraryRepair
+          key={`${repairPath}:${shelf}:${mediaType}`}
           path={repairPath}
           shelf={shelf}
           mediaType={mediaType || undefined}
-          reload={reload}
+          reload={refresh}
         />
       )}
       <ServiceNote error={error} what="your library" retry={reload} />
