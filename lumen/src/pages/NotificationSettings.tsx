@@ -3,28 +3,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { useAuth } from '../auth';
+import {
+  defaultMask,
+  EventChoices,
+} from '../components/NotificationEventChoices';
 import { PushDevices } from '../components/PushDevices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
-
-const notificationEvents = [
-  [2, 'Request awaiting approval'],
-  [4, 'Request approved'],
-  [8, 'Media available'],
-  [16, 'Request failed'],
-  [64, 'Request declined'],
-  [128, 'Request automatically approved'],
-  [256, 'Issue reported'],
-  [512, 'Issue comment added'],
-  [1024, 'Issue resolved'],
-  [2048, 'Issue reopened'],
-  [4096, 'Media automatically requested'],
-  [8192, 'Software available'],
-  [16384, 'Software request status changed'],
-  [32768, 'Pending request updated'],
-] as const;
 
 interface Preferences {
   emailEnabled?: boolean;
@@ -50,38 +37,6 @@ interface Preferences {
     pushover?: number;
     webpush?: number;
   };
-}
-
-const defaultMask = 65534; // Native default includes all current bits and the test bit.
-
-function EventChoices({
-  mask,
-  enabledMask = defaultMask,
-  disabled,
-  change,
-}: {
-  mask: number;
-  enabledMask?: number;
-  disabled: boolean;
-  change: (mask: number) => void;
-}) {
-  return (
-    <div className="setlist">
-      {notificationEvents
-        .filter(([bit]) => (enabledMask & bit) !== 0)
-        .map(([bit, label]) => (
-          <label key={bit} className="set cfg-row">
-            <b>{label}</b>
-            <input
-              type="checkbox"
-              disabled={disabled}
-              checked={(BigInt(mask) & BigInt(bit)) !== 0n}
-              onChange={() => change(Number(BigInt(mask) ^ BigInt(bit)))}
-            />
-          </label>
-        ))}
-    </div>
-  );
 }
 
 function EventForm({

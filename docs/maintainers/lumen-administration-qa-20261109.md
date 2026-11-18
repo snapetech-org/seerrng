@@ -74,3 +74,11 @@ Administrators can open `/admin/notifications` from `/me` and save or test email
 Compared the form with shared Network Settings controls at 1440×900, iPhone 13, Pixel 7, and iPad Pro 11. Inspected control and action wrapping, long heading and credential notices, and horizontal overflow. The Lumen production build, four browser checks, and the focused server API case passed. Test deliveries were mocked. Other instance notification channels and their old bookmarks still use native settings.
 
 Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-notifications-20261118/`.
+
+## Instance messaging notifications follow-up — 2026-11-18
+
+`/admin/notifications` adds independent Telegram, Pushbullet, and Pushover forms with event selection and draft test sends. Inputs keep saved credentials redacted. Pushover sound choices use the existing server lookup. Account notification preferences reuse the same event controls.
+
+Compared the shared form rows and credential actions against the Email baseline from `7f6752ecc` on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build, eight instance browser checks, and four managed notification browser checks passed. The browser used mocked settings and sound responses. No live messages were sent.
+
+Screenshots and logs are retained on kspld0 under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-messaging-20261118/`.

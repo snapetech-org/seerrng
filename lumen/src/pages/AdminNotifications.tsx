@@ -2,19 +2,27 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
+import { EventChoices } from '../components/NotificationEventChoices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
-type Channel = 'email' | 'webpush';
+type Channel = 'email' | 'webpush' | 'telegram' | 'pushbullet' | 'pushover';
 type Configuration = {
   enabled: boolean;
   embedPoster: boolean;
+  types?: number;
   options: Record<string, string | number | boolean>;
 };
-const titles = { email: 'Email', webpush: 'Web Push' };
+const titles = {
+  email: 'Email',
+  webpush: 'Web Push',
+  telegram: 'Telegram',
+  pushbullet: 'Pushbullet',
+  pushover: 'Pushover',
+};
 const redacted = '[REDACTED]';
 const emailFields = [
   { key: 'senderName', label: 'Sender Name', kind: 'text' },
@@ -31,6 +39,30 @@ const emailSwitches = [
   ['usePublicLogo', 'Use the Public Logo'],
   ['allowSelfSigned', 'Allow Self-Signed SMTP Certificates'],
 ] as const;
+
+const fields = {
+  email: emailFields,
+  webpush: [],
+  telegram: [
+    { key: 'botAPI', label: 'Bot Token', kind: 'password' },
+    { key: 'botUsername', label: 'Bot Username', kind: 'text' },
+    { key: 'chatId', label: 'Chat ID', kind: 'text' },
+    { key: 'messageThreadId', label: 'Message Thread ID', kind: 'text' },
+  ],
+  pushbullet: [
+    { key: 'accessToken', label: 'Access Token', kind: 'password' },
+    { key: 'channelTag', label: 'Channel Tag', kind: 'text' },
+  ],
+  pushover: [
+    { key: 'accessToken', label: 'Application Token', kind: 'password' },
+    { key: 'userToken', label: 'User Key', kind: 'password' },
+  ],
+} as const;
+const required = {
+  telegram: ['botAPI', 'chatId'],
+  pushbullet: ['accessToken'],
+  pushover: ['accessToken', 'userToken'],
+} as const;
 
 function AgentForm({
   channel,
@@ -49,17 +81,24 @@ function AgentForm({
   const pending = useRef(false);
   const changed = JSON.stringify(draft) !== JSON.stringify(saved);
   const options = draft.options;
-  const valid =
-    channel === 'webpush' ||
-    (typeof options.emailFrom === 'string' &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(options.emailFrom) &&
-      typeof options.senderName === 'string' &&
-      !!options.senderName.trim() &&
-      typeof options.smtpHost === 'string' &&
-      !!options.smtpHost.trim() &&
-      Number.isInteger(options.smtpPort) &&
-      Number(options.smtpPort) >= 1 &&
-      Number(options.smtpPort) <= 65535);
+  const eventChannel = channel !== 'email' && channel !== 'webpush';
+  const sounds = useApi<{ name: string; description: string }[]>(
+    channel === 'pushover' && saved.options.accessToken
+      ? '/settings/notifications/pushover/sounds'
+      : null
+  );
+  const valid = eventChannel
+    ? required[channel].every((key) => String(options[key] ?? '').trim())
+    : channel === 'webpush' ||
+      (typeof options.emailFrom === 'string' &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(options.emailFrom) &&
+        typeof options.senderName === 'string' &&
+        !!options.senderName.trim() &&
+        typeof options.smtpHost === 'string' &&
+        !!options.smtpHost.trim() &&
+        Number.isInteger(options.smtpPort) &&
+        Number(options.smtpPort) >= 1 &&
+        Number(options.smtpPort) <= 65535);
   const encryption = options.secure
     ? 'implicit'
     : options.requireTls
@@ -82,7 +121,8 @@ function AgentForm({
     if (
       pending.current ||
       (!test && !changed) ||
-      (!valid && (test || draft.enabled))
+      (!valid && (test || draft.enabled)) ||
+      (!test && draft.enabled && eventChannel && !draft.types)
     )
       return;
     const generation = sessionGeneration();
@@ -93,7 +133,11 @@ function AgentForm({
     try {
       const request: RequestInit = {
         method: 'POST',
-        body: JSON.stringify(test ? { ...draft, enabled: true } : draft),
+        body: JSON.stringify({
+          ...draft,
+          ...(test ? { enabled: true } : {}),
+          ...(eventChannel ? { types: draft.types ?? 0 } : {}),
+        }),
       };
       if (test) {
         await api(`${endpoint}/test`, request, 'empty');
@@ -104,6 +148,11 @@ function AgentForm({
         if (generation !== sessionGeneration()) return;
         setSaved(updated);
         setDraft(updated);
+        if (
+          channel === 'pushover' &&
+          draft.options.accessToken !== saved.options.accessToken
+        )
+          sounds.reload();
         invalidatePublicSettings();
         forget('/settings/public');
         setNotice('Notification settings saved.');
@@ -147,75 +196,73 @@ function AgentForm({
             />
           </label>
         ))}
+        {fields[channel].map(({ key, label, kind }) => {
+          const id = `notification-${channel}-${key}`;
+          const value = options[key];
+          const secret =
+            key === 'smtpHost' ||
+            key === 'authUser' ||
+            kind === 'password' ||
+            kind === 'secret-multiline';
+          const configured = secret && saved.options[key] === redacted;
+          const displayed =
+            secret && value === redacted ? '' : String(value ?? '');
+          return (
+            <div className="set cfg-row" key={key}>
+              <span>
+                <label htmlFor={id}>{label}</label>
+                {configured && (
+                  <small>
+                    Credential saved. Enter a replacement or clear it.
+                  </small>
+                )}
+              </span>
+              {kind === 'secret-multiline' ? (
+                <textarea
+                  id={id}
+                  className="cfg-input"
+                  value={displayed}
+                  maxLength={128 * 1024}
+                  disabled={busy}
+                  onChange={(event) =>
+                    setOptions({
+                      [key]: event.target.value || (configured ? redacted : ''),
+                    })
+                  }
+                />
+              ) : (
+                <input
+                  id={id}
+                  className="cfg-input"
+                  type={kind}
+                  value={displayed}
+                  disabled={busy}
+                  autoComplete={secret ? 'new-password' : undefined}
+                  onChange={(event) =>
+                    setOptions({
+                      [key]:
+                        kind === 'number'
+                          ? Number(event.target.value)
+                          : event.target.value || (configured ? redacted : ''),
+                    })
+                  }
+                />
+              )}
+              {configured && (
+                <button
+                  className="btn btn-quiet btn-sm"
+                  type="button"
+                  disabled={busy || value === ''}
+                  onClick={() => setOptions({ [key]: '' })}
+                >
+                  Clear {label}
+                </button>
+              )}
+            </div>
+          );
+        })}
         {channel === 'email' && (
           <>
-            {emailFields.map(({ key, label, kind }) => {
-              const id = `notification-${key}`;
-              const value = options[key];
-              const secret =
-                key === 'smtpHost' ||
-                key === 'authUser' ||
-                kind === 'password' ||
-                kind === 'secret-multiline';
-              const configured = secret && saved.options[key] === redacted;
-              const displayed =
-                secret && value === redacted ? '' : String(value ?? '');
-              return (
-                <div className="set cfg-row" key={key}>
-                  <span>
-                    <label htmlFor={id}>{label}</label>
-                    {configured && (
-                      <small>
-                        Credential saved. Enter a replacement or clear it.
-                      </small>
-                    )}
-                  </span>
-                  {kind === 'secret-multiline' ? (
-                    <textarea
-                      id={id}
-                      className="cfg-input"
-                      value={displayed}
-                      maxLength={128 * 1024}
-                      disabled={busy}
-                      onChange={(event) =>
-                        setOptions({
-                          [key]:
-                            event.target.value || (configured ? redacted : ''),
-                        })
-                      }
-                    />
-                  ) : (
-                    <input
-                      id={id}
-                      className="cfg-input"
-                      type={kind}
-                      value={displayed}
-                      disabled={busy}
-                      autoComplete={secret ? 'new-password' : undefined}
-                      onChange={(event) =>
-                        setOptions({
-                          [key]:
-                            kind === 'number'
-                              ? Number(event.target.value)
-                              : event.target.value ||
-                                (configured ? redacted : ''),
-                        })
-                      }
-                    />
-                  )}
-                  {configured && (
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      type="button"
-                      disabled={busy || value === ''}
-                      onClick={() => setOptions({ [key]: '' })}
-                    >
-                      Clear {label}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
             <label className="set cfg-row">
               <span>SMTP Encryption</span>
               <select
@@ -251,7 +298,69 @@ function AgentForm({
             ))}
           </>
         )}
+        {channel === 'telegram' && (
+          <label className="set cfg-row">
+            <span>Send Silently</span>
+            <input
+              type="checkbox"
+              disabled={busy}
+              checked={options.sendSilently === true}
+              onChange={(event) =>
+                setOptions({ sendSilently: event.target.checked })
+              }
+            />
+          </label>
+        )}
+        {channel === 'pushover' && (
+          <label className="set cfg-row">
+            <span>Notification Sound</span>
+            <select
+              className="cfg-select"
+              value={String(options.sound ?? '')}
+              disabled={busy}
+              onChange={(event) => setOptions({ sound: event.target.value })}
+            >
+              <option value="">Device Default</option>
+              {typeof options.sound === 'string' &&
+                options.sound &&
+                !sounds.data?.some(({ name }) => name === options.sound) && (
+                  <option value={options.sound}>{options.sound}</option>
+                )}
+              {sounds.data?.map(({ name, description }) => (
+                <option key={name} value={name}>
+                  {description}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
+      {channel === 'pushover' && (
+        <ServiceNote
+          error={sounds.error}
+          what="Pushover sounds"
+          retry={sounds.reload}
+        />
+      )}
+      {eventChannel && (
+        <>
+          <p className="note">Notification Events</p>
+          <EventChoices
+            mask={draft.types ?? 0}
+            disabled={busy}
+            change={(types) => update({ ...draft, types })}
+          />
+          {draft.enabled && !draft.types && (
+            <p className="note">Select at least one notification event.</p>
+          )}
+          {!valid && (
+            <p className="note">
+              Set the channel credentials and destination before enabling or
+              testing notifications.
+            </p>
+          )}
+        </>
+      )}
       {!valid && channel === 'email' && (
         <p className="note">
           Enter a sender name and email, SMTP host, and port to enable or test
@@ -271,7 +380,11 @@ function AgentForm({
       <div className="toolbar">
         <button
           className="btn btn-primary btn-sm"
-          disabled={busy || !changed || (draft.enabled && !valid)}
+          disabled={
+            busy ||
+            !changed ||
+            (draft.enabled && (!valid || (eventChannel && !draft.types)))
+          }
         >
           Save {titles[channel]}
         </button>
@@ -292,7 +405,7 @@ function AgentSection({ channel }: { channel: Channel }) {
   const endpoint = `/settings/notifications/${channel}`;
   const { data, error, reload } = useApi<Configuration>(endpoint);
   return (
-    <Section title={titles[channel]}>
+    <Section title={titles[channel]} id={channel}>
       {channel === 'webpush' && (
         <p className="note">
           Test delivery requires a browser subscribed to Web Push on your
@@ -329,6 +442,9 @@ export default function AdminNotifications() {
         </div>
       </header>
       <AgentSection channel="email" />
+      <AgentSection channel="telegram" />
+      <AgentSection channel="pushbullet" />
+      <AgentSection channel="pushover" />
       <AgentSection channel="webpush" />
     </>
   );
