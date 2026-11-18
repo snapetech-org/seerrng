@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 
@@ -149,6 +150,7 @@ function CreateLocalUser({
 export default function AdminUsers() {
   const [params, setParams] = useSearchParams();
   const [creating, setCreating] = useState(false);
+  const [queueUser, setQueueUser] = useState<number>();
   const [notice, setNotice] = useState('');
   const search = (params.get('q') ?? '').slice(0, 200);
   const requestedSort = params.get('sort') ?? '';
@@ -295,6 +297,18 @@ export default function AdminUsers() {
                   <small>{user.requestCount.toLocaleString()} requests</small>
                 )}
               </div>
+              <button
+                className="btn btn-quiet btn-sm"
+                aria-expanded={queueUser === user.id}
+                onClick={() =>
+                  setQueueUser(queueUser === user.id ? undefined : user.id)
+                }
+              >
+                Episode Queue
+              </button>
+              {queueUser === user.id && (
+                <ManagedEpisodeQueue id={user.id} name={user.displayName} />
+              )}
             </li>
           ))}
         </ul>

@@ -4526,3 +4526,47 @@ test('Users creates a local account with a password setup link', async ({
   await expect(page.getByText('Created New Member.')).toBeVisible();
   await expect(page.getByText('New Member', { exact: true })).toBeVisible();
 });
+
+test('Users sets an Episode Queue default for the selected account', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 8, displayName: 'Manager', permissions: 8 } })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1, results: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let count = 1;
+  await page.route('**/api/v1/user/19/settings/episode-queue', (route) => {
+    if (route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({
+        defaultEpisodeCount: 4,
+      });
+      count = 4;
+    }
+    return route.fulfill({ json: { defaultEpisodeCount: count } });
+  });
+  await page.goto('/admin/users');
+  await page
+    .getByRole('button', { name: 'Episode Queue', exact: true })
+    .click();
+  await expect(page.getByLabel('Episodes Ahead')).toHaveValue('1');
+  await page.getByLabel('Episodes Ahead').selectOption('4');
+  await page.getByRole('button', { name: 'Save Default', exact: true }).click();
+  expect(count).toBe(1);
+  const dialog = page.getByRole('alertdialog', {
+    name: 'Save Episode Queue default for Viewer?',
+  });
+  await dialog.getByRole('button', { name: 'Save Default' }).click();
+  await expect(page.getByText('Episode Queue default saved.')).toBeVisible();
+  await expect(page.getByLabel('Episodes Ahead')).toHaveValue('4');
+  await expect(
+    page.getByRole('button', { name: 'Save Default', exact: true })
+  ).toBeDisabled();
+});
