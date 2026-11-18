@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { api } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import { useBlocklistNavigation } from '../blocklist';
 import { canManageDownloads } from '../downloadPermissions';
 import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
@@ -82,6 +83,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const extras = useExtras();
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
   const loc = useLocation();
+  const showBlocklist = useBlocklistNavigation();
   const canManageRequests = canChooseRequestOptions(user?.permissions);
   const [pendingRequests, setPendingRequests] = useState(0);
   useEffect(() => {
@@ -321,6 +323,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/issues">
               <Icon name="list" />
               Issues
+            </NavLink>
+          )}
+          {showBlocklist && (
+            <NavLink to="/blocklist">
+              <Icon name="list" />
+              Blocklist
             </NavLink>
           )}
           <NavLink to="/watchlist">

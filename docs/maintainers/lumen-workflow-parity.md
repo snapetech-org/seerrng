@@ -225,3 +225,17 @@ standalone discussion fixture. Editing the description, confirming a manager's
 deletion of another account's reply, and confirming issue deletion all worked.
 Mobile and bundled visual checks remain open. Reporting on behalf of another
 user, advanced filters and title metadata, and Blocklist remain open.
+
+### Blocklist browsing and removal increment
+
+The Lumen Blocklist uses the authorized count endpoint for desktop and You
+navigation, keeping the current link visible while the route is active. The
+page supports native search, media, source and date filters, sorting and
+pagination. Accounts with View Blocklist can browse. Managers can also
+confirm removal using the affected entry's TMDB or external identity.
+
+Headed Chrome at 1440 × 1000 verified the standalone list, exact encoded
+external ID removal, and empty navigation state against a fixture. Mobile and
+bundled visual checks and the rendered native comparison remain open. Adding
+entries from media details, collection actions, and automatic rule setup
+remain open.

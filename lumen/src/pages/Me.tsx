@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
+import { useBlocklistNavigation } from '../blocklist';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { canChooseRequestOptions } from '../components/detail';
@@ -64,6 +65,7 @@ function Toggle({
 
 export default function Me() {
   const { user, signOut } = useAuth();
+  const showBlocklist = useBlocklistNavigation();
   const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
   const [askReset, setAskReset] = useState(false);
@@ -205,15 +207,29 @@ export default function Me() {
         </Section>
       )}
 
-      {canReadIssues(user?.permissions) && (
+      {(showBlocklist || canReadIssues(user?.permissions)) && (
         <Section title="Support">
           <div className="setlist">
-            <div className="set">
-              <b>Issues</b>
-              <Link className="go" to="/issues" aria-label="Open Issues">
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
+            {showBlocklist && (
+              <div className="set">
+                <b>Blocklist</b>
+                <Link
+                  className="go"
+                  to="/blocklist"
+                  aria-label="Open Blocklist"
+                >
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            )}
+            {canReadIssues(user?.permissions) && (
+              <div className="set">
+                <b>Issues</b>
+                <Link className="go" to="/issues" aria-label="Open Issues">
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            )}
           </div>
         </Section>
       )}

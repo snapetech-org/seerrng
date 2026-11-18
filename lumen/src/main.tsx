@@ -43,6 +43,7 @@ import './styles/lumen.css';
 import './styles/touch.css';
 
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
+const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
 
@@ -132,6 +133,20 @@ function App() {
                 }
               >
                 <Issues />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blocklist"
+            element={
+              <Suspense
+                fallback={
+                  <p className="note" role="status">
+                    Loading Blocklist…
+                  </p>
+                }
+              >
+                <Blocklist />
               </Suspense>
             }
           />
