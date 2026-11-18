@@ -13,3 +13,5 @@ Series request links open the 4K selection for viewers who have access to it.
 Changing series quality keeps the bookmark’s season anchor and other query parameters.
 
 Bundled redirects preserve an explicit 4K series selection.
+
+Movie request links prefer the 4K playback copy when it is available to the viewer, including through bundled redirects.

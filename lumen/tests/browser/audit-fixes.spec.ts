@@ -178,6 +178,36 @@ test('a 4K-only movie links Watch to the 4K copy', async ({ page }) => {
   await expect(watch).toHaveAttribute('href', url);
 });
 
+test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
+  const hd = 'https://app.plex.tv/desktop/#!/server/s/details?key=hd';
+  const uhd = 'https://app.plex.tv/desktop/#!/server/s/details?key=uhd';
+  await fixtures(page, (path) => {
+    if (path === '/movie/60')
+      return {
+        json: {
+          id: 60,
+          title: 'Two Copies',
+          genres: [],
+          mediaInfo: {
+            id: 3,
+            status: 5,
+            status4k: 5,
+            mediaUrl: hd,
+            mediaUrl4k: uhd,
+          },
+        },
+      };
+  });
+  await page.goto('/movie/60?quality=4k');
+  await expect(
+    page.getByRole('link', { name: 'Watch 4K on Plex' }).first()
+  ).toHaveAttribute('href', uhd);
+  await page.goto('/movie/60');
+  await expect(
+    page.getByRole('link', { name: 'Watch on Plex' }).first()
+  ).toHaveAttribute('href', hd);
+});
+
 test('the audiobooks page is titled Audiobooks', async ({ page }) => {
   await fixtures(page, (path) => {
     if (path === '/settings/public') return undefined;

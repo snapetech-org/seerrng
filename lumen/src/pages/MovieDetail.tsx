@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   ApiError,
   mediaLink,
@@ -74,6 +74,7 @@ function movieCurrency(value?: number) {
 export default function MovieDetail() {
   const serverName = useMediaServerName();
   const { id } = useParams();
+  const [quality] = useSearchParams();
   const {
     data: m,
     error,
@@ -205,41 +206,53 @@ export default function MovieDetail() {
     });
   };
 
-  const main =
-    playableStatus?.k === 'ok' ? (
-      <a
-        className="btn btn-primary"
-        {...mediaLink(
-          videoPlaybackMedia(m.mediaInfo, mode),
-          false,
+  const playback = videoPlaybackMedia(m.mediaInfo, mode);
+  const fourKPlayback =
+    quality.get('quality') === '4k' && visible4k && !shared4k
+      ? mediaLink(
+          {
+            mediaUrl4k: playback?.mediaUrl4k,
+            iOSPlexUrl4k: playback?.iOSPlexUrl4k,
+          },
+          true,
           'movie',
           serverName
-        )}
-      >
-        <Icon name="play" />
-        Watch on {serverName}
-      </a>
-    ) : s ? (
-      visibleStatus && (
-        <button className="btn btn-tonal" disabled>
-          <Icon name={visibleStatus.ico} />
-          {visibleStatus.word}
-        </button>
-      )
-    ) : (
-      <button
-        className="btn btn-primary"
-        disabled={busy}
-        onClick={() => request()}
-      >
-        <Icon name="plus" />
-        {requireApproval
-          ? 'Request Approval'
-          : unreleased
-            ? 'Request · downloads on release'
-            : 'Request'}
+        )
+      : undefined;
+  const main = fourKPlayback?.href ? (
+    <a className="btn btn-primary" {...fourKPlayback}>
+      <Icon name="play" />
+      Watch 4K on {serverName}
+    </a>
+  ) : playableStatus?.k === 'ok' ? (
+    <a
+      className="btn btn-primary"
+      {...mediaLink(playback, false, 'movie', serverName)}
+    >
+      <Icon name="play" />
+      Watch on {serverName}
+    </a>
+  ) : s ? (
+    visibleStatus && (
+      <button className="btn btn-tonal" disabled>
+        <Icon name={visibleStatus.ico} />
+        {visibleStatus.word}
       </button>
-    );
+    )
+  ) : (
+    <button
+      className="btn btn-primary"
+      disabled={busy}
+      onClick={() => request()}
+    >
+      <Icon name="plus" />
+      {requireApproval
+        ? 'Request Approval'
+        : unreleased
+          ? 'Request · downloads on release'
+          : 'Request'}
+    </button>
+  );
   // offered whether or not the HD copy is here or requested: they're separate files
   const fourK =
     !blocklisted && pub?.movie4kEnabled && can4k && !has4k ? (

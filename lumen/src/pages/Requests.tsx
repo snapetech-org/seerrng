@@ -633,8 +633,8 @@ function cachedRow(r: RequestItem, known: Omit<Row, 'r'>): Row {
     href:
       r.type === 'book'
         ? requestBookPath(r, known.title === 'Book' ? undefined : known.title)
-        : r.type === 'tv'
-          ? videoRequestPath(r, 'tv')
+        : r.type === 'tv' || r.type === 'movie'
+          ? videoRequestPath(r, r.type)
           : known.href,
   };
 }
@@ -757,7 +757,7 @@ function requestBookPath(r: RequestItem, title?: string) {
   );
 }
 function videoRequestPath(r: RequestItem, kind: 'movie' | 'tv') {
-  return `/${kind}/${r.media.tmdbId}${kind === 'tv' && r.is4k ? '?quality=4k' : ''}`;
+  return `/${kind}/${r.media.tmdbId}${r.is4k ? '?quality=4k' : ''}`;
 }
 
 function titlePlaceholder(r: RequestItem): Row {
