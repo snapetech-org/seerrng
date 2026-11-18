@@ -73,9 +73,12 @@ export default function Search() {
   // comics join the search once the category is on and its catalogue answers
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const term0 = (p.get('q') || '').trim();
+  const videoPath = scopedVideoSearchPath(p, f, term0);
+  const hasVideoFilters = videoPath.startsWith('/discover/');
+  const hasSearch = !!term0 || hasVideoFilters;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
-    term0 ? null : '/discover/trending'
+    hasSearch ? null : '/discover/trending'
   ).data;
   // a search is remembered when it's finished (Enter, or a result opened), not on every keystroke,
   // so slow typing on a phone doesn't fill the list with "the off", "the offi"…
@@ -115,8 +118,8 @@ export default function Search() {
     setQ(fromUrl);
   }, [p, navType, entryKey]);
   useEffect(() => {
-    const term = (p.get('q') || '').trim();
-    if (!term) {
+    const term = term0;
+    if (!hasSearch) {
       setTitles(null);
       setBooks(null);
       setComics(null);
@@ -148,9 +151,7 @@ export default function Search() {
         : null;
       const [tr, ...brs] = await Promise.all([
         wantTitles
-          ? api<Paged<VideoSearchResult>>(
-              scopedVideoSearchPath(p, f, term)
-            ).catch(failure)
+          ? api<Paged<VideoSearchResult>>(videoPath).catch(failure)
           : null,
         ...formats.map((fmt) =>
           wantBooks
@@ -218,7 +219,7 @@ export default function Search() {
       clearTimeout(t);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p, prefs.showBooks, attempt, comicsOn]);
+  }, [videoPath, f, term0, hasSearch, prefs.showBooks, attempt, comicsOn]);
 
   const setParam = (k: string, v: string) => {
     const n = new URLSearchParams(p);
@@ -314,24 +315,23 @@ export default function Search() {
             </button>
           ))}
         </div>
-        {term0 &&
-          scopedVideoSearchPath(p, f, term0).startsWith('/discover/') && (
-            <div className="toolbar">
-              <button
-                type="button"
-                className="chip"
-                onClick={() => {
-                  const next = new URLSearchParams(p);
-                  for (const key of videoFilterKeys) next.delete(key);
-                  next.delete('certificationMode');
-                  setP(next, { replace: true });
-                }}
-              >
-                Clear Discovery Filters
-              </button>
-            </div>
-          )}
-        {p.get('q') &&
+        {hasVideoFilters && (
+          <div className="toolbar">
+            <button
+              type="button"
+              className="chip"
+              onClick={() => {
+                const next = new URLSearchParams(p);
+                for (const key of videoFilterKeys) next.delete(key);
+                next.delete('certificationMode');
+                setP(next, { replace: true });
+              }}
+            >
+              Clear Discovery Filters
+            </button>
+          </div>
+        )}
+        {hasSearch &&
           (f === 'all' ||
             f === 'movie' ||
             f === 'tv' ||
@@ -342,7 +342,7 @@ export default function Search() {
             </div>
           )}
       </header>
-      {!p.get('q') && !!recent.length && (
+      {!hasSearch && !!recent.length && (
         <Section
           title="Recent searches"
           action={
@@ -368,7 +368,7 @@ export default function Search() {
           </div>
         </Section>
       )}
-      {!term0 && (
+      {!hasSearch && (
         <Section title="Browse">
           <div className="chips wrap">
             {(
@@ -394,7 +394,7 @@ export default function Search() {
           </div>
         </Section>
       )}
-      {!term0 && !!trending?.results.length && (
+      {!hasSearch && !!trending?.results.length && (
         <Section title="Trending this week">
           <div className="grid">
             {trending.results
@@ -424,8 +424,9 @@ export default function Search() {
       {nothing && !searching && !failed && (
         <div className="empty">
           <b>
-            No {f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “
-            {p.get('q')}”
+            {term0
+              ? `No ${f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “${term0}”`
+              : 'No titles match these discovery filters.'}
           </b>
           {f !== 'all' ? (
             <button

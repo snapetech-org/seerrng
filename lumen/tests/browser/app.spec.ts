@@ -6915,3 +6915,32 @@ test('Classic video search bookmarks apply discovery constraints until cleared',
   await unfiltered;
   await expect(page).toHaveURL(/\/search\?q=Test&f=movie$/);
 });
+
+test('a filter-only Classic series bookmark shows matching titles without a search term', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/tv?*', (route) => {
+    const url = new URL(route.request().url());
+    expect(url.searchParams.get('genre')).toBe('18');
+    expect(url.searchParams.get('language')).toBe('fr');
+    expect(url.searchParams.has('search')).toBe(false);
+    return route.fulfill({
+      json: paged([
+        { mediaType: 'tv', id: 91, name: 'Filtered Series Fixture' },
+      ]),
+    });
+  });
+  await page.goto('/search?type=tv&genre=18&language=fr');
+  await expect(
+    page.getByRole('link', { name: 'Filtered Series Fixture' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Trending this week' })
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Clear Discovery Filters' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Filtered Series Fixture' })
+  ).toHaveCount(0);
+  await expect(page).toHaveURL(/\/search\?f=tv$/);
+});

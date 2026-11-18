@@ -70,7 +70,7 @@ export function scopedVideoSearchPath(
         filters.set(key, values[0]);
     }
     if (filters.size) {
-      filters.set('search', term);
+      if (term) filters.set('search', term);
       filters.set('page', '1');
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
