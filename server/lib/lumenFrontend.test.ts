@@ -44,6 +44,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         '/discover/movies',
         '/profile/settings/linked-accounts',
         '/calendar',
+        '/settings/:page',
       ],
       (_req, res) => res.send('Native interface')
     );
@@ -228,6 +229,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'Native interface'
     );
     for (const [bookmark, destination] of [
+      ['/settings/network', '/lumen/admin/network'],
+      [
+        '/settings/services?settingsSearchTarget=prowlarr',
+        '/lumen/admin/prowlarr',
+      ],
+      ['/settings/notifications/webhook', '/lumen/admin/notifications/webhook'],
+      ['/settings/plex', '/lumen/admin/media-libraries'],
       ['/calendar', '/lumen/calendar'],
       [
         '/profile/settings/linked-accounts',
@@ -285,6 +293,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal((await companion.get('/calendar')).text, 'Native interface');
     assert.equal(
       (await companion.get('/profile/settings/linked-accounts')).text,
+      'Native interface'
+    );
+    assert.equal(
+      (await companion.get('/settings/network')).text,
+      'Native interface'
+    );
+    assert.equal(
+      (await request(app).get('/settings/unknown')).text,
       'Native interface'
     );
     const browser = request.agent(app);

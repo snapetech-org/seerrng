@@ -711,41 +711,47 @@ export const mountLumenFrontend = (
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
-  server.get(
-    /^\/lumen\/settings\/notifications(?:\/(email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?\/?$/,
-    (req, res) => {
-      const channel = req.params[0];
-      return res
-        .set('Cache-Control', 'no-store')
-        .redirect(
-          302,
-          `/lumen/admin/notifications${channel ? `/${channel}` : ''}`
-        );
+  server.get(/^\/(?:lumen\/)?settings(?:\/|$)/, (req, res, next) => {
+    const prefixed = req.path.startsWith('/lumen/');
+    if (
+      !prefixed &&
+      (!isInitialized() ||
+        frontend() !== 'lumen' ||
+        (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic'))
+    ) {
+      return next();
     }
-  );
-  server.get(/^\/lumen\/settings\/(?:plex|jellyfin)\/?$/, (_req, res) => {
-    res
-      .set('Cache-Control', 'no-store')
-      .redirect(302, '/lumen/admin/media-libraries');
-  });
-  server.get(/^\/lumen\/settings\/services\/?$/, (req, res) => {
-    const destination =
-      req.query.settingsSearchTarget === 'prowlarr' ? '/prowlarr' : '';
-    res
-      .set('Cache-Control', 'no-store')
-      .redirect(302, `/lumen/admin${destination}`);
-  });
-  server.get(
-    /^\/lumen\/settings(?:\/(main|users|jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr))?\/?$/,
-    (req, res) => {
-      const page = req.params[0];
-      const destination =
-        !page || page === 'main' || page === 'users' ? 'general' : page;
-      return res
-        .set('Cache-Control', 'no-store')
-        .redirect(302, `/lumen/admin/${destination}`);
+    const pathname = prefixed ? req.path.slice('/lumen'.length) : req.path;
+    const section = pathname.replace(/^\/settings\/?|\/$/g, '');
+    let destination: string;
+    if (
+      /^notifications(?:\/(email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?$/.test(
+        section
+      )
+    ) {
+      destination = `/admin/${section}`;
+    } else if (section === 'plex' || section === 'jellyfin') {
+      destination = '/admin/media-libraries';
+    } else if (section === 'services') {
+      destination =
+        req.query.settingsSearchTarget === 'prowlarr'
+          ? '/admin/prowlarr'
+          : '/admin';
+    } else if (!section || section === 'main' || section === 'users') {
+      destination = '/admin/general';
+    } else if (
+      /^(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)$/.test(
+        section
+      )
+    ) {
+      destination = `/admin/${section}`;
+    } else {
+      return next();
     }
-  );
+    return res
+      .set('Cache-Control', 'no-store')
+      .redirect(302, `/lumen${destination}`);
+  });
   server.post('/lumen/share-target', (_req, res) => {
     res
       .set('Cache-Control', 'no-store')
