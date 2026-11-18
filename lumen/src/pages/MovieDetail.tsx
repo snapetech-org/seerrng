@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   ApiError,
@@ -46,7 +46,7 @@ import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
-import { useApi, usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings, useVisibleMediaRefresh } from '../hooks';
 import { Icon } from '../icons';
 import { useTitleRegions } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
@@ -87,17 +87,11 @@ export default function MovieDetail() {
   });
   const selected4k = quality.get('quality') === '4k';
   const status4k = m?.mediaInfo?.status4k;
-  useEffect(() => {
-    if (
-      !selected4k ||
-      (status4k !== MediaStatus.PENDING && status4k !== MediaStatus.PROCESSING)
-    )
-      return;
-    const timer = window.setInterval(() => {
-      if (document.visibilityState === 'visible') revalidate();
-    }, 30_000);
-    return () => window.clearInterval(timer);
-  }, [revalidate, selected4k, status4k]);
+  useVisibleMediaRefresh(
+    selected4k &&
+      (status4k === MediaStatus.PENDING || status4k === MediaStatus.PROCESSING),
+    revalidate
+  );
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();

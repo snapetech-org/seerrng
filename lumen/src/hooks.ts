@@ -102,6 +102,19 @@ export function useApi<T>(
   };
 }
 
+export function useVisibleMediaRefresh(
+  active: boolean,
+  revalidate: () => void
+) {
+  useEffect(() => {
+    if (!active) return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') revalidate();
+    }, 30_000);
+    return () => window.clearInterval(timer);
+  }, [active, revalidate]);
+}
+
 // one call for everyone asking for the same path at once; the answer is saved
 function fetchShared<T>(path: string): Promise<T> {
   return shared(path, async () => {

@@ -2602,6 +2602,9 @@ test('HD controls reset after a 4K advanced request becomes pending', async ({
 test('4K series selection uses 4K season ownership even when every HD season is available', async ({
   page,
 }, info) => {
+  let ready = false;
+  let detailReads = 0;
+  await page.clock.install();
   const { posts } = await fixtures(page);
   await page.route('**/api/v1/settings/public', (r) =>
     r.fulfill({
@@ -2613,8 +2616,9 @@ test('4K series selection uses 4K season ownership even when every HD season is 
       },
     })
   );
-  await page.route('**/api/v1/tv/400', (r) =>
-    r.fulfill({
+  await page.route('**/api/v1/tv/400', (r) => {
+    detailReads++;
+    return r.fulfill({
       json: {
         id: 400,
         name: 'Tiered Show',
@@ -2628,13 +2632,13 @@ test('4K series selection uses 4K season ownership even when every HD season is 
           status: 5,
           status4k: 4,
           seasons: [
-            { seasonNumber: 1, status: 5, status4k: 5 },
+            { seasonNumber: 1, status: 5, status4k: ready ? 5 : 3 },
             { seasonNumber: 2, status: 5, status4k: 1 },
           ],
         },
       },
-    })
-  );
+    });
+  });
   await page.route('**/api/v1/tv/400/recommendations', (r) =>
     r.fulfill({ json: paged([]) })
   );
@@ -2661,6 +2665,9 @@ test('4K series selection uses 4K season ownership even when every HD season is 
     'aria-pressed',
     'true'
   );
+  ready = true;
+  await page.clock.fastForward(30_100);
+  await expect.poll(() => detailReads).toBe(2);
   await quality.getByRole('button', { name: '1080p' }).click();
   await expect(page).toHaveURL('/tv/400?source=request#seasons');
   await quality.getByRole('button', { name: '4K' }).click();

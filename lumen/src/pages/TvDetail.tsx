@@ -49,7 +49,7 @@ import TvEpisodeRequestSheet from '../components/TvEpisodeRequestSheet';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
-import { useApi, usePublicSettings } from '../hooks';
+import { useApi, usePublicSettings, useVisibleMediaRefresh } from '../hooks';
 import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
@@ -83,7 +83,16 @@ export default function TvDetail() {
   const { id } = useParams();
   const loc = useLocation();
   const navigate = useNavigate();
-  const { data: t, error, reload, refresh } = useApi<TvDetails>(`/tv/${id}`);
+  const {
+    data: t,
+    error,
+    reload,
+    refresh,
+    revalidate,
+  } = useApi<TvDetails>(`/tv/${id}`, {
+    currentPathOnly: true,
+    keepDuringRefresh: true,
+  });
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
   const progressMedia = useLiveMediaProgress(
     t?.mediaInfo,
@@ -135,6 +144,14 @@ export default function TvDetail() {
     );
   };
   const is4k = offers4k && fourK;
+  const pending4k = (status?: number) =>
+    status === MediaStatus.PENDING || status === MediaStatus.PROCESSING;
+  useVisibleMediaRefresh(
+    is4k &&
+      (pending4k(t?.mediaInfo?.status4k) ||
+        !!t?.mediaInfo?.seasons?.some(({ status4k }) => pending4k(status4k))),
+    revalidate
+  );
 
   const specials = pub?.enableSpecialEpisodes === true;
   const seasons = useMemo(
@@ -225,14 +242,15 @@ export default function TvDetail() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [missingKey]);
+  const loaded = !!t;
   useEffect(() => {
-    if (t && loc.hash === '#seasons')
+    if (loaded && loc.hash === '#seasons')
       document
         .getElementById('seasons')
         ?.scrollIntoView({ behavior: scrollBehavior() });
-  }, [t, loc.hash]);
+  }, [loaded, id, loc.hash]);
 
-  if (error)
+  if (error && !t)
     return <ServiceNote error={error} what="this series" retry={reload} />;
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
@@ -519,6 +537,7 @@ export default function TvDetail() {
         ]}
       />
       <div className="dbody">
+        <ServiceNote error={error} what="this series" retry={reload} />
         <div className="dstatus">
           {watchable && (
             <Pill k="ok" icon="check">
