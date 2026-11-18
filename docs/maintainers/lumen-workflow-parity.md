@@ -1790,6 +1790,13 @@ were byte-identical for ordinary text. A long unbroken link wrapped
 within the biography at both widths. This comparison used a fixture
 profile and standalone production builds.
 
+Release notes now use the same Markdown renderer as Classic. Lumen
+downloads the renderer when a release is expanded and renders HTTPS
+links without raw HTML or embedded images. Four browser cases passed
+in each production deployment, covering Markdown headings, links,
+deferred loading, retry, and long-text wrapping. These runs used
+fixtures. Matched visual review with live Markdown notes remains open.
+
 ### Instance General Settings
 
 The administration menu opens a Lumen General Settings page for the
