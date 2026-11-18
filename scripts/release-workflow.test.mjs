@@ -23,20 +23,22 @@ const ghCliSetupRef = '${{ github.sha }}';
 const ghCliSetupPath = './.github-actions/.github/actions/setup-gh-cli';
 
 test('trusted image publishers and their scans do not restore shared caches', () => {
-  for (const [workflowName, scanJob] of [
-    ['ci.yml', 'scan-main-image'],
-    ['release.yml', 'scan-release-image'],
+  for (const [workflowName, jobs] of [
+    ['ci.yml', ['publish', 'scan-main-image']],
+    ['release.yml', ['publish', 'scan-release-image']],
+    ['preview.yml', ['publish']],
+    ['trivy-scan.yml', ['trivy']],
   ]) {
     const workflow = readWorkflow(workflowName);
-    const publisher = workflow.jobs.publish;
-    const scanner = workflow.jobs[scanJob];
-    assert.ok(publisher && scanner, workflowName);
-    const source = JSON.stringify([publisher, scanner]);
-    assert.doesNotMatch(
-      source,
-      /--cache-(?:from|to) type=gha|actions\/cache@/u,
-      workflowName
-    );
+    for (const job of jobs) {
+      const source = workflow.jobs[job];
+      assert.ok(source, `${workflowName}: ${job}`);
+      assert.doesNotMatch(
+        JSON.stringify(source),
+        /--cache-(?:from|to) type=gha|"cache-(?:from|to)"\s*:\s*"type=gha|actions\/cache(?:\/[^@]+)?@/u,
+        `${workflowName}: ${job}`
+      );
+    }
   }
 });
 

@@ -134,3 +134,12 @@ Private media-server avatar fetching retains its configured-origin and
 same-origin redirect policy. All 109 focused image proxy, avatar proxy,
 and URL security tests passed. GitHub alert 312 still shows the historical
 analysis.
+
+### Shared image build and scanner caches
+
+The 21 open cache-poisoning alerts reference CI commit `6fa6f964b`, an
+ancestor of `d43b04897`. The latter removed shared BuildKit cache inputs
+from main and release publishing and shared database caches from their
+Trivy jobs. The preview publisher and standalone Trivy scanner now use
+the same cache isolation. All 49 release-workflow tests passed. The
+historical GitHub findings remain open.

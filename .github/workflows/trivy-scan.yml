@@ -59,14 +59,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Cache Trivy DB
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .trivycache
-          key: trivy-${{ runner.os }}-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            trivy-${{ runner.os }}-
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
         with:
