@@ -30,6 +30,7 @@ declare module 'express-session' {
     };
     spotifyOAuthState?: string;
     spotifyOAuthStateCreatedAt?: number;
+    steamOpenIdFrontend?: 'native' | 'bundled-lumen' | 'companion-lumen';
     steamOpenIdState?: string;
     steamOpenIdStateCreatedAt?: number;
   }

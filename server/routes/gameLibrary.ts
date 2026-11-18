@@ -421,8 +421,13 @@ const steamSyncRateLimit = rateLimit({
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
 });
 
-const applicationUrl = (): string | undefined => {
-  const configured = getSettings().main.applicationUrl?.trim();
+type SteamFrontend = 'native' | 'bundled-lumen' | 'companion-lumen';
+
+const steamBaseUrl = (frontend: SteamFrontend): string | undefined => {
+  const main = getSettings().main;
+  const configured = (
+    frontend === 'companion-lumen' ? main.lumenPublicUrl : main.applicationUrl
+  )?.trim();
   if (!configured) return undefined;
   try {
     const url = new URL(configured);
@@ -453,12 +458,20 @@ const stateMatches = (provided: string, expected: string): boolean => {
   );
 };
 
-const redirectToGames = (result: 'connected' | 'error'): string => {
-  const baseUrl = applicationUrl();
-  if (!baseUrl) return `/games?steam=${result}`;
-  const destination = new URL('games', `${baseUrl}/`);
-  destination.searchParams.set('steam', result);
-  return destination.toString();
+const redirectToGames = (
+  result: 'connected' | 'error',
+  frontend: SteamFrontend
+): string => {
+  const page = {
+    native: 'games',
+    'bundled-lumen': 'lumen/game-library',
+    'companion-lumen': 'game-library',
+  }[frontend];
+  const destination = `${page}?steam=${result}`;
+  const baseUrl = steamBaseUrl(frontend);
+  return baseUrl
+    ? new URL(destination, `${baseUrl}/`).toString()
+    : `/${destination}`;
 };
 
 gameLibraryRoutes.get('/', async (req, res) => {
@@ -925,13 +938,24 @@ gameLibraryRoutes.get('/steam/connect', async (req, res) => {
       .status(403)
       .json({ error: 'A signed-in browser session is required.' });
   }
-  const baseUrl = applicationUrl();
+  const frontend = req.query.frontend ?? 'native';
+  if (
+    frontend !== 'native' &&
+    frontend !== 'bundled-lumen' &&
+    frontend !== 'companion-lumen'
+  ) {
+    return res
+      .status(400)
+      .json({ error: 'Choose a supported Steam return interface.' });
+  }
+  const baseUrl = steamBaseUrl(frontend);
   if (!baseUrl) {
     return res.status(400).json({
-      error: 'Set the SeerrNG application URL before connecting Steam.',
+      error: 'Set the public URL for this interface before connecting Steam.',
     });
   }
   const state = randomBytes(32).toString('hex');
+  req.session.steamOpenIdFrontend = frontend;
   req.session.steamOpenIdState = state;
   req.session.steamOpenIdStateCreatedAt = Date.now();
   const authorizationUrl = new URL(STEAM_OPENID_ENDPOINT);
@@ -958,9 +982,11 @@ gameLibraryRoutes.get('/steam/connect', async (req, res) => {
 
 gameLibraryRoutes.get('/steam/callback', async (req, res) => {
   const state = typeof req.query.state === 'string' ? req.query.state : '';
+  const frontend = req.session?.steamOpenIdFrontend ?? 'native';
   const expectedState = req.session?.steamOpenIdState;
   const createdAt = req.session?.steamOpenIdStateCreatedAt ?? 0;
   if (req.session) {
+    req.session.steamOpenIdFrontend = undefined;
     req.session.steamOpenIdState = undefined;
     req.session.steamOpenIdStateCreatedAt = undefined;
   }
@@ -973,11 +999,11 @@ gameLibraryRoutes.get('/steam/callback', async (req, res) => {
     Date.now() - createdAt > OAUTH_STATE_TTL_MS ||
     Date.now() < createdAt
   ) {
-    return res.redirect(redirectToGames('error'));
+    return res.redirect(redirectToGames('error', frontend));
   }
 
-  const baseUrl = applicationUrl();
-  if (!baseUrl) return res.redirect(redirectToGames('error'));
+  const baseUrl = steamBaseUrl(frontend);
+  if (!baseUrl) return res.redirect(redirectToGames('error', frontend));
   const assertion: Record<string, string> = {};
   for (const [name, value] of Object.entries(req.query)) {
     if (
@@ -1012,16 +1038,16 @@ gameLibraryRoutes.get('/steam/callback', async (req, res) => {
     Date.now() - nonceDate > OAUTH_STATE_TTL_MS ||
     nonceDate > Date.now() + 60_000
   ) {
-    return res.redirect(redirectToGames('error'));
+    return res.redirect(redirectToGames('error', frontend));
   }
 
   try {
     const valid = await new SteamAPI('').verifyOpenIdAssertion(assertion);
-    if (!valid) return res.redirect(redirectToGames('error'));
+    if (!valid) return res.redirect(redirectToGames('error', frontend));
     const repository = getRepository(GameLibraryAccount);
     const existingOwner = await repository.findOneBy({ steamId });
     if (existingOwner && existingOwner.userId !== req.user.id) {
-      return res.redirect(redirectToGames('error'));
+      return res.redirect(redirectToGames('error', frontend));
     }
     const account = await repository.findOneBy({ userId: req.user.id });
     if (account && account.steamId !== steamId) {
@@ -1031,10 +1057,10 @@ gameLibraryRoutes.get('/steam/callback', async (req, res) => {
       account ?? new GameLibraryAccount({ userId: req.user.id });
     linkedAccount.steamId = steamId;
     await repository.save(linkedAccount);
-    return res.redirect(redirectToGames('connected'));
+    return res.redirect(redirectToGames('connected', frontend));
   } catch {
     logger.warn('Steam account verification failed', { userId: req.user.id });
-    return res.redirect(redirectToGames('error'));
+    return res.redirect(redirectToGames('error', frontend));
   }
 });
 

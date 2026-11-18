@@ -218,3 +218,94 @@ test('catalogue matching saves the chosen identity with the current game edits',
   ).toHaveAttribute('href', '/game/game/57');
   expect(attempts).toBe(2);
 });
+
+test('Steam import returns to My Games and refreshes ownership after sync and unlink', async ({
+  page,
+}) => {
+  let connected = false;
+  let synced = false;
+  let unlinkCount = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    switch (url.pathname.slice('/api/v1'.length)) {
+      case '/auth/me':
+        return route.fulfill({
+          json: { id: 1, displayName: 'Player', permissions: 32 },
+        });
+      case '/game-library/steam/status':
+        return route.fulfill({
+          json: {
+            connected,
+            apiKeyConfigured: true,
+            lastSyncedAt: synced ? '2026-11-17T00:00:00Z' : null,
+            lastSyncCount: synced ? 1 : 0,
+          },
+        });
+      case '/game-library/steam/connect':
+        expect(url.searchParams.get('frontend')).toBe('companion-lumen');
+        connected = true;
+        return route.fulfill({
+          status: 302,
+          headers: { location: '/game-library?steam=connected' },
+        });
+      case '/game-library/steam/sync':
+        expect(request.method()).toBe('POST');
+        synced = true;
+        return route.fulfill({ json: { imported: 1, updated: 0, total: 1 } });
+      case '/game-library/steam':
+        expect(request.method()).toBe('DELETE');
+        unlinkCount++;
+        connected = false;
+        return route.fulfill({ status: 204 });
+      case '/game-library':
+        return route.fulfill({
+          json: {
+            total: synced ? 1 : 0,
+            nextOffset: null,
+            results: synced
+              ? [
+                  {
+                    id: 6,
+                    title: 'Steam Fixture',
+                    category: 'game',
+                    status: 'backlog',
+                    catalogId: null,
+                    isOwned: false,
+                    steamOwned: connected,
+                    shareWithHousehold: false,
+                    storeName: 'Steam',
+                    platformName: 'PC',
+                    playtimeMinutes: 8,
+                    request: null,
+                  },
+                ]
+              : [],
+          },
+        });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+
+  await page.goto('/game-library');
+  await page.getByText('Steam Library Import', { exact: true }).click();
+  await page.getByRole('link', { name: 'Link Steam Account' }).click();
+  await expect(
+    page.getByText('Steam account linked. Sync to import your games.')
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Sync Steam Library' }).click();
+  const entry = page.getByRole('listitem').filter({ hasText: 'Steam Fixture' });
+  await expect(
+    entry.getByText('Owned on Steam', { exact: false })
+  ).toBeVisible();
+
+  await page.getByRole('button', { name: 'Unlink Steam' }).click();
+  expect(unlinkCount).toBe(0);
+  await page.getByRole('button', { name: 'Confirm Unlink' }).click();
+  await expect(
+    entry.getByText('Not marked owned', { exact: false })
+  ).toBeVisible();
+  expect(unlinkCount).toBe(1);
+});

@@ -87,6 +87,7 @@ const createApp = (
 const configureSettings = () => {
   const settings = getSettings();
   settings.main.applicationUrl = 'https://seerr.test';
+  settings.main.lumenPublicUrl = '';
   settings.main.apiKey = 'game-library-test-api-key';
   settings.softwareAcquisition = {
     romarr: {
@@ -385,6 +386,58 @@ describe('game library routes', () => {
     assert.match(callback.headers.location, /steam=error/);
     assert.equal(verify.mock.callCount(), 0);
     assert.equal(await getRepository(GameLibraryAccount).count(), 0);
+  });
+
+  for (const [frontend, base, page] of [
+    ['bundled-lumen', 'https://seerr.test', '/lumen/game-library'],
+    ['companion-lumen', 'https://lumen.test', '/game-library'],
+  ]) {
+    it(`returns Steam linking to the selected ${frontend} interface`, async () => {
+      getSettings().main.lumenPublicUrl = 'https://lumen.test';
+      const { app, session } = createApp();
+      const start = await request(app)
+        .get('/api/v1/game-library/steam/connect')
+        .query({ frontend });
+      assert.equal(start.status, 302, JSON.stringify(start.body));
+      const returnTo = new URL(start.headers.location).searchParams.get(
+        'openid.return_to'
+      );
+      assert.equal(
+        returnTo,
+        `${base}/api/v1/game-library/steam/callback?state=${session.steamOpenIdState}`
+      );
+      const verify = mock.method(
+        SteamAPI.prototype,
+        'verifyOpenIdAssertion',
+        async () => true
+      );
+      const identity = 'https://steamcommunity.com/openid/id/76561198000000002';
+      const callback = await request(app)
+        .get('/api/v1/game-library/steam/callback')
+        .query({
+          state: session.steamOpenIdState,
+          'openid.ns': 'http://specs.openid.net/auth/2.0',
+          'openid.mode': 'id_res',
+          'openid.op_endpoint': 'https://steamcommunity.com/openid/login',
+          'openid.claimed_id': identity,
+          'openid.identity': identity,
+          'openid.return_to': returnTo,
+          'openid.signed': 'claimed_id:identity:return_to:response_nonce',
+          'openid.response_nonce': `${new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')}fixture`,
+        });
+      assert.equal(callback.headers.location, `${base}${page}?steam=connected`);
+      assert.equal(verify.mock.callCount(), 1);
+      assert.equal(session.steamOpenIdFrontend, undefined);
+    });
+  }
+
+  it('rejects an arbitrary Steam return interface', async () => {
+    const { app, session } = createApp();
+    const response = await request(app)
+      .get('/api/v1/game-library/steam/connect')
+      .query({ frontend: 'https://unrelated.test' });
+    assert.equal(response.status, 400);
+    assert.equal(session.steamOpenIdState, undefined);
   });
 
   it('verifies the Steam issuer and signed identity before linking, then consumes state once', async () => {

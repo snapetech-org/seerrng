@@ -1219,3 +1219,18 @@ Eight standalone browser checks passed across desktop, iPhone, Android
 and tablet. They covered explicit selection, preservation of pending edits,
 retry after a failed match, and the existing library workflows. Live
 catalogue results and matched visual comparisons remain open.
+
+### Steam library import in My Games
+
+The private library includes Steam linking, import status, sync and
+confirmed unlink. Steam returns to the initiating interface using an
+allowlisted session value and the configured public URL. The companion
+requires its Lumen Public URL. The bundled frontend uses SeerrNG's
+Application URL. Game-library reads bypass the persistent frontend cache
+so ownership and sharing reflect callback, sync and unlink changes.
+
+Server tests with stubbed Steam assertions verified the native, bundled
+and companion callbacks and rejected an arbitrary frontend value. Twelve
+standalone browser checks across desktop, iPhone, Android and tablet
+covered the simulated link return, sync, unlink and existing library
+workflows. Live Steam linking and matched visual comparisons remain open.

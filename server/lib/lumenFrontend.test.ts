@@ -195,6 +195,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/following/', '/lumen/following'],
       ['/library', '/lumen/library'],
       ['/games', '/lumen/game-library'],
+      ['/games?steam=connected', '/lumen/game-library?steam=connected'],
       ['/calendar', '/lumen/calendar'],
       ['/coming-soon', '/lumen/soon'],
       ['/profile/settings/password', '/lumen/me/account'],

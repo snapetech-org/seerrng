@@ -165,6 +165,13 @@ function workflowDeepLink(req: Request): string | undefined {
     if (typeof value === 'string' && value.length <= 256) query.set(key, value);
   }
 
+  if (
+    destination === '/game-library' &&
+    (req.query.steam === 'connected' || req.query.steam === 'error')
+  ) {
+    query.set('steam', req.query.steam);
+  }
+
   if (destination === '/search') {
     const { query: term, type, format } = req.query;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);

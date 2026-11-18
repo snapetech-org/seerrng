@@ -347,6 +347,156 @@ function EntryEditor({
   );
 }
 
+function SteamLibrary({
+  result,
+  onChange,
+}: {
+  result: string | null;
+  onChange: () => void;
+}) {
+  const [openOnMount] = useState(
+    () => result === 'connected' || result === 'error'
+  );
+  const status = useApi<{
+    connected: boolean;
+    lastSyncedAt: string | null;
+    lastSyncCount: number;
+    apiKeyConfigured: boolean;
+  }>('/game-library/steam/status');
+  const [busy, setBusy] = useState(false);
+  const [confirmUnlink, setConfirmUnlink] = useState(false);
+  const pending = useRef(false);
+  const toast = useToast();
+  const frontend =
+    import.meta.env.BASE_URL === '/lumen/'
+      ? 'bundled-lumen'
+      : 'companion-lumen';
+
+  async function change(action: 'sync' | 'unlink') {
+    if (pending.current) return;
+    pending.current = true;
+    setBusy(true);
+    try {
+      if (action === 'sync') {
+        const synced = await api<{
+          imported: number;
+          updated: number;
+          total: number;
+        }>('/game-library/steam/sync', { method: 'POST' });
+        toast(
+          `Steam sync complete. ${synced.imported} added, ${synced.updated} updated.`
+        );
+      } else {
+        await api('/game-library/steam', { method: 'DELETE' });
+        setConfirmUnlink(false);
+        toast('Steam account unlinked.');
+      }
+      status.reload();
+      onChange();
+    } catch (error) {
+      toast(friendlyError(error, 'Couldn’t update the Steam library'));
+    } finally {
+      pending.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <details className="adv" open={openOnMount}>
+      <summary>Steam Library Import</summary>
+      {result === 'error' && (
+        <p className="note" role="alert">
+          Steam could not be linked. Try again.
+        </p>
+      )}
+      {result === 'connected' && status.data?.connected && (
+        <p className="note" role="status">
+          Steam account linked. Sync to import your games.
+        </p>
+      )}
+      <ServiceNote
+        error={status.error}
+        what="Steam account status"
+        retry={status.reload}
+      />
+      {!status.data && !status.error && (
+        <p className="note" role="status">
+          Loading Steam account status…
+        </p>
+      )}
+      {status.data && (
+        <>
+          {!status.data.apiKeyConfigured && (
+            <p className="note">
+              Steam import is unavailable until an administrator configures it.
+            </p>
+          )}
+          {status.data.connected && (
+            <p className="note">
+              {status.data.lastSyncedAt
+                ? `Last synced ${new Date(status.data.lastSyncedAt).toLocaleDateString()} · ${status.data.lastSyncCount} games`
+                : 'Steam account linked. No sync recorded yet.'}
+            </p>
+          )}
+          <div className="toolbar">
+            {status.data.apiKeyConfigured && !status.data.connected && (
+              <a
+                className="chip"
+                href={`/api/v1/game-library/steam/connect?frontend=${frontend}`}
+              >
+                Link Steam Account
+              </a>
+            )}
+            {status.data.connected && (
+              <>
+                {status.data.apiKeyConfigured && (
+                  <button
+                    className="btn btn-tonal btn-sm"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => void change('sync')}
+                  >
+                    Sync Steam Library
+                  </button>
+                )}
+                {confirmUnlink ? (
+                  <>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void change('unlink')}
+                    >
+                      Confirm Unlink
+                    </button>
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => setConfirmUnlink(false)}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="btn btn-quiet btn-sm"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => setConfirmUnlink(true)}
+                  >
+                    Unlink Steam
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      )}
+    </details>
+  );
+}
+
 export default function GameLibrary() {
   const [params, setParams] = useSearchParams();
   const [editor, setEditor] = useState<GameEntry | null | undefined>();
@@ -464,6 +614,19 @@ export default function GameLibrary() {
         )}
       </form>
 
+      {!shared && (
+        <SteamLibrary
+          result={params.get('steam')}
+          onChange={() => {
+            if (params.has('steam')) {
+              const next = new URLSearchParams(params);
+              next.delete('steam');
+              setParams(next, { replace: true });
+            }
+            reload();
+          }}
+        />
+      )}
       {!shared && editor !== undefined && (
         <EntryEditor
           key={editor?.id ?? 'new'}

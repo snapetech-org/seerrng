@@ -24079,10 +24079,17 @@ paths:
   /game-library/steam/connect:
     get:
       summary: Start the Steam OpenID account linking flow
-      description: Starts a one-use, session-bound Steam identity verification. Requires a configured SeerrNG application URL and a signed-in browser session.
+      description: Starts a one-use, session-bound Steam identity verification. Requires a configured public URL for the selected interface and a signed-in browser session.
       tags: [game library]
       security:
         - cookieAuth: []
+      parameters:
+        - in: query
+          name: frontend
+          description: The browser interface that should receive the Steam result.
+          schema:
+            type: string
+            enum: [native, bundled-lumen, companion-lumen]
       responses:
         '302':
           description: Redirect to Steam to authenticate the account
