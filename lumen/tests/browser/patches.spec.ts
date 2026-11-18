@@ -81,3 +81,111 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await page.getByRole('button', { name: 'First Page' }).click();
   await expect(page.getByText('Fixture Translation')).toBeVisible();
 });
+
+test('a Following update opens its exact patch version and submits only with a compatible base', async ({
+  page,
+}) => {
+  const key = `dat-${'b'.repeat(64)}`;
+  let submissions = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const req = route.request();
+    const url = new URL(req.url());
+    switch (url.pathname.slice('/api/v1'.length)) {
+      case '/auth/me':
+        return route.fulfill({
+          json: { id: 1, displayName: 'Player', permissions: 32 },
+        });
+      case '/follow/events':
+        return route.fulfill({
+          json: {
+            total: 1,
+            results: [
+              {
+                id: 1,
+                title: 'Patch v1',
+                seen: true,
+                follow: { subjectLabel: 'Patch Fixture' },
+                target: {
+                  mediaType: 'patch',
+                  id: 'patch:fixture',
+                  variantKey: 'v1',
+                },
+              },
+            ],
+          },
+        });
+      case '/follow':
+        return route.fulfill({ json: { results: [] } });
+      case '/patches/projects/patch%3Afixture':
+        return route.fulfill({
+          json: {
+            id: 'patch:fixture',
+            name: 'Patch Fixture',
+            game: {
+              catalogKey: key,
+              title: 'Fixture Game',
+              platformSlug: 'snes',
+            },
+            latestVersionId: 'v2',
+            versions: [
+              { id: 'v1', version: '1.0', base: { available: false } },
+              { id: 'v2', version: '2.0', base: { available: true } },
+            ],
+          },
+        });
+      case `/request/software/catalog/games/${key}`:
+        return route.fulfill({
+          json: {
+            catalogProvider: 'dat',
+            catalogId: key,
+            emulationSystems: [
+              { group: 'retro', slug: 'snes', name: 'SNES' },
+              { group: 'retro', slug: 'other', name: 'Other System' },
+            ],
+          },
+        });
+      case '/request/software':
+        expect(req.method()).toBe('POST');
+        expect(req.postDataJSON()).toEqual({
+          category: 'retro',
+          catalogProvider: 'dat',
+          catalogKey: key,
+          platformSlug: 'snes',
+          selection: {
+            kind: 'patch',
+            projectId: 'patch:fixture',
+            versionId: 'v2',
+            keepOriginal: true,
+          },
+        });
+        submissions++;
+        return route.fulfill({
+          status: 201,
+          json: { request: { status: 'pending' } },
+        });
+      default:
+        return route.fulfill({ json: {} });
+    }
+  });
+  await page.goto('/following');
+  const link = page.getByRole('link', { name: 'Patch v1' });
+  await expect(link).toHaveAttribute(
+    'href',
+    '/patches/patch%3Afixture?version=v1'
+  );
+  await link.click();
+  await expect(page.getByLabel('Patch Version')).toHaveValue('v1');
+  const submit = page.getByRole('button', { name: 'Request Patch' });
+  await expect(submit).toBeDisabled();
+  await expect(
+    page.getByText('The required base revision is unavailable.')
+  ).toBeVisible();
+  expect(submissions).toBe(0);
+  await page.getByLabel('Patch Version').selectOption('v2');
+  await expect(page.getByLabel('System', { exact: true })).toHaveValue('snes');
+  await submit.click();
+  await expect(page.getByText('Waiting for approval')).toBeVisible();
+  await expect(submit).toBeDisabled();
+  expect(submissions).toBe(1);
+});

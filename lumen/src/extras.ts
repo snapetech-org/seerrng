@@ -461,12 +461,23 @@ export const PC_ARCH = [
 export const requestGame = (
   category: GameCategory,
   g: Game,
-  pick: { os?: string; arch?: string; system?: string }
+  pick: {
+    os?: string;
+    arch?: string;
+    system?: string;
+    selection?: {
+      kind: 'patch';
+      projectId: string;
+      versionId: string;
+      keepOriginal: boolean;
+    };
+  }
 ) =>
   api<{ request: { status: string } }>('/request/software', {
     method: 'POST',
     body: JSON.stringify({
       category,
+      selection: pick.selection,
       catalogProvider: g.catalogProvider,
       ...(g.catalogProvider === 'dat'
         ? { catalogKey: g.catalogId }

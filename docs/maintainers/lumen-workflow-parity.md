@@ -1262,3 +1262,17 @@ exact follow identity and DAT game links. Bundled redirect and production
 companion proxy checks passed. Patch version selection and requests,
 exact Following event links, live provider results and matched visual
 comparisons remain open.
+
+### Exact-version patch requests
+
+Patch discovery links to a project page for choosing a specific version.
+Following updates open that page with their exact version selected. The
+request uses the matched catalogue identity and compatible emulation
+system, requires the selected version's base revision to be available,
+and keeps the original by default. The server still authorizes and admits
+the request through its software request endpoint.
+
+Eight standalone browser checks passed across desktop, iPhone, Android
+and tablet. The request fixture covers a version-specific Following link,
+an unavailable base, and an exact DAT request pending approval. Live
+provider submission and matched visual comparison remain open.

@@ -29,6 +29,12 @@ const PAGE_SIZE = 30;
 const BOOK_FOLLOW_KINDS = ['narrator', 'author', 'series-language', 'edition'];
 
 function eventHref({ target, title }: FollowEvent) {
+  if (target?.mediaType === 'patch') {
+    const version = target.variantKey
+      ? `?${new URLSearchParams({ version: target.variantKey })}`
+      : '';
+    return `/patches/${encodeURIComponent(target.id)}${version}`;
+  }
   if (target && ['movie', 'tv', 'book', 'album'].includes(target.mediaType)) {
     const kind = target.mediaType === 'album' ? 'music' : target.mediaType;
     const format = kind === 'book' && target.variantKey ? '?f=audio' : '';
