@@ -7,6 +7,7 @@ import { GenrePicker } from '../components/GenrePicker';
 import { useAsksRequestOptions } from '../components/requestSheet';
 import { Avatar } from '../components/Shell';
 import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
+import { SubjectTagFilter } from '../components/SubjectTagFilter';
 import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { serverName } from '../mediaServer';
@@ -127,6 +128,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const validRatingRange =
     !minRating || !maxRating || Number(minRating) <= Number(maxRating);
   const publicSettings = usePublicSettings();
+  const [showTags, setShowTags] = useState(false);
   const [showProviders, setShowProviders] = useState(false);
   const rawRegion = p.get('watchRegion') ?? '';
   const defaultRegion = publicSettings?.streamingRegion?.toUpperCase() ?? '';
@@ -332,6 +334,31 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               next.set('watchRegion', nextRegion);
               next.set('watchProviderMode', exclude ? 'exclude' : 'include');
             }
+            setP(next, { replace: true });
+          }}
+        />
+      )}
+      <div className="toolbar">
+        <button
+          className="chip"
+          type="button"
+          aria-expanded={showTags}
+          onClick={() => setShowTags(!showTags)}
+        >
+          Subject Tags
+        </button>
+      </div>
+      {showTags && (
+        <SubjectTagFilter
+          included={keywords ? keywords.split(',') : []}
+          excluded={excludeKeywords ? excludeKeywords.split(',') : []}
+          apply={(included, excluded) => {
+            const next = new URLSearchParams(p);
+            if (included.length) next.set('keywords', included.join(','));
+            else next.delete('keywords');
+            if (excluded.length)
+              next.set('excludeKeywords', excluded.join(','));
+            else next.delete('excludeKeywords');
             setP(next, { replace: true });
           }}
         />

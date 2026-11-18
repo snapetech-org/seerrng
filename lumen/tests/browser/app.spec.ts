@@ -1783,3 +1783,27 @@ test('shared discovery links retain multiple included and excluded subject tags'
   await page.getByRole('button', { name: 'Clear Subject Tag' }).click();
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
+
+test('discovery searches for subject tags and moves a tag between include and exclude', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/search/keyword?query=space', (route) =>
+    route.fulfill({ json: paged([{ id: 73, name: 'Space travel' }]) })
+  );
+  await page.goto('/movies?genre=18');
+  await page.getByRole('button', { name: 'Subject Tags', exact: true }).click();
+  await page.getByLabel('Find Subject Tags').fill('space');
+  await page.getByRole('button', { name: 'Find Tags' }).click();
+  const tag = page.getByRole('button', { name: 'Space travel', exact: true });
+  await tag.click();
+  await expect(page).toHaveURL(/keywords=73/);
+  await expect(tag).toHaveAttribute('aria-pressed', 'true');
+  await page.getByLabel('Tag Match').selectOption('exclude');
+  await tag.click();
+  await expect(page).toHaveURL(/\/movies\?genre=18&excludeKeywords=73$/);
+  await page
+    .getByRole('button', { name: 'Remove excluded Space travel' })
+    .click();
+  await expect(page).toHaveURL(/\/movies\?genre=18$/);
+});
