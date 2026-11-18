@@ -265,6 +265,16 @@ export default function Me() {
               </Link>
             </div>
             <div className="set">
+              <b>Navidrome Settings</b>
+              <Link
+                className="go"
+                to="/admin/navidrome"
+                aria-label="Open Navidrome Settings"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+            <div className="set">
               <b>Whisparr Services</b>
               <Link
                 className="go"

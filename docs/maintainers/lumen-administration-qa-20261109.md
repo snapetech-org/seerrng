@@ -255,3 +255,14 @@ check.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-soulseek-20261118/`.
+
+### Navidrome connection
+
+Administrators can configure and test Navidrome from You, toggle library scans,
+and disconnect after confirmation. Compared the tested connection with Soulseek
+on desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and eight
+browser checks passed with synthetic responses. Live library scans were outside
+this check.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-navidrome-20261118/`.

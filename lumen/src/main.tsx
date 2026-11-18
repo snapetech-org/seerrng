@@ -64,6 +64,7 @@ const AdminLibraryMigration = lazy(
 const AdminNotifications = lazy(() => import('./pages/AdminNotifications'));
 const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
+const AdminNavidrome = lazy(() => import('./pages/AdminNavidrome'));
 const AdminSoulseek = lazy(() => import('./pages/AdminSoulseek'));
 const AdminServarr = lazy(() => import('./pages/AdminServarr'));
 const AdminProwlarr = lazy(() => import('./pages/AdminProwlarr'));
@@ -629,6 +630,24 @@ function App() {
                   }
                 >
                   <AdminSoulseek />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/navidrome"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Navidrome settings…
+                    </p>
+                  }
+                >
+                  <AdminNavidrome />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />
