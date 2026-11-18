@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -9,17 +9,20 @@ import { ServiceNote } from './extra';
 
 const base = '/integrations/discovery/accounts';
 const aniListPath = base + '/anilist';
+const simklPath = base + '/simkl';
 const providerNames = { trakt: 'Trakt', anilist: 'AniList', simkl: 'Simkl' };
 type Provider = keyof typeof providerNames;
 type Account = { provider: Provider; username: string; allowWrites: boolean };
+type SimklAttempt = { userCode: string; expiresAt: number; interval: number };
 
 export default function DiscoveryAccounts() {
   const accounts = useApi<{ accounts: Account[] }>(base);
-  const config = useApi<{ anilist: { configured: boolean } }>(
+  const config = useApi<Partial<Record<Provider, { configured: boolean }>>>(
     '/integrations/discovery/configuration'
   );
   const [authorization, setAuthorization] = useState('');
   const [code, setCode] = useState('');
+  const [simkl, setSimkl] = useState<SimklAttempt>();
   const rows = Array.isArray(accounts.data?.accounts)
     ? accounts.data.accounts
     : undefined;
@@ -30,13 +33,70 @@ export default function DiscoveryAccounts() {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
   const working = useRef(false);
+  const reloadAccounts = accounts.reload;
+
+  useEffect(() => {
+    if (!simkl) return;
+    const { expiresAt, interval: initialInterval } = simkl;
+    const controller = new AbortController();
+    const generation = sessionGeneration();
+    let timer: ReturnType<typeof setTimeout>;
+    const active = () =>
+      !controller.signal.aborted && generation === sessionGeneration();
+    const expire = () => {
+      setSimkl(undefined);
+      setFailure('Simkl authorization expired. Start again for a new code.');
+    };
+    function schedule(interval: number) {
+      const remaining = expiresAt - Date.now();
+      timer = setTimeout(
+        poll,
+        Math.max(0, Math.min(interval * 1000, remaining))
+      );
+    }
+    async function poll() {
+      if (!active()) return;
+      if (Date.now() >= expiresAt) return expire();
+      try {
+        const result = await api<{ status: string; interval?: number }>(
+          simklPath + '/complete',
+          {
+            method: 'POST',
+            body: '{}',
+            signal: controller.signal,
+          }
+        );
+        if (!active()) return;
+        if (result.status === 'authorized') {
+          setSimkl(undefined);
+          reloadAccounts();
+        } else if (
+          result.status === 'pending' ||
+          result.status === 'slow_down'
+        ) {
+          schedule(Math.max(5, result.interval || initialInterval));
+        } else {
+          expire();
+        }
+      } catch (error) {
+        if (!active()) return;
+        setSimkl(undefined);
+        setFailure(friendlyError(error, 'Could not connect Simkl.'));
+      }
+    }
+    schedule(initialInterval);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [simkl, reloadAccounts]);
 
   async function act<T>(
     work: () => Promise<T>,
     onSuccess: (result: T) => void,
     fallback: string
   ) {
-    if (working.current) return;
+    if (working.current || simkl) return;
     const generation = sessionGeneration();
     working.current = true;
     setBusy(true);
@@ -52,6 +112,31 @@ export default function DiscoveryAccounts() {
       working.current = false;
       if (generation === sessionGeneration()) setBusy(false);
     }
+  }
+
+  function startSimkl() {
+    return act(
+      async () => {
+        const result = await api<{
+          userCode: string;
+          expiresIn: number;
+          interval: number;
+        }>(simklPath + '/connect', { method: 'POST', body: '{}' });
+        if (
+          !result.userCode ||
+          !Number.isFinite(result.expiresIn) ||
+          result.expiresIn <= 0
+        )
+          throw new Error('Invalid Simkl device code.');
+        return {
+          userCode: result.userCode,
+          expiresAt: Date.now() + result.expiresIn * 1000,
+          interval: Math.max(5, result.interval || 5),
+        };
+      },
+      setSimkl,
+      'Could not start Simkl authorization.'
+    );
   }
 
   function update(provider: Provider, allowWrites?: boolean) {
@@ -156,7 +241,7 @@ export default function DiscoveryAccounts() {
                 <input
                   type="checkbox"
                   checked={allowWrites}
-                  disabled={busy}
+                  disabled={busy || !!simkl}
                   onChange={(event) =>
                     void update(provider, event.target.checked)
                   }
@@ -165,7 +250,7 @@ export default function DiscoveryAccounts() {
               </label>
               <button
                 className="btn btn-quiet btn-sm"
-                disabled={busy}
+                disabled={busy || !!simkl}
                 onClick={() => {
                   setFailure('');
                   setDisconnect(provider);
@@ -178,6 +263,7 @@ export default function DiscoveryAccounts() {
         </ul>
       )}
       {rows &&
+        !simkl &&
         config.data?.anilist?.configured &&
         !rows.some(({ provider }) => provider === 'anilist') &&
         (authorization ? (
@@ -235,6 +321,44 @@ export default function DiscoveryAccounts() {
             Connect AniList
           </button>
         ))}
+      {simkl ? (
+        <div className="toolbar">
+          <p className="note" role="status">
+            Enter <b>{simkl.userCode}</b> on Simkl. This code expires at{' '}
+            <time dateTime={new Date(simkl.expiresAt).toISOString()}>
+              {new Date(simkl.expiresAt).toLocaleTimeString()}
+            </time>
+            .
+          </p>
+          <a
+            className="btn btn-tonal btn-sm"
+            href="https://simkl.com/pin/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Authorize on Simkl
+          </a>
+          <button
+            className="btn btn-quiet btn-sm"
+            onClick={() => setSimkl(undefined)}
+          >
+            Cancel Simkl Connection
+          </button>
+        </div>
+      ) : (
+        rows &&
+        !authorization &&
+        config.data?.simkl?.configured &&
+        !rows.some(({ provider }) => provider === 'simkl') && (
+          <button
+            className="btn btn-tonal btn-sm"
+            disabled={busy}
+            onClick={() => void startSimkl()}
+          >
+            Connect Simkl
+          </button>
+        )
+      )}
       {disconnect && (
         <ConfirmSheet
           title={`Disconnect ${providerNames[disconnect]}?`}

@@ -255,3 +255,73 @@ test('AniList connects through a code submitted in the request body', async ({
   await expect(code).toHaveCount(0);
   expect(new URL(page.url()).search).toBe('');
 });
+
+test('Simkl stops polling on cancel and links after provider approval', async ({
+  page,
+}) => {
+  const base = '/integrations/discovery';
+  let connected = false;
+  let polls = 0;
+  await page.clock.install();
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === base + '/configuration')
+      return route.fulfill({ json: { simkl: { configured: true } } });
+    if (path === base + '/accounts')
+      return route.fulfill({
+        json: {
+          accounts: connected
+            ? [
+                {
+                  provider: 'simkl',
+                  username: 'Simkl Viewer',
+                  allowWrites: false,
+                },
+              ]
+            : [],
+        },
+      });
+    if (path === base + '/accounts/simkl/connect')
+      return route.fulfill({
+        json: { userCode: 'PIN123', expiresIn: 30, interval: 5 },
+      });
+    if (path === base + '/accounts/simkl/complete') {
+      expect(route.request().method()).toBe('POST');
+      polls++;
+      if (polls === 1)
+        return route.fulfill({
+          status: 202,
+          json: { status: 'pending', interval: 8 },
+        });
+      connected = true;
+      return route.fulfill({ json: { status: 'authorized' } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/me/account/linked-accounts');
+  const connect = page.getByRole('button', {
+    name: 'Connect Simkl',
+    exact: true,
+  });
+  await connect.click();
+  await expect(page.getByText('PIN123')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel Simkl Connection' }).click();
+  await page.clock.fastForward(6000);
+  expect(polls).toBe(0);
+  await connect.click();
+  await expect(
+    page.getByRole('link', { name: 'Authorize on Simkl' })
+  ).toHaveAttribute('href', 'https://simkl.com/pin/');
+  await page.clock.fastForward(5000);
+  await expect.poll(() => polls).toBe(1);
+  await page.clock.fastForward(7000);
+  expect(polls).toBe(1);
+  await page.clock.fastForward(1500);
+  await expect(page.getByText('Simkl Viewer')).toBeVisible();
+});
