@@ -7,6 +7,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import ImportMediaServerUsers from '../components/ImportMediaServerUsers';
 import ManagedEpisodeQueue from '../components/ManagedEpisodeQueue';
+import ManagedLinkedAccounts from '../components/ManagedLinkedAccounts';
 import ManagedMaturity from '../components/ManagedMaturity';
 import ManagedMediaCategories from '../components/ManagedMediaCategories';
 import ManagedPassword from '../components/ManagedPassword';
@@ -23,6 +24,10 @@ interface DirectoryUser {
   permissions: number;
   requestCount?: number;
   userType?: number;
+  plexId?: number | null;
+  plexUsername?: string;
+  jellyfinUserId?: string | null;
+  jellyfinUsername?: string;
 }
 
 const pageSize = 25;
@@ -290,6 +295,9 @@ export default function AdminUsers() {
           : undefined;
   const canImport = ((actor?.permissions ?? 0) & 2) !== 0 && provider;
   const [importing, setImporting] = useState(false);
+  const [linkedUser, setLinkedUser] = useState<number | undefined>(
+    panel === 'linked-accounts' ? target : undefined
+  );
   const [tvAccessUser, setTvAccessUser] = useState<number | undefined>(
     panel === 'tv-request-access' ? target : undefined
   );
@@ -705,6 +713,44 @@ export default function AdminUsers() {
                   TV Request Access
                 </button>
                 {tvAccessUser === user.id && <ManagedTvAccess id={user.id} />}
+                <button
+                  className="btn btn-quiet btn-sm"
+                  aria-expanded={linkedUser === user.id}
+                  onClick={() =>
+                    setLinkedUser(linkedUser === user.id ? undefined : user.id)
+                  }
+                >
+                  Linked Accounts
+                </button>
+                {linkedUser === user.id && (
+                  <ManagedLinkedAccounts
+                    id={user.id}
+                    media={
+                      provider === 'Plex' && user.plexId
+                        ? {
+                            key: 'plex',
+                            name: provider,
+                            username: user.plexUsername,
+                          }
+                        : (provider === 'Jellyfin' || provider === 'Emby') &&
+                            user.jellyfinUserId
+                          ? {
+                              key: 'jellyfin',
+                              name: provider,
+                              username: user.jellyfinUsername,
+                            }
+                          : undefined
+                    }
+                    canUnlink={
+                      !!actor &&
+                      (actor.id === user.id ||
+                        actor.id === 1 ||
+                        (user.permissions & 2) === 0) &&
+                      canManageAuthentication(user)
+                    }
+                    onSaved={reload}
+                  />
+                )}
                 {canDelete(user) && (
                   <button
                     className="btn btn-quiet btn-sm"

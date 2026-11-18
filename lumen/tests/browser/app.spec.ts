@@ -5119,3 +5119,44 @@ test('Managed TV access bookmark opens the selected user and the review queue', 
     page.getByRole('link', { name: 'Review TV Access Requests' })
   ).toHaveAttribute('href', '/me/account/tv-requests');
 });
+
+test('Managed Linked Accounts preserves a last sign-in method', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let accounts = [
+    { id: 4, username: 'viewer', provider: { name: 'Provider One' } },
+    { id: 8, username: 'viewer', provider: { name: 'Provider Two' } },
+  ];
+  await page.route('**/api/v1/user/19/settings/linked-accounts', (route) =>
+    route.fulfill({ json: accounts })
+  );
+  await page.route('**/api/v1/user/19/settings/password', (route) =>
+    route.fulfill({ json: { hasPassword: false } })
+  );
+  await page.route('**/api/v1/user/19/settings/linked-accounts/4', (route) => {
+    expect(route.request().method()).toBe('DELETE');
+    accounts = accounts.filter((account) => account.id !== 4);
+    return route.fulfill({ status: 204 });
+  });
+  await page.goto('/admin/users/19/linked-accounts');
+  await page.getByRole('button', { name: 'Unlink Provider One' }).click();
+  expect(accounts).toHaveLength(2);
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Unlink Account' })
+    .click();
+  await expect(page.getByText('Account unlinked.')).toBeVisible();
+  await expect(page.getByText('Provider Two', { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Unlink Provider Two' })
+  ).toHaveCount(0);
+});
