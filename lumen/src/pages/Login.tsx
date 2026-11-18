@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import {
   finishQuickConnect,
@@ -66,7 +66,8 @@ export default function Login() {
   const { refresh } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const providers = usePublicSettings()?.openIdProviders ?? [];
+  const publicSettings = usePublicSettings();
+  const providers = publicSettings?.openIdProviders ?? [];
   const [callback] = useState(() =>
     location.pathname === '/login' ? readOidcCallback() : null
   );
@@ -351,6 +352,11 @@ export default function Login() {
             <button className="btn btn-tonal" disabled={busy}>
               Sign in
             </button>
+            {publicSettings?.emailEnabled && (
+              <Link className="btn btn-quiet btn-sm" to="/resetpassword">
+                Forgot password?
+              </Link>
+            )}
           </form>
         ) : (
           server.serverLogin && (

@@ -417,3 +417,19 @@ Headed Chrome at 1440 × 1000 verified a pending TV request in the standalone
 Everyone tab with synthetic API data, including a save from the owner's default
 to two episodes ahead and readback after navigation. Native visual comparison,
 mobile, bundled, delegated-role and live playback checks remain open.
+
+### Local password recovery increment
+
+Lumen offers a recovery link from local sign-in when email is enabled and
+allows the user to set a new password from the emailed link. Both forms use
+the existing authentication API. The standalone companion serves
+`/resetpassword` directly when the Application URL points there. SeerrNG
+routes incoming recovery links to bundled Lumen when selected, honoring
+the native preference when allowed. Recovery links on the SeerrNG origin
+keep using that origin for externally configured frontends.
+
+Headed Chrome at 1440 × 1000 verified standalone request and reset forms using
+a synthetic API, including mismatched confirmation and successful POSTs.
+The server tests verified bundled link routing and native and external
+fallback. Live SMTP, mobile and bundled browser rendering, and native
+visual comparison remain open.

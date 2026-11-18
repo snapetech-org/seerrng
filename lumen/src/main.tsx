@@ -6,6 +6,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useMatch,
 } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth';
 import { PageBoundary } from './components/PageBoundary';
@@ -42,6 +43,7 @@ import './styles/app.css';
 import './styles/lumen.css';
 import './styles/touch.css';
 
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const IndexerSearch = lazy(() => import('./pages/IndexerSearch'));
 const TvRequestSettings = lazy(() => import('./pages/TvRequestSettings'));
 const LinkedAccounts = lazy(() => import('./pages/LinkedAccounts'));
@@ -55,6 +57,24 @@ const Downloads = lazy(() => import('./pages/Downloads'));
 function App() {
   const { user, unreachable, refresh } = useAuth();
   const location = useLocation();
+  const resetLink = useMatch('/resetpassword/:guid');
+  const resetRequest = useMatch('/resetpassword');
+  if (resetLink || resetRequest) {
+    return (
+      <Suspense fallback={<div className="boot" aria-busy="true" />}>
+        <Routes>
+          <Route
+            path="/resetpassword"
+            element={<ResetPassword key="request" />}
+          />
+          <Route
+            path="/resetpassword/:guid"
+            element={<ResetPassword key={location.pathname} />}
+          />
+        </Routes>
+      </Suspense>
+    );
+  }
   if (unreachable && !user)
     return (
       <div className="boot boot-note" role="alert">

@@ -100,6 +100,7 @@ export interface PublicSettings {
   lockLumenForNonAdmins?: boolean;
   softwareEnabled?: boolean;
   romarrEnabled?: boolean;
+  emailEnabled?: boolean;
   applicationTitle: string;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;

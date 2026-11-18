@@ -6,6 +6,7 @@ import express from 'express';
 import path from 'node:path';
 
 const classicCookie = 'seerrng-frontend';
+const passwordRecoveryPath = /^\/resetpassword(?:\/[^/]+)?\/?$/i;
 
 export const redirectLockedNativeFrontend: RequestHandler = (
   req,
@@ -23,7 +24,12 @@ export const redirectLockedNativeFrontend: RequestHandler = (
     !req.path.startsWith('/api') &&
     !path.extname(req.path)
   ) {
-    res.set('Cache-Control', 'no-store').redirect(302, '/lumen/');
+    res
+      .set('Cache-Control', 'no-store')
+      .redirect(
+        302,
+        passwordRecoveryPath.test(req.path) ? `/lumen${req.path}` : '/lumen/'
+      );
     return;
   }
   next();
@@ -92,6 +98,18 @@ export const mountLumenFrontend = (
       }
     }
     return next();
+  });
+  server.get(['/resetpassword', '/resetpassword/:guid'], (req, res, next) => {
+    if (
+      !isInitialized() ||
+      frontend() !== 'lumen' ||
+      (!enforceFrontend() && req.cookies?.[classicCookie] === 'classic')
+    ) {
+      return next();
+    }
+    return res
+      .set('Cache-Control', 'no-store')
+      .redirect(302, `/lumen${req.path}`);
   });
   server.use(
     '/lumen',

@@ -34,7 +34,12 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       enforceFrontend: () => enforceFrontend,
       companionUrl: () => companionUrl,
     });
-    app.get('/', (_req, res) => res.send('Native interface'));
+    app.get(['/', '/resetpassword/:guid'], (_req, res) =>
+      res.send('Native interface')
+    );
+    const recovery = await request(app).get('/resetpassword/example');
+    assert.equal(recovery.headers.location, '/lumen/resetpassword/example');
+    assert.equal(recovery.headers['cache-control'], 'no-store');
     for (const cookie of ['', 'theme=seerrNGJ', 'theme=seerrOrig']) {
       const response = await request(app).get('/').set('Cookie', cookie);
       assert.equal(response.status, 302);
@@ -47,6 +52,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       'Native interface'
     );
     assert.equal((await companion.get('/')).text, 'Native interface');
+    assert.equal(
+      (await companion.get('/resetpassword/example')).text,
+      'Native interface'
+    );
     const browser = request.agent(app);
     assert.equal((await browser.get('/seerrng')).headers.location, '/');
     assert.equal((await browser.get('/')).text, 'Native interface');
@@ -73,6 +82,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     frontend = 'native';
     assert.equal((await request(app).get('/')).text, 'Native interface');
     frontend = 'external';
+    assert.equal(
+      (await request(app).get('/resetpassword/example')).text,
+      'Native interface'
+    );
     assert.equal(
       (await request(app).get('/')).headers.location,
       'http://companion.example:5080/'
@@ -146,6 +159,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       assert.equal(response.status, 302, route);
       assert.equal(response.headers.location, '/lumen/', route);
     }
+    const recovery = await request(app)
+      .get('/resetpassword/example')
+      .set('X-Test-Role', 'user');
+    assert.equal(recovery.headers.location, '/lumen/resetpassword/example');
     const nonHtmlRequest = await request(app)
       .get('/movie/123')
       .set('X-Test-Role', 'user')
