@@ -64,6 +64,16 @@ iPhone cases cover the provider round trips, library selection and pagination,
 private matches, and tracking updates using fixture API responses. Live provider
 effects and matched visual acceptance remain unverified.
 
+### Game Finder verification
+
+Lumen supports filtered QuestarrNG searches, saved searches, notification
+preferences, and retrying a failed page without losing earlier results.
+The desktop and iPhone browser fixtures cover search, pagination, retry,
+save, run, delete, and game detail links on both standalone Lumen and the
+production bundle served by Express at `/lumen/`. The bundled frontend
+redirects the Classic `/discover/games` entry point to Game Finder. Live
+QuestarrNG effects and matched visual verification remain open.
+
 ### Following feed increment
 
 Lumen has a Following route, with a desktop sidebar link and a Library entry

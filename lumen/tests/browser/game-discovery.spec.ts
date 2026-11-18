@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('Game Finder pages with the submitted filters and saves, runs and deletes searches', async ({
   page,
+  baseURL,
 }) => {
   const discovery: Record<string, unknown>[] = [];
   let saved: Record<string, unknown> | undefined;
@@ -55,7 +56,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/games/discovery');
+  await page.goto('./games/discovery');
   const invalid = page
     .getByRole('alert')
     .filter({ hasText: 'Invalid saved searches response.' });
@@ -68,7 +69,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   await page.getByRole('button', { name: 'Show Matches' }).click();
   await expect(page.getByRole('link', { name: 'First Game' })).toHaveAttribute(
     'href',
-    '/game/game/21'
+    new URL('./game/game/21', baseURL).pathname
   );
   await page.getByLabel('Keywords').fill('different draft');
   await page.getByRole('button', { name: 'Load More Matches' }).click();
