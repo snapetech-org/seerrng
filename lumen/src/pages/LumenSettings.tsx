@@ -162,6 +162,7 @@ export default function LumenSettings() {
     folder?: string;
     uid?: number;
     gid?: number;
+    message?: string;
   } | null>(null);
   const [saving, setSaving] = useState(false);
   const [storageCheck, setStorageCheck] = useState(0);
@@ -355,24 +356,33 @@ export default function LumenSettings() {
         <div className="note" role="status">
           <p>
             {embedded
-              ? 'Included Lumen cannot save its settings. Check that SeerrNG’s config volume is writable.'
+              ? (saveState.message ??
+                'Included Lumen cannot save its settings. Check that SeerrNG’s config volume is writable.')
               : saveState.folder === 'readonly'
                 ? `Lumen cannot write to /lumen-data. Mount it read-write and give its host folder to UID:GID ${saveState.uid ?? 'the container user'}:${saveState.gid ?? 'the container group'}.`
                 : saveState.folder === 'missing'
                   ? 'Mount a writable host folder at /lumen-data to enable Save and Upload.'
                   : 'Could not check Lumen storage. Check the container logs, then try again.'}
           </p>
+          {embedded && saveState.uid != null && saveState.gid != null && (
+            <p>
+              SeerrNG runs as UID {saveState.uid} and GID {saveState.gid}.
+            </p>
+          )}
           <button
             className="btn btn-tonal btn-sm"
             onClick={() => setStorageCheck((n) => n + 1)}
           >
             Check storage again
           </button>
-          <p>
-            Compose: put <code>user: "1000:1000"</code> beside{' '}
-            <code>environment:</code>, with the same indentation. It is not an
-            environment variable. Your draft stays here while you check.
-          </p>
+          {!embedded && (
+            <p>
+              Compose: put <code>user: "1000:1000"</code> beside{' '}
+              <code>environment:</code>, with the same indentation. It is not an
+              environment variable.
+            </p>
+          )}
+          <p>Your draft stays here while you check.</p>
         </div>
       )}
 

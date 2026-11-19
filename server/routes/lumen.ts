@@ -57,6 +57,7 @@ export const createLumenRoutes = (
     '/config',
     isAuthenticated(Permission.ADMIN),
     async (_req, res, next) => {
+      const identity = { uid: process.geteuid?.(), gid: process.getegid?.() };
       const probe = path.join(directory(), `${randomUUID()}.probe`);
       let probeCreated = false;
       try {
@@ -71,6 +72,7 @@ export const createLumenRoutes = (
             canSave: false,
             folder: 'readonly',
             message: unusableLumenStorageMessage,
+            ...identity,
           });
         }
         // Verify the actual write path; access(W_OK) can give false positives.
@@ -80,12 +82,17 @@ export const createLumenRoutes = (
         await handle.close();
         await fs.unlink(probe);
         probeCreated = false;
-        return res.json({ canSave: true, folder: 'ok' });
+        return res.json({ canSave: true, folder: 'ok', ...identity });
       } catch (error) {
         if (probeCreated) await fs.unlink(probe).catch(() => undefined);
         const message = lumenStorageError(error);
         if (message)
-          return res.json({ canSave: false, folder: 'readonly', message });
+          return res.json({
+            canSave: false,
+            folder: 'readonly',
+            message,
+            ...identity,
+          });
         return next(error);
       }
     }

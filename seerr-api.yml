@@ -9463,7 +9463,26 @@ paths:
       summary: Check administrator Lumen configuration storage
       responses:
         '200':
-          description: Writable app configuration volume
+          description: App configuration storage status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [canSave, folder]
+                properties:
+                  canSave:
+                    type: boolean
+                  folder:
+                    type: string
+                    enum: [ok, readonly]
+                  message:
+                    type: string
+                  uid:
+                    type: integer
+                    description: Effective process user ID on platforms that expose it
+                  gid:
+                    type: integer
+                    description: Effective process group ID on platforms that expose it
         '403':
           description: Administrator required
     put:

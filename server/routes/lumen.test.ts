@@ -59,7 +59,12 @@ test('embedded Lumen configuration is public, bounded, and administrator-write-o
   );
   assert.deepEqual(
     (await request(app).get(url).set('x-test-role', 'admin')).body,
-    { canSave: true, folder: 'ok' }
+    {
+      canSave: true,
+      folder: 'ok',
+      ...(process.geteuid ? { uid: process.geteuid() } : {}),
+      ...(process.getegid ? { gid: process.getegid() } : {}),
+    }
   );
   const config = {
     defaults: { theme: 'dark', showBooks: false },
@@ -103,6 +108,8 @@ test('embedded Lumen reports an unusable configuration directory without changin
     const check = await request(app).get(url).set('x-test-role', 'admin');
     assert.equal(check.status, 200);
     assert.equal(check.body.canSave, false);
+    assert.equal(check.body.uid, process.geteuid?.());
+    assert.equal(check.body.gid, process.getegid?.());
     assert.match(check.body.message, /not a usable directory/);
 
     const put = await request(app)
