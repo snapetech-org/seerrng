@@ -3,6 +3,13 @@
 ## Unreleased
 
 - **Lumen:** Discover Watchlist opens the viewer-filtered discovery list and supports local title search, media filtering, and sorting. SeerrNG independently extends the watchlist behavior [@JamyPatch44](https://github.com/JamyPatch44) contributed to upstream Seerr in [PR #3506](https://github.com/seerr-team/seerr/pull/3506).
+- **Lumen:** Discover shelves remember their horizontal positions when you return from a title. SeerrNG independently adapted the behavior suggested upstream by [@simpat1zq](https://github.com/simpat1zq) in [Seerr issue #3591](https://github.com/seerr-team/seerr/issues/3591).
+- **Lumen:** Movies discovery now supports searching for and excluding production studios. SeerrNG independently adapted the exclusion idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
+- **Lumen:** Series discovery now supports including or excluding a series status. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
+- **Lumen:** Movies and Series can include or exclude streaming services by region. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
+- **Lumen:** Movies and Series now support decimal TMDB rating bounds. SeerrNG independently adapted its native rating filters, including the flexible score filtering proposed upstream by [@wjh000123](https://github.com/wjh000123) in [Seerr PR #626](https://github.com/seerr-team/seerr/pull/626).
+- **Lumen:** Movie and series browsing can exclude selected genres. SeerrNG independently adapted ideas suggested upstream by [@sveinbjornpalsson](https://github.com/sveinbjornpalsson) in [Seerr issue #3090](https://github.com/seerr-team/seerr/issues/3090) and [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
+- **Lumen:** Person pages show complete cast and crew filmographies with media filters and sorting. SeerrNG independently adapted the sorting idea suggested upstream by [@zjgoodman](https://github.com/zjgoodman) in [Seerr PR #3342](https://github.com/seerr-team/seerr/pull/3342).
 
 ## [3.72.38](https://github.com/snapetech-org/seerrng/compare/v3.72.37..v3.72.38) - 2026-11-17
 
@@ -1624,18 +1631,6 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 ## [Unreleased]
 
 ### User-facing changes
-
-- **Lumen:** Discover shelves remember their horizontal positions when you return from a title. SeerrNG independently adapted the behavior suggested upstream by [@simpat1zq](https://github.com/simpat1zq) in [Seerr issue #3591](https://github.com/seerr-team/seerr/issues/3591).
-- **Lumen:** Movies discovery now supports searching for and excluding production studios. SeerrNG independently adapted the exclusion idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
-- **Lumen:** Series discovery now supports including or excluding a series status. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
-- **Lumen:** Movies and Series can include or exclude streaming services by region. SeerrNG independently adapted the filtering idea proposed upstream by [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
-- **Lumen:** Movies and Series now support decimal TMDB rating bounds. SeerrNG independently adapted its native rating filters, including the flexible score filtering proposed upstream by [@wjh000123](https://github.com/wjh000123) in [Seerr PR #626](https://github.com/seerr-team/seerr/pull/626).
-- **Lumen:** Movie and series browsing can exclude selected genres. SeerrNG independently adapted ideas suggested upstream by [@sveinbjornpalsson](https://github.com/sveinbjornpalsson) in [Seerr issue #3090](https://github.com/seerr-team/seerr/issues/3090) and [@TheReaperJay](https://github.com/TheReaperJay) in [Seerr PR #3166](https://github.com/seerr-team/seerr/pull/3166).
-
-
-#### Added
-
-- **Lumen:** Person pages show complete cast and crew filmographies with media filters and sorting. SeerrNG independently adapted the sorting idea suggested upstream by [@zjgoodman](https://github.com/zjgoodman) in [Seerr PR #3342](https://github.com/seerr-team/seerr/pull/3342).
 
 #### Fixed
 
