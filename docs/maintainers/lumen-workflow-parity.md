@@ -4347,3 +4347,16 @@ were inspected. Live provider authorization, linked-account readback,
 native-matched Arabic visuals, and bundled-mount acceptance remain open.
 Evidence is retained under
 `/mnt/disks/scratch/codex-task-scratch/seerrng-discovery-accounts-localization-visual-20261119/`.
+
+### Keep the open genre popover anchored after selection
+
+The tablet workflow exposed a stale horizontal offset: selecting a genre changes
+the picker label width while the popover remains open. The popover now observes
+its anchor and its own dimensions and recomputes its viewport-relative placement
+after layout changes. The browser regression selects and removes genres at the
+tablet viewport and asserts the open menu remains within the viewport. The
+hosted failure trace showed the page scrolling horizontally with the menu at the
+right edge; the previous candidate screenshot returned to the normal page width
+with the menu in bounds. Local repeat validation passed 20 tablet runs with eight
+workers, and the iPhone recommendation-feed case passed. Exact-head hosted
+qualification remains required before release.

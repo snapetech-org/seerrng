@@ -95,6 +95,9 @@ export function GenrePicker({
     };
     position();
     window.addEventListener('resize', position);
+    const observer = new ResizeObserver(position);
+    if (wrap.current) observer.observe(wrap.current);
+    if (box) observer.observe(box);
     (
       box?.querySelector<HTMLElement>('.gp-opt[aria-pressed="true"]') ||
       box?.querySelector<HTMLElement>('.gp-opt')
@@ -116,6 +119,7 @@ export function GenrePicker({
     document.addEventListener('keydown', onKey);
     return () => {
       window.removeEventListener('resize', position);
+      observer.disconnect();
       document.removeEventListener('pointerdown', outside);
       document.removeEventListener('focusin', outside);
       document.removeEventListener('keydown', onKey);

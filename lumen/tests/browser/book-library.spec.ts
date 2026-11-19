@@ -378,6 +378,12 @@ test('a genre or a sort from the landing fills the page with that list, and Back
       '?format=ebook&sortBy=trending&subject=science%20fiction%7Cromance%7Cfantasy&page=1'
     );
   await chip('Science Fiction').click();
+  const genrePopover = await page.locator('.gp-pop').boundingBox();
+  expect(genrePopover).not.toBeNull();
+  expect(genrePopover!.x).toBeGreaterThanOrEqual(0);
+  expect(genrePopover!.x + genrePopover!.width).toBeLessThanOrEqual(
+    page.viewportSize()!.width
+  );
   await chip('Romance').click();
   await expect
     .poll(feed)
