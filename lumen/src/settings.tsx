@@ -10,6 +10,7 @@ import {
 import { useAuth } from './auth';
 import { forgetLumenConfig, readLumenConfig } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
+import { isThemeColor, themeColors } from './themeOverrides';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
 // lumen-config.json next to the app; each person can change whatever isn't locked.
@@ -224,11 +225,17 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     setMine({});
   }, [key]);
 
+  const overrides = user?.settings?.advancedThemeOverrides;
+
   // theme lives on <html>, the same switch the mockup used
   // and the browser's own bar (address bar, phone status bar) follows the page, including
   // when "Device" is picked and the phone flips between light and dark
   useEffect(() => {
     const root = document.documentElement;
+    for (const [key, property] of themeColors) {
+      const value = overrides?.[key];
+      if (isThemeColor(value)) root.style.setProperty(property, value);
+    }
     if (prefs.theme === 'system') delete root.dataset.theme;
     else root.dataset.theme = prefs.theme;
     const paintBar = () =>
@@ -241,8 +248,12 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     paintBar();
     const media = window.matchMedia?.('(prefers-color-scheme: dark)');
     media?.addEventListener('change', paintBar);
-    return () => media?.removeEventListener('change', paintBar);
-  }, [prefs.theme]);
+    return () => {
+      media?.removeEventListener('change', paintBar);
+      for (const [, property] of themeColors)
+        root.style.removeProperty(property);
+    };
+  }, [prefs.theme, overrides]);
 
   return (
     <C.Provider

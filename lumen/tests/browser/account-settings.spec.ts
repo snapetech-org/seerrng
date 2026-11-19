@@ -186,3 +186,56 @@ test('watchlist preferences honor account type and category permissions and pers
   await expect(music).toBeVisible();
   await expect(music).not.toBeChecked();
 });
+
+test('account theme colors preserve stored overrides for other controls', async ({
+  page,
+}) => {
+  const classicOnly = { '--theme-overlay-menu': '#112233' };
+  let overrides: Record<string, string> = { ...classicOnly };
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          permissions: 32,
+          settings: { advancedThemeOverrides: overrides },
+        },
+      });
+    if (path === '/user/2/settings/advanced-theme') {
+      overrides = request.postDataJSON().overrides;
+      return route.fulfill({ json: { advancedThemeOverrides: overrides } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('./me/account');
+  const background = page.getByLabel('Page Background');
+  const save = page.getByRole('button', { name: 'Save Theme Colors' });
+  await background.fill('invalid');
+  await expect(save).toBeDisabled();
+  await background.fill('#123456');
+  await save.click();
+  await expect(page.getByText('Theme colors saved.')).toBeVisible();
+  expect(overrides).toEqual({ ...classicOnly, '--theme-page-bg': '#123456' });
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        getComputedStyle(document.documentElement)
+          .getPropertyValue('--bg')
+          .trim()
+      )
+    )
+    .toBe('#123456');
+  await background.fill('');
+  await save.click();
+  await expect(page.getByText('Theme colors saved.')).toBeVisible();
+  expect(overrides).toEqual(classicOnly);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        document.documentElement.style.getPropertyValue('--bg')
+      )
+    )
+    .toBe('');
+});

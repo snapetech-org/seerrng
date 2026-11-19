@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import AccountThemeOverrides from '../components/AccountThemeOverrides';
 import { Section } from '../components/cards';
 import { CardTitlePreferences } from '../components/CardTitlePreferences';
 import { ServiceNote } from '../components/extra';
@@ -667,6 +668,7 @@ export default function AccountSettings() {
       {user && (
         <Settings id={user.id} key={user.id} plex={user.userType === 1} />
       )}
+      {user && <AccountThemeOverrides key={`theme:${user.id}`} />}
     </>
   );
 }
