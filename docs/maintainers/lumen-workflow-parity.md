@@ -3487,3 +3487,15 @@ could not upload for that account, and the returned versioned URL
 served the stored 512 × 512 WebP. The storage directory belonged to
 the test and the avatar was removed after verification. The browser
 and server checks ran separately.
+
+### Artist detail to Music discovery
+
+The Artist page links directly to Music discovery with the artist name
+and exact MusicBrainz ID. The separate discography action remains
+available. Desktop and iPhone checks in both production deployments
+verified that applying FLAC keeps the exact artist in the API request.
+Matched baseline and candidate Artist renders at 390 and 1440 CSS
+pixels showed the existing action row wrapping without horizontal
+overflow. Tests used real local sign-in and synthetic artist and
+discovery responses. Live music providers and the Classic in-place
+artist picker workflow remain outside this check.

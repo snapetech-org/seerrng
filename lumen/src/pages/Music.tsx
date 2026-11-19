@@ -469,6 +469,18 @@ export function Artist() {
             >
               View Discography
             </Link>
+            <Link
+              className="btn btn-tonal btn-sm"
+              to={{
+                pathname: '/music',
+                search: new URLSearchParams({
+                  artist: a.artist.name,
+                  artistId: id,
+                }).toString(),
+              }}
+            >
+              Filter Music by Artist
+            </Link>
             <IndexerSearchLink category="music" title={a.artist.name} />
             <AssociationLink mediaType="artist" id={id} />
           </div>
