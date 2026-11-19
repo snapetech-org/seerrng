@@ -1,5 +1,69 @@
 import { expect, test } from '@playwright/test';
 
+test('Indexer Search is reachable from the permission-aware mobile You menu', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Operator', permissions: 16 }
+          : path === '/settings/public'
+            ? { mediaServerType: 1 }
+            : path === '/indexer-search/configuration'
+              ? { configured: true, categories: [] }
+              : {},
+    });
+  });
+
+  await page.goto('/me');
+  const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
+  if (!desktop) {
+    await page
+      .getByRole('navigation', { name: 'Tabs', exact: true })
+      .getByRole('link', { name: 'You', exact: true })
+      .click();
+  }
+  const link = desktop
+    ? page
+        .getByRole('navigation', { name: 'Main', exact: true })
+        .getByRole('link', { name: 'Indexer Search', exact: true })
+    : page.getByRole('link', { name: 'Open Indexer Search', exact: true });
+  await expect(link).toBeVisible();
+  await link.click();
+  await expect(page).toHaveURL(/\/indexer-search$/);
+  await expect(
+    page.getByText(
+      'No configured media categories are available to this account.',
+      {
+        exact: true,
+      }
+    )
+  ).toBeVisible();
+});
+
+test('Indexer Search is absent from the You menu without permission', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) =>
+    route.fulfill({
+      json: new URL(route.request().url()).pathname.endsWith('/auth/me')
+        ? { id: 1, displayName: 'Viewer', permissions: 32 }
+        : {},
+    })
+  );
+
+  await page.goto('/me');
+  await expect(
+    page.getByRole('link', { name: 'Open Indexer Search', exact: true })
+  ).toHaveCount(0);
+});
+
 test('indexer search honors enabled categories, submitted pagination and one-use handoff', async ({
   page,
 }) => {

@@ -16,6 +16,7 @@ import { canManageDownloads } from '../downloadPermissions';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
+import { canSearchIndexers } from '../indexerPermissions';
 import { canReadIssues } from '../issuePermissions';
 import { useLiveTvStatus } from '../liveTv';
 import { mediaServer, services } from '../mediaServer';
@@ -203,19 +204,34 @@ export default function Me() {
         </div>
       </Section>
 
-      {canManageDownloads(user?.permissions) && (
+      {(canManageDownloads(user?.permissions) ||
+        canSearchIndexers(user?.permissions)) && (
         <Section title="Acquisition">
           <div className="setlist">
-            <div className="set">
-              <b>Download Inbox</b>
-              <Link
-                className="go"
-                to="/downloads"
-                aria-label="Open Download Inbox"
-              >
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
+            {canManageDownloads(user?.permissions) && (
+              <div className="set">
+                <b>Download Inbox</b>
+                <Link
+                  className="go"
+                  to="/downloads"
+                  aria-label="Open Download Inbox"
+                >
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            )}
+            {canSearchIndexers(user?.permissions) && (
+              <div className="set">
+                <b>Indexer Search</b>
+                <Link
+                  className="go"
+                  to="/indexer-search"
+                  aria-label="Open Indexer Search"
+                >
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            )}
           </div>
         </Section>
       )}
