@@ -465,11 +465,12 @@ saved profile values by reading them back. The separate password form uses
 the server's password-presence flag, confirms the new password locally, and
 clears password fields after each submission.
 
-Headed Chrome at 1440 × 1000 verified standalone entry from You, a rejected
-edit with its draft retained, successful retry and name readback, and a
-password change with synthetic credentials. Native baseline, mobile and
-bundled visual acceptance, live password and provider paths, interface
-localization, linked accounts, tokens, and other account settings remain open.
+The 72 browser checks for account settings and household profiles passed
+against both standalone Vite and the production Express `/lumen/` mount across
+desktop, iPhone, Android, and tablet projects. They use synthetic credentials
+and fixture APIs. Native visual comparison, live password and provider paths,
+interface localization, linked accounts, tokens, and other account settings
+remain open.
 
 ### Client token increment
 
@@ -2465,8 +2466,9 @@ No real image or credential was sent. Evidence is retained under
 Lumen Administration now has Reader Delivery settings for Grimmory and
 BookOrbit, including credentials, preferred reader, OPDS and Komga addresses,
 and tests against saved connections. Administrators can inspect managed shelf
-status and remove a shelf after confirmation. Book and comic detail actions
-for creating managed shelves remain separate work.
+status and remove a shelf after confirmation. Managed shelf actions are
+available on eligible comic and manga editions, authors, and book series in
+the later increments below; their production behavior is covered there.
 
 Compared the configured form with the existing Lumen provider form on
 desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and 44
@@ -2839,7 +2841,8 @@ the movie and TV detail actions with the previous version on desktop,
 iPhone 13, Pixel 7, and iPad Pro 11. Fixtures verify payloads and
 confirmation for both media types. Live quota enforcement and approval
 are outside this check. Poster quick requests and manager-facing
-exception identification still need parity review. Evidence is retained
+exception identification are covered in the following increments.
+Evidence is retained
 under `seerrng-lumen-quota-approval*` in
 `/mnt/disks/scratch/task-deliverables/`.
 

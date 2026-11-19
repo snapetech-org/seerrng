@@ -1,8 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const appHref = (path: string, baseURL: string | undefined) => {
   const url = new URL(path, baseURL);
-  return url.pathname + url.search;
+  return mount + url.pathname + url.search;
 };
 
 for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
@@ -127,7 +130,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
           return route.fulfill({ json: {} });
       }
     });
-    await page.goto('./household/19');
+    await page.goto(appPath('/household/19'));
     await expect(
       page.getByRole('heading', { name: 'Household Member' })
     ).toBeVisible();
@@ -195,7 +198,9 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
       await expect(page.getByText('Over Quota', { exact: true })).toBeVisible();
       await expect(page.getByText('Movie · 4K', { exact: true })).toBeVisible();
       await page.getByRole('link', { name: 'Requested Film' }).click();
-      await expect(page).toHaveURL('./requests?requestedBy=19&requestId=3');
+      await expect(page).toHaveURL(
+        appPath('/requests?requestedBy=19&requestId=3')
+      );
       const history = page.getByRole('dialog', { name: 'Request history' });
       await expect(
         history.getByRole('link', { name: 'Open Title' })
@@ -207,7 +212,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
         history.getByText('Current status: Requested', { exact: true })
       ).toBeVisible();
       await history.getByRole('button', { name: 'Close', exact: true }).click();
-      await expect(page).toHaveURL('./requests?requestedBy=19');
+      await expect(page).toHaveURL(appPath('/requests?requestedBy=19'));
     } else {
       await expect(
         page.getByRole('link', { name: 'View Requests' })
@@ -255,9 +260,9 @@ test('incomplete household preview responses recover independently', async ({
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto('./me');
+  await page.goto(appPath('/me'));
   await page.getByRole('link', { name: 'Open My Profile' }).click();
-  await expect(page).toHaveURL('./household/me');
+  await expect(page).toHaveURL(appPath('/household/me'));
   await expect(
     page.getByRole('heading', { name: 'Household Member' })
   ).toBeVisible();
@@ -339,7 +344,7 @@ test('a local account can retry a picture upload without losing its current avat
         return route.fulfill({ json: { results: [] } });
     }
   });
-  await page.goto('./household/me');
+  await page.goto(appPath('/household/me'));
   const button = page.getByRole('button', { name: 'Change Profile Picture' });
   const picture = page.locator('.ph .avatar[aria-hidden="true"] img');
   async function selectPicture() {

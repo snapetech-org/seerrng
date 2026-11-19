@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) =>
+  `${mount}${path.startsWith('./') ? path.slice(1) : path}`;
+
 test('password and Episode Queue bookmarks scroll to the selected section after loading', async ({
   page,
 }) => {
@@ -35,13 +39,13 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
     ['./me/account/tv-requests#episode-queue', 'episode-queue'],
     ['./me/account#advanced-theme', 'advanced-theme'],
   ]) {
-    await page.goto(path);
+    await page.goto(appPath(path));
     await expect(page.locator(`section#${id}`)).toHaveAttribute(
       'data-bookmark-target',
       'true'
     );
   }
-  await page.goto('./me/account');
+  await page.goto(appPath('./me/account'));
   await expect(page.getByText('Jellyfin User', { exact: true })).toBeVisible();
   await expect(
     page.locator('dd').getByText('User', { exact: true })
@@ -99,7 +103,7 @@ test('account settings preserve failed profile edits and save only changes and p
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me');
+  await page.goto(appPath('./me'));
   await page.getByRole('link', { name: 'Open Account Settings' }).click();
   const displayName = page.getByLabel('Display Name');
   await expect(displayName).toHaveValue('Viewer');
@@ -180,7 +184,7 @@ test('watchlist preferences honor account type and category permissions and pers
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./me/account');
+  await page.goto(appPath('./me/account'));
   const music = page.getByRole('checkbox', { name: 'Auto-Request Music' });
   await expect(music).toBeChecked();
   await expect(page.getByLabel('Auto-Request Movies')).toHaveCount(0);
@@ -288,7 +292,7 @@ for (const scenario of [
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('./me/account');
+    await page.goto(appPath('./me/account'));
     for (const label of [
       'Auto-Request Movies',
       'Auto-Request Series',
@@ -346,7 +350,7 @@ test('account theme colors preserve stored overrides for other controls', async 
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account');
+  await page.goto(appPath('./me/account'));
   const background = page.getByLabel('Page Background');
   const save = page.getByRole('button', { name: 'Save Theme Colors' });
   await background.fill('invalid');
