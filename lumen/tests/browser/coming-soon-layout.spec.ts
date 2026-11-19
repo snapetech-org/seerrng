@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 const paged = (results: unknown[]) => ({
   page: 1,
   totalPages: 1,
@@ -23,9 +28,7 @@ async function fixtures(page: Page, permissions = 2) {
     route.fulfill({ json: { defaults: { requestOptions: false } } })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'test', permissions },
@@ -37,6 +40,10 @@ async function fixtures(page: Page, permissions = 2) {
           movie4kEnabled: false,
           series4kEnabled: false,
         },
+      });
+    if (path === '/lumen/configuration')
+      return route.fulfill({
+        json: { defaults: { requestOptions: false } },
       });
     if (path === '/request' && route.request().method() === 'POST') {
       requestBodies.push(route.request().postDataJSON() as RequestBody);
@@ -77,9 +84,11 @@ test('Coming Soon fits Request buttons in tablet landscape and preserves request
   test.skip(info.project.name !== 'tablet', 'tablet layout only');
   const requestBodies = await fixtures(page);
   const configLoaded = page.waitForResponse(
-    (response) => new URL(response.url()).pathname === '/lumen-config.json'
+    (response) =>
+      new URL(response.url()).pathname ===
+      (testMount ? '/api/v1/lumen/configuration' : '/lumen-config.json')
   );
-  await page.goto('/soon');
+  await page.goto(testAppPath('/soon'));
   await configLoaded;
   await expect(page.locator('.si')).toHaveCount(6);
   await expect(page.locator('.si .act button')).toHaveCount(6);
@@ -179,7 +188,7 @@ test('Coming Soon offers approval after a quota denial', async ({
         : { status: 403, json: { message: 'Movie Quota exceeded.' } }
     );
   });
-  await page.goto('/soon');
+  await page.goto(testAppPath('/soon'));
   const row = page.locator('.si').filter({ hasText: 'Upcoming Movie 1' });
   const request = row.getByRole('button', { name: 'Request', exact: true });
   await expect(request).toBeVisible();

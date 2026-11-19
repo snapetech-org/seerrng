@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 const paged = (results: unknown[]) => ({
   page: 1,
   totalPages: 1,
@@ -18,9 +23,7 @@ async function fixtures(page: Page, permissions = 2) {
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'test', permissions },
@@ -40,7 +43,7 @@ test('Coming soon titles wrap to two lines instead of cutting to a few letters',
 }, info) => {
   test.skip(info.project.name !== 'desktop', 'sets its own viewport');
   await fixtures(page);
-  await page.goto('/soon');
+  await page.goto(testAppPath('/soon'));
   await expect(page.locator('.si')).toHaveCount(6);
   for (const width of [1320, 1366, 1440, 1520, 1599]) {
     await page.setViewportSize({ width, height: 900 });
@@ -92,7 +95,7 @@ test('Coming Soon loads subsequent pages for the selected media only', async ({
       },
     });
   });
-  await page.goto('/soon?media=movie');
+  await page.goto(testAppPath('/soon?media=movie'));
   await expect(
     page.getByText('Upcoming movie 1', { exact: true })
   ).toBeVisible();
@@ -131,7 +134,7 @@ test('Coming Soon requests can confirm a permitted streaming override', async ({
       },
     });
   });
-  await page.goto('/soon?media=movie');
+  await page.goto(testAppPath('/soon?media=movie'));
   const title = 'Victorian Psychosis Stories 1';
   const item = page.locator('.si').filter({ hasText: title });
   const trigger = item.getByRole('button', { name: 'Request', exact: true });

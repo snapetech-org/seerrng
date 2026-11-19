@@ -1464,9 +1464,11 @@ provider history and matched visual comparisons remain open.
 
 Coming Soon can show both feeds, movies only, or series only. Both
 deployments preserve native upcoming movie and series bookmarks. A scoped
-entry requests only its selected feed. Bundled route tests, companion
-container checks, and twelve standalone browser checks across desktop,
-iPhone, Android and tablet passed. Matched visual and live provider
+entry requests only its selected feed. Bundled route tests and companion container checks passed. The Coming Soon
+title and layout suites now pass 14 cases with six expected viewport skips in
+both standalone and bundled deployments. They cover selected-feed paging,
+streaming and quota confirmations, title wrapping, tablet request-button fit,
+and overflow across the accepted widths. Matched native visual and live-provider
 comparisons remain open.
 
 ### Full video Trending grid
@@ -4057,7 +4059,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. The selected current-source set now totals 573 passing cases and 15
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. The selected current-source set now totals 587 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
