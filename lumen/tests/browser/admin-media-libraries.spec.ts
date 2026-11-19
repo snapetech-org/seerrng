@@ -1,5 +1,32 @@
 import { expect, test } from '@playwright/test';
 
+for (const permissions of [32, 16, 4]) {
+  test(`non-admin permission ${permissions} cannot load media server settings`, async ({
+    page,
+  }) => {
+    const protectedReads: string[] = [];
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const { pathname } = new URL(route.request().url());
+      if (/\/settings\/(plex|jellyfin|tautulli)/.test(pathname))
+        protectedReads.push(pathname);
+      return route.fulfill({
+        json: pathname.endsWith('/auth/me') ? { id: 1, permissions } : {},
+      });
+    });
+
+    await page.goto('/admin/media-libraries');
+    await expect(page).toHaveURL(/\/me$/);
+    expect(protectedReads).toEqual([]);
+    await expect(
+      page.getByRole('link', { name: 'Open Media Server Libraries' })
+    ).toHaveCount(0);
+  });
+}
+
 for (const [type, name, provider] of [
   [1, 'Plex', 'plex'],
   [2, 'Jellyfin', 'jellyfin'],
