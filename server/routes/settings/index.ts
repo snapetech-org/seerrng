@@ -103,6 +103,7 @@ import {
 } from '@server/utils/adminLoginNetworks';
 import { appDataPath } from '@server/utils/appDataVolume';
 import { getAppVersion } from '@server/utils/appVersion';
+import AsyncLock from '@server/utils/asyncLock';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { dnsCache } from '@server/utils/dnsCache';
 import { getHostname } from '@server/utils/getHostname';
@@ -133,7 +134,7 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import fs from 'fs';
 import { escapeRegExp, merge, omit, set, sortBy } from 'lodash';
-import { rescheduleJob } from 'node-schedule';
+import { rescheduleJob, scheduleJob } from 'node-schedule';
 import path from 'path';
 import semver from 'semver';
 import { URL } from 'url';
@@ -3073,6 +3074,8 @@ settingsRoutes.post<{ jobId: JobId }>(
   )
 );
 
+const scheduledJobSettingsLock = new AsyncLock();
+
 settingsRoutes.post<{ jobId: JobId }>(
   '/jobs/:jobId/schedule',
   authorizedMutation<{ jobId: JobId }>(
@@ -3096,38 +3099,54 @@ settingsRoutes.post<{ jobId: JobId }>(
       }
 
       const schedule = (req.body as { schedule: string }).schedule.trim();
-      const previousSchedule = scheduledJob.cronSchedule;
-      const result = rescheduleJob(scheduledJob.job, schedule);
-      const settings = getSettings();
+      return scheduledJobSettingsLock.dispatch(scheduledJob.id, async () => {
+        const previousSchedule = scheduledJob.cronSchedule;
+        const settings = getSettings();
+        const enabled = settings.jobs[scheduledJob.id]?.enabled !== false;
+        // Validate disabled schedules without registering the real job.
+        const validationJob = enabled
+          ? undefined
+          : scheduleJob(schedule, () => undefined);
+        const result = enabled
+          ? rescheduleJob(scheduledJob.job, schedule)
+          : Boolean(validationJob);
+        validationJob?.cancel();
 
-      if (result) {
-        try {
-          await settings.persistSection('jobs', (current) => ({
-            ...current,
-            [scheduledJob.id]: {
-              ...current[scheduledJob.id],
-              schedule,
-            },
-          }));
-        } catch (error) {
-          if (!rescheduleJob(scheduledJob.job, previousSchedule)) {
-            logger.error('Failed to restore job schedule after save failure', {
-              label: 'Jobs',
-              jobId: scheduledJob.id,
-              previousSchedule,
-            });
+        if (result) {
+          try {
+            await settings.persistSection('jobs', (current) => ({
+              ...current,
+              [scheduledJob.id]: {
+                ...current[scheduledJob.id],
+                schedule,
+              },
+            }));
+          } catch (error) {
+            if (enabled && !rescheduleJob(scheduledJob.job, previousSchedule)) {
+              logger.error(
+                'Failed to restore job schedule after save failure',
+                {
+                  label: 'Jobs',
+                  jobId: scheduledJob.id,
+                  previousSchedule,
+                }
+              );
+            }
+            throw error;
           }
-          throw error;
+
+          scheduledJob.cronSchedule = schedule;
+          if (getSettings().jobs[scheduledJob.id]?.enabled === false) {
+            scheduledJob.job.cancel();
+          }
+
+          return res
+            .status(200)
+            .json(await getScheduledJobResponseWithLease(scheduledJob));
+        } else {
+          return next({ status: 400, message: 'Invalid job schedule.' });
         }
-
-        scheduledJob.cronSchedule = schedule;
-
-        return res
-          .status(200)
-          .json(await getScheduledJobResponseWithLease(scheduledJob));
-      } else {
-        return next({ status: 400, message: 'Invalid job schedule.' });
-      }
+      });
     }
   )
 );
@@ -3152,22 +3171,27 @@ settingsRoutes.post<{ jobId: JobId }>(
       return next({ status: 400, message: 'Invalid job enabled setting.' });
     }
 
-    const settings = getSettings();
-    settings.jobs[scheduledJob.id].enabled = enabled.value;
-    await settings.save();
+    return scheduledJobSettingsLock.dispatch(scheduledJob.id, async () => {
+      const settings = getSettings();
+      settings.jobs[scheduledJob.id].enabled = enabled.value;
+      await settings.save();
 
-    if (enabled.value) {
-      const result = rescheduleJob(scheduledJob.job, scheduledJob.cronSchedule);
-      if (!result) {
-        return next({ status: 400, message: 'Invalid job schedule.' });
+      if (enabled.value) {
+        const result = rescheduleJob(
+          scheduledJob.job,
+          scheduledJob.cronSchedule
+        );
+        if (!result) {
+          return next({ status: 400, message: 'Invalid job schedule.' });
+        }
+      } else {
+        scheduledJob.job.cancel();
       }
-    } else {
-      scheduledJob.job.cancel();
-    }
 
-    return res
-      .status(200)
-      .json(await getScheduledJobResponseWithLease(scheduledJob));
+      return res
+        .status(200)
+        .json(await getScheduledJobResponseWithLease(scheduledJob));
+    });
   }
 );
 

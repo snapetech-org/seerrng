@@ -3382,6 +3382,43 @@ describe('Settings route input validation', () => {
     assert.strictEqual(getSettings().jobs['download-recovery'].enabled, false);
   });
 
+  it('edits a disabled schedule without scheduling the job', async () => {
+    const settings = getSettings();
+    const previous = settings.jobs['radarr-scan'];
+    const schedule = '0 30 4 * * *';
+    const job = scheduleJob(previous.schedule, () => undefined);
+    assert.ok(job);
+    job.cancel();
+    settings.jobs['radarr-scan'] = { ...previous, enabled: false };
+    scheduledJobs.push({
+      id: 'radarr-scan',
+      name: 'Radarr Scan',
+      type: 'process',
+      interval: 'hours',
+      cronSchedule: previous.schedule,
+      job,
+    });
+    try {
+      const response = await request(app)
+        .post('/settings/jobs/radarr-scan/schedule')
+        .send({ schedule });
+      assert.equal(response.status, 200);
+      assert.equal(response.body.enabled, false);
+      assert.equal(response.body.nextExecutionTime, null);
+      assert.equal(settings.jobs['radarr-scan'].schedule, schedule);
+
+      const enabled = await request(app)
+        .post('/settings/jobs/radarr-scan/enabled')
+        .send({ enabled: true });
+      assert.equal(enabled.status, 200);
+      assert.equal(enabled.body.cronSchedule, schedule);
+      assert.ok(job.nextInvocation());
+    } finally {
+      job.cancel();
+      settings.jobs['radarr-scan'] = previous;
+    }
+  });
+
   it('rejects oversized cache IDs before lookup', async () => {
     const res = await request(app).post(
       `/settings/cache/${'x'.repeat(129)}/flush`
