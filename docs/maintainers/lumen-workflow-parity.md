@@ -32,6 +32,13 @@ requests for disabled catalogs, on desktop, iPhone, Android and tablet.
 Per-category provider, filter, pagination, saved-settings,
 live-provider and native-matched visual acceptance remain open.
 
+The six optional catalog entries (Music, Comics/Manga, Magazines, Games,
+Sports and Adult) also remain reachable from the desktop sidebar and narrow
+Discover chips when both the global and per-user categories are enabled and
+their providers answer. Four browser cases verify exact destinations and no
+horizontal overflow at desktop, iPhone, Android and tablet widths. Live
+provider content and native-matched visuals remain open.
+
 ## Delivery and verification
 
 1. Start with household library workflows. Add the feed and saved-item screens
@@ -4076,7 +4083,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across books, comics and magazines. The selected current-source set now totals 703 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. The selected current-source set now totals 707 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
