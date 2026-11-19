@@ -3928,22 +3928,25 @@ Request Override Rules is reachable from Administration and its System
 Services category. Bundled desktop and iPhone checks loaded a real isolated
 Lidarr rule and displayed its service name, genre and root folder. The same
 viewports confirmed a standard user was redirected and the API returned
-403. Existing rules can be inspected. Creation, editing and deletion,
-empty and error browser states, and companion verification remain open.
+403. Existing rules can be inspected. Creation, editing, deletion, empty and
+error browser states still need a complete matched visual review; mutation
+coverage through the companion is recorded below.
 
 Bundled desktop and iPhone checks created, edited, reloaded, and deleted a
 Lidarr request override rule through the real authenticated API and isolated
 database. The original rule stayed present. The editor exposes the existing
-service-specific condition and destination fields. Operator-friendly lookup
-selectors, coverage for the other service types, and companion mutation
-verification remain open.
+service-specific condition and destination fields. The editor now resolves
+condition values by name and covers all four provider types supported by the
+native override-rule schema: Radarr, Sonarr, Lidarr, and Bookshelf/Readarr.
+Other provider types are outside native behavior. Matched visual review remains
+open.
 
 The rule editor loads destination choices from the selected service and offers
 named quality profiles, legacy Sonarr language profiles, root folders and
 tags. Bundled desktop and iPhone checks supplied isolated Lidarr destination
 responses, chose the named options, saved through the real override API,
-and verified the same profile and tag on edit after reloading. Other
-providers, named condition selectors, and companion verification remain open.
+and verified the same profile and tag on edit after reloading. Live provider
+responses and matched native visual comparison remain open.
 
 The override rule editor now resolves users, video genres, languages,
 production countries and video keywords by name. Bundled desktop and iPhone
