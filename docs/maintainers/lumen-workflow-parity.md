@@ -4053,6 +4053,13 @@ cases per deployment. These fixture-backed runs qualify the bundled asset and
 mount behavior; they do not replace live-provider checks or native visual
 comparison.
 
+Administration, compact-height navigation, and wide-display geometry added
+45 passing cases and 15 expected skips per deployment. These checks cover
+administrator entry and denial, mobile tab clearance, and Discover widths up
+to 3840px. The selected current-source set now totals 521 passing cases and 15
+expected skips per deployment; native visual comparison and live effects remain
+open.
+
 The complete standalone Lumen browser suite passed at `11faf2052`: 2,892
 passed, 108 configured skips, and 0 failures across 3,000 desktop, iPhone,
 Android, and tablet cases. The run found two stale Watchlist test labels and

@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 // Wide monitors: the page should grow with the window instead of stopping at
 // 1320px, and posters should grow with it so rows stay full.
 const movies = Array.from({ length: 24 }, (_, i) => ({
@@ -30,9 +35,7 @@ async function fixtures(page: Page) {
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', async (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     let body: unknown = {};
     if (path === '/auth/me')
       body = { id: 1, displayName: 'owner', permissions: 2 };
@@ -69,7 +72,7 @@ for (const size of sizes)
     test.skip(info.project.name !== 'desktop', 'desktop layout only');
     await page.setViewportSize({ width: size.width, height: size.height });
     await fixtures(page);
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     await expect(
       page.getByRole('heading', { name: 'Discover', exact: true })
     ).toBeVisible();

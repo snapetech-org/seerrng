@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 // A short, narrow screen (360x288) is landscape by shape, but there is no room to give a third of
 // its width to a side rail: it keeps the bottom tab bar and its pages must not scroll sideways.
 async function fixture(page: Page) {
@@ -7,7 +12,7 @@ async function fixture(page: Page) {
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/api/v1/**', (r) => {
     const url = new URL(r.request().url());
-    const path = url.pathname.slice(7);
+    const path = testApiPath(url.href);
     if (path === '/auth/me')
       return r.fulfill({
         json: { id: 1, displayName: 'reader', permissions: 2 },
@@ -65,7 +70,7 @@ test('a short narrow screen keeps the bottom tab bar and never scrolls sideways'
   await fixture(page);
   await page.setViewportSize({ width: 360, height: 288 });
   for (const path of ['/requests?tab=all', '/soon', '/me/lumen']) {
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     await expect(page.locator('.view')).toBeVisible();
     await page.waitForTimeout(400);
     const m = await page.evaluate(() => {
@@ -87,7 +92,7 @@ test('a short narrow screen keeps the bottom tab bar and never scrolls sideways'
   }
   // a wide short phone still gets the side rail
   await page.setViewportSize({ width: 740, height: 360 });
-  await page.goto('/soon');
+  await page.goto(testAppPath('/soon'));
   const rail = await page.locator('.tabbar').boundingBox();
   expect(rail!.height).toBeGreaterThan(rail!.width);
 });

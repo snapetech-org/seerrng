@@ -1,12 +1,17 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 async function session(page: Page, permissions: unknown, configured?: string) {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: { seerrPublicUrl: configured } })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = testApiPath(route.request().url());
     const json =
       path === '/auth/me'
         ? { id: 1, displayName: 'Household', permissions }
@@ -35,12 +40,12 @@ test('administration is visible in navigation and at the start of You', async ({
   page,
 }, info) => {
   await session(page, 2);
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(
     page.getByRole('heading', { name: 'Administration', exact: true })
   ).toBeVisible();
   await page.screenshot({ path: info.outputPath('you.png') });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   const nav = page.getByRole('navigation', { name: 'Main', exact: true });
   const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
   await page.screenshot({ path: info.outputPath('discover.png') });
@@ -69,7 +74,7 @@ test('administration is visible in navigation and at the start of You', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Open System Caches' })
-  ).toHaveAttribute('href', '/admin/caches');
+  ).toHaveAttribute('href', testAppPath('/admin/caches'));
   await page.screenshot({ path: info.outputPath('administration.png') });
   await page
     .getByRole('link', { name: 'Open Lumen Settings', exact: true })
@@ -90,7 +95,7 @@ for (const permissions of [32, 4, '2', [2], -2, 2.5]) {
     page,
   }) => {
     await session(page, permissions);
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await expect(
       page.getByRole('heading', { name: 'You', exact: true })
     ).toBeVisible();
@@ -104,9 +109,9 @@ for (const permissions of [32, 4, '2', [2], -2, 2.5]) {
       page.getByRole('heading', { name: 'Administration', exact: true })
     ).toHaveCount(0);
     await expect(page.getByText('Full SeerrNG', { exact: true })).toBeVisible();
-    await page.goto('/admin');
+    await page.goto(testAppPath('/admin'));
     await expect(page).toHaveURL(/\/me$/);
-    await page.goto('/me/lumen');
+    await page.goto(testAppPath('/me/lumen'));
     await expect(page.getByText('Admins only', { exact: true })).toBeVisible();
   });
 }
@@ -115,7 +120,7 @@ test('configured companion destination is retained with the classic interface es
   page,
 }) => {
   await session(page, 2, 'https://seerr.example.test/base/?keep=1');
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   const link = page.getByRole('link', {
     name: 'Open Full SeerrNG',
     exact: true,
@@ -158,7 +163,7 @@ test('About opens release history on demand and retries a failed lookup', async 
             ],
           })
   );
-  await page.goto('./admin/about');
+  await page.goto(testAppPath('/admin/about'));
   const open = page.getByRole('button', { name: 'Show Releases' });
   await expect(open).toBeVisible();
   expect(lookups).toBe(0);
@@ -226,7 +231,7 @@ test('About links a development update to the installed commit comparison', asyn
       },
     })
   );
-  await page.goto('./admin/about');
+  await page.goto(testAppPath('/admin/about'));
   await expect(
     page.getByRole('link', { name: 'Update available' })
   ).toHaveAttribute(
