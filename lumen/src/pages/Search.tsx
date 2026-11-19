@@ -366,7 +366,11 @@ function SearchResults({
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
-        wantsTitles ? api<Paged<SearchResult>>(titlePath).catch(failure) : null,
+        wantsTitles
+          ? api<Paged<SearchResult> & { partial?: boolean }>(titlePath).catch(
+              failure
+            )
+          : null,
         ...formats.map((fmt) =>
           wantBooks
             ? cachedApi<Paged<BookResult>>(
@@ -439,7 +443,10 @@ function SearchResults({
       setTitles(foundTitles);
       setBooks(foundBooks);
       setComics(foundComics);
-      setSearchError(error);
+      setSearchError(
+        error ??
+          (tr?.partial ? 'A search provider did not respond. Try again.' : null)
+      );
       setSearching(false);
     }, 300);
     return () => {

@@ -3033,9 +3033,12 @@ lengths, Back navigation, and the existing scoped pagination.
 When one catalog request fails, All Search keeps successful results
 visible and offers retry. Desktop and iPhone fixtures across both
 deployments recovered from an ebook catalog 503 while retaining the
-movie result. This check covers failures reported by a catalog
-endpoint. Partial failures within an otherwise successful federated
-response and matched visual review remain open.
+movie result. The combined search API now marks successful responses
+as partial when a provider fails or times out. Lumen uses the same
+Retry action for this response. The server fixture retained collection
+results during a video provider failure. Desktop and iPhone fixtures
+tested retry after a partial response in both deployments. Matched
+visual review remains open.
 
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched

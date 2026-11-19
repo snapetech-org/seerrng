@@ -245,6 +245,7 @@ describe('GET /search', () => {
         });
       }
       let collectionCalls = 0;
+      let videoUnavailable = false;
       mockPrivate(ExternalAPI.prototype, 'get', async (endpoint) => {
         if (endpoint === '/search/collection') {
           collectionCalls++;
@@ -259,6 +260,7 @@ describe('GET /search', () => {
           };
         }
         if (endpoint === '/search/multi') {
+          if (videoUnavailable) throw new Error('Video provider unavailable');
           return { page: 1, total_pages: 1, total_results: 0, results: [] };
         }
         throw new Error(`Unexpected endpoint: ${String(endpoint)}`);
@@ -274,6 +276,13 @@ describe('GET /search', () => {
         })),
         restricted ? [] : [{ id: 9001, mediaType: 'collection' }]
       );
+      if (!restricted) {
+        videoUnavailable = true;
+        const partial = await agent.get('/search').query({ query: 'recovery' });
+        assert.equal(partial.status, 200);
+        assert.equal(partial.body.partial, true);
+        assert.equal(partial.body.results[0]?.mediaType, 'collection');
+      }
     });
   }
 

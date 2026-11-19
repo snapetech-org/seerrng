@@ -781,6 +781,7 @@ interface SearchOptions {
   page?: number;
   includeAdult?: boolean;
   language?: string;
+  throwOnError?: boolean;
 }
 
 interface SingleSearchOptions extends SearchOptions {
@@ -983,6 +984,7 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
     page = 1,
     includeAdult = this.includeAdult,
     language = this.locale,
+    throwOnError = false,
   }: SearchOptions): Promise<TmdbSearchMultiResponse> => {
     try {
       const data = await this.get<TmdbSearchMultiResponse>('/search/multi', {
@@ -1025,7 +1027,8 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
         normalizedData,
         page
       );
-    } catch {
+    } catch (error) {
+      if (throwOnError) throw error;
       return {
         page: 1,
         results: [],
@@ -1095,6 +1098,7 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
     page = 1,
     includeAdult = this.includeAdult,
     language = this.locale,
+    throwOnError = false,
     year,
   }: SingleSearchOptions): Promise<TmdbSearchMovieResponse> => {
     try {
@@ -1109,7 +1113,8 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
       });
 
       return sanitizeTmdbPagedResponse<TmdbSearchMovieResponse>(data, page);
-    } catch {
+    } catch (error) {
+      if (throwOnError) throw error;
       return {
         page: 1,
         results: [],
@@ -1124,6 +1129,7 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
     page = 1,
     includeAdult = this.includeAdult,
     language = this.locale,
+    throwOnError = false,
     year,
   }: SingleSearchOptions): Promise<TmdbSearchTvResponse> => {
     try {
@@ -1138,7 +1144,8 @@ class TheMovieDb extends ExternalAPI implements TvShowProvider {
       });
 
       return sanitizeTmdbPagedResponse<TmdbSearchTvResponse>(data, page);
-    } catch {
+    } catch (error) {
+      if (throwOnError) throw error;
       return {
         page: 1,
         results: [],

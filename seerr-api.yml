@@ -18800,6 +18800,9 @@ paths:
                   totalResults:
                     type: number
                     example: 200
+                  partial:
+                    type: boolean
+                    description: One or more search providers failed or timed out.
                   results:
                     type: array
                     items:

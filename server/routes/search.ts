@@ -337,6 +337,7 @@ searchRoutes.get('/', async (req, res, next) => {
   const queryString = parsedQuery.value;
   let typeSpecificTotalResults: number | undefined;
   let typeSpecificTotalPages: number | undefined;
+  let partial = false;
   const page = parsePositiveInt(req.query.page, 1, 500);
   const parsedLanguage = parseOptionalLanguage(req.query.language);
   if ('error' in parsedLanguage) {
@@ -540,7 +541,12 @@ searchRoutes.get('/', async (req, res, next) => {
         shouldSearchVideo
           ? typeFilter === 'movie'
             ? tmdb
-                .searchMovies({ query: queryString, page, language })
+                .searchMovies({
+                  query: queryString,
+                  page,
+                  language,
+                  throwOnError: true,
+                })
                 .then((response) => ({
                   ...response,
                   results: response.results.map((result) => ({
@@ -550,7 +556,12 @@ searchRoutes.get('/', async (req, res, next) => {
                 }))
             : typeFilter === 'tv'
               ? tmdb
-                  .searchTvShows({ query: queryString, page, language })
+                  .searchTvShows({
+                    query: queryString,
+                    page,
+                    language,
+                    throwOnError: true,
+                  })
                   .then((response) => ({
                     ...response,
                     results: response.results.map((result) => ({
@@ -558,7 +569,12 @@ searchRoutes.get('/', async (req, res, next) => {
                       media_type: 'tv' as const,
                     })),
                   }))
-              : tmdb.searchMulti({ query: queryString, page, language })
+              : tmdb.searchMulti({
+                  query: queryString,
+                  page,
+                  language,
+                  throwOnError: true,
+                })
           : Promise.resolve({
               page,
               results: [],
@@ -740,6 +756,7 @@ searchRoutes.get('/', async (req, res, next) => {
           : [];
       });
       if (failedProviders.length > 0) {
+        partial = true;
         logger.warn('One or more global search providers failed', {
           label: 'API',
           failedProviders,
@@ -1441,6 +1458,7 @@ searchRoutes.get('/', async (req, res, next) => {
           ? filteredResults.length
           : results.total_results),
       results: filteredResults,
+      ...(partial && { partial: true }),
     });
   } catch (e) {
     logger.debug('Something went wrong retrieving search results', {

@@ -8102,8 +8102,14 @@ test('All search keeps successful results and retries a failed book catalog', as
 }) => {
   await fixtures(page);
   let bookCatalogUnavailable = true;
+  let videoPartial = false;
   await page.route('**/api/v1/search?**', (route) =>
-    route.fulfill({ json: paged([{ ...movie, title: 'Available Film' }]) })
+    route.fulfill({
+      json: {
+        ...paged([{ ...movie, title: 'Available Film' }]),
+        partial: videoPartial,
+      },
+    })
   );
   await page.route('**/api/v1/discover/books?**', (route) => {
     const audio =
@@ -8130,6 +8136,14 @@ test('All search keeps successful results and retries a failed book catalog', as
     page.getByRole('link', { name: 'Recovered Book' })
   ).toBeVisible();
   await expect(warning).toHaveCount(0);
+  videoPartial = true;
+  await page.goto('./search?q=Other');
+  await expect(film).toBeVisible();
+  await expect(warning).toContainText('A search provider did not respond.');
+  videoPartial = false;
+  await warning.getByRole('button', { name: 'Retry' }).click();
+  await expect(warning).toHaveCount(0);
+  await expect(film).toBeVisible();
 });
 
 test('scoped book and comic searches retain their catalogue page in the URL', async ({
