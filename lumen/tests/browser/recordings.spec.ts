@@ -37,6 +37,16 @@ async function fixture(
       return route.fulfill({
         json: { configured, canRequest: true, guideReady: configured },
       });
+    if (path === '/live-tv/sports/teams')
+      return route.fulfill({
+        json: {
+          configured: true,
+          enabled: true,
+          teams: [{ dataset: 'nfl', team: 'Buffalo Bills', league: 'NFL' }],
+        },
+      });
+    if (path === '/live-tv/sports/follows')
+      return route.fulfill({ json: { results: [] } });
     if (path === '/live-tv/recordings') {
       reads.push(url.searchParams.get('scope') ?? '');
       const all = url.searchParams.get('filter') === 'all';
@@ -60,18 +70,65 @@ async function fixture(
   return { writes, reads };
 }
 
-for (const { locale, label, direction } of [
-  { locale: 'en', label: 'Recordings', direction: 'ltr' },
-  { locale: 'fr', label: 'Enregistrements', direction: 'ltr' },
-  { locale: 'ar', label: 'التسجيلات', direction: 'rtl' },
+for (const {
+  locale,
+  label,
+  teamsHeading,
+  teamLabel,
+  chooseTeam,
+  direction,
+} of [
+  {
+    locale: 'en',
+    label: 'Recordings',
+    teamsHeading: 'Followed Teams',
+    teamLabel: 'Team',
+    chooseTeam: 'Choose a team',
+    direction: 'ltr',
+  },
+  {
+    locale: 'fr',
+    label: 'Enregistrements',
+    teamsHeading: 'Équipes suivies',
+    teamLabel: 'Équipe',
+    chooseTeam: 'Choisir une équipe',
+    direction: 'ltr',
+  },
+  {
+    locale: 'ar',
+    label: 'التسجيلات',
+    teamsHeading: 'الفرق التي تتابعها',
+    teamLabel: 'الفريق',
+    chooseTeam: 'اختر الفريق',
+    direction: 'rtl',
+  },
 ]) {
-  test(`the configured Recordings menu uses the saved ${locale} locale`, async ({
+  test(`the Recordings page uses the saved ${locale} locale`, async ({
     page,
   }, info) => {
     test.skip(info.project.name !== 'desktop');
     await fixture(page, 2, true, locale);
     await page.goto('/recordings');
     await expect(page.getByText('Fixture Airing')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: label, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: teamsHeading, exact: true })
+    ).toBeVisible();
+    await expect(page.getByRole('combobox', { name: teamLabel })).toContainText(
+      chooseTeam
+    );
+    await expect(
+      page.getByText(
+        locale === 'en'
+          ? 'Pending Approval'
+          : locale === 'fr'
+            ? 'En attente d’approbation'
+            : 'انتظار الموافقة',
+        { exact: true }
+      )
+    ).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.locator('html')).toHaveAttribute('dir', direction);
     await expect(
@@ -84,7 +141,8 @@ for (const { locale, label, direction } of [
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
     await page.screenshot({
-      path: info.outputPath(`recordings-menu-${locale}.png`),
+      path: info.outputPath(`recordings-page-${locale}.png`),
+      fullPage: true,
     });
   });
 }
@@ -138,7 +196,7 @@ test('a member can cancel their own request and see it in history', async ({
   await page
     .getByRole('combobox', { name: 'Status Filter' })
     .selectOption('all');
-  await expect(page.getByText('Canceled', { exact: true })).toBeVisible();
+  await expect(page.getByText('Cancelled', { exact: true })).toBeVisible();
   expect(writes).toEqual(['DELETE /live-tv/recordings/17']);
   expect([...new Set(reads)]).toEqual(['mine']);
 });
@@ -150,7 +208,7 @@ test('unconfigured recordings show a setup state without fetching the list', asy
   await page.goto('/recordings');
   await expect(
     page.getByText(
-      'Live TV recordings are unavailable until Tunerr is configured.'
+      'Live TV recording is not set up. An administrator can connect IPTV Tunerr in Settings → Services.'
     )
   ).toBeVisible();
   expect(reads).toEqual([]);

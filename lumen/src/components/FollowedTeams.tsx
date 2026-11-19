@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 
@@ -19,6 +20,7 @@ const identity = (team: Team) =>
   JSON.stringify([team.dataset, team.team.toLowerCase()]);
 
 export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
+  const { t } = useLumenLocale();
   const teams = useApi<{
     configured: boolean;
     enabled?: boolean;
@@ -64,7 +66,15 @@ export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
       }
       follows.reload();
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not update the team follow.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.recordings.followUpdateFailed',
+            'Could not update the team follow.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -72,23 +82,32 @@ export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
   }
 
   return (
-    <Section title="Followed Teams">
+    <Section
+      title={t('components.LiveTv.FollowedTeams.title', 'Followed Teams')}
+    >
       <p className="note">
-        SeerrNG requests recordings when Tunerr matches upcoming games. Your
-        usual recording approval rules apply.
+        {t(
+          'components.LiveTv.FollowedTeams.description',
+          'SeerrNG requests recordings when Tunerr matches upcoming games. Your usual recording approval rules apply.'
+        )}
       </p>
       <ServiceNote
-        what="followed teams"
+        what={t('components.LiveTv.FollowedTeams.title', 'followed teams')}
         error={follows.error}
         retry={follows.reload}
       />
       {!follows.data && !follows.error && (
         <p className="note" role="status">
-          Loading followed teams…
+          {t('lumen.recordings.loadingTeams', 'Loading followed teams…')}
         </p>
       )}
       {follows.data && !current.length && (
-        <p className="note">You are following no teams.</p>
+        <p className="note">
+          {t(
+            'components.LiveTv.FollowedTeams.none',
+            'You are following no teams.'
+          )}
+        </p>
       )}
       {!!current.length && (
         <div className="setlist">
@@ -102,23 +121,31 @@ export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
                 className="btn btn-tonal btn-sm"
                 type="button"
                 disabled={busy}
-                aria-label={`Unfollow ${follow.team}`}
+                aria-label={t(
+                  'components.LiveTv.FollowedTeams.unfollow',
+                  'Unfollow {team}',
+                  { team: follow.team }
+                )}
                 onClick={() => void update(follow)}
               >
-                Unfollow
+                {t(
+                  'components.LiveTv.FollowedTeams.unfollow',
+                  'Unfollow {team}',
+                  { team: follow.team }
+                )}
               </button>
             </div>
           ))}
         </div>
       )}
       <ServiceNote
-        what="team schedules"
+        what={t('lumen.recordings.teamSchedules', 'team schedules')}
         error={teams.error}
         retry={teams.reload}
       />
       {!teams.data && !teams.error && (
         <p className="note" role="status">
-          Loading team schedules…
+          {t('lumen.recordings.loadingSchedules', 'Loading team schedules…')}
         </p>
       )}
       {teams.data &&
@@ -127,13 +154,17 @@ export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
         teams.data.teams.length ? (
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Team</span>
+              <span className="lbl">
+                {t('components.LiveTv.FollowedTeams.team', 'Team')}
+              </span>
               <select
                 value={target ? selected : ''}
                 disabled={busy || !canFollow || !available.length}
                 onChange={(event) => setSelected(event.target.value)}
               >
-                <option value="">Choose a Team</option>
+                <option value="">
+                  {t('components.LiveTv.FollowedTeams.choose', 'Choose a Team')}
+                </option>
                 {available.map((team) => (
                   <option key={identity(team)} value={identity(team)}>
                     {team.team} ({(team.league || team.dataset).toUpperCase()})
@@ -147,17 +178,24 @@ export default function FollowedTeams({ canRequest }: { canRequest: boolean }) {
               disabled={busy || !canFollow || !target}
               onClick={() => void update()}
             >
-              Follow Team
+              {t('components.LiveTv.FollowedTeams.follow', 'Follow')}
             </button>
           </div>
         ) : (
           <p className="note">
-            Team schedules are unavailable. An administrator can enable sports
-            automation in Tunerr.
+            {t(
+              'components.LiveTv.FollowedTeams.unavailable',
+              'Team schedules are unavailable. An administrator can enable sports automation in Tunerr.'
+            )}
           </p>
         ))}
       {current.length >= limit && (
-        <p className="note">You can follow up to 20 teams.</p>
+        <p className="note">
+          {t(
+            'lumen.recordings.maxFollowedTeams',
+            'You can follow up to 20 teams.'
+          )}
+        </p>
       )}
       {error && (
         <p className="note" role="alert">

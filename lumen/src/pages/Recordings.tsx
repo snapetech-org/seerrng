@@ -12,6 +12,7 @@ import { ServiceNote } from '../components/extra';
 import FollowedTeams from '../components/FollowedTeams';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { useLiveTvStatus } from '../liveTv';
 
 const statuses = {
@@ -23,8 +24,22 @@ const statuses = {
   declined: 'Declined',
   cancelled: 'Canceled',
 } as const;
+const statusMessages: Record<keyof typeof statuses, string> = {
+  pending: 'components.LiveTv.RecordingList.statusPending',
+  scheduled: 'components.LiveTv.RecordingList.statusScheduled',
+  recording: 'components.LiveTv.RecordingList.statusRecording',
+  completed: 'components.LiveTv.RecordingList.statusCompleted',
+  failed: 'components.LiveTv.RecordingList.statusFailed',
+  declined: 'components.LiveTv.RecordingList.statusDeclined',
+  cancelled: 'components.LiveTv.RecordingList.statusCancelled',
+};
 type Action = 'approve' | 'decline' | 'cancel';
-const labels: Record<Action, string> = {
+const actionMessages: Record<Action, string> = {
+  approve: 'components.LiveTv.RecordingList.approve',
+  decline: 'components.LiveTv.RecordingList.decline',
+  cancel: 'components.LiveTv.RecordingList.cancel',
+};
+const actionFallbacks: Record<Action, string> = {
   approve: 'Approve',
   decline: 'Decline',
   cancel: 'Cancel Recording',
@@ -49,12 +64,15 @@ interface Recording {
   requestedBy?: { id: number; displayName: string };
 }
 
-const dateLabel = (raw?: string) => {
+const dateLabel = (raw: string | undefined, locale: string) => {
   const date = raw ? new Date(raw) : undefined;
-  return date && Number.isFinite(date.getTime()) ? date.toLocaleString() : '';
+  return date && Number.isFinite(date.getTime())
+    ? date.toLocaleString(locale)
+    : '';
 };
 
 export default function Recordings() {
+  const { locale, t } = useLumenLocale();
   const status = useLiveTvStatus();
   const { user } = useAuth();
   const manage = canManageRequests(user?.permissions);
@@ -95,10 +113,16 @@ export default function Recordings() {
     try {
       if (selected.action === 'cancel') await api(path, { method: 'DELETE' });
       else await api(`${path}/${selected.action}`, { method: 'POST' });
-      setNotice({ text: 'Recording updated.' });
+      setNotice({ text: t('lumen.recordings.updated', 'Recording updated.') });
     } catch (failure) {
       setNotice({
-        text: friendlyError(failure, 'Could not update the recording.'),
+        text: friendlyError(
+          failure,
+          t(
+            'components.LiveTv.RecordingList.actionFailed',
+            'The recording could not be updated.'
+          )
+        ),
         error: true,
       });
     } finally {
@@ -112,21 +136,24 @@ export default function Recordings() {
   return (
     <>
       <header className="ph">
-        <h1>Recordings</h1>
+        <h1>{t('components.LiveTv.RecordingList.title', 'Recordings')}</h1>
       </header>
       <ServiceNote
-        what="Live TV status"
+        what={t('lumen.recordings.liveTvStatus', 'Live TV status')}
         error={status.error}
         retry={status.reload}
       />
       {!status.data && !status.error && (
         <p className="note" role="status">
-          Checking Live TV…
+          {t('lumen.recordings.checking', 'Checking Live TV…')}
         </p>
       )}
       {status.data && !configured && (
         <p className="note">
-          Live TV recordings are unavailable until Tunerr is configured.
+          {t(
+            'components.LiveTv.RecordingList.notConfigured',
+            'Live TV recording is not set up. An administrator can connect IPTV Tunerr in Settings → Services.'
+          )}
         </p>
       )}
       {configured && (
@@ -135,7 +162,9 @@ export default function Recordings() {
           <div className="toolbar">
             {viewAll && (
               <label className="sel">
-                <span className="lbl">Scope</span>
+                <span className="lbl">
+                  {t('lumen.recordings.scope', 'Scope')}
+                </span>
                 <select
                   value={scope}
                   onChange={(event) => {
@@ -143,13 +172,19 @@ export default function Recordings() {
                     setScope(event.target.value);
                   }}
                 >
-                  <option value="mine">My Recordings</option>
-                  <option value="all">All Users</option>
+                  <option value="mine">
+                    {t('components.LiveTv.RecordingList.mine', 'My Recordings')}
+                  </option>
+                  <option value="all">
+                    {t('components.Requests.allUsers', 'All Users')}
+                  </option>
                 </select>
               </label>
             )}
             <label className="sel">
-              <span className="lbl">Status Filter</span>
+              <span className="lbl">
+                {t('lumen.recordings.statusFilter', 'Status Filter')}
+              </span>
               <select
                 value={filter}
                 onChange={(event) => {
@@ -157,8 +192,12 @@ export default function Recordings() {
                   setFilter(event.target.value);
                 }}
               >
-                <option value="active">Active</option>
-                <option value="all">All Statuses</option>
+                <option value="active">
+                  {t('lumen.recordings.active', 'Active')}
+                </option>
+                <option value="all">
+                  {t('lumen.recordings.allStatuses', 'All Statuses')}
+                </option>
               </select>
             </label>
             <button
@@ -166,7 +205,7 @@ export default function Recordings() {
               type="button"
               onClick={rows.reload}
             >
-              Refresh Recordings
+              {t('lumen.recordings.refresh', 'Refresh Recordings')}
             </button>
           </div>
           <ServiceNote
@@ -185,7 +224,12 @@ export default function Recordings() {
             </p>
           )}
           {rows.data?.results.length === 0 && (
-            <p className="note">No recordings match this view.</p>
+            <p className="note">
+              {t(
+                'lumen.recordings.emptyView',
+                'No recordings match this view.'
+              )}
+            </p>
           )}
           {!!rows.data?.results.length && (
             <div className="setlist">
@@ -223,8 +267,11 @@ export default function Recordings() {
                       <small>
                         {[
                           recording.kind === 'series'
-                            ? 'Series'
-                            : dateLabel(recording.startsAt),
+                            ? t(
+                                'components.Discover.DiscoverMediaTabs.series',
+                                'Series'
+                              )
+                            : dateLabel(recording.startsAt, locale),
                           recording.channelName || recording.channel,
                         ]
                           .filter(Boolean)
@@ -232,13 +279,23 @@ export default function Recordings() {
                       </small>
                       {recording.kind === 'series' && (
                         <small>
-                          {recording.completedCount} recorded ·{' '}
-                          {recording.failedCount} failed
+                          {t(
+                            'lumen.recordings.countSummary',
+                            '{completed} recorded · {failed} failed',
+                            {
+                              completed: recording.completedCount,
+                              failed: recording.failedCount,
+                            }
+                          )}
                         </small>
                       )}
                       {allUsers && recording.requestedBy && (
                         <small>
-                          Requested by {recording.requestedBy.displayName}
+                          {t(
+                            'components.LiveTv.RecordingList.requestedBy',
+                            'Requested By'
+                          )}{' '}
+                          {recording.requestedBy.displayName}
                         </small>
                       )}
                       {recording.lastError && (
@@ -253,14 +310,20 @@ export default function Recordings() {
                               type="button"
                               onClick={() => setSelected({ recording, action })}
                             >
-                              {labels[action]}
+                              {t(
+                                actionMessages[action],
+                                actionFallbacks[action]
+                              )}
                             </button>
                           ))}
                         </div>
                       )}
                     </div>
                     <Pill k="neutral">
-                      {statuses[recording.status] ?? recording.status}
+                      {t(
+                        statusMessages[recording.status],
+                        statuses[recording.status] ?? recording.status
+                      )}
                     </Pill>
                   </div>
                 );
@@ -275,7 +338,7 @@ export default function Recordings() {
                 disabled={!skip}
                 onClick={() => setSkip(Math.max(0, skip - take))}
               >
-                Previous
+                {t('i18n.previous', 'Previous')}
               </button>
               <button
                 className="btn btn-tonal btn-sm"
@@ -283,7 +346,7 @@ export default function Recordings() {
                 disabled={skip + take >= rows.data.pageInfo.total}
                 onClick={() => setSkip(skip + take)}
               >
-                Next
+                {t('i18n.next', 'Next')}
               </button>
             </div>
           )}
@@ -291,10 +354,16 @@ export default function Recordings() {
       )}
       {selected && (
         <ConfirmSheet
-          title={`${labels[selected.action]}?`}
+          title={`${t(
+            actionMessages[selected.action],
+            actionFallbacks[selected.action]
+          )}?`}
           body={selected.recording.title}
-          confirm={labels[selected.action]}
-          cancel="Keep Recording"
+          confirm={t(
+            actionMessages[selected.action],
+            actionFallbacks[selected.action]
+          )}
+          cancel={t('lumen.recordings.keep', 'Keep Recording')}
           busy={busy}
           onConfirm={() => void apply()}
           onClose={() => {

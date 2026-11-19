@@ -250,6 +250,39 @@ export const localeData = [
         'طلب هذه القاعدة لحسابك؟',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'ليس لديك أي حسابات خارجية مرتبطة بحسابك.',
+      'components.LiveTv.RecordingList.approve': 'وافِق',
+      'components.LiveTv.RecordingList.cancel': 'إلغاء التسجيل',
+      'components.LiveTv.RecordingList.decline': 'رفض',
+      'components.LiveTv.RecordingList.empty': 'لا سجلات بعد',
+      'components.LiveTv.RecordingList.loadError': 'تعذّر تحميل التسجيلات.',
+      'components.LiveTv.RecordingList.mine': 'تسجيلاتي',
+      'components.LiveTv.RecordingList.everyone': 'كل التسجيلات',
+      'components.LiveTv.RecordingList.notConfigured':
+        'لم يُعَدّ تسجيل البث التلفزيوني المباشر بعد. يمكن للمسؤول ربط IPTV Tunerr من الإعدادات → الخدمات.',
+      'components.LiveTv.RecordingList.requestedBy': 'تم الطلب من قبل',
+      'components.LiveTv.RecordingList.series': 'كل بث',
+      'components.LiveTv.RecordingList.statusCancelled': 'ألغيت',
+      'components.LiveTv.RecordingList.statusCompleted': 'المسجلة',
+      'components.LiveTv.RecordingList.statusDeclined': 'تم رفضه',
+      'components.LiveTv.RecordingList.statusFailed': 'فشل',
+      'components.LiveTv.RecordingList.statusPending': 'انتظار الموافقة',
+      'components.LiveTv.RecordingList.statusRecording': 'جارٍ التسجيل',
+      'components.LiveTv.RecordingList.statusScheduled': 'مجدول',
+      'components.LiveTv.FollowedTeams.choose': 'اختر الفريق',
+      'components.LiveTv.FollowedTeams.description':
+        'تطلب SeerrNG تسجيل كل مباراة قادمة لهذه الفرق عندما يعثر عليها Tunerr في دليل البرامج. وتخضع التسجيلات لقواعد الموافقة المعتادة.',
+      'components.LiveTv.FollowedTeams.failed': 'تعذّر تحديث الفريق.',
+      'components.LiveTv.FollowedTeams.follow': 'اتبع',
+      'components.LiveTv.FollowedTeams.none': 'أنت لا تتبع أي فرق.',
+      'components.LiveTv.FollowedTeams.team': 'الفريق',
+      'components.LiveTv.FollowedTeams.title': 'الفرق التي تتابعها',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'جداول الفرق غير متاحة. يمكن للمسؤول تفعيل أتمتة الرياضة في IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'ألغِ متابعة {team}',
+      'components.Requests.allUsers': 'جميع المستخدمين',
+      'components.Discover.DiscoverMediaTabs.series': 'مسلسلات',
+      'i18n.next': 'التالي',
+      'i18n.previous': 'السابق',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -850,6 +883,22 @@ export const localeData = [
       'lumen.soon.request': 'طلب',
       'lumen.soon.showMore': 'عرض المزيد من {media}',
       'lumen.soon.requested': 'مطلوب',
+      'lumen.recordings.scope': 'النطاق',
+      'lumen.recordings.statusFilter': 'تصفية الحالة',
+      'lumen.recordings.active': 'النشطة',
+      'lumen.recordings.allStatuses': 'كل الحالات',
+      'lumen.recordings.refresh': 'تحديث التسجيلات',
+      'lumen.recordings.emptyView': 'لا توجد تسجيلات تطابق هذا العرض.',
+      'lumen.recordings.checking': 'جارٍ التحقق من البث التلفزيوني المباشر…',
+      'lumen.recordings.liveTvStatus': 'حالة البث التلفزيوني المباشر',
+      'lumen.recordings.followUpdateFailed': 'تعذّر تحديث متابعة الفريق.',
+      'lumen.recordings.updated': 'تم تحديث التسجيل.',
+      'lumen.recordings.keep': 'الاحتفاظ بالتسجيل',
+      'lumen.recordings.countSummary': 'تم تسجيل {completed} · تعذّر {failed}',
+      'lumen.recordings.loadingTeams': 'جارٍ تحميل الفرق التي تتابعها…',
+      'lumen.recordings.loadingSchedules': 'جارٍ تحميل جداول الفرق…',
+      'lumen.recordings.teamSchedules': 'جداول الفرق',
+      'lumen.recordings.maxFollowedTeams': 'يمكنك متابعة 20 فريقًا كحد أقصى.',
     },
   },
   {
@@ -931,6 +980,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роля',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Нямате външни акаунти, свързани с вашия профил.',
+      'i18n.next': 'Напред',
+      'i18n.previous': 'Назад',
     },
   },
   {
@@ -996,6 +1047,8 @@ export const localeData = [
       'i18n.close': 'Tanca',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel·la',
+      'i18n.next': 'Endavant',
+      'i18n.previous': 'Endarrere',
     },
   },
   {
@@ -1077,6 +1130,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Nemáte žádné externí účty propojené s vaším účtem.',
+      'i18n.next': 'Další',
+      'i18n.previous': 'Předchozí',
     },
   },
   {
@@ -1157,6 +1212,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Annullér',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Du har ingen eksterne konti knyttet til din konto.',
+      'i18n.next': 'Næste',
+      'i18n.previous': 'Forrige',
     },
   },
   {
@@ -1416,6 +1473,42 @@ export const localeData = [
         'Diese Regel für Ihr Konto anfordern?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Es sind keine externen Konten mit deinem Account verknüpft.',
+      'components.LiveTv.RecordingList.approve': 'Genehmigen',
+      'components.LiveTv.RecordingList.cancel': 'Aufnahme abbrechen',
+      'components.LiveTv.RecordingList.decline': 'Ablehnen',
+      'components.LiveTv.RecordingList.empty': 'Noch keine Aufnahmen',
+      'components.LiveTv.RecordingList.loadError':
+        'Aufzeichnungen konnten nicht geladen werden.',
+      'components.LiveTv.RecordingList.mine': 'Meine Aufzeichnungen',
+      'components.LiveTv.RecordingList.everyone': 'Alle Aufzeichnungen',
+      'components.LiveTv.RecordingList.notConfigured':
+        'Live-TV-Aufnahmen sind nicht eingerichtet. Ein Administrator kann IPTV Tunerr unter Einstellungen → Dienste verbinden.',
+      'components.LiveTv.RecordingList.requestedBy': 'Angefragt von',
+      'components.LiveTv.RecordingList.series': 'Jede Ausstrahlung',
+      'components.LiveTv.RecordingList.statusCancelled': 'Storniert',
+      'components.LiveTv.RecordingList.statusCompleted': 'Aufgezeichnet',
+      'components.LiveTv.RecordingList.statusDeclined': 'Abgelehnt',
+      'components.LiveTv.RecordingList.statusFailed': 'Fehlgeschlagen',
+      'components.LiveTv.RecordingList.statusPending':
+        'Ausstehende Genehmigung',
+      'components.LiveTv.RecordingList.statusRecording': 'Aufnahme läuft',
+      'components.LiveTv.RecordingList.statusScheduled': 'Geplant',
+      'components.LiveTv.FollowedTeams.choose': 'Wählen Sie ein Team',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG fordert eine Aufzeichnung jedes bevorstehenden Spiels für diese Teams an, wenn Tunerr es im Guide findet. Aufnahmen folgen den üblichen Genehmigungsregeln.',
+      'components.LiveTv.FollowedTeams.failed':
+        'Das Team konnte nicht aktualisiert werden.',
+      'components.LiveTv.FollowedTeams.follow': 'Folgen',
+      'components.LiveTv.FollowedTeams.none': 'Sie folgen keinem Team.',
+      'components.LiveTv.FollowedTeams.team': 'Team',
+      'components.LiveTv.FollowedTeams.title': 'Gefolgte Teams',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Teamzeitpläne sind nicht verfügbar. Ein Administrator kann die Sportautomatisierung in IPTV Tunerr aktivieren.',
+      'components.LiveTv.FollowedTeams.unfollow': '{team} nicht mehr folgen',
+      'components.Requests.allUsers': 'Alle Benutzer',
+      'components.Discover.DiscoverMediaTabs.series': 'Serien',
+      'i18n.next': 'Weiter',
+      'i18n.previous': 'Zurück',
     },
   },
   {
@@ -1680,6 +1773,42 @@ export const localeData = [
         'Link Identity Provider',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'You do not have any external accounts linked to your account.',
+      'components.LiveTv.RecordingList.approve': 'Approve',
+      'components.LiveTv.RecordingList.cancel': 'Cancel Recording',
+      'components.LiveTv.RecordingList.decline': 'Decline',
+      'components.LiveTv.RecordingList.empty': 'No Recordings Yet',
+      'components.LiveTv.RecordingList.loadError':
+        'Recordings could not be loaded.',
+      'components.LiveTv.RecordingList.mine': 'My Recordings',
+      'components.LiveTv.RecordingList.everyone': 'All Recordings',
+      'components.LiveTv.RecordingList.notConfigured':
+        'Live TV recording is not set up. An administrator can connect IPTV Tunerr in Settings → Services.',
+      'components.LiveTv.RecordingList.requestedBy': 'Requested By',
+      'components.LiveTv.RecordingList.series': 'Every Airing',
+      'components.LiveTv.RecordingList.statusCancelled': 'Cancelled',
+      'components.LiveTv.RecordingList.statusCompleted': 'Recorded',
+      'components.LiveTv.RecordingList.statusDeclined': 'Declined',
+      'components.LiveTv.RecordingList.statusFailed': 'Failed',
+      'components.LiveTv.RecordingList.statusPending': 'Pending Approval',
+      'components.LiveTv.RecordingList.statusRecording': 'Recording',
+      'components.LiveTv.RecordingList.statusScheduled': 'Scheduled',
+      'components.LiveTv.FollowedTeams.choose': 'Choose a team',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG requests a recording of each upcoming game for these teams when Tunerr finds it in the guide. Recordings follow the usual approval rules.',
+      'components.LiveTv.FollowedTeams.failed':
+        'The team could not be updated.',
+      'components.LiveTv.FollowedTeams.follow': 'Follow',
+      'components.LiveTv.FollowedTeams.none':
+        'You are not following any teams.',
+      'components.LiveTv.FollowedTeams.team': 'Team',
+      'components.LiveTv.FollowedTeams.title': 'Followed Teams',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Team schedules are not available. An administrator can turn on sports automation in IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Unfollow {team}',
+      'components.Requests.allUsers': 'All Users',
+      'components.Discover.DiscoverMediaTabs.series': 'Series',
+      'i18n.next': 'Next',
+      'i18n.previous': 'Previous',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2230,6 +2359,23 @@ export const localeData = [
       'lumen.soon.request': 'Request',
       'lumen.soon.showMore': 'Show more {media}',
       'lumen.soon.requested': 'Requested',
+      'lumen.recordings.scope': 'Scope',
+      'lumen.recordings.statusFilter': 'Status Filter',
+      'lumen.recordings.active': 'Active',
+      'lumen.recordings.allStatuses': 'All Statuses',
+      'lumen.recordings.refresh': 'Refresh Recordings',
+      'lumen.recordings.emptyView': 'No recordings match this view.',
+      'lumen.recordings.checking': 'Checking Live TV…',
+      'lumen.recordings.liveTvStatus': 'Live TV status',
+      'lumen.recordings.followUpdateFailed':
+        'Could not update the team follow.',
+      'lumen.recordings.updated': 'Recording updated.',
+      'lumen.recordings.keep': 'Keep Recording',
+      'lumen.recordings.countSummary': '{completed} recorded · {failed} failed',
+      'lumen.recordings.loadingTeams': 'Loading followed teams…',
+      'lumen.recordings.loadingSchedules': 'Loading team schedules…',
+      'lumen.recordings.teamSchedules': 'team schedules',
+      'lumen.recordings.maxFollowedTeams': 'You can follow up to 20 teams.',
     },
   },
   {
@@ -2290,6 +2436,8 @@ export const localeData = [
       'components.Settings.notificationsettings': 'Ρυθμίσεις Ειδοποιήσεων',
       'i18n.close': 'Κλείσιμο',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ρόλος',
+      'i18n.next': 'Επόμενο',
+      'i18n.previous': 'Προηγούμενο',
     },
   },
   {
@@ -2545,6 +2693,42 @@ export const localeData = [
         '¿Solicitar esta regla para tu cuenta?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'No existe una cuenta externa asociada a su cuenta.',
+      'components.LiveTv.RecordingList.approve': 'Aprobar',
+      'components.LiveTv.RecordingList.cancel': 'Cancelar grabación',
+      'components.LiveTv.RecordingList.decline': 'Rechazar',
+      'components.LiveTv.RecordingList.empty': 'Sin grabaciones todavía',
+      'components.LiveTv.RecordingList.loadError':
+        'Las grabaciones no se pueden cargar.',
+      'components.LiveTv.RecordingList.mine': 'Mis grabaciones',
+      'components.LiveTv.RecordingList.everyone': 'Todas las grabaciones',
+      'components.LiveTv.RecordingList.notConfigured':
+        'La grabación de TV en vivo no está preparada. Un administrador puede conectar IPTV Tunerr en Ajustes → Servicios.',
+      'components.LiveTv.RecordingList.requestedBy': 'Solicitante',
+      'components.LiveTv.RecordingList.series': 'Cada emisión',
+      'components.LiveTv.RecordingList.statusCancelled': 'Cancelada',
+      'components.LiveTv.RecordingList.statusCompleted': 'Grabado',
+      'components.LiveTv.RecordingList.statusDeclined': 'Rechazado',
+      'components.LiveTv.RecordingList.statusFailed': 'Fallido',
+      'components.LiveTv.RecordingList.statusPending': 'Aprobación pendiente',
+      'components.LiveTv.RecordingList.statusRecording': 'Grabando',
+      'components.LiveTv.RecordingList.statusScheduled': 'Programado',
+      'components.LiveTv.FollowedTeams.choose': 'Elige un equipo',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG solicita grabar cada próximo partido de estos equipos cuando Tunerr lo encuentra en la guía. Las grabaciones siguen las reglas habituales de aprobación.',
+      'components.LiveTv.FollowedTeams.failed':
+        'El equipo no pudo ser actualizado.',
+      'components.LiveTv.FollowedTeams.follow': 'Seguir',
+      'components.LiveTv.FollowedTeams.none':
+        'No estás siguiendo ningún equipo.',
+      'components.LiveTv.FollowedTeams.team': 'Equipo',
+      'components.LiveTv.FollowedTeams.title': 'Equipos seguidos',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Los horarios del equipo no están disponibles. Un administrador puede activar la automatización deportiva en IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Dejar de seguir {team}',
+      'components.Requests.allUsers': 'Todos los usuarios',
+      'components.Discover.DiscoverMediaTabs.series': 'Series',
+      'i18n.next': 'Adelante',
+      'i18n.previous': 'Anterior',
     },
   },
   {
@@ -2800,6 +2984,42 @@ export const localeData = [
         '¿Solicitar esta regla para tu cuenta?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Usted no tiene ninguna cuenta externa vinculada a su cuenta.',
+      'components.LiveTv.RecordingList.approve': 'Aprobar',
+      'components.LiveTv.RecordingList.cancel': 'Cancelar grabación',
+      'components.LiveTv.RecordingList.decline': 'Rechazar',
+      'components.LiveTv.RecordingList.empty': 'Sin grabaciones todavía',
+      'components.LiveTv.RecordingList.loadError':
+        'Las grabaciones no se pueden cargar.',
+      'components.LiveTv.RecordingList.mine': 'Mis grabaciones',
+      'components.LiveTv.RecordingList.everyone': 'Todas las grabaciones',
+      'components.LiveTv.RecordingList.notConfigured':
+        'La grabación de TV en vivo no está preparada. Un administrador puede conectar IPTV Tunerr en Ajustes → Servicios.',
+      'components.LiveTv.RecordingList.requestedBy': 'Solicitado Por',
+      'components.LiveTv.RecordingList.series': 'Cada aire',
+      'components.LiveTv.RecordingList.statusCancelled': 'Cancelada',
+      'components.LiveTv.RecordingList.statusCompleted': 'Grabado',
+      'components.LiveTv.RecordingList.statusDeclined': 'Rechazado',
+      'components.LiveTv.RecordingList.statusFailed': 'Fallido',
+      'components.LiveTv.RecordingList.statusPending': 'Aprobación pendiente',
+      'components.LiveTv.RecordingList.statusRecording': 'Grabación',
+      'components.LiveTv.RecordingList.statusScheduled': 'Programado',
+      'components.LiveTv.FollowedTeams.choose': 'Elige un equipo',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG solicita una grabación de cada próximo juego para estos equipos cuando Tunerr lo encuentra en la guía. Las grabaciones siguen las reglas de aprobación habituales.',
+      'components.LiveTv.FollowedTeams.failed':
+        'El equipo no pudo ser actualizado.',
+      'components.LiveTv.FollowedTeams.follow': 'Seguir',
+      'components.LiveTv.FollowedTeams.none':
+        'No estás siguiendo ningún equipo.',
+      'components.LiveTv.FollowedTeams.team': 'Equipo',
+      'components.LiveTv.FollowedTeams.title': 'Equipos seguidos',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Los horarios del equipo no están disponibles. Un administrador puede activar la automatización deportiva en IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Dejar de seguir a {team}',
+      'components.Requests.allUsers': 'Todos los Usuarios',
+      'components.Discover.DiscoverMediaTabs.series': 'Serie',
+      'i18n.next': 'Adelante',
+      'i18n.previous': 'Anterior',
     },
   },
   {
@@ -2880,6 +3100,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Sinu kontoga pole lingitud ühtegi välist kontot.',
+      'i18n.next': 'Järgmine',
+      'i18n.previous': 'Eelmine',
     },
   },
   {
@@ -2936,6 +3158,8 @@ export const localeData = [
         'Suodata sisältöä alkuperäisen kielen perusteella',
       'i18n.close': 'Sulje',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rooli',
+      'i18n.next': 'Seuraava',
+      'i18n.previous': 'Edellinen',
     },
   },
   {
@@ -3190,6 +3414,43 @@ export const localeData = [
         'Demander cette règle pour votre compte ?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         "Vous n'avez pas de comptes externes liés à votre compte.",
+      'components.LiveTv.RecordingList.approve': 'Valider',
+      'components.LiveTv.RecordingList.cancel': 'Annuler l’enregistrement',
+      'components.LiveTv.RecordingList.decline': 'Refuser',
+      'components.LiveTv.RecordingList.empty': "Pas encore d'enregistrements",
+      'components.LiveTv.RecordingList.loadError':
+        'Les enregistrements ne pouvaient pas être chargés.',
+      'components.LiveTv.RecordingList.mine': 'Mes enregistrements',
+      'components.LiveTv.RecordingList.everyone': 'Tous les enregistrements',
+      'components.LiveTv.RecordingList.notConfigured':
+        'L’enregistrement de la télévision en direct n’est pas configuré. Un administrateur peut connecter IPTV Tunerr dans Paramètres → Services.',
+      'components.LiveTv.RecordingList.requestedBy': 'Demandé par',
+      'components.LiveTv.RecordingList.series': 'Chaque diffusion',
+      'components.LiveTv.RecordingList.statusCancelled': 'Annulé',
+      'components.LiveTv.RecordingList.statusCompleted': 'Enregistré',
+      'components.LiveTv.RecordingList.statusDeclined': 'Refusé',
+      'components.LiveTv.RecordingList.statusFailed': 'Échec',
+      'components.LiveTv.RecordingList.statusPending':
+        'En attente d’approbation',
+      'components.LiveTv.RecordingList.statusRecording':
+        'En cours d’enregistrement',
+      'components.LiveTv.RecordingList.statusScheduled': 'Prévu',
+      'components.LiveTv.FollowedTeams.choose': 'Choisir une équipe',
+      'components.LiveTv.FollowedTeams.description':
+        "SeerrNG demande un enregistrement de chaque match à venir pour ces équipes lorsque Tunerr le trouve dans le guide. Les enregistrements sont conformes aux règles habituelles d'approbation.",
+      'components.LiveTv.FollowedTeams.failed':
+        "L'équipe n'a pas pu être mise à jour.",
+      'components.LiveTv.FollowedTeams.follow': 'Suivre',
+      'components.LiveTv.FollowedTeams.none': 'Vous ne suivez aucune équipe.',
+      'components.LiveTv.FollowedTeams.team': 'Équipe',
+      'components.LiveTv.FollowedTeams.title': 'Équipes suivies',
+      'components.LiveTv.FollowedTeams.unavailable':
+        "Les horaires des équipes ne sont pas disponibles. Un administrateur peut activer l'automatisation sportive dans IPTV Tunerr.",
+      'components.LiveTv.FollowedTeams.unfollow': 'Ne plus suivre {team}',
+      'components.Requests.allUsers': 'Tous les utilisateurs',
+      'components.Discover.DiscoverMediaTabs.series': 'Séries',
+      'i18n.next': 'Suivant',
+      'i18n.previous': 'Précédent',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -3844,6 +4105,27 @@ export const localeData = [
       'lumen.soon.request': 'Demander',
       'lumen.soon.showMore': 'Afficher plus : {media}',
       'lumen.soon.requested': 'Demandé',
+      'lumen.recordings.scope': 'Portée',
+      'lumen.recordings.statusFilter': 'Filtrer par statut',
+      'lumen.recordings.active': 'En cours',
+      'lumen.recordings.allStatuses': 'Tous les statuts',
+      'lumen.recordings.refresh': 'Actualiser les enregistrements',
+      'lumen.recordings.emptyView':
+        'Aucun enregistrement ne correspond à cette vue.',
+      'lumen.recordings.checking': 'Vérification de la télévision en direct…',
+      'lumen.recordings.liveTvStatus': 'État de la télévision en direct',
+      'lumen.recordings.followUpdateFailed':
+        'Impossible de modifier le suivi de l’équipe.',
+      'lumen.recordings.updated': 'Enregistrement mis à jour.',
+      'lumen.recordings.keep': 'Conserver l’enregistrement',
+      'lumen.recordings.countSummary':
+        '{completed} enregistrés · {failed} échecs',
+      'lumen.recordings.loadingTeams': 'Chargement des équipes suivies…',
+      'lumen.recordings.loadingSchedules':
+        'Chargement des calendriers des équipes…',
+      'lumen.recordings.teamSchedules': 'calendriers des équipes',
+      'lumen.recordings.maxFollowedTeams':
+        'Vous pouvez suivre jusqu’à 20 équipes.',
     },
   },
   {
@@ -3905,6 +4187,8 @@ export const localeData = [
       'components.Settings.notificationsettings': 'Postavke obavijesti',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'i18n.next': 'Dalje',
+      'i18n.previous': 'Prethodno',
     },
   },
   {
@@ -3918,6 +4202,7 @@ export const localeData = [
       'components.Layout.UserDropdown.myprofile': 'פרופיל',
       'components.Layout.Sidebar.issues': 'מקרים',
       'i18n.usersettings': 'הגדרות משתמש',
+      'i18n.previous': 'קודם',
     },
   },
   {
@@ -4173,6 +4458,42 @@ export const localeData = [
         'क्या अपने खाते के लिए इस नियम का अनुरोध करना है?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'आपके पास आपके खाते से जुड़े कोई बाहरी खाते नहीं हैं।',
+      'components.LiveTv.RecordingList.approve': 'मंज़ूर करें',
+      'components.LiveTv.RecordingList.cancel': 'रिकॉर्डिंग रद्द करें',
+      'components.LiveTv.RecordingList.decline': 'अस्वीकार करें',
+      'components.LiveTv.RecordingList.empty': 'अभी तक कोई रिकॉर्डिंग नहीं',
+      'components.LiveTv.RecordingList.loadError':
+        'रिकॉर्डिंग लोड नहीं की जा सकीं।',
+      'components.LiveTv.RecordingList.mine': 'मेरी रिकॉर्डिंग',
+      'components.LiveTv.RecordingList.everyone': 'सभी रिकॉर्डिंग',
+      'components.LiveTv.RecordingList.notConfigured':
+        'लाइव टीवी रिकॉर्डिंग सेट अप नहीं है। व्यवस्थापक सेटिंग्स → सेवाएँ में IPTV Tunerr कनेक्ट कर सकता है।',
+      'components.LiveTv.RecordingList.requestedBy': 'अनुरोधकर्ता',
+      'components.LiveTv.RecordingList.series': 'हर प्रसारण',
+      'components.LiveTv.RecordingList.statusCancelled': 'रद्द किया गया',
+      'components.LiveTv.RecordingList.statusCompleted': 'रिकॉर्ड किया गया',
+      'components.LiveTv.RecordingList.statusDeclined': 'अस्वीकृत',
+      'components.LiveTv.RecordingList.statusFailed': 'विफल',
+      'components.LiveTv.RecordingList.statusPending': 'लंबित स्वीकृति',
+      'components.LiveTv.RecordingList.statusRecording': 'रिकॉर्डिंग जारी',
+      'components.LiveTv.RecordingList.statusScheduled': 'अनुसूचित',
+      'components.LiveTv.FollowedTeams.choose': 'एक टीम चुनें',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG इन टीमों के हर आगामी मैच की रिकॉर्डिंग का अनुरोध करता है, जब Tunerr उसे कार्यक्रम-सूची में ढूँढ़ता है। रिकॉर्डिंग पर सामान्य अनुमोदन नियम लागू होते हैं।',
+      'components.LiveTv.FollowedTeams.failed':
+        'टीम को अपडेट नहीं किया जा सकता है।',
+      'components.LiveTv.FollowedTeams.follow': 'फ़ॉलो करें',
+      'components.LiveTv.FollowedTeams.none':
+        'आप किसी भी टीम का अनुसरण नहीं कर रहे हैं।',
+      'components.LiveTv.FollowedTeams.team': 'टीम',
+      'components.LiveTv.FollowedTeams.title': 'फ़ॉलो की गई टीमें',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'टीमों का शेड्यूल उपलब्ध नहीं है। व्यवस्थापक IPTV Tunerr में स्पोर्ट्स ऑटोमेशन चालू कर सकता है।',
+      'components.LiveTv.FollowedTeams.unfollow': 'फ़ॉलो करना बंद करें: {team}',
+      'components.Requests.allUsers': 'सभी उपयोगकर्ता',
+      'components.Discover.DiscoverMediaTabs.series': 'श्रृंखला',
+      'i18n.next': 'अगला',
+      'i18n.previous': 'पिछला',
     },
   },
   {
@@ -4255,6 +4576,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Mégsem',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Nincs külső fiókja, amely a fiókjához lenne kapcsolva.',
+      'i18n.next': 'Következő',
+      'i18n.previous': 'Előző',
     },
   },
   {
@@ -4509,6 +4832,40 @@ export const localeData = [
         'Minta aturan ini untuk akun Anda?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Anda tidak memiliki akun eksternal terkait dengan akun Anda.',
+      'components.LiveTv.RecordingList.approve': 'Setujui',
+      'components.LiveTv.RecordingList.cancel': 'Batalkan Rekaman',
+      'components.LiveTv.RecordingList.decline': 'Tolak',
+      'components.LiveTv.RecordingList.empty': 'Belum ada rekaman',
+      'components.LiveTv.RecordingList.loadError': 'Rekaman tidak bisa dimuat.',
+      'components.LiveTv.RecordingList.mine': 'Rekaman saya',
+      'components.LiveTv.RecordingList.everyone': 'Semua Rekaman',
+      'components.LiveTv.RecordingList.notConfigured':
+        'Perekaman TV langsung belum disiapkan. Administrator dapat menghubungkan IPTV Tunerr di Pengaturan → Layanan.',
+      'components.LiveTv.RecordingList.requestedBy': 'Diminta Oleh',
+      'components.LiveTv.RecordingList.series': 'Setiap siaran',
+      'components.LiveTv.RecordingList.statusCancelled': 'Dibatalkan',
+      'components.LiveTv.RecordingList.statusCompleted': 'Direkam',
+      'components.LiveTv.RecordingList.statusDeclined': 'Ditolak',
+      'components.LiveTv.RecordingList.statusFailed': 'Gagal',
+      'components.LiveTv.RecordingList.statusPending': 'Persetujuan Tertunda',
+      'components.LiveTv.RecordingList.statusRecording': 'Sedang merekam',
+      'components.LiveTv.RecordingList.statusScheduled': 'Dijadwalkan',
+      'components.LiveTv.FollowedTeams.choose': 'Pilih sebuah tim',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG meminta rekaman setiap pertandingan mendatang dari tim-tim ini saat Tunerr menemukannya di panduan acara. Rekaman mengikuti aturan persetujuan yang biasa.',
+      'components.LiveTv.FollowedTeams.failed': 'Tim tidak bisa diperbarui.',
+      'components.LiveTv.FollowedTeams.follow': 'Ikuti',
+      'components.LiveTv.FollowedTeams.none':
+        'Anda tidak mengikuti tim apapun.',
+      'components.LiveTv.FollowedTeams.team': 'Tim',
+      'components.LiveTv.FollowedTeams.title': 'Tim yang Diikuti',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Jadwal tim tidak tersedia. Administrator dapat mengaktifkan otomatisasi olahraga di IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Berhenti mengikuti {team}',
+      'components.Requests.allUsers': 'Semua Pengguna',
+      'components.Discover.DiscoverMediaTabs.series': 'Serial',
+      'i18n.next': 'Berikutnya',
+      'i18n.previous': 'Sebelumnya',
     },
   },
   {
@@ -4590,6 +4947,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ruolo',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Non hai alcun account esterno collegato al tuo account.',
+      'i18n.next': 'Avanti',
+      'i18n.previous': 'Precedente',
     },
   },
   {
@@ -4843,6 +5202,41 @@ export const localeData = [
         'このルールをあなたのアカウントでリクエストしますか？',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'あなたのアカウントにリンクされている外部アカウントはありません。',
+      'components.LiveTv.RecordingList.approve': '承認',
+      'components.LiveTv.RecordingList.cancel': '録画をキャンセル',
+      'components.LiveTv.RecordingList.decline': '拒否する',
+      'components.LiveTv.RecordingList.empty': '録画はまだありません',
+      'components.LiveTv.RecordingList.loadError':
+        '録画を読み込めませんでした。',
+      'components.LiveTv.RecordingList.mine': '自分の録画',
+      'components.LiveTv.RecordingList.everyone': 'すべての録画',
+      'components.LiveTv.RecordingList.notConfigured':
+        'ライブTV録画が設定されていません。管理者は「設定」→「サービス」でIPTV Tunerrを連携できます。',
+      'components.LiveTv.RecordingList.requestedBy': 'リクエスト者',
+      'components.LiveTv.RecordingList.series': '放送のたび',
+      'components.LiveTv.RecordingList.statusCancelled': 'キャンセル済み',
+      'components.LiveTv.RecordingList.statusCompleted': '録画済み',
+      'components.LiveTv.RecordingList.statusDeclined': '拒否済み',
+      'components.LiveTv.RecordingList.statusFailed': '失敗',
+      'components.LiveTv.RecordingList.statusPending': '承認待ち',
+      'components.LiveTv.RecordingList.statusRecording': '録画中',
+      'components.LiveTv.RecordingList.statusScheduled': '予約済み',
+      'components.LiveTv.FollowedTeams.choose': 'チームを選ぶ',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG は、Tunerr が番組表で見つけたこれらのチームの今後の各試合について、録画をリクエストします。録画は通常の承認ルールに従います。',
+      'components.LiveTv.FollowedTeams.failed':
+        'チームは更新できませんでした。',
+      'components.LiveTv.FollowedTeams.follow': 'フォロー',
+      'components.LiveTv.FollowedTeams.none': 'チームをフォローしていない',
+      'components.LiveTv.FollowedTeams.team': 'チーム',
+      'components.LiveTv.FollowedTeams.title': 'フォロー中のチーム',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'チームの試合日程を取得できません。管理者はIPTV Tunerrでスポーツ自動化を有効にできます。',
+      'components.LiveTv.FollowedTeams.unfollow': '{team} のフォローを解除',
+      'components.Requests.allUsers': 'すべてのユーザー',
+      'components.Discover.DiscoverMediaTabs.series': 'シリーズ',
+      'i18n.next': '次',
+      'i18n.previous': '前',
     },
   },
   {
@@ -5093,6 +5487,39 @@ export const localeData = [
         '계정에 이 규칙을 요청하시겠습니까?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         '계정과 연결된 외부 계정이 없습니다.',
+      'components.LiveTv.RecordingList.approve': '승인',
+      'components.LiveTv.RecordingList.cancel': '녹화 취소',
+      'components.LiveTv.RecordingList.decline': '거절',
+      'components.LiveTv.RecordingList.empty': '아직 녹화가 없습니다',
+      'components.LiveTv.RecordingList.loadError': '녹화를 불러올 수 없습니다.',
+      'components.LiveTv.RecordingList.mine': '내 녹화',
+      'components.LiveTv.RecordingList.everyone': '모든 녹화',
+      'components.LiveTv.RecordingList.notConfigured':
+        '라이브 TV 녹화가 설정되지 않습니다. 관리자는 설정 → 서비스에서 IPTV Tunerr를 연결할 수 있습니다.',
+      'components.LiveTv.RecordingList.requestedBy': '요청자',
+      'components.LiveTv.RecordingList.series': '매 방송',
+      'components.LiveTv.RecordingList.statusCancelled': '취소됨',
+      'components.LiveTv.RecordingList.statusCompleted': '녹화됨',
+      'components.LiveTv.RecordingList.statusDeclined': '거부됨',
+      'components.LiveTv.RecordingList.statusFailed': '실패',
+      'components.LiveTv.RecordingList.statusPending': '승인 대기',
+      'components.LiveTv.RecordingList.statusRecording': '녹화 중',
+      'components.LiveTv.RecordingList.statusScheduled': '예약됨',
+      'components.LiveTv.FollowedTeams.choose': '팀 선택',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG는 Tunerr가 편성표에서 찾은 이 팀들의 각 예정 경기에 대해 녹화를 요청합니다. 녹화 요청에는 일반 승인 규칙이 적용됩니다.',
+      'components.LiveTv.FollowedTeams.failed': '팀을 업데이트할 수 없습니다.',
+      'components.LiveTv.FollowedTeams.follow': '팔로우하기',
+      'components.LiveTv.FollowedTeams.none': '아직 팔로우 중인 팀이 없습니다.',
+      'components.LiveTv.FollowedTeams.team': '팀',
+      'components.LiveTv.FollowedTeams.title': '팔로우 중인 팀',
+      'components.LiveTv.FollowedTeams.unavailable':
+        '팀 일정은 사용할 수 없습니다. 관리자는 IPTV Tunerr에서 스포츠 자동화를 설정할 수 있습니다.',
+      'components.LiveTv.FollowedTeams.unfollow': '{team} 팔로우 취소',
+      'components.Requests.allUsers': '모든 사용자',
+      'components.Discover.DiscoverMediaTabs.series': '시리즈',
+      'i18n.next': '다음',
+      'i18n.previous': '이전',
     },
   },
   {
@@ -5121,6 +5548,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.menuChangePass': 'Slaptažodis',
       'i18n.close': 'Uždaryti',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolė',
+      'i18n.next': 'Kitas',
+      'i18n.previous': 'Ankstesnis',
     },
   },
   {
@@ -5180,6 +5609,8 @@ export const localeData = [
       'components.Settings.notificationsettings': 'Varsel-innstillinger',
       'i18n.close': 'Avbryt',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'i18n.next': 'Neste',
+      'i18n.previous': 'Forrige',
     },
   },
   {
@@ -5262,6 +5693,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Annuleren',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Er zijn geen externe accounts aan je account gekoppeld.',
+      'i18n.next': 'Volgende',
+      'i18n.previous': 'Vorige',
     },
   },
   {
@@ -5344,6 +5777,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Anuluj',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Nie masz żadnych kont zewnętrznych powiązanych z Twoim kontem.',
+      'i18n.next': 'Następny',
+      'i18n.previous': 'Poprzedni',
     },
   },
   {
@@ -5598,6 +6033,42 @@ export const localeData = [
         'Solicitar esta regra para sua conta?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Você não tem nenhuma conta externa ligada à sua conta.',
+      'components.LiveTv.RecordingList.approve': 'Aprovar',
+      'components.LiveTv.RecordingList.cancel': 'Cancelar gravação',
+      'components.LiveTv.RecordingList.decline': 'Rejeitar',
+      'components.LiveTv.RecordingList.empty': 'Sem gravações ainda.',
+      'components.LiveTv.RecordingList.loadError':
+        'As gravações não puderam ser carregadas.',
+      'components.LiveTv.RecordingList.mine': 'Minhas gravações',
+      'components.LiveTv.RecordingList.everyone': 'Todas as gravações',
+      'components.LiveTv.RecordingList.notConfigured':
+        'A gravação ao vivo não está configurada. Um administrador pode conectar IPTV Tunerr em Configurações → Serviços.',
+      'components.LiveTv.RecordingList.requestedBy': 'Solicitado Por',
+      'components.LiveTv.RecordingList.series': 'Cada exibição',
+      'components.LiveTv.RecordingList.statusCancelled': 'Cancelado',
+      'components.LiveTv.RecordingList.statusCompleted': 'Gravado',
+      'components.LiveTv.RecordingList.statusDeclined': 'Rejeitado',
+      'components.LiveTv.RecordingList.statusFailed': 'Falhou',
+      'components.LiveTv.RecordingList.statusPending': 'Aprovação pendente',
+      'components.LiveTv.RecordingList.statusRecording': 'Gravando',
+      'components.LiveTv.RecordingList.statusScheduled': 'Agendado',
+      'components.LiveTv.FollowedTeams.choose': 'Escolha uma equipe.',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG solicita a gravação de cada jogo futuro dessas equipes quando o Tunerr o encontra no guia. As gravações seguem as regras habituais de aprovação.',
+      'components.LiveTv.FollowedTeams.failed':
+        'A equipe não pôde ser atualizada.',
+      'components.LiveTv.FollowedTeams.follow': 'Seguir',
+      'components.LiveTv.FollowedTeams.none':
+        'Você não está seguindo nenhuma equipe.',
+      'components.LiveTv.FollowedTeams.team': 'Equipe',
+      'components.LiveTv.FollowedTeams.title': 'Equipes Seguidas',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Os horários da equipe não estão disponíveis. Um administrador pode ativar a automação esportiva em IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Deixar de seguir {team}',
+      'components.Requests.allUsers': 'Todos os usuários',
+      'components.Discover.DiscoverMediaTabs.series': 'Séries',
+      'i18n.next': 'Próxima',
+      'i18n.previous': 'Anterior',
     },
   },
   {
@@ -5679,6 +6150,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Função',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Não tem nenhuma conta externa associada à sua conta.',
+      'i18n.next': 'Próxima',
+      'i18n.previous': 'Anterior',
     },
   },
   {
@@ -5710,6 +6183,7 @@ export const localeData = [
         'Conturi conectate',
       'components.UserProfile.UserSettings.menuPermissions': 'Permisiuni',
       'components.UserProfile.UserSettings.menuNotifications': 'Notificări',
+      'i18n.previous': 'Precedent',
     },
   },
   {
@@ -5793,6 +6267,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Отмена',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'У вас нет ни одного привязанного внешнего аккаунта.',
+      'i18n.next': 'Следующая',
+      'i18n.previous': 'Предыдущая',
     },
   },
   {
@@ -5848,6 +6324,8 @@ export const localeData = [
       'components.Settings.notificationsettings': 'Cilësimet e njoftimit',
       'i18n.close': 'Mbylle',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roli',
+      'i18n.next': 'Tjetra',
+      'i18n.previous': 'Para',
     },
   },
   {
@@ -5899,6 +6377,8 @@ export const localeData = [
       'components.Settings.notificationsettings': 'Podešavanje notifikacija',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'i18n.next': 'Sledeći',
+      'i18n.previous': 'Prethodni',
     },
   },
   {
@@ -5980,6 +6460,8 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Avbryt',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Du har inte några externa konton länkade till ditt konto.',
+      'i18n.next': 'Nästa',
+      'i18n.previous': 'Föregående',
     },
   },
   {
@@ -6061,6 +6543,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Hesabınıza bağlı harici hesap yok.',
+      'i18n.next': 'Sonraki',
+      'i18n.previous': 'Önceki',
     },
   },
   {
@@ -6142,6 +6626,8 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         "У вас немає зовнішніх облікових записів, пов'язаних з вашим обліковим записом.",
+      'i18n.next': 'Наступна',
+      'i18n.previous': 'Попередня',
     },
   },
   {
@@ -6392,6 +6878,39 @@ export const localeData = [
         '为您的账户请求此规则？',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         '您的账号没有绑定任何外部账号。',
+      'components.LiveTv.RecordingList.approve': '批准',
+      'components.LiveTv.RecordingList.cancel': '取消录制',
+      'components.LiveTv.RecordingList.decline': '拒绝',
+      'components.LiveTv.RecordingList.empty': '暂无录像',
+      'components.LiveTv.RecordingList.loadError': '无法加载录像。',
+      'components.LiveTv.RecordingList.mine': '我的录像',
+      'components.LiveTv.RecordingList.everyone': '所有录像',
+      'components.LiveTv.RecordingList.notConfigured':
+        '尚未设置电视直播录制。管理员可以在“设置”→“服务”中连接 IPTV Tunerr。',
+      'components.LiveTv.RecordingList.requestedBy': '请求者',
+      'components.LiveTv.RecordingList.series': '每次播出',
+      'components.LiveTv.RecordingList.statusCancelled': '已取消',
+      'components.LiveTv.RecordingList.statusCompleted': '已录制',
+      'components.LiveTv.RecordingList.statusDeclined': '已拒绝',
+      'components.LiveTv.RecordingList.statusFailed': '失败',
+      'components.LiveTv.RecordingList.statusPending': '待核准',
+      'components.LiveTv.RecordingList.statusRecording': '录制中',
+      'components.LiveTv.RecordingList.statusScheduled': '已安排',
+      'components.LiveTv.FollowedTeams.choose': '选择球队',
+      'components.LiveTv.FollowedTeams.description':
+        '当 Tunerr 在节目指南中找到这些球队即将进行的比赛时，SeerrNG 会为每场比赛请求录制。录制请求遵循通常的审批规则。',
+      'components.LiveTv.FollowedTeams.failed': '团队无法更新。',
+      'components.LiveTv.FollowedTeams.follow': '关注',
+      'components.LiveTv.FollowedTeams.none': '您尚未关注任何球队。',
+      'components.LiveTv.FollowedTeams.team': '团队',
+      'components.LiveTv.FollowedTeams.title': '已关注的球队',
+      'components.LiveTv.FollowedTeams.unavailable':
+        '无法获取球队赛程。管理员可以在 IPTV Tunerr 中启用体育自动化。',
+      'components.LiveTv.FollowedTeams.unfollow': '取消关注 {team}',
+      'components.Requests.allUsers': '所有用户',
+      'components.Discover.DiscoverMediaTabs.series': '剧集',
+      'i18n.next': '下一页',
+      'i18n.previous': '上一页',
     },
   },
   {
@@ -6642,6 +7161,39 @@ export const localeData = [
         '要為您的帳戶請求此規則嗎？',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         '您的帳戶沒有任何外部帳號 。',
+      'components.LiveTv.RecordingList.approve': '批准',
+      'components.LiveTv.RecordingList.cancel': '取消錄影',
+      'components.LiveTv.RecordingList.decline': '拒絕',
+      'components.LiveTv.RecordingList.empty': '尚無錄影',
+      'components.LiveTv.RecordingList.loadError': '無法載入錄影。',
+      'components.LiveTv.RecordingList.mine': '我的錄影',
+      'components.LiveTv.RecordingList.everyone': '所有錄影',
+      'components.LiveTv.RecordingList.notConfigured':
+        '尚未設定電視直播錄製。管理員可以在「設定」→「服務」中連結 IPTV Tunerr。',
+      'components.LiveTv.RecordingList.requestedBy': '請求者',
+      'components.LiveTv.RecordingList.series': '每次播出',
+      'components.LiveTv.RecordingList.statusCancelled': '已取消',
+      'components.LiveTv.RecordingList.statusCompleted': '已錄制',
+      'components.LiveTv.RecordingList.statusDeclined': '已拒絕',
+      'components.LiveTv.RecordingList.statusFailed': '失敗',
+      'components.LiveTv.RecordingList.statusPending': '待核准',
+      'components.LiveTv.RecordingList.statusRecording': '錄影中',
+      'components.LiveTv.RecordingList.statusScheduled': '已排程',
+      'components.LiveTv.FollowedTeams.choose': '選擇球隊',
+      'components.LiveTv.FollowedTeams.description':
+        'Tunerr 在節目表中找到這些球隊即將進行的賽事時，SeerrNG 會要求錄製每場比賽。錄製請求依照一般核准規則處理。',
+      'components.LiveTv.FollowedTeams.failed': '團隊無法更新。',
+      'components.LiveTv.FollowedTeams.follow': '追蹤',
+      'components.LiveTv.FollowedTeams.none': '您尚未追蹤任何球隊。',
+      'components.LiveTv.FollowedTeams.team': '團隊',
+      'components.LiveTv.FollowedTeams.title': '已追蹤的球隊',
+      'components.LiveTv.FollowedTeams.unavailable':
+        '無法取得球隊賽程。管理員可以在 IPTV Tunerr 中啟用體育自動化。',
+      'components.LiveTv.FollowedTeams.unfollow': '取消追蹤 {team}',
+      'components.Requests.allUsers': '所有使用者',
+      'components.Discover.DiscoverMediaTabs.series': '影集',
+      'i18n.next': '下一頁',
+      'i18n.previous': '上一頁',
     },
   },
   {
@@ -6897,6 +7449,40 @@ export const localeData = [
         'Yêu cầu quy tắc này cho tài khoản của bạn?',
       'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
         'Bạn không có bất kỳ tài khoản bên ngoài nào liên quan đến tài khoản của bạn.',
+      'components.LiveTv.RecordingList.approve': 'Phê duyệt',
+      'components.LiveTv.RecordingList.cancel': 'Hủy yêu cầu ghi hình',
+      'components.LiveTv.RecordingList.decline': 'Từ chối',
+      'components.LiveTv.RecordingList.empty': 'Chưa có bản ghi hình nào',
+      'components.LiveTv.RecordingList.loadError':
+        'Không thể tải các bản ghi hình.',
+      'components.LiveTv.RecordingList.mine': 'Bản ghi hình của tôi',
+      'components.LiveTv.RecordingList.everyone': 'Tất cả bản ghi hình',
+      'components.LiveTv.RecordingList.notConfigured':
+        'Chưa thiết lập ghi hình truyền hình trực tiếp. Quản trị viên có thể kết nối IPTV Tunerr trong Cài đặt → Dịch vụ.',
+      'components.LiveTv.RecordingList.requestedBy': 'Yêu cầu bởi',
+      'components.LiveTv.RecordingList.series': 'Mỗi lần phát sóng',
+      'components.LiveTv.RecordingList.statusCancelled': 'Đã hủy',
+      'components.LiveTv.RecordingList.statusCompleted': 'Đã ghi hình',
+      'components.LiveTv.RecordingList.statusDeclined': 'Đã từ chối',
+      'components.LiveTv.RecordingList.statusFailed': 'Thất bại',
+      'components.LiveTv.RecordingList.statusPending': 'Đang chờ phê duyệt',
+      'components.LiveTv.RecordingList.statusRecording': 'Đang ghi hình',
+      'components.LiveTv.RecordingList.statusScheduled': 'Đã lên lịch',
+      'components.LiveTv.FollowedTeams.choose': 'Chọn một đội',
+      'components.LiveTv.FollowedTeams.description':
+        'SeerrNG yêu cầu ghi hình từng trận đấu sắp tới của các đội này khi Tunerr tìm thấy trận đấu trong lịch phát sóng. Các yêu cầu ghi hình tuân theo quy trình phê duyệt thông thường.',
+      'components.LiveTv.FollowedTeams.failed': 'Không thể cập nhật đội.',
+      'components.LiveTv.FollowedTeams.follow': 'Theo dõi',
+      'components.LiveTv.FollowedTeams.none': 'Bạn chưa theo dõi đội nào.',
+      'components.LiveTv.FollowedTeams.team': 'Đội',
+      'components.LiveTv.FollowedTeams.title': 'Các đội bạn đang theo dõi',
+      'components.LiveTv.FollowedTeams.unavailable':
+        'Không có lịch thi đấu của các đội. Quản trị viên có thể bật tính năng tự động hóa thể thao trong IPTV Tunerr.',
+      'components.LiveTv.FollowedTeams.unfollow': 'Bỏ theo dõi {team}',
+      'components.Requests.allUsers': 'Mọi người dùng',
+      'components.Discover.DiscoverMediaTabs.series': 'Loạt phim',
+      'i18n.next': 'Tiếp theo',
+      'i18n.previous': 'Trước',
     },
   },
 ] as const;
