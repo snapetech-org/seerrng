@@ -15,7 +15,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | --- | --- | --- | --- |
 | Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. | Finish per-category provider gating, filter and paging edges, empty/error states, saved discovery settings, and native-matched visual acceptance. Verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
-| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. | Complete cross-provider mutations, poster and category watchlist actions, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
+| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. | Complete remaining cross-provider mutations, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
@@ -2068,6 +2068,13 @@ Status, filters, search, and page are bookmarkable, and changing a filter
 resets pagination. All 28 standalone issue cases and both server routing
 tests passed. Advanced native metadata filters and matched visual
 acceptance remain open.
+
+Poster Watchlist actions now cover movie, TV, book, music, comic, and magazine
+cards. The book browser regression verifies that the first action reads fresh
+detail state and posts the exact Open Library work ID; it passed on desktop,
+iPhone, Android, and tablet. Existing movie/TV poster regressions also passed
+on all four projects. The Lumen production build passed. Native-matched and
+bundled acceptance for this surface remain open.
 
 Issue lists now support media-specific year, genre, studio, network, and
 album type filters along with sort order. The metadata controls use text

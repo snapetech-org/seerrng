@@ -326,3 +326,91 @@ test('poster Watchlist control is unavailable for a Plex primary account', async
     poster.getByRole('button', { name: /Add .* to your Watchlist/ })
   ).toHaveCount(0);
 });
+
+test('book poster Watchlist action preserves the Open Library work identity', async ({
+  page,
+}, testInfo) => {
+  let listed = false;
+  let detailReads = 0;
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32, userType: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          enabledMediaCategories: { ebook: true },
+        },
+      });
+    if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+    if (path.startsWith('/service/')) return route.fulfill({ json: [] });
+    if (path.startsWith('/discover/books'))
+      return route.fulfill({
+        json: {
+          page: 1,
+          totalPages: 1,
+          results: [
+            {
+              id: 'OL123W',
+              title: 'Watchlist Fixture Book',
+              provider: 'openlibrary',
+              author: 'Fixture Author',
+            },
+          ],
+        },
+      });
+    if (path === '/book/OL123W') {
+      detailReads++;
+      return route.fulfill({
+        json: {
+          id: 'OL123W',
+          title: 'Watchlist Fixture Book',
+          onUserWatchlist: listed,
+        },
+      });
+    }
+    if (path === '/watchlist' && route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toMatchObject({
+        mediaType: 'book',
+        externalId: 'OL123W',
+        title: 'Watchlist Fixture Book',
+      });
+      listed = true;
+      writes++;
+      return route.fulfill({ json: { id: 9001 } });
+    }
+    if (path === '/genres/book' || path === '/languages')
+      return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/books');
+  const poster = page
+    .locator('.poster')
+    .filter({
+      has: page.getByRole('link', { name: 'Watchlist Fixture Book' }),
+    })
+    .first();
+  await expect(poster).toBeVisible();
+  if (testInfo.project.name === 'desktop') await poster.hover();
+  const action = poster.getByRole('button', {
+    name: 'Add Watchlist Fixture Book to your Watchlist',
+  });
+  await expect(action).toBeVisible();
+  await action.click();
+  await expect.poll(() => detailReads).toBeGreaterThan(0);
+  await expect.poll(() => writes).toBe(1);
+  await expect(
+    poster.getByRole('button', {
+      name: 'Remove Watchlist Fixture Book from your Watchlist',
+    })
+  ).toBeVisible();
+});

@@ -536,69 +536,84 @@ export function BookCard({ b }: { b: BookResult }) {
             busy={busy}
           />
         )}
-        {prefs.hoverRequest && (
-          <div className="qa">
-            <div className="qt">{b.title}</div>
-            <div className="qm">
-              {[
-                series?.title ? `${series.title} #${series.position}` : '',
-                b.firstPublishYear,
-              ]
-                .filter(Boolean)
-                .join(' · ')}
-            </div>
-            <div className="qb">
-              {s?.k === 'ok' ? (
-                <>
-                  {/* this button did nothing: the book page has the library links */}
+        <WatchlistButton
+          mediaType="book"
+          detail={{ id: b.id, title: b.title }}
+          compact
+          touch
+        />
+        <div className="qa">
+          {prefs.hoverRequest && (
+            <>
+              <div className="qt">{b.title}</div>
+              <div className="qm">
+                {[
+                  series?.title ? `${series.title} #${series.position}` : '',
+                  b.firstPublishYear,
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </div>
+              <div className="qb">
+                {s?.k === 'ok' ? (
+                  <>
+                    {/* this button did nothing: the book page has the library links */}
+                    <Link
+                      className="qbtn okb"
+                      to={href}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
+                      <Icon name={audio ? 'play' : 'book'} size="sm" />
+                      {audio ? 'Listen' : 'Read'}
+                    </Link>
+                    {audio && prefs.narratorChoice && (
+                      <Link
+                        className="qbtn ghost"
+                        to={href + '#narr'}
+                        aria-label="Request another narrator"
+                        title="Request another narrator"
+                      >
+                        <Icon name="plus" size="sm" />
+                      </Link>
+                    )}
+                  </>
+                ) : s && !ownershipUnknown ? (
+                  <button className="qbtn done" disabled>
+                    <Icon name={s.ico} size="sm" />
+                    {s.word}
+                  </button>
+                ) : straight ? (
+                  <button className="qbtn go" disabled={busy} onClick={request}>
+                    <Icon name="plus" size="sm" />
+                    {ownershipUnknown
+                      ? 'Request anyway'
+                      : audio
+                        ? 'Request audiobook'
+                        : 'Request ebook'}
+                  </button>
+                ) : (
                   <Link
-                    className="qbtn okb"
+                    className="qbtn go"
                     to={href}
                     tabIndex={-1}
                     aria-hidden="true"
                   >
-                    <Icon name={audio ? 'play' : 'book'} size="sm" />
-                    {audio ? 'Listen' : 'Read'}
+                    <Icon name="headphones" size="sm" />
+                    Choose narrator
                   </Link>
-                  {audio && prefs.narratorChoice && (
-                    <Link
-                      className="qbtn ghost"
-                      to={href + '#narr'}
-                      aria-label="Request another narrator"
-                      title="Request another narrator"
-                    >
-                      <Icon name="plus" size="sm" />
-                    </Link>
-                  )}
-                </>
-              ) : s && !ownershipUnknown ? (
-                <button className="qbtn done" disabled>
-                  <Icon name={s.ico} size="sm" />
-                  {s.word}
-                </button>
-              ) : straight ? (
-                <button className="qbtn go" disabled={busy} onClick={request}>
-                  <Icon name="plus" size="sm" />
-                  {ownershipUnknown
-                    ? 'Request anyway'
-                    : audio
-                      ? 'Request audiobook'
-                      : 'Request ebook'}
-                </button>
-              ) : (
-                <Link
-                  className="qbtn go"
-                  to={href}
-                  tabIndex={-1}
-                  aria-hidden="true"
-                >
-                  <Icon name="headphones" size="sm" />
-                  Choose narrator
-                </Link>
-              )}
-            </div>
+                )}
+              </div>
+            </>
+          )}
+          <div className="qb watchlist-row">
+            <WatchlistButton
+              mediaType="book"
+              detail={{ id: b.id, title: b.title }}
+              compact
+            />
           </div>
-        )}
+        </div>
       </div>
       <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
         {b.title}

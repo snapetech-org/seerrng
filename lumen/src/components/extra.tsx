@@ -11,11 +11,13 @@ import { friendlyError } from '../errors';
 import { useExtras, type Extra, type Magazine } from '../extras';
 import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
+import type { ManagedMediaType } from '../mediaIdentity';
 import { usePrefs } from '../settings';
 import { Glyph, statusOf, useCardTitleMode, type Stat } from './cards';
 import { Pill } from './detail';
 import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
+import WatchlistButton from './WatchlistButton';
 
 // The pieces the extra categories share: a poster card, the page header, the status-aware
 // request button and the "this category is off" notice.
@@ -100,6 +102,7 @@ export function MagazineCard({ magazine }: { magazine: Magazine }) {
       shape="book"
       icon="magazine"
       stat={extraStat(magazine.mediaInfo)}
+      watchlist={{ mediaType: 'magazine', id: magazine.title }}
       meta={[
         magazine.publisher,
         magazine.latestIssue
@@ -123,6 +126,7 @@ export function ExtraCard({
   note,
   pct,
   titleKind,
+  watchlist,
 }: {
   href: string;
   img?: string;
@@ -133,6 +137,7 @@ export function ExtraCard({
   icon: IconName;
   note?: string; // a second, quieter line (e.g. the library state)
   titleKind?: CardTitleKind;
+  watchlist?: { mediaType: ManagedMediaType; id: string | number };
   pct?: number; // a download progress bar along the bottom of the art
 }) {
   const titleMode = useCardTitleMode(titleKind);
@@ -162,6 +167,27 @@ export function ExtraCard({
           </span>
         )}
         <Link className="hit" to={href} aria-label={title} />
+        {watchlist && (
+          <WatchlistButton
+            mediaType={watchlist.mediaType}
+            detail={{ id: watchlist.id, title }}
+            requestedId={watchlist.id}
+            compact
+            touch
+          />
+        )}
+        {watchlist && (
+          <div className="qa">
+            <div className="qb watchlist-row">
+              <WatchlistButton
+                mediaType={watchlist.mediaType}
+                detail={{ id: watchlist.id, title }}
+                requestedId={watchlist.id}
+                compact
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="t">{title}</div>
       {meta && <div className="m">{meta}</div>}

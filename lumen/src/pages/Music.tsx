@@ -184,6 +184,7 @@ export const AlbumCard = ({ a }: { a: Album }) => (
     titleKind="album"
     icon="music"
     stat={extraStat(a.mediaInfo)}
+    watchlist={{ mediaType: 'music', id: a.id }}
     meta={[artistOf(a), (a['first-release-date'] || '').slice(0, 4)]
       .filter(Boolean)
       .join(' · ')}

@@ -14,6 +14,7 @@ import { usePrefs } from '../settings';
 import { Cover, Glyph, TouchQuick, type Stat } from './cards';
 import { comicState } from './extra';
 import { useToast } from './toast';
+import WatchlistButton from './WatchlistButton';
 
 // The comic/manga card: same poster, glyph, hover overlay and touch button as
 // the series and audiobook cards. Request asks for the recommended (English)
@@ -78,6 +79,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
   const href = comicWorkHref(w);
   const editions = w.editions.length;
   const rec = recommendedEdition(w);
+  const watchlistId = w.mediaEditionId || rec?.id;
   // a manga from AniList with its editions not looked up yet can still be
   // requested: the lookup runs on the tap
   const quick = !!rec || !w.editionsResolved;
@@ -166,66 +168,89 @@ export function ComicCard({ w }: { w: ComicWork }) {
             busy={busy}
           />
         )}
-        {prefs.hoverRequest && (
+        {watchlistId && (
+          <WatchlistButton
+            mediaType="comic"
+            detail={{ id: watchlistId, title: w.title }}
+            requestedId={watchlistId}
+            compact
+            touch
+          />
+        )}
+        {(prefs.hoverRequest || watchlistId) && (
           <div className="qa">
-            <div className="qt">{w.title}</div>
-            <div className="qm">{qm}</div>
-            <div className="qb">
-              {s?.k === 'ok' ? (
-                <>
-                  {readHref && complete ? (
-                    <a
-                      className="qbtn okb"
-                      href={readHref}
-                      target="_blank"
-                      rel="noopener"
-                      aria-label={`Read ${w.title} in Kavita`}
-                    >
-                      <Icon name="book" size="sm" />
-                      Read
-                    </a>
+            {prefs.hoverRequest && (
+              <>
+                <div className="qt">{w.title}</div>
+                <div className="qm">{qm}</div>
+                <div className="qb">
+                  {s?.k === 'ok' ? (
+                    <>
+                      {readHref && complete ? (
+                        <a
+                          className="qbtn okb"
+                          href={readHref}
+                          target="_blank"
+                          rel="noopener"
+                          aria-label={`Read ${w.title} in Kavita`}
+                        >
+                          <Icon name="book" size="sm" />
+                          Read
+                        </a>
+                      ) : (
+                        // the same page as the poster's own link: kept out of Tab order
+                        <Link
+                          className="qbtn okb"
+                          to={href}
+                          tabIndex={-1}
+                          aria-hidden="true"
+                        >
+                          <Icon name="book" size="sm" />
+                          <span className="ql">{s.word}</span>
+                        </Link>
+                      )}
+                      {readHref && !complete && readGhost}
+                      {editions > 1 && choose}
+                    </>
+                  ) : s ? (
+                    <>
+                      <button className="qbtn done" disabled>
+                        <Icon name={s.ico} size="sm" />
+                        <span className="ql">{s.word}</span>
+                      </button>
+                      {readHref && readGhost}
+                    </>
+                  ) : quick ? (
+                    <>
+                      <button
+                        className="qbtn go"
+                        disabled={busy}
+                        onClick={() => void request()}
+                      >
+                        <Icon name="plus" size="sm" />
+                        Request
+                      </button>
+                      {choose}
+                    </>
                   ) : (
-                    // the same page as the poster's own link: kept out of Tab order
-                    <Link
-                      className="qbtn okb"
-                      to={href}
-                      tabIndex={-1}
-                      aria-hidden="true"
-                    >
-                      <Icon name="book" size="sm" />
-                      <span className="ql">{s.word}</span>
+                    <Link className="qbtn go" to={href + '#editions'}>
+                      <Icon name="list" size="sm" />
+                      Choose edition
                     </Link>
                   )}
-                  {readHref && !complete && readGhost}
-                  {editions > 1 && choose}
-                </>
-              ) : s ? (
-                <>
-                  <button className="qbtn done" disabled>
-                    <Icon name={s.ico} size="sm" />
-                    <span className="ql">{s.word}</span>
-                  </button>
-                  {readHref && readGhost}
-                </>
-              ) : quick ? (
-                <>
-                  <button
-                    className="qbtn go"
-                    disabled={busy}
-                    onClick={() => void request()}
-                  >
-                    <Icon name="plus" size="sm" />
-                    Request
-                  </button>
-                  {choose}
-                </>
-              ) : (
-                <Link className="qbtn go" to={href + '#editions'}>
-                  <Icon name="list" size="sm" />
-                  Choose edition
-                </Link>
-              )}
-            </div>
+                </div>
+              </>
+            )}
+            {watchlistId && (
+              <div className="qb watchlist-row">
+                <WatchlistButton
+                  mediaType="comic"
+                  detail={{ id: watchlistId, title: w.title }}
+                  requestedId={watchlistId}
+                  compact
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
