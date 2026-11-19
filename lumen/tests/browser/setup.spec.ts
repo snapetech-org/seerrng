@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+
 for (const administrator of [true, false]) {
   test(`initialized setup guide enforces access for ${administrator ? 'administrators' : 'members'}`, async ({
     page,
@@ -10,9 +13,7 @@ for (const administrator of [true, false]) {
       route.fulfill({ json: {} })
     );
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(
-        '/api/v1'.length
-      );
+      const path = testApiPath(route.request().url());
       if (path === '/settings/public')
         return route.fulfill({
           json: {
@@ -215,7 +216,7 @@ test('first-run Plex setup exchanges the PIN and configures a discovered server'
   );
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = testApiPath(request.url());
     switch (path) {
       case '/settings/public':
         return route.fulfill({
@@ -335,9 +336,7 @@ for (const [provider, serverType] of [
       route.fulfill({ json: {} })
     );
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(
-        '/api/v1'.length
-      );
+      const path = testApiPath(route.request().url());
       switch (path) {
         case '/settings/public':
           return route.fulfill({

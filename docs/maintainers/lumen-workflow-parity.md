@@ -3059,7 +3059,7 @@ permissions separately from bookmark routing.
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Standalone browser fixtures cover creating a personalized feed and applying feedback. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open. |
-| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
+| `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Twenty fixture browser cases passed in both standalone and freshly built bundled deployments across desktop, iPhone, Android, and tablet. Matched visual acceptance and live provider verification remain open. |
 
 Native SeerrNG exposes Share & Identify from Discover to users with request
 access (including administrators). Lumen now provides the same permission-gated
@@ -4044,8 +4044,9 @@ stale unless `pnpm build:lumen` runs first. Against the freshly built asset,
 grouping and requests, requests, acquisition, collections, details, and Swipe
 passed across desktop, iPhone, Android, and tablet. Another 60 account,
 managed-user, and override-rule cases passed through the same production
-Express `/lumen/` mount. The corresponding standalone runs passed the same
-412 selected cases. These fixture-backed runs qualify the bundled asset and
+Express `/lumen/` mount. Watch Sessions and Setup added 20 cases each on both
+deployments, bringing the selected current-source qualification set to 492
+cases per deployment. These fixture-backed runs qualify the bundled asset and
 mount behavior; they do not replace live-provider checks or native visual
 comparison.
 
