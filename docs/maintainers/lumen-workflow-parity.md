@@ -3632,3 +3632,12 @@ The isolated job stayed disabled without a next invocation after the
 administrator saved a cron change and reloaded. Enabling the job then
 registered its next invocation with the edited schedule. Both runs
 used real sign-in and settings routes with an isolated scheduler job.
+
+Job enable failure recovery on `26f188344` passed through the Classic
+Scheduled Jobs bookmark in bundled desktop and standalone iPhone
+Lumen. The real API rejected an invalid cron expression with HTTP 400
+and the job stayed disabled and unscheduled. After correcting the cron,
+an injected settings write failure returned HTTP 500 and left the job
+disabled, with the corrected expression intact. The next enable
+succeeded and registered an invocation. Both runs used isolated
+scheduler jobs and real local sign-in.
