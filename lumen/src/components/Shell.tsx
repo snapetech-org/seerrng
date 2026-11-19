@@ -319,26 +319,28 @@ export default function Shell({ children }: { children: ReactNode }) {
               className={({ isActive }) => (isActive ? 'active' : '')}
             >
               <Icon name="share" />
-              Share &amp; Identify
+              {t('components.Layout.Sidebar.share', 'Share & Identify')}
             </NavLink>
           )}
           {isAdministrator(user?.permissions) && (
             <>
-              <div className="lbl">Administration</div>
+              <div className="lbl">
+                {t('lumen.nav.administration', 'Administration')}
+              </div>
               <Link to="/me/lumen">
                 <Icon name="lock" />
-                Lumen Settings
+                {t('lumen.nav.lumenSettings', 'Lumen Settings')}
               </Link>
               <Link to="/admin">
                 <Icon name="list" />
-                SeerrNG Administration
+                {t('lumen.nav.seerrAdministration', 'SeerrNG Administration')}
               </Link>
             </>
           )}
-          <div className="lbl">You</div>
+          <div className="lbl">{t('components.Layout.Sidebar.you', 'You')}</div>
           <NavLink to="/requests">
             <Icon name="inbox" />
-            Requests
+            {t('components.Layout.Sidebar.requests', 'Requests')}
             {pendingRequests > 0 && (
               <span
                 className="n"
@@ -351,51 +353,51 @@ export default function Shell({ children }: { children: ReactNode }) {
           {canViewFollowing(user?.permissions) && (
             <NavLink to="/following">
               <Icon name="list" />
-              Following
+              {t('components.Layout.Sidebar.following', 'Following')}
             </NavLink>
           )}
           {canManageDownloads(user?.permissions) && (
             <NavLink to="/downloads">
               <Icon name="down" />
-              Download Inbox
+              {t('components.Layout.Sidebar.downloads', 'Download Inbox')}
             </NavLink>
           )}
           {canSearchIndexers(user?.permissions) && (
             <NavLink to="/indexer-search">
               <Icon name="search" />
-              Indexer Search
+              {t('components.Layout.Sidebar.indexerSearch', 'Indexer Search')}
             </NavLink>
           )}
           {canReadIssues(user?.permissions) && (
             <NavLink to="/issues">
               <Icon name="list" />
-              Issues
+              {t('components.Layout.Sidebar.issues', 'Issues')}
             </NavLink>
           )}
           {showBlocklist && (
             <NavLink to="/blocklist">
               <Icon name="list" />
-              Blocklist
+              {t('components.Layout.Sidebar.blocklist', 'Blocklist')}
             </NavLink>
           )}
           <NavLink to="/watchlist">
             <Icon name="star" />
-            Watchlist
+            {t('library.watchlist', 'Watchlist')}
           </NavLink>
           <NavLink to="/library">
             <Icon name="book" />
-            My Media
+            {t('components.Layout.Sidebar.myMedia', 'My Media')}
           </NavLink>
           {swipeEnabled && canUseRequestAccess(user?.permissions) && (
             <NavLink to="/swipe">
               <Icon name="star" />
-              Swipe
+              {t('components.Layout.Sidebar.swipe', 'Swipe')}
             </NavLink>
           )}
           {canRequestMovies(user?.permissions) && (
             <NavLink to="/watch-sessions">
               <Icon name="cal" />
-              Watch Sessions
+              {t('components.Layout.Sidebar.watchSessions', 'Watch Sessions')}
             </NavLink>
           )}
           {liveTv.data?.configured && (
@@ -406,11 +408,11 @@ export default function Shell({ children }: { children: ReactNode }) {
           )}
           <NavLink to="/calendar">
             <Icon name="cal" />
-            Release Calendar
+            {t('components.Layout.Sidebar.calendar', 'Release Calendar')}
           </NavLink>
           <NavLink to="/soon">
             <Icon name="cal" />
-            Coming soon
+            {t('components.Layout.Sidebar.comingSoon', 'Coming soon')}
           </NavLink>
           <Link className="me" to="/me">
             <span className="avatar">
@@ -422,7 +424,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             </span>
             <span>
               <b>{user?.displayName}</b>
-              <small>Signed in</small>
+              <small>{t('lumen.nav.signedIn', 'Signed in')}</small>
             </span>
           </Link>
         </nav>

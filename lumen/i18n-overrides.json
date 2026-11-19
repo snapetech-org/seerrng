@@ -1,5 +1,9 @@
 {
   "en": {
+    "lumen.nav.administration": "Administration",
+    "lumen.nav.lumenSettings": "Lumen Settings",
+    "lumen.nav.seerrAdministration": "SeerrNG Administration",
+    "lumen.nav.signedIn": "Signed in",
     "lumen.account.tvRequestSettings": "TV Request Settings",
     "lumen.account.backToYou": "Back to You",
     "lumen.account.saveThemeColors": "Save Theme Colors",
@@ -32,6 +36,13 @@
     "lumen.account.saving": "Saving…"
   },
   "fr": {
+    "components.Layout.Sidebar.you": "Vous",
+    "components.Layout.Sidebar.comingSoon": "À venir",
+    "components.Layout.Sidebar.watchSessions": "Séances de visionnage",
+    "lumen.nav.administration": "Administration",
+    "lumen.nav.lumenSettings": "Paramètres de Lumen",
+    "lumen.nav.seerrAdministration": "Administration de SeerrNG",
+    "lumen.nav.signedIn": "Connecté",
     "pages.profile.advancedTheme.title": "Préférences de thème avancées",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie": "Préférence de langue des films",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv": "Préférence de langue des séries",
@@ -73,6 +84,13 @@
     "lumen.account.themeOverrideJson": "JSON des préférences du thème"
   },
   "ar": {
+    "components.Layout.Sidebar.you": "أنت",
+    "components.Layout.Sidebar.comingSoon": "قريبًا",
+    "components.Layout.Sidebar.watchSessions": "جلسات المشاهدة",
+    "lumen.nav.administration": "الإدارة",
+    "lumen.nav.lumenSettings": "إعدادات Lumen",
+    "lumen.nav.seerrAdministration": "إدارة SeerrNG",
+    "lumen.nav.signedIn": "تم تسجيل الدخول",
     "pages.profile.advancedTheme.title": "تجاوزات المظهر المتقدمة",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit": "استخدام التفضيل العام",
     "components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility": "عناوين البطاقات",

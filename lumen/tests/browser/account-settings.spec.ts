@@ -189,6 +189,9 @@ test('display language persists and localizes the shell and account settings', a
   ).toBeVisible();
   await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
   await expect(
+    page.getByRole('link', { name: 'Demandes' }).first()
+  ).toBeVisible();
+  await expect(
     page.getByRole('heading', { name: 'Paramètres utilisateur' })
   ).toBeVisible();
   await expect(page.getByLabel('Nom affiché')).toHaveValue('Viewer');
@@ -253,6 +256,9 @@ test('display language persists and localizes the shell and account settings', a
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.getByRole('link', { name: 'اكتشف' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'الطلبات' }).first()
+  ).toBeVisible();
   await expect(page.getByLabel('إسم العرض')).toHaveValue('Viewer');
   await expect(page.getByText('مستخدم محلي')).toBeVisible();
   await expect(page.getByText('الدور', { exact: true })).toBeVisible();

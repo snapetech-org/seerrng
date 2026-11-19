@@ -97,11 +97,15 @@ open. Evidence: task scratch directory
 
 Account Settings localization now also covers its TV Request Settings and
 return navigation links, plus the account theme override title, guidance,
-editing mode, validation feedback, and save confirmation. French and Arabic
-browser assertions cover those controls and the updated desktop and phone
-screenshots were inspected. Theme token names, password help/actions, and some
-permission names remain English; independent linguistic review and full
-bundled-suite qualification remain open.
+editing mode, validation feedback, and save confirmation. The desktop sidebar
+and mobile tabs now use locale messages for the principal destinations and
+section labels, including requests, following, downloads, indexer search,
+issues, Blocklist, Swipe, calendar, and watch sessions. French and Arabic
+browser assertions cover these labels and updated desktop and phone screenshots
+were inspected. Theme token names, password help/actions, some permission names,
+and less common account-screen copy remain English. Locale-specific overrides
+are currently human-written only for English, French, and Arabic; independent
+linguistic review and full bundled-suite qualification remain open.
 
 ### Open gap in personal discovery accounts
 
