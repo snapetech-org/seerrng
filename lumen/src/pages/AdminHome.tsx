@@ -81,6 +81,11 @@ const shortcuts = [
   ['4K Requests', '/admin/general#enable4k', '4k uhd ultra hd'],
   ['Application API Key', '/admin/general#apiKey', 'apikey token'],
   [
+    'Download Client Refresh Interval',
+    '/admin/download-clients#download-clients-interval',
+    'poll polling frequency seconds live download progress',
+  ],
+  [
     'Spotify Playlist Import',
     '/admin/general#spotifyClientId',
     'spotify client id secret credentials',

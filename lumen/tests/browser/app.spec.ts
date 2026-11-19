@@ -6227,6 +6227,30 @@ test('Administration search brings the Steam key field into view', async ({
   await expect(key).toHaveValue('');
 });
 
+test('Administration search opens the download client polling interval', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/download-clients', (route) =>
+    route.fulfill({ json: { pollIntervalSeconds: 7, clients: [] } })
+  );
+  await page.goto('/admin');
+  await page
+    .getByRole('searchbox', { name: 'Search Settings' })
+    .fill('poll frequency');
+  await page
+    .getByRole('link', { name: 'Open Download Client Refresh Interval' })
+    .click();
+  await expect(page).toHaveURL(
+    /\/admin\/download-clients#download-clients-interval$/
+  );
+  const interval = page.getByLabel('Refresh Interval (Seconds)', {
+    exact: true,
+  });
+  await expect(interval).toBeInViewport({ ratio: 1 });
+  await expect(interval).toHaveValue('7');
+});
+
 test('General Settings saves default request quotas without changing other media drafts', async ({
   page,
 }) => {

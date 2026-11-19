@@ -3697,3 +3697,9 @@ interval field after local sign-in in both the bundled Express app and
 standalone nginx companion. Desktop and iPhone runs used the real settings
 endpoint with an isolated instance and no download clients configured.
 Matched renders retained the baseline form layout at both widths.
+
+Administration search for download polling frequency opens the same interval
+control. Desktop and iPhone checks covered the standalone production build
+with fixture API responses and bundled Express with real local sign-in and
+the isolated settings endpoint. The matched search renders showed the new
+result at both widths without horizontal overflow.
