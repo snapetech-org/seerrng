@@ -662,9 +662,12 @@ Browser fixtures across desktop, iPhone, Android, and tablet verify owner,
 request-manager, and view-only permissions across approval, decline,
 withdrawal, retry, cancellation, stop tracking, and clearing cancelled
 history. Retry and cancellation send a no-existing-download confirmation only
-after a synthetic 409 makes provider state uncertain. Native visual comparison,
-bundled deployment, administrator-specific variants, and live provider
-behavior remain unverified.
+after a synthetic 409 makes provider state uncertain. Each state passes a
+no-horizontal-overflow check at all four presets. The uncertain-retry sheet
+was rendered and reviewed on iPhone; its message and confirmation buttons stay
+within the view. Native visual comparison, bundled deployment,
+administrator-specific variants, and live provider behavior remain
+unverified.
 
 ### Household software requests increment
 
