@@ -6030,7 +6030,17 @@ test('book recommendations open a newly created feed', async ({ page }) => {
   await page.getByLabel('Genres to Include').fill('Fantasy, History');
   await page.getByLabel('Genres to Avoid').fill('Horror');
   await page.getByLabel('Series Position').selectOption('standalone');
-  await page.getByLabel('Prefer Less Popular Books').check();
+  const lessPopular = page.getByLabel('Prefer Less Popular Books');
+  await lessPopular.scrollIntoViewIfNeeded();
+  const controlBox = await lessPopular.boundingBox();
+  const tabbarBox = await page.locator('.tabbar').boundingBox();
+  if (tabbarBox && controlBox) {
+    expect(
+      controlBox.y + controlBox.height <= tabbarBox.y ||
+        controlBox.y >= tabbarBox.y + tabbarBox.height
+    ).toBe(true);
+  }
+  await lessPopular.check();
   await create.click();
   await expect(page.getByRole('alert')).toHaveText(
     'Hardcover rejected your API token.'

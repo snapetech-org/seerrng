@@ -23,6 +23,13 @@
 .view > * {
   min-width: 0;
 }
+
+/* Keep programmatic and keyboard scrolling targets clear of the fixed bottom tabs. */
+@media (max-width: 1039px) {
+  html {
+    scroll-padding-block-end: calc(120px + env(safe-area-inset-bottom));
+  }
+}
 .side,
 .topbar {
   display: none;
@@ -2263,6 +2270,9 @@ a.brand {
    Only when the screen is wide enough to spare the rail: a short, narrow screen (360x288) is
    landscape by shape but keeps the bottom bar, or the content would be left under 300px wide */
 @media (min-width: 560px) and (max-width: 1039px) and (max-height: 500px) and (orientation: landscape) {
+  html {
+    scroll-padding-block-end: calc(32px + env(safe-area-inset-bottom));
+  }
   :root {
     --rail: calc(76px + env(safe-area-inset-left));
   }
