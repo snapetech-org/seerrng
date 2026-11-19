@@ -975,6 +975,12 @@ export const mountLumenFrontend = (
           : '/admin';
     } else if (section === 'users') {
       destination = '/admin/general#default-request-quotas';
+    } else if (section === 'logs') {
+      const page = req.query.page;
+      destination =
+        typeof page === 'string' && /^[1-9]\d{0,3}$/.test(page)
+          ? `/admin/logs?page=${page}`
+          : '/admin/logs';
     } else if (!section || section === 'main') {
       const target = req.query.settingsSearchTarget;
       destination =
@@ -985,7 +991,7 @@ export const mountLumenFrontend = (
           ? `/admin/general#${target}`
           : '/admin/general';
     } else if (
-      /^(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)$/.test(
+      /^(jobs|about|categories|network|discovery|metadata|library-migration|prowlarr)$/.test(
         section
       )
     ) {

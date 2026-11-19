@@ -102,6 +102,14 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');
     for (const prefix of ['', '/lumen']) {
+      for (const [query, destination] of [
+        ['?page=2&search=private', '/lumen/admin/logs?page=2'],
+        ['?page=0', '/lumen/admin/logs'],
+        ['?page=2&page=3', '/lumen/admin/logs'],
+      ]) {
+        const logs = await request(app).get(`${prefix}/settings/logs${query}`);
+        assert.equal(logs.headers.location, destination);
+      }
       for (const target of ['spotifyClientId', 'apiKey', 'enable4k']) {
         const response = await request(app).get(
           `${prefix}/settings/main?settingsSearchTarget=${target}`

@@ -229,6 +229,8 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ],
       ['/users/19/settings/notifications/', '/admin/users/19/notifications'],
       ['/settings/logs', '/admin/logs'],
+      ['/settings/logs?page=2&search=private', '/admin/logs?page=2'],
+      ['/settings/logs?page=0', '/admin/logs'],
       [
         '/settings/main?settingsSearchTarget=spotifyClientId',
         '/admin/general#spotifyClientId',

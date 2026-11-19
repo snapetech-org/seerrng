@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -17,15 +17,29 @@ const levels = [
   ['warn', 'Warnings and errors'],
   ['error', 'Errors only'],
 ];
+const MAX_LOG_OFFSET = 100_000;
 
 export default function AdminLogs() {
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [level, setLevel] = useState('info');
   const [take, setTake] = useState(25);
-  const [page, setPage] = useState(1);
+  const [params, setParams] = useSearchParams();
+  const lastPage = Math.floor(MAX_LOG_OFFSET / take) + 1;
+  const bookmarkPage = params.get('page') ?? '';
+  const page = /^[1-9]\d{0,3}$/.test(bookmarkPage)
+    ? Math.min(Number(bookmarkPage), lastPage)
+    : 1;
   const [live, setLive] = useState(false);
   const [copyStatus, setCopyStatus] = useState('');
+
+  function setPage(nextPage: number, replace = false) {
+    if (nextPage === 1 && !params.has('page')) return;
+    const next = new URLSearchParams(params);
+    if (nextPage === 1) next.delete('page');
+    else next.set('page', String(nextPage));
+    setParams(next, { replace });
+  }
   const query = new URLSearchParams({
     take: String(take),
     skip: String((page - 1) * take),
@@ -82,7 +96,7 @@ export default function AdminLogs() {
         className="toolbar"
         onSubmit={(event) => {
           event.preventDefault();
-          setPage(1);
+          setPage(1, true);
           setSearch(input.trim());
         }}
       >
@@ -102,7 +116,7 @@ export default function AdminLogs() {
             value={level}
             onChange={(event) => {
               setLevel(event.target.value);
-              setPage(1);
+              setPage(1, true);
             }}
           >
             {levels.map(([value, label]) => (
@@ -118,7 +132,7 @@ export default function AdminLogs() {
             value={take}
             onChange={(event) => {
               setTake(Number(event.target.value));
-              setPage(1);
+              setPage(1, true);
             }}
           >
             {[25, 50, 100].map((size) => (
@@ -174,15 +188,15 @@ export default function AdminLogs() {
           <button
             className="btn btn-quiet btn-sm"
             disabled={page === 1}
-            onClick={() => setPage((value) => value - 1)}
+            onClick={() => setPage(page - 1)}
           >
             Previous Page
           </button>
           <span>Page {page}</span>
           <button
             className="btn btn-quiet btn-sm"
-            disabled={!data || page >= data.pageInfo.pages}
-            onClick={() => setPage((value) => value + 1)}
+            disabled={!data || page >= Math.min(data.pageInfo.pages, lastPage)}
+            onClick={() => setPage(page + 1)}
           >
             Next Page
           </button>

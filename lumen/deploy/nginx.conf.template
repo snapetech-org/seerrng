@@ -277,7 +277,11 @@ server {
   location ~ ^/settings/notifications(/(?:email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?/?$ {
     return 302 /admin/notifications$1;
   }
-  location ~ ^/settings/(jobs|logs|about|categories|network|discovery|metadata|library-migration|prowlarr)/?$ {
+  location ~ ^/settings/logs/?$ {
+    if ($arg_page ~ "^[1-9][0-9]{0,3}$") { return 302 /admin/logs?page=$arg_page; }
+    return 302 /admin/logs;
+  }
+  location ~ ^/settings/(jobs|about|categories|network|discovery|metadata|library-migration|prowlarr)/?$ {
     return 302 /admin/$1;
   }
   location ~ ^/settings/(plex|jellyfin)/?$ {

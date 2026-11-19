@@ -5351,7 +5351,7 @@ test('System Logs filters server entries and excludes non-admins', async ({
     const query = new URL(route.request().url()).searchParams;
     return route.fulfill({
       json: {
-        pageInfo: { pages: 1 },
+        pageInfo: { pages: 3 },
         results: [
           {
             timestamp: '2026-11-18T00:00:00Z',
@@ -5360,7 +5360,9 @@ test('System Logs filters server entries and excludes non-admins', async ({
             message:
               query.get('search') === 'a&b'
                 ? 'Filtered result'
-                : 'Initial result',
+                : query.get('skip') === '25'
+                  ? 'Second page result'
+                  : 'Initial result',
             data: { attempts: 2 },
           },
         ],
@@ -5370,9 +5372,15 @@ test('System Logs filters server entries and excludes non-admins', async ({
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open System Logs' }).click();
   await expect(page.getByText('Initial result')).toBeVisible();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page).toHaveURL(/\/admin\/logs\?page=2$/);
+  await expect(page.getByText('Second page result')).toBeVisible();
+  await page.reload();
+  await expect(page.getByText('Second page result')).toBeVisible();
   await page.getByLabel('Search Logs').fill('a&b');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect(page.getByText('Filtered result')).toBeVisible();
+  await expect(page).toHaveURL(/\/admin\/logs$/);
   await page.getByText('Details', { exact: true }).click();
   await expect(page.getByText('{"attempts":2}', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
