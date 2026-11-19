@@ -3739,3 +3739,9 @@ case retained its text genre. The tests proxied real sign-in and rule
 mutations to an isolated Express server. Provider choice and metadata
 responses were fixtures. The regular browser suite now checks the payload
 for multiple language and production-country selections.
+
+The Classic `/settings/services#prowlarr` bookmark reaches Prowlarr Settings
+after local sign-in in both production deployments. Browser checks covered
+desktop and iPhone with real local authentication, plus the permanent
+standalone regression for the preserved fragment. The change reuses the
+existing Prowlarr screen.

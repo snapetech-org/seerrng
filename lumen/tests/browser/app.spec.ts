@@ -6198,6 +6198,17 @@ test('Administration searches all settings and opens exact controls', async ({
   await expect(page).toHaveURL(/\/admin\/general#enable4k$/);
 });
 
+test('Administration resolves the legacy Prowlarr bookmark fragment', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/admin#prowlarr');
+  await expect(page).toHaveURL('/admin/prowlarr');
+  await expect(
+    page.getByRole('heading', { name: 'Prowlarr Settings', exact: true })
+  ).toBeVisible();
+});
+
 test('Administration search brings the Steam key field into view', async ({
   page,
 }) => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Section } from '../components/cards';
 import { Icon } from '../icons';
 
@@ -145,7 +145,9 @@ export function AdminLinks({
 
 export default function AdminHome() {
   const [params] = useSearchParams();
+  const { hash } = useLocation();
   const [search, setSearch] = useState('');
+  if (hash === '#prowlarr') return <Navigate to="/admin/prowlarr" replace />;
   const terms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const category = params.get('serviceCategory') ?? '';
   const group = Object.hasOwn(serviceGroups, category)
