@@ -3006,8 +3006,8 @@ permissions separately from bookmark routing.
 
 Native SeerrNG exposes Share & Identify from Discover to users with request
 access (including administrators). Lumen now provides the same permission-gated
-desktop menu entry and a Discover link on the mobile You page. Eight focused
-Twelve focused navigation checks passed across desktop, iPhone, Android, and
+desktop menu entry, a gated Discover shortcut, and a link on the mobile You
+page. Twelve focused navigation checks passed across desktop, iPhone, Android, and
 tablet. They cover request-only users, admin-only users, and the no-request-
 access state, and confirm that the mobile link clears the fixed tab bar after
 scrolling. Baseline and candidate screenshots are retained under

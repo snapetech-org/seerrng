@@ -21,6 +21,7 @@ import {
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
+import { canUseShare } from '../components/detail';
 import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
 import {
@@ -184,7 +185,9 @@ export default function Discover() {
         {preferencesReady && (
           <div className="chips navchips">
             {CHIPS.filter(
-              ([, , h]) => books_ || (h !== '/books' && h !== '/audiobooks')
+              ([, , h]) =>
+                (books_ || (h !== '/books' && h !== '/audiobooks')) &&
+                (h !== '/share' || canUseShare(user?.permissions))
             ).map(([i, t, h]) => (
               <Link key={h} className="chip" to={h}>
                 <Icon name={i} />

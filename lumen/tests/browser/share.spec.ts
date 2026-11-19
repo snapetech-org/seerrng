@@ -153,9 +153,21 @@ for (const permissions of [32, 2]) {
         return route.fulfill({ json: { enabled: false } });
       if (path === '/user/1/settings/main')
         return route.fulfill({ json: { enabledMediaCategories: {} } });
+      if (path === '/discover/genreslider/movie')
+        return route.fulfill({ json: [] });
       return route.fulfill({ json: { results: [] } });
     });
 
+    await page.goto('/');
+    const discoverShortcut = page.getByRole('link', {
+      name: 'Share',
+      exact: true,
+    });
+    await discoverShortcut.scrollIntoViewIfNeeded();
+    await expect(discoverShortcut).toBeVisible();
+    await page.screenshot({ path: info.outputPath('discover-share.png') });
+    await discoverShortcut.click();
+    await expect(page).toHaveURL(/\/share$/);
     await page.goto('/');
     const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
     if (desktop) {
@@ -208,9 +220,15 @@ test('Share & Identify navigation stays hidden without request access', async ({
       });
     if (path === '/settings/public')
       return route.fulfill({ json: { mediaServerType: 1 } });
+    if (path === '/discover/genreslider/movie')
+      return route.fulfill({ json: [] });
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto('/');
+  await expect(
+    page.getByRole('link', { name: 'Share', exact: true })
+  ).toHaveCount(0);
+  await page.screenshot({ path: test.info().outputPath('discover.png') });
   await expect(
     page.getByRole('navigation', { name: 'Main' }).getByRole('link', {
       name: 'Share & Identify',
