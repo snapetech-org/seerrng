@@ -19,7 +19,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
-| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. | Native matched visuals across mobile and bundled deployments; finish automatic rule setup and remaining media/action coverage. |
+| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, and several per-user request policies have dedicated routes. | Finish per-user TV/Episode Queue, maturity and delegated-user management parity; qualify provider authorization, persistence/recovery, and native-matched/bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
@@ -3789,6 +3789,13 @@ after local sign-in in both production deployments. Browser checks covered
 desktop and iPhone with real local authentication, plus the permanent
 standalone regression for the preserved fragment. The change reuses the
 existing Prowlarr screen.
+
+The parity inventory previously listed automatic Blocklist rule setup as
+unfinished. Lumen's administrator Discovery page already configures keyword
+IDs, movie and TV genres, and the per-rule page limit; its browser regression
+preserves stored genre selections and verifies changed-field persistence.
+Remaining Blocklist parity is media/action coverage plus mobile matched and
+bundled acceptance.
 
 Indexer Search was present in the desktop sidebar but missing from the mobile
 You menu. The You page now exposes it under Acquisition only when the signed-in
