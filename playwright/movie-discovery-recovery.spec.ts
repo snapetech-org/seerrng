@@ -162,7 +162,7 @@ test('movie discovery retains loaded titles when the next query is denied', asyn
   await expect(title).toBeVisible();
   denied = true;
   await page
-    .getByRole('combobox', { name: 'Sort', exact: true })
+    .getByRole('combobox', { name: /^Sort(?: By)?$/ })
     .selectOption('vote_average.desc');
   await expect(page).toHaveURL(/sortBy=vote_average.desc/);
   await expect
