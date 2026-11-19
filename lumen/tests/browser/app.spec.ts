@@ -6227,6 +6227,63 @@ test('Administration search brings the Steam key field into view', async ({
   await expect(key).toHaveValue('');
 });
 
+test('override rules save multiple language and country selections', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/radarr', (route) =>
+    route.fulfill({ json: [{ id: 1, name: 'Test Radarr' }] })
+  );
+  for (const [path, json] of [
+    [
+      'service/radarr/1',
+      { profiles: [{ id: 4, name: 'HD' }], rootFolders: [], tags: [] },
+    ],
+    ['genres/movie', []],
+    [
+      'languages',
+      [
+        { iso_639_1: 'en', english_name: 'English' },
+        { iso_639_1: 'fr', english_name: 'French' },
+      ],
+    ],
+    [
+      'regions',
+      [
+        { iso_3166_1: 'CA', english_name: 'Canada' },
+        { iso_3166_1: 'US', english_name: 'United States' },
+      ],
+    ],
+  ] as const) {
+    await page.route(`**/api/v1/${path}`, (route) => route.fulfill({ json }));
+  }
+  await page.route('**/api/v1/overrideRule', (route) =>
+    route.fulfill({ json: route.request().method() === 'GET' ? [] : { id: 1 } })
+  );
+  await page.goto('/admin/override-rules');
+  await page.getByRole('button', { name: 'New Override Rule' }).click();
+  const choice = (name: string) =>
+    page.getByRole('combobox', { name, exact: true });
+  await choice('Service').selectOption({ label: 'Radarr · Test Radarr' });
+  await choice('Language').selectOption({ label: 'English' });
+  await choice('Language').selectOption({ label: 'French' });
+  await choice('Production Country').selectOption({ label: 'Canada' });
+  await choice('Production Country').selectOption({ label: 'United States' });
+  await choice('Quality Profile').selectOption({ label: 'HD' });
+  const write = page.waitForRequest(
+    (request) =>
+      request.method() === 'POST' &&
+      new URL(request.url()).pathname === '/api/v1/overrideRule'
+  );
+  await page.getByRole('button', { name: 'Save Rule', exact: true }).click();
+  expect((await write).postDataJSON()).toMatchObject({
+    radarrServiceId: 1,
+    language: 'en|fr',
+    productionCountries: 'CA|US',
+    profileId: 4,
+  });
+});
+
 test('Administration search opens the download client polling interval', async ({
   page,
 }) => {

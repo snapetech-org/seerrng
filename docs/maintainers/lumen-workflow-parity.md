@@ -3730,3 +3730,12 @@ production countries and video keywords by name. Bundled desktop and iPhone
 checks used local sign-in, the real user lookup and rule API, and fixture
 metadata. Creating a Radarr rule persisted all five named conditions,
 including two languages and two production countries in the API format.
+
+Standalone nginx verification on `c0c326407` passed on desktop and iPhone.
+Both viewports created a Radarr rule with named conditions, created, updated,
+and deleted a Lidarr rule, and created and reloaded Sonarr and Bookshelf
+rules. The Sonarr case saved the legacy language profile and the Bookshelf
+case retained its text genre. The tests proxied real sign-in and rule
+mutations to an isolated Express server. Provider choice and metadata
+responses were fixtures. The regular browser suite now checks the payload
+for multiple language and production-country selections.
