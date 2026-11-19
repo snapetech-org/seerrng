@@ -206,13 +206,14 @@ and preflight checks as movie and series details and keeps provider identities
 separate. Bookshelf-only works without an Open Library identity still cannot
 use SeerrNG's existing local Watchlist API. Poster and Plex actions remain open.
 
-Movie and series browse posters now offer the Watchlist action on desktop hover
-and touch layouts. The poster uses the shared detail preflight only after the
-viewer activates it, so browsing a catalog does not request membership once per
-card. When membership is unknown, its first activation means Add; a fresh detail
-read confirms an existing saved item without deleting it. Blocklisted titles
-and Plex primary accounts do not get the control. The existing authenticated
-Watchlist endpoints remain responsible for add and remove.
+Movie, series, book, album, magazine, and eligible comic edition browse posters
+offer the Watchlist action on desktop hover and touch layouts. The poster uses
+the shared detail preflight only after the viewer activates it, so browsing a
+catalog does not request membership once per card. When membership is unknown,
+its first activation means Add; a fresh detail read confirms an existing saved
+item without deleting it. Blocklisted titles and Plex primary accounts do not
+get the control. The existing authenticated Watchlist endpoints remain
+responsible for add and remove.
 
 Sixteen browser cases passed across desktop, iPhone, Android, and tablet: movie
 and series add/remove round trips with exact media identity, initial confirmation
@@ -222,6 +223,13 @@ sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
 Live provider effects, native-matched visual acceptance, and bundled deployment
 verification remain open.
+
+Album and magazine poster actions also passed exact-identity add checks on
+desktop, iPhone, Android, and tablet. The book poster test covers Open Library
+work identity. Comic poster actions are available only when the browse result
+provides a supported edition identity; the comic detail action remains covered
+separately. Native-matched visual acceptance and bundled deployment verification
+remain open.
 
 Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in

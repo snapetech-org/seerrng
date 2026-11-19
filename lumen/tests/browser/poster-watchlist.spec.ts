@@ -400,6 +400,7 @@ test('book poster Watchlist action preserves the Open Library work identity', as
     })
     .first();
   await expect(poster).toBeVisible();
+  await poster.scrollIntoViewIfNeeded();
   if (testInfo.project.name === 'desktop') await poster.hover();
   const action = poster.getByRole('button', {
     name: 'Add Watchlist Fixture Book to your Watchlist',
@@ -413,4 +414,136 @@ test('book poster Watchlist action preserves the Open Library work identity', as
       name: 'Remove Watchlist Fixture Book from your Watchlist',
     })
   ).toBeVisible();
+});
+
+test('album and magazine posters preserve their Watchlist identities', async ({
+  page,
+}, testInfo) => {
+  const records = [
+    {
+      path: '/music?q=Watchlist',
+      listing: '/discover/music',
+      detail: '/music/rg-fixture',
+      mediaType: 'music',
+      id: 'RG-FIXTURE',
+      title: 'Watchlist Fixture Album',
+      result: {
+        id: 'RG-FIXTURE',
+        mediaType: 'album',
+        title: 'Watchlist Fixture Album',
+        'artist-credit': [{ name: 'Fixture Artist' }],
+      },
+      body: {
+        mediaType: 'music',
+        mbId: 'rg-fixture',
+        title: 'Watchlist Fixture Album',
+      },
+    },
+    {
+      path: '/magazines?query=Watchlist',
+      listing: '/discover/magazines',
+      detail: '/magazine/Watchlist%20Fixture%20Magazine',
+      mediaType: 'magazine',
+      id: 'Watchlist Fixture Magazine',
+      title: 'Watchlist Fixture Magazine',
+      result: {
+        id: 'Watchlist Fixture Magazine',
+        mediaType: 'magazine',
+        provider: 'googlebooks',
+        title: 'Watchlist Fixture Magazine',
+        requestable: true,
+      },
+      body: {
+        mediaType: 'magazine',
+        externalId: 'watchlist fixture magazine',
+        title: 'Watchlist Fixture Magazine',
+      },
+    },
+  ];
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32, userType: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          musicEnabled: true,
+          comicsEnabled: true,
+          magazinesEnabled: true,
+          enabledMediaCategories: { music: true, comic: true, magazine: true },
+        },
+      });
+    if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+    if (path.startsWith('/service/')) return route.fulfill({ json: [] });
+    if (path === '/discover/comics/landing')
+      return route.fulfill({
+        json: {
+          library: [],
+          trending: [],
+          newest: [],
+          western: [],
+          failed: [],
+          genres: [],
+          publishers: [],
+          comicVineConfigured: true,
+        },
+      });
+    if (
+      path === '/genres/book' ||
+      path === '/genres/tv' ||
+      path === '/languages'
+    )
+      return route.fulfill({ json: [] });
+    const item = records.find((record) => path === record.listing);
+    if (item)
+      return route.fulfill({
+        json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
+          results: [item.result],
+        },
+      });
+    const detail = records.find((record) => path === record.detail);
+    if (detail)
+      return route.fulfill({
+        json: {
+          id: detail.id,
+          title: detail.title,
+          mediaType: detail.mediaType,
+          onUserWatchlist: false,
+        },
+      });
+    if (path === '/watchlist' && route.request().method() === 'POST') {
+      writes.push(route.request().postDataJSON());
+      return route.fulfill({ json: { id: 9001 } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  for (const [index, record] of records.entries()) {
+    await page.goto(record.path);
+    const poster = page
+      .locator('.poster')
+      .filter({
+        has: page.getByRole('link', { name: record.title, exact: true }),
+      })
+      .first();
+    await expect(poster).toBeVisible();
+    await poster.scrollIntoViewIfNeeded();
+    if (testInfo.project.name === 'desktop') await poster.hover();
+    const action = poster.getByRole('button', {
+      name: `Add ${record.title} to your Watchlist`,
+    });
+    await expect(action).toBeVisible();
+    await action.click();
+    await expect.poll(() => writes.length).toBe(index + 1);
+    expect(writes.at(-1)).toMatchObject(record.body);
+  }
 });
