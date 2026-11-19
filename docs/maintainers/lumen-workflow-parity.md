@@ -160,14 +160,14 @@ SeerrNG's calendar API for monthly windows, media filters, permission-gated
 scopes, and administrator-only unmonitored releases. It links normalized
 calendar items to the corresponding Lumen title screens and distinguishes
 partial results, truncation, and empty months. Coming Soon still serves the
-separate discovery workflow. Calendar presentation and title-link behavior
-need rendered qualification on both deployments.
+separate discovery workflow. Fixture-backed browser qualification now covers calendar rendering and title
+links on both deployments; live providers and matched native visuals remain open.
 
 Headed Chrome at 1440 × 1000 rendered the standalone calendar with a timed TV
 episode, an all-day audiobook, and a partial-source warning. Next Month moved the
 fixture query from November to December 2026. The isolated desktop could not
 reach the preview, so verification used a dedicated Agent GUI VM session.
-Narrow and bundled visual acceptance remains open.
+The eight-case calendar suite passes on desktop, iPhone, Android, and tablet in standalone Lumen and the production Express `/lumen/` mount. Narrow native-matched and live-provider visual acceptance remains open.
 
 ### My Media browse increment
 
@@ -4057,7 +4057,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. The selected current-source set now totals 565 passing cases and 15
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. The selected current-source set now totals 573 passing cases and 15
 expected skips per deployment; native visual comparison and live effects remain
 open.
 

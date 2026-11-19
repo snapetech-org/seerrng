@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 test.use({ locale: 'en-US', timezoneId: 'America/Los_Angeles' });
 
 for (const permissions of [2, 32]) {
@@ -11,7 +16,7 @@ for (const permissions of [2, 32]) {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
       const url = new URL(route.request().url());
-      const path = url.pathname.slice('/api/v1'.length);
+      const path = testApiPath(route.request().url());
       if (path === '/calendar') {
         queries.push(url.searchParams);
         if (queries.length === 1) return route.fulfill({ json: {} });
@@ -90,7 +95,7 @@ for (const permissions of [2, 32]) {
             : {},
       });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page.getByRole('link', { name: 'Open Release Calendar' }).click();
     await expect(
       page.getByRole('heading', { name: 'Release Calendar' })
@@ -102,10 +107,13 @@ for (const permissions of [2, 32]) {
     await error.getByRole('button', { name: 'Retry' }).click();
     await expect(
       page.getByRole('link', { name: 'Fixture 4K Movie' })
-    ).toHaveAttribute('href', '/movie/12?quality=4k');
+    ).toHaveAttribute('href', testAppPath('/movie/12?quality=4k'));
     await expect(
       page.getByRole('link', { name: 'Fixture Series' })
-    ).toHaveAttribute('href', '/tv/42?quality=4k&episode=3#season-2');
+    ).toHaveAttribute(
+      'href',
+      testAppPath('/tv/42?quality=4k&episode=3#season-2')
+    );
     await expect(
       page
         .getByRole('listitem')
@@ -114,7 +122,7 @@ for (const permissions of [2, 32]) {
     ).toHaveText(/Jan 11, 2026/);
     await expect(
       page.getByRole('link', { name: 'Fixture Audiobook' })
-    ).toHaveAttribute('href', '/book/hc%3A10?f=audio');
+    ).toHaveAttribute('href', testAppPath('/book/hc%3A10?f=audio'));
     await expect(
       page
         .getByRole('listitem')
@@ -125,7 +133,9 @@ for (const permissions of [2, 32]) {
       page.getByRole('link', { name: 'Local Audiobook' })
     ).toHaveAttribute(
       'href',
-      '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Audiobook'
+      testAppPath(
+        '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Audiobook'
+      )
     );
     await expect(
       page.getByText('Some release sources could not be reached.', {
@@ -159,7 +169,9 @@ for (const permissions of [2, 32]) {
         includeUnmonitored: String(permissions === 2),
       });
     await page.goto(
-      '/calendar?month=2026-02&mediaType=tv&scope=all&includeUnmonitored=true'
+      testAppPath(
+        '/calendar?month=2026-02&mediaType=tv&scope=all&includeUnmonitored=true'
+      )
     );
     await expect(page.getByLabel('Month', { exact: true })).toHaveValue(
       '2026-02'
