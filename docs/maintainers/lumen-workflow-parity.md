@@ -2185,8 +2185,12 @@ and candidate captures are retained under
 
 The production build and four browser checks passed with synthetic movie
 recommendations across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The checks
-covered request payloads, pass, and undo. Catalog decks, gesture controls,
-history, preference editing, and Swipe administration remain open.
+covered request payloads, pass, and undo. Dedicated browser cases also cover
+catalog decks, gesture and keyboard controls, decision history, preference
+editing, and Swipe administration. The full Swipe and admin-Swipe suites passed
+44 cases in the standalone and freshly built bundled deployments across all
+four viewports. Live provider behavior and matched native visual review remain
+open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-20261118/`.
@@ -4027,6 +4031,18 @@ unavailable action on iPhone, and browser checks confirm no horizontal
 overflow. Live provider behavior and bundled acceptance remain open.
 
 ### Lumen regression checkpoint
+
+The SeerrNG embedded Lumen asset was rebuilt from the current frontend before
+the production-mount run; `public/lumen` is ignored build output and can become
+stale unless `pnpm build:lumen` runs first. Against the freshly built asset,
+352 browser cases covering account preferences, household profiles, book
+grouping and requests, requests, acquisition, collections, details, and Swipe
+passed across desktop, iPhone, Android, and tablet. Another 60 account,
+managed-user, and override-rule cases passed through the same production
+Express `/lumen/` mount. The corresponding standalone runs passed the same
+412 selected cases. These fixture-backed runs qualify the bundled asset and
+mount behavior; they do not replace live-provider checks or native visual
+comparison.
 
 The complete standalone Lumen browser suite passed at `11faf2052`: 2,892
 passed, 108 configured skips, and 0 failures across 3,000 desktop, iPhone,

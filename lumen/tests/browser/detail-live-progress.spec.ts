@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+
 for (const kind of ['movie', 'tv']) {
   test(`${kind} live download progress keeps HD and 4K separate`, async ({
     page,
@@ -65,7 +70,7 @@ for (const kind of ['movie', 'tv']) {
       }
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto(`/${kind}/42`);
+    await page.goto(testAppPath(`/${kind}/42`));
     const status = page.locator(kind === 'tv' ? '.dtop' : '.dstatus');
     await expect(
       status.getByText('Downloading 10%', { exact: true })
@@ -198,7 +203,7 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
       ebook: '/book/OL700W',
       audiobook: '/book/OL700W?f=audio',
     }[format]!;
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     const status = page.locator('.dstatus');
     await expect(
       status.getByText(isAudio ? 'Downloading 30%' : 'Downloading 10%', {
@@ -218,14 +223,13 @@ for (const media of ['movie', 'tv']) {
   test(`${media} trailers use a valid YouTube video ID`, async ({
     page,
   }, info) => {
-    const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
     const title = media === 'movie' ? 'Fixture Movie' : 'Fixture Series';
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
     );
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(7);
+      const path = testApiPath(route.request().url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions: 32 } });
       if (path === `/${media}/42` || path === `/${media}/43`) {
@@ -261,7 +265,7 @@ for (const media of ['movie', 'tv']) {
       }
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto(`${mount}/${media}/42`);
+    await page.goto(testAppPath(`/${media}/42`));
     const trailer = page.getByRole('link', { name: 'Trailer', exact: true });
     await expect(trailer).toHaveAttribute(
       'href',
@@ -271,7 +275,7 @@ for (const media of ['movie', 'tv']) {
       path: info.outputPath(`${media}-trailer-valid.png`),
       animations: 'disabled',
     });
-    await page.goto(`${mount}/${media}/43`);
+    await page.goto(testAppPath(`/${media}/43`));
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
     await expect(trailer).toHaveCount(0);
     await page.screenshot({

@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+
 test('series and album details reach their curated collections', async ({
   page,
 }, info) => {
@@ -13,7 +18,7 @@ test('series and album details reach their curated collections', async ({
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = testApiPath(route.request().url());
     if (path === '/request') {
       expect(route.request().method()).toBe('POST');
       tvRequests.push(route.request().postDataJSON());
@@ -138,7 +143,7 @@ test('series and album details reach their curated collections', async ({
       seriesReads.push(path);
     return route.fulfill({ json: entries[path] ?? { results: [] } });
   });
-  await page.goto('/tv/42');
+  await page.goto(testAppPath('/tv/42'));
   await expect(
     page.getByRole('heading', { name: 'Fixture Series' })
   ).toBeVisible();
@@ -150,7 +155,7 @@ test('series and album details reach their curated collections', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Fixture Series', exact: true })
-  ).toHaveAttribute('href', '/tv/42');
+  ).toHaveAttribute('href', testAppPath('/tv/42'));
   await expect(page.getByRole('alert')).toHaveText('Provider unavailable.');
   await page.getByRole('button', { name: 'Refresh Availability' }).click();
   await expect(page.getByTitle('On Plex')).toBeVisible();
@@ -196,14 +201,14 @@ test('series and album details reach their curated collections', async ({
     },
   ]);
   await tvSheet.getByRole('button', { name: 'Close' }).click();
-  await page.goto(`/music/${album}`);
+  await page.goto(testAppPath(`/music/${album}`));
   await page.getByRole('link', { name: 'View Discography' }).click();
   await expect(
     page.getByRole('heading', { name: 'Fixture Discography' })
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Back to Album' })
-  ).toHaveAttribute('href', `/music/${album}`);
+  ).toHaveAttribute('href', testAppPath(`/music/${album}`));
   await expect(page.getByText('FLAC', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Refresh Availability' })
@@ -268,7 +273,7 @@ test('TV collection quota override enables otherwise restricted requests', async
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = testApiPath(route.request().url());
     if (path === '/request' && route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
       requests.push(body);
@@ -308,7 +313,7 @@ test('TV collection quota override enables otherwise restricted requests', async
     };
     return route.fulfill({ json: responses[path] ?? { results: [] } });
   });
-  await page.goto('/collections/tv/19');
+  await page.goto(testAppPath('/collections/tv/19'));
   await page.getByRole('button', { name: 'Request Series' }).click();
   const sheet = page.getByRole('dialog', { name: 'Request Series' });
   const submit = sheet.getByRole('button', { name: 'Request Selected Series' });
@@ -341,14 +346,13 @@ for (const kind of ['tv', 'music']) {
   test(`curated ${kind} blocklisting confirms the exact eligible member`, async ({
     page,
   }) => {
-    const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
     const id = kind === 'tv' ? '42' : '62a8e15d-a5f1-4213-a794-e10e0150e945';
     const blockedId =
       kind === 'tv' ? '43' : '60a8e15d-a5f1-4213-a794-e10e0150e946';
     let writes = 0;
     let associationReads = 0;
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(7);
+      const path = testApiPath(route.request().url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions: 268435456 } });
       if (path === '/settings/public')
@@ -427,11 +431,11 @@ for (const kind of ['tv', 'music']) {
         });
       return route.fulfill({ json: { count: 0 } });
     });
-    await page.goto(`${mount}/collections/${kind}/19`);
+    await page.goto(testAppPath(`/collections/${kind}/19`));
     expect(associationReads).toBe(0);
     await page.getByText('Collection Associations', { exact: true }).click();
     const related = page.getByRole('link', { name: 'Related Person' });
-    await expect(related).toHaveAttribute('href', `${mount}/person/91`);
+    await expect(related).toHaveAttribute('href', testAppPath('/person/91'));
     await expect(page.getByText('Strongest match')).toBeVisible();
     await expect(page.getByText('Internal Member')).toHaveCount(0);
     expect(associationReads).toBe(2);
@@ -466,7 +470,6 @@ for (const kind of ['tv', 'music']) {
 test('collection server sync adds visible verified IDs and removes the confirmed remote library', async ({
   page,
 }) => {
-  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
   const removalToken = 'a'.repeat(64);
   const parts = [{ id: '42', title: 'Fixture Series' }];
   let exists = false;
@@ -486,7 +489,7 @@ test('collection server sync adds visible verified IDs and removes the confirmed
   }
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const pathname = new URL(request.url()).pathname.slice(7);
+    const pathname = testApiPath(request.url());
     switch (pathname) {
       case '/auth/me':
         return route.fulfill({ json: { id: 1, permissions: 2 } });
@@ -527,7 +530,7 @@ test('collection server sync adds visible verified IDs and removes the confirmed
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto(`${mount}/collections/tv/19`);
+  await page.goto(testAppPath('/collections/tv/19'));
   await page.getByRole('button', { name: 'Add to Media Server' }).click();
   const add = page.getByRole('dialog', {
     name: 'Add Collection to Media Server',

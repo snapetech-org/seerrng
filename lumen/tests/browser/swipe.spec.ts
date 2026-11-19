@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 test('Swipe records decisions and restores or clears history', async ({
   page,
 }, info) => {
@@ -63,7 +66,7 @@ test('Swipe records decisions and restores or clears history', async ({
       json: path.endsWith('/undo') ? { card: cards[1] } : {},
     });
   });
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await expect(page.getByRole('heading', { name: 'First Film' })).toBeVisible();
   await expect(page.locator('.gesture-surface img')).toHaveAttribute(
     'src',
@@ -198,7 +201,7 @@ test('saved Swipe preferences apply to the active series deck', async ({
       decisions.push(request.postDataJSON());
     return route.fulfill({ json: {} });
   });
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await page.getByText('Swipe Preferences', { exact: true }).click();
   await page
     .getByRole('combobox', { name: 'Series Request Default' })
@@ -296,7 +299,7 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
     if (request.method() === 'POST') writes.push(request.postDataJSON());
     return route.fulfill({ json: {} });
   });
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await expect(page.getByRole('heading', { name: 'New Issue' })).toBeVisible();
   await page.getByLabel('Search Titles').fill('Issue');
   await page.getByRole('button', { name: 'Search Deck' }).click();
@@ -384,7 +387,7 @@ test('Swipe software requests use the chosen PC variant and next catalog offset'
       writes.push({ path, body: request.postDataJSON() });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await expect(page.getByRole('heading', { name: 'First Game' })).toBeVisible();
   const request = page.getByRole('button', { name: 'Request', exact: true });
   await expect(request).toBeDisabled();
@@ -464,7 +467,7 @@ test('Swipe software title search follows and retains the catalog cursor', async
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await page
     .getByRole('combobox', { name: 'Category' })
     .selectOption('software-game');
@@ -556,7 +559,7 @@ test('Swipe software decks preserve category filters and exact request targets',
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   const category = page.getByRole('combobox', { name: 'Category' });
   await category.selectOption('software-retro');
   await expect(

@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 for (const permissions of [0, 4, 32, 2]) {
   test(`Swipe navigation follows request access (permissions: ${permissions})`, async ({
     page,
@@ -9,7 +12,9 @@ for (const permissions of [0, 4, 32, 2]) {
       route.fulfill({ json: {} })
     );
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(7);
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen(?=\/)/, '')
+        .slice(7);
       if (path === '/auth/me')
         return route.fulfill({
           json: { id: 1, displayName: 'Viewer', permissions },
@@ -24,7 +29,7 @@ for (const permissions of [0, 4, 32, 2]) {
     });
 
     const canUseSwipe = (permissions & (2 | 32)) !== 0;
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
     if (desktop) {
       const nav = page.getByRole('navigation', { name: 'Main', exact: true });
@@ -95,7 +100,7 @@ test('Swipe settings test the provider and save enablement without resending its
     }
     return route.fulfill({ json: saved });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Swipe Settings' }).click();
   await page.getByLabel('Enable Swipe').check();
   await page
