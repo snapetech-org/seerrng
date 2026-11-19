@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
 import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import {
@@ -34,7 +35,7 @@ function createApp() {
   app.use(express.json());
   app.use(
     session({
-      secret: 'test-secret',
+      secret: randomBytes(32).toString('hex'),
       cookie: { secure: 'auto' },
       resave: false,
       saveUninitialized: false,
