@@ -31,8 +31,8 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
     };
   });
   for (const [path, id] of [
-    ['/me/account#password', 'password'],
-    ['/me/account/tv-requests#episode-queue', 'episode-queue'],
+    ['./me/account#password', 'password'],
+    ['./me/account/tv-requests#episode-queue', 'episode-queue'],
   ]) {
     await page.goto(path);
     await expect(page.locator(`section#${id}`)).toHaveAttribute(
@@ -98,7 +98,7 @@ test('account settings preserve failed profile edits and save only changes and p
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/me');
+  await page.goto('./me');
   await page.getByRole('link', { name: 'Open Account Settings' }).click();
   const displayName = page.getByLabel('Display Name');
   await expect(displayName).toHaveValue('Viewer');
@@ -173,7 +173,7 @@ test('watchlist preferences honor account type and category permissions and pers
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account');
+  await page.goto('./me/account');
   const music = page.getByRole('checkbox', { name: 'Auto-Request Music' });
   await expect(music).toBeChecked();
   await expect(page.getByLabel('Auto-Request Movies')).toHaveCount(0);

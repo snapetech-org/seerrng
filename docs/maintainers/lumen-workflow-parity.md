@@ -1771,6 +1771,13 @@ and the confirmed save feedback. Express and nginx bookmark checks and
 12 standalone account browser checks passed across the four viewport
 presets. Matched native visual acceptance remains unverified.
 
+Account Settings shows the signed-in member's account type and role.
+Twelve browser cases passed per deployment with API fixtures. The
+bundled suite covered the Jellyfin account label, member role,
+password and Episode Queue anchors, and profile save and retry.
+Matched visual review remains open. Classic's Advanced Theme Overrides
+editor still needs a Lumen equivalent.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the
