@@ -3682,3 +3682,10 @@ links to the application API key and 4K controls using browser API fixtures.
 The bundled Express build of `7a46f151f` also passed desktop and iPhone
 checks with real local sign-in and an isolated application API key.
 Both search results scrolled the corresponding controls into view.
+
+Administration search also opens Spotify Playlist Import and Steam Library
+Import. The standalone build at 1440 and 390 CSS pixels retained a
+pixel-identical unfiltered directory and showed both new results without
+horizontal overflow. Browser fixtures confirmed that selecting each result
+scrolls its credential control into view. Provider setup and bundled
+verification of these two additions remain open.

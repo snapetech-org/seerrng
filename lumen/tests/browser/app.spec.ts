@@ -6198,7 +6198,7 @@ test('Administration searches all settings and opens exact controls', async ({
   await expect(page).toHaveURL(/\/admin\/general#enable4k$/);
 });
 
-test('Steam settings bookmark brings the key field into view', async ({
+test('Administration search brings the Steam key field into view', async ({
   page,
 }) => {
   await fixtures(page);
@@ -6211,7 +6211,14 @@ test('Steam settings bookmark brings the key field into view', async ({
       },
     })
   );
-  await page.goto('/admin/software-acquisition#steam-library-import');
+  await page.goto('/admin');
+  await page
+    .getByRole('searchbox', { name: 'Search Settings' })
+    .fill('steam key');
+  await page.getByRole('link', { name: 'Open Steam Library Import' }).click();
+  await expect(page).toHaveURL(
+    /\/admin\/software-acquisition#steam-library-import$/
+  );
   await expect(
     page.getByRole('heading', { name: 'Steam Library Import' })
   ).toBeInViewport();
@@ -7507,12 +7514,20 @@ test('General Settings shortcuts scroll to their controls after settings load', 
       },
     })
   );
-  for (const [anchor, label] of [
-    ['enable4k', 'Enable 4K'],
-    ['spotifyClientId', 'Spotify Client ID'],
-    ['apiKey', 'API Key'],
+  for (const [anchor, label, query, result] of [
+    ['enable4k', 'Enable 4K', 'uhd', '4K Requests'],
+    [
+      'spotifyClientId',
+      'Spotify Client ID',
+      'spotify client id',
+      'Spotify Playlist Import',
+    ],
+    ['apiKey', 'API Key', 'apikey', 'Application API Key'],
   ] as const) {
-    await page.goto(`/admin/general#${anchor}`);
+    await page.goto('/admin');
+    await page.getByRole('searchbox', { name: 'Search Settings' }).fill(query);
+    await page.getByRole('link', { name: `Open ${result}` }).click();
+    await expect(page).toHaveURL(`/admin/general#${anchor}`);
     const control = page.getByLabel(label, { exact: true });
     await expect(control).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: info.outputPath(`settings-${anchor}.png`) });

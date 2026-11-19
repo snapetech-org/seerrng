@@ -81,6 +81,16 @@ const shortcuts = [
   ['4K Requests', '/admin/general#enable4k', '4k uhd ultra hd'],
   ['Application API Key', '/admin/general#apiKey', 'apikey token'],
   [
+    'Spotify Playlist Import',
+    '/admin/general#spotifyClientId',
+    'spotify client id secret credentials',
+  ],
+  [
+    'Steam Library Import',
+    '/admin/software-acquisition#steam-library-import',
+    'steam api key apikey credentials',
+  ],
+  [
     'Default Request Quotas',
     '/admin/general#default-request-quotas',
     'limit limits quotas',
