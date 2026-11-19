@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. | Complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Lumen does not expose the native per-user display-language setting and its interface is English-only. | Complete the full settings role matrix and failure recovery; restore per-user display-language selection and localize Lumen; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 Discover previously issued its default-on catalog requests before the
@@ -57,6 +57,27 @@ provider content and native-matched visuals remain open.
    populated states, and authorized interactions against isolated fixtures.
    Include direct-link denial for unauthorized actions and both deployments.
    Track retired gaps here with the version and evidence that closed them.
+
+### Lumen localization gap
+
+Native SeerrNG persists the user's selected interface locale and ships a
+generated 38-locale registry with names, direction, fallback metadata, and
+message catalogs. Lumen currently has no translation runtime and hard-codes
+English throughout its routes and shared components. Its account settings also
+omit the persisted `locale` field. This is a feature gap: adding a selector
+without making Lumen render that locale would falsely imply that the setting
+works in the selected interface.
+
+The localization implementation must reuse the existing locale identifiers,
+fallbacks, and right-to-left metadata; load the saved locale from the existing
+per-user settings endpoint; persist changes through the same endpoint; and
+translate Lumen's user-visible navigation, states, forms, errors, and actions.
+Use stable message IDs instead of reverse-matching English strings: an initial
+source audit found duplicate English catalog values and significant Lumen text
+that has no exact native catalog entry. Verify the saved choice after reload,
+locale fallback, and right-to-left layout in standalone and bundled Lumen.
+Human linguistic review remains separate from technical locale selection and
+fallback behavior.
 
 ### Open gap in personal discovery accounts
 
