@@ -74,13 +74,44 @@ const searchTitleCollator = new Intl.Collator(undefined, {
   sensitivity: 'base',
 });
 
-function sortSearchTitles<T extends { title?: string; name?: string }>(
-  items: T[],
+type SearchSortFields = {
+  title?: string;
+  name?: string;
+  releaseDate?: string;
+  firstAirDate?: string;
+  firstPublishYear?: number;
+  'first-release-date'?: string;
+  startYear?: string;
+  year?: number;
+};
+
+function searchDate(item: SearchSortFields) {
+  const value = String(
+    item.releaseDate ||
+      item.firstAirDate ||
+      item['first-release-date'] ||
+      item.firstPublishYear ||
+      item.startYear ||
+      item.year ||
+      ''
+  );
+  return /^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(value) &&
+    Number.isFinite(Date.parse(value))
+    ? value
+    : '';
+}
+
+function sortSearchResults<T extends SearchSortFields>(
+  items: T[] | null,
+  field: string | null,
   order: 'asc' | 'desc'
 ) {
+  if (!items || (field !== 'title' && field !== 'date')) return items ?? [];
+  const value =
+    field === 'date' ? searchDate : (item: T) => item.title || item.name;
   return [...items].sort((left, right) => {
-    const a = left.title || left.name;
-    const b = right.title || right.name;
+    const a = value(left);
+    const b = value(right);
     if (!a || !b) return Number(!a) - Number(!b);
     return searchTitleCollator.compare(a, b) * (order === 'desc' ? -1 : 1);
   });
@@ -362,11 +393,15 @@ function SearchResults({
       : f === 'comic'
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
-  const titleOrder = p.get('order') === 'desc' ? 'desc' : 'asc';
-  const byTitle = p.get('sort') === 'title';
-  const orderedTitles = byTitle
-    ? sortSearchTitles(titles ?? [], titleOrder)
-    : (titles ?? []);
+  const sortField = p.get('sort');
+  const requestedOrder = p.get('order');
+  const sortOrder =
+    requestedOrder === 'asc' || requestedOrder === 'desc'
+      ? requestedOrder
+      : sortField === 'title'
+        ? 'asc'
+        : 'desc';
+  const orderedTitles = sortSearchResults(titles, sortField, sortOrder);
   const people =
     f === 'all'
       ? orderedTitles.filter((t): t is TitleResult => t.mediaType === 'person')
@@ -393,12 +428,8 @@ function SearchResults({
   const leagues = orderedTitles.filter(
     (item): item is League => item.mediaType === 'sports'
   );
-  const bookCards = byTitle
-    ? sortSearchTitles(books ?? [], titleOrder)
-    : (books ?? []);
-  const comicCards = byTitle
-    ? sortSearchTitles(comics ?? [], titleOrder)
-    : (comics ?? []);
+  const bookCards = sortSearchResults(books, sortField, sortOrder);
+  const comicCards = sortSearchResults(comics, sortField, sortOrder);
   const nothing =
     titles !== null &&
     books !== null &&
@@ -480,19 +511,26 @@ function SearchResults({
             <label className="sel">
               <span className="lbl">Sort Results</span>
               <select
-                value={byTitle ? titleOrder : ''}
+                value={
+                  sortField === 'title' || sortField === 'date'
+                    ? `${sortField}:${sortOrder}`
+                    : ''
+                }
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
                   next.delete('sort');
                   next.delete('order');
-                  if (event.target.value) next.set('sort', 'title');
-                  if (event.target.value === 'desc') next.set('order', 'desc');
+                  const [field, order] = event.target.value.split(':');
+                  if (field) next.set('sort', field);
+                  if (order) next.set('order', order);
                   setP(next, { replace: true });
                 }}
               >
                 <option value="">Best Match</option>
-                <option value="asc">Title A–Z</option>
-                <option value="desc">Title Z–A</option>
+                <option value="title:asc">Title A–Z</option>
+                <option value="title:desc">Title Z–A</option>
+                <option value="date:desc">Newest First</option>
+                <option value="date:asc">Oldest First</option>
               </select>
             </label>
           </div>

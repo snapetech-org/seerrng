@@ -2975,11 +2975,13 @@ standalone and bundled Lumen confirmed that an invalid leap day
 blocks requests until the dates are cleared. Matched visual review
 remains open.
 
-Search offers title sorting in both directions within each result group
-on the current page. Classic title-sort bookmarks retain their direction.
-Two server route checks and four browser fixture checks exercised the
-Series result order and switching back to Best Match. Other Classic sort
-fields, whole-result ordering, and matched visual review remain open.
+Search offers title and date sorting in both directions within each
+result group on the current page. Classic bookmarks retain the sort
+field and direction. Undated results follow dated results in either
+direction. Two server route checks and four browser fixture checks
+exercised Series result order, missing dates, and restoration of Best
+Match. Other Classic sort fields, whole-result ordering, and matched
+visual review remain open.
 
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched

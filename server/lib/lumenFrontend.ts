@@ -673,9 +673,10 @@ function workflowDeepLink(
     const term = q ?? legacyTerm;
     const type = f ?? legacyType;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
-    if (req.query.sort === 'title') {
-      query.set('sort', 'title');
-      if (req.query.order === 'desc') query.set('order', 'desc');
+    if (req.query.sort === 'title' || req.query.sort === 'date') {
+      query.set('sort', req.query.sort);
+      if (req.query.order === 'asc' || req.query.order === 'desc')
+        query.set('order', req.query.order);
     }
     if (type === 'software') {
       for (const key of ['category', 'game', 'catalogProvider']) {

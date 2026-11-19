@@ -4163,8 +4163,19 @@ test('native search bookmarks retain the decoded term and media scope', async ({
     return route.fulfill({
       json: paged([
         { ...movie, title: 'Bookmark Film' },
-        { id: 202, mediaType: 'tv', name: 'Bookmark Series' },
-        { id: 203, mediaType: 'tv', name: 'Another Series' },
+        {
+          id: 202,
+          mediaType: 'tv',
+          name: 'Bookmark Series',
+          firstAirDate: '2020-03-01',
+        },
+        {
+          id: 203,
+          mediaType: 'tv',
+          name: 'Another Series',
+          firstAirDate: '2024-03-01',
+        },
+        { id: 204, mediaType: 'tv', name: 'Undated Series' },
       ]),
     });
   });
@@ -4181,11 +4192,17 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   );
   expect(queries).toContain('A & B');
   const seriesLinks = page.getByRole('link', {
-    name: /^(Bookmark|Another) Series$/,
+    name: /^(Bookmark|Another|Undated) Series$/,
   });
-  await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
-  await page.getByLabel('Sort Results').selectOption('asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Undated Series');
+  await page.getByLabel('Sort Results').selectOption('title:asc');
   await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  await page.getByLabel('Sort Results').selectOption('date:asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
+  await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
+  await page.getByLabel('Sort Results').selectOption('date:desc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
   await page.getByLabel('Sort Results').selectOption('');
   await page.getByRole('button', { name: 'Movies', exact: true }).click();
   await expect(page).toHaveURL(/\/search\?q=A\+%26\+B&f=movie$/);
