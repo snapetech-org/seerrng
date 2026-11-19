@@ -657,6 +657,11 @@ function workflowDeepLink(
     if (value.length <= limit) query.set(key, value);
   }
 
+  if (destination === '/books' || destination === '/audiobooks') {
+    if (req.query.libraryView === 'available') query.set('show', 'have');
+    if (req.query.libraryView === 'missing') query.set('show', 'not');
+  }
+
   if (destination === '/share' && req.query.image === '1') {
     query.set('image', '1');
   }

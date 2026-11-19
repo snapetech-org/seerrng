@@ -198,7 +198,12 @@ server {
   location ~ ^/discover/games/?$ {
     return 302 /games/discovery;
   }
-  location ~ ^/discover/(adult|audiobooks|books|comics|magazines|music|patches|providers|sports)/?$ {
+  location ~ ^/discover/(?<book_catalog>books|audiobooks)/?$ {
+    if ($arg_libraryView = available) { return 302 /$book_catalog?show=have&$args; }
+    if ($arg_libraryView = missing) { return 302 /$book_catalog?show=not&$args; }
+    return 302 /$book_catalog$is_args$args;
+  }
+  location ~ ^/discover/(adult|comics|magazines|music|patches|providers|sports)/?$ {
     return 302 /$1$is_args$args;
   }
   location ~ "^/discover/list/([1-9][0-9]{0,9})/?$" {

@@ -160,6 +160,15 @@ async function check(settings, clientIp, scheme, headers = {}) {
         '/requests/by-user/19?requestedBy=11&filter=pending&mediaType=movie&timeFrame=7d&sort=added&sortDirection=asc',
       ],
       ['/discover/comics?q=Example', '/comics?q=Example'],
+      [
+        '/discover/books?libraryView=available&subject=History',
+        '/books?show=have&libraryView=available&subject=History',
+      ],
+      [
+        '/discover/books?format=audiobook&libraryView=missing&narrator=Reader',
+        '/books?show=not&format=audiobook&libraryView=missing&narrator=Reader',
+      ],
+      ['/discover/audiobooks?libraryView=all', '/audiobooks?libraryView=all'],
       ['/discover/watchlist/?page=3', '/watchlist/discover?page=3'],
       [
         '/discover/movies/studio/42?sortBy=vote_average.desc',

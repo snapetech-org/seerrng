@@ -337,6 +337,15 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         '/lumen/audiobooks?narrator=Reader&sortBy=oldest',
       ],
       ['/discover/books?subject=History', '/lumen/books?subject=History'],
+      [
+        '/discover/books?libraryView=available&subject=History',
+        '/lumen/books?subject=History&show=have',
+      ],
+      [
+        '/discover/books?format=audiobook&libraryView=missing&narrator=Reader',
+        '/lumen/audiobooks?narrator=Reader&show=not',
+      ],
+      ['/discover/audiobooks?libraryView=all', '/lumen/audiobooks'],
     ]) {
       const response = await request(app).get(bookmark);
       assert.equal(response.status, 302);
