@@ -1273,6 +1273,7 @@ export const apiMessages: Record<
   m59487f06e706527dfbb5: '[Whisparr] Failed to accept the scene request.',
   m594a332a6901f1f3e31b:
     'Open Library and configured book catalogs are unavailable. Please try again.',
+  m5982fd2f9194f7d12a44: 'The start date must be on or before the end date.',
   m598e51772ee6293dfa91: 'Navidrome URL must be a valid HTTP or HTTPS address.',
   m598f6ef74576799a3399: '{value0} exceeds {value1} bytes',
   m59a574094fb09d329119: 'You can have up to {value0} active track requests.',
@@ -1487,6 +1488,7 @@ export const apiMessages: Record<
     '[Sportarr] Failed to retrieve cover for league {value0}: No advertised cover was available',
   m6909fb6f491b7f6d5be3: "The slskdN API key''s role cannot use {value0}.",
   m690c75bc734b849aa2af: '[Sportarr] Failed to retrieve leagues: {value0}',
+  m691b4fa5d8b53fa57bfb: 'This job cannot be canceled.',
   m69285fc68224336454a0:
     'The connected book service reported a download or import failure. Check its queue or logs for the cause, fix it there, then retry here.',
   m693680c12afb5ab5a461: '{value0} is connected to this',
@@ -1686,6 +1688,7 @@ export const apiMessages: Record<
   m765a84376ffccbbec466: 'Servarr returned an invalid tag',
   m767d4feb29e2237d0703: 'mediaId must be a canonical StashDB scene ID.',
   m767e0fab9b99d06ad7d1: 'Subscription failed',
+  m768849b5a883ac4dc9fe: 'Invalid advanced theme changes.',
   m768cb3be7ae9fe62e497: 'mediaId must be a valid MusicBrainz resource ID.',
   m76e99a0f8b7a5e204524: 'Image response is not a supported raster image.',
   m770e3c614abd860863b4: 'Open Library returned an invalid {value0}.',
@@ -2986,6 +2989,7 @@ export const apiMessages: Record<
   md62257fc3735aaa4c39c: 'IndexedDB error',
   md639796f4a88dc2362e2: 'Unable to retrieve series by network.',
   md63b7a30de8053b2cf6f: '[TMDB] Failed to fetch TV network: {value0}',
+  md63ccf53deb3c68604ff: 'Invalid advanced theme change.',
   md64da26a4fea6ab8edf0: 'Invalid magazine identity.',
   md65b62a043841d865b8e: 'Failed to proxy image.',
   md69f27a12a581e241238: '{value0} must not end with a slash.',
