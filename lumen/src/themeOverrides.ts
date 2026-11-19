@@ -9,3 +9,9 @@ export const themeColors = [
 
 export const isThemeColor = (value: unknown): value is string =>
   typeof value === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(value);
+
+export function normalizeThemeColor(value: unknown): string | undefined {
+  if (!isThemeColor(value)) return undefined;
+  const hex = value.toLowerCase().slice(1);
+  return `#${hex.length === 3 ? [...hex].map((digit) => digit + digit).join('') : hex}`;
+}

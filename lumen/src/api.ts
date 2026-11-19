@@ -241,7 +241,7 @@ export interface User {
   warnings?: string[];
   tvSeasonWatchGateStatus?: string;
   settings?: {
-    advancedThemeOverrides?: Record<string, string> | null;
+    advancedThemeOverrides?: Record<string, string | number> | null;
     detailDisclosureCastPinned?: boolean;
     detailDisclosureCrewPinned?: boolean;
     detailDisclosureSubjectTagsPinned?: boolean;

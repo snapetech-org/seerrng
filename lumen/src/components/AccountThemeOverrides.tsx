@@ -3,7 +3,11 @@ import { api } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { sessionGeneration } from '../sessionState';
-import { isThemeColor, themeColors } from '../themeOverrides';
+import {
+  isThemeColor,
+  normalizeThemeColor,
+  themeColors,
+} from '../themeOverrides';
 import { Section } from './cards';
 
 export default function AccountThemeOverrides() {
@@ -37,8 +41,22 @@ export default function AccountThemeOverrides() {
         method: 'POST',
         body: JSON.stringify({ overrides }),
       });
-      await refresh();
+      const confirmed = await refresh();
       if (generation !== sessionGeneration()) return;
+      const readback = confirmed?.settings?.advancedThemeOverrides;
+      if (
+        !confirmed ||
+        Object.keys(draft).some(
+          (key) =>
+            normalizeThemeColor(readback?.[key]) !==
+            normalizeThemeColor(overrides[key])
+        )
+      ) {
+        setError(
+          'The server accepted the save, but Lumen could not confirm the updated colors.'
+        );
+        return;
+      }
       setDraft({});
       setNotice('Theme colors saved.');
     } catch (cause) {

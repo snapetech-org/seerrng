@@ -15,13 +15,13 @@ import { resetSessionState } from './sessionState';
 interface AuthState {
   user: User | null | undefined; // undefined = still checking
   unreachable: boolean; // /auth/me couldn't be answered (not the same as signed out)
-  refresh: () => Promise<void>;
+  refresh: () => Promise<User | undefined>;
   signOut: () => Promise<void>;
 }
 const Ctx = createContext<AuthState>({
   user: undefined,
   unreachable: false,
-  refresh: async () => {},
+  refresh: async () => undefined,
   signOut: async () => {},
 });
 export const useAuth = () => useContext(Ctx);
@@ -58,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (request === authRequest.current) {
           setUnreachable(false);
           setPrincipal(next);
+          return next;
         }
       } catch (e) {
         if (request !== authRequest.current) return;

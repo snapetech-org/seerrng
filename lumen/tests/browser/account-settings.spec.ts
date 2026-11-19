@@ -193,6 +193,7 @@ test('account theme colors preserve stored overrides for other controls', async 
 }) => {
   const classicOnly = { '--theme-overlay-menu': '#112233' };
   let overrides: Record<string, string> = { ...classicOnly };
+  let fail = true;
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname.slice(7);
@@ -205,7 +206,16 @@ test('account theme colors preserve stored overrides for other controls', async 
         },
       });
     if (path === '/user/2/settings/advanced-theme') {
+      if (fail) {
+        fail = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Theme save unavailable.' },
+        });
+      }
       overrides = request.postDataJSON().overrides;
+      if (overrides['--theme-page-bg'] === '#123')
+        overrides['--theme-page-bg'] = '#112233';
       return route.fulfill({ json: { advancedThemeOverrides: overrides } });
     }
     return route.fulfill({ json: {} });
@@ -215,10 +225,14 @@ test('account theme colors preserve stored overrides for other controls', async 
   const save = page.getByRole('button', { name: 'Save Theme Colors' });
   await background.fill('invalid');
   await expect(save).toBeDisabled();
-  await background.fill('#123456');
+  await background.fill('#123');
+  await save.click();
+  await expect(page.getByText('Theme save unavailable.')).toBeVisible();
+  await expect(background).toHaveValue('#123');
+  expect(overrides).toEqual(classicOnly);
   await save.click();
   await expect(page.getByText('Theme colors saved.')).toBeVisible();
-  expect(overrides).toEqual({ ...classicOnly, '--theme-page-bg': '#123456' });
+  expect(overrides).toEqual({ ...classicOnly, '--theme-page-bg': '#112233' });
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -227,7 +241,9 @@ test('account theme colors preserve stored overrides for other controls', async 
           .trim()
       )
     )
-    .toBe('#123456');
+    .toBe('#112233');
+  await page.reload();
+  await expect(background).toHaveValue('#112233');
   await background.fill('');
   await save.click();
   await expect(page.getByText('Theme colors saved.')).toBeVisible();
