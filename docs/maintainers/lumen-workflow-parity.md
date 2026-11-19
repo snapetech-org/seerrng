@@ -67,6 +67,14 @@ their providers answer. Four browser cases verify exact destinations and no
 horizontal overflow at desktop, iPhone, Android and tablet widths. Live
 provider content and native-matched visuals remain open.
 
+These optional desktop links and Discover chips now use locale message IDs
+instead of the English labels stored in the catalog metadata. English, French,
+and Arabic fixtures verify all six translated labels and their destinations at
+desktop, iPhone, Android, and tablet widths. The same native link and chip
+owners remain in place; candidate renders were checked against English-label
+baselines with no clipping or horizontal overflow. Independent linguistic
+review and full-production-mount verification remain open.
+
 ## Delivery and verification
 
 1. Start with household library workflows. Add the feed and saved-item screens

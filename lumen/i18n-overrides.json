@@ -108,7 +108,9 @@
     "lumen.shell.back": "Back",
     "lumen.shell.openFullSeerrNG": "open full SeerrNG",
     "lumen.shell.pageNotFound": "Page not found",
-    "lumen.shell.or": "or"
+    "lumen.shell.or": "or",
+    "lumen.nav.comicsManga": "Comics/Manga",
+    "lumen.nav.games": "Games"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -289,7 +291,9 @@
     "lumen.shell.back": "Retour",
     "lumen.shell.openFullSeerrNG": "ouvrir SeerrNG en entier",
     "lumen.shell.pageNotFound": "Page introuvable",
-    "lumen.shell.or": "ou"
+    "lumen.shell.or": "ou",
+    "lumen.nav.comicsManga": "BD/Manga",
+    "lumen.nav.games": "Jeux"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -466,6 +470,8 @@
     "lumen.shell.back": "عودة",
     "lumen.shell.openFullSeerrNG": "فتح واجهة SeerrNG كاملة",
     "lumen.shell.pageNotFound": "الصفحة غير موجودة",
-    "lumen.shell.or": "أو"
+    "lumen.shell.or": "أو",
+    "lumen.nav.comicsManga": "قصص مصورة/مانغا",
+    "lumen.nav.games": "ألعاب"
   }
 }

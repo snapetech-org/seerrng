@@ -261,5 +261,11 @@
   "lumen.shell.back",
   "lumen.shell.openFullSeerrNG",
   "lumen.shell.pageNotFound",
-  "lumen.shell.or"
+  "lumen.shell.or",
+  "components.Layout.Sidebar.browsemusic",
+  "components.Layout.Sidebar.browsemagazines",
+  "components.Layout.Sidebar.browsesports",
+  "components.Layout.Sidebar.browseadult",
+  "lumen.nav.comicsManga",
+  "lumen.nav.games"
 ]

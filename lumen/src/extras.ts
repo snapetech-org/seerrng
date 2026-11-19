@@ -19,13 +19,50 @@ export const EXTRAS: {
   path: string;
   icon: IconName;
   label: string;
+  message: string;
 }[] = [
-  { key: 'music', path: '/music', icon: 'music', label: 'Music' },
-  { key: 'comic', path: '/comics', icon: 'comic', label: 'Comics/Manga' },
-  { key: 'magazine', path: '/magazines', icon: 'magazine', label: 'Magazines' },
-  { key: 'game', path: '/games', icon: 'game', label: 'Games' },
-  { key: 'sports', path: '/sports', icon: 'trophy', label: 'Sports' },
-  { key: 'adult', path: '/adult', icon: 'lock', label: 'Adult' },
+  {
+    key: 'music',
+    path: '/music',
+    icon: 'music',
+    label: 'Music',
+    message: 'components.Layout.Sidebar.browsemusic',
+  },
+  {
+    key: 'comic',
+    path: '/comics',
+    icon: 'comic',
+    label: 'Comics/Manga',
+    message: 'lumen.nav.comicsManga',
+  },
+  {
+    key: 'magazine',
+    path: '/magazines',
+    icon: 'magazine',
+    label: 'Magazines',
+    message: 'components.Layout.Sidebar.browsemagazines',
+  },
+  {
+    key: 'game',
+    path: '/games',
+    icon: 'game',
+    label: 'Games',
+    message: 'lumen.nav.games',
+  },
+  {
+    key: 'sports',
+    path: '/sports',
+    icon: 'trophy',
+    label: 'Sports',
+    message: 'components.Layout.Sidebar.browsesports',
+  },
+  {
+    key: 'adult',
+    path: '/adult',
+    icon: 'lock',
+    label: 'Adult',
+    message: 'components.Layout.Sidebar.browseadult',
+  },
 ];
 export const GAME_LABEL: Record<GameCategory, string> = {
   game: 'PC games',

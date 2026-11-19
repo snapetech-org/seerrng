@@ -30,6 +30,7 @@ import {
 } from '../discoveryVisibility';
 import { useExtras } from '../extras';
 import { cachedApi, useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import {
   enrichRecentMediaTitles,
@@ -102,6 +103,7 @@ const CHIPS: [IconName, string, string][] = [
 ];
 
 export default function Discover() {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const { prefs, adminConfigState } = usePrefs();
   // Admin defaults arrive asynchronously. Do not mount optional shelves or
@@ -197,7 +199,7 @@ export default function Discover() {
             {extras.list.map((e) => (
               <Link key={e.path} className="chip" to={e.path}>
                 <Icon name={e.icon} />
-                {e.label}
+                {t(e.message, e.label)}
               </Link>
             ))}
           </div>

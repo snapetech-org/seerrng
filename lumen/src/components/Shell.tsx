@@ -320,7 +320,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               className={({ isActive }) => (isActive ? 'active' : '')}
             >
               <Icon name={e.icon} />
-              {e.label}
+              {t(e.message, e.label)}
             </NavLink>
           ))}
           {canUseShare(user?.permissions) && (
