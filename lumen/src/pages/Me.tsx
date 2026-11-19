@@ -202,6 +202,12 @@ export default function Me() {
             </Link>
           </div>
           <div className="set">
+            <b>Coming soon</b>
+            <Link className="go" to="/soon" aria-label="Open Coming soon">
+              Open <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+          <div className="set">
             <b>Watchlist</b>
             <Link className="go" to="/watchlist" aria-label="Open Watchlist">
               Open <Icon name="chev" size="sm" />

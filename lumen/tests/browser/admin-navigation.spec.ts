@@ -36,6 +36,26 @@ async function session(page: Page, permissions: unknown, configured?: string) {
   });
 }
 
+test('Coming soon is reachable from You on every screen size', async ({
+  page,
+}) => {
+  await session(page, 32);
+  await page.goto(testAppPath('/me'));
+  const link = page.getByRole('link', {
+    name: 'Open Coming soon',
+    exact: true,
+  });
+  await expect(link).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  await link.click();
+  await expect(page).toHaveURL(/\/soon$/);
+  await expect(
+    page.getByRole('heading', { name: 'Coming soon', exact: true })
+  ).toBeVisible();
+});
+
 test('administration is visible in navigation and at the start of You', async ({
   page,
 }, info) => {

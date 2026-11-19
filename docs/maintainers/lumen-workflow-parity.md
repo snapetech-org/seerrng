@@ -4012,6 +4012,17 @@ baseline and candidate layouts; the new row uses the existing settings-list
 owner with no horizontal overflow. Live Prowlarr handoff and bundled visual
 acceptance remain open.
 
+Coming Soon was available in desktop navigation but could be unreachable on
+mobile when its Discover shelf was hidden or empty. The You page's Library
+section now links to `/soon`; four browser cases per deployment verify the
+entry, route, and no horizontal overflow across desktop, iPhone, Android, and
+tablet.
+Matching 390 × 844 CSS-pixel standalone captures before and after the addition
+are retained in
+`/mnt/disks/scratch/codex-task-scratch/seerrng-lumen-navigation-20261119/`.
+The added row reuses the existing settings-list style; no native layout change
+was needed.
+
 Indexer Search and Download Inbox suites now also run against bundled Lumen at
 the Express `/lumen/` mount. The 36-case combined suite passed in both
 standalone and bundled deployments across desktop, iPhone, Android, and tablet.
@@ -4059,7 +4070,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. The selected current-source set now totals 687 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. The selected current-source set now totals 691 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
