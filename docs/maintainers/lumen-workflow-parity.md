@@ -3648,3 +3648,8 @@ bookmark through local sign-in, sent offset 25 to the protected logs
 route, and showed the second page from 60 synthetic entries written
 to the isolated machine log. Reload kept page two. Searching returned
 to page one and did not put the search term in the address.
+
+Matched standalone System Logs renders compared the parent of
+`3040909f4` with the updated page at 390 and 1440 CSS pixels. Both
+builds displayed the same fixture result and page-two controls after
+Next Page. The screenshots were pixel-identical at both widths.
