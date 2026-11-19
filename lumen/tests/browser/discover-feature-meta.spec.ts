@@ -79,6 +79,13 @@ test('Discover feature card meta is not cut off on narrow screens', async ({
 test('movie and series genre directories open the matching filtered browse', async ({
   page,
 }) => {
+  let seriesArtworkUnavailable = true;
+  await page.route('**/imageproxy/tmdb/t/p/w780/*.jpg', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="780" height="440"><rect width="780" height="440" fill="#365279"/></svg>',
+    })
+  );
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
@@ -95,7 +102,11 @@ test('movie and series genre directories open the matching filtered browse', asy
         json: [{ id: 28, name: 'Action', backdrops: ['/action.jpg'] }],
       });
     if (path.endsWith('/discover/genreslider/tv'))
-      return route.fulfill({ status: 503, json: {} });
+      return seriesArtworkUnavailable
+        ? route.fulfill({ status: 503, json: {} })
+        : route.fulfill({
+            json: [{ id: 18, name: 'Drama', backdrops: ['/drama.jpg'] }],
+          });
     if (path.endsWith('/genres/movie'))
       return route.fulfill({ json: [{ id: 28, name: 'Action' }] });
     if (path.endsWith('/genres/tv'))
@@ -103,22 +114,34 @@ test('movie and series genre directories open the matching filtered browse', asy
     return route.fulfill({ json: paged([]) });
   });
   for (const [path, title, genre, id] of [
-    ['/movies', 'Movie Genres', 'Action', 28],
-    ['/series', 'Series Genres', 'Drama', 18],
+    ['movies', 'Movie Genres', 'Action', 28],
+    ['series', 'Series Genres', 'Drama', 18],
   ] as const) {
-    await page.goto(path);
+    await page.goto(`./${path}`);
     await page.getByRole('link', { name: 'Browse Genres' }).click();
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
     const tile = page.getByRole('link', { name: `Browse ${genre}` });
-    if (path === '/movies') {
+    if (path === 'movies') {
       await expect(tile.locator('img')).toHaveAttribute(
         'src',
         '/imageproxy/tmdb/t/p/w780/action.jpg'
       );
     } else {
+      await expect(tile).toBeVisible();
       await expect(tile.locator('img')).toHaveCount(0);
+      const warning = page
+        .getByRole('alert')
+        .filter({ hasText: 'genre artwork' });
+      await expect(warning).toBeVisible();
+      seriesArtworkUnavailable = false;
+      await warning.getByRole('button', { name: 'Retry' }).click();
+      await expect(tile.locator('img')).toHaveAttribute(
+        'src',
+        '/imageproxy/tmdb/t/p/w780/drama.jpg'
+      );
+      await expect(warning).toHaveCount(0);
     }
     await tile.click();
-    await expect(page).toHaveURL(`${path}?genre=${id}`);
+    await expect(page).toHaveURL(new RegExp(`/${path}\\?genre=${id}$`));
   }
 });

@@ -2887,7 +2887,7 @@ permissions separately from bookmark routing.
 | `/users/[userId]` | Both deployments map the bookmark to `/household/:id`. Standalone browser fixtures cover independent permission checks and recovery for request and watchlist previews. The managed-user editor remains a separate action. |
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Standalone browser fixtures cover creating a personalized feed and applying feedback. |
-| `/discover/movies/genres` and `/discover/tv/genres` | Lumen now lists genres and links to filtered browse. Native backdrop cards and matched visual acceptance remain open. |
+| `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open. |
 | `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
 
 The household and recommendation browser suites passed 36 cases per
@@ -2903,6 +2903,13 @@ companion image tests passed. Browser fixtures opened both directories
 and followed a genre to its filtered results on desktop, iPhone 13,
 Pixel 7, and iPad Pro 11. Matched visual comparison and live provider
 states remain unverified.
+
+Genre directories keep their links available when the artwork endpoint
+fails. Retry reloads the artwork independently. Four focused fixture
+checks passed at 390 and 1440 CSS pixels across standalone and bundled
+Lumen. The series fixture recovered from a 503 and opened the filtered
+genre after artwork returned. Bundled screenshots covered the retry
+notice and restored artwork at both widths.
 
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched

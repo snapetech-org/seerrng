@@ -285,6 +285,13 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
         <h1>{kind === 'movie' ? 'Movie Genres' : 'Series Genres'}</h1>
       </header>
       <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
+      {Boolean(genres.data?.length) && (
+        <ServiceNote
+          error={artwork.error}
+          what="genre artwork"
+          retry={artwork.reload}
+        />
+      )}
       {genres.data ? (
         genres.data.length ? (
           <GenreTiles
