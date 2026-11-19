@@ -1817,6 +1817,16 @@ geometry, typography, button alignment, and Cancel dismissal held.
 These checks used a fixture account and a 1080p/4K movie. Other sheet
 consumers and live account persistence were outside this browser review.
 
+Lumen maps four more Classic colors to the desktop sidebar: gradient
+start and end, divider, and navigation hover. Eight standalone account
+checks and two focused bundled checks passed with account fixtures.
+At 1440 CSS pixels, matched default and customized sidebar renders
+preserved the rail width, navigation spacing, and footer position.
+The browser verified the saved gradient, divider and hover colors,
+then restored the default divider after clearing the overrides.
+The 390-pixel account check used the mobile layout, where the desktop
+sidebar is hidden.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the

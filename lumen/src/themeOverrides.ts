@@ -4,6 +4,10 @@ export const themeColors = [
   ['--theme-control-surface-hover', '--surface-2', 'Raised Surface'],
   ['--theme-control-border', '--line', 'Border'],
   ['--theme-overlay-menu', '--overlay-surface', 'Menu and Dialog Background'],
+  ['--theme-sidebar-start', '--sidebar-start', 'Sidebar Background Start'],
+  ['--theme-sidebar-end', '--sidebar-end', 'Sidebar Background End'],
+  ['--theme-sidebar-border', '--sidebar-border', 'Sidebar Border'],
+  ['--theme-sidebar-hover', '--sidebar-hover', 'Sidebar Hover Background'],
   ['--theme-heading-text', '--ink', 'Primary Text'],
   ['--palette-blue', '--accent', 'Accent'],
 ] as const;

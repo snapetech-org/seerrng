@@ -1961,8 +1961,12 @@ body.is-detail .toast {
     height: 100vh;
     height: 100dvh;
     padding: 24px 14px;
-    border-right: 1px solid var(--line);
-    background: var(--surface);
+    border-right: 1px solid var(--sidebar-border, var(--line));
+    background: linear-gradient(
+      to bottom,
+      var(--sidebar-start, var(--surface)),
+      var(--sidebar-end, var(--surface))
+    );
   }
   .brand {
     display: flex;
@@ -1995,7 +1999,7 @@ body.is-detail .toast {
     color: var(--ink-2);
   }
   .side a:hover {
-    background: var(--surface-2);
+    background: var(--sidebar-hover, var(--surface-2));
     color: var(--ink);
   }
   .side a[aria-current='page'] {
