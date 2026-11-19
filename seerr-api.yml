@@ -18276,7 +18276,7 @@ paths:
   /user/{userId}/settings/advanced-theme:
     post:
       summary: Save or clear a user's advanced theme overrides
-      description: Stores supported visual theme token overrides for the signed-in user. Send null to clear the overrides.
+      description: Stores supported visual theme token overrides for the signed-in user. Send overrides to replace the full set or changes to merge specific tokens. Null in changes clears a token.
       tags: [users]
       parameters:
         - in: path
@@ -18291,7 +18291,9 @@ paths:
             schema:
               type: object
               additionalProperties: false
-              required: [overrides]
+              oneOf:
+                - required: [overrides]
+                - required: [changes]
               properties:
                 overrides:
                   nullable: true
@@ -18300,6 +18302,13 @@ paths:
                     oneOf:
                       - type: string
                       - type: number
+                changes:
+                  type: object
+                  minProperties: 1
+                  maxProperties: 128
+                  additionalProperties:
+                    type: string
+                    nullable: true
       responses:
         '200':
           description: Saved theme overrides returned

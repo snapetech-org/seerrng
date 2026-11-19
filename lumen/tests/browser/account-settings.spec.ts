@@ -192,7 +192,7 @@ test('account theme colors preserve stored overrides for other controls', async 
   page,
 }) => {
   const classicOnly = { '--theme-overlay-menu': '#112233' };
-  let overrides: Record<string, string> = { ...classicOnly };
+  const overrides: Record<string, string> = { ...classicOnly };
   let fail = true;
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -213,7 +213,12 @@ test('account theme colors preserve stored overrides for other controls', async 
           json: { message: 'Theme save unavailable.' },
         });
       }
-      overrides = request.postDataJSON().overrides;
+      for (const [key, value] of Object.entries(
+        request.postDataJSON().changes
+      )) {
+        if (typeof value === 'string') overrides[key] = value;
+        else delete overrides[key];
+      }
       if (overrides['--theme-page-bg'] === '#123')
         overrides['--theme-page-bg'] = '#112233';
       return route.fulfill({ json: { advancedThemeOverrides: overrides } });

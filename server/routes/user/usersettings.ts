@@ -772,41 +772,78 @@ userSettingsRoutes.post<{ id: string }>(
   '/advanced-theme',
   isOwnProfile(),
   async (req, res, next) => {
+    const body = req.body;
+    const replace = body && hasOwn(body, 'overrides');
     if (
-      !req.body ||
-      Array.isArray(req.body) ||
-      Object.keys(req.body).some((key) => key !== 'overrides') ||
-      !hasOwn(req.body, 'overrides')
+      !body ||
+      Array.isArray(body) ||
+      Object.keys(body).length !== 1 ||
+      (!replace && !hasOwn(body, 'changes'))
     ) {
       return next({ status: 400, message: 'Invalid advanced theme settings.' });
     }
-
-    const validation = validateAdvancedThemeOverrides(req.body.overrides);
-    if ('error' in validation) {
-      return next({ status: 400, message: validation.error });
+    const changes = body.changes;
+    if (
+      !replace &&
+      (!changes || typeof changes !== 'object' || Array.isArray(changes))
+    ) {
+      return next({ status: 400, message: 'Invalid advanced theme changes.' });
     }
 
     const userId = parseUserSettingsRouteId(req.params.id);
     if (!userId) return next({ status: 404, message: 'User not found.' });
 
     try {
-      const repository = getRepository(User);
-      const user = await repository.findOne({
-        where: { id: userId },
-        relations: { settings: true },
-      });
-      if (!user) return next({ status: 404, message: 'User not found.' });
+      return await runUserSecurityMutationWithActor(
+        req.user!.id,
+        userId,
+        Permission.MANAGE_USERS,
+        async () => {
+          const repository = getRepository(User);
+          const user = await repository.findOne({
+            where: { id: userId },
+            relations: { settings: true },
+          });
+          if (!user) return next({ status: 404, message: 'User not found.' });
 
-      if (!user.settings) user.settings = new UserSettings({ user });
-      user.settings.advancedThemeOverrides = validation.value;
-      await repository.save(user);
+          let input: unknown = body.overrides;
+          if (!replace) {
+            const merged = new Map(
+              Object.entries(user.settings?.advancedThemeOverrides ?? {})
+            );
+            for (const [key, value] of Object.entries(changes)) {
+              if (value === null) merged.delete(key);
+              else if (typeof value === 'string') merged.set(key, value);
+              else
+                return next({
+                  status: 400,
+                  message: 'Invalid advanced theme change.',
+                });
+            }
+            input = Object.fromEntries(merged);
+          }
+          const validation = validateAdvancedThemeOverrides(input);
+          if ('error' in validation) {
+            return next({ status: 400, message: validation.error });
+          }
 
-      return res.status(200).json({
-        advancedThemeOverrides: validation.value,
-      });
-    } catch {
+          if (!user.settings) user.settings = new UserSettings({ user });
+          user.settings.advancedThemeOverrides = validation.value;
+          await repository.save(user);
+          return res
+            .status(200)
+            .json({ advancedThemeOverrides: validation.value });
+        },
+        {
+          expectedCredentialVersion:
+            req.session?.userId === req.user!.id
+              ? (req.session.credentialVersion ?? 0)
+              : undefined,
+        }
+      );
+    } catch (error) {
       return next({
-        status: 500,
+        status: error instanceof UserMutationActorUnauthorizedError ? 403 : 500,
         message: 'Could not save advanced theme settings.',
       });
     }

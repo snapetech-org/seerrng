@@ -30,16 +30,13 @@ export default function AccountThemeOverrides() {
     setBusy(true);
     setNotice('');
     setError('');
-    const overrides = { ...saved };
-    for (const [key, value] of Object.entries(draft)) {
-      const color = value.trim();
-      if (color) overrides[key] = color;
-      else delete overrides[key];
-    }
+    const changes = Object.fromEntries(
+      Object.entries(draft).map(([key, value]) => [key, value.trim() || null])
+    );
     try {
       await api(`/user/${user.id}/settings/advanced-theme`, {
         method: 'POST',
-        body: JSON.stringify({ overrides }),
+        body: JSON.stringify({ changes }),
       });
       const confirmed = await refresh();
       if (generation !== sessionGeneration()) return;
@@ -49,7 +46,7 @@ export default function AccountThemeOverrides() {
         Object.keys(draft).some(
           (key) =>
             normalizeThemeColor(readback?.[key]) !==
-            normalizeThemeColor(overrides[key])
+            normalizeThemeColor(changes[key])
         )
       ) {
         setError(

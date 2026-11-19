@@ -827,6 +827,28 @@ describe('POST /user/:id/settings/advanced-theme', () => {
       '--theme-page-spotlight-strength': 0.5,
     });
 
+    const edit = (changes: Record<string, string | null>) =>
+      request(app)
+        .post(route)
+        .set('X-Forwarded-Proto', 'https')
+        .set('Cookie', sessionCookie)
+        .send({ changes })
+        .expect(200);
+    await Promise.all([
+      edit({ '--theme-page-bg': null }),
+      edit({ '--theme-heading-text': '#ABC' }),
+    ]);
+
+    const merged = await request(app)
+      .get('/auth/me')
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', sessionCookie)
+      .expect(200);
+    assert.deepEqual(merged.body.settings.advancedThemeOverrides, {
+      '--theme-heading-text': '#aabbcc',
+      '--theme-page-spotlight-strength': 0.5,
+    });
+
     const invalid = await request(app)
       .post(route)
       .set('X-Forwarded-Proto', 'https')
