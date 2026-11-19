@@ -18,8 +18,8 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | Media availability and play links appear on applicable titles. | My Media, watchlist filters and actions, sharing, follow feed and unread state, and provider-specific favorite and collection actions. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Coming Soon groups upcoming movies and series and offers requests. | Full release calendar with source and media filters, swipe discovery, and watch-session creation, membership, and playback flow. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
-| Acquisition tools | `/downloads`, `/indexer-search` | Per-request download progress. | Dedicated queue and history, exact destination selection, permitted download actions, indexer search, and authorized handoff. |
-| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Full SeerrNG link from the account menu where permitted. | Issue creation, listing, comments, status changes, and blocklist display and management with the same per-action permissions. |
+| Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
+| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. | Native matched visuals across mobile and bundled deployments; finish automatic rule setup and remaining media/action coverage. |
 | Accounts | `/profile/*`, `/users/*` | Sign-in, account summary, and Lumen preferences. | Profile editing, password, linked accounts, client tokens, notifications, per-user TV and Episode Queue policy, maturity, permissions, and delegated user administration. |
 | Instance administration | `/setup`, `/settings/*` | Lumen presentation and branding settings, administrator handoff. | Setup, general and network settings, libraries, services and profiles, jobs, logs, notifications, metadata and discovery, category access, indexers, and library migration. Preserve validation, dirty-state tracking, failed-save recovery, and existing provider boundaries. |
 
@@ -2904,6 +2904,13 @@ permissions separately from bookmark routing.
 | `/discover/book-recommendations` | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Standalone browser fixtures cover creating a personalized feed and applying feedback. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open. |
 | `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
+
+The standalone production-preview suites for Issues, Blocklist, Download Inbox,
+and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
+and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise
+the responsive layouts and permission branches. They do not establish matched
+native screenshot acceptance, production-bundled behavior, or live provider
+effects; those checks remain open where listed above.
 
 The household and recommendation browser suites passed 36 cases per
 deployment across desktop, iPhone, Android, and tablet. The bundled run
