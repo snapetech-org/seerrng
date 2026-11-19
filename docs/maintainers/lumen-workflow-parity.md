@@ -175,10 +175,9 @@ Lumen serves `/library` in both deployments and exposes My Media in desktop
 navigation and under You. It lists libraries from connected Plex, Jellyfin,
 Emby, Trakt, AniList, and Simkl accounts, preserves server cursors, and opens
 only confirmed catalog identities. Linking accounts, identity repair
-and mapping packs, provider tracking writes, library sharing, and poster-based
-Watchlist actions remain open. The dedicated personal and delegated Watchlist
-flows now pass in standalone and bundled browser suites. Narrow and bundled visual acceptance remains
-open.
+and mapping packs, provider tracking writes, and library sharing remain open.
+The dedicated personal and delegated Watchlist flows now pass in standalone and
+bundled browser suites. Narrow and bundled visual acceptance remains open.
 
 Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
 Plex connection. It selected the first visible library, linked the matched
@@ -193,9 +192,10 @@ The personal Watchlist reads the signed-in user's existing SeerrNG and Plex
 watchlist. For local lists it supports title, media, and sort filters, shareable
 filter and page URLs, and removal with confirmed catalog identity. Combined
 lists preserve provider order and avoid offering local removal for rows whose
-ownership source cannot be distinguished. Watchlist creation from detail pages is covered for video and books. Poster-based
-actions remain open; delegated access and combined-list local removal are now
-covered in standalone and bundled browser suites.
+ownership source cannot be distinguished. Watchlist creation from detail pages
+is covered for video and books. Delegated access and combined-list local removal
+are covered in standalone and bundled browser suites. Poster actions now have a
+separate cross-media qualification.
 
 Headed Chrome at 1440 × 1000 verified a movie filter opened from a bookmarked
 URL, cleared it to show a second item, and removed the movie through the
@@ -204,8 +204,8 @@ Narrow and combined Plex behavior is now fixture-covered in standalone and bundl
 
 Movie and series details now offer the local Watchlist action. The action
 checks current membership and title identity before writing and uses the
-existing authenticated SeerrNG endpoint. Plex Watchlist actions, poster
-controls, and the other media categories remain open.
+existing authenticated SeerrNG endpoint. Plex provider mutations and
+narrow/native-matched visual acceptance remain open.
 
 Headed Chrome at 1440 × 1000 rendered the local-account movie action and
 verified Add and Remove against a synthetic API. The unavailable branches and native-matched visual acceptance remain open; series and narrow layouts are covered by the watchlist browser suite.
@@ -214,7 +214,7 @@ The local detail action now also covers Open Library works, MusicBrainz
 release groups, ComicVine editions, and magazines. It uses the same permission
 and preflight checks as movie and series details and keeps provider identities
 separate. Bookshelf-only works without an Open Library identity still cannot
-use SeerrNG's existing local Watchlist API. Poster and Plex actions remain open.
+use SeerrNG's existing local Watchlist API. Plex provider actions remain open.
 
 Movie, series, book, album, magazine, and eligible comic edition browse posters
 offer the Watchlist action on desktop hover and touch layouts. The poster uses
@@ -225,24 +225,25 @@ item without deleting it. Blocklisted titles and Plex primary accounts do not
 get the control. The existing authenticated Watchlist endpoints remain
 responsible for add and remove.
 
-Sixteen browser cases passed across desktop, iPhone, Android, and tablet: movie
-and series add/remove round trips with exact media identity, initial confirmation
-of an already-saved movie without a mutation, and Plex-account exclusion.
+Twenty-four browser cases passed in standalone Lumen and another 24 against the
+production Express `/lumen/` mount across desktop, iPhone, Android, and tablet.
+They cover movie and series add/remove round trips, a safe first activation,
+Plex-account exclusion, and exact book, album, and magazine identities.
 Baseline and candidate movie poster renders were captured at matching viewport
 sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
-Live provider effects and native-matched visual acceptance remain open. The complete watchlist suite now passes under both standalone Lumen and the production Express `/lumen/` mount.
+Live provider effects and native-matched visual acceptance remain open. The
+complete watchlist suite now passes under both standalone Lumen and the
+production Express `/lumen/` mount.
 
-Album and magazine poster actions also passed exact-identity add checks on
-desktop, iPhone, Android, and tablet. The book poster test covers Open Library
-work identity. Comic poster actions are available only when the browse result
-provides a supported edition identity; the comic detail action remains covered
-separately. Native-matched visual acceptance remains open. The complete watchlist suite now passes under both standalone Lumen and the production Express `/lumen/` mount.
+Comic poster actions are available only when the browse result provides a
+supported edition identity; the comic detail action remains covered separately.
+Native-matched visual acceptance and live provider effects remain open.
 
 Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in
-the request. Visual checks for albums, comic edition changes, magazines,
-narrow layouts, and bundled deployment remain open.
+the request. Native-matched visual checks for albums, comic edition changes,
+magazines, and narrow layouts remain open.
 
 ### Download Inbox browse increment
 
@@ -1356,11 +1357,11 @@ category settings, and shares the personal screen's filters, paging, and
 local removal. The bundled lock and companion redirect preserve the
 native Discover Watchlist link and its supported filters.
 
-Twenty standalone browser checks passed across desktop, iPhone, Android,
-and tablet. They cover both endpoint scopes, hidden media categories,
-filter paging, and existing personal watchlist actions. Server redirect
-tests and the companion redirect inventory check passed. Live bundled and
-companion browser checks and matched visual comparisons remain open.
+The complete 36-case Watchlist suite now passes in standalone and bundled
+deployments across desktop, iPhone, Android, and tablet. It covers endpoint
+scopes, hidden media categories, filter paging, and personal Watchlist actions.
+Server redirect tests and the companion redirect inventory check passed. Live
+Plex effects and matched visual comparisons remain open.
 
 ### Private and household game libraries
 
@@ -4057,7 +4058,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. The selected current-source set now totals 659 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 24 passing cases on both deployments. The selected current-source set now totals 683 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 

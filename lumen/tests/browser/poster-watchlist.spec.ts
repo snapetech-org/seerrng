@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 test('movie poster Watchlist action checks current state before add and remove', async ({
   page,
 }, testInfo) => {
@@ -9,8 +14,7 @@ test('movie poster Watchlist action checks current state before add and remove',
   let removes = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: {
@@ -76,7 +80,7 @@ test('movie poster Watchlist action checks current state before add and remove',
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const poster = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Watchlist Fixture Film' }),
   });
@@ -116,8 +120,7 @@ test('first poster activation never removes an item already on the Watchlist', a
   let mutations = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: {
@@ -170,7 +173,7 @@ test('first poster activation never removes an item already on the Watchlist', a
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const poster = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Saved Fixture Film' }),
   });
@@ -197,7 +200,7 @@ test('series poster Watchlist action uses the TV detail and media identity', asy
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: {
@@ -257,7 +260,7 @@ test('series poster Watchlist action uses the TV detail and media identity', asy
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/series');
+  await page.goto(testAppPath('/series'));
   const poster = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Watchlist Fixture Series' }),
   });
@@ -283,8 +286,7 @@ test('poster Watchlist control is unavailable for a Plex primary account', async
 }) => {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const { pathname } = new URL(route.request().url());
-    const path = pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Plex', permissions: 32, userType: 1 },
@@ -317,7 +319,7 @@ test('poster Watchlist control is unavailable for a Plex primary account', async
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const poster = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Watchlist Fixture Film' }),
   });
@@ -335,8 +337,7 @@ test('book poster Watchlist action preserves the Open Library work identity', as
   let writes = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Reader', permissions: 32, userType: 2 },
@@ -392,7 +393,7 @@ test('book poster Watchlist action preserves the Open Library work identity', as
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/books');
+  await page.goto(testAppPath('/books?search=Watchlist'));
   const poster = page
     .locator('.poster')
     .filter({
@@ -400,7 +401,9 @@ test('book poster Watchlist action preserves the Open Library work identity', as
     })
     .first();
   await expect(poster).toBeVisible();
-  await poster.scrollIntoViewIfNeeded();
+  await poster.evaluate((element) =>
+    element.scrollIntoView({ block: 'center', inline: 'nearest' })
+  );
   if (testInfo.project.name === 'desktop') await poster.hover();
   const action = poster.getByRole('button', {
     name: 'Add Watchlist Fixture Book to your Watchlist',
@@ -463,8 +466,7 @@ test('album and magazine posters preserve their Watchlist identities', async ({
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Reader', permissions: 32, userType: 2 },
@@ -528,7 +530,7 @@ test('album and magazine posters preserve their Watchlist identities', async ({
   });
 
   for (const [index, record] of records.entries()) {
-    await page.goto(record.path);
+    await page.goto(testAppPath(record.path));
     const poster = page
       .locator('.poster')
       .filter({
