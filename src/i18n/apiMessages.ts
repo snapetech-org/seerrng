@@ -442,6 +442,7 @@ export const apiMessages: Record<
   m1effeb2c9cd503923023: '{value0}: port must be between 1 and 65535.',
   m1f1d52cc141111f79305: 'LazyLibrarian command "{value0}" failed: {value1}',
   m1f20c657ca03a1918b2c: 'No usable release was found.',
+  m1f32c2f81e61653e7660: 'lumenPreferences.rows contains an unknown row.',
   m1f3462464c6d78a1237e:
     'Edition preferences are only valid for book requests.',
   m1f6129d8e44dfbc7586b: 'Unable to retrieve comic issues.',
@@ -1513,6 +1514,7 @@ export const apiMessages: Record<
     'Search slider data must be {value0} characters or fewer.',
   m6a155416f97e5c72a3e1: 'Slider keywords are limited to {value0} ids.',
   m6a1e9567e1481fe0cc9a: 'Invalid series catalog ID.',
+  m6a3649646916c5f0fa1b: 'lumenPreferences contains an unsupported preference.',
   m6a7df25064dbb41a7559: 'Unable to retrieve series genres.',
   m6aceffd846c45a8caa79: 'Notification outbox payload exceeds maximum size.',
   m6ae9e8d54f09a1739ee9: 'is4k must be a boolean.',
@@ -1586,6 +1588,7 @@ export const apiMessages: Record<
   m6fbb19720b1b35ed4f61: 'Error during logout process.',
   m6fe1973f858b4dc3bc93: 'Password sign-in is disabled.',
   m6fe1b1dd7e01b6c60e3f: 'The game could not be linked to the catalog.',
+  m7004c80f1ca9bf419370: 'lumenPreferences.rows.{value0} must be a boolean.',
   m7027a275c6ff623966b5: 'Unverified created collection.',
   m703810483feb208b0778:
     'A request for this adult scene already exists on the selected Whisparr server.',
@@ -1801,6 +1804,7 @@ export const apiMessages: Record<
     'defaultEnabledMediaCategories.{value0} must be a boolean.',
   m7d4f87667b22a39f2c3d: 'Image disk cache entry escapes cache directory.',
   m7d6075d39e5e9abb597f: 'Bindery service URL is invalid.',
+  m7d8a5fe9708d1bc9414f: 'lumenPreferences.rows must be an object.',
   m7d8fc51e93248032fa36: 'jellyfinUserIds is invalid.',
   m7dc51c9a5fd3f0e9d3bc: 'Missing MusicBrainz identifier.',
   m7dcfb8e452fe32201a88: 'discordIds must be an array of Discord user IDs.',
@@ -2206,6 +2210,7 @@ export const apiMessages: Record<
     'IMDb CSV lists are updated by importing a new IMDb watchlist export.',
   m9df98bf1db427225f5b3:
     'You do not have access to the selected request destination.',
+  m9dfca9b3c4fa8565c310: 'lumenPreferences.{value0} must be a boolean.',
   m9e12f34f9ebb0cb9b2c1: 'Interface theme preference was not confirmed.',
   m9e2701a8b0d0be36e3d2:
     'Music search is temporarily unavailable. Please try again.',
@@ -2790,6 +2795,8 @@ export const apiMessages: Record<
     'Choose one book format so its edition language can be verified.',
   mc83b2e910a682e9ef44e: 'External URL must be a valid HTTP or HTTPS URL.',
   mc843e80de99129fd4027: 'Unable to call login if class is not initialized.',
+  mc869c9a5a6e17b15296b:
+    'lumenPreferences.theme must be dark, light, or system.',
   mc88fb6627be23f59d630: 'unsupported pack',
   mc8a5c5fa033fd8302c31: '[Readarr] Failed to add book: {value0}',
   mc8aaea60a2fc99b42bb2: '{value0} settings must be an object.',
@@ -3305,6 +3312,7 @@ export const apiMessages: Record<
   mecee8fc579c707f72c7b: 'Backend did not confirm watch state.',
   mecefd80c34056b493fa3:
     'Chaptarr library scan reached the {value0}-book safety limit before confirming the library was complete',
+  med0ac964d088e75f5559: 'lumenPreferences must be an object or null.',
   med0df8245b351753b17f: 'Log path must resolve to one private regular file.',
   med14e271cfdd4692f62d:
     'No Guid metadata for this title. Skipping. (Try refreshing the metadata in Plex for this media!)',

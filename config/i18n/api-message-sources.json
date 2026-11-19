@@ -266,7 +266,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1812,
+          "line": 1888,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to read request folders.'",
@@ -1653,7 +1653,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 478,
+          "line": 480,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not review TV request access.'",
@@ -2091,7 +2091,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 974,
+          "line": 976,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose at least one maturity limit to update.'",
@@ -3603,7 +3603,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1259,
+          "line": 1261,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'requestRootFolders must be an object.'",
@@ -5129,7 +5129,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1955,
+          "line": 2034,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5137,7 +5137,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2152,
+          "line": 2237,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5145,7 +5145,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2255,
+          "line": 2340,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5153,7 +5153,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2298,
+          "line": 2383,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5161,7 +5161,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2380,
+          "line": 2465,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5169,7 +5169,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2409,
+          "line": 2494,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5177,7 +5177,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2490,
+          "line": 2575,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5185,7 +5185,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2522,
+          "line": 2607,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5193,7 +5193,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3389,
+          "line": 3474,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5201,7 +5201,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3444,
+          "line": 3529,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -5209,7 +5209,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3860,
+          "line": 3945,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's settings.\"",
@@ -6877,7 +6877,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1358,
+          "line": 1424,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'metadataLocale must be a supported locale.'",
@@ -6934,7 +6934,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 942,
+          "line": 944,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Only movie and TV maturity limits may be updated.'",
@@ -7488,7 +7488,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1395,
+          "line": 1461,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`streamingSubscriptionProviderIds must contain at most ${MAX_STREAMING_SUBSCRIPTION_PROVIDERS} positive provider IDs.`",
@@ -7532,7 +7532,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 688,
+          "line": 690,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid interface theme.'",
@@ -7988,7 +7988,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1419,
+          "line": 1485,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Unknown media category: ${key}.`",
@@ -8384,6 +8384,25 @@
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'No usable release was found.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m1f32c2f81e61653e7660",
+      "id": "utils.ApiMessage.m1f32c2f81e61653e7660",
+      "source": "lumenPreferences.rows contains an unknown row.",
+      "defaultMessage": "lumenPreferences.rows contains an unknown row.",
+      "sourceHash": "1f32c2f81e61653e76608556377304175e2127d5678caa016011100897c662a0",
+      "parts": ["lumenPreferences.rows contains an unknown row."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1340,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'lumenPreferences.rows contains an unknown row.'",
           "captured": []
         }
       ]
@@ -9089,7 +9108,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 321,
+          "line": 323,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not load TV request access.'",
@@ -9165,7 +9184,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2825,
+          "line": 2910,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's account.\"",
@@ -9173,7 +9192,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2854,
+          "line": 2939,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's account.\"",
@@ -9181,7 +9200,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3043,
+          "line": 3128,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's account.\"",
@@ -9189,7 +9208,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3073,
+          "line": 3158,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's account.\"",
@@ -10520,7 +10539,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 393,
+          "line": 395,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'TV request access has not been approved.'",
@@ -10940,7 +10959,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 209,
+          "line": 211,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10948,7 +10967,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 351,
+          "line": 353,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10956,7 +10975,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 518,
+          "line": 520,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "e instanceof UserMutationActorUnauthorizedError\n            ? 'Access denied.'\n            : e.message",
@@ -10964,7 +10983,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 551,
+          "line": 553,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10972,7 +10991,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 574,
+          "line": 576,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "e instanceof UserMutationActorUnauthorizedError\n            ? 'Access denied.'\n            : e.message",
@@ -10980,7 +10999,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 658,
+          "line": 660,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10988,7 +11007,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1760,
+          "line": 1836,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -10996,7 +11015,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1799,
+          "line": 1875,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11004,7 +11023,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1910,
+          "line": 1989,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11012,7 +11031,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2204,
+          "line": 2289,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11020,7 +11039,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2338,
+          "line": 2423,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11028,7 +11047,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2448,
+          "line": 2533,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11036,7 +11055,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2699,
+          "line": 2784,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11044,7 +11063,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3346,
+          "line": 3431,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11052,7 +11071,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3493,
+          "line": 3578,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11060,7 +11079,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3762,
+          "line": 3847,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11068,7 +11087,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3779,
+          "line": 3864,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "unauthorized\n          ? 'Access denied.'\n          : 'Book home sections could not be saved.'",
@@ -11076,7 +11095,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3817,
+          "line": 3902,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11084,7 +11103,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3884,
+          "line": 3969,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Access denied.'",
@@ -11634,7 +11653,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2860,
+          "line": 2945,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11642,7 +11661,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2986,
+          "line": 3071,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11650,7 +11669,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3079,
+          "line": 3164,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -12293,7 +12312,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 382,
+          "line": 384,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No pending access request.'",
@@ -12914,7 +12933,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 232,
+          "line": 234,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not load Episode Queue access.'",
@@ -13587,7 +13606,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2765,
+          "line": 2850,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This Plex account is registered under a different email address.'",
@@ -13704,7 +13723,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2723,
+          "line": 2808,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Plex login is disabled'",
@@ -13712,7 +13731,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2801,
+          "line": 2886,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Plex login is disabled'",
@@ -15258,7 +15277,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1567,
+          "line": 1643,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`notificationTypes.${key} must be valid.`",
@@ -16855,7 +16874,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 416,
+          "line": 418,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not update TV request access.'",
@@ -18593,7 +18612,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 359,
+          "line": 361,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'TV season watch requirements are enabled for everyone.'",
@@ -19456,7 +19475,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 783,
+          "line": 785,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid advanced theme settings.'",
@@ -19976,7 +19995,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2562,
+          "line": 2647,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's password.\"",
@@ -19984,7 +20003,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2612,
+          "line": 2697,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's password.\"",
@@ -19992,7 +20011,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2644,
+          "line": 2729,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's password.\"",
@@ -21641,7 +21660,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3886,
+          "line": 3971,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to save maturity limits.'",
@@ -22073,7 +22092,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1209,
+          "line": 1211,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'preferredLanguages must be an object.'",
@@ -22344,7 +22363,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3532,
+          "line": 3617,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body contains invalid fields.'",
@@ -22401,7 +22420,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 540,
+          "line": 542,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid disclosure order.'",
@@ -23416,7 +23435,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3649,
+          "line": 3734,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to grant this level of access'",
@@ -23513,7 +23532,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 254,
+          "line": 256,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid Episode Queue default.'",
@@ -23861,7 +23880,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1412,
+          "line": 1478,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'enabledMediaCategories must be an object.'",
@@ -24142,7 +24161,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2923,
+          "line": 3008,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media server returned an invalid user identity.'",
@@ -24316,7 +24335,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1438,
+          "line": 1504,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'showIndexerDetails must be a boolean or null.'",
@@ -26388,7 +26407,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 848,
+          "line": 850,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not save advanced theme settings.'",
@@ -27791,7 +27810,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2754,
+          "line": 2839,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This Plex account is already linked to a Seerr user'",
@@ -27799,7 +27818,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2784,
+          "line": 2869,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This Plex account is already linked to a Seerr user'",
@@ -28750,6 +28769,25 @@
       ]
     },
     {
+      "key": "m6a3649646916c5f0fa1b",
+      "id": "utils.ApiMessage.m6a3649646916c5f0fa1b",
+      "source": "lumenPreferences contains an unsupported preference.",
+      "defaultMessage": "lumenPreferences contains an unsupported preference.",
+      "sourceHash": "6a3649646916c5f0fa1bd8c308da7130fe2bd37e8617065072898fdf85b1744e",
+      "parts": ["lumenPreferences contains an unsupported preference."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1308,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'lumenPreferences contains an unsupported preference.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m6a7df25064dbb41a7559",
       "id": "utils.ApiMessage.m6a7df25064dbb41a7559",
       "source": "Unable to retrieve series genres.",
@@ -29142,7 +29180,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 765,
+          "line": 767,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not save theme preference.'",
@@ -29385,7 +29423,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1668,
+          "line": 1744,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Password must be at least 8 characters.'",
@@ -30356,6 +30394,31 @@
       ]
     },
     {
+      "key": "m7004c80f1ca9bf419370",
+      "id": "utils.ApiMessage.m7004c80f1ca9bf419370",
+      "source": "lumenPreferences.rows.{value0} must be a boolean.",
+      "defaultMessage": "lumenPreferences.rows.{value0} must be a boolean.",
+      "sourceHash": "7004c80f1ca9bf419370cbeb9360b9da51e76ebd0809d964786ce2376e9bfbcf",
+      "parts": ["lumenPreferences.rows.", " must be a boolean."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1346,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`lumenPreferences.rows.${row} must be a boolean.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "row",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m7027a275c6ff623966b5",
       "id": "utils.ApiMessage.m7027a275c6ff623966b5",
       "source": "Unverified created collection.",
@@ -31087,7 +31150,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 264,
+          "line": 266,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'defaultEpisodeCount must be an integer from 0 to 5.'",
@@ -32330,7 +32393,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 790,
+          "line": 792,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid advanced theme changes.'",
@@ -33394,7 +33457,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3552,
+          "line": 3637,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'contentRestricted is invalid.'",
@@ -33476,7 +33539,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1983,
+          "line": 2062,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "\"You do not have permission to modify this user's email.\"",
@@ -33746,7 +33809,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3245,
+          "line": 3330,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Quick Connect is only supported by Jellyfin.'",
@@ -34226,6 +34289,25 @@
       ]
     },
     {
+      "key": "m7d8a5fe9708d1bc9414f",
+      "id": "utils.ApiMessage.m7d8a5fe9708d1bc9414f",
+      "source": "lumenPreferences.rows must be an object.",
+      "defaultMessage": "lumenPreferences.rows must be an object.",
+      "sourceHash": "7d8a5fe9708d1bc9414f7eae21b57e168c3ff77fe1cb3f885f4fb95dd70c6f27",
+      "parts": ["lumenPreferences.rows must be an object."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1332,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'lumenPreferences.rows must be an object.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m7d8fc51e93248032fa36",
       "id": "utils.ApiMessage.m7d8fc51e93248032fa36",
       "source": "jellyfinUserIds is invalid.",
@@ -34274,7 +34356,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1167,
+          "line": 1169,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'discordIds must be an array of Discord user IDs.'",
@@ -35435,7 +35517,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2839,
+          "line": 2924,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User does not have a local password or other linked account.'",
@@ -35443,7 +35525,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3057,
+          "line": 3142,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User does not have a local password or other linked account.'",
@@ -35451,7 +35533,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3191,
+          "line": 3276,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User does not have a local password or other linked account.'",
@@ -35835,7 +35917,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3083,
+          "line": 3168,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to unlink Jellyfin/Emby account.'",
@@ -36225,7 +36307,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3228,
+          "line": 3313,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid secret format'",
@@ -38064,7 +38146,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3779,
+          "line": 3864,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "unauthorized\n          ? 'Access denied.'\n          : 'Book home sections could not be saved.'",
@@ -38498,7 +38580,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2894,
+          "line": 2979,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin/Emby login is disabled'",
@@ -38506,7 +38588,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3019,
+          "line": 3104,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin/Emby login is disabled'",
@@ -38514,7 +38596,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3239,
+          "line": 3324,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Jellyfin/Emby login is disabled'",
@@ -38680,7 +38762,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 342,
+          "line": 344,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid TV request access action.'",
@@ -38718,7 +38800,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3819,
+          "line": 3904,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to read maturity limits.'",
@@ -39405,7 +39487,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 403,
+          "line": 405,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'TV request access is not enabled.'",
@@ -40319,7 +40401,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2832,
+          "line": 2917,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cannot unlink media server accounts for the primary administrator.'",
@@ -40327,7 +40409,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3050,
+          "line": 3135,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Cannot unlink media server accounts for the primary administrator.'",
@@ -41417,6 +41499,31 @@
       ]
     },
     {
+      "key": "m9dfca9b3c4fa8565c310",
+      "id": "utils.ApiMessage.m9dfca9b3c4fa8565c310",
+      "source": "lumenPreferences.{value0} must be a boolean.",
+      "defaultMessage": "lumenPreferences.{value0} must be a boolean.",
+      "sourceHash": "9dfca9b3c4fa8565c310149ac4cd6ce07681565701fbe255ffba133acc29c4cd",
+      "parts": ["lumenPreferences.", " must be a boolean."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1315,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`lumenPreferences.${key} must be a boolean.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "key",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m9e12f34f9ebb0cb9b2c1",
       "id": "utils.ApiMessage.m9e12f34f9ebb0cb9b2c1",
       "source": "Interface theme preference was not confirmed.",
@@ -41857,7 +41964,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 969,
+          "line": 971,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid US TV rating limit.'",
@@ -42251,7 +42358,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3544,
+          "line": 3629,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'permissions is invalid.'",
@@ -42741,7 +42848,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2667,
+          "line": 2752,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Current password is invalid.'",
@@ -44112,7 +44219,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2691,
+          "line": 2776,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Password changed during request. Try again.'",
@@ -44654,7 +44761,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1045,
+          "line": 1047,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${key} must be \"always\" or \"hover\".`",
@@ -44839,7 +44946,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 723,
+          "line": 725,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not save interface theme.'",
@@ -44999,7 +45106,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1273,
+          "line": 1275,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'requestRootFolders contains an invalid service key.'",
@@ -45663,7 +45770,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 453,
+          "line": 455,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You cannot review your own request.'",
@@ -46110,7 +46217,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 673,
+          "line": 675,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not save media filter pin.'",
@@ -46426,7 +46533,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1172,
+          "line": 1174,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`discordIds may not contain more than ${USER_SETTINGS_LIMITS.discordIdsMax} entries.`",
@@ -47045,7 +47152,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3690,
+          "line": 3775,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Book home sections could not be loaded.'",
@@ -49489,7 +49596,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1241,
+          "line": 1243,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`preferredLanguages.${fieldName} must be a two-letter language code.`",
@@ -49639,7 +49746,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 738,
+          "line": 740,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid theme palette.'",
@@ -50094,7 +50201,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1265,
+          "line": 1267,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'requestRootFolders cannot contain more than 100 entries.'",
@@ -51615,7 +51722,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 922,
+          "line": 924,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'User settings body must be an object.'",
@@ -51902,6 +52009,25 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unable to call login if class is not initialized.'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mc869c9a5a6e17b15296b",
+      "id": "utils.ApiMessage.mc869c9a5a6e17b15296b",
+      "source": "lumenPreferences.theme must be dark, light, or system.",
+      "defaultMessage": "lumenPreferences.theme must be dark, light, or system.",
+      "sourceHash": "c869c9a5a6e17b15296baac9cc3a23812c887cd918a723484c4e29b830055606",
+      "parts": ["lumenPreferences.theme must be dark, light, or system."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1323,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'lumenPreferences.theme must be dark, light, or system.'",
           "captured": []
         }
       ]
@@ -52857,7 +52983,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1966,
+          "line": 2045,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Only user managers can change indexer detail visibility.'",
@@ -53000,7 +53126,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1775,
+          "line": 1851,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "error instanceof Error\n          ? error.message\n          : 'Unable to read language preferences.'",
@@ -53644,7 +53770,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 293,
+          "line": 295,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Could not update Episode Queue access.'",
@@ -54498,7 +54624,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1215,
+          "line": 1217,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'preferredLanguages contains an unsupported media type.'",
@@ -54690,7 +54816,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2953,
+          "line": 3038,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The specified account is already linked to a Seerr user'",
@@ -54698,7 +54824,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2996,
+          "line": 3081,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The specified account is already linked to a Seerr user'",
@@ -54706,7 +54832,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3260,
+          "line": 3345,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The specified account is already linked to a Seerr user'",
@@ -55814,7 +55940,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 821,
+          "line": 823,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid advanced theme change.'",
@@ -56743,7 +56869,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 492,
+          "line": 494,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid detail media type.'",
@@ -56751,7 +56877,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 534,
+          "line": 536,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid detail media type.'",
@@ -56759,7 +56885,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2176,
+          "line": 2261,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid detail media type.'",
@@ -56767,7 +56893,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2230,
+          "line": 2315,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid detail media type.'",
@@ -60044,7 +60170,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2748,
+          "line": 2833,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media server configuration changed.'",
@@ -60052,7 +60178,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2944,
+          "line": 3029,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media server configuration changed.'",
@@ -60060,7 +60186,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2964,
+          "line": 3049,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Media server configuration changed.'",
@@ -60138,7 +60264,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 644,
+          "line": 646,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid media filter pin.'",
@@ -60182,7 +60308,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1281,
+          "line": 1283,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'requestRootFolders paths must be valid folder paths.'",
@@ -60239,7 +60365,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3717,
+          "line": 3802,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose a valid book home layout.'",
@@ -60247,7 +60373,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3736,
+          "line": 3821,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose a valid book home layout.'",
@@ -60255,7 +60381,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3747,
+          "line": 3832,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Choose a valid book home layout.'",
@@ -61151,7 +61277,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1191,
+          "line": 1193,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'discordId must be a valid Discord user ID.'",
@@ -61446,7 +61572,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1423,
+          "line": 1489,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`enabledMediaCategories.${key} must be a boolean.`",
@@ -61550,6 +61676,25 @@
               "disposition": "opaque captured value; preserve verbatim"
             }
           ]
+        }
+      ]
+    },
+    {
+      "key": "med0ac964d088e75f5559",
+      "id": "utils.ApiMessage.med0ac964d088e75f5559",
+      "source": "lumenPreferences must be an object or null.",
+      "defaultMessage": "lumenPreferences must be an object or null.",
+      "sourceHash": "ed0ac964d088e75f555999d4679f5c78307ccc1f250ab4daa98619e2621d2208",
+      "parts": ["lumenPreferences must be an object or null."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/user/usersettings.ts",
+          "line": 1303,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "'lumenPreferences must be an object or null.'",
+          "captured": []
         }
       ]
     },
@@ -61768,7 +61913,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3643,
+          "line": 3728,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify this user'",
@@ -61776,7 +61921,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3666,
+          "line": 3751,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to modify this user'",
@@ -62560,7 +62705,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1481,
+          "line": 1547,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${fieldName} must be a valid non-negative integer.`",
@@ -63300,7 +63445,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 955,
+          "line": 957,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Choose a valid US movie rating limit.'",
@@ -63412,7 +63557,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1365,
+          "line": 1431,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'formatRegion must be a supported region code.'",
@@ -63845,7 +63990,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 200,
+          "line": 202,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63853,7 +63998,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 215,
+          "line": 217,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63861,7 +64006,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 225,
+          "line": 227,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63869,7 +64014,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 247,
+          "line": 249,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63877,7 +64022,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 276,
+          "line": 278,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63885,7 +64030,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 304,
+          "line": 306,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63893,7 +64038,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 314,
+          "line": 316,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63901,7 +64046,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 333,
+          "line": 335,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63909,7 +64054,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 355,
+          "line": 357,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63917,7 +64062,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 430,
+          "line": 432,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63925,7 +64070,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 458,
+          "line": 460,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63933,7 +64078,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 494,
+          "line": 496,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63941,7 +64086,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 504,
+          "line": 506,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63949,7 +64094,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 542,
+          "line": 544,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63957,7 +64102,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 554,
+          "line": 556,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63965,7 +64110,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 647,
+          "line": 649,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63973,7 +64118,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 656,
+          "line": 658,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63981,7 +64126,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 690,
+          "line": 692,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63989,7 +64134,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 699,
+          "line": 701,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -63997,7 +64142,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 740,
+          "line": 742,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64005,7 +64150,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 749,
+          "line": 751,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64013,7 +64158,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 794,
+          "line": 796,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64021,7 +64166,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 807,
+          "line": 809,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64029,7 +64174,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1749,
+          "line": 1825,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64037,7 +64182,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1767,
+          "line": 1843,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64045,7 +64190,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1788,
+          "line": 1864,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64053,7 +64198,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1807,
+          "line": 1883,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64061,7 +64206,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1828,
+          "line": 1904,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64069,7 +64214,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1841,
+          "line": 1917,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64077,7 +64222,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1934,
+          "line": 2013,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64085,7 +64230,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1948,
+          "line": 2027,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64093,7 +64238,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2182,
+          "line": 2267,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64101,7 +64246,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2192,
+          "line": 2277,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64109,7 +64254,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2239,
+          "line": 2324,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64117,7 +64262,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2249,
+          "line": 2334,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64125,7 +64270,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2315,
+          "line": 2400,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64133,7 +64278,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2328,
+          "line": 2413,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64141,7 +64286,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2360,
+          "line": 2445,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64149,7 +64294,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2373,
+          "line": 2458,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64157,7 +64302,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2425,
+          "line": 2510,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64165,7 +64310,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2438,
+          "line": 2523,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64173,7 +64318,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2470,
+          "line": 2555,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64181,7 +64326,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2483,
+          "line": 2568,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64189,7 +64334,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2538,
+          "line": 2623,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64197,7 +64342,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2552,
+          "line": 2637,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64205,7 +64350,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2591,
+          "line": 2676,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64213,7 +64358,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2605,
+          "line": 2690,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64221,7 +64366,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2806,
+          "line": 2891,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64229,7 +64374,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2819,
+          "line": 2904,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64237,7 +64382,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3024,
+          "line": 3109,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64245,7 +64390,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3037,
+          "line": 3122,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64253,7 +64398,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3300,
+          "line": 3385,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64261,7 +64406,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3313,
+          "line": 3398,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64269,7 +64414,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3369,
+          "line": 3454,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64277,7 +64422,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3382,
+          "line": 3467,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64285,7 +64430,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3468,
+          "line": 3553,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64293,7 +64438,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3481,
+          "line": 3566,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64301,7 +64446,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3591,
+          "line": 3676,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64309,7 +64454,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3638,
+          "line": 3723,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64317,7 +64462,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3679,
+          "line": 3764,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64325,7 +64470,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3682,
+          "line": 3767,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64333,7 +64478,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3701,
+          "line": 3786,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64341,7 +64486,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3766,
+          "line": 3851,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64349,7 +64494,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3793,
+          "line": 3878,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64357,7 +64502,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3807,
+          "line": 3892,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64365,7 +64510,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3839,
+          "line": 3924,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64373,7 +64518,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3854,
+          "line": 3939,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'User not found.'",
@@ -64711,7 +64856,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1351,
+          "line": 1417,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'locale must be a supported locale.'",
@@ -64797,7 +64942,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 441,
+          "line": 443,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid TV request access decision.'",
@@ -64999,7 +65144,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1540,
+          "line": 1616,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'notificationTypes must be an object.'",
@@ -65279,7 +65424,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 464,
+          "line": 466,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'This access request is no longer pending.'",
@@ -65598,7 +65743,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 2864,
+          "line": 2949,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Failed to unlink Plex account.'",
@@ -66408,7 +66553,7 @@
       "callsites": [
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3563,
+          "line": 3648,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestServices is invalid.'",
@@ -66416,7 +66561,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 3583,
+          "line": 3668,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'requestServices is invalid.'",
@@ -66899,7 +67044,7 @@
         },
         {
           "path": "server/routes/user/usersettings.ts",
-          "line": 1132,
+          "line": 1134,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${key} must be a boolean.`",
@@ -87703,7 +87848,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 518,
+      "line": 520,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof UserMutationActorUnauthorizedError\n            ? 'Access denied.'\n            : e.message",
@@ -87712,7 +87857,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 574,
+      "line": 576,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e instanceof UserMutationActorUnauthorizedError\n            ? 'Access denied.'\n            : e.message",
@@ -87721,7 +87866,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 828,
+      "line": 830,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "validation.error",
@@ -87730,7 +87875,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 1775,
+      "line": 1851,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error instanceof Error\n          ? error.message\n          : 'Unable to read language preferences.'",
@@ -87739,7 +87884,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 1912,
+      "line": 1991,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87748,7 +87893,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 1926,
+      "line": 2005,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87757,7 +87902,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 1997,
+      "line": 2076,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "400",
@@ -87766,7 +87911,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2158,
+      "line": 2243,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.errorCode",
@@ -87775,7 +87920,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2161,
+      "line": 2246,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87784,7 +87929,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2206,
+      "line": 2291,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87793,7 +87938,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2233,
+      "line": 2318,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87802,7 +87947,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2301,
+      "line": 2386,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87811,7 +87956,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2340,
+      "line": 2425,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87820,7 +87965,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2354,
+      "line": 2439,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87829,7 +87974,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2412,
+      "line": 2497,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87838,7 +87983,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2450,
+      "line": 2535,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87847,7 +87992,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2464,
+      "line": 2549,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87856,7 +88001,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2525,
+      "line": 2610,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87865,7 +88010,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2565,
+      "line": 2650,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87874,7 +88019,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2583,
+      "line": 2668,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87883,7 +88028,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2701,
+      "line": 2786,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87892,7 +88037,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2715,
+      "line": 2800,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87901,7 +88046,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2734,
+      "line": 2819,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedAccount.error",
@@ -87910,7 +88055,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2860,
+      "line": 2945,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -87919,7 +88064,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2879,
+      "line": 2964,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87928,7 +88073,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 2986,
+      "line": 3071,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -87937,7 +88082,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3079,
+      "line": 3164,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -87946,7 +88091,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3281,
+      "line": 3366,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e",
@@ -87955,7 +88100,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3348,
+      "line": 3433,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87964,7 +88109,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3361,
+      "line": 3446,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -87973,7 +88118,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3447,
+      "line": 3532,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87982,7 +88127,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3495,
+      "line": 3580,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -87991,7 +88136,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3519,
+      "line": 3604,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
@@ -88000,7 +88145,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3669,
+      "line": 3754,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -88009,7 +88154,7 @@
     },
     {
       "path": "server/routes/user/usersettings.ts",
-      "line": 3834,
+      "line": 3919,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedBody.error",
