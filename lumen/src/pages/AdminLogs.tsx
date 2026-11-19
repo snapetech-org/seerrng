@@ -19,7 +19,7 @@ const levels = [
   ['error', 'Errors only'],
 ];
 const MAX_LOG_OFFSET = 100_000;
-const pageSizes = [25, 50, 100];
+const pageSizes = [10, 25, 50, 100];
 
 export default function AdminLogs() {
   const { user } = useAuth();
@@ -45,7 +45,7 @@ function LogViewer({ storageKey }: { storageKey: string }) {
   const [params, setParams] = useSearchParams();
   const lastPage = Math.floor(MAX_LOG_OFFSET / take) + 1;
   const bookmarkPage = params.get('page') ?? '';
-  const page = /^[1-9]\d{0,3}$/.test(bookmarkPage)
+  const page = /^[1-9]\d{0,4}$/.test(bookmarkPage)
     ? Math.min(Number(bookmarkPage), lastPage)
     : 1;
   const [live, setLive] = useState(false);

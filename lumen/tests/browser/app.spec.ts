@@ -5347,12 +5347,18 @@ test('System Logs restores display preferences without retaining search text', a
   await fixtures(page);
   const queries: URLSearchParams[] = [];
   await page.route(/\/api\/v1\/settings\/logs\?/, (route) => {
-    queries.push(new URL(route.request().url()).searchParams);
-    return route.fulfill({ json: { pageInfo: { pages: 1 }, results: [] } });
+    const query = new URL(route.request().url()).searchParams;
+    queries.push(query);
+    return route.fulfill({
+      json: {
+        pageInfo: { pages: query.get('skip') === '100000' ? 10002 : 1 },
+        results: [],
+      },
+    });
   });
   await page.goto('/admin/logs');
   await page.getByRole('combobox', { name: 'Severity' }).selectOption('error');
-  await page.getByRole('combobox', { name: 'Page Size' }).selectOption('50');
+  await page.getByRole('combobox', { name: 'Page Size' }).selectOption('10');
   await page.getByLabel('Search Logs').fill('temporary search');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect
@@ -5363,21 +5369,25 @@ test('System Logs restores display preferences without retaining search text', a
     'error'
   );
   await expect(page.getByRole('combobox', { name: 'Page Size' })).toHaveValue(
-    '50'
+    '10'
   );
   await expect(page.getByLabel('Search Logs')).toHaveValue('');
   await expect
     .poll(() => queries.at(-1)?.toString())
-    .toBe('take=50&skip=0&filter=error');
+    .toBe('take=10&skip=0&filter=error');
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
     'temporary search'
   );
+  await page.goto('/admin/logs?page=10001');
+  await expect(page.getByText('Page 10001', { exact: true })).toBeVisible();
+  await expect.poll(() => queries.at(-1)?.get('skip')).toBe('100000');
+  await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
       json: { id: 12, displayName: 'Another Admin', permissions: 2 },
     })
   );
-  await page.reload();
+  await page.goto('/admin/logs');
   await expect(page.getByRole('combobox', { name: 'Severity' })).toHaveValue(
     'info'
   );

@@ -978,7 +978,7 @@ export const mountLumenFrontend = (
     } else if (section === 'logs') {
       const page = req.query.page;
       destination =
-        typeof page === 'string' && /^[1-9]\d{0,3}$/.test(page)
+        typeof page === 'string' && /^[1-9]\d{0,4}$/.test(page)
           ? `/admin/logs?page=${page}`
           : '/admin/logs';
     } else if (!section || section === 'main') {

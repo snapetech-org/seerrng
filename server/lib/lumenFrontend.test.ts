@@ -104,6 +104,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     for (const prefix of ['', '/lumen']) {
       for (const [query, destination] of [
         ['?page=2&search=private', '/lumen/admin/logs?page=2'],
+        ['?page=10001', '/lumen/admin/logs?page=10001'],
         ['?page=0', '/lumen/admin/logs'],
         ['?page=2&page=3', '/lumen/admin/logs'],
       ]) {
