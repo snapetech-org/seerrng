@@ -3003,6 +3003,14 @@ retain the direction. Two routing checks and four standalone and
 bundled browser checks covered bookmark routing and ebook publisher
 order in both directions, with missing publishers last.
 
+Movie and series title searches offer writer and director order.
+Selecting either uses the existing scoped search response with
+credits. Results without a credit stay last. Classic bookmark
+direction is retained. Two routing tests and four browser fixture
+checks covered credit ordering in standalone and bundled Lumen.
+Discovery-filtered searches use a different response without credits.
+Whole-result ordering and matched visual review remain open.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

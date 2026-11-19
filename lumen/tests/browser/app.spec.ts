@@ -4156,10 +4156,12 @@ test('native search bookmarks retain the decoded term and media scope', async ({
 }) => {
   await fixtures(page);
   const queries: string[] = [];
+  const types: (string | null)[] = [];
   await page.route(/\/api\/v1\/search\?/, (route) => {
-    queries.push(
-      new URL(route.request().url()).searchParams.get('query') ?? ''
-    );
+    const params = new URL(route.request().url()).searchParams;
+    queries.push(params.get('query') ?? '');
+    const type = params.get('type');
+    types.push(type);
     return route.fulfill({
       json: paged([
         { ...movie, title: 'Bookmark Film' },
@@ -4169,6 +4171,7 @@ test('native search bookmarks retain the decoded term and media scope', async ({
           name: 'Bookmark Series',
           firstAirDate: '2020-03-01',
           voteAverage: 7.12,
+          ...(type === 'tv' ? { writers: ['Zara'], directors: ['Ada'] } : {}),
         },
         {
           id: 203,
@@ -4176,6 +4179,7 @@ test('native search bookmarks retain the decoded term and media scope', async ({
           name: 'Another Series',
           firstAirDate: '2024-03-01',
           voteAverage: 7.9,
+          ...(type === 'tv' ? { writers: ['Ada'], directors: ['Zara'] } : {}),
         },
         { id: 204, mediaType: 'tv', name: 'Undated Series' },
       ]),
@@ -4209,6 +4213,12 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
   await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
   await page.getByLabel('Sort Results').selectOption('rating:asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
+  await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
+  await page.getByLabel('Sort Results').selectOption('writer:asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  expect(types.at(-1)).toBe('tv');
+  await page.getByLabel('Sort Results').selectOption('director:asc');
   await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
   await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
   await page.getByLabel('Sort Results').selectOption('');

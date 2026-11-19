@@ -117,7 +117,13 @@ export function scopedSearchPath(
     filters.set('type', 'music');
     return `/search?${filters}`;
   }
-  return `/search?query=${encodeURIComponent(term)}&page=${page}${scope === 'author' || scope === 'magazine' ? '&type=' + scope : ''}`;
+  const sort = params.get('sort');
+  const scoped =
+    scope === 'author' ||
+    scope === 'magazine' ||
+    ((scope === 'movie' || scope === 'tv') &&
+      (sort === 'writer' || sort === 'director'));
+  return `/search?query=${encodeURIComponent(term)}&page=${page}${scoped ? '&type=' + scope : ''}`;
 }
 
 export function activeMusicSearchFilters(params: URLSearchParams) {

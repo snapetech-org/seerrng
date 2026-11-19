@@ -87,6 +87,8 @@ type SearchSortFields = {
   voteAverage?: number;
   author?: string;
   publisher?: string;
+  directors?: string[];
+  writers?: string[];
   'artist-credit'?: Album['artist-credit'];
 };
 
@@ -118,6 +120,8 @@ const searchSortKeys = {
   artist: artistOf,
   author: (item: SearchSortFields) => item.author,
   publisher: (item: SearchSortFields) => item.publisher,
+  writer: (item: SearchSortFields) => item.writers?.[0],
+  director: (item: SearchSortFields) => item.directors?.[0],
 };
 
 const searchSortOptions: {
@@ -147,6 +151,20 @@ const searchSortOptions: {
     desc: 'Highest Rated',
     scopes: ['movie', 'tv'],
     defaultOrder: 'desc',
+  },
+  {
+    field: 'writer',
+    asc: 'Writer A–Z',
+    desc: 'Writer Z–A',
+    scopes: ['movie', 'tv'],
+    defaultOrder: 'asc',
+  },
+  {
+    field: 'director',
+    asc: 'Director A–Z',
+    desc: 'Director Z–A',
+    scopes: ['movie', 'tv'],
+    defaultOrder: 'asc',
   },
   {
     field: 'artist',
@@ -467,7 +485,9 @@ function SearchResults({
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
   const sortOptions = searchSortOptions.filter(
-    ({ scopes }) => !scopes || scopes.includes(f)
+    ({ field, scopes }) =>
+      (!scopes || scopes.includes(f)) &&
+      (!hasVideoFilters || (field !== 'writer' && field !== 'director'))
   );
   const activeSort = sortOptions.find(({ field }) => field === p.get('sort'));
   const sortField = activeSort?.field;

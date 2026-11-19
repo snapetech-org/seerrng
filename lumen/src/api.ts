@@ -167,6 +167,8 @@ export interface TitleResult {
   releaseDate?: string;
   firstAirDate?: string;
   voteAverage?: number;
+  directors?: string[];
+  writers?: string[];
   genreIds?: number[];
   originalLanguage?: string;
   mediaInfo?: MediaInfo;
