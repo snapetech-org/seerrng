@@ -3568,3 +3568,10 @@ and streaming visibility, retained a requested saved-search match,
 and confirmed that title, collection, person, and See All links stayed
 under the bundled base path. The backend session and metadata
 responses were fixtures.
+
+Bundled Coming Soon passed the wrong-page recovery check on
+`49f2e8236` at 390 and 1440 CSS pixels. After real local sign-in, the
+Express movie route received page 1 from a synthetic TMDB provider on
+its first request for page 2. Lumen kept the first page visible and
+offered Retry. Retry sent a fresh page 2 request and displayed its
+title once. Live TMDB behavior was outside the check.
