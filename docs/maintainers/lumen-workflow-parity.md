@@ -3710,3 +3710,10 @@ Lidarr rule and displayed its service name, genre and root folder. The same
 viewports confirmed a standard user was redirected and the API returned
 403. Existing rules can be inspected. Creation, editing and deletion,
 empty and error browser states, and companion verification remain open.
+
+Bundled desktop and iPhone checks created, edited, reloaded, and deleted a
+Lidarr request override rule through the real authenticated API and isolated
+database. The original rule stayed present. The editor exposes the existing
+service-specific condition and destination fields. Operator-friendly lookup
+selectors, coverage for the other service types, and companion mutation
+verification remain open.
