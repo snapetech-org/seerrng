@@ -3419,6 +3419,49 @@ describe('Settings route input validation', () => {
     }
   });
 
+  it('keeps a job disabled when enabling fails', async () => {
+    const settings = getSettings();
+    const id = 'radarr-scan';
+    const previous = settings.jobs[id];
+    const job = scheduleJob(previous.schedule, () => undefined);
+    assert.ok(job);
+    job.cancel();
+    const reschedule = mock.method(job, 'reschedule');
+    settings.jobs[id] = { ...previous, enabled: false };
+    const registration = {
+      id,
+      name: 'Radarr Scan',
+      type: 'process',
+      interval: 'hours',
+      cronSchedule: 'invalid cron',
+      job,
+    } as const;
+    scheduledJobs.push(registration);
+    try {
+      const enable = () =>
+        request(app)
+          .post('/settings/jobs/radarr-scan/enabled')
+          .send({ enabled: true });
+      const invalid = await enable();
+      assert.equal(invalid.status, 400);
+      assert.equal(settings.jobs[id].enabled, false);
+      assert.equal(job.nextInvocation(), null);
+
+      scheduledJobs[0].cronSchedule = previous.schedule;
+      mock.method(settings, 'save', async () => {
+        throw new Error('Disk write failed');
+      });
+      const failedWrite = await enable();
+      assert.equal(failedWrite.status, 500);
+      assert.equal(reschedule.mock.callCount(), 0);
+      assert.equal(settings.jobs[id].enabled, false);
+      assert.equal(job.nextInvocation(), null);
+    } finally {
+      job.cancel();
+      settings.jobs[id] = previous;
+    }
+  });
+
   it('rejects oversized cache IDs before lookup', async () => {
     const res = await request(app).post(
       `/settings/cache/${'x'.repeat(129)}/flush`

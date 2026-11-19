@@ -3076,6 +3076,12 @@ settingsRoutes.post<{ jobId: JobId }>(
 
 const scheduledJobSettingsLock = new AsyncLock();
 
+function isValidJobSchedule(schedule: string): boolean {
+  const validationJob = scheduleJob(schedule, () => undefined);
+  validationJob?.cancel();
+  return Boolean(validationJob);
+}
+
 settingsRoutes.post<{ jobId: JobId }>(
   '/jobs/:jobId/schedule',
   authorizedMutation<{ jobId: JobId }>(
@@ -3104,13 +3110,9 @@ settingsRoutes.post<{ jobId: JobId }>(
         const settings = getSettings();
         const enabled = settings.jobs[scheduledJob.id]?.enabled !== false;
         // Validate disabled schedules without registering the real job.
-        const validationJob = enabled
-          ? undefined
-          : scheduleJob(schedule, () => undefined);
         const result = enabled
           ? rescheduleJob(scheduledJob.job, schedule)
-          : Boolean(validationJob);
-        validationJob?.cancel();
+          : isValidJobSchedule(schedule);
 
         if (result) {
           try {
@@ -3171,23 +3173,41 @@ settingsRoutes.post<{ jobId: JobId }>(
       return next({ status: 400, message: 'Invalid job enabled setting.' });
     }
 
+    const shouldEnable = enabled.value;
     return scheduledJobSettingsLock.dispatch(scheduledJob.id, async () => {
       const settings = getSettings();
-      settings.jobs[scheduledJob.id].enabled = enabled.value;
-      await settings.save();
+      const needsRegistration =
+        shouldEnable && !scheduledJob.job.nextInvocation();
+      if (needsRegistration && !isValidJobSchedule(scheduledJob.cronSchedule))
+        return next({ status: 400, message: 'Invalid job schedule.' });
 
-      if (enabled.value) {
-        const result = rescheduleJob(
-          scheduledJob.job,
-          scheduledJob.cronSchedule
-        );
-        if (!result) {
-          return next({ status: 400, message: 'Invalid job schedule.' });
-        }
-      } else {
-        scheduledJob.job.cancel();
+      let previousEnabled: boolean | undefined;
+      await settings.persistSection('jobs', (current) => {
+        previousEnabled = current[scheduledJob.id]?.enabled;
+        return {
+          ...current,
+          [scheduledJob.id]: {
+            ...current[scheduledJob.id],
+            enabled: shouldEnable,
+          },
+        };
+      });
+
+      if (
+        needsRegistration &&
+        !rescheduleJob(scheduledJob.job, scheduledJob.cronSchedule)
+      ) {
+        await settings.persistSection('jobs', (current) => ({
+          ...current,
+          [scheduledJob.id]: {
+            ...current[scheduledJob.id],
+            enabled: previousEnabled,
+          },
+        }));
+        return next({ status: 400, message: 'Invalid job schedule.' });
       }
 
+      if (!shouldEnable) scheduledJob.job.cancel();
       return res
         .status(200)
         .json(await getScheduledJobResponseWithLease(scheduledJob));
