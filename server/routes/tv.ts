@@ -1,5 +1,8 @@
 import MdblistAPI from '@server/api/mdblist';
-import { getMetadataProvider } from '@server/api/metadata';
+import {
+  getMetadataProvider,
+  isTheMovieDbProvider,
+} from '@server/api/metadata';
 import RottenTomatoes from '@server/api/rating/rottentomatoes';
 import {
   hasMdblistRatingScores,
@@ -431,6 +434,54 @@ const requestSeasonBatchRateLimit = rateLimit({
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
 });
 
+const getRequestSeason = async (
+  provider: Awaited<ReturnType<typeof getMetadataProvider>>,
+  tvId: number,
+  seasonNumber: number,
+  language?: string
+) => {
+  try {
+    const season = await provider.getTvSeason({ tvId, seasonNumber, language });
+    if (
+      season.season_number === seasonNumber &&
+      season.id > 0 &&
+      season.episodes.length > 0
+    ) {
+      return season;
+    }
+  } catch (error) {
+    logger.debug('Configured provider failed to retrieve request season', {
+      label: 'TV',
+      tvId,
+      seasonNumber,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+
+  if (isTheMovieDbProvider(provider)) return undefined;
+
+  try {
+    const season = await new TheMovieDb().getTvSeason({
+      tvId,
+      seasonNumber,
+      language,
+    });
+    return season.season_number === seasonNumber &&
+      season.id > 0 &&
+      season.episodes.length > 0
+      ? season
+      : undefined;
+  } catch (error) {
+    logger.debug('TMDB fallback failed to retrieve request season', {
+      label: 'TV',
+      tvId,
+      seasonNumber,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return undefined;
+  }
+};
+
 tvRoutes.get(
   '/:id/seasons',
   requestSeasonBatchRateLimit,
@@ -478,16 +529,13 @@ tvRoutes.get(
         3,
         async (seasonNumber) => {
           try {
-            const season = await metadata.provider.getTvSeason({
+            const season = await getRequestSeason(
+              metadata.provider,
               tvId,
               seasonNumber,
-              language,
-            });
-            return season.season_number === seasonNumber &&
-              season.id > 0 &&
-              season.episodes.length > 0
-              ? mapSeasonWithEpisodes(season)
-              : undefined;
+              language
+            );
+            return season ? mapSeasonWithEpisodes(season) : undefined;
           } catch (error) {
             logger.debug('Something went wrong retrieving season', {
               label: 'API',
