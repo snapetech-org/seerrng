@@ -4168,12 +4168,14 @@ test('native search bookmarks retain the decoded term and media scope', async ({
           mediaType: 'tv',
           name: 'Bookmark Series',
           firstAirDate: '2020-03-01',
+          voteAverage: 7.12,
         },
         {
           id: 203,
           mediaType: 'tv',
           name: 'Another Series',
           firstAirDate: '2024-03-01',
+          voteAverage: 7.9,
         },
         { id: 204, mediaType: 'tv', name: 'Undated Series' },
       ]),
@@ -4202,6 +4204,12 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
   await page.getByLabel('Sort Results').selectOption('date:desc');
   await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
+  await page.getByLabel('Sort Results').selectOption('rating:desc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
+  await page.getByLabel('Sort Results').selectOption('rating:asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
   await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
   await page.getByLabel('Sort Results').selectOption('');
   await page.getByRole('button', { name: 'Movies', exact: true }).click();

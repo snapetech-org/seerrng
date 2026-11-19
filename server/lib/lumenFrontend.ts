@@ -673,7 +673,11 @@ function workflowDeepLink(
     const term = q ?? legacyTerm;
     const type = f ?? legacyType;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
-    if (req.query.sort === 'title' || req.query.sort === 'date') {
+    if (
+      req.query.sort === 'title' ||
+      req.query.sort === 'date' ||
+      (req.query.sort === 'rating' && (type === 'movie' || type === 'tv'))
+    ) {
       query.set('sort', req.query.sort);
       if (req.query.order === 'asc' || req.query.order === 'desc')
         query.set('order', req.query.order);

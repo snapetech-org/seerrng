@@ -83,6 +83,7 @@ type SearchSortFields = {
   'first-release-date'?: string;
   startYear?: string;
   year?: number;
+  voteAverage?: number;
 };
 
 function searchDate(item: SearchSortFields) {
@@ -106,14 +107,28 @@ function sortSearchResults<T extends SearchSortFields>(
   field: string | null,
   order: 'asc' | 'desc'
 ) {
-  if (!items || (field !== 'title' && field !== 'date')) return items ?? [];
+  if (!items || (field !== 'title' && field !== 'date' && field !== 'rating'))
+    return items ?? [];
   const value =
-    field === 'date' ? searchDate : (item: T) => item.title || item.name;
+    field === 'date'
+      ? searchDate
+      : field === 'rating'
+        ? (item: T) => {
+            const rating = item.voteAverage;
+            return typeof rating === 'number' && rating > 0 && rating <= 10
+              ? rating
+              : undefined;
+          }
+        : (item: T) => item.title || item.name;
   return [...items].sort((left, right) => {
     const a = value(left);
     const b = value(right);
     if (!a || !b) return Number(!a) - Number(!b);
-    return searchTitleCollator.compare(a, b) * (order === 'desc' ? -1 : 1);
+    const comparison =
+      typeof a === 'number' && typeof b === 'number'
+        ? a - b
+        : searchTitleCollator.compare(String(a), String(b));
+    return comparison * (order === 'desc' ? -1 : 1);
   });
 }
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
@@ -393,7 +408,10 @@ function SearchResults({
       : f === 'comic'
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
-  const sortField = p.get('sort');
+  const canSortByRating = f === 'movie' || f === 'tv';
+  const requestedSort = p.get('sort');
+  const sortField =
+    requestedSort === 'rating' && !canSortByRating ? null : requestedSort;
   const requestedOrder = p.get('order');
   const sortOrder =
     requestedOrder === 'asc' || requestedOrder === 'desc'
@@ -512,7 +530,9 @@ function SearchResults({
               <span className="lbl">Sort Results</span>
               <select
                 value={
-                  sortField === 'title' || sortField === 'date'
+                  sortField === 'title' ||
+                  sortField === 'date' ||
+                  sortField === 'rating'
                     ? `${sortField}:${sortOrder}`
                     : ''
                 }
@@ -531,6 +551,12 @@ function SearchResults({
                 <option value="title:desc">Title Z–A</option>
                 <option value="date:desc">Newest First</option>
                 <option value="date:asc">Oldest First</option>
+                {canSortByRating && (
+                  <>
+                    <option value="rating:desc">Highest Rated</option>
+                    <option value="rating:asc">Lowest Rated</option>
+                  </>
+                )}
               </select>
             </label>
           </div>

@@ -2983,6 +2983,13 @@ exercised Series result order, missing dates, and restoration of Best
 Match. Other Classic sort fields, whole-result ordering, and matched
 visual review remain open.
 
+Movie and Series Search also offer highest- and lowest-rated order.
+Classic rating-sort bookmarks retain their direction. The Series
+fixture verified numeric ordering for fractional ratings in both
+directions and displayed unrated results last. Two server routing
+checks and four browser checks covered the selected sort and prior
+title and date sorts.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

@@ -720,6 +720,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/search?q=Test&sort=date&order=asc&f=tv',
       ],
       [
+        '/search?query=Test&type=movie&sort=rating&order=desc',
+        '/lumen/search?q=Test&sort=rating&order=desc&f=movie',
+      ],
+      [
         '/discover/trending?mediaType=tv&timeWindow=week',
         '/lumen/trending?mediaType=tv&timeWindow=week',
       ],
