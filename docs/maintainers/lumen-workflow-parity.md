@@ -444,12 +444,14 @@ changed selection against synthetic data. Mobile and bundled visual
 acceptance, comparison against rendered native workflows, and live provider
 playback remain open.
 
-The current standalone Playwright suite passed all 20 collection cases across
-desktop, iPhone, Android, and tablet presets. This confirms responsive
-interaction coverage for collection entry, progressive requests, filtered bulk
-requests, collection playback, and media-server collection sync. It does not
-close the rendered native comparison, bundled production, or live playback
-checks above.
+The 20-case collection suite now honors the configured deployment mount and
+passed against both standalone Lumen and the production Express `/lumen/`
+mount, across desktop, iPhone, Android, and tablet presets. Coverage includes
+collection entry, progressive requests, filtered bulk requests, collection
+playback, and media-server collection sync. The bundled run exposed and
+corrected a stale test assertion that expected an unprefixed movie link; the
+production app correctly retains `/lumen/` in internal links. Rendered native
+comparison, visual acceptance, and live playback checks remain open.
 
 ### Personal profile and password increment
 

@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 test('collections are reachable from search and blocklist as one collection', async ({
   page,
 }) => {
@@ -46,14 +48,14 @@ test('collections are reachable from search and blocklist as one collection', as
       return route.fulfill({ json: { count: Number(blocked) } });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/search?q=example');
+  await page.goto(`${mount}/search?q=example`);
   await page.getByRole('link', { name: 'Example Collection' }).click();
   await expect(
     page.getByRole('heading', { name: 'Example Collection' })
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Example Movie' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', `${mount}/movie/20`);
   await page
     .getByRole('button', { name: 'Blocklist Collection', exact: true })
     .click();
@@ -126,7 +128,7 @@ test('progressive requests start, stop, and restart the selected quality', async
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/collection/30');
+  await page.goto(`${mount}/collection/30`);
   await page.getByRole('button', { name: 'Queue Collection' }).click();
   const sheet = page.getByRole('dialog', { name: 'Queue Collection' });
   await expect(
@@ -216,7 +218,7 @@ test('bulk collection requests exclude blocked titles and show partial results',
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/collection/30');
+  await page.goto(`${mount}/collection/30`);
   await page.getByRole('button', { name: 'Request Collection' }).click();
   const sheet = page.getByRole('dialog', { name: 'Request Collection' });
   await expect(
@@ -331,7 +333,7 @@ test('collection playback uses ordered internal IDs, skips shared copies, and op
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/collection/30');
+  await page.goto(`${mount}/collection/30`);
   await page.getByRole('button', { name: 'Play Collection' }).click();
   const sheet = page.getByRole('dialog', { name: 'Play Collection' });
   await expect(
@@ -354,7 +356,6 @@ test('collection playback uses ordered internal IDs, skips shared copies, and op
 test('movie media-server collection sync checks on demand and adds visible verified movies', async ({
   page,
 }) => {
-  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
   const parts = [{ id: 42, title: 'Fixture Movie' }];
   let checks = 0;
   let writes = 0;
