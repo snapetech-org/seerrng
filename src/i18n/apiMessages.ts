@@ -2188,6 +2188,7 @@ export const apiMessages: Record<
   m9ce7ac7cc44f19ca1584: 'defaultEnabledMediaCategories must be an object.',
   m9d007e599c5ecbe06898: 'Your request is waiting for approval.',
   m9d5b9aa5a03ba91d6cc5: 'Request for this media already exists.',
+  m9d7d6b992cc937984a82: 'Search query must be at least 2 characters.',
   m9d7f3e43bd53754d25dc: 'Vision base URL is invalid.',
   m9d82a518b0f895bd4787: 'Invalid Trakt list reference: {value0}',
   m9d87547acd7ba65b0984:
@@ -2841,6 +2842,7 @@ export const apiMessages: Record<
   mcb75b9451e232f209c91: '[ListenBrainz] Invalid MusicBrainz album ID',
   mcb9e107c1301e210b9aa:
     'Spotify playlist integration is not configured by an administrator.',
+  mcbac516591508afa2098: 'Unable to search issue reporters.',
   mcbc6ffb9361ddf7d6e1a: 'Unable to start collection playback.',
   mcbc836cfea835cdc3fd7: 'Invalid Plex series item.',
   mcbf55f10e419244a5b44:
