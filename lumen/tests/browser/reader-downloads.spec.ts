@@ -159,6 +159,27 @@ test('reader detail downloads stay scoped to the selected media and format', asy
   });
   await ebookDialog.getByRole('button', { name: 'Close' }).click();
 
+  await page.goto(testAppPath('/book/OL123W?f=audio'));
+  await page.getByRole('button', { name: 'Download Audiobook' }).click();
+  const audiobookDialog = page.getByRole('dialog', {
+    name: 'Download request files',
+  });
+  await expect(
+    audiobookDialog.getByRole('link', { name: 'fixture.m4b' })
+  ).toHaveAttribute(
+    'href',
+    `/api/v1/request/status/801/downloads/${audiobookFile}`
+  );
+  await expect(audiobookDialog.getByText('fixture.epub')).toHaveCount(0);
+  expectLatestQuery({
+    requestedBy: '1',
+    mediaType: 'book',
+    mediaId: '72',
+    bookFormat: 'audiobook',
+    filter: 'available',
+  });
+  await audiobookDialog.getByRole('button', { name: 'Close' }).click();
+
   await page.goto(testAppPath('/comic/al-1'));
   await page.getByRole('button', { name: 'Download Files' }).click();
   const comicDialog = page.getByRole('dialog', {
