@@ -5,7 +5,12 @@ const testAppPath = (path: string) => `${testMount}${path}`;
 const testApiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
 
-async function session(page: Page, permissions: unknown, configured?: string) {
+async function session(
+  page: Page,
+  permissions: unknown,
+  configured?: string,
+  warnings?: string[]
+) {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: { seerrPublicUrl: configured } })
@@ -14,7 +19,12 @@ async function session(page: Page, permissions: unknown, configured?: string) {
     const path = testApiPath(route.request().url());
     const json =
       path === '/auth/me'
-        ? { id: 1, displayName: 'Household', permissions }
+        ? {
+            id: 1,
+            displayName: 'Household',
+            permissions,
+            ...(warnings ? { warnings } : {}),
+          }
         : path === '/settings/public'
           ? {
               mediaServerType: 1,
@@ -120,6 +130,16 @@ for (const locale of [
     all: 'Tous les paramètres et outils',
     group: 'Télévision et films',
     groupHeading: 'Télévision et films',
+    homeSearch: 'Rechercher des films, séries, livres et mangas…',
+    back: 'Retour',
+    profile: 'Profil',
+    missingHeading: 'Page introuvable',
+    missingPage: 'Cette page n’existe pas dans Lumen.',
+    backToDiscover: 'Retour à Découvrir',
+    fullSeerr: 'ouvrir SeerrNG en entier',
+    serverWarning:
+      'Déconnectez-vous depuis Vous, puis reconnectez-vous avec votre compte Jellyfin ou Emby pour rétablir la disponibilité et la lecture de votre bibliothèque.',
+    openYou: 'Ouvrir Vous',
   },
   {
     tag: 'ar',
@@ -130,6 +150,16 @@ for (const locale of [
     all: 'كل الإعدادات والأدوات',
     group: 'التلفزيون والأفلام',
     groupHeading: 'التلفزيون والأفلام',
+    homeSearch: 'ابحث عن الأفلام والمسلسلات والكتب والمانغا…',
+    back: 'عودة',
+    profile: 'ملف التعريف',
+    missingHeading: 'الصفحة غير موجودة',
+    missingPage: 'هذه الصفحة غير موجودة في Lumen.',
+    backToDiscover: 'العودة إلى الاستكشاف',
+    fullSeerr: 'فتح واجهة SeerrNG كاملة',
+    serverWarning:
+      'سجّل الخروج من صفحة «أنت»، ثم سجّل الدخول مجددًا باستخدام حساب Jellyfin أو Emby لاستعادة مكتبتك وإمكانية التشغيل.',
+    openYou: 'فتح صفحة «أنت»',
   },
 ]) {
   test(`administrator directory uses ${locale.tag} messages on You and Administration`, async ({
@@ -152,10 +182,42 @@ for (const locale of [
     await expect(
       page.getByText(locale.settings, { exact: true })
     ).toBeVisible();
+    await expect(page.locator('#tq')).toHaveAttribute(
+      'placeholder',
+      locale.homeSearch
+    );
+    await page.screenshot({
+      path: info.outputPath(`shell-search-${locale.tag}.png`),
+    });
+    await expect(page.locator('#tq')).toHaveAttribute(
+      'placeholder',
+      locale.homeSearch
+    );
+    await expect(page.locator('.tb-back')).toHaveAttribute(
+      'aria-label',
+      locale.back
+    );
+    await page.goto(testAppPath('/no-such-lumen-page'));
+    await expect(
+      page.getByRole('heading', { name: locale.missingHeading, exact: true })
+    ).toBeVisible();
+    await expect(page.locator('.ph-only-avatar')).toHaveAttribute(
+      'aria-label',
+      locale.profile
+    );
+    await expect(page.getByText(locale.missingPage)).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: locale.backToDiscover, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: locale.fullSeerr, exact: true })
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath(`missing-page-${locale.tag}.png`),
+    });
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
-    await page.screenshot({ path: info.outputPath(`you-${locale.tag}.png`) });
 
     await page.goto(testAppPath('/admin'));
     await expect(page.getByLabel(locale.search, { exact: true })).toBeVisible();
@@ -194,6 +256,29 @@ for (const locale of [
         { exact: true }
       )
     ).toBeVisible();
+  });
+
+  test(`media-server sign-in notice uses ${locale.tag} messages`, async ({
+    page,
+  }, info) => {
+    await session(page, 2, undefined, ['mediaServerSignInRequired']);
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({ json: { locale: locale.tag } })
+    );
+    await page.goto(testAppPath('/me'));
+    const notice = page
+      .locator('p[role="status"]')
+      .filter({ hasText: locale.serverWarning });
+    await expect(notice).toContainText(locale.serverWarning);
+    await expect(
+      notice.getByRole('link', { name: locale.openYou, exact: true })
+    ).toHaveAttribute('href', testAppPath('/me'));
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await page.screenshot({
+      path: info.outputPath(`server-warning-${locale.tag}.png`),
+    });
   });
 }
 

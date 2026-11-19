@@ -159,6 +159,16 @@ browser cases); qualification through SeerrNG's full production server mount
 remains open. Independent linguistic review also remains open. Visual evidence is retained in
 `seerrng-admin-directory-visual-20261119`.
 
+The shared Lumen shell now localizes search prompts by media scope, Back
+accessibility labels, and the missing-page heading, explanation, and recovery
+links. The media-server re-authentication notice is translated as well. French
+and Arabic fixtures verify the labels and missing-page state on desktop, iPhone,
+Android, and tablet. Baseline and candidate `/me` and missing-page renders were
+compared at 1440 × 900 and 390 × 844; existing shell geometry, text wrapping,
+and mobile-tab placement are unchanged. Screenshots and comparison montages are
+retained in `seerrng-shell-localization-visual-20261119`. Other Lumen routes
+and some shell messages remain English; full locale coverage is still open.
+
 ### Open gap in personal discovery accounts
 
 Lumen's Linked Accounts page manages sign-in methods and personal tracking

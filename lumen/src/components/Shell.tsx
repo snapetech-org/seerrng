@@ -81,8 +81,13 @@ const TABS: [string, IconName, string, string][] = [
 
 export function Avatar({ className = 'avatar' }: { className?: string }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   return (
-    <Link className={className} to="/me" aria-label="Your profile">
+    <Link
+      className={className}
+      to="/me"
+      aria-label={t('components.Layout.UserDropdown.myprofile', 'Profile')}
+    >
       <AvatarContent
         key={user?.id}
         name={user?.displayName}
@@ -160,23 +165,28 @@ export default function Shell({ children }: { children: ReactNode }) {
               : path === '/comics' || path.startsWith('/comic/')
                 ? 'comic'
                 : 'all';
-  const word: Record<string, string> = {
-    movie: 'movies',
-    tv: 'series',
-    ebook: 'books and authors',
-    audio: 'audiobooks and narrators',
-    comic: 'comics and manga',
-  };
   const comics = extras.list.some((e) => e.key === 'comic');
-  const placeholder = word[scope]
-    ? `Search ${word[scope]}…`
+  const searchMessages: Record<string, [string, string]> = {
+    movie: ['lumen.shell.searchMovies', 'Search movies…'],
+    tv: ['lumen.shell.searchSeries', 'Search series…'],
+    audio: ['lumen.shell.searchAudio', 'Search audiobooks and narrators…'],
+    ebook: ['lumen.shell.searchBooks', 'Search books and authors…'],
+  };
+  const placeholder = searchMessages[scope]
+    ? t(...searchMessages[scope])
     : prefs.showBooks
       ? comics
-        ? 'Search movies, series, books, manga…'
-        : 'Search movies, series, books, narrators…'
+        ? t(
+            'lumen.shell.searchAllWithComics',
+            'Search movies, series, books, manga…'
+          )
+        : t('lumen.shell.searchAll', 'Search movies, series, books, narrators…')
       : comics
-        ? 'Search movies, series, comics…'
-        : 'Search movies and series…';
+        ? t(
+            'lumen.shell.searchVideoWithComics',
+            'Search movies, series, comics…'
+          )
+        : t('lumen.shell.searchVideo', 'Search movies and series…');
   const [term, setTerm] = useState('');
   useEffect(() => {
     setTerm(path === '/search' ? params.get('q') || '' : '');
@@ -432,7 +442,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           <div className="topbar" ref={topbar}>
             <button
               className="icon-btn tb-back"
-              aria-label="Back"
+              aria-label={t('lumen.shell.back', 'Back')}
               onClick={back}
             >
               <Icon name="chevL" />
@@ -469,10 +479,12 @@ export default function Shell({ children }: { children: ReactNode }) {
           <main className="view" id="view">
             {user?.warnings?.includes('mediaServerSignInRequired') && (
               <p className="note" role="status">
-                Sign out on You, then sign in with your Jellyfin or Emby account
-                again to restore library availability and playback.{' '}
+                {t(
+                  'lumen.shell.mediaServerSignInRequired',
+                  'Sign out on You, then sign in with your Jellyfin or Emby account again to restore library availability and playback.'
+                )}{' '}
                 <Link className="btn btn-quiet btn-sm" to="/me">
-                  Open You
+                  {t('lumen.shell.openYou', 'Open You')}
                 </Link>
               </p>
             )}
@@ -484,7 +496,11 @@ export default function Shell({ children }: { children: ReactNode }) {
       </div>
       {/* phones: detail pages hide the tab bar, so this is the way out (also while loading) */}
       {detail && (
-        <button className="dback ph-only" aria-label="Back" onClick={back}>
+        <button
+          className="dback ph-only"
+          aria-label={t('lumen.shell.back', 'Back')}
+          onClick={back}
+        >
           <Icon name="chevL" />
         </button>
       )}
@@ -517,6 +533,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 }
 
 export function Placeholder({ title }: { title: string }) {
+  const { t } = useLumenLocale();
   const { seerrPublicUrl } = usePrefs();
   const { user } = useAuth();
   const lockedToLumen =
@@ -527,24 +544,29 @@ export function Placeholder({ title }: { title: string }) {
       <header className="ph">
         <div className="ph-row">
           <div>
-            <h1>{title}</h1>
+            <h1>
+              {title === 'Page not found'
+                ? t('lumen.shell.pageNotFound', title)
+                : title}
+            </h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
       </header>
       <div className="empty">
-        <b>Nothing here</b>This page doesn’t exist in Lumen.{' '}
+        <b>{t('lumen.shell.nothingHere', 'Nothing here')}</b>
+        {t('lumen.shell.pageMissing', 'This page doesn’t exist in Lumen.')}{' '}
         <Link to="/" style={{ color: 'var(--accent)' }}>
-          Back to Discover
+          {t('lumen.shell.backToDiscover', 'Back to Discover')}
         </Link>{' '}
         {!lockedToLumen && (
           <>
-            or{' '}
+            {t('lumen.shell.or', 'or')}{' '}
             <a
               href={fullSeerrUrl(seerrPublicUrl)}
               style={{ color: 'var(--accent)' }}
             >
-              open full SeerrNG
+              {t('lumen.shell.openFullSeerrNG', 'open full SeerrNG')}
             </a>
           </>
         )}

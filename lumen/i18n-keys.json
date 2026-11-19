@@ -244,5 +244,22 @@
   "lumen.admin.dest.steamImport",
   "lumen.admin.dest.quotas",
   "lumen.admin.open",
-  "lumen.admin.title"
+  "lumen.admin.title",
+  "lumen.shell.searchAllWithComics",
+  "lumen.shell.searchVideoWithComics",
+  "lumen.shell.searchVideo",
+  "lumen.shell.mediaServerSignInRequired",
+  "lumen.shell.openYou",
+  "lumen.shell.nothingHere",
+  "lumen.shell.pageMissing",
+  "lumen.shell.backToDiscover",
+  "lumen.shell.searchMovies",
+  "lumen.shell.searchSeries",
+  "lumen.shell.searchAudio",
+  "lumen.shell.searchBooks",
+  "lumen.shell.searchAll",
+  "lumen.shell.back",
+  "lumen.shell.openFullSeerrNG",
+  "lumen.shell.pageNotFound",
+  "lumen.shell.or"
 ]
