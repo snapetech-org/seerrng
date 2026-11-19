@@ -3874,3 +3874,19 @@ standalone production renders of `/me` at 1440 and 390 CSS pixels compared
 baseline and candidate layouts; the new row uses the existing settings-list
 owner with no horizontal overflow. Live Prowlarr handoff and bundled visual
 acceptance remain open.
+
+### Viewer-scoped TV media-server saved items
+
+TV details in Lumen now expose the existing viewer-scoped media-server saved
+item action when Plex, Jellyfin, or Emby is configured. Plex uses the viewer's
+Universal Watchlist; Jellyfin and Emby use the viewer's Favorites for the
+selected quality. The action remains distinct from SeerrNG's local Watchlist,
+uses the existing authenticated endpoint, and reads back state after writes.
+Browser fixtures cover all three server types, add/remove, read-only retry,
+unconfigured servers, and quality selection. Candidate and baseline were
+rendered at `/tv/202` in the loaded Plex state and compared at desktop (1440 ×
+1274), iPhone (1170 × 3495; baseline 3339), Android (1082 × 2922), and
+tablet (1668 × 2416; baseline 2388).
+The existing mobile detail action wraps onto its own row; surrounding detail
+layout and sticky playback control remain intact. Live provider behavior and
+bundled acceptance remain open.

@@ -326,15 +326,21 @@ test('video Watchlist action confirms the current title and server response', as
     });
   });
   await page.goto('/movie/20');
-  await page.getByRole('button', { name: 'Add To Watchlist' }).click();
+  await page
+    .getByRole('button', { name: 'Add Example Movie to your Watchlist' })
+    .click();
   await expect(
-    page.getByRole('button', { name: 'Remove From Watchlist' })
+    page.getByRole('button', {
+      name: 'Remove Example Movie from your Watchlist',
+    })
   ).toBeVisible();
   expect(writes).toBe(1);
   await page.reload();
-  await page.getByRole('button', { name: 'Remove From Watchlist' }).click();
+  await page
+    .getByRole('button', { name: 'Remove Example Movie from your Watchlist' })
+    .click();
   await expect(
-    page.getByRole('button', { name: 'Add To Watchlist' })
+    page.getByRole('button', { name: 'Add Example Movie to your Watchlist' })
   ).toBeVisible();
   expect(writes).toBe(2);
 });
@@ -389,8 +395,12 @@ test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf 
     });
   });
   await page.goto(`/book/${work}`);
-  const add = page.getByRole('button', { name: 'Add To Watchlist' });
-  const remove = page.getByRole('button', { name: 'Remove From Watchlist' });
+  const add = page.getByRole('button', {
+    name: 'Add Example Book to your Watchlist',
+  });
+  const remove = page.getByRole('button', {
+    name: 'Remove Example Book from your Watchlist',
+  });
   await add.click();
   await expect(remove).toBeVisible();
   await remove.click();
