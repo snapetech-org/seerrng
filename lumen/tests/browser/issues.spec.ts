@@ -81,6 +81,45 @@ for (const permissions of [4194304, 2097152, 32]) {
   });
 }
 
+test('issue list resolves affected media titles from visible rows', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 4194304 } });
+    if (path === '/issue')
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: 7,
+              status: 1,
+              issueType: 1,
+              media: { mediaType: 'movie', tmdbId: 20 },
+              createdBy: { id: 2 },
+              createdAt: '2026-11-12T00:00:00Z',
+              comments: [],
+            },
+          ],
+          pageInfo: { page: 1, pages: 1 },
+        },
+      });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: { title: 'Example Film', releaseDate: '2023-04-17' },
+      });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/issues');
+  const media = page.getByRole('link', { name: 'Example Film (2023)' });
+  await expect(media).toHaveAttribute('href', '/movie/20');
+  await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+});
+
 test('reporting uses the internal media row and opens the confirmed report', async ({
   page,
 }) => {

@@ -330,8 +330,11 @@ permission checks.
 Headed Chrome at 1440 × 1000 compared the baseline and candidate on the same
 standalone discussion fixture. Editing the description, confirming a manager's
 deletion of another account's reply, and confirming issue deletion all worked.
-Mobile and bundled visual checks remain open. Advanced filters and title
-metadata, and Blocklist remain open.
+Issue media titles now resolve lazily from the existing detail endpoints for
+visible rows and link to the matching media detail. The browser fixture covers
+the title and year. Advanced metadata filters and issue-list title metadata are
+implemented. Mobile and bundled visual checks, and native-matched comparison,
+remain open.
 
 ### Blocklist browsing and removal increment
 

@@ -28,6 +28,15 @@ interface IssueMedia {
   identifiers?: { provider: string; value: string }[];
 }
 
+interface IssueMediaTitle {
+  title?: string;
+  name?: string;
+  releaseDate?: string;
+  firstAirDate?: string;
+  firstPublishYear?: number;
+  startYear?: string;
+}
+
 function issueTitleLink(media?: IssueMedia) {
   if (!media) return;
   const { mediaType, tmdbId } = media;
@@ -63,6 +72,54 @@ function issueTitleLink(media?: IssueMedia) {
     path: `/${mediaType}/${encodeURIComponent(id)}`,
     label: labels[mediaType],
   };
+}
+
+function IssueMediaTitle({ media }: { media?: IssueMedia }) {
+  const anchor = useRef<HTMLSpanElement>(null);
+  const [nearView, setNearView] = useState(false);
+  const destination = issueTitleLink(media);
+  useEffect(() => {
+    if (!destination || nearView || !anchor.current) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setNearView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNearView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(anchor.current);
+    return () => observer.disconnect();
+  }, [destination?.path, nearView]);
+  const { data, error } = useApi<IssueMediaTitle>(
+    nearView && destination ? destination.path : null,
+    { currentPathOnly: true }
+  );
+  const title = data?.title || data?.name;
+  const year =
+    (data?.releaseDate || data?.firstAirDate || '').match(/\d{4}/)?.[0] ||
+    data?.firstPublishYear ||
+    data?.startYear;
+  if (!destination || error) return null;
+  return (
+    <small ref={anchor}>
+      {title ? (
+        <Link to={destination.path}>
+          {title}
+          {year ? ` (${year})` : ''}
+        </Link>
+      ) : nearView ? (
+        'Loading title…'
+      ) : (
+        ' '
+      )}
+    </small>
+  );
 }
 
 interface Issue {
@@ -326,6 +383,7 @@ function IssueList() {
           {data.results.map((issue) => (
             <li className="set" key={issue.id}>
               <div>
+                <IssueMediaTitle media={issue.media} />
                 <Link
                   to={{
                     pathname: `/issues/${issue.id}`,
