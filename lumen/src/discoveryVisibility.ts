@@ -15,7 +15,7 @@ export function discoveryVisibility(
 }
 
 export function showDiscoveryTitle(
-  title: TitleResult,
+  title: Pick<TitleResult, 'mediaInfo'>,
   {
     hideAvailable,
     hideRequested,

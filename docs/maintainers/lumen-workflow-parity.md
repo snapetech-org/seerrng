@@ -3532,3 +3532,12 @@ the API returned one result. MusicBrainz returned HTTP 503 on the first
 standalone run and responded successfully when the run was repeated.
 The library rows were seeded, so this check did not exercise a Lidarr
 scan.
+
+Music discovery now applies the instance's available and blocklisted
+title visibility rules. Explicit MP3 and FLAC library filters keep
+available albums visible. As in Classic, the video-only hide-requested
+setting leaves albums visible. Desktop and iPhone browser checks in
+bundled Express and standalone nginx verified a hidden first page,
+manual continuation to a visible album, and an explicit FLAC filter.
+Matched renders retained the existing Music controls and used the
+shared pagination button. Catalogue data was synthetic.

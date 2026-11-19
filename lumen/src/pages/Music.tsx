@@ -20,6 +20,10 @@ import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
 import WatchlistButton from '../components/WatchlistButton';
 import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
+import {
   artistOf,
   fmtTrack,
   requestExtra,
@@ -27,7 +31,7 @@ import {
   type AlbumDetails,
   type ArtistDetails,
 } from '../extras';
-import { useApi, usePaged } from '../hooks';
+import { useApi, usePaged, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { AssociationLink } from './Associations';
@@ -237,7 +241,17 @@ export function Music() {
   useEffect(() => {
     setQ((value) => (value.trim() === query ? value : query));
   }, [query]);
-  const items = list.items;
+  const { user } = useAuth();
+  const visibility = discoveryVisibility(
+    usePublicSettings(),
+    user?.permissions
+  );
+  if (filters.has('availability')) visibility.hideAvailable = false;
+  visibility.hideRequested = false;
+  const items = list.items.filter((album) =>
+    showDiscoveryTitle(album, visibility)
+  );
+  const filtered = items.length < list.items.length;
 
   return (
     <ExtraGate k="music">
@@ -366,7 +380,7 @@ export function Music() {
         )}
       </form>
       <ServiceNote error={list.items.length ? null : list.error} what="music" />
-      {!list.error && !items.length && !list.loading && (
+      {!list.error && !items.length && !list.loading && list.done && (
         <div className="empty">
           <b>Nothing here</b>
           {query
@@ -379,8 +393,19 @@ export function Music() {
           <AlbumCard key={a.id} a={a} />
         ))}
       </div>
+      {filtered && !list.done && !list.error && (
+        <div className="more-scroll">
+          <button
+            className="btn btn-tonal"
+            disabled={list.loading}
+            onClick={list.more}
+          >
+            {list.loading ? 'Loading…' : 'Show More Music'}
+          </button>
+        </div>
+      )}
       <MoreOnScroll
-        done={list.done}
+        done={list.done || filtered}
         loading={list.loading}
         more={list.more}
         error={list.error}
