@@ -3898,3 +3898,17 @@ layout and sticky playback control remain intact. The unlinked-account state
 was also rendered at all four presets; its recovery link wraps below the
 unavailable action on iPhone, and browser checks confirm no horizontal
 overflow. Live provider behavior and bundled acceptance remain open.
+
+### Lumen regression checkpoint
+
+The complete standalone Lumen browser suite passed at `11faf2052`: 2,892
+passed, 108 configured skips, and 0 failures across 3,000 desktop, iPhone,
+Android, and tablet cases. The run found two stale Watchlist test labels and
+confirmed both passed after updating the selectors. Subsequent focused suites
+on the saved-item and software-request-history increments passed 32 cases each
+across the same four viewport presets. The Lumen TypeScript/production build
+and the SeerrNG production build passed locally after synchronizing the API
+message source catalog. The latter commit also passed the i18n and current
+batch contract checks. Exact-head hosted validation remains in progress;
+live provider behavior, bundled/native visual comparisons, and the broader
+workflow gaps in the inventory remain open.
