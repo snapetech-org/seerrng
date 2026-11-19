@@ -2497,7 +2497,8 @@ Author and series pages can submit bulk ebook or audiobook requests through
 the existing bulk API. Author selections can span bibliography pages.
 The sheet submits up to 100 titles per batch using normal request defaults,
 preserves selections after rejection, and reports created, skipped, and
-failed results. Native advanced destination overrides remain separate work.
+failed results. Advanced destination overrides are covered in the following
+increment; the earlier status is superseded by that implementation.
 
 The production build, 18 bulk API tests, and 36 browser checks passed.
 Compared the new sheet with existing Lumen dialog geometry on desktop,
