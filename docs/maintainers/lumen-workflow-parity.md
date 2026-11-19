@@ -3403,6 +3403,15 @@ the discovery API request, and displayed only the unowned fixture. Both
 catalogue and library responses were synthetic. Live book services were
 outside this check.
 
+Classic Trending bookmarks passed 12 browser checks on production builds
+from `f1b9af9b1` across bundled Express and standalone nginx at 390 and
+1440 CSS pixels. After real local sign-in, the ebook and audiobook
+bookmarks selected the requested library scope and displayed the matching
+fixture. The audiobook request retained its narrator. The Music request
+retained FLAC, EP, and ascending release date, and the visible quality
+and sort controls reflected those values. Catalogue, library, and Music
+category availability used fixtures. Live providers were outside the check.
+
 The older increment notes describe the state at delivery. Use the table above for
 these workflows and current route, permission, and browser evidence when
 rechecking the original inventory. A continuation audit must include both
