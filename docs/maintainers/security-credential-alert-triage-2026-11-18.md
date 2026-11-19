@@ -23,8 +23,18 @@ Dismissed alert 652 because the locale cookie stores only a validated
 display language. Alert 653 concerns the production OIDC correlation cookie. Newly issued
 cookies encrypt the correlation payload with AES-256-GCM and expire after
 ten minutes on both the client and server. Existing signed cookies can
-finish an in-flight login within the same lifetime. The alert is still
-open in GitHub.
+finish an in-flight login within the same lifetime. GitHub now marks alert
+653 fixed at `efdb4c63d`; current code-scanning state has no open alerts.
+
+## Lumen shared configuration authorization
+
+The companion's `/_lumen_session_check` now clears `X-API-Key` and
+`Authorization` before requesting `/api/v1/auth/me`. This makes the shared
+configuration and branding endpoints rely on the interactive session cookie,
+matching the embedded Lumen route's client-token boundary. The nginx image test
+simulates an admin-owned limited token and verifies that each header alone is
+rejected while a valid session cookie remains accepted. The end-to-end proxy
+suite passed all 10 tests.
 
 ## Markup handling
 

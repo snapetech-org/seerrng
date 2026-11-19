@@ -90,6 +90,9 @@ server {
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $remote_addr;
     proxy_set_header X-Real-IP $remote_addr;
+    # Shared settings require an interactive session, never a client token.
+    proxy_set_header X-API-Key "";
+    proxy_set_header Authorization "";
     proxy_set_header CF-Connecting-IP "";
     proxy_set_header Forwarded "";
     proxy_set_header X-Forwarded-Proto $lumen_forwarded_proto;

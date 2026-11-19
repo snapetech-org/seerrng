@@ -22,10 +22,15 @@ const malformedPermissions = new Map([
 ]);
 const echo = createServer((req, res) => {
   if (req.url === '/api/v1/auth/me') {
+    const tokenUser =
+      req.headers['x-api-key'] === 'fixture-limited-admin-token' ||
+      req.headers.authorization === 'Bearer fixture-limited-admin-token';
     res.statusCode =
       ['fixture-session=valid', 'fixture-session=family'].includes(
         req.headers.cookie
-      ) || malformedPermissions.has(req.headers.cookie)
+      ) ||
+      malformedPermissions.has(req.headers.cookie) ||
+      tokenUser
         ? 200
         : req.headers.cookie === 'fixture-session=forbidden'
           ? 403
@@ -36,7 +41,7 @@ const echo = createServer((req, res) => {
     const body = JSON.stringify({
       permissions: malformedPermissions.has(req.headers.cookie)
         ? malformedPermissions.get(req.headers.cookie)
-        : req.headers.cookie === 'fixture-session=valid'
+        : req.headers.cookie === 'fixture-session=valid' || tokenUser
           ? 2
           : 32,
       // Real /auth/me responses contain settings and exceed the compression threshold.
@@ -536,6 +541,24 @@ test('actual nginx saves and serves admin branding without deleting the live log
           expected
         );
       }
+    }
+    for (const headers of [
+      { 'x-api-key': 'fixture-limited-admin-token' },
+      { authorization: 'Bearer fixture-limited-admin-token' },
+      {
+        cookie: 'fixture-session=valid',
+        'x-api-key': 'fixture-limited-admin-token',
+        authorization: 'Bearer fixture-limited-admin-token',
+      },
+    ]) {
+      const response = await fetch(base + '/lumen/config', {
+        headers: { ...headers, accept: 'application/json' },
+      });
+      assert.equal(
+        response.status,
+        headers.cookie ? 200 : 401,
+        'Only the interactive session may authorize shared settings'
+      );
     }
     for (const [body, type, expected] of [
       ['[]', 'application/json', 400],
