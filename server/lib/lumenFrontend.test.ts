@@ -754,6 +754,14 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ],
       ['/discover/trending?mediaType=book', '/lumen/books'],
       [
+        '/discover/trending?mediaType=audiobook&libraryView=missing&narrator=Reader',
+        '/lumen/audiobooks?narrator=Reader&show=not',
+      ],
+      [
+        '/discover/trending?mediaType=music&releaseType=ep&availability=flac',
+        '/lumen/music?releaseType=ep&availability=flac',
+      ],
+      [
         '/discover/books?subject=local+history',
         '/lumen/books?subject=local+history',
       ],

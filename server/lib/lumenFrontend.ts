@@ -602,12 +602,6 @@ function workflowDeepLink(
   const issueId = /^\/issues\/([1-9]\d{0,15})$/.exec(nativePath)?.[1];
   const issueDetail = issueId && Number.isSafeInteger(Number(issueId));
 
-  if (nativePath === '/discover/trending') {
-    if (req.query.mediaType === 'music') return '/lumen/music';
-    if (req.query.mediaType === 'book') return '/lumen/books';
-    if (req.query.mediaType === 'audiobook') return '/lumen/audiobooks';
-  }
-
   const [, userId, userWorkflow] =
     /^\/users\/([1-9]\d{0,9})\/(watchlist|requests)$/.exec(nativePath) ?? [];
   const userDestination = userId && Number(userId) <= 1_000_000_000;
@@ -624,6 +618,11 @@ function workflowDeepLink(
 
   const userWatchlist = userDestination && userWorkflow === 'watchlist';
   let destination = workflowDestinations.get(nativePath);
+  if (destination === '/trending') {
+    if (req.query.mediaType === 'music') destination = '/music';
+    if (req.query.mediaType === 'book') destination = '/books';
+    if (req.query.mediaType === 'audiobook') destination = '/audiobooks';
+  }
   if (userWatchlist) destination = `/watchlist/user/${userId}`;
   if (issueDetail) destination = `/issues/${issueId}`;
   if (!destination) return;

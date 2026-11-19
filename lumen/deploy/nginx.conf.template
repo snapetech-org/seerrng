@@ -210,9 +210,9 @@ server {
     return 302 /list/$1$is_args$args;
   }
   location ~ ^/discover/trending/?$ {
-    if ($arg_mediaType = music) { return 302 /music; }
-    if ($arg_mediaType = book) { return 302 /books; }
-    if ($arg_mediaType = audiobook) { return 302 /audiobooks; }
+    if ($arg_mediaType = music) { rewrite ^ /discover/music last; }
+    if ($arg_mediaType = book) { rewrite ^ /discover/books last; }
+    if ($arg_mediaType = audiobook) { rewrite ^ /discover/audiobooks last; }
     return 302 /trending$is_args$args;
   }
   location ~ ^/discover/movies/upcoming/?$ {

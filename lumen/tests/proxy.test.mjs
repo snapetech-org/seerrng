@@ -197,7 +197,15 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/coming-soon/?media=tv&extra=1', '/soon?media=tv'],
       ['/discover/movies/upcoming/', '/soon?media=movie'],
       ['/discover/tv/upcoming', '/soon?media=tv'],
-      ['/discover/trending?mediaType=audiobook', '/audiobooks'],
+      ['/discover/trending?mediaType=audiobook', '/audiobooks?mediaType=audiobook'],
+      [
+        '/discover/trending?mediaType=audiobook&libraryView=missing&narrator=Reader',
+        '/audiobooks?show=not&mediaType=audiobook&libraryView=missing&narrator=Reader',
+      ],
+      [
+        '/discover/trending?mediaType=music&releaseType=ep&availability=flac',
+        '/music?mediaType=music&releaseType=ep&availability=flac',
+      ],
       ['/discover/list/12345/?page=2', '/list/12345?page=2'],
       ['/discover/trending?mediaType=tv', '/trending?mediaType=tv'],
       ['/discover/patches?kind=hack', '/patches?kind=hack'],
