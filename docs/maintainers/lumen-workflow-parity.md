@@ -3115,17 +3115,19 @@ browser can normalize them. Valid proxy URLs keep their query strings.
 The production build and 28 Swipe and curated collection browser checks
 passed. Compared Swipe cards on desktop, iPhone 13, Pixel 7, and iPad
 Pro 11 and verified that a control character in an artwork path causes
-the image to be omitted. A regular proxy image still renders. GitHub
-alert 690 remains open pending disposition. Evidence is retained under
-`seerrng-lumen-art-url*` in `/mnt/disks/scratch/task-deliverables/`.
+the image to be omitted. A regular proxy image still renders. GitHub code-scanning alert 690 was
+dismissed as a false positive: this sink is an image `src`, not a page
+navigation, and the shared artwork URL validator restricts accepted origins.
+Evidence is retained under `seerrng-lumen-art-url*` in
+`/mnt/disks/scratch/task-deliverables/`.
 
 Movie trailers now use a fixed YouTube watch origin and a validated
 video ID. If a trailer has no valid ID, Lumen checks the next trailer
 candidate. Compared movie detail pages before and after on desktop,
 iPhone 13, Pixel 7, and iPad Pro 11. The production build and 28 detail
 browser checks passed. The trailer fixture verifies the generated
-destination and omission of invalid candidates. GitHub alert 670 is
-still open. Evidence is retained under `seerrng-lumen-trailer-url*`
+destination and omission of invalid candidates. GitHub code-scanning alert
+670 is fixed. Evidence is retained under `seerrng-lumen-trailer-url*`
 in `/mnt/disks/scratch/task-deliverables/`.
 
 Reader service links now share absolute HTTP(S) address validation.
@@ -3143,7 +3145,7 @@ valid screenshot as the backdrop even when the API's first entry is
 invalid. The production build and 40 browser checks passed. Compared
 software detail before and after on desktop, iPhone 13, Pixel 7, and iPad
 Pro 11. The fixture verifies valid proxy art and omission of unsupported
-image URLs. GitHub findings 654–657 remain open. Evidence is retained
+image URLs. GitHub code-scanning alerts 654–657 are fixed. Evidence is retained
 under `seerrng-lumen-rendered-art*` in `/mnt/disks/scratch/task-deliverables/`.
 
 Bundled Lumen HTML responses now share a per-client budget of 600
@@ -3152,14 +3154,14 @@ missing asset responses, and setup redirects do not consume the shell
 budget. The existing client IP helper respects the configured proxy
 trust boundary. Both frontend routing integration tests passed,
 including deep links and the distinction between shell and asset
-responses. GitHub alert 671 remains open. Evidence is retained at
+responses. GitHub code-scanning alert 671 is fixed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shell-ratelimit-20261118.log`.
 
 ComicVine description formatting now decodes supported entities in one
 pass and renders the result as React text. Compared comic details on
 desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production build and
 seven browser checks passed, with nine responsive-test skips. GitHub
-finding 647 remains open on earlier code. Evidence is retained under
+code-scanning alert 647 is fixed. Evidence is retained under
 `seerrng-lumen-comic-text*` in `/mnt/disks/scratch/task-deliverables/`.
 
 Shared card covers and the request card's decorative image now validate
@@ -3687,7 +3689,8 @@ GitHub code-scanning alert 693 flagged the ComicVine plain-text formatter
 in the analysis of `ba2844e70`. In that revision and current main, its
 only consumer renders each paragraph as a React text child. The alert was
 dismissed as a false positive because the formatted value never reaches
-an HTML parser. The artwork URL findings remain open for separate review.
+an HTML parser. Alert 693 was dismissed as a false positive; alerts 654–657 covering the
+shared artwork rendering paths were fixed separately.
 
 Lumen's shared artwork validator limits same-origin image loads to the
 image proxy and dedicated image endpoints. It retains query parameters
@@ -4238,6 +4241,18 @@ Exact latest-head hosted validation remains in progress; live provider
 behavior, bundled/native visual comparisons, and the broader workflow gaps in
 the inventory remain open.
 
+### Security alert status (2026-11-19)
+
+Live GitHub API checks report zero open Dependabot alerts, zero open code
+scanning alerts, and zero open secret-scanning alerts for this repository.
+CodeQL remains manually disabled under the owner directive. The seven
+historical Lumen findings recorded below are now dispositioned: 654–657,
+670–671, and 647 are fixed; 690 and 693 are dismissed as false positives with
+their rationale recorded at the corresponding implementation notes. Both
+`pnpm audit` and `pnpm audit --prod` report no known vulnerabilities. This
+snapshot does not substitute for future scans after dependency or source
+changes.
+
 TV Request Settings now localizes the season-watch policy states, approval
 review queue, Episode Queue controls, and account navigation using existing
 SeerrNG locale messages, plus Lumen-specific labels for episode counts and
@@ -4255,7 +4270,16 @@ media-server linking form, identity-provider actions, unlink confirmation, and
 account-link feedback in English, French, and Arabic. The French fixture passes
 across desktop, iPhone, Android, and tablet and checks desktop/iPhone baseline
 and candidate renders plus horizontal overflow. The screenshot still shows
-English text in the Tracking Accounts section because that independently-owned
-Discovery component has not yet been localized. Provider authorization,
-unlinking failure and role behavior, live readback, Arabic rendering, and
-bundled-mount visuals remain open.
+the now-localized Tracking Accounts section because its provider configuration
+and authorization statuses share the same Discovery Accounts component.
+Provider authorization, unlinking failure and role behavior, live readback,
+Arabic rendering, and bundled-mount visuals remain open.
+
+Tracking Accounts now localizes provider setup guidance, account states,
+write-preference and disconnect actions, AniList/Trakt/Simkl authorization
+flows, and their errors in English, French, and Arabic. The Linked Accounts
+fixture verifies translated empty state and provider actions in French across
+desktop, iPhone, Android, and tablet, with no horizontal overflow; matching
+desktop and iPhone candidate renders preserve existing control owners and
+layout. Live provider authorization, linked-account readback, Arabic visual
+review, and bundled-mount acceptance remain open.

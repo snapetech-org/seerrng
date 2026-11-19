@@ -35,7 +35,15 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
     if (path === '/user/2/settings/password')
       return route.fulfill({ json: { hasPassword: true } });
     if (path === '/integrations/discovery/configuration')
-      return route.fulfill({ json: {} });
+      return route.fulfill({
+        json: {
+          anilist: { configured: true },
+          simkl: { configured: true },
+          trakt: { configured: true },
+        },
+      });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({ json: { accounts: [] } });
     if (path === '/integrations/discovery/accounts')
       return route.fulfill({ json: { accounts: [] } });
     return route.fulfill({ json: {} });
@@ -51,6 +59,23 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
   await expect(
     page.getByRole('heading', {
       name: candidate ? 'Méthodes de connexion' : 'Sign-in Methods',
+    })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      name: candidate ? 'Comptes de suivi' : 'Tracking Accounts',
+    })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      candidate
+        ? 'Aucun compte de suivi n’est connecté.'
+        : 'No tracking accounts are connected.'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', {
+      name: candidate ? 'Connecter AniList' : 'Connect AniList',
     })
   ).toBeVisible();
   await expect(

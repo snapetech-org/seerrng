@@ -431,6 +431,55 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'حالة تسجيل الدخول المحلي',
       'lumen.account.linked.quickConnect': 'اتصال Jellyfin السريع',
       'lumen.account.linked.unlinkProvider': 'إلغاء ربط {provider}',
+      'lumen.discoveryAccounts.heading': 'حسابات التتبع',
+      'lumen.discoveryAccounts.invalidResponse':
+        'استجابة حسابات التتبع غير صالحة.',
+      'lumen.discoveryAccounts.accountsWhat': 'حسابات التتبع',
+      'lumen.discoveryAccounts.configurationWhat': 'إعداد موفري التتبع',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        'يلزم إعداد {providers} قبل الاتصال.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        'يلزم إعداد {providers} قبل الاتصال.',
+      'lumen.discoveryAccounts.openDiscoverySettings': 'فتح إعدادات الاكتشاف',
+      'lumen.discoveryAccounts.askAdministrator':
+        'اطلب من مسؤول SeerrNG إعداد التكامل.',
+      'lumen.discoveryAccounts.loading': 'جارٍ تحميل حسابات التتبع…',
+      'lumen.discoveryAccounts.empty': 'لا توجد حسابات تتبع متصلة.',
+      'lumen.discoveryAccounts.allowWrites': 'السماح بالكتابة إلى {provider}',
+      'lumen.discoveryAccounts.reconnect': 'إعادة الاتصال بـ {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'قطع الاتصال بـ {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'التفويض عبر {provider}',
+      'lumen.discoveryAccounts.authorizationCode': 'رمز تفويض {provider}',
+      'lumen.discoveryAccounts.completeConnection':
+        'إكمال الاتصال بـ {provider}',
+      'lumen.discoveryAccounts.cancel': 'إلغاء',
+      'lumen.discoveryAccounts.simklInstruction':
+        'أدخل {code} في Simkl. تنتهي صلاحية الرمز في {time}.',
+      'lumen.discoveryAccounts.cancelConnection': 'إلغاء الاتصال بـ {provider}',
+      'lumen.discoveryAccounts.disconnectTitle': 'قطع الاتصال بـ {provider}؟',
+      'lumen.discoveryAccounts.disconnectBody':
+        'سيتوقف SeerrNG عن استخدام حساب التتبع هذا.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'قطع الاتصال',
+      'lumen.discoveryAccounts.keepConnected': 'الإبقاء على الاتصال',
+      'lumen.discoveryAccounts.traktDenied': 'تم رفض تفويض Trakt.',
+      'lumen.discoveryAccounts.traktExpired':
+        'انتهت صلاحية تفويض Trakt. ابدأ من جديد.',
+      'lumen.discoveryAccounts.traktIncomplete': 'تعذر إكمال تفويض Trakt.',
+      'lumen.discoveryAccounts.connectFailure': 'تعذر الاتصال بـ {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'تعذر بدء التفويض عبر {provider}.',
+      'lumen.discoveryAccounts.simklExpired':
+        'انتهت صلاحية تفويض Simkl. ابدأ من جديد للحصول على رمز جديد.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'رمز جهاز Simkl غير صالح.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'رابط تفويض AniList غير صالح.',
+      'lumen.discoveryAccounts.invalidTraktLink': 'رابط تفويض Trakt غير صالح.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'افتح Lumen عبر عنوان تطبيق SeerrNG المُعد للاتصال بـ Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'تعذر تحديث حساب التتبع.',
+      'lumen.discoveryAccounts.connect': 'الاتصال بـ {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete': 'تعذر إكمال تفويض AniList.',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -925,6 +974,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -1360,6 +1465,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -1794,6 +1955,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -2226,6 +2443,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -2666,6 +2939,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -3097,6 +3426,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -3530,6 +3915,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -3966,6 +4407,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -4402,6 +4899,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -4835,6 +5388,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -5270,6 +5879,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -5721,6 +6386,66 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'état de la connexion locale',
       'lumen.account.linked.quickConnect': 'Quick Connect Jellyfin',
       'lumen.account.linked.unlinkProvider': 'Délier {provider}',
+      'lumen.discoveryAccounts.heading': 'Comptes de suivi',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Réponse invalide des comptes de suivi.',
+      'lumen.discoveryAccounts.accountsWhat': 'comptes de suivi',
+      'lumen.discoveryAccounts.configurationWhat':
+        'configuration des fournisseurs de suivi',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        'La configuration de {providers} est requise avant la connexion.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        'La configuration de {providers} est requise avant la connexion.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Ouvrir les paramètres de découverte',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Demandez à votre administrateur SeerrNG de configurer cette intégration.',
+      'lumen.discoveryAccounts.loading': 'Chargement des comptes de suivi…',
+      'lumen.discoveryAccounts.empty': 'Aucun compte de suivi n’est connecté.',
+      'lumen.discoveryAccounts.allowWrites':
+        'Autoriser les écritures vers {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnecter {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Déconnecter {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Autoriser sur {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        'Code d’autorisation {provider}',
+      'lumen.discoveryAccounts.completeConnection':
+        'Terminer la connexion à {provider}',
+      'lumen.discoveryAccounts.cancel': 'Annuler',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Saisissez {code} sur Simkl. Ce code expire à {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Annuler la connexion à {provider}',
+      'lumen.discoveryAccounts.disconnectTitle': 'Déconnecter {provider} ?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG cessera d’utiliser ce compte de suivi.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Déconnecter',
+      'lumen.discoveryAccounts.keepConnected': 'Garder la connexion',
+      'lumen.discoveryAccounts.traktDenied':
+        'L’autorisation Trakt a été refusée.',
+      'lumen.discoveryAccounts.traktExpired':
+        'L’autorisation Trakt a expiré. Recommencez.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'L’autorisation Trakt n’a pas abouti.',
+      'lumen.discoveryAccounts.connectFailure':
+        'Impossible de connecter {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Impossible de lancer l’autorisation {provider}.',
+      'lumen.discoveryAccounts.simklExpired':
+        'L’autorisation Simkl a expiré. Recommencez pour obtenir un nouveau code.',
+      'lumen.discoveryAccounts.invalidSimklCode':
+        'Code d’appareil Simkl invalide.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Lien d’autorisation AniList invalide.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Lien d’autorisation Trakt invalide.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Ouvrez Lumen à l’adresse d’application SeerrNG configurée pour connecter Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Impossible de mettre à jour le compte de suivi.',
+      'lumen.discoveryAccounts.connect': 'Connecter {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'L’autorisation AniList n’a pas abouti.',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',
@@ -6224,6 +6949,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -6655,6 +7436,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -7091,6 +7928,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -7525,6 +8418,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -7960,6 +8909,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -8394,6 +9399,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -8828,6 +9889,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -9259,6 +10376,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -9690,6 +10863,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -10124,6 +11353,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -10556,6 +11841,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -10990,6 +12331,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -11424,6 +12821,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -11859,6 +13312,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -12293,6 +13802,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -12724,6 +14289,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -13159,6 +14780,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -13593,6 +15270,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -14027,6 +15760,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -14460,6 +16249,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -14894,6 +16739,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -15329,6 +17230,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -15760,6 +17717,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -16191,6 +18204,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
   {
@@ -16627,6 +18696,62 @@ export const localeData = [
       'lumen.account.linked.localSignInStatus': 'local sign-in status',
       'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
       'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
+      'lumen.discoveryAccounts.heading': 'Tracking Accounts',
+      'lumen.discoveryAccounts.invalidResponse':
+        'Invalid tracking account response.',
+      'lumen.discoveryAccounts.accountsWhat': 'tracking accounts',
+      'lumen.discoveryAccounts.configurationWhat':
+        'tracking provider configuration',
+      'lumen.discoveryAccounts.setupRequiredSingular':
+        '{providers} requires setup before connecting.',
+      'lumen.discoveryAccounts.setupRequiredPlural':
+        '{providers} require setup before connecting.',
+      'lumen.discoveryAccounts.openDiscoverySettings':
+        'Open Discovery Settings',
+      'lumen.discoveryAccounts.askAdministrator':
+        'Ask your SeerrNG administrator to configure the integration.',
+      'lumen.discoveryAccounts.loading': 'Loading tracking accounts…',
+      'lumen.discoveryAccounts.empty': 'No tracking accounts are connected.',
+      'lumen.discoveryAccounts.allowWrites': 'Allow writes to {provider}',
+      'lumen.discoveryAccounts.reconnect': 'Reconnect {provider}',
+      'lumen.discoveryAccounts.disconnectProvider': 'Disconnect {provider}',
+      'lumen.discoveryAccounts.authorizeProvider': 'Authorize on {provider}',
+      'lumen.discoveryAccounts.authorizationCode':
+        '{provider} authorization code',
+      'lumen.discoveryAccounts.completeConnection':
+        'Complete {provider} Connection',
+      'lumen.discoveryAccounts.cancel': 'Cancel',
+      'lumen.discoveryAccounts.simklInstruction':
+        'Enter {code} on Simkl. This code expires at {time}.',
+      'lumen.discoveryAccounts.cancelConnection':
+        'Cancel {provider} Connection',
+      'lumen.discoveryAccounts.disconnectTitle': 'Disconnect {provider}?',
+      'lumen.discoveryAccounts.disconnectBody':
+        'SeerrNG will stop using this tracking account.',
+      'lumen.discoveryAccounts.disconnectConfirm': 'Disconnect',
+      'lumen.discoveryAccounts.keepConnected': 'Keep connected',
+      'lumen.discoveryAccounts.traktDenied': 'Trakt authorization was denied.',
+      'lumen.discoveryAccounts.traktExpired':
+        'Trakt authorization expired. Start again.',
+      'lumen.discoveryAccounts.traktIncomplete':
+        'Trakt authorization did not complete.',
+      'lumen.discoveryAccounts.connectFailure': 'Could not connect {provider}.',
+      'lumen.discoveryAccounts.startFailure':
+        'Could not start {provider} authorization.',
+      'lumen.discoveryAccounts.simklExpired':
+        'Simkl authorization expired. Start again for a new code.',
+      'lumen.discoveryAccounts.invalidSimklCode': 'Invalid Simkl device code.',
+      'lumen.discoveryAccounts.invalidAniListLink':
+        'Invalid AniList authorization link.',
+      'lumen.discoveryAccounts.invalidTraktLink':
+        'Invalid Trakt authorization link.',
+      'lumen.discoveryAccounts.applicationUrl':
+        'Open Lumen at the configured SeerrNG application URL to connect Trakt.',
+      'lumen.discoveryAccounts.providerUpdateFailure':
+        'Could not update the tracking account.',
+      'lumen.discoveryAccounts.connect': 'Connect {provider}',
+      'lumen.discoveryAccounts.anilistIncomplete':
+        'AniList authorization did not complete.',
     },
   },
 ] as const;
