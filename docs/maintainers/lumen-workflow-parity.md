@@ -3687,5 +3687,7 @@ Administration search also opens Spotify Playlist Import and Steam Library
 Import. The standalone build at 1440 and 390 CSS pixels retained a
 pixel-identical unfiltered directory and showed both new results without
 horizontal overflow. Browser fixtures confirmed that selecting each result
-scrolls its credential control into view. Provider setup and bundled
-verification of these two additions remain open.
+scrolls its credential control into view. Both destinations also passed
+desktop and iPhone checks through bundled Express and standalone nginx
+with real local sign-in and an isolated settings database. Live Spotify
+and Steam setup remain unverified.
