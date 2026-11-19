@@ -741,6 +741,72 @@ test('a double click on a poster’s Request sends one request', async ({
   expect(fixture.errors).toEqual([]);
 });
 
+for (const item of [
+  {
+    path: '/movies',
+    endpoint: '**/api/v1/discover/movies*',
+    permissions: [0, 262144],
+    title: 'The Test Film',
+    result: movie,
+  },
+  {
+    path: '/series',
+    endpoint: '**/api/v1/discover/tv*',
+    permissions: [0, 524288],
+    title: 'The Test Series',
+    result: {
+      ...movie,
+      id: 202,
+      title: undefined,
+      name: 'The Test Series',
+      mediaType: 'tv',
+      firstAirDate: '2020-01-01',
+    },
+  },
+]) {
+  for (const permissions of item.permissions) {
+    test(`${item.path} poster request follows media permission (${permissions})`, async ({
+      page,
+    }) => {
+      await fixtures(page);
+      await page.route('**/api/v1/auth/me', (route) =>
+        route.fulfill({
+          json: { id: 1, displayName: 'Viewer', permissions },
+        })
+      );
+      await page.route('**/api/v1/languages', (route) =>
+        route.fulfill({
+          json: [{ iso_639_1: 'en', english_name: 'English' }],
+        })
+      );
+      await page.route('**/api/v1/watchproviders/regions', (route) =>
+        route.fulfill({
+          json: [{ iso_3166_1: 'US', english_name: 'United States' }],
+        })
+      );
+      await page.route(item.endpoint, (route) =>
+        route.fulfill({ json: paged([item.result]) })
+      );
+      await page.goto(item.path);
+      const poster = page.locator('.poster', {
+        has: page.getByRole('link', { name: item.title, exact: true }),
+      });
+      await expect(poster).toBeVisible();
+      await poster.hover();
+      await expect(
+        poster.getByRole('button', { name: /request/i })
+      ).toHaveCount(permissions === 0 ? 0 : 1);
+      await page.screenshot({
+        path: test
+          .info()
+          .outputPath(`${item.path.slice(1)}-permission-${permissions}.png`),
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+  }
+}
+
 test('movie posters distinguish or hide shared copies without offering duplicate requests', async ({
   page,
 }) => {

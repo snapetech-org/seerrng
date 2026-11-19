@@ -3048,12 +3048,15 @@ open.
 The same audit found request controls on movie and series cards, ebook and
 audiobook cards/details, and comic/manga cards/details. Lumen now gates these
 actions with each media type's native request permissions, including the
-quick-request sheet entry points. Eighty browser checks passed across desktop,
-iPhone, Android, and tablet for game, music, adult, book, and comic detail
-actions plus book-card actions, covering no permission and each allowed role.
-Candidate screenshots for the newly covered book and comic detail states are
-retained under `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-action-permissions/`.
-Matched native baseline comparison and live provider behavior remain open.
+quick-request sheet entry points. One hundred twenty-four browser checks passed
+across desktop, iPhone, Android, and tablet for movie and series cards, game,
+music, adult, book, and comic detail actions, and book-card actions, covering
+no permission and each allowed role. Denied-state baseline/candidate screenshots
+for movie, series, ebook, and audiobook cards cover the same four viewports.
+Candidate book and comic detail screens are also retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-card-permissions/`
+and `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-action-permissions/`.
+Live provider behavior and broader native visual acceptance remain open.
 
 The standalone production-preview suites for Issues, Blocklist, Download Inbox,
 and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
