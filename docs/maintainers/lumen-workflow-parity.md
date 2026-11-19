@@ -1775,8 +1775,15 @@ Account Settings shows the signed-in member's account type and role.
 Twelve browser cases passed per deployment with API fixtures. The
 bundled suite covered the Jellyfin account label, member role,
 password and Episode Queue anchors, and profile save and retry.
-Matched visual review remains open. Classic's Advanced Theme Overrides
-editor still needs a Lumen equivalent.
+Matched visual review remains open.
+
+Lumen edits six personal theme colors through the authenticated account
+API. Classic Advanced Theme bookmarks open the corresponding section in
+both deployments. Sixteen browser cases passed per deployment with
+fixtures. The real account route suite passed 24 cases, including shorthand
+color normalization and readback through `/auth/me` with an unrelated
+numeric override preserved. Other Classic theme controls and matched
+visual review remain open.
 
 ### About release history
 

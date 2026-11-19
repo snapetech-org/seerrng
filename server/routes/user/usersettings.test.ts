@@ -797,14 +797,14 @@ describe('POST /user/:id/settings/advanced-theme', () => {
       .set('Cookie', sessionCookie)
       .send({
         overrides: {
-          '--theme-page-bg': '#123456',
+          '--theme-page-bg': '#123',
           '--theme-page-spotlight-strength': 0.5,
         },
       });
 
     assert.strictEqual(saved.status, 200);
     assert.deepEqual(saved.body.advancedThemeOverrides, {
-      '--theme-page-bg': '#123456',
+      '--theme-page-bg': '#112233',
       '--theme-page-spotlight-strength': 0.5,
     });
 
@@ -813,7 +813,17 @@ describe('POST /user/:id/settings/advanced-theme', () => {
       relations: { settings: true },
     });
     assert.deepEqual(user.settings?.advancedThemeOverrides, {
-      '--theme-page-bg': '#123456',
+      '--theme-page-bg': '#112233',
+      '--theme-page-spotlight-strength': 0.5,
+    });
+
+    const readback = await request(app)
+      .get('/auth/me')
+      .set('X-Forwarded-Proto', 'https')
+      .set('Cookie', sessionCookie)
+      .expect(200);
+    assert.deepEqual(readback.body.settings.advancedThemeOverrides, {
+      '--theme-page-bg': '#112233',
       '--theme-page-spotlight-strength': 0.5,
     });
 
