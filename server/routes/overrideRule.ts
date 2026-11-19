@@ -872,6 +872,7 @@ overrideRuleRoutes.put(
                   .json({ status: 400, message: shapeError.error });
               }
 
+              // nosemgrep: javascript.express.security.express-data-exfiltration.express-data-exfiltration -- updatedRule combines the stored entity with parseOverrideRuleBody's strict allowlist and validated values
               Object.assign(rule, updatedRule);
 
               const newRule = await overrideRuleRepository.save(rule);

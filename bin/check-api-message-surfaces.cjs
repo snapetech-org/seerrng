@@ -16,9 +16,11 @@ const files = (dir) =>
     )
     .flatMap((e) =>
       e.isDirectory()
-        ? files(path.join(dir, e.name))
+        ? // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- e.name is a basename returned by readdirSync under the fixed repository src directory
+          files(path.join(dir, e.name))
         : /\.tsx$/.test(e.name) && !/\.(test|spec)\./.test(e.name)
-          ? [path.join(dir, e.name)]
+          ? // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- e.name is a basename returned by readdirSync under the fixed repository src directory
+            [path.join(dir, e.name)]
           : []
     );
 const rows = [];

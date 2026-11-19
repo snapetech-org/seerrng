@@ -18,7 +18,7 @@ export function initI18n(): void {
   intls.clear();
 
   for (const locale of availableLocales) {
-    const messages: Record<string, string> = {};
+    let messages: Record<string, string> = {};
     const fallbackChain = getLocaleFallbackChain(locale).reverse();
 
     for (const fallback of fallbackChain) {
@@ -37,7 +37,10 @@ export function initI18n(): void {
         continue;
       }
 
-      Object.assign(messages, JSON.parse(fs.readFileSync(filePath, 'utf-8')));
+      messages = {
+        ...messages,
+        ...JSON.parse(fs.readFileSync(filePath, 'utf-8')),
+      };
     }
 
     intls.set(

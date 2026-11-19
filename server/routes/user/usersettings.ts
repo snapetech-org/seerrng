@@ -2070,6 +2070,7 @@ userSettingsRoutes.post<
             'watchlistSyncMagazines',
           ] as const) {
             if (hasOwn(body, fieldName)) {
+              // nosemgrep: javascript.express.security.express-data-exfiltration.express-data-exfiltration -- fieldName is selected from this fixed preference allowlist and its value is schema-validated above
               Object.assign(user.settings, {
                 [fieldName]:
                   fieldName === 'locale'
@@ -3407,6 +3408,7 @@ userSettingsRoutes.post<{ id: string }, UserSettingsNotificationsResponse>(
             'telegramSendSilently',
           ] as const) {
             if (hasOwn(preservedBody, fieldName)) {
+              // nosemgrep: javascript.express.security.express-data-exfiltration.express-data-exfiltration -- fieldName is selected from this fixed secret-field allowlist and secrets were validated and redacted above
               Object.assign(user.settings, {
                 [fieldName]: preservedBody[fieldName] ?? null,
               });

@@ -22,6 +22,7 @@ for (const args of [
     '--emptyOutDir',
   ],
 ]) {
+  // nosemgrep: javascript.lang.security.audit.spawn-shell-true.spawn-shell-true -- Windows requires shell dispatch for the fixed npm.cmd command; arguments are constant repository build steps
   const result = spawnSync(npm, args, {
     cwd,
     stdio: 'inherit',

@@ -90,6 +90,7 @@ export async function updateHelmReleaseMetadata(
   );
   updatedReadme = replaceExactlyOnce(
     updatedReadme,
+    // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp -- chartVersion is parsed from this checked-in README and escaped before interpolation
     new RegExp(`Version: ${escapeRegExp(chartVersion)}(?=\\])`, 'gu'),
     `Version: ${nextChartVersion}`,
     'chart version label in README.md'

@@ -31,6 +31,7 @@ const assertManagedLogSymlink = (directory: string, file: string): void => {
     throw new Error(`Log symlink escapes log directory: ${file}`);
   }
 
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- target is verified as a single in-directory basename above
   const targetPath = path.join(directory, target);
   try {
     const targetStat = fs.lstatSync(targetPath);
@@ -80,6 +81,7 @@ export const secureLogDirectory = (directory: string): void => {
   }
 
   for (const file of fs.readdirSync(directory)) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- file is a basename returned by readdirSync; lstat and hard-link checks follow
     const filePath = path.join(directory, file);
 
     try {

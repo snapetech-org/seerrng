@@ -49,6 +49,7 @@ reject_control_characters() {
 }
 normalize_absolute_path() {
   local absolute="$1" component component_count
+  # nosemgrep: bash.lang.security.ifs-tampering.ifs-tampering -- local scopes and restores IFS when this function returns
   local IFS='/'
   local -a path_components=() components=()
 

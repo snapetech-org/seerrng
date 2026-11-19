@@ -4,8 +4,6 @@
  * requested window, so large guides do not have to fit in memory as a DOM.
  */
 
-import { escapeRegExp } from 'lodash';
-
 export interface GuideChannel {
   /** XMLTV channel ID. In Tunerr's guide this is the guide number. */
   id: string;
@@ -73,12 +71,16 @@ const readAttributes = (openTag: string): Record<string, string> => {
   return attributes;
 };
 
-const childTexts = (element: string, tag: string): string[] => {
-  const escapedTag = escapeRegExp(tag);
-  const pattern = new RegExp(
-    `<${escapedTag}(?:\\s[^>]*)?>([\\s\\S]*?)</${escapedTag}>`,
-    'g'
-  );
+const childTexts = (
+  element: string,
+  tag: 'title' | 'sub-title' | 'category' | 'display-name'
+): string[] => {
+  const pattern = {
+    title: /<title(?:\s[^>]*)?>([\s\S]*?)<\/title>/g,
+    'sub-title': /<sub-title(?:\s[^>]*)?>([\s\S]*?)<\/sub-title>/g,
+    category: /<category(?:\s[^>]*)?>([\s\S]*?)<\/category>/g,
+    'display-name': /<display-name(?:\s[^>]*)?>([\s\S]*?)<\/display-name>/g,
+  }[tag];
   const values: string[] = [];
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(element))) {
