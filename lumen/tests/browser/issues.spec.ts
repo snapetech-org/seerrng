@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 for (const permissions of [4194304, 2097152, 32]) {
   test(`issue discussion follows account permissions ${permissions}`, async ({
     page,
@@ -23,9 +28,7 @@ for (const permissions of [4194304, 2097152, 32]) {
     });
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
-      const path = new URL(route.request().url()).pathname.slice(
-        '/api/v1'.length
-      );
+      const path = testApiPath(route.request().url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 2, permissions } });
       if (path === '/issue') {
@@ -52,7 +55,7 @@ for (const permissions of [4194304, 2097152, 32]) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/issues');
+    await page.goto(testAppPath('/issues'));
     if (permissions === 32) {
       await expect(
         page.getByText('You do not have permission to view issues.')
@@ -86,9 +89,7 @@ test('issue list resolves affected media titles from visible rows', async ({
 }) => {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 4194304 } });
     if (path === '/issue')
@@ -114,9 +115,9 @@ test('issue list resolves affected media titles from visible rows', async ({
       });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/issues');
+  await page.goto(testAppPath('/issues'));
   const media = page.getByRole('link', { name: 'Example Film (2023)' });
-  await expect(media).toHaveAttribute('href', '/movie/20');
+  await expect(media).toHaveAttribute('href', testAppPath('/movie/20'));
   await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
 });
 
@@ -136,9 +137,7 @@ test('reporting uses the internal media row and opens the confirmed report', asy
   };
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 4194304 } });
     if (path === '/movie/20')
@@ -159,7 +158,7 @@ test('reporting uses the internal media row and opens the confirmed report', asy
     if (path === '/issue/8') return route.fulfill({ json: issue });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/movie/20');
+  await page.goto(testAppPath('/movie/20'));
   await page.getByRole('button', { name: 'Report an Issue' }).click();
   const dialog = page.getByRole('dialog', { name: 'Report an Issue' });
   await expect(
@@ -187,7 +186,7 @@ test('issue managers can report for a selected user', async ({
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 1048576 } });
     if (path === '/movie/20')
@@ -233,7 +232,7 @@ test('issue managers can report for a selected user', async ({
       });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/movie/20');
+  await page.goto(testAppPath('/movie/20'));
   await page.getByRole('button', { name: 'Report an Issue' }).click();
   const dialog = page.getByRole('dialog', { name: 'Report an Issue' });
   await dialog.getByRole('searchbox').fill('demo');
@@ -269,7 +268,7 @@ test('a reporter can edit their description and confirm removal of their own rep
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = testApiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 4194304 } });
     if (path === '/issue/7')
@@ -297,7 +296,7 @@ test('a reporter can edit their description and confirm removal of their own rep
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/issues/7');
+  await page.goto(testAppPath('/issues/7'));
   await expect(page.getByRole('button', { name: 'Delete Issue' })).toHaveCount(
     0
   );
@@ -348,9 +347,7 @@ test('issue details link to exact non-video catalog titles', async ({
   ];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 2097152 } });
     const id = /^\/issue\/(\d+)$/.exec(path)?.[1];
@@ -371,12 +368,12 @@ test('issue details link to exact non-video catalog titles', async ({
     });
   });
   for (const [index, title] of titles.entries()) {
-    await page.goto(`/issues/${index + 1}`);
+    await page.goto(testAppPath(`/issues/${index + 1}`));
     await expect(
       page.getByRole('link', { name: `Open ${title.label}` })
     ).toHaveAttribute(
       'href',
-      `/${title.mediaType}/${encodeURIComponent(title.value)}`
+      testAppPath(`/${title.mediaType}/${encodeURIComponent(title.value)}`)
     );
   }
 });
@@ -407,7 +404,9 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
       return route.fulfill({ json: issue });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2');
+  await page.goto(
+    testAppPath('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2')
+  );
   await expect(page.getByLabel('Media Type')).toHaveValue('book');
   await expect.poll(() => queries.at(-1)?.get('skip')).toBe('10');
   expect(queries.at(-1)?.get('issueType')).toBe('audio');
@@ -474,7 +473,7 @@ test('deleting the final issue on a page preserves filters and returns to the la
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/issues?mediaType=movie&page=2');
+  await page.goto(testAppPath('/issues?mediaType=movie&page=2'));
   await page.getByRole('link', { name: 'Video #7' }).click();
   await page.getByRole('button', { name: 'Delete Issue' }).click();
   await page

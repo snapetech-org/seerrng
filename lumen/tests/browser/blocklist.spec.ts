@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 for (const permissions of [32, 1073741824, 268435456]) {
   test(`blocklist count and removal respect account permission ${permissions}`, async ({
     page,
@@ -12,7 +17,7 @@ for (const permissions of [32, 1073741824, 268435456]) {
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
       const url = new URL(request.url());
-      const path = url.pathname.slice('/api/v1'.length);
+      const path = testApiPath(request.url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions } });
       if (path === '/blocklist/count') {
@@ -45,7 +50,7 @@ for (const permissions of [32, 1073741824, 268435456]) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/blocklist');
+    await page.goto(testAppPath('/blocklist'));
     if (permissions === 32) {
       await expect(
         page.getByText('You do not have permission to view the Blocklist.')
@@ -72,7 +77,7 @@ for (const permissions of [32, 1073741824, 268435456]) {
       .click();
     await expect(page.getByText('No entries match this view.')).toBeVisible();
     expect(removals).toEqual(['/blocklist/hc%3A123?mediaType=book']);
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await expect(
       page.getByRole('link', { name: 'Open Blocklist' })
     ).toHaveCount(0);
@@ -87,7 +92,7 @@ test('movie detail adds and removes the exact blocked title and refreshes reques
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = testApiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 268435456 } });
     if (path === '/movie/20')
@@ -119,7 +124,7 @@ test('movie detail adds and removes the exact blocked title and refreshes reques
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/movie/20');
+  await page.goto(testAppPath('/movie/20'));
   await page.getByRole('button', { name: 'Add to Blocklist' }).click();
   expect(writes).toEqual([]);
   await page
@@ -244,7 +249,7 @@ test('detail Blocklist actions send the canonical identity for every supported m
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 268435456 } });
     if (path === '/settings/public')
@@ -297,7 +302,7 @@ test('detail Blocklist actions send the canonical identity for every supported m
     active = item;
     blocked = false;
     const before = writes.length;
-    await page.goto(item.route);
+    await page.goto(testAppPath(item.route));
     await page.getByRole('button', { name: 'Add to Blocklist' }).click();
     await page
       .getByRole('alertdialog')

@@ -253,8 +253,7 @@ standalone proxy serves the screen directly.
 
 Headed Chrome at 1440 × 1000 verified the authorized Inbox, History switch,
 partial-source warning, and expanded action record against synthetic data.
-Narrow and bundled visual checks remain open. The Inbox is loaded on demand
-so the home entry does not download its 1.51 kB gzip route chunk.
+The complete Download Inbox browser suite passes 12 cases per deployment across desktop, iPhone, Android, and tablet, including denied direct access, queue/history reads, file import, and rejection defaults. Matched native visuals and live service handoff remain open. The Inbox is loaded on demand so the home entry does not download its 1.51 kB gzip route chunk.
 
 Lumen's Download Inbox now also offers manual import and rejection. The
 import sheet uses the backend's current file preview, eligible selections,
@@ -304,10 +303,7 @@ the discussion without write controls. The You page exposes the same route
 for narrow navigation.
 
 Headed Chrome at 1440 × 1000 checked the standalone list, TV episode scope,
-comment submission, and resolution against synthetic data. Mobile, bundled,
-and equivalent rendered native comparisons remain open. Creation, editing and
-deletion of reports or comments, advanced filters and title metadata, and
-Blocklist remain open.
+comment submission, and resolution against synthetic data. Issue list, details, reporting, editing, deletion, media links, filters, and paging now pass their fixture suites in both standalone and bundled deployments across four viewport projects. Matched native visuals and live provider behavior remain open.
 
 ### Issue reporting increment
 
@@ -349,8 +345,9 @@ deletion of another account's reply, and confirming issue deletion all worked.
 Issue media titles now resolve lazily from the existing detail endpoints for
 visible rows and link to the matching media detail. The browser fixture covers
 the title and year. Advanced metadata filters and issue-list title metadata are
-implemented. Mobile and bundled visual checks, and native-matched comparison,
-remain open.
+implemented. Fixture-backed issue actions pass in both deployments across four
+viewport projects; native-matched comparison and live provider behavior remain
+open.
 
 ### Blocklist browsing and removal increment
 
@@ -360,9 +357,10 @@ page supports native search, media, source and date filters, sorting and
 pagination. Accounts with View Blocklist can browse. Managers can also
 confirm removal using the affected entry's TMDB or external identity.
 
-Headed Chrome at 1440 × 1000 verified the standalone list, exact encoded
-external ID removal, and empty navigation state against a fixture. Mobile and
-bundled visual checks and the rendered native comparison remain open. The
+Headed Chrome at 1440 × 1000 verified the list, exact encoded external ID
+removal, and empty navigation state against a fixture. Permission checks, search,
+filtering, removal and media identities now pass in both deployments across four
+viewport projects; matched native visuals remain open. The
 detail and collection add actions and administrator automatic-rule settings
 are implemented below; their remaining gap is rendered acceptance.
 
@@ -373,9 +371,9 @@ Open Library book, ComicVine edition, and magazine details. The action looks
 up the exact canonical identity and rechecks the detail, entry, and
 navigation count after a change. Request controls reflect Blocklisted after
 detail refresh. Bookshelf-only records without a supported Open Library work
-identity are excluded from the detail action. Browser fixtures now assert the
-exact add identity for all six supported media types across desktop, iPhone,
-Android, and tablet, alongside the movie add/remove and request-state flow.
+identity are excluded from the detail action. Browser fixtures assert the exact add identity for all six supported media
+types across desktop, iPhone, Android, and tablet in both standalone and bundled
+deployments, alongside the movie add/remove and request-state flow.
 The Blocklist API's supported scope is movie, TV, music, book, comic, and
 magazine; other Lumen catalogs have no native Blocklist contract.
 
@@ -3118,12 +3116,12 @@ Candidate book and comic detail screens are also retained under
 and `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-action-permissions/`.
 Live provider behavior and broader native visual acceptance remain open.
 
-The standalone production-preview suites for Issues, Blocklist, Download Inbox,
-and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
-and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise
-the responsive layouts and permission branches. They do not establish matched
-native screenshot acceptance, production-bundled behavior, or live provider
-effects; those checks remain open where listed above.
+Issues, Blocklist, and Download Inbox now pass 72 fixture-backed browser cases
+per deployment across desktop, iPhone, Android, and tablet, including permission
+branches, media identities, reporting and edits, paging, queue history, imports,
+and rejection defaults. Watch Sessions separately passes 20 cases per deployment.
+These runs establish production-bundled route and interaction behavior, but do
+not replace matched native screenshot acceptance or live provider effects.
 
 The household and recommendation browser suites passed 36 cases per
 deployment across desktop, iPhone, Android, and tablet. The bundled run
@@ -4059,7 +4057,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. The selected current-source set now totals 587 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. The selected current-source set now totals 659 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
