@@ -444,6 +444,13 @@ changed selection against synthetic data. Mobile and bundled visual
 acceptance, comparison against rendered native workflows, and live provider
 playback remain open.
 
+The current standalone Playwright suite passed all 20 collection cases across
+desktop, iPhone, Android, and tablet presets. This confirms responsive
+interaction coverage for collection entry, progressive requests, filtered bulk
+requests, collection playback, and media-server collection sync. It does not
+close the rendered native comparison, bundled production, or live playback
+checks above.
+
 ### Personal profile and password increment
 
 You links to Account Settings. Users can save display name, non-Plex email,
