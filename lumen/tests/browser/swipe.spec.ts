@@ -298,11 +298,15 @@ test('Swipe catalog decisions preserve magazine identity and destination', async
   });
   await page.goto('/swipe');
   await expect(page.getByRole('heading', { name: 'New Issue' })).toBeVisible();
+  await page.getByLabel('Search Titles').fill('Issue');
+  await page.getByRole('button', { name: 'Search Deck' }).click();
   await page.getByText('Deck Filters', { exact: true }).click();
+  await expect(
+    page.locator('details.adv').getByLabel('Search Titles')
+  ).toHaveCount(0);
   await page
     .getByRole('combobox', { name: 'Magazine Catalog' })
     .selectOption('public');
-  await page.getByLabel('Search Titles').fill('Issue');
   await page.getByRole('button', { name: 'Apply Filters' }).click();
   await expect
     .poll(() =>

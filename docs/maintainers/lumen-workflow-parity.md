@@ -2133,15 +2133,18 @@ catalog filters, and live catalog verification remain open.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-catalog-20261118/`.
 
-Swipe deck filters expose title search, applicable genre, publisher, year and
-rating criteria, and magazine source. The form resets to the first catalog
-page when filters change. The production build and 16 browser checks passed
-with synthetic responses. Compared filtered and unfiltered magazine decks on
-desktop, iPhone 13, Pixel 7, and iPad Pro 11. The browser fixture verified
-public-catalog query parameters and filtered pagination.
+Swipe exposes title search above its expandable deck filters; the advanced
+filters retain the applied query while changing genre, publisher, year, rating,
+or magazine source. Reset clears both search and advanced filters. Applying
+either form resets catalog pagination. The production build and four browser
+viewport projects (desktop, iPhone, Android, tablet) passed against synthetic
+responses. Compared baseline and candidate at matching viewports. The browser
+fixture verified public-catalog query parameters, retained search, and filtered
+pagination. Live catalog/provider effects and native matched-state rendering
+remain unverified.
 
 Evidence is retained under
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-filters-20261118/`.
+`/mnt/disks/scratch/codex-task-scratch/lumen-swipe-search-duplicate.Px1n2C/`.
 
 Swipe now opens the permitted retro games, apps, and PC games decks. Software
 requests use the selected system or OS and architecture, and the deck follows

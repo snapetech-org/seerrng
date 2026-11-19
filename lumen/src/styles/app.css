@@ -256,6 +256,9 @@ body.is-detail .tabbar {
   align-items: center;
   flex-wrap: wrap;
 }
+.toolbar[role='search'] + .adv {
+  margin-top: 10px;
+}
 .toolbar .chips {
   flex: 1 1 100%;
 }

@@ -63,11 +63,15 @@ interface Status {
 function DeckFilters({
   category,
   disabled,
+  query,
   onApply,
+  onReset,
 }: {
   category: DeckCategory;
   disabled: boolean;
+  query: string;
   onApply: (filters: SwipeCatalogFilters) => void;
+  onReset: () => void;
 }) {
   const [draft, setDraft] = useState(catalogDefaults);
   const basic = category === 'sports' || category === 'adult';
@@ -77,7 +81,6 @@ function DeckFilters({
     !!draft.yearTo &&
     Number(draft.yearFrom) > Number(draft.yearTo);
   const fields = [
-    ['query', 'Search Titles'],
     ...(!basic ? [['genre', 'Genre or Subject']] : []),
     ...(category === 'comic' ? [['publisher', 'Publisher']] : []),
   ] as [keyof SwipeCatalogFilters, string][];
@@ -88,7 +91,7 @@ function DeckFilters({
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          if (!inverted) onApply(draft);
+          if (!inverted) onApply({ ...draft, query });
         }}
       >
         <div className="setlist">
@@ -186,7 +189,7 @@ function DeckFilters({
             disabled={disabled}
             onClick={() => {
               setDraft(catalogDefaults);
-              onApply(catalogDefaults);
+              onReset();
             }}
           >
             Reset Filters
@@ -480,6 +483,7 @@ function Deck({
     index: number;
   }>();
   const [filters, setFilters] = useState(catalogDefaults);
+  const [queryDraft, setQueryDraft] = useState(filters.query);
   const filtered = Object.keys(catalogDefaults).some(
     (key) =>
       filters[key as keyof SwipeCatalogFilters] !==
@@ -757,6 +761,16 @@ function Deck({
   }
 
   const image = artUrl(card?.imageUrl);
+
+  function applyFilters(next: SwipeCatalogFilters) {
+    setFilters(next);
+    setQueryDraft(next.query);
+    setCursor(undefined);
+    setOffset(undefined);
+    setPage(1);
+    setRestored(undefined);
+  }
+
   return (
     <Section title={categories[category]}>
       {streamingOverride &&
@@ -771,16 +785,41 @@ function Deck({
             onConfirm={() => void act('want', streamingOverride)}
           />
         )}
+      <form
+        className="toolbar"
+        role="search"
+        onSubmit={(event) => {
+          event.preventDefault();
+          applyFilters({ ...filters, query: queryDraft.trim() });
+        }}
+      >
+        <label className="sr-only" htmlFor={`swipe-catalog-search-${category}`}>
+          Search Titles
+        </label>
+        <input
+          id={`swipe-catalog-search-${category}`}
+          className="cfg-input"
+          type="search"
+          maxLength={128}
+          placeholder="Search titles"
+          value={queryDraft}
+          disabled={busy}
+          onChange={(event) => setQueryDraft(event.target.value)}
+        />
+        <button
+          type="submit"
+          className="btn btn-primary btn-sm"
+          disabled={busy}
+        >
+          Search Deck
+        </button>
+      </form>
       <DeckFilters
         category={category}
         disabled={busy}
-        onApply={(next) => {
-          setFilters(next);
-          setCursor(undefined);
-          setOffset(undefined);
-          setPage(1);
-          setRestored(undefined);
-        }}
+        query={filters.query}
+        onApply={(next) => applyFilters({ ...next, query: filters.query })}
+        onReset={() => applyFilters(catalogDefaults)}
       />
       <ServiceNote
         what="previous decisions"
