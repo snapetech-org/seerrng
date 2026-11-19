@@ -887,7 +887,7 @@ remain open.
 When enabled on the server, Notification Settings supports browser push event
 preferences and listing and removing registered devices. Removal is scoped to
 the current account and confirmed before the server subscription is deleted.
-New browser registration and Lumen service-worker delivery remain open.
+Lumen browser registration now has fixture-backed browser coverage on desktop, iPhone, Android, and tablet in standalone and bundled deployments. Real subscription and live delivery on a secure browser remain open.
 
 Standalone Chrome verified device removal against a synthetic API, with an
 empty device list on API readback. Mobile, bundled and native visual checks
@@ -901,10 +901,12 @@ the new registrations. Bundled Lumen leaves the native root worker alone.
 Notification clicks validate the destination and preserve supported request
 links under the appropriate frontend base.
 
-Worker tests verified notification display arguments, request link resolution
+Worker tests verify notification display arguments, request link resolution
 in both deployment layouts, and rejection of cross-origin and ambiguous
-navigation targets. Real subscription and delivery through a secure browser,
-mobile installation, and native visual comparison remain open.
+navigation targets. Browser registration tests verify granted and denied
+permission, account-specific worker scope and script, exact subscription keys,
+and server readback across four viewports and both deployments. Real browser
+subscriptions, live delivery, and native visual comparison remain open.
 
 ### Current browser push device increment
 
@@ -4046,14 +4048,14 @@ passed across desktop, iPhone, Android, and tablet. Another 60 account,
 managed-user, and override-rule cases passed through the same production
 Express `/lumen/` mount. Watch Sessions and Setup added 20 cases each on both
 deployments, bringing the selected current-source qualification set to 476
-cases per deployment. Watchlist adds 36 cases on both deployments across user-scoped, personal, combined Plex, video/book identity, discovery filters, and pagination flows. These fixture-backed runs qualify the bundled asset and
+cases per deployment. Watchlist adds 36 cases on both deployments across user-scoped, personal, combined Plex, video/book identity, discovery filters, and pagination flows. Browser push adds eight cases per deployment for granted and denied registration permission across all four viewport projects. These fixture-backed runs qualify the bundled asset and
 mount behavior; they do not replace live-provider checks or native visual
 comparison.
 
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. The selected current-source set now totals 557 passing cases and 15
+to 3840px. The selected current-source set now totals 565 passing cases and 15
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
