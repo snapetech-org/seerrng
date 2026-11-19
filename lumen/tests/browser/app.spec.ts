@@ -8100,27 +8100,43 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   await fixtures(page);
   const albumId = 'ca52c0ec-764d-4705-9fac-6315533215a2';
   const artistId = '8a7ca096-0778-49cb-8a0e-02cdabd91735';
+  const secondAlbumId = 'a9ac219a-1d5c-4844-ab4b-9164f779c5e8';
   await page.route('**/api/v1/search?*', (route) => {
     const query = new URL(route.request().url()).searchParams;
     expect(query.get('type')).toBe('music');
     expect(query.get('genre')).toBe('jazz');
     return route.fulfill({
       json: paged([
-        { mediaType: 'album', id: albumId, title: 'Fixture Album' },
+        {
+          mediaType: 'album',
+          id: albumId,
+          title: 'Fixture Album',
+          'artist-credit': [{ name: 'Zara' }],
+        },
+        {
+          mediaType: 'album',
+          id: secondAlbumId,
+          title: 'Second Album',
+          'artist-credit': [{ name: 'Ada' }],
+        },
         { mediaType: 'artist', id: artistId, name: 'Fixture Artist' },
       ]),
     });
   });
-  await page.goto('/search?query=Fixture&type=music&genre=jazz');
+  await page.goto('./search?query=Fixture&type=music&genre=jazz&sort=artist');
   await expect(
     page.getByRole('button', { name: 'Music', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(
     page.getByRole('link', { name: 'Fixture Album' })
-  ).toHaveAttribute('href', '/music/' + albumId);
+  ).toHaveAttribute('href', new RegExp('/music/' + albumId + '$'));
   await expect(
     page.getByRole('link', { name: 'Fixture Artist' })
-  ).toHaveAttribute('href', '/artist/' + artistId);
+  ).toHaveAttribute('href', new RegExp('/artist/' + artistId + '$'));
+  const albums = page.getByRole('link', { name: /^(Fixture|Second) Album$/ });
+  await expect(albums.first()).toHaveAccessibleName('Second Album');
+  await page.getByLabel('Sort Results').selectOption('artist:desc');
+  await expect(albums.first()).toHaveAccessibleName('Fixture Album');
   await page.route('**/api/v1/discover/music?*', (route) => {
     const query = new URL(route.request().url()).searchParams;
     expect(query.get('genre')).toBe('jazz');
@@ -8136,7 +8152,7 @@ test('Classic music search bookmarks open the Music scope with album and artist 
       },
     });
   });
-  await page.goto('/search?type=music&genre=jazz&page=2');
+  await page.goto('./search?type=music&genre=jazz&page=2');
   await expect(
     page.getByRole('link', { name: 'Jazz Catalogue Album' })
   ).toBeVisible();
@@ -8145,6 +8161,45 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   await expect(
     page.getByRole('link', { name: 'Jazz Catalogue Album' })
   ).toHaveCount(0);
+});
+
+test('Classic book bookmarks sort search results by author', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/discover/books?**', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          id: 'first',
+          mediaType: 'book',
+          title: 'First Book',
+          author: 'Zara',
+          bookFormat: 'ebook',
+        },
+        {
+          id: 'second',
+          mediaType: 'book',
+          title: 'Second Book',
+          author: 'Ada',
+          bookFormat: 'ebook',
+        },
+        {
+          id: 'third',
+          mediaType: 'book',
+          title: 'Third Book',
+          bookFormat: 'ebook',
+        },
+      ]),
+    })
+  );
+  await page.goto('./search?query=Fixture&type=book&sort=author');
+  const books = page.getByRole('link', { name: /^(First|Second|Third) Book$/ });
+  await expect(books.first()).toHaveAccessibleName('Second Book');
+  await expect(books.last()).toHaveAccessibleName('Third Book');
+  await page.getByLabel('Sort Results').selectOption('author:desc');
+  await expect(books.first()).toHaveAccessibleName('First Book');
+  await expect(books.last()).toHaveAccessibleName('Third Book');
 });
 
 for (const { advanced, detail } of [

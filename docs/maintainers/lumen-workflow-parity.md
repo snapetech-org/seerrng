@@ -2990,6 +2990,13 @@ directions and displayed unrated results last. Two server routing
 checks and four browser checks covered the selected sort and prior
 title and date sorts.
 
+Music Search sorts albums by their credited artists, and book and
+audiobook Search sort by author. Classic bookmarks retain the
+applicable order. Missing credits stay last. Two server routing
+checks and twelve standalone and bundled browser checks covered
+album and ebook credit order and the prior video sorts. Results are
+ordered within the current page. Matched visual review remains open.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

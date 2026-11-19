@@ -25,6 +25,7 @@ import { ComicCard } from '../components/comics';
 import { MagazineCard, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import {
+  artistOf,
   useExtras,
   type Album,
   type ComicWork,
@@ -84,6 +85,8 @@ type SearchSortFields = {
   startYear?: string;
   year?: number;
   voteAverage?: number;
+  author?: string;
+  'artist-credit'?: Album['artist-credit'];
 };
 
 function searchDate(item: SearchSortFields) {
@@ -102,24 +105,70 @@ function searchDate(item: SearchSortFields) {
     : '';
 }
 
+const searchSortKeys = {
+  title: (item: SearchSortFields) => item.title || item.name,
+  date: searchDate,
+  rating: (item: SearchSortFields) => {
+    const rating = item.voteAverage;
+    return typeof rating === 'number' && rating > 0 && rating <= 10
+      ? rating
+      : undefined;
+  },
+  artist: artistOf,
+  author: (item: SearchSortFields) => item.author,
+};
+
+const searchSortOptions: {
+  field: keyof typeof searchSortKeys;
+  asc: string;
+  desc: string;
+  scopes: Scope[] | null;
+  defaultOrder: 'asc' | 'desc';
+}[] = [
+  {
+    field: 'title',
+    asc: 'Title A–Z',
+    desc: 'Title Z–A',
+    scopes: null,
+    defaultOrder: 'asc',
+  },
+  {
+    field: 'date',
+    asc: 'Oldest First',
+    desc: 'Newest First',
+    scopes: null,
+    defaultOrder: 'desc',
+  },
+  {
+    field: 'rating',
+    asc: 'Lowest Rated',
+    desc: 'Highest Rated',
+    scopes: ['movie', 'tv'],
+    defaultOrder: 'desc',
+  },
+  {
+    field: 'artist',
+    asc: 'Artist A–Z',
+    desc: 'Artist Z–A',
+    scopes: ['music'],
+    defaultOrder: 'asc',
+  },
+  {
+    field: 'author',
+    asc: 'Author A–Z',
+    desc: 'Author Z–A',
+    scopes: ['ebook', 'audio'],
+    defaultOrder: 'asc',
+  },
+];
+
 function sortSearchResults<T extends SearchSortFields>(
   items: T[] | null,
-  field: string | null,
+  field: keyof typeof searchSortKeys | undefined,
   order: 'asc' | 'desc'
 ) {
-  if (!items || (field !== 'title' && field !== 'date' && field !== 'rating'))
-    return items ?? [];
-  const value =
-    field === 'date'
-      ? searchDate
-      : field === 'rating'
-        ? (item: T) => {
-            const rating = item.voteAverage;
-            return typeof rating === 'number' && rating > 0 && rating <= 10
-              ? rating
-              : undefined;
-          }
-        : (item: T) => item.title || item.name;
+  if (!items || !field) return items ?? [];
+  const value = searchSortKeys[field];
   return [...items].sort((left, right) => {
     const a = value(left);
     const b = value(right);
@@ -408,17 +457,16 @@ function SearchResults({
       : f === 'comic'
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
-  const canSortByRating = f === 'movie' || f === 'tv';
-  const requestedSort = p.get('sort');
-  const sortField =
-    requestedSort === 'rating' && !canSortByRating ? null : requestedSort;
+  const sortOptions = searchSortOptions.filter(
+    ({ scopes }) => !scopes || scopes.includes(f)
+  );
+  const activeSort = sortOptions.find(({ field }) => field === p.get('sort'));
+  const sortField = activeSort?.field;
   const requestedOrder = p.get('order');
   const sortOrder =
     requestedOrder === 'asc' || requestedOrder === 'desc'
       ? requestedOrder
-      : sortField === 'title'
-        ? 'asc'
-        : 'desc';
+      : (activeSort?.defaultOrder ?? 'desc');
   const orderedTitles = sortSearchResults(titles, sortField, sortOrder);
   const people =
     f === 'all'
@@ -529,13 +577,7 @@ function SearchResults({
             <label className="sel">
               <span className="lbl">Sort Results</span>
               <select
-                value={
-                  sortField === 'title' ||
-                  sortField === 'date' ||
-                  sortField === 'rating'
-                    ? `${sortField}:${sortOrder}`
-                    : ''
-                }
+                value={sortField ? `${sortField}:${sortOrder}` : ''}
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
                   next.delete('sort');
@@ -547,16 +589,15 @@ function SearchResults({
                 }}
               >
                 <option value="">Best Match</option>
-                <option value="title:asc">Title A–Z</option>
-                <option value="title:desc">Title Z–A</option>
-                <option value="date:desc">Newest First</option>
-                <option value="date:asc">Oldest First</option>
-                {canSortByRating && (
-                  <>
-                    <option value="rating:desc">Highest Rated</option>
-                    <option value="rating:asc">Lowest Rated</option>
-                  </>
-                )}
+                {sortOptions.map(({ field, asc, desc }) => (
+                  <optgroup
+                    key={field}
+                    label={field[0].toUpperCase() + field.slice(1)}
+                  >
+                    <option value={`${field}:asc`}>{asc}</option>
+                    <option value={`${field}:desc`}>{desc}</option>
+                  </optgroup>
+                ))}
               </select>
             </label>
           </div>

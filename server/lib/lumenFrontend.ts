@@ -676,7 +676,10 @@ function workflowDeepLink(
     if (
       req.query.sort === 'title' ||
       req.query.sort === 'date' ||
-      (req.query.sort === 'rating' && (type === 'movie' || type === 'tv'))
+      (req.query.sort === 'rating' && (type === 'movie' || type === 'tv')) ||
+      (req.query.sort === 'artist' && (type === 'music' || type === 'album')) ||
+      (req.query.sort === 'author' &&
+        (type === 'book' || type === 'ebook' || type === 'audio'))
     ) {
       query.set('sort', req.query.sort);
       if (req.query.order === 'asc' || req.query.order === 'desc')

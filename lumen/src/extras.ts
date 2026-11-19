@@ -285,7 +285,7 @@ export interface ArtistDetails {
   artistBackdrop?: string;
   releaseGroups: Album[];
 }
-export const artistOf = (a: Album) =>
+export const artistOf = (a: Pick<Album, 'artist-credit'>) =>
   a['artist-credit']?.map((c) => c.name).join(', ') || '';
 export const fmtTrack = (ms?: number) =>
   ms
