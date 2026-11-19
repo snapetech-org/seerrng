@@ -6575,6 +6575,8 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   let quotas: Record<string, number | null> = {
     globalMusicQuotaLimit: 4,
     globalMusicQuotaDays: 7,
+    globalBookQuotaLimit: 1,
+    globalBookQuotaDays: 0,
   };
   await page.route('**/api/v1/user/19/settings/main', (route) => {
     if (route.request().method() === 'POST') {
@@ -6586,6 +6588,13 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   });
   await page.goto('/admin/users');
   await page.getByRole('button', { name: 'Request Quotas' }).click();
+  await expect(
+    page.getByText('Server default unlimited requests')
+  ).toBeVisible();
+  await page.getByLabel('Media Type').selectOption('book');
+  await expect(
+    page.getByText('Server default 1 request across all time')
+  ).toBeVisible();
   await page.getByLabel('Media Type').selectOption('music');
   await expect(
     page.getByText('Server default 4 requests per 7 days')

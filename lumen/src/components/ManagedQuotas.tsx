@@ -18,6 +18,14 @@ export default function ManagedQuotas({ id }: { id: number }) {
   const limitKey = `${category}QuotaLimit`;
   const daysKey = `${category}QuotaDays`;
   const global = `global${category[0].toUpperCase()}${category.slice(1)}Quota`;
+  const globalLimit = data?.[global + 'Limit'] ?? 0;
+  const globalDays = data?.[global + 'Days'] ?? 0;
+  const quotaWindow = globalDays
+    ? `per ${globalDays} ${globalDays === 1 ? 'day' : 'days'}`
+    : 'across all time';
+  const serverDefault = globalLimit
+    ? `${globalLimit} ${globalLimit === 1 ? 'request' : 'requests'} ${quotaWindow}`
+    : 'unlimited requests';
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -94,10 +102,7 @@ export default function ManagedQuotas({ id }: { id: number }) {
               </select>
             </label>
           </div>
-          <small>
-            Server default {data[global + 'Limit'] ?? 0} requests per{' '}
-            {data[global + 'Days'] ?? 0} days
-          </small>
+          <small>Server default {serverDefault}</small>
           <form className="toolbar" key={category} onSubmit={save}>
             <label className="sel">
               <span className="lbl">Request Limit</span>
