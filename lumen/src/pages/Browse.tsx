@@ -95,11 +95,13 @@ function RangeFilter({
   kind = 'rating',
   min,
   max,
+  invalidSaved = false,
   apply,
 }: {
   kind?: keyof typeof RANGE_FILTERS;
   min: string;
   max: string;
+  invalidSaved?: boolean;
   apply: (min: string, max: string) => void;
 }) {
   const [low, setLow] = useState(min);
@@ -139,7 +141,7 @@ function RangeFilter({
       <button className="btn btn-tonal btn-sm" disabled={reversed}>
         Apply {filter.name}
       </button>
-      {(min || max || low || high) && (
+      {(invalidSaved || min || max || low || high) && (
         <button
           className="btn btn-quiet btn-sm"
           type="button"
@@ -155,6 +157,12 @@ function RangeFilter({
       {reversed && (
         <p className="note" role="alert">
           The lower bound must be at or below the upper bound.
+        </p>
+      )}
+      {invalidSaved && !reversed && (
+        <p className="note" role="alert">
+          The saved date filter contains an invalid date. Enter a valid date or
+          clear the filter.
         </p>
       )}
     </form>
@@ -327,9 +335,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const startKey =
     kind === 'movie' ? 'primaryReleaseDateGte' : 'firstAirDateGte';
   const endKey = kind === 'movie' ? 'primaryReleaseDateLte' : 'firstAirDateLte';
-  const start = dateBound(p.get(startKey));
-  const end = dateBound(p.get(endKey));
-  const validDates = !start || !end || start <= end;
+  const savedStart = p.get(startKey);
+  const savedEnd = p.get(endKey);
+  const start = dateBound(savedStart);
+  const end = dateBound(savedEnd);
+  const invalidSavedDate = Boolean(
+    (savedStart && !start) || (savedEnd && !end)
+  );
+  const validDates = !invalidSavedDate && (!start || !end || start <= end);
   const minRuntime = integerBound(p.get('withRuntimeGte'));
   const maxRuntime = integerBound(p.get('withRuntimeLte'));
   const validRuntime =
@@ -1069,9 +1082,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       )}
       <RangeFilter
         kind="dates"
-        key={`${filterReset}:dates:${start}:${end}`}
+        key={`${filterReset}:dates:${savedStart}:${savedEnd}`}
         min={start}
         max={end}
+        invalidSaved={invalidSavedDate}
         apply={(min, max) => {
           const next = new URLSearchParams(p);
           if (min) next.set(startKey, min);

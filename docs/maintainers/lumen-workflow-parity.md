@@ -2968,6 +2968,13 @@ the server rejects reversed bounds before any lookup. Two server
 checks and four fixture browser checks across standalone and bundled
 Lumen covered valid and reversed date ranges.
 
+Malformed bookmark dates also stop the query. The date controls
+offer correction or a date-only reset that preserves the owned
+filter. Four browser fixture checks at 390 and 1440 CSS pixels across
+standalone and bundled Lumen confirmed that an invalid leap day
+blocks requests until the dates are cleared. Matched visual review
+remains open.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

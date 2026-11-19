@@ -7572,6 +7572,14 @@ test('Discover and Movies apply visibility defaults while the library view still
   ).toBeVisible();
   await expect(page.getByText('Nothing here', { exact: true })).toHaveCount(0);
   expect(invertedQueries).toEqual([]);
+  await page.goto('./series?show=have&firstAirDateGte=2025-02-29');
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'invalid date' })
+  ).toBeVisible();
+  expect(invertedQueries).toEqual([]);
+  await page.getByRole('button', { name: 'Clear Release Dates' }).click();
+  await expect(page).toHaveURL(/series\?show=have$/);
+  await expect.poll(() => invertedQueries.length).toBe(1);
 });
 
 test('Trending and Coming Soon apply discovery visibility and keep later pages reachable', async ({
