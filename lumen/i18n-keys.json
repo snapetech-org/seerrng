@@ -97,5 +97,20 @@
   "lumen.account.streamingSubscriptionsSaved",
   "lumen.account.streamingSubscriptionsTip",
   "lumen.account.saving",
-  "components.UserProfile.UserSettings.UserGeneralSettings.role"
+  "components.UserProfile.UserSettings.UserGeneralSettings.role",
+  "pages.profile.advancedTheme.title",
+  "pages.profile.advancedTheme.save",
+  "pages.profile.advancedTheme.saved",
+  "lumen.account.tvRequestSettings",
+  "lumen.account.backToYou",
+  "lumen.account.saveThemeColors",
+  "lumen.account.themeOverrideConfirmFailure",
+  "lumen.account.themeColorsSaved",
+  "lumen.account.themeColorsSaveFailure",
+  "lumen.account.themeColorHelp",
+  "lumen.account.themeJsonHelp",
+  "lumen.account.themeOverrideInvalidJson",
+  "lumen.account.themeEditColors",
+  "lumen.account.themeEditAll",
+  "lumen.account.themeOverrideJson"
 ]

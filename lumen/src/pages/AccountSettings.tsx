@@ -504,7 +504,10 @@ function ProfileForm({
           className="btn btn-primary btn-sm"
           disabled={busy || (!changes.length && !languageChanged) || invalid}
         >
-          Save Profile
+          {t(
+            'components.UserProfile.UserSettings.UserGeneralSettings.save',
+            'Save Changes'
+          )}
         </button>
       </div>
     </form>
@@ -853,7 +856,7 @@ export default function AccountSettings() {
           )}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/me/account/tv-requests">
-          TV Request Settings
+          {t('lumen.account.tvRequestSettings', 'TV Request Settings')}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/me/account/linked-accounts">
           {t(
@@ -874,7 +877,7 @@ export default function AccountSettings() {
           )}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to You
+          {t('lumen.account.backToYou', 'Back to You')}
         </Link>
       </div>
       {user && (

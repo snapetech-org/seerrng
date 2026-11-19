@@ -95,6 +95,14 @@ full account-suite qualification against the bundled production build remains
 open. Evidence: task scratch directory
 `seerrng-lumen-localization-visual-20261119`.
 
+Account Settings localization now also covers its TV Request Settings and
+return navigation links, plus the account theme override title, guidance,
+editing mode, validation feedback, and save confirmation. French and Arabic
+browser assertions cover those controls and the updated desktop and phone
+screenshots were inspected. Theme token names, password help/actions, and some
+permission names remain English; independent linguistic review and full
+bundled-suite qualification remain open.
+
 ### Open gap in personal discovery accounts
 
 Lumen's Linked Accounts page manages sign-in methods and personal tracking

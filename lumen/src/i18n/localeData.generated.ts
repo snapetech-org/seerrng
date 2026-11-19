@@ -143,6 +143,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'إغلاق',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'الدور',
+      'pages.profile.advancedTheme.title': 'تجاوزات المظهر المتقدمة',
+      'pages.profile.advancedTheme.save': 'حفظ تخصيصات المظهر.',
+      'pages.profile.advancedTheme.saved': 'تم حفظ تخصيصات المظهر.',
       'lumen.account.cardTitleOnHover': 'عند التحويم أو التركيز',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.',
@@ -167,6 +170,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'اختر خدمات البث المتاحة في {region} التي تشترك بها. يستخدم SeerrNG هذه القائمة ضمن قواعد إتاحة الطلبات.',
       'lumen.account.saving': 'جارٍ الحفظ…',
+      'lumen.account.tvRequestSettings': 'إعدادات طلبات التلفاز',
+      'lumen.account.backToYou': 'العودة إلى صفحتك',
+      'lumen.account.saveThemeColors': 'حفظ ألوان المظهر',
+      'lumen.account.themeOverrideConfirmFailure':
+        'قبل الخادم الحفظ، لكن تعذر على Lumen تأكيد الألوان المحدّثة.',
+      'lumen.account.themeColorsSaved': 'تم حفظ ألوان المظهر.',
+      'lumen.account.themeColorsSaveFailure': 'تعذر حفظ ألوان المظهر.',
+      'lumen.account.themeColorHelp':
+        'أدخل لونًا سداسيًا مثل #2950e0، أو امسح الحقل لاستخدام اللون الافتراضي.',
+      'lumen.account.themeJsonHelp':
+        'عدّل كائن تجاوزات الحساب. احذف مفتاحًا لاستعادة قيمته الافتراضية.',
+      'lumen.account.themeOverrideInvalidJson':
+        'أدخل كائن JSON بقيم نصية أو رقمية لتجاوزات المظهر.',
+      'lumen.account.themeEditColors': 'تعديل ألوان المظهر',
+      'lumen.account.themeEditAll': 'تعديل كل التجاوزات',
+      'lumen.account.themeOverrideJson': 'JSON لتجاوزات المظهر',
     },
   },
   {
@@ -314,6 +333,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Затваряне',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роля',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -340,6 +362,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -488,6 +526,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tanca',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -514,6 +555,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -661,6 +718,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zavřít',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -687,6 +747,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -832,6 +908,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Luk',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -858,6 +937,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1008,6 +1103,10 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Schließen',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'pages.profile.advancedTheme.title': 'Erweitertes Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Überschreibungen speichern',
+      'pages.profile.advancedTheme.saved':
+        'Ihre Theme-Überschreibungen wurden gespeichert.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1034,6 +1133,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1178,6 +1293,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1204,6 +1322,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1350,6 +1484,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Κλείσιμο',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ρόλος',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1376,6 +1513,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1524,6 +1677,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'pages.profile.advancedTheme.title': 'Tema avanzado anula',
+      'pages.profile.advancedTheme.save': 'Guardar anulaciones',
+      'pages.profile.advancedTheme.saved': 'Tu tema fue salvado.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1550,6 +1706,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1698,6 +1870,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'pages.profile.advancedTheme.title': 'Tema avanzado anula',
+      'pages.profile.advancedTheme.save': 'Guardar anulaciones',
+      'pages.profile.advancedTheme.saved': 'Tu tema fue salvado.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1724,6 +1899,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -1870,6 +2061,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulge',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -1896,6 +2090,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -2044,6 +2254,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulje',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rooli',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -2070,6 +2283,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -2216,6 +2445,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fermer',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rôle',
+      'pages.profile.advancedTheme.title': 'Préférences de thème avancées',
+      'pages.profile.advancedTheme.save': 'Enregistrer les redéfinitions',
+      'pages.profile.advancedTheme.saved': 'Ton thème a été sauvegardé.',
       'lumen.account.cardTitleOnHover': 'Au survol ou au focus clavier',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Impossible de confirmer les préférences de titre enregistrées.',
@@ -2247,6 +2479,23 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Sélectionnez les services de streaming auxquels vous êtes abonné pour la région {region}. SeerrNG utilise cette liste dans ses règles de disponibilité des demandes.',
       'lumen.account.saving': 'Enregistrement…',
+      'lumen.account.tvRequestSettings': 'Paramètres des demandes TV',
+      'lumen.account.backToYou': 'Retour à votre espace',
+      'lumen.account.saveThemeColors': 'Enregistrer les couleurs du thème',
+      'lumen.account.themeOverrideConfirmFailure':
+        'Le serveur a accepté l’enregistrement, mais Lumen n’a pas pu confirmer les nouvelles couleurs.',
+      'lumen.account.themeColorsSaved': 'Couleurs du thème enregistrées.',
+      'lumen.account.themeColorsSaveFailure':
+        'Impossible d’enregistrer les couleurs du thème.',
+      'lumen.account.themeColorHelp':
+        'Saisissez une couleur hexadécimale comme #2950e0, ou effacez le champ pour utiliser la valeur par défaut.',
+      'lumen.account.themeJsonHelp':
+        'Modifiez l’objet de préférences du compte. Supprimez une clé pour rétablir sa valeur par défaut.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Saisissez un objet JSON contenant des valeurs texte ou numériques.',
+      'lumen.account.themeEditColors': 'Modifier les couleurs du thème',
+      'lumen.account.themeEditAll': 'Modifier toutes les préférences',
+      'lumen.account.themeOverrideJson': 'JSON des préférences du thème',
     },
   },
   {
@@ -2394,6 +2643,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -2420,6 +2672,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -2564,6 +2832,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -2590,6 +2861,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -2735,6 +3022,10 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'बंद करें',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'भूमिका',
+      'pages.profile.advancedTheme.title': 'उन्नत थीम ओवरराइड',
+      'pages.profile.advancedTheme.save': 'ओवरराइड्स सहेजें',
+      'pages.profile.advancedTheme.saved':
+        'आपकी थीम ओवरराइड्स को बचाया गया था।',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -2761,6 +3052,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -2908,6 +3215,9 @@ export const localeData = [
       'i18n.close': 'Bezárás',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Jogosultság',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -2934,6 +3244,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3081,6 +3407,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tutup',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Peran',
+      'pages.profile.advancedTheme.title': 'Penggantian Tema Tingkat Lanjut',
+      'pages.profile.advancedTheme.save': 'Simpan menimpa',
+      'pages.profile.advancedTheme.saved': 'Tema Anda overrides disimpan.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3107,6 +3436,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3254,6 +3599,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Chiudi',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ruolo',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3280,6 +3628,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3426,6 +3790,10 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '閉じる',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'ロール',
+      'pages.profile.advancedTheme.title': '高度なテーマオーバーライド',
+      'pages.profile.advancedTheme.save': 'オーバーライドを保存',
+      'pages.profile.advancedTheme.saved':
+        'テーマオーバーライドを保存しました。',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3452,6 +3820,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3595,6 +3979,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '닫기',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '역할',
+      'pages.profile.advancedTheme.title': '고급 테마 Overrides',
+      'pages.profile.advancedTheme.save': '저장 overrides',
+      'pages.profile.advancedTheme.saved': '테마가 저장되었습니다.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3621,6 +4008,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3765,6 +4168,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3791,6 +4197,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -3938,6 +4360,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Uždaryti',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolė',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -3964,6 +4389,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4109,6 +4550,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Avbryt',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4135,6 +4579,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4282,6 +4742,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sluiten',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4308,6 +4771,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4455,6 +4934,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zamknij',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rola',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4481,6 +4963,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4628,6 +5126,10 @@ export const localeData = [
       'i18n.close': 'Fechar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Privilégio',
+      'pages.profile.advancedTheme.title': 'Tema Avançado Sobrepõe',
+      'pages.profile.advancedTheme.save': 'Economize sobreposições.',
+      'pages.profile.advancedTheme.saved':
+        'Suas sobreposições temáticas foram salvas.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4654,6 +5156,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4801,6 +5319,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fechar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Função',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4827,6 +5348,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -4971,6 +5508,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -4997,6 +5537,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -5145,6 +5701,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрыть',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -5171,6 +5730,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -5318,6 +5893,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Mbylle',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roli',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -5344,6 +5922,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -5491,6 +6085,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -5517,6 +6114,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -5663,6 +6276,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Stäng',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -5689,6 +6305,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -5836,6 +6468,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Kapat',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -5862,6 +6497,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -6010,6 +6661,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрити',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
+      'pages.profile.advancedTheme.title': 'Advanced Theme Overrides',
+      'pages.profile.advancedTheme.save': 'Save overrides',
+      'pages.profile.advancedTheme.saved': 'Your theme overrides were saved.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -6036,6 +6690,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -6180,6 +6850,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '关闭',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
+      'pages.profile.advancedTheme.title': '高级主题覆盖',
+      'pages.profile.advancedTheme.save': '保存覆盖',
+      'pages.profile.advancedTheme.saved': '您的主题更改已被保存 。',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -6206,6 +6879,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -6350,6 +7039,9 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '關閉',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
+      'pages.profile.advancedTheme.title': '高级主題覆寫',
+      'pages.profile.advancedTheme.save': '儲存覆寫',
+      'pages.profile.advancedTheme.saved': '您的主題覆寫已儲存 。',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -6376,6 +7068,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
   {
@@ -6525,6 +7233,9 @@ export const localeData = [
       'i18n.close': 'Đóng',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Nhiệm vụ',
+      'pages.profile.advancedTheme.title': 'Ghi đè sắc thái nâng cao',
+      'pages.profile.advancedTheme.save': 'Lưu ghi đè',
+      'pages.profile.advancedTheme.saved': 'Thiết bị ghi đè đã được lưu.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
@@ -6551,6 +7262,22 @@ export const localeData = [
       'lumen.account.streamingSubscriptionsTip':
         'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.tvRequestSettings': 'TV Request Settings',
+      'lumen.account.backToYou': 'Back to You',
+      'lumen.account.saveThemeColors': 'Save Theme Colors',
+      'lumen.account.themeOverrideConfirmFailure':
+        'The server accepted the save, but Lumen could not confirm the updated colors.',
+      'lumen.account.themeColorsSaved': 'Theme colors saved.',
+      'lumen.account.themeColorsSaveFailure': 'Could not save theme colors.',
+      'lumen.account.themeColorHelp':
+        'Enter a hex color such as #2950e0, or clear the field to use the default.',
+      'lumen.account.themeJsonHelp':
+        'Edit the account override object. Remove a key to restore its default.',
+      'lumen.account.themeOverrideInvalidJson':
+        'Enter a JSON object with string or numeric override values.',
+      'lumen.account.themeEditColors': 'Edit Theme Colors',
+      'lumen.account.themeEditAll': 'Edit All Overrides',
+      'lumen.account.themeOverrideJson': 'Theme Override JSON',
     },
   },
 ] as const;

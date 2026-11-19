@@ -1,5 +1,17 @@
 {
   "en": {
+    "lumen.account.tvRequestSettings": "TV Request Settings",
+    "lumen.account.backToYou": "Back to You",
+    "lumen.account.saveThemeColors": "Save Theme Colors",
+    "lumen.account.themeOverrideConfirmFailure": "The server accepted the save, but Lumen could not confirm the updated colors.",
+    "lumen.account.themeColorsSaved": "Theme colors saved.",
+    "lumen.account.themeColorsSaveFailure": "Could not save theme colors.",
+    "lumen.account.themeColorHelp": "Enter a hex color such as #2950e0, or clear the field to use the default.",
+    "lumen.account.themeJsonHelp": "Edit the account override object. Remove a key to restore its default.",
+    "lumen.account.themeOverrideInvalidJson": "Enter a JSON object with string or numeric override values.",
+    "lumen.account.themeEditColors": "Edit Theme Colors",
+    "lumen.account.themeEditAll": "Edit All Overrides",
+    "lumen.account.themeOverrideJson": "Theme Override JSON",
     "lumen.account.streamingSubscriptions": "Streaming Subscriptions",
     "lumen.account.streamingSubscriptionsTip": "Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.",
     "lumen.account.filterStreamingServices": "Filter streaming services",
@@ -20,6 +32,7 @@
     "lumen.account.saving": "Saving…"
   },
   "fr": {
+    "pages.profile.advancedTheme.title": "Préférences de thème avancées",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie": "Préférence de langue des films",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv": "Préférence de langue des séries",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic": "Préférence de langue musicale",
@@ -45,9 +58,22 @@
     "lumen.account.cardTitleSettingsSaveFailure": "Impossible d’enregistrer les préférences de titre. Réessayez.",
     "lumen.account.saving": "Enregistrement…",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit": "Hériter de la préférence générale",
-    "components.UserProfile.UserSettings.UserGeneralSettings.role": "Rôle"
+    "components.UserProfile.UserSettings.UserGeneralSettings.role": "Rôle",
+    "lumen.account.tvRequestSettings": "Paramètres des demandes TV",
+    "lumen.account.backToYou": "Retour à votre espace",
+    "lumen.account.saveThemeColors": "Enregistrer les couleurs du thème",
+    "lumen.account.themeOverrideConfirmFailure": "Le serveur a accepté l’enregistrement, mais Lumen n’a pas pu confirmer les nouvelles couleurs.",
+    "lumen.account.themeColorsSaved": "Couleurs du thème enregistrées.",
+    "lumen.account.themeColorsSaveFailure": "Impossible d’enregistrer les couleurs du thème.",
+    "lumen.account.themeColorHelp": "Saisissez une couleur hexadécimale comme #2950e0, ou effacez le champ pour utiliser la valeur par défaut.",
+    "lumen.account.themeJsonHelp": "Modifiez l’objet de préférences du compte. Supprimez une clé pour rétablir sa valeur par défaut.",
+    "lumen.account.themeOverrideInvalidJson": "Saisissez un objet JSON contenant des valeurs texte ou numériques.",
+    "lumen.account.themeEditColors": "Modifier les couleurs du thème",
+    "lumen.account.themeEditAll": "Modifier toutes les préférences",
+    "lumen.account.themeOverrideJson": "JSON des préférences du thème"
   },
   "ar": {
+    "pages.profile.advancedTheme.title": "تجاوزات المظهر المتقدمة",
     "components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit": "استخدام التفضيل العام",
     "components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility": "عناوين البطاقات",
     "components.UserProfile.UserSettings.menuAdvancedTheme": "المظهر المتقدم",
@@ -69,6 +95,18 @@
     "lumen.account.cardTitleSettingsConfirmFailure": "تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.",
     "lumen.account.cardTitleSettingsSaveFailure": "تعذر حفظ إعدادات عناوين البطاقات. حاول مرة أخرى.",
     "lumen.account.saving": "جارٍ الحفظ…",
-    "components.UserProfile.UserSettings.UserGeneralSettings.role": "الدور"
+    "components.UserProfile.UserSettings.UserGeneralSettings.role": "الدور",
+    "lumen.account.tvRequestSettings": "إعدادات طلبات التلفاز",
+    "lumen.account.backToYou": "العودة إلى صفحتك",
+    "lumen.account.saveThemeColors": "حفظ ألوان المظهر",
+    "lumen.account.themeOverrideConfirmFailure": "قبل الخادم الحفظ، لكن تعذر على Lumen تأكيد الألوان المحدّثة.",
+    "lumen.account.themeColorsSaved": "تم حفظ ألوان المظهر.",
+    "lumen.account.themeColorsSaveFailure": "تعذر حفظ ألوان المظهر.",
+    "lumen.account.themeColorHelp": "أدخل لونًا سداسيًا مثل #2950e0، أو امسح الحقل لاستخدام اللون الافتراضي.",
+    "lumen.account.themeJsonHelp": "عدّل كائن تجاوزات الحساب. احذف مفتاحًا لاستعادة قيمته الافتراضية.",
+    "lumen.account.themeOverrideInvalidJson": "أدخل كائن JSON بقيم نصية أو رقمية لتجاوزات المظهر.",
+    "lumen.account.themeEditColors": "تعديل ألوان المظهر",
+    "lumen.account.themeEditAll": "تعديل كل التجاوزات",
+    "lumen.account.themeOverrideJson": "JSON لتجاوزات المظهر"
   }
 }

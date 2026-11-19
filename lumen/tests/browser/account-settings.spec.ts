@@ -108,12 +108,12 @@ test('account settings preserve failed profile edits and save only changes and p
   const displayName = page.getByLabel('Display Name');
   await expect(displayName).toHaveValue('Viewer');
   await displayName.fill('Updated Viewer');
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(
     page.getByText('Could not save the profile.', { exact: false })
   ).toBeVisible();
   await expect(displayName).toHaveValue('Updated Viewer');
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(page.getByText('Settings saved successfully!')).toBeVisible();
   expect(writes).toEqual([
     { username: 'Updated Viewer' },
@@ -126,9 +126,9 @@ test('account settings preserve failed profile edits and save only changes and p
   await expect(page.getByLabel('Book Language Override')).toHaveValue('zz');
   await movieLanguage.selectOption('inherit');
   await seriesLanguage.selectOption('fr');
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(
-    page.getByRole('button', { name: 'Save Profile' })
+    page.getByRole('button', { name: 'Save Changes' })
   ).toBeDisabled();
   expect(writes.at(-1)).toEqual({
     preferredLanguages: { all: 'en', tv: 'fr', book: 'zz' },
@@ -151,7 +151,7 @@ test('account settings preserve failed profile edits and save only changes and p
 
 test('display language persists and localizes the shell and account settings', async ({
   page,
-}) => {
+}, testInfo) => {
   const profile = { username: 'Viewer', locale: null as string | null };
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -183,7 +183,7 @@ test('display language persists and localizes the shell and account settings', a
   const language = page.getByRole('combobox', { name: 'Display Language' });
   await expect(language).toHaveValue('');
   await language.selectOption('fr');
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(
     page.getByText('Les paramètres ont été enregistrés !')
   ).toBeVisible();
@@ -210,6 +210,26 @@ test('display language persists and localizes the shell and account settings', a
   ).toBeVisible();
   await expect(page.getByRole('link', { name: 'Thème avancé' })).toBeVisible();
   await expect(
+    page.getByRole('link', { name: 'Paramètres des demandes TV' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Retour à votre espace' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Préférences de thème avancées' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Modifier toutes les préférences' })
+  ).toBeVisible();
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${testInfo.project.name}-french-account.png`,
+      fullPage: false,
+    });
+  await expect(
     page.getByRole('combobox', { name: "Langue d'affichage" })
   ).toHaveValue('fr');
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
@@ -227,13 +247,32 @@ test('display language persists and localizes the shell and account settings', a
   await page
     .getByRole('combobox', { name: "Langue d'affichage" })
     .selectOption('ar');
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page
+    .getByRole('button', { name: 'Enregistrer les modifications' })
+    .click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.getByRole('link', { name: 'اكتشف' })).toBeVisible();
   await expect(page.getByLabel('إسم العرض')).toHaveValue('Viewer');
   await expect(page.getByText('مستخدم محلي')).toBeVisible();
   await expect(page.getByText('الدور', { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'إعدادات طلبات التلفاز' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'العودة إلى صفحتك' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'تجاوزات المظهر المتقدمة' })
+  ).toBeVisible();
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${testInfo.project.name}-arabic-account.png`,
+      fullPage: false,
+    });
   await expect(
     page.getByLabel('اللغة المفضلة لجميع وسائط الإعلام')
   ).toBeVisible();
@@ -283,7 +322,7 @@ test('watchlist preferences honor account type and category permissions and pers
   await expect(page.getByLabel('Auto-Request Movies')).toHaveCount(0);
   await expect(page.getByLabel('Auto-Request Books')).toHaveCount(0);
   await music.uncheck();
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(
     page.getByText(
       'Could not save the profile. Check the values and try again.'
@@ -291,7 +330,7 @@ test('watchlist preferences honor account type and category permissions and pers
   ).toBeVisible();
   await expect(music).not.toBeChecked();
   rejectSave = false;
-  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(page.getByText('Settings saved successfully!')).toBeVisible();
   expect(writes).toEqual([
     { watchlistSyncMusic: false },
@@ -564,7 +603,7 @@ test('account theme colors preserve stored overrides for other controls', async 
   await expect(background).toBeVisible();
   await page.getByRole('button', { name: 'Edit All Overrides' }).click();
   await expect(editor).toHaveValue('[]');
-  await page.getByRole('button', { name: 'Save Theme Overrides' }).click();
+  await page.getByRole('button', { name: 'Save overrides' }).click();
   await expect(
     page.getByText(
       'Enter a JSON object with string or numeric override values.'
@@ -573,7 +612,9 @@ test('account theme colors preserve stored overrides for other controls', async 
   await editor.fill(
     JSON.stringify({ '--theme-page-spotlight-strength': 0.75 })
   );
-  await page.getByRole('button', { name: 'Save Theme Overrides' }).click();
-  await expect(page.getByText('Theme overrides saved.')).toBeVisible();
+  await page.getByRole('button', { name: 'Save overrides' }).click();
+  await expect(
+    page.getByText('Your theme overrides were saved.')
+  ).toBeVisible();
   expect(overrides).toEqual({ '--theme-page-spotlight-strength': 0.75 });
 });

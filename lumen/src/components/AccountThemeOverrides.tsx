@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import {
   isThemeColor,
@@ -11,6 +12,7 @@ import {
 import { Section } from './cards';
 
 export default function AccountThemeOverrides() {
+  const { t } = useLumenLocale();
   const { user, refresh } = useAuth();
   const saved = user?.settings?.advancedThemeOverrides;
   const [draft, setDraft] = useState<Record<string, string>>({});
@@ -57,16 +59,36 @@ export default function AccountThemeOverrides() {
         })
       ) {
         setError(
-          'The server accepted the save, but Lumen could not confirm the updated colors.'
+          t(
+            'lumen.account.themeOverrideConfirmFailure',
+            'The server accepted the save, but Lumen could not confirm the updated colors.'
+          )
         );
         return;
       }
       setDraft({});
       if (editingJson) openJson(readback ?? {});
-      setNotice(editingJson ? 'Theme overrides saved.' : 'Theme colors saved.');
+      setNotice(
+        t(
+          editingJson
+            ? 'pages.profile.advancedTheme.saved'
+            : 'lumen.account.themeColorsSaved',
+          editingJson
+            ? 'Your theme overrides were saved.'
+            : 'Theme colors saved.'
+        )
+      );
     } catch (cause) {
       if (generation === sessionGeneration())
-        setError(friendlyError(cause, 'Could not save theme colors.'));
+        setError(
+          friendlyError(
+            cause,
+            t(
+              'lumen.account.themeColorsSaveFailure',
+              'Could not save theme colors.'
+            )
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -103,7 +125,10 @@ export default function AccountThemeOverrides() {
   }
 
   return (
-    <Section title="Advanced Theme Overrides" id="advanced-theme">
+    <Section
+      title={t('pages.profile.advancedTheme.title', 'Advanced Theme Overrides')}
+      id="advanced-theme"
+    >
       <div className="toolbar">
         <button
           className="btn btn-quiet btn-sm"
@@ -116,17 +141,27 @@ export default function AccountThemeOverrides() {
             setEditingJson(!editingJson);
           }}
         >
-          {editingJson ? 'Edit Theme Colors' : 'Edit All Overrides'}
+          {t(
+            editingJson
+              ? 'lumen.account.themeEditColors'
+              : 'lumen.account.themeEditAll',
+            editingJson ? 'Edit Theme Colors' : 'Edit All Overrides'
+          )}
         </button>
       </div>
       {!editingJson ? (
         <p className="note">
-          Enter a hex color such as #2950e0, or clear the field to use the
-          default.
+          {t(
+            'lumen.account.themeColorHelp',
+            'Enter a hex color such as #2950e0, or clear the field to use the default.'
+          )}
         </p>
       ) : (
         <p className="note">
-          Edit the account override object. Remove a key to restore its default.
+          {t(
+            'lumen.account.themeJsonHelp',
+            'Edit the account override object. Remove a key to restore its default.'
+          )}
         </p>
       )}
       <form
@@ -146,7 +181,7 @@ export default function AccountThemeOverrides() {
       >
         {editingJson ? (
           <label className="set cfg-row">
-            <b>Theme Override JSON</b>
+            <b>{t('lumen.account.themeOverrideJson', 'Theme Override JSON')}</b>
             <textarea
               className="cfg-json"
               rows={10}
@@ -176,7 +211,13 @@ export default function AccountThemeOverrides() {
         )}
         {error && (
           <p className="note" role="alert">
-            {error}
+            {error ===
+            'Enter a JSON object with string or numeric override values.'
+              ? t(
+                  'lumen.account.themeOverrideInvalidJson',
+                  'Enter a JSON object with string or numeric override values.'
+                )
+              : error}
           </p>
         )}
         {notice && (
@@ -190,7 +231,12 @@ export default function AccountThemeOverrides() {
             type="submit"
             disabled={busy || (editingJson ? !jsonDirty : !dirty || invalid)}
           >
-            {editingJson ? 'Save Theme Overrides' : 'Save Theme Colors'}
+            {t(
+              editingJson
+                ? 'pages.profile.advancedTheme.save'
+                : 'lumen.account.saveThemeColors',
+              editingJson ? 'Save overrides' : 'Save Theme Colors'
+            )}
           </button>
         </div>
       </form>
