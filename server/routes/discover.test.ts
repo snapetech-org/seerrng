@@ -2478,8 +2478,11 @@ describe('GET /discover/tv', () => {
   });
 });
 
-describe('Upcoming discovery page limits', () => {
+describe('Video discovery page limits', () => {
   for (const [route, endpoint] of [
+    ['/discover/movies', '/discover/movie'],
+    ['/discover/tv', '/discover/tv'],
+    ['/discover/trending', '/trending/all/day'],
     ['/discover/movies/upcoming', '/discover/movie'],
     ['/discover/tv/upcoming', '/discover/tv'],
   ]) {

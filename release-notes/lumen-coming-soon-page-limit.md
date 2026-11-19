@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Coming Soon stops offering more results when it reaches the last page the movie or TV catalog can serve.
+Movie and TV discovery, Trending, and Coming Soon stop offering more results when it reaches the last page the movie or TV catalog can serve.

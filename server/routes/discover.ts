@@ -1802,6 +1802,8 @@ const findMatchingVideoKeywordIds = async (
   }
 };
 
+const MAX_VIDEO_DISCOVERY_PAGE = 500;
+
 discoverRoutes.get('/movies', async (req, res, next) => {
   const tmdb = createTmdbWithRegionLanguage(req.user);
 
@@ -1846,7 +1848,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
     const keywords = parsedKeywords.value;
     const excludeKeywords = parsedExcludeKeywords.value;
 
-    const page = parsePositiveInt(query.page, 1, 500);
+    const page = parsePositiveInt(query.page, 1, MAX_VIDEO_DISCOVERY_PAGE);
     if (query.availability) {
       const localResults = await getLocalAvailableVideoDiscoverResponse({
         mediaType: MediaType.MOVIE,
@@ -1923,7 +1925,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         );
         feed = {
           page: data.page,
-          totalPages: data.total_pages,
+          totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
           totalResults: data.total_results,
           results: filteredResults,
         };
@@ -2093,7 +2095,7 @@ discoverRoutes.get('/movies', async (req, res, next) => {
 
     return res.status(200).json({
       page: responsePage,
-      totalPages,
+      totalPages: Math.min(totalPages, MAX_VIDEO_DISCOVERY_PAGE),
       totalResults,
       stale,
       keywords: keywordData,
@@ -2139,7 +2141,7 @@ discoverRoutes.get<{ language: string }>(
       }
 
       const data = await tmdb.getDiscoverMovies({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         originalLanguage: req.params.language,
       });
@@ -2163,7 +2165,7 @@ discoverRoutes.get<{ language: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         language,
         results: rankedResults.map((result) =>
@@ -2218,7 +2220,7 @@ discoverRoutes.get<{ genreId: string }>(
       }
 
       const data = await tmdb.getDiscoverMovies({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         genre: genreId.toString(),
       });
@@ -2242,7 +2244,7 @@ discoverRoutes.get<{ genreId: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         genre,
         results: rankedResults.map((result) =>
@@ -2289,7 +2291,7 @@ discoverRoutes.get<{ studioId: string }>(
       const studio = await tmdb.getStudio(studioId);
 
       const data = await tmdb.getDiscoverMovies({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         studio: studioId.toString(),
       });
@@ -2313,7 +2315,7 @@ discoverRoutes.get<{ studioId: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         studio: mapProductionCompany(studio),
         results: rankedResults.map((result) =>
@@ -2340,8 +2342,6 @@ discoverRoutes.get<{ studioId: string }>(
   }
 );
 
-const MAX_UPCOMING_PAGE = 500;
-
 discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
   const tmdb = createTmdbWithRegionLanguage(req.user);
 
@@ -2362,7 +2362,7 @@ discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
         .json({ status: 400, message: parsedLanguage.error });
     }
     const data = await tmdb.getDiscoverMovies({
-      page: parsePositiveInt(req.query.page, 1, MAX_UPCOMING_PAGE),
+      page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
       language: parsedLanguage.value,
       primaryReleaseDateGte: date,
     });
@@ -2385,7 +2385,7 @@ discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: Math.min(data.total_pages, MAX_UPCOMING_PAGE),
+      totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
       totalResults: data.total_results,
       results: maturityFilteredResults.map((result) =>
         mapMovieResult(
@@ -2465,7 +2465,7 @@ discoverRoutes.get('/tv', async (req, res, next) => {
     const keywords = parsedKeywords.value;
     const excludeKeywords = parsedExcludeKeywords.value;
 
-    const page = parsePositiveInt(query.page, 1, 500);
+    const page = parsePositiveInt(query.page, 1, MAX_VIDEO_DISCOVERY_PAGE);
     if (query.availability) {
       const localResults = await getLocalAvailableVideoDiscoverResponse({
         mediaType: MediaType.TV,
@@ -2621,7 +2621,10 @@ discoverRoutes.get('/tv', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: Math.max(data.total_pages, taggedData?.total_pages ?? 0),
+      totalPages: Math.min(
+        Math.max(data.total_pages, taggedData?.total_pages ?? 0),
+        MAX_VIDEO_DISCOVERY_PAGE
+      ),
       totalResults: data.total_results + (taggedData?.total_results ?? 0),
       keywords: keywordData,
       results: query.includeCredits
@@ -2665,7 +2668,7 @@ discoverRoutes.get<{ language: string }>(
       }
 
       const data = await tmdb.getDiscoverTv({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         originalLanguage: req.params.language,
       });
@@ -2689,7 +2692,7 @@ discoverRoutes.get<{ language: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         language,
         results: rankedResults.map((result) =>
@@ -2746,7 +2749,7 @@ discoverRoutes.get<{ genreId: string }>(
       }
 
       const data = await tmdb.getDiscoverTv({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         genre: genreId.toString(),
       });
@@ -2770,7 +2773,7 @@ discoverRoutes.get<{ genreId: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         genre,
         results: rankedResults.map((result) =>
@@ -2819,7 +2822,7 @@ discoverRoutes.get<{ networkId: string }>(
       const network = await tmdb.getNetwork(networkId);
 
       const data = await tmdb.getDiscoverTv({
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
         network: networkId,
       });
@@ -2843,7 +2846,7 @@ discoverRoutes.get<{ networkId: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         network: mapNetwork(network),
         results: rankedResults.map((result) =>
@@ -2890,7 +2893,7 @@ discoverRoutes.get('/tv/upcoming', async (req, res, next) => {
         .json({ status: 400, message: parsedLanguage.error });
     }
     const data = await tmdb.getDiscoverTv({
-      page: parsePositiveInt(req.query.page, 1, MAX_UPCOMING_PAGE),
+      page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
       language: parsedLanguage.value,
       firstAirDateGte: date,
     });
@@ -2913,7 +2916,7 @@ discoverRoutes.get('/tv/upcoming', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: Math.min(data.total_pages, MAX_UPCOMING_PAGE),
+      totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
       totalResults: data.total_results,
       results: maturityFilteredResults.map((result) =>
         mapTvResult(
@@ -2972,7 +2975,7 @@ discoverRoutes.get('/trending', async (req, res, next) => {
     const mediaType = parsedMediaType.value ?? 'all';
     const timeWindow = parsedTimeWindow.value ?? 'day';
     const language = parsedLanguage.value;
-    const page = parsePositiveInt(req.query.page, 1, 500);
+    const page = parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE);
 
     const trendingFetchers = {
       movie: async () => ({
@@ -3068,7 +3071,7 @@ discoverRoutes.get('/trending', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: data.total_pages,
+      totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
       totalResults: data.total_results,
       results: maturityFilteredTrendingResults.map((result) => {
         const type = isMovie(result) ? MediaType.MOVIE : MediaType.TV;
@@ -3112,7 +3115,7 @@ discoverRoutes.get<{ listId: string }>(
         .json({ status: 400, message: parsedLanguage.error });
     }
 
-    const page = parsePositiveInt(req.query.page, 1, 500);
+    const page = parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE);
     const tmdb = createTmdbWithRegionLanguage(req.user);
 
     try {
@@ -3221,7 +3224,7 @@ discoverRoutes.get<{ keywordId: string }>(
       }
       const data = await tmdb.getMoviesByKeyword({
         keywordId,
-        page: parsePositiveInt(req.query.page, 1, 500),
+        page: parsePositiveInt(req.query.page, 1, MAX_VIDEO_DISCOVERY_PAGE),
         language: parsedLanguage.value,
       });
       let rankedResults = rankTmdbMovieResults(data.results);
@@ -3244,7 +3247,7 @@ discoverRoutes.get<{ keywordId: string }>(
 
       return res.status(200).json({
         page: data.page,
-        totalPages: data.total_pages,
+        totalPages: Math.min(data.total_pages, MAX_VIDEO_DISCOVERY_PAGE),
         totalResults: data.total_results,
         results: rankedResults.map((result) =>
           mapMovieResult(
