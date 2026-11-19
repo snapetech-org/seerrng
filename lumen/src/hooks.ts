@@ -186,6 +186,17 @@ const pagedSnap = new Map<
 >();
 const pageItemId = (item: unknown) => String((item as { id?: unknown }).id);
 
+async function readCatalogPage<T>(base: string, page: number) {
+  const separator = base.includes('?') ? '&' : '?';
+  const path = `${base}${separator}page=${page}`;
+  const result = await cachedApi<T & { page: number }>(path);
+  if (result?.page !== page) {
+    forget(path);
+    throw new Error('The server returned a different page. Try again.');
+  }
+  return result;
+}
+
 export function usePaged<T, Metadata extends object = object>(
   base: string | null,
   idOf: (item: T) => string = pageItemId
@@ -234,12 +245,10 @@ export function usePaged<T, Metadata extends object = object>(
     if (!base || !s || s.gen === cacheGeneration()) return;
     let live = true;
     const gen = cacheGeneration();
-    const sep = base.includes('?') ? '&' : '?';
     const head = Math.min(2, s.page);
     const tail = [s.page - 1, s.page].filter((p) => p > head);
     (async () => {
-      const read = (p: number) =>
-        cachedApi<Paged<T> & Metadata>(`${base}${sep}page=${p}`);
+      const read = (p: number) => readCatalogPage<Paged<T> & Metadata>(base, p);
       const rows: T[] = [];
       const seen = new Set<string>();
       let totalPages = s.total;
@@ -313,10 +322,7 @@ export function usePaged<T, Metadata extends object = object>(
       setError(null);
       setLoading(true);
       try {
-        const sep = base.includes('?') ? '&' : '?';
-        const d = await cachedApi<Paged<T> & Metadata>(
-          `${base}${sep}page=${page + 1}`
-        );
+        const d = await readCatalogPage<Paged<T> & Metadata>(base, page + 1);
         if (!ownsRequest()) return; // an old filter must not replace the current list
         // popular lists shift between pages, so a title can come back; show it once
         setItems((x) => {

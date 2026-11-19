@@ -7755,6 +7755,51 @@ test('Trending and Coming Soon apply discovery visibility and keep later pages r
   ]);
 });
 
+test('Coming Soon retries a mismatched page without dropping loaded titles', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const reads: number[] = [];
+  await page.route('**/api/v1/discover/movies/upcoming?page=*', (route) => {
+    const page = Number(
+      new URL(route.request().url()).searchParams.get('page')
+    );
+    const returnedPage = page === 2 && !reads.includes(2) ? 1 : page;
+    reads.push(page);
+    return route.fulfill({
+      json: {
+        page: returnedPage,
+        totalPages: 2,
+        totalResults: 2,
+        results: [
+          {
+            ...movie,
+            id: movie.id + returnedPage,
+            title: `Upcoming Page ${returnedPage}`,
+          },
+        ],
+      },
+    });
+  });
+  await page.goto('/soon?media=movie');
+  const first = page.getByRole('link', { name: 'Upcoming Page 1' });
+  const second = page.getByRole('link', { name: 'Upcoming Page 2' });
+  const more = page.getByRole('button', { name: 'Show more upcoming movies' });
+  await expect(first).toBeVisible();
+  await more.click();
+  await expect(
+    page.getByText('The server returned a different page. Try again.')
+  ).toBeVisible();
+  await expect(first).toBeVisible();
+  await expect(second).toHaveCount(0);
+  expect(reads).toEqual([1, 2]);
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(second).toBeVisible();
+  await expect(first).toHaveCount(1);
+  await expect(more).toHaveCount(0);
+  expect(reads).toEqual([1, 2, 2]);
+});
+
 test('Streaming Request Policy preserves edits across a failed save', async ({
   page,
 }, info) => {
