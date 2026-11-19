@@ -150,6 +150,7 @@ test('watchlist preferences honor account type and category permissions and pers
 }) => {
   const profile = { username: 'Viewer', watchlistSyncMusic: true };
   const writes: unknown[] = [];
+  let rejectSave = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -167,6 +168,11 @@ test('watchlist preferences honor account type and category permissions and pers
       if (request.method() === 'POST') {
         const body = request.postDataJSON();
         writes.push(body);
+        if (rejectSave)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Profile service unavailable.' },
+          });
         Object.assign(profile, body);
       }
       return route.fulfill({ json: profile });
@@ -181,8 +187,19 @@ test('watchlist preferences honor account type and category permissions and pers
   await expect(page.getByLabel('Auto-Request Books')).toHaveCount(0);
   await music.uncheck();
   await page.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(
+    page.getByText(
+      'Could not save the profile. Check the values and try again.'
+    )
+  ).toBeVisible();
+  await expect(music).not.toBeChecked();
+  rejectSave = false;
+  await page.getByRole('button', { name: 'Save Profile' }).click();
   await expect(page.getByText('Profile saved.')).toBeVisible();
-  expect(writes).toEqual([{ watchlistSyncMusic: false }]);
+  expect(writes).toEqual([
+    { watchlistSyncMusic: false },
+    { watchlistSyncMusic: false },
+  ]);
   await page.reload();
   await expect(music).toBeVisible();
   await expect(music).not.toBeChecked();
