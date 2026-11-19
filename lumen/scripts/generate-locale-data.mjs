@@ -55,7 +55,10 @@ for (const locale of config.locales) {
     }
   }
   for (const item of chain) {
-    Object.assign(catalog, overrides[item.tag] ?? {});
+    for (const key of keys) {
+      const message = overrides[item.tag]?.[key];
+      if (typeof message === 'string' && message) catalog[key] = message;
+    }
   }
   entries.push({
     tag: locale.tag,

@@ -143,29 +143,29 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'إغلاق',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'الدور',
-      'lumen.account.streamingSubscriptions': 'اشتراكات خدمات البث',
-      'lumen.account.streamingSubscriptionsTip':
-        'اختر خدمات البث المتاحة في {region} التي تشترك بها. يستخدم SeerrNG هذه القائمة ضمن قواعد إتاحة الطلبات.',
-      'lumen.account.filterStreamingServices': 'تصفية خدمات البث',
-      'lumen.account.selectShown': 'تحديد الخدمات المعروضة',
-      'lumen.account.clearShown': 'إلغاء تحديد الخدمات المعروضة',
-      'lumen.account.saveStreamingSubscriptions': 'حفظ اشتراكات خدمات البث',
-      'lumen.account.loadingStreamingProviders': 'جارٍ تحميل خدمات البث…',
-      'lumen.account.noMatchingStreamingServices': 'لا توجد خدمات بث مطابقة.',
-      'lumen.account.maxStreamingServices': 'يمكنك تحديد 500 خدمة كحد أقصى.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'تم حفظ اشتراكات خدمات البث.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'تعذر تأكيد حفظ الاشتراكات. حاول مرة أخرى.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'تعذر حفظ اشتراكات خدمات البث. حاول مرة أخرى.',
       'lumen.account.cardTitleOnHover': 'عند التحويم أو التركيز',
-      'lumen.account.saveCardTitles': 'حفظ عناوين البطاقات',
-      'lumen.account.cardTitleSettingsSaved': 'تم حفظ إعدادات عناوين البطاقات.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'تعذر حفظ إعدادات عناوين البطاقات. حاول مرة أخرى.',
+      'lumen.account.cardTitleSettingsSaved': 'تم حفظ إعدادات عناوين البطاقات.',
+      'lumen.account.clearShown': 'إلغاء تحديد الخدمات المعروضة',
+      'lumen.account.filterStreamingServices': 'تصفية خدمات البث',
+      'lumen.account.loadingStreamingProviders': 'جارٍ تحميل خدمات البث…',
+      'lumen.account.maxStreamingServices': 'يمكنك تحديد 500 خدمة كحد أقصى.',
+      'lumen.account.noMatchingStreamingServices': 'لا توجد خدمات بث مطابقة.',
+      'lumen.account.saveCardTitles': 'حفظ عناوين البطاقات',
+      'lumen.account.saveStreamingSubscriptions': 'حفظ اشتراكات خدمات البث',
+      'lumen.account.selectShown': 'تحديد الخدمات المعروضة',
+      'lumen.account.streamingSubscriptions': 'اشتراكات خدمات البث',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'تعذر تأكيد حفظ الاشتراكات. حاول مرة أخرى.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'تعذر حفظ اشتراكات خدمات البث. حاول مرة أخرى.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'تم حفظ اشتراكات خدمات البث.',
+      'lumen.account.streamingSubscriptionsTip':
+        'اختر خدمات البث المتاحة في {region} التي تشترك بها. يستخدم SeerrNG هذه القائمة ضمن قواعد إتاحة الطلبات.',
       'lumen.account.saving': 'جارٍ الحفظ…',
     },
   },
@@ -314,31 +314,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Затваряне',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роля',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -488,31 +488,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tanca',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -661,31 +661,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zavřít',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -832,31 +832,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Luk',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1008,31 +1008,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Schließen',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1178,31 +1178,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1350,31 +1350,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Κλείσιμο',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ρόλος',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1524,31 +1524,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1698,31 +1698,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -1870,31 +1870,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulge',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -2044,31 +2044,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulje',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rooli',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -2216,36 +2216,36 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fermer',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rôle',
-      'lumen.account.streamingSubscriptions':
-        'Abonnements aux services de streaming',
-      'lumen.account.streamingSubscriptionsTip':
-        'Sélectionnez les services de streaming auxquels vous êtes abonné pour la région {region}. SeerrNG utilise cette liste dans ses règles de disponibilité des demandes.',
-      'lumen.account.filterStreamingServices':
-        'Filtrer les services de streaming',
-      'lumen.account.selectShown': 'Sélectionner les services affichés',
-      'lumen.account.clearShown': 'Désélectionner les services affichés',
-      'lumen.account.saveStreamingSubscriptions':
-        'Enregistrer les abonnements de streaming',
-      'lumen.account.loadingStreamingProviders':
-        'Chargement des services de streaming…',
-      'lumen.account.noMatchingStreamingServices':
-        'Aucun service de streaming correspondant.',
-      'lumen.account.maxStreamingServices':
-        'Sélectionnez au maximum 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Abonnements de streaming enregistrés.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Impossible de confirmer les abonnements enregistrés. Réessayez.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        "Impossible d'enregistrer les abonnements de streaming. Réessayez.",
       'lumen.account.cardTitleOnHover': 'Au survol ou au focus clavier',
-      'lumen.account.saveCardTitles': 'Enregistrer les titres des affiches',
-      'lumen.account.cardTitleSettingsSaved':
-        'Préférences de titre des affiches enregistrées.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Impossible de confirmer les préférences de titre enregistrées.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Impossible d’enregistrer les préférences de titre. Réessayez.',
+      'lumen.account.cardTitleSettingsSaved':
+        'Préférences de titre des affiches enregistrées.',
+      'lumen.account.clearShown': 'Désélectionner les services affichés',
+      'lumen.account.filterStreamingServices':
+        'Filtrer les services de streaming',
+      'lumen.account.loadingStreamingProviders':
+        'Chargement des services de streaming…',
+      'lumen.account.maxStreamingServices':
+        'Sélectionnez au maximum 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'Aucun service de streaming correspondant.',
+      'lumen.account.saveCardTitles': 'Enregistrer les titres des affiches',
+      'lumen.account.saveStreamingSubscriptions':
+        'Enregistrer les abonnements de streaming',
+      'lumen.account.selectShown': 'Sélectionner les services affichés',
+      'lumen.account.streamingSubscriptions':
+        'Abonnements aux services de streaming',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Impossible de confirmer les abonnements enregistrés. Réessayez.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        "Impossible d'enregistrer les abonnements de streaming. Réessayez.",
+      'lumen.account.streamingSubscriptionsSaved':
+        'Abonnements de streaming enregistrés.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Sélectionnez les services de streaming auxquels vous êtes abonné pour la région {region}. SeerrNG utilise cette liste dans ses règles de disponibilité des demandes.',
       'lumen.account.saving': 'Enregistrement…',
     },
   },
@@ -2394,31 +2394,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -2564,31 +2564,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -2735,31 +2735,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'बंद करें',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'भूमिका',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -2908,31 +2908,31 @@ export const localeData = [
       'i18n.close': 'Bezárás',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Jogosultság',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3081,31 +3081,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tutup',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Peran',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3254,31 +3254,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Chiudi',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ruolo',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3426,31 +3426,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '閉じる',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'ロール',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3595,31 +3595,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '닫기',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '역할',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3765,31 +3765,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -3938,31 +3938,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Uždaryti',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolė',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4109,31 +4109,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Avbryt',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4282,31 +4282,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sluiten',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4455,31 +4455,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zamknij',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rola',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4628,31 +4628,31 @@ export const localeData = [
       'i18n.close': 'Fechar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Privilégio',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4801,31 +4801,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fechar',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Função',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -4971,31 +4971,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -5145,31 +5145,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрыть',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -5318,31 +5318,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Mbylle',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roli',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -5491,31 +5491,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -5663,31 +5663,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Stäng',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -5836,31 +5836,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Kapat',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -6010,31 +6010,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрити',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -6180,31 +6180,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '关闭',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -6350,31 +6350,31 @@ export const localeData = [
       'components.Persius.retry': 'Retry',
       'i18n.close': '關閉',
       'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
@@ -6525,31 +6525,31 @@ export const localeData = [
       'i18n.close': 'Đóng',
       'components.UserProfile.UserSettings.UserGeneralSettings.role':
         'Nhiệm vụ',
-      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
-      'lumen.account.streamingSubscriptionsTip':
-        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
-      'lumen.account.filterStreamingServices': 'Filter streaming services',
-      'lumen.account.selectShown': 'Select Shown',
-      'lumen.account.clearShown': 'Clear Shown',
-      'lumen.account.saveStreamingSubscriptions':
-        'Save Streaming Subscriptions',
-      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
-      'lumen.account.noMatchingStreamingServices':
-        'No matching streaming services.',
-      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
-      'lumen.account.streamingSubscriptionsSaved':
-        'Streaming subscriptions saved.',
-      'lumen.account.streamingSubscriptionsConfirmFailure':
-        'Could not confirm the saved subscriptions. Try again.',
-      'lumen.account.streamingSubscriptionsSaveFailure':
-        'Could not save streaming subscriptions. Try again.',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
-      'lumen.account.saveCardTitles': 'Save Card Titles',
-      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
         'Could not save card title settings. Try again.',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
       'lumen.account.saving': 'Saving…',
     },
   },
