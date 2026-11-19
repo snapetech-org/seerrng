@@ -1,1 +1,8 @@
-Lumen now shows Book Recommendations, Collector Picks, Game Finder, and Translations and Hacks only to users with request access or administrators, matching native SeerrNG navigation permissions. The same gate applies to the Translations and Hacks shortcut on retro and console game details. Movie and series quick-request actions, ebook and audiobook card/detail actions, comic and manga card/detail actions, software game requests, music album requests, and adult scene requests now follow their corresponding native SeerrNG permission masks.
+---
+category: fixed
+audience: users
+area: lumen-navigation
+action: none
+breaking: false
+---
+Lumen now applies SeerrNG request permissions to navigation links and quick-request actions across supported media types, so users only see actions their account can perform.

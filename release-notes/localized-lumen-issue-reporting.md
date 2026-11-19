@@ -1,1 +1,8 @@
-Lumen's shared issue reporting sheet now follows the saved English, French, or Arabic locale across its controls, reason choices, owner selection, season and episode labels, feedback, and accessible text. Report submission continues to use the same media ID and issue payload.
+---
+category: changed
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+Lumen's issue report form now follows the saved English, French, or Arabic language across controls, reason choices, account selection, episode labels, and feedback.

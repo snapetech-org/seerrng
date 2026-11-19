@@ -1,1 +1,8 @@
-Lumen's Release Calendar now localizes its filters, release descriptions, statuses, feedback, and date formatting in English, French, and Arabic using the saved account locale. The browser-native month input keeps the browser's own month-name presentation.
+---
+category: changed
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+Lumen's Release Calendar now localizes filters, release descriptions, statuses, feedback, and dates in English, French, and Arabic using the saved account language.
