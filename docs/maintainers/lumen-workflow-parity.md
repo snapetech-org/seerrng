@@ -3667,3 +3667,9 @@ sign-in. Both runs appended a synthetic log with the same timestamp
 and different details to the isolated machine log. Refresh used the
 real logs endpoint. The original details remained open and the new
 entry stayed collapsed.
+
+The ten-row System Logs setting on `cfb8f0ba8` passed bundled desktop
+and iPhone checks with real sign-in and synthetic machine logs. The
+browser requested ten rows on page one. Opening the Classic page-two
+bookmark in the same browser retained the preference, sent offset ten
+to the real API, and displayed ten rows from page two.
