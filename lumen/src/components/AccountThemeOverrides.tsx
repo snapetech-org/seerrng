@@ -148,8 +148,9 @@ export default function AccountThemeOverrides() {
           <label className="set cfg-row">
             <b>Theme Override JSON</b>
             <textarea
-              className="cfg-input"
+              className="cfg-json"
               rows={10}
+              spellCheck={false}
               value={json}
               disabled={busy}
               onChange={(event) => setJson(event.target.value)}

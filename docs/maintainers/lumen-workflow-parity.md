@@ -1799,7 +1799,10 @@ Edit All Overrides offers the complete saved JSON object, including
 numeric settings. The server validates and merges changed keys. Switching
 to the color controls and back keeps unfinished JSON edits. The 16-case
 bundled browser suite passed with fixtures. Lumen currently renders six
-mapped colors. Visual review of the JSON editor remains open.
+mapped colors. Matched standalone renders at 390 and 1440 pixels
+identified a 40-pixel editor. Using the shared JSON textarea style
+increased it to 221 pixels and kept it inside the viewport. The fixture
+included long token names and a numeric override.
 
 ### About release history
 
