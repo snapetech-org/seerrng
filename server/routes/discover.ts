@@ -1177,6 +1177,23 @@ const getVideoFilterCompatibilityError = (
   query: FilterOptions,
   mediaType: 'movie' | 'tv'
 ): string | undefined => {
+  const primaryDates = mediaType === 'movie' || Boolean(query.availability);
+  const start = [
+    primaryDates ? query.primaryReleaseDateGte : undefined,
+    mediaType === 'tv' ? query.firstAirDateGte : undefined,
+  ]
+    .filter((date): date is string => date !== undefined)
+    .sort()
+    .at(-1);
+  const end = [
+    primaryDates ? query.primaryReleaseDateLte : undefined,
+    mediaType === 'tv' ? query.firstAirDateLte : undefined,
+  ]
+    .filter((date): date is string => date !== undefined)
+    .sort()[0];
+  if (start && end && start > end) {
+    return 'The start date must be on or before the end date.';
+  }
   if (query.excludeGenre && !query.genre) {
     return 'Choose a genre before excluding it.';
   }

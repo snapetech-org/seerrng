@@ -524,7 +524,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     );
   if (libraryFirst) q.set('availability', quality);
   const list = usePaged<TitleResult>(
-    checkingQuality || unavailableQuality || (regionPending && providers.length)
+    !validDates ||
+      checkingQuality ||
+      unavailableQuality ||
+      (regionPending && providers.length)
       ? null
       : `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
@@ -1144,7 +1147,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </button>
         </div>
       )}
-      {!checkingQuality &&
+      {validDates &&
+        !checkingQuality &&
         !unavailableQuality &&
         !list.error &&
         !items.length &&

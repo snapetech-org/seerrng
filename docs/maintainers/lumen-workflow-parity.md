@@ -2962,6 +2962,12 @@ inventory, and indexed 4K series. Four standalone and bundled browser
 checks at 390 and 1440 CSS pixels verified that the series bookmark
 passes its date filter and sort through to the local query.
 
+Reversed discovery dates now stop the query. Lumen shows the existing
+range validation message for a saved link with reversed dates, and
+the server rejects reversed bounds before any lookup. Two server
+checks and four fixture browser checks across standalone and bundled
+Lumen covered valid and reversed date ranges.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

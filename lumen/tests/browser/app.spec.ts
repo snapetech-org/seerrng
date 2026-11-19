@@ -7546,8 +7546,8 @@ test('Discover and Movies apply visibility defaults while the library view still
   await expect(page.getByRole('link', { name: 'Blocked fixture' })).toHaveCount(
     0
   );
-  const seriesSort = page.waitForRequest((request) => {
-    const url = new URL(request.url());
+  const seriesSort = page.waitForResponse((response) => {
+    const url = new URL(response.url());
     return (
       url.pathname === '/api/v1/discover/tv' &&
       url.searchParams.get('availability') === 'hd' &&
@@ -7559,6 +7559,19 @@ test('Discover and Movies apply visibility defaults while the library view still
     './series?show=have&sort=first_air_date.desc&firstAirDateGte=2020-01-01'
   );
   await seriesSort;
+  const invertedQueries: string[] = [];
+  await page.route('**/api/v1/discover/tv?**', (route) => {
+    invertedQueries.push(route.request().url());
+    return route.fulfill({ json: paged([]) });
+  });
+  await page.goto(
+    './series?show=have&firstAirDateGte=2025-12-31&firstAirDateLte=2025-01-01'
+  );
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'lower bound' })
+  ).toBeVisible();
+  await expect(page.getByText('Nothing here', { exact: true })).toHaveCount(0);
+  expect(invertedQueries).toEqual([]);
 });
 
 test('Trending and Coming Soon apply discovery visibility and keep later pages reachable', async ({

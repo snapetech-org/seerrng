@@ -691,6 +691,10 @@ describe('GET /discover/movies', () => {
     );
     assert.strictEqual(laterYear.status, 200);
     assert.strictEqual(laterYear.body.totalResults, 0);
+    const inverted = await agent.get(
+      '/discover/movies?availability=hd&primaryReleaseDateGte=2025-12-31&primaryReleaseDateLte=2025-01-01'
+    );
+    assert.strictEqual(inverted.status, 400);
 
     const excluded = await agent.get(
       '/discover/movies?availability=hd&genre=12&excludeGenre=true'
