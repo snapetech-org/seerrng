@@ -356,6 +356,32 @@ describe('software request routes', () => {
     });
   });
 
+  it('keeps an ordinary requester on their own software status rows', async () => {
+    const owned = await createSoftwareRequest({
+      requestedById: 2,
+      category: 'retro',
+      externalRequestId: 'seerrng:software:owner-status',
+    });
+    await createSoftwareRequest({
+      requestedById: 1,
+      category: 'retro',
+      externalRequestId: 'seerrng:software:other-status',
+    });
+    const agent = request(createApp(2, Permission.REQUEST));
+    for (const requestedBy of [undefined, 2]) {
+      const response = await agent
+        .get('/request/software/status')
+        .query({ category: 'retro', ...(requestedBy && { requestedBy }) });
+      assert.equal(response.status, 200);
+      assert.equal(response.body.pageInfo.results, 1);
+      assert.equal(response.body.results[0].request.id, owned.id);
+    }
+    await agent
+      .get('/request/software/status')
+      .query({ requestedBy: 1 })
+      .expect(403);
+  });
+
   it('lets the requester clear a cancelled request and its status history', async () => {
     const saved = await createSoftwareRequest({
       status: 'cancelled',
