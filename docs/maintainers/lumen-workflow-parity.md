@@ -23,6 +23,18 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings now persists the native per-user display locale, and the shell/account headings have an initial translated message slice. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
+Request lifecycle status is already implemented and no longer an open Lumen
+gap. Lumen opts into SeerrNG's owner-scoped status projection for request
+progress and lifecycle filters, then uses the requested book format to select
+ebook or audiobook status and download data. Legacy fallback is limited to
+older backends that reject the projection; outages and malformed projected
+responses do not downgrade to coarse status. The server projection shipped in
+`28d8abd9c`. The current `request-status.spec.ts` suite passes 96 cases across
+desktop, iPhone, Android, and tablet, including missing-audiobook versus
+available-ebook, authoritative Available membership, format-specific downloads,
+TV season selection, cancellation, and approval. Other request-audit items in
+the table remain open.
+
 Discover previously issued its default-on catalog requests before the
 asynchronous Lumen configuration loaded, even when an administrator had disabled
 every home row. It now waits for that configuration before rendering optional
