@@ -658,10 +658,13 @@ permission, request state, and provider capabilities. When the server cannot
 confirm a previous handoff, retry or cancellation waits for the user to check
 the download queue and history and explicitly confirm there is no match.
 
-Standalone Chrome at 1440 × 1000 verified that an owner retry waited for
-explicit confirmation after a synthetic 409 and refreshed to Searching after
-the confirmed retry. Native visual comparison, mobile, bundled, delegated
-roles, other actions, and live provider behavior remain unverified.
+Browser fixtures across desktop, iPhone, Android, and tablet verify that
+owners can withdraw pending requests, request managers can approve pending
+requests, and view-only users receive no mutation controls. An owner retry
+waits for explicit confirmation after a synthetic 409 and sends the verified
+confirmation before retrying. Native visual comparison, bundled deployment,
+delegated role variants, remaining action states, and live provider behavior
+remain unverified.
 
 ### Household software requests increment
 
