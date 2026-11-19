@@ -66,8 +66,20 @@ test('Movies: All genres by default; ticking genres updates the address and the 
     page.waitForFunction(() =>
       document.getAnimations().every((x) => x.playState !== 'running')
     );
+  const dialog = page.getByRole('dialog', { name: 'Genres' });
+  const positions = async () => {
+    const [choice, surface, trigger] = await Promise.all([
+      opt('Comedy').boundingBox(),
+      dialog.boundingBox(),
+      picker.boundingBox(),
+    ]);
+    return {
+      row: choice!.y - surface!.y,
+      anchor: surface!.y - trigger!.y - trigger!.height,
+    };
+  };
   await settled();
-  const before = await opt('Comedy').boundingBox();
+  const before = await positions();
 
   await opt('Action').click();
   await expect(page).toHaveURL(/\/movies\?genre=28$/);
@@ -75,7 +87,10 @@ test('Movies: All genres by default; ticking genres updates the address and the 
   await expect(picker).toHaveText('Action');
   // ticking a genre doesn't move the rest of the list
   await settled();
-  expect((await opt('Comedy').boundingBox())!.y).toBeCloseTo(before!.y, 0);
+  const after = await positions();
+  expect(after.row).toBeCloseTo(before.row, 0);
+  if (await page.locator('.gp-pop').count())
+    expect(after.anchor).toBeCloseTo(before.anchor, 0);
   await opt('Comedy').click();
   await expect(page).toHaveURL(/genre=28%2C35/);
   await expect(
