@@ -140,12 +140,24 @@ choices, request preference controls, Discover rows, reset confirmation,
 media-server summary, sign-out action, and accessible link names. French and
 Arabic browser assertions exercise the hub at desktop, iPhone, Android, and
 tablet sizes. Its route targets and permission-gated entries are unchanged.
-The administrator settings directory embedded on the hub, most destination
-pages, and some account or error copy remain English, so this closes one
-prominent display gap without completing Lumen localization. Candidate hub
-English baseline and French/Arabic candidate screenshots at matching desktop
-and iPhone viewports are retained in task scratch at
+The administrator settings directory embedded on the hub and the dedicated
+Administration index now translate destination labels, groups, search controls,
+and Open actions in French and Arabic. Most destination pages and some account
+or error copy remain English, so this closes another prominent display gap
+without completing Lumen localization. Candidate hub English baseline and
+French/Arabic renders from the earlier milestone are retained in task scratch at
 `seerrng-me-localization-20261119`.
+
+The administrator directory fixtures verify both routes, RTL direction, route
+destinations, and no horizontal overflow at desktop, iPhone, Android, and tablet
+sizes. Matching baseline/candidate renders were inspected at 1440 CSS-pixel
+desktop and 390 CSS-pixel iPhone widths for both locales; the existing
+settings-list and toolbar owners remain unchanged. Most destination pages
+remain English. The localized cases also passed against a freshly built
+embedded asset served under an isolated Express `/lumen/` static mount (8
+browser cases); qualification through SeerrNG's full production server mount
+remains open. Independent linguistic review also remains open. Visual evidence is retained in
+`seerrng-admin-directory-visual-20261119`.
 
 ### Open gap in personal discovery accounts
 

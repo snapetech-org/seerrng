@@ -110,6 +110,93 @@ test('administration is visible in navigation and at the start of You', async ({
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
 
+for (const locale of [
+  {
+    tag: 'fr',
+    administration: 'Administration',
+    settings: 'Paramètres généraux',
+    open: 'Ouvrir Paramètres généraux',
+    search: 'Rechercher des paramètres',
+    all: 'Tous les paramètres et outils',
+    group: 'Télévision et films',
+    groupHeading: 'Télévision et films',
+  },
+  {
+    tag: 'ar',
+    administration: 'الإدارة',
+    settings: 'إعدادات الشبكة',
+    open: 'فتح إعدادات الشبكة',
+    search: 'البحث في الإعدادات',
+    all: 'كل الإعدادات والأدوات',
+    group: 'التلفزيون والأفلام',
+    groupHeading: 'التلفزيون والأفلام',
+  },
+]) {
+  test(`administrator directory uses ${locale.tag} messages on You and Administration`, async ({
+    page,
+  }, info) => {
+    await session(page, 2);
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({ json: { locale: locale.tag } })
+    );
+    await page.goto(testAppPath('/me'));
+    await expect(
+      page.getByRole('heading', { name: locale.administration, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: locale.open, exact: true })
+    ).toHaveAttribute(
+      'href',
+      testAppPath(locale.tag === 'fr' ? '/admin/general' : '/admin/network')
+    );
+    await expect(
+      page.getByText(locale.settings, { exact: true })
+    ).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await page.screenshot({ path: info.outputPath(`you-${locale.tag}.png`) });
+
+    await page.goto(testAppPath('/admin'));
+    await expect(page.getByLabel(locale.search, { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: locale.all, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: locale.open, exact: true })
+    ).toBeVisible();
+    await page.getByLabel(locale.search, { exact: true }).fill(locale.settings);
+    await expect(
+      page.getByRole('link', { name: locale.open, exact: true })
+    ).toBeVisible();
+    await page.getByLabel(locale.search, { exact: true }).fill('');
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale.tag === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await page.screenshot({ path: info.outputPath(`admin-${locale.tag}.png`) });
+
+    await page.getByRole('link', { name: locale.group, exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: locale.groupHeading, exact: true })
+    ).toBeVisible();
+    await page
+      .getByLabel(locale.search, { exact: true })
+      .fill('no-such-setting');
+    await expect(
+      page.getByText(
+        locale.tag === 'fr'
+          ? 'Aucun paramètre ne correspond à cette recherche.'
+          : 'لا توجد إعدادات تطابق هذا البحث.',
+        { exact: true }
+      )
+    ).toBeVisible();
+  });
+}
+
 for (const permissions of [32, 4, '2', [2], -2, 2.5]) {
   test(`non-admin or invalid mask ${JSON.stringify(permissions)} has no admin navigation`, async ({
     page,
