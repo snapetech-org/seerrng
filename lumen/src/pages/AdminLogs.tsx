@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
@@ -79,6 +79,22 @@ function LogViewer({ storageKey }: { storageKey: string }) {
     currentPathOnly: true,
     keepDuringRefresh: true,
   });
+  const entries = useMemo(() => {
+    const occurrences = new Map<string, number>();
+    return data?.results.map((entry) => {
+      const details = entry.data ? JSON.stringify(entry.data) : undefined;
+      const identity = JSON.stringify([
+        entry.timestamp,
+        entry.level,
+        entry.label,
+        entry.message,
+        details,
+      ]);
+      const occurrence = (occurrences.get(identity) ?? 0) + 1;
+      occurrences.set(identity, occurrence);
+      return { entry, details, key: `${identity}:${occurrence}` };
+    });
+  }, [data]);
 
   useEffect(() => {
     if (!live || error) return;
@@ -178,13 +194,13 @@ function LogViewer({ storageKey }: { storageKey: string }) {
           Loading system logs…
         </p>
       )}
-      {data?.results.length === 0 && (
+      {entries?.length === 0 && (
         <p className="note">No logs match these filters.</p>
       )}
-      {!!data?.results.length && (
+      {!!entries?.length && (
         <ul className="setlist">
-          {data.results.map((entry, index) => (
-            <li className="set" key={`${entry.timestamp}:${index}`}>
+          {entries.map(({ entry, details, key }) => (
+            <li className="set" key={key}>
               <div>
                 <b>{entry.message}</b>
                 <small>
@@ -192,10 +208,10 @@ function LogViewer({ storageKey }: { storageKey: string }) {
                     .filter(Boolean)
                     .join(' · ')}
                 </small>
-                {entry.data && (
+                {details && (
                   <details>
                     <summary>Details</summary>
-                    <small>{JSON.stringify(entry.data)}</small>
+                    <small>{details}</small>
                   </details>
                 )}
               </div>

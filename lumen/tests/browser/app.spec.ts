@@ -5386,6 +5386,39 @@ test('System Logs restores display preferences without retaining search text', a
   );
 });
 
+test('System Logs keeps the same entry expanded when a newer log arrives', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let refresh = false;
+  const entry = {
+    timestamp: '2026-11-18T00:00:00Z',
+    level: 'info',
+    message: 'Original entry',
+    data: { value: 1 },
+  };
+  await page.route(/\/api\/v1\/settings\/logs\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: refresh
+          ? [{ ...entry, message: 'New entry', data: { value: 2 } }, entry]
+          : [entry],
+      },
+    })
+  );
+  await page.goto('/admin/logs');
+  const row = page.getByRole('listitem').filter({ hasText: 'Original entry' });
+  await row.getByText('Details', { exact: true }).click();
+  await expect(row.getByText('{"value":1}', { exact: true })).toBeVisible();
+  refresh = true;
+  await page.getByRole('button', { name: 'Refresh', exact: true }).click();
+  const latest = page.getByRole('listitem').filter({ hasText: 'New entry' });
+  await expect(latest).toBeVisible();
+  await expect(row.getByText('{"value":1}', { exact: true })).toBeVisible();
+  await expect(latest.getByText('{"value":2}', { exact: true })).toBeHidden();
+});
+
 test('System Logs filters server entries and excludes non-admins', async ({
   page,
 }) => {
