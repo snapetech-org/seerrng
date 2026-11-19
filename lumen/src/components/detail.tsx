@@ -455,7 +455,7 @@ export const ActionBar = ({
 // ---- admin-only request options: which server, quality profile and folder ----
 const MANAGE = 2 | 16; // ADMIN | MANAGE_REQUESTS
 const REQUEST_VIEW = 16384;
-const SHARE_ACCESS = 2 | 32; // ADMIN | REQUEST
+const REQUEST_ACCESS = 2 | 32; // ADMIN | REQUEST
 interface Server {
   id: number;
   name: string;
@@ -490,9 +490,10 @@ export const canChooseRequestOptions = (permissions?: number) =>
   (permissionBits(permissions) & (MANAGE | 8192)) !== 0;
 export const canViewAllRequests = (permissions?: number) =>
   (permissionBits(permissions) & (MANAGE | REQUEST_VIEW)) !== 0;
-// Share & Identify resolves mixed-media links into requests, matching native navigation access.
-export const canUseShare = (permissions?: number) =>
-  (permissionBits(permissions) & SHARE_ACCESS) !== 0;
+// Native navigation grants request workflows to request users and administrators.
+export const canUseRequestAccess = (permissions?: number) =>
+  (permissionBits(permissions) & REQUEST_ACCESS) !== 0;
+export const canUseShare = canUseRequestAccess;
 export const canRequestMovies = (permissions?: number) =>
   (permissionBits(permissions) & (2 | 32 | 262144)) !== 0;
 export const canRequestSeries = (permissions?: number) =>

@@ -8,6 +8,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
   canRequestMovies,
+  canUseRequestAccess,
   canUseShare,
 } from '../components/detail';
 import RequestLimits from '../components/RequestLimits';
@@ -157,14 +158,15 @@ export default function Me() {
               Open <Icon name="chev" size="sm" />
             </Link>
           </div>
-          {publicSettings?.swipeEnabled && (
-            <div className="set">
-              <b>Swipe</b>
-              <Link className="go" to="/swipe" aria-label="Open Swipe">
-                Open <Icon name="chev" size="sm" />
-              </Link>
-            </div>
-          )}
+          {publicSettings?.swipeEnabled &&
+            canUseRequestAccess(user?.permissions) && (
+              <div className="set">
+                <b>Swipe</b>
+                <Link className="go" to="/swipe" aria-label="Open Swipe">
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            )}
           {canRequestMovies(user?.permissions) && (
             <div className="set">
               <b>Watch Sessions</b>

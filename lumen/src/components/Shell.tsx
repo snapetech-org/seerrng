@@ -28,7 +28,12 @@ import { usePrefs } from '../settings';
 import { VideoAvailabilityProvider } from '../videoAvailability';
 import AvatarContent from './AvatarContent';
 import { BrandMark, brandName } from './brand';
-import { canManageRequests, canRequestMovies, canUseShare } from './detail';
+import {
+  canManageRequests,
+  canRequestMovies,
+  canUseRequestAccess,
+  canUseShare,
+} from './detail';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -374,7 +379,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Icon name="book" />
             My Media
           </NavLink>
-          {swipeEnabled && (
+          {swipeEnabled && canUseRequestAccess(user?.permissions) && (
             <NavLink to="/swipe">
               <Icon name="star" />
               Swipe
