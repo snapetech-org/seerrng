@@ -2151,8 +2151,9 @@ requests use the selected system or OS and architecture, and the deck follows
 the server's page continuation. Native and Lumen share the request payload
 builder. Compared the PC game and magazine decks across desktop, iPhone 13,
 Pixel 7, and iPad Pro 11. The production build, 42 native tests, and 20 browser
-checks passed. The browser fixture verified PC target selection and offset
-pagination. Live acquisition and software search cursor behavior remain unverified.
+checks passed. The fixtures verified PC target selection, offset pagination,
+and title-search cursor continuation with the query retained. Live acquisition
+effects remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-software-20261118/`.

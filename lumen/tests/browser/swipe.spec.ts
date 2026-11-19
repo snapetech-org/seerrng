@@ -419,3 +419,68 @@ test('Swipe software requests use the chosen PC variant and next catalog offset'
     },
   });
 });
+
+test('Swipe software title search follows and retains the catalog cursor', async ({
+  page,
+}) => {
+  const searches: URLSearchParams[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/swipe/status'))
+      return route.fulfill({
+        json: { mediaTypes: ['software-game'], bookFormats: [] },
+      });
+    if (path.endsWith('/swipe/profile'))
+      return route.fulfill({
+        json: { seriesRequest: 'first-season', bookFormat: 'ebook' },
+      });
+    if (path.endsWith('/request/software/catalog/search')) {
+      searches.push(url.searchParams);
+      const next = url.searchParams.get('cursor') === 'cursor-2';
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: next ? 83 : 82,
+              catalogId: String(next ? 83 : 82),
+              title: next ? 'Next Search Result' : 'First Search Result',
+              platformOptions: [{ name: 'Windows' }],
+            },
+          ],
+          nextCursor: next ? null : 'cursor-2',
+        },
+      });
+    }
+    if (path.endsWith('/swipe/decisions') && request.method() === 'GET')
+      return route.fulfill({ json: { decisions: [] } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/swipe');
+  await page
+    .getByRole('combobox', { name: 'Category' })
+    .selectOption('software-game');
+  await page.getByLabel('Search Titles').fill('Search');
+  await page.getByRole('button', { name: 'Search Deck' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'First Search Result' })
+  ).toBeVisible();
+  expect(searches[0]?.get('q')).toBe('Search');
+  expect(searches[0]?.has('cursor')).toBe(false);
+
+  await page.getByRole('button', { name: 'Pass', exact: true }).click();
+  await page.getByRole('button', { name: 'Load More Recommendations' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Next Search Result' })
+  ).toBeVisible();
+  expect(searches[1]?.get('q')).toBe('Search');
+  expect(searches[1]?.get('cursor')).toBe('cursor-2');
+});
