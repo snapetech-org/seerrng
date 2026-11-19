@@ -3541,3 +3541,10 @@ bundled Express and standalone nginx verified a hidden first page,
 manual continuation to a visible album, and an explicit FLAC filter.
 Matched renders retained the existing Music controls and used the
 shared pagination button. Catalogue data was synthetic.
+
+Configured Music genre and chart shelves on Discover now apply the
+same visibility rules as Music discovery. Matched browser fixtures at
+390 and 1440 CSS pixels verified that the normal album, shelf heading,
+and See All link stayed in place while available and blocklisted albums
+were removed. Genre and chart links kept their filters. This check
+used the standalone production build and synthetic catalogue responses.

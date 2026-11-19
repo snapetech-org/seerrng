@@ -3781,7 +3781,12 @@ test('configured music shelves preserve genre and yearly chart in Music', async 
   await fixtures(page);
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
-      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+      json: {
+        musicEnabled: true,
+        enabledMediaCategories: { music: true },
+        hideAvailable: true,
+        hideBlocklisted: true,
+      },
     })
   );
   await page.route('**/api/v1/user/1/settings/main', (route) =>
@@ -3820,6 +3825,18 @@ test('configured music shelves preserve genre and yearly chart in Music', async 
           mediaType: 'album',
           title: query.has('genre') ? 'Genre Fixture' : 'Chart Fixture',
         },
+        {
+          id: 'available-album-fixture',
+          mediaType: 'album',
+          title: 'Available Fixture',
+          mediaInfo: { status: 5 },
+        },
+        {
+          id: 'blocklisted-album-fixture',
+          mediaType: 'album',
+          title: 'Blocklisted Fixture',
+          mediaInfo: { status: 6 },
+        },
       ]),
     });
   });
@@ -3838,6 +3855,14 @@ test('configured music shelves preserve genre and yearly chart in Music', async 
   await expect(
     chart.getByRole('link', { name: 'Chart Fixture' })
   ).toBeVisible();
+  for (const shelf of [genre, chart]) {
+    await expect(
+      shelf.getByRole('link', { name: 'Available Fixture' })
+    ).toHaveCount(0);
+    await expect(
+      shelf.getByRole('link', { name: 'Blocklisted Fixture' })
+    ).toHaveCount(0);
+  }
   expect(reads.some((q) => q.get('sortBy') === 'popular.year')).toBe(true);
   await expect(chart.getByRole('link', { name: 'See all' })).toHaveAttribute(
     'href',

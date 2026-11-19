@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { BookResult, Paged, VideoSearchResult } from '../api';
+import { useAuth } from '../auth';
+import {
+  discoveryVisibility,
+  showDiscoveryTitle,
+} from '../discoveryVisibility';
 import type { Album } from '../extras';
 import { useApi, usePublicSettings } from '../hooks';
 import { AlbumCard } from '../pages/Music';
@@ -143,7 +148,12 @@ function DiscoverShelf({
   endpoint,
   href,
   kind,
-}: ShelfDestination & { id: number; title?: string }) {
+  musicVisibility,
+}: ShelfDestination & {
+  id: number;
+  title?: string;
+  musicVisibility: ReturnType<typeof discoveryVisibility>;
+}) {
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const { data, error, reload } = useApi<ShelfPage>(visible ? endpoint : null);
@@ -164,15 +174,15 @@ function DiscoverShelf({
     return () => observer.disconnect();
   }, [visible]);
 
-  const items = data?.results.filter(({ mediaType }) =>
+  const items = data?.results.filter((item) =>
     kind === 'music'
-      ? mediaType === 'album'
+      ? item.mediaType === 'album' && showDiscoveryTitle(item, musicVisibility)
       : kind === 'books'
-        ? mediaType === 'book'
-        : mediaType === 'movie' ||
-          mediaType === 'tv' ||
-          mediaType === 'person' ||
-          mediaType === 'collection'
+        ? item.mediaType === 'book'
+        : item.mediaType === 'movie' ||
+          item.mediaType === 'tv' ||
+          item.mediaType === 'person' ||
+          item.mediaType === 'collection'
   );
   if (items?.length === 0) return null;
 
@@ -229,6 +239,9 @@ export function ConfiguredDiscoverShelves({
   showMusic: boolean;
 }) {
   const settings = usePublicSettings();
+  const { user } = useAuth();
+  const musicVisibility = discoveryVisibility(settings, user?.permissions);
+  musicVisibility.hideRequested = false;
   const categories = settings?.enabledMediaCategories;
   const ebook =
     showBooks &&
@@ -264,6 +277,7 @@ export function ConfiguredDiscoverShelves({
           key={`${slider.id}:${destination.endpoint}`}
           id={slider.id}
           title={slider.title}
+          musicVisibility={musicVisibility}
           {...destination}
         />
       ) : null;
