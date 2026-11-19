@@ -78,6 +78,7 @@ const AdminMediaLibraries = lazy(() => import('./pages/AdminMediaLibraries'));
 const AdminMetadata = lazy(() => import('./pages/AdminMetadata'));
 const AdminReaders = lazy(() => import('./pages/AdminReaders'));
 const AdminUrlConnection = lazy(() => import('./pages/AdminUrlConnection'));
+const AdminOverrideRules = lazy(() => import('./pages/AdminOverrideRules'));
 const AdminDownloadClients = lazy(() => import('./pages/AdminDownloadClients'));
 const AdminReaderDelivery = lazy(() => import('./pages/AdminReaderDelivery'));
 const AdminSoftwareAcquisition = lazy(
@@ -528,6 +529,24 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <AdminHome />
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/override-rules"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading request override rules…
+                    </p>
+                  }
+                >
+                  <AdminOverrideRules />
+                </Suspense>
               ) : (
                 <Navigate to="/me" replace />
               )

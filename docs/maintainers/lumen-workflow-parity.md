@@ -3703,3 +3703,10 @@ control. Desktop and iPhone checks covered the standalone production build
 with fixture API responses and bundled Express with real local sign-in and
 the isolated settings endpoint. The matched search renders showed the new
 result at both widths without horizontal overflow.
+
+Request Override Rules is reachable from Administration and its System
+Services category. Bundled desktop and iPhone checks loaded a real isolated
+Lidarr rule and displayed its service name, genre and root folder. The same
+viewports confirmed a standard user was redirected and the API returned
+403. Existing rules can be inspected. Creation, editing and deletion,
+empty and error browser states, and companion verification remain open.
