@@ -29,6 +29,7 @@ test('book details reach the author and series and send the exact shelf target',
     series: [{ ...first.series[0], position: '2' }],
   };
   const targets: unknown[] = [];
+  const creations: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -63,6 +64,27 @@ test('book details reach the author and series and send the exact shelf target',
           grimmoryUrl: 'https://reader.example.test',
         },
       });
+    if (
+      path === '/settings/reader-delivery/groupings' &&
+      request.method() === 'POST'
+    ) {
+      creations.push(request.postDataJSON());
+      const body = request.postDataJSON();
+      return route.fulfill({
+        json: {
+          grouping: {
+            targetType: body.target.type,
+            targetId: body.target.id,
+            provider: body.provider,
+            isPublic: body.isPublic,
+            syncToKobo: body.syncToKobo,
+            countVerified: true,
+            lastMatchCount: 1,
+            serviceUrl: 'https://reader.example.test',
+          },
+        },
+      });
+    }
     if (path === '/settings/reader-delivery/groupings')
       return route.fulfill({ json: [] });
     if (path.endsWith('/groupings/preview')) {
@@ -96,6 +118,8 @@ test('book details reach the author and series and send the exact shelf target',
     const dialog = page.getByRole('dialog', { name: 'Reader Shelf' });
     await dialog.getByRole('button', { name: 'Preview Matches' }).click();
     await expect(dialog.getByText('Matches fixture books')).toBeVisible();
+    await dialog.getByRole('button', { name: 'Create Shelf' }).click();
+    await expect(dialog.getByRole('status')).toHaveText('Reader shelf saved');
     await dialog.getByRole('button', { name: 'Close', exact: true }).click();
   }
   await preview();
@@ -130,6 +154,22 @@ test('book details reach the author and series and send the exact shelf target',
   expect(targets).toEqual([
     { type: 'author', id: 'OL42A', name: 'Fixture Author' },
     { type: 'book-series', id: seriesId, name: 'Fixture Series' },
+  ]);
+  expect(creations).toEqual([
+    {
+      provider: 'grimmory',
+      target: { type: 'author', id: 'OL42A', name: 'Fixture Author' },
+      isPublic: true,
+      syncToKobo: false,
+      allowEmpty: false,
+    },
+    {
+      provider: 'grimmory',
+      target: { type: 'book-series', id: seriesId, name: 'Fixture Series' },
+      isPublic: true,
+      syncToKobo: false,
+      allowEmpty: false,
+    },
   ]);
 });
 

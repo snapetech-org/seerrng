@@ -2469,8 +2469,10 @@ Comic and manga details now open Reader Shelf setup for the selected edition.
 Administrators can preview matches, set visibility, enable BookOrbit Kobo
 sync, and create or update the shelf. Empty previews require explicit consent.
 The fallback provider is used when the preferred reader has no address.
-The result distinguishes verified counts from previews. Author and book
-series detail routes still need Lumen coverage before exposing this action.
+The result distinguishes verified counts from previews. The earlier statement
+that author and book-series routes needed coverage is superseded by the
+following book-grouping increment; both routes expose this action when the
+viewer is an administrator.
 
 The production build, 13 reader-delivery API tests, and 21 browser checks
 passed, with three existing viewport skips. Inspected the shelf sheet and
@@ -2491,8 +2493,12 @@ The production build, 28 browser checks, two server routing tests, and ten
 built-image proxy tests passed. Inspected the new pages against Lumen's book
 detail and book grid layouts across desktop, iPhone 13, Pixel 7, and iPad
 Pro 11. Browser fixtures checked pagination, order, and shelf preview
-identities. Real reader providers were outside the check. Evidence is retained
-under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-20261118/`.
+identities. The focused regression now previews and creates author and series
+shelves and checks the exact target, provider, visibility, and empty-shelf
+consent payload on desktop, iPhone, Android, and tablet; all 12 cases pass.
+Real reader providers and matched native visual acceptance remain unverified.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-20261118/`.
 
 Lumen book series now filter by format, publication year, subject, minimum
 rating, and language. The format filter retains untracked books and keeps
