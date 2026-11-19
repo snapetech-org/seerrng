@@ -18,15 +18,6 @@
     "reason": "Cloudron requires root to repair restored volume ownership. start-cloudron.cjs clears groups and drops uid/gid to 1000 before loading app modules; start-cloudron.test.mjs verifies fail-closed behavior."
   },
   {
-    "rule": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
-    "path": "server/routes/lumen.ts",
-    "sha256": "03c8ac1bb4e386bf2a768376c68296c1143c67c7c12e0bf9d0bcbf0f194241b7",
-    "count": 1,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "The filename is restricted to a fixed logo/icon UUID.png allowlist before sendFile; uploads are decoded and re-encoded as bounded PNG raster data."
-  },
-  {
     "rule": "javascript.express.security.express-data-exfiltration.express-data-exfiltration",
     "path": "server/routes/overrideRule.ts",
     "sha256": "08c986000071206caf7d9c1a608daef0534982aec405d4d8883cff0c2068a474",
@@ -79,15 +70,6 @@
     "owner": "SeerrNG maintainers",
     "expires": "2027-02-07",
     "reason": "Developer inventory traversal starts in fixed repository directories and uses filesystem directory entries, not request paths."
-  },
-  {
-    "rule": "javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal",
-    "path": "server/lib/imageproxy.ts",
-    "sha256": "6b1517fb3547369a4b8cfe17dd242ac48e004b5c8fa43db310e01e3dbca706b8",
-    "count": 9,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "Paths are cache directory entries or basename-validated cache filenames. The surrounding cache boundary code checks containment, symlinks, file type and private permissions; image proxy tests exercise these boundaries."
   },
   {
     "rule": "javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal",

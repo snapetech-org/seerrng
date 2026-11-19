@@ -139,6 +139,7 @@ function OpenPgpForm({
         lines[0] !== '-----BEGIN PGP PUBLIC KEY BLOCK-----' ||
         lines.at(-1) !== '-----END PGP PUBLIC KEY BLOCK-----' ||
         !lines.slice(1, -1).some((line) => line.trim()) ||
+        // nosemgrep: generic.secrets.security.detected-pgp-private-key-block.detected-pgp-private-key-block -- the armor header identifies private-key input for rejection
         value.includes('-----BEGIN PGP PRIVATE KEY BLOCK-----')
       ) {
         setError('Paste an armored OpenPGP public key.');
