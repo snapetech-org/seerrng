@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '');
+
 test('a household can create a watch session and opt in to watchlist contributions', async ({
   page,
 }, info) => {
@@ -24,7 +29,7 @@ test('a household can create a watch session and opt in to watchlist contributio
   );
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const url = new URL(request.url()).pathname;
+    const url = testApiPath(request.url());
     if (url.endsWith('/auth/me'))
       return route.fulfill({ json: { id: userId, permissions: 2 } });
     if (url.endsWith('/genres/movie'))
@@ -72,7 +77,7 @@ test('a household can create a watch session and opt in to watchlist contributio
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Watch Sessions' }).click();
   await page.getByLabel('Session Title').fill('Movie Night');
   await page
@@ -127,7 +132,7 @@ test('a household can create a watch session and opt in to watchlist contributio
   });
   await page.getByRole('button', { name: 'Create Invite Link' }).click();
   await expect(page.getByLabel('Invite Link', { exact: true })).toHaveValue(
-    new RegExp(`/watch-sessions/join#token=${token}$`)
+    new RegExp(`${testAppPath('/watch-sessions/join')}#token=${token}$`)
   );
   await page.screenshot({
     path: info.outputPath('watch-invites.png'),
@@ -137,7 +142,7 @@ test('a household can create a watch session and opt in to watchlist contributio
   await expect(page.getByLabel('Invite Link', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Create Invite Link' }).click();
   await expect(page.getByLabel('Invite Link', { exact: true })).toHaveValue(
-    new RegExp(`/watch-sessions/join#token=${token}$`)
+    new RegExp(`${testAppPath('/watch-sessions/join')}#token=${token}$`)
   );
   const invite = await page
     .getByLabel('Invite Link', { exact: true })
@@ -173,7 +178,7 @@ test('active watch sessions save and revise ballots and show matches', async ({
   );
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const url = new URL(request.url()).pathname;
+    const url = testApiPath(request.url());
     if (url.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 2, permissions: 2 } });
     if (url.endsWith('/settings/public'))
@@ -233,12 +238,12 @@ test('active watch sessions save and revise ballots and show matches', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/watch-sessions/9');
+  await page.goto(testAppPath('/watch-sessions/9'));
   await page
     .getByRole('button', { name: 'Want to Watch Fixture Match' })
     .click();
   const match = page.getByRole('link', { name: 'Open Fixture Match' });
-  await expect(match).toHaveAttribute('href', '/movie/84');
+  await expect(match).toHaveAttribute('href', testAppPath('/movie/84'));
   await page.screenshot({
     path: info.outputPath('watch-ballots.png'),
     fullPage: true,
@@ -285,7 +290,7 @@ for (const action of [
     );
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
-      const url = new URL(request.url()).pathname;
+      const url = testApiPath(request.url());
       if (url.endsWith('/auth/me'))
         return route.fulfill({ json: { id: action.user, permissions: 2 } });
       if (request.method() === 'DELETE') {
@@ -314,7 +319,7 @@ for (const action of [
         return route.fulfill({ json: { invites: [] } });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/watch-sessions/9');
+    await page.goto(testAppPath('/watch-sessions/9'));
     await page.getByRole('button', { name: action.label }).click();
     await expect(page.getByRole('alert')).toContainText(action.warning);
     await page.screenshot({

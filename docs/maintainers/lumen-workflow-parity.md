@@ -2199,8 +2199,9 @@ Swipe preferences now save series season defaults, book format, recommendation
 sources, and taste notes. The active deck uses the saved profile immediately.
 Compared collapsed and expanded settings across desktop, iPhone 13, Pixel 7,
 and iPad Pro 11. The build and eight synthetic browser checks passed,
-including an all-seasons request from the active deck after saving.
-Favorite selection and live provider behavior remain open.
+including an all-seasons request from the active deck after saving. Selected
+Favorites is implemented and covered in the following increment; real library
+ranking and live provider behavior remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-prefs-20261118/`.
@@ -2255,7 +2256,8 @@ viewport projects (desktop, iPhone, Android, tablet) passed against synthetic
 responses. Compared baseline and candidate at matching viewports. The browser
 fixture verified public-catalog query parameters, retained search, and filtered
 pagination. Live catalog/provider effects and native matched-state rendering
-remain unverified.
+remain unverified; the mounted workflow is covered by the current bundled
+Swipe regression suite.
 
 Evidence is retained under
 `/mnt/disks/scratch/codex-task-scratch/lumen-swipe-search-duplicate.Px1n2C/`.
@@ -2269,8 +2271,9 @@ also verifies a software genre filter, all three category-specific target
 payloads, and request submission for Retro, Modern, and PC Game cards. Captures
 at desktop, iPhone, Android, and tablet show the selected target and request
 actions after scrolling them into view; the fixed mobile tabs clear the action
-row. The production build passed. Live acquisition effects and the bundled
-Express `/lumen/` workflow remain unverified.
+row. The production build passed, and the software decks also passed in the
+current bundled Swipe regression suite. Live acquisition effects remain
+unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-software-20261118/`.
@@ -2284,8 +2287,9 @@ and rating filters, displays room membership, and lets users opt in to
 watchlist contributions before the host starts. The production build and four
 fixture browser checks passed for creation and preference readback. Inspected
 the create and room states on desktop, iPhone 13, Pixel 7, and iPad Pro 11.
-Genre selection, invitations, membership management, ballots, matches,
-playback, and live multi-user verification remain open.
+Genre selection, invitations, membership management, ballots, and matches are
+covered in the following increments; live provider playback and cross-device
+use remain open.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-sessions-20261118/`.
@@ -2334,13 +2338,14 @@ and saving the genre selection.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-genres-20261118/`.
 
-The watch-session browser suite now covers removing a guest, ending the room,
-and leaving as a guest. It verifies canceling before each mutation and the
-return to the session list after success. It also follows a group match to the
-movie page and checks the Jellyfin playback link. All 20 synthetic browser
-checks passed across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The production
-build and all 15 isolated watch-session server tests passed. Live provider
-playback and cross-device use remain unverified.
+The watch-session browser suite now covers room creation and editing,
+invitations, ballots and matches, and confirmed guest removal, host closure,
+and guest departure. It follows a group match to the movie page and checks the
+Jellyfin playback link. All 20 synthetic browser checks passed against both
+standalone Vite and the freshly built bundled Express `/lumen/` mount across
+desktop, iPhone, Android, and tablet. The production build and all 15 isolated
+watch-session server tests passed. Live provider playback and cross-device use
+remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-verify-20261118/`.
