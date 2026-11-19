@@ -681,6 +681,17 @@ describe('GET /discover/movies', () => {
     assert.strictEqual(res.body.results[0].title, 'Local HD Movie');
     assert.match(res.body.results[0].posterPath, /\/movie\/456789\/cover/);
 
+    const matchingYear = await agent.get(
+      '/discover/movies?availability=hd&primaryReleaseDateGte=2025-01-01&primaryReleaseDateLte=2025-12-31'
+    );
+    assert.strictEqual(matchingYear.status, 200);
+    assert.strictEqual(matchingYear.body.totalResults, 1);
+    const laterYear = await agent.get(
+      '/discover/movies?availability=hd&primaryReleaseDateGte=2026-01-01'
+    );
+    assert.strictEqual(laterYear.status, 200);
+    assert.strictEqual(laterYear.body.totalResults, 0);
+
     const excluded = await agent.get(
       '/discover/movies?availability=hd&genre=12&excludeGenre=true'
     );
@@ -915,7 +926,9 @@ describe('GET /discover/movies', () => {
 
     try {
       const agent = await login();
-      const res = await agent.get('/discover/movies?availability=4k');
+      const res = await agent.get(
+        '/discover/movies?availability=4k&primaryReleaseDateGte=2026-01-01'
+      );
 
       assert.strictEqual(res.status, 200);
       assert.strictEqual(res.body.totalResults, 1);
@@ -1917,7 +1930,9 @@ describe('GET /discover/tv', () => {
 
     try {
       const agent = await login();
-      const res = await agent.get('/discover/tv?availability=4k');
+      const res = await agent.get(
+        '/discover/tv?availability=4k&firstAirDateGte=2026-01-01&firstAirDateLte=2026-01-01'
+      );
 
       assert.strictEqual(res.status, 200);
       assert.ok(

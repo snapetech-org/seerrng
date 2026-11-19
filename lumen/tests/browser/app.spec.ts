@@ -7551,10 +7551,13 @@ test('Discover and Movies apply visibility defaults while the library view still
     return (
       url.pathname === '/api/v1/discover/tv' &&
       url.searchParams.get('availability') === 'hd' &&
+      url.searchParams.get('firstAirDateGte') === '2020-01-01' &&
       url.searchParams.get('sortBy') === 'first_air_date.desc'
     );
   });
-  await page.goto('./series?show=have&sort=first_air_date.desc');
+  await page.goto(
+    './series?show=have&sort=first_air_date.desc&firstAirDateGte=2020-01-01'
+  );
   await seriesSort;
 });
 

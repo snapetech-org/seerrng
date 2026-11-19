@@ -362,6 +362,18 @@ const isValidIsoCalendarDate = (value: string): boolean => {
   );
 };
 
+const matchesLocalReleaseDate = (date: string, min?: string, max?: string) => {
+  if (!min && !max) return true;
+  if (/^\d{4}$/.test(date)) {
+    return (!min || `${date}-12-31` >= min) && (!max || `${date}-01-01` <= max);
+  }
+  return (
+    isValidIsoCalendarDate(date) &&
+    (!min || date >= min) &&
+    (!max || date <= max)
+  );
+};
+
 const parseOptionalDateFilter = (value: unknown, fieldName: string) => {
   const parsed = parseOptionalDiscoverString(value, fieldName, 10);
   if ('error' in parsed || parsed.value === undefined) {
@@ -1411,10 +1423,11 @@ const getLiveAvailableMovieDiscoverResponse = async ({
             query.search
           )) &&
         matchesVideoListFilter(query.genre, genreIds, excludeGenre) &&
-        (!query.primaryReleaseDateGte ||
-          releaseDate >= query.primaryReleaseDateGte) &&
-        (!query.primaryReleaseDateLte ||
-          releaseDate <= query.primaryReleaseDateLte) &&
+        matchesLocalReleaseDate(
+          releaseDate,
+          query.primaryReleaseDateGte,
+          query.primaryReleaseDateLte
+        ) &&
         (!query.withRuntimeGte ||
           (runtime ?? 0) >= Number(query.withRuntimeGte)) &&
         (!query.withRuntimeLte ||
@@ -1604,12 +1617,16 @@ const getLocalAvailableVideoDiscoverResponse = async ({
             query.search
           )) &&
         matchesVideoListFilter(query.genre, genreIds, excludeGenre) &&
-        (!query.primaryReleaseDateGte ||
-          releaseDate >= query.primaryReleaseDateGte) &&
-        (!query.primaryReleaseDateLte ||
-          releaseDate <= query.primaryReleaseDateLte) &&
-        (!query.firstAirDateGte || releaseDate >= query.firstAirDateGte) &&
-        (!query.firstAirDateLte || releaseDate <= query.firstAirDateLte) &&
+        matchesLocalReleaseDate(
+          releaseDate,
+          query.primaryReleaseDateGte,
+          query.primaryReleaseDateLte
+        ) &&
+        matchesLocalReleaseDate(
+          releaseDate,
+          query.firstAirDateGte,
+          query.firstAirDateLte
+        ) &&
         (!query.withRuntimeGte ||
           (runtime ?? 0) >= Number(query.withRuntimeGte)) &&
         (!query.withRuntimeLte ||

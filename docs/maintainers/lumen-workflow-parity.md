@@ -2954,6 +2954,14 @@ bundled browser checks covered a movie title search sorted A–Z,
 a series bookmark sorted by first air date, and availability
 bookmark recovery. These checks verified the API query with fixtures.
 
+Release and first-air date filters also stay on the local catalog
+for supported owned views. An indexed or Radarr item with only a year
+can match a date range that overlaps that year. Full dates use inclusive
+bounds. Three isolated server tests covered indexed movies, Radarr
+inventory, and indexed 4K series. Four standalone and bundled browser
+checks at 390 and 1440 CSS pixels verified that the series bookmark
+passes its date filter and sort through to the local query.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

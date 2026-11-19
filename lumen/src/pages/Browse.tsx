@@ -516,6 +516,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         'search',
         'genre',
         'excludeGenre',
+        startKey,
+        endKey,
         'withRuntimeGte',
         'withRuntimeLte',
       ].includes(key)
