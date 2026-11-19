@@ -9,6 +9,7 @@ import {
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const TYPES: Record<string, string> = {
   movie: 'Movie',
@@ -89,6 +90,7 @@ function removalPath(entry: Entry) {
 }
 
 function BlocklistEntries({ manager }: { manager: boolean }) {
+  const { locale, t } = useLumenLocale();
   const [filters, setFilters] = useState(DEFAULTS);
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
@@ -117,11 +119,14 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
       await api<void>(path, { method: 'DELETE' });
       if (page > 1 && data?.results.length === 1) setPage(page - 1);
       else refresh();
-      setNotice('Removed from the Blocklist.');
+      setNotice(t('lumen.blocklist.removed', 'Removed from the Blocklist.'));
     } catch {
       reload();
       setNotice(
-        'Could not confirm removal. Check the Blocklist before trying again.'
+        t(
+          'lumen.blocklist.removalUnconfirmed',
+          'Could not confirm removal. Check the Blocklist before trying again.'
+        )
       );
     } finally {
       notifyBlocklistChanged();
@@ -143,9 +148,11 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
       >
         {(Object.keys(FILTERS) as (keyof typeof FILTERS)[]).map((key) => (
           <label key={key} className="sel">
-            <span className="lbl">{LABELS[key]}</span>
+            <span className="lbl">
+              {t(`lumen.blocklist.label.${key}`, LABELS[key])}
+            </span>
             <select
-              aria-label={LABELS[key]}
+              aria-label={t(`lumen.blocklist.label.${key}`, LABELS[key])}
               value={filters[key]}
               onChange={(event) => {
                 setFilters({ ...filters, [key]: event.target.value });
@@ -154,7 +161,7 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
             >
               {FILTERS[key].map(([value, title]) => (
                 <option key={value} value={value}>
-                  {title}
+                  {t(`lumen.blocklist.option.${key}.${value}`, title)}
                 </option>
               ))}
             </select>
@@ -163,16 +170,25 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
         <label className="search">
           <input
             type="search"
-            aria-label="Search Blocklist"
-            placeholder="Search the Blocklist"
+            aria-label={t('lumen.blocklist.searchLabel', 'Search Blocklist')}
+            placeholder={t(
+              'lumen.blocklist.searchPlaceholder',
+              'Search the Blocklist'
+            )}
             maxLength={512}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
         </label>
-        <button className="btn btn-tonal btn-sm">Search</button>
+        <button className="btn btn-tonal btn-sm">
+          {t('lumen.blocklist.search', 'Search')}
+        </button>
       </form>
-      <ServiceNote error={error} what="the Blocklist" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.blocklist.serviceName', 'the Blocklist')}
+        retry={reload}
+      />
       {notice && (
         <p className="note" role="status">
           {notice}
@@ -180,19 +196,25 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
       )}
       {!data && !error && (
         <p className="note" role="status">
-          Loading Blocklist…
+          {t('lumen.blocklist.loading', 'Loading Blocklist…')}
         </p>
       )}
       {data?.results.length === 0 && (
-        <p className="note">No entries match this view.</p>
+        <p className="note">
+          {t('lumen.blocklist.noMatches', 'No entries match this view.')}
+        </p>
       )}
       {!!data?.results.length && (
         <ul className="setlist">
           {data.results.map((entry) => {
             const date = new Date(entry.createdAt);
             const sources = [
-              entry.blocklistedTags ? 'Automatic Tags' : '',
-              entry.blocklistedGenres ? 'Automatic Genres' : '',
+              entry.blocklistedTags
+                ? t('lumen.blocklist.source.tags', 'Automatic Tags')
+                : '',
+              entry.blocklistedGenres
+                ? t('lumen.blocklist.source.genres', 'Automatic Genres')
+                : '',
             ].filter(Boolean);
             const title =
               entry.title || entry.externalId || `TMDB #${entry.tmdbId}`;
@@ -202,11 +224,18 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
                   <b>{title}</b>
                   <small>
                     {[
-                      TYPES[entry.mediaType] || entry.mediaType,
-                      ...(!sources.length ? ['Manual'] : sources),
+                      t(
+                        `lumen.blocklist.media.${entry.mediaType}`,
+                        TYPES[entry.mediaType] || entry.mediaType
+                      ),
+                      ...(!sources.length
+                        ? [t('lumen.blocklist.source.manual', 'Manual')]
+                        : sources),
                       entry.user?.displayName,
                       Number.isFinite(date.valueOf())
-                        ? date.toLocaleDateString()
+                        ? new Intl.DateTimeFormat(locale, {
+                            dateStyle: 'short',
+                          }).format(date)
                         : null,
                     ]
                       .filter(Boolean)
@@ -216,11 +245,15 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
                 {manager && removalPath(entry) && (
                   <button
                     className="btn btn-quiet btn-sm"
-                    aria-label={`Remove ${title} from Blocklist`}
+                    aria-label={t(
+                      'lumen.blocklist.removeEntry',
+                      'Remove {title} from Blocklist',
+                      { title }
+                    )}
                     disabled={busy}
                     onClick={() => setTarget(entry)}
                   >
-                    Remove
+                    {t('lumen.blocklist.remove', 'Remove')}
                   </button>
                 )}
               </li>
@@ -229,33 +262,46 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
         </ul>
       )}
       {data && (page > 1 || data.pageInfo.pages > 1) && (
-        <nav className="toolbar" aria-label="Blocklist Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.blocklist.pages', 'Blocklist Pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             onClick={() => setPage(page - 1)}
             disabled={page <= 1}
           >
-            Previous Page
+            {t('lumen.blocklist.previousPage', 'Previous Page')}
           </button>
-          <span>Page {page}</span>
+          <span>{t('lumen.blocklist.page', 'Page {page}', { page })}</span>
           <button
             className="btn btn-quiet btn-sm"
             onClick={() => setPage(page + 1)}
             disabled={page >= data.pageInfo.pages || page * PAGE_SIZE > 100000}
           >
-            Next Page
+            {t('lumen.blocklist.nextPage', 'Next Page')}
           </button>
         </nav>
       )}
       {target && (
         <ConfirmSheet
-          title="Remove from the Blocklist?"
+          title={t(
+            'lumen.blocklist.removeQuestion',
+            'Remove from the Blocklist?'
+          )}
           body={
             target.title
-              ? `“${target.title}” can be requested again after removal.`
-              : 'This item can be requested again after removal.'
+              ? t(
+                  'lumen.blocklist.removeBodyTitle',
+                  '“{title}” can be requested again after removal.',
+                  { title: target.title }
+                )
+              : t(
+                  'lumen.blocklist.removeBody',
+                  'This item can be requested again after removal.'
+                )
           }
-          confirm="Remove from Blocklist"
+          confirm={t('lumen.blocklist.confirmRemove', 'Remove from Blocklist')}
           busy={busy}
           onConfirm={() => void remove()}
           onClose={() => {
@@ -268,17 +314,21 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
 }
 
 export default function Blocklist() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   return (
     <>
       <header className="ph">
-        <h1>Blocklist</h1>
+        <h1>{t('lumen.blocklist.title', 'Blocklist')}</h1>
       </header>
       {canViewBlocklist(user?.permissions) ? (
         <BlocklistEntries manager={canManageBlocklist(user?.permissions)} />
       ) : (
         <p className="note">
-          You do not have permission to view the Blocklist.
+          {t(
+            'lumen.blocklist.noPermission',
+            'You do not have permission to view the Blocklist.'
+          )}
         </p>
       )}
     </>

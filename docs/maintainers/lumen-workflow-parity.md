@@ -517,6 +517,15 @@ viewport projects; matched native visuals remain open. The
 detail and collection add actions and administrator automatic-rule settings
 are implemented below; their remaining gap is rendered acceptance.
 
+The Blocklist page now localizes its source and media filters, dates, entry
+sources, removal confirmation, permission feedback, and save results in English,
+French, and Arabic. Twelve localization cases passed across desktop, iPhone,
+Android, and tablet; the existing 20-case permission and exact-identity removal
+suite passed. English/French desktop and iPhone renders and Arabic desktop/iPhone
+RTL renders were reviewed with no overflow or control-owner changes. Longer
+French labels wrap the filter row naturally. Native-matched visuals and bundled
+acceptance remain open.
+
 ### Blocklist media detail increment
 
 Managers can confirm adding or removing a title from movie, series, album,
