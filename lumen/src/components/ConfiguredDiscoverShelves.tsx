@@ -148,11 +148,11 @@ function DiscoverShelf({
   endpoint,
   href,
   kind,
-  musicVisibility,
+  visibility,
 }: ShelfDestination & {
   id: number;
   title?: string;
-  musicVisibility: ReturnType<typeof discoveryVisibility>;
+  visibility: ReturnType<typeof discoveryVisibility>;
 }) {
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -174,16 +174,14 @@ function DiscoverShelf({
     return () => observer.disconnect();
   }, [visible]);
 
-  const items = data?.results.filter((item) =>
-    kind === 'music'
-      ? item.mediaType === 'album' && showDiscoveryTitle(item, musicVisibility)
-      : kind === 'books'
-        ? item.mediaType === 'book'
-        : item.mediaType === 'movie' ||
-          item.mediaType === 'tv' ||
-          item.mediaType === 'person' ||
-          item.mediaType === 'collection'
-  );
+  const items = data?.results.filter((item) => {
+    if (kind === 'music')
+      return item.mediaType === 'album' && showDiscoveryTitle(item, visibility);
+    if (kind === 'books') return item.mediaType === 'book';
+    if (item.mediaType === 'movie' || item.mediaType === 'tv')
+      return showDiscoveryTitle(item, visibility);
+    return item.mediaType === 'person' || item.mediaType === 'collection';
+  });
   if (items?.length === 0) return null;
 
   return (
@@ -240,8 +238,7 @@ export function ConfiguredDiscoverShelves({
 }) {
   const settings = usePublicSettings();
   const { user } = useAuth();
-  const musicVisibility = discoveryVisibility(settings, user?.permissions);
-  musicVisibility.hideRequested = false;
+  const visibility = discoveryVisibility(settings, user?.permissions);
   const categories = settings?.enabledMediaCategories;
   const ebook =
     showBooks &&
@@ -277,7 +274,11 @@ export function ConfiguredDiscoverShelves({
           key={`${slider.id}:${destination.endpoint}`}
           id={slider.id}
           title={slider.title}
-          musicVisibility={musicVisibility}
+          visibility={
+            destination.kind === 'music' || slider.type === TMDB_SEARCH
+              ? { ...visibility, hideRequested: false }
+              : visibility
+          }
           {...destination}
         />
       ) : null;

@@ -3552,3 +3552,11 @@ The bundled production build from `264e3e1ff` also passed both viewport
 checks through the Express mount at `/lumen/`. Its See All links stayed
 under the bundled base path and opened the same filtered Music results.
 Browser fixtures supplied session, settings, and catalogue responses.
+
+Configured video shelves on Discover now use the same visibility rules
+as the built-in shelves. Saved-search shelves continue to show requested
+matches. Standalone desktop and iPhone checks with fixture responses
+verified hidden titles in keyword and streaming shelves, preserved
+See All filters, and requested matches in saved-search shelves. Matched
+renders showed the remaining cards and shelf controls in their existing
+positions.

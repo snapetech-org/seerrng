@@ -3329,6 +3329,11 @@ test('configured video shelves preserve keyword and streaming filters', async ({
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { hideAvailable: true, hideRequested: true, hideBlocklisted: true },
+    })
+  );
   const reads: string[] = [];
   await page.route('**/api/v1/settings/discover', (route) =>
     route.fulfill({
@@ -3368,6 +3373,19 @@ test('configured video shelves preserve keyword and streaming filters', async ({
         url.pathname.endsWith('/tv')
           ? { id: 88, mediaType: 'tv', name: 'Streaming Fixture' }
           : { ...movie, title: 'Keyword Fixture' },
+        { ...movie, id: 501, title: 'Available Fixture', mediaInfo: available },
+        {
+          ...movie,
+          id: 502,
+          title: 'Requested Fixture',
+          mediaInfo: { status: 2, hasActiveRequest: true },
+        },
+        {
+          ...movie,
+          id: 503,
+          title: 'Blocklisted Fixture',
+          mediaInfo: { status: 6 },
+        },
       ]),
     });
   });
@@ -3389,6 +3407,14 @@ test('configured video shelves preserve keyword and streaming filters', async ({
   await expect(
     keywords.getByRole('link', { name: 'Keyword Fixture' })
   ).toBeVisible();
+  for (const shelf of [streaming, keywords]) {
+    for (const title of [
+      'Available Fixture',
+      'Requested Fixture',
+      'Blocklisted Fixture',
+    ])
+      await expect(shelf.getByRole('link', { name: title })).toHaveCount(0);
+  }
   await expect(keywords.getByRole('link', { name: 'See all' })).toHaveAttribute(
     'href',
     '/movies?keywords=12%2C34'
@@ -3406,6 +3432,9 @@ test('configured search shelves link mixed results and preserve the search term'
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { hideRequested: true } })
+  );
   await page.route('**/api/v1/settings/discover', (route) =>
     route.fulfill({
       json: [
@@ -3426,7 +3455,11 @@ test('configured search shelves link mixed results and preserve the search term'
     queries.push(term ?? '');
     return route.fulfill({
       json: paged([
-        { ...movie, title: 'Shelf Film' },
+        {
+          ...movie,
+          title: 'Shelf Film',
+          mediaInfo: { status: 2, hasActiveRequest: true },
+        },
         { id: 101, mediaType: 'tv', name: 'Shelf Series' },
         { id: 101, mediaType: 'person', name: 'Shelf Person' },
         { id: 101, mediaType: 'collection', title: 'Shelf Collection' },
