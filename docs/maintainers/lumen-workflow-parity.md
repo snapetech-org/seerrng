@@ -452,6 +452,9 @@ playback, and media-server collection sync. The bundled run exposed and
 corrected a stale test assertion that expected an unprefixed movie link; the
 production app correctly retains `/lumen/` in internal links. Rendered native
 comparison, visual acceptance, and live playback checks remain open.
+Standalone request-sheet renders for the four presets are retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/collection-parity/`;
+they inspect the Lumen sheet only and are not native comparison captures.
 
 ### Personal profile and password increment
 
