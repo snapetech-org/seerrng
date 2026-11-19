@@ -469,6 +469,16 @@ Candidate sheet renders are retained in
 `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/`. Native-matched
 baseline comparison and bundled acceptance remain open.
 
+The shared report sheet now localizes its title, quality and issue-type
+controls, reason options, owner picker, season and episode labels, description,
+actions, loading and error messages, and media fallback in English, French, and
+Arabic. Twelve fixture-backed cases passed on desktop, iPhone, Android, and
+tablet, including an exact report payload and opening the submitted discussion.
+English baseline and French/Arabic candidate sheets were captured at desktop
+and iPhone widths; Arabic RTL alignment and mobile sheet geometry were
+reviewed. No overflow or layout-owner changes were needed. Native-matched and
+live-provider acceptance remain open.
+
 ### Issue editing and deletion increment
 
 Authors with report permissions can edit their own descriptions and replies.

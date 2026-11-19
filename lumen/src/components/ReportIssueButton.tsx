@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { api, ApiError, MediaStatus, type MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canCreateIssues, canManageIssues } from '../issuePermissions';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
@@ -73,15 +74,20 @@ function Episodes({
   change: (numbers?: number[]) => void;
   disabled: boolean;
 }) {
+  const { t } = useLumenLocale();
   const { data, error, reload } = useApi<{
     episodes: { episodeNumber: number; name: string }[];
   }>(`/tv/${tvId}/season/${scope.seasonNumber}`);
   return (
     <>
-      <ServiceNote error={error} what="season episodes" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.issueReport.episodes', 'season episodes')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading episodes…
+          {t('lumen.issueReport.loadingEpisodes', 'Loading episodes…')}
         </p>
       )}
       {data && (
@@ -110,7 +116,9 @@ function Episodes({
                       )
                     }
                   />{' '}
-                  Episode {episodeNumber}
+                  {t('lumen.issueReport.episode', 'Episode {episode}', {
+                    episode: episodeNumber,
+                  })}
                   {name ? ` · ${name}` : ''}
                 </label>
               </li>
@@ -138,6 +146,7 @@ function ReportSheet({
   tvId?: number;
   close: () => void;
 }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const submitting = useRef(false);
   const navigate = useNavigate();
@@ -236,7 +245,10 @@ function ReportSheet({
       setError(
         err instanceof ApiError && err.status >= 400 && err.status < 500
           ? err.message
-          : 'Could not confirm the report. Check Issues before submitting again.'
+          : t(
+              'lumen.issueReport.unconfirmed',
+              'Could not confirm the report. Check Issues before submitting again.'
+            )
       );
     } finally {
       submitting.current = false;
@@ -252,7 +264,7 @@ function ReportSheet({
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Report an Issue"
+        aria-label={t('lumen.issueReport.reportIssue', 'Report an Issue')}
       >
         <div className="grab" />
         <form
@@ -263,15 +275,17 @@ function ReportSheet({
           }}
         >
           <header>
-            <h2>Report an Issue</h2>
+            <h2>{t('lumen.issueReport.reportIssue', 'Report an Issue')}</h2>
             <p className="note">{title}</p>
           </header>
           <div className="toolbar">
             {qualities.length > 0 && (
               <label className="sel">
-                <span className="lbl">Quality</span>
+                <span className="lbl">
+                  {t('lumen.issueReport.quality', 'Quality')}
+                </span>
                 <select
-                  aria-label="Quality"
+                  aria-label={t('lumen.issueReport.quality', 'Quality')}
                   disabled={busy}
                   value={is4k ? '4k' : 'hd'}
                   onChange={(event) => {
@@ -281,39 +295,48 @@ function ReportSheet({
                 >
                   {qualities.map((quality) => (
                     <option key={String(quality)} value={quality ? '4k' : 'hd'}>
-                      {quality ? '4K' : 'HD'}
+                      {quality
+                        ? t('lumen.issueReport.4k', '4K')
+                        : t('lumen.issueReport.hd', 'HD')}
                     </option>
                   ))}
                 </select>
               </label>
             )}
             <label className="sel">
-              <span className="lbl">Issue Type</span>
+              <span className="lbl">
+                {t('lumen.issueReport.issueType', 'Issue Type')}
+              </span>
               <select
-                aria-label="Issue Type"
+                aria-label={t('lumen.issueReport.issueType', 'Issue Type')}
                 disabled={busy}
                 value={issueType}
                 onChange={(event) => setIssueType(Number(event.target.value))}
               >
                 {types.map((option) => (
                   <option key={option} value={option}>
-                    {TYPES[option]}
+                    {t(`lumen.issueReport.type.${option}`, TYPES[option])}
                   </option>
                 ))}
               </select>
             </label>
             {reasons.length > 0 && (
               <label className="sel">
-                <span className="lbl">Reason</span>
+                <span className="lbl">
+                  {t('lumen.issueReport.reason', 'Reason')}
+                </span>
                 <select
-                  aria-label="Reason"
+                  aria-label={t('lumen.issueReport.reason', 'Reason')}
                   disabled={busy}
                   value={reason}
                   onChange={(event) => setReason(event.target.value)}
                 >
                   {reasons.map((option) => (
                     <option key={option} value={option}>
-                      {REASON_LABELS[option]}
+                      {t(
+                        `lumen.issueReport.reason.${option}`,
+                        REASON_LABELS[option]
+                      )}
                     </option>
                   ))}
                 </select>
@@ -323,23 +346,30 @@ function ReportSheet({
           {manageIssues && (
             <div className="toolbar">
               <label className="sel">
-                <span className="lbl">Search</span>
+                <span className="lbl">
+                  {t('lumen.issueReport.search', 'Search')}
+                </span>
                 <input
                   className="cfg-input"
                   type="search"
-                  aria-label="Search users"
+                  aria-label={t(
+                    'lumen.issueReport.searchUsers',
+                    'Search users'
+                  )}
                   autoComplete="off"
                   maxLength={128}
-                  placeholder="User name"
+                  placeholder={t('lumen.issueReport.userName', 'User name')}
                   value={reporterSearch}
                   disabled={busy}
                   onChange={(event) => setReporterSearch(event.target.value)}
                 />
               </label>
               <label className="sel">
-                <span className="lbl">Report for</span>
+                <span className="lbl">
+                  {t('lumen.issueReport.reportFor', 'Report for')}
+                </span>
                 <select
-                  aria-label="Report for"
+                  aria-label={t('lumen.issueReport.reportFor', 'Report for')}
                   value={reporter?.id ?? ''}
                   disabled={busy}
                   onChange={(event) => {
@@ -351,7 +381,9 @@ function ReportSheet({
                     );
                   }}
                 >
-                  <option value="">My account</option>
+                  <option value="">
+                    {t('lumen.issueReport.myAccount', 'My account')}
+                  </option>
                   {reporter &&
                     !reporterResults.data?.results.some(
                       (candidate) => candidate.id === reporter.id
@@ -369,16 +401,26 @@ function ReportSheet({
               </label>
               <ServiceNote
                 error={reporterPath ? reporterResults.error : null}
-                what="reporters"
+                what={t('lumen.issueReport.reporters', 'reporters')}
                 retry={reporterResults.reload}
               />
             </div>
           )}
           {type === 'tv' && (
-            <p className="note">Choose the affected seasons or episodes.</p>
+            <p className="note">
+              {t(
+                'lumen.issueReport.chooseScope',
+                'Choose the affected seasons or episodes.'
+              )}
+            </p>
           )}
           {type === 'tv' && reportableSeasons.length === 0 && (
-            <p className="note">No reportable seasons for this quality.</p>
+            <p className="note">
+              {t(
+                'lumen.issueReport.noSeasons',
+                'No reportable seasons for this quality.'
+              )}
+            </p>
           )}
           {type === 'tv' && reportableSeasons.length > 0 && (
             <ul className="setlist">
@@ -412,7 +454,9 @@ function ReportSheet({
                             )
                           }
                         />{' '}
-                        Season {seasonNumber}
+                        {t('lumen.issueReport.season', 'Season {season}', {
+                          season: seasonNumber,
+                        })}
                       </label>
                       {scope && tvId && (
                         <>
@@ -428,8 +472,14 @@ function ReportSheet({
                               }
                             >
                               {scope.episodeNumbers
-                                ? 'Use Whole Season'
-                                : 'Choose Episodes'}
+                                ? t(
+                                    'lumen.issueReport.wholeSeason',
+                                    'Use Whole Season'
+                                  )
+                                : t(
+                                    'lumen.issueReport.chooseEpisodes',
+                                    'Choose Episodes'
+                                  )}
                             </button>
                           </div>
                           {scope.episodeNumbers && (
@@ -455,8 +505,8 @@ function ReportSheet({
           )}
           <textarea
             className="cfg-json"
-            aria-label="Issue Description"
-            placeholder="Describe the issue"
+            aria-label={t('lumen.issueReport.description', 'Issue Description')}
+            placeholder={t('lumen.issueReport.describe', 'Describe the issue')}
             rows={4}
             maxLength={10000}
             disabled={busy}
@@ -470,10 +520,10 @@ function ReportSheet({
               disabled={busy}
               onClick={dismiss}
             >
-              Cancel
+              {t('lumen.issueReport.cancel', 'Cancel')}
             </button>
             <button className="btn btn-primary" disabled={busy || !valid}>
-              Submit Report
+              {t('lumen.issueReport.submit', 'Submit Report')}
             </button>
           </div>
         </form>
@@ -496,6 +546,7 @@ export default function ReportIssueButton({
   allow4k?: boolean;
   tvId?: number;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const video = type === 'movie' || type === 'tv';
@@ -516,12 +567,12 @@ export default function ReportIssueButton({
         disabled={!available}
         onClick={() => setOpen(true)}
       >
-        Report an Issue
+        {t('lumen.issueReport.reportIssue', 'Report an Issue')}
       </button>
       {open && available && (
         <ReportSheet
           key={mediaId}
-          title={title ?? 'Media'}
+          title={title ?? t('lumen.issueReport.media', 'Media')}
           type={type}
           mediaId={mediaId}
           qualities={qualities}
