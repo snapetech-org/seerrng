@@ -1808,8 +1808,14 @@ The seventh mapped color is Classic's menu background. It paints Lumen's
 shared sheets, genre popover, and their sticky action backgrounds. At
 390 and 1440 pixels, fixture browser checks confirmed the genre picker's
 default surface, the stored override's computed color, unchanged width,
-and Escape dismissal. Matched visual review of other sheet consumers and
-bundled verification remain open.
+and Escape dismissal. Four checks passed against the production Express
+`/lumen/` mount for the account editor and genre picker. Two additional
+bundled checks opened the movie request dialog through its poster action
+and compared its default and customized renders at 390 and 1440 CSS
+pixels. The surface and sticky footer used the saved color. Dialog
+geometry, typography, button alignment, and Cancel dismissal held.
+These checks used a fixture account and a 1080p/4K movie. Other sheet
+consumers and live account persistence were outside this browser review.
 
 ### About release history
 
