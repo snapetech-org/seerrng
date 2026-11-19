@@ -11,6 +11,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import {
   canCreateIssues,
   canManageIssues,
@@ -75,6 +76,7 @@ function issueTitleLink(media?: IssueMedia) {
 }
 
 function IssueMediaTitle({ media }: { media?: IssueMedia }) {
+  const { t } = useLumenLocale();
   const anchor = useRef<HTMLSpanElement>(null);
   const [nearView, setNearView] = useState(false);
   const destination = issueTitleLink(media);
@@ -114,7 +116,7 @@ function IssueMediaTitle({ media }: { media?: IssueMedia }) {
           {year ? ` (${year})` : ''}
         </Link>
       ) : nearView ? (
-        'Loading title…'
+        t('lumen.issues.loadingTitle', 'Loading title…')
       ) : (
         ' '
       )}
@@ -153,15 +155,23 @@ interface IssuePage {
 const TYPES = ['Issue', 'Video', 'Audio', 'Subtitles', 'Other'];
 const PAGE_SIZE = 10;
 
-function timestamp(value: string) {
+function timestamp(value: string, locale: string) {
   const date = new Date(value);
-  return Number.isFinite(date.valueOf()) ? date.toLocaleString() : '';
+  return Number.isFinite(date.valueOf())
+    ? new Intl.DateTimeFormat(locale, {
+        dateStyle: 'short',
+        timeStyle: 'short',
+      }).format(date)
+    : '';
 }
 
 function IssueStatus({ status }: { status: number }) {
+  const { t } = useLumenLocale();
   return (
     <Pill k={status === 2 ? 'ok' : 'wait'}>
-      {status === 2 ? 'Resolved' : 'Open'}
+      {status === 2
+        ? t('lumen.issues.resolved', 'Resolved')
+        : t('lumen.issues.open', 'Open')}
     </Pill>
   );
 }
@@ -236,6 +246,7 @@ const issueMetadata = [
 ] as const;
 
 function IssueList() {
+  const { locale, t } = useLumenLocale();
   const [bookmark, setBookmark] = useSearchParams();
   const submitted = (bookmark.get('search') ?? '').trim().slice(0, 512);
   const parsedPage = Number(bookmark.get('page'));
@@ -313,7 +324,7 @@ function IssueList() {
         {issueFilters.map(({ key, label, options }) => (
           <label className="sel" key={key}>
             <select
-              aria-label={label}
+              aria-label={t(`lumen.issues.filter.${key}`, label)}
               value={params.get(key) ?? 'all'}
               onChange={(event) =>
                 update(
@@ -324,7 +335,7 @@ function IssueList() {
             >
               {Object.entries(options).map(([value, name]) => (
                 <option key={value} value={value}>
-                  {name}
+                  {t(`lumen.issues.option.${key}.${value}`, name)}
                 </option>
               ))}
             </select>
@@ -333,8 +344,8 @@ function IssueList() {
         <label className="search">
           <input
             type="search"
-            aria-label="Search Issues"
-            placeholder="Search issues"
+            aria-label={t('lumen.issues.searchLabel', 'Search Issues')}
+            placeholder={t('lumen.issues.searchPlaceholder', 'Search issues')}
             maxLength={512}
             key={submitted}
             name="search"
@@ -343,13 +354,21 @@ function IssueList() {
         </label>
         {metadata.map(({ key, label }) => (
           <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
-            <span className="lbl">{label}</span>
+            <span className="lbl">
+              {t(`lumen.issues.metadata.${key}`, label)}
+            </span>
             {key === 'albumType' ? (
               <select name={key} defaultValue={params.get(key) ?? ''}>
-                <option value="">Any Album Type</option>
-                <option value="album">Album</option>
-                <option value="ep">EP</option>
-                <option value="single">Single</option>
+                <option value="">
+                  {t('lumen.issues.anyAlbumType', 'Any Album Type')}
+                </option>
+                <option value="album">
+                  {t('lumen.issues.album', 'Album')}
+                </option>
+                <option value="ep">{t('lumen.issues.ep', 'EP')}</option>
+                <option value="single">
+                  {t('lumen.issues.single', 'Single')}
+                </option>
               </select>
             ) : (
               <input
@@ -361,22 +380,28 @@ function IssueList() {
                   key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
                 }
                 placeholder={
-                  key === 'releaseYear' ? 'YYYY or before-1970' : undefined
+                  key === 'releaseYear'
+                    ? t('lumen.issues.yearPlaceholder', 'YYYY or before-1970')
+                    : undefined
                 }
               />
             )}
           </label>
         ))}
-        <button className="btn btn-tonal btn-sm">Search</button>
+        <button className="btn btn-tonal btn-sm">
+          {t('lumen.issues.search', 'Search')}
+        </button>
       </form>
       <ServiceNote error={error} what="issues" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
-          Loading issues…
+          {t('lumen.issues.loading', 'Loading issues…')}
         </p>
       )}
       {data?.results.length === 0 && (
-        <p className="note">No issues match this view.</p>
+        <p className="note">
+          {t('lumen.issues.noMatches', 'No issues match this view.')}
+        </p>
       )}
       {!!data?.results.length && (
         <ul className="setlist">
@@ -391,15 +416,20 @@ function IssueList() {
                   }}
                 >
                   <b>
-                    {TYPES[issue.issueType] ?? 'Issue'} #{issue.id}
+                    {t(
+                      `lumen.issues.type.${issue.issueType}`,
+                      TYPES[issue.issueType] ?? 'Issue'
+                    )}{' '}
+                    #{issue.id}
                   </b>
                 </Link>
                 {issue.comments?.[0] && (
                   <small>{issue.comments[0].message.slice(0, 160)}</small>
                 )}
                 <small>
-                  {issue.createdBy.displayName ?? 'Reporter'} ·{' '}
-                  {timestamp(issue.createdAt)}
+                  {issue.createdBy.displayName ??
+                    t('lumen.issues.reporter', 'Reporter')}{' '}
+                  · {timestamp(issue.createdAt, locale)}
                 </small>
               </div>
               <IssueStatus status={issue.status} />
@@ -408,21 +438,24 @@ function IssueList() {
         </ul>
       )}
       {!!data && (page > 1 || data.pageInfo.pages > 1) && (
-        <nav className="toolbar" aria-label="Issue Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.issues.pages', 'Issue Pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             disabled={page <= 1}
             onClick={() => update('page', page > 2 ? String(page - 1) : '')}
           >
-            Previous Page
+            {t('lumen.issues.previousPage', 'Previous Page')}
           </button>
-          <span>Page {page}</span>
+          <span>{t('lumen.issues.page', 'Page {page}', { page })}</span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={page >= data.pageInfo.pages}
             onClick={() => update('page', String(page + 1))}
           >
-            Next Page
+            {t('lumen.issues.nextPage', 'Next Page')}
           </button>
         </nav>
       )}
@@ -435,6 +468,7 @@ type IssueAction =
   | { kind: 'edit-comment' | 'delete-comment'; commentId: number };
 
 function Discussion({ id }: { id: number }) {
+  const { locale, t } = useLumenLocale();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -523,7 +557,10 @@ function Discussion({ id }: { id: number }) {
     } catch {
       reload();
       setFailure(
-        'Could not confirm the update. Check the discussion before trying again.'
+        t(
+          'lumen.issues.updateUnconfirmed',
+          'Could not confirm the update. Check the discussion before trying again.'
+        )
       );
     } finally {
       setConfirmation(undefined);
@@ -538,13 +575,15 @@ function Discussion({ id }: { id: number }) {
     <>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to={issueList}>
-          {listSearch ? 'Back to Issues' : 'All Issues'}
+          {listSearch
+            ? t('lumen.issues.backToIssues', 'Back to Issues')
+            : t('lumen.issues.allIssues', 'All Issues')}
         </Link>
       </div>
       <ServiceNote error={error} what="the issue" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
-          Loading issue…
+          {t('lumen.issues.loadingIssue', 'Loading issue…')}
         </p>
       )}
       {failure && (
@@ -556,18 +595,24 @@ function Discussion({ id }: { id: number }) {
         <ConfirmSheet
           title={
             confirmation.kind === 'delete-issue'
-              ? 'Delete this issue?'
-              : 'Delete this comment?'
+              ? t('lumen.issues.deleteIssueQuestion', 'Delete this issue?')
+              : t('lumen.issues.deleteCommentQuestion', 'Delete this comment?')
           }
           body={
             confirmation.kind === 'delete-issue'
-              ? 'The report and its discussion will be permanently removed.'
-              : 'This comment will be permanently removed.'
+              ? t(
+                  'lumen.issues.deleteIssueBody',
+                  'The report and its discussion will be permanently removed.'
+                )
+              : t(
+                  'lumen.issues.deleteCommentBody',
+                  'This comment will be permanently removed.'
+                )
           }
           confirm={
             confirmation.kind === 'delete-issue'
-              ? 'Delete Issue'
-              : 'Delete Comment'
+              ? t('lumen.issues.deleteIssue', 'Delete Issue')
+              : t('lumen.issues.deleteComment', 'Delete Comment')
           }
           busy={busy}
           onConfirm={() => void submit(confirmation)}
@@ -581,7 +626,10 @@ function Discussion({ id }: { id: number }) {
           <div className="toolbar">
             <IssueStatus status={data.status} />
             <span>
-              {TYPES[data.issueType] ?? 'Issue'}
+              {t(
+                `lumen.issues.type.${data.issueType}`,
+                TYPES[data.issueType] ?? 'Issue'
+              )}
               {data.issueSubtype
                 ? ' · ' + data.issueSubtype.replaceAll('_', ' ')
                 : ''}
@@ -589,7 +637,12 @@ function Discussion({ id }: { id: number }) {
             </span>
             {titleLink && (
               <Link className="btn btn-quiet btn-sm" to={titleLink.path}>
-                Open {titleLink.label}
+                {t('lumen.issues.openMedia', 'Open {media}', {
+                  media: t(
+                    `lumen.issues.media.${titleLink.label.toLowerCase()}`,
+                    titleLink.label
+                  ),
+                })}
               </Link>
             )}
             {editable && (
@@ -600,7 +653,9 @@ function Discussion({ id }: { id: number }) {
                   void submit({ kind: data.status === 2 ? 'open' : 'resolved' })
                 }
               >
-                {data.status === 2 ? 'Reopen Issue' : 'Resolve Issue'}
+                {data.status === 2
+                  ? t('lumen.issues.reopenIssue', 'Reopen Issue')
+                  : t('lumen.issues.resolveIssue', 'Resolve Issue')}
               </button>
             )}
             {canDeleteIssue && (
@@ -609,7 +664,7 @@ function Discussion({ id }: { id: number }) {
                 disabled={busy}
                 onClick={() => setConfirmation({ kind: 'delete-issue' })}
               >
-                Delete Issue
+                {t('lumen.issues.deleteIssue', 'Delete Issue')}
               </button>
             )}
           </div>
@@ -618,9 +673,11 @@ function Discussion({ id }: { id: number }) {
               {data.problemEpisodeSelections.map(
                 ({ seasonNumber, episodeNumbers }) => (
                   <li className="set" key={seasonNumber}>
-                    Season {seasonNumber}
+                    {t('lumen.issues.season', 'Season {season}', {
+                      season: seasonNumber,
+                    })}
                     {episodeNumbers?.length
-                      ? ` · Episodes ${episodeNumbers.join(', ')}`
+                      ? ` · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: episodeNumbers.join(', ') })}`
                       : ''}
                   </li>
                 )
@@ -633,24 +690,32 @@ function Discussion({ id }: { id: number }) {
               data.problemEpisodes?.length
             ) && (
               <p className="note">
-                Season {data.problemSeason ?? 0}
+                {t('lumen.issues.season', 'Season {season}', {
+                  season: data.problemSeason ?? 0,
+                })}
                 {data.problemEpisodes?.length
-                  ? ` · Episodes ${data.problemEpisodes.join(', ')}`
+                  ? ` · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: data.problemEpisodes.join(', ') })}`
                   : data.problemEpisode
-                    ? ` · Episode ${data.problemEpisode}`
+                    ? ` · ${t('lumen.issues.episode', 'Episode {episode}', { episode: data.problemEpisode })}`
                     : ''}
               </p>
             )
           )}
-          <ul className="setlist" aria-label="Issue Discussion">
+          <ul
+            className="setlist"
+            aria-label={t('lumen.issues.discussion', 'Issue Discussion')}
+          >
             {data.comments?.map((comment, index) => {
               const author = canCreate && comment.user?.id === user?.id;
               const editing = author && edit?.id === comment.id;
               return (
                 <li className="set" key={comment.id}>
                   <div>
-                    <b>{comment.user?.displayName ?? 'Reporter'}</b>
-                    <small>{timestamp(comment.createdAt)}</small>
+                    <b>
+                      {comment.user?.displayName ??
+                        t('lumen.issues.reporter', 'Reporter')}
+                    </b>
+                    <small>{timestamp(comment.createdAt, locale)}</small>
                     {editing ? (
                       <form
                         onSubmit={(event) => {
@@ -665,8 +730,11 @@ function Discussion({ id }: { id: number }) {
                           className="cfg-json"
                           aria-label={
                             index === 0
-                              ? 'Edit Issue Description'
-                              : 'Edit Comment'
+                              ? t(
+                                  'lumen.issues.editIssueDescription',
+                                  'Edit Issue Description'
+                                )
+                              : t('lumen.issues.editComment', 'Edit Comment')
                           }
                           rows={4}
                           maxLength={10000}
@@ -686,7 +754,7 @@ function Discussion({ id }: { id: number }) {
                             disabled={busy}
                             onClick={() => setEdit(undefined)}
                           >
-                            Cancel Edit
+                            {t('lumen.issues.cancelEdit', 'Cancel Edit')}
                           </button>
                           <button
                             className="btn btn-tonal btn-sm"
@@ -696,7 +764,7 @@ function Discussion({ id }: { id: number }) {
                               edit.message.trim() === comment.message
                             }
                           >
-                            Save Edit
+                            {t('lumen.issues.saveEdit', 'Save Edit')}
                           </button>
                         </div>
                       </form>
@@ -717,7 +785,12 @@ function Discussion({ id }: { id: number }) {
                             })
                           }
                         >
-                          {index === 0 ? 'Edit Description' : 'Edit Comment'}
+                          {index === 0
+                            ? t(
+                                'lumen.issues.editDescription',
+                                'Edit Description'
+                              )
+                            : t('lumen.issues.editComment', 'Edit Comment')}
                         </button>
                       )}
                       {index > 0 && (author || manager) && (
@@ -731,7 +804,7 @@ function Discussion({ id }: { id: number }) {
                             })
                           }
                         >
-                          Delete Comment
+                          {t('lumen.issues.deleteComment', 'Delete Comment')}
                         </button>
                       )}
                     </div>
@@ -749,7 +822,7 @@ function Discussion({ id }: { id: number }) {
             >
               <textarea
                 className="cfg-json"
-                aria-label="Comment"
+                aria-label={t('lumen.issues.comment', 'Comment')}
                 maxLength={10000}
                 rows={4}
                 value={message}
@@ -761,7 +834,7 @@ function Discussion({ id }: { id: number }) {
                   className="btn btn-tonal btn-sm"
                   disabled={busy || !message.trim()}
                 >
-                  Add Comment
+                  {t('lumen.issues.addComment', 'Add Comment')}
                 </button>
               </div>
             </form>
@@ -773,6 +846,7 @@ function Discussion({ id }: { id: number }) {
 }
 
 export default function Issues() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const { issueId } = useParams();
   const [params] = useSearchParams();
@@ -782,15 +856,26 @@ export default function Issues() {
   return (
     <>
       <header className="ph">
-        <h1>{validId ? `Issue #${id}` : 'Issues'}</h1>
+        <h1>
+          {validId
+            ? `${t('lumen.issues.issue', 'Issue')} #${id}`
+            : t('lumen.issues.issues', 'Issues')}
+        </h1>
       </header>
       {!canReadIssues(user?.permissions) ? (
-        <p className="note">You do not have permission to view issues.</p>
+        <p className="note">
+          {t(
+            'lumen.issues.noPermission',
+            'You do not have permission to view issues.'
+          )}
+        </p>
       ) : rawId != null ? (
         validId ? (
           <Discussion key={id} id={id} />
         ) : (
-          <p className="note">Issue not found.</p>
+          <p className="note">
+            {t('lumen.issues.notFound', 'Issue not found.')}
+          </p>
         )
       ) : (
         <IssueList />

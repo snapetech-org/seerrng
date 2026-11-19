@@ -489,6 +489,19 @@ implemented. Fixture-backed issue actions pass in both deployments across four
 viewport projects; native-matched comparison and live provider behavior remain
 open.
 
+Issue filters, status and media labels, loading/empty/denial states, pagination,
+discussion actions, confirmation copy, accessible labels, and timestamps now
+follow Lumen's saved locale in English, French, and Arabic. Twelve localization
+cases passed across desktop, iPhone, Android, and tablet; the existing 40-case
+issue workflow suite passed across its permission and mutation scenarios.
+Baseline English and French candidate screenshots were compared at desktop and
+iPhone widths, and Arabic desktop/iPhone RTL renders were reviewed. There was no
+horizontal overflow or control-owner/layout change. The locale generator now
+stores English fallback strings once rather than copying them into all 38 locale
+dictionaries; the standalone main bundle fell from 347.72 KB to 323.39 KB gzip
+while adding these issue translations. Live-provider and native-matched
+acceptance remain open.
+
 ### Blocklist browsing and removal increment
 
 The Lumen Blocklist uses the authorized count endpoint for desktop and You
