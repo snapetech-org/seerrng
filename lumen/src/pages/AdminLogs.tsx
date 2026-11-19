@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -18,12 +19,29 @@ const levels = [
   ['error', 'Errors only'],
 ];
 const MAX_LOG_OFFSET = 100_000;
+const pageSizes = [25, 50, 100];
 
 export default function AdminLogs() {
+  const { user } = useAuth();
+  if (!user) return null;
+  const storageKey = `lumen-log-display:${user.id}`;
+  return <LogViewer key={storageKey} storageKey={storageKey} />;
+}
+
+function LogViewer({ storageKey }: { storageKey: string }) {
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
-  const [level, setLevel] = useState('info');
-  const [take, setTake] = useState(25);
+  const [{ level, take }, setDisplay] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
+      return {
+        level: levels.find(([value]) => value === saved?.level)?.[0] ?? 'info',
+        take: pageSizes.find((value) => value === saved?.take) ?? 25,
+      };
+    } catch {
+      return { level: 'info', take: 25 };
+    }
+  });
   const [params, setParams] = useSearchParams();
   const lastPage = Math.floor(MAX_LOG_OFFSET / take) + 1;
   const bookmarkPage = params.get('page') ?? '';
@@ -32,6 +50,14 @@ export default function AdminLogs() {
     : 1;
   const [live, setLive] = useState(false);
   const [copyStatus, setCopyStatus] = useState('');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({ level, take }));
+    } catch {
+      // The current controls still work when storage is unavailable.
+    }
+  }, [level, storageKey, take]);
 
   function setPage(nextPage: number, replace = false) {
     if (nextPage === 1 && !params.has('page')) return;
@@ -115,7 +141,7 @@ export default function AdminLogs() {
           <select
             value={level}
             onChange={(event) => {
-              setLevel(event.target.value);
+              setDisplay({ level: event.target.value, take });
               setPage(1, true);
             }}
           >
@@ -131,11 +157,11 @@ export default function AdminLogs() {
           <select
             value={take}
             onChange={(event) => {
-              setTake(Number(event.target.value));
+              setDisplay({ level, take: Number(event.target.value) });
               setPage(1, true);
             }}
           >
-            {[25, 50, 100].map((size) => (
+            {pageSizes.map((size) => (
               <option key={size}>{size}</option>
             ))}
           </select>
