@@ -1789,7 +1789,11 @@ Theme edits send only changed colors. The API merges concurrent edits
 to different colors, including a clear and a save, while retaining other
 overrides. The 24-case account API suite and 16 browser cases per
 deployment passed. Browser tests used fixtures for save, retry, reload,
-and restore-default behavior. Matched visual review remains open.
+and restore-default behavior. Matched standalone Chromium renders at
+390 and 1440 pixels showed an identical You page with default colors
+before and after the feature. The theme editor displayed a stored
+background override and kept its inputs within both viewports.
+The renders used an isolated fixture account.
 
 ### About release history
 
