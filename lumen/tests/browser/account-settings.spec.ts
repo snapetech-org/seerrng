@@ -7,7 +7,12 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   await page.route('**/api/v1/**', (route) => {
     const { pathname } = new URL(route.request().url());
     const responses: Record<string, object> = {
-      '/api/v1/auth/me': { id: 2, displayName: 'Viewer', permissions: 32 },
+      '/api/v1/auth/me': {
+        id: 2,
+        displayName: 'Viewer',
+        permissions: 32,
+        userType: 3,
+      },
       '/api/v1/user/2/settings/main': { username: 'Viewer' },
       '/api/v1/user/2/settings/password': { hasPassword: true },
       '/api/v1/user/2/settings/tv-season-watch-gate': {
@@ -35,6 +40,11 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
       'true'
     );
   }
+  await page.goto('./me/account');
+  await expect(page.getByText('Jellyfin User', { exact: true })).toBeVisible();
+  await expect(
+    page.locator('dd').getByText('User', { exact: true })
+  ).toBeVisible();
 });
 
 test('account settings preserve failed profile edits and save only changes and password fields', async ({

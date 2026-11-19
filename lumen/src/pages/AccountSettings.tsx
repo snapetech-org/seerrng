@@ -10,6 +10,13 @@ import { useApi, usePublicSettings } from '../hooks';
 import { permissionOptions } from '../permissionOptions';
 import { sessionGeneration } from '../sessionState';
 
+const accountTypes: Readonly<Record<number, string>> = {
+  1: 'Plex User',
+  2: 'Local User',
+  3: 'Jellyfin User',
+  4: 'Emby User',
+};
+
 const watchlistFields = [
   {
     key: 'watchlistSyncMovies',
@@ -509,6 +516,13 @@ function PasswordForm({
 
 function Settings({ id, plex }: { id: number; plex: boolean }) {
   const { user } = useAuth();
+  const accountType = user?.userType ? accountTypes[user.userType] : undefined;
+  const role =
+    user?.id === 1
+      ? 'Owner'
+      : isAdministrator(user?.permissions)
+        ? 'Admin'
+        : 'User';
   const mask = user?.permissions ?? 0;
   const permissionBits =
     Number.isSafeInteger(mask) && mask >= 0 ? BigInt(mask) : 0n;
@@ -535,6 +549,26 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
   return (
     <>
       <Section title="Profile">
+        <dl className="setlist">
+          {accountType && (
+            <div className="set">
+              <dt>
+                <b>Account Type</b>
+              </dt>
+              <dd>
+                <small>{accountType}</small>
+              </dd>
+            </div>
+          )}
+          <div className="set">
+            <dt>
+              <b>Role</b>
+            </dt>
+            <dd>
+              <small>{role}</small>
+            </dd>
+          </div>
+        </dl>
         <ServiceNote
           error={profile.error}
           what="profile settings"
