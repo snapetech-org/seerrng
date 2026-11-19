@@ -163,6 +163,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'مجلات',
       'components.Layout.Sidebar.browsesports': 'الرياضة',
       'components.Layout.Sidebar.browseadult': 'للبالغين',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'موافقة',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'سيتمكن هذا المستخدم من تفعيل شرط مشاهدة الموسم السابق لحسابه الخاص.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'الموافقة على الوصول إلى موسم التلفزيون؟',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'رفض',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'يمكن لهذا المستخدم طلب الوصول مرة أخرى من ملفه الشخصي.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'رفض الوصول إلى موسم التلفزيون؟',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'راجع الطلبات من المستخدمين الذين يرغبون في فتح المواسم اللاحقة بعد إكمالهم الموسم السابق.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'لا توجد طلبات معلقة لمشاهدة الموسم السابق.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'تعذّر مراجعة هذا الطلب. حدّث الصفحة وحاول مرة أخرى.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'جارٍ الحفظ…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'يجب على مدير مستخدم آخر مراجعة طلبك.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'تم الطلب في {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'طلبات مشاهدة الموسم السابق',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'يُطبَّق هذا على جميع طلبات التلفزيون التفاعلية الحالية والمستقبلية لهذا المستخدم. يبدأ كل طلب بحلقة واحدة، ثم يستمر التشغيل في طلب العدد المحدد من الحلقات القادمة.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'عدد الحلقات المطلوب الاحتفاظ بها',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'حفظ الافتراضي',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'تم حفظ الافتراضي لقائمة الحلقات.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'قائمة الحلقات',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'اختر ما إذا كان يجب فتح المواسم التلفزيونية اللاحقة فقط بعد إنهاء الموسم العادي السابق. يتم تخطي الحلقات الخاصة.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'تعذر تحديث وصول طلبات التلفزيون. يرجى المحاولة مرة أخرى.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'ستتطلب طلبات المواسم اللاحقة من حسابك إنهاء مشاهدة الموسم العادي السابق. يمكنك إيقاف القاعدة مرة أخرى في أي وقت.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'تم تحديث الوصول لطلبات التلفزيون.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'تمت الموافقة · معطّل',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'يمكنك تجاوز هذه القاعدة',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'تم رفض الطلب',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'مفعّل لحسابك',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'مفعّل للجميع',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'يتطلب موافقة',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'بانتظار الموافقة',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'متطلب مشاهدة الموسم السابق',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'تعطيل هذه القاعدة',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'تفعيلها لحسابي',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'جارٍ تحميل إعداد قائمة انتظار الحلقات…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'معطّل',
+      'components.RequestModal.watchAheadLabel': 'قائمة انتظار الحلقات',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'إلغاء',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'إلغاء الطلب',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'طلب الموافقة',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'طلب الموافقة مرة أخرى',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'تعذر تحميل وصول طلبات التلفزيون.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'تعذّر تحديث الافتراضي لقائمة الحلقات لهذا المستخدم. حاول مرة أخرى.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'سيؤدي هذا إلى إيقاف إضافات قائمة الحلقات المستقبلية عبر جميع طلبات التلفزيون التفاعلية الخاصة بهذا المستخدم. ستبقى الحلقات المطلوبة بالفعل في SeerrNG و Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'سيؤدي هذا إلى الاحتفاظ بـ {count} في قائمة الانتظار مسبقًا لجميع طلبات التلفزيون التفاعلية الحالية والمستقبلية الخاصة بهذا المستخدم. ستبقى الحلقات المطلوبة بالفعل في مكانها.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'تطبيق هذا الافتراضي لقائمة الحلقات؟',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'سيتم إزالة طلبك من قائمة المراجعة. يمكنك طلب الوصول مرة أخرى لاحقاً.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'إلغاء طلب الوصول الخاص بك؟',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'ستتوقف متطلبات المشاهدة عن التطبيق على حسابك. يبقى اعتمادك نشطاً، لذا يمكنك إعادة تفعيل القاعدة في أي وقت.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'إيقاف متطلبات المشاهدة؟',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'تفعيل متطلبات المشاهدة؟',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'سيراجع مدير المستخدم طلبك. بمجرد الموافقة، يمكنك تفعيل القاعدة عندما تكون مستعداً.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'طلب هذه القاعدة لحسابك؟',
       'lumen.nav.administration': 'الإدارة',
       'lumen.nav.lumenSettings': 'إعدادات Lumen',
       'lumen.nav.seerrAdministration': 'إدارة SeerrNG',
@@ -287,6 +384,10 @@ export const localeData = [
       'lumen.shell.or': 'أو',
       'lumen.nav.comicsManga': 'قصص مصورة/مانغا',
       'lumen.nav.games': 'ألعاب',
+      'lumen.account.backToSettings': 'العودة إلى إعدادات الحساب',
+      'lumen.tvRequests.loadingAccess': 'جارٍ تحميل إعدادات طلبات التلفاز…',
+      'lumen.tvRequests.episodeAhead.one': 'حلقة قادمة: {count}',
+      'lumen.tvRequests.episodeAhead.other': 'حلقات قادمة: {count}',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -514,6 +615,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -638,6 +835,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -806,6 +1007,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel·la',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -930,6 +1227,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -1097,6 +1398,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -1221,6 +1618,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -1386,6 +1787,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Annullér',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -1510,6 +2007,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -1681,6 +2182,104 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazine',
       'components.Layout.Sidebar.browsesports': 'Sport',
       'components.Layout.Sidebar.browseadult': 'Erwachsenenbereich',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve':
+        'Genehmigen',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Dieser Benutzer kann die Anforderung zum Ansehen der vorherigen Staffel für sein eigenes Konto aktivieren.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Zugang zur TV-Staffel genehmigen?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Ablehnen',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Dieser Benutzer kann den Zugang erneut aus seinem Profil anfordern.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Zugang zur TV-Staffel ablehnen?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Prüfen Sie Anfragen von Benutzern, die möchten, dass spätere Staffeln erst nach Abschluss der vorherigen Staffel freigeschaltet werden.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'Keine ausstehenden Anfragen zum Ansehen der vorherigen Staffel.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Diese Anfrage konnte nicht geprüft werden. Aktualisieren Sie die Seite und versuchen Sie es erneut.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'Wird gespeichert…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Ein anderer Benutzer-Manager muss Ihre Anfrage prüfen.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Angefordert am {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Anfragen zum Ansehen der vorherigen Staffel',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Dies gilt für alle bestehenden und zukünftigen interaktiven TV-Anfragen dieses Benutzers. Jede Anfrage beginnt mit einer Folge, dann behält die Wiedergabe die gewählte Anzahl an anstehenden Folgen in der Anfrage bei.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Anzahl der anzufragenden Folgen',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Standardwert speichern',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Standardwert für die Folgenwarteschlange gespeichert.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Folgenwarteschlange',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Wählen Sie, ob spätere TV-Staffeln nur freigeschaltet werden sollen, wenn Sie die vorherige reguläre Staffel abgeschlossen haben. Specials werden übersprungen.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'TV-Anforderungszugriff konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Anfragen für spätere Staffeln von Ihrem Konto erfordern, dass Sie die vorherige reguläre Staffel vollständig angesehen haben. Sie können die Regel jederzeit wieder deaktivieren.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Zugriff auf TV-Anfragen aktualisiert.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Genehmigt · deaktiviert',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Sie können diese Regel umgehen',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Anfrage abgelehnt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Für Ihr Konto aktiviert',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Für alle aktiviert',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Genehmigung erforderlich',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Wartet auf Genehmigung',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Anforderung zur Wiedergabe der vorherigen Staffel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Diese Regel deaktivieren',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Für mein Konto aktivieren',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Deine Einstellung für die Episodenwarteschlange wird geladen…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Aus',
+      'components.RequestModal.watchAheadLabel': 'Episodenwarteschlange',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Abbrechen',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Anfrage stornieren',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Genehmigung anfordern',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Genehmigung erneut anfordern',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'TV-Anforderungszugriff konnte nicht geladen werden.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Der Standardwert der Folgenwarteschlange für diesen Benutzer konnte nicht aktualisiert werden. Versuchen Sie es erneut.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Dies stoppt zukünftige Hinzufügungen zur Folgenwarteschlange für alle interaktiven TV-Anfragen dieses Benutzers. Bereits angeforderte Folgen bleiben in SeerrNG und Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Dies hält {count} Folgen in der Warteschlange für alle bestehenden und zukünftigen interaktiven TV-Anfragen dieses Benutzers. Bereits angeforderte Folgen bleiben an ihrem Platz.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Diesen Standardwert für die Folgenwarteschlange anwenden?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Ihre Anfrage wird aus der Überwachungsqueue entfernt. Sie können den Zugriff später erneut anfordern.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Ihre Zugriffsanfrage stornieren?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'Die Wiedergabe-Anforderung wird für Ihr Konto nicht mehr angewendet. Ihre Genehmigung bleibt aktiv, sodass Sie die Regel jederzeit wieder aktivieren können.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Wiedergabe-Anforderung deaktivieren?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Wiedergabe-Anforderung aktivieren?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Ein Benutzeradministrator wird Ihre Anfrage prüfen. Nach der Genehmigung können Sie die Regel aktivieren, wenn Sie bereit sind.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Diese Regel für Ihr Konto anfordern?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -1805,6 +2404,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -1969,6 +2572,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2093,6 +2792,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -2259,6 +2962,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2383,6 +3182,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -2551,6 +3354,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Revistas',
       'components.Layout.Sidebar.browsesports': 'Deportes',
       'components.Layout.Sidebar.browseadult': 'Contenido para adultos',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Aprobar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Este usuario podrá activar el requisito de ver la temporada anterior para su propia cuenta.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        '¿Aprobar el acceso a la temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Rechazar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Este usuario puede solicitar el acceso nuevamente desde su perfil.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        '¿Rechazar el acceso a la temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Revisa las solicitudes de usuarios que desean desbloquear temporadas posteriores después de terminar la temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No hay solicitudes pendientes de visionado de la temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'No se pudo revisar esta solicitud. Actualiza e inténtalo de nuevo.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'Guardando…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Otro administrador de usuarios debe revisar tu solicitud.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Solicitado el {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Solicitudes de visionado de la temporada anterior',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Esto se aplica a todas las solicitudes interactivas de TV existentes y futuras de este usuario. Cada solicitud comienza con un episodio, y la reproducción mantiene solicitado el número de episodios próximos seleccionados.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodios para mantener solicitados',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Guardar predeterminado',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Valor predeterminado de la Cola de episodios guardado.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Cola de episodios',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Elige si las temporadas posteriores de TV deben desbloquearse solo después de que termines la temporada regular anterior. Los especiales se omiten.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'No se pudo actualizar el acceso a solicitudes de TV. Por favor, inténtalo de nuevo.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Las solicitudes de temporadas posteriores desde tu cuenta requerirán que termines de ver la temporada regular anterior. Puedes desactivar la regla de nuevo en cualquier momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Acceso a solicitudes de TV actualizado.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Aprobado · desactivado',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Puedes anular esta regla',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Solicitud rechazada',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Activado para tu cuenta',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Activado para todos',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Se requiere aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Esperando aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Requisito de visionado de temporadas anteriores',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Desactivar esta regla',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Activar para mi cuenta',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Cargando tu configuración de cola de episodios…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Desactivado',
+      'components.RequestModal.watchAheadLabel': 'Cola de episodios',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancelar',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancelar solicitud',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Solicitar aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Solicitar aprobación nuevamente',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'No se pudo cargar el acceso a solicitudes de TV.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'No se pudo actualizar el valor predeterminado de la Cola de episodios de este usuario. Inténtalo de nuevo.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Esto detendrá las adiciones futuras a la Cola de episodios en todas las solicitudes interactivas de TV de este usuario. Los episodios ya solicitados permanecerán en SeerrNG y Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Esto mantendrá {count} episodios en cola por adelantado en todas las solicitudes interactivas de TV existentes y futuras de este usuario. Los episodios ya solicitados permanecerán en su lugar.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        '¿Aplicar este valor predeterminado de la Cola de episodios?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Tu solicitud se eliminará de la cola de revisión. Puedes solicitar acceso de nuevo más tarde.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        '¿Cancelar tu solicitud de acceso?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'El requisito de visualización dejará de aplicarse a tu cuenta. Tu aprobación sigue activa, por lo que puedes volver a activar la regla en cualquier momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '¿Desactivar el requisito de visualización?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '¿Activar el requisito de visualización?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Un administrador de usuarios revisará tu solicitud. Una vez aprobada, puedes activar la regla cuando estés listo.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        '¿Solicitar esta regla para tu cuenta?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2675,6 +3575,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -2843,6 +3747,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Revistas',
       'components.Layout.Sidebar.browsesports': 'Deportes',
       'components.Layout.Sidebar.browseadult': 'Contenido para adultos',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Aprobar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Este usuario podrá activar el requisito de ver la temporada anterior para su propia cuenta.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        '¿Aprobar el acceso a la temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Rechazar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Este usuario puede solicitar el acceso nuevamente desde su perfil.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        '¿Rechazar el acceso a la temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Revisa las solicitudes de usuarios que desean desbloquear temporadas posteriores después de terminar la temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No hay solicitudes pendientes de visionado de la temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'No se pudo revisar esta solicitud. Actualiza e inténtalo de nuevo.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'Guardando…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Otro administrador de usuarios debe revisar tu solicitud.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Solicitado el {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Solicitudes de visionado de la temporada anterior',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Esto se aplica a todas las solicitudes interactivas de TV existentes y futuras de este usuario. Cada solicitud comienza con un episodio, y la reproducción mantiene solicitado el número de episodios próximos seleccionados.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodios para mantener solicitados',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Guardar predeterminado',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Valor predeterminado de la Cola de episodios guardado.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Cola de episodios',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Elige si las temporadas posteriores de TV deben desbloquearse solo después de que termines la temporada regular anterior. Los especiales se omiten.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'No se pudo actualizar el acceso a solicitudes de TV. Por favor, inténtalo de nuevo.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Las solicitudes de temporadas posteriores desde tu cuenta requerirán que termines de ver la temporada regular anterior. Puedes desactivar la regla de nuevo en cualquier momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Acceso a solicitudes de TV actualizado.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Aprobado · desactivado',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Puedes anular esta regla',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Solicitud rechazada',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Activado para tu cuenta',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Activado para todos',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Se requiere aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Esperando aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Requisito de visionado de temporadas anteriores',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Desactivar esta regla',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Activar para mi cuenta',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Cargando tu configuración de cola de episodios…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Desactivado',
+      'components.RequestModal.watchAheadLabel': 'Episodio Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancelar',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancelar solicitud',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Solicitar aprobación',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Solicitar aprobación nuevamente',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'No se pudo cargar el acceso a solicitudes de TV.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'No se pudo actualizar el valor predeterminado de la Cola de episodios de este usuario. Inténtalo de nuevo.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Esto detendrá las adiciones futuras a la Cola de episodios en todas las solicitudes interactivas de TV de este usuario. Los episodios ya solicitados permanecerán en SeerrNG y Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Esto mantendrá {count} episodios en cola por adelantado en todas las solicitudes interactivas de TV existentes y futuras de este usuario. Los episodios ya solicitados permanecerán en su lugar.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        '¿Aplicar este valor predeterminado de la Cola de episodios?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Tu solicitud se eliminará de la cola de revisión. Puedes solicitar acceso de nuevo más tarde.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        '¿Cancelar tu solicitud de acceso?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'El requisito de visualización dejará de aplicarse a tu cuenta. Tu aprobación sigue activa, por lo que puedes volver a activar la regla en cualquier momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '¿Desactivar el requisito de visualización?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '¿Activar el requisito de visualización?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Un administrador de usuarios revisará tu solicitud. Una vez aprobada, puedes activar la regla cuando estés listo.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        '¿Solicitar esta regla para tu cuenta?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2967,6 +3968,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -3133,6 +4138,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3257,6 +4358,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -3425,6 +4530,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3549,6 +4750,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -3716,6 +4921,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Revues',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Contenu pour adultes',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approuver',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        "Cet utilisateur pourra activer l'exigence de visionnage de la saison précédente pour son propre compte.",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        "Approuver l'accès à la saison TV ?",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Refuser',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        "Cet utilisateur peut demander l'accès à nouveau depuis son profil.",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        "Refuser l'accès à la saison TV ?",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Examiner les demandes des utilisateurs qui souhaitent que les saisons ultérieures soient déverrouillées après la fin de la saison précédente.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'Aucune demande de visionnage de la saison précédente en attente.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        "Impossible d'examiner cette demande. Actualisez et réessayez.",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'Enregistrement…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        "Un autre gestionnaire d'utilisateurs doit examiner votre demande.",
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Demandé le {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Demandes de visionnage de la saison précédente',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        "Cela s'applique à toutes les demandes interactives de TV existantes et futures pour cet utilisateur. Chaque demande commence par un épisode, puis la lecture maintient le nombre d'épisodes à venir sélectionné en demande.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Épisodes à maintenir en demande',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Enregistrer la valeur par défaut',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        "Valeur par défaut du File d'épisodes enregistrée.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        "File d'épisodes",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choisissez si les saisons TV ultérieures doivent se déverrouiller uniquement après avoir terminé la saison régulière précédente. Les épisodes spéciaux sont ignorés.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        "Impossible de mettre à jour l'accès aux demandes TV. Veuillez réessayer.",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Les demandes de saisons ultérieures depuis votre compte exigeront que vous ayez terminé de visionner la saison régulière précédente. Vous pouvez désactiver la règle à tout moment.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Accès aux demandes TV mis à jour.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approuvé · désactivé',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Vous pouvez contourner cette règle',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Demande refusée',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Activé pour votre compte',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Activé pour tout le monde',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approbation requise',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        "En attente d'approbation",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Exigence de visionnage de la saison précédente',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Désactiver cette règle',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Activer pour mon compte',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Chargement de votre réglage de file d’attente des épisodes…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Désactivé',
+      'components.RequestModal.watchAheadLabel': 'File d’attente des épisodes',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Annuler',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Annuler la demande',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        "Demander l'approbation",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        "Demander l'approbation à nouveau",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        "Impossible de charger l'accès aux demandes TV.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        "Impossible de mettre à jour la valeur par défaut du File d'épisodes pour cet utilisateur. Réessayez.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        "Cela arrêtera les ajouts futurs au File d'épisodes pour toutes les demandes interactives de TV de cet utilisateur. Les épisodes déjà demandés resteront dans SeerrNG et Sonarr.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        "Cela maintiendra {count} épisodes en file d'attente pour toutes les demandes interactives de TV existantes et futures de cet utilisateur. Les épisodes déjà demandés resteront en place.",
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        "Appliquer cette valeur par défaut du File d'épisodes ?",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        "Votre demande sera retirée de la file d'attente de révision. Vous pouvez demander l'accès à nouveau plus tard.",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        "Annuler votre demande d'accès ?",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        "L'exigence de visionnage cessera de s'appliquer à votre compte. Votre approbation reste active, vous pouvez donc réactiver la règle à tout moment.",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        "Désactiver l'exigence de visionnage ?",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        "Activer l'exigence de visionnage ?",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        "Un gestionnaire d'utilisateurs examinera votre demande. Une fois approuvée, vous pourrez activer la règle lorsque vous serez prêt.",
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Demander cette règle pour votre compte ?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Paramètres de Lumen',
       'lumen.nav.seerrAdministration': 'Administration de SeerrNG',
@@ -3853,6 +5155,11 @@ export const localeData = [
       'lumen.shell.or': 'ou',
       'lumen.nav.comicsManga': 'BD/Manga',
       'lumen.nav.games': 'Jeux',
+      'lumen.account.backToSettings': 'Retour aux paramètres du compte',
+      'lumen.tvRequests.loadingAccess':
+        'Chargement des autorisations de demande TV…',
+      'lumen.tvRequests.episodeAhead.one': '{count} épisode à venir',
+      'lumen.tvRequests.episodeAhead.other': '{count} épisodes à venir',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',
@@ -4089,6 +5396,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4213,6 +5616,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -4377,6 +5784,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4501,6 +6004,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -4667,6 +6174,105 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'पत्रिकाएँ',
       'components.Layout.Sidebar.browsesports': 'खेल',
       'components.Layout.Sidebar.browseadult': 'वयस्क',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve':
+        'स्वीकृत करें',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'यह उपयोगकर्ता अपने खाते के लिए पिछली सीज़न देखने की आवश्यकता चालू करने में सक्षम होगा।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'टीवी सीज़न एक्सेस स्वीकृत करें?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny':
+        'अस्वीकार करें',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'यह उपयोगकर्ता अपने प्रोफ़ाइल से एक्सेस के लिए फिर से अनुरोध कर सकता है।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'टीवी सीज़न एक्सेस अस्वीकार करें?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'उन उपयोगकर्ताओं के अनुरोधों की समीक्षा करें जो पिछली सीज़न पूरा करने के बाद बाद की सीज़न अनलॉक करना चाहते हैं।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'कोई लंबित पिछली सीज़न देखने के अनुरोध नहीं हैं।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'इस अनुरोध की समीक्षा नहीं की जा सकी। रीफ्रेश करें और फिर से प्रयास करें।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'सहेजा जा रहा है…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'आपके अनुरोध की समीक्षा किसी अन्य उपयोगकर्ता प्रबंधक को करनी होगी।',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        '{date} को अनुरोध किया गया',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'पिछली सीज़न देखने के अनुरोध',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'यह इस उपयोगकर्ता के सभी मौजूदा और भविष्य के इंटरैक्टिव टीवी अनुरोधों पर लागू होता है। प्रत्येक अनुरोध एक एपिसोड से शुरू होता है, फिर प्लेबैक चुने गए आगामी एपिसोडों की संख्या को अनुरोधित रखता है।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'अनुरोधित रखने के लिए एपिसोड',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'डिफ़ॉल्ट सहेजें',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'एपिसोड कतार डिफ़ॉल्ट सहेजा गया।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'एपिसोड कतार',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'चुनें कि क्या बाद के TV सीज़न केवल तभी अनलॉक होने चाहिए जब आप पिछला नियमित सीज़न पूरा कर लें। विशेष एपिसोड छोड़ दिए जाते हैं।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'TV अनुरोध पहुंच को अपडेट नहीं किया जा सका। कृपया पुनः प्रयास करें।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'आपके खाते से बाद के सीज़न के अनुरोधों के लिए आपको पिछला नियमित सीज़न देखना पूरा करना होगा। आप नियम को कभी भी फिर से बंद कर सकते हैं।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'टीवी अनुरोध पहुंच अपडेट की गई।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'स्वीकृत · बंद',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'आप इस नियम को ओवरराइड कर सकते हैं',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'अनुरोध अस्वीकृत',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'आपके खाते के लिए सक्षम',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'सभी के लिए सक्षम',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'स्वीकृति आवश्यक',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'स्वीकृति का प्रतीक्षा में',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'पिछले सीज़न की देखभाल आवश्यकता',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'इस नियम को बंद करें',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'मेरे खाते के लिए चालू करें',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'आपकी एपिसोड कतार की सेटिंग लोड हो रही है…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'बंद',
+      'components.RequestModal.watchAheadLabel': 'एपिसोड की कतार',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'रद्द करें',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'अनुरोध रद्द करें',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'स्वीकृति का अनुरोध करें',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'फिर से स्वीकृति का अनुरोध करें',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'TV अनुरोध पहुंच लोड नहीं की जा सकी।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'इस उपयोगकर्ता की एपिसोड कतार डिफ़ॉल्ट अपडेट नहीं की जा सकी। फिर से प्रयास करें।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'इससे इस उपयोगकर्ता के इंटरैक्टिव टीवी अनुरोधों में भविष्य की एपिसोड कतार जोड़ना बंद हो जाएगा। पहले से अनुरोध किए गए एपिसोड SeerrNG और Sonarr में रहेंगे।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'इससे इस उपयोगकर्ता के सभी मौजूदा और भविष्य के इंटरैक्टिव टीवी अनुरोधों में {count} एपिसोड कतार में आगे रखे जाएंगे। पहले से अनुरोध किए गए एपिसोड अपनी जगह पर रहेंगे।',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'यह एपिसोड कतार डिफ़ॉल्ट लागू करें?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'आपका अनुरोध समीक्षा कतार से हटा दिया जाएगा। आप बाद में पहुंच का अनुरोध फिर से कर सकते हैं।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'क्या आप अपनी पहुंच का अनुरोध रद्द करना चाहते हैं?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'देखने की आवश्यकता आपके खाते पर लागू होना बंद हो जाएगी। आपकी स्वीकृति सक्रिय रहती है, इसलिए आप नियम को कभी भी फिर से चालू कर सकते हैं।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'क्या देखने की आवश्यकता बंद करनी है?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'क्या देखने की आवश्यकता चालू करनी है?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'एक उपयोगकर्ता प्रबंधक आपके अनुरोध की समीक्षा करेगा। एक बार स्वीकृत होने के बाद, आप तैयार होने पर नियम को चालू कर सकते हैं।',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'क्या अपने खाते के लिए इस नियम का अनुरोध करना है?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4791,6 +6397,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -4958,6 +6568,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Mégsem',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5082,6 +6788,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -5249,6 +6959,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Majalah',
       'components.Layout.Sidebar.browsesports': 'Olahraga',
       'components.Layout.Sidebar.browseadult': 'Dewasa',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Setujui',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Pengguna ini akan dapat mengaktifkan persyaratan menonton musim sebelumnya untuk akun mereka sendiri.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Setujui akses musim TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Tolak',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Pengguna ini dapat meminta akses kembali dari profil mereka.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Tolak akses musim TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Tinjau permintaan dari pengguna yang ingin musim berikutnya terbuka setelah mereka menyelesaikan musim sebelumnya.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'Tidak ada permintaan menonton musim sebelumnya yang tertunda.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Gagal meninjau permintaan ini. Muat ulang dan coba lagi.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        'Menyimpan…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Manajer pengguna lain harus meninjau permintaan Anda.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Diminta {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Permintaan menonton musim sebelumnya',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Ini berlaku untuk semua permintaan TV interaktif yang ada dan mendatang untuk pengguna ini. Setiap permintaan dimulai dengan satu episode, kemudian pemutaran mempertahankan jumlah episode mendatang yang diminta sesuai pilihan.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episode yang dipertahankan diminta',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Simpan default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Default Antrean Episode disimpan.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Antrean Episode',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Pilih apakah musim TV berikutnya harus terbuka hanya setelah Anda menyelesaikan musim reguler sebelumnya. Spesial dilewati.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Gagal memperbarui akses permintaan TV. Silakan coba lagi.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Permintaan musim berikutnya dari akun Anda akan mengharuskan Anda menyelesaikan menonton musim reguler sebelumnya. Anda dapat mematikan aturan ini lagi kapan saja.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Akses permintaan TV diperbarui.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Disetujui · nonaktif',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Anda dapat mengabaikan aturan ini',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Permintaan ditolak',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Diaktifkan untuk akun Anda',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Diaktifkan untuk semua orang',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Persetujuan diperlukan',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Menunggu persetujuan',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Persyaratan menonton musim sebelumnya',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Nonaktifkan aturan ini',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Aktifkan untuk akun saya',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Memuat pengaturan antrean episode Anda…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Nonaktif',
+      'components.RequestModal.watchAheadLabel': 'Antrian Episode',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Batal',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Batalkan permintaan',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Minta persetujuan',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Minta persetujuan lagi',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Gagal memuat akses permintaan TV.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Gagal memperbarui default Antrean Episode pengguna ini. Coba lagi.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Ini akan menghentikan penambahan Antrean Episode di masa depan untuk semua permintaan TV interaktif pengguna ini. Episode yang sudah diminta akan tetap ada di SeerrNG dan Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Ini akan mempertahankan {count} episode dalam antrean di semua permintaan TV interaktif yang ada dan mendatang untuk pengguna ini. Episode yang sudah diminta akan tetap di tempatnya.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Terapkan default Antrean Episode ini?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Permintaan Anda akan dihapus dari antrean tinjauan. Anda dapat meminta akses lagi nanti.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Batalkan permintaan akses Anda?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'Persyaratan menonton akan berhenti berlaku untuk akun Anda. Persetujuan Anda tetap aktif, jadi Anda dapat mengaktifkan aturan ini lagi kapan saja.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Matikan persyaratan menonton?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Nyalakan persyaratan menonton?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Manajer pengguna akan meninjau permintaan Anda. Setelah disetujui, Anda dapat mengaktifkan aturan ini ketika Anda siap.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Minta aturan ini untuk akun Anda?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5373,6 +7180,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -5540,6 +7351,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5664,6 +7571,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -5831,6 +7742,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': '雑誌',
       'components.Layout.Sidebar.browsesports': 'スポーツ',
       'components.Layout.Sidebar.browseadult': 'アダルト',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': '承認',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'このユーザーは、自分のアカウントで前シーズン視聴要件をオンにできるようになります。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'TVシーズンのアクセスを承認しますか？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': '却下',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'このユーザーは、プロフィールから再度アクセスをリクエストできます。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'TVシーズンのアクセスを却下しますか？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        '前シーズン視聴後に後続シーズンが解放されることを希望するユーザーのリクエストを確認してください。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        '保留中の前シーズン視聴リクエストはありません。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'このリクエストを確認できませんでした。更新して再試行してください。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': '保存中…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        '他のユーザーマネージャーがあなたのリクエストを確認する必要があります。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        '{date} にリクエスト',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        '前シーズン視聴リクエスト',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'これはこのユーザーのすべての既存および将来の対話型TVリクエストに適用されます。各リクエストは1エピソードから始まり、再生時に選択した数の今後のエピソードがリクエストされたまま保持されます。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'リクエストを保持するエピソード数',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'デフォルトを保存',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'エピソードキューデフォルトを保存しました。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'エピソードキュー',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        '後期のTVシーズンが、前回の通常シーズン視聴完了後にのみ解放されるようにするか選択します。スペシャルはスキップされます。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'TVリクエストアクセスを更新できませんでした。もう一度お試しください。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'あなたのアカウントからの後期シーズンリクエストには、前回の通常シーズン視聴完了が必須になります。いつでもルートをオフにできます。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TVリクエストアクセスを更新しました。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        '承認済み · 無効',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'このルールを無視できます',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'リクエストが却下されました',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'アカウントで有効化されています',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        '全員に対して有効化されています',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        '承認が必要です',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        '承認待ち',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        '前シーズン視聴要件',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'このルールを無効にする',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        '自分のアカウントで有効にする',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'エピソードキューの設定を読み込み中…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'オフ',
+      'components.RequestModal.watchAheadLabel': 'エピソードキュー',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'キャンセル',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'リクエストをキャンセル',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        '承認をリクエスト',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        '再度承認をリクエスト',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'TVリクエストアクセスを読み込めませんでした。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'このユーザーのエピソードキューデフォルトを更新できませんでした。再試行してください。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'これにより、このユーザーの対話型TVリクエスト全体での将来のエピソードキュー追加が停止されます。すでにリクエストされたエピソードは SeerrNG および Sonarr に残ります。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'これにより、このユーザーのすべての既存および将来の対話型TVリクエストで、{count} 個のエピソードがキューに保持されます。すでにリクエストされたエピソードはそのまま保持されます。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'このエピソードキューデフォルトを適用しますか？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'あなたのリクエストはレビューキューから削除されます。後で再度アクセスをリクエストできます。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'アクセスリクエストをキャンセルしますか？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        '視聴要件はあなたのアカウントに適用されなくなります。承認は有効なままなので、いつでもルートを再有効にできます。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '視聴要件をオフにしますか？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '視聴要件をオンにしますか？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'ユーザーマネージャーがあなたのリクエストを確認します。承認されると、準備ができたらルートをオンにできます。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'このルールをあなたのアカウントでリクエストしますか？',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5955,6 +7962,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -6118,6 +8129,103 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': '잡지',
       'components.Layout.Sidebar.browsesports': '스포츠',
       'components.Layout.Sidebar.browseadult': '성인',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': '승인',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        '이 사용자는 자신의 계정에 대해 이전 시즌 시청 요건을 활성화할 수 있습니다.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'TV 시즌 접근 권한을 승인하시겠습니까?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': '거절',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        '이 사용자는 프로필에서 다시 접근 권한을 요청할 수 있습니다.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'TV 시즌 접근 권한을 거절하시겠습니까?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        '이전 시즌을 시청한 후에 후속 시즌이 잠금 해제되기를 원하는 사용자의 요청을 검토합니다.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        '대기 중인 이전 시즌 시청 요청이 없습니다.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        '이 요청을 검토할 수 없습니다. 새로고침 후 다시 시도해 주세요.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading':
+        '저장 중...',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        '다른 사용자 관리자가 사용자의 요청을 검토해야 합니다.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        '{date}에 요청됨',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        '이전 시즌 시청 요청',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        '이 설정은 이 사용자의 모든 기존 및 향후 인터랙티브 TV 요청에 적용됩니다. 각 요청은 1개의 에피소드로 시작되며, 재생 시 선택된 수의 향후 에피소드가 요청 상태로 유지됩니다.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        '요청 상태로 유지할 에피소드 수',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        '기본값 저장',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        '에피소드 대기열 기본값이 저장되었습니다.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        '에피소드 대기열',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        '이전 정규 시즌을 완료한 후에만 후속 TV 시즌이 잠금 해제되도록 선택하세요. 스페셜은 건너뜁니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'TV 요청 액세스를 업데이트하지 못했습니다. 다시 시도해 주세요.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        '계정에서 후속 시즌을 요청하려면 이전 정규 시즌 시청을 완료해야 합니다. 언제든지 규칙을 다시 끌 수 있습니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV 요청 액세스가 업데이트되었습니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        '승인됨 · 비활성',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        '이 규칙을 무시할 수 있습니다',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        '요청 거절됨',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        '계정에 대해 활성화됨',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        '모두에게 활성화됨',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        '승인 필요',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        '승인 대기 중',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        '이전 시즌 시청 요구 사항',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        '이 규칙 비활성화',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        '내 계정에 대해 활성화',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        '에피소드 큐 설정을 불러오는 중…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': '사용 안 함',
+      'components.RequestModal.watchAheadLabel': '에피소드 큐',
+      'components.Login.JellyfinQuickConnectModal.cancel': '취소',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        '요청 취소',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        '승인 요청',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        '다시 승인 요청',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'TV 요청 액세스를 불러오지 못했습니다.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        '이 사용자의 에피소드 대기열 기본값을 업데이트할 수 없습니다. 다시 시도해 주세요.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        '이 사용자의 인터랙티브 TV 요청에 대한 향후 에피소드 대기열 추가가 중단됩니다. 이미 요청된 에피소드는 SeerrNG 및 Sonarr에 유지됩니다.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        '이 사용자의 모든 기존 및 향후 인터랙티브 TV 요청에서 {count}개의 에피소드가 대기 상태로 유지됩니다. 이미 요청된 에피소드는 그대로 유지됩니다.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        '이 에피소드 대기열 기본값을 적용하시겠습니까?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        '요청이 검토 대기열에서 제거됩니다. 나중에 다시 액세스를 요청할 수 있습니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        '액세스 요청을 취소하시겠습니까?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        '시청 요구 사항이 더 이상 계정에 적용되지 않습니다. 승인은 유지되므로 언제든지 규칙을 다시 켤 수 있습니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '시청 요구 사항을 끄시겠습니까?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '시청 요구 사항을 켜시겠습니까?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        '사용자 관리자가 요청을 검토합니다. 승인되면 준비가 되면 규칙을 켤 수 있습니다.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        '계정에 이 규칙을 요청하시겠습니까?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6242,6 +8350,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -6406,6 +8518,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6530,6 +8738,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -6697,6 +8909,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6821,6 +9129,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -6986,6 +9298,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7110,6 +9518,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -7277,6 +9689,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Annuleren',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7401,6 +9909,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -7568,6 +10080,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Anuluj',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7692,6 +10300,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -7860,6 +10472,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Revistas',
       'components.Layout.Sidebar.browsesports': 'Esportes',
       'components.Layout.Sidebar.browseadult': 'Conteúdo para adultos',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Aprovar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Este usuário poderá ativar o requisito de visualização da temporada anterior para sua própria conta.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Aprovar acesso à temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Recusar',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Este usuário pode solicitar o acesso novamente em seu perfil.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Recusar acesso à temporada de TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Revise solicitações de usuários que desejam que temporadas posteriores sejam desbloqueadas após a conclusão da temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'Nenhuma solicitação pendente de visualização da temporada anterior.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Não foi possível revisar esta solicitação. Atualize e tente novamente.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Salvando…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Outro gerente de usuários deve revisar sua solicitação.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Solicitado em {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Solicitações de visualização da temporada anterior',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Isso se aplica a todas as solicitações interativas de TV existentes e futuras deste usuário. Cada solicitação começa com um episódio, e a reprodução mantém o número selecionado de episódios futuros solicitados.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episódios a manter solicitados',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Salvar padrão',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Padrão da Fila de Episódios salvo.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Fila de Episódios',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Escolha se as temporadas de TV posteriores devem ser desbloqueadas apenas após você terminar a temporada regular anterior. Especiais são ignorados.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Não foi possível atualizar o acesso a solicitações de TV. Por favor, tente novamente.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Solicitações de temporadas posteriores da sua conta exigirão que você termine de assistir à temporada regular anterior. Você pode desativar a regra novamente a qualquer momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Acesso a solicitações de TV atualizado.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Aprovado · desativado',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Você pode ignorar esta regra',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Solicitação recusada',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Ativado para sua conta',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Ativado para todos',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Aprovação necessária',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Aguardando aprovação',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Requisito de visualização da temporada anterior',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Desativar esta regra',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Ativar para minha conta',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Carregando a configuração da sua fila de episódios…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Desativado',
+      'components.RequestModal.watchAheadLabel': 'Fila de episódios',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancelar',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancelar solicitação',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Solicitar aprovação',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Solicitar aprovação novamente',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Não foi possível carregar o acesso a solicitações de TV.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Não foi possível atualizar o padrão da Fila de Episódios deste usuário. Tente novamente.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Isso interromperá as adições futuras à Fila de Episódios em todas as solicitações interativas de TV deste usuário. Episódios já solicitados permanecerão em SeerrNG e Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Isso manterá {count} episódios na fila em todas as solicitações interativas de TV existentes e futuras deste usuário. Episódios já solicitados permanecerão no lugar.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Aplicar este padrão da Fila de Episódios?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Sua solicitação será removida da fila de revisão. Você pode solicitar acesso novamente mais tarde.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancelar sua solicitação de acesso?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'O requisito de visualização deixará de se aplicar à sua conta. Sua aprovação permanece ativa, então você pode reativar a regra a qualquer momento.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Desativar o requisito de visualização?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Ativar o requisito de visualização?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Um gerente de usuários revisará sua solicitação. Uma vez aprovada, você pode ativar a regra quando estiver pronto.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Solicitar esta regra para sua conta?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7984,6 +10692,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -8151,6 +10863,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -8275,6 +11083,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -8439,6 +11251,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -8563,6 +11471,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -8731,6 +11643,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Отмена',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -8855,6 +11863,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -9022,6 +12034,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9146,6 +12254,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -9313,6 +12425,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9437,6 +12645,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -9603,6 +12815,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Avbryt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9727,6 +13035,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -9894,6 +13206,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10018,6 +13426,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -10186,6 +13598,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Magazines',
       'components.Layout.Sidebar.browsesports': 'Sports',
       'components.Layout.Sidebar.browseadult': 'Adult',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Approve',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'This user will be able to turn on the previous-season watch requirement for their own account.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Approve TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Decline',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'This user can request access again from their profile.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Decline TV season access?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Review requests from users who want later seasons to unlock after they finish the previous season.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'No pending previous-season watch requests.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Could not review this request. Refresh and try again.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Saving…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Another user manager must review your request.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Requested {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Previous-season watch requests',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'This applies to all existing and future interactive TV requests for this user. Each request starts with one episode, then playback keeps the selected number of upcoming episodes requested.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Episodes to keep requested',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Save default',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Episode Queue default saved.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Episode Queue',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Choose whether later TV seasons should unlock only after you finish the previous regular season. Specials are skipped.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Could not update TV request access. Please try again.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Later-season requests from your account will require you to finish watching the previous regular season. You can turn the rule off again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'TV request access updated.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Approved · off',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'You can override this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Request declined',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Enabled for your account',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Enabled for everyone',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Approval needed',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Waiting for approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Previous-season watch requirement',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Turn off this rule',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Turn on for my account',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Loading Episode Queue settings…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Off',
+      'components.RequestModal.watchAheadLabel': 'Episode Queue',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Cancel request',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Request approval',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Request approval again',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Could not load TV request access.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Could not update this user’s Episode Queue default. Try again.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'This will stop future Episode Queue additions across this user’s interactive TV requests. Episodes already requested will remain in SeerrNG and Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'This will keep {count} queued ahead on all of this user’s existing and future interactive TV requests. Episodes already requested will stay in place.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Apply this Episode Queue default?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Your request will be removed from the review queue. You can request access again later.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Cancel your access request?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'The watch requirement will stop applying to your account. Your approval stays active, so you can turn the rule on again at any time.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Turn off the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Turn on the watch requirement?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Request this rule for your account?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10310,6 +13818,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -10474,6 +13986,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': '杂志',
       'components.Layout.Sidebar.browsesports': '体育',
       'components.Layout.Sidebar.browseadult': '成人内容',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': '批准',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        '该用户将能够为其自己的账户开启上一季观看要求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        '批准电视剧季访问权限？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': '拒绝',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        '该用户可以从其个人资料中再次申请访问权限。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        '拒绝电视剧季访问权限？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        '审核希望在看完上一季后解锁后续季数的用户请求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        '没有待处理的上一季观看请求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        '无法审核此请求。请刷新并重试。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': '正在保存…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        '必须由另一位用户管理员审核您的请求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        '申请于 {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        '上一季观看请求',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        '这适用于该用户所有现有和未来的交互式电视剧请求。每个请求从一集开始，然后播放时保持请求所选数量的后续剧集。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        '保持请求的剧集数',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        '保存默认值',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        '剧集队列默认值已保存。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        '剧集队列',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        '选择是否仅在您看完上一正季后才解锁后续电视季度。特别篇将被跳过。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        '无法更新电视请求访问权限。请重试。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        '来自您账户的后续季度请求将要求您先看完上一正季。您可以随时关闭此规则。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        '已更新电视剧请求访问权限。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        '已批准 · 已关闭',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        '您可以覆盖此规则',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        '请求被拒绝',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        '已为您的账户启用',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        '已为所有人启用',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        '需要批准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        '等待批准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        '前季观看要求',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        '关闭此规则',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        '在我的账户上开启',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        '正在加载你的剧集队列设置…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': '关闭',
+      'components.RequestModal.watchAheadLabel': '剧集队列',
+      'components.Login.JellyfinQuickConnectModal.cancel': '取消',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        '取消请求',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        '请求批准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        '再次请求批准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        '无法加载电视请求访问权限。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        '无法更新该用户的剧集队列默认值。请重试。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        '这将停止该用户所有交互式电视剧请求的未来剧集队列添加。已请求的剧集将保留在 SeerrNG 和 Sonarr 中。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        '这将保持该用户所有现有和未来交互式电视剧请求中 {count} 集排队在前。已请求的剧集将保持原位。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        '应用此剧集队列默认值？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        '您的请求将从审核队列中移除。您可以稍后再次请求访问权限。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        '取消您的访问请求？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        '观看要求将不再适用于您的账户。您的批准状态保持有效，因此您可以随时重新开启此规则。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '关闭观看要求？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '开启观看要求？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        '用户管理员将审核您的请求。一旦批准，您可以在准备好时开启此规则。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        '为您的账户请求此规则？',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10598,6 +14206,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -10762,6 +14374,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': '雜誌',
       'components.Layout.Sidebar.browsesports': '體育',
       'components.Layout.Sidebar.browseadult': '成人內容',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': '核准',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        '此使用者將能為其帳戶開啟前季觀看要求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        '核准電視節目季數存取？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': '拒絕',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        '此使用者可從其個人檔案再次申請存取。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        '拒絕電視節目季數存取？',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        '審核希望在前季看完後解鎖後續季數的使用者請求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        '沒有待處理的前季觀看請求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        '無法審核此請求。請重新整理並再試一次。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': '儲存中…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        '必須由另一位使用者管理員審核您的請求。',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        '申請於 {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        '前季觀看請求',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        '這適用於該使用者所有現有的及未來的互動式電視請求。每個請求從一集開始，然後播放時會保持請求選定的後續集數數量。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        '保持請求的集數',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        '儲存預設值',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        '集數佇列預設值已儲存。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        '集數佇列',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        '選擇後續電視季度是否僅在您看完前一季正片後解鎖。特別篇將被跳過。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        '無法更新電視請求存取權限。請再試一次。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        '來自您帳戶的後續季度請求將要求您看完前一季正片。您可以隨時再次關閉此規則。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        '已更新電視節目要求存取權限。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        '已核准 · 已關閉',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        '您可以覆寫此規則',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        '申請被拒絕',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        '已對您的帳戶啟用',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        '已對所有人啟用',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        '需要核准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        '等待核准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        '前幾季觀看要求',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        '關閉此規則',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        '對我的帳戶開啟',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        '正在載入你的集數佇列設定…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': '關閉',
+      'components.RequestModal.watchAheadLabel': '集數佇列',
+      'components.Login.JellyfinQuickConnectModal.cancel': '取消',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        '取消請求',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        '申請核准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        '再次申請核准',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        '無法載入電視請求存取權限。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        '無法更新此使用者的集數佇列預設值。請再試一次。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        '這將停止該使用者互動式電視請求的未來集數佇列新增。已請求的集數將保留在 SeerrNG 和 Sonarr 中。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        '這將為該使用者所有現有的及未來的互動式電視請求保持 {count} 集在佇列中。已請求的集數將保持不變。',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        '套用此集數佇列預設值？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        '您的請求將從審核佇列中移除。您可以稍後再次請求存取權限。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        '要取消您的存取請求嗎？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        '觀看要求將不再適用於您的帳戶。您的核准狀態仍保持有效，因此您可以隨時重新開啟此規則。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        '要關閉觀看要求嗎？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        '要開啟觀看要求嗎？',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        '用戶管理員將審核您的請求。核准後，您可以隨時開啟此規則。',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        '要為您的帳戶請求此規則嗎？',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10886,6 +14594,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
   {
@@ -11055,6 +14767,102 @@ export const localeData = [
       'components.Layout.Sidebar.browsemagazines': 'Tạp chí',
       'components.Layout.Sidebar.browsesports': 'Thể thao',
       'components.Layout.Sidebar.browseadult': 'Nội dung người lớn',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approve': 'Phê duyệt',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveDescription':
+        'Người dùng này sẽ có thể bật yêu cầu xem mùa trước cho tài khoản của họ.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle':
+        'Phê duyệt quyền truy cập mùa TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.deny': 'Từ chối',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription':
+        'Người dùng này có thể yêu cầu quyền truy cập lại từ hồ sơ của họ.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle':
+        'Từ chối quyền truy cập mùa TV?',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.description':
+        'Xem xét các yêu cầu từ người dùng muốn mở khóa các mùa sau khi họ hoàn thành mùa trước.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.empty':
+        'Không có yêu cầu xem mùa trước nào đang chờ.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.error':
+        'Không thể xem xét yêu cầu này. Hãy tải lại và thử lại.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.loading': 'Đang lưu…',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest':
+        'Một quản lý người dùng khác phải xem xét yêu cầu của bạn.',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.requested':
+        'Đã yêu cầu {date}',
+      'components.UserList.TvSeasonWatchGateApprovalQueue.title':
+        'Yêu cầu xem mùa trước',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp':
+        'Điều này áp dụng cho tất cả các yêu cầu TV tương tác hiện có và tương lai của người dùng này. Mỗi yêu cầu bắt đầu với một tập, sau đó việc phát giữ lại số lượng tập sắp tới đã chọn được yêu cầu.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel':
+        'Số tập giữ yêu cầu',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save':
+        'Lưu mặc định',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved':
+        'Đã lưu mặc định Hàng đợi tập.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title':
+        'Hàng đợi tập',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description':
+        'Chọn xem các mùa TV sau có nên chỉ mở khóa sau khi bạn hoàn thành mùa thường trước đó hay không. Các tập đặc biệt sẽ bị bỏ qua.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error':
+        'Không thể cập nhật quyền truy cập yêu cầu TV. Vui lòng thử lại.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription':
+        'Các yêu cầu mùa sau từ tài khoản của bạn sẽ yêu cầu bạn phải xem xong mùa thường trước đó. Bạn có thể tắt quy tắc này lại bất cứ lúc nào.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved':
+        'Đã cập nhật quyền truy cập yêu cầu TV.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved':
+        'Đã phê duyệt · Tắt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass':
+        'Bạn có thể ghi đè quy tắc này',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied':
+        'Yêu cầu bị từ chối',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled':
+        'Đã bật cho tài khoản của bạn',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal':
+        'Đã bật cho tất cả mọi người',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff':
+        'Cần phê duyệt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending':
+        'Đang chờ phê duyệt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title':
+        'Yêu cầu xem mùa trước',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff':
+        'Tắt quy tắc này',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn':
+        'Bật cho tài khoản của tôi',
+      'components.RequestEpisodeQueueControl.watchAheadLoading':
+        'Đang tải cài đặt hàng đợi tập phim của bạn…',
+      'components.RequestEpisodeQueueControl.watchAheadOff': 'Tắt',
+      'components.RequestModal.watchAheadLabel': 'Hàng đợi tập phim',
+      'components.Login.JellyfinQuickConnectModal.cancel': 'Hủy',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest':
+        'Hủy yêu cầu',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess':
+        'Yêu cầu phê duyệt',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain':
+        'Yêu cầu phê duyệt lại',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.loadError':
+        'Không thể tải quyền truy cập yêu cầu TV.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error':
+        'Không thể cập nhật mặc định Hàng đợi tập của người dùng này. Hãy thử lại.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff':
+        'Điều này sẽ dừng việc thêm vào Hàng đợi tập trong tương lai cho tất cả các yêu cầu TV tương tác của người dùng này. Các tập đã yêu cầu sẽ vẫn ở trong SeerrNG và Sonarr.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn':
+        'Điều này sẽ giữ {count} tập trong hàng đợi phía trước cho tất cả các yêu cầu TV tương tác hiện có và tương lai của người dùng này. Các tập đã yêu cầu sẽ giữ nguyên vị trí.',
+      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle':
+        'Áp dụng mặc định Hàng đợi tập này?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription':
+        'Yêu cầu của bạn sẽ bị xóa khỏi hàng đợi xem xét. Bạn có thể yêu cầu truy cập lại sau.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle':
+        'Hủy yêu cầu truy cập của bạn?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription':
+        'Yêu cầu xem sẽ ngừng áp dụng cho tài khoản của bạn. Phê duyệt của bạn vẫn còn hiệu lực, vì vậy bạn có thể bật lại quy tắc này bất cứ lúc nào.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle':
+        'Tắt yêu cầu xem?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle':
+        'Bật yêu cầu xem?',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription':
+        'Quản trị viên người dùng sẽ xem xét yêu cầu của bạn. Sau khi được phê duyệt, bạn có thể bật quy tắc này khi sẵn sàng.',
+      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
+        'Yêu cầu quy tắc này cho tài khoản của bạn?',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -11179,6 +14987,10 @@ export const localeData = [
       'lumen.shell.or': 'or',
       'lumen.nav.comicsManga': 'Comics/Manga',
       'lumen.nav.games': 'Games',
+      'lumen.account.backToSettings': 'Back to Account Settings',
+      'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
+      'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
+      'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
     },
   },
 ] as const;

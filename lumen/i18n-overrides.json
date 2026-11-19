@@ -110,7 +110,11 @@
     "lumen.shell.pageNotFound": "Page not found",
     "lumen.shell.or": "or",
     "lumen.nav.comicsManga": "Comics/Manga",
-    "lumen.nav.games": "Games"
+    "lumen.nav.games": "Games",
+    "lumen.account.backToSettings": "Back to Account Settings",
+    "lumen.tvRequests.loadingAccess": "Loading TV request access…",
+    "lumen.tvRequests.episodeAhead.one": "{count} episode ahead",
+    "lumen.tvRequests.episodeAhead.other": "{count} episodes ahead"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -293,7 +297,11 @@
     "lumen.shell.pageNotFound": "Page introuvable",
     "lumen.shell.or": "ou",
     "lumen.nav.comicsManga": "BD/Manga",
-    "lumen.nav.games": "Jeux"
+    "lumen.nav.games": "Jeux",
+    "lumen.account.backToSettings": "Retour aux paramètres du compte",
+    "lumen.tvRequests.loadingAccess": "Chargement des autorisations de demande TV…",
+    "lumen.tvRequests.episodeAhead.one": "{count} épisode à venir",
+    "lumen.tvRequests.episodeAhead.other": "{count} épisodes à venir"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -472,6 +480,10 @@
     "lumen.shell.pageNotFound": "الصفحة غير موجودة",
     "lumen.shell.or": "أو",
     "lumen.nav.comicsManga": "قصص مصورة/مانغا",
-    "lumen.nav.games": "ألعاب"
+    "lumen.nav.games": "ألعاب",
+    "lumen.account.backToSettings": "العودة إلى إعدادات الحساب",
+    "lumen.tvRequests.loadingAccess": "جارٍ تحميل إعدادات طلبات التلفاز…",
+    "lumen.tvRequests.episodeAhead.one": "حلقة قادمة: {count}",
+    "lumen.tvRequests.episodeAhead.other": "حلقات قادمة: {count}"
   }
 }

@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings now persists the native per-user display locale, and the shell/account headings have an initial translated message slice. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Account-synced Lumen preferences
@@ -4237,3 +4237,15 @@ on desktop, iPhone, Android, and tablet and the Lumen production build passed.
 Exact latest-head hosted validation remains in progress; live provider
 behavior, bundled/native visual comparisons, and the broader workflow gaps in
 the inventory remain open.
+
+TV Request Settings now localizes the season-watch policy states, approval
+review queue, Episode Queue controls, and account navigation using existing
+SeerrNG locale messages, plus Lumen-specific labels for episode counts and
+loading text. Browser fixtures pass in English and French across desktop,
+iPhone, Android, and tablet. They verify viewer-only controls, manager review
+access, queue-default persistence, and retaining a changed value after a
+failed save so it can be retried. Matching baseline and French candidate
+renders were compared at desktop and iPhone widths; only copy and natural text wrapping
+changed, with no horizontal overflow. Arabic rendering, live provider
+authorization, bundled-mount visuals, and the rest of the account role matrix
+remain open.

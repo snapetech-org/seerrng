@@ -8,6 +8,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const GATE = {
@@ -33,6 +34,17 @@ const GATE = {
     action: 'disable',
   },
 } as const;
+const gateStatusMessages: Record<GateStatus, string> = {
+  off: 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusOff',
+  denied:
+    'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusDenied',
+  pending:
+    'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusPending',
+  approved:
+    'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusApproved',
+  enabled:
+    'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusEnabled',
+};
 type GateStatus = keyof typeof GATE;
 interface GateAccess {
   status: GateStatus;
@@ -52,6 +64,7 @@ interface PendingAccessRequest {
 }
 
 function AccessReview({ viewerId }: { viewerId: number }) {
+  const { t } = useLumenLocale();
   const { data, error, reload } = useApi<PendingAccessRequest[]>(
     '/user/tv-season-watch-gate-requests'
   );
@@ -68,7 +81,13 @@ function AccessReview({ viewerId }: { viewerId: number }) {
     return () => window.clearInterval(timer);
   }, [reload]);
 
-  const label = pending?.decision === 'approve' ? 'Approve' : 'Decline';
+  const label =
+    pending?.decision === 'approve'
+      ? t(
+          'components.UserList.TvSeasonWatchGateApprovalQueue.approve',
+          'Approve'
+        )
+      : t('components.UserList.TvSeasonWatchGateApprovalQueue.deny', 'Decline');
 
   async function review() {
     if (!pending || pending.request.id === viewerId || working.current) return;
@@ -91,7 +110,15 @@ function AccessReview({ viewerId }: { viewerId: number }) {
       );
     } catch (error) {
       if (generation !== sessionGeneration()) return;
-      setFailure(friendlyError(error, 'Could not review this request.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'components.UserList.TvSeasonWatchGateApprovalQueue.error',
+            'Could not review this request.'
+          )
+        )
+      );
     } finally {
       if (generation === sessionGeneration()) {
         setPending(undefined);
@@ -103,7 +130,12 @@ function AccessReview({ viewerId }: { viewerId: number }) {
   }
 
   return (
-    <Section title="Previous-Season Watch Requests">
+    <Section
+      title={t(
+        'components.UserList.TvSeasonWatchGateApprovalQueue.title',
+        'Previous-season watch requests'
+      )}
+    >
       <ServiceNote error={error} what="access requests" retry={reload} />
       {failure && (
         <p className="note" role="alert">
@@ -121,7 +153,12 @@ function AccessReview({ viewerId }: { viewerId: number }) {
         </p>
       )}
       {data?.length === 0 && (
-        <p className="note">No pending access requests.</p>
+        <p className="note">
+          {t(
+            'components.UserList.TvSeasonWatchGateApprovalQueue.empty',
+            'No pending access requests.'
+          )}
+        </p>
       )}
       {!!data?.length && (
         <ul className="setlist">
@@ -131,26 +168,44 @@ function AccessReview({ viewerId }: { viewerId: number }) {
                 <b>{request.displayName}</b>
                 {request.requestedAt && (
                   <small>
-                    Requested{' '}
-                    {new Date(request.requestedAt).toLocaleDateString()}
+                    {t(
+                      'components.UserList.TvSeasonWatchGateApprovalQueue.requested',
+                      'Requested {date}',
+                      {
+                        date: new Date(
+                          request.requestedAt
+                        ).toLocaleDateString(),
+                      }
+                    )}
                   </small>
                 )}
               </div>
               {request.id === viewerId ? (
-                <small>Another user manager must review your request.</small>
+                <small>
+                  {t(
+                    'components.UserList.TvSeasonWatchGateApprovalQueue.ownRequest',
+                    'Another user manager must review your request.'
+                  )}
+                </small>
               ) : (
                 <div className="toolbar">
                   <button
                     className="btn btn-quiet btn-sm"
                     onClick={() => setPending({ request, decision: 'deny' })}
                   >
-                    Decline
+                    {t(
+                      'components.UserList.TvSeasonWatchGateApprovalQueue.deny',
+                      'Decline'
+                    )}
                   </button>
                   <button
                     className="btn btn-tonal btn-sm"
                     onClick={() => setPending({ request, decision: 'approve' })}
                   >
-                    Approve
+                    {t(
+                      'components.UserList.TvSeasonWatchGateApprovalQueue.approve',
+                      'Approve'
+                    )}
                   </button>
                 </div>
               )}
@@ -160,14 +215,25 @@ function AccessReview({ viewerId }: { viewerId: number }) {
       )}
       {pending && (
         <ConfirmSheet
-          title={`${label} access for ${pending.request.displayName}?`}
+          title={t(
+            pending.decision === 'approve'
+              ? 'components.UserList.TvSeasonWatchGateApprovalQueue.approveTitle'
+              : 'components.UserList.TvSeasonWatchGateApprovalQueue.denyTitle',
+            `${label} access?`
+          )}
           body={
             pending.decision === 'approve'
               ? 'This user can turn on the previous-season watch requirement for their account.'
-              : 'This user can request access again from their account.'
+              : t(
+                  'components.UserList.TvSeasonWatchGateApprovalQueue.denyDescription',
+                  'This user can request access again from their account.'
+                )
           }
           confirm={label}
-          cancel="Cancel"
+          cancel={t(
+            'components.Login.JellyfinQuickConnectModal.cancel',
+            'Cancel'
+          )}
           busy={busy}
           onConfirm={() => void review()}
           onClose={() => {
@@ -179,6 +245,18 @@ function AccessReview({ viewerId }: { viewerId: number }) {
   );
 }
 
+function episodeAheadLabel(
+  count: number,
+  locale: string,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const plural = new Intl.PluralRules(locale).select(count);
+  const key = `lumen.tvRequests.episodeAhead.${plural === 'one' ? 'one' : 'other'}`;
+  const fallback =
+    plural === 'one' ? '{count} episode ahead' : '{count} episodes ahead';
+  return t(key, fallback, { count });
+}
+
 function RequestSettings({
   id,
   permissions,
@@ -186,6 +264,7 @@ function RequestSettings({
   id: number;
   permissions: number;
 }) {
+  const { locale, t } = useLumenLocale();
   const base = `/user/${id}/settings`;
   const gatePath = base + '/tv-season-watch-gate';
   const queuePath = base + '/episode-queue';
@@ -212,6 +291,20 @@ function RequestSettings({
   const bypass = (permissions & (2 | 16)) !== 0;
   const policy = gate.data && GATE[gate.data.status];
   const count = draft ?? queue.data?.defaultEpisodeCount ?? 0;
+  const gateActionLabel = (status: GateStatus) => {
+    const action = GATE[status].action;
+    const message =
+      action === 'request'
+        ? status === 'denied'
+          ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAgain'
+          : 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.requestAccess'
+        : action === 'cancel'
+          ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.cancelRequest'
+          : action === 'enable'
+            ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOn'
+            : 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.turnOff';
+    return t(message, GATE[status].label);
+  };
   const reloadGate = gate.reload;
   useEffect(() => {
     const timer = window.setInterval(reloadGate, 60_000);
@@ -252,12 +345,28 @@ function RequestSettings({
         queue.refresh();
       } else gate.refresh();
       setNotice(
-        isQueue ? 'Episode Queue default saved.' : 'TV request access updated.'
+        isQueue
+          ? t(
+              'components.UserProfile.UserSettings.UserEpisodeQueueSettings.saved',
+              'Episode Queue default saved.'
+            )
+          : t(
+              'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.saved',
+              'TV request access updated.'
+            )
       );
     } catch {
       if (generation !== sessionGeneration()) return;
       setFailure(
-        'Could not confirm the change. Review the current settings before trying again.'
+        isQueue
+          ? t(
+              'components.UserProfile.UserSettings.UserEpisodeQueueSettings.error',
+              'Could not update this Episode Queue default. Try again.'
+            )
+          : t(
+              'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.error',
+              'Could not update TV request access. Please try again.'
+            )
       );
       if (isQueue) queue.reload();
       else gate.reload();
@@ -270,7 +379,10 @@ function RequestSettings({
 
   const label =
     confirmation?.kind === 'queue'
-      ? 'Save Episode Queue Default'
+      ? t(
+          'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save',
+          'Save default'
+        )
       : (confirmation?.label ?? '');
   return (
     <>
@@ -284,19 +396,29 @@ function RequestSettings({
           {failure}
         </p>
       )}
-      <Section title="Previous-Season Watch Requirement">
+      <Section
+        title={t(
+          'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title',
+          'Previous-season watch requirement'
+        )}
+      >
         <p className="note">
-          When enabled, later TV seasons unlock after you finish the previous
-          regular season. Specials are skipped.
+          {t(
+            'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.description',
+            'When enabled, later TV seasons unlock after you finish the previous regular season. Specials are skipped.'
+          )}
         </p>
         <ServiceNote
           error={gate.error}
-          what="TV request access"
+          what={t(
+            'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.title',
+            'TV request access'
+          )}
           retry={gate.reload}
         />
         {!gate.data && !gate.error && (
           <p className="note" role="status">
-            Loading TV request access…
+            {t('lumen.tvRequests.loadingAccess', 'Loading TV request access…')}
           </p>
         )}
         {gate.data && (
@@ -304,10 +426,17 @@ function RequestSettings({
             <div className="set">
               <b>
                 {bypass
-                  ? 'You can override this rule'
+                  ? t(
+                      'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusBypass',
+                      'You can override this rule'
+                    )
                   : gate.data.globallyEnabled
-                    ? 'Enabled for everyone'
-                    : policy?.status}
+                    ? t(
+                        'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.statusGlobal',
+                        'Enabled for everyone'
+                      )
+                    : policy &&
+                      t(gateStatusMessages[gate.data.status], policy.status)}
               </b>
               {!bypass && !gate.data.globallyEnabled && policy && (
                 <button
@@ -317,11 +446,11 @@ function RequestSettings({
                     setConfirmation({
                       kind: 'gate',
                       action: policy.action,
-                      label: policy.label,
+                      label: gateActionLabel(gate.data!.status),
                     })
                   }
                 >
-                  {policy.label}
+                  {gateActionLabel(gate.data.status)}
                 </button>
               )}
             </div>
@@ -332,19 +461,30 @@ function RequestSettings({
             to="/me/account/linked-accounts"
             className="btn btn-quiet btn-sm"
           >
-            Linked Accounts
+            {t(
+              'components.UserProfile.UserSettings.menuLinkedAccounts',
+              'Linked Accounts'
+            )}
           </Link>
         </div>
       </Section>
       {canManageUsers && <AccessReview viewerId={id} />}
-      <Section title="Episode Queue" id="episode-queue">
+      <Section
+        title={t('components.RequestModal.watchAheadLabel', 'Episode Queue')}
+        id="episode-queue"
+      >
         <p className="note">
-          Playback can keep upcoming episodes requested on interactive TV
-          requests. User managers set the account default.
+          {t(
+            'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultHelp',
+            'Playback can keep upcoming episodes requested on interactive TV requests. User managers set the account default.'
+          )}
         </p>
         <ServiceNote
           error={queue.error}
-          what="Episode Queue defaults"
+          what={t(
+            'components.UserProfile.UserSettings.UserEpisodeQueueSettings.title',
+            'Episode Queue defaults'
+          )}
           retry={queue.reload}
         />
         {!queue.data && !queue.error && (
@@ -357,14 +497,27 @@ function RequestSettings({
             <div className="set">
               {canManageUsers ? (
                 <label className="sel">
-                  <span className="lbl">Episodes Ahead</span>
+                  <span className="lbl">
+                    {t(
+                      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel',
+                      'Episodes Ahead'
+                    )}
+                  </span>
                   <select
-                    aria-label="Episodes Ahead"
+                    aria-label={t(
+                      'components.UserProfile.UserSettings.UserEpisodeQueueSettings.defaultLabel',
+                      'Episodes Ahead'
+                    )}
                     value={count}
                     disabled={busy}
                     onChange={(event) => setDraft(Number(event.target.value))}
                   >
-                    <option value={0}>Off</option>
+                    <option value={0}>
+                      {t(
+                        'components.RequestEpisodeQueueControl.watchAheadOff',
+                        'Off'
+                      )}
+                    </option>
                     {[1, 2, 3, 4, 5].map((value) => (
                       <option key={value} value={value}>
                         {value} {value === 1 ? 'episode' : 'episodes'}
@@ -375,8 +528,11 @@ function RequestSettings({
               ) : (
                 <b>
                   {count
-                    ? `${count} ${count === 1 ? 'episode' : 'episodes'} ahead`
-                    : 'Off'}
+                    ? episodeAheadLabel(count, locale, t)
+                    : t(
+                        'components.RequestEpisodeQueueControl.watchAheadOff',
+                        'Off'
+                      )}
                 </b>
               )}
               {canManageUsers && (
@@ -385,7 +541,10 @@ function RequestSettings({
                   disabled={busy || count === queue.data.defaultEpisodeCount}
                   onClick={() => setConfirmation({ kind: 'queue', count })}
                 >
-                  Save Default
+                  {t(
+                    'components.UserProfile.UserSettings.UserEpisodeQueueSettings.save',
+                    'Save default'
+                  )}
                 </button>
               )}
             </div>
@@ -394,11 +553,45 @@ function RequestSettings({
       </Section>
       {confirmation && (
         <ConfirmSheet
-          title={label + '?'}
+          title={
+            confirmation.kind === 'queue'
+              ? t(
+                  'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalTitle',
+                  'Apply this Episode Queue default?'
+                )
+              : t(
+                  confirmation.action === 'request'
+                    ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle'
+                    : confirmation.action === 'cancel'
+                      ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelTitle'
+                      : confirmation.action === 'enable'
+                        ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableTitle'
+                        : 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableTitle',
+                  `${label}?`
+                )
+          }
           body={
             confirmation.kind === 'queue'
-              ? 'This applies to existing and future interactive TV requests. Episodes already requested stay in place.'
-              : 'This changes the previous-season watch requirement for your account.'
+              ? confirmation.count === 0
+                ? t(
+                    'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff',
+                    'This stops future Episode Queue additions; existing requests stay in place.'
+                  )
+                : t(
+                    'components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOn',
+                    'This keeps {count} episodes queued ahead on existing and future requests.',
+                    { count: confirmation.count }
+                  )
+              : t(
+                  confirmation.action === 'request'
+                    ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestDescription'
+                    : confirmation.action === 'cancel'
+                      ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalCancelDescription'
+                      : confirmation.action === 'enable'
+                        ? 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalEnableDescription'
+                        : 'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalDisableDescription',
+                  'This changes the previous-season watch requirement for your account.'
+                )
           }
           confirm={label}
           busy={busy}
@@ -413,15 +606,16 @@ function RequestSettings({
 }
 
 export default function TvRequestSettings() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   return (
     <>
       <header className="ph">
-        <h1>TV Request Settings</h1>
+        <h1>{t('lumen.account.tvRequestSettings', 'TV Request Settings')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me/account">
-          Back to Account Settings
+          {t('lumen.account.backToSettings', 'Back to Account Settings')}
         </Link>
       </div>
       {user && (
