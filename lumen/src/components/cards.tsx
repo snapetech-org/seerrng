@@ -46,6 +46,7 @@ import {
   videoPlaybackMedia,
   type AvailabilityMode,
 } from '../videoAvailability';
+import { canRequestBook } from './detail';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
 import WatchlistButton from './WatchlistButton';
@@ -342,7 +343,8 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   }, [sheetOpen, hold]);
   let qb: ReactNode;
   const plex = plexUrl(playbackMedia);
-  if (s?.k === 'ok')
+  if (!quick.allowed) qb = null;
+  else if (s?.k === 'ok')
     qb =
       visibleRequestStatus?.k !== 'ok' ? null : plex ? (
         <a
@@ -410,13 +412,16 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         />
         <Glyph s={visibleRequestStatus || shown} />
         <Link className="hit" to={href} aria-label={titleOf(it)} />
-        {prefs.hoverRequest && !s && (!tv || prefs.wholeSeriesDefault) && (
-          <TouchQuick
-            label={`Request ${titleOf(it)}${tv ? ' (entire series)' : ''}`}
-            onClick={request}
-            busy={busy}
-          />
-        )}
+        {prefs.hoverRequest &&
+          quick.allowed &&
+          !s &&
+          (!tv || prefs.wholeSeriesDefault) && (
+            <TouchQuick
+              label={`Request ${titleOf(it)}${tv ? ' (entire series)' : ''}`}
+              onClick={request}
+              busy={busy}
+            />
+          )}
         <WatchlistButton
           mediaType={tv ? 'tv' : 'movie'}
           detail={{ id: it.id, title: titleOf(it) }}
@@ -453,6 +458,8 @@ export function BookCard({ b }: { b: BookResult }) {
   const titleMode = useCardTitleMode('book');
   const audio = b.bookFormat === 'audiobook';
   const { prefs } = usePrefs();
+  const { user } = useAuth();
+  const mayRequest = canRequestBook(user?.permissions);
   const toast = useToast();
   const states = useBookStates();
   const format = audio ? 'audiobook' : 'ebook';
@@ -492,6 +499,7 @@ export function BookCard({ b }: { b: BookResult }) {
   // narrator choice off (admin or personal setting) = one straight request, no picker
   const straight = !audio || !prefs.narratorChoice;
   const go = async () => {
+    if (!mayRequest) return;
     try {
       await requestBook(
         b.id,
@@ -525,17 +533,20 @@ export function BookCard({ b }: { b: BookResult }) {
             results), so no corner badge; the request still says "anyway" */}
         <Glyph s={ownershipUnknown ? null : s} />
         <Link className="hit" to={href} aria-label={b.title} />
-        {prefs.hoverRequest && (!s || ownershipUnknown) && straight && (
-          <TouchQuick
-            label={
-              ownershipUnknown
-                ? `Request ${b.title} anyway; library status is unknown`
-                : `Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`
-            }
-            onClick={request}
-            busy={busy}
-          />
-        )}
+        {prefs.hoverRequest &&
+          mayRequest &&
+          (!s || ownershipUnknown) &&
+          straight && (
+            <TouchQuick
+              label={
+                ownershipUnknown
+                  ? `Request ${b.title} anyway; library status is unknown`
+                  : `Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`
+              }
+              onClick={request}
+              busy={busy}
+            />
+          )}
         <WatchlistButton
           mediaType="book"
           detail={{ id: b.id, title: b.title }}
@@ -543,7 +554,7 @@ export function BookCard({ b }: { b: BookResult }) {
           touch
         />
         <div className="qa">
-          {prefs.hoverRequest && (
+          {prefs.hoverRequest && mayRequest && (
             <>
               <div className="qt">{b.title}</div>
               <div className="qm">
@@ -704,17 +715,17 @@ export function FeatCard({
                 {shown?.word || done}
               </span>
             )
-          ) : tv && !prefs.wholeSeriesDefault ? (
+          ) : quick.allowed && tv && !prefs.wholeSeriesDefault ? (
             <Link className="btn go" to={`/tv/${it.id}#seasons`}>
               <Icon name="list" size="sm" />
               Choose seasons
             </Link>
-          ) : (
+          ) : quick.allowed ? (
             <button className="btn go" disabled={busy} onClick={request}>
               <Icon name="plus" size="sm" />
               {tv ? 'Request series' : 'Request'}
             </button>
-          )}
+          ) : null}
         </span>
       </span>
     </div>

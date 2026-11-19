@@ -18,6 +18,8 @@ import {
   canChooseRequestOptions,
   canManageRequests,
   canRequest4k,
+  canRequestMovies,
+  canRequestSeries,
 } from './detail';
 import { useToast } from './toast';
 import { useDialog } from './useDialog';
@@ -328,12 +330,17 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
   const toast = useToast();
   const choosesOptions = useAsksRequestOptions();
   const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
+  const allowed =
+    it.mediaType === 'tv'
+      ? canRequestSeries(user?.permissions)
+      : canRequestMovies(user?.permissions);
   const [sheet, setSheet] = useState<
     'options' | 'approval' | { streamingDenial: string }
   >();
   const close = useCallback(() => setSheet(undefined), []);
   return {
     request: async () => {
+      if (!allowed) return;
       if (choosesOptions || offers4k) {
         setSheet('options');
         return;
@@ -355,6 +362,7 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
         else toast(friendlyError(error, 'Request failed'));
       }
     },
+    allowed,
     sheet: sheet ? (
       <RequestSheet
         it={it}

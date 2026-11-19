@@ -3043,6 +3043,16 @@ They show the unsupported request buttons removed while detail and status
 content stays in place. Provider behavior and bundled visual acceptance remain
 open.
 
+The same audit found request controls on movie and series cards, ebook and
+audiobook cards/details, and comic/manga cards/details. Lumen now gates these
+actions with each media type's native request permissions, including the
+quick-request sheet entry points. Eighty browser checks passed across desktop,
+iPhone, Android, and tablet for game, music, adult, book, and comic detail
+actions plus book-card actions, covering no permission and each allowed role.
+Candidate screenshots for the newly covered book and comic detail states are
+retained under `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-action-permissions/`.
+Matched native baseline comparison and live provider behavior remain open.
+
 The standalone production-preview suites for Issues, Blocklist, Download Inbox,
 and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
 and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise

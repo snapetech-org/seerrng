@@ -23,6 +23,7 @@ import { statusOf } from '../components/cards';
 import {
   ActionBar,
   canManageRequests,
+  canRequestBook,
   DetailTop,
   Facts,
   fmtHrs,
@@ -322,6 +323,7 @@ export default function BookDetail() {
             request.bookFormat === 'both')
       )
     : undefined;
+  const mayRequest = canRequestBook(user?.permissions);
   const approve = async () => {
     if (!pendingRequest || busy) return;
     setBusy(true);
@@ -363,7 +365,7 @@ export default function BookDetail() {
     }
   };
   const request = async () => {
-    if (sending.current) return;
+    if (!mayRequest || sending.current) return;
     sending.current = true;
     setBusy(true);
     try {
@@ -435,7 +437,7 @@ export default function BookDetail() {
         <Icon name="check" />
         {busy ? 'Approving…' : 'Approve request'}
       </button>
-    ) : audio && showNarr && anotherMode ? (
+    ) : !mayRequest ? null : audio && showNarr && anotherMode ? (
       chosenRow ? (
         <button
           className="btn btn-primary"

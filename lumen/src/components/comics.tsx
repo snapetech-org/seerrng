@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
+import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import {
   loadComicWork,
@@ -12,6 +13,7 @@ import {
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 import { Cover, Glyph, TouchQuick, type Stat } from './cards';
+import { canRequestComic } from './detail';
 import { comicState } from './extra';
 import { useToast } from './toast';
 import WatchlistButton from './WatchlistButton';
@@ -55,6 +57,8 @@ export async function requestComicEdition(
 
 export function ComicCard({ w }: { w: ComicWork }) {
   const { prefs, kavitaUrl } = usePrefs();
+  const { user } = useAuth();
+  const mayRequest = canRequestComic(user?.permissions);
   const toast = useToast();
   const nav = useNavigate();
   const cs = comicState(w.mediaInfo);
@@ -84,7 +88,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
   // requested: the lookup runs on the tap
   const quick = !!rec || !w.editionsResolved;
   const request = async () => {
-    if (running.current) return;
+    if (!mayRequest || running.current) return;
     running.current = true;
     setBusy(true);
     try {
@@ -161,7 +165,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
           </span>
         )}
         <Link className="hit" to={href} aria-label={w.title} />
-        {prefs.hoverRequest && !s && quick && (
+        {prefs.hoverRequest && mayRequest && !s && quick && (
           <TouchQuick
             label={`Request ${w.title}${rec ? ` (${editionLabel(rec)})` : ''}`}
             onClick={request}
@@ -179,7 +183,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
         )}
         {(prefs.hoverRequest || watchlistId) && (
           <div className="qa">
-            {prefs.hoverRequest && (
+            {prefs.hoverRequest && mayRequest && (
               <>
                 <div className="qt">{w.title}</div>
                 <div className="qm">{qm}</div>

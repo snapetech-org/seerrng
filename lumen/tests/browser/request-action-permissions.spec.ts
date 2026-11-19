@@ -44,6 +44,46 @@ const cases = [
       },
     }),
   },
+  {
+    path: '/book/OL42W',
+    label: 'Request ebook',
+    allowed: [2, 32, 34359738368],
+    configure: () => ({
+      '/book/OL42W': {
+        id: 'OL42W',
+        title: 'Fixture Ebook',
+        author: 'Fixture Author',
+        mediaType: 'book',
+        bookFormat: 'ebook',
+      },
+    }),
+  },
+  {
+    path: '/comic/work-42',
+    label: 'Request manga',
+    allowed: [2, 32, 274877906944],
+    configure: () => ({
+      '/comic/work/work-42': {
+        id: 'work-42',
+        kind: 'manga',
+        title: 'Fixture Manga',
+        editionsResolved: true,
+        recommendedId: 'edition-42',
+        editions: [
+          {
+            id: 'edition-42',
+            publisher: 'Fixture Press',
+            languageName: 'English',
+          },
+        ],
+      },
+      '/comic/edition-42': {
+        id: 'edition-42',
+        title: 'Fixture Manga',
+        mediaInfo: undefined,
+      },
+    }),
+  },
 ];
 
 for (const item of cases) {
@@ -71,11 +111,13 @@ for (const item of cases) {
               softwareEnabled: true,
               romarrEnabled: true,
               adultEnabled: true,
+              comicsEnabled: true,
               enabledMediaCategories: {
                 music: true,
                 game: true,
                 retro: true,
                 adult: true,
+                comic: true,
               },
             },
           });
@@ -87,6 +129,7 @@ for (const item of cases) {
                 game: true,
                 retro: true,
                 adult: true,
+                comic: true,
               },
             },
           });

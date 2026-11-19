@@ -19,6 +19,7 @@ import {
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
+  canRequestComic,
   DetailTop,
   Facts,
   Pill,
@@ -606,6 +607,8 @@ export function ComicDetail() {
   });
   const [pick, setPick] = useState<string | null>(null);
   const [asked, setAsked] = useState<Set<string>>(new Set());
+  const { user } = useAuth();
+  const mayRequest = canRequestComic(user?.permissions);
   const [busy, setBusy] = useState(false);
   // set at once, unlike busy: a double tap can't send the request twice
   const sending = useRef(false);
@@ -670,7 +673,7 @@ export function ComicDetail() {
         .filter(Boolean)
     : plainText(c?.description);
   const request = async () => {
-    if (!chosen || sending.current) return;
+    if (!mayRequest || !chosen || sending.current) return;
     sending.current = true;
     setBusy(true);
     try {
@@ -719,7 +722,7 @@ export function ComicDetail() {
         <Icon name={s.ico} />
         {s.word}
       </button>
-    ) : (
+    ) : !mayRequest ? null : (
       <button className="btn btn-primary" disabled={busy} onClick={request}>
         <Icon name="plus" />
         {editions.length > 1
