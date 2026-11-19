@@ -262,7 +262,9 @@ function SearchResults({
   const publicSettings = usePublicSettings();
   const seriesFormat =
     f === 'ebook' ? 'ebook' : f === 'audio' ? 'audiobook' : undefined;
+  const resultPage = searchResultPage(p);
   const showSeries =
+    resultPage === 1 &&
     prefs.showBooks &&
     publicSettings?.booksEnabled === true &&
     (f === 'all' || seriesFormat !== undefined) &&
@@ -279,7 +281,6 @@ function SearchResults({
     (f === 'movie' || f === 'tv') && titlePath.startsWith('/discover/');
   const hasMusicFilters = f === 'music' && activeMusicSearchFilters(p);
   const hasDiscoveryFilters = hasVideoFilters || hasMusicFilters;
-  const resultPage = searchResultPage(p);
   const hasSearch = !!term0 || hasDiscoveryFilters;
   const wantsTitles =
     hasSearch &&
@@ -290,7 +291,6 @@ function SearchResults({
       f === 'music' ||
       f === 'magazine' ||
       f === 'sports');
-  const cataloguePage = f === 'all' ? 1 : resultPage;
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
     hasSearch ? null : '/discover/trending'
@@ -363,7 +363,7 @@ function SearchResults({
       };
       const comicsAsk = wantComics
         ? cachedApi<Paged<ComicWork>>(
-            `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=${cataloguePage}`
+            `/discover/comics?query=${encodeURIComponent(term)}&group=works&page=${resultPage}`
           ).catch(failure)
         : null;
       const [tr, ...brs] = await Promise.all([
@@ -371,7 +371,7 @@ function SearchResults({
         ...formats.map((fmt) =>
           wantBooks
             ? cachedApi<Paged<BookResult>>(
-                `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=${cataloguePage}`
+                `/discover/books?format=${fmt}&query=${encodeURIComponent(term)}&page=${resultPage}`
               ).catch((e: unknown) => {
                 catalogueUnavailable ||=
                   e instanceof ApiError && e.status >= 500;
@@ -383,8 +383,10 @@ function SearchResults({
       const br = brs.find(Boolean) ?? null;
       const cr = await comicsAsk;
       if (!live) return;
-      const foundComics = cr?.results || [];
-      const foundTitles = (tr?.results || []).filter(({ mediaType }) => {
+      const resultsOnPage = <T,>(response: Paged<T> | null) =>
+        response && resultPage <= response.totalPages ? response.results : [];
+      const foundComics = resultsOnPage(cr);
+      const foundTitles = resultsOnPage(tr).filter(({ mediaType }) => {
         if (f === 'music')
           return mediaType === 'album' || mediaType === 'artist';
         if (f === 'author' || f === 'tv' || f === 'magazine' || f === 'sports')
@@ -401,7 +403,7 @@ function SearchResults({
         );
       });
       let foundBooks = brs.flatMap((r, i) =>
-        (r?.results || [])
+        resultsOnPage(r)
           .filter((b) => b.mediaType === 'book')
           .map((b) =>
             f === 'all' && formats[i] === 'audiobook'
@@ -412,7 +414,7 @@ function SearchResults({
       // The format-neutral metadata endpoint also serves audiobook-only households.
       // Only canonical Open Library works can be retargeted as audiobook cards.
       if (
-        cataloguePage === 1 &&
+        resultPage === 1 &&
         format === 'audiobook' &&
         wantBooks &&
         (br || catalogueUnavailable) &&
@@ -426,8 +428,15 @@ function SearchResults({
           .filter((b) => b.mediaType === 'book' && /^OL[1-9]\d*W$/.test(b.id))
           .map((b) => ({ ...b, bookFormat: 'audiobook' }));
       }
-      const pagedResults = wantsTitles ? tr : f === 'comic' ? cr : br;
-      setTotalPages(Math.min(500, pagedResults?.totalPages ?? 1));
+      setTotalPages(
+        Math.min(
+          500,
+          Math.max(
+            1,
+            ...[tr, cr, ...brs].map((result) => result?.totalPages ?? 1)
+          )
+        )
+      );
       setTitles(foundTitles);
       setBooks(foundBooks);
       setComics(foundComics);
@@ -449,7 +458,7 @@ function SearchResults({
     term0,
     hasSearch,
     wantsTitles,
-    cataloguePage,
+    resultPage,
     prefs.showBooks,
     attempt,
     comicsOn,

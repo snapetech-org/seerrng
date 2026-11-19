@@ -8060,6 +8060,43 @@ test('regular video search links to later pages and resets on scope change', asy
   await expect(page).toHaveURL(/q=Test&sort=title&order=desc&f=movie$/);
 });
 
+test('All search reaches later book pages after the video results end', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/search?**', (route) =>
+    route.fulfill({ json: paged([{ ...movie, title: 'Only Film' }]) })
+  );
+  await page.route('**/api/v1/discover/books?**', (route) => {
+    const params = new URL(route.request().url()).searchParams;
+    const audio = params.get('format') === 'audiobook';
+    const current = Number(params.get('page'));
+    const title = audio ? 'Only Audiobook' : `Book Page ${current}`;
+    return route.fulfill({
+      json: {
+        ...paged([
+          { id: audio ? 'audio' : `book-${current}`, mediaType: 'book', title },
+        ]),
+        totalPages: audio ? 1 : 2,
+      },
+    });
+  });
+  await page.goto('./search?q=Test');
+  await expect(page.getByRole('link', { name: 'Book Page 1' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Only Audiobook' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Next Page' }).click();
+  await expect(page.getByRole('link', { name: 'Book Page 2' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Only Film' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Only Audiobook' })).toHaveCount(
+    0
+  );
+  await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
+  await page.goBack();
+  await expect(page.getByRole('link', { name: 'Book Page 1' })).toBeVisible();
+});
+
 test('scoped book and comic searches retain their catalogue page in the URL', async ({
   page,
 }) => {
@@ -8088,7 +8125,7 @@ test('scoped book and comic searches retain their catalogue page in the URL', as
       (route) => route.fulfill({ json: { ...paged([]), totalPages: 2 } })
     );
     const first = page.waitForRequest((request) => matches(request, '1'));
-    await page.goto('/search?q=Fixture&f=' + scope);
+    await page.goto('./search?q=Fixture&f=' + scope);
     await first;
     const second = page.waitForRequest((request) => matches(request, '2'));
     await page.getByRole('button', { name: 'Next Page' }).click();

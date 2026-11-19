@@ -3023,6 +3023,13 @@ opt-out, and existing collection rules. Desktop and iPhone browser
 fixtures verified sort readback on page two and a reset to page one
 when changing scope.
 
+All Search now advances book, audiobook, comic, and video catalogs
+together. Pagination stays available through the longest reported
+catalog. Catalogs that have ended no longer repeat earlier results,
+and the Book Series preview appears on page one. Twelve fixture
+checks across standalone and bundled Lumen covered mixed catalog
+lengths, Back navigation, and the existing scoped pagination.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express
