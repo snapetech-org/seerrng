@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 async function fixture(
   page: Page,
   status: Record<string, unknown> | undefined,
@@ -89,7 +92,7 @@ for (const [stage, percent, word] of [
 ] as const) {
   test(`${stage} ${percent} uses current request truth`, async ({ page }) => {
     const calls = await fixture(page, { stage, percent });
-    await page.goto('/requests?tab=active');
+    await page.goto(appPath('/requests?tab=active'));
     const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
     await expect(row).toBeVisible();
     await expect(row.locator('.st')).toContainText(word);
@@ -102,7 +105,7 @@ test('older backend falls back without treating an ebook as audio', async ({
   page,
 }) => {
   const calls = await fixture(page, undefined, true);
-  await page.goto('/requests?tab=active');
+  await page.goto(appPath('/requests?tab=active'));
   const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
   await expect(row).toBeVisible();
   await expect(row.getByText('In library', { exact: true })).toHaveCount(0);
@@ -114,7 +117,7 @@ test('an outage does not downgrade to coarse legacy status', async ({
   page,
 }) => {
   const calls = await fixture(page, undefined, false, true);
-  await page.goto('/requests?tab=active');
+  await page.goto(appPath('/requests?tab=active'));
   await expect(page.getByRole('alert')).toContainText('Couldn’t load requests');
   await page.getByRole('button', { name: 'Retry', exact: true }).click();
   await expect.poll(() => calls.length).toBeGreaterThan(2);
@@ -167,7 +170,7 @@ test('Available uses lifecycle membership and its count instead of coarse flags'
       ]),
     });
   });
-  await page.goto('/requests?tab=everyone&show=available');
+  await page.goto(appPath('/requests?tab=everyone&show=available'));
   const row = page.locator('.rq');
   await expect(row).toHaveCount(1);
   await expect(row.getByText('In library', { exact: true })).toBeVisible();
@@ -185,7 +188,7 @@ test('a completed coarse flag cannot place missing audio in Available', async ({
   await page.route('**/api/v1/request/status?**', (r) =>
     r.fulfill({ json: lifecyclePage([]) })
   );
-  await page.goto('/requests?tab=everyone&show=available');
+  await page.goto(appPath('/requests?tab=everyone&show=available'));
   await expect(page.getByText('Nothing here', { exact: true })).toBeVisible();
   await expect(page.locator('.rq')).toHaveCount(0);
   await expect(availableFilter(page)).toHaveText('Available0');
@@ -220,11 +223,11 @@ for (const everyone of [false, true])
       })
     );
     await page.goto(
-      everyone ? '/requests?tab=everyone&show=processing' : '/requests'
+      appPath(everyone ? '/requests?tab=everyone&show=processing' : '/requests')
     );
-    const download = page
-      .locator('.rq')
-      .filter({ has: page.locator('a[href="/book/OL700W?f=audio"]') });
+    const download = page.locator('.rq').filter({
+      has: page.locator(`a[href="${appPath('/book/OL700W?f=audio')}"]`),
+    });
     await expect(download).toBeVisible();
     await expect(download.locator('.st')).toContainText('Downloading 42%');
     await expect(download.getByText('In library', { exact: true })).toHaveCount(
@@ -245,7 +248,7 @@ test('legacy Available fallback rejects missing-format rows and withholds its co
   await page.route('**/api/v1/request/count', (r) =>
     r.fulfill({ json: { available: 999 } })
   );
-  await page.goto('/requests?tab=everyone&show=available');
+  await page.goto(appPath('/requests?tab=everyone&show=available'));
   await expect(page.getByText('Nothing here', { exact: true })).toBeVisible();
   await expect(page.locator('.rq')).toHaveCount(0);
   await expect(availableFilter(page)).toHaveText('Available');
@@ -264,7 +267,7 @@ for (const status of [401, 403, 503])
       lifecycleCalls++;
       return r.fulfill({ status, json: { message: 'Unavailable' } });
     });
-    await page.goto('/requests?tab=everyone&show=available');
+    await page.goto(appPath('/requests?tab=everyone&show=available'));
     await expect(page.getByRole('alert')).toContainText(
       'Couldn’t load requests'
     );
@@ -290,7 +293,7 @@ test('malformed successful lifecycle data does not become legacy availability', 
       ]),
     })
   );
-  await page.goto('/requests?tab=everyone&show=available');
+  await page.goto(appPath('/requests?tab=everyone&show=available'));
   await expect(page.getByRole('alert')).toContainText('Couldn’t load requests');
   expect(
     calls.some((q) => new URLSearchParams(q).get('filter') === 'available')
@@ -337,7 +340,7 @@ test('a double click on Cancel cancels the request once', async ({ page }) => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     await route.fulfill({ status: 204 });
   });
-  await page.goto('/requests?tab=active');
+  await page.goto(appPath('/requests?tab=active'));
   const row = page.locator('.rq').filter({ hasText: 'Requested audio' });
   await row.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.getByRole('button', { name: 'Cancel request' }).dblclick();
@@ -407,7 +410,7 @@ for (const admin of [false, true]) {
         body: `event: downloads\ndata: ${JSON.stringify([{ id: token, state: 'downloading', size: 100, sizeLeft: 35, progress: 0.65 }])}\n\n`,
       });
     });
-    await page.goto('/requests?tab=all');
+    await page.goto(appPath('/requests?tab=all'));
     await expect(
       page.getByText('Downloading 10%', { exact: true })
     ).toBeVisible();
@@ -462,7 +465,7 @@ test('available request history finds download copies on demand and links the se
       },
     });
   });
-  await page.goto('/requests?requestId=614');
+  await page.goto(appPath('/requests?requestId=614'));
   const history = page.getByRole('dialog', { name: 'Request history' });
   const find = history.getByRole('button', { name: 'Find Download Files' });
   await expect(find).toBeVisible();
@@ -502,7 +505,7 @@ test('a bookmarked TV request shows its season and episode selection', async ({
       },
     });
   });
-  await page.goto('/requests?requestId=615');
+  await page.goto(appPath('/requests?requestId=615'));
   const history = page.getByRole('dialog', { name: 'Request history' });
   await expect(
     history.getByText('Invalid request history response.')
@@ -510,14 +513,14 @@ test('a bookmarked TV request shows its season and episode selection', async ({
   await history.getByRole('button', { name: 'Retry' }).click();
   await expect(
     history.getByRole('link', { name: 'Open Title' })
-  ).toHaveAttribute('href', '/tv/22?quality=4k');
+  ).toHaveAttribute('href', appPath('/tv/22?quality=4k'));
   const seasons = history.getByRole('list', { name: 'Requested seasons' });
   await expect(
     seasons.getByRole('link', { name: 'Season 2', exact: true })
-  ).toHaveAttribute('href', '/tv/22?quality=4k#season-2');
+  ).toHaveAttribute('href', appPath('/tv/22?quality=4k#season-2'));
   await expect(
     seasons.getByRole('link', { name: 'Specials', exact: true })
-  ).toHaveAttribute('href', '/tv/22?quality=4k#season-0');
+  ).toHaveAttribute('href', appPath('/tv/22?quality=4k#season-0'));
   await expect(seasons.getByRole('listitem')).toHaveText([
     /Specials.*Episodes 2 · Declined/,
     /Season 2.*Episodes 3, 5 · Approved/,
@@ -558,7 +561,7 @@ test('a focused request link keeps its resolved title in the owner cancel confir
     return route.fulfill({ status: 204 });
   });
 
-  await page.goto('/requests?requestId=616');
+  await page.goto(appPath('/requests?requestId=616'));
   const history = page.getByRole('dialog', { name: 'Request history' });
   await history.getByRole('button', { name: 'Cancel', exact: true }).click();
   await expect(
@@ -616,7 +619,7 @@ test('a request manager can approve a focused request missing from the list', as
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/requests?requestId=617');
+  await page.goto(appPath('/requests?requestId=617'));
   const history = page.getByRole('dialog', { name: 'Request history' });
   await expect(history.getByRole('button', { name: 'Approve' })).toBeVisible();
   await expect(history.getByRole('button', { name: 'Decline' })).toBeVisible();

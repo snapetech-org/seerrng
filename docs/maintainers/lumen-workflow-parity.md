@@ -640,8 +640,10 @@ Standalone Chrome at 1440 × 1000 verified the notification alias with an
 empty request list, an authorized history, Escape dismissal, and a 403
 response with no history or files. Server tests cover bundled redirects,
 classic preference, invalid or duplicate IDs, and the frontend lock.
-Native visual comparison, mobile and bundled browser checks, software
-request links, and full management from focused links remain open.
+The focused request-status suite now passes on desktop, iPhone, Android, and
+tablet against both standalone Lumen and the production Express `/lumen/`
+mount. Native visual comparison, software request links, and full management
+from focused links remain open.
 
 The focused request link also preserves owner cancellation when the request is
 absent from the current list. A browser regression confirms the title resolved
@@ -2504,6 +2506,10 @@ Pro 11. Browser fixtures checked pagination, order, and shelf preview
 identities. The focused regression now previews and creates author and series
 shelves and checks the exact target, provider, visibility, and empty-shelf
 consent payload on desktop, iPhone, Android, and tablet; all 12 cases pass.
+The combined book-grouping and request-status suite passes all 108 cases in
+both standalone and Express-mounted deployments. Bundled screenshots and the
+isolated server logs are retained under
+`/mnt/disks/scratch/codex-task-scratch/seerrng-lumen-bundled-parity-20261119/`.
 Real reader providers and matched native visual acceptance remain unverified.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-20261118/`.
