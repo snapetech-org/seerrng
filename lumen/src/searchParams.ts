@@ -96,12 +96,15 @@ export function scopedSearchPath(
   term: string
 ) {
   const page = String(searchResultPage(params));
+  const sort = params.get('sort');
+  const sortByCredit = sort === 'writer' || sort === 'director';
   if (scope === 'sports')
     return '/discover/sports?' + new URLSearchParams({ query: term, page });
   if (scope === 'movie' || scope === 'tv') {
     const filters = readFilters(params, videoFilterKeys);
     if (filters.size) {
       if (term) filters.set('search', term);
+      if (sortByCredit) filters.set('includeCredits', 'true');
       filters.set('page', page);
       return `/discover/${scope === 'movie' ? 'movies' : 'tv'}?${filters}`;
     }
@@ -117,12 +120,10 @@ export function scopedSearchPath(
     filters.set('type', 'music');
     return `/search?${filters}`;
   }
-  const sort = params.get('sort');
   const scoped =
     scope === 'author' ||
     scope === 'magazine' ||
-    ((scope === 'movie' || scope === 'tv') &&
-      (sort === 'writer' || sort === 'director'));
+    ((scope === 'movie' || scope === 'tv') && sortByCredit);
   return `/search?query=${encodeURIComponent(term)}&page=${page}${scoped ? '&type=' + scope : ''}`;
 }
 

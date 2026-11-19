@@ -38,6 +38,7 @@ import {
   findSearchProvider,
   type CombinedSearchResponse,
 } from '@server/lib/search';
+import { enrichSearchCredits } from '@server/lib/searchCredits';
 import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
 import { getSettings } from '@server/lib/settings';
 import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
@@ -60,12 +61,8 @@ import {
   searchBookshelfAuthors,
   searchBookshelfCatalogs,
 } from '@server/utils/bookshelfCatalog';
-import {
-  BoundedTaskQueue,
-  mapWithConcurrency,
-  settlePromisesWithin,
-} from '@server/utils/concurrency';
-import { getHttpErrorDetails, hasHttpStatus } from '@server/utils/httpError';
+import { settlePromisesWithin } from '@server/utils/concurrency';
+import { getHttpErrorDetails } from '@server/utils/httpError';
 import {
   buildArtistAutocompleteQuery,
   buildMusicAlbumSearchQuery,
@@ -132,15 +129,6 @@ export const MAX_SEARCH_RESULTS_PER_PROVIDER = 20;
 export const MAX_COMBINED_SEARCH_RESULTS = 100;
 export const SEARCH_PROVIDER_TIMEOUT_MS = 5_000;
 export const BOOK_SEARCH_PROVIDER_TIMEOUT_MS = 15_000;
-export const SEARCH_CREDIT_LOOKUP_CONCURRENCY = parsePositiveInt(
-  process.env.SEARCH_CREDIT_CONCURRENCY,
-  10,
-  40
-);
-const searchCreditLookupQueue = new BoundedTaskQueue(
-  SEARCH_CREDIT_LOOKUP_CONCURRENCY,
-  MAX_COMBINED_SEARCH_RESULTS
-);
 const searchRateLimit = rateLimit({
   ...SEARCH_RATE_LIMIT,
   standardHeaders: true,
@@ -296,41 +284,6 @@ const searchLazyLibrarianCatalogs = async (
     totalResults: matched.length,
     results: matched.slice(offset, offset + MAX_SEARCH_RESULTS_PER_PROVIDER),
   };
-};
-
-const WRITING_JOBS = new Set(['Screenplay', 'Story', 'Teleplay', 'Writer']);
-
-const sortedUniqueCreditNames = (values: unknown[]): string[] =>
-  [
-    ...new Set(
-      values
-        .filter((value): value is string => typeof value === 'string')
-        .map((value) => value.trim())
-        .filter(Boolean)
-    ),
-  ].sort((left, right) => left.localeCompare(right));
-
-export const extractSearchCrew = (details: {
-  credits?: { crew?: { job?: string; name?: string }[] };
-  created_by?: { name?: string }[];
-}) => {
-  const crew = details.credits?.crew ?? [];
-  const directors = sortedUniqueCreditNames(
-    crew
-      .filter((credit) => credit.job === 'Director')
-      .map((credit) => credit.name)
-  );
-  const creditedWriters = crew
-    .filter((credit) => credit.job && WRITING_JOBS.has(credit.job))
-    .map((credit) => credit.name);
-  const writers = sortedUniqueCreditNames([
-    ...creditedWriters,
-    ...(creditedWriters.length === 0
-      ? (details.created_by ?? []).map((creator) => creator.name)
-      : []),
-  ]);
-
-  return { directors, writers };
 };
 
 const dedupeAlbumSearchResults = <T extends { id: string }>(
@@ -1404,36 +1357,11 @@ searchRoutes.get('/', async (req, res, next) => {
     );
     const creditEnrichedResults =
       typeFilter === 'movie' || typeFilter === 'tv'
-        ? await mapWithConcurrency(
+        ? await enrichSearchCredits(
+            tmdb,
             qualityEnrichedResults,
-            SEARCH_CREDIT_LOOKUP_CONCURRENCY,
-            async (result) => {
-              if (result.mediaType !== typeFilter) {
-                return result;
-              }
-
-              try {
-                const details = await searchCreditLookupQueue.run(async () =>
-                  result.mediaType === 'movie'
-                    ? await tmdb.getMovie({ movieId: result.id, language })
-                    : await tmdb.getTvShow({ tvId: result.id, language })
-                );
-
-                return { ...result, ...extractSearchCrew(details) };
-              } catch (error) {
-                if (hasHttpStatus(error, 429)) {
-                  logger.warn(
-                    'TMDB rate limit reached during search credit enrichment; returning results without credits.',
-                    {
-                      label: 'Search',
-                      mediaId: result.id,
-                      ...getHttpErrorDetails(error),
-                    }
-                  );
-                }
-                return result;
-              }
-            }
+            typeFilter,
+            language
           )
         : qualityEnrichedResults;
 

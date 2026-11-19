@@ -105,6 +105,7 @@ import {
   getAvailableMusicQualities,
   getMusicQualityStatuses,
 } from '@server/lib/musicQualityAvailability';
+import { enrichSearchCredits } from '@server/lib/searchCredits';
 import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
 import type { RadarrSettings } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
@@ -1144,6 +1145,7 @@ const QueryFilterOptions = z.object({
   keywords: optionalTmdbQueryString(),
   excludeKeywords: optionalTmdbQueryString(),
   excludeGenre: z.literal('true').optional(),
+  includeCredits: z.literal('true').optional(),
   excludeStudio: z.literal('true').optional(),
   excludeStatus: z.literal('true').optional(),
   language: optionalTmdbQueryString(32),
@@ -1840,6 +1842,13 @@ discoverRoutes.get('/movies', async (req, res, next) => {
         localResults.results,
         req.metadataLocale
       );
+      if (query.includeCredits)
+        localResults.results = await enrichSearchCredits(
+          tmdb,
+          localResults.results,
+          'movie',
+          req.metadataLocale
+        );
       return res.status(200).json(localResults);
     }
     const feedShelf = getMovieFeedShelf(query);
@@ -2053,21 +2062,24 @@ discoverRoutes.get('/movies', async (req, res, next) => {
       { includeActiveRequest: true }
     );
 
+    const results = rankedResults.map((result) =>
+      mapMovieResult(
+        result,
+        media.find(
+          (req) => req.tmdbId === result.id && req.mediaType === MediaType.MOVIE
+        )
+      )
+    );
+
     return res.status(200).json({
       page: responsePage,
       totalPages,
       totalResults,
       stale,
       keywords: keywordData,
-      results: rankedResults.map((result) =>
-        mapMovieResult(
-          result,
-          media.find(
-            (req) =>
-              req.tmdbId === result.id && req.mediaType === MediaType.MOVIE
-          )
-        )
-      ),
+      results: query.includeCredits
+        ? await enrichSearchCredits(tmdb, results, 'movie', req.metadataLocale)
+        : results,
     });
   } catch (e) {
     logger.debug('Something went wrong retrieving movie discovery results', {
@@ -2447,6 +2459,13 @@ discoverRoutes.get('/tv', async (req, res, next) => {
         localResults.results,
         req.metadataLocale
       );
+      if (query.includeCredits)
+        localResults.results = await enrichSearchCredits(
+          tmdb,
+          localResults.results,
+          'tv',
+          req.metadataLocale
+        );
       return res.status(200).json(localResults);
     }
     const matchingKeywordIdsPromise = query.search
@@ -2569,19 +2588,23 @@ discoverRoutes.get('/tv', async (req, res, next) => {
       );
     }
 
+    const results = maturityFilteredResults.map((result) =>
+      mapTvResult(
+        result,
+        media.find(
+          (med) => med.tmdbId === result.id && med.mediaType === MediaType.TV
+        )
+      )
+    );
+
     return res.status(200).json({
       page: data.page,
       totalPages: Math.max(data.total_pages, taggedData?.total_pages ?? 0),
       totalResults: data.total_results + (taggedData?.total_results ?? 0),
       keywords: keywordData,
-      results: maturityFilteredResults.map((result) =>
-        mapTvResult(
-          result,
-          media.find(
-            (med) => med.tmdbId === result.id && med.mediaType === MediaType.TV
-          )
-        )
-      ),
+      results: query.includeCredits
+        ? await enrichSearchCredits(tmdb, results, 'tv', req.metadataLocale)
+        : results,
     });
   } catch (e) {
     logger.debug('Something went wrong retrieving popular series', {

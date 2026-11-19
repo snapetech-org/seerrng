@@ -485,9 +485,7 @@ function SearchResults({
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
   const sortOptions = searchSortOptions.filter(
-    ({ field, scopes }) =>
-      (!scopes || scopes.includes(f)) &&
-      (!hasVideoFilters || (field !== 'writer' && field !== 'director'))
+    ({ scopes }) => !scopes || scopes.includes(f)
   );
   const activeSort = sortOptions.find(({ field }) => field === p.get('sort'));
   const sortField = activeSort?.field;

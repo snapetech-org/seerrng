@@ -668,9 +668,17 @@ describe('GET /discover/movies', () => {
         searchText: 'local hd movie adventure',
       })
     );
-    const tmdbGet = mockPrivate(ExternalAPI.prototype, 'get', async () => {
-      throw new Error('TMDB must not be called for local availability');
-    });
+    const tmdbGet = mockPrivate(
+      ExternalAPI.prototype,
+      'get',
+      async (path: unknown) => {
+        assert.strictEqual(path, '/movie/456789');
+        return {
+          id: 456789,
+          credits: { crew: [{ name: 'Fixture Director', job: 'Director' }] },
+        };
+      }
+    );
 
     const agent = await login();
     const res = await agent.get('/discover/movies?availability=hd');
@@ -705,6 +713,13 @@ describe('GET /discover/movies', () => {
       (tmdbGet as { mock: { callCount: () => number } }).mock.callCount(),
       0
     );
+    const enriched = await agent.get(
+      '/discover/movies?availability=hd&includeCredits=true'
+    );
+    assert.strictEqual(enriched.status, 200);
+    assert.deepStrictEqual(enriched.body.results[0].directors, [
+      'Fixture Director',
+    ]);
   });
 
   it('rejects exclusions that local availability cannot evaluate', async () => {

@@ -7958,13 +7958,24 @@ test('a filter-only Classic series bookmark shows matching titles without a sear
             mediaType: 'tv',
             id: second ? 92 : 91,
             name: second ? 'Second Filtered Series' : 'Filtered Series Fixture',
+            directors: ['Zara'],
           },
+          ...(url.searchParams.get('includeCredits') === 'true'
+            ? [
+                {
+                  mediaType: 'tv',
+                  id: 93,
+                  name: 'Directed Series',
+                  directors: ['Ada'],
+                },
+              ]
+            : []),
         ]),
         totalPages: 2,
       },
     });
   });
-  await page.goto('/search?type=tv&genre=18&language=fr');
+  await page.goto('./search?type=tv&genre=18&language=fr');
   await expect(
     page.getByRole('link', { name: 'Filtered Series Fixture' })
   ).toBeVisible();
@@ -7985,6 +7996,13 @@ test('a filter-only Classic series bookmark shows matching titles without a sear
     page.getByRole('link', { name: 'Filtered Series Fixture' })
   ).toHaveCount(0);
   await expect(page).toHaveURL(/\/search\?f=tv$/);
+  await page.goto('./search?type=tv&genre=18&language=fr&sort=director');
+  const series = page.getByRole('link', {
+    name: /^(Directed Series|Filtered Series Fixture)$/,
+  });
+  await expect(series.first()).toHaveAccessibleName('Directed Series');
+  await page.getByLabel('Sort Results').selectOption('director:desc');
+  await expect(series.first()).toHaveAccessibleName('Filtered Series Fixture');
 });
 
 test('regular video search links to later pages and resets on scope change', async ({

@@ -3008,8 +3008,12 @@ Selecting either uses the existing scoped search response with
 credits. Results without a credit stay last. Classic bookmark
 direction is retained. Two routing tests and four browser fixture
 checks covered credit ordering in standalone and bundled Lumen.
-Discovery-filtered searches use a different response without credits.
-Whole-result ordering and matched visual review remain open.
+Discovery-filtered searches can also request credits for writer or
+director ordering. Search and discovery share the same bounded
+lookup queue. The server fixture verified that local discovery skips
+TMDB by default and includes credits when requested. Eight browser
+fixture checks across both deployments covered direct and filtered
+searches. Whole-result ordering and matched visual review remain open.
 
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched

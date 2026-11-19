@@ -1,3 +1,4 @@
+import { extractSearchCrew } from '@server/lib/searchCredits';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
 import path from 'node:path';
@@ -45,7 +46,6 @@ import searchRoutes, {
   SEARCH_PROVIDER_TIMEOUT_MS,
   SEARCH_RATE_LIMIT,
   capSearchProviderResults,
-  extractSearchCrew,
 } from './search';
 
 let app: Express;

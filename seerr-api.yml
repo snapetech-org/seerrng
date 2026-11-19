@@ -18963,6 +18963,12 @@ paths:
         - search
       parameters:
         - in: query
+          name: includeCredits
+          description: Include available writer and director names for the returned page.
+          schema:
+            type: string
+            enum: ['true']
+        - in: query
           name: page
           schema:
             type: number
@@ -19335,6 +19341,12 @@ paths:
       tags:
         - search
       parameters:
+        - in: query
+          name: includeCredits
+          description: Include available writer and director names for the returned page.
+          schema:
+            type: string
+            enum: ['true']
         - in: query
           name: page
           schema:
