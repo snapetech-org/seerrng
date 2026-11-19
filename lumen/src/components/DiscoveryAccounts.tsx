@@ -28,6 +28,41 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
     fallback: string,
     values?: Record<string, string | number>
   ) => t(`lumen.discoveryAccounts.${key}`, fallback, values);
+  const localizedFailure = (error: unknown, fallback: string) => {
+    const message = friendlyError(error, fallback);
+    const generic: Record<string, [string, string]> = {
+      'The server had a problem. Try again in a moment.': [
+        'errorServer',
+        'The server had a problem. Try again in a moment.',
+      ],
+      'Your session ended. Sign in again.': [
+        'errorSession',
+        'Your session ended. Sign in again.',
+      ],
+      'You don’t have permission to do that.': [
+        'errorPermission',
+        'You don’t have permission to do that.',
+      ],
+      'The server took too long to answer. Try again.': [
+        'errorTimeout',
+        'The server took too long to answer. Try again.',
+      ],
+      'Too many requests. Wait a minute and try again.': [
+        'errorRateLimit',
+        'Too many requests. Wait a minute and try again.',
+      ],
+      'You’re offline. Check your connection and try again.': [
+        'errorOffline',
+        'You’re offline. Check your connection and try again.',
+      ],
+      'Couldn’t reach the server. Check your connection and try again.': [
+        'errorNetwork',
+        'Couldn’t reach the server. Check your connection and try again.',
+      ],
+    };
+    const localized = generic[message];
+    return localized ? text(localized[0], localized[1]) : message;
+  };
   const [params, setParams] = useSearchParams();
   const accounts = useApi<{ accounts: Account[] }>(base);
   const config = useApi<Partial<Record<Provider, { configured: boolean }>>>(
@@ -204,7 +239,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
         if (!active()) return;
         setSimkl(undefined);
         setFailure(
-          friendlyError(
+          localizedFailure(
             error,
             text('connectFailure', 'Could not connect {provider}.', {
               provider: 'Simkl',
@@ -236,7 +271,7 @@ export default function DiscoveryAccounts({ userId }: { userId: number }) {
       onSuccess(result);
     } catch (error) {
       if (generation === sessionGeneration())
-        setFailure(friendlyError(error, fallback));
+        setFailure(localizedFailure(error, fallback));
     } finally {
       working.current = false;
       if (generation === sessionGeneration()) setBusy(false);

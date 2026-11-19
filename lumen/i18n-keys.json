@@ -390,5 +390,12 @@
   "lumen.discoveryAccounts.applicationUrl",
   "lumen.discoveryAccounts.providerUpdateFailure",
   "lumen.discoveryAccounts.connect",
-  "lumen.discoveryAccounts.anilistIncomplete"
+  "lumen.discoveryAccounts.anilistIncomplete",
+  "lumen.discoveryAccounts.errorServer",
+  "lumen.discoveryAccounts.errorSession",
+  "lumen.discoveryAccounts.errorPermission",
+  "lumen.discoveryAccounts.errorTimeout",
+  "lumen.discoveryAccounts.errorRateLimit",
+  "lumen.discoveryAccounts.errorOffline",
+  "lumen.discoveryAccounts.errorNetwork"
 ]

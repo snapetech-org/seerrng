@@ -104,4 +104,18 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
       name: candidate ? 'Connecter AniList' : 'Connect AniList',
     })
   ).toBeVisible();
+  await page.route(
+    '**/api/v1/integrations/discovery/accounts/anilist/connect',
+    (route) => route.fulfill({ status: 500, json: {} })
+  );
+  await page
+    .getByRole('button', {
+      name: candidate ? 'Connecter AniList' : 'Connect AniList',
+    })
+    .click();
+  await expect(page.getByRole('alert')).toHaveText(
+    candidate
+      ? 'Le serveur a rencontré un problème. Réessayez dans un instant.'
+      : 'The server had a problem. Try again in a moment.'
+  );
 });

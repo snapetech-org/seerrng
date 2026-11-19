@@ -480,6 +480,20 @@ export const localeData = [
         'تعذر تحديث حساب التتبع.',
       'lumen.discoveryAccounts.connect': 'الاتصال بـ {provider}',
       'lumen.discoveryAccounts.anilistIncomplete': 'تعذر إكمال تفويض AniList.',
+      'lumen.discoveryAccounts.errorServer':
+        'حدثت مشكلة في الخادم. حاول مرة أخرى بعد قليل.',
+      'lumen.discoveryAccounts.errorSession':
+        'انتهت جلستك. سجّل الدخول مرة أخرى.',
+      'lumen.discoveryAccounts.errorPermission':
+        'ليس لديك إذن لتنفيذ هذا الإجراء.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'استغرق الخادم وقتًا طويلًا للرد. حاول مرة أخرى.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'طلبات كثيرة جدًا. انتظر دقيقة ثم حاول مرة أخرى.',
+      'lumen.discoveryAccounts.errorOffline':
+        'أنت غير متصل بالإنترنت. تحقق من اتصالك وحاول مرة أخرى.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'تعذر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -1030,6 +1044,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -1521,6 +1549,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -2011,6 +2053,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -2499,6 +2555,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -2995,6 +3065,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -3482,6 +3566,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -3971,6 +4069,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -4463,6 +4575,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -4955,6 +5081,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -5444,6 +5584,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -5935,6 +6089,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -6446,6 +6614,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connecter {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'L’autorisation AniList n’a pas abouti.',
+      'lumen.discoveryAccounts.errorServer':
+        'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      'lumen.discoveryAccounts.errorSession':
+        'Votre session a expiré. Connectez-vous à nouveau.',
+      'lumen.discoveryAccounts.errorPermission':
+        'Vous n’avez pas l’autorisation d’effectuer cette action.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'Le serveur a mis trop de temps à répondre. Réessayez.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Trop de requêtes. Attendez une minute, puis réessayez.',
+      'lumen.discoveryAccounts.errorOffline':
+        'Vous êtes hors ligne. Vérifiez votre connexion et réessayez.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',
@@ -7005,6 +7187,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -7492,6 +7688,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -7984,6 +8194,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -8474,6 +8698,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -8965,6 +9203,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -9455,6 +9707,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -9945,6 +10211,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -10432,6 +10712,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -10919,6 +11213,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -11409,6 +11717,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -11897,6 +12219,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -12387,6 +12723,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -12877,6 +13227,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -13368,6 +13732,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -13858,6 +14236,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -14345,6 +14737,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -14836,6 +15242,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -15326,6 +15746,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -15816,6 +16250,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -16305,6 +16753,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -16795,6 +17257,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -17286,6 +17762,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -17773,6 +18263,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -18260,6 +18764,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -18752,6 +19270,20 @@ export const localeData = [
       'lumen.discoveryAccounts.connect': 'Connect {provider}',
       'lumen.discoveryAccounts.anilistIncomplete':
         'AniList authorization did not complete.',
+      'lumen.discoveryAccounts.errorServer':
+        'The server had a problem. Try again in a moment.',
+      'lumen.discoveryAccounts.errorSession':
+        'Your session ended. Sign in again.',
+      'lumen.discoveryAccounts.errorPermission':
+        'You don’t have permission to do that.',
+      'lumen.discoveryAccounts.errorTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.discoveryAccounts.errorRateLimit':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.discoveryAccounts.errorOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.discoveryAccounts.errorNetwork':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
 ] as const;
