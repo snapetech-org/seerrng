@@ -2997,6 +2997,12 @@ checks and twelve standalone and bundled browser checks covered
 album and ebook credit order and the prior video sorts. Results are
 ordered within the current page. Matched visual review remains open.
 
+Book and audiobook Search also offer publisher order using the
+publisher in catalog results. Classic publisher-sort bookmarks
+retain the direction. Two routing checks and four standalone and
+bundled browser checks covered bookmark routing and ebook publisher
+order in both directions, with missing publishers last.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

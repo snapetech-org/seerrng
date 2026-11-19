@@ -187,6 +187,7 @@ export interface BookResult {
   provider?: 'openlibrary' | 'bookshelf';
   title: string;
   author?: string;
+  publisher?: string;
   authorId?: string;
   isbn13?: string;
   editionId?: string;

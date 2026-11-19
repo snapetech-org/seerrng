@@ -86,6 +86,7 @@ type SearchSortFields = {
   year?: number;
   voteAverage?: number;
   author?: string;
+  publisher?: string;
   'artist-credit'?: Album['artist-credit'];
 };
 
@@ -116,6 +117,7 @@ const searchSortKeys = {
   },
   artist: artistOf,
   author: (item: SearchSortFields) => item.author,
+  publisher: (item: SearchSortFields) => item.publisher,
 };
 
 const searchSortOptions: {
@@ -157,6 +159,13 @@ const searchSortOptions: {
     field: 'author',
     asc: 'Author A–Z',
     desc: 'Author Z–A',
+    scopes: ['ebook', 'audio'],
+    defaultOrder: 'asc',
+  },
+  {
+    field: 'publisher',
+    asc: 'Publisher A–Z',
+    desc: 'Publisher Z–A',
     scopes: ['ebook', 'audio'],
     defaultOrder: 'asc',
   },

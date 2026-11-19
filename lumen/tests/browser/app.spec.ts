@@ -8163,7 +8163,7 @@ test('Classic music search bookmarks open the Music scope with album and artist 
   ).toHaveCount(0);
 });
 
-test('Classic book bookmarks sort search results by author', async ({
+test('Classic book bookmarks sort search results by author and publisher', async ({
   page,
 }) => {
   await fixtures(page);
@@ -8175,6 +8175,7 @@ test('Classic book bookmarks sort search results by author', async ({
           mediaType: 'book',
           title: 'First Book',
           author: 'Zara',
+          publisher: 'Alpha Press',
           bookFormat: 'ebook',
         },
         {
@@ -8182,6 +8183,7 @@ test('Classic book bookmarks sort search results by author', async ({
           mediaType: 'book',
           title: 'Second Book',
           author: 'Ada',
+          publisher: 'Zeta Press',
           bookFormat: 'ebook',
         },
         {
@@ -8198,6 +8200,12 @@ test('Classic book bookmarks sort search results by author', async ({
   await expect(books.first()).toHaveAccessibleName('Second Book');
   await expect(books.last()).toHaveAccessibleName('Third Book');
   await page.getByLabel('Sort Results').selectOption('author:desc');
+  await expect(books.first()).toHaveAccessibleName('First Book');
+  await expect(books.last()).toHaveAccessibleName('Third Book');
+  await page.goto('./search?query=Fixture&type=book&sort=publisher&order=desc');
+  await expect(books.first()).toHaveAccessibleName('Second Book');
+  await expect(books.last()).toHaveAccessibleName('Third Book');
+  await page.getByLabel('Sort Results').selectOption('publisher:asc');
   await expect(books.first()).toHaveAccessibleName('First Book');
   await expect(books.last()).toHaveAccessibleName('Third Book');
 });

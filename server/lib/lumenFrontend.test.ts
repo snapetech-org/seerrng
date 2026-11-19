@@ -693,6 +693,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/search?q=Fixture&sort=author&f=audio',
       ],
       [
+        '/search?query=Fixture&type=book&format=audiobook&sort=publisher&order=desc',
+        '/lumen/search?q=Fixture&sort=publisher&order=desc&f=audio',
+      ],
+      [
         '/search?type=music&genre=jazz&page=2',
         '/lumen/search?f=music&genre=jazz&page=2',
       ],
