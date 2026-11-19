@@ -29,7 +29,7 @@ configured companion was silently displaced.
 | Remaining work | Acceptance |
 | --- | --- |
 | Distinguish compatibility defaults from deliberate interface selections, then safely adopt included Lumen for existing installations/accounts | Fresh and legacy unset choices enter Lumen; explicit native/external choices survive upgrade and restart; native escape works before sign-in |
-| Provide an explicit checked import of companion preferences and branding | Preserve defaults, locks and safe URLs; enforce admin/CSRF and raster validation; failed import preserves both configurations; retire companion only after successful readback |
+| Complete companion-local branding migration | The bundled settings page imports supported JSON preferences, locks and absolute web addresses into a draft. Local logo and icon paths require separately uploading their raster files. Verify the imported settings and reuploaded branding before retiring the companion. |
 | Qualify the complete rollout against published images | Fresh and real upgrade configs, old/new accounts, dark default and saved choices, same-origin auth, direct links, optional companion and native escape at phone/tablet/desktop sizes |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real

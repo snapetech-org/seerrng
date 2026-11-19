@@ -5,6 +5,7 @@ import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useToast } from '../components/toast';
+import { parseCompanionConfig } from '../configImport';
 import { embedded, lumenAdminUrl } from '../deployment';
 import { Icon } from '../icons';
 import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
@@ -165,6 +166,7 @@ export default function LumenSettings() {
     message?: string;
   } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [storageCheck, setStorageCheck] = useState(0);
   useEffect(() => {
     if (!isAdmin) return;
@@ -224,6 +226,24 @@ export default function LumenSettings() {
     });
 
   const json = useMemo(() => JSON.stringify(cfg, null, 2) + '\n', [cfg]);
+  const importConfig = async (file: File) => {
+    if (file.size > 64 * 1024) {
+      toast('Choose a Lumen configuration file of up to 64 KiB.');
+      return;
+    }
+    setImporting(true);
+    try {
+      const imported = parseCompanionConfig(await file.text());
+      setCfg(() => imported);
+      toast('Configuration loaded into your draft. Review it before saving.');
+    } catch (error) {
+      toast(
+        error instanceof Error ? error.message : 'Could not read the file.'
+      );
+    } finally {
+      setImporting(false);
+    }
+  };
   const download = () => {
     const url = URL.createObjectURL(
       new Blob([json], { type: 'application/json' })
@@ -685,7 +705,7 @@ export default function LumenSettings() {
           <button
             className="btn btn-primary"
             onClick={save}
-            disabled={saving || !canWrite}
+            disabled={saving || importing || !canWrite}
             title={
               !saveState?.canSave
                 ? 'Saving needs writable storage. See the storage message above.'
@@ -705,6 +725,23 @@ export default function LumenSettings() {
           <button className="btn btn-tonal" onClick={copy}>
             Copy
           </button>
+          {embedded && (
+            <label className="btn btn-tonal cfg-upload">
+              {importing ? 'Reading…' : 'Import lumen-config.json'}
+              <input
+                type="file"
+                className="sr"
+                accept=".json,application/json"
+                aria-label="Import lumen-config.json"
+                disabled={!loaded || saving || importing}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = '';
+                  if (file) void importConfig(file);
+                }}
+              />
+            </label>
+          )}
         </div>
         <textarea
           className="cfg-json"
