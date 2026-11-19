@@ -308,6 +308,25 @@ test('account theme colors preserve stored overrides for other controls', async 
     await save.click();
     await expect(sidebar).toHaveCSS('border-right-color', 'rgb(42, 48, 59)');
     await expect(sidebar).toHaveCSS('background-image', 'none');
+  } else {
+    const tabs = page.getByRole('navigation', { name: 'Tabs' });
+    await expect(tabs).toHaveCSS('background-image', 'none');
+    const width = (await tabs.boundingBox())?.width;
+    const color = page.getByLabel('Sidebar Background Start');
+    const divider = page.getByLabel('Sidebar Border');
+    await color.fill('#233446');
+    await divider.fill('#506680');
+    await save.click();
+    await expect(tabs).toHaveCSS(
+      'background-image',
+      'linear-gradient(rgb(35, 52, 70), rgba(24, 27, 34, 0.72))'
+    );
+    await expect(tabs).toHaveCSS('border-top-color', 'rgb(80, 102, 128)');
+    expect((await tabs.boundingBox())?.width).toBe(width);
+    await color.fill('');
+    await divider.fill('');
+    await save.click();
+    await expect(tabs).toHaveCSS('background-image', 'none');
   }
   await background.fill('');
   await save.click();

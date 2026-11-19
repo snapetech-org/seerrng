@@ -1843,6 +1843,13 @@ pixels the bundled header stayed 71 pixels tall in all three states.
 The 390-pixel tests covered the account editor where the desktop
 header is hidden. Rendering time was not measured.
 
+In the mobile layout, the saved navigation gradient and border colors
+also paint the bottom tabs. A single saved gradient endpoint blends
+into the standard glass surface. Standalone and bundled account
+checks passed at 390 and 1440 CSS pixels. Matched phone screenshots
+preserved the 366-by-66-pixel bar, the tab spacing, and the selected
+You tab. The fixture verified both saving and clearing mobile colors.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the

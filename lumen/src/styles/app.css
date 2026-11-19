@@ -29,6 +29,7 @@
 }
 
 .tabbar {
+  --navigation-surface: var(--glass);
   position: fixed;
   z-index: 50;
   left: 50%;
@@ -39,14 +40,21 @@
   padding: 6px;
   border-radius: 30px;
   width: min(400px, calc(100% - 24px));
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
+  background: var(--navigation-surface);
+  border: 1px solid var(--sidebar-border, var(--glass-line));
   box-shadow: var(--shadow-float);
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
   transition:
     transform 0.3s var(--ease),
     opacity 0.3s;
+}
+:root[data-sidebar-gradient] :is(.tabbar, .side) {
+  background-image: linear-gradient(
+    to bottom,
+    var(--sidebar-start, var(--navigation-surface)),
+    var(--sidebar-end, var(--navigation-surface))
+  );
 }
 .tab {
   flex: 1;
@@ -1952,6 +1960,7 @@ body.is-detail .toast {
     display: none;
   }
   .side {
+    --navigation-surface: var(--surface);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -1962,14 +1971,7 @@ body.is-detail .toast {
     height: 100dvh;
     padding: 24px 14px;
     border-right: 1px solid var(--sidebar-border, var(--line));
-    background: var(--surface);
-  }
-  :root[data-sidebar-gradient] .side {
-    background-image: linear-gradient(
-      to bottom,
-      var(--sidebar-start, var(--surface)),
-      var(--sidebar-end, var(--surface))
-    );
+    background: var(--navigation-surface);
   }
   .brand {
     display: flex;
