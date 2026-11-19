@@ -5422,7 +5422,7 @@ test('System Logs restores display preferences without retaining search text', a
       },
     });
   });
-  await page.goto('/admin/logs');
+  await page.goto(testAppPath('/admin/logs'));
   await page.getByRole('combobox', { name: 'Severity' }).selectOption('error');
   await page.getByRole('combobox', { name: 'Page Size' }).selectOption('10');
   await page.getByLabel('Search Logs').fill('temporary search');
@@ -5444,7 +5444,7 @@ test('System Logs restores display preferences without retaining search text', a
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
     'temporary search'
   );
-  await page.goto('/admin/logs?page=10001');
+  await page.goto(testAppPath('/admin/logs?page=10001'));
   await expect(page.getByText('Page 10001', { exact: true })).toBeVisible();
   await expect.poll(() => queries.at(-1)?.get('skip')).toBe('100000');
   await expect(page.getByRole('button', { name: 'Next Page' })).toBeDisabled();
@@ -5453,7 +5453,7 @@ test('System Logs restores display preferences without retaining search text', a
       json: { id: 12, displayName: 'Another Admin', permissions: 2 },
     })
   );
-  await page.goto('/admin/logs');
+  await page.goto(testAppPath('/admin/logs'));
   await expect(page.getByRole('combobox', { name: 'Severity' })).toHaveValue(
     'info'
   );
@@ -5483,7 +5483,7 @@ test('System Logs keeps the same entry expanded when a newer log arrives', async
       },
     })
   );
-  await page.goto('/admin/logs');
+  await page.goto(testAppPath('/admin/logs'));
   const row = page.getByRole('listitem').filter({ hasText: 'Original entry' });
   await row.getByText('Details', { exact: true }).click();
   await expect(row.getByText('{"value":1}', { exact: true })).toBeVisible();
@@ -5523,7 +5523,7 @@ test('System Logs filters server entries and excludes non-admins', async ({
       },
     });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open System Logs' }).click();
   await expect(page.getByText('Initial result')).toBeVisible();
   await page.getByRole('button', { name: 'Next Page' }).click();
@@ -5560,7 +5560,7 @@ test('System Logs filters server entries and excludes non-admins', async ({
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ json: { id: 1, displayName: 'Member', permissions: 32 } })
   );
-  await page.goto('/admin/logs');
+  await page.goto(testAppPath('/admin/logs'));
   await expect(page).toHaveURL(/\/me$/);
   await expect(
     page.getByRole('link', { name: 'Open System Logs' })
@@ -5587,7 +5587,7 @@ test('Media Categories saves only changed instance switches and excludes non-adm
     } else reads++;
     return route.fulfill({ json: { enabledMediaCategories: categories } });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Media Categories' }).click();
   await page.getByRole('checkbox', { name: 'Movies', exact: true }).uncheck();
   await page.getByRole('button', { name: 'Save Categories' }).click();
@@ -5749,7 +5749,7 @@ test('General Settings retains application edits after failure and saves only ch
     }
     return route.fulfill({ json: saved });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open General Settings' }).click();
   const title = page.getByLabel('Application Title');
   const save = page.getByRole('button', { name: 'Save Application Settings' });
@@ -6553,7 +6553,7 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
     job.cronSchedule = schedule;
     return route.fulfill({ json: job });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Scheduled Jobs' }).click();
   await expect(
     page.getByRole('button', { name: 'Cancellation Unavailable' })
@@ -6599,7 +6599,7 @@ test('Scheduled Jobs describes calendar presets and preserves existing custom sc
       })),
     })
   );
-  await page.goto('/admin/jobs');
+  await page.goto(testAppPath('/admin/jobs'));
   for (const [name, label, schedule] of [
     ['Seconds Job', 'At Seconds 0 and 45 Each Minute', '*/45 * * * * *'],
     ['Hours Job', 'Custom Schedule', '0 0 */48 * * *'],
@@ -6662,7 +6662,7 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
       return route.fulfill({ status: 204 });
     }
   );
-  await page.goto('/admin/caches');
+  await page.goto(testAppPath('/admin/caches'));
   await expect(page.getByText('cache.example', { exact: true })).toBeVisible();
   await expect(page.getByText('/data/fixture/cache/images')).toBeVisible();
   await page.getByRole('button', { name: 'Flush DNS Entry' }).click();
@@ -6711,7 +6711,7 @@ test('About SeerrNG shows installed version and respects disabled update checks'
       },
     })
   );
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open About SeerrNG' }).click();
   await expect(page.getByText('v3.72.38', { exact: true })).toBeVisible();
   await expect(

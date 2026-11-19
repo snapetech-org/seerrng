@@ -1795,8 +1795,11 @@ Administrators can search and filter logs, page through results, inspect
 structured data, copy an entry, and opt into live refresh. Log responses
 bypass persistent application and HTTP caches. TypeScript, the production
 build, and four standalone browser fixtures passed for search, details,
-and non-admin route denial. Live server logs, clipboard and refresh,
-bundled rendering, and native visual comparison remain unverified.
+and non-admin route denial. The 24 System Logs, Scheduled Jobs, and System
+Caches browser cases also passed against standalone Vite and the freshly built
+bundled Express mount across all four viewports. Live server logs, clipboard
+actions, refresh against real jobs, and native visual comparison remain
+unverified.
 
 ### Administrator scheduled jobs
 
@@ -1809,8 +1812,8 @@ DNS, and image cache statistics and offers confirmed API and DNS flushes.
 The schedule picker preserves loaded cron expressions and describes its
 presets according to the scheduler's actual cadence. Twelve standalone
 browser cases passed across the four viewport presets for guided schedule
-editing, run confirmation, and DNS flush. Live jobs, bundled rendering,
-and native visual comparison remain open.
+editing, run confirmation, and DNS flush. Live jobs and native visual
+comparison remain open.
 
 System Caches also shows the configured image-cache directory and
 distinguishes unavailable DNS data from an empty cache. Four standalone
@@ -4045,7 +4048,7 @@ grouping and requests, requests, acquisition, collections, details, and Swipe
 passed across desktop, iPhone, Android, and tablet. Another 60 account,
 managed-user, and override-rule cases passed through the same production
 Express `/lumen/` mount. Watch Sessions and Setup added 20 cases each on both
-deployments, bringing the selected current-source qualification set to 492
+deployments, bringing the selected current-source qualification set to 476
 cases per deployment. These fixture-backed runs qualify the bundled asset and
 mount behavior; they do not replace live-provider checks or native visual
 comparison.
