@@ -305,8 +305,17 @@ submissions open the new discussion.
 Headed Chrome at 1440 × 1000 rendered the standalone movie sheet and confirmed
 a report with a synthetic API that accepted only the exact internal media ID,
 type, quality, and description. The native comparison, mobile and bundled
-layouts, and other media branches remain visually unverified. Reporting on
-behalf of another user and editing or deleting reports and comments remain open.
+layouts, and other media branches remain visually unverified. Editing or
+deleting reports and comments remains open.
+
+Manage Issues operators can now search for and select a report owner in the
+issue sheet. The reporter-search endpoint requires Manage Issues, a two-character
+query, and returns only matching account IDs and display names (up to 20); issue
+creation still rechecks the selected owner server-side. Its browser flow passed
+on desktop, iPhone, Android, and tablet, and the issue-route suite passed 44/44.
+Candidate sheet renders are retained in
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/`. Native-matched
+baseline comparison and bundled acceptance remain open.
 
 ### Issue editing and deletion increment
 
@@ -321,8 +330,8 @@ permission checks.
 Headed Chrome at 1440 × 1000 compared the baseline and candidate on the same
 standalone discussion fixture. Editing the description, confirming a manager's
 deletion of another account's reply, and confirming issue deletion all worked.
-Mobile and bundled visual checks remain open. Reporting on behalf of another
-user, advanced filters and title metadata, and Blocklist remain open.
+Mobile and bundled visual checks remain open. Advanced filters and title
+metadata, and Blocklist remain open.
 
 ### Blocklist browsing and removal increment
 

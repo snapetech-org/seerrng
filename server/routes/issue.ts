@@ -74,6 +74,50 @@ const issueTypeByFilter = {
   other: IssueType.OTHER,
 } as const;
 
+issueRoutes.get(
+  '/reporters',
+  isAuthenticated(Permission.MANAGE_ISSUES),
+  authorizedRouteAccess(Permission.MANAGE_ISSUES),
+  async (req, res, next) => {
+    const parsedQuery = parseBoundedString(req.query.q, {
+      fieldName: 'Search query',
+      maxLength: 128,
+    });
+    if ('error' in parsedQuery) {
+      return next({ status: 400, message: parsedQuery.error });
+    }
+    if (parsedQuery.value.length < 2) {
+      return next({
+        status: 400,
+        message: 'Search query must be at least 2 characters.',
+      });
+    }
+    try {
+      const query = escapeSqlLikePattern(parsedQuery.value.toLocaleLowerCase());
+      const results = await getRepository(User)
+        .createQueryBuilder('user')
+        .where(
+          `LOWER(CASE
+            WHEN user.username IS NOT NULL AND user.username != '' THEN user.username
+            WHEN user.plexUsername IS NOT NULL AND user.plexUsername != '' THEN user.plexUsername
+            WHEN user.jellyfinUsername IS NOT NULL AND user.jellyfinUsername != '' THEN user.jellyfinUsername
+            ELSE user.email
+          END) LIKE :query ESCAPE '\\'`,
+          { query: `%${query}%` }
+        )
+        .orderBy('user.id', 'ASC')
+        .take(20)
+        .getMany();
+      res.status(200).json({
+        results: results.map(({ id, displayName }) => ({ id, displayName })),
+      });
+    } catch (error) {
+      logger.error('Unable to search issue reporters', error);
+      next({ status: 500, message: 'Unable to search issue reporters.' });
+    }
+  }
+);
+
 const parseIssueMetadataFilter = (value: unknown, fieldName: string) =>
   parseBoundedString(value ?? '', {
     fieldName,

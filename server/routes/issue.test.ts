@@ -134,6 +134,40 @@ async function createIssue(
   );
 }
 
+describe('GET /issue/reporters', () => {
+  it('returns only matching reporter IDs and display names to issue managers', async () => {
+    const target = await getRepository(User).findOneByOrFail({
+      email: 'demo@seerr.dev',
+    });
+    const agent = await login();
+    const response = await agent.get('/issue/reporters').query({ q: 'demo' });
+
+    assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+    assert.deepEqual(response.body, {
+      results: [{ id: target.id, displayName: target.displayName }],
+    });
+    assert.equal(JSON.stringify(response.body).includes(target.email), false);
+  });
+
+  it('rejects short searches and users without Manage Issues', async () => {
+    const manager = await login();
+    const shortSearch = await manager.get('/issue/reporters').query({ q: 'd' });
+    assert.strictEqual(shortSearch.status, 400);
+
+    const viewer = await loginAs('demo@seerr.dev');
+    const denied = await viewer.get('/issue/reporters').query({ q: 'demo' });
+    assert.strictEqual(denied.status, 403);
+  });
+
+  it('treats LIKE wildcard characters in a reporter search literally', async () => {
+    const agent = await login();
+    const response = await agent.get('/issue/reporters').query({ q: '%%' });
+
+    assert.strictEqual(response.status, 200);
+    assert.deepEqual(response.body, { results: [] });
+  });
+});
+
 describe('Issue route validation', () => {
   it('rejects malformed issue list query filters', async () => {
     const agent = await login();

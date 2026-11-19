@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { api, ApiError, MediaStatus, type MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { useApi } from '../hooks';
-import { canCreateIssues } from '../issuePermissions';
+import { canCreateIssues, canManageIssues } from '../issuePermissions';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -17,6 +17,10 @@ interface Season {
 interface Scope {
   seasonNumber: number;
   episodeNumbers?: number[];
+}
+interface IssueReporter {
+  id: number;
+  displayName: string;
 }
 
 const TYPES = { 4: 'Other', 2: 'Audio', 1: 'Video', 3: 'Subtitles' };
@@ -137,13 +141,32 @@ function ReportSheet({
   const dialog = useRef<HTMLDivElement>(null);
   const submitting = useRef(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [is4k, setIs4k] = useState(qualities[0] ?? false);
   const [issueType, setIssueType] = useState(4);
   const [reason, setReason] = useState('other');
   const [scopes, setScopes] = useState<Scope[]>([]);
   const [message, setMessage] = useState('');
+  const [reporterSearch, setReporterSearch] = useState('');
+  const [reporterQuery, setReporterQuery] = useState('');
+  const [reporter, setReporter] = useState<IssueReporter>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const manageIssues = canManageIssues(user?.permissions);
+  useEffect(() => {
+    const timer = setTimeout(
+      () => setReporterQuery(reporterSearch.trim()),
+      300
+    );
+    return () => clearTimeout(timer);
+  }, [reporterSearch]);
+  const reporterPath =
+    manageIssues && reporterQuery.length >= 2
+      ? `/issue/reporters?q=${encodeURIComponent(reporterQuery)}`
+      : null;
+  const reporterResults = useApi<{ results: IssueReporter[] }>(reporterPath, {
+    currentPathOnly: true,
+  });
   const dismiss = () => {
     if (!submitting.current) close();
   };
@@ -193,6 +216,7 @@ function ReportSheet({
           issueType,
           message: message.trim(),
           is4k,
+          ...(reporter ? { userId: reporter.id } : {}),
           ...(reasons.length ? { issueSubtype: reason } : {}),
           ...(type === 'tv'
             ? {
@@ -296,6 +320,60 @@ function ReportSheet({
               </label>
             )}
           </div>
+          {manageIssues && (
+            <div className="toolbar">
+              <label className="sel">
+                <span className="lbl">Search</span>
+                <input
+                  className="cfg-input"
+                  type="search"
+                  aria-label="Search users"
+                  autoComplete="off"
+                  maxLength={128}
+                  placeholder="User name"
+                  value={reporterSearch}
+                  disabled={busy}
+                  onChange={(event) => setReporterSearch(event.target.value)}
+                />
+              </label>
+              <label className="sel">
+                <span className="lbl">Report for</span>
+                <select
+                  aria-label="Report for"
+                  value={reporter?.id ?? ''}
+                  disabled={busy}
+                  onChange={(event) => {
+                    const id = Number(event.target.value);
+                    setReporter(
+                      reporterResults.data?.results.find(
+                        (candidate) => candidate.id === id
+                      ) ?? (reporter?.id === id ? reporter : undefined)
+                    );
+                  }}
+                >
+                  <option value="">My account</option>
+                  {reporter &&
+                    !reporterResults.data?.results.some(
+                      (candidate) => candidate.id === reporter.id
+                    ) && (
+                      <option value={reporter.id}>
+                        {reporter.displayName}
+                      </option>
+                    )}
+                  {reporterResults.data?.results.map((candidate) => (
+                    <option key={candidate.id} value={candidate.id}>
+                      {candidate.displayName}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <ServiceNote
+                error={reporterPath ? reporterResults.error : null}
+                what="reporters"
+                retry={reporterResults.reload}
+              />
+            </div>
+          )}
           {type === 'tv' && (
             <p className="note">Choose the affected seasons or episodes.</p>
           )}

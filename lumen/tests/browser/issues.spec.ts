@@ -108,6 +108,8 @@ test('reporting uses the internal media row and opens the confirmed report', asy
           id: 20,
           title: 'Example Movie',
           genres: [],
+          releases: { results: [] },
+          credits: { crew: [], cast: [] },
           mediaInfo: { id: 654, status: 5 },
         },
       });
@@ -121,6 +123,9 @@ test('reporting uses the internal media row and opens the confirmed report', asy
   await page.goto('/movie/20');
   await page.getByRole('button', { name: 'Report an Issue' }).click();
   const dialog = page.getByRole('dialog', { name: 'Report an Issue' });
+  await expect(
+    dialog.getByRole('combobox', { name: 'Report for' })
+  ).toHaveCount(0);
   const submit = dialog.getByRole('button', { name: 'Submit Report' });
   await expect(submit).toBeDisabled();
   await dialog.getByRole('combobox', { name: 'Issue Type' }).selectOption('1');
@@ -133,6 +138,84 @@ test('reporting uses the internal media row and opens the confirmed report', asy
   expect(posts).toEqual([
     { mediaId: 654, issueType: 1, message: 'Video stutters', is4k: false },
   ]);
+});
+
+test('issue managers can report for a selected user', async ({
+  page,
+}, info) => {
+  let submitted: unknown;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 1048576 } });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: {
+          id: 20,
+          title: 'Example Movie',
+          genres: [],
+          releases: { results: [] },
+          credits: { crew: [], cast: [] },
+          mediaInfo: { id: 654, status: 5 },
+        },
+      });
+    if (path === '/issue/reporters') {
+      expect(url.searchParams.get('q')).toBe('demo');
+      return route.fulfill({
+        json: { results: [{ id: 3, displayName: 'Demo Reader' }] },
+      });
+    }
+    if (path === '/issue' && request.method() === 'POST') {
+      submitted = request.postDataJSON();
+      return route.fulfill({
+        json: {
+          id: 9,
+          status: 1,
+          issueType: 1,
+          createdBy: { id: 3, displayName: 'Demo Reader' },
+          createdAt: '2026-11-12T00:00:00Z',
+          comments: [{ id: 1, message: 'Playback fails', user: { id: 3 } }],
+        },
+      });
+    }
+    if (path === '/issue/9')
+      return route.fulfill({
+        json: {
+          id: 9,
+          status: 1,
+          issueType: 1,
+          createdBy: { id: 3, displayName: 'Demo Reader' },
+          createdAt: '2026-11-12T00:00:00Z',
+          comments: [{ id: 1, message: 'Playback fails', user: { id: 3 } }],
+        },
+      });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/movie/20');
+  await page.getByRole('button', { name: 'Report an Issue' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Report an Issue' });
+  await dialog.getByRole('searchbox').fill('demo');
+  await dialog.getByRole('combobox', { name: 'Report for' }).selectOption('3');
+  await page.screenshot({
+    path: info.outputPath('issue-on-behalf-sheet.png'),
+    animations: 'disabled',
+  });
+  await dialog.getByRole('combobox', { name: 'Issue Type' }).selectOption('1');
+  await dialog
+    .getByRole('textbox', { name: 'Issue Description' })
+    .fill('Playback fails');
+  await dialog.getByRole('button', { name: 'Submit Report' }).click();
+  await expect(page.getByRole('heading', { name: 'Issue #9' })).toBeVisible();
+  expect(submitted).toEqual({
+    mediaId: 654,
+    issueType: 1,
+    message: 'Playback fails',
+    is4k: false,
+    userId: 3,
+  });
 });
 
 test('a reporter can edit their description and confirm removal of their own reply', async ({
