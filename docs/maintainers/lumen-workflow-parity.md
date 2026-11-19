@@ -1785,6 +1785,12 @@ color normalization and readback through `/auth/me` with an unrelated
 numeric override preserved. Other Classic theme controls and matched
 visual review remain open.
 
+Theme edits send only changed colors. The API merges concurrent edits
+to different colors, including a clear and a save, while retaining other
+overrides. The 24-case account API suite and 16 browser cases per
+deployment passed. Browser tests used fixtures for save, retry, reload,
+and restore-default behavior. Matched visual review remains open.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the
