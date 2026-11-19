@@ -4164,10 +4164,11 @@ test('native search bookmarks retain the decoded term and media scope', async ({
       json: paged([
         { ...movie, title: 'Bookmark Film' },
         { id: 202, mediaType: 'tv', name: 'Bookmark Series' },
+        { id: 203, mediaType: 'tv', name: 'Another Series' },
       ]),
     });
   });
-  await page.goto('/search?query=A+%26+B&type=tv');
+  await page.goto('./search?query=A+%26+B&type=tv&sort=title&order=desc');
   await expect(page.getByRole('searchbox')).toHaveValue('A & B');
   await expect(
     page.getByRole('button', { name: 'Series', exact: true })
@@ -4179,6 +4180,13 @@ test('native search bookmarks retain the decoded term and media scope', async ({
     0
   );
   expect(queries).toContain('A & B');
+  const seriesLinks = page.getByRole('link', {
+    name: /^(Bookmark|Another) Series$/,
+  });
+  await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
+  await page.getByLabel('Sort Results').selectOption('asc');
+  await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
+  await page.getByLabel('Sort Results').selectOption('');
   await page.getByRole('button', { name: 'Movies', exact: true }).click();
   await expect(page).toHaveURL(/\/search\?q=A\+%26\+B&f=movie$/);
   await expect(page.getByRole('link', { name: 'Bookmark Film' })).toBeVisible();

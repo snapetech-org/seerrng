@@ -69,6 +69,22 @@ type ArtistResult = { mediaType: 'artist'; id: string; name: string };
 type SearchResult =
   VideoSearchResult | AuthorResult | ArtistResult | Album | Magazine | League;
 type Scope = keyof typeof SCOPES;
+const searchTitleCollator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: 'base',
+});
+
+function sortSearchTitles<T extends { title?: string; name?: string }>(
+  items: T[],
+  order: 'asc' | 'desc'
+) {
+  return [...items].sort((left, right) => {
+    const a = left.title || left.name;
+    const b = right.title || right.name;
+    if (!a || !b) return Number(!a) - Number(!b);
+    return searchTitleCollator.compare(a, b) * (order === 'desc' ? -1 : 1);
+  });
+}
 // Search stays in the section you came from (?f=movie|tv|ebook|audio|comic); "All" widens it
 export default function Search() {
   const [params, setP] = useSearchParams();
@@ -346,36 +362,43 @@ function SearchResults({
       : f === 'comic'
         ? 'Search comics and manga…'
         : `Search ${SCOPES[f].toLowerCase()}…`;
+  const titleOrder = p.get('order') === 'desc' ? 'desc' : 'asc';
+  const byTitle = p.get('sort') === 'title';
+  const orderedTitles = byTitle
+    ? sortSearchTitles(titles ?? [], titleOrder)
+    : (titles ?? []);
   const people =
     f === 'all'
-      ? (titles || []).filter((t): t is TitleResult => t.mediaType === 'person')
+      ? orderedTitles.filter((t): t is TitleResult => t.mediaType === 'person')
       : [];
-  const collections = (titles || []).filter(
-    (t) => t.mediaType === 'collection'
-  );
-  const movies = (titles || []).filter(
+  const collections = orderedTitles.filter((t) => t.mediaType === 'collection');
+  const movies = orderedTitles.filter(
     (t): t is TitleResult => t.mediaType === 'movie'
   );
-  const shows = (titles || []).filter(
+  const shows = orderedTitles.filter(
     (t): t is TitleResult => t.mediaType === 'tv'
   );
-  const authors = (titles || []).filter(
+  const authors = orderedTitles.filter(
     (item): item is AuthorResult => item.mediaType === 'author'
   );
-  const albums = (titles || []).filter(
+  const albums = orderedTitles.filter(
     (item): item is Album => item.mediaType === 'album'
   );
-  const artists = (titles || []).filter(
+  const artists = orderedTitles.filter(
     (item): item is ArtistResult => item.mediaType === 'artist'
   );
-  const magazines = (titles || []).filter(
+  const magazines = orderedTitles.filter(
     (item): item is Magazine => item.mediaType === 'magazine'
   );
-  const leagues = (titles || []).filter(
+  const leagues = orderedTitles.filter(
     (item): item is League => item.mediaType === 'sports'
   );
-  const bookCards = books || [];
-  const comicCards = comics || [];
+  const bookCards = byTitle
+    ? sortSearchTitles(books ?? [], titleOrder)
+    : (books ?? []);
+  const comicCards = byTitle
+    ? sortSearchTitles(comics ?? [], titleOrder)
+    : (comics ?? []);
   const nothing =
     titles !== null &&
     books !== null &&
@@ -452,6 +475,28 @@ function SearchResults({
             </Link>
           )}
         </div>
+        {hasSearch && (
+          <div className="toolbar">
+            <label className="sel">
+              <span className="lbl">Sort Results</span>
+              <select
+                value={byTitle ? titleOrder : ''}
+                onChange={(event) => {
+                  const next = new URLSearchParams(p);
+                  next.delete('sort');
+                  next.delete('order');
+                  if (event.target.value) next.set('sort', 'title');
+                  if (event.target.value === 'desc') next.set('order', 'desc');
+                  setP(next, { replace: true });
+                }}
+              >
+                <option value="">Best Match</option>
+                <option value="asc">Title A–Z</option>
+                <option value="desc">Title Z–A</option>
+              </select>
+            </label>
+          </div>
+        )}
         {hasDiscoveryFilters && (
           <div className="toolbar">
             <button

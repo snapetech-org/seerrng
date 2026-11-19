@@ -673,6 +673,10 @@ function workflowDeepLink(
     const term = q ?? legacyTerm;
     const type = f ?? legacyType;
     if (typeof term === 'string' && term.length <= 256) query.set('q', term);
+    if (req.query.sort === 'title') {
+      query.set('sort', 'title');
+      if (req.query.order === 'desc') query.set('order', 'desc');
+    }
     if (type === 'software') {
       for (const key of ['category', 'game', 'catalogProvider']) {
         const value = req.query[key];
