@@ -2389,6 +2389,9 @@ and tablet. The fixtures cover Plex discovery and save, Jellyfin credential
 preservation and bridge sign-in, Tautulli save and disconnect, and library and
 scan actions for Plex, Jellyfin, and Emby. They do not exercise live provider
 writes or compare the pages against matched native settings renders.
+The Jellyfin connection case also verifies that a rejected save keeps the
+edited settings available and that retry succeeds without losing the redacted
+saved credential.
 
 The remaining Services workflows have dedicated Administration pages for
 software acquisition, reader delivery, recognition, Tunerr, request override

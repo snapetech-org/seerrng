@@ -126,6 +126,7 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
     bridgeLoginEnabled: false,
   };
   const writes: { path: string; body: Record<string, unknown> }[] = [];
+  let rejectConnectionSave = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -145,6 +146,13 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
     writes.push({ path: endpoint.slice(path.length), body });
     if (endpoint.endsWith('/bridge-login'))
       return route.fulfill({ json: { bridgeLoginEnabled: body.enabled } });
+    if (endpoint === path && rejectConnectionSave) {
+      rejectConnectionSave = false;
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Media server is temporarily unavailable.' },
+      });
+    }
     return route.fulfill({ json: { ...settings, ...body, libraries: [] } });
   });
   await page.goto('/admin/media-libraries');
@@ -152,12 +160,32 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
   await page.getByLabel('Server Port').fill('8920');
   await page.getByLabel('Use HTTPS', { exact: true }).check();
   await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
+  await expect(
+    page.getByText(
+      'Could not save the Jellyfin connection. Check the address and credentials, then try again.'
+    )
+  ).toBeVisible();
+  await expect(page.getByLabel('Server Port')).toHaveValue('8920');
+  await expect(page.getByLabel('Use HTTPS', { exact: true })).toBeChecked();
+  await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
   await expect(page.getByText('Connection settings saved.')).toBeVisible();
   await expect(page.getByText('Old Library', { exact: true })).toHaveCount(0);
   const bridge = page.getByLabel('Enable Jellyfin Bridge Sign-In');
   await bridge.click();
   await expect(bridge).toBeChecked();
   expect(writes).toEqual([
+    {
+      path: '',
+      body: {
+        ip: 'jellyfin.internal',
+        port: 8920,
+        useSsl: true,
+        urlBase: '',
+        externalHostname: '',
+        jellyfinForgotPasswordUrl: '',
+        apiKey: '[REDACTED]',
+      },
+    },
     {
       path: '',
       body: {
