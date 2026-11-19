@@ -3653,3 +3653,10 @@ Matched standalone System Logs renders compared the parent of
 `3040909f4` with the updated page at 390 and 1440 CSS pixels. Both
 builds displayed the same fixture result and page-two controls after
 Next Page. The screenshots were pixel-identical at both widths.
+
+System Logs display preferences on `e2f11af24` also passed at 390 and
+1440 CSS pixels through the bundled Express mount. After real local
+sign-in and reading the isolated machine log, the browser restored
+Warnings and Errors and 50 rows on reload. The first request after
+reload used both preferences without the previous search term. The
+stored preference object contained only severity and page size.
