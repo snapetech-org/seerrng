@@ -225,10 +225,11 @@ item without deleting it. Blocklisted titles and Plex primary accounts do not
 get the control. The existing authenticated Watchlist endpoints remain
 responsible for add and remove.
 
-Twenty-four browser cases passed in standalone Lumen and another 24 against the
+Twenty-eight browser cases passed in standalone Lumen and another 28 against the
 production Express `/lumen/` mount across desktop, iPhone, Android, and tablet.
 They cover movie and series add/remove round trips, a safe first activation,
-Plex-account exclusion, and exact book, album, and magazine identities.
+Plex-account exclusion, and exact book, comic edition, album, and magazine
+identities.
 Baseline and candidate movie poster renders were captured at matching viewport
 sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
@@ -4058,7 +4059,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 24 passing cases on both deployments. The selected current-source set now totals 683 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. The selected current-source set now totals 687 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 

@@ -14,6 +14,7 @@ test('movie poster Watchlist action checks current state before add and remove',
   let removes = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
     const path = testApiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
@@ -415,6 +416,113 @@ test('book poster Watchlist action preserves the Open Library work identity', as
   await expect(
     poster.getByRole('button', {
       name: 'Remove Watchlist Fixture Book from your Watchlist',
+    })
+  ).toBeVisible();
+});
+
+test('comic poster Watchlist action preserves the ComicVine edition identity', async ({
+  page,
+}, testInfo) => {
+  let listed = false;
+  let detailReads = 0;
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32, userType: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          comicsEnabled: true,
+          enabledMediaCategories: { comic: true },
+        },
+      });
+    if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+    if (path.startsWith('/service/')) return route.fulfill({ json: [] });
+    if (path === '/discover/comics/landing')
+      return route.fulfill({
+        json: {
+          library: [],
+          trending: [],
+          newest: [],
+          western: [],
+          failed: [],
+          genres: [],
+          publishers: ['Fixture Press'],
+          comicVineConfigured: true,
+        },
+      });
+    if (path === '/discover/comics/browse')
+      return route.fulfill({
+        json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
+          results: [
+            {
+              id: '67890',
+              mediaType: 'comic',
+              kind: 'comic',
+              title: 'Watchlist Fixture Comic',
+              publisher: 'Fixture Press',
+              editions: [
+                {
+                  id: '67890',
+                  publisher: 'Fixture Press',
+                  languageName: 'English',
+                  recommended: true,
+                },
+              ],
+              editionsResolved: true,
+              recommendedId: '67890',
+            },
+          ],
+        },
+      });
+    if (path === '/comic/67890') {
+      detailReads++;
+      return route.fulfill({
+        json: {
+          id: 67890,
+          title: 'Watchlist Fixture Comic',
+          onUserWatchlist: listed,
+        },
+      });
+    }
+    if (path === '/watchlist' && route.request().method() === 'POST') {
+      expect(route.request().postDataJSON()).toMatchObject({
+        mediaType: 'comic',
+        externalId: '67890',
+        title: 'Watchlist Fixture Comic',
+      });
+      listed = true;
+      writes++;
+      return route.fulfill({ json: { id: 9002 } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(testAppPath('/comics?type=comic'));
+  const poster = page.locator('.comic-card').filter({
+    has: page.getByRole('link', { name: 'Watchlist Fixture Comic' }),
+  });
+  await expect(poster).toBeVisible();
+  await poster.scrollIntoViewIfNeeded();
+  if (testInfo.project.name === 'desktop') await poster.hover();
+  const action = poster.getByRole('button', {
+    name: 'Add Watchlist Fixture Comic to your Watchlist',
+  });
+  await expect(action).toBeVisible();
+  await action.click();
+  await expect.poll(() => detailReads).toBeGreaterThan(0);
+  await expect.poll(() => writes).toBe(1);
+  await expect(
+    poster.getByRole('button', {
+      name: 'Remove Watchlist Fixture Comic from your Watchlist',
     })
   ).toBeVisible();
 });
