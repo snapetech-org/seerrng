@@ -3030,6 +3030,13 @@ and the Book Series preview appears on page one. Twelve fixture
 checks across standalone and bundled Lumen covered mixed catalog
 lengths, Back navigation, and the existing scoped pagination.
 
+When one catalog request fails, All Search keeps successful results
+visible and offers retry. Desktop and iPhone fixtures across both
+deployments recovered from an ebook catalog 503 while retaining the
+movie result. This check covers failures reported by a catalog
+endpoint. Partial failures within an otherwise successful federated
+response and matched visual review remain open.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

@@ -8097,6 +8097,41 @@ test('All search reaches later book pages after the video results end', async ({
   await expect(page.getByRole('link', { name: 'Book Page 1' })).toBeVisible();
 });
 
+test('All search keeps successful results and retries a failed book catalog', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let bookCatalogUnavailable = true;
+  await page.route('**/api/v1/search?**', (route) =>
+    route.fulfill({ json: paged([{ ...movie, title: 'Available Film' }]) })
+  );
+  await page.route('**/api/v1/discover/books?**', (route) => {
+    const audio =
+      new URL(route.request().url()).searchParams.get('format') === 'audiobook';
+    if (audio) return route.fulfill({ json: paged([]) });
+    if (bookCatalogUnavailable) return route.fulfill({ status: 503, json: {} });
+    return route.fulfill({
+      json: paged([
+        { id: 'recovered', mediaType: 'book', title: 'Recovered Book' },
+      ]),
+    });
+  });
+  await page.goto('./search?q=Test');
+  const film = page.getByRole('link', { name: 'Available Film' });
+  const warning = page
+    .getByRole('alert')
+    .filter({ hasText: 'some search results' });
+  await expect(film).toBeVisible();
+  await expect(warning).toBeVisible();
+  bookCatalogUnavailable = false;
+  await warning.getByRole('button', { name: 'Retry' }).click();
+  await expect(film).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Recovered Book' })
+  ).toBeVisible();
+  await expect(warning).toHaveCount(0);
+});
+
 test('scoped book and comic searches retain their catalogue page in the URL', async ({
   page,
 }) => {

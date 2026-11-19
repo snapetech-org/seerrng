@@ -246,8 +246,7 @@ function SearchResults({
   const [recent, setRecent] = useState<string[]>(readRecentSearches);
   const [totalPages, setTotalPages] = useState(1);
   const [searching, setSearching] = useState(false);
-  // a lookup failed and nothing was found: an error with Retry, not "No matches"
-  const [failed, setFailed] = useState<string | null>(null);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
   const navType = useNavigationType();
   // a new key per history entry, even when Enter pushes the same URL typing already showed
@@ -342,7 +341,7 @@ function SearchResults({
       setBooks(null);
       setComics(null);
       setSearching(false);
-      setFailed(null);
+      setSearchError(null);
       return;
     }
     let live = true;
@@ -440,11 +439,7 @@ function SearchResults({
       setTitles(foundTitles);
       setBooks(foundBooks);
       setComics(foundComics);
-      setFailed(
-        foundTitles.length || foundBooks.length || foundComics.length
-          ? null
-          : error
-      );
+      setSearchError(error);
       setSearching(false);
     }, 300);
     return () => {
@@ -742,12 +737,12 @@ function SearchResults({
       )}
       {!searching && (
         <ServiceNote
-          error={failed}
-          what="search results"
+          error={searchError}
+          what={nothing ? 'search results' : 'some search results'}
           retry={() => setAttempt((n) => n + 1)}
         />
       )}
-      {nothing && !searching && !failed && (
+      {nothing && !searching && !searchError && (
         <div className="empty">
           <b>
             {term0
@@ -922,7 +917,11 @@ function SearchResults({
           <button
             className="btn btn-quiet btn-sm"
             type="button"
-            disabled={searching || !!failed || resultPage >= totalPages}
+            disabled={
+              searching ||
+              (nothing && !!searchError) ||
+              resultPage >= totalPages
+            }
             onClick={() => moveResultPage(resultPage + 1)}
           >
             Next Page
