@@ -3660,3 +3660,10 @@ sign-in and reading the isolated machine log, the browser restored
 Warnings and Errors and 50 rows on reload. The first request after
 reload used both preferences without the previous search term. The
 stored preference object contained only severity and page size.
+
+Bundled System Logs on `bc5b6b4e4` kept the same log entry expanded at
+390 and 1440 CSS pixels through the Classic bookmark and real local
+sign-in. Both runs appended a synthetic log with the same timestamp
+and different details to the isolated machine log. Refresh used the
+real logs endpoint. The original details remained open and the new
+entry stayed collapsed.
