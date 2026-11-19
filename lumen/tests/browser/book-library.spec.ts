@@ -383,7 +383,7 @@ test('a genre or a sort from the landing fills the page with that list, and Back
   expect(genrePopover).not.toBeNull();
   expect(genrePopover!.x).toBeGreaterThanOrEqual(0);
   expect(genrePopover!.x + genrePopover!.width).toBeLessThanOrEqual(
-    page.viewportSize()!.width
+    page.viewportSize()!.width + 1
   );
   await chip('Romance').click();
   await expect

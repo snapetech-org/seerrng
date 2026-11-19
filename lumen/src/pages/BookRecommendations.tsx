@@ -497,16 +497,19 @@ export default function BookRecommendations() {
                   </option>
                 </select>
               </label>
-              <label className="set">
-                Prefer Less Popular Books
+              <div className="set">
+                <label htmlFor="recommendation-create-less-popular">
+                  Prefer Less Popular Books
+                </label>
                 <input
+                  id="recommendation-create-less-popular"
                   type="checkbox"
                   checked={createLessPopular}
                   onChange={(event) =>
                     setCreateLessPopular(event.target.checked)
                   }
                 />
-              </label>
+              </div>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy || !title.trim()}

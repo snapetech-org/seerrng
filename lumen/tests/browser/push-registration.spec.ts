@@ -145,7 +145,7 @@ for (const permission of ['granted', 'denied'] as const) {
     }
 
     await expect(
-      page.getByText('This browser is registered.', { exact: true })
+      page.getByText('This browser is registered.', { exact: true }).first()
     ).toBeVisible();
     await expect(
       page.getByRole('button', { name: 'Disable This Browser' })

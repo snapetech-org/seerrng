@@ -90,7 +90,9 @@ test('team follows are reachable from sports and added and removed by exact iden
     fullPage: true,
   });
   await unfollow.click();
-  await expect(page.getByText('You are following no teams.')).toBeVisible();
+  await expect(
+    page.getByText('You are not following any teams.')
+  ).toBeVisible();
   await expect(
     picker.locator('option', { hasText: 'Fixture | Owls' })
   ).toHaveCount(1);
