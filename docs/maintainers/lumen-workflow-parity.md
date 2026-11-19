@@ -3560,3 +3560,11 @@ verified hidden titles in keyword and streaming shelves, preserved
 See All filters, and requested matches in saved-search shelves. Matched
 renders showed the remaining cards and shelf controls in their existing
 positions.
+
+The bundled production build from `70716afd7` also passed the
+configured video and saved-search shelf checks through Express at
+`/lumen/` at 390 and 1440 CSS pixels. Browser fixtures verified keyword
+and streaming visibility, retained a requested saved-search match,
+and confirmed that title, collection, person, and See All links stayed
+under the bundled base path. The backend session and metadata
+responses were fixtures.
