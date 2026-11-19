@@ -3617,3 +3617,11 @@ no cancellation handler. Standalone desktop and iPhone fixtures
 verified the disabled action and retained controls for a cancellable
 job. Matched renders reused the existing action row and button styling.
 Two API regression checks verified the unavailable cases.
+
+Bundled Scheduled Jobs passed cancellation availability at 390 and
+1440 CSS pixels on `55a97688c`. After real local sign-in through the
+Classic bookmark, Express reported one running fixture without a
+handler and one locally cancellable fixture. Lumen disabled the first
+action. Running and canceling the second fixture through the real API
+returned it to Idle. No production jobs or provider connections were
+used.
