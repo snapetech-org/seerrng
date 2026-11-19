@@ -2547,7 +2547,16 @@ test('explicit series vote counts override the Top rated default and reset clean
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/series?sort=vote_average.desc');
+  const defaultQuery = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname.endsWith('/discover/tv') &&
+      url.searchParams.get('sortBy') === 'vote_average.desc' &&
+      url.searchParams.get('voteCountGte') === '50'
+    );
+  });
+  await page.goto('./series?sort=vote_average.desc');
+  await defaultQuery;
   await page.getByLabel('Minimum Votes').fill('10');
   await page.getByLabel('Maximum Votes').fill('50');
   const query = page.waitForRequest((request) => {
@@ -4044,7 +4053,7 @@ test('native companion discovery filters retain genre matching and clear without
     return route.fulfill({ json: paged([movie]) });
   });
   await page.goto(
-    '/movies?nativeFilters=1&genre=18%2C35&sortBy=vote_average.desc&keywords=12'
+    './movies?nativeFilters=1&genre=18%2C35&sortBy=vote_average.desc&keywords=12'
   );
   await expect
     .poll(() => Object.fromEntries(reads.at(-1) ?? []))
@@ -4052,11 +4061,13 @@ test('native companion discovery filters retain genre matching and clear without
       genre: '18,35',
       sortBy: 'vote_average.desc',
       keywords: '12',
+      voteCountGte: '50',
     });
   await page.getByRole('button', { name: /clear discovery filters/i }).click();
   await expect.poll(() => reads.at(-1)?.get('sortBy')).toBe('popularity.desc');
   expect(reads.at(-1)?.has('genre')).toBe(false);
   expect(reads.at(-1)?.has('keywords')).toBe(false);
+  expect(reads.at(-1)?.has('voteCountGte')).toBe(false);
   await expect(page).toHaveURL(/\/movies$/);
 });
 

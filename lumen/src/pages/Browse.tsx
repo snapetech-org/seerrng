@@ -433,12 +433,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const genre = picked.join(matchAll ? ',' : '|');
   const genres =
     useApi<{ id: number; name: string }[]>(`/genres/${kind}`).data || [];
+  // Match Classic's default so a saved rating sort returns the same catalog.
   const defaultVotes =
-    sort === 'vote_average.desc' || sort === 'vote_average.asc'
-      ? kind === 'movie'
-        ? '500'
-        : '200'
-      : '';
+    sort === 'vote_average.desc' || sort === 'vote_average.asc' ? '50' : '';
   const minVotes = integerBound(p.get('voteCountGte'));
   const maxVotes = integerBound(p.get('voteCountLte'));
   const effectiveMinVotes = minVotes || (maxVotes ? '' : defaultVotes);

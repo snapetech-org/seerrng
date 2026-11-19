@@ -2911,6 +2911,13 @@ Lumen. The series fixture recovered from a 503 and opened the filtered
 genre after artwork returned. Bundled screenshots covered the retry
 notice and restored artwork at both widths.
 
+Movie and series rating sorts now use Classic's default minimum of 50
+TMDB votes. Explicit vote filters still take precedence. Eight browser
+checks across standalone and bundled Lumen verified the outgoing
+catalog queries for a Classic-style movie bookmark, the default series
+rating sort, and explicit series vote bounds. The checks used fixtures
+at 390 and 1440 CSS pixels.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express
