@@ -2616,13 +2616,21 @@ Lumen can browse curated series collections and artist discographies.
 Series details load collection names on expansion. Album and artist details
 link to the discography, and album-origin visits can return to that album.
 Direct bookmarks resolve in standalone and bundled locked deployments.
-Collection-wide requests, filters, and availability refresh remain open.
+The collection workflows now include selected-release requests, progressive
+movie requests, shared-availability refresh, and movie/TV and music release
+filters. Native matched comparison for video collection filters and additional
+request overrides remains open, as does live playback and acquisition.
 
 The production build, 28 browser checks, two server routing tests, and
 ten built-image proxy tests passed. Inspected series and discography grids
 using shared Lumen detail and card layouts across four viewports. Live
 catalog providers were outside the check. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-collections-20261118/`.
+The complete `collection.spec.ts` browser file was rerun on the current head:
+20 fixture cases passed across desktop, iPhone, Android, and tablet, covering
+collection entry and blocklist actions, progressive queue start/stop/restart,
+bulk request outcomes, collection playback, and media-server sync. Live
+provider behavior remains outside this fixture run.
 
 Curated collections now check availability while visible and online on
 supported media servers. Pending collections recheck on a one-minute
