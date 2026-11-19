@@ -91,6 +91,11 @@ async function openHistory(
   const dialog = page.getByRole('dialog', { name: 'Software request history' });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Fixture Software Request')).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
   return { dialog, writes };
 }
 
@@ -133,7 +138,7 @@ test('a request manager can approve a pending software request', async ({
 
 test('retry requires explicit confirmation when provider state is uncertain', async ({
   page,
-}) => {
+}, info) => {
   let confirmationNeeded = true;
   const { dialog, writes } = await openHistory(page, 32, 1, 'failed', () => {
     if (confirmationNeeded) {
@@ -146,6 +151,9 @@ test('retry requires explicit confirmation when provider state is uncertain', as
   await expect(
     dialog.getByText(/Check the download client’s queue and history/)
   ).toBeVisible();
+  await dialog.screenshot({
+    path: info.outputPath('software-history-uncertain.png'),
+  });
   expect(writes).toEqual([
     { action: 'retry', body: { confirmNoExistingDownload: false } },
   ]);
