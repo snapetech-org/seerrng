@@ -132,3 +132,94 @@ for (const override of [false, true]) {
     ]);
   });
 }
+
+test('Share & Identify is reachable from desktop and mobile navigation for request users', async ({
+  page,
+}, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Household', permissions: 34 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (path === '/resolve/capabilities')
+      return route.fulfill({ json: { enabled: false } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { enabledMediaCategories: {} } });
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('/');
+  const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
+  if (desktop) {
+    const main = page.getByRole('navigation', { name: 'Main', exact: true });
+    const link = main.getByRole('link', {
+      name: 'Share & Identify',
+      exact: true,
+    });
+    await expect(link).toBeVisible();
+    await link.click();
+    await expect(page).toHaveURL(/\/share$/);
+    await expect(page.getByRole('heading', { name: 'Share' })).toBeVisible();
+    await page.screenshot({ path: info.outputPath('share.png') });
+  } else {
+    const tabs = page.getByRole('navigation', { name: 'Tabs', exact: true });
+    await tabs.getByRole('link', { name: 'You', exact: true }).click();
+    const link = page.getByRole('link', {
+      name: 'Open Share & Identify',
+      exact: true,
+    });
+    await expect(link).toBeVisible();
+    await link.scrollIntoViewIfNeeded();
+    const linkBottom = await link.evaluate(
+      (element) => element.getBoundingClientRect().bottom
+    );
+    const tabsTop = await tabs.evaluate(
+      (element) => element.getBoundingClientRect().top
+    );
+    expect(linkBottom).toBeLessThan(tabsTop);
+    await page.screenshot({ path: info.outputPath('you.png') });
+    await link.click();
+  }
+  await expect(page).toHaveURL(/\/share$/);
+  await expect(page.getByRole('heading', { name: 'Share' })).toBeVisible();
+});
+
+test('Share & Identify navigation stays hidden without request access', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Viewer', permissions: 0 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('navigation', { name: 'Main' }).getByRole('link', {
+      name: 'Share & Identify',
+      exact: true,
+    })
+  ).toHaveCount(0);
+  await page.goto('/me');
+  await expect(
+    page.getByRole('link', {
+      name: 'Open Share & Identify',
+      exact: true,
+    })
+  ).toHaveCount(0);
+});

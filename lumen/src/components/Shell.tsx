@@ -28,7 +28,7 @@ import { usePrefs } from '../settings';
 import { VideoAvailabilityProvider } from '../videoAvailability';
 import AvatarContent from './AvatarContent';
 import { BrandMark, brandName } from './brand';
-import { canManageRequests, canRequestMovies } from './detail';
+import { canManageRequests, canRequestMovies, canUseShare } from './detail';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -301,6 +301,15 @@ export default function Shell({ children }: { children: ReactNode }) {
               {e.label}
             </NavLink>
           ))}
+          {canUseShare(user?.permissions) && (
+            <NavLink
+              to="/share"
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              <Icon name="share" />
+              Share &amp; Identify
+            </NavLink>
+          )}
           {isAdministrator(user?.permissions) && (
             <>
               <div className="lbl">Administration</div>

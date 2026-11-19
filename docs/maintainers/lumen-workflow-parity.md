@@ -3004,6 +3004,16 @@ permissions separately from bookmark routing.
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open. |
 | `/setup` | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Matched visual acceptance and live provider verification remain open. |
 
+Native SeerrNG exposes Share & Identify from Discover to users with request
+access (including administrators). Lumen now provides the same permission-gated
+desktop menu entry and a Discover link on the mobile You page. Eight focused
+browser checks passed across desktop, iPhone, Android, and tablet, including
+the no-request-access state and confirming that the mobile link clears the
+fixed tab bar after scrolling. Baseline and candidate screenshots are retained
+under `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/share-navigation/`.
+This verifies navigation and page rendering with fixtures; live link
+recognition, provider behavior, and matched visual acceptance remain open.
+
 The standalone production-preview suites for Issues, Blocklist, Download Inbox,
 and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
 and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise

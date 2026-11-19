@@ -8,6 +8,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
   canRequestMovies,
+  canUseShare,
 } from '../components/detail';
 import RequestLimits from '../components/RequestLimits';
 import { fullSeerrUrl } from '../components/Shell';
@@ -128,6 +129,23 @@ export default function Me() {
             </div>
           </div>
           <AdminLinks />
+        </Section>
+      )}
+
+      {canUseShare(user?.permissions) && (
+        <Section title="Discover">
+          <div className="setlist">
+            <div className="set">
+              <b>Share &amp; Identify</b>
+              <Link
+                className="go"
+                to="/share"
+                aria-label="Open Share & Identify"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          </div>
         </Section>
       )}
 
