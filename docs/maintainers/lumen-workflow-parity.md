@@ -4249,3 +4249,13 @@ renders were compared at desktop and iPhone widths; only copy and natural text w
 changed, with no horizontal overflow. Arabic rendering, live provider
 authorization, bundled-mount visuals, and the rest of the account role matrix
 remain open.
+
+Linked Accounts now localizes the route heading, navigation, sign-in methods,
+media-server linking form, identity-provider actions, unlink confirmation, and
+account-link feedback in English, French, and Arabic. The French fixture passes
+across desktop, iPhone, Android, and tablet and checks desktop/iPhone baseline
+and candidate renders plus horizontal overflow. The screenshot still shows
+English text in the Tracking Accounts section because that independently-owned
+Discovery component has not yet been localized. Provider authorization,
+unlinking failure and role behavior, live readback, Arabic rendering, and
+bundled-mount visuals remain open.

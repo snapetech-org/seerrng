@@ -260,6 +260,10 @@ export const localeData = [
         'سيراجع مدير المستخدم طلبك. بمجرد الموافقة، يمكنك تفعيل القاعدة عندما تكون مستعداً.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'طلب هذه القاعدة لحسابك؟',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'ليس لديك أي حسابات خارجية مرتبطة بحسابك.',
       'lumen.nav.administration': 'الإدارة',
       'lumen.nav.lumenSettings': 'إعدادات Lumen',
       'lumen.nav.seerrAdministration': 'إدارة SeerrNG',
@@ -388,6 +392,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'جارٍ تحميل إعدادات طلبات التلفاز…',
       'lumen.tvRequests.episodeAhead.one': 'حلقة قادمة: {count}',
       'lumen.tvRequests.episodeAhead.other': 'حلقات قادمة: {count}',
+      'lumen.account.linked.signInMethods': 'طرق تسجيل الدخول',
+      'lumen.account.linked.localPassword': 'كلمة المرور المحلية',
+      'lumen.account.linked.loading': 'جارٍ تحميل الحسابات المرتبطة…',
+      'lumen.account.linked.noProviders': 'لا توجد مزوّدات مرتبطة.',
+      'lumen.account.linked.linkMediaServer': 'ربط {provider}',
+      'lumen.account.linked.authorizePlex': 'تخويل Plex',
+      'lumen.account.linked.startQuickConnect': 'بدء Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'إلغاء التخويل',
+      'lumen.account.linked.waitingAuthorization': 'بانتظار التخويل…',
+      'lumen.account.linked.quickConnectInstruction':
+        'أدخل {code} في تطبيق Jellyfin مسجّل الدخول للموافقة على الربط.',
+      'lumen.account.linked.linkProvider': 'ربط {provider}',
+      'lumen.account.linked.mediaServerUsername': 'اسم مستخدم خادم الوسائط',
+      'lumen.account.linked.mediaServerPassword': 'كلمة مرور خادم الوسائط',
+      'lumen.account.linked.linkAccount': 'ربط الحساب',
+      'lumen.account.linked.unlinkTitle': 'إلغاء ربط هذا الحساب؟',
+      'lumen.account.linked.unlinkBody':
+        'ستفقد تسجيل الدخول إلى هذا الحساب عبر {provider}.',
+      'lumen.account.linked.unlinkAccount': 'إلغاء ربط الحساب',
+      'lumen.account.linked.linkedNotice': 'تم ربط الحساب.',
+      'lumen.account.linked.unlinkedNotice': 'تم إلغاء ربط الحساب.',
+      'lumen.account.linked.oidcFailure':
+        'تعذر إكمال ربط موفّر الهوية. ابدأ من جديد من الحسابات المرتبطة.',
+      'lumen.account.linked.authorizationStartFailure':
+        'تعذر بدء التخويل. تحقق من إعداد الموفّر وعنوان تطبيق SeerrNG.',
+      'lumen.account.linked.plexFailure':
+        'تعذر إكمال تخويل Plex أو ربط الحساب.',
+      'lumen.account.linked.quickConnectFailure':
+        'تعذر إكمال Quick Connect. ابدأ من جديد للحصول على رمز جديد.',
+      'lumen.account.linked.unlinkBlocked':
+        'منع SeerrNG إلغاء الربط. تحقق من وجود طريقة أخرى لتسجيل الدخول.',
+      'lumen.account.linked.linkFailure':
+        'تعذر ربط الحساب. تحقق من بيانات اعتماد خادم الوسائط ثم أعد المحاولة.',
+      'lumen.account.linked.unlinkFailure':
+        'تعذر تأكيد إلغاء الربط. حدّث الحسابات المرتبطة ثم أعد المحاولة.',
+      'lumen.account.linked.linkedProviders': 'المزوّدات المرتبطة',
+      'lumen.account.linked.localSignInStatus': 'حالة تسجيل الدخول المحلي',
+      'lumen.account.linked.quickConnect': 'اتصال Jellyfin السريع',
+      'lumen.account.linked.unlinkProvider': 'إلغاء ربط {provider}',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -711,6 +754,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Нямате външни акаунти, свързани с вашия профил.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -839,6 +886,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -1103,6 +1189,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -1231,6 +1321,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -1494,6 +1623,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Nemáte žádné externí účty propojené s vaším účtem.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -1622,6 +1755,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -1883,6 +2055,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Du har ingen eksterne konti knyttet til din konto.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2011,6 +2187,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -2280,6 +2495,10 @@ export const localeData = [
         'Ein Benutzeradministrator wird Ihre Anfrage prüfen. Nach der Genehmigung können Sie die Regel aktivieren, wenn Sie bereit sind.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Diese Regel für Ihr Konto anfordern?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Es sind keine externen Konten mit deinem Account verknüpft.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2408,6 +2627,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -2668,6 +2926,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2796,6 +3058,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -3058,6 +3359,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3186,6 +3491,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -3451,6 +3795,10 @@ export const localeData = [
         'Un administrador de usuarios revisará tu solicitud. Una vez aprobada, puedes activar la regla cuando estés listo.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         '¿Solicitar esta regla para tu cuenta?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'No existe una cuenta externa asociada a su cuenta.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3579,6 +3927,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -3844,6 +4231,10 @@ export const localeData = [
         'Un administrador de usuarios revisará tu solicitud. Una vez aprobada, puedes activar la regla cuando estés listo.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         '¿Solicitar esta regla para tu cuenta?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Usted no tiene ninguna cuenta externa vinculada a su cuenta.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3972,6 +4363,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -4234,6 +4664,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Sinu kontoga pole lingitud ühtegi välist kontot.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4362,6 +4796,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -4626,6 +5099,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4754,6 +5231,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -5018,6 +5534,10 @@ export const localeData = [
         "Un gestionnaire d'utilisateurs examinera votre demande. Une fois approuvée, vous pourrez activer la règle lorsque vous serez prêt.",
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Demander cette règle pour votre compte ?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        "Vous n'avez pas de comptes externes liés à votre compte.",
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Paramètres de Lumen',
       'lumen.nav.seerrAdministration': 'Administration de SeerrNG',
@@ -5160,6 +5680,47 @@ export const localeData = [
         'Chargement des autorisations de demande TV…',
       'lumen.tvRequests.episodeAhead.one': '{count} épisode à venir',
       'lumen.tvRequests.episodeAhead.other': '{count} épisodes à venir',
+      'lumen.account.linked.signInMethods': 'Méthodes de connexion',
+      'lumen.account.linked.localPassword': 'Mot de passe local',
+      'lumen.account.linked.loading': 'Chargement des comptes liés…',
+      'lumen.account.linked.noProviders': 'Aucun fournisseur lié.',
+      'lumen.account.linked.linkMediaServer': 'Lier {provider}',
+      'lumen.account.linked.authorizePlex': 'Autoriser Plex',
+      'lumen.account.linked.startQuickConnect': 'Démarrer Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Annuler l’autorisation',
+      'lumen.account.linked.waitingAuthorization': 'En attente d’autorisation…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Saisissez {code} dans une application Jellyfin connectée pour autoriser la liaison.',
+      'lumen.account.linked.linkProvider': 'Lier {provider}',
+      'lumen.account.linked.mediaServerUsername':
+        'Nom d’utilisateur du serveur multimédia',
+      'lumen.account.linked.mediaServerPassword':
+        'Mot de passe du serveur multimédia',
+      'lumen.account.linked.linkAccount': 'Lier le compte',
+      'lumen.account.linked.unlinkTitle': 'Délier ce compte ?',
+      'lumen.account.linked.unlinkBody':
+        'Vous ne pourrez plus vous connecter à ce compte avec {provider}.',
+      'lumen.account.linked.unlinkAccount': 'Délier le compte',
+      'lumen.account.linked.linkedNotice': 'Compte lié.',
+      'lumen.account.linked.unlinkedNotice': 'Compte délié.',
+      'lumen.account.linked.oidcFailure':
+        'Impossible de lier le fournisseur d’identité. Recommencez depuis Comptes liés.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Impossible de démarrer l’autorisation. Vérifiez la configuration du fournisseur et l’URL de SeerrNG.',
+      'lumen.account.linked.plexFailure':
+        'Impossible d’autoriser Plex ou de lier le compte.',
+      'lumen.account.linked.quickConnectFailure':
+        'Impossible de terminer Quick Connect. Recommencez pour obtenir un nouveau code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG a bloqué la dissociation. Vérifiez que vous disposez d’un autre moyen de connexion.',
+      'lumen.account.linked.linkFailure':
+        'Impossible de lier le compte. Vérifiez les identifiants du serveur multimédia puis réessayez.',
+      'lumen.account.linked.unlinkFailure':
+        'Impossible de confirmer la dissociation. Actualisez les comptes liés puis réessayez.',
+      'lumen.account.linked.linkedProviders': 'fournisseurs liés',
+      'lumen.account.linked.localSignInStatus': 'état de la connexion locale',
+      'lumen.account.linked.quickConnect': 'Quick Connect Jellyfin',
+      'lumen.account.linked.unlinkProvider': 'Délier {provider}',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',
@@ -5492,6 +6053,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5620,6 +6185,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -5880,6 +6484,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6008,6 +6616,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -6273,6 +6920,10 @@ export const localeData = [
         'एक उपयोगकर्ता प्रबंधक आपके अनुरोध की समीक्षा करेगा। एक बार स्वीकृत होने के बाद, आप तैयार होने पर नियम को चालू कर सकते हैं।',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'क्या अपने खाते के लिए इस नियम का अनुरोध करना है?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'आपके पास आपके खाते से जुड़े कोई बाहरी खाते नहीं हैं।',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6401,6 +7052,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -6664,6 +7354,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Nincs külső fiókja, amely a fiókjához lenne kapcsolva.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6792,6 +7486,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -7056,6 +7789,10 @@ export const localeData = [
         'Manajer pengguna akan meninjau permintaan Anda. Setelah disetujui, Anda dapat mengaktifkan aturan ini ketika Anda siap.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Minta aturan ini untuk akun Anda?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Anda tidak memiliki akun eksternal terkait dengan akun Anda.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7184,6 +7921,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -7447,6 +8223,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Non hai alcun account esterno collegato al tuo account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7575,6 +8355,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -7838,6 +8657,10 @@ export const localeData = [
         'ユーザーマネージャーがあなたのリクエストを確認します。承認されると、準備ができたらルートをオンにできます。',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'このルールをあなたのアカウントでリクエストしますか？',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'あなたのアカウントにリンクされている外部アカウントはありません。',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -7966,6 +8789,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -8226,6 +9088,10 @@ export const localeData = [
         '사용자 관리자가 요청을 검토합니다. 승인되면 준비가 되면 규칙을 켤 수 있습니다.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         '계정에 이 규칙을 요청하시겠습니까?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        '계정과 연결된 외부 계정이 없습니다.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -8354,6 +9220,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -8614,6 +9519,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -8742,6 +9651,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -9005,6 +9953,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9133,6 +10085,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -9394,6 +10385,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9522,6 +10517,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -9785,6 +10819,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Er zijn geen externe accounts aan je account gekoppeld.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -9913,6 +10951,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -10176,6 +11253,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Nie masz żadnych kont zewnętrznych powiązanych z Twoim kontem.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10304,6 +11385,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -10568,6 +11688,10 @@ export const localeData = [
         'Um gerente de usuários revisará sua solicitação. Uma vez aprovada, você pode ativar a regra quando estiver pronto.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Solicitar esta regra para sua conta?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Você não tem nenhuma conta externa ligada à sua conta.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -10696,6 +11820,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -10959,6 +12122,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Não tem nenhuma conta externa associada à sua conta.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -11087,6 +12254,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -11347,6 +12553,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -11475,6 +12685,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -11739,6 +12988,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'У вас нет ни одного привязанного внешнего аккаунта.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -11867,6 +13120,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -12130,6 +13422,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -12258,6 +13554,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -12521,6 +13856,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'You do not have any external accounts linked to your account.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -12649,6 +13988,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -12911,6 +14289,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Du har inte några externa konton länkade till ditt konto.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -13039,6 +14421,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -13302,6 +14723,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Hesabınıza bağlı harici hesap yok.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -13430,6 +14855,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -13694,6 +15158,10 @@ export const localeData = [
         'A user manager will review your request. Once approved, you can turn the rule on when you are ready.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Request this rule for your account?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        "У вас немає зовнішніх облікових записів, пов'язаних з вашим обліковим записом.",
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -13822,6 +15290,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -14082,6 +15589,10 @@ export const localeData = [
         '用户管理员将审核您的请求。一旦批准，您可以在准备好时开启此规则。',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         '为您的账户请求此规则？',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        '您的账号没有绑定任何外部账号。',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -14210,6 +15721,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -14470,6 +16020,10 @@ export const localeData = [
         '用戶管理員將審核您的請求。核准後，您可以隨時開啟此規則。',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         '要為您的帳戶請求此規則嗎？',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        '您的帳戶沒有任何外部帳號 。',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -14598,6 +16152,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
   {
@@ -14863,6 +16456,10 @@ export const localeData = [
         'Quản trị viên người dùng sẽ xem xét yêu cầu của bạn. Sau khi được phê duyệt, bạn có thể bật quy tắc này khi sẵn sàng.',
       'components.UserProfile.UserSettings.UserTvSeasonWatchGateAccess.modalRequestTitle':
         'Yêu cầu quy tắc này cho tài khoản của bạn?',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Link Identity Provider',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts':
+        'Bạn không có bất kỳ tài khoản bên ngoài nào liên quan đến tài khoản của bạn.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -14991,6 +16588,45 @@ export const localeData = [
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
+      'lumen.account.linked.signInMethods': 'Sign-in Methods',
+      'lumen.account.linked.localPassword': 'Local Password',
+      'lumen.account.linked.loading': 'Loading linked accounts…',
+      'lumen.account.linked.noProviders': 'No linked providers.',
+      'lumen.account.linked.linkMediaServer': 'Link {provider}',
+      'lumen.account.linked.authorizePlex': 'Authorize Plex',
+      'lumen.account.linked.startQuickConnect': 'Start Quick Connect',
+      'lumen.account.linked.cancelAuthorization': 'Cancel Authorization',
+      'lumen.account.linked.waitingAuthorization': 'Waiting for authorization…',
+      'lumen.account.linked.quickConnectInstruction':
+        'Enter {code} in a signed-in Jellyfin app to approve linking.',
+      'lumen.account.linked.linkProvider': 'Link {provider}',
+      'lumen.account.linked.mediaServerUsername': 'Media Server Username',
+      'lumen.account.linked.mediaServerPassword': 'Media Server Password',
+      'lumen.account.linked.linkAccount': 'Link Account',
+      'lumen.account.linked.unlinkTitle': 'Unlink this account?',
+      'lumen.account.linked.unlinkBody':
+        'You will lose sign-in through {provider} for this account.',
+      'lumen.account.linked.unlinkAccount': 'Unlink Account',
+      'lumen.account.linked.linkedNotice': 'Account linked.',
+      'lumen.account.linked.unlinkedNotice': 'Account unlinked.',
+      'lumen.account.linked.oidcFailure':
+        'Could not complete the identity provider link. Start again from Linked Accounts.',
+      'lumen.account.linked.authorizationStartFailure':
+        'Could not start authorization. Check the provider configuration and SeerrNG application URL.',
+      'lumen.account.linked.plexFailure':
+        'Could not complete Plex authorization or link the account.',
+      'lumen.account.linked.quickConnectFailure':
+        'Could not complete Quick Connect. Start again for a new code.',
+      'lumen.account.linked.unlinkBlocked':
+        'SeerrNG blocked unlinking. Check that you have another way to sign in.',
+      'lumen.account.linked.linkFailure':
+        'Could not link the account. Check your media-server credentials and try again.',
+      'lumen.account.linked.unlinkFailure':
+        'Could not confirm unlinking. Refresh the linked accounts before trying again.',
+      'lumen.account.linked.linkedProviders': 'linked providers',
+      'lumen.account.linked.localSignInStatus': 'local sign-in status',
+      'lumen.account.linked.quickConnect': 'Jellyfin Quick Connect',
+      'lumen.account.linked.unlinkProvider': 'Unlink {provider}',
     },
   },
 ] as const;

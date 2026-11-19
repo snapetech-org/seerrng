@@ -12,6 +12,7 @@ import DiscoveryAccounts from '../components/DiscoveryAccounts';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { completeOidc, readOidcCallback, startOidcLink } from '../oidc';
 import { sessionGeneration } from '../sessionState';
 
@@ -22,6 +23,12 @@ interface Account {
 }
 
 function Accounts({ user }: { user: User }) {
+  const { t } = useLumenLocale();
+  const text = (
+    key: string,
+    fallback: string,
+    values?: Record<string, string | number>
+  ) => t(`lumen.account.linked.${key}`, fallback, values);
   const { refresh: refreshUser } = useAuth();
   const settings = usePublicSettings();
   const base = `/user/${user.id}/settings`;
@@ -57,13 +64,16 @@ function Accounts({ user }: { user: User }) {
     void callbackWork.current
       .then(() => {
         if (!active) return;
-        setNotice('Account linked.');
+        setNotice(text('linkedNotice', 'Account linked.'));
         refreshLinks();
       })
       .catch(() => {
         if (active)
           setFailure(
-            'Could not complete the identity provider link. Start again from Linked Accounts.'
+            text(
+              'oidcFailure',
+              'Could not complete the identity provider link. Start again from Linked Accounts.'
+            )
           );
       })
       .finally(() => {
@@ -86,7 +96,10 @@ function Accounts({ user }: { user: User }) {
       await startOidcLink(slug, user.id);
     } catch {
       setFailure(
-        'Could not start authorization. Check the provider configuration and SeerrNG application URL.'
+        text(
+          'authorizationStartFailure',
+          'Could not start authorization. Check the provider configuration and SeerrNG application URL.'
+        )
       );
       working.current = false;
       setBusy(false);
@@ -145,15 +158,21 @@ function Accounts({ user }: { user: User }) {
       if (controller.signal.aborted || generation !== sessionGeneration())
         return;
       setRemoved((ids) => ids.filter((id) => id !== kind));
-      setNotice('Account linked.');
+      setNotice(text('linkedNotice', 'Account linked.'));
       linked.refresh();
       await refreshUser();
     } catch {
       if (!controller.signal.aborted && generation === sessionGeneration()) {
         setFailure(
           kind === 'plex'
-            ? 'Could not complete Plex authorization or link the account.'
-            : 'Could not complete Quick Connect. Start again for a new code.'
+            ? text(
+                'plexFailure',
+                'Could not complete Plex authorization or link the account.'
+              )
+            : text(
+                'quickConnectFailure',
+                'Could not complete Quick Connect. Start again for a new code.'
+              )
         );
       }
     } finally {
@@ -185,7 +204,7 @@ function Accounts({ user }: { user: User }) {
         });
         if (generation !== sessionGeneration()) return;
         setRemoved((ids) => [...ids, target.id]);
-        setNotice('Account unlinked.');
+        setNotice(text('unlinkedNotice', 'Account unlinked.'));
       } else {
         await api<void>(path + '/jellyfin', {
           method: 'POST',
@@ -194,7 +213,7 @@ function Accounts({ user }: { user: User }) {
         if (generation !== sessionGeneration()) return;
         setRemoved((ids) => ids.filter((id) => id !== 'jellyfin'));
         setUsername('');
-        setNotice('Account linked.');
+        setNotice(text('linkedNotice', 'Account linked.'));
       }
       linked.refresh();
       await refreshUser();
@@ -202,10 +221,19 @@ function Accounts({ user }: { user: User }) {
       if (generation !== sessionGeneration()) return;
       setFailure(
         err instanceof ApiError && err.status === 400 && action === 'unlink'
-          ? 'SeerrNG blocked unlinking. Check that you have another way to sign in.'
+          ? text(
+              'unlinkBlocked',
+              'SeerrNG blocked unlinking. Check that you have another way to sign in.'
+            )
           : action === 'link'
-            ? 'Could not link the account. Check your media-server credentials and try again.'
-            : 'Could not confirm unlinking. Refresh the linked accounts before trying again.'
+            ? text(
+                'linkFailure',
+                'Could not link the account. Check your media-server credentials and try again.'
+              )
+            : text(
+                'unlinkFailure',
+                'Could not confirm unlinking. Refresh the linked accounts before trying again.'
+              )
       );
       linked.reload();
     } finally {
@@ -220,12 +248,12 @@ function Accounts({ user }: { user: User }) {
     <>
       <ServiceNote
         error={linked.error}
-        what="linked providers"
+        what={text('linkedProviders', 'linked providers')}
         retry={linked.reload}
       />
       <ServiceNote
         error={passwordState.error}
-        what="local sign-in status"
+        what={text('localSignInStatus', 'local sign-in status')}
         retry={passwordState.reload}
       />
       {notice && (
@@ -238,11 +266,11 @@ function Accounts({ user }: { user: User }) {
           {failure}
         </p>
       )}
-      <Section title="Sign-in Methods">
+      <Section title={text('signInMethods', 'Sign-in Methods')}>
         <ul className="setlist">
           {local && (
             <li className="set">
-              <b>Local Password</b>
+              <b>{text('localPassword', 'Local Password')}</b>
             </li>
           )}
           {mediaLinked && media && (
@@ -261,7 +289,9 @@ function Accounts({ user }: { user: User }) {
                       setTarget({ id: media.id, name: media.name })
                     }
                   >
-                    Unlink {media.name}
+                    {text('unlinkProvider', 'Unlink {provider}', {
+                      provider: media.name,
+                    })}
                   </button>
                 )}
             </li>
@@ -285,7 +315,9 @@ function Accounts({ user }: { user: User }) {
                     })
                   }
                 >
-                  Unlink {account.provider.name}
+                  {text('unlinkProvider', 'Unlink {provider}', {
+                    provider: account.provider.name,
+                  })}
                 </button>
               )}
             </li>
@@ -293,11 +325,16 @@ function Accounts({ user }: { user: User }) {
         </ul>
         {!accounts && !linked.error && (
           <p className="note" role="status">
-            Loading linked accounts…
+            {text('loading', 'Loading linked accounts…')}
           </p>
         )}
         {accounts?.length === 0 && !mediaLinked && (
-          <p className="note">No linked providers.</p>
+          <p className="note">
+            {t(
+              'components.UserProfile.UserSettings.UserLinkedAccountsSettings.noLinkedAccounts',
+              text('noProviders', 'No linked providers.')
+            )}
+          </p>
         )}
       </Section>
       {!mediaLinked &&
@@ -306,8 +343,10 @@ function Accounts({ user }: { user: User }) {
           <Section
             title={
               settings.mediaServerType === 1
-                ? 'Link Plex'
-                : 'Jellyfin Quick Connect'
+                ? text('linkMediaServer', 'Link {provider}', {
+                    provider: 'Plex',
+                  })
+                : text('quickConnect', 'Jellyfin Quick Connect')
             }
           >
             <div className="toolbar">
@@ -321,27 +360,30 @@ function Accounts({ user }: { user: User }) {
                 }
               >
                 {settings.mediaServerType === 1
-                  ? 'Authorize Plex'
-                  : 'Start Quick Connect'}
+                  ? text('authorizePlex', 'Authorize Plex')
+                  : text('startQuickConnect', 'Start Quick Connect')}
               </button>
               {authorizing && (
                 <button
                   className="btn btn-quiet btn-sm"
                   onClick={() => authorization.current?.abort()}
                 >
-                  Cancel Authorization
+                  {text('cancelAuthorization', 'Cancel Authorization')}
                 </button>
               )}
             </div>
             {authorizing && !code && (
               <p className="note" role="status">
-                Waiting for authorization…
+                {text('waitingAuthorization', 'Waiting for authorization…')}
               </p>
             )}
             {code && (
               <p className="note" role="status">
-                Enter <b>{code}</b> in a signed-in Jellyfin app to approve
-                linking.
+                {text(
+                  'quickConnectInstruction',
+                  'Enter {code} in a signed-in Jellyfin app to approve linking.',
+                  { code }
+                )}
               </p>
             )}
           </Section>
@@ -350,7 +392,12 @@ function Accounts({ user }: { user: User }) {
         !!settings?.openIdProviders?.some(
           ({ slug }) => !accounts.some(({ provider }) => provider.slug === slug)
         ) && (
-          <Section title="Link an Identity Provider">
+          <Section
+            title={t(
+              'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider',
+              'Link an Identity Provider'
+            )}
+          >
             <div className="toolbar">
               {settings.openIdProviders
                 .filter(
@@ -364,14 +411,18 @@ function Accounts({ user }: { user: User }) {
                     disabled={busy}
                     onClick={() => void linkIdentity(slug)}
                   >
-                    Link {name}
+                    {text('linkProvider', 'Link {provider}', {
+                      provider: name,
+                    })}
                   </button>
                 ))}
             </div>
           </Section>
         )}
       {canLink && (
-        <Section title={`Link ${provider}`}>
+        <Section
+          title={text('linkMediaServer', 'Link {provider}', { provider })}
+        >
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -380,7 +431,7 @@ function Accounts({ user }: { user: User }) {
           >
             <div className="setlist">
               <label className="set cfg-row">
-                <b>Media Server Username</b>
+                <b>{text('mediaServerUsername', 'Media Server Username')}</b>
                 <input
                   className="cfg-input"
                   value={username}
@@ -391,7 +442,7 @@ function Accounts({ user }: { user: User }) {
                 />
               </label>
               <label className="set cfg-row">
-                <b>Media Server Password</b>
+                <b>{text('mediaServerPassword', 'Media Server Password')}</b>
                 <input
                   className="cfg-input"
                   type="password"
@@ -408,7 +459,7 @@ function Accounts({ user }: { user: User }) {
                 className="btn btn-primary btn-sm"
                 disabled={busy || !username.trim() || !password.trim()}
               >
-                Link Account
+                {text('linkAccount', 'Link Account')}
               </button>
             </div>
           </form>
@@ -416,9 +467,13 @@ function Accounts({ user }: { user: User }) {
       )}
       {target && (
         <ConfirmSheet
-          title="Unlink this account?"
-          body={`You will lose sign-in through ${target.name} for this account.`}
-          confirm="Unlink Account"
+          title={text('unlinkTitle', 'Unlink this account?')}
+          body={text(
+            'unlinkBody',
+            'You will lose sign-in through {provider} for this account.',
+            { provider: target.name }
+          )}
+          confirm={text('unlinkAccount', 'Unlink Account')}
           busy={busy}
           onConfirm={() => void change('unlink')}
           onClose={() => {
@@ -431,18 +486,26 @@ function Accounts({ user }: { user: User }) {
 }
 
 export default function LinkedAccounts() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   return (
     <>
       <header className="ph">
-        <h1>Linked Accounts</h1>
+        <h1>
+          {t(
+            'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts',
+            'Linked Accounts'
+          )}
+        </h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me/account">
-          Back to Account Settings
+          {t('lumen.account.backToSettings', 'Back to Account Settings')}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/library">
-          Open My Media
+          {t('lumen.me.openLink', 'Open {resource}', {
+            resource: t('components.Layout.Sidebar.myMedia', 'My Media'),
+          })}
         </Link>
       </div>
       {user && <Accounts key={user.id} user={user} />}
