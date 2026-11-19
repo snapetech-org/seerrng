@@ -504,6 +504,12 @@ body.is-detail .tabbar {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+.qa .watchlist-row {
+  margin-top: 0;
+}
+.qa .watchlist-row .watchlist-action {
+  flex: 1;
+}
 .qa .qbtn.done {
   background: rgba(255, 255, 255, 0.18);
   color: #fff;

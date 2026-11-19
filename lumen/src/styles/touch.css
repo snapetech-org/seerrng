@@ -42,6 +42,11 @@
 .tq:disabled {
   opacity: 0.5;
 }
+.tq.tq-watchlist {
+  right: 4px;
+  top: 4px;
+  bottom: auto;
+}
 @media (hover: none), (pointer: coarse) {
   .tq {
     display: grid;

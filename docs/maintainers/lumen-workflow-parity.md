@@ -13,15 +13,15 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
-| Discovery and search | `/`, `/search`, `/discover/*` | Movie, series, ebook, audiobook, music, comics, magazine, games, sports, and adult browsing. Search has movie, series, book, audiobook, and comic scopes and people in All. | Compare category and provider gating, filters, paging, empty and partial results, genre and network/studio pages, saved discovery settings, TMDB lists and collections, and search across enabled media. |
-| Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Games browse and detail. | Software and patches discovery, platform choice and request eligibility, software history/inventory, private games library, and household sharing. Check that a browse route does not substitute for a library route. |
-| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | Media availability and play links appear on applicable titles. | My Media, watchlist filters and actions, sharing, follow feed and unread state, and provider-specific favorite and collection actions. |
-| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Coming Soon groups upcoming movies and series and offers requests. | Full release calendar with source and media filters, swipe discovery, and watch-session creation, membership, and playback flow. |
+| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. | Finish per-category provider gating, filter and paging edges, empty/error states, saved discovery settings, and native-matched visual acceptance. Verify remaining live provider data separately. |
+| Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
+| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. | Complete cross-provider mutations, poster and category watchlist actions, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
+| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. | Native matched visuals across mobile and bundled deployments; finish automatic rule setup and remaining media/action coverage. |
-| Accounts | `/profile/*`, `/users/*` | Sign-in, account summary, and Lumen preferences. | Profile editing, password, linked accounts, client tokens, notifications, per-user TV and Episode Queue policy, maturity, permissions, and delegated user administration. |
-| Instance administration | `/setup`, `/settings/*` | Lumen presentation and branding settings, administrator handoff. | Setup, general and network settings, libraries, services and profiles, jobs, logs, notifications, metadata and discovery, category access, indexers, and library migration. Preserve validation, dirty-state tracking, failed-save recovery, and existing provider boundaries. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, and several per-user request policies have dedicated routes. | Finish per-user TV/Episode Queue, maturity and delegated-user management parity; qualify provider authorization, persistence/recovery, and native-matched/bundled visuals. |
+| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ## Delivery and verification
 
@@ -205,6 +205,23 @@ release groups, ComicVine editions, and magazines. It uses the same permission
 and preflight checks as movie and series details and keeps provider identities
 separate. Bookshelf-only works without an Open Library identity still cannot
 use SeerrNG's existing local Watchlist API. Poster and Plex actions remain open.
+
+Movie and series browse posters now offer the Watchlist action on desktop hover
+and touch layouts. The poster uses the shared detail preflight only after the
+viewer activates it, so browsing a catalog does not request membership once per
+card. When membership is unknown, its first activation means Add; a fresh detail
+read confirms an existing saved item without deleting it. Blocklisted titles
+and Plex primary accounts do not get the control. The existing authenticated
+Watchlist endpoints remain responsible for add and remove.
+
+Sixteen browser cases passed across desktop, iPhone, Android, and tablet: movie
+and series add/remove round trips with exact media identity, initial confirmation
+of an already-saved movie without a mutation, and Plex-account exclusion.
+Baseline and candidate movie poster renders were captured at matching viewport
+sizes and route state in
+`/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
+Live provider effects, native-matched visual acceptance, and bundled deployment
+verification remain open.
 
 Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in

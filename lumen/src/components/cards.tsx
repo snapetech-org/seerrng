@@ -48,6 +48,7 @@ import {
 } from '../videoAvailability';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
+import WatchlistButton from './WatchlistButton';
 
 // A stable theme-owned tone per title keeps drawn covers consistent between visits.
 function toneOf(text: string) {
@@ -416,13 +417,28 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
             busy={busy}
           />
         )}
-        {prefs.hoverRequest && (
-          <div className="qa">
-            <div className="qt">{titleOf(it)}</div>
-            <div className="qm">{qm}</div>
-            <div className="qb">{qb}</div>
+        <WatchlistButton
+          mediaType={tv ? 'tv' : 'movie'}
+          detail={{ id: it.id, title: titleOf(it) }}
+          compact
+          touch
+        />
+        <div className="qa">
+          {prefs.hoverRequest && (
+            <>
+              <div className="qt">{titleOf(it)}</div>
+              <div className="qm">{qm}</div>
+              <div className="qb">{qb}</div>
+            </>
+          )}
+          <div className="qb watchlist-row">
+            <WatchlistButton
+              mediaType={tv ? 'tv' : 'movie'}
+              detail={{ id: it.id, title: titleOf(it) }}
+              compact
+            />
           </div>
-        )}
+        </div>
       </div>
       <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
         {titleOf(it)}

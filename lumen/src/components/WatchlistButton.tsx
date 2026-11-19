@@ -18,10 +18,14 @@ export default function WatchlistButton({
   mediaType,
   detail,
   requestedId = detail.id,
+  compact = false,
+  touch = false,
 }: {
   mediaType: ManagedMediaType;
   detail: WatchlistTitle;
   requestedId?: string | number;
+  compact?: boolean;
+  touch?: boolean;
 }) {
   const { user } = useAuth();
   const toast = useToast();
@@ -37,7 +41,7 @@ export default function WatchlistButton({
     !id ||
     id !== canonicalMediaId(mediaType, requestedId) ||
     detail.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
-    typeof detail.onUserWatchlist !== 'boolean'
+    (!compact && typeof detail.onUserWatchlist !== 'boolean')
   )
     return null;
 
@@ -52,7 +56,6 @@ export default function WatchlistButton({
     if (pending.current) return;
     pending.current = true;
     setBusy(true);
-    const desired = !listed;
     const session = sessionGeneration();
     try {
       const fresh = await api<WatchlistTitle>(detailPath, {
@@ -68,6 +71,10 @@ export default function WatchlistButton({
         toast('Watchlist is unavailable for this title.');
         return;
       }
+      // Poster rows intentionally don't load detail state until the viewer acts.
+      // An unknown poster action means Add; never remove a saved item on first click.
+      const desired = typeof listed === 'boolean' ? !listed : true;
+      const alreadySaved = typeof listed !== 'boolean' && fresh.onUserWatchlist;
       if (fresh.onUserWatchlist !== desired) {
         if (desired) {
           const saved = await api<{ id: number }>('/watchlist', {
@@ -97,7 +104,13 @@ export default function WatchlistButton({
       }
       if (sessionGeneration() !== session) return;
       setConfirmed(desired);
-      toast(desired ? 'Added to Watchlist' : 'Removed from Watchlist');
+      toast(
+        alreadySaved
+          ? 'Already on Watchlist'
+          : desired
+            ? 'Added to Watchlist'
+            : 'Removed from Watchlist'
+      );
     } catch (error) {
       if (sessionGeneration() === session)
         toast(friendlyError(error, 'Couldn’t update your Watchlist'));
@@ -110,13 +123,36 @@ export default function WatchlistButton({
   return (
     <button
       type="button"
-      className="btn btn-quiet btn-sm"
+      className={
+        touch
+          ? 'tq tq-watchlist'
+          : compact
+            ? 'qbtn ghost watchlist-action'
+            : 'btn btn-quiet btn-sm'
+      }
       disabled={busy}
       aria-busy={busy}
-      onClick={() => void toggle()}
+      aria-label={
+        typeof listed === 'boolean'
+          ? `${listed ? 'Remove' : 'Add'} ${detail.title || 'title'} ${listed ? 'from' : 'to'} your Watchlist`
+          : `Add ${detail.title || 'title'} to your Watchlist`
+      }
+      title={
+        typeof listed === 'boolean'
+          ? `${listed ? 'Remove from' : 'Add to'} Watchlist`
+          : 'Check Watchlist and toggle'
+      }
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        void toggle();
+      }}
     >
-      <Icon name={listed ? 'check' : 'star'} />
-      {listed ? 'Remove From Watchlist' : 'Add To Watchlist'}
+      <Icon
+        name={listed ? 'check' : 'star'}
+        size={compact ? 'sm' : undefined}
+      />
+      {!compact && (listed ? 'Remove From Watchlist' : 'Add To Watchlist')}
     </button>
   );
 }
