@@ -2340,6 +2340,8 @@ discoverRoutes.get<{ studioId: string }>(
   }
 );
 
+const MAX_UPCOMING_PAGE = 500;
+
 discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
   const tmdb = createTmdbWithRegionLanguage(req.user);
 
@@ -2360,7 +2362,7 @@ discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
         .json({ status: 400, message: parsedLanguage.error });
     }
     const data = await tmdb.getDiscoverMovies({
-      page: parsePositiveInt(req.query.page, 1, 500),
+      page: parsePositiveInt(req.query.page, 1, MAX_UPCOMING_PAGE),
       language: parsedLanguage.value,
       primaryReleaseDateGte: date,
     });
@@ -2383,7 +2385,7 @@ discoverRoutes.get('/movies/upcoming', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: data.total_pages,
+      totalPages: Math.min(data.total_pages, MAX_UPCOMING_PAGE),
       totalResults: data.total_results,
       results: maturityFilteredResults.map((result) =>
         mapMovieResult(
@@ -2888,7 +2890,7 @@ discoverRoutes.get('/tv/upcoming', async (req, res, next) => {
         .json({ status: 400, message: parsedLanguage.error });
     }
     const data = await tmdb.getDiscoverTv({
-      page: parsePositiveInt(req.query.page, 1, 500),
+      page: parsePositiveInt(req.query.page, 1, MAX_UPCOMING_PAGE),
       language: parsedLanguage.value,
       firstAirDateGte: date,
     });
@@ -2911,7 +2913,7 @@ discoverRoutes.get('/tv/upcoming', async (req, res, next) => {
 
     return res.status(200).json({
       page: data.page,
-      totalPages: data.total_pages,
+      totalPages: Math.min(data.total_pages, MAX_UPCOMING_PAGE),
       totalResults: data.total_results,
       results: maturityFilteredResults.map((result) =>
         mapTvResult(

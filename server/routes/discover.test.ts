@@ -2478,6 +2478,29 @@ describe('GET /discover/tv', () => {
   });
 });
 
+describe('Upcoming discovery page limits', () => {
+  for (const [route, endpoint] of [
+    ['/discover/movies/upcoming', '/discover/movie'],
+    ['/discover/tv/upcoming', '/discover/tv'],
+  ]) {
+    it(`caps the advertised total on ${route} at the last retrievable page`, async () => {
+      mockPrivate(ExternalAPI.prototype, 'get', async (path, options) => {
+        assert.equal(path, endpoint);
+        const { page } = (options as { params: { page: number } }).params;
+        assert.equal(page, 500);
+        return { page, total_pages: 512, total_results: 10_240, results: [] };
+      });
+
+      const agent = await login();
+      const response = await agent.get(route).query({ page: 501 });
+      assert.equal(response.status, 200);
+      assert.equal(response.body.page, 500);
+      assert.equal(response.body.totalPages, 500);
+      assert.equal(response.body.totalResults, 10_240);
+    });
+  }
+});
+
 describe('GET /discover/music', () => {
   it('uses the scanned local catalog for music availability filters', async () => {
     const settings = getSettings();
