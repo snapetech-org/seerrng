@@ -805,6 +805,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
         '/lumen/movies?keywords=73&genre=18%2C35',
       ],
       [
+        '/discover/tv?search=The+Show&genre=18',
+        '/lumen/series?search=The+Show&genre=18',
+      ],
+      [
         '/discover/movies?libraryView=missing&genre=18',
         '/lumen/movies?genre=18&show=not',
       ],

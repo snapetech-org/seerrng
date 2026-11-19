@@ -2918,6 +2918,13 @@ catalog queries for a Classic-style movie bookmark, the default series
 rating sort, and explicit series vote bounds. The checks used fixtures
 at 390 and 1440 CSS pixels.
 
+Movie and series discovery now retain Classic's title search alongside
+genre, sort, and the other browse filters. Lumen offers an editable
+Title field on both pages and clears it with the discovery filters.
+Two server routing tests and four focused browser fixture checks
+passed across standalone and bundled Lumen. Bundled screenshots
+covered the 390- and 1440-pixel title filter layout.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

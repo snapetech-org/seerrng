@@ -155,6 +155,7 @@ function requestDeepLink(req: Request, userId?: string): string | undefined {
 }
 
 const discoveryFilters = [
+  'search',
   'certification',
   'certificationCountry',
   'certificationGte',

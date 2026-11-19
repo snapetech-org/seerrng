@@ -166,6 +166,7 @@ const NETWORK_OPTIONS = tvNetworks.map(({ name, url }) => ({
   id: url.slice(url.lastIndexOf('/') + 1),
 }));
 const BROWSE_FILTER_PARAMS = [
+  'search',
   'show',
   'quality',
   'sort',
@@ -320,6 +321,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const asks = useAsksRequestOptions();
   // "plex" is the old name for "have", kept so saved links still work
   const show = p.get('show') === 'plex' ? 'have' : p.get('show') || 'all';
+  const search = (p.get('search') ?? '').slice(0, 512).trim();
   const keywords = keywordIds(p.get('keywords'));
   const excludeKeywords = keywordIds(p.get('excludeKeywords'));
   const startKey =
@@ -446,6 +448,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   // top rated by average alone surfaces films with a handful of votes; ask for a real audience
   const q = new URLSearchParams({
     sortBy: sort,
+    ...(search ? { search } : {}),
     ...(studio
       ? { studio, ...(excludeStudio ? { excludeStudio: 'true' } : {}) }
       : {}),
@@ -521,6 +524,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   };
   const visibility = discoveryVisibility(publicSettings, user?.permissions);
   if (show !== 'all') visibility.hideAvailable = false;
+  if (search) visibility.hideRequested = false;
   const items = list.items.filter(
     (x) =>
       (!filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))) &&
@@ -614,6 +618,33 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <span className="ph-text">Search {word.toLowerCase()}…</span>
         </Link>
       </header>
+      <form
+        key={`${kind}:${search}:${filterReset}`}
+        className="toolbar"
+        aria-label="Filter by Title"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const value = String(
+            new FormData(event.currentTarget).get('search') ?? ''
+          ).trim();
+          const next = new URLSearchParams(p);
+          if (value) next.set('search', value);
+          else next.delete('search');
+          setP(next, { replace: true });
+        }}
+      >
+        <label className="sel">
+          <span className="lbl">Title</span>
+          <input
+            className="cfg-input"
+            name="search"
+            type="search"
+            maxLength={512}
+            defaultValue={search}
+          />
+        </label>
+        <button className="btn btn-tonal btn-sm">Apply Title</button>
+      </form>
       <div className="toolbar">
         {canViewFollowing(user?.permissions) && (
           <>

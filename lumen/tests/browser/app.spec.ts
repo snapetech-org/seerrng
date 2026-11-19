@@ -4053,7 +4053,7 @@ test('native companion discovery filters retain genre matching and clear without
     return route.fulfill({ json: paged([movie]) });
   });
   await page.goto(
-    './movies?nativeFilters=1&genre=18%2C35&sortBy=vote_average.desc&keywords=12'
+    './movies?nativeFilters=1&genre=18%2C35&sortBy=vote_average.desc&keywords=12&search=The+Film'
   );
   await expect
     .poll(() => Object.fromEntries(reads.at(-1) ?? []))
@@ -4062,12 +4062,20 @@ test('native companion discovery filters retain genre matching and clear without
       sortBy: 'vote_average.desc',
       keywords: '12',
       voteCountGte: '50',
+      search: 'The Film',
     });
+  const title = page.getByRole('searchbox', { name: 'Title', exact: true });
+  await expect(title).toHaveValue('The Film');
+  await title.fill('all');
+  await page.getByRole('button', { name: 'Apply Title' }).click();
+  await expect.poll(() => reads.at(-1)?.get('search')).toBe('all');
+  expect(reads.at(-1)?.get('genre')).toBe('18,35');
   await page.getByRole('button', { name: /clear discovery filters/i }).click();
   await expect.poll(() => reads.at(-1)?.get('sortBy')).toBe('popularity.desc');
   expect(reads.at(-1)?.has('genre')).toBe(false);
   expect(reads.at(-1)?.has('keywords')).toBe(false);
   expect(reads.at(-1)?.has('voteCountGte')).toBe(false);
+  expect(reads.at(-1)?.has('search')).toBe(false);
   await expect(page).toHaveURL(/\/movies$/);
 });
 
