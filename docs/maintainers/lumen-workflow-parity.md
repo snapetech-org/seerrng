@@ -3673,3 +3673,10 @@ and iPhone checks with real sign-in and synthetic machine logs. The
 browser requested ten rows on page one. Opening the Classic page-two
 bookmark in the same browser retained the preference, sent offset ten
 to the real API, and displayed ten rows from page two.
+
+Administration search passed matched standalone production renders on
+desktop and iPhone. The new search field and result list preserve the
+existing category links and settings rows. Browser regressions at both
+viewports verified search across categories, an empty result, and direct
+navigation to the application API key and 4K controls. These used browser
+API fixtures. Bundled Express verification remains pending.

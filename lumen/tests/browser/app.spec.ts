@@ -6174,6 +6174,30 @@ test('Classic service category bookmarks filter the Lumen administration menu', 
   ).toHaveCount(0);
 });
 
+test('Administration searches all settings and opens exact controls', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/admin?serviceCategory=music');
+  const search = page.getByRole('searchbox', { name: 'Search Settings' });
+  await search.fill('system logs');
+  await expect(
+    page.getByRole('link', { name: 'Open System Logs' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Open Lidarr Services' })
+  ).toHaveCount(0);
+  await search.fill('not-an-existing-setting');
+  await expect(page.getByText('No settings match this search.')).toBeVisible();
+  await search.fill('apikey');
+  await expect(
+    page.getByRole('link', { name: 'Open Application API Key' })
+  ).toHaveAttribute('href', '/admin/general#apiKey');
+  await search.fill('uhd');
+  await page.getByRole('link', { name: 'Open 4K Requests' }).click();
+  await expect(page).toHaveURL(/\/admin\/general#enable4k$/);
+});
+
 test('Steam settings bookmark brings the key field into view', async ({
   page,
 }) => {

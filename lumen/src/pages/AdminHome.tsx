@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Section } from '../components/cards';
 import { Icon } from '../icons';
@@ -76,27 +77,59 @@ const serviceGroups = {
   },
 } satisfies Record<string, { label: string; pages: string[] }>;
 
-export function AdminLinks({ pages }: { pages?: readonly string[] } = {}) {
+const shortcuts = [
+  ['4K Requests', '/admin/general#enable4k', '4k uhd ultra hd'],
+  ['Application API Key', '/admin/general#apiKey', 'apikey token'],
+  [
+    'Default Request Quotas',
+    '/admin/general#default-request-quotas',
+    'limit limits quotas',
+  ],
+  [
+    'Prowlarr Settings',
+    '/admin/prowlarr',
+    'indexer search nzbhydra2 nzb hydra2',
+  ],
+] as const;
+
+export function AdminLinks({
+  pages,
+  terms = [],
+}: { pages?: readonly string[]; terms?: readonly string[] } = {}) {
+  const entries = terms.length
+    ? [
+        ...destinations.filter(
+          ([, path]) => !shortcuts.some(([, target]) => target === path)
+        ),
+        ...shortcuts,
+      ].filter(([label, , aliases]) => {
+        const searchable = `${label} ${aliases ?? ''}`.toLowerCase();
+        return terms.every((term) => searchable.includes(term));
+      })
+    : destinations.filter(
+        ([, path]) => !pages || pages.includes(path.slice('/admin/'.length))
+      );
+
+  if (!entries.length)
+    return <p className="note">No settings match this search.</p>;
   return (
     <div className="setlist">
-      {destinations
-        .filter(
-          ([, path]) => !pages || pages.includes(path.slice('/admin/'.length))
-        )
-        .map(([label, path]) => (
-          <div className="set" key={path}>
-            <b>{label}</b>
-            <Link className="go" to={path} aria-label={`Open ${label}`}>
-              Open <Icon name="chev" size="sm" />
-            </Link>
-          </div>
-        ))}
+      {entries.map(([label, path]) => (
+        <div className="set" key={path}>
+          <b>{label}</b>
+          <Link className="go" to={path} aria-label={`Open ${label}`}>
+            Open <Icon name="chev" size="sm" />
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }
 
 export default function AdminHome() {
   const [params] = useSearchParams();
+  const [search, setSearch] = useState('');
+  const terms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const category = params.get('serviceCategory') ?? '';
   const group = Object.hasOwn(serviceGroups, category)
     ? serviceGroups[category as keyof typeof serviceGroups]
@@ -106,10 +139,22 @@ export default function AdminHome() {
       <header className="ph">
         <h1>Administration</h1>
       </header>
+      <div className="toolbar">
+        <label className="sel">
+          <span className="lbl">Search Settings</span>
+          <input
+            className="cfg-input"
+            type="search"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
+      </div>
       <nav className="toolbar" aria-label="Administration Categories">
         <Link
           className="btn btn-quiet btn-sm"
           to="/admin"
+          onClick={() => setSearch('')}
           aria-current={!group ? 'page' : undefined}
         >
           All Settings and Tools
@@ -119,14 +164,21 @@ export default function AdminHome() {
             className="btn btn-quiet btn-sm"
             key={key}
             to={`/admin?serviceCategory=${key}`}
+            onClick={() => setSearch('')}
             aria-current={group && category === key ? 'page' : undefined}
           >
             {label}
           </Link>
         ))}
       </nav>
-      <Section title={group?.label ?? 'Settings and Tools'}>
-        <AdminLinks pages={group?.pages} />
+      <Section
+        title={
+          terms.length
+            ? 'Search Results'
+            : (group?.label ?? 'Settings and Tools')
+        }
+      >
+        <AdminLinks pages={group?.pages} terms={terms} />
       </Section>
     </>
   );
