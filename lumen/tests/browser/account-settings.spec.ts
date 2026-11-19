@@ -33,6 +33,7 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   for (const [path, id] of [
     ['./me/account#password', 'password'],
     ['./me/account/tv-requests#episode-queue', 'episode-queue'],
+    ['./me/account#advanced-theme', 'advanced-theme'],
   ]) {
     await page.goto(path);
     await expect(page.locator(`section#${id}`)).toHaveAttribute(

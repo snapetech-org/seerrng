@@ -144,6 +144,7 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/profile/settings/', '/me/account'],
       ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password/', '/me/account#password'],
+      ['/profile/advanced-theme/', '/me/account#advanced-theme'],
       [
         '/profile/settings/episode-queue/',
         '/me/account/tv-requests#episode-queue',

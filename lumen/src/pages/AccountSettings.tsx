@@ -541,7 +541,10 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
     (profile.data || profile.error) && (password.data || password.error)
   );
   useEffect(() => {
-    if (loaded && (hash === '#password' || hash === '#account-permissions')) {
+    if (
+      hash === '#advanced-theme' ||
+      (loaded && (hash === '#password' || hash === '#account-permissions'))
+    ) {
       document
         .getElementById(hash.slice(1))
         ?.scrollIntoView({ block: 'start' });
@@ -646,6 +649,9 @@ export default function AccountSettings() {
         <h1>Account Settings</h1>
       </header>
       <div className="toolbar">
+        <Link className="btn btn-quiet btn-sm" to="#advanced-theme">
+          Theme Colors
+        </Link>
         <Link className="btn btn-quiet btn-sm" to="#account-permissions">
           Account Permissions
         </Link>

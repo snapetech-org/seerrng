@@ -420,6 +420,7 @@ const workflowDestinations = new Map([
   ['/recordings', '/recordings'],
   ['/profile', '/household/me'],
   ['/users', '/admin/users'],
+  ['/profile/advanced-theme', '/me/account#advanced-theme'],
   ['/profile/settings', '/me/account'],
   ['/profile/settings/main', '/me/account'],
   ['/profile/settings/permissions', '/me/account#account-permissions'],

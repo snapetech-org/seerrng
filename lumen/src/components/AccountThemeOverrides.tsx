@@ -51,7 +51,7 @@ export default function AccountThemeOverrides() {
   }
 
   return (
-    <Section title="Advanced Theme Overrides">
+    <Section title="Advanced Theme Overrides" id="advanced-theme">
       <p className="note">
         Enter a hex color such as #2950e0, or clear the field to use the
         default.

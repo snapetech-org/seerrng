@@ -165,6 +165,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['/profile/', '/household/me'],
       ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password', '/me/account#password'],
+      ['/profile/advanced-theme/', '/me/account#advanced-theme'],
       [
         '/profile/settings/episode-queue',
         '/me/account/tv-requests#episode-queue',
@@ -629,6 +630,7 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       ['/discover/tv/upcoming', '/lumen/soon?media=tv'],
       ['/profile', '/lumen/household/me'],
       ['/profile/settings/password', '/lumen/me/account#password'],
+      ['/profile/advanced-theme/', '/lumen/me/account#advanced-theme'],
       [
         '/profile/settings/notifications/webpush',
         '/lumen/me/account/notifications#notification-webpush',
