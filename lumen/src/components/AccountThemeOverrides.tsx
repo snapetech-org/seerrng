@@ -14,13 +14,15 @@ export default function AccountThemeOverrides() {
   const { user, refresh } = useAuth();
   const saved = user?.settings?.advancedThemeOverrides;
   const [draft, setDraft] = useState<Record<string, string>>({});
-  const [json, setJson] = useState<string>();
+  const [editingJson, setEditingJson] = useState(false);
+  const [json, setJson] = useState('{}');
   const [jsonBase, setJsonBase] = useState<Record<string, string | number>>({});
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const pending = useRef(false);
   const dirty = Object.keys(draft).length > 0;
+  const jsonDirty = json !== JSON.stringify(jsonBase, null, 2);
   const invalid = Object.values(draft).some(
     (value) => value.trim() !== '' && !isThemeColor(value.trim())
   );
@@ -60,10 +62,8 @@ export default function AccountThemeOverrides() {
         return;
       }
       setDraft({});
-      if (json !== undefined) openJson(readback ?? {});
-      setNotice(
-        json === undefined ? 'Theme colors saved.' : 'Theme overrides saved.'
-      );
+      if (editingJson) openJson(readback ?? {});
+      setNotice(editingJson ? 'Theme overrides saved.' : 'Theme colors saved.');
     } catch (cause) {
       if (generation === sessionGeneration())
         setError(friendlyError(cause, 'Could not save theme colors.'));
@@ -80,7 +80,7 @@ export default function AccountThemeOverrides() {
 
   function saveJson() {
     try {
-      const parsed: unknown = JSON.parse(json ?? '');
+      const parsed: unknown = JSON.parse(json);
       if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed))
         throw new Error();
       const values = Object.entries(parsed);
@@ -112,14 +112,14 @@ export default function AccountThemeOverrides() {
           onClick={() => {
             setNotice('');
             setError('');
-            if (json === undefined) openJson(saved ?? {});
-            else setJson(undefined);
+            if (!editingJson && !jsonDirty) openJson(saved ?? {});
+            setEditingJson(!editingJson);
           }}
         >
-          {json === undefined ? 'Edit All Overrides' : 'Edit Theme Colors'}
+          {editingJson ? 'Edit Theme Colors' : 'Edit All Overrides'}
         </button>
       </div>
-      {json === undefined ? (
+      {!editingJson ? (
         <p className="note">
           Enter a hex color such as #2950e0, or clear the field to use the
           default.
@@ -132,7 +132,7 @@ export default function AccountThemeOverrides() {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          if (json !== undefined) saveJson();
+          if (editingJson) saveJson();
           else if (dirty && !invalid)
             void save(
               Object.fromEntries(
@@ -144,7 +144,7 @@ export default function AccountThemeOverrides() {
             );
         }}
       >
-        {json !== undefined ? (
+        {editingJson ? (
           <label className="set cfg-row">
             <b>Theme Override JSON</b>
             <textarea
@@ -187,14 +187,9 @@ export default function AccountThemeOverrides() {
           <button
             className="btn btn-primary btn-sm"
             type="submit"
-            disabled={
-              busy ||
-              (json === undefined
-                ? !dirty || invalid
-                : json === JSON.stringify(jsonBase, null, 2))
-            }
+            disabled={busy || (editingJson ? !jsonDirty : !dirty || invalid)}
           >
-            {json === undefined ? 'Save Theme Colors' : 'Save Theme Overrides'}
+            {editingJson ? 'Save Theme Overrides' : 'Save Theme Colors'}
           </button>
         </div>
       </form>

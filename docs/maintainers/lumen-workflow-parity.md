@@ -1795,6 +1795,12 @@ before and after the feature. The theme editor displayed a stored
 background override and kept its inputs within both viewports.
 The renders used an isolated fixture account.
 
+Edit All Overrides offers the complete saved JSON object, including
+numeric settings. The server validates and merges changed keys. Switching
+to the color controls and back keeps unfinished JSON edits. The 16-case
+bundled browser suite passed with fixtures. Lumen currently renders six
+mapped colors. Visual review of the JSON editor remains open.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the

@@ -265,6 +265,10 @@ test('account theme colors preserve stored overrides for other controls', async 
   const editor = page.getByLabel('Theme Override JSON');
   await expect(editor).toHaveValue(JSON.stringify(classicOnly, null, 2));
   await editor.fill('[]');
+  await page.getByRole('button', { name: 'Edit Theme Colors' }).click();
+  await expect(background).toBeVisible();
+  await page.getByRole('button', { name: 'Edit All Overrides' }).click();
+  await expect(editor).toHaveValue('[]');
   await page.getByRole('button', { name: 'Save Theme Overrides' }).click();
   await expect(
     page.getByText(
