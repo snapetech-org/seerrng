@@ -4083,16 +4083,35 @@ test('native companion discovery bookmarks retain library availability', async (
   page,
 }) => {
   await fixtures(page);
+  const queries: (string | null)[] = [];
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enable4k: false, movie4kEnabled: true } })
+  );
+  await page.route('**/api/v1/discover/movies?**', (route) => {
+    queries.push(
+      new URL(route.request().url()).searchParams.get('availability')
+    );
+    return route.fulfill({ json: paged([movie]) });
+  });
   for (const [search, selected] of [
     ['libraryView=missing', /^Not on /],
     ['libraryView=available', /^On /],
-    ['libraryView=missing&availability=4k', /^On /],
+    ['libraryView=missing&availability=4k&search=Test', /^On /],
   ] as const) {
+    queries.length = 0;
     await page.goto(`./movies?nativeFilters=1&${search}`);
     const availability = page.getByRole('group', { name: 'Availability' });
     await expect(
       availability.getByRole('button', { name: selected })
     ).toHaveAttribute('aria-pressed', 'true');
+    if (search.includes('availability=4k')) {
+      await expect(page.getByText('4K discovery is unavailable')).toBeVisible();
+      expect(queries).toEqual([]);
+      await page.getByRole('button', { name: 'Show HD Results' }).click();
+      await expect(page.getByRole('link', { name: movie.title })).toBeVisible();
+      expect(queries).toEqual(['hd']);
+      expect(new URL(page.url()).searchParams.has('quality')).toBe(false);
+    }
     const all = availability.getByRole('button', { name: 'All', exact: true });
     await all.click();
     await expect(all).toHaveAttribute('aria-pressed', 'true');

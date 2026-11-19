@@ -2941,6 +2941,13 @@ recovery. The recovery fixture confirmed that the first Movies catalog
 request used 4K after settings became available. Matched visual review
 and live 4K library results remain unverified.
 
+When settings disable 4K, a saved 4K filter shows an explicit option
+to load HD results. Eight browser fixture checks passed across
+standalone and bundled Lumen. The disabled case made no catalog
+request before confirmation and preserved the title filter when
+switching to HD. Bundled screenshots covered the recovery message
+at 390 and 1440 CSS pixels.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

@@ -496,9 +496,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       (kind === 'movie'
         ? publicSettings?.movie4kEnabled
         : publicSettings?.series4kEnabled));
-  const quality = qualityEnabled && p.get('quality') === '4k' ? '4k' : 'hd';
-  const checkingQuality =
-    show !== 'all' && p.get('quality') === '4k' && !publicSettings;
+  const wants4k = show !== 'all' && p.get('quality') === '4k';
+  const quality = qualityEnabled && wants4k ? '4k' : 'hd';
+  const checkingQuality = wants4k && !publicSettings;
+  const unavailableQuality =
+    wants4k && Boolean(publicSettings) && !qualityEnabled;
   // The library endpoint only implements a subset of the catalog filters and sorts.
   const libraryFirst =
     show === 'have' &&
@@ -515,7 +517,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     );
   if (libraryFirst) q.set('availability', quality);
   const list = usePaged<TitleResult>(
-    checkingQuality || (regionPending && providers.length)
+    checkingQuality || unavailableQuality || (regionPending && providers.length)
       ? null
       : `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
@@ -1124,7 +1126,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           retry={settings.reload}
         />
       )}
+      {unavailableQuality && (
+        <div className="empty">
+          <b>4K discovery is unavailable</b>
+          <button
+            className="btn btn-tonal btn-sm"
+            onClick={() => upd('quality', '')}
+          >
+            Show HD Results
+          </button>
+        </div>
+      )}
       {!checkingQuality &&
+        !unavailableQuality &&
         !list.error &&
         !items.length &&
         !list.loading &&
