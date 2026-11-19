@@ -3,6 +3,7 @@ export const themeColors = [
   ['--theme-control-surface', '--surface', 'Surface'],
   ['--theme-control-surface-hover', '--surface-2', 'Raised Surface'],
   ['--theme-control-border', '--line', 'Border'],
+  ['--theme-overlay-menu', '--overlay-surface', 'Menu and Dialog Background'],
   ['--theme-heading-text', '--ink', 'Primary Text'],
   ['--palette-blue', '--accent', 'Accent'],
 ] as const;

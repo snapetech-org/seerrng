@@ -301,7 +301,7 @@
   padding: 14px 14px 0;
   border-radius: var(--r-lg);
   border: 1px solid var(--line);
-  background: var(--surface);
+  background: var(--overlay-surface, var(--surface));
   box-shadow: var(--shadow-float);
   animation: fade 0.15s var(--ease);
 }
@@ -375,7 +375,11 @@
   display: flex;
   justify-content: flex-end;
   padding: 10px 0 14px;
-  background: linear-gradient(to bottom, transparent, var(--surface) 30%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--overlay-surface, var(--surface)) 30%
+  );
 }
 .gp-sheet .gp-body {
   padding: 14px var(--s5) env(safe-area-inset-bottom);

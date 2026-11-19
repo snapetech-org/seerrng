@@ -1849,7 +1849,11 @@ body.is-detail .toast {
   position: sticky;
   bottom: 0;
   padding-top: 10px;
-  background: linear-gradient(to bottom, transparent, var(--surface) 30%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--overlay-surface, var(--surface)) 30%
+  );
   display: grid;
   gap: 6px;
 }

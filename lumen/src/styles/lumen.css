@@ -563,7 +563,7 @@ h3 {
   max-height: 92%;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--surface);
+  background: var(--overlay-surface, var(--surface));
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   box-shadow: var(--shadow-sheet);
   animation: rise 0.34s var(--ease);

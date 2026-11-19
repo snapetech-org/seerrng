@@ -191,7 +191,7 @@ test('watchlist preferences honor account type and category permissions and pers
 test('account theme colors preserve stored overrides for other controls', async ({
   page,
 }) => {
-  const classicOnly = { '--theme-overlay-menu': '#112233' };
+  const classicOnly = { '--theme-page-spotlight-strength': 0.5 };
   const overrides: Record<string, string | number> = { ...classicOnly };
   let fail = true;
   await page.route('**/api/v1/**', (route) => {

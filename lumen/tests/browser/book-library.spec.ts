@@ -71,6 +71,32 @@ test('manager records do not mark missing book files available', async ({
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
     ).toHaveCount(1);
 });
+test('personal overlay color applies to the genre picker', async ({ page }) => {
+  await fixtures(page);
+  let advancedThemeOverrides = {};
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, permissions: 2, settings: { advancedThemeOverrides } },
+    })
+  );
+  const open = async () => {
+    await page.goto('./books');
+    await page.getByRole('button', { name: /^Genres:/ }).click();
+    const overlay = page.locator('.gp-pop, .gp-sheet');
+    await expect(overlay).toBeVisible();
+    return overlay;
+  };
+  const baseline = await open();
+  await expect(baseline).toHaveCSS('background-color', 'rgb(20, 23, 29)');
+  const width = (await baseline.boundingBox())?.width;
+  advancedThemeOverrides = { '--theme-overlay-menu': '#29354d' };
+  const customized = await open();
+  await expect(customized).toHaveCSS('background-color', 'rgb(41, 53, 77)');
+  expect((await customized.boundingBox())?.width).toBe(width);
+  await page.keyboard.press('Escape');
+  await expect(customized).toHaveCount(0);
+});
+
 test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
   const requests = await fixtures(page);
   const feed = () =>
