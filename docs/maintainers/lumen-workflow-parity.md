@@ -3522,3 +3522,13 @@ bundled lookup. The picker exposed Retry Artist Lookup and that retry
 succeeded. The isolated configuration supplied a synthetic Lidarr
 entry for category availability. No Lidarr library or quality lookup
 was exercised.
+
+The exact artist and FLAC filters also passed in both production
+deployments at 1440 CSS pixels with real local sign-in. The isolated
+SQLite library contained two FLAC rows with the same indexed artist
+name. The live MusicBrainz release-group lookup selected only Too Young
+for the French band Phoenix. The UI displayed the matching release and
+the API returned one result. MusicBrainz returned HTTP 503 on the first
+standalone run and responded successfully when the run was repeated.
+The library rows were seeded, so this check did not exercise a Lidarr
+scan.
