@@ -383,17 +383,24 @@ export class ReaderDeliveryApi extends ExternalAPI {
     token: string,
     remoteId: string
   ): Promise<number> {
-    const endpoint =
-      provider === 'grimmory'
-        ? '/api/v1/app/shelves/magic/' + encodeURIComponent(remoteId) + '/books'
-        : '/api/v1/smart-scopes/' + encodeURIComponent(remoteId) + '/books';
-    const response = await this.call<unknown>(
-      'GET',
-      endpoint,
-      token,
-      undefined,
-      { page: 0, size: 1 }
-    );
+    const id = encodeURIComponent(remoteId);
+    const pagination = { page: 0, size: 1 };
+    // BookOrbit's GET for scope members requires official mobile app attestation.
+    const response =
+      provider === 'bookorbit'
+        ? await this.call<unknown>(
+            'POST',
+            `/api/v1/smart-scopes/${id}/books/query`,
+            token,
+            { sort: [], pagination }
+          )
+        : await this.call<unknown>(
+            'GET',
+            `/api/v1/app/shelves/magic/${id}/books`,
+            token,
+            undefined,
+            pagination
+          );
     const count = getCount(response, false);
     if (count === undefined) {
       throw new Error('Reader service did not return a grouping count.');

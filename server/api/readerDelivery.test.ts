@@ -306,7 +306,7 @@ describe('ReaderDeliveryApi', () => {
 
   it('reads verified totals and deletes encoded remote grouping identifiers', async () => {
     const api = new InspectReaderDeliveryApi([
-      { data: { page: { total: 83 }, content: [] } },
+      { items: [{ id: 1 }], total: 83, page: 0, size: 1 },
       undefined,
     ]);
 
@@ -319,8 +319,8 @@ describe('ReaderDeliveryApi', () => {
       api.calls.map(({ method, endpoint }) => ({ method, endpoint })),
       [
         {
-          method: 'GET',
-          endpoint: '/api/v1/smart-scopes/scope%2Fwith%20spaces/books',
+          method: 'POST',
+          endpoint: '/api/v1/smart-scopes/scope%2Fwith%20spaces/books/query',
         },
         {
           method: 'DELETE',
@@ -328,8 +328,32 @@ describe('ReaderDeliveryApi', () => {
         },
       ]
     );
-    assert.deepEqual(api.calls[0].config?.params, { page: 0, size: 1 });
+    assert.deepEqual(api.calls[0].data, {
+      sort: [],
+      pagination: { page: 0, size: 1 },
+    });
+    assert.equal(api.calls[0].config?.headers?.Authorization, 'Bearer token');
     assert.equal(api.calls[1].config?.headers?.Authorization, 'Bearer token');
+  });
+
+  it('keeps a verified empty BookOrbit scope distinct from a missing total', async () => {
+    const api = new InspectReaderDeliveryApi([
+      { items: [], total: 0 },
+      { items: [] },
+    ]);
+    assert.equal(await api.getGroupingCount('bookorbit', 'token', '42'), 0);
+    await assert.rejects(
+      api.getGroupingCount('bookorbit', 'token', '42'),
+      /did not return a grouping count/
+    );
+  });
+
+  it('keeps the Grimmory count on the paginated magic shelf endpoint', async () => {
+    const api = new InspectReaderDeliveryApi([{ totalElements: 31 }]);
+    assert.equal(await api.getGroupingCount('grimmory', 'token', '42'), 31);
+    assert.equal(api.calls[0].method, 'GET');
+    assert.equal(api.calls[0].endpoint, '/api/v1/app/shelves/magic/42/books');
+    assert.deepEqual(api.calls[0].config?.params, { page: 0, size: 1 });
   });
 
   it('creates, updates, finds, and deletes native BookOrbit Collections', async () => {
