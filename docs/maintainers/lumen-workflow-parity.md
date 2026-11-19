@@ -4360,3 +4360,14 @@ right edge; the previous candidate screenshot returned to the normal page width
 with the menu in bounds. Local repeat validation passed 20 tablet runs with eight
 workers, and the iPhone recommendation-feed case passed. Exact-head hosted
 qualification remains required before release.
+
+### Localized Live TV navigation
+
+The configured desktop Recordings link now reads its label from the existing
+SeerrNG locale catalog. Browser checks verified the active `/recordings` route
+and populated fixture state with the saved English, French, and Arabic locales;
+Arabic sets RTL direction. All six desktop recording workflow and locale cases
+passed. English, French, and Arabic renders at 1440 × 900 were inspected; the
+sidebar stayed within the viewport and each label remained readable. Screenshots
+are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-validation-44600171238/recordings-menu/`.

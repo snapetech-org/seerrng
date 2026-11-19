@@ -414,7 +414,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           {liveTv.data?.configured && (
             <NavLink to="/recordings">
               <Icon name="cal" />
-              Recordings
+              {t('components.LiveTv.RecordingList.title', 'Recordings')}
             </NavLink>
           )}
           <NavLink to="/calendar">

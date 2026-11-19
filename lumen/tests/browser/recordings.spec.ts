@@ -12,7 +12,12 @@ const active = {
   requestedBy: { id: 1, displayName: 'Viewer' },
 };
 
-async function fixture(page: Page, permissions: number, configured = true) {
+async function fixture(
+  page: Page,
+  permissions: number,
+  configured = true,
+  locale = 'en'
+) {
   let status = active.status;
   const writes: string[] = [];
   const reads: string[] = [];
@@ -26,6 +31,8 @@ async function fixture(page: Page, permissions: number, configured = true) {
     const path = url.pathname.slice(7);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
     if (path === '/live-tv/status')
       return route.fulfill({
         json: { configured, canRequest: true, guideReady: configured },
@@ -51,6 +58,35 @@ async function fixture(page: Page, permissions: number, configured = true) {
     return route.fulfill({ json: {} });
   });
   return { writes, reads };
+}
+
+for (const { locale, label, direction } of [
+  { locale: 'en', label: 'Recordings', direction: 'ltr' },
+  { locale: 'fr', label: 'Enregistrements', direction: 'ltr' },
+  { locale: 'ar', label: 'التسجيلات', direction: 'rtl' },
+]) {
+  test(`the configured Recordings menu uses the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    test.skip(info.project.name !== 'desktop');
+    await fixture(page, 2, true, locale);
+    await page.goto('/recordings');
+    await expect(page.getByText('Fixture Airing')).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.locator('html')).toHaveAttribute('dir', direction);
+    await expect(
+      page.getByRole('navigation', { name: 'Main' }).getByRole('link', {
+        name: label,
+        exact: true,
+      })
+    ).toHaveAttribute('href', '/recordings');
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await page.screenshot({
+      path: info.outputPath(`recordings-menu-${locale}.png`),
+    });
+  });
 }
 
 test('recording managers can review all users and approve an airing', async ({
