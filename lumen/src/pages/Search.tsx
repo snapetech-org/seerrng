@@ -14,6 +14,7 @@ import {
   type TitleResult,
   type VideoSearchResult,
 } from '../api';
+import { cacheGeneration } from '../apiCache';
 import {
   BookCard,
   CollectionCard,
@@ -47,6 +48,7 @@ import {
   searchResultPage,
   videoFilterKeys,
 } from '../searchParams';
+import { sessionGeneration } from '../sessionState';
 import { usePrefs } from '../settings';
 import { BookSeriesResults } from './BookSeriesSearch';
 import { AlbumCard } from './Music';
@@ -69,6 +71,13 @@ type AuthorResult = { mediaType: 'author'; id: string; name: string };
 type ArtistResult = { mediaType: 'artist'; id: string; name: string };
 type SearchResult =
   VideoSearchResult | AuthorResult | ArtistResult | Album | Magazine | League;
+type SearchPage = Paged<SearchResult> & { partial?: boolean };
+type SearchReply = {
+  path: string;
+  session: number;
+  generation: number;
+  page: SearchPage;
+};
 type Scope = keyof typeof SCOPES;
 const searchTitleCollator = new Intl.Collator(undefined, {
   numeric: true,
@@ -247,6 +256,8 @@ function SearchResults({
   const [totalPages, setTotalPages] = useState(1);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
+  const lastReply = useRef<SearchReply | null>(null);
+  const retryReply = useRef<SearchReply | null>(null);
   const [attempt, setAttempt] = useState(0);
   const navType = useNavigationType();
   // a new key per history entry, even when Enter pushes the same URL typing already showed
@@ -345,6 +356,10 @@ function SearchResults({
       return;
     }
     let live = true;
+    const session = sessionGeneration();
+    const generation = cacheGeneration();
+    const reusable = retryReply.current;
+    retryReply.current = null;
     setSearching(true);
     const t = setTimeout(async () => {
       const wantBooks =
@@ -367,9 +382,11 @@ function SearchResults({
         : null;
       const [tr, ...brs] = await Promise.all([
         wantsTitles
-          ? api<Paged<SearchResult> & { partial?: boolean }>(titlePath).catch(
-              failure
-            )
+          ? reusable?.path === titlePath &&
+            reusable.session === session &&
+            reusable.generation === generation
+            ? reusable.page
+            : api<SearchPage>(titlePath).catch(failure)
           : null,
         ...formats.map((fmt) =>
           wantBooks
@@ -386,6 +403,10 @@ function SearchResults({
       const br = brs.find(Boolean) ?? null;
       const cr = await comicsAsk;
       if (!live) return;
+      lastReply.current =
+        tr && !tr.partial
+          ? { path: titlePath, session, generation, page: tr }
+          : null;
       const resultsOnPage = <T,>(response: Paged<T> | null) =>
         response && resultPage <= response.totalPages ? response.results : [];
       const foundComics = resultsOnPage(cr);
@@ -746,7 +767,10 @@ function SearchResults({
         <ServiceNote
           error={searchError}
           what={nothing ? 'search results' : 'some search results'}
-          retry={() => setAttempt((n) => n + 1)}
+          retry={() => {
+            retryReply.current = lastReply.current;
+            setAttempt((n) => n + 1);
+          }}
         />
       )}
       {nothing && !searching && !searchError && (

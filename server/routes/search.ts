@@ -1449,6 +1449,7 @@ searchRoutes.get('/', async (req, res, next) => {
       capabilityResults.length !== creditEnrichedResults.length ||
       maturityFilteredResults.length !== capabilityResults.length;
 
+    if (partial) res.set('Cache-Control', 'no-store');
     return res.status(200).json({
       page: results.page,
       totalPages: typeSpecificTotalPages ?? results.total_pages,

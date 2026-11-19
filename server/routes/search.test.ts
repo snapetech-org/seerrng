@@ -281,6 +281,7 @@ describe('GET /search', () => {
         const partial = await agent.get('/search').query({ query: 'recovery' });
         assert.equal(partial.status, 200);
         assert.equal(partial.body.partial, true);
+        assert.equal(partial.headers['cache-control'], 'no-store');
         assert.equal(partial.body.results[0]?.mediaType, 'collection');
       }
     });

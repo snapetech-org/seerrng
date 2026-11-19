@@ -3040,6 +3040,12 @@ results during a video provider failure. Desktop and iPhone fixtures
 tested retry after a partial response in both deployments. Matched
 visual review remains open.
 
+Manual retry reuses a successful title response for the same
+query, page, and account while retrying an independent catalog.
+A partial title response is fetched again and the API sends it
+with `Cache-Control: no-store`. Fixtures check both request paths
+and prior results remaining visible.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express
