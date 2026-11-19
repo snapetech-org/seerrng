@@ -2195,7 +2195,11 @@ changes require confirmation. The room can refresh membership, and returns to
 the list if the server reports closure. Compared draft room states on desktop,
 iPhone 13, Pixel 7, and iPad Pro 11. The production build and 12 browser checks
 passed with synthetic responses, including removal and server-reported closure.
-Guest departure and host closure still need direct interaction tests.
+The watch-session suite also verifies that host closure, guest departure, and
+guest removal each require confirmation, use the expected endpoint, and return
+to the session list after success; all 20 fixture cases passed on desktop,
+iPhone, Android, and tablet. Live provider playback and cross-device use remain
+unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watch-members-20261118/`.
