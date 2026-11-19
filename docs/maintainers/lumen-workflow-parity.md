@@ -1341,9 +1341,10 @@ browsing categories. It translates the native search term and supported
 search scopes and retains supported personal watchlist and indexer inputs.
 
 Server integration tests cover representative routes, issue ID bounds,
-repeated search parameters, and unsupported routes. The native Games
-library and Discover Watchlist still need distinct Lumen workflows. Live
-browser validation of the bundled redirects remains open.
+repeated search parameters, and unsupported routes. The earlier statement that
+the native Games library and Discover Watchlist needed distinct workflows is
+superseded by the dedicated increments below. Live browser validation of the
+bundled redirects remains open.
 
 ### Discover Watchlist
 
