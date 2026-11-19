@@ -3383,6 +3383,17 @@ Live metadata and matched visual acceptance remain unverified.
 | Coming Soon pagination and media filter | `6d9bf45a2`, `338876e79` | Browser fixtures cover paging, retry, and title wrapping. Desktop and iPhone checks cover direct TV links, switching to movies, browser Back, and returning to both feeds. The first TV-only view fetches only the TV feed. Bundled and standalone redirect tests preserve the scope. | Matched renders of the new pagination controls and real-server paging in both deployments. |
 | One-time sign-in links | `ed08e9ee9`, `df8b19237`, `ae0cda171` | Standalone browser fixtures cover administrator creation and revocation, explicit redemption, address-bar cleanup, restoration of the requested title, and opening a link into an existing session. | The real session and SQLite API tests verify expiry, revocation, single use, and conflict with an existing session. Compare the expanded administrator panel and sign-in confirmation at matching desktop and mobile widths. |
 
+A follow-up on production builds from `d89e11007` verified four more
+administration bookmarks after local sign-in against the real API, CSRF
+middleware, and isolated SQLite accounts. Both the Express bundle and the
+standalone nginx companion passed 16 cases at 390 and 1440 CSS pixels.
+Administrators reached General Settings with the 4K or default quota
+fragment, System Logs, and Administration with the TV and movies service
+category selected in the URL. Members landed on their account page. The
+corresponding settings, logs, and Sonarr configuration reads returned HTTP
+200 for administrators and HTTP 403 for members. These were read-only
+checks with synthetic accounts and no external providers.
+
 The older increment notes describe the state at delivery. Use the table above for
 these workflows and current route, permission, and browser evidence when
 rechecking the original inventory. A continuation audit must include both
