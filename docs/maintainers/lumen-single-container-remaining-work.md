@@ -49,3 +49,9 @@ that upstream or a released SeerrNG version implements the behavior):
 - [upgrade-routing report #629](https://github.com/snapetech-org/seerrng/issues/629).
 
 [Back to the Seerr / SeerrNG feature comparison](../feature-comparison.md).
+
+Bundled desktop and iPhone checks on `f8fd882ba` imported both local branding
+references from one companion export. Save stayed disabled after uploading the
+logo alone, and a rejected upload and a simulated failed configuration save
+left the existing shared configuration intact. After retry, the saved settings
+referenced two distinct PNGs served by the bundled branding endpoint.
