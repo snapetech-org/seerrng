@@ -3111,6 +3111,14 @@ browser checks across desktop, iPhone, Android, and tablet confirmed the
 authorized roles see Adult while viewers with no permission or generic
 `REQUEST` do not.
 
+The mobile You page now shows My Games only when at least one supported game
+category is enabled for the signed-in account and its catalog is available.
+Fixture runs verify the hidden global-disabled state makes no game-catalog request,
+and the enabled state keeps the exact link available. Eight cases passed across
+desktop, iPhone, Android, and tablet in standalone and bundled Lumen. Matching
+390 × 844 CSS-pixel baseline and candidate screenshots are retained under
+`/mnt/disks/scratch/codex-task-scratch/seerrng-lumen-game-navigation-20261119/`.
+
 Request buttons on software game details, album details, and adult-scene
 details now follow the native permission masks (`REQUEST`; `REQUEST` or
 `REQUEST_MUSIC`; and `ADMIN`, `MANAGE_REQUESTS`, or `REQUEST_ADULT`,
@@ -4092,7 +4100,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. Reader Issue Reports add four cases per deployment for book, comic, magazine and music detail controls. The selected current-source set now totals 719 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. Reader Issue Reports add four cases per deployment for book, comic, magazine and music detail controls. Game Library Navigation adds eight cases per deployment for enabled and disabled categories. The selected current-source set now totals 727 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 

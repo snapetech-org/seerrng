@@ -15,6 +15,7 @@ import RequestLimits from '../components/RequestLimits';
 import { fullSeerrUrl } from '../components/Shell';
 import { useToast } from '../components/toast';
 import { canManageDownloads } from '../downloadPermissions';
+import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -74,6 +75,7 @@ export default function Me() {
   const showBlocklist = useBlocklistNavigation();
   const toast = useToast();
   const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
+  const extras = useExtras();
   const [askReset, setAskReset] = useState(false);
   const full = fullSeerrUrl(seerrPublicUrl);
   const isAdmin = isAdministrator(user?.permissions);
@@ -213,12 +215,18 @@ export default function Me() {
               Open <Icon name="chev" size="sm" />
             </Link>
           </div>
-          <div className="set">
-            <b>My Games</b>
-            <Link className="go" to="/game-library" aria-label="Open My Games">
-              Open <Icon name="chev" size="sm" />
-            </Link>
-          </div>
+          {extras.list.some((item) => item.key === 'game') && (
+            <div className="set">
+              <b>My Games</b>
+              <Link
+                className="go"
+                to="/game-library"
+                aria-label="Open My Games"
+              >
+                Open <Icon name="chev" size="sm" />
+              </Link>
+            </div>
+          )}
           {canViewFollowing(user?.permissions) && (
             <div className="set">
               <b>Following</b>
