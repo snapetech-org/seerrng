@@ -26,9 +26,147 @@ export const localeData = [
         'استخدام لغة المتصفح ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'حفظ التغييرات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'نوع الحساب',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'مستخدم محلي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex مستعمل',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'مستخدم {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'المالك',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'اداري',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'مستخدم',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'تم حفظ الإعدادات بنجاح!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'إسم العرض',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'البريد الإلكتروني',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'لغة البيانات الوصفية',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'يضبط لغة العناوين ونتائج البحث بشكل مستقل عن لغة الواجهة.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'التنسيق الإقليمي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'يضبط تنسيقات التاريخ والوقت والأرقام والوحدات بشكل مستقل عن لغة العرض.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'منطقة الاستكشاف',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'تصفية المحتوى بحسب التوافر الإقليمي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'منطقة البث',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'إظهار مواقع البث بحسب التوافر الإقليمي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'لغة العرض الخاصة بـ إكتشف محتوى جديد',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'تصفية المحتوى بحسب اللغة الأصلية',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'اللغة المفضلة لجميع وسائط الإعلام',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'تجاوز لغة الأفلام',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'سلسلة تجاوزات اللغات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'تجاوز لغة الموسيقى',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'تجاوز لغة الكتاب',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'أي لغة',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'استخدام التفضيل العام',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'تقديم طلبات تلقائي للأفلام',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'تقديم تلقائي لطلبات المسلسلات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'طلب الموسيقى التلقائي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'ألبومات الطلب الآلي تضاف إلى SeerrNG مُراقبة الموسيقى عندما يُتاح مصدر مُساند لمراقبة الموسيقى.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'طلب الكتب تلقائيًا',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'الدفاتر التي تطلبها الآلية مضافة إلى SeerrNG قائمة مراقبة الكتب عندما يكون هناك مصدر مدعوم لمراقبي الكتب',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'رسوم هزلية للطلب التلقائي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'اطلب تلقائيًا إضافة القصص المصورة إلى قائمة مراقبة القصص المصورة SeerrNG الخاصة بك.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'مجلات الطلب التلقائي',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'طلب إضافة المجلات تلقائيًا إلى قائمة مراقبة المجلات SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'عناوين البطاقات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'اختر عندما يظهر كل نوع من وسائل الإعلام نص عنوان على بطاقات الملصقات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'أفلام',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'مسلسلات',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'الموسيقى',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'كتب',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'دائما',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'كلمة السر الحالية',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'كلمة سر جديد',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'تأكيد كلمة السر',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'تم حفظ كلمة السر بنجاح!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'كلمة السر قصيرة جدا؛ الحد الأدنى ثمانية خانات',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'الحسابات المرتبطة',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'إعدادات التنبيه',
+      'components.UserProfile.UserSettings.menuChangePass': 'كلمة السر',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'الحسابات المرتبطة',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'المظهر المتقدم',
+      'components.UserProfile.UserSettings.menuPermissions': 'الصلاحيات',
+      'components.UserProfile.UserSettings.menuNotifications': 'التنبيهات',
+      'components.Settings.notificationsettings': 'اعدادات التنبيهات',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'إغلاق',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'الدور',
+      'lumen.account.streamingSubscriptions': 'اشتراكات خدمات البث',
+      'lumen.account.streamingSubscriptionsTip':
+        'اختر خدمات البث المتاحة في {region} التي تشترك بها. يستخدم SeerrNG هذه القائمة ضمن قواعد إتاحة الطلبات.',
+      'lumen.account.filterStreamingServices': 'تصفية خدمات البث',
+      'lumen.account.selectShown': 'تحديد الخدمات المعروضة',
+      'lumen.account.clearShown': 'إلغاء تحديد الخدمات المعروضة',
+      'lumen.account.saveStreamingSubscriptions': 'حفظ اشتراكات خدمات البث',
+      'lumen.account.loadingStreamingProviders': 'جارٍ تحميل خدمات البث…',
+      'lumen.account.noMatchingStreamingServices': 'لا توجد خدمات بث مطابقة.',
+      'lumen.account.maxStreamingServices': 'يمكنك تحديد 500 خدمة كحد أقصى.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'تم حفظ اشتراكات خدمات البث.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'تعذر تأكيد حفظ الاشتراكات. حاول مرة أخرى.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'تعذر حفظ اشتراكات خدمات البث. حاول مرة أخرى.',
+      'lumen.account.cardTitleOnHover': 'عند التحويم أو التركيز',
+      'lumen.account.saveCardTitles': 'حفظ عناوين البطاقات',
+      'lumen.account.cardTitleSettingsSaved': 'تم حفظ إعدادات عناوين البطاقات.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'تعذر حفظ إعدادات عناوين البطاقات. حاول مرة أخرى.',
+      'lumen.account.saving': 'جارٍ الحفظ…',
     },
   },
   {
@@ -57,9 +195,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Запазване на промените',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Тип на акаунта',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Локален потребител',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex потребител',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Потребител на {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Собственик',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Администратор',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Потребител',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Настройките са запазени успешно!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Показвано име',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Имейл',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        "Регион за 'Откриване'",
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Филтриране на съдържанието по регионална наличност',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Регион за стрийминг',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Показване на платформите за стрийминг според регионалната им наличност',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        "Език за 'Откриване'",
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Филтриране на съдържанието по оригинален език',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Автоматична заявка на филми',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Автоматична заявка на сериали',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Текуща парола',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Нова парола',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Потвърдете паролата',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Паролата е запазена успешно!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Паролата е твърде кратка; трябва да бъде поне 8 знака',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Свързани акаунти',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Настройки за известията',
+      'components.UserProfile.UserSettings.menuChangePass': 'Парола',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Свързани акаунти',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Права',
+      'components.UserProfile.UserSettings.menuNotifications': 'Известия',
+      'components.Settings.notificationsettings': 'Настройки за известията',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Затваряне',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роля',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -88,9 +368,152 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipus de compte',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Usuari local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Usuari de Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Propietari',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Usuari',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        "La configuració s'ha desat correctament!",
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nom de visualització',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Correu electrònic',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Idioma per a la secció «Descobriu»',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        "Filtra el contingut per l'idioma original",
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Sol·licitud automàtica de pel·lícules',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Sol·licitud automàtica de sèries',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Contrasenya actual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nova contrasenya',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmeu la contrasenya',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        "La contrasenya s'ha desat correctament!",
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'La contrasenya és massa curta; ha de tenir un mínim de 8 caràcters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Configuració de les notificacions',
+      'components.UserProfile.UserSettings.menuChangePass': 'Contrasenya',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permisos',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificacions',
+      'components.Settings.notificationsettings':
+        'Configuració de les notificacions',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tanca',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -119,9 +542,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Uložit změny',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Typ účtu',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Místní uživatel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Uživatel Plexu',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Uživatel {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Vlastník',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Správce',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Uživatel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Nastavení úspěšně uloženo!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Zobrazované jméno',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Region pro objevování',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrovat obsah podle regionální dostupnosti',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Region streamování',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Zobrazit streamovací služby podle regionální dostupnosti',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Jazyk pro objevování',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrovat obsah podle původního jazyka',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Automaticky požádat o filmy',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Automaticky požádat o seriál',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Aktuální heslo',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nové heslo',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Potvrďte heslo',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Heslo úspěšně uloženo!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Heslo je příliš krátké; mělo by mít minimálně 8 znaků',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Propojené účty',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Nastavení oznámení',
+      'components.UserProfile.UserSettings.menuChangePass': 'Heslo',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Propojené účty',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Oprávnění',
+      'components.UserProfile.UserSettings.menuNotifications': 'Oznámení',
+      'components.Settings.notificationsettings': 'Nastavení oznámení',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zavřít',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -150,9 +715,149 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Gem ændringer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Kontotype',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokal bruger',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex-bruger',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName}-bruger',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Ejer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Bruger',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Indstillinger gemt!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Vist navn',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Region til Udforsk-siden',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrér indhold efter regional tilgængelighed',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streamingregion',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Vis streamingsider efter regional tilgængelighed',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Sprog til Udforsk-siden',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrér indhold efter originalsprog',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-anmod om film',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-anmod om serier',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Nuværende adgangskode',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Ny adgangskode',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Bekræft adgangskode',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Adgangskoden er gemt!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Adgangskoden er for kort; skal være mindst 8 tegn lang',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Tilknyttede konti',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notifikationsindstillinger',
+      'components.UserProfile.UserSettings.menuChangePass': 'Adgangskode',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Tilknyttede konti',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Tilladelser',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifikationer',
+      'components.Settings.notificationsettings': 'Notifikationsindstillinger',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Luk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -181,9 +886,154 @@ export const localeData = [
         'Browsersprache verwenden ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Änderungen speichern',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Kontotyp',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokaler Benutzer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex Benutzer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Benutzer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Besitzer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Benutzer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Einstellungen erfolgreich gespeichert!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Anzeigename',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-Mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadatensprache',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Legt die Sprache für Titel und Suchergebnisse unabhängig von der Oberflächensprache fest.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regionales Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Legt die Formate für Datum, Uhrzeit, Zahlen und Einheiten unabhängig von der Anzeigesprache fest.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Region für "Entdecken"',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Inhalte nach regionaler Verfügbarkeit filtern',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Verkehrsgebiet',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Streaming Seiten nach regionaler Verfügbarkeit anzeigen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Sprache des Bereichs "Entdecken"',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtere Inhalte nach Originalsprache',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Bevorzugte Sprache für alle Medien',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Filmsprache Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Serie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Musiksprache überschreiben',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Buchsprache Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Jede Sprache',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Verwenden Sie All-Media-Präferenzen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Filme',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request-Serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Musik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Fordern Sie automatisch Alben an, die zu SeerrNG-Musik-Watchlisten hinzugefügt wurden, wenn eine unterstützte Musik-Watchlisten-Quelle verfügbar ist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Bücher automatisch anfordern',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Fordern Sie automatisch Bücher an, die zu SeerrNG-Buchbeobachtungslisten hinzugefügt wurden, wenn eine unterstützte Buchbeobachtungslistenquelle verfügbar ist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Comics automatisch anfordern',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Fordern Sie automatisch Comics an, die Ihrer SeerrNG-Comics-Watchlist hinzugefügt wurden.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Zeitschriften automatisch anfordern',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Fordern Sie automatisch Zeitschriften an, die Ihrer SeerrNG-Magazin-Watchlist hinzugefügt wurden.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Kartentitel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Wählen Sie aus, wann jeder Medientyp Titeltext auf Posterkarten anzeigt.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Filme',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Serien',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Musik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Bücher',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Immer',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Aktuelles Passwort',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Neues Passwort',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Passwort bestätigen',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Passwort erfolgreich geändert!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Das Passwort ist zu kurz, es sollte mindestens 8 Zeichen lang sein',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Verknüpfte Konten',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Benachrichtigungseinstellungen',
+      'components.UserProfile.UserSettings.menuChangePass': 'Passwort',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Verknüpfte Konten',
+      'components.UserProfile.UserSettings.menuAdvancedTheme':
+        'Erweitertes Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Berechtigungen',
+      'components.UserProfile.UserSettings.menuNotifications':
+        'Benachrichtigungen',
+      'components.Settings.notificationsettings':
+        'Benachrichtigungseinstellungen',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Schließen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -212,9 +1062,148 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Account Type',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Local User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Owner',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'Admin',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Display Name',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Discover Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Current Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'New Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirm Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password saved successfully!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Password is too short; should be a minimum of 8 characters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Password',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissions',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -243,9 +1232,150 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Τύπος Λογαριασμού',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Τοπικός χρήστης',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Χρήστης Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Ιδιοκτήτης',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Διαχειριστής',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Χρήστης',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Οι ρυθμίσεις αποθηκεύτηκαν με επιτυχία!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Εμφανιζόμενο όνομα',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Ανακάλυψη με βάση την γλώσσα',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Φίλτραρε το περιεχόμενο με βάση την αρχική γλώσσα',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Αυτόματη αίτηση ταινιών',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Αυτόματη αίτηση σειρών',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Τρέχων κωδικός πρόσβασης',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Νέος κωδικός πρόσβασης',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Επιβεβαίωση κωδικού πρόσβασης',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Ο κωδικός πρόσβασης αποθηκεύτηκε με επιτυχία!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Ο κωδικός πρόσβασης είναι πολύ σύντομος- θα πρέπει να αποτελείται από τουλάχιστον 8 χαρακτήρες',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Ρυθμίσεις ειδοποιήσεων',
+      'components.UserProfile.UserSettings.menuChangePass': 'Κωδικός πρόσβασης',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Άδειες',
+      'components.UserProfile.UserSettings.menuNotifications': 'Ειδοποιήσεις',
+      'components.Settings.notificationsettings': 'Ρυθμίσεις Ειδοποιήσεων',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Κλείσιμο',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ρόλος',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -274,9 +1404,152 @@ export const localeData = [
         'Usar idioma del navegador ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Guardar Cambios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipo de Cuenta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Usuario Local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Usuario en Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Usuario de {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Propietario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Usuario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '¡Ajustes guardados con éxito!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nombre a mostrar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Correo electrónico',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Idioma de metadatos',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Establece el idioma de los títulos y resultados de búsqueda de forma independiente al idioma de la interfaz.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Formato regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Establece los formatos de fecha, hora, número y unidad de forma independiente al idioma de visualización.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Región en sección "Descubre"',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrar contenido por disponibilidad regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Región de transmisión',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Mostrar sitios de transmisión por disponibilidad regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Idioma de la sección "Descubre"',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrar contenido por idioma original',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Idioma preferido por todos los medios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Cambio de lenguaje de películas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Anulación del lenguaje de serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Anulación del lenguaje musical',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Anulación del lenguaje del libro',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Cualquier idioma',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Utilice la preferencia de todos los medios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Solicitar películas automáticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Solicitar series automáticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Música de Auto-Solicitud',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Solicitar automáticamente discos añadidos a las listas de música de SeerrNG cuando esté disponible una fuente de música compatible.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Libros Auto-Solicitud',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Solicitar automáticamente libros añadidos a las listas de relojería SeerrNG cuando se dispone de una fuente de relojería de libros compatible.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Cómics de solicitud automática',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Solicitar automáticamente cómics añadidos a su lista de relojes cómicos SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Revistas de solicitud automática',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Solicitar automáticamente revistas agregadas a tu lista de vigilancia de la revista SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Títulos de la tarjeta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Elige cuando cada tipo de medio muestra texto de título en tarjetas de cartel.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Películas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Música',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Libros',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Siempre',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Contraseña Actual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nueva Contraseña',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmar Contraseña',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        '¡Contraseña guardada correctamente!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'La contraseña es muy corta; debería tener, al menos, 8 caracteres',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Cuentas asociadas',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Ajustes de Notificaciones',
+      'components.UserProfile.UserSettings.menuChangePass': 'Contraseña',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Cuentas vinculadas',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Avances Tema',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permisos',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificaciones',
+      'components.Settings.notificationsettings':
+        'Configuración de notificaciones',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -305,9 +1578,152 @@ export const localeData = [
         'Usar idioma del navegador ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Guardar cambios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipo de Cuenta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Usuario Local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Usuario en Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Usuario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Propietario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Usuario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '¡Ajustes guardados con éxito!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nombre a mostrar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Correo electrónico',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Idioma de metadatos',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Establece el idioma de los títulos y resultados de búsqueda de forma independiente al idioma de la interfaz.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Formato regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Establece los formatos de fecha, hora, número y unidad de forma independiente al idioma de visualización.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Descubre',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Contenido filtrado por disponibilidad regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Región de transmisión',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Mostrar sitios de transmisión por disponibilidad regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Idioma de la sección "Descubre"',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrar contenido por idioma original',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Idioma preferido por todos los medios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Cambio de lenguaje de películas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Anulación del lenguaje de serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Anulación del idioma musical',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Anulación del lenguaje del libro',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Cualquier idioma',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Utilice la preferencia de todos los medios',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Solicitar Películas automáticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Solicitar series automáticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Música de Auto-Solicitud',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Solicitar automáticamente discos añadidos a las listas de música de SeerrNG cuando esté disponible una fuente de música compatible.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Libros Auto-Solicitud',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Solicitar automáticamente libros añadidos a las listas de relojería SeerrNG cuando se dispone de una fuente de relojería de libros compatible.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Cómics de solicitud automática',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Solicitar automáticamente cómics añadidos a su lista de relojes cómicos SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Revistas de solicitud automática',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Solicitar automáticamente revistas agregadas a tu lista de vigilancia de la revista SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Títulos de la tarjeta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Elige cuando cada tipo de medio muestra texto de título en tarjetas de cartel.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Películas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Música',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Libros',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Siempre',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Contraseña Actual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nueva Contraseña',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmar Contraseña',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        '¡Contraseña guardada correctamente!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'La contraseña es muy corta; debería tener, al menos, 8 caracteres',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Cuentas vinculadas',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Ajustes de Notificaciones',
+      'components.UserProfile.UserSettings.menuChangePass': 'Contraseña',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Cuentas vinculadas',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Avances Tema',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permisos',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificaciones',
+      'components.Settings.notificationsettings':
+        'Configuración de notificaciones',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Cerrar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -336,9 +1752,150 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Salvesta muudatused',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Konto tüüp',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Kohalik kasutaja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plexi kasutaja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} kasutaja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Omanik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administraator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Kasutaja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Seaded on edukalt salvestatud!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Kuvatav nimi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-post',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Avastamise piirkond',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtreeri sisu piirkondliku kättesaadavuse järgi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Voogedastuse piirkond',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Näita voogedastusplatvorme piirkondliku kättesaadavuse järgi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Avastamise keel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtreeri sisu originaalkeele järgi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Taotle filme automaatselt',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Taotle sarju automaatselt',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Praegune parool',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Uus parool',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Kinnita parool',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Parool on edukalt salvestatud!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Parool on liiga lühike; see peab olema vähemalt 8 märki pikk',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Lingitud kontod',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Teavituste seaded',
+      'components.UserProfile.UserSettings.menuChangePass': 'Parool',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Lingitud kontod',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Õigused',
+      'components.UserProfile.UserSettings.menuNotifications': 'Teavitused',
+      'components.Settings.notificationsettings': 'Teavituste seaded',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulge',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -367,9 +1924,152 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Tallenna muutokset',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tilin tyyppi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Paikallinen käyttäjä',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex käyttäjä',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Käyttäjä',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Omistaja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Ylläpitäjä',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Käyttäjä',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Asetukset tallennettu!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Näyttönimi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Sähköposti',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Tutustu-osion alue',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Suodata sisältöä alueellisen saatavuuden perusteella',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Striimauspalveluiden alue',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Näytä striimauspalvelut alueellisen saatavuuden perusteella',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Tutustu-osion kieli',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Suodata sisältöä alkuperäisen kielen perusteella',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Current Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'New Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirm Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password saved successfully!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Password is too short; should be a minimum of 8 characters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Password',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissions',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sulje',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rooli',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -398,9 +2098,155 @@ export const localeData = [
         'Utiliser la langue du navigateur ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Enregistrer les modifications',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Type de compte',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Utilisateur local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Utilisateur Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Utilisateur {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Propriétaire',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrateur',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Utilisateur',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Les paramètres ont été enregistrés !',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nom affiché',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Langue des métadonnées',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Définit la langue des titres et des résultats de recherche indépendamment de la langue de l’interface.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Format régional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Définit les formats de date, d’heure, de nombre et d’unité indépendamment de la langue d’affichage.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Pays dans Découvrir',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrer le contenu selon la disponibilité par pays',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Pays de streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Afficher les plateformes de streaming selon la disponibilité par pays',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Langue dans Découvrir',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        "Filtrer le contenu par langue d'origine",
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Langue préférée pour tous les médias',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Préférence de langue des films',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Préférence de langue des séries',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Préférence de langue musicale',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Préférence de langue des livres',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Toute langue',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Hériter de la préférence générale',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Demander automatiquement les films',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Demander automatiquement les séries',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Musique de demande automatique',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        "Demander automatiquement des albums ajoutés aux listes d'horlogers de SeerrNG quand une source de liste d'horlogers de musique prise en charge est disponible.",
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Livres de demande automatique',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        "Demander automatiquement des livres ajoutés aux listes de veille de livres SeerrNG lorsqu'une source de liste de veille de livres est disponible.",
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Demande automatique de bandes dessinées',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Demander automatiquement des BD ajoutées à votre liste de BD SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Magazines de demande automatique',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        "Demandez automatiquement l'ajout de magazines à votre liste de surveillance de magazine SeerrNG.",
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Abonnements aux services de streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Titres des cartes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choisissez quand chaque type de média affiche le texte du titre sur les affiches.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Films',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Séries',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Musique',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Livres',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Toujours',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Mot de passe actuel',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nouveau mot de passe',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmez le mot de passe',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Le mot de passe a été enregistré !',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Le mot de passe est trop court, il doit contenir un minimum de 8 caractères',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Comptes liés',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Paramètres de notification',
+      'components.UserProfile.UserSettings.menuChangePass': 'Mot de passe',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': 'Comptes liés',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Thème avancé',
+      'components.UserProfile.UserSettings.menuPermissions': 'Autorisations',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Paramètres de notification',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fermer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rôle',
+      'lumen.account.streamingSubscriptions':
+        'Abonnements aux services de streaming',
+      'lumen.account.streamingSubscriptionsTip':
+        'Sélectionnez les services de streaming auxquels vous êtes abonné pour la région {region}. SeerrNG utilise cette liste dans ses règles de disponibilité des demandes.',
+      'lumen.account.filterStreamingServices':
+        'Filtrer les services de streaming',
+      'lumen.account.selectShown': 'Sélectionner les services affichés',
+      'lumen.account.clearShown': 'Désélectionner les services affichés',
+      'lumen.account.saveStreamingSubscriptions':
+        'Enregistrer les abonnements de streaming',
+      'lumen.account.loadingStreamingProviders':
+        'Chargement des services de streaming…',
+      'lumen.account.noMatchingStreamingServices':
+        'Aucun service de streaming correspondant.',
+      'lumen.account.maxStreamingServices':
+        'Sélectionnez au maximum 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Abonnements de streaming enregistrés.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Impossible de confirmer les abonnements enregistrés. Réessayez.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        "Impossible d'enregistrer les abonnements de streaming. Réessayez.",
+      'lumen.account.cardTitleOnHover': 'Au survol ou au focus clavier',
+      'lumen.account.saveCardTitles': 'Enregistrer les titres des affiches',
+      'lumen.account.cardTitleSettingsSaved':
+        'Préférences de titre des affiches enregistrées.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Impossible de confirmer les préférences de titre enregistrées.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Impossible d’enregistrer les préférences de titre. Réessayez.',
+      'lumen.account.saving': 'Enregistrement…',
     },
   },
   {
@@ -429,9 +2275,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Vrsta računa',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokalni korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Vlasnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Postavke su uspješno spremljene!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Prikazano ime',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Jezik otkrivanja',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtriraj sadržaj po izvornom jeziku',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Automatsko zahtijevanje filmova',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Automatsko zahtijevanje serija',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Aktualna lozinka',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nova lozinka',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Potvrdi lozinku',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Lozinka je uspješno spremljena!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Lozinka je prekratka; mora sadržati barem 8 znakova',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Postavke za obavijesti',
+      'components.UserProfile.UserSettings.menuChangePass': 'Lozinka',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Dozvole',
+      'components.UserProfile.UserSettings.menuNotifications': 'Obavijesti',
+      'components.Settings.notificationsettings': 'Postavke obavijesti',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -460,9 +2448,148 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Account Type',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Local User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Owner',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'Admin',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Display Name',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Discover Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Current Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'New Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirm Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password saved successfully!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Password is too short; should be a minimum of 8 characters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Password',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissions',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -491,9 +2618,149 @@ export const localeData = [
         'ब्राउज़र भाषा का उपयोग करें ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'परिवर्तन सहेजें',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'खाता प्रकार',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'स्थानीय उपयोगकर्ता',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex उपयोगकर्ता',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} उपयोगकर्ता',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'मालिक',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'व्यवस्थापक',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'उपयोगकर्ता',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'सेटिंग्स सफलतापूर्वक बचाया!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'प्रदर्शन का नाम',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'ईमेल',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'मेटाडेटा भाषा',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'इंटरफ़ेस भाषा से स्वतंत्र रूप से शीर्षकों और खोज परिणामों के लिए भाषा सेट करता है।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'क्षेत्रीय प्रारूप',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'प्रदर्शन भाषा से स्वतंत्र रूप से तारीख, समय, संख्या और इकाई प्रारूप सेट करता है।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'खोज क्षेत्र',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'क्षेत्रीय उपलब्धता द्वारा फ़िल्टर सामग्री',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'क्षेत्र स्ट्रीमिंग',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'क्षेत्रीय उपलब्धता द्वारा स्ट्रीमिंग साइटों को दिखाएं',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'भाषा',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'मूल भाषा से सामग्री फ़िल्टर करें',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'सभी मीडिया के लिए पसंदीदा भाषा',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'मूवी भाषा ओवरराइड',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'शृंखला भाषा ओवरराइड',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'संगीत भाषा ओवरराइड',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'पुस्तक भाषा ओवरराइड',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'भाषा',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'सभी मीडिया वरीयता का उपयोग करें',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'ऑटो-अनुरोध फिल्में',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'ऑटो-रीक्वेस्ट सीरीज़',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'ऑटो-अनुरोध संगीत',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'स्वचालित रूप से अनुरोध एल्बम को जोड़ा गया SeerrNG जब एक समर्थित म्यूजिक वॉचलिस्ट स्रोत उपलब्ध है तो म्यूजिक वॉचलिस्ट।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'ऑटो-रीक्वेस्ट बुक',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'स्वचालित रूप से अनुरोध पुस्तकों को जोड़ा गया SeerrNG जब एक समर्थित बुक वॉचलिस्ट स्रोत उपलब्ध है तो बुक वॉचलिस्ट।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'ऑटो-रीक्वेस्ट कॉमिक्स',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'स्वचालित रूप से आपकी SeerrNG कॉमिक वॉचलिस्ट में जोड़ी गई कॉमिक्स का अनुरोध करें।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'ऑटो-रीक्वेस्ट पत्रिका',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'स्वचालित रूप से आपकी SeerrNG पत्रिका वॉचलिस्ट में जोड़ी गई पत्रिकाओं का अनुरोध करें।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'कार्ड शीर्षक',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'जब प्रत्येक मीडिया प्रकार पोस्टर कार्ड पर शीर्षक पाठ दिखाता है चुनें।',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'फ़िल्में',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'श्रृंखला',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'संगीत',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'पुस्तकें',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'हमेशा',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'वर्तमान पासवर्ड',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'नया पासवर्ड',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'पासवर्ड की पुष्टि',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'पासवर्ड सफलतापूर्वक बचाया!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'पासवर्ड बहुत छोटा है; न्यूनतम 8 वर्ण होना चाहिए',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'लिंक्ड खाता',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'अधिसूचना सेटिंग',
+      'components.UserProfile.UserSettings.menuChangePass': 'पासवर्ड',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': 'लिंक्ड खाता',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'उन्नत विषय',
+      'components.UserProfile.UserSettings.menuPermissions': 'अनुमतियां',
+      'components.UserProfile.UserSettings.menuNotifications': 'अधिसूचनाएं',
+      'components.Settings.notificationsettings': 'अधिसूचना सेटिंग',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'बंद करें',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'भूमिका',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -522,9 +2789,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Módosítások mentése',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Fióktípus',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Helyi felhasználó',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex felhasználó',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} felhasználó',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Tulajdonos',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'Admin',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Felhasználó',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'A beállítások sikeresen mentve!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Megjelenített név',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Felfedezés régiója',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Tartalom szűrése regionális elérhetőség szerint',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streamelési régió',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'A streaming oldalak megjelenítése regionális elérhetőség szerint',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Nyelv felfedezése',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Tartalom szűrése eredeti nyelv szerint',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Filmek automatikus kérése',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Automatikus sorozat kérés',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Jelenlegi jelszó',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Új jelszó',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Jelszó megerősítése',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Jelszó sikeresen mentve!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'A jelszó túl rövid; minimum 8 karakter hosszú legyen',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Összekapcsolt fiókok',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Értesítési beállítások',
+      'components.UserProfile.UserSettings.menuChangePass': 'Jelszó',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Összekapcsolt fiókok',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Jogosultságok',
+      'components.UserProfile.UserSettings.menuNotifications': 'Értesítések',
+      'components.Settings.notificationsettings': 'Értesítési beállítások',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Bezárás',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role':
+        'Jogosultság',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -553,9 +2962,151 @@ export const localeData = [
         'Gunakan Bahasa Browser ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Simpan perubahan',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipe Akun',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Pengguna Lokal',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Pengguna Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Pengguna',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Pemilik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Pengguna',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Pengaturan berhasil disimpan!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nama Tampilan',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Surel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Bahasa Metadata',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Mengatur bahasa untuk judul dan hasil pencarian secara terpisah dari bahasa antarmuka.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Format Regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Mengatur format tanggal, waktu, angka, dan satuan secara terpisah dari bahasa tampilan.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Temukan Daerah',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter isi dengan ketersediaan regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Daerah Streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Tampilkan situs streaming dengan ketersediaan regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Temukan Bahasa',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter isi oleh bahasa asli',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Bahasa yang disukai bagi Semua Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Timpa Bahasa Film',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Penggantian Bahasa Seri',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Timpa Bahasa Musik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Override Bahasa Buku',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Bahasa apapun',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Gunakan semua preferensi media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Film Permintaan Otomatis',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto- Permintaan Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Musik Permintaan Otomatis',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Secara otomatis meminta album ditambahkan ke daftar pantauan musik SeerrNG ketika sumber daftar pantauan musik yang didukung tersedia.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Buku Permintaan Otomatis',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Otomatis meminta buku ditambahkan ke daftar penjaga buku SeerrNG ketika sumber daftar buku yang didukung tersedia.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Komik Permintaan Otomatis',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Secara otomatis meminta komik ditambahkan ke daftar pantauan komik SeerrNG Anda.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto- Permintaan Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Secara otomatis meminta majalah ditambahkan ke daftar pantauan majalah SeerrNG Anda.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Judul Kartu',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Pilih ketika setiap jenis media menampilkan teks judul pada kartu poster.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Film',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Serial',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Musik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Buku',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Selalu',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Sandi Saat Ini',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Sandi Baru',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Konfirmasi Sandi',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Sandi disimpan dengan sukses!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Sandi terlalu pendek; harus minimal 8 karakter',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Akun Terkait',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Pengaturan Pemberitahuan',
+      'components.UserProfile.UserSettings.menuChangePass': 'Sandi',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': 'Akun Terkait',
+      'components.UserProfile.UserSettings.menuAdvancedTheme':
+        'Tingkat lanjut Tema',
+      'components.UserProfile.UserSettings.menuPermissions': 'Hak',
+      'components.UserProfile.UserSettings.menuNotifications': 'Pemberitahuan',
+      'components.Settings.notificationsettings': 'Pengaturan Pemberitahuan',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Tutup',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Peran',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -584,9 +3135,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Salva Modifiche',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipo di account',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Utente locale',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Utente Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Utente {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Proprietario',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Amministratore',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Utente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Impostazioni salvate con successo!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nome da mostrare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Ricerca per Regione',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtra i contenuti in base alla disponibilità della regione',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Regione di streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Mostra i siti di streaming in base alla disponibilità della regione',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Lingua da scoprire',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtra i contenuti per lingua originale',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Richiedi automaticamente i film',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Richiedi automaticamente le serie',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Password attuale',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nuova password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Conferma la password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password salvata correttamente!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'La password è troppo corta; deve avere un minimo di 8 caratteri',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Account Collegati',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Impostazioni Notifiche',
+      'components.UserProfile.UserSettings.menuChangePass': 'Password',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Account Collegati',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Autorizzazioni',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifiche',
+      'components.Settings.notificationsettings':
+        'Impostazioni delle notifiche',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Chiudi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ruolo',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -615,9 +3308,150 @@ export const localeData = [
         'ブラウザの言語を使用 ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         '変更を保存',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'アカウントの種類',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'ローカルユーザー',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plexユーザー',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName}ユーザー',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': '所有者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': '管理',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'ユーザー',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '設定が保存されました！',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        '表示名',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'メール',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'メタデータ言語',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'インターフェース言語とは独立して、タイトルと検索結果の言語を設定します。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        '地域別フォーマット',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        '表示言語とは独立して、日付、時刻、数値、単位のフォーマットを設定します。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        '地域を見つける',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        '利用可能な地域に応じてコンテンツをフィルタリングする',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'ストリーミング地域',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        '利用可能な地域別にストリーミングサイトを表示する',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        '言語を見つける',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        '元の言語でコンテンツをフィルタリングする',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'すべてのメディアのための優先言語',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        '映画の言語 オーバーライド',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'シリーズ言語オーバーライド',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        '音楽言語 オーバーライド',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'ブック・ランゲージ・オーバーライド',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'すべての言語',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'オールメディアの設定',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        '映画の自動リクエスト',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'シリーズの自動リクエスト',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'オートリクエスト・ミュージック',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'サポートされている音楽 watchlist ソースが利用可能になったら、自動的にSeerrNG の音楽ウォッチリストに追加されたアルバムリクエスト。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        '自動依頼書',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'サポートされているブックウォッチリストのソースが利用可能になったらただちにSeerrNG book watchlistsに追加された書籍の自動リクエスト。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'オートリクエストコミック',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'SeerrNGコミックウォッチリストに自動的に漫画リクエストを追加しました。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'オートリクエストマガジン',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'あなたのSeerrNGマガジンウォッチリストに自動で雑誌のリクエストを追加しました。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'カードタイトル',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        '各メディアタイプがポスターカードのタイトルテキストを表示するタイミングを選択します。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        '映画',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'シリーズ',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'ミュージック',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        '本',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        '常に',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        '現在のパスワード',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        '新しいパスワード',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'パスワードの認証',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'パスワードが保存されました！',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'パスワードが短すぎます。8文字以上にしてください',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'リンクされたアカウント',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        '通知設定',
+      'components.UserProfile.UserSettings.menuChangePass': 'パスワード',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'リンクされたアカウント',
+      'components.UserProfile.UserSettings.menuAdvancedTheme':
+        'アドバンスト テーマ',
+      'components.UserProfile.UserSettings.menuPermissions': '権限',
+      'components.UserProfile.UserSettings.menuNotifications': '通知',
+      'components.Settings.notificationsettings': '通知設定',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': '閉じる',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'ロール',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -646,9 +3480,147 @@ export const localeData = [
         '브라우저 언어 사용 ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         '변경 사항 저장',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        '계정 유형',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        '로컬 사용자',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex 사용자',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} 사용자 이름',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': '소유자',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': '관리자',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': '사용자',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '설정이 성공적으로 저장되었습니다!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        '표시 이름',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': '이메일',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        '메타데이터 언어',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        '인터페이스 언어와 독립적으로 제목 및 검색 결과의 언어를 설정합니다.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        '지역 형식',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        '표시 언어와 독립적으로 날짜, 시간, 숫자 및 단위 형식을 설정합니다.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        '지역 찾기',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        '지역 가용성에 의한 필터 콘텐츠',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        '지역 선택',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        '지역 가용성으로 스트리밍 사이트 표시',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        '디스커버 언어',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        '원작 언어로 콘텐츠 필터링',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        '모든 미디어에 대한 선호 언어',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        '영화 언어 Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        '시리즈 언어 Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        '음악 언어 Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        '책 언어 Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        '모든 언어',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        '모든 매체 선호',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        '영화 자동 요청',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        '영화 자동 요청',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request 음악',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        '지원되는 음악 watchlist 소스가 사용할 때 SeerrNG 음악 시계 목록에 추가된 자동 요청 앨범.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request 책',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        '지원된 책 watchlist 소스가 사용할 때 SeerrNG 책 watchlists에 추가된 자동 요청 책.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request 만화',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'SeerrNG 만화 시계에 추가된 자동 요청 만화.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request 매거진',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'SeerrNG 잡지 watchlist에 추가 된 자동 요청 잡지.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        '카드 제목',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        '각 미디어 유형이 포스터 카드에 제목 텍스트를 표시 할 때 선택.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        '영화',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        '시리즈',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        '·',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        '책',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        '(주)',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        '현재 암호',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        '새 암호',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        '암호 확인',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        '비밀번호가 성공적으로 저장되었습니다!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        '비밀번호가 너무 짧습니다. 최소 8자리 이상이어야 합니다',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        '연결 계정',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        '알림 설정',
+      'components.UserProfile.UserSettings.menuChangePass': '비밀번호',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': '연결 계정',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': '고급 테마',
+      'components.UserProfile.UserSettings.menuPermissions': '권한',
+      'components.UserProfile.UserSettings.menuNotifications': '알림',
+      'components.Settings.notificationsettings': '알림 설정',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': '닫기',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': '역할',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -677,9 +3649,148 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Account Type',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Local User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Owner',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'Admin',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Display Name',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Discover Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Current Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'New Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirm Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password saved successfully!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Password is too short; should be a minimum of 8 characters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Password',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissions',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -708,9 +3819,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Account Type',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Local User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Savininkas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administratorius',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Vartotojas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Display Name',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Discover Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Current Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'New Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirm Password',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Password saved successfully!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Password is too short; should be a minimum of 8 characters',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Slaptažodis',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissions',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifications',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Uždaryti',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolė',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -739,9 +3992,149 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Kontotype',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokal bruker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex-bruker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Eier',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Bruker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Innstillingene ble lagret!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Visningsnavn',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Utforskelsesspråk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrer innhold basert på originalspråk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Forespør Filmer Automagisk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Forespør Serier Automagisk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Nåværende Passord',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nytt Passord',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Gjenta Passord',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Passord laget!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Passordet er for kort; det må bestå av minimum 8 tegn',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Varsel-innstillinger',
+      'components.UserProfile.UserSettings.menuChangePass': 'Passord',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Tillatelser',
+      'components.UserProfile.UserSettings.menuNotifications': 'Varsler',
+      'components.Settings.notificationsettings': 'Varsel-innstillinger',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Avbryt',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -770,9 +4163,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Wijzigingen opslaan',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Accounttype',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokale gebruiker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex-gebruiker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName}-gebruiker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Eigenaar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Beheerder',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Gebruiker',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Instellingen opgeslagen!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Weergavenaam',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Regio voor Ontdekken',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Inhoud filteren op regionale beschikbaarheid',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Regio voor streamen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Streamingdiensten tonen op regionale beschikbaarheid',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Taal voor Ontdekken',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Inhoud filteren op oorspronkelijke taal',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Films automatisch aanvragen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Series automatisch aanvragen',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Huidig wachtwoord',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nieuw wachtwoord',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Wachtwoord bevestigen',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Wachtwoord gewijzigd!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Wachtwoord is te kort; moet minimaal 8 tekens bevatten',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Gekoppelde accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Meldingsinstellingen',
+      'components.UserProfile.UserSettings.menuChangePass': 'Wachtwoord',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Gekoppelde accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Machtigingen',
+      'components.UserProfile.UserSettings.menuNotifications': 'Meldingen',
+      'components.Settings.notificationsettings': 'Meldingsinstellingen',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Sluiten',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -801,9 +4336,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Zapisz zmiany',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Typ konta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Użytkownik lokalny',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Użytkownik Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Użytkownik {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Właściciel',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Użytkownik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Ustawienia zostały zapisane pomyślnie!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Wyświetlana nazwa',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Region Odkryj',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtruj zawartość według dostępności regionalnej',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Region streamingu',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Pokaż witryny streamingowe według dostępności regionalnej',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Odkryj język',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtruj zawartość według języka oryginału',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Automatyczne żądania filmów',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Automatyczna prośba o serial',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Aktualne hasło',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nowe hasło',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Potwierdź hasło',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Hasło zostało zapisane pomyślnie!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Hasło jest zbyt krótkie; powinno mieć co najmniej 8 znaków',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Połączone konta',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Ustawienia powiadomień',
+      'components.UserProfile.UserSettings.menuChangePass': 'Hasło',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Powiązane konta',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Uprawnienia',
+      'components.UserProfile.UserSettings.menuNotifications': 'Powiadomienia',
+      'components.Settings.notificationsettings': 'Ustawienia powiadomień',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zamknij',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rola',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -832,9 +4509,151 @@ export const localeData = [
         'Usar Idioma do Navegador ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Salvar Alterações',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipo de Conta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Usuário Local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Usuário Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Usuário {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Dono',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'Usuário',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Configurações salvas com sucesso!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nome de Exibição',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Idioma dos Metadados',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Define o idioma para títulos e resultados de busca independentemente do idioma da interface.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Formato Regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Define os formatos de data, hora, número e unidade independentemente do idioma de exibição.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Descubra a Região',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrar conteúdo por disponibilidade regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Região de Streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Mostrar sites de streaming por disponibilidade regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Idioma de Exploração',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtra conteúdo pela língua original',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Linguagem preferida para toda a mídia',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Linguagem de Filme Sobreposta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Série Linguagem Sobreposta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Linguagem Musical Sobrescrever',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Linguagem do Livro Sobreposta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Qualquer língua.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use a preferência da mídia.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Solicitar Filmes Automaticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Solicitar Séries Automaticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Música de pedido automático',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Solicite automaticamente álbuns adicionados às listas de música da SeerrNG quando uma fonte de listas de música suportada estiver disponível.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Livros de Pedido Automático',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Solicite automaticamente livros adicionados às listas de observação de livros da SeerrNG quando uma fonte suportada está disponível.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Pedido Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Solicite automaticamente quadrinhos adicionados à sua lista de quadrinhos SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Revistas de Pedido Automático',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Solicite automaticamente revistas adicionadas à lista da revista SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Títulos das Cartas',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Escolha quando cada tipo de mídia mostrar o título nos cartazes.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Filmes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Séries',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Música',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Livros',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Sempre.',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Senha Atual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nova Senha',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirme a Senha',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Senha salva com sucesso!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'A senha é muito curta; Ela deve ter no mínimo 8 caractéres',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Contas Vinculadas',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Configurações de Notificação',
+      'components.UserProfile.UserSettings.menuChangePass': 'Senha',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Contas Vinculadas',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Avançado. Tema',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissões',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificações',
+      'components.Settings.notificationsettings':
+        'Configurações de Notificação',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fechar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role':
+        'Privilégio',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -863,9 +4682,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Guardar alterações',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tipo de Conta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Utilizador Local',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Utilizador Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Utilizador {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Proprietário',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Utilizador',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Definições gravadas com sucesso!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Nome de Exibição',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Região de descoberta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrar conteúdo por disponibilidade regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Região de streaming',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Mostrar sites de streaming por disponibilidade regional',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Descobrir Idioma',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrar conteúdo por idioma original',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Pedir filmes automaticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Pedir séries automaticamente',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Palavra-passe Atual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nova Palavra-passe',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmar Palavra-passe',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Palavra-passe gravada com sucesso!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Palavra-passe muito curta; necessário ter no mínimo 8 caracteres',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Contas associadas',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Definicções de Notificação',
+      'components.UserProfile.UserSettings.menuChangePass': 'Palavra-passe',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Contas associadas',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permissões',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificações',
+      'components.Settings.notificationsettings': 'Definições de Notificação',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Fechar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Função',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -894,9 +4855,148 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Account Type',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Local User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Owner',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': 'Admin',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': 'User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Display Name',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Limbă Descoperire',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Parolă curentă',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Parolă nouă',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Confirmă parola',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Parolă salvată cu succes!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Parola este prea scurtă; ar trebui să fie compusă din minim 8 caractere',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Notification Settings',
+      'components.UserProfile.UserSettings.menuChangePass': 'Parolă',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Conturi conectate',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Permisiuni',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notificări',
+      'components.Settings.notificationsettings': 'Notification Settings',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Close',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Role',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -925,9 +5025,152 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Сохранить изменения',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Тип учётной записи',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Локальный пользователь',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Пользователь Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Пользователь {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Владелец',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Администратор',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Пользователь',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Настройки успешно сохранены!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Отображаемое имя',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Электронная почта',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Регион поиска',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Фильтровать контент по региональной доступности',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Регион трансляции',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Показывать сайты трансляций по региональной доступности',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Языки для поиска фильмов и сериалов',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Контент фильтруется по языку оригинала',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Автоматический запрос фильмов',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Автоматический запрос сериалов',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Текущий пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Новый пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Подтвердите пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Пароль успешно сохранён!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Пароль слишком короткий: он должен содержать не менее 8 символов',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Связанные аккаунты',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Настройки уведомлений',
+      'components.UserProfile.UserSettings.menuChangePass': 'Пароль',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Связанные аккаунты',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Разрешения',
+      'components.UserProfile.UserSettings.menuNotifications': 'Уведомления',
+      'components.Settings.notificationsettings': 'Настройки уведомлений',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрыть',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -956,9 +5199,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Lloji i llogarisë',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Përdorues Lokal',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Përdoruesi Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Pronari',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Përdoruesi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Cilësimet u ruajtën me sukses!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Emri i shfaqur',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Gjuha e Zbulimit',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtro përmbajtjen sipas gjuhës origjinale',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Fjalëkalimi aktual',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Fjalëkalimi i ri',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Konfirmo fjalëkalimin',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Fjalëkalimi u ruajt me sukses!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Fjalëkalimi është shumë i shkurtër; duhet të jetë së paku 8 karaktere',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Cilësimet e njoftimit',
+      'components.UserProfile.UserSettings.menuChangePass': 'Fjalëkalimi',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Lejet',
+      'components.UserProfile.UserSettings.menuNotifications': 'Njoftime',
+      'components.Settings.notificationsettings': 'Cilësimet e njoftimit',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Mbylle',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roli',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -987,9 +5372,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Save Changes',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Tip naloga',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokalni korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} User',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Vlasnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administrator',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Korisnik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Podašavanja uspešno sačuvana!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Prikaži ime',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'Email',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Discover Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filter content by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streaming Region',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Show streaming sites by regional availability',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Otkrijte jezik',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filter content by original language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Auto-Request Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Auto-Request Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Trenutna lozinka',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nova lozinka',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Potvrdi lozinku',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Lozinka uspešno sačuvana!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Lozinka je previše kratka; mora imati najmanje 8 znakova',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Podešavanje notifikacija',
+      'components.UserProfile.UserSettings.menuChangePass': 'Lozinka',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Linked Accounts',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Dozvole',
+      'components.UserProfile.UserSettings.menuNotifications': 'Notifikacije',
+      'components.Settings.notificationsettings': 'Podešavanje notifikacija',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Zatvori',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1018,9 +5545,150 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Spara ändringar',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Kontotyp',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Lokal användare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex-användare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName}-användare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Ägare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Administratör',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Användare',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Inställningarna har sparats!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Visningsnamn',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-post',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Region för Upptäck',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Filtrera innehåll efter regional tillgänglighet',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Streamingregion',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Visa streamingtjänster efter regional tillgänglighet',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Språk för Upptäck',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Filtrera innehåll efter originalspråk',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Automatisk förfrågan för filmer',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Automatisk förfrågan för serier',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Nuvarande lösenord',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Nytt lösenord',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Bekräfta lösenord',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Lösenordet har ändrats!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Lösenordet är för kort; det måste innehålla minst 8 tecken',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Länkade konton',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Meddelandeinställningar',
+      'components.UserProfile.UserSettings.menuChangePass': 'Lösenord',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Länkade konton',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Behörigheter',
+      'components.UserProfile.UserSettings.menuNotifications': 'Meddelanden',
+      'components.Settings.notificationsettings': 'Meddelandeinställningar',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Stäng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roll',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1049,9 +5717,151 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Değişiklikleri Kaydet',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Hesap Türü',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Yerel Kullanıcı',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex Kullanıcısı',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Kullanıcısı',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Sahip',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Yönetici',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Kullanıcı',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Ayarlar başarıyla kaydedildi!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Görünen Ad',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'E-posta',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Keşfet Bölgesi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'İçeriği bölgesel kullanılabilirliğe göre filtrele',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Yayın Bölgesi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Yayın sitelerini bölgesel kullanılabilirliğe göre göster',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Keşfet Dili',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'İçeriği orijinal dile göre filtrele',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Filmleri Otomatik Talep Et',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Dizileri Otomatik Talep Et',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Mevcut Şifre',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Yeni Şifre',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Şifreyi Onayla',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Şifre başarıyla kaydedildi!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Şifre çok kısa; en az 8 karakter olmalıdır',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Bağlı Hesaplar',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Bildirim Ayarları',
+      'components.UserProfile.UserSettings.menuChangePass': 'Şifre',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Bağlı Hesaplar',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'İzinler',
+      'components.UserProfile.UserSettings.menuNotifications': 'Bildirimler',
+      'components.Settings.notificationsettings': 'Bildirim Ayarları',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Kapat',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rol',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1080,9 +5890,152 @@ export const localeData = [
         'Use Browser Language ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Зберегти зміни',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Тип облікового запису',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Локальний користувач',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Користувач Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        'Користувач {mediaServerName}',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner':
+        'Власник',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Адміністратор',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Користувач',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Налаштування успішно збережено!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        "Відображуване ім'я",
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        'Електронна пошта',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Metadata Language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Sets the language for titles and search results independently from the interface language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Regional Format',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Sets date, time, number, and unit formats independently from the display language.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Регіон для пошуку фільмів та серіалів',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Вміст фільтрується за доступністю у вибраному регіоні',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Регіон для стримінгу',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Показувати стримінгові сайти за регіональною доступністю',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Мови для пошуку фільмів та серіалів',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Контент фільтрується за мовою оригіналу',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Preferred Language for All Media',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Movie Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Series Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Music Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Book Language Override',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Any language',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Use all-media preference',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Автоматичний запит фільмів',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Автоматичний запит Серіалів',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Auto-Request Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Automatically request albums added to SeerrNG music watchlists when a supported music watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Auto-Request Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Automatically request books added to SeerrNG book watchlists when a supported book watchlist source is available.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Auto-Request Comics',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Automatically request comics added to your SeerrNG comic watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Auto-Request Magazines',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Automatically request magazines added to your SeerrNG magazine watchlist.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Card Titles',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Choose when each media type shows title text on poster cards.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Movies',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Series',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Music',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Books',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Always',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Поточний пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Новий пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Підтвердіть пароль',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Пароль успішно збережений!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Пароль занадто короткий: він повинен містити не менше 8 символів',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        "Пов'язані облікові записи",
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Налаштування повідомлень',
+      'components.UserProfile.UserSettings.menuChangePass': 'Пароль',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        "Пов'язані облікові записи",
+      'components.UserProfile.UserSettings.menuAdvancedTheme': 'Advanced Theme',
+      'components.UserProfile.UserSettings.menuPermissions': 'Дозволи',
+      'components.UserProfile.UserSettings.menuNotifications': 'Сповіщення',
+      'components.Settings.notificationsettings': 'Налаштування повідомлень',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Закрити',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Роль',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1111,9 +6064,148 @@ export const localeData = [
         '使用浏览器语言 ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         '保存更改',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        '用户类型',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        '本地用户',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex 用户',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} 用户',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': '所有者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': '管理员',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': '用户',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '设置保存成功！',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        '显示名称',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        '电子邮件',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        '元数据语言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        '独立于界面语言设置标题和搜索结果的语言。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        '区域格式',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        '独立于显示语言设置日期、时间、数字和单位格式。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        '发现区域',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        '根据区域可用性筛选内容',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        '流媒体区域',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        '按地区可用性显示流媒体网站',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        '探索语言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        '以原始语言筛选結果',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        '所有媒体首选语言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        '电影语言覆盖',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        '系列语言覆盖',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        '音乐语言覆盖',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        '书本语言覆盖',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        '任何语言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        '使用全媒体首选项',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        '电影自动请求',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        '电视节目自动请求',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        '自动请求音乐',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        '当支持的音乐监视列表来源可用时,自动请求添加到SeerrNG音乐监视列表中的专辑.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        '自动请求书',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        '当支持的书表列表来源可用时,自动请求添加到 SeerrNG 书表的书籍.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        '自动请求漫画',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        '自动请求添加到您的漫画 SeerrNG 漫画观察列表.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        '自动请求杂志',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        '自动请求添加到您的杂志 SeerrNG 杂志观察名单。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        '纸牌标题',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        '选择每个媒体类型在海报卡上显示标题文本的时间 。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        '电影',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        '剧集',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        '音乐',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        '书籍',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        '总是',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        '当前的密码',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        '新密码',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        '确认密码',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        '密码设置成功！',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        '密码必须至少包含八个字符',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        '关联账户',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        '通知设置',
+      'components.UserProfile.UserSettings.menuChangePass': '密码',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': '关联账户',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': '高级 主题',
+      'components.UserProfile.UserSettings.menuPermissions': '权限',
+      'components.UserProfile.UserSettings.menuNotifications': '通知',
+      'components.Settings.notificationsettings': '通知设置',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': '关闭',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1142,9 +6234,148 @@ export const localeData = [
         '使用瀏覽器語言 ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         '儲存變更',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        '使用者類型',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        '本地使用者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Plex 使用者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} 使用者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': '所有者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin': '管理員',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user': '使用者',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        '設定儲存成功！',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        '顯示名稱',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email':
+        '電子郵件',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        '中繼資料語言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        '獨立於介面語言，設定標題和搜尋結果的語言。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        '地區格式',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        '獨立於顯示語言，設定日期、時間、數字和單位格式。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        '發現區域',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        '按區域可提供性筛选內容',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        '串流地區',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        '顯示各個地區可收看的平台',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        '「探索」語言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        '以原始語言篩選結果',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        '所有媒體首選語言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        '電影語言覆寫',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        '系列語言覆寫',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        '音樂語言覆寫',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        '書語覆寫',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        '任何語言',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        '使用全媒體偏好',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        '自動提出電影請求',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        '自動提出影集請求',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        '自動要求音樂',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        '當支援的音樂觀看清單來源可用時，自動請求會新增至 SeerrNG 音樂觀看清單的專輯。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        '自動要求書',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        '當受支援的圖書監視清單來源可用時，自動請求新增至 SeerrNG 圖書監視清單中的圖書。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        '自動要求漫畫',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        '自动请求添加到您的漫画 SeerrNG 漫画观察列表.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        '自動要求雜誌',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        '自动请求添加到您的杂志 SeerrNG 杂志观察名单。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        '卡片標題',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        '選擇每個媒體型態在海報卡上顯示标题文字 。',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        '電影',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        '影集',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        '音樂',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        '書籍',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        '永遠',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        '目前的密碼',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        '新密碼',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        '確認密碼',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        '密碼設定成功！',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        '密碼必須至少包含八個字符',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        '連接帳號',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        '通知設定',
+      'components.UserProfile.UserSettings.menuChangePass': '密碼',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts': '帳號連結',
+      'components.UserProfile.UserSettings.menuAdvancedTheme': '高级 主題',
+      'components.UserProfile.UserSettings.menuPermissions': '權限',
+      'components.UserProfile.UserSettings.menuNotifications': '通知',
+      'components.Settings.notificationsettings': '通知設定',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': '關閉',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role': '角色',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
   {
@@ -1173,9 +6404,153 @@ export const localeData = [
         'Sử dụng ngôn ngữ trình duyệt ({language})',
       'components.UserProfile.UserSettings.UserGeneralSettings.save':
         'Lưu thay đổi',
+      'components.UserProfile.UserSettings.UserGeneralSettings.accounttype':
+        'Kiểu tài khoản',
+      'components.UserProfile.UserSettings.UserGeneralSettings.localuser':
+        'Người dùng cục bộ',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexuser':
+        'Người dùng Plex',
+      'components.UserProfile.UserSettings.UserGeneralSettings.mediaServerUser':
+        '{mediaServerName} Người dùng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.owner': 'Sở hữu',
+      'components.UserProfile.UserSettings.UserGeneralSettings.admin':
+        'Quản trị',
+      'components.UserProfile.UserSettings.UserGeneralSettings.user':
+        'Người dùng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.toastSettingsSuccess':
+        'Thiết lập đã được lưu thành công!',
+      'components.UserProfile.UserSettings.UserGeneralSettings.displayName':
+        'Hiện tên',
+      'components.UserProfile.UserSettings.UserGeneralSettings.email': 'E-mail',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguage':
+        'Ngôn ngữ metadata',
+      'components.UserProfile.UserSettings.UserGeneralSettings.metadataLanguageTip':
+        'Đặt ngôn ngữ cho tiêu đề và kết quả tìm kiếm độc lập với ngôn ngữ giao diện.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegion':
+        'Định dạng khu vực',
+      'components.UserProfile.UserSettings.UserGeneralSettings.formatRegionTip':
+        'Đặt định dạng ngày, giờ, số và đơn vị độc lập với ngôn ngữ hiển thị.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegion':
+        'Vùng Khám phá',
+      'components.UserProfile.UserSettings.UserGeneralSettings.discoverRegionTip':
+        'Lọc nội dung theo tiện ích vùng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegion':
+        'Vùng chảy',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingRegionTip':
+        'Hiển thị các địa điểm truyền bởi vùng sẵn sàng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
+        'Phát hiện ngôn ngữ',
+      'components.UserProfile.UserSettings.UserGeneralSettings.originallanguageTip':
+        'Lọc nội dung bằng ngôn ngữ gốc',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAll':
+        'Ngôn ngữ thích dùng cho mọi phương tiện',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMovie':
+        'Ghi đè ngôn ngữ phim ảnh',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageTv':
+        'Ghi đè ngôn ngữ sê-ri',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageMusic':
+        'Ghi đè ngôn ngữ âm nhạc',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageBook':
+        'Ghi đè ngôn ngữ cuốn sách',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageAny':
+        'Bất kỳ ngôn ngữ nào',
+      'components.UserProfile.UserSettings.UserGeneralSettings.preferredLanguageInherit':
+        'Dùng mọi thứ ưa thích',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncmovies':
+        'Tự động sửa đổi phim',
+      'components.UserProfile.UserSettings.UserGeneralSettings.plexwatchlistsyncseries':
+        'Chuỗi yêu cầu tự động',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsync':
+        'Tự động đảo âm nhạc',
+      'components.UserProfile.UserSettings.UserGeneralSettings.musicwatchlistsynctip':
+        'Yêu cầu tự động thêm tập ảnh vào danh sách xem nhạc SeerrNG khi có sẵn một nguồn nhạc có sẵn.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsync':
+        'Tự động sửa',
+      'components.UserProfile.UserSettings.UserGeneralSettings.bookwatchlistsynctip':
+        'Yêu cầu tự động thêm sách vào danh sách xem sách SeerrNG khi có sẵn một nguồn xem sách.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsync':
+        'Tranh biếm họa tự động',
+      'components.UserProfile.UserSettings.UserGeneralSettings.comicwatchlistsynctip':
+        'Yêu cầu truyện tranh tự động thêm vào danh sách theo dõi truyện tranh SeerrNG.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsync':
+        'Tự động lấy tạp chí',
+      'components.UserProfile.UserSettings.UserGeneralSettings.magazinewatchlistsynctip':
+        'Yêu cầu tạp chí thêm vào danh sách theo dõi tạp chí SeerrNG của bạn.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
+        'Streaming Subscriptions',
+      'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptionsTip':
+        'Select the services this user subscribes to. Request rules use this user’s Streaming Region, then the global Streaming Region, then US. Rent and buy listings do not count.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibility':
+        'Tựa thẻ',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTip':
+        'Chọn khi mỗi kiểu phương tiện hiển thị tiêu đề chữ trên thẻ poster.',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityMovie':
+        'Phim',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityTv':
+        'Loạt phim',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlbum':
+        'Âm nhạc',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityBook':
+        'Sách',
+      'components.UserProfile.UserSettings.UserGeneralSettings.cardTextVisibilityAlways':
+        'Luôn luôn',
+      'components.UserProfile.UserSettings.UserPasswordChange.currentpassword':
+        'Mật khẩu hiện thời',
+      'components.UserProfile.UserSettings.UserPasswordChange.newpassword':
+        'Mật khẩu mới',
+      'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
+        'Xác nhận mật khẩu',
+      'components.UserProfile.UserSettings.UserPasswordChange.toastSettingsSuccess':
+        'Mật khẩu đã lưu thành công!',
+      'components.UserProfile.UserSettings.UserPasswordChange.validationNewPasswordLength':
+        'Mật khẩu quá ngắn; nên là tối thiểu 8 ký tự',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkedAccounts':
+        'Tài khoản liên kết',
+      'components.UserProfile.UserSettings.UserClientTokens.title':
+        'Client Tokens',
+      'components.UserProfile.UserSettings.UserNotificationSettings.notificationsettings':
+        'Thiết lập thông báo',
+      'components.UserProfile.UserSettings.menuChangePass': 'Mật khẩu',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Client Tokens',
+      'components.UserProfile.UserSettings.menuLinkedAccounts':
+        'Tài khoản liên kết',
+      'components.UserProfile.UserSettings.menuAdvancedTheme':
+        'Cấp cao Sắc thái',
+      'components.UserProfile.UserSettings.menuPermissions': 'Quyền hạn',
+      'components.UserProfile.UserSettings.menuNotifications':
+        'Thông báo Hệ thốngComment',
+      'components.Settings.notificationsettings': 'Thiết lập thông báo',
       'components.Persius.loading': 'Loading…',
       'components.Persius.retry': 'Retry',
       'i18n.close': 'Đóng',
+      'components.UserProfile.UserSettings.UserGeneralSettings.role':
+        'Nhiệm vụ',
+      'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
+      'lumen.account.streamingSubscriptionsTip':
+        'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+      'lumen.account.filterStreamingServices': 'Filter streaming services',
+      'lumen.account.selectShown': 'Select Shown',
+      'lumen.account.clearShown': 'Clear Shown',
+      'lumen.account.saveStreamingSubscriptions':
+        'Save Streaming Subscriptions',
+      'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
+      'lumen.account.noMatchingStreamingServices':
+        'No matching streaming services.',
+      'lumen.account.maxStreamingServices': 'Select at most 500 services.',
+      'lumen.account.streamingSubscriptionsSaved':
+        'Streaming subscriptions saved.',
+      'lumen.account.streamingSubscriptionsConfirmFailure':
+        'Could not confirm the saved subscriptions. Try again.',
+      'lumen.account.streamingSubscriptionsSaveFailure':
+        'Could not save streaming subscriptions. Try again.',
+      'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.saveCardTitles': 'Save Card Titles',
+      'lumen.account.cardTitleSettingsSaved': 'Card title settings saved.',
+      'lumen.account.cardTitleSettingsConfirmFailure':
+        'Could not confirm the saved card title settings.',
+      'lumen.account.cardTitleSettingsSaveFailure':
+        'Could not save card title settings. Try again.',
+      'lumen.account.saving': 'Saving…',
     },
   },
 ] as const;

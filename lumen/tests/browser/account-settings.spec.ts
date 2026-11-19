@@ -114,7 +114,7 @@ test('account settings preserve failed profile edits and save only changes and p
   ).toBeVisible();
   await expect(displayName).toHaveValue('Updated Viewer');
   await page.getByRole('button', { name: 'Save Profile' }).click();
-  await expect(page.getByText('Profile saved.')).toBeVisible();
+  await expect(page.getByText('Settings saved successfully!')).toBeVisible();
   expect(writes).toEqual([
     { username: 'Updated Viewer' },
     { username: 'Updated Viewer' },
@@ -140,7 +140,7 @@ test('account settings preserve failed profile edits and save only changes and p
   await page.getByLabel('Confirm Password').fill('synthetic-new');
   await savePassword.click();
   await expect(
-    page.getByText('Password saved.', { exact: false })
+    page.getByText('Password saved successfully!', { exact: false })
   ).toBeVisible();
   expect(writes.at(-1)).toEqual({
     currentPassword: 'synthetic-current',
@@ -184,8 +184,31 @@ test('display language persists and localizes the shell and account settings', a
   await expect(language).toHaveValue('');
   await language.selectOption('fr');
   await page.getByRole('button', { name: 'Save Profile' }).click();
-  await expect(page.getByText('Profile saved.')).toBeVisible();
+  await expect(
+    page.getByText('Les paramètres ont été enregistrés !')
+  ).toBeVisible();
   await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Paramètres utilisateur' })
+  ).toBeVisible();
+  await expect(page.getByLabel('Nom affiché')).toHaveValue('Viewer');
+  await expect(page.getByLabel('Langue des métadonnées')).toBeVisible();
+  await expect(page.getByText('Type de compte')).toBeVisible();
+  await expect(page.getByText('Utilisateur local')).toBeVisible();
+  await expect(page.getByText('Rôle', { exact: true })).toBeVisible();
+  await expect(
+    page.getByLabel('Langue préférée pour tous les médias')
+  ).toBeVisible();
+  await expect(page.getByLabel('Préférence de langue des films')).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      name: 'Abonnements aux services de streaming',
+    })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Titres des cartes' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Thème avancé' })).toBeVisible();
   await expect(
     page.getByRole('combobox', { name: "Langue d'affichage" })
   ).toHaveValue('fr');
@@ -195,6 +218,7 @@ test('display language persists and localizes the shell and account settings', a
 
   await page.reload();
   await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
+  await expect(page.getByLabel('Nom affiché')).toHaveValue('Viewer');
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(
     page.getByRole('combobox', { name: "Langue d'affichage" })
@@ -207,6 +231,15 @@ test('display language persists and localizes the shell and account settings', a
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.getByRole('link', { name: 'اكتشف' })).toBeVisible();
+  await expect(page.getByLabel('إسم العرض')).toHaveValue('Viewer');
+  await expect(page.getByText('مستخدم محلي')).toBeVisible();
+  await expect(page.getByText('الدور', { exact: true })).toBeVisible();
+  await expect(
+    page.getByLabel('اللغة المفضلة لجميع وسائط الإعلام')
+  ).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+    .toBeLessThanOrEqual(await page.evaluate(() => window.innerWidth));
 });
 
 test('watchlist preferences honor account type and category permissions and persist false', async ({
@@ -259,7 +292,7 @@ test('watchlist preferences honor account type and category permissions and pers
   await expect(music).not.toBeChecked();
   rejectSave = false;
   await page.getByRole('button', { name: 'Save Profile' }).click();
-  await expect(page.getByText('Profile saved.')).toBeVisible();
+  await expect(page.getByText('Settings saved successfully!')).toBeVisible();
   expect(writes).toEqual([
     { watchlistSyncMusic: false },
     { watchlistSyncMusic: false },

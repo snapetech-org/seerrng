@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
@@ -30,6 +31,7 @@ export function StreamingSubscriptions({
   region: string;
   initialIds: number[];
 }) {
+  const { t } = useLumenLocale();
   const suffix = `?watchRegion=${encodeURIComponent(region)}`;
   const movies = useApi<Provider[]>(`/watchproviders/movies${suffix}`);
   const series = useApi<Provider[]>(`/watchproviders/tv${suffix}`);
@@ -88,15 +90,30 @@ export function StreamingSubscriptions({
       if (generation !== sessionGeneration()) return;
       const ids = result.streamingSubscriptionProviderIds;
       if (!Array.isArray(ids) || !sameSelection(new Set(ids), draft)) {
-        setFailure('Could not confirm the saved subscriptions. Try again.');
+        setFailure(
+          t(
+            'lumen.account.streamingSubscriptionsConfirmFailure',
+            'Could not confirm the saved subscriptions. Try again.'
+          )
+        );
         return;
       }
       forget(path);
       setSaved(draft);
-      setNotice('Streaming subscriptions saved.');
+      setNotice(
+        t(
+          'lumen.account.streamingSubscriptionsSaved',
+          'Streaming subscriptions saved.'
+        )
+      );
     } catch {
       if (generation === sessionGeneration())
-        setFailure('Could not save streaming subscriptions. Try again.');
+        setFailure(
+          t(
+            'lumen.account.streamingSubscriptionsSaveFailure',
+            'Could not save streaming subscriptions. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -104,11 +121,18 @@ export function StreamingSubscriptions({
   }
 
   return (
-    <Section title="Streaming Subscriptions">
+    <Section
+      title={t(
+        'lumen.account.streamingSubscriptions',
+        'Streaming Subscriptions'
+      )}
+    >
       <p className="note">
-        Choose services you subscribe to{region ? ` in ${region}` : ''}. SeerrNG
-        uses this list when the instance applies streaming availability rules to
-        requests.
+        {t(
+          'lumen.account.streamingSubscriptionsTip',
+          'Select services available in {region} that you subscribe to. SeerrNG uses them in request availability rules.',
+          { region: region || 'US' }
+        )}
       </p>
       <ServiceNote
         error={movies.error}
@@ -122,7 +146,10 @@ export function StreamingSubscriptions({
       />
       {((!movies.data && !movies.error) || (!series.data && !series.error)) && (
         <p className="note" role="status">
-          Loading streaming providers…
+          {t(
+            'lumen.account.loadingStreamingProviders',
+            'Loading streaming providers…'
+          )}
         </p>
       )}
       <form
@@ -135,8 +162,14 @@ export function StreamingSubscriptions({
           <label className="search">
             <input
               type="search"
-              aria-label="Filter streaming services"
-              placeholder="Filter streaming services"
+              aria-label={t(
+                'lumen.account.filterStreamingServices',
+                'Filter streaming services'
+              )}
+              placeholder={t(
+                'lumen.account.filterStreamingServices',
+                'Filter streaming services'
+              )}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
             />
@@ -147,7 +180,7 @@ export function StreamingSubscriptions({
             disabled={busy || selectedVisible === visibleIds.length}
             onClick={() => changeVisible(true)}
           >
-            Select Shown
+            {t('lumen.account.selectShown', 'Select Shown')}
           </button>
           <button
             type="button"
@@ -155,7 +188,7 @@ export function StreamingSubscriptions({
             disabled={busy || selectedVisible === 0}
             onClick={() => changeVisible(false)}
           >
-            Clear Shown
+            {t('lumen.account.clearShown', 'Clear Shown')}
           </button>
         </div>
         {visible.length > 0 ? (
@@ -178,11 +211,19 @@ export function StreamingSubscriptions({
             ))}
           </div>
         ) : movies.data && series.data ? (
-          <p className="note">No matching streaming services.</p>
+          <p className="note">
+            {t(
+              'lumen.account.noMatchingStreamingServices',
+              'No matching streaming services.'
+            )}
+          </p>
         ) : null}
         {draft.size > MAX_PROVIDERS && (
           <p className="note" role="alert">
-            Select at most 500 services.
+            {t(
+              'lumen.account.maxStreamingServices',
+              'Select at most 500 services.'
+            )}
           </p>
         )}
         {notice && (
@@ -200,7 +241,12 @@ export function StreamingSubscriptions({
             className="btn btn-primary btn-sm"
             disabled={busy || !changed || draft.size > MAX_PROVIDERS}
           >
-            {busy ? 'Saving…' : 'Save Streaming Subscriptions'}
+            {busy
+              ? t('lumen.account.saving', 'Saving…')
+              : t(
+                  'lumen.account.saveStreamingSubscriptions',
+                  'Save Streaming Subscriptions'
+                )}
           </button>
         </div>
       </form>

@@ -6,8 +6,10 @@ const lumen = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repo = path.resolve(lumen, '..');
 const configPath = path.join(repo, 'config/i18n/locales.json');
 const keyPath = path.join(lumen, 'i18n-keys.json');
+const overridesPath = path.join(lumen, 'i18n-overrides.json');
 const config = JSON.parse(await readFile(configPath, 'utf8'));
 const keys = JSON.parse(await readFile(keyPath, 'utf8'));
+const overrides = JSON.parse(await readFile(overridesPath, 'utf8'));
 const readCatalog = async (file) =>
   JSON.parse(await readFile(path.join(repo, 'src/i18n/locale', file), 'utf8'));
 const english = await readCatalog(
@@ -15,8 +17,21 @@ const english = await readCatalog(
 );
 
 for (const key of keys) {
-  if (typeof english[key] !== 'string')
+  const hasLocaleOverride = Object.values(overrides).some(
+    (messages) => typeof messages?.[key] === 'string'
+  );
+  if (typeof english[key] !== 'string' && !hasLocaleOverride)
     throw new Error(`Missing English message ${key} in the native catalog.`);
+}
+for (const [tag, messages] of Object.entries(overrides)) {
+  if (!config.locales.some((locale) => locale.tag === tag))
+    throw new Error(`Unknown locale ${tag} in Lumen translation overrides.`);
+  for (const [key, message] of Object.entries(messages)) {
+    if (!keys.includes(key))
+      throw new Error(`Override message ${key} is not listed in i18n-keys.json.`);
+    if (typeof message !== 'string' || !message)
+      throw new Error(`Invalid ${tag} override message ${key}.`);
+  }
 }
 
 const entries = [];
@@ -38,6 +53,9 @@ for (const locale of config.locales) {
       if (typeof source[key] === 'string' && source[key])
         catalog[key] = source[key];
     }
+  }
+  for (const item of chain) {
+    Object.assign(catalog, overrides[item.tag] ?? {});
   }
   entries.push({
     tag: locale.tag,

@@ -76,17 +76,23 @@ Use stable message IDs instead of reverse-matching English strings: an initial
 source audit found duplicate English catalog values and significant Lumen text
 that has no exact native catalog entry. Verify the saved choice after reload,
 locale fallback, and right-to-left layout in standalone and bundled Lumen.
-Lumen now generates a compact locale bundle from SeerrNG's registry and
-catalogs, loads and saves the account locale through the existing settings
-endpoint, applies document language and direction, and translates the primary
-shell navigation plus account headings and the profile label. French save and
-reload and Arabic direction are covered by four standalone viewport cases.
-Desktop baseline/candidate account screenshots were compared at 1440 × 900;
-candidate French and English phone screenshots were inspected at 390 × 844.
-No horizontal overflow appeared at either width. Arabic desktop and phone
-metadata report RTL with no horizontal overflow. The rest of Account Settings
-and most Lumen routes remain English, and a production-bundle regression plus
-human linguistic review remain open. Evidence: task scratch directory
+Lumen generates a compact locale bundle from SeerrNG's registry and catalogs,
+loads and saves the account locale through the existing settings endpoint,
+applies document language and direction, and translates the primary shell plus
+more of Account Settings: profile fields, preferred media languages, watchlist
+controls, password labels, account type and role, streaming subscriptions, and
+card title preferences. French save/reload and Arabic RTL are covered in the
+account browser suite across desktop, iPhone, Android, and tablet. The actual
+production bundle served at `/lumen/` passes the display-language persistence
+flow across the same four viewport projects. Desktop baseline/candidate
+screenshots were compared at 1440 × 900; English, French, and Arabic phone
+screenshots were inspected at 390 × 844. No horizontal overflow appeared.
+
+This is still a partial localization: remaining account actions, notices,
+permission names, theme controls, and most other Lumen routes remain English.
+Locale overrides have not received independent human linguistic review, and
+full account-suite qualification against the bundled production build remains
+open. Evidence: task scratch directory
 `seerrng-lumen-localization-visual-20261119`.
 
 ### Open gap in personal discovery accounts

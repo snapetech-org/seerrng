@@ -8,15 +8,17 @@ import { forget } from '../apiCache';
 import { useAuth } from '../auth';
 import { saveCardTitleModes } from '../cardTitleModes';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 
+const generalKey = 'components.UserProfile.UserSettings.UserGeneralSettings.';
 const categories = [
-  ['movie', 'Movies'],
-  ['tv', 'Series'],
-  ['album', 'Music'],
-  ['book', 'Books'],
+  ['movie', 'Movies', 'cardTextVisibilityMovie'],
+  ['tv', 'Series', 'cardTextVisibilityTv'],
+  ['album', 'Music', 'cardTextVisibilityAlbum'],
+  ['book', 'Books', 'cardTextVisibilityBook'],
 ] as const;
 
 function CardTitleForm({
@@ -26,6 +28,7 @@ function CardTitleForm({
   path: string;
   initial: CardTitleSettings;
 }) {
+  const { t } = useLumenLocale();
   const { refresh } = useAuth();
   const fieldId = useId();
   const [saved, setSaved] = useState({ ...defaultCardTitleModes, ...initial });
@@ -53,15 +56,27 @@ function CardTitleForm({
       await refresh();
       if (generation !== sessionGeneration()) return;
       if (changed.some(([kind]) => confirmed[kind] !== draft[kind])) {
-        setError('Could not confirm the saved card title settings.');
+        setError(
+          t(
+            'lumen.account.cardTitleSettingsConfirmFailure',
+            'Could not confirm the saved card title settings.'
+          )
+        );
         return;
       }
       setSaved({ ...defaultCardTitleModes, ...confirmed });
       setDraft({ ...defaultCardTitleModes, ...confirmed });
-      setNotice('Card title settings saved.');
+      setNotice(
+        t('lumen.account.cardTitleSettingsSaved', 'Card title settings saved.')
+      );
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save card title settings. Try again.');
+        setError(
+          t(
+            'lumen.account.cardTitleSettingsSaveFailure',
+            'Could not save card title settings. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -76,13 +91,15 @@ function CardTitleForm({
       }}
     >
       <p className="note">
-        Choose when poster cards show their titles. Touch devices keep titles
-        visible.
+        {t(
+          generalKey + 'cardTextVisibilityTip',
+          'Choose when poster cards show their titles. Touch devices keep titles visible.'
+        )}
       </p>
       <div className="setlist">
-        {categories.map(([kind, label]) => (
+        {categories.map(([kind, label, message]) => (
           <label className="set cfg-row" key={kind} htmlFor={fieldId + kind}>
-            <b>{label}</b>
+            <b>{t(generalKey + message, label)}</b>
             <select
               className="cfg-select"
               id={fieldId + kind}
@@ -95,8 +112,15 @@ function CardTitleForm({
                 })
               }
             >
-              <option value="hover">On Hover or Focus</option>
-              <option value="always">Always</option>
+              <option value="hover">
+                {t(
+                  'lumen.account.cardTitleOnHover',
+                  'On hover or keyboard focus'
+                )}
+              </option>
+              <option value="always">
+                {t(generalKey + 'cardTextVisibilityAlways', 'Always')}
+              </option>
             </select>
           </label>
         ))}
@@ -116,7 +140,7 @@ function CardTitleForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !changed.length}
         >
-          Save Card Titles
+          {t('lumen.account.saveCardTitles', 'Save Card Titles')}
         </button>
       </div>
     </form>
@@ -124,9 +148,10 @@ function CardTitleForm({
 }
 
 export function CardTitlePreferences({ path }: { path: string }) {
+  const { t } = useLumenLocale();
   const settings = useApi<CardTitleSettings>(path);
   return (
-    <Section title="Card Titles">
+    <Section title={t(generalKey + 'cardTextVisibility', 'Card Titles')}>
       <ServiceNote
         error={settings.error}
         what="card title settings"
