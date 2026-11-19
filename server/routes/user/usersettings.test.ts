@@ -827,7 +827,7 @@ describe('POST /user/:id/settings/advanced-theme', () => {
       '--theme-page-spotlight-strength': 0.5,
     });
 
-    const edit = (changes: Record<string, string | null>) =>
+    const edit = (changes: Record<string, string | number | null>) =>
       request(app)
         .post(route)
         .set('X-Forwarded-Proto', 'https')
@@ -836,7 +836,10 @@ describe('POST /user/:id/settings/advanced-theme', () => {
         .expect(200);
     await Promise.all([
       edit({ '--theme-page-bg': null }),
-      edit({ '--theme-heading-text': '#ABC' }),
+      edit({
+        '--theme-heading-text': '#ABC',
+        '--theme-page-spotlight-strength': 0.75,
+      }),
     ]);
 
     const merged = await request(app)
@@ -846,7 +849,7 @@ describe('POST /user/:id/settings/advanced-theme', () => {
       .expect(200);
     assert.deepEqual(merged.body.settings.advancedThemeOverrides, {
       '--theme-heading-text': '#aabbcc',
-      '--theme-page-spotlight-strength': 0.5,
+      '--theme-page-spotlight-strength': 0.75,
     });
 
     const invalid = await request(app)

@@ -18307,8 +18307,10 @@ paths:
                   minProperties: 1
                   maxProperties: 128
                   additionalProperties:
-                    type: string
-                    nullable: true
+                    oneOf:
+                      - type: string
+                        nullable: true
+                      - type: number
       responses:
         '200':
           description: Saved theme overrides returned

@@ -192,7 +192,7 @@ test('account theme colors preserve stored overrides for other controls', async 
   page,
 }) => {
   const classicOnly = { '--theme-overlay-menu': '#112233' };
-  const overrides: Record<string, string> = { ...classicOnly };
+  const overrides: Record<string, string | number> = { ...classicOnly };
   let fail = true;
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -216,7 +216,8 @@ test('account theme colors preserve stored overrides for other controls', async 
       for (const [key, value] of Object.entries(
         request.postDataJSON().changes
       )) {
-        if (typeof value === 'string') overrides[key] = value;
+        if (typeof value === 'string' || typeof value === 'number')
+          overrides[key] = value;
         else delete overrides[key];
       }
       if (overrides['--theme-page-bg'] === '#123')
@@ -260,4 +261,20 @@ test('account theme colors preserve stored overrides for other controls', async 
       )
     )
     .toBe('');
+  await page.getByRole('button', { name: 'Edit All Overrides' }).click();
+  const editor = page.getByLabel('Theme Override JSON');
+  await expect(editor).toHaveValue(JSON.stringify(classicOnly, null, 2));
+  await editor.fill('[]');
+  await page.getByRole('button', { name: 'Save Theme Overrides' }).click();
+  await expect(
+    page.getByText(
+      'Enter a JSON object with string or numeric override values.'
+    )
+  ).toBeVisible();
+  await editor.fill(
+    JSON.stringify({ '--theme-page-spotlight-strength': 0.75 })
+  );
+  await page.getByRole('button', { name: 'Save Theme Overrides' }).click();
+  await expect(page.getByText('Theme overrides saved.')).toBeVisible();
+  expect(overrides).toEqual({ '--theme-page-spotlight-strength': 0.75 });
 });

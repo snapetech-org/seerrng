@@ -813,7 +813,8 @@ userSettingsRoutes.post<{ id: string }>(
             );
             for (const [key, value] of Object.entries(changes)) {
               if (value === null) merged.delete(key);
-              else if (typeof value === 'string') merged.set(key, value);
+              else if (typeof value === 'string' || typeof value === 'number')
+                merged.set(key, value);
               else
                 return next({
                   status: 400,
