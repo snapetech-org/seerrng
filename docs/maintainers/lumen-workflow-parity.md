@@ -598,6 +598,12 @@ Searching after Retry. An owner season mismatch and another user's request
 both lacked the Retry action. Native baseline comparison, mobile, bundled,
 other media and quality combinations, and live service checks remain open.
 
+The browser matrix now covers owner retry for movie, series, music, book,
+comic, magazine, sports and adult failures, plus denial for missing type
+permission, another requester, and the TVDB season mismatch. All eight cases
+pass on desktop, iPhone, Android and tablet in standalone and bundled Lumen.
+4K-specific quality permission and live service recovery remain open.
+
 ### Request history increment
 
 Lumen request rows open the latest lifecycle events and current stage from
@@ -4083,7 +4089,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. The selected current-source set now totals 707 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. The selected current-source set now totals 715 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
