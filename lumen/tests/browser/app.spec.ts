@@ -4088,7 +4088,7 @@ test('native companion discovery bookmarks retain library availability', async (
     ['libraryView=available', /^On /],
     ['libraryView=missing&availability=4k', /^On /],
   ] as const) {
-    await page.goto(`/movies?nativeFilters=1&${search}`);
+    await page.goto(`./movies?nativeFilters=1&${search}`);
     const availability = page.getByRole('group', { name: 'Availability' });
     await expect(
       availability.getByRole('button', { name: selected })
@@ -4098,6 +4098,38 @@ test('native companion discovery bookmarks retain library availability', async (
     await expect(all).toHaveAttribute('aria-pressed', 'true');
     expect(new URL(page.url()).searchParams.has('libraryView')).toBe(false);
   }
+});
+
+test('a saved 4K discovery filter waits for availability settings and retries failures', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let settingsAvailable = false;
+  const queries: (string | null)[] = [];
+  await page.route('**/api/v1/settings/public', (route) =>
+    settingsAvailable
+      ? route.fulfill({ json: { enable4k: true } })
+      : route.fulfill({
+          status: 503,
+          json: { message: 'Settings unavailable' },
+        })
+  );
+  await page.route('**/api/v1/discover/movies?**', (route) => {
+    queries.push(
+      new URL(route.request().url()).searchParams.get('availability')
+    );
+    return route.fulfill({ json: paged([movie]) });
+  });
+  await page.goto('./movies?nativeFilters=1&availability=4k');
+  const error = page.getByRole('alert').filter({ hasText: 'sign-in options' });
+  await expect(error).toBeVisible();
+  expect(queries).toEqual([]);
+  await expect(page.getByText('Nothing here', { exact: true })).toHaveCount(0);
+  settingsAvailable = true;
+  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(page.getByLabel('Availability Quality')).toHaveValue('4k');
+  await expect(page.getByRole('link', { name: movie.title })).toBeVisible();
+  expect(queries).toEqual(['4k']);
 });
 
 test('native search bookmarks retain the decoded term and media scope', async ({

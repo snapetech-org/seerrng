@@ -19,7 +19,7 @@ import {
   showDiscoveryTitle,
 } from '../discoveryVisibility';
 import { canViewFollowing } from '../followPermissions';
-import { CAN_HOVER, useApi, usePaged, usePublicSettings } from '../hooks';
+import { CAN_HOVER, useApi, usePaged, type PublicSettings } from '../hooks';
 import { Icon } from '../icons';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { serverName } from '../mediaServer';
@@ -338,7 +338,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const maxRating = ratingBound(p.get('voteAverageLte'));
   const validRatingRange =
     !minRating || !maxRating || Number(minRating) <= Number(maxRating);
-  const publicSettings = usePublicSettings();
+  const settings = useApi<PublicSettings>('/settings/public');
+  const publicSettings = settings.data;
   const { user } = useAuth();
   const [showStudios, setShowStudios] = useState(false);
   const [showTags, setShowTags] = useState(false);
@@ -496,6 +497,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         ? publicSettings?.movie4kEnabled
         : publicSettings?.series4kEnabled));
   const quality = qualityEnabled && p.get('quality') === '4k' ? '4k' : 'hd';
+  const checkingQuality =
+    show !== 'all' && p.get('quality') === '4k' && !publicSettings;
   // The library endpoint only implements a subset of the catalog filters and sorts.
   const libraryFirst =
     show === 'have' &&
@@ -512,7 +515,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     );
   if (libraryFirst) q.set('availability', quality);
   const list = usePaged<TitleResult>(
-    regionPending && providers.length
+    checkingQuality || (regionPending && providers.length)
       ? null
       : `/discover/${kind === 'movie' ? 'movies' : 'tv'}?${q}`
   );
@@ -1114,12 +1117,25 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           retry={list.retry}
         />
       )}
-      {!list.error && !items.length && !list.loading && !capped && (
-        <div className="empty">
-          <b>Nothing here</b>Try changing your filters.
-        </div>
+      {checkingQuality && (
+        <ServiceNote
+          error={settings.error}
+          what="availability settings"
+          retry={settings.reload}
+        />
       )}
-      {list.loading && !items.length && list.page === 0 && <GridSkeleton />}
+      {!checkingQuality &&
+        !list.error &&
+        !items.length &&
+        !list.loading &&
+        !capped && (
+          <div className="empty">
+            <b>Nothing here</b>Try changing your filters.
+          </div>
+        )}
+      {(list.loading || (checkingQuality && !settings.error)) &&
+        !items.length &&
+        list.page === 0 && <GridSkeleton />}
       <div className="grid">
         {items.map((x) => (
           <TitleCard key={x.id} it={{ ...x, mediaType: kind }} />

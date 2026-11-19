@@ -2933,6 +2933,14 @@ title and availability request, then returned to the full catalog and
 confirmed that explicit title searches show requested matches while
 still hiding blocklisted titles.
 
+Saved 4K discovery filters wait for public settings before fetching
+results. A failed settings load can be retried without making an HD
+request in the meantime. Eight standalone and bundled browser checks
+at 390 and 1440 CSS pixels covered bookmark availability and startup
+recovery. The recovery fixture confirmed that the first Movies catalog
+request used 4K after settings became available. Matched visual review
+and live 4K library results remain unverified.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express
