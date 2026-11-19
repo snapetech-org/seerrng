@@ -369,6 +369,7 @@ test('the side menu calls it Comics/Manga and the top search is scoped to it', a
     page.locator('nav.side').getByRole('link', { name: 'Comics/Manga' })
   ).toBeVisible();
   const top = page.locator('#tq');
+  await page.screenshot({ path: info.outputPath('comics-scoped-search.png') });
   await expect(top).toHaveAttribute('placeholder', 'Search comics and manga…');
   await top.fill('chainsaw');
   await top.press('Enter');

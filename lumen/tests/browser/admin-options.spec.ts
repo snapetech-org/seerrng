@@ -1390,7 +1390,7 @@ test('request managers without Manage Users get no Request as', async ({
   page,
 }) => {
   const asked: string[] = [];
-  await fixtures(page, { permissions: 16 }); // MANAGE_REQUESTS only
+  await fixtures(page, { permissions: 32 | 16 }); // REQUEST + MANAGE_REQUESTS, without MANAGE_USERS
   await page.route('**/api/v1/user?*', (route) => {
     asked.push(route.request().url());
     return route.fulfill({
@@ -2492,7 +2492,7 @@ test('game capability denials expire during in-app navigation after the document
 });
 
 for (const permissions of [-1, 2.5, '2']) {
-  test(`malformed permission mask ${permissions} does not expose privileged request controls`, async ({
+  test(`malformed permission mask ${permissions} fails closed for requests`, async ({
     page,
   }) => {
     const { posts } = await fixtures(page, {
@@ -2500,12 +2500,12 @@ for (const permissions of [-1, 2.5, '2']) {
     });
     await with4k(page);
     await page.goto('/movies');
-    await quickRequest(page, 'Fresh Pick');
-    await expect(page.getByRole('dialog')).toHaveCount(0);
-    await expect
-      .poll(() => posts.filter((p) => p.path === '/request').length)
-      .toBe(1);
-    expect(posts.find((p) => p.path === '/request')?.body.is4k).toBeFalsy();
+    const poster = page.locator('.poster', { hasText: 'Fresh Pick' });
+    await expect(poster).toBeVisible();
+    await expect(poster.getByRole('button', { name: /^Request/ })).toHaveCount(
+      0
+    );
+    expect(posts.filter((p) => p.path === '/request')).toHaveLength(0);
   });
 }
 

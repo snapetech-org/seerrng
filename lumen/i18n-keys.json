@@ -257,6 +257,7 @@
   "lumen.shell.searchSeries",
   "lumen.shell.searchAudio",
   "lumen.shell.searchBooks",
+  "lumen.shell.searchComics",
   "lumen.shell.searchAll",
   "lumen.shell.back",
   "lumen.shell.openFullSeerrNG",

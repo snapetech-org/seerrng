@@ -430,6 +430,7 @@ export const localeData = [
       'lumen.shell.searchSeries': 'ابحث عن المسلسلات…',
       'lumen.shell.searchAudio': 'ابحث عن الكتب الصوتية والرواة…',
       'lumen.shell.searchBooks': 'ابحث عن الكتب والمؤلفين…',
+      'lumen.shell.searchComics': 'ابحث عن القصص المصورة والمانغا…',
       'lumen.shell.searchAll': 'ابحث عن الأفلام والمسلسلات والكتب والرواة…',
       'lumen.shell.back': 'عودة',
       'lumen.shell.openFullSeerrNG': 'فتح واجهة SeerrNG كاملة',
@@ -1796,6 +1797,7 @@ export const localeData = [
       'lumen.shell.searchSeries': 'Search series…',
       'lumen.shell.searchAudio': 'Search audiobooks and narrators…',
       'lumen.shell.searchBooks': 'Search books and authors…',
+      'lumen.shell.searchComics': 'Search comics and manga…',
       'lumen.shell.searchAll': 'Search movies, series, books, narrators…',
       'lumen.shell.back': 'Back',
       'lumen.shell.openFullSeerrNG': 'open full SeerrNG',
@@ -3391,6 +3393,8 @@ export const localeData = [
       'lumen.shell.searchAudio':
         'Rechercher des livres audio et des narrateurs…',
       'lumen.shell.searchBooks': 'Rechercher des livres et des auteurs…',
+      'lumen.shell.searchComics':
+        'Rechercher des bandes dessinées et des mangas…',
       'lumen.shell.searchAll':
         'Rechercher des films, séries, livres et narrateurs…',
       'lumen.shell.back': 'Retour',

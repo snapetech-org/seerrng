@@ -4774,7 +4774,7 @@ test('TV access review confirms a decision and respects manager permissions', as
     .getByRole('button', { name: 'Approve' })
     .click();
   const dialog = page.getByRole('alertdialog', {
-    name: 'Approve access for Household Member?',
+    name: 'Approve TV season access?',
   });
   await expect(dialog).toBeVisible();
   expect(decision).toBeUndefined();
@@ -4788,7 +4788,7 @@ test('TV access review confirms a decision and respects manager permissions', as
     .getByRole('button', { name: 'Decline' });
   await decline.click();
   const declineDialog = page.getByRole('alertdialog', {
-    name: 'Decline access for Another Member?',
+    name: 'Decline TV season access?',
   });
   await declineDialog.getByRole('button', { name: 'Cancel' }).click();
   expect(declined).toBeUndefined();

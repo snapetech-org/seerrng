@@ -28,7 +28,7 @@ test('Indexer Search is reachable from the permission-aware mobile You menu', as
   if (!desktop) {
     await page
       .getByRole('navigation', { name: 'Tabs', exact: true })
-      .getByRole('link', { name: 'You', exact: true })
+      .locator('a[href="/me"]')
       .click();
   }
   const link = desktop

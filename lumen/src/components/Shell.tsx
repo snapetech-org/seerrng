@@ -171,6 +171,7 @@ export default function Shell({ children }: { children: ReactNode }) {
     tv: ['lumen.shell.searchSeries', 'Search series…'],
     audio: ['lumen.shell.searchAudio', 'Search audiobooks and narrators…'],
     ebook: ['lumen.shell.searchBooks', 'Search books and authors…'],
+    comic: ['lumen.shell.searchComics', 'Search comics and manga…'],
   };
   const placeholder = searchMessages[scope]
     ? t(...searchMessages[scope])

@@ -85,7 +85,14 @@ test('My Games keeps private edits separate from household results', async ({
       json:
         path === '/auth/me'
           ? { id: 1, displayName: 'Player', permissions: 32 }
-          : {},
+          : path === '/settings/public'
+            ? {
+                softwareEnabled: true,
+                enabledMediaCategories: { game: true },
+              }
+            : path === '/user/1/settings/main'
+              ? { enabledMediaCategories: { game: true } }
+              : {},
     });
   });
 

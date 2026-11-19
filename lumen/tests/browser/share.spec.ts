@@ -183,7 +183,7 @@ for (const permissions of [32, 2]) {
       await page.screenshot({ path: info.outputPath('share.png') });
     } else {
       const tabs = page.getByRole('navigation', { name: 'Tabs', exact: true });
-      await tabs.getByRole('link', { name: 'You', exact: true }).click();
+      await tabs.locator('a[href="/me"]').click();
       const link = page.getByRole('link', {
         name: 'Open Share & Identify',
         exact: true,
