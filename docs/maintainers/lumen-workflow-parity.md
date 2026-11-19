@@ -2471,8 +2471,9 @@ Book details now link to Lumen author bibliographies and book series when
 the API supplies their identities. Author pages support forward and backward
 pagination, and series pages order books by their series position. Both
 pages reuse the Reader Shelf action. Direct links work with the standalone
-proxy and with the bundled Lumen lock. Native bulk requests and series
-filters are still separate parity gaps.
+proxy and with the bundled Lumen lock. Bulk requests and series filters are
+implemented in the following increments; this earlier gap statement is
+superseded by those entries.
 
 The production build, 28 browser checks, two server routing tests, and ten
 built-image proxy tests passed. Inspected the new pages against Lumen's book
