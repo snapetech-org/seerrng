@@ -6041,6 +6041,13 @@ test('book recommendations open a newly created feed', async ({ page }) => {
     ).toBe(true);
   }
   await lessPopular.check();
+  const settingBox = await lessPopular.boundingBox();
+  const createBox = await create.boundingBox();
+  expect(settingBox).not.toBeNull();
+  expect(createBox).not.toBeNull();
+  expect(createBox!.y).toBeGreaterThanOrEqual(
+    settingBox!.y + settingBox!.height
+  );
   await create.click();
   await expect(page.getByRole('alert')).toHaveText(
     'Hardcover rejected your API token.'
