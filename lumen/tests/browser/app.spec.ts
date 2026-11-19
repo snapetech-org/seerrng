@@ -7525,6 +7525,20 @@ test('Discover and Movies apply visibility defaults while the library view still
   await expect(page.getByRole('link', { name: 'Visible fixture' })).toHaveCount(
     0
   );
+  const sortedLibrarySearch = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/movies' &&
+      url.searchParams.get('availability') === 'hd' &&
+      url.searchParams.get('search') === 'fixture' &&
+      url.searchParams.get('sortBy') === 'original_title.asc'
+    );
+  });
+  await page
+    .getByRole('combobox', { name: 'Sort', exact: true })
+    .selectOption('original_title.asc');
+  await sortedLibrarySearch;
+  await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
   await page.getByRole('button', { name: 'All', exact: true }).click();
   await expect(
     page.getByRole('link', { name: 'Requested fixture' })
@@ -7532,6 +7546,16 @@ test('Discover and Movies apply visibility defaults while the library view still
   await expect(page.getByRole('link', { name: 'Blocked fixture' })).toHaveCount(
     0
   );
+  const seriesSort = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/tv' &&
+      url.searchParams.get('availability') === 'hd' &&
+      url.searchParams.get('sortBy') === 'first_air_date.desc'
+    );
+  });
+  await page.goto('./series?show=have&sort=first_air_date.desc');
+  await seriesSort;
 });
 
 test('Trending and Coming Soon apply discovery visibility and keep later pages reachable', async ({

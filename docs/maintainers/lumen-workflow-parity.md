@@ -2948,6 +2948,12 @@ request before confirmation and preserved the title filter when
 switching to HD. Bundled screenshots covered the recovery message
 at 390 and 1440 CSS pixels.
 
+Owned movie and series views now keep supported release-date and
+original-title sorts on the local catalog. Eight standalone and
+bundled browser checks covered a movie title search sorted A–Z,
+a series bookmark sorted by first air date, and availability
+bookmark recovery. These checks verified the API query with fixtures.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

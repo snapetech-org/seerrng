@@ -502,9 +502,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const unavailableQuality =
     wants4k && Boolean(publicSettings) && !qualityEnabled;
   // The library endpoint only implements a subset of the catalog filters and sorts.
+  const localSort =
+    sort === 'popularity.desc' ||
+    (kind === 'movie'
+      ? /^(?:primary_release_date|release_date|original_title)\./.test(sort)
+      : /^(?:first_air_date|original_name)\./.test(sort));
   const libraryFirst =
     show === 'have' &&
-    sort === 'popularity.desc' &&
+    localSort &&
     [...q.keys()].every((key) =>
       [
         'sortBy',
