@@ -12,6 +12,7 @@ for (const directory of [
     browse: '/movies',
     title: 'Movie Genres',
     genre: { id: 28, name: 'Action' },
+    otherGenre: { id: 12, name: 'Adventure' },
   },
   {
     route: '/series/genres',
@@ -19,12 +20,19 @@ for (const directory of [
     browse: '/series',
     title: 'Series Genres',
     genre: { id: 10759, name: 'Action & Adventure' },
+    otherGenre: { id: 18, name: 'Drama' },
   },
 ]) {
   test(`${directory.title} links genres to the matching browse filter`, async ({
     page,
   }) => {
     await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/imageproxy/**', (route) =>
+      route.fulfill({
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="48"/>',
+      })
+    );
     await page.route('**/api/v1/**', (route) => {
       const path = testApiPath(route.request().url());
       if (path === '/auth/me')
@@ -39,9 +47,19 @@ for (const directory of [
           },
         });
       if (path === `/genres/${directory.kind}`)
-        return route.fulfill({ json: [directory.genre] });
+        return route.fulfill({
+          json: [directory.genre, directory.otherGenre],
+        });
       if (path === `/discover/genreslider/${directory.kind}`)
-        return route.fulfill({ json: [] });
+        return route.fulfill({
+          json: [
+            { ...directory.genre, backdrops: ['/shared.jpg'] },
+            {
+              ...directory.otherGenre,
+              backdrops: ['/shared.jpg', '/adventure.jpg'],
+            },
+          ],
+        });
       return route.fulfill({ json: {} });
     });
 
@@ -55,5 +73,15 @@ for (const directory of [
       'href',
       testAppPath(`${directory.browse}?genre=${directory.genre.id}`)
     );
+    await expect(
+      page
+        .getByRole('link', { name: `Browse ${directory.genre.name}` })
+        .locator('img')
+    ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w780/shared.jpg');
+    await expect(
+      page
+        .getByRole('link', { name: `Browse ${directory.otherGenre.name}` })
+        .locator('img')
+    ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w780/adventure.jpg');
   });
 }

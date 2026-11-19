@@ -3151,10 +3151,10 @@ matched visual verification remain open for these targeted checks.
 Lumen Movies and Series now link to their genre directories. Legacy
 genre-directory bookmarks route to Lumen under bundled frontend lock and
 in the companion. The production build, two Express tests, and ten
-companion image tests passed. Browser fixtures opened both directories
-and followed a genre to its filtered results on desktop, iPhone 13,
-Pixel 7, and iPad Pro 11. Matched visual comparison and live provider
-states remain unverified.
+companion image tests passed. Browser fixtures opened both directories, verified the genre backdrop
+proxy and unique-art selection, and followed a genre to its filtered results
+on desktop, iPhone 13, Pixel 7, and iPad Pro 11. Matched visual comparison
+and live provider states remain unverified.
 
 Genre directories keep their links available when the artwork endpoint
 fails. Retry reloads the artwork independently. Four focused fixture
