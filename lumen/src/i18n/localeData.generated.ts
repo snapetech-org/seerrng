@@ -494,6 +494,54 @@ export const localeData = [
         'أنت غير متصل بالإنترنت. تحقق من اتصالك وحاول مرة أخرى.',
       'lumen.discoveryAccounts.errorNetwork':
         'تعذر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.',
+      'lumen.following.updates': 'التحديثات',
+      'lumen.following.markAllSeen': 'وضع علامة المشاهدة على الكل ({count})',
+      'lumen.following.loadingUpdates': 'جارٍ تحميل التحديثات…',
+      'lumen.following.noUpdates': 'لا توجد تحديثات في هذه الصفحة.',
+      'lumen.following.from': 'من {subject}',
+      'lumen.following.markSeen': 'وضع علامة تمت المشاهدة: {title}',
+      'lumen.following.markSeenButton': 'تمت المشاهدة',
+      'lumen.following.previousPage': 'الصفحة السابقة',
+      'lumen.following.nextPage': 'الصفحة التالية',
+      'lumen.following.whatYouFollow': 'ما تتابعه',
+      'lumen.following.loadingSubscriptions': 'جارٍ تحميل الاشتراكات…',
+      'lumen.following.noSubscriptions': 'لم تتابع أي شيء بعد.',
+      'lumen.following.notifyMe': 'أرسل لي إشعارًا',
+      'lumen.following.requestAutomatically': 'اطلب تلقائيًا',
+      'lumen.following.stopFollowing': 'إيقاف المتابعة',
+      'lumen.following.saveFailure': 'تعذر حفظ التغيير',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'تم الإعلان عن المجلد التالي من {series} باللغة {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'صدر مجلد جديد باللغة {language} من {series}: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'توجد رواية صوتية مختلفة لـ {title}: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'يتوفر إنتاج بممثلين كاملين لـ {title}.',
+      'lumen.following.reason.newBookByNarrator':
+        'يروي {narrator} كتابًا صوتيًا جديدًا: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        'لدى {author} عمل جديد: {title}.',
+      'lumen.following.reason.newExpansion':
+        'محتوى جديد للعبة {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        'الإصدار {version} من {project} متاح للعبة {game}.',
+      'lumen.following.reason.newArtistRelease': 'أصدر {artist} العمل {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'علاقة جديدة في سلسلة {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'تطابق جديد لـ “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'يشارك هواة الجمع الذين تتابعهم {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'عنوان فيلم أو مسلسل جديد مرتبط بـ {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'فيلم أو مسلسل قادم مرتبط بـ {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'انقضى تاريخ الإصدار المحدد لـ {title} المرتبط بـ {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'يلزم توفر إذن الطلبات لاستخدام المتابعة.',
+      'lumen.following.stopFollowingSubject': 'إيقاف متابعة {subject}',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -1058,6 +1106,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -1563,6 +1658,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -2067,6 +2209,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -2569,6 +2758,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -3079,6 +3315,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -3580,6 +3863,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -4083,6 +4413,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -4589,6 +4966,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -5095,6 +5519,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -5598,6 +6069,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -6103,6 +6621,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -6628,6 +7193,55 @@ export const localeData = [
         'Vous êtes hors ligne. Vérifiez votre connexion et réessayez.',
       'lumen.discoveryAccounts.errorNetwork':
         'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
+      'lumen.following.updates': 'Mises à jour',
+      'lumen.following.markAllSeen': 'Tout marquer comme vu ({count})',
+      'lumen.following.loadingUpdates': 'Chargement des mises à jour…',
+      'lumen.following.noUpdates': 'Aucune mise à jour sur cette page.',
+      'lumen.following.from': 'De {subject}',
+      'lumen.following.markSeen': 'Marquer comme vu : {title}',
+      'lumen.following.markSeenButton': 'Marquer comme vu',
+      'lumen.following.previousPage': 'Page précédente',
+      'lumen.following.nextPage': 'Page suivante',
+      'lumen.following.whatYouFollow': 'Vos abonnements',
+      'lumen.following.loadingSubscriptions': 'Chargement des abonnements…',
+      'lumen.following.noSubscriptions': 'Vous ne suivez encore aucun élément.',
+      'lumen.following.notifyMe': 'M’avertir',
+      'lumen.following.requestAutomatically': 'Demander automatiquement',
+      'lumen.following.stopFollowing': 'Ne plus suivre',
+      'lumen.following.saveFailure':
+        'Impossible d’enregistrer cette modification',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'Le prochain tome de {series} est annoncé en {language} : {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'Un nouveau volume {language} de {series} est disponible : {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'Une autre narration de {title} est disponible : {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'Une production avec distribution complète de {title} est disponible.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narre un nouvel audiobook : {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} a publié une nouvelle œuvre : {title}.',
+      'lumen.following.reason.newExpansion':
+        'Nouveau contenu pour {game} : {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} est disponible pour {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} a sorti {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'Nouvelle relation dans {franchise} : {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'Nouvelle correspondance pour « {discovery} » : {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Les collectionneurs que vous suivez partagent {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'Nouveau film ou série lié à {subject} : {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'À venir : film ou série lié à {subject} : {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'La date de sortie indiquée est passée pour {title}, lié à {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'L’accès aux demandes est requis pour utiliser le suivi.',
+      'lumen.following.stopFollowingSubject': 'Ne plus suivre : {subject}',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',
@@ -7201,6 +7815,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -7702,6 +8363,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -8208,6 +8916,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -8712,6 +9467,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -9217,6 +10019,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -9721,6 +10570,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -10225,6 +11121,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -10726,6 +11669,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -11227,6 +12217,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -11731,6 +12768,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -12233,6 +13317,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -12737,6 +13868,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -13241,6 +14419,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -13746,6 +14971,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -14250,6 +15522,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -14751,6 +16070,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -15256,6 +16622,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -15760,6 +17173,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -16264,6 +17724,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -16767,6 +18274,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -17271,6 +18825,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -17776,6 +19377,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -18277,6 +19925,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -18778,6 +20473,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
   {
@@ -19284,6 +21026,53 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.discoveryAccounts.errorNetwork':
         'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.following.updates': 'Updates',
+      'lumen.following.markAllSeen': 'Mark All Seen ({count})',
+      'lumen.following.loadingUpdates': 'Loading updates…',
+      'lumen.following.noUpdates': 'No updates on this page.',
+      'lumen.following.from': 'From {subject}',
+      'lumen.following.markSeen': 'Mark Seen: {title}',
+      'lumen.following.markSeenButton': 'Mark Seen',
+      'lumen.following.previousPage': 'Previous Page',
+      'lumen.following.nextPage': 'Next Page',
+      'lumen.following.whatYouFollow': 'What You Follow',
+      'lumen.following.loadingSubscriptions': 'Loading subscriptions…',
+      'lumen.following.noSubscriptions': 'You haven’t followed anything yet.',
+      'lumen.following.notifyMe': 'Notify Me',
+      'lumen.following.requestAutomatically': 'Request Automatically',
+      'lumen.following.stopFollowing': 'Stop Following',
+      'lumen.following.saveFailure': 'Couldn’t save the change',
+      'lumen.following.reason.nextVolumeAnnounced':
+        'The next volume of {series} is announced in {language}: {title}.',
+      'lumen.following.reason.newVolumeReleased':
+        'A new {language} volume of {series} is out: {title}.',
+      'lumen.following.reason.newNarrationAvailable':
+        'A different narration of {title} exists: {narrators}.',
+      'lumen.following.reason.fullCastProduction':
+        'A full-cast production of {title} exists.',
+      'lumen.following.reason.newBookByNarrator':
+        '{narrator} narrates a new audiobook: {title}.',
+      'lumen.following.reason.newBookByAuthor':
+        '{author} has a new work: {title}.',
+      'lumen.following.reason.newExpansion': 'New content for {game}: {title}.',
+      'lumen.following.reason.newPatchVersion':
+        '{project} {version} is available for {game}.',
+      'lumen.following.reason.newArtistRelease': '{artist} released {title}.',
+      'lumen.following.reason.newFranchiseRelation':
+        'New connection in {franchise}: {relation}.',
+      'lumen.following.reason.savedDiscoveryMatch':
+        'A new match for “{discovery}”: {attributes}.',
+      'lumen.following.reason.collectorsAreSharing':
+        'Collectors you follow are sharing {title}.',
+      'lumen.following.reason.newVideoTitle':
+        'New movie or series title related to {subject}: {title} ({date}).',
+      'lumen.following.reason.upcomingVideoTitle':
+        'Upcoming movie or series related to {subject}: {title} ({date}).',
+      'lumen.following.reason.videoReleaseDateReached':
+        'The listed release date has passed for {title}, related to {subject} ({date}).',
+      'lumen.following.accessRequired':
+        'Request access is required to use Following.',
+      'lumen.following.stopFollowingSubject': 'Stop Following: {subject}',
     },
   },
 ] as const;

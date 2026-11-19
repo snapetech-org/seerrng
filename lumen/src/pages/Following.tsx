@@ -9,6 +9,7 @@ import { friendlyError } from '../errors';
 import { patchHref } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface Subscription {
   id: number;
@@ -59,8 +60,14 @@ const eventReasons = new Map(
   })
 );
 
-function eventReason(event: FollowEvent) {
-  const template = event.reasonKey && eventReasons.get(event.reasonKey);
+function eventReason(
+  event: FollowEvent,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const source = event.reasonKey && eventReasons.get(event.reasonKey);
+  const template = source
+    ? t(`lumen.following.reason.${event.reasonKey}`, source)
+    : undefined;
   if (!template) return undefined;
 
   const parameters: Record<string, string> = {
@@ -138,6 +145,7 @@ function eventHref({ target, title }: FollowEvent) {
 }
 
 export default function Following() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const allowed = canViewFollowing(user?.permissions);
   const [page, setPage] = useState(0);
@@ -162,7 +170,12 @@ export default function Following() {
       subscriptions.refresh();
       count.refresh();
     } catch (error) {
-      toast(friendlyError(error, 'Couldn’t save the change'));
+      toast(
+        friendlyError(
+          error,
+          t('lumen.following.saveFailure', 'Couldn’t save the change')
+        )
+      );
     } finally {
       setSaving(false);
     }
@@ -172,14 +185,19 @@ export default function Following() {
   return (
     <>
       <header className="ph">
-        <h1>Following</h1>
+        <h1>{t('components.Layout.Sidebar.following', 'Following')}</h1>
       </header>
       {!allowed ? (
-        <p className="note">Request access is required to use Following.</p>
+        <p className="note">
+          {t(
+            'lumen.following.accessRequired',
+            'Request access is required to use Following.'
+          )}
+        </p>
       ) : (
         <>
           <Section
-            title="Updates"
+            title={t('lumen.following.updates', 'Updates')}
             action={
               Boolean(count.data?.unseen) && (
                 <button
@@ -189,29 +207,33 @@ export default function Following() {
                     void save('/follow/events/seen', 'POST', { all: true })
                   }
                 >
-                  Mark All Seen ({count.data?.unseen})
+                  {t('lumen.following.markAllSeen', 'Mark All Seen ({count})', {
+                    count: count.data?.unseen ?? 0,
+                  })}
                 </button>
               )
             }
           >
             <ServiceNote
               error={events.error}
-              what="updates"
+              what={t('lumen.following.updates', 'updates')}
               retry={events.reload}
             />
             {!events.data && !events.error && (
               <p className="note" role="status">
-                Loading updates…
+                {t('lumen.following.loadingUpdates', 'Loading updates…')}
               </p>
             )}
             {rows?.length === 0 && (
-              <p className="note">No updates on this page.</p>
+              <p className="note">
+                {t('lumen.following.noUpdates', 'No updates on this page.')}
+              </p>
             )}
             {!!rows?.length && (
               <ul className="setlist">
                 {rows.map((event) => {
                   const reason =
-                    eventReason(event) ??
+                    eventReason(event, t) ??
                     (event.follow.kind === 'franchise'
                       ? event.reasonValues?.relation?.replaceAll('-', ' ')
                       : undefined);
@@ -239,13 +261,21 @@ export default function Following() {
                         >
                           {event.title}
                         </Link>
-                        <small>From {event.follow.subjectLabel}</small>
+                        <small>
+                          {t('lumen.following.from', 'From {subject}', {
+                            subject: event.follow.subjectLabel,
+                          })}
+                        </small>
                         {reason && <small>{reason}</small>}
                       </span>
                       {!event.seen && (
                         <button
                           className="btn btn-quiet btn-sm"
-                          aria-label={`Mark Seen: ${event.title}`}
+                          aria-label={t(
+                            'lumen.following.markSeen',
+                            'Mark Seen: {title}',
+                            { title: event.title }
+                          )}
                           disabled={saving}
                           onClick={() =>
                             void save('/follow/events/seen', 'POST', {
@@ -253,7 +283,7 @@ export default function Following() {
                             })
                           }
                         >
-                          Mark Seen
+                          {t('lumen.following.markSeenButton', 'Mark Seen')}
                         </button>
                       )}
                     </li>
@@ -267,7 +297,7 @@ export default function Following() {
                 disabled={saving}
                 onClick={() => setPage(page - 1)}
               >
-                Previous Page
+                {t('lumen.following.previousPage', 'Previous Page')}
               </button>
             )}
             {(events.data?.total ?? 0) > (page + 1) * PAGE_SIZE && (
@@ -276,23 +306,33 @@ export default function Following() {
                 disabled={saving}
                 onClick={() => setPage(page + 1)}
               >
-                Next Page
+                {t('lumen.following.nextPage', 'Next Page')}
               </button>
             )}
           </Section>
-          <Section title="What You Follow">
+          <Section
+            title={t('lumen.following.whatYouFollow', 'What You Follow')}
+          >
             <ServiceNote
               error={subscriptions.error}
-              what="subscriptions"
+              what={t('lumen.following.whatYouFollow', 'subscriptions')}
               retry={subscriptions.reload}
             />
             {!subscriptions.data && !subscriptions.error && (
               <p className="note" role="status">
-                Loading subscriptions…
+                {t(
+                  'lumen.following.loadingSubscriptions',
+                  'Loading subscriptions…'
+                )}
               </p>
             )}
             {subscriptions.data?.results.length === 0 && (
-              <p className="note">You haven’t followed anything yet.</p>
+              <p className="note">
+                {t(
+                  'lumen.following.noSubscriptions',
+                  'You haven’t followed anything yet.'
+                )}
+              </p>
             )}
             {!!subscriptions.data?.results.length && (
               <ul className="setlist">
@@ -319,7 +359,7 @@ export default function Following() {
                             })
                           }
                         />{' '}
-                        Notify Me
+                        {t('lumen.following.notifyMe', 'Notify Me')}
                       </label>
                       {BOOK_FOLLOW_KINDS.includes(subscription.kind) && (
                         <label>
@@ -333,16 +373,23 @@ export default function Following() {
                               })
                             }
                           />{' '}
-                          Request Automatically
+                          {t(
+                            'lumen.following.requestAutomatically',
+                            'Request Automatically'
+                          )}
                         </label>
                       )}
                       <button
                         className="btn btn-quiet btn-sm"
                         disabled={saving}
-                        aria-label={`Stop Following: ${subscription.subjectLabel}`}
+                        aria-label={t(
+                          'lumen.following.stopFollowingSubject',
+                          'Stop Following: {subject}',
+                          { subject: subscription.subjectLabel }
+                        )}
                         onClick={() => void save(path, 'DELETE')}
                       >
-                        Stop Following
+                        {t('lumen.following.stopFollowing', 'Stop Following')}
                       </button>
                     </li>
                   );

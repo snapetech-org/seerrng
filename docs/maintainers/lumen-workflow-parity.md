@@ -245,6 +245,15 @@ rows with the existing You screen. The isolated desktop could not reach the
 fixture, so this check used a dedicated session on the persistent Agent GUI VM.
 Narrow and embedded-browser visual acceptance remains open.
 
+Following's feed, subscription controls, access-denied state, and event reason
+messages now use Lumen locale strings in English, French, and Arabic. Four
+standalone localization cases pass at desktop, iPhone, Android, and tablet
+viewports; the existing 44-case fixture-backed Following workflow suite also
+passes. Matched English/French desktop and iPhone screenshots, plus Arabic
+desktop and iPhone screenshots, were reviewed with no new overflow or layout
+changes. Live provider, role-matrix, native-matched, and embedded-browser
+acceptance remain open.
+
 Book details offer Follow New Releases for an identified author. Audiobook
 details offer Follow for each listed solo narrator in the narration picker.
 Twenty-four browser cases passed per deployment across desktop, iPhone,
