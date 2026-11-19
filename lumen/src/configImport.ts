@@ -28,6 +28,10 @@ const lockKeys = new Set([
   ...[...rowKeys].map((key) => `rows.${key}`),
 ]);
 
+export const isCompanionBrandingPath = (value: unknown): value is string =>
+  typeof value === 'string' &&
+  /^\/branding\/[a-z0-9][a-z0-9._-]*\.(?:png|jpe?g|webp|svg|ico)$/i.test(value);
+
 export function parseCompanionConfig(text: string): AdminConfig {
   let parsed: unknown;
   try {
@@ -70,10 +74,8 @@ export function parseCompanionConfig(text: string): AdminConfig {
       case 'branding':
         for (const [key, setting] of Object.entries(object(value, field))) {
           if (key === 'logo' || key === 'icon') {
-            if (!webAddress(setting)) {
-              throw new Error(
-                'Remove companion-local logo and icon paths from the JSON. Upload those images separately in bundled Lumen.'
-              );
+            if (!webAddress(setting) && !isCompanionBrandingPath(setting)) {
+              throw new Error(`Invalid branding address: ${key}.`);
             }
           } else if (
             !(key === 'name' && typeof setting === 'string') &&

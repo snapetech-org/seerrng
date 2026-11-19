@@ -29,12 +29,11 @@ configured companion was silently displaced.
 | Remaining work | Acceptance |
 | --- | --- |
 | Distinguish compatibility defaults from deliberate interface selections, then safely adopt included Lumen for existing installations/accounts | Fresh and legacy unset choices enter Lumen; explicit native/external choices survive upgrade and restart; native escape works before sign-in |
-| Complete companion-local branding migration | The bundled settings page imports supported JSON preferences, locks and absolute web addresses into a draft. Local logo and icon paths require separately uploading their raster files. Verify the imported settings and reuploaded branding before retiring the companion. |
 | Qualify the complete rollout against published images | Fresh and real upgrade configs, old/new accounts, dark default and saved choices, same-origin auth, direct links, optional companion and native escape at phone/tablet/desktop sizes |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
-Included Lumen now reports a real storage write probe, the effective UID/GID where available, and the applicable storage error. Bundled desktop and iPhone checks with real sign-in simulated a disk-full diagnostic, then used the actual successful probe to confirm recheck enabled Save and retained the draft. Route tests covered an unusable config path and an intact saved configuration. The migration and import work remain open. Physical Plex or
+Included Lumen now reports a real storage write probe, the effective UID/GID where available, and the applicable storage error. Bundled desktop and iPhone checks with real sign-in simulated a disk-full diagnostic, then used the actual successful probe to confirm recheck enabled Save and retained the draft. Route tests covered an unusable config path and an intact saved configuration. Bundled Lumen imports a companion configuration export into a draft. For companion-local branding, supply the logo or icon as PNG, JPEG or WebP. The raster upload prepares the asset, and Save for everyone publishes its reference with the other settings. Read the saved settings back before retiring the companion. Automatic adoption and published-image rollout qualification remain open. Physical Plex or
 Jellyfin playback and real household-provider mutations require separate evidence.
 
 ## Sources and attribution

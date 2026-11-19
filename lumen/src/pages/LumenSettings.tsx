@@ -5,7 +5,7 @@ import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useToast } from '../components/toast';
-import { parseCompanionConfig } from '../configImport';
+import { isCompanionBrandingPath, parseCompanionConfig } from '../configImport';
 import { embedded, lumenAdminUrl } from '../deployment';
 import { Icon } from '../icons';
 import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
@@ -167,6 +167,10 @@ export default function LumenSettings() {
   } | null>(null);
   const [saving, setSaving] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [importDraft, setImportDraft] = useState(false);
+  const [missingBranding, setMissingBranding] = useState<('logo' | 'icon')[]>(
+    []
+  );
   const [storageCheck, setStorageCheck] = useState(0);
   useEffect(() => {
     if (!isAdmin) return;
@@ -234,7 +238,13 @@ export default function LumenSettings() {
     setImporting(true);
     try {
       const imported = parseCompanionConfig(await file.text());
+      const missing = (['logo', 'icon'] as const).filter((kind) =>
+        isCompanionBrandingPath(imported.branding?.[kind])
+      );
+      for (const kind of missing) delete imported.branding?.[kind];
       setCfg(() => imported);
+      setMissingBranding(missing);
+      setImportDraft(true);
       toast('Configuration loaded into your draft. Review it before saving.');
     } catch (error) {
       toast(
@@ -271,6 +281,7 @@ export default function LumenSettings() {
     const sent = edits.current.length;
     try {
       await putConfig(json);
+      setImportDraft(false);
       edits.current = edits.current.slice(sent);
       adminSaved(JSON.parse(json));
       toast('Saved. Everyone gets it the next time they open Lumen.');
@@ -304,6 +315,14 @@ export default function LumenSettings() {
       const d = await r.json().catch(() => null);
       if (!r.ok || typeof d?.url !== 'string')
         throw new Error(d?.message || `Couldn’t upload (${r.status})`);
+      if (importDraft) {
+        setBrand(kind, d.url);
+        setMissingBranding((previous) =>
+          previous.filter((item) => item !== kind)
+        );
+        toast('Image added to your draft.');
+        return;
+      }
       const saved: AdminConfig = {
         ...adminConfig,
         branding: { ...(adminConfig?.branding || {}), [kind]: d.url },
@@ -542,6 +561,15 @@ export default function LumenSettings() {
       </Section>
 
       <Section title="Logo and tab icon">
+        {missingBranding.length > 0 && (
+          <p className="note" role="status">
+            Upload the companion{' '}
+            {missingBranding
+              .map((kind) => (kind === 'icon' ? 'tab icon' : 'logo'))
+              .join(' and ')}{' '}
+            as PNG, JPEG, or WebP before saving.
+          </p>
+        )}
         <div className="setlist">
           <label className="set cfg-row">
             <span>
@@ -577,7 +605,7 @@ export default function LumenSettings() {
             />
             <Upload
               kind="logo"
-              ready={canWrite}
+              ready={canWrite && !saving && !importing}
               uploading={uploading}
               onFile={onFile}
             />
@@ -605,7 +633,7 @@ export default function LumenSettings() {
             )}
             <Upload
               kind="icon"
-              ready={canWrite}
+              ready={canWrite && !saving && !importing}
               uploading={uploading}
               onFile={onFile}
             />
@@ -705,7 +733,13 @@ export default function LumenSettings() {
           <button
             className="btn btn-primary"
             onClick={save}
-            disabled={saving || importing || !canWrite}
+            disabled={
+              saving ||
+              importing ||
+              !!uploading ||
+              missingBranding.length > 0 ||
+              !canWrite
+            }
             title={
               !saveState?.canSave
                 ? 'Saving needs writable storage. See the storage message above.'
@@ -733,7 +767,7 @@ export default function LumenSettings() {
                 className="sr"
                 accept=".json,application/json"
                 aria-label="Import lumen-config.json"
-                disabled={!loaded || saving || importing}
+                disabled={!loaded || saving || importing || !!uploading}
                 onChange={(event) => {
                   const file = event.target.files?.[0];
                   event.target.value = '';
