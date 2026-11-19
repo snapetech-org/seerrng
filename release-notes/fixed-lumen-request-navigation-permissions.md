@@ -1,1 +1,1 @@
-Lumen now shows Book Recommendations, Collector Picks, Game Finder, and Translations and Hacks only to users with request access or administrators, matching native SeerrNG navigation permissions.
+Lumen now shows Book Recommendations, Collector Picks, Game Finder, and Translations and Hacks only to users with request access or administrators, matching native SeerrNG navigation permissions. The same gate applies to the Translations and Hacks shortcut on retro and console game details.

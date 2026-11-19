@@ -476,7 +476,7 @@ function GameDetailView({
           <div className="dstatus">
             <StatPill s={s} />
             <IndexerSearchLink category={cat} title={g.title} />
-            {patchSearch && (
+            {patchSearch && canUseRequestAccess(user?.permissions) && (
               <Link
                 className="btn btn-quiet btn-sm"
                 to={`/patches?${patchSearch}`}

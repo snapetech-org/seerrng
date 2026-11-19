@@ -5,6 +5,10 @@ const pages = [
   { path: '/music', label: 'Collector Picks' },
   { path: '/games', label: 'Translations and Hacks' },
   { path: '/games', label: 'Game Finder' },
+  {
+    path: '/game/retro/123',
+    label: 'Translations and Hacks for This Game',
+  },
 ];
 
 for (const permissions of [0, 32, 2]) {
@@ -59,6 +63,17 @@ for (const permissions of [0, 32, 2]) {
           return route.fulfill({ json: { categories: ['game', 'modern'] } });
         if (path === '/request/software/catalog/popular')
           return route.fulfill({ json: { results: [], nextOffset: null } });
+        if (path === '/request/software/catalog/games/123')
+          return route.fulfill({
+            json: {
+              id: '123',
+              catalogId: '123',
+              title: 'Fixture Console Game',
+              genres: [],
+              platforms: [],
+              emulationSystems: [{ group: 'retro', slug: 'nes', name: 'NES' }],
+            },
+          });
         return route.fulfill({ json: { page: 1, results: [], totalPages: 1 } });
       });
       await page.goto(entry.path);

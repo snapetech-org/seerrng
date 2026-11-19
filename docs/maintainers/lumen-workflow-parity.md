@@ -3024,11 +3024,11 @@ recognition, provider behavior, and matched visual acceptance remain open.
 
 The native request-gated Book Recommendations, Collector Picks, Game Finder,
 and Translations and Hacks shortcuts are also permission-gated in Lumen's
-Books, Music, and Games headers. Forty-eight browser checks covered viewers,
-request users, and administrators across desktop, iPhone, Android, and tablet.
-Baseline and candidate desktop screenshots are retained under
-`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-entry-navigation/candidate-final/`
-(with pre-change desktop captures in the sibling `baseline/` directory).
+Books, Music, Games, and retro/console game-detail views. Sixty browser checks
+covered viewers, request users, and administrators across desktop, iPhone,
+Android, and tablet. Baseline and candidate desktop screenshots are retained
+under `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-entry-navigation/`
+in `baseline/`, `candidate-final/`, `detail-baseline/`, and `detail-final/`.
 The screenshots confirm that only the restricted shortcuts disappear for
 viewers; provider behavior and matched native visual acceptance remain open.
 
