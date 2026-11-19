@@ -102,33 +102,40 @@ const CHIPS: [IconName, string, string][] = [
 
 export default function Discover() {
   const serverName = useMediaServerName();
-  const { prefs } = usePrefs();
+  const { prefs, adminConfigState } = usePrefs();
+  // Admin defaults arrive asynchronously. Do not mount optional shelves or
+  // spend catalog requests on default-on rows before those defaults are known.
+  const preferencesReady = adminConfigState !== 'loading';
   const on = prefs.rows;
   const books_ = prefs.showBooks;
   const trending = useApi<Paged<VideoSearchResult>>(
-    on.hero ? '/discover/trending' : null
+    preferencesReady && on.hero ? '/discover/trending' : null
   );
   const movies = useApi<Paged<TitleResult>>(
-    on.trendingMovies ? '/discover/movies' : null
+    preferencesReady && on.trendingMovies ? '/discover/movies' : null
   );
   const series = useApi<Paged<TitleResult>>(
-    on.popularSeries ? '/discover/tv' : null
+    preferencesReady && on.popularSeries ? '/discover/tv' : null
   );
   const audio = useApi<Paged<BookResult>>(
-    books_ && on.audiobooks ? '/discover/books?format=audiobook' : null
+    preferencesReady && books_ && on.audiobooks
+      ? '/discover/books?format=audiobook'
+      : null
   );
   const books = useApi<Paged<BookResult>>(
-    books_ && on.books ? '/discover/books?format=ebook' : null
+    preferencesReady && books_ && on.books
+      ? '/discover/books?format=ebook'
+      : null
   );
   const soon = useApi<Paged<TitleResult>>(
-    on.comingSoon ? '/discover/movies/upcoming' : null
+    preferencesReady && on.comingSoon ? '/discover/movies/upcoming' : null
   );
   const genres = useApi<Genre[]>(
-    on.genres ? '/discover/genreslider/movie' : null
+    preferencesReady && on.genres ? '/discover/genreslider/movie' : null
   );
   const { user } = useAuth();
   const recentAllowed = canSeeRecent(user?.permissions);
-  const fresh = useNewOnPlex(on.newOnPlex && recentAllowed);
+  const fresh = useNewOnPlex(preferencesReady && on.newOnPlex && recentAllowed);
   const extras = useExtras();
 
   const settings = usePublicSettings();
@@ -174,25 +181,27 @@ export default function Discover() {
               : 'Movies and series…'}
           </span>
         </Link>
-        <div className="chips navchips">
-          {CHIPS.filter(
-            ([, , h]) => books_ || (h !== '/books' && h !== '/audiobooks')
-          ).map(([i, t, h]) => (
-            <Link key={h} className="chip" to={h}>
-              <Icon name={i} />
-              {t}
-            </Link>
-          ))}
-          {extras.list.map((e) => (
-            <Link key={e.path} className="chip" to={e.path}>
-              <Icon name={e.icon} />
-              {e.label}
-            </Link>
-          ))}
-        </div>
+        {preferencesReady && (
+          <div className="chips navchips">
+            {CHIPS.filter(
+              ([, , h]) => books_ || (h !== '/books' && h !== '/audiobooks')
+            ).map(([i, t, h]) => (
+              <Link key={h} className="chip" to={h}>
+                <Icon name={i} />
+                {t}
+              </Link>
+            ))}
+            {extras.list.map((e) => (
+              <Link key={e.path} className="chip" to={e.path}>
+                <Icon name={e.icon} />
+                {e.label}
+              </Link>
+            ))}
+          </div>
+        )}
       </header>
 
-      {on.hero && (
+      {preferencesReady && on.hero && (
         <Section title="Popular right now" link={['See all', '/trending']}>
           {hero.length ? (
             <Rail className="feat-rail" restoreId="featured">
@@ -229,47 +238,50 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.newOnPlex && recentAllowed && fresh?.length !== 0 && (
-        <Section
-          title={`New on ${serverName}`}
-          link={['See all', '/movies?show=plex']}
-          action={
-            fresh?.length ? (
-              <CardTitleToggle
-                kinds={[
-                  ...new Set(
-                    fresh.map((item) =>
-                      item.mediaType === 'tv'
-                        ? ('tv' as const)
-                        : ('movie' as const)
-                    )
-                  ),
-                ]}
-              />
-            ) : undefined
-          }
-        >
-          {fresh ? (
-            <Rail restoreId="recent">
-              {fresh.map((m) => (
-                <TitleCard
-                  key={m.mediaType + m.id}
-                  it={m}
-                  meta={
-                    m.added
-                      ? 'Added ' + shortDate(m.added.slice(0, 10))
-                      : undefined
-                  }
+      {preferencesReady &&
+        on.newOnPlex &&
+        recentAllowed &&
+        fresh?.length !== 0 && (
+          <Section
+            title={`New on ${serverName}`}
+            link={['See all', '/movies?show=plex']}
+            action={
+              fresh?.length ? (
+                <CardTitleToggle
+                  kinds={[
+                    ...new Set(
+                      fresh.map((item) =>
+                        item.mediaType === 'tv'
+                          ? ('tv' as const)
+                          : ('movie' as const)
+                      )
+                    ),
+                  ]}
                 />
-              ))}
-            </Rail>
-          ) : (
-            <RailSkeleton />
-          )}
-        </Section>
-      )}
+              ) : undefined
+            }
+          >
+            {fresh ? (
+              <Rail restoreId="recent">
+                {fresh.map((m) => (
+                  <TitleCard
+                    key={m.mediaType + m.id}
+                    it={m}
+                    meta={
+                      m.added
+                        ? 'Added ' + shortDate(m.added.slice(0, 10))
+                        : undefined
+                    }
+                  />
+                ))}
+              </Rail>
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
 
-      {on.trendingMovies && !empty(movieCards) && (
+      {preferencesReady && on.trendingMovies && !empty(movieCards) && (
         <Section
           title="Trending movies"
           action={<CardTitleToggle kinds={['movie']} />}
@@ -289,7 +301,7 @@ export default function Discover() {
         </Section>
       )}
 
-      {on.popularSeries && !empty(seriesCards) && (
+      {preferencesReady && on.popularSeries && !empty(seriesCards) && (
         <Section
           title="Popular series"
           action={<CardTitleToggle kinds={['tv']} />}
@@ -309,7 +321,8 @@ export default function Discover() {
         </Section>
       )}
 
-      {books_ &&
+      {preferencesReady &&
+        books_ &&
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
           <Section
@@ -331,30 +344,33 @@ export default function Discover() {
           </Section>
         )}
 
-      {books_ && on.books && !empty(books.data ? ebookCards : undefined) && (
-        <Section
-          title="Popular books"
-          action={<CardTitleToggle kinds={['book']} />}
-          link={['See all', '/books']}
-        >
-          {books.data ? (
-            <Rail restoreId="books">
-              {ebookCards.map((b) => (
-                <BookCard
-                  key={b.id}
-                  b={{ ...b, bookFormat: b.bookFormat || 'ebook' }}
-                />
-              ))}
-            </Rail>
-          ) : books.error ? (
-            <RowError retry={books.reload} />
-          ) : (
-            <RailSkeleton />
-          )}
-        </Section>
-      )}
+      {preferencesReady &&
+        books_ &&
+        on.books &&
+        !empty(books.data ? ebookCards : undefined) && (
+          <Section
+            title="Popular books"
+            action={<CardTitleToggle kinds={['book']} />}
+            link={['See all', '/books']}
+          >
+            {books.data ? (
+              <Rail restoreId="books">
+                {ebookCards.map((b) => (
+                  <BookCard
+                    key={b.id}
+                    b={{ ...b, bookFormat: b.bookFormat || 'ebook' }}
+                  />
+                ))}
+              </Rail>
+            ) : books.error ? (
+              <RowError retry={books.reload} />
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
 
-      {on.comingSoon && !empty(upcomingCards) && (
+      {preferencesReady && on.comingSoon && !empty(upcomingCards) && (
         <Section
           title="Coming soon"
           action={<CardTitleToggle kinds={['movie']} />}
@@ -378,12 +394,14 @@ export default function Discover() {
         </Section>
       )}
 
-      <ConfiguredDiscoverShelves
-        showBooks={books_}
-        showMusic={extras.list.some((entry) => entry.key === 'music')}
-      />
+      {preferencesReady && (
+        <ConfiguredDiscoverShelves
+          showBooks={books_}
+          showMusic={extras.list.some((entry) => entry.key === 'music')}
+        />
+      )}
 
-      {on.genres && genres.data && (
+      {preferencesReady && on.genres && genres.data && (
         <Section title="Browse by genre">
           <GenreTiles genres={genres.data.slice(0, 12)} browse="/movies" />
         </Section>

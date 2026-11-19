@@ -23,6 +23,15 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. | Complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
+Discover previously issued its default-on catalog requests before the
+asynchronous Lumen configuration loaded, even when an administrator had disabled
+every home row. It now waits for that configuration before rendering optional
+chips/shelves or fetching row data. Standalone fixtures verify the seven
+disabled rows remain absent while the enabled Popular row loads, with no
+requests for disabled catalogs, on desktop, iPhone, Android and tablet.
+Per-category provider, filter, pagination, saved-settings,
+live-provider and native-matched visual acceptance remain open.
+
 ## Delivery and verification
 
 1. Start with household library workflows. Add the feed and saved-item screens

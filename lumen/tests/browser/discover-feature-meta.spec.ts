@@ -16,6 +16,70 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
+test('disabled Discover rows do not fetch catalog data', async ({
+  page,
+}, info) => {
+  const catalogReads: string[] = [];
+  const configReads: string[] = [];
+  const hiddenRows = {
+    hero: false,
+    newOnPlex: false,
+    trendingMovies: false,
+    popularSeries: false,
+    audiobooks: false,
+    books: false,
+    comingSoon: false,
+    genres: false,
+  };
+  await page.route('**/lumen-config.json', (route) => {
+    configReads.push('/lumen-config.json');
+    return route.fulfill({
+      json: { defaults: { rows: hiddenRows, showBooks: false } },
+    });
+  });
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path.startsWith('/discover/')) catalogReads.push(path);
+    if (path === '/lumen/configuration') {
+      configReads.push(path);
+      return route.fulfill({
+        json: { defaults: { rows: hiddenRows, showBooks: false } },
+      });
+    }
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 7, displayName: 'Viewer', permissions: 32 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { applicationTitle: 'SeerrNG' } });
+    return route.fulfill({ json: path === '/settings/discover' ? [] : {} });
+  });
+
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Discover' })).toBeVisible();
+  for (const title of [
+    'Popular right now',
+    'New on Plex',
+    'Trending movies',
+    'Popular series',
+    'Popular audiobooks',
+    'Popular books',
+    'Coming soon',
+    'Browse by genre',
+  ])
+    await expect(page.getByRole('heading', { name: title })).toHaveCount(0);
+  await expect(page.locator('.navchips')).toBeVisible();
+  expect(configReads).toEqual(['/lumen-config.json']);
+  expect(catalogReads).toEqual([]);
+  if (process.env.LUMEN_CAPTURE_DISABLED_DISCOVER)
+    await page.screenshot({
+      path: info.outputPath('disabled-discover.png'),
+      fullPage: true,
+    });
+});
+
 test('Discover feature card meta is not cut off on narrow screens', async ({
   page,
 }, info) => {
