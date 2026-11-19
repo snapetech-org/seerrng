@@ -182,6 +182,18 @@ test('display language persists and localizes the shell and account settings', a
   await page.goto(appPath('./me/account'));
   const language = page.getByRole('combobox', { name: 'Display Language' });
   await expect(language).toHaveValue('');
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  ) {
+    await page.goto(appPath('./me'));
+    await expect(page.getByRole('heading', { name: 'You' })).toBeVisible();
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/baseline-${testInfo.project.name}-english-you.png`,
+      fullPage: false,
+    });
+    await page.goto(appPath('./me/account'));
+  }
   await language.selectOption('fr');
   await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(
@@ -195,6 +207,27 @@ test('display language persists and localizes the shell and account settings', a
     page.getByRole('heading', { name: 'Paramètres utilisateur' })
   ).toBeVisible();
   await expect(page.getByLabel('Nom affiché')).toHaveValue('Viewer');
+  await page.goto(appPath('./me'));
+  await expect(page.getByRole('heading', { name: 'Vous' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Bibliothèque' })
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Apparence' })).toBeVisible();
+  await expect(
+    page.getByRole('switch', { name: /Demande rapide depuis les affiches/ })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Ouvrir Ma médiathèque' })
+  ).toBeVisible();
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${testInfo.project.name}-french-you.png`,
+      fullPage: false,
+    });
+  await page.goto(appPath('./me/account'));
   await expect(page.getByLabel('Langue des métadonnées')).toBeVisible();
   await expect(page.getByText('Type de compte')).toBeVisible();
   await expect(page.getByText('Utilisateur local')).toBeVisible();
@@ -260,6 +293,27 @@ test('display language persists and localizes the shell and account settings', a
     page.getByRole('link', { name: 'الطلبات' }).first()
   ).toBeVisible();
   await expect(page.getByLabel('إسم العرض')).toHaveValue('Viewer');
+  await page.goto(appPath('./me'));
+  await expect(page.getByRole('heading', { name: 'أنت' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'المكتبة' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'المظهر', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('switch', { name: /طلب سريع من الملصقات/ })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'فتح مكتبتي الإعلامية' })
+  ).toBeVisible();
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${testInfo.project.name}-arabic-you.png`,
+      fullPage: false,
+    });
+  await page.goto(appPath('./me/account'));
   await expect(page.getByText('مستخدم محلي')).toBeVisible();
   await expect(page.getByText('الدور', { exact: true })).toBeVisible();
   await expect(

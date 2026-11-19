@@ -79,7 +79,7 @@ test('administration is visible in navigation and at the start of You', async ({
   } else {
     await page
       .getByRole('navigation', { name: 'Tabs', exact: true })
-      .getByRole('link', { name: 'You', exact: true })
+      .getByRole('link', { name: 'Profile', exact: true })
       .click();
     await expect(
       page.getByRole('heading', { name: 'Administration', exact: true })

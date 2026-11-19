@@ -18,6 +18,7 @@ import { canManageDownloads } from '../downloadPermissions';
 import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { canSearchIndexers } from '../indexerPermissions';
 import { canReadIssues } from '../issuePermissions';
@@ -35,14 +36,21 @@ import { canSeeRecent } from './Discover';
 function Toggle({
   path,
   title,
+  titleKey,
+  titleValues,
   sub,
+  subKey,
   on,
 }: {
   path: string;
   title: string;
+  titleKey: string;
+  titleValues?: Record<string, string | number>;
   sub?: string;
+  subKey?: string;
   on: boolean;
 }) {
+  const { t } = useLumenLocale();
   const { set, locked } = usePrefs();
   const isLocked = locked.has(path);
   return (
@@ -61,8 +69,14 @@ function Toggle({
       }}
     >
       <span>
-        <b>{title}</b>
-        <small>{isLocked ? 'Set by your admin' : sub}</small>
+        <b>{t(titleKey, title, titleValues)}</b>
+        <small>
+          {isLocked
+            ? t('lumen.me.setByAdmin', 'Set by your admin')
+            : subKey
+              ? t(subKey, sub)
+              : sub}
+        </small>
       </span>
       <span className="sw" />
     </div>
@@ -70,6 +84,7 @@ function Toggle({
 }
 
 export default function Me() {
+  const { t } = useLumenLocale();
   const { user, signOut } = useAuth();
   const liveTv = useLiveTvStatus();
   const showBlocklist = useBlocklistNavigation();
@@ -81,12 +96,16 @@ export default function Me() {
   const isAdmin = isAdministrator(user?.permissions);
   const publicSettings = usePublicSettings();
   const lockedToLumen = publicSettings?.lockLumenForNonAdmins && !isAdmin;
+  const me = (key: string, fallback: string) => t(`lumen.me.${key}`, fallback);
+  const openLink = (resource: string) =>
+    t('lumen.me.openLink', 'Open {resource}', { resource });
+  const open = me('open', 'Open');
   return (
     <>
       <header className="ph">
         <div className="ph-row">
           <div>
-            <h1>You</h1>
+            <h1>{t('components.Layout.Sidebar.you', 'You')}</h1>
           </div>
         </div>
       </header>
@@ -100,17 +119,21 @@ export default function Me() {
         </span>
         <div>
           <b>{user?.displayName}</b>
-          <small>Signed in to SeerrNG</small>
+          <small>{t('lumen.me.signedInTo', 'Signed in to SeerrNG')}</small>
         </div>
       </div>
 
       {!isAdmin && ((user?.permissions ?? 0) & 8) !== 0 && (
-        <Section title="User Management">
+        <Section title={me('userManagement', 'User Management')}>
           <div className="setlist">
             <div className="set">
-              <b>Users</b>
-              <Link className="go" to="/admin/users" aria-label="Open Users">
-                Open <Icon name="chev" size="sm" />
+              <b>{me('users', 'Users')}</b>
+              <Link
+                className="go"
+                to="/admin/users"
+                aria-label={openLink(me('users', 'Users'))}
+              >
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           </div>
@@ -118,16 +141,18 @@ export default function Me() {
       )}
 
       {isAdmin && (
-        <Section title="Administration">
+        <Section title={me('administration', 'Administration')}>
           <div className="setlist">
             <div className="set">
-              <b>SeerrNG Administration</b>
+              <b>{me('seerrAdministration', 'SeerrNG Administration')}</b>
               <Link
                 className="go"
                 to="/admin"
-                aria-label="Open SeerrNG Administration"
+                aria-label={openLink(
+                  me('seerrAdministration', 'SeerrNG Administration')
+                )}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           </div>
@@ -136,102 +161,140 @@ export default function Me() {
       )}
 
       {canUseShare(user?.permissions) && (
-        <Section title="Discover">
+        <Section title={t('components.Layout.Sidebar.discover', 'Discover')}>
           <div className="setlist">
             <div className="set">
-              <b>Share &amp; Identify</b>
+              <b>{t('components.Layout.Sidebar.share', 'Share & Identify')}</b>
               <Link
                 className="go"
                 to="/share"
-                aria-label="Open Share & Identify"
+                aria-label={openLink(
+                  t('components.Layout.Sidebar.share', 'Share & Identify')
+                )}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           </div>
         </Section>
       )}
 
-      <Section title="Library">
+      <Section title={me('library', 'Library')}>
         <div className="setlist">
           <div className="set">
-            <b>My Media</b>
-            <Link className="go" to="/library" aria-label="Open My Media">
-              Open <Icon name="chev" size="sm" />
+            <b>{t('components.Layout.Sidebar.myMedia', 'My Media')}</b>
+            <Link
+              className="go"
+              to="/library"
+              aria-label={openLink(
+                t('components.Layout.Sidebar.myMedia', 'My Media')
+              )}
+            >
+              {open} <Icon name="chev" size="sm" />
             </Link>
           </div>
           {publicSettings?.swipeEnabled &&
             canUseRequestAccess(user?.permissions) && (
               <div className="set">
-                <b>Swipe</b>
-                <Link className="go" to="/swipe" aria-label="Open Swipe">
-                  Open <Icon name="chev" size="sm" />
+                <b>{t('components.Layout.Sidebar.swipe', 'Swipe')}</b>
+                <Link
+                  className="go"
+                  to="/swipe"
+                  aria-label={openLink(
+                    t('components.Layout.Sidebar.swipe', 'Swipe')
+                  )}
+                >
+                  {open} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             )}
           {canRequestMovies(user?.permissions) && (
             <div className="set">
-              <b>Watch Sessions</b>
+              <b>
+                {t('components.Layout.Sidebar.watchSessions', 'Watch Sessions')}
+              </b>
               <Link
                 className="go"
                 to="/watch-sessions"
-                aria-label="Open Watch Sessions"
+                aria-label={openLink(
+                  t('components.Layout.Sidebar.watchSessions', 'Watch Sessions')
+                )}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           )}
           {liveTv.data?.configured && (
             <div className="set">
-              <b>Recordings</b>
+              <b>{t('components.LiveTv.RecordingList.title', 'Recordings')}</b>
               <Link
                 className="go"
                 to="/recordings"
-                aria-label="Open Recordings"
+                aria-label={openLink(
+                  t('components.LiveTv.RecordingList.title', 'Recordings')
+                )}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           )}
           <div className="set">
-            <b>Release Calendar</b>
+            <b>{me('releaseCalendar', 'Release Calendar')}</b>
             <Link
               className="go"
               to="/calendar"
-              aria-label="Open Release Calendar"
+              aria-label={openLink(me('releaseCalendar', 'Release Calendar'))}
             >
-              Open <Icon name="chev" size="sm" />
+              {open} <Icon name="chev" size="sm" />
             </Link>
           </div>
           <div className="set">
-            <b>Coming soon</b>
-            <Link className="go" to="/soon" aria-label="Open Coming soon">
-              Open <Icon name="chev" size="sm" />
+            <b>{t('components.Layout.Sidebar.comingSoon', 'Coming soon')}</b>
+            <Link
+              className="go"
+              to="/soon"
+              aria-label={openLink(
+                t('components.Layout.Sidebar.comingSoon', 'Coming soon')
+              )}
+            >
+              {open} <Icon name="chev" size="sm" />
             </Link>
           </div>
           <div className="set">
-            <b>Watchlist</b>
-            <Link className="go" to="/watchlist" aria-label="Open Watchlist">
-              Open <Icon name="chev" size="sm" />
+            <b>{t('library.watchlist', 'Watchlist')}</b>
+            <Link
+              className="go"
+              to="/watchlist"
+              aria-label={openLink(t('library.watchlist', 'Watchlist'))}
+            >
+              {open} <Icon name="chev" size="sm" />
             </Link>
           </div>
           {extras.list.some((item) => item.key === 'game') && (
             <div className="set">
-              <b>My Games</b>
+              <b>{t('components.Layout.Sidebar.gamesLibrary', 'My Games')}</b>
               <Link
                 className="go"
                 to="/game-library"
-                aria-label="Open My Games"
+                aria-label={openLink(
+                  t('components.Layout.Sidebar.gamesLibrary', 'My Games')
+                )}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           )}
           {canViewFollowing(user?.permissions) && (
             <div className="set">
-              <b>Following</b>
-              <Link className="go" to="/following" aria-label="Open Following">
-                Open <Icon name="chev" size="sm" />
+              <b>{t('components.Layout.Sidebar.following', 'Following')}</b>
+              <Link
+                className="go"
+                to="/following"
+                aria-label={openLink(
+                  t('components.Layout.Sidebar.following', 'Following')
+                )}
+              >
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           )}
@@ -240,29 +303,43 @@ export default function Me() {
 
       {(canManageDownloads(user?.permissions) ||
         canSearchIndexers(user?.permissions)) && (
-        <Section title="Acquisition">
+        <Section title={me('acquisition', 'Acquisition')}>
           <div className="setlist">
             {canManageDownloads(user?.permissions) && (
               <div className="set">
-                <b>Download Inbox</b>
+                <b>
+                  {t('components.Layout.Sidebar.downloads', 'Download Inbox')}
+                </b>
                 <Link
                   className="go"
                   to="/downloads"
-                  aria-label="Open Download Inbox"
+                  aria-label={openLink(
+                    t('components.Layout.Sidebar.downloads', 'Download Inbox')
+                  )}
                 >
-                  Open <Icon name="chev" size="sm" />
+                  {open} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             )}
             {canSearchIndexers(user?.permissions) && (
               <div className="set">
-                <b>Indexer Search</b>
+                <b>
+                  {t(
+                    'components.Layout.Sidebar.indexerSearch',
+                    'Indexer Search'
+                  )}
+                </b>
                 <Link
                   className="go"
                   to="/indexer-search"
-                  aria-label="Open Indexer Search"
+                  aria-label={openLink(
+                    t(
+                      'components.Layout.Sidebar.indexerSearch',
+                      'Indexer Search'
+                    )
+                  )}
                 >
-                  Open <Icon name="chev" size="sm" />
+                  {open} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             )}
@@ -271,25 +348,33 @@ export default function Me() {
       )}
 
       {(showBlocklist || canReadIssues(user?.permissions)) && (
-        <Section title="Support">
+        <Section title={me('support', 'Support')}>
           <div className="setlist">
             {showBlocklist && (
               <div className="set">
-                <b>Blocklist</b>
+                <b>{t('components.Layout.Sidebar.blocklist', 'Blocklist')}</b>
                 <Link
                   className="go"
                   to="/blocklist"
-                  aria-label="Open Blocklist"
+                  aria-label={openLink(
+                    t('components.Layout.Sidebar.blocklist', 'Blocklist')
+                  )}
                 >
-                  Open <Icon name="chev" size="sm" />
+                  {open} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             )}
             {canReadIssues(user?.permissions) && (
               <div className="set">
-                <b>Issues</b>
-                <Link className="go" to="/issues" aria-label="Open Issues">
-                  Open <Icon name="chev" size="sm" />
+                <b>{t('components.Layout.Sidebar.issues', 'Issues')}</b>
+                <Link
+                  className="go"
+                  to="/issues"
+                  aria-label={openLink(
+                    t('components.Layout.Sidebar.issues', 'Issues')
+                  )}
+                >
+                  {open} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             )}
@@ -297,28 +382,28 @@ export default function Me() {
         </Section>
       )}
 
-      <Section title="Account">
+      <Section title={me('account', 'Account')}>
         <div className="setlist">
           {user && (
             <div className="set">
-              <b>My Profile</b>
+              <b>{me('myProfile', 'My Profile')}</b>
               <Link
                 className="go"
                 to="/household/me"
-                aria-label="Open My Profile"
+                aria-label={openLink(me('myProfile', 'My Profile'))}
               >
-                Open <Icon name="chev" size="sm" />
+                {open} <Icon name="chev" size="sm" />
               </Link>
             </div>
           )}
           <div className="set">
-            <b>Profile and Password</b>
+            <b>{me('profilePassword', 'Profile and Password')}</b>
             <Link
               className="go"
               to="/me/account"
-              aria-label="Open Account Settings"
+              aria-label={openLink(me('accountSettings', 'Account Settings'))}
             >
-              Open <Icon name="chev" size="sm" />
+              {open} <Icon name="chev" size="sm" />
             </Link>
           </div>
         </div>
@@ -332,18 +417,18 @@ export default function Me() {
         />
       )}
 
-      <Section title="Appearance">
+      <Section title={me('appearance', 'Appearance')}>
         <div className="setlist">
           <div className="set">
             <span>
-              <b>Theme</b>
+              <b>{me('theme', 'Theme')}</b>
               <small>
                 {locked.has('theme')
-                  ? 'Set by your admin'
-                  : 'Dark is the default'}
+                  ? me('setByAdmin', 'Set by your admin')
+                  : me('darkDefault', 'Dark is the default')}
               </small>
             </span>
-            <div className="seg" role="group" aria-label="Theme">
+            <div className="seg" role="group" aria-label={me('theme', 'Theme')}>
               {(['dark', 'light', 'system'] as const).map((v) => (
                 <button
                   key={v}
@@ -351,7 +436,10 @@ export default function Me() {
                   aria-pressed={prefs.theme === v}
                   onClick={() => set('theme', v)}
                 >
-                  {v === 'system' ? 'Device' : v[0].toUpperCase() + v.slice(1)}
+                  {me(
+                    `theme.${v}`,
+                    v === 'system' ? 'Device' : v[0].toUpperCase() + v.slice(1)
+                  )}
                 </button>
               ))}
             </div>
@@ -359,12 +447,18 @@ export default function Me() {
         </div>
       </Section>
 
-      <Section title="Requesting">
+      <Section title={me('requesting', 'Requesting')}>
         <div className="setlist">
           <Toggle
             path="hoverRequest"
             on={prefs.hoverRequest}
+            titleKey="lumen.me.quickRequestTitle"
             title="Quick request on posters"
+            subKey={
+              CAN_HOVER
+                ? 'lumen.me.quickRequestHover'
+                : 'lumen.me.quickRequestTouch'
+            }
             sub={
               CAN_HOVER
                 ? 'Hovering a poster shows Request without opening it'
@@ -374,20 +468,26 @@ export default function Me() {
           <Toggle
             path="wholeSeriesDefault"
             on={prefs.wholeSeriesDefault}
+            titleKey="lumen.me.wholeSeriesTitle"
             title="Request whole series by default"
+            subKey="lumen.me.wholeSeriesHelp"
             sub="Off: pick seasons yourself every time"
           />
           <Toggle
             path="narratorChoice"
             on={prefs.narratorChoice}
+            titleKey="lumen.me.narratorTitle"
             title="Choose audiobook narrators"
+            subKey="lumen.me.narratorHelp"
             sub="Off: one straight Request button, best available recording"
           />
           {canChooseRequestOptions(user?.permissions) && (
             <Toggle
               path="requestOptions"
               on={prefs.requestOptions}
+              titleKey="lumen.me.requestOptionsTitle"
               title="Choose server and folder on quick requests"
+              subKey="lumen.me.requestOptionsHelp"
               sub="Off: poster Request buttons use the default server, quality and folder"
             />
           )}
@@ -395,14 +495,16 @@ export default function Me() {
             <Toggle
               path="showBooks"
               on={prefs.showBooks}
+              titleKey="lumen.me.showBooksTitle"
               title="Show books and audiobooks"
+              subKey="lumen.me.showBooksHelp"
               sub="Off: Lumen is movies and series only"
             />
           )}
         </div>
       </Section>
 
-      <Section title="Discover rows">
+      <Section title={me('discoverRows', 'Discover rows')}>
         <div className="setlist">
           {(Object.keys(DISCOVER_ROWS) as DiscoverRow[])
             .filter(
@@ -415,7 +517,15 @@ export default function Me() {
                 key={r}
                 path={`rows.${r}`}
                 on={prefs.rows[r]}
+                titleKey={
+                  r === 'newOnPlex'
+                    ? 'lumen.me.row.newOnServer'
+                    : `lumen.me.row.${r}`
+                }
                 title={discoverRowLabel(r)}
+                titleValues={
+                  r === 'newOnPlex' ? { server: mediaServer().name } : undefined
+                }
               />
             ))}
         </div>
@@ -424,15 +534,18 @@ export default function Me() {
           style={{ marginTop: 10 }}
           onClick={() => setAskReset(true)}
         >
-          Reset to defaults
+          {me('resetDefaults', 'Reset to defaults')}
         </button>
       </Section>
 
       {askReset && (
         <ConfirmSheet
-          title="Reset to defaults?"
-          body="Your theme, quick-request, narrator and Discover row choices go back to how they started."
-          confirm="Reset"
+          title={me('resetDefaultsQuestion', 'Reset to defaults?')}
+          body={me(
+            'resetPreferencesHelp',
+            'Your theme, quick-request, narrator and Discover row choices go back to how they started.'
+          )}
+          confirm={me('reset', 'Reset')}
           onClose={() => setAskReset(false)}
           onConfirm={() => {
             setAskReset(false);
@@ -441,26 +554,45 @@ export default function Me() {
         />
       )}
 
-      <Section title="More">
+      <Section title={me('more', 'More')}>
         <div className="setlist">
           <div className="set">
             <span>
-              <b>Media server: {mediaServer().name}</b>
+              <b>
+                {t('lumen.me.mediaServer', 'Media server: {name}', {
+                  name: mediaServer().name,
+                })}
+              </b>
               <small>
                 {mediaServer().source === 'config'
-                  ? 'Set by your admin in lumen-config.json'
-                  : 'Follows SeerrNG’s media server setting'}
+                  ? me(
+                      'mediaServerAdmin',
+                      'Set by your admin in lumen-config.json'
+                    )
+                  : me(
+                      'mediaServerFollows',
+                      'Follows SeerrNG’s media server setting'
+                    )}
               </small>
             </span>
           </div>
           {!lockedToLumen && (
             <div className="set">
               <span>
-                <b>Full SeerrNG</b>
-                <small>Issues, watchlists, settings and admin tools</small>
+                <b>{me('fullSeerrNG', 'Full SeerrNG')}</b>
+                <small>
+                  {me(
+                    'fullSeerrDescription',
+                    'Issues, watchlists, settings and admin tools'
+                  )}
+                </small>
               </span>
-              <a className="go" href={full} aria-label="Open Full SeerrNG">
-                Open <Icon name="chev" size="sm" />
+              <a
+                className="go"
+                href={full}
+                aria-label={openLink(me('fullSeerrNG', 'Full SeerrNG'))}
+              >
+                {open} <Icon name="chev" size="sm" />
               </a>
             </div>
           )}
@@ -470,10 +602,12 @@ export default function Me() {
         className="btn btn-quiet"
         style={{ justifySelf: 'start' }}
         onClick={() =>
-          signOut().catch(() => toast('Couldn’t sign out. Try again.'))
+          signOut().catch(() =>
+            toast(me('signOutFailure', 'Couldn’t sign out. Try again.'))
+          )
         }
       >
-        Sign out
+        {me('signOut', 'Sign out')}
       </button>
     </>
   );

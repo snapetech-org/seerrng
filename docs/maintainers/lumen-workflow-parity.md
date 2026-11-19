@@ -119,6 +119,18 @@ and less common account-screen copy remain English. Locale-specific overrides
 are currently human-written only for English, French, and Arabic; independent
 linguistic review and full bundled-suite qualification remain open.
 
+The signed-in You hub now localizes its section headings, destinations, theme
+choices, request preference controls, Discover rows, reset confirmation,
+media-server summary, sign-out action, and accessible link names. French and
+Arabic browser assertions exercise the hub at desktop, iPhone, Android, and
+tablet sizes. Its route targets and permission-gated entries are unchanged.
+The administrator settings directory embedded on the hub, most destination
+pages, and some account or error copy remain English, so this closes one
+prominent display gap without completing Lumen localization. Candidate hub
+English baseline and French/Arabic candidate screenshots at matching desktop
+and iPhone viewports are retained in task scratch at
+`seerrng-me-localization-20261119`.
+
 ### Open gap in personal discovery accounts
 
 Lumen's Linked Accounts page manages sign-in methods and personal tracking
