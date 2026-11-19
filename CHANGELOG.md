@@ -1,5 +1,1292 @@
 # Changelog
 
+## [3.72.39](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.39) - 2026-11-19
+
+### User-facing changes
+
+#### Added
+
+- **Lumen:** Lumen now synchronizes each user's theme, Discover shelves, and personal display and request preferences through SeerrNG's authenticated user settings. Existing browser preferences migrate to the account, server values take precedence across devices, and administrator defaults and locks remain in effect. Failed loads and saves can be retried.
+- **Lumen:** Lumen now translates its administrator directory and Administration index in French and Arabic. Search, category labels, settings destinations, and Open actions follow the selected account language, including right-to-left Arabic layout.
+- **Lumen:** Lumen's Administration entry opens an in-app settings directory, with links to users, system caches, and other administrator tools.
+- **Lumen:** Lumen book details now link to author bibliographies and book series. Administrators can manage reader shelves from both pages.
+- **Lumen:** Lumen book series can be filtered by format, publication year, subject, rating, and language while preserving reading order.
+- **Lumen:** Authorized users can choose a book service, profiles, root folder, and tags for bulk book requests in Lumen. Users with delegated request permissions can also choose the requester.
+- **Lumen:** Lumen now accepts bulk ebook and audiobook requests from author and series pages and shows which requests were created, skipped, or failed.
+- **Lumen:** Administrators can preview and manage Grimmory and BookOrbit reader shelves from a selected comic or manga edition in Lumen.
+- **Lumen:** Coming Soon can ask for approval when a movie or TV request exceeds your quota.
+- **Lumen:** Lumen can refresh series and music collection availability against a configured media server without leaving the collection page.
+- **Lumen:** Lumen can open series collections and artist discographies from title details and existing collection bookmarks.
+- **Lumen:** Users can choose English, French, or Arabic as their saved display language in Account Settings. Lumen applies it to the account page and signed-in You hub, including navigation, request preferences, and media-server summary.
+- **Lumen:** Request individual episodes from Lumen's TV detail pages when partial requests are enabled.
+- **Lumen:** Lumen movie and series details can find matching Live TV airings and request a single airing or a series recording when Tunerr is configured.
+- **Lumen:** Lumen music collections and artist discographies can be filtered by release type, genre, and release year.
+- **Lumen:** Request selected releases in MP3 or FLAC from Lumen music collections and artist discographies.
+- **Lumen:** Lumen poster quick requests can ask for approval after a movie or TV quota denial.
+- **Lumen:** Pending quota exceptions are labeled Over Quota in Lumen's request list and history.
+- **Lumen:** Lumen administrators can configure Grimmory and BookOrbit, choose a preferred reader, test grouping access, and manage existing reader shelves.
+- **Lumen:** Lumen ebook, audiobook, comic, and magazine details can open the configured Grimmory or BookOrbit library.
+- **Lumen:** Lumen administrators can configure Share to Request, local text recognition, vision providers, and image size limits from Administration.
+- **Lumen:** Lumen has a Recordings page for viewing scheduled and past recordings, canceling eligible requests, and approving or declining requests with the appropriate permissions.
+- **Lumen Navigation:** Lumen now provides a permission-aware Share & Identify entry in the desktop navigation and on the mobile You page for users who can submit requests.
+- **Lumen:** Lumen administrators can configure and test ROMarrNG and QuestarrNG, choose an emulation catalog, manage platform groups and IGDB matches, and configure Steam library import.
+- **Lumen:** Choose a Sonarr language profile or metadata language in Lumen's advanced TV request controls when the destination server supports it.
+- **Lumen:** Choose the Sonarr season order in Lumen's advanced single-series requests when multiple orders are available.
+- **Lumen:** Lumen users can follow or unfollow Tunerr sports teams from Recordings and reach the controls from Sports.
+- **Lumen:** Lumen administrators can configure Tunerr, test deck and guide connectivity separately, and connect or synchronize Sportarr feeds.
+- **Lumen:** Request selected series from Lumen TV collections with season eligibility, quality selection, quota checks, and per-series results.
+- **Lumen:** Filter movie and TV collection requests by release year, genre, rating, and language. TV collections also support series status, and native TV collection requests now receive the metadata needed for status and language filters.
+- **Lumen:** Request approval from movie and TV detail pages when your request would exceed your quota.
+- **Lumen:** Eligible request managers can explicitly ignore a configured quota when submitting advanced movie or TV requests in Lumen.
+- **Lumen:** Customize the selected Radarr or Sonarr server's tags in Lumen's advanced movie and TV request controls.
+- **Lumen:** About now shows recent releases, identifies the installed version, and opens formatted release notes on demand. Development builds with an available update link to the GitHub commit comparison.
+- **Lumen:** Lumen now offers Account Settings under You. Update your display name, supported email and metadata preferences, or set or change your local password.
+- **Lumen:** Account Settings shows your account type and whether you are an owner, administrator, or user.
+- **Lumen:** Find Spotify Playlist Import and Steam Library Import directly from Lumen Administration search.
+- **Lumen:** Search the Lumen Administration directory to find settings pages or open individual controls such as 4K requests, the application API key, and default quotas.
+- **Lumen:** Explore exact AniList franchises from Provider Discovery, including titles without a TMDB match. Browse manga and novel continuations by season, see when a volume is unconfirmed, and follow future translated volumes. Franchise curators can link directly to Bookshelf volumes and IGDB games.
+- **Lumen:** Open Music discovery from an artist page with the exact artist already selected, then narrow results by library quality, release type, or date.
+- **Lumen:** Blocklist managers can now add or remove supported titles directly from Lumen media details. The controls use each title’s exact media identity and refresh the request state after the change.
+- **Lumen:** Lumen now lets authorized users browse and filter the Blocklist. Managers can remove entries after confirmation.
+- **Lumen:** Lumen can now filter household book requests by ebook or audiobook format.
+- **Lumen:** Open Hardcover recommendation feeds from Lumen Books or Audiobooks, refine the results, and create a personalized feed from your feedback.
+- **Lumen:** Lumen administrators can test and manage ChaptarrNG, BookshelfNG, other Readarr-compatible services, Bindery, and BookOrbit request destinations.
+- **Lumen:** Lumen now supports personal browser push event preferences and removal of registered browser devices.
+- **Lumen:** Lumen can register a compatible browser for push notifications over a secure connection.
+- **Lumen:** Lumen now supports selecting and requesting multiple eligible movies from a collection in HD or 4K. Each title shows its individual request outcome.
+- **Lumen:** System Caches shows the server's image cache location and distinguishes unavailable DNS diagnostics from an empty cache.
+- **Lumen:** Lumen now shares SeerrNG's poster title visibility preferences for movies, series, music and books. Manage them under Account Settings.
+- **Lumen:** Lumen Movies and Series now offer one action to clear discovery filters and reset sorting.
+- **Lumen:** Create, list, and revoke scoped client tokens in Lumen under You → Account Settings → Client Tokens. New token values are available to copy once.
+- **Lumen:** Lumen can now play selected collection movies on an authorized media-server device or prepare a playlist for the selected quality and titles.
+- **Lumen:** Lumen can now queue a movie collection in release order, keeping one or two unwatched movies ahead. Users can choose an eligible quality, check progress, and stop or restart their own queue.
+- **Lumen:** Open Collector Picks from Lumen Music to see releases shared by trusted collectors, open matched albums, and follow artist releases.
+- **Lumen:** Administrators can manage and test Mylar, Kapowarr, and BackIssue connections in Lumen, including library scanning and supported search and root folder settings.
+- **Lumen:** Coming Soon now honors the instance’s shared-availability display setting while keeping existing copies ineligible for duplicate requests.
+- **Lumen:** Migrate companion-local logos and icons with the Lumen configuration draft. Bundled Lumen validates the replacement images before publishing the settings.
+- **Lumen:** Bundled Lumen can load a companion configuration export into an administrator draft for review before saving.
+- **Lumen:** Lumen movie and series details now offer expandable cast and crew lists with character names, crew jobs, and links to person pages.
+- **Lumen:** Administrators can manage saved connection hosts in Lumen and reuse them in the shared request service editor. Saved hosts are also available in Prowlarr, reader, request integration, and media server connection forms.
+- **Lumen:** Lumen General Settings can select the default SeerrNG interface, configure the standalone companion URL, and manage the bundled Lumen lock for non-administrators.
+- **Lumen:** Lumen administrators can set default request limits and quota windows for accounts that inherit instance quotas.
+- **Lumen:** Administrators can set the default media categories for inheriting accounts from Lumen’s Media Categories page.
+- **Lumen:** Lumen administrators can edit and confirm the default permissions assigned to new accounts.
+- **Lumen:** Authorized users can open another user's watchlist in Lumen. The read-only view supports the same title filters and pagination as the personal watchlist where supported, and existing user watchlist bookmarks open the matching list.
+- **Lumen:** Lumen now supports personal Discord mention and event settings.
+- **Lumen:** Lumen administrators can configure and test Discord and Slack notifications, including Slack approval actions. The Discord settings API now retains thread IDs.
+- **Lumen:** Lumen Movies and Series now let you choose HD or 4K when filtering by availability. Compatible available-title views now query the library directly.
+- **Lumen:** Lumen administrators can configure and clear Trakt, AniList, Simkl, and MDBList credentials from Discovery Integrations.
+- **Lumen:** Lumen Movies and Series can now filter discovery by country of origin. Production countries on title details now link directly to the corresponding filter.
+- **Lumen:** Lumen Movies and Series now let you filter discovery by original language.
+- **Lumen:** Lumen Discovery Integrations now supports publishing, replacing, downloading, and deleting shared title-match packs.
+- **Lumen:** Lumen profile settings now expose personal discover and streaming regions and original language.
+- **Lumen:** Lumen Movies and Series can now filter discovery by release date range.
+- **Lumen:** Lumen Movies and Series can now filter discovery by runtime in minutes.
+- **Lumen:** Lumen Movies and Series can now filter discovery by minimum and maximum TMDB vote counts.
+- **Lumen:** Administrators can configure and test live download clients and adjust the refresh interval in Lumen. The Requests page now updates download percentages live when a configured download client reports progress. Movie and series detail pages now show live download progress for HD and 4K.
+- **Lumen:** Users with Manage Downloads access can open Lumen's Download Inbox to see active acquisition warnings, resolved items, and their recorded intervention history.
+- **Lumen:** Lumen's Download Inbox now supports previewing files, choosing an existing library match, submitting manual imports, and reviewing and confirming download rejections.
+- **Lumen:** Lumen now lets signed-in users choose their email notification events in Account Settings.
+- **Lumen:** Lumen now lets users manage the OpenPGP public key for their notification email.
+- **Lumen:** Lumen admins can enable individual episode file tracking. Series pages can show reported HD and 4K files by season when tracking is enabled.
+- **Lumen:** Lumen’s episode availability panel marks or hides shared HD and 4K file reports independently using the season’s viewer coverage.
+- **Lumen:** Start setup in the Lumen companion or at the bundled Lumen setup URL. Sign in as the first administrator, enable a media library, and finish initialization in Lumen.
+- **Lumen:** Lumen now offers eligible media request actions directly from Request History.
+- **Lumen:** Lumen Request History now shows and can refresh detailed download and import progress.
+- **Lumen:** Users with request access can follow or unfollow a person directly from their Lumen detail page. Updates appear in Following.
+- **Lumen:** Users with request access can open Following in Lumen to read updates, mark them seen, and manage notifications and automatic book requests for existing subscriptions. Follow story expansions from a PC game’s details. Expansion updates open the base game directly.
+- **Lumen:** Follow movie and series genres, production companies, TV networks, authors, and solo audiobook narrators directly in Lumen. Following explains why updates appeared, opens exact catalog targets where available, and marks updates seen when opened.
+- **Lumen:** Game Finder supports filtered QuestarrNG searches, including excluded themes, and lets you save searches and opt into notifications for new matches. Emulated game details link to translations and hacks for the selected game and console.
+- **Lumen:** When QuestarrNG supplies game content, Lumen shows PC game editions and add-ons. Select an edition or request missing add-ons even if you already own the base game. Open request history directly after submitting. It shows the selected edition or add-ons by name when the catalog has them, with IGDB IDs as a fallback.
+- **Lumen:** Lumen General Settings now controls image caching and automatic version checks. The server also persists and validates the Version Check switch in the native interface.
+- **Lumen:** Lumen administrators can edit the SeerrNG application title and public URL from General Settings, alongside the existing instance request controls.
+- **Lumen:** Browse movie and series genres in Lumen and open filtered results for any listed genre. Existing genre-directory bookmarks open the corresponding Lumen directory.
+- **Lumen:** With Tautulli configured, Plex account owners and administrators can see total plays and recently watched titles on Lumen household profiles.
+- **Lumen:** Lumen household profiles show recent requests and watchlist previews when the viewer has permission to see them.
+- **Lumen:** Lumen now lists household software and game requests under Requests → Everyone → Software for accounts with permission to view household requests.
+- **Lumen:** Users with Manage Requests access can open a prefilled Prowlarr search from Lumen movie, series, book, audiobook, music, comic, magazine, and game pages.
+- **Lumen:** Lumen now offers Indexer Search to users with Manage Requests access. Search your configured Prowlarr indexers by media category, browse release results, and send a release to Prowlarr’s download client.
+- **Lumen:** Lumen administrators can configure the instance Age Gate, including the default restriction, movie and series rating limits, and ratings country.
+- **Lumen:** Administrators can manage instance-wide media category switches in Lumen. Existing Media Categories bookmarks open the Lumen page in both deployments.
+- **Lumen:** Lumen administrators can configure and test instance-wide email and Web Push notifications.
+- **Lumen:** Lumen admins can now enable or disable person-page bulk movie requests under Instance Request Settings.
+- **Lumen:** Lumen General Settings can manage local and media-server sign-in and require Quick Connect for Jellyfin. Changes keep at least one sign-in method enabled.
+- **Lumen:** Issue details now link to the affected book, album, comic, or magazine when the report has a catalog identifier.
+- **Lumen:** Lumen now has an Issues list and discussion view. Authorized users can browse and search reports, and users with edit access can add comments, resolve, or reopen them.
+- **Lumen:** Lumen now lets eligible users edit their own issue descriptions and replies, and confirm deletion of issues or replies they have permission to remove.
+- **Lumen:** Lumen Issues can filter by media type, issue type, and reporting period. Saved links preserve filters, search, and pagination.
+- **Lumen:** Lumen Issues supports sorting and media-specific filters for year, genre, studio, network, and album type.
+- **Lumen:** Lumen issue managers can now create an issue report on behalf of another account. Search and choose the account in the report form; the report remains subject to server permission checks.
+- **Lumen:** Administrators can configure, test, and disconnect Jellystat from Lumen.
+- **Lumen:** Administrators can configure and test LazyLibrarian magazine services directly in Lumen, including library scans and automatic searches on approval.
+- **Lumen:** With tracking writes enabled, you can update watched status and ratings, and save episode progress on AniList. Trakt and Simkl also support updating watched status for individual episodes.
+- **Lumen:** My Media can scan Trakt, AniList, and Simkl shelves for exact catalog matches. You can stop after a batch and continue from the next page. My Media also imports and exports private title-match files. Library links remember the selected source, shelf, and filters. You can also search for, save, or reset an individual title match in My Media.
+- **Lumen:** Lumen administrators can preview, confirm, and monitor BookshelfNG library path migrations for books and audiobooks.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Lidarr and Whisparr services, including Lidarr metadata profiles.
+- **Lumen:** Lumen now offers Incomplete, Needs attention, Unavailable and Completed filters for household media requests.
+- **Lumen:** Lumen Account Settings now lists linked sign-in methods and supports eligible account unlinking and Jellyfin or Emby credential linking.
+- **Lumen:** Lumen can control whether eligible media server users may sign in before an administrator imports their accounts. Native Users settings bookmarks open Lumen General Settings in both deployments.
+- **Lumen:** Lumen administrators can update Plex, Jellyfin, and Emby connection settings and manage Jellyfin bridge sign-in from Media Server Libraries.
+- **Lumen:** Lumen administrators can refresh Plex, Jellyfin, or Emby libraries, manage which libraries are indexed, change episode order, and monitor full library scans.
+- **Lumen:** Lumen administrators can configure and test Telegram, Pushbullet, and Pushover notifications and choose their notification events.
+- **Lumen:** Lumen administrators can select and test TV and anime metadata providers, test music providers, set Cover Art Archive request limits, and manage book language restrictions.
+- **Lumen Navigation:** Lumen adds a permission-aware Indexer Search link to the mobile You menu for accounts that can search indexers.
+- **Lumen:** Lumen now opens movie collections from search and movie details. Browse collection members and, with Manage Blocklist access, block or unblock a collection after confirmation.
+- **Lumen:** Movie details now apply the shared-availability setting separately to HD and 4K copies, including playback actions and availability labels.
+- **Lumen:** Lumen movie details now link production studios to matching discovery results.
+- **Lumen:** Search for an artist from Music discovery and choose an exact MusicBrainz match, with disambiguation for artists who share a name. You can also apply the artist name as text.
+- **Lumen:** My Media in Lumen lets you browse connected Plex, Jellyfin, Emby, Trakt, AniList, and Simkl libraries, switch shelves, and open titles with a confirmed SeerrNG catalog match.
+- **Lumen:** Administrators can configure, test, and disconnect Navidrome from Lumen and control whether its music library is scanned.
+- **Lumen:** Lumen administrators can now manage DNS caching, outbound proxy settings, administrator sign-in restrictions, and HTTP and HTTPS transport from Network Settings.
+- **Lumen:** Lumen now lets you add or remove Open Library books, MusicBrainz albums, ComicVine editions, and magazines from the local Watchlist on their detail screens.
+- **Lumen:** Lumen notification administration now offers direct channel links. Existing notification settings bookmarks open the corresponding channel in bundled and standalone Lumen.
+- **Lumen:** Lumen administrators can configure and test Gotify, ntfy, and Apprise. The ntfy settings API now retains notification tags.
+- **Lumen:** Lumen can now link an OpenID Connect identity from Account Settings. Register the exact callback URL for the Lumen deployment in your provider.
+- **Lumen:** Lumen can now sign in through configured OpenID Connect providers and return to the page the user originally opened.
+- **Lumen:** Administrators can inspect, create, edit, and delete request override rules in Lumen.
+- **Lumen:** Lumen now supports requesting a local-account recovery email and resetting the password from the recovery link.
+- **Lumen:** Eligible Lumen users can now request all movies credited to a person when their SeerrNG instance enables person-page bulk requests.
+- **Lumen:** Lumen person pages now show full cast and crew filmographies with media filters and credit sorting.
+- **Lumen:** Customize six personal theme colors in Account Settings. Classic Advanced Theme bookmarks open the editor, and edits preserve other stored Classic overrides.
+- **Lumen:** Lumen now shows your SeerrNG and Plex Watchlist. On local lists, you can filter and sort saved titles and remove entries directly from Lumen.
+- **Lumen:** Lumen administrators can discover Plex servers, review reachable connections, and populate the connection form from a selected address.
+- **Watchlist:** Movie and series posters now offer a Watchlist action on desktop and touch layouts. The first poster action checks current membership before changing it, and catalog browsing does not fetch details for every card.
+- **Lumen:** Lumen now supports linking Plex or linking Jellyfin with Quick Connect from Account Settings.
+- **Lumen:** Lumen administrators can configure and test a Prowlarr connection, view indexer diagnostics, and set the default search limit.
+- **Lumen:** Lumen Prowlarr Settings now supports category mappings, category-specific indexer assignments, and per-indexer search limits.
+- **Lumen:** Lumen now supports personal Pushbullet notification settings.
+- **Lumen:** Lumen now supports personal Pushover credential, sound and event settings.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Radarr request destinations, including quality profiles, root folders, and tags.
+- **Lumen:** Lumen can now find downloadable request files from ebook, audiobook, comic edition and magazine detail pages.
+- **Lumen:** Administrators can configure, test, and disconnect Audiobookshelf and Kavita from Lumen and select the Audiobookshelf library to scan.
+- **Lumen:** Administrators can configure and test the ReadMeABook connection in Lumen. Administrators can approve or deny ReadMeABook requests and inspect the acquisition dashboard in Lumen.
+- **Lumen:** Lumen now has a Release Calendar for movie, series, music, book, comic, magazine, and game releases, with month and media filters and scope controls based on your permissions.
+- **Lumen:** Lumen users with issue reporting permission can report problems from movie, series, book, album, comic and magazine pages. Reports can identify the affected video quality, seasons, episodes, or publication issue type.
+- **Lumen:** Lumen can now filter household media requests by date added.
+- **Lumen:** Lumen now lets user managers set Episode Queue length on individual TV requests and identifies requests created automatically by the queue.
+- **Lumen:** Lumen can now look up and download available request files from Request History.
+- **Lumen:** Lumen now shows request history with the current stage, timestamps and retry attempts from the Requests screen.
+- **Lumen:** Lumen now opens request history from direct and notification links, even when the request is outside the current list.
+- **Lumen:** Lumen can now filter household media requests by media type alongside status and requester.
+- **Lumen:** Lumen now lets eligible requesters retry their own failed or unavailable requests and shows known reasons for request dispatch failures.
+- **Lumen:** Lumen can now search household media requests alongside the current filters.
+- **Lumen:** Lumen can now sort household media requests by date added, last update, or title.
+- **Lumen:** Lumen can now filter household media and software requests by requester.
+- **Lumen:** Lumen now keeps previous-season watch-rule feedback beside the season picker and links to account settings when playback account linking is required.
+- **Lumen:** Network links on Lumen series details now open discovery filtered to that network. The Series grid also lets you choose a network directly.
+- **Lumen:** Lumen series details now use season and quality coverage to mark or hide shared availability without offering duplicate season requests.
+- **Lumen:** Administrators can configure download clients and Prowlarr during first-run Lumen setup.
+- **Lumen:** Administrators can set the instance and default user media categories during first-run Lumen setup.
+- **Lumen:** Configure Radarr, Sonarr, Lidarr, and book request services during first-run Lumen setup.
+- **Lumen:** Lumen video posters and featured cards now mark or hide shared copies according to the instance availability setting.
+- **Lumen:** Lumen General Settings can configure how SeerrNG displays availability for copies a viewer did not request.
+- **Lumen:** Administrators can create and revoke one-time Lumen sign-in links, manage the application API key, configure metadata and Spotify credentials, edit library path mappings, and set discovery regions, languages, and visibility defaults from Lumen. Trailer links use the configured YouTube player when one is set.
+- **Lumen:** My Software lets users browse and filter their own game and software requests. Coming Soon can show additional pages of movies and series. Discover, Movies, Series, Trending, and Coming Soon honor the instance's visibility defaults. The explicit library view still shows owned titles.
+- **Lumen:** Lumen can now filter household software requests by category and status.
+- **Lumen:** Lumen now offers software request moderation and recovery actions from Software Request History, including confirmation for uncertain downloads.
+- **Lumen:** Lumen now opens software request history and downloads from request rows and notification links.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Sonarr request destinations, including separate anime settings and version-specific language controls.
+- **Lumen:** Administrators can configure and test the Soulseek connection in Lumen and see which slskdN capabilities are available.
+- **Lumen:** Lumen league details now show paginated Sportarr events and their file status. Bundled Lumen preserves canonical Sportarr league bookmarks.
+- **Lumen:** Administrators can configure and test Sportarr connections and select a sports quality profile in Lumen.
+- **Lumen:** Lumen series details now confirm which seasons SeerrNG accepted, including when a whole-series request stages only eligible seasons. Quick series requests also report the accepted seasons.
+- **Lumen:** Lumen can now select or clear multiple streaming subscriptions in the current search results.
+- **Lumen:** Lumen Account Settings now lets users choose their streaming subscriptions for SeerrNG request rules.
+- **Lumen:** Lumen Movies and Series can now search for subject tags and include or exclude them from discovery results.
+- **Lumen:** Swipe adds catalog decks for audiobooks, comics, magazines, music, sports, and adult media. Swipe adds deck search and category-specific filters, including tracked and public magazine catalogs. Swipe now supports retro games, apps, and PC game decks with request target selection.
+- **Lumen:** Swipe History can restore individual passed or seen titles and clear decisions by category. Administrators can enable Swipe and configure and test its ranking provider in Lumen. Swipe recommendation decks support keyboard shortcuts and directional touch gestures.
+- **Lumen:** Lumen now offers Swipe recommendation decks for movies, series, and books, with request, pass, seen or read, and undo actions. Swipe users can change their series and book request defaults, recommendation sources, and taste notes in Lumen. Swipe users can select favorite titles from their library and request history to guide recommendations.
+- **Lumen:** Plex administrators can configure Tautulli from Lumen’s Media Server Libraries page.
+- **Lumen:** Lumen now supports personal Telegram notification settings.
+- **Lumen:** Lumen now offers a Title View toggle while browsing movies, series, music, books, audiobooks, search results, and supported Discover shelves.
+- **Lumen:** Open Linked Accounts in Lumen to connect or disconnect Trakt, AniList, and Simkl, and choose whether SeerrNG may write to each account. Trakt connections use the configured HTTPS application address. You can reconnect a provider from its account row. The existing connection is replaced after authorization succeeds.
+- **Lumen:** Lumen TV details now let each viewer add or remove the whole series from their linked Plex Watchlist or Jellyfin/Emby Favorites. The action is separate from SeerrNG's own Watchlist, follows the selected quality, and confirms changes against the existing authenticated API.
+- **Lumen:** Lumen Account Settings now exposes the previous-season watch requirement and the account’s Episode Queue default, with changes gated by existing SeerrNG permissions.
+- **Lumen:** Lumen movie and series details now have cast and crew panels that can be pinned open using the same preferences as SeerrNG.
+- **Lumen:** Lumen admins can now manage global 4K, partial series requests, special episodes, and previous-season watch rules. Series details offer specials when the instance allows them.
+- **Lumen:** Lumen movie and series details now show subject tags in a pinnable panel. Select a tag to browse matching titles.
+- **Lumen:** Users with a local SeerrNG Watchlist can add and remove movies and series directly from their Lumen detail pages.
+- **Lumen:** Watch-session hosts can remove guests or end a room, and guests can leave from Lumen. Watch-session hosts can select movie genres and edit a draft session’s title and filters from Lumen.
+- **Lumen:** Lumen now lists private watch sessions and lets users create movie sessions and choose whether to contribute their watchlist. Watch-session hosts can create and revoke invitation links in Lumen, and guests can use those links to join. Watch-session members can vote on movies, change their votes, and open group matches in Lumen.
+- **Lumen:** Lumen Account Settings now lets eligible users manage watchlist auto-requests for Plex movies and series, music, books, comics, and magazines. Account Settings remains available if a streaming provider endpoint returns an unexpected response format.
+- **Lumen:** Lumen administrators can configure and test generic webhook notifications, including JSON payload templates, authorization, custom headers, and URL variables.
+- **Lumen:** Lumen opens Whisparr scenes from Requests using the saved request destination.
+- **Lumen:** Lumen preserves the Whisparr source on scene cards and native bookmarks. Users without destination selection permission still request through the instance’s default Whisparr server.
+
+#### Changed
+
+- **Lumen:** Lumen now translates shared search prompts, Back labels, missing-page recovery text, and media-server sign-in guidance in French and Arabic.
+- **Lumen:** Lumen's configured Live TV Recordings page and navigation now use the saved display locale, including right-to-left layouts. The filters, recording statuses and actions, and Followed Teams controls are localized in English, French, and Arabic.
+- **Lumen:** Lumen's Blocklist now localizes filters, entry details, removal confirmation, feedback, and dates in English, French, and Arabic.
+- **Lumen:** Lumen's Release Calendar now localizes filters, release descriptions, statuses, feedback, and dates in English, French, and Arabic using the saved account language.
+- **Lumen:** Lumen's Coming Soon feed now localizes filters, dates, media types, request actions, confirmations, and submission status in English, French, and Arabic.
+- **Lumen:** Lumen's Following page now localizes feed controls, access states, and update reason messages in English, French, and Arabic.
+- **Lumen:** Lumen's issue report form now follows the saved English, French, or Arabic language across controls, reason choices, account selection, episode labels, and feedback.
+- **Lumen:** Lumen now localizes issue filters, report statuses, discussions, confirmations, accessibility labels, and timestamps in English, French, and Arabic. Its locale bundle keeps English fallback strings shared, reducing the main bundle while adding these translations.
+- **Lumen:** Linked Accounts now translates its sign-in, media-server linking, and unlinking controls in English, French, and Arabic.
+- **Lumen:** Lumen now shows localized names for optional catalog categories in the sidebar and Discover shortcuts in English, French, and Arabic.
+- **Lumen:** Lumen now translates linked tracking account controls and authorization feedback in English, French, and Arabic.
+- **Lumen:** Lumen’s TV Request Settings page now translates the season-watch policy, approval queue, and Episode Queue controls using SeerrNG’s locale catalog. Failed Episode Queue saves keep the selected value available for retry and show an Episode Queue-specific error.
+- **Lumen:** Classic personal permissions bookmarks open a read-only summary of the signed-in account’s permissions in Lumen.
+- **Lumen:** Lumen opens a newly created recommendation feed and keeps the form available for retry if Hardcover rejects creation. Lumen’s recommendation feed form supports descriptions, preferred and avoided genres, series position, and a preference for less popular books. An unavailable recommendation bookmark can be retried or cleared without losing the selected book format.
+- **Lumen:** Bookshelf matches opened from a recommendation keep their edition format and title lookup hint. Switching between ebook and audiobook details preserves the Bookshelf lookup title. Opening a Bookshelf result from Share preserves the resolved title and edition format. Bookshelf cards in search and discovery carry the title needed to open the matching edition.
+- **Lumen:** Book Series catalog links also retain the matched Bookshelf title and selected format. Release Calendar links preserve the Bookshelf title for local book releases. Request links carry the resolved Bookshelf title and format, including when Lumen restores a cached row. Switching formats from an older Bookshelf bookmark carries forward the title resolved on the detail page.
+- **Lumen:** Bundled Lumen redirects older padded Bookshelf bookmarks to the book and keeps the title and format. Book details show verified Bookshelf and Open Library ratings, using the same lookup title as the book itself. Book search keeps working if its optional series lookup returns an incomplete response. The series panel offers its own retry.
+- **Lumen:** Lumen keeps the last successful recommendation results and feedback selections if a refresh fails, and displays the error beside the feed. Opening a recommendation feed updates the URL so it can be bookmarked and restored on reload. Recommendation bookmarks also restore the selected ebook or audiobook format.
+- **Lumen:** Release Calendar saves the selected month and filters in the URL. Shared links still respect each viewer’s permissions. Bundled Lumen keeps calendar filters when redirecting older calendar links. Incomplete release responses show a Retry button. A failed retry keeps the prior results visible and explains the failure.
+- **Lumen:** Lumen Comics preserves Classic catalogue bookmarks and supports filtering by title, publisher, start year, and issue count. Lumen displays ComicVine indexing progress and refreshes catalogue results once indexing finishes.
+- **Lumen:** Coming Soon bookmarks keep their movie or TV scope when redirected to Lumen.
+- **Lumen:** Lumen keeps the genre picker inside the viewport when the filter button sits near a window edge. Compact filters also stay within the page at narrow widths, including Comics at 360 px.
+- **Lumen:** An incomplete playback activity response now stays within that panel, where it can be retried without interrupting the profile. An incomplete watchlist preview can be retried independently of other profile panels. Recent Requests also offers its own retry when the profile API returns an incomplete list. The You menu links directly to My Profile, including for members without administrative access.
+- **Lumen:** Classic profile bookmarks open My Profile in bundled and standalone Lumen. Household profiles show account email to the owner and authorized user managers, and show user IDs to request managers. Household profiles show supported profile pictures through the SeerrNG avatar proxy and fall back to initials if the picture is unavailable.
+- **Lumen:** Local account owners can upload a JPEG, PNG, or WebP profile picture from My Profile. The signed-in account picture also appears in Lumen navigation and refreshes after an upload. Recent Requests on household profiles shows each request’s status before opening its history. Pending requests over quota show the same Over Quota label in household previews and on the Requests page.
+- **Lumen:** Recent Requests shows the same media and quality labels as the main Requests page.
+- **Lumen:** Lumen household profiles show when the member joined and link to the appropriate account settings for viewers with edit access. Opening and closing request history from a household profile keeps the request list scoped to that member. Playback activity explains when recent plays have no catalog titles to display while keeping the total play count visible.
+- **Lumen:** Lumen issue lists now show the affected movie, series, album, book, comic, or magazine title and year when available. Title metadata loads as a row approaches the viewport and links to the matching media detail page.
+- **Lumen:** Choose a configured magazine service from the Lumen discovery request confirmation when advanced request options are permitted. Magazine details use the same permission-aware request confirmation and service selection as discovery. Magazine request confirmations show approval requirements and the remaining request quota. A reached quota disables submission.
+- **Lumen:** Magazine request confirmation checks for an existing request, library availability, or a blocklist entry before offering submission.
+- **Lumen:** Lumen Magazines preserves Classic discovery searches and lets users switch between tracked titles and the public catalogue. Request a magazine by title from Lumen discovery, even when it is missing from the catalogue results. Start public magazine discovery from suggested title searches.
+- **Lumen:** Lumen preserves Classic Music discovery bookmarks, including search, artist, release type, audio quality, release dates, and ascending sort orders. Edit genre, artist, audio quality, and release date filters directly in Lumen Music. Select multiple MusicBrainz release types in Lumen Music, including compilations and soundtracks.
+- **Lumen:** Lumen labels requests for both book formats as Ebook and Audiobook in the Requests list and household previews. Request History shows the requested book format even when opened directly from a bookmark.
+- **Lumen:** Request History links to the resolved catalog title and retains the Bookshelf lookup title and format. Series request links open the 4K selection for viewers who have access to it. Changing series quality keeps the bookmark’s season anchor and other query parameters. Bundled redirects preserve an explicit 4K series selection.
+- **Lumen:** Movie request links prefer the 4K playback copy when it is available to the viewer, including through bundled redirects. A 4K movie bookmark explains when 4K playback is unavailable while retaining other available playback controls. An open 4K movie bookmark refreshes a pending or processing copy while the page is visible, so the 4K Watch link appears when the copy arrives.
+- **Lumen:** Visible 4K series bookmarks now refresh pending seasons without jumping back to the season anchor on each update. Release Calendar links preserve the 4K selection for movie and series entries. TV episode entries in Release Calendar open the corresponding season row when it is visible. Each season in TV Request History links directly to its row and keeps the requested video quality.
+- **Lumen:** The episode picker starts at the bookmarked season when that season is eligible to request. Release Calendar carries the episode number to the series detail page. The picker selects that episode if it is eligible when opened. Bundled TV redirects retain a valid episode selection from an older link.
+- **Lumen:** Request History shows the 4K label for movie and series requests, including from a direct request link. TV Request History lists requested seasons, specials, and selected episodes. Each requested TV season shows its own approval status when available. Incomplete Request History responses can be retried without leaving the dialog.
+- **Lumen:** Default Request Quotas explains the difference between unlimited requests and a quota that counts requests across all time. The user-defaults bookmark also links directly to the default permission editor. Classic Steam API key search links jump to Steam Library Import in Lumen. Classic service category bookmarks open the corresponding group of Lumen administration pages.
+- **Lumen:** Lumen Administration lets administrators switch between service categories and the full settings list.
+- **Lumen:** Classic service settings search links open the matching administration page in bundled and standalone Lumen. Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings. Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.
+- **Lumen:** League follow confirmations show the shared TV request quota and disable submission when it has been reached. Eligible users can choose another Sportarr service when the default service already follows the league. League follow confirmations explain whether the request is automatically approved or requires approval.
+- **Lumen:** League details explain when events are unavailable and show season and local broadcast time for scheduled events. Lumen league schedules show the total number of events and identify recordings split across multiple files. Failed league follow requests show the error in the confirmation and keep the selected service available for retry.
+- **Lumen:** Lumen preserves the selected page of a league schedule in the address so it can be bookmarked and reopened. If a bookmarked event page no longer exists, Lumen opens the last available page.
+- **Lumen:** Lumen preserves Classic league and adult discovery search text when opening bookmarks. Adult discovery preserves bookmarked Whisparr service filters and offers a service selector for multi-service installations. Adult discovery identifies incomplete Whisparr results while keeping available matches visible. Lumen confirms league follows and lets eligible users choose their Sportarr service.
+- **Lumen:** Standalone request bookmarks keep the explicit software category when an older media type filter is also present. Request bookmarks use an explicit ebook or audiobook format when a legacy audiobook media filter is also present.
+- **Lumen:** Standalone Lumen preserves the requester from the path of a Classic user request bookmark, even if the link contains conflicting requester filters. Bundled request bookmarks retain title searches and explicit book formats when opening Lumen. Bundled request bookmarks keep Lumen’s sort order, selected tab, and software filters when opening from an older request URL.
+- **Interface:** Swipe now keeps title search visible above deck filters, so searches are easier to find and remain applied when you change advanced filters.
+
+#### Fixed
+
+- **Reader Delivery:** SeerrNG can confirm the number of books on a saved BookOrbit live shelf even when BookOrbit requires app attestation for its mobile shelf view.
+- **Discover:** Discover now honors a user's saved Discover Region in Lumen and native SeerrNG.
+- **Lumen:** Lumen now shows advanced movie and TV request options and the quick-request preference to accounts with the Advanced Requests permission.
+- **Lumen:** Lumen decodes entities in ComicVine descriptions once, preserving text intended to display literally.
+- **Lumen:** Lumen now shows comic download percentages when the queue reports total and remaining bytes. Comic details also refresh while an active download page is open.
+- **Lumen:** The Lumen search bar now uses a comics and manga prompt while browsing Comics/Manga.
+- **Lumen:** Editing a TV request in Lumen preserves the previously selected episodes and leaves declined seasons unselected.
+- **Lumen:** Lumen keeps your episode selection and explains what happened when the server adds no episodes to a request.
+- **Lumen:** Lumen resets game request selections when the title or catalog changes and offers a retry when game details fail to load.
+- **Lumen:** Lumen now scrolls interactive controls clear of the fixed mobile navigation, so controls near the end of a page remain reachable on phones and tablets. Open genre menus also stay anchored when selecting filters changes the control width, keeping their options on screen and clickable.
+- **Lumen Navigation:** Lumen now applies SeerrNG request permissions to navigation links and quick-request actions across supported media types, so users only see actions their account can perform.
+- **Lumen:** Lumen confirms TV requests only when SeerrNG returns a request ID, so a response that adds no seasons no longer appears successful.
+- **Lumen:** Legacy software bookmarks now open Lumen's catalog or the matching game, including DAT-backed titles. Game details also read the catalog API's current response format.
+- **Lumen:** Swipe bookmarks now open Lumen in the standalone companion and when an account is locked to the bundled Lumen interface.
+- **Lumen Navigation:** Lumen now shows Swipe in desktop and mobile navigation only when Swipe is enabled and the signed-in user can request media.
+- **Lumen:** Swipe and Share keep series available to retry when SeerrNG adds no seasons.
+- **Lumen:** TV collection requests report when SeerrNG adds no seasons for a selected series.
+- **Lumen:** Password and Episode Queue bookmarks now open the matching settings section in bundled and standalone Lumen. Profile save feedback stays visible while Lumen refreshes the saved settings.
+- **Lumen:** Classic ebook and audiobook discovery bookmarks now retain their In Library or Not Yet selection when opened in bundled or standalone Lumen.
+- **Lumen:** Classic bookmarks for catalog titles, discovery, requests, account settings, and supported administration pages now open the matching Lumen views when bundled Lumen is the default. Bundled and standalone Lumen preserve supported request and discovery filters, and legacy watch-session invites keep their join destination.
+- **Lumen:** The bundled Lumen lock preserves supported book, comic, album, and artist bookmarks. Both Lumen deployments recognize the native audiobook format parameter on book links.
+- **Lumen:** Catalogs keep the titles already loaded and offer Retry if a server sends the wrong page. Retrying fetches a fresh response for the requested page.
+- **Lumen:** Lumen can remove SeerrNG entries from a combined watchlist while preserving matching Plex entries.
+- **Lumen:** Coming Soon now shows which feed failed and lets you retry it while keeping results from the other feed visible.
+- **Lumen:** Movie and TV discovery, Trending, and Coming Soon stop offering more results when it reaches the last page the movie or TV catalog can serve.
+- **Lumen:** Configured movie and TV shelves on Discover now respect the instance’s visibility settings. Shelves based on a saved search can still show requested titles.
+- **Lumen:** Lumen labels the current registered browser and can disable its push notifications without unsubscribing other devices.
+- **Lumen:** Editing a disabled job’s schedule keeps it disabled until an administrator enables it again.
+- **Discovery:** Lumen now applies administrator Discover defaults before loading home shelves. Disabled shelves no longer issue unnecessary catalog requests or briefly appear with default settings.
+- **Lumen:** Classic download-client refresh interval bookmarks open the equivalent control directly in Lumen. The control is also available from Administration search.
+- **Lumen:** Bundled Lumen preserves Bookshelf links with lookup hints and magazine bookmarks containing punctuation.
+- **Lumen:** Opening a fresh SeerrNG installation at its home address now starts the bundled Lumen setup wizard when Lumen is the default interface.
+- **Lumen:** Per-user quota settings now describe inherited limits as unlimited, all-time, or time-limited according to the server’s actual policy.
+- **Lumen:** Returning from an issue discussion now restores the active issue filters, search, and page. If the saved page no longer exists, Lumen opens the last available page with those filters. Bundled Lumen also preserves these settings when redirecting an issue discussion bookmark.
+- **Lumen:** Scheduled Jobs shows when a run cannot be canceled, including jobs running on a different SeerrNG instance.
+- **Lumen:** A failed attempt to enable a scheduled job now leaves it disabled. This applies to invalid schedules and settings write failures.
+- **Lumen:** Lumen's scheduled job presets describe when cron actually runs. The hourly picker no longer offers 48- or 72-hour presets, which ran daily.
+- **Lumen:** Existing book series bookmarks now open the matching series in the Lumen companion and in bundled Lumen when frontend lock is enabled.
+- **Lumen:** The Lumen companion opens Administration from existing Services settings bookmarks. Bundled and companion Lumen both open Prowlarr Settings from its older settings search link.
+- **Lumen:** Expanded System Logs details stay attached to the same entry when new logs arrive during a refresh.
+- **Lumen:** System Logs remembers each administrator’s severity and page size in the browser. It includes Classic’s 10-row page size. Search terms remain temporary.
+- **Lumen:** Existing Plex and Jellyfin settings bookmarks open the Media Server Libraries page in bundled and standalone Lumen.
+- **Lumen:** Music discovery and configured Music shelves respect the instance’s available and blocklisted title visibility settings. Explicit MP3 and FLAC library filters still show matching available albums.
+- **Lumen:** Music discovery now honors the exact artist filter alongside the MP3 or FLAC library filter.
+- **Lumen:** Lumen now lets you add books, music, comics, and magazines to your Watchlist from catalog cards, alongside movies and TV. Poster actions check the current title state before changing the Watchlist.
+- **Lumen:** Classic Prowlarr bookmarks now open Prowlarr Settings directly in bundled and companion Lumen.
+- **Lumen:** Lumen shows the media title on direct Request History links, even when the request is outside the current list.
+- **Lumen:** Included Lumen shows the cause of a storage write failure and the SeerrNG process UID and GID when available. Rechecking storage keeps your draft.
+- **Lumen:** System Logs keeps the selected page in the address so reloading or opening a Classic page bookmark preserves the page. Log search text stays out of the address.
+- **Lumen:** Classic Trending bookmarks retain their music, ebook, and audiobook filters when opened in Lumen.
+- **Lumen:** Administrators can save a single default request quota field even when the other field has never been configured. Lumen shows the effective zero value for unset fields.
+- **Lumen:** Lumen opens a user's requests from the user directory and existing request bookmarks with the requester already selected.
+- **Lumen:** Lumen returns to the last available watchlist page when a removal empties the final page, while keeping the active filters.
+- **Requests:** TV request forms now fall back to TMDB when the configured metadata provider cannot load season episodes, so temporary provider failures are less likely to block requests for large series.
+
+#### Security
+
+- **Lumen Security:** Lumen's shared configuration now requires an interactive SeerrNG admin session. Client API keys and bearer tokens cannot authorize shared settings changes.
+- **Lumen:** Updated the Lumen companion image to nginx 1.30.7 for upstream security fixes.
+- **Notifications:** Notification preferences now reject event masks outside the supported numeric range, including integers that would wrap during bitwise validation.
+- **Auth:** OIDC sign-in now encrypts the temporary data stored in its correlation cookie and enforces the cookie's ten-minute lifetime on the server.
+- **Metadata:** Hardened external title and ISBN lookup by reading named HTML metadata attributes with fixed patterns.
+- **Lumen:** Lumen validates same-origin artwork paths before passing them to the browser and preserves query strings on valid image URLs.
+- **Lumen:** Lumen validates artwork URLs on shared cover cards and uses the drawn cover when a request's artwork URL is unsupported. Same-origin artwork is limited to the image proxy and dedicated cover endpoints. Other same-origin paths use the artwork fallback. Artwork on shared cards and the affected detail screens loads without sending the page address as a referrer.
+- **Lumen:** Movie trailer links in Lumen now use validated YouTube video IDs and open only the YouTube watch page.
+- **Lumen:** Lumen validates reader service addresses and limits Kavita links to series pages.
+- **Lumen:** Lumen validates artwork in shared detail headers, extra-category cards, and game screenshots before rendering it.
+- **Lumen:** Bundled Lumen page loads now use a per-client rate limit. Static assets and missing asset responses use their existing paths.
+- **Dependencies:** GitHub withdrew the [Picomatch advisory](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) associated with the repeated-extglob patch. The app and documentation builds still treat those patterns as literal text.
+- **Image Proxy:** Public image and avatar fetches now connect directly so SeerrNG's destination checks apply to the socket. These fetches bypass the configured outbound forward proxy.
+- **Release:** Main and release image publishing no longer share GitHub Actions BuildKit caches, and their Trivy scans fetch fresh vulnerability databases. Preview publishing and the standalone Trivy scanner also avoid these shared caches. Trusted Docker jobs also disable the setup actions' Buildx binary and QEMU image caches.
+
+### 🛡️ Security
+- *(security)* Resolve reviewed scan findings - ([9b6f798](https://github.com/snapetech-org/seerrng/commit/9b6f79879a7c152743a8cba5bcdd53d6a79c8301))
+- *(security)* Record OpenPGP armor scanner false positive - ([4784a01](https://github.com/snapetech-org/seerrng/commit/4784a01bd45d3e6a1b900b14619abac133c393a8))
+- *(security)* Reject oversized notification event masks - ([e0be7c7](https://github.com/snapetech-org/seerrng/commit/e0be7c7086df2c1445ea60d56b35b4e4e6da4c54))
+- *(security)* Parse resolver metadata with fixed patterns - ([8129fcd](https://github.com/snapetech-org/seerrng/commit/8129fcdc1f85fdba790f76938fd04c8f8374551f))
+- *(security)* Record current CI alert provenance - ([5abf9ca](https://github.com/snapetech-org/seerrng/commit/5abf9cacf05d4a010cba39908eed23bb745a4c48))
+- *(security)* Record Picomatch advisory withdrawal - ([63d986e](https://github.com/snapetech-org/seerrng/commit/63d986ec05eb1b613cc4fc007a7aa6d459ff025e))
+- *(security)* Disable Buildx cache during alias publication - ([aa5ad46](https://github.com/snapetech-org/seerrng/commit/aa5ad46f34b631f6d1ef801c1a35bfc46b8e72b6))
+- *(security)* Disable cached tools in trusted Docker jobs - ([9ed326e](https://github.com/snapetech-org/seerrng/commit/9ed326ecd9babd0fd9b15c014bf1ee665bf663e2))
+- *(security)* Isolate preview builds and standalone image scans - ([e87809a](https://github.com/snapetech-org/seerrng/commit/e87809acc1886266eada39ff2fb055b8244ba0fb))
+- *(security)* Enforce validated DNS for public image connections - ([c8cf687](https://github.com/snapetech-org/seerrng/commit/c8cf687ef5892d4693ae7da0ea0dfd5168c2142c))
+- *(security)* Record Lumen comic description alert disposition - ([994e051](https://github.com/snapetech-org/seerrng/commit/994e0510cfdf84d903185ce1db9ae9d890866f9b))
+- *(security)* Record the book request edit allowlist - ([1ee86fb](https://github.com/snapetech-org/seerrng/commit/1ee86fb8e1100ea8cf43fc8a27de468a6f9d99d7))
+- *(security)* Annotate verified image cache path boundaries - ([d3d857d](https://github.com/snapetech-org/seerrng/commit/d3d857da74a4339372ba37f47e7fc43fa67786ed))
+- *(security)* Reject symlinked image cache read directories - ([4e23969](https://github.com/snapetech-org/seerrng/commit/4e23969f94d074b8b60c5c53fbb0f51af345d5b7))
+- *(security)* Reconcile historical findings with fixes on main - ([56afc6d](https://github.com/snapetech-org/seerrng/commit/56afc6d2151ab9caad1e909214d60bc02dc9dc1d))
+- *(security)* Constrain configured image proxy destinations - ([0498d74](https://github.com/snapetech-org/seerrng/commit/0498d74ca250cb72c9aa9354e0f0e7b5322f2741))
+- *(security)* Record self-hosted service destination dispositions - ([97d26b7](https://github.com/snapetech-org/seerrng/commit/97d26b7d628305badf15087f43aef0bcfdc57164))
+- *(security)* Record Jellystat and Audiobookshelf alert dispositions - ([6244949](https://github.com/snapetech-org/seerrng/commit/6244949af562f8dc16391c4741962c953a86aab2))
+- *(security)* Record notification destination alert dispositions - ([7937800](https://github.com/snapetech-org/seerrng/commit/79378001f118ac315fc311e47e6d93b406106f83))
+- *(security)* Record swipe ranking alert disposition - ([f0ae041](https://github.com/snapetech-org/seerrng/commit/f0ae041370df4ce6ea911c2848e11661f5486db3))
+- *(security)* Record Slack action callback alert disposition - ([cb87d41](https://github.com/snapetech-org/seerrng/commit/cb87d419cc55703ab25ae21fa6213943a479a6cb))
+- *(security)* Record Visual Lab script alert disposition - ([34c83a0](https://github.com/snapetech-org/seerrng/commit/34c83a08d792b64bd19a10b2169bd5474e6c0f23))
+- *(security)* Record markup alert dispositions - ([e059e05](https://github.com/snapetech-org/seerrng/commit/e059e0570e32e0820e9d28552f9db67b86107808))
+- *(security)* Eliminate API catalog regex backtracking and refresh messages - ([a97bd32](https://github.com/snapetech-org/seerrng/commit/a97bd32036f7b4c4f927bc647682644869aa10e5))
+- *(security)* Require full OIDC cookie authentication tags - ([cc541a5](https://github.com/snapetech-org/seerrng/commit/cc541a5c505b38c2af33e9376e95ee95111aeed6))
+- *(security)* Encrypt OIDC correlation cookies - ([022c66b](https://github.com/snapetech-org/seerrng/commit/022c66b660b574f7a5f030a89e0366a6b3c61f49))
+- *(security)* Record credential alert dispositions - ([b44ae05](https://github.com/snapetech-org/seerrng/commit/b44ae053b4ee263b358a53a1dae9cc37fc3f4807))
+- *(security)* Record rate-limit alert dispositions - ([de1d906](https://github.com/snapetech-org/seerrng/commit/de1d906d2873f712b113805e169a8cb7e48edded))
+- *(security)* Rate limit bundled Lumen shell responses - ([efdb4c6](https://github.com/snapetech-org/seerrng/commit/efdb4c63de3b56b25d2eca5fd04cf4c750a27ea3))
+- *(security)* Isolate image publishing and scan inputs - ([d43b048](https://github.com/snapetech-org/seerrng/commit/d43b04897786b52e40c4be1767161d0dc5705e7b))
+- *(security)* Record Picomatch frozen-install verification - ([fe5639a](https://github.com/snapetech-org/seerrng/commit/fe5639a47df825601d390a77974cdf115de7f2ee))
+- *(security)* Verify Picomatch lockfile patches - ([5a65e4a](https://github.com/snapetech-org/seerrng/commit/5a65e4add58c1b1a979c8eac8c39d02bffe1907f))
+
+### 🚀 Features
+- *(lumen)* Localize recordings workflows - ([e8c575b](https://github.com/snapetech-org/seerrng/commit/e8c575b2714749d11f02b5d7b165382ddb7eefcd))
+- *(lumen)* Localize coming soon feed - ([22da7a6](https://github.com/snapetech-org/seerrng/commit/22da7a6b74f76f964a72a3ee51a9f609c411aaae))
+- *(lumen)* Localize release calendar - ([c521183](https://github.com/snapetech-org/seerrng/commit/c5211832b08f529d1f96ffcd35450415c0350e28))
+- *(lumen)* Localize issue reporting - ([a0826f9](https://github.com/snapetech-org/seerrng/commit/a0826f9393300b9ca28f56adfe0b2aa872e089bf))
+- *(lumen)* Localize blocklist workflows - ([f12702c](https://github.com/snapetech-org/seerrng/commit/f12702cf048d1555d87eef07e93e29809ebce41b))
+- *(lumen)* Localize issue workflows - ([228f6c2](https://github.com/snapetech-org/seerrng/commit/228f6c21c98d30a3f456064bc90ea5e9f2284f9b))
+- *(lumen)* Localize Following page - ([8177a02](https://github.com/snapetech-org/seerrng/commit/8177a0251b902f2cdffb1d64fe9ea0d1b61de6f0))
+- *(lumen)* Localize discovery accounts - ([50d817c](https://github.com/snapetech-org/seerrng/commit/50d817c5e383f84cc114c9810a3c6ea01f968f23))
+- *(lumen)* Localize linked accounts - ([e3b4967](https://github.com/snapetech-org/seerrng/commit/e3b49677e6619bf78f0a272b5ff25edd2c053a6a))
+- *(lumen)* Localize TV request settings - ([c86e57b](https://github.com/snapetech-org/seerrng/commit/c86e57bde36ef628aa3bb3329e7fdfe1232afea4))
+- *(lumen)* Localize optional catalog navigation - ([6bc1791](https://github.com/snapetech-org/seerrng/commit/6bc1791cc5725cba76e7a8b704361f3e5c986d32))
+- *(lumen)* Localize shared shell messages - ([d077855](https://github.com/snapetech-org/seerrng/commit/d0778557d28d953f6a5ec3c8d242eda11e28f670))
+- *(lumen)* Localize administrator directory - ([6983fa7](https://github.com/snapetech-org/seerrng/commit/6983fa715d2a8b4a77f7804fb5c57040676f3c03))
+- *(lumen)* Sync personal preferences to account - ([10e18d8](https://github.com/snapetech-org/seerrng/commit/10e18d821e44ee48dc6748d2e46e3f7e9dc08721))
+- *(lumen)* Localize the signed-in hub - ([0a42eba](https://github.com/snapetech-org/seerrng/commit/0a42eba7b56b4614b0785379624b4b285951dc15))
+- *(lumen)* Localize primary navigation - ([7ef4222](https://github.com/snapetech-org/seerrng/commit/7ef4222d73c8a7908beb4337ca3785d3f51e38c1))
+- *(lumen)* Localize account theme controls - ([daf17c9](https://github.com/snapetech-org/seerrng/commit/daf17c9898845ec365a426e1a50b7b9aec81d455))
+- *(lumen)* Localize more account settings - ([91c89ec](https://github.com/snapetech-org/seerrng/commit/91c89ecb3100f6019db035cd1e09eb6a3f4f3fba))
+- *(lumen)* Add persisted display language - ([6fa5a7a](https://github.com/snapetech-org/seerrng/commit/6fa5a7ab6522b6702327d3bc07a6aef4a4ff2602))
+- *(lumen)* Expose Share and Identify navigation - ([6bfcb81](https://github.com/snapetech-org/seerrng/commit/6bfcb8101f8e8b9b7d5bd662c9ef7c1499f4b022))
+- *(lumen)* Add TV media-server saved actions - ([11faf20](https://github.com/snapetech-org/seerrng/commit/11faf205248d2507152fc52639b4bfb8f6fc8511))
+- *(lumen)* Show media titles in issue lists - ([b5518e1](https://github.com/snapetech-org/seerrng/commit/b5518e1bf318cac675137cdf5c125df62edbbaff))
+- *(lumen)* Support issue reports on behalf of users - ([9bf767a](https://github.com/snapetech-org/seerrng/commit/9bf767a137eb12c785e111c8c017dd17a5f4f232))
+- *(lumen)* Add cross-media poster watchlist actions - ([cd87251](https://github.com/snapetech-org/seerrng/commit/cd872515b6152aa4e24adadec726a1dfcf7c1f6b))
+- *(lumen)* Add poster watchlist actions - ([bc8454c](https://github.com/snapetech-org/seerrng/commit/bc8454caa14963664252eea8440ad59eb0ecd211))
+- *(lumen)* Find request override conditions by name - ([c0c3264](https://github.com/snapetech-org/seerrng/commit/c0c3264074b5a80a44a89c5c23f676cb478de999))
+- *(lumen)* Choose named request override destinations - ([8e3f04c](https://github.com/snapetech-org/seerrng/commit/8e3f04c0e011b6eacc7eebb34fcac7445e562246))
+- *(lumen)* Manage request routing override rules - ([fd57ce3](https://github.com/snapetech-org/seerrng/commit/fd57ce3b22a86b44a463eda8705d5731e684ceb7))
+- *(lumen)* Show request routing override rules - ([bfe510b](https://github.com/snapetech-org/seerrng/commit/bfe510b49ff13299585f4c7f9c80d906563b244f))
+- *(lumen)* Find download polling interval in Settings search - ([e2b3d14](https://github.com/snapetech-org/seerrng/commit/e2b3d14d9f9fa2682ed1da591d44c3e4c7295fce))
+- *(lumen)* Stage companion branding with the imported draft - ([f8fd882](https://github.com/snapetech-org/seerrng/commit/f8fd882baef94a312de8806233bc20400e628d30))
+- *(lumen)* Import companion preferences into a reviewable draft - ([7ad7526](https://github.com/snapetech-org/seerrng/commit/7ad7526c0bec75c60d81d796ea39f07a8ff191ee))
+- *(lumen)* Find Spotify and Steam settings from Administration - ([7d542a8](https://github.com/snapetech-org/seerrng/commit/7d542a8f41d2a4f001b7f13cec61bc1218a92054))
+- *(lumen)* Search the Administration settings directory - ([7a46f15](https://github.com/snapetech-org/seerrng/commit/7a46f151f45b039aa4256282310268630648f743))
+- *(lumen)* Choose an exact artist in Music discovery - ([1209b96](https://github.com/snapetech-org/seerrng/commit/1209b96461b3e376864e7846c1e0350406ec6319))
+- *(lumen)* Open Music discovery from an exact artist - ([84d2c09](https://github.com/snapetech-org/seerrng/commit/84d2c098d2a667091fbab8b5a25f043ef8ee66d9))
+- *(lumen)* Sort filtered search by video credits - ([7eefb28](https://github.com/snapetech-org/seerrng/commit/7eefb28a0905891bfaf0d24afb79720c9d715778))
+- *(lumen)* Sort video search by writer and director - ([c4c4b95](https://github.com/snapetech-org/seerrng/commit/c4c4b951eef24e1c8845a27add89577831a1df0a))
+- *(lumen)* Sort book search results by publisher - ([ee2b81f](https://github.com/snapetech-org/seerrng/commit/ee2b81f00efa073c6c6b14fcdafd57754f071543))
+- *(lumen)* Sort search results by author and artist - ([8133e65](https://github.com/snapetech-org/seerrng/commit/8133e65967b9654a1c7053e992c95a3b1f80c202))
+- *(lumen)* Sort video search results by rating - ([5ca4349](https://github.com/snapetech-org/seerrng/commit/5ca4349a4d09fd176695cdd0e55e9fc7a2025c09))
+- *(lumen)* Sort search results by release date - ([f54a8dc](https://github.com/snapetech-org/seerrng/commit/f54a8dcd54eb839fad569104e460f6494d0320b9))
+- *(lumen)* Sort search results by title - ([cc3b11b](https://github.com/snapetech-org/seerrng/commit/cc3b11be629862d6ef565d331c070f9d8b812baa))
+- *(lumen)* Preserve discovery title searches - ([153619f](https://github.com/snapetech-org/seerrng/commit/153619f63c44ec2b9ed8596eaae4ff08d37d2112))
+- *(lumen)* Apply saved colors to mobile navigation - ([27b2bf5](https://github.com/snapetech-org/seerrng/commit/27b2bf5108cb537d15f456639847904ca5683d91))
+- *(lumen)* Honor the scrolled search header color - ([b087f56](https://github.com/snapetech-org/seerrng/commit/b087f56940be7a764ddae7121b8a13c2c9895ec5))
+- *(lumen)* Apply personal sidebar colors - ([34742aa](https://github.com/snapetech-org/seerrng/commit/34742aac5ca99fcbe88266fc6141bf4608f49aa0))
+- *(lumen)* Apply personal menu and dialog color - ([9f1f5e4](https://github.com/snapetech-org/seerrng/commit/9f1f5e456b845d2b36ad59f1a86021c74f6f67b8))
+- *(lumen)* Edit the full account theme override object - ([1aa85a0](https://github.com/snapetech-org/seerrng/commit/1aa85a04dec30c9b8498458afb5b1b4d10f4f13a))
+- *(lumen)* Open personal theme colors from Classic bookmarks - ([f0243e4](https://github.com/snapetech-org/seerrng/commit/f0243e451597e686aef4924eda84aca2b8e059fe))
+- *(lumen)* Apply and edit personal theme colors - ([dadf78e](https://github.com/snapetech-org/seerrng/commit/dadf78eefccdce723b8806d739faa9f1a3ff5958))
+- *(lumen)* Show account type and role on personal settings - ([2cb67e5](https://github.com/snapetech-org/seerrng/commit/2cb67e5e40ddb0c82c270d30101ebe03ff1d801b))
+- *(lumen)* Link About update status to release and commit details - ([8800dca](https://github.com/snapetech-org/seerrng/commit/8800dca372ca4be37fa2a46446c5eb9c44d35fd5))
+- *(lumen)* Render formatted Markdown release notes - ([7914543](https://github.com/snapetech-org/seerrng/commit/79145439a20c849a03d9fc8cfc941d049155e501))
+- *(lumen)* Show release history in About - ([4a3b391](https://github.com/snapetech-org/seerrng/commit/4a3b3911d06cb2b210a075d6a67c7c5491631b24))
+- *(lumen)* Explain estimated anime continuation positions - ([671b5a5](https://github.com/snapetech-org/seerrng/commit/671b5a5a9cf3a775cb4acb14f3b72cfd092b9bdc))
+- *(lumen)* Open continuations from AniList franchises - ([47679d6](https://github.com/snapetech-org/seerrng/commit/47679d634214a5014802dd8bd13ff12dd3384bf0))
+- *(lumen)* Show proxied art for unmatched AniList titles - ([4c21ec0](https://github.com/snapetech-org/seerrng/commit/4c21ec00cf075d5ad8b486784a02019044a8ea6c))
+- *(lumen)* Explain provider title match states - ([633a8c0](https://github.com/snapetech-org/seerrng/commit/633a8c0db5299462273e38b49177e28379507d77))
+- *(lumen)* Show unmatched provider title counts - ([8cf8b7a](https://github.com/snapetech-org/seerrng/commit/8cf8b7ae0f7d87406b9896f607cd0d8c8592039d))
+- *(lumen)* Open franchises from AniList discovery - ([0fed0aa](https://github.com/snapetech-org/seerrng/commit/0fed0aac18bd0c1f984da2e3036ee5840cb41e8b))
+- *(lumen)* Explore related anime by AniList identity - ([b3bb48f](https://github.com/snapetech-org/seerrng/commit/b3bb48f58d5383866170edc5c6dad2283044c266))
+- *(lumen)* Link curated franchise games by IGDB ID - ([711c0e1](https://github.com/snapetech-org/seerrng/commit/711c0e1281378a002a97b32817b6f552d8304b56))
+- *(lumen)* Link Following subscriptions to TMDB source pages - ([f2f2f03](https://github.com/snapetech-org/seerrng/commit/f2f2f03e8429391f2d6943617b416aa9f996d3d4))
+- *(lumen)* Show anime source continuations and volume follows - ([40c58fb](https://github.com/snapetech-org/seerrng/commit/40c58fb439cd4028b44f33f4f8759b3c072239d3))
+- *(lumen)* Follow solo audiobook narrators - ([99ce5d8](https://github.com/snapetech-org/seerrng/commit/99ce5d8d44e2a99e410ee9c73e8508a27d17e863))
+- *(lumen)* Follow author releases from book details - ([a0d5ac0](https://github.com/snapetech-org/seerrng/commit/a0d5ac0479c62fe2509e5aa315bf47feafa26600))
+- *(lumen)* Follow discovery genres studios and networks - ([d644f54](https://github.com/snapetech-org/seerrng/commit/d644f54c9cc4a5147856bec27a1cc450e9fe36ca))
+- *(lumen)* Explain why Following updates appeared - ([c18bb3f](https://github.com/snapetech-org/seerrng/commit/c18bb3fd71d982efae0cc8672072a41c6d6996ed))
+- *(lumen)* Open console patches from an exact game - ([04a585a](https://github.com/snapetech-org/seerrng/commit/04a585a74646b0344845c40120a226bb6727b6e9))
+- *(lumen)* Add Game Finder filters and saved searches - ([ee679cc](https://github.com/snapetech-org/seerrng/commit/ee679cc0c40671005b5be15ba70199893a530e57))
+- *(lumen)* Identify requested game editions and add-ons by name - ([6c88dc7](https://github.com/snapetech-org/seerrng/commit/6c88dc741a344f680f627589938eede2138f6c38))
+- *(lumen)* Show selected game content in request history - ([8741ea1](https://github.com/snapetech-org/seerrng/commit/8741ea153771cc1eed4b557de7ca739577abb38d))
+- *(lumen)* Select PC game editions and add-ons - ([3902f6a](https://github.com/snapetech-org/seerrng/commit/3902f6affd882416a1c10277241fce27a4f2a516))
+- *(lumen)* Follow story expansions from game details - ([cd40ec8](https://github.com/snapetech-org/seerrng/commit/cd40ec8580aae94a9140c665ea673ea76e12abbc))
+- *(lumen)* Reconnect tracking providers from their account rows - ([bcd9fad](https://github.com/snapetech-org/seerrng/commit/bcd9fadde7deb15fcb61ffd1b7c4f25370f7b2dd))
+- *(lumen)* Track individual Trakt and Simkl episodes - ([4d6ab05](https://github.com/snapetech-org/seerrng/commit/4d6ab05163889b4f3d95f4e5d1bf199ddb727f15))
+- *(lumen)* Update personal tracking from My Media - ([94529ae](https://github.com/snapetech-org/seerrng/commit/94529ae6d40a6bfe6382ea42349d6abb36715a6c))
+- *(lumen)* Edit private matches directly in My Media - ([ffa9475](https://github.com/snapetech-org/seerrng/commit/ffa94756fa9c2df6af1b3bb9ad4ba8c0c6a1f1c7))
+- *(lumen)* Preserve My Media filters in bookmarks - ([f217ff3](https://github.com/snapetech-org/seerrng/commit/f217ff3f3403eb031addcd0582d67b67d918bebc))
+- *(lumen)* Link My Media with account connections - ([2129614](https://github.com/snapetech-org/seerrng/commit/2129614695492b49adae92ce601dfaec6a0c47d3))
+- *(lumen)* Import and export personal title matches - ([8919879](https://github.com/snapetech-org/seerrng/commit/89198798eada65c2f6d5fd464ba0178747f84f73))
+- *(lumen)* Repair exact catalog matches in provider libraries - ([6b28ac4](https://github.com/snapetech-org/seerrng/commit/6b28ac41d0bee730209238046140218db537ea36))
+- *(lumen)* Connect personal Trakt accounts - ([a62bed0](https://github.com/snapetech-org/seerrng/commit/a62bed075a5c867139486970202b59aca135900a))
+- *(lumen)* Connect personal Simkl accounts - ([a0865b2](https://github.com/snapetech-org/seerrng/commit/a0865b29c0c158e9181557646ac05c1250b2f332))
+- *(lumen)* Connect personal AniList accounts - ([ba4f268](https://github.com/snapetech-org/seerrng/commit/ba4f268471d1e46ed1c648e07e3996756f05e064))
+- *(lumen)* Manage connected personal tracking accounts - ([52c2b98](https://github.com/snapetech-org/seerrng/commit/52c2b98cc2f9249f08fa1dcec31ff37151c87e1f))
+- *(lumen)* Make release calendar filters bookmarkable - ([b7f5085](https://github.com/snapetech-org/seerrng/commit/b7f5085436364400d990cd4ec32042424dd90cfd))
+- *(lumen)* Carry calendar episode selection to the request picker - ([8b6abc7](https://github.com/snapetech-org/seerrng/commit/8b6abc78b8c1350b44b7cb438d9b948a9613c33e))
+- *(lumen)* Start episode picker on bookmarked season - ([8612d2c](https://github.com/snapetech-org/seerrng/commit/8612d2c370f56040fc10f279f6da32b61c76fee0))
+- *(lumen)* Link request history to individual season rows - ([0fc8b77](https://github.com/snapetech-org/seerrng/commit/0fc8b777ba2481fe80b6fdab1fa9e9dfd479947d))
+- *(lumen)* Open the relevant season from calendar episodes - ([d8a1c3a](https://github.com/snapetech-org/seerrng/commit/d8a1c3aed2aef040741e768200c941394aa1454c))
+- *(lumen)* Preserve 4K quality in release calendar links - ([a548d3f](https://github.com/snapetech-org/seerrng/commit/a548d3f4fad9564eace13b34a6fe2a7d8eb50323))
+- *(lumen)* Refresh pending 4K series seasons - ([6661dbf](https://github.com/snapetech-org/seerrng/commit/6661dbfb2f0666fd3ba85a016c76338433ac4866))
+- *(lumen)* Refresh pending 4K movie playback - ([17c5350](https://github.com/snapetech-org/seerrng/commit/17c5350c03d2c211cb48b5a92965f12970bc7cb0))
+- *(lumen)* Open the 4K movie copy from request links - ([a38ece2](https://github.com/snapetech-org/seerrng/commit/a38ece25303ad4c6ccadfce4c3467018eb9fff7e))
+- *(lumen)* Preserve 4K quality in series request links - ([4e8f7d2](https://github.com/snapetech-org/seerrng/commit/4e8f7d280376d0116586c3cff88dca2900e8edb2))
+- *(lumen)* Link request history to the catalog title - ([bfab662](https://github.com/snapetech-org/seerrng/commit/bfab66208c6149bf604f7420adbf2afd943df8f4))
+- *(lumen)* Show individual season request decisions - ([b1f7bfc](https://github.com/snapetech-org/seerrng/commit/b1f7bfca48a176b34942a1dc806264e3aeda53cd))
+- *(lumen)* Show TV season and episode scope in request history - ([23b79d8](https://github.com/snapetech-org/seerrng/commit/23b79d83ac30fdcd4403e55e871b8e640d2d55b4))
+- *(lumen)* Identify 4K requests in history - ([460842b](https://github.com/snapetech-org/seerrng/commit/460842b07ce327993d4ac1bde7ecf2dcff6a70d9))
+- *(lumen)* Show book format in request history - ([32aeb3b](https://github.com/snapetech-org/seerrng/commit/32aeb3bd9311e062b374c747921813deff654dc1))
+- *(lumen)* Distinguish media variants in household requests - ([ab3cfc2](https://github.com/snapetech-org/seerrng/commit/ab3cfc2b9d505456738e5fd9051b85b15e08556a))
+- *(lumen)* Show quota exceptions in household request previews - ([20feb63](https://github.com/snapetech-org/seerrng/commit/20feb63cec85fc4d61b8c2965a1359d210406622))
+- *(lumen)* Show status on household request previews - ([8fb229b](https://github.com/snapetech-org/seerrng/commit/8fb229b6803ec5e6256a697bc65d554cadaf88e0))
+- *(lumen)* Show profile pictures in account navigation - ([4938bf4](https://github.com/snapetech-org/seerrng/commit/4938bf45733568d1b508209406ee696f955882f3))
+- *(lumen)* Let local account owners upload profile pictures - ([ed1e536](https://github.com/snapetech-org/seerrng/commit/ed1e536e91b45211b08c6276109c78dd3fef7ee7))
+- *(lumen)* Show household profile pictures through the avatar proxy - ([86dafd5](https://github.com/snapetech-org/seerrng/commit/86dafd50c85f964248055474303b1cc5003bbcf9))
+- *(lumen)* Show permitted household identity details - ([35fac0b](https://github.com/snapetech-org/seerrng/commit/35fac0b1948c2e4eaeb79ae65ed3012985af33f0))
+- *(lumen)* Link to My Profile from You - ([be383fa](https://github.com/snapetech-org/seerrng/commit/be383fa7d34c2b6644886420c2f582cb2daa740d))
+- *(lumen)* Open settings from household profiles - ([92ddd4d](https://github.com/snapetech-org/seerrng/commit/92ddd4d89abbe9e57e9a0ea6ec58b04876c285f4))
+- *(lumen)* Show provider ratings on book details - ([03123db](https://github.com/snapetech-org/seerrng/commit/03123dbb20c008b01a8cc0f004f281367c8fd882))
+- *(lumen)* Expose recommendation feed creation options - ([9650f64](https://github.com/snapetech-org/seerrng/commit/9650f6412b975897503ec953670af9ce4dea3d48))
+- *(lumen)* Open newly created recommendation feeds - ([bf03892](https://github.com/snapetech-org/seerrng/commit/bf0389259f9c8084e4d6d478e4aeebd50fb7592b))
+- *(lumen)* Restore recommendation format from bookmarks - ([a66bd46](https://github.com/snapetech-org/seerrng/commit/a66bd46c25612c3acc7590da31726aac35403e73))
+- *(lumen)* Bookmark book recommendation feeds - ([2f47102](https://github.com/snapetech-org/seerrng/commit/2f47102b215b10b05a38a8c334e72c064bd70dc0))
+- *(lumen)* Show personal account permissions - ([2c9260c](https://github.com/snapetech-org/seerrng/commit/2c9260cc10ea4fab6c7a3ebf99be8b7758cf7931))
+- *(lumen)* Expose administration service categories - ([3d8db8d](https://github.com/snapetech-org/seerrng/commit/3d8db8dc08d1fbe340abd4b6ceec7a9b6b7d8d32))
+- *(lumen)* Bookmark Sportarr event schedule pages - ([9c9c93c](https://github.com/snapetech-org/seerrng/commit/9c9c93cb25b439374a0835b5f07b8479a565cf96))
+- *(lumen)* Show Sportarr event totals and recording parts - ([359ed49](https://github.com/snapetech-org/seerrng/commit/359ed49ae0cef63f82928b5817ead230a46226a8))
+- *(lumen)* Show league monitoring and broadcast dates - ([707bfaa](https://github.com/snapetech-org/seerrng/commit/707bfaac647d87fa220fb112386d16db68243818))
+- *(lumen)* Show approval status for league requests - ([70673aa](https://github.com/snapetech-org/seerrng/commit/70673aada5605c97149fbd58df0f1f5558be6c6b))
+- *(lumen)* Show shared TV quota for league requests - ([d0cd158](https://github.com/snapetech-org/seerrng/commit/d0cd158b1b9270980bdacdd509ec0191f4bd9133))
+- *(lumen)* Confirm Sportarr league follow destination - ([7df8c38](https://github.com/snapetech-org/seerrng/commit/7df8c386f436d4a26772ecb4d45dcd8c3c794afc))
+- *(lumen)* Preserve Whisparr discovery service filters - ([8db09a5](https://github.com/snapetech-org/seerrng/commit/8db09a52ba57165b9d07a4faf552f415e3f04b48))
+- *(lumen)* Show magazine request quota and approval - ([434e6c6](https://github.com/snapetech-org/seerrng/commit/434e6c635eafd0dd257eea8e4d574a54fff8c38b))
+- *(lumen)* Share magazine request flow with detail pages - ([cfbf963](https://github.com/snapetech-org/seerrng/commit/cfbf9636afeb5ed63a51159d654754aa58f2607a))
+- *(lumen)* Choose magazine discovery request service - ([4830b53](https://github.com/snapetech-org/seerrng/commit/4830b53307adb82030f52e70ac4458020274fafb))
+- *(lumen)* Offer suggested public magazine searches - ([b50481c](https://github.com/snapetech-org/seerrng/commit/b50481c18174d7f34882bd6c4f8a41c6e5f01a45))
+- *(lumen)* Request magazines by title from discovery - ([c8141e6](https://github.com/snapetech-org/seerrng/commit/c8141e6e6e5231b378a559dbf60dd14017786477))
+- *(lumen)* Restore comic catalogue filters - ([f15ac21](https://github.com/snapetech-org/seerrng/commit/f15ac21fdee47b3955a2f06a865f5248fb8e4da8))
+- *(lumen)* Support all music discovery release types - ([0d10c75](https://github.com/snapetech-org/seerrng/commit/0d10c759b90e734e6450959cac4b7edef34c1a76))
+- *(lumen)* Edit music discovery filters - ([26d548c](https://github.com/snapetech-org/seerrng/commit/26d548c18fb3c0b3a528ac3f423834446f83af57))
+- *(lumen)* Add book year language and rating filters - ([ec55833](https://github.com/snapetech-org/seerrng/commit/ec558336098fb58b9b941d7ae4456ce2d97ff5f3))
+- *(lumen)* Edit title author and narrator discovery filters - ([767b9d8](https://github.com/snapetech-org/seerrng/commit/767b9d891a427251e9553d81216e7c21b3d21157))
+- *(lumen)* Retain book discovery search filters and series matches - ([3042615](https://github.com/snapetech-org/seerrng/commit/30426150822eb6384b80fa85def4da12cd1eed82))
+- *(lumen)* Show book series matches in search - ([235cfd3](https://github.com/snapetech-org/seerrng/commit/235cfd31ad6239d8a3ba5a5cf0f29b5f3499b881))
+- *(lumen)* Add scoped sports search - ([60b6831](https://github.com/snapetech-org/seerrng/commit/60b68316ce7c031300760b93f356626bfe4bb70c))
+- *(lumen)* Add scoped magazine search - ([dcf1a2e](https://github.com/snapetech-org/seerrng/commit/dcf1a2ebd2907963e9f42349813aa73ef5d2fa30))
+- *(lumen)* Add scoped music search - ([4b4a171](https://github.com/snapetech-org/seerrng/commit/4b4a1717161566816b77742d22378677dfee0a9c))
+- *(lumen)* Add scoped author search - ([586beb4](https://github.com/snapetech-org/seerrng/commit/586beb4d48450f66b9513dd19b8e8595d038f6a4))
+- *(lumen)* Paginate scoped book and comic searches - ([0ff9d86](https://github.com/snapetech-org/seerrng/commit/0ff9d863359d5e7e6d7ae453a6cc4e556f7eae3d))
+- *(lumen)* Paginate regular video search - ([567bc1d](https://github.com/snapetech-org/seerrng/commit/567bc1dc3c5b0a37e29897a253eea4e40033da41))
+- *(lumen)* Paginate filtered video search results - ([fdfe12c](https://github.com/snapetech-org/seerrng/commit/fdfe12ca602214127c45af11e3d3a098f166ea38))
+- *(lumen)* Filter discovery by content rating - ([e59a117](https://github.com/snapetech-org/seerrng/commit/e59a117b60e4c518204321ca90154a1901662e1f))
+- *(lumen)* Expose movie and series discovery sort orders - ([bc13a04](https://github.com/snapetech-org/seerrng/commit/bc13a048afe815c0c351dbdd8f6304895b273ff2))
+- *(lumen)* Complete movie and series detail metadata rows - ([69722c4](https://github.com/snapetech-org/seerrng/commit/69722c467ac505e2f56cd03202b7ce6d7edf6471))
+- *(lumen)* Show regional movie release dates - ([39f8f74](https://github.com/snapetech-org/seerrng/commit/39f8f7438c73c903b9cf06a2f183a52ae9a9c91d))
+- *(lumen)* Show regional streaming providers on title details - ([3ffd91e](https://github.com/snapetech-org/seerrng/commit/3ffd91efeb947fb47b7db717962050394d3833f3))
+- *(lumen)* Edit account media language preferences - ([27e0410](https://github.com/snapetech-org/seerrng/commit/27e04106faec9c398b1dc480ecd688d2692eb70e))
+- *(lumen)* Expose TMDB adult inclusion setting - ([5ed0f13](https://github.com/snapetech-org/seerrng/commit/5ed0f137fd3992b45fde7f1d7bffc9484c7f33f2))
+- *(lumen)* Search automatic blocklist keywords by name - ([2f47004](https://github.com/snapetech-org/seerrng/commit/2f47004cf96d3e6a361d38e5a56ea9284ee54142))
+- *(lumen)* Configure automatic blocklist rules - ([2a98cd2](https://github.com/snapetech-org/seerrng/commit/2a98cd21761cf81856a9c32c8f20e52845fbaf69))
+- *(lumen)* Retry eligible TV collection streaming overrides - ([5fcb804](https://github.com/snapetech-org/seerrng/commit/5fcb804ed8fb21a51a25289d559f0b819416dbd2))
+- *(lumen)* Retry eligible movie collection streaming overrides - ([ee8a9bf](https://github.com/snapetech-org/seerrng/commit/ee8a9bfcc73e00704fc7c67b118055ffacb9b222))
+- *(lumen)* Confirm permitted streaming overrides in Swipe - ([9ecd7f6](https://github.com/snapetech-org/seerrng/commit/9ecd7f6d11887601e453d61519f5344e8c49bbe8))
+- *(lumen)* Confirm permitted streaming overrides in Share batches - ([92999ef](https://github.com/snapetech-org/seerrng/commit/92999ef9fcb9233abc24c4d77e0d3758417de0f7))
+- *(lumen)* Confirm streaming overrides from Coming Soon - ([d49b4b7](https://github.com/snapetech-org/seerrng/commit/d49b4b7be555331e3225e84e398033e6b2310b6e))
+- *(lumen)* Confirm permitted episode streaming policy overrides - ([a3195ec](https://github.com/snapetech-org/seerrng/commit/a3195ec421a5bd53bdee2c8d24e725158b816811))
+- *(lumen)* Confirm permitted streaming overrides in quick requests - ([840ef8a](https://github.com/snapetech-org/seerrng/commit/840ef8aff8c6b77d3f7c4fe838493af4a31a2ccd))
+- *(lumen)* Confirm permitted TV season streaming policy overrides - ([a564a7b](https://github.com/snapetech-org/seerrng/commit/a564a7bcdd8b24153d6c5d5a67b868e78150e578))
+- *(lumen)* Confirm permitted movie streaming policy overrides - ([e9b748e](https://github.com/snapetech-org/seerrng/commit/e9b748e9dfd68bdef74cb28c18a409db361ae7a9))
+- *(lumen)* Configure streaming request policy - ([3a460be](https://github.com/snapetech-org/seerrng/commit/3a460bec5051f17835112aa6af6ae9f7d8cc0b17))
+- *(lumen)* Honor and configure discovery visibility defaults - ([4cd40d3](https://github.com/snapetech-org/seerrng/commit/4cd40d3ca4cfbf2aa11ca51512473f486d841b24))
+- *(lumen)* Edit discovery regions and languages - ([25b0620](https://github.com/snapetech-org/seerrng/commit/25b0620909f255b5450b38e668f4d01b76d79759))
+- *(lumen)* Honor configured YouTube trailer destinations - ([3c1e2b4](https://github.com/snapetech-org/seerrng/commit/3c1e2b49060b832eecbe5c4f1a09ad35db1547e7))
+- *(lumen)* Configure metadata provider credentials - ([6e0ac71](https://github.com/snapetech-org/seerrng/commit/6e0ac71ee8d843e2b2ae6c2da506c1c333afae49))
+- *(lumen)* Edit library path mappings for download copies - ([61e8a9c](https://github.com/snapetech-org/seerrng/commit/61e8a9cff7993b4fc2b8888b288b42869dc28d0a))
+- *(lumen)* Manage the application API key in General Settings - ([a8599fd](https://github.com/snapetech-org/seerrng/commit/a8599fdd9160305815e60f0958b0ca685bc1d8d2))
+- *(lumen)* Configure Spotify playlist import credentials - ([67bc194](https://github.com/snapetech-org/seerrng/commit/67bc194afd089b4d55934b1e6598529c9003cc24))
+- *(lumen)* Manage one-time sign-in links from the user directory - ([df8b192](https://github.com/snapetech-org/seerrng/commit/df8b192373ceab2117102966f3a60a323d332084))
+- *(lumen)* Accept one-time sign-in links - ([ed08e9e](https://github.com/snapetech-org/seerrng/commit/ed08e9ee955bc09a1d86dc6f2a5ec0d565edd859))
+- *(lumen)* Paginate coming-soon movies and series - ([6d9bf45](https://github.com/snapetech-org/seerrng/commit/6d9bf45a28c4abc7a28cd68d36a4816c0e12bf73))
+- *(lumen)* Let users filter their own software requests - ([698c156](https://github.com/snapetech-org/seerrng/commit/698c1568f39718be35708bd7fd578427188b130a))
+- *(lumen)* Show trailers for movie collections - ([93e1ca6](https://github.com/snapetech-org/seerrng/commit/93e1ca6d46cbd0a6a529b53e820e689f9f842d4c))
+- *(lumen)* Sync movie collections to media servers - ([3bcaa63](https://github.com/snapetech-org/seerrng/commit/3bcaa634079a99f3f2bf1c9d18651ee564099fb8))
+- *(lumen)* Sync curated collections to media servers - ([89e2677](https://github.com/snapetech-org/seerrng/commit/89e26779fe960cac96b0eea1d236904e03366ce2))
+- *(lumen)* Show associations for collections - ([f7b9b7a](https://github.com/snapetech-org/seerrng/commit/f7b9b7a1dd694ad35930c8fbc6ab3b98584a5c77))
+- *(lumen)* Show trailers on TV details - ([76b1bf8](https://github.com/snapetech-org/seerrng/commit/76b1bf8b6e5b7a01cd22d485be19e677e4a3a169))
+- *(lumen)* Show trailers for curated TV collections - ([0930749](https://github.com/snapetech-org/seerrng/commit/09307494f97a6146b950bef5bdedef3970c1b854))
+- *(lumen)* Blocklist curated collection members - ([f37f3f3](https://github.com/snapetech-org/seerrng/commit/f37f3f385113b4bff7e9659d7fab38402db809e4))
+- *(lumen)* Open full cast and crew pages - ([67b8b06](https://github.com/snapetech-org/seerrng/commit/67b8b06e3456afb930257ec5bd737e440c3e3732))
+- *(lumen)* Link managers to the series book service - ([8cbf62b](https://github.com/snapetech-org/seerrng/commit/8cbf62bf7a03fb6f437c8c6549a23eef6769a25a))
+- *(lumen)* Support Goodreads library series monitoring - ([43ed166](https://github.com/snapetech-org/seerrng/commit/43ed166d0ccd276cb25d276a6bb7845beca9a764))
+- *(lumen)* Request matched books from series previews - ([860a304](https://github.com/snapetech-org/seerrng/commit/860a304fb8ba2b76a28da1bfe873b47122454ecd))
+- *(lumen)* Search book series across catalog and library services - ([a32a89b](https://github.com/snapetech-org/seerrng/commit/a32a89b3a121c5a5a2ae56dfccd0179fd082ae23))
+- *(lumen)* Request monitoring from book series previews - ([47e31ad](https://github.com/snapetech-org/seerrng/commit/47e31ada9f4aba28eee478cc3aa6997eb8129b79))
+- *(lumen)* Open exact book series catalog previews - ([c3cf8b4](https://github.com/snapetech-org/seerrng/commit/c3cf8b4f8c104783a9646504f1daa3d4939b54fb))
+- *(lumen)* Manage book series monitoring requests - ([e420762](https://github.com/snapetech-org/seerrng/commit/e4207621d876cebba7dc9b7694955f36f26ccc0b))
+- *(lumen)* Add download setup profiles - ([e1d118b](https://github.com/snapetech-org/seerrng/commit/e1d118b717d5371881d615a2716b793c2b8f15f5))
+- *(lumen)* Guide setup by request-service group - ([4a938e2](https://github.com/snapetech-org/seerrng/commit/4a938e2dc79aed8b01141363cc53f93232dfc3e1))
+- *(lumen)* Prioritize setup services by enabled category - ([cc792cb](https://github.com/snapetech-org/seerrng/commit/cc792cbf11bc4ea3dbc265fd740c58380a81890c))
+- *(lumen)* Review saved request services during setup - ([1c7cb39](https://github.com/snapetech-org/seerrng/commit/1c7cb39ada1d45c3e7503aec9c3535a1ab6eae66))
+- *(lumen)* Show saved integration status in setup review - ([352075e](https://github.com/snapetech-org/seerrng/commit/352075ecbd5f83120748ca7e7278348a13c7cc18))
+- *(lumen)* Review saved media libraries during setup - ([4f6b338](https://github.com/snapetech-org/seerrng/commit/4f6b338a1f4871483209fe6e6c3a38ae779b6369))
+- *(lumen)* Make setup steps resumable from the URL - ([60a14ec](https://github.com/snapetech-org/seerrng/commit/60a14ec69cf8a0db6a6c2b5710a0757eadec846c))
+- *(lumen)* Expose remaining Servarr editors in setup - ([a758645](https://github.com/snapetech-org/seerrng/commit/a758645353c2d048c64c05c67822fff20c611ba8))
+- *(lumen)* Let administrators reopen setup - ([6f9c871](https://github.com/snapetech-org/seerrng/commit/6f9c8718359438e9c3ad60fc0e0455425cc53b14))
+- *(lumen)* Show backdrops in genre directories - ([0418067](https://github.com/snapetech-org/seerrng/commit/0418067f4aa620348c8b983d0db5f8b4e1d051ae))
+- *(lumen)* Show artwork in book recommendation feeds - ([5e2c129](https://github.com/snapetech-org/seerrng/commit/5e2c129e93ff0677eecfb02a4a92e804707ebd0d))
+- *(lumen)* Show shared album covers in Collector Picks - ([da64830](https://github.com/snapetech-org/seerrng/commit/da64830155753bdd31a8bd03c6d2f189c4c4c149))
+- *(lumen)* Show artwork for recently watched titles - ([178e2d5](https://github.com/snapetech-org/seerrng/commit/178e2d54ce8a11b9f013b375306218efb5359994))
+- *(lumen)* Configure download clients and indexers during setup - ([ba4948c](https://github.com/snapetech-org/seerrng/commit/ba4948caec54f7c93d6004e2b572ce91c8578746))
+- *(lumen)* Configure request services during setup - ([5522269](https://github.com/snapetech-org/seerrng/commit/5522269795cedd03da19762f9465939064ab118c))
+- *(lumen)* Configure media categories during setup - ([9d54c3f](https://github.com/snapetech-org/seerrng/commit/9d54c3f4a12e6cab1191741a0477df136db83149))
+- *(lumen)* Add first-run media server setup - ([3e3061b](https://github.com/snapetech-org/seerrng/commit/3e3061b9fa36f291adbe725c2007b8428ca8cb68))
+- *(lumen)* Show authorized Plex playback activity - ([d1a73f2](https://github.com/snapetech-org/seerrng/commit/d1a73f2f35ebb261c507e79bd32a27855add48b6))
+- *(lumen)* Show authorized household request limits - ([bd1984c](https://github.com/snapetech-org/seerrng/commit/bd1984c4ec8f5dc493f025c35714f3d1fa3d2ebe))
+- *(lumen)* Add permission-aware household profiles - ([9827b09](https://github.com/snapetech-org/seerrng/commit/9827b09690545a35bf9fec6a7f1cd77b058c2d92))
+- *(lumen)* Add Hardcover book recommendation feeds - ([a8477b6](https://github.com/snapetech-org/seerrng/commit/a8477b68c96f69e00375d1d8e2f2dc82b6a379b9))
+- *(lumen)* Add trusted collector picks to music - ([dcff442](https://github.com/snapetech-org/seerrng/commit/dcff44248b62277a094838eca4e18a281fded98c))
+- *(lumen)* Add movie and series genre directories - ([76d6c96](https://github.com/snapetech-org/seerrng/commit/76d6c9671025f9c1dc3ffcf7229c113c54c6abe1))
+- *(lumen)* Request individual episodes from TV details - ([b4f8659](https://github.com/snapetech-org/seerrng/commit/b4f86593e857b1e0d499c91b4a2d993e9245f95a))
+- *(lumen)* Offer quota approval in Coming Soon - ([da12de7](https://github.com/snapetech-org/seerrng/commit/da12de7c5119fd30eed066d968939780cbec0eae))
+- *(lumen)* Recover poster requests from quota denials - ([03ae8e3](https://github.com/snapetech-org/seerrng/commit/03ae8e3264f72b6da90d338944e213e28c7952b8))
+- *(lumen)* Identify pending quota exception requests - ([1451271](https://github.com/snapetech-org/seerrng/commit/1451271f1b26532416de702bdf5f43b4c4cb2ad6))
+- *(lumen)* Request approval from over-quota video details - ([8fced92](https://github.com/snapetech-org/seerrng/commit/8fced925bdf0e81a3fc518b5f8e4467571fbab34))
+- *(lumen)* Support video request quota overrides - ([c089581](https://github.com/snapetech-org/seerrng/commit/c089581ab2557fc30432b93e866023c025660c62))
+- *(lumen)* Choose Sonarr season ordering - ([c910eeb](https://github.com/snapetech-org/seerrng/commit/c910eebc47b6688c8b66df1d18e59092afbdef37))
+- *(lumen)* Customize video request destination tags - ([eb467a7](https://github.com/snapetech-org/seerrng/commit/eb467a7c528cb52b7252237d3a8b192dbfef5c3c))
+- *(lumen)* Choose Sonarr request languages - ([7f80a8a](https://github.com/snapetech-org/seerrng/commit/7f80a8a0319db175be9098d7dad0995b9e93bf4b))
+- *(lumen)* Filter video collection requests - ([2f9afde](https://github.com/snapetech-org/seerrng/commit/2f9afde3c9e807e606f12f543ded16e4b4bf7ce9))
+- *(lumen)* Request selected series from TV collections - ([9a17d65](https://github.com/snapetech-org/seerrng/commit/9a17d65efe87989b35aa3225a3685542ec12b087))
+- *(lumen)* Request selected music collection releases - ([618ae3a](https://github.com/snapetech-org/seerrng/commit/618ae3ab598c7f4771d208652a432669c0d45d58))
+- *(lumen)* Filter music collections and discographies - ([9dd88e7](https://github.com/snapetech-org/seerrng/commit/9dd88e762ca125eb0be0397b925836394c5e37c9))
+- *(lumen)* Refresh curated collection availability - ([78758d7](https://github.com/snapetech-org/seerrng/commit/78758d7ae939879923dd399a524d08b4cc489921))
+- *(lumen)* Open series collections and artist discographies - ([7fbb03c](https://github.com/snapetech-org/seerrng/commit/7fbb03cec25a236658290ebbe5aae0f644f7c9eb))
+- *(lumen)* Administer software acquisition - ([8f7e50f](https://github.com/snapetech-org/seerrng/commit/8f7e50fcdf204dc08de3162b9d410ca0f92fdd2f))
+- *(lumen)* Follow teams for sports recordings - ([62ced56](https://github.com/snapetech-org/seerrng/commit/62ced564866e706bf2cccfcffd43e84f25a17c14))
+- *(lumen)* Find Live TV airings and request recordings - ([c956177](https://github.com/snapetech-org/seerrng/commit/c956177e3dc3ddcf270a72453332eaaec7de4211))
+- *(lumen)* Review and manage recordings - ([882100e](https://github.com/snapetech-org/seerrng/commit/882100ea4efbae6d238357a870f5dfbb26aa9820))
+- *(lumen)* Configure Tunerr and Sportarr feeds - ([036e9c8](https://github.com/snapetech-org/seerrng/commit/036e9c819855fcb7c4cc258303a1eee0a14ec51e))
+- *(lumen)* Open configured reader libraries from details - ([f1d7155](https://github.com/snapetech-org/seerrng/commit/f1d715574213034ad6692dc590c9dea0cc7bdfa4))
+- *(lumen)* Choose advanced bulk book destinations - ([4940a5d](https://github.com/snapetech-org/seerrng/commit/4940a5dce62d1ba9f60f41df27c9701fff442d6f))
+- *(lumen)* Request books in bulk from authors and series - ([6103005](https://github.com/snapetech-org/seerrng/commit/6103005d78c21564b7d575a57abdf3f807e4d4cc))
+- *(lumen)* Filter books in a series - ([1ad27bd](https://github.com/snapetech-org/seerrng/commit/1ad27bd704a8f44eb053cb0a645a6e60b6c0b634))
+- *(lumen)* Open author and book series details - ([2a7e3dd](https://github.com/snapetech-org/seerrng/commit/2a7e3dd4d2a7650ba16ed79317715ca6322cdc29))
+- *(lumen)* Manage reader shelves from comic details - ([8fc302c](https://github.com/snapetech-org/seerrng/commit/8fc302cc0150c8e21a444121328e9d0fe72fc33b))
+- *(lumen)* Administer reader delivery and managed shelves - ([5c5e10a](https://github.com/snapetech-org/seerrng/commit/5c5e10a5f7c5be7617eec817ed6b68c695e03b03))
+- *(lumen)* Configure share and image recognition - ([0a1ec8f](https://github.com/snapetech-org/seerrng/commit/0a1ec8fa9e7debada4ff17b5e745711ba9c50c5b))
+- *(lumen)* Open administration inside Lumen - ([daa6813](https://github.com/snapetech-org/seerrng/commit/daa6813ff1ba52adb3b891d478778d3239376301))
+- *(lumen)* Show live progress on Whisparr scene details - ([bb78a3f](https://github.com/snapetech-org/seerrng/commit/bb78a3ff1307683ae396c6a9421d6fc8f22f127e))
+- *(lumen)* Show live download progress on album details - ([16a21aa](https://github.com/snapetech-org/seerrng/commit/16a21aa9a0be53a577f94ab1d5f2c38919e90073))
+- *(lumen)* Stream format-specific book download progress - ([6625e74](https://github.com/snapetech-org/seerrng/commit/6625e74c3a6004734c950e9333693363a5fbc91b))
+- *(lumen)* Show live progress on video details - ([c3bdaec](https://github.com/snapetech-org/seerrng/commit/c3bdaece80fdfbed5048555a2d1066e31a318605))
+- *(lumen)* Stream live progress in Requests - ([96db1a2](https://github.com/snapetech-org/seerrng/commit/96db1a297ed82c6e50d2a7a28e3fa159184b2570))
+- *(lumen)* Configure live download clients - ([45e4d7a](https://github.com/snapetech-org/seerrng/commit/45e4d7a86f9b533c5680ce08c2379fb4856e48d8))
+- *(lumen)* Edit watch session movie filters - ([abe7c34](https://github.com/snapetech-org/seerrng/commit/abe7c349e2fd0b5bbd1f479332998cbdc0aa86a1))
+- *(lumen)* Manage watch session membership - ([8bc99b5](https://github.com/snapetech-org/seerrng/commit/8bc99b551b206befdf3356bc31a87789f8d13b0b))
+- *(lumen)* Vote and view watch session matches - ([d365c0e](https://github.com/snapetech-org/seerrng/commit/d365c0ed6db4811f3941de35c2a4ea9019180249))
+- *(lumen)* Invite guests to watch sessions - ([9080c2a](https://github.com/snapetech-org/seerrng/commit/9080c2ad087896b61d99c01dd135f409a569d555))
+- *(lumen)* Create and open watch sessions - ([6ea5caa](https://github.com/snapetech-org/seerrng/commit/6ea5caa02abd57343b5a3ce4ff946ec20611de04))
+- *(lumen)* Add Swipe software decks - ([949a814](https://github.com/snapetech-org/seerrng/commit/949a814e6995c6489cd75dd9067c0f799cd7685a))
+- *(lumen)* Filter Swipe decks - ([345e3fb](https://github.com/snapetech-org/seerrng/commit/345e3fbbe87e24232c29c94650ce00ec5c3edcc0))
+- *(lumen)* Add Swipe media catalog decks - ([a9be897](https://github.com/snapetech-org/seerrng/commit/a9be8974d00930d24040d165d5dae18edd3d8aaa))
+- *(lumen)* Support Swipe keyboard and touch actions - ([6952b9d](https://github.com/snapetech-org/seerrng/commit/6952b9dc5cc8bb584628298d70ba625f7db05e1d))
+- *(lumen)* Administer Swipe ranking - ([454f5c1](https://github.com/snapetech-org/seerrng/commit/454f5c151cb7efed0c2289bc482ef5267c01b5c7))
+- *(lumen)* Manage Swipe decision history - ([e33195e](https://github.com/snapetech-org/seerrng/commit/e33195e3daa076a26aa191d0d9fff3d24357ac67))
+- *(lumen)* Select Swipe recommendation favorites - ([58a93d1](https://github.com/snapetech-org/seerrng/commit/58a93d109fdc21e98765fab13f882c662f5680f5))
+- *(lumen)* Edit Swipe preferences - ([c4e51e3](https://github.com/snapetech-org/seerrng/commit/c4e51e39ed559bb1f3c6b6266ef3ee3086a52a51))
+- *(lumen)* Add Swipe recommendation decks - ([230bbe3](https://github.com/snapetech-org/seerrng/commit/230bbe31b0ea4221e9097771782113a465961015))
+- *(lumen)* Reuse saved hosts across connection forms - ([1c6b3e5](https://github.com/snapetech-org/seerrng/commit/1c6b3e5609d2439b63fc6ddab64a7be04e718707))
+- *(lumen)* Manage saved connection hosts - ([06e8a4f](https://github.com/snapetech-org/seerrng/commit/06e8a4ffc4933c673c3b94711d8a487666216254))
+- *(lumen)* Administer the Jellystat connection - ([d833000](https://github.com/snapetech-org/seerrng/commit/d833000a4b5ab3ff45151509c427c42fd1d2cb61))
+- *(lumen)* Manage ReadMeABook approvals - ([b7ae516](https://github.com/snapetech-org/seerrng/commit/b7ae5161cc751438aad104db88ed9eb0ab8c77dc))
+- *(lumen)* Configure ReadMeABook connections - ([ba6a6aa](https://github.com/snapetech-org/seerrng/commit/ba6a6aae23c58f0c3cac5e689539f480886b3c94))
+- *(lumen)* Administer audiobook and comic readers - ([312b193](https://github.com/snapetech-org/seerrng/commit/312b193248028e10ca8d582c7ff28d54173b76c7))
+- *(lumen)* Administer the Navidrome connection - ([eaf054f](https://github.com/snapetech-org/seerrng/commit/eaf054f5bdad7af5774d37f62339511d98174df9))
+- *(lumen)* Administer the Soulseek connection - ([5d2b8aa](https://github.com/snapetech-org/seerrng/commit/5d2b8aa9bb27036051b8b26a214f2bbcfc3272a7))
+- *(lumen)* Manage Sportarr services - ([c41ba88](https://github.com/snapetech-org/seerrng/commit/c41ba88f87671c664cb1b27e863d403ace94a655))
+- *(lumen)* Manage comic and magazine services - ([f9c109f](https://github.com/snapetech-org/seerrng/commit/f9c109ff5fbe76598e1477ddd7e9f3ef62c23789))
+- *(lumen)* Manage LazyLibrarian magazine services - ([3df9f4a](https://github.com/snapetech-org/seerrng/commit/3df9f4a192038222635db63f619a7c9d87249102))
+- *(lumen)* Add book metadata diagnostics - ([ed10569](https://github.com/snapetech-org/seerrng/commit/ed105692c97acff09e9dc07047f1f2bda9e5c259))
+- *(lumen)* Manage book and audiobook services - ([113588b](https://github.com/snapetech-org/seerrng/commit/113588b1ed0254ce4e0b017fc5b10c63ffbb4c47))
+- *(lumen)* Manage Lidarr and Whisparr destinations - ([ddeaad2](https://github.com/snapetech-org/seerrng/commit/ddeaad25e8e6b04636c27987928b66a3b9dd6179))
+- *(lumen)* Manage Sonarr request destinations - ([06564f4](https://github.com/snapetech-org/seerrng/commit/06564f4500142e1bdf31abc23af65c7327903520))
+- *(lumen)* Manage Radarr request destinations - ([1a49d31](https://github.com/snapetech-org/seerrng/commit/1a49d31282d44cb70048fcc03923a269b578d52d))
+- *(lumen)* Configure Tautulli connections - ([5b2c296](https://github.com/snapetech-org/seerrng/commit/5b2c296d15127603bfcc33257f30890f306c3f77))
+- *(lumen)* Discover Plex server connections - ([162166a](https://github.com/snapetech-org/seerrng/commit/162166a2f836eb7c52f3bc1ef1c904f6aa5bb9f3))
+- *(lumen)* Administer media server connections - ([41fd98a](https://github.com/snapetech-org/seerrng/commit/41fd98a9ce335c776920a70a3d5c4cbe2b1d66af))
+- *(lumen)* Administer media server libraries - ([31c8be5](https://github.com/snapetech-org/seerrng/commit/31c8be512aca4747ae056d1e94e65ea7750b4b24))
+- *(lumen)* Configure Prowlarr indexer routing - ([b49d7df](https://github.com/snapetech-org/seerrng/commit/b49d7df0b855b357c9694f7a3e907b515387aab6))
+- *(lumen)* Add Prowlarr connection administration - ([33725d2](https://github.com/snapetech-org/seerrng/commit/33725d2984c87eb30a70762e5f8a0fba9ededd3e))
+- *(lumen)* Add direct notification channel links - ([0c6a309](https://github.com/snapetech-org/seerrng/commit/0c6a309a22f7f76eeb65fce2c00846f09719a286))
+- *(lumen)* Administer generic webhook notifications - ([1a3d07f](https://github.com/snapetech-org/seerrng/commit/1a3d07f20485b59fa572a486b6147b15feb7ba66))
+- *(lumen)* Administer Discord and Slack notifications - ([4862221](https://github.com/snapetech-org/seerrng/commit/48622211dd1f1c753501fd6f9804661a1415103c))
+- *(lumen)* Administer Gotify, ntfy, and Apprise - ([3e4383c](https://github.com/snapetech-org/seerrng/commit/3e4383cddf098faea2ae5b01a0c6cabf3b0842d0))
+- *(lumen)* Administer Telegram and push messaging - ([731a421](https://github.com/snapetech-org/seerrng/commit/731a4215496bc123c2ed3de69aee1bb4df8c5151))
+- *(lumen)* Administer email and web push notifications - ([7f6752e](https://github.com/snapetech-org/seerrng/commit/7f6752ecce5422d3be4aa498691a97365210ecdb))
+- *(lumen)* Add Bookshelf library migration - ([1e1f8ab](https://github.com/snapetech-org/seerrng/commit/1e1f8ab9fc7c3b21b012f67fc33545fd19c868f7))
+- *(lumen)* Add metadata provider administration - ([220bc9c](https://github.com/snapetech-org/seerrng/commit/220bc9cc891303a87f4c3cfb66e15a8fedbbdfac))
+- *(lumen)* Manage shared discovery title matches - ([85eef7a](https://github.com/snapetech-org/seerrng/commit/85eef7a07e503ebc8926e328b4d66fd86c084e26))
+- *(lumen)* Manage discovery provider credentials - ([0d45bf7](https://github.com/snapetech-org/seerrng/commit/0d45bf7d862e45088e800ef65202de1ce8289fff))
+- *(lumen)* Add network administration - ([a5b76ac](https://github.com/snapetech-org/seerrng/commit/a5b76acadfbd336e0dd212988c5983d8b71c7862))
+- *(lumen)* Add issue metadata filters and sorting - ([19a67e4](https://github.com/snapetech-org/seerrng/commit/19a67e4038214e488f92ca85d66a2bf3385b7f40))
+- *(lumen)* Add bookmarkable issue filters - ([427803e](https://github.com/snapetech-org/seerrng/commit/427803e4fdad213087410d71ca60cdd5bdb87d47))
+- *(lumen)* Link issue reports to catalog titles - ([ddb437f](https://github.com/snapetech-org/seerrng/commit/ddb437f7fbf96afcd2d0f9ac568dd70bf07ad95a))
+- *(lumen)* Show Sportarr league events - ([3719591](https://github.com/snapetech-org/seerrng/commit/3719591e8bdad33ccf32cc440ad591f88957b935))
+- *(lumen)* Remove local entries from combined watchlists - ([48d0da3](https://github.com/snapetech-org/seerrng/commit/48d0da3737514c22fc81ad3858b434986b981e21))
+- *(lumen)* Apply shared availability to coming soon - ([9056a01](https://github.com/snapetech-org/seerrng/commit/9056a01acb9ad35a1771ef3a5da7620accb39cda))
+- *(lumen)* Apply shared availability to episode files - ([70d1b5a](https://github.com/snapetech-org/seerrng/commit/70d1b5a538bf6307a4b6c989e6fed29dba8b502f))
+- *(lumen)* Apply shared availability to series seasons - ([9600114](https://github.com/snapetech-org/seerrng/commit/9600114c7ab9046fcdb095313a332ca3abf745de))
+- *(lumen)* Apply shared availability to movie details - ([748e7dd](https://github.com/snapetech-org/seerrng/commit/748e7dd724711d887e2151ccc0bf6165e30b6c3e))
+- *(lumen)* Apply shared availability to featured cards - ([2669577](https://github.com/snapetech-org/seerrng/commit/26695776893bef6826a0168ad6712c93cd4d85a5))
+- *(lumen)* Apply shared availability to video posters - ([70cc0bc](https://github.com/snapetech-org/seerrng/commit/70cc0bc73c2d10fb4c3961865cedd37b25eb405b))
+- *(lumen)* Configure shared availability display - ([4c107e2](https://github.com/snapetech-org/seerrng/commit/4c107e216c392699d2cb32682fbcd39bb02999c8))
+- *(lumen)* Manage media server account admission - ([a4b6799](https://github.com/snapetech-org/seerrng/commit/a4b6799d29ee2060202ca727844c8650b81b9f81))
+- *(lumen)* Manage default user permissions - ([9dfb1fc](https://github.com/snapetech-org/seerrng/commit/9dfb1fc45ba5ce0db409d341c0f69a820cd4bfd1))
+- *(lumen)* Manage default request quotas - ([2571313](https://github.com/snapetech-org/seerrng/commit/2571313f4271d3937950f84a6b62fe049a426fc4))
+- *(lumen)* Manage default user media categories - ([62a7aad](https://github.com/snapetech-org/seerrng/commit/62a7aad0ed408a49706ca5cc3b5e4139d09d4fec))
+- *(lumen)* Manage instance sign-in methods - ([da2ea89](https://github.com/snapetech-org/seerrng/commit/da2ea8931666f6d39afeaf01836b2aa82ccca310))
+- *(lumen)* Manage default interface settings - ([6825da8](https://github.com/snapetech-org/seerrng/commit/6825da8a0991120d0fa45f1efaa605ea42d377fd))
+- *(lumen)* Configure instance age gate - ([8f90be4](https://github.com/snapetech-org/seerrng/commit/8f90be45d62a2999ef1fd92ca213db8ec57af708))
+- *(lumen)* Manage instance media categories - ([b376feb](https://github.com/snapetech-org/seerrng/commit/b376feb70fe9221dde82ac2c95cfa876ce672d3d))
+- *(lumen)* Manage image caching and version checks - ([360d891](https://github.com/snapetech-org/seerrng/commit/360d891642f796d655b8f29a4c1d970b79ec7a19))
+- *(lumen)* Add instance general settings - ([037a3d8](https://github.com/snapetech-org/seerrng/commit/037a3d867261f60eb4ccf63ffae2f15e57021152))
+- *(lumen)* Show image cache location and diagnostic state - ([e1337ea](https://github.com/snapetech-org/seerrng/commit/e1337ea8ccbea8540e6df1b8f8b3d9b59fd812b9))
+- *(lumen)* Open requests scoped to a selected user - ([8435cd9](https://github.com/snapetech-org/seerrng/commit/8435cd9a961d3057824b25fa3111e2470a6b17aa))
+- *(lumen)* Add delegated user watchlists - ([47cf107](https://github.com/snapetech-org/seerrng/commit/47cf1076a40620528b0ce89500489817728bb7be))
+- *(lumen)* Edit managed user notification settings - ([e8eeef1](https://github.com/snapetech-org/seerrng/commit/e8eeef10de705a847ded1ed2d08553d91e9cc832))
+- *(lumen)* Manage linked accounts for selected users - ([dc86ceb](https://github.com/snapetech-org/seerrng/commit/dc86ceb9ecf1b51a0085637156a2c64bb28f9bb2))
+- *(lumen)* Inspect managed TV request access - ([0b8b0b1](https://github.com/snapetech-org/seerrng/commit/0b8b0b14da791c7155ff421357257ae6488e78ac))
+- *(lumen)* Open managed user settings bookmarks - ([7354088](https://github.com/snapetech-org/seerrng/commit/7354088482cff02f1559f130b69de5c3438cac39))
+- *(lumen)* Set managed user local passwords - ([8942d86](https://github.com/snapetech-org/seerrng/commit/8942d862b28bd9d25e38e05c598733e5fdb555ea))
+- *(lumen)* Edit managed account email addresses - ([bd3d6e1](https://github.com/snapetech-org/seerrng/commit/bd3d6e123c05d32b9b7bf7032f5a8540429f48b1))
+- *(lumen)* Edit managed account usernames - ([a888946](https://github.com/snapetech-org/seerrng/commit/a8889463061a8a48d9a1b2ea204122ab51dac909))
+- *(lumen)* Import and sync media server users - ([debb4c0](https://github.com/snapetech-org/seerrng/commit/debb4c0ea24887a932cbb54e813720d745eae0e3))
+- *(lumen)* Remove managed user accounts - ([a2f4c75](https://github.com/snapetech-org/seerrng/commit/a2f4c755cb42d5cfc6c359d7e99351e0b95e0d28))
+- *(lumen)* Manage request destinations and account age gates - ([47a4641](https://github.com/snapetech-org/seerrng/commit/47a4641205fcfef443d7e0c840cd9352c337d31b))
+- *(lumen)* Edit managed user permissions - ([c526ffe](https://github.com/snapetech-org/seerrng/commit/c526ffe117036c683d3a290a0fb84ea0d3a46a76))
+- *(lumen)* Manage per-user maturity limits - ([41fa2bd](https://github.com/snapetech-org/seerrng/commit/41fa2bd8a3de1e62ef063678c061df17ab102ee0))
+- *(lumen)* Manage per-user indexer visibility - ([f0a946a](https://github.com/snapetech-org/seerrng/commit/f0a946a08c2623fa3890a0f23db8d504a09e9ea9))
+- *(lumen)* Manage per-user media categories - ([f210fc3](https://github.com/snapetech-org/seerrng/commit/f210fc3c6425ce1f2118e6156997a8577fd2d11a))
+- *(lumen)* Manage per-user request quotas - ([f7ee55d](https://github.com/snapetech-org/seerrng/commit/f7ee55dd5016cbf612b8a33d742ea869244976ab))
+- *(lumen)* Manage per-user Episode Queue defaults - ([9487913](https://github.com/snapetech-org/seerrng/commit/94879134cd6e2ddb5db831ffe373857ec9aa4e29))
+- *(lumen)* Create local users from the directory - ([16e56c4](https://github.com/snapetech-org/seerrng/commit/16e56c4b1cf66ef873db0612a3ef886deb49beeb))
+- *(lumen)* Browse the managed user directory - ([10cb439](https://github.com/snapetech-org/seerrng/commit/10cb439727261b0be7bdd9a7453d3212efdb7113))
+- *(lumen)* Show SeerrNG server information - ([64207c7](https://github.com/snapetech-org/seerrng/commit/64207c731893150d0cf96133c1ed46376e768975))
+- *(lumen)* Offer guided scheduled job frequencies - ([5420b27](https://github.com/snapetech-org/seerrng/commit/5420b27ea40becc73709aa5cb510615bf68f5831))
+- *(lumen)* Inspect and flush administrator caches - ([9172d29](https://github.com/snapetech-org/seerrng/commit/9172d2947eb1687d3fa57749e60d66aa0e047ef1))
+- *(lumen)* Manage administrator scheduled jobs - ([714a722](https://github.com/snapetech-org/seerrng/commit/714a7221606822f89e3f4e375ba094efae474b46))
+- *(lumen)* Browse administrator system logs - ([54c0bbd](https://github.com/snapetech-org/seerrng/commit/54c0bbd53fc41a0c9db1b61b4d9439dd9165f2dd))
+- *(lumen)* Paginate track request history - ([affd869](https://github.com/snapetech-org/seerrng/commit/affd869054b6a2a75d71e78d777b378ef57be3f0))
+- *(lumen)* Finish Spotify playlist account controls - ([fff5d95](https://github.com/snapetech-org/seerrng/commit/fff5d9526ec4edd124b50e289b2edace455ca69f))
+- *(lumen)* Preview and import music playlists - ([9f0c57d](https://github.com/snapetech-org/seerrng/commit/9f0c57ddc6595a861edcb321276f292677020682))
+- *(lumen)* Identify songs and request exact tracks - ([8bfa677](https://github.com/snapetech-org/seerrng/commit/8bfa67705a5f16399432d54ff15ddf4aefe5b8d0))
+- *(lumen)* Manage Soulseek track requests - ([7d5da43](https://github.com/snapetech-org/seerrng/commit/7d5da439c33eaebea2c472bce9827b0391016d9d))
+- *(lumen)* Accept installed app shares - ([1021d69](https://github.com/snapetech-org/seerrng/commit/1021d6925d4c975263a7832ac2908ca19a295274))
+- *(lumen)* Read shared book barcodes on device - ([efebd5a](https://github.com/snapetech-org/seerrng/commit/efebd5aa9bfab6f4aad6a9dcdaca183c0c3c17db))
+- *(lumen)* Recognize images in Share - ([66b2b29](https://github.com/snapetech-org/seerrng/commit/66b2b29e9da16f49275c762488a4abd59ea840c9))
+- *(lumen)* Recognize shared text and links - ([20bda92](https://github.com/snapetech-org/seerrng/commit/20bda926dc837800983e5577bae2e108db9aa364))
+- *(lumen)* Review TV request access approvals - ([6f62b4d](https://github.com/snapetech-org/seerrng/commit/6f62b4d6143fce0b39997004863e6dc14097c56d))
+- *(lumen)* Repair provider discovery title mappings - ([256e93d](https://github.com/snapetech-org/seerrng/commit/256e93d9927a7c31d3e7bac86edec9ca1905e80e))
+- *(lumen)* Add provider discovery feeds - ([9af669d](https://github.com/snapetech-org/seerrng/commit/9af669d7f56eb374aff2f5ed86a3497fc7b3dafb))
+- *(lumen)* Add franchise relationship curation - ([c5cb274](https://github.com/snapetech-org/seerrng/commit/c5cb2749ebba3a649a5056df54c426ea2cb180be))
+- *(lumen)* Add franchise explorer - ([ae1a54f](https://github.com/snapetech-org/seerrng/commit/ae1a54f38d72d60bcbe2540cb88dc8b35d6ff870))
+- *(lumen)* Add interactive association graph - ([e99e5da](https://github.com/snapetech-org/seerrng/commit/e99e5daf6df72f28a3439f360f298684b8a1d3df))
+- *(lumen)* Link book and music associations - ([4a95182](https://github.com/snapetech-org/seerrng/commit/4a951829f62ec47d77f502b3c5cb56ceb1672a32))
+- *(lumen)* Add association explorer - ([1ac3289](https://github.com/snapetech-org/seerrng/commit/1ac32899b6d3b3c80b222dbc3dac418112b80722))
+- *(lumen)* Show configured music discovery shelves - ([7510c24](https://github.com/snapetech-org/seerrng/commit/7510c24306f03401eab7f053a3c2ba6bb0635219))
+- *(lumen)* Show configured book subject shelves - ([17cbaf5](https://github.com/snapetech-org/seerrng/commit/17cbaf514b3a0b4edef4df0d648eab659cf5d2a3))
+- *(lumen)* Show configured search discovery shelves - ([201f253](https://github.com/snapetech-org/seerrng/commit/201f25346613b4d4dce733ddabaded77ba7d099c))
+- *(lumen)* Show configured video discovery shelves - ([9dc7500](https://github.com/snapetech-org/seerrng/commit/9dc75000c19cd2fbe38c03ff70fc957e67cb8a50))
+- *(lumen)* Show configured TMDB list shelves - ([8736708](https://github.com/snapetech-org/seerrng/commit/8736708f7936bb03b352ba5d7402e0c0f1d83358))
+- *(lumen)* Open public TMDB discovery lists - ([9f8006b](https://github.com/snapetech-org/seerrng/commit/9f8006b993fc047a7aa276a6b2d701be530a745f))
+- *(lumen)* Add full trending discovery - ([b2dc3bd](https://github.com/snapetech-org/seerrng/commit/b2dc3bdc6f9605902cb56140561bcd59b935626b))
+- *(lumen)* Preserve scoped upcoming discovery - ([e8ec243](https://github.com/snapetech-org/seerrng/commit/e8ec243ae9775740dc7f42d41772c3e638bacc52))
+- *(lumen)* Preserve patch identity in request history - ([7f0ea46](https://github.com/snapetech-org/seerrng/commit/7f0ea46d2154d185ea7ad9031bf6f784c8ef61e7))
+- *(lumen)* Request exact patch versions - ([2f45595](https://github.com/snapetech-org/seerrng/commit/2f4559567a6b39b77d46e3752492a2cdb6dbf5b6))
+- *(lumen)* Add translation and hack discovery - ([4ac390e](https://github.com/snapetech-org/seerrng/commit/4ac390eb8189215f901e743d220788b389927d0f))
+- *(lumen)* Support Steam library import - ([9b2dc0e](https://github.com/snapetech-org/seerrng/commit/9b2dc0ebca63325227d0d7444ceb74af58c9a15a))
+- *(lumen)* Match private game entries to the catalogue - ([54d0c0b](https://github.com/snapetech-org/seerrng/commit/54d0c0bd6775512f2621bb908e5fefa0e4aaa5e3))
+- *(lumen)* Add private and household game libraries - ([e3c9fca](https://github.com/snapetech-org/seerrng/commit/e3c9fca3a64fc1be9ed266b893d61e53f0910dc5))
+- *(lumen)* Add discover watchlist - ([dd870dd](https://github.com/snapetech-org/seerrng/commit/dd870dd76a85c0c4ad6ffd2d47782c2afc2dc145))
+- *(lumen)* Add full related video lists - ([55d5e94](https://github.com/snapetech-org/seerrng/commit/55d5e94f0250ab06fe5632185f7e6cadd628f9e8))
+- *(lumen)* Restore Discover shelf positions - ([0dd1947](https://github.com/snapetech-org/seerrng/commit/0dd194727d42f97cf17998103c85d6513af6440e))
+- *(lumen)* Browse available titles from the library - ([d059dbe](https://github.com/snapetech-org/seerrng/commit/d059dbe6db060a9b9e81d17f635ca4bb2ca98241))
+- *(lumen)* Distinguish HD and 4K discovery availability - ([0800591](https://github.com/snapetech-org/seerrng/commit/0800591054efafa69f6720fb192b60b4ebde7217))
+- *(lumen)* Clear discovery filters together - ([76e06b8](https://github.com/snapetech-org/seerrng/commit/76e06b82a50cc1ea5a2d213133d8179c628f6d59))
+- *(lumen)* Select and exclude production studios - ([72bcf37](https://github.com/snapetech-org/seerrng/commit/72bcf37c9c1498546b1aa811f263b380bce8dc68))
+- *(lumen)* Link movie studios to discovery - ([d95de33](https://github.com/snapetech-org/seerrng/commit/d95de33f9fbd923d6d5414580f8b3c2944033dae))
+- *(lumen)* Select series networks in discovery - ([d965138](https://github.com/snapetech-org/seerrng/commit/d96513803277f173fc15da348de346f32f585cc2))
+- *(lumen)* Link series networks to discovery - ([ae73cd9](https://github.com/snapetech-org/seerrng/commit/ae73cd97aac599816f8d1b7a1033d89acd918774))
+- *(lumen)* Link production countries to discovery - ([095ff32](https://github.com/snapetech-org/seerrng/commit/095ff32973b19ab7735e718462f3cf1e5bbbe1f5))
+- *(lumen)* Filter discovery by country of origin - ([72a4f41](https://github.com/snapetech-org/seerrng/commit/72a4f418348855d3b5ada958ae833aa89f0a58f9))
+- *(lumen)* Filter discovery by original language - ([46e65fd](https://github.com/snapetech-org/seerrng/commit/46e65fdfccd802f8e52a9221e94e1294062328f6))
+- *(lumen)* Filter discovery by vote count - ([01e5c57](https://github.com/snapetech-org/seerrng/commit/01e5c57e1fba480e1f604735df00f8a1fb129d3d))
+- *(lumen)* Filter discovery by runtime - ([d3f4e64](https://github.com/snapetech-org/seerrng/commit/d3f4e64469ecfcd8010f53aac26ca4d956a94eb1))
+- *(lumen)* Filter discovery by release date - ([17f3ca3](https://github.com/snapetech-org/seerrng/commit/17f3ca36879fbca00e22035e96a21b111fbce5a9))
+- *(lumen)* Filter discovery by series status - ([ae3ec88](https://github.com/snapetech-org/seerrng/commit/ae3ec882cb1a660e340eb027272d70de97bf6848))
+- *(lumen)* Page through subject tag search - ([f458b97](https://github.com/snapetech-org/seerrng/commit/f458b975eb39d996b013d67f2bd3e3d6beae072e))
+- *(lumen)* Select discovery subject tags - ([3921ee8](https://github.com/snapetech-org/seerrng/commit/3921ee82e6447414bbaf47eabab1007da3d51293))
+- *(lumen)* Filter discovery by streaming service - ([ff78615](https://github.com/snapetech-org/seerrng/commit/ff78615d0f0dd77a162e231c7a6618dd9e72d807))
+- *(lumen)* Filter video discovery by rating - ([9b31dbd](https://github.com/snapetech-org/seerrng/commit/9b31dbdc74eed2eca8db0bda2166448c77c8ac4b))
+- *(lumen)* Exclude selected video genres - ([9d8f82a](https://github.com/snapetech-org/seerrng/commit/9d8f82a8fe0de53409b7c477d4dc09c1ce49a423))
+- *(lumen)* Explain blocked season requests - ([1fa7c36](https://github.com/snapetech-org/seerrng/commit/1fa7c36d0dcd38899be84bc43649bf241f436a78))
+- *(lumen)* Show and configure episode availability - ([e7db340](https://github.com/snapetech-org/seerrng/commit/e7db340ebe79e7b505eac712eff838c893014af8))
+- *(lumen)* Manage instance video request policies - ([a66cf57](https://github.com/snapetech-org/seerrng/commit/a66cf57d638e737560f1a6c73ee40278ae01860f))
+- *(lumen)* Manage person bulk requests in admin settings - ([926687e](https://github.com/snapetech-org/seerrng/commit/926687e6ab48130a882eef4039f2f187cedbf836))
+- *(lumen)* Request credited movies from person pages - ([4626db5](https://github.com/snapetech-org/seerrng/commit/4626db576ed9fa9634a81629ab41c90b394db542))
+- *(lumen)* Show sortable cast and crew filmographies - ([a12dce6](https://github.com/snapetech-org/seerrng/commit/a12dce68662fdfbed34c3d6184ac189b0d92e97b))
+- *(lumen)* Expand video credits and link people - ([d2d8be4](https://github.com/snapetech-org/seerrng/commit/d2d8be498b28eec02b76522817604d9d45253fca))
+- *(lumen)* Browse video subject tags - ([d453c6c](https://github.com/snapetech-org/seerrng/commit/d453c6ccfbd80ff50a157e79309e8fbb14133fec))
+- *(lumen)* Pin cast and crew disclosures - ([adea869](https://github.com/snapetech-org/seerrng/commit/adea869e6720e2603e75bac34a1b09e5841dfeb8))
+- *(lumen)* Toggle poster titles while browsing - ([01d7504](https://github.com/snapetech-org/seerrng/commit/01d75040522e90a4a0585dd333f99cd1bb946dc3))
+- *(lumen)* Honor personal poster title preferences - ([325baec](https://github.com/snapetech-org/seerrng/commit/325baec0985f117552a9378a61398812ea70dbcb))
+- *(lumen)* Configure watchlist auto-request preferences - ([b40f0f0](https://github.com/snapetech-org/seerrng/commit/b40f0f0181d2e9c3fbb77b302ec571ed12e60f3a))
+- *(lumen)* Bulk edit streaming subscription selections - ([84fedb4](https://github.com/snapetech-org/seerrng/commit/84fedb4438a5a60e8de6cf356a70f68df05ae890))
+- *(lumen)* Configure personal streaming subscriptions - ([4b0e4b6](https://github.com/snapetech-org/seerrng/commit/4b0e4b601514e9aa3c112f415c847f504fb9eb3e))
+- *(lumen)* Expose personal discovery preferences - ([0f7c52f](https://github.com/snapetech-org/seerrng/commit/0f7c52f7a835eddf0530261cd7359248668ae2cc))
+- *(lumen)* Identify and disable current push browser - ([8818c93](https://github.com/snapetech-org/seerrng/commit/8818c93d5610c641913cfa9813cb702f006fef04))
+- *(lumen)* Register browsers for push notifications - ([4d0c6ed](https://github.com/snapetech-org/seerrng/commit/4d0c6ed0b3fefd158436d74880cbf082b8e14d0d))
+- *(lumen)* Manage browser push preferences and devices - ([23d14b0](https://github.com/snapetech-org/seerrng/commit/23d14b08df48e13cc2d56095fb6e5b4cf2ff09ea))
+- *(lumen)* Configure personal Pushover notifications - ([31ea541](https://github.com/snapetech-org/seerrng/commit/31ea54139075e4fd15cf6ed4d41a2900b8657000))
+- *(lumen)* Configure personal Pushbullet notifications - ([6e2e69b](https://github.com/snapetech-org/seerrng/commit/6e2e69b897b479f05713b318ed3d640b94481d04))
+- *(lumen)* Configure personal Discord mentions - ([c8765ff](https://github.com/snapetech-org/seerrng/commit/c8765ff5cbb859e1d5788adbb1c21feed09ec6e3))
+- *(lumen)* Configure personal Telegram notifications - ([df94d3c](https://github.com/snapetech-org/seerrng/commit/df94d3cea6652459956fa60c1a9d9b31c54ce4eb))
+- *(lumen)* Manage personal OpenPGP notification keys - ([1a930e9](https://github.com/snapetech-org/seerrng/commit/1a930e9519acc366037a31fc23e022b140f25f74))
+- *(lumen)* Configure personal email notifications - ([301a94d](https://github.com/snapetech-org/seerrng/commit/301a94d03f7c6d4aba311d166048e8205bf77e90))
+- *(lumen)* Manage media requests from history - ([fd87de6](https://github.com/snapetech-org/seerrng/commit/fd87de666effb807ea4fe55d2bacb72635087091))
+- *(lumen)* Show detailed request progress - ([d3fc6f4](https://github.com/snapetech-org/seerrng/commit/d3fc6f4d6de70091c5bd91091fd0abf45a665d01))
+- *(lumen)* Add household lifecycle filters - ([f271628](https://github.com/snapetech-org/seerrng/commit/f271628852d8045d6fc300611536d26b24adb001))
+- *(lumen)* Sort household media requests - ([2be30b1](https://github.com/snapetech-org/seerrng/commit/2be30b162cde6b8936baa88d17d28ff52b599a4d))
+- *(lumen)* Search household media requests - ([3cfa648](https://github.com/snapetech-org/seerrng/commit/3cfa648ba822555b6895651a6492471f8dd85c5b))
+- *(lumen)* Filter household requests by book format - ([67f835c](https://github.com/snapetech-org/seerrng/commit/67f835ca5bf87b0adbc3d8189efda6d575a0d1c4))
+- *(lumen)* Filter household requests by date - ([e7f7720](https://github.com/snapetech-org/seerrng/commit/e7f7720d483d2edbe909d86d4f16c627518e897e))
+- *(lumen)* Filter household requests by media type - ([fd2556b](https://github.com/snapetech-org/seerrng/commit/fd2556b92ce1b41ecf1873783842eb5b42efa54d))
+- *(lumen)* Filter household requests by requester - ([aa65912](https://github.com/snapetech-org/seerrng/commit/aa65912f630d03c3b9f40c969fbe07d0749b9a2e))
+- *(lumen)* Filter household software requests - ([e697724](https://github.com/snapetech-org/seerrng/commit/e697724a200336e438da3325617e5314f7a7c243))
+- *(lumen)* List household software requests - ([15d282d](https://github.com/snapetech-org/seerrng/commit/15d282d7064babf8305c89f89239ba0ffdd1246d))
+- *(lumen)* Moderate and recover software requests - ([e9b25c9](https://github.com/snapetech-org/seerrng/commit/e9b25c953761438dd8f5a376416e19a273d35246))
+- *(lumen)* Open software request history and downloads - ([d383411](https://github.com/snapetech-org/seerrng/commit/d3834112f8185829491a6cfa2b914cac38132e91))
+- *(lumen)* Open request history from direct links - ([e5468d3](https://github.com/snapetech-org/seerrng/commit/e5468d38abe3fe6edf96bce4d70c408474ca91d6))
+- *(lumen)* Find request downloads from reader details - ([cd00799](https://github.com/snapetech-org/seerrng/commit/cd00799d83c4d822f2c9435c9d1037a86073b41b))
+- *(lumen)* Download available request files - ([2616048](https://github.com/snapetech-org/seerrng/commit/2616048002dc26847788fb47c61775fa69c9c767))
+- *(lumen)* Show request lifecycle history - ([6680373](https://github.com/snapetech-org/seerrng/commit/6680373da0fa55d6123202a309764ce1dc9bdae7))
+- *(lumen)* Expose permitted request retries and failure reasons - ([366c6cd](https://github.com/snapetech-org/seerrng/commit/366c6cd22ad97f0ad69dbfa804dae01774f4dd56))
+- *(lumen)* Support local password recovery - ([1f251cd](https://github.com/snapetech-org/seerrng/commit/1f251cd9c4cfecc8394ad4725272f354bf7714ce))
+- *(lumen)* Add per-request Episode Queue settings - ([c6c8086](https://github.com/snapetech-org/seerrng/commit/c6c8086228a3a5730f35f755f276b2d27b1dd7e4))
+- *(lumen)* Add personal TV request settings - ([d4d9db3](https://github.com/snapetech-org/seerrng/commit/d4d9db389866e62079e6badbc4f73a289da9a80a))
+- *(lumen)* Sign in through OpenID Connect - ([1c92fb1](https://github.com/snapetech-org/seerrng/commit/1c92fb17a7211d41091147f1a4feaaeec6fd4667))
+- *(lumen)* Link OpenID Connect accounts - ([eba8cf4](https://github.com/snapetech-org/seerrng/commit/eba8cf47a196bc99ef483049cef8f93d9716763d))
+- *(lumen)* Link Plex and Jellyfin Quick Connect accounts - ([2e6e3e0](https://github.com/snapetech-org/seerrng/commit/2e6e3e05d4c1490c5533ec14a96c3ee5fc877eca))
+- *(lumen)* Manage linked sign-in accounts - ([2c3831f](https://github.com/snapetech-org/seerrng/commit/2c3831f41a9ac400a87899e900fdbfea54e6e7ac))
+- *(lumen)* Manage personal client tokens - ([68af578](https://github.com/snapetech-org/seerrng/commit/68af578b4fefd656dd090e3c3ee54369353eef3a))
+- *(lumen)* Edit personal profile and password - ([2a1fd0e](https://github.com/snapetech-org/seerrng/commit/2a1fd0e583df871fb036b66de63dd7398c720b9f))
+- *(lumen)* Play selected movies from a collection - ([569537c](https://github.com/snapetech-org/seerrng/commit/569537c04eb6353ded23c32da433fb0fa6427206))
+- *(lumen)* Request selected collection movies in bulk - ([8fe2b3f](https://github.com/snapetech-org/seerrng/commit/8fe2b3f20478fe915b98bce8fabe034f8ac22f93))
+- *(lumen)* Queue collections progressively - ([325faa3](https://github.com/snapetech-org/seerrng/commit/325faa3a28154b0834fdc9344901ede0bed7465d))
+- *(lumen)* Browse and blocklist movie collections - ([a29d116](https://github.com/snapetech-org/seerrng/commit/a29d11677d84ab0e5b0036be1a8313df67728376))
+- *(lumen)* Manage the Blocklist from media details - ([dad459d](https://github.com/snapetech-org/seerrng/commit/dad459d6c0bba77c06744c0a4713688603115eb0))
+- *(lumen)* Browse and manage Blocklist entries - ([17347d4](https://github.com/snapetech-org/seerrng/commit/17347d4d31a572925ef0d4f4490df55a4045a67b))
+- *(lumen)* Edit and delete issue discussions - ([2d53543](https://github.com/snapetech-org/seerrng/commit/2d53543b0095e9c161b7d201cc429c156b26eb8e))
+- *(lumen)* Report issues from media details - ([1742d36](https://github.com/snapetech-org/seerrng/commit/1742d368d2695ec5c6d1f473a8bed93b1d3ded48))
+- *(lumen)* Add issue list and discussion - ([ce73e58](https://github.com/snapetech-org/seerrng/commit/ce73e58b865ab08f50ecea6f41e1fc67edf8d3d8))
+- *(lumen)* Add Prowlarr shortcuts on media details - ([aef7ae4](https://github.com/snapetech-org/seerrng/commit/aef7ae4163e6ed6cad6d233a1a7703e5b631f2ed))
+- *(lumen)* Add Prowlarr indexer search and handoff - ([085bbeb](https://github.com/snapetech-org/seerrng/commit/085bbebb666baff18f4deda97b60e6ed84d6c69b))
+- *(lumen)* Add Download Inbox import and rejection - ([af0470b](https://github.com/snapetech-org/seerrng/commit/af0470b9b2b18343b8875630a8f8e515930b4a33))
+- *(lumen)* Add the Download Inbox - ([e13a54f](https://github.com/snapetech-org/seerrng/commit/e13a54fa4519d5e7a8facd98aee2443d7de459b4))
+- *(lumen)* Extend detail Watchlist actions across media - ([b2631f7](https://github.com/snapetech-org/seerrng/commit/b2631f7d6fb5cd376a1d728fdbeabc2ab694b043))
+- *(lumen)* Manage Watchlist from video details - ([132b1e1](https://github.com/snapetech-org/seerrng/commit/132b1e1b6c65f0a70bed55c7125d7ecbea790280))
+- *(lumen)* Add the personal Watchlist - ([3d813a5](https://github.com/snapetech-org/seerrng/commit/3d813a52047b1659d09387a062c51cc67c053dbd))
+- *(lumen)* Browse connected libraries in My Media - ([fe28882](https://github.com/snapetech-org/seerrng/commit/fe28882fd678286b587e406231e87621f5adc61d))
+- *(lumen)* Add the Release Calendar - ([3bc6cd8](https://github.com/snapetech-org/seerrng/commit/3bc6cd863f62b8bff8366a1cdd80e41c95d6da5e))
+- *(lumen)* Follow people from their detail pages - ([c5f77cc](https://github.com/snapetech-org/seerrng/commit/c5f77cc72edc49f5e035841a9a57369f39d4c5bc))
+- *(lumen)* Add Following feed and subscription controls - ([bf69df6](https://github.com/snapetech-org/seerrng/commit/bf69df6d7aa28f0400a0356f162250f65504f081))
+
+### 🐛 Bug Fixes
+- *(ci)* Recognize the hardened remote avatar URL resolver - ([f35c485](https://github.com/snapetech-org/seerrng/commit/f35c4853924713a19fe963fb8a766468c884eef1))
+- *(ci)* Install Cypress without a shared executable cache - ([53bbc20](https://github.com/snapetech-org/seerrng/commit/53bbc20c546d21296e0d77621e8499af984a59a8))
+- *(discover)* Cap video feed totals at the retrievable page limit - ([c9578f6](https://github.com/snapetech-org/seerrng/commit/c9578f6fc65a9eee14634f7050a1b6663d27cc3b))
+- *(discover)* Cap upcoming totals at the retrievable page limit - ([00f4d4c](https://github.com/snapetech-org/seerrng/commit/00f4d4c10b88fc7b9c1b053a4c89a2d5e613b432))
+- *(discover)* Honor exact artist with music library quality - ([9562bec](https://github.com/snapetech-org/seerrng/commit/9562bec7b6c8adee52059df5aba453b4705215c9))
+- *(discover)* Match trending availability by media identity - ([9b434d8](https://github.com/snapetech-org/seerrng/commit/9b434d81fa95f35c5d830bb6c5eeee71e168d706))
+- *(discover)* Honor the personal discovery region - ([d87571a](https://github.com/snapetech-org/seerrng/commit/d87571a1c35c7853da81e656c9dddc48a8970c27))
+- *(i18n)* Extract Lumen preference validation messages - ([e18a049](https://github.com/snapetech-org/seerrng/commit/e18a049ecd44f1192b7c885eb94e7e0bf7d9ddb0))
+- *(i18n)* Catalog Lumen preference validation messages - ([97a5b1b](https://github.com/snapetech-org/seerrng/commit/97a5b1ba33082b4409b199dfd997207e414d81b4))
+- *(i18n)* Sync API error message catalogs - ([8fbd378](https://github.com/snapetech-org/seerrng/commit/8fbd3781447693dca5dccd468b88d67be19d8b24))
+- *(i18n)* Refresh API message source catalogs - ([d15b372](https://github.com/snapetech-org/seerrng/commit/d15b3720a01aa8f8510bc5724695c42e44ff3d18))
+- *(i18n)* Refresh API message catalog after proxy hardening - ([455978e](https://github.com/snapetech-org/seerrng/commit/455978e4150f96d017e31c182f1615fb66653915))
+- *(jobs)* Preserve disabled state when enabling a job fails - ([26f1883](https://github.com/snapetech-org/seerrng/commit/26f18834473924ed064d4d317b47fc210c17c4a8))
+- *(jobs)* Keep disabled jobs unscheduled when editing cron - ([32b2b67](https://github.com/snapetech-org/seerrng/commit/32b2b6797c73a2cdb80b0ad233053303821636ca))
+- *(lumen)* Localize recordings navigation - ([67d1181](https://github.com/snapetech-org/seerrng/commit/67d1181ad19af91e433a2c30a675aa344303da82))
+- *(lumen)* Keep genre menus anchored while filtering - ([f4bd4cd](https://github.com/snapetech-org/seerrng/commit/f4bd4cd4a599d0f692833889523e8ae21a6ad01b))
+- *(lumen)* Keep mobile scroll targets clear of nav - ([80adeb6](https://github.com/snapetech-org/seerrng/commit/80adeb69aee0a3ce496d98fda32616da4777a0f1))
+- *(lumen)* Scope comic search and repair browser gate - ([aabd93f](https://github.com/snapetech-org/seerrng/commit/aabd93f199d12623abe2c6c7fbd343c4cb0d2c92))
+- *(lumen)* Declare Tailwind config dependency - ([4547a29](https://github.com/snapetech-org/seerrng/commit/4547a294cd80b1d2174465b6ba9c66b8f4c7bba6))
+- *(lumen)* Include formatter plugins in standalone builds - ([7ea0607](https://github.com/snapetech-org/seerrng/commit/7ea060717ccfc1b14a971c975abeeeff114115fe))
+- *(lumen)* Make locale generation work in image builds - ([779388d](https://github.com/snapetech-org/seerrng/commit/779388da46758764e4e1384d75c8476bfd28f559))
+- *(lumen)* Localize discovery account errors - ([543324c](https://github.com/snapetech-org/seerrng/commit/543324c2c07e3eddbd878459cebc74eb4b51ed3e))
+- *(lumen)* Format generated locale data - ([e4793d1](https://github.com/snapetech-org/seerrng/commit/e4793d1b83b394710a1f148600f317fa4007202d))
+- *(lumen)* Copy locale overrides safely - ([ef2e042](https://github.com/snapetech-org/seerrng/commit/ef2e042ef3edb69b60c03d5651b3b2c1eb3b1669))
+- *(lumen)* Gate My Games by enabled catalog - ([d5522a5](https://github.com/snapetech-org/seerrng/commit/d5522a597d502abc57536a78b4b17b074ef017b4))
+- *(lumen)* Expose Coming Soon in the mobile menu - ([f4fe41a](https://github.com/snapetech-org/seerrng/commit/f4fe41a61d3fc3c9c446e3041b6ebeb0b2309478))
+- *(lumen)* Gate media request controls by permission - ([3b68468](https://github.com/snapetech-org/seerrng/commit/3b684683d7056f93ae9837d8ce758d6644cfc0f3))
+- *(lumen)* Gate media request actions - ([9e2f258](https://github.com/snapetech-org/seerrng/commit/9e2f2589914945bc430d8ec147429f517b6b614f))
+- *(lumen)* Gate game patch shortcut - ([3a3401f](https://github.com/snapetech-org/seerrng/commit/3a3401fda91344d744096f8ac81de591b03b4abf))
+- *(lumen)* Gate request discovery shortcuts - ([41d4032](https://github.com/snapetech-org/seerrng/commit/41d403202ec331ad86b79e947f003be5c415c5b0))
+- *(lumen)* Gate Swipe navigation by request access - ([3ed4836](https://github.com/snapetech-org/seerrng/commit/3ed483613c56a193df93bc5e59492b8d37567702))
+- *(lumen)* Gate Share shortcuts by request access - ([9fc3501](https://github.com/snapetech-org/seerrng/commit/9fc350139870e31f1b32ed249b99963ba8a387f1))
+- *(lumen)* Wait for Discover settings before loading shelves - ([43b396f](https://github.com/snapetech-org/seerrng/commit/43b396f5b6090b50f0fb0917d5b8462b37111c77))
+- *(lumen)* Require session for shared config - ([74a6285](https://github.com/snapetech-org/seerrng/commit/74a6285c89165eb709a8f2232ff774b4a331917a))
+- *(lumen)* Expose indexer search on mobile - ([373d405](https://github.com/snapetech-org/seerrng/commit/373d405a14359d2886b4cc8497cb3413bedb977d))
+- *(lumen)* Keep Swipe title search visible - ([add8e24](https://github.com/snapetech-org/seerrng/commit/add8e24c10143972876903b928f9694e1eadc7d2))
+- *(lumen)* Start bundled setup from a fresh server home - ([4c0ce9a](https://github.com/snapetech-org/seerrng/commit/4c0ce9ad8634f387a49fa2abb1151008b4ff4910))
+- *(lumen)* Preserve Classic Prowlarr bookmark fragments - ([a335767](https://github.com/snapetech-org/seerrng/commit/a335767b275aff14724d8c1a0f479a0d05b61f08))
+- *(lumen)* Preserve download refresh interval bookmarks - ([59e5f39](https://github.com/snapetech-org/seerrng/commit/59e5f3975303222902fce955b7ad61399dfc51aa))
+- *(lumen)* Show bundled storage failure details - ([04fecfb](https://github.com/snapetech-org/seerrng/commit/04fecfb02c3fc569528a4afb9a1a8b9d92e7148b))
+- *(lumen)* Update companion runtime to nginx 1.30.7 - ([488b00c](https://github.com/snapetech-org/seerrng/commit/488b00c658c7e616f9199322b2cd55fd7f007af9))
+- *(lumen)* Restore the Classic ten-row log page size - ([cfb8f0b](https://github.com/snapetech-org/seerrng/commit/cfb8f0ba8ced60f50fc8a66aa835f68177f51cc7))
+- *(lumen)* Keep expanded details on the same log entry - ([bc5b6b4](https://github.com/snapetech-org/seerrng/commit/bc5b6b4e4f444483aa227336fa9304275e7e6625))
+- *(lumen)* Retain per-account System Logs display preferences - ([e2f11af](https://github.com/snapetech-org/seerrng/commit/e2f11af247417d0f2188a0c01828896580a59cbb))
+- *(lumen)* Preserve System Logs page bookmarks - ([3040909](https://github.com/snapetech-org/seerrng/commit/3040909f4a9c166343053a3706178b676c8576b1))
+- *(lumen)* Reflect whether scheduled jobs can be canceled - ([55a9768](https://github.com/snapetech-org/seerrng/commit/55a97688cc93be27bdc1c8bd6277ffad530ed4ea))
+- *(lumen)* Describe inherited quota limits accurately - ([0b91da5](https://github.com/snapetech-org/seerrng/commit/0b91da5440aaa0a2cd7813259cb75714f618b37b))
+- *(lumen)* Allow partial saves for unset default quotas - ([d242288](https://github.com/snapetech-org/seerrng/commit/d2422888a1b21eb26913754e032c869cf45c4ad2))
+- *(lumen)* Retry catalog requests when the server returns the wrong page - ([49f2e82](https://github.com/snapetech-org/seerrng/commit/49f2e82369fa856703bd42aab787386e9f395e78))
+- *(lumen)* Apply visibility rules to configured video shelves - ([70716af](https://github.com/snapetech-org/seerrng/commit/70716afd75b59e56872eb78641857072d9f45fdb))
+- *(lumen)* Apply visibility rules to configured Music shelves - ([264e3e1](https://github.com/snapetech-org/seerrng/commit/264e3e1ff3785e6bef0ac170b71dece1fd62712b))
+- *(lumen)* Apply discovery visibility to Music releases - ([2acc105](https://github.com/snapetech-org/seerrng/commit/2acc1051c93905508a957f955f457765b6d50bd5))
+- *(lumen)* Keep filters on Classic Trending catalogue bookmarks - ([f1b9af9](https://github.com/snapetech-org/seerrng/commit/f1b9af9b162d951527e9a1d067ab9ab713b1f07c))
+- *(lumen)* Retain Classic book discovery library selections - ([99f606e](https://github.com/snapetech-org/seerrng/commit/99f606ee1b4d5f8338433ea8d8b1214fc5a3e27a))
+- *(lumen)* Retry missing search results without repeating successful lookups - ([2081333](https://github.com/snapetech-org/seerrng/commit/208133304778e49686b7e9c4378413ed613e9000))
+- *(lumen)* Surface partial federated search responses - ([23e2cac](https://github.com/snapetech-org/seerrng/commit/23e2cac9310b6957083042757f64f268685422a9))
+- *(lumen)* Expose retry for partial search failures - ([3759256](https://github.com/snapetech-org/seerrng/commit/3759256a26b81003a602a2b96b1c06153cb6ec67))
+- *(lumen)* Paginate all search catalogs together - ([e073625](https://github.com/snapetech-org/seerrng/commit/e07362521606925365b96a53222c330fa124d4ee))
+- *(lumen)* Page video searches within their selected scope - ([e709a10](https://github.com/snapetech-org/seerrng/commit/e709a10109fb38b2400b2c994f17737cb96f86e4))
+- *(lumen)* Validate malformed discovery bookmark dates - ([2e35904](https://github.com/snapetech-org/seerrng/commit/2e3590483c6bb89b7376124fd5e0f63d82dea336))
+- *(lumen)* Reject reversed discovery date ranges - ([4e63cd9](https://github.com/snapetech-org/seerrng/commit/4e63cd90f03ce8123c77100ebe20ffac5526fd2d))
+- *(lumen)* Preserve date filters in owned discovery - ([0f66273](https://github.com/snapetech-org/seerrng/commit/0f662732c62d41245926443d9d533ce199975ac2))
+- *(lumen)* Keep supported owned sorts on the local catalog - ([b0f2710](https://github.com/snapetech-org/seerrng/commit/b0f27103d8c618e8156641a742da685110f60437))
+- *(lumen)* Make disabled 4K bookmark fallback explicit - ([e271bd1](https://github.com/snapetech-org/seerrng/commit/e271bd119dff256cfdbc5ac1ebc4992505dbd47d))
+- *(lumen)* Wait for settings before loading saved 4K discovery - ([c33bcba](https://github.com/snapetech-org/seerrng/commit/c33bcba01c4f2d89cb8d40bbb52463005b49667f))
+- *(lumen)* Query the local library for owned title searches - ([297ea80](https://github.com/snapetech-org/seerrng/commit/297ea80c7c18096ba520f75f7971a02f9eadb6ed))
+- *(lumen)* Match Classic discovery rating thresholds - ([9b8617e](https://github.com/snapetech-org/seerrng/commit/9b8617e9ff4fd39d9fecc2d26288f5c3905cb0af))
+- *(lumen)* Retry genre artwork without losing browse links - ([5316b0c](https://github.com/snapetech-org/seerrng/commit/5316b0c48e93ab053a45b825c769c7972c911ea9))
+- *(lumen)* Paint sidebar gradients only for saved colors - ([bbd0279](https://github.com/snapetech-org/seerrng/commit/bbd027996b8c5aeb9eff8f15b52952694d4a25e9))
+- *(lumen)* Use multiline styling for theme JSON - ([364e243](https://github.com/snapetech-org/seerrng/commit/364e243f1ba37879ac72cecb67f8b7c63bdd100d))
+- *(lumen)* Retain theme JSON draft across editor modes - ([230b715](https://github.com/snapetech-org/seerrng/commit/230b7153cf3f54389143699a12ee838547ca4e86))
+- *(lumen)* Merge concurrent personal theme color changes - ([cba5c57](https://github.com/snapetech-org/seerrng/commit/cba5c5713136c7e30322ef6294d2444c72e9a90d))
+- *(lumen)* Confirm saved theme colors before clearing edits - ([92f7630](https://github.com/snapetech-org/seerrng/commit/92f7630c7c0f6547a42b9dd41097dd9a6d9a7ad4))
+- *(lumen)* Wrap long release notes on narrow screens - ([a9b269f](https://github.com/snapetech-org/seerrng/commit/a9b269f55a64286c526f8fdf71117c39e34816b9))
+- *(lumen)* Select the correct initial anime continuation season - ([b7f5709](https://github.com/snapetech-org/seerrng/commit/b7f5709daa1f7b7e5258ab33c5629e54bab9b65e))
+- *(lumen)* Save exact Bookshelf links from franchise curation - ([875698a](https://github.com/snapetech-org/seerrng/commit/875698af7b6a09c723cfcf228895d0f29aeecab3))
+- *(lumen)* Preserve franchise searches and Bookshelf links - ([5316972](https://github.com/snapetech-org/seerrng/commit/531697274000dca63c6acd8c3d1bd3a6cc0b716e))
+- *(lumen)* Isolate franchise state when switching titles - ([00bf9f9](https://github.com/snapetech-org/seerrng/commit/00bf9f9451d1c2549fa4fd4a150f5a1f480468fc))
+- *(lumen)* Keep search targets from Following updates - ([2ce64c9](https://github.com/snapetech-org/seerrng/commit/2ce64c9429bac550e56508e8669acb1c4c82596c))
+- *(lumen)* Mark Following updates seen when opened - ([a6aab75](https://github.com/snapetech-org/seerrng/commit/a6aab75e71cb4054f8eb87d8041daff80e757db3))
+- *(lumen)* Preserve anime continuation search terms - ([1a89a03](https://github.com/snapetech-org/seerrng/commit/1a89a03d6cae6d050cd3fda6387d01bc0090b201))
+- *(lumen)* Retry invalid saved Game Finder searches - ([38c126c](https://github.com/snapetech-org/seerrng/commit/38c126c2e34829daee0a0b14a8dedd1375921c87))
+- *(lumen)* Preserve Game Finder results after provider failures - ([c302054](https://github.com/snapetech-org/seerrng/commit/c3020541973fbd5dcc7ebf578e3845758d88f835))
+- *(lumen)* Synchronize game search with browser history - ([5dc9ff2](https://github.com/snapetech-org/seerrng/commit/5dc9ff237c4f966fb3817d3a7b582f6170a28816))
+- *(lumen)* Retry invalid game catalog pages in place - ([a76e97d](https://github.com/snapetech-org/seerrng/commit/a76e97d7e8132517a63c309952c35912ccf12fe0))
+- *(lumen)* Recover from invalid patch search results - ([17a3adf](https://github.com/snapetech-org/seerrng/commit/17a3adff857363e32626b04237376af1c7f2ec07))
+- *(lumen)* Resolve patch base games from the catalog response - ([578260f](https://github.com/snapetech-org/seerrng/commit/578260fcd62f3af2910cf6ef7e539869e99719fe))
+- *(lumen)* Explain unavailable patch bookmark selections - ([555ffdc](https://github.com/snapetech-org/seerrng/commit/555ffdcfbd51a26aa4a9c549f9fbe63302803ee0))
+- *(lumen)* Retain explicit patch version choices in bookmarks - ([4ee475c](https://github.com/snapetech-org/seerrng/commit/4ee475c684fa4ad17fbaff015381a7a7c680793d))
+- *(lumen)* Preserve game scope in legacy patch bookmarks - ([6affc72](https://github.com/snapetech-org/seerrng/commit/6affc721dae7ac50045f0a03e3259c124e4f5269))
+- *(lumen)* Restore the console when returning from a patch - ([7201716](https://github.com/snapetech-org/seerrng/commit/7201716d3cc3c79de7d27ce4c5d167bb17e757dc))
+- *(lumen)* Retain the selected console in patch requests - ([6a954bd](https://github.com/snapetech-org/seerrng/commit/6a954bda62e31851e3b4d77371779e39506ebf72))
+- *(lumen)* Retain modern console scope in patch links - ([8a26bba](https://github.com/snapetech-org/seerrng/commit/8a26bba271efe47772419b25e6ee2082bcc6e03e))
+- *(lumen)* Explain unavailable tracking provider setup - ([2a88652](https://github.com/snapetech-org/seerrng/commit/2a88652b69686e490d2c4e310956293978791626))
+- *(lumen)* Reconnect expired library provider accounts - ([9da9ae3](https://github.com/snapetech-org/seerrng/commit/9da9ae3971c542c8bfcce8e7a4a4430115d9e87d))
+- *(lumen)* Explain rejected provider tracking updates - ([f345aa3](https://github.com/snapetech-org/seerrng/commit/f345aa35d3e827a3d0a7f558be2b7a25a7ef29d9))
+- *(lumen)* Recover from invalid episode tracking responses - ([b52ee36](https://github.com/snapetech-org/seerrng/commit/b52ee36aab30cb38d9900dcf5804e3fdeb1c13b9))
+- *(lumen)* Recover from malformed My Media responses - ([3b3094b](https://github.com/snapetech-org/seerrng/commit/3b3094bc8e2b0d7e8e3e5e3548c9d576fcfd3004))
+- *(lumen)* Keep provider library scans running while paging - ([598d805](https://github.com/snapetech-org/seerrng/commit/598d8059dd695c4c04894956f708be8a852bb495))
+- *(lumen)* Route standalone legacy Steam callbacks to the library - ([96d1d33](https://github.com/snapetech-org/seerrng/commit/96d1d33604b0e7a52ee19cf471d76bb27db46bf9))
+- *(lumen)* Preserve search parameters across bundled redirects - ([afd3e28](https://github.com/snapetech-org/seerrng/commit/afd3e28040c880f14b2dc277888e745b8063a6d3))
+- *(lumen)* Retain full supported issue search in redirects - ([798ef99](https://github.com/snapetech-org/seerrng/commit/798ef997ebb7070a3b3e99c1be05c80e31a01ab3))
+- *(lumen)* Preserve issue list filters in discussion redirects - ([14253d7](https://github.com/snapetech-org/seerrng/commit/14253d75f1e9822d60336aeb803529b75b6ef12b))
+- *(lumen)* Retain partial calendar results during retries - ([214858f](https://github.com/snapetech-org/seerrng/commit/214858f409fad76f3c1bbf0b634d8f4ca213bd89))
+- *(lumen)* Distinguish partial calendar results from empty months - ([22a666a](https://github.com/snapetech-org/seerrng/commit/22a666ab18eabcc1954ba440867a2b2e6f6a8be7))
+- *(lumen)* Recover from incomplete calendar responses - ([103fe57](https://github.com/snapetech-org/seerrng/commit/103fe571e4b4bc20a065673eeda50853981fe1ed))
+- *(lumen)* Retain release calendar filters in bundled redirects - ([c66a7b2](https://github.com/snapetech-org/seerrng/commit/c66a7b28034023231b2d005ba56c569b784ec365))
+- *(lumen)* Preserve episode selections in bundled TV redirects - ([4011647](https://github.com/snapetech-org/seerrng/commit/4011647facd152ce1bb80204ed5064328258fef8))
+- *(lumen)* Revalidate pending movies without clearing unrelated cache entries - ([fa3af00](https://github.com/snapetech-org/seerrng/commit/fa3af0000fcdf448d1e0255d0233c5ee72ccd6c4))
+- *(lumen)* Explain unavailable 4K movie playback - ([1a49c03](https://github.com/snapetech-org/seerrng/commit/1a49c03ec8af6f5bb9a7c7c2c6c5baf3cb379d75))
+- *(lumen)* Retain 4K quality in bundled series redirects - ([022d639](https://github.com/snapetech-org/seerrng/commit/022d639270092c3189533ab221c815f3b18916e6))
+- *(lumen)* Retain series bookmark anchors when changing quality - ([d0789fd](https://github.com/snapetech-org/seerrng/commit/d0789fd648499859785de1b99253184d6282e561))
+- *(lumen)* Recover from incomplete request history - ([120edb2](https://github.com/snapetech-org/seerrng/commit/120edb22e5fb2ce62ef122dc1d8fcd81be9a5bc5))
+- *(lumen)* Label requests for both book formats - ([e634794](https://github.com/snapetech-org/seerrng/commit/e634794812a584ae8e6a1ca8bf89543fe022fd2a))
+- *(lumen)* Route Classic bookmarks to My Profile - ([04de548](https://github.com/snapetech-org/seerrng/commit/04de548fda68e9b8351ef4c7860d95429c108ad1))
+- *(lumen)* Recover incomplete household request previews - ([4b57005](https://github.com/snapetech-org/seerrng/commit/4b570055ff467ada3ad1d9ae04b8583a7d8f3665))
+- *(lumen)* Recover from incomplete household watchlist previews - ([52788ed](https://github.com/snapetech-org/seerrng/commit/52788eda61ef31077d332e3802ec6d10478b0767))
+- *(lumen)* Recover from incomplete playback activity responses - ([c7c72ca](https://github.com/snapetech-org/seerrng/commit/c7c72cac4bc324d47a438d9f644c74a11155ab11))
+- *(lumen)* Explain empty playback activity - ([031581e](https://github.com/snapetech-org/seerrng/commit/031581ed91ffb98f9fe3ffb10d1f54e9620b72a4))
+- *(lumen)* Preserve household requester scope in history links - ([333e4cf](https://github.com/snapetech-org/seerrng/commit/333e4cf3540a1606f608465a53f55f9009e24e97))
+- *(lumen)* Keep compact filters within narrow pages - ([2161e13](https://github.com/snapetech-org/seerrng/commit/2161e13a8abaea4e891e3d6193d90e67f6cfca78))
+- *(lumen)* Keep the genre picker within the viewport - ([61713b4](https://github.com/snapetech-org/seerrng/commit/61713b43125b21d430e71a8c9b9fd39e0cf52c95))
+- *(lumen)* Isolate incomplete book series search responses - ([660e5ca](https://github.com/snapetech-org/seerrng/commit/660e5cacadef35c3c0aff1bf299ffd553e448891))
+- *(lumen)* Validate book rating attribution - ([7640460](https://github.com/snapetech-org/seerrng/commit/764046078790fad75514d13d3fbdece0a11d2872))
+- *(lumen)* Redirect padded Bookshelf bookmarks to book details - ([aabcd05](https://github.com/snapetech-org/seerrng/commit/aabcd05a1b81d5f6e2d774a620e8d2fb68e1f7af))
+- *(lumen)* Retain resolved title when switching book formats - ([4b9ae39](https://github.com/snapetech-org/seerrng/commit/4b9ae39ae917c40139dc984bccb1f6b439dcf76c))
+- *(lumen)* Preserve Bookshelf titles in request links - ([228c3fd](https://github.com/snapetech-org/seerrng/commit/228c3fd392ca2458564d4440ad9c2891b478473a))
+- *(lumen)* Preserve Bookshelf titles in calendar links - ([3c52023](https://github.com/snapetech-org/seerrng/commit/3c520230234f90f8c20511fe85172d780ec006e9))
+- *(lumen)* Preserve Bookshelf titles in series catalog links - ([d2db676](https://github.com/snapetech-org/seerrng/commit/d2db67651ec74db66f52f0325ecb366fa488f9f3))
+- *(lumen)* Keep Bookshelf lookup titles on catalogue cards - ([0277135](https://github.com/snapetech-org/seerrng/commit/0277135d536e5bdbb7dd018549cb8d3baab3bea2))
+- *(lumen)* Keep Bookshelf title hints when opening shared matches - ([e6ab8e9](https://github.com/snapetech-org/seerrng/commit/e6ab8e931a850bb87931e690c0bd2daa396d8be0))
+- *(lumen)* Retain Bookshelf lookup titles when switching format - ([9f8b57e](https://github.com/snapetech-org/seerrng/commit/9f8b57ee27cd52c099ea81fd660730486e9cb94f))
+- *(lumen)* Preserve Bookshelf title hints from recommendations - ([84853fd](https://github.com/snapetech-org/seerrng/commit/84853fd04b0fe1c8f813fa46b2c76014c13a9df5))
+- *(lumen)* Recover unavailable recommendation bookmarks - ([7c7fc15](https://github.com/snapetech-org/seerrng/commit/7c7fc158518e95e9d65f31f20e9c6a5c7f698e12))
+- *(lumen)* Preserve book recommendations after feedback errors - ([f0e2cc7](https://github.com/snapetech-org/seerrng/commit/f0e2cc709c8fc9cb0052d03dff9988412a047bcd))
+- *(lumen)* Honor explicit request book formats across deployments - ([fee5ebb](https://github.com/snapetech-org/seerrng/commit/fee5ebb2a902a870beffaac4da41066bce1d1f25))
+- *(lumen)* Retain standalone software request category - ([ea6fc34](https://github.com/snapetech-org/seerrng/commit/ea6fc348e6eaa6de9693430c4d9c5ef96ef524a3))
+- *(lumen)* Retain request filters on bundled redirects - ([785edbb](https://github.com/snapetech-org/seerrng/commit/785edbba128f51cdef116e50243ed3d1e3ea8e5a))
+- *(lumen)* Preserve request search and book format bookmarks - ([c98a6b0](https://github.com/snapetech-org/seerrng/commit/c98a6b0e1cf3c177799385fc109e3c895a5e0803))
+- *(lumen)* Preserve standalone user request bookmark scope - ([25dae8e](https://github.com/snapetech-org/seerrng/commit/25dae8e27125b4f481ea9036792d96c782a68b86))
+- *(lumen)* Preserve Coming Soon bookmark scope - ([338876e](https://github.com/snapetech-org/seerrng/commit/338876e796a34031c88e3ba39126ddbb8a5e8589))
+- *(lumen)* Retain Classic service category bookmarks - ([c5ca0e6](https://github.com/snapetech-org/seerrng/commit/c5ca0e6ff662b12935ff93b8f67ab870e36493ba))
+- *(lumen)* Link Classic Steam settings to the key field - ([dd1b3ac](https://github.com/snapetech-org/seerrng/commit/dd1b3ac33b03c9a932a89e054615a5cbc2a80d8d))
+- *(lumen)* Link user defaults to the permissions editor - ([ef2d75a](https://github.com/snapetech-org/seerrng/commit/ef2d75ad57bf610295742c2742429f62bcf97e6b))
+- *(lumen)* Link user defaults to category settings - ([ac3a7b3](https://github.com/snapetech-org/seerrng/commit/ac3a7b352c00190fa2f29e3d92ad04109b558391))
+- *(lumen)* Open Classic user-default bookmarks at quotas - ([4304bdb](https://github.com/snapetech-org/seerrng/commit/4304bdb669579830f92f217f7bb9a10396bb28c6))
+- *(lumen)* Route Classic service settings bookmarks - ([b432519](https://github.com/snapetech-org/seerrng/commit/b432519c76a8185d63e51282305d155c7ba1a8ac))
+- *(lumen)* Recover stale Sportarr event bookmarks - ([5883d64](https://github.com/snapetech-org/seerrng/commit/5883d64bc797bfe6d5038145709e225a8f5df538))
+- *(lumen)* Keep failed league requests ready to retry - ([234003f](https://github.com/snapetech-org/seerrng/commit/234003fdc3d8356a52266d5312a649e11623e8cd))
+- *(lumen)* Offer alternate Sportarr follow destinations - ([af25a92](https://github.com/snapetech-org/seerrng/commit/af25a924c35a81f0150df3102910767a429225d1))
+- *(lumen)* Report incomplete Whisparr discovery results - ([f918b1c](https://github.com/snapetech-org/seerrng/commit/f918b1c709fed0f48724a1f7f0b85836059e5270))
+- *(lumen)* Preserve Classic sports and adult discovery searches - ([18fa933](https://github.com/snapetech-org/seerrng/commit/18fa933957086fcf02ddd9b1d51add21225a164a))
+- *(lumen)* Check magazine request coverage before submitting - ([2b4c757](https://github.com/snapetech-org/seerrng/commit/2b4c7574e2e8599268d9a8a70d2e4309ab82cd5e))
+- *(lumen)* Preserve magazine discovery catalogue and search - ([9cf4a4a](https://github.com/snapetech-org/seerrng/commit/9cf4a4a7f4a2e4ace72439e4f632bdca2e6c223c))
+- *(lumen)* Show comic catalogue indexing and refresh results - ([b5f5776](https://github.com/snapetech-org/seerrng/commit/b5f5776ba159cfd7fa1094a1d20961a99dfc5b9f))
+- *(lumen)* Preserve Classic music discovery bookmarks - ([59616ba](https://github.com/snapetech-org/seerrng/commit/59616ba4e96a462e05be60cd71356836b58f9c03))
+- *(lumen)* Preserve book bookmark format and sorting - ([2fd4887](https://github.com/snapetech-org/seerrng/commit/2fd4887094e3964bc94cad62ceeb2190ce05ede4))
+- *(lumen)* Open Classic software searches in the catalog - ([c2ab905](https://github.com/snapetech-org/seerrng/commit/c2ab90506ca15890c4a53234c65b774b0cb5884b))
+- *(lumen)* Open filter-only music search bookmarks - ([7a69fc4](https://github.com/snapetech-org/seerrng/commit/7a69fc4ad895f8cf34ee48ba2dac3322a3221ed1))
+- *(lumen)* Show filter-only Classic search results - ([8856619](https://github.com/snapetech-org/seerrng/commit/8856619c29358e36a294e36eb7a736edc42652d9))
+- *(lumen)* Retain filters on Classic video search links - ([ecc40d6](https://github.com/snapetech-org/seerrng/commit/ecc40d61e86f8fa437d0ab3a3f3469e1c9829337))
+- *(lumen)* Honor discovery region for title content ratings - ([66a29fa](https://github.com/snapetech-org/seerrng/commit/66a29fac1c3d4df424eaebf07d0fea73f2e12665))
+- *(lumen)* Default streaming filters to the account region - ([c2dc078](https://github.com/snapetech-org/seerrng/commit/c2dc078bc40100b7569ed5bc8b409636211c29f9))
+- *(lumen)* Apply visibility defaults to Trending and Coming Soon - ([3f5784f](https://github.com/snapetech-org/seerrng/commit/3f5784f04099fe764b67f06f74fb4cc6a75126bb))
+- *(lumen)* Honor discovery visibility on the home page - ([16d1738](https://github.com/snapetech-org/seerrng/commit/16d1738f3bd766d714d73119e6a4148d7d1ab545))
+- *(lumen)* Scroll to 4K after General Settings settles - ([6829420](https://github.com/snapetech-org/seerrng/commit/6829420e3a5caa8b1bd0e4c8bf3dcdeb05999525))
+- *(lumen)* Preserve the Classic Enable 4K settings shortcut - ([b08bae1](https://github.com/snapetech-org/seerrng/commit/b08bae14d582d87e4aa9d8fae3b7943ec847fd3e))
+- *(lumen)* Open the application API key from Classic shortcuts - ([f057e16](https://github.com/snapetech-org/seerrng/commit/f057e16d76b32552a569211eb4f6512f54ba20bc))
+- *(lumen)* Open Spotify configuration from Classic bookmarks - ([527efe0](https://github.com/snapetech-org/seerrng/commit/527efe0d4c3bbe672d48914e19fb7035ddc331d2))
+- *(lumen)* Resolve legacy Bookshelf links under the bundled prefix - ([c70c776](https://github.com/snapetech-org/seerrng/commit/c70c77659fa0fbe43376e9a4b48f8d685795fdda))
+- *(lumen)* Clear sign-in link tokens from authenticated pages - ([ae0cda1](https://github.com/snapetech-org/seerrng/commit/ae0cda171d9514ca72144e29283085af8c11dfcd))
+- *(lumen)* Apply frontend lock to dotted magazine titles - ([0e89943](https://github.com/snapetech-org/seerrng/commit/0e89943807135ecba6817d73a5bea070f255f0b0))
+- *(lumen)* Open supported settings bookmarks in the default frontend - ([a589616](https://github.com/snapetech-org/seerrng/commit/a589616311d8e17ef5b937612fd31195be1373a3))
+- *(lumen)* Route personal bookmarks to the default frontend - ([c057b50](https://github.com/snapetech-org/seerrng/commit/c057b5047bc0858bc2950e0b7baa0789f464d969))
+- *(lumen)* Route catalog bookmarks to the default frontend - ([8e410df](https://github.com/snapetech-org/seerrng/commit/8e410df1f6e8f7ded9886ae05ef841bdb78bf6aa))
+- *(lumen)* Support Classic discovery links under the bundled prefix - ([544a8f0](https://github.com/snapetech-org/seerrng/commit/544a8f00abb07db2ca769de32731f75b4140f8a7))
+- *(lumen)* Retain filters on standalone user request bookmarks - ([a8a136a](https://github.com/snapetech-org/seerrng/commit/a8a136a1e61334d4df7de25ce1635e3f0e7069f8))
+- *(lumen)* Honor Classic filters on standalone request links - ([c6b2863](https://github.com/snapetech-org/seerrng/commit/c6b2863f0772636a6bc345462dcae90a429ff6e1))
+- *(lumen)* Honor Classic library filters in standalone discovery - ([2cb2b54](https://github.com/snapetech-org/seerrng/commit/2cb2b54ef2ca1988276f60733935cbeeba51fd77))
+- *(lumen)* Preserve Classic discovery library filters - ([59c94ea](https://github.com/snapetech-org/seerrng/commit/59c94ea4146e8452fad1a47b69b2ad931a65ef96))
+- *(lumen)* Preserve legacy software request filters - ([709e831](https://github.com/snapetech-org/seerrng/commit/709e831362704134742bc8471aa200535f190c83))
+- *(lumen)* Route legacy request lists to the selected frontend - ([41b4302](https://github.com/snapetech-org/seerrng/commit/41b4302b70a350637e4e728d4804956d24a957cd))
+- *(lumen)* Preserve legacy request filters under frontend lock - ([ee59a35](https://github.com/snapetech-org/seerrng/commit/ee59a355e1547b13c5ae45346e146552cfb5bab5))
+- *(lumen)* Preserve legacy watch session links - ([7340545](https://github.com/snapetech-org/seerrng/commit/73405454980b675f96f8cc079ceb596e9240d044))
+- *(lumen)* Preserve collection results when readback fails - ([4c4dbb5](https://github.com/snapetech-org/seerrng/commit/4c4dbb5298a09c3b505e638f1c0e179e0cae59e1))
+- *(lumen)* Omit referrers from artwork requests - ([72a5758](https://github.com/snapetech-org/seerrng/commit/72a5758599081a33555bbb74099fff3b50660342))
+- *(lumen)* Scope local artwork to image endpoints - ([21b094f](https://github.com/snapetech-org/seerrng/commit/21b094f7dce1d1edbe7fc4a80875457634394270))
+- *(lumen)* Wait for series request status before further actions - ([04acf13](https://github.com/snapetech-org/seerrng/commit/04acf13f7b88f1e80a2c9986724bf9a47bbde923))
+- *(lumen)* Protect unsaved download settings during setup - ([a854fb1](https://github.com/snapetech-org/seerrng/commit/a854fb1de0a24ca244a99d4210f3676bc749830a))
+- *(lumen)* Open bundled first-run setup from the home URL - ([1263ab2](https://github.com/snapetech-org/seerrng/commit/1263ab23ef8b844e32ba2d43b35caf749aefc245))
+- *(lumen)* Refresh provider settings for first-run libraries - ([bc8edc5](https://github.com/snapetech-org/seerrng/commit/bc8edc5e238306f08a41a5cbbad9bf1cf48083a2))
+- *(lumen)* Resolve native book series bookmarks - ([6fa6f96](https://github.com/snapetech-org/seerrng/commit/6fa6f964bedf82a68f27f3f6f5aa4cfe2b26ee4f))
+- *(lumen)* Route legacy media server settings bookmarks - ([279c7e7](https://github.com/snapetech-org/seerrng/commit/279c7e7b5812d87b37c01dd115d07f5d0dd9f3bc))
+- *(lumen)* Resolve legacy service settings bookmarks - ([b660cd4](https://github.com/snapetech-org/seerrng/commit/b660cd4941c34ddf799c8911b8bab7db94ea5655))
+- *(lumen)* Validate shared request cover artwork - ([b3a87a7](https://github.com/snapetech-org/seerrng/commit/b3a87a7dbb7898a35d76432eca130db4d79a2904))
+- *(lumen)* Decode comic description entities once - ([b918a42](https://github.com/snapetech-org/seerrng/commit/b918a42bac47db5ed83b678b8d1111efe3e171a1))
+- *(lumen)* Validate artwork at shared render points - ([153349b](https://github.com/snapetech-org/seerrng/commit/153349b31f6fef593f4e6fae6f7ed3234e78457c))
+- *(lumen)* Validate reader service destinations - ([4b64d2d](https://github.com/snapetech-org/seerrng/commit/4b64d2dc9c7df59c4f8353cb015727007e3f7474))
+- *(lumen)* Constrain movie trailer links to YouTube - ([4a334ec](https://github.com/snapetech-org/seerrng/commit/4a334ec32a878e888322a676b78cb6a09a61b80a))
+- *(lumen)* Validate same-origin artwork paths - ([2b074db](https://github.com/snapetech-org/seerrng/commit/2b074db5fd5c3035531795b9c69da87c7c0011f2))
+- *(lumen)* Verify TV requests in Swipe and Share - ([cfe0300](https://github.com/snapetech-org/seerrng/commit/cfe030015ffc359c4d52d84c55d5ca5799f29d4d))
+- *(lumen)* Verify shared series request responses - ([256c7d3](https://github.com/snapetech-org/seerrng/commit/256c7d3e5fd4c791e73f9fdbac53c75b42e19080))
+- *(lumen)* Verify TV collection request results - ([66b8ba5](https://github.com/snapetech-org/seerrng/commit/66b8ba5a3b308fca786c930b0cdf1bed971c2f4f))
+- *(lumen)* Confirm episode requests before reporting success - ([a82359c](https://github.com/snapetech-org/seerrng/commit/a82359c8ba72a989ad47d6f0f0a25ffd77736973))
+- *(lumen)* Preserve existing episode selections when editing requests - ([aff4f25](https://github.com/snapetech-org/seerrng/commit/aff4f25a6bd20c3315d413bbbe3f429210b64729))
+- *(lumen)* Honor advanced request permission - ([23485e6](https://github.com/snapetech-org/seerrng/commit/23485e6b68371e56b577bdaa5552c67bcaf7ec29))
+- *(lumen)* Isolate game request selections by title - ([869ac02](https://github.com/snapetech-org/seerrng/commit/869ac02f899d450928a8cf3f96d121505739dd69))
+- *(lumen)* Open legacy software bookmarks - ([e158544](https://github.com/snapetech-org/seerrng/commit/e158544c8f79f3fa9c533e4cefab8bb497c22a72))
+- *(lumen)* Serve Swipe deep links in both deployments - ([1338c91](https://github.com/snapetech-org/seerrng/commit/1338c919ad6c4b1272fd7e8f659de83d59c7e03b))
+- *(lumen)* Refresh comic download progress in place - ([c1bcca5](https://github.com/snapetech-org/seerrng/commit/c1bcca53b1e6f6be2cdebdd9134b5ad51f3c37b6))
+- *(lumen)* Display byte-based comic download progress - ([ab9e5d2](https://github.com/snapetech-org/seerrng/commit/ab9e5d25c59bbabf91e54008a5e60ddc82df8de3))
+- *(lumen)* Recover issue pagination after deletion - ([ad43086](https://github.com/snapetech-org/seerrng/commit/ad430864b04c9ff2e1ca80be7bdc88617a1e128c))
+- *(lumen)* Restore issue list filters from discussions - ([873661b](https://github.com/snapetech-org/seerrng/commit/873661bd7f10168bd5a23b374356dc8be15bcc8a))
+- *(lumen)* Preserve Whisparr destinations in request links - ([1d2f47e](https://github.com/snapetech-org/seerrng/commit/1d2f47e462ad93cda98b1d0a70e955231f023c5d))
+- *(lumen)* Preserve Whisparr scene sources - ([4fd2f44](https://github.com/snapetech-org/seerrng/commit/4fd2f4460020729b92eaeeb7a09d121fc1a94712))
+- *(lumen)* Preserve encoded catalog bookmarks - ([a4e3688](https://github.com/snapetech-org/seerrng/commit/a4e368895e8411159c4d64f7a245dc33edb1f6ec))
+- *(lumen)* Preserve native catalog bookmarks - ([add2a93](https://github.com/snapetech-org/seerrng/commit/add2a938b2480f8c6e9abccbfc04053dd1399ca1))
+- *(lumen)* Recover watchlist pagination after removal - ([272b35c](https://github.com/snapetech-org/seerrng/commit/272b35c3f522ae3791f3fca52d1f3d0aecb1a16e))
+- *(lumen)* Describe actual scheduled job frequencies - ([c9ff238](https://github.com/snapetech-org/seerrng/commit/c9ff2381d1aef652f42537e6cab5529ff680b100))
+- *(lumen)* Land on bookmarked account settings sections - ([1575af6](https://github.com/snapetech-org/seerrng/commit/1575af67eb8f4b7d1f3bb6f75e334e2cd5d4aa60))
+- *(lumen)* Resolve bundled account bookmarks - ([437d404](https://github.com/snapetech-org/seerrng/commit/437d4040b8f57331887b88da965f4931daf8bee5))
+- *(lumen)* Keep notification bookmark channel context - ([8999b65](https://github.com/snapetech-org/seerrng/commit/8999b65fbc939b4e90d529fa19170e6b44fd9f2c))
+- *(lumen)* Open native user directory bookmarks - ([a0753d5](https://github.com/snapetech-org/seerrng/commit/a0753d50a7a510fa1be5bc9f76cf53385ff6755d))
+- *(lumen)* Clarify and verify Plex account sync scope - ([5b6ed79](https://github.com/snapetech-org/seerrng/commit/5b6ed79fa3b3d0acc0e6b305b3da2a2de4d3c1ae))
+- *(lumen)* Route jobs and logs settings bookmarks - ([4611557](https://github.com/snapetech-org/seerrng/commit/4611557479fb4ec91a2fb870ef1bfecffe7da398))
+- *(lumen)* Retain system logs during refresh - ([3d4f365](https://github.com/snapetech-org/seerrng/commit/3d4f36567070982ddf4166ce0d013aeafbec7208))
+- *(lumen)* Clear stale provider discovery feed results - ([60b3317](https://github.com/snapetech-org/seerrng/commit/60b331744b6bf10cab39d5f1aadd829228b559d4))
+- *(lumen)* Keep track request rows scoped to the current query - ([b5ea858](https://github.com/snapetech-org/seerrng/commit/b5ea85812b4e0e66a0bfcb8db6946361c9c6811a))
+- *(lumen)* Consume native Share image handoffs - ([c68ef3f](https://github.com/snapetech-org/seerrng/commit/c68ef3ff1fc903d3d7fd5de7c8113dd10766974c))
+- *(lumen)* Preserve Share and provider bookmark inputs - ([649bc39](https://github.com/snapetech-org/seerrng/commit/649bc3920a7c67d96d1feb6db15220cc314f3412))
+- *(lumen)* Respect provider discovery retry timing - ([64188be](https://github.com/snapetech-org/seerrng/commit/64188bee72f784158b268bd8a9a000684398397d))
+- *(lumen)* Link exact franchise updates - ([4d5e9e1](https://github.com/snapetech-org/seerrng/commit/4d5e9e1da5ea2ae88439fe36d0d7797dda89d54b))
+- *(lumen)* Retain association bookmark filters - ([03b879b](https://github.com/snapetech-org/seerrng/commit/03b879b61714b67dfb6a7e26c871858937a8657a))
+- *(lumen)* Preserve native search bookmarks - ([a05b487](https://github.com/snapetech-org/seerrng/commit/a05b4877688a0ec04d9db5add7caefc2d606fe2b))
+- *(lumen)* Preserve companion video discovery filters - ([2a37335](https://github.com/snapetech-org/seerrng/commit/2a37335115e4fe5b52847d56bbf72635e7f7d23a))
+- *(lumen)* Preserve trending collection identities - ([75f0813](https://github.com/snapetech-org/seerrng/commit/75f081354185e3c7a8a8219529ec97c0fe5c6bb4))
+- *(lumen)* Preserve companion workflow bookmarks - ([0795e9d](https://github.com/snapetech-org/seerrng/commit/0795e9d93a29010d26c42e06cada68487e57121c))
+- *(lumen)* Preserve native workflow destinations - ([b220430](https://github.com/snapetech-org/seerrng/commit/b220430398a7e4ab0876523afcea92d5522a4cee))
+- *(lumen)* Preserve native video credit links - ([516b6ba](https://github.com/snapetech-org/seerrng/commit/516b6ba5ea45a508921ef32edf6a16982a44f97d))
+- *(lumen)* Preserve title links under frontend lock - ([e96e88c](https://github.com/snapetech-org/seerrng/commit/e96e88c4504fff3ef2a5b2a319140d98cddbd995))
+- *(lumen)* Preserve discovery links under frontend lock - ([525052c](https://github.com/snapetech-org/seerrng/commit/525052c04fbc0e8c951a7d8627b614dfe1feba35))
+- *(lumen)* Retry failed discovery pages directly - ([2bb4b7f](https://github.com/snapetech-org/seerrng/commit/2bb4b7f35e69c7c4ef3c5089d381e2fd03f99419))
+- *(lumen)* Simplify discovery failure recovery - ([8e396c0](https://github.com/snapetech-org/seerrng/commit/8e396c01a5192ed5c3bcb187898e8acb82060560))
+- *(lumen)* Preserve shared subject tag filters - ([02601aa](https://github.com/snapetech-org/seerrng/commit/02601aa8c694f7e84c83b58176c4b3372f2fac67))
+- *(lumen)* Recover independent Coming Soon feeds - ([9148694](https://github.com/snapetech-org/seerrng/commit/9148694c9716c8d85619a10a06eb48f08c22837e))
+- *(lumen)* Report accepted seasons for quick requests - ([d3b5232](https://github.com/snapetech-org/seerrng/commit/d3b5232dd2e60ba28190e2c8ac639e6b54c1dd6a))
+- *(lumen)* Report accepted series request seasons - ([2da4566](https://github.com/snapetech-org/seerrng/commit/2da4566aaa8187784402fa70a9c82bc113e01fc6))
+- *(lumen)* Resolve titles for directly linked requests - ([4a77f65](https://github.com/snapetech-org/seerrng/commit/4a77f6544279210e7e4e6bba7d6954cd18b760f7))
+- *(lumen)* Align Following rows with shared list spacing - ([a8cdfbe](https://github.com/snapetech-org/seerrng/commit/a8cdfbee28e5b042489b4ecf2fbadce99c5a6b28))
+- *(release)* Validate unpublished Lumen and security notes - ([acc37ff](https://github.com/snapetech-org/seerrng/commit/acc37ffef292d289edb016858f283b565f2c82d7))
+- *(requests)* Type quota-denial API responses - ([2e8fca9](https://github.com/snapetech-org/seerrng/commit/2e8fca9bddbe766baf2ecd5d115364769b76cc32))
+- *(tv)* Fall back for failed request seasons - ([3c52d30](https://github.com/snapetech-org/seerrng/commit/3c52d30e23b2cb3082b02118afac42d0483105e4))
+
+### 📖 Documentation
+- *(api)* Declare the quota-denial response code - ([ba2844e](https://github.com/snapetech-org/seerrng/commit/ba2844e70b9eac4c8bc5afcfc65973f05cc2c50c))
+- *(lumen)* Retire request status parity gap - ([3edc4e6](https://github.com/snapetech-org/seerrng/commit/3edc4e6578d1526e01093d567899e555b785ecf2))
+- *(lumen)* Track interface localization parity gap - ([7cb34b2](https://github.com/snapetech-org/seerrng/commit/7cb34b25d104652487f451e7d1121c33ef7ae331))
+- *(lumen)* Refresh request retry parity status - ([5c53cca](https://github.com/snapetech-org/seerrng/commit/5c53cca587a18031df0986e42f56efdf0b2d6ffa))
+- *(lumen)* Refresh bundled watchlist parity - ([a4b839d](https://github.com/snapetech-org/seerrng/commit/a4b839d145db5148dee86c72e74e022730f216b5))
+- *(lumen)* Align override parity with native - ([616235f](https://github.com/snapetech-org/seerrng/commit/616235f88940ccec8783e05b302928db5689a994))
+- *(lumen)* Retire stale workflow gaps - ([6bcbb35](https://github.com/snapetech-org/seerrng/commit/6bcbb354a82aa88f3c28a963d5aa8922fd59867a))
+- *(lumen)* Retain collection viewport evidence - ([af50e45](https://github.com/snapetech-org/seerrng/commit/af50e45a309ab12f69f59820b62efa2f2e41b4d4))
+- *(lumen)* Record collection viewport verification - ([ddb1d08](https://github.com/snapetech-org/seerrng/commit/ddb1d08a35fbf23ca13749765f2a6f993fa4819a))
+- *(lumen)* Reconcile book parity inventory - ([a8ad613](https://github.com/snapetech-org/seerrng/commit/a8ad61399fe7d5dc76ee5dcac52f6e596735d059))
+- *(lumen)* Reconcile bulk book parity ledger - ([eae9f7d](https://github.com/snapetech-org/seerrng/commit/eae9f7dc1beccee1fb0449fbd52397626ce322f2))
+- *(lumen)* Reconcile subject tag parity status - ([a478948](https://github.com/snapetech-org/seerrng/commit/a47894874dd36779aeee0c2ec477184090a0fefb))
+- *(lumen)* Reconcile collection parity status - ([538399f](https://github.com/snapetech-org/seerrng/commit/538399f2f1d4411cbed187b4d5b9d8af74675e78))
+- *(lumen)* Clarify build checkpoint revisions - ([5009a26](https://github.com/snapetech-org/seerrng/commit/5009a26d21f4851ecd74794b2358b57a03bf9585))
+- *(lumen)* Record regression checkpoint - ([cb1bd95](https://github.com/snapetech-org/seerrng/commit/cb1bd95f67014acac20e6fbc2542eac4e5bfcb66))
+- *(lumen)* Record software history viewport acceptance - ([0ccf0ad](https://github.com/snapetech-org/seerrng/commit/0ccf0add9f763fd5e817b24b41ed4ca4952a8c71))
+- *(lumen)* Reconcile account parity inventory - ([ab3f746](https://github.com/snapetech-org/seerrng/commit/ab3f7469be8f088b4efb5b6b10ef876419fb4ad7))
+- *(lumen)* Reconcile blocklist parity inventory - ([9959485](https://github.com/snapetech-org/seerrng/commit/99594854875784b231354c55f85a727f41546eb6))
+- *(lumen)* Correct watch session coverage - ([52bb11f](https://github.com/snapetech-org/seerrng/commit/52bb11fad9da5ee980c16bb8401e86dcf92a33eb))
+- *(lumen)* Refresh parity route inventory - ([1046ca7](https://github.com/snapetech-org/seerrng/commit/1046ca7aeadbde138ed5505310eac4c7547861bc))
+- *(lumen)* Retire covered media server gap - ([ca34826](https://github.com/snapetech-org/seerrng/commit/ca34826235e891feac7bb951c4d35fcab3ea8e1c))
+- *(lumen)* Verify paired companion branding migration - ([31fb587](https://github.com/snapetech-org/seerrng/commit/31fb587ed06fbac9a9f910c7fbbcfc75665f8e89))
+- *(lumen)* Verify bundled Administration search - ([9b9db48](https://github.com/snapetech-org/seerrng/commit/9b9db4820737f7f44220c6d951de4ecfc9d7a686))
+- *(lumen)* Verify bundled ten-row log bookmarks - ([ab3b9b8](https://github.com/snapetech-org/seerrng/commit/ab3b9b83eb492af9a2fa892f1ce850150f39bff8))
+- *(lumen)* Verify bundled log details after a real refresh - ([03c76f9](https://github.com/snapetech-org/seerrng/commit/03c76f9919581889e3ebe4ba0431fe1cf9382417))
+- *(lumen)* Verify bundled System Logs preferences - ([fbc9de0](https://github.com/snapetech-org/seerrng/commit/fbc9de0b4dc851442d32aa9caa4669405de0a743))
+- *(lumen)* Verify System Logs page layout after bookmark fix - ([bc4bfed](https://github.com/snapetech-org/seerrng/commit/bc4bfedc81c744707cb9126bc194efb160092429))
+- *(lumen)* Verify System Logs bookmarks with the real API - ([341a096](https://github.com/snapetech-org/seerrng/commit/341a0961a0fdf265700ec52e29405ade9e2d7a5e))
+- *(lumen)* Verify job enable failure recovery in both deployments - ([0663a31](https://github.com/snapetech-org/seerrng/commit/0663a317870039a4787c54f885e566000e203844))
+- *(lumen)* Verify disabled schedule edits in both deployments - ([15d2d4d](https://github.com/snapetech-org/seerrng/commit/15d2d4dfba7527a6cbc6edc54c56b8d9ed8208b7))
+- *(lumen)* Verify bundled job cancellation availability - ([702696e](https://github.com/snapetech-org/seerrng/commit/702696ecfa231aade0456f445ed94b723e7f63c1))
+- *(lumen)* Verify Scheduled Jobs controls against the real API - ([29a5f6f](https://github.com/snapetech-org/seerrng/commit/29a5f6fb6e6822f97005f2f5449fe23270b93668))
+- *(lumen)* Verify bundled quota labels with real settings - ([15fe709](https://github.com/snapetech-org/seerrng/commit/15fe70994e3e40af22c695a153940f1e55c0aab2))
+- *(lumen)* Verify household quota overrides and reset - ([0e0ad4c](https://github.com/snapetech-org/seerrng/commit/0e0ad4c98eb71d259fb2ce4a0ed32547d2557fd3))
+- *(lumen)* Verify bundled wrong-page recovery - ([9b5ff64](https://github.com/snapetech-org/seerrng/commit/9b5ff64000ac6982796f05d4d2311137d16c100d))
+- *(lumen)* Verify Coming Soon paging with real API routes - ([e6871a6](https://github.com/snapetech-org/seerrng/commit/e6871a6ed00cf7241c2a3062c9f87eba92df626d))
+- *(lumen)* Verify configured video shelves in the bundle - ([ccfef0f](https://github.com/snapetech-org/seerrng/commit/ccfef0f33b90f76dc7cbf96a65d1dd8072502d21))
+- *(lumen)* Verify configured Music shelves in the bundle - ([750e95e](https://github.com/snapetech-org/seerrng/commit/750e95e2e2404ab37e5a090ea869984a44f0eaff))
+- *(lumen)* Verify exact artist and FLAC against live MusicBrainz - ([3e14e13](https://github.com/snapetech-org/seerrng/commit/3e14e13fb5d9b3a3bbf2f44945877829b07dce64))
+- *(lumen)* Verify exact artist picker against live MusicBrainz - ([e1f44ba](https://github.com/snapetech-org/seerrng/commit/e1f44ba0f2762ab9ce68ff9d632bfd07377110c3))
+- *(lumen)* Verify Trending bookmarks after sign-in - ([442fcb7](https://github.com/snapetech-org/seerrng/commit/442fcb7df5cb07252a27a23a2d8590573db142ce))
+- *(lumen)* Verify book library bookmarks in both deployments - ([0a44a99](https://github.com/snapetech-org/seerrng/commit/0a44a99b6c4c94b9f2498e0b6a857d538c46bb08))
+- *(lumen)* Verify more administration bookmarks with real sessions - ([641f49d](https://github.com/snapetech-org/seerrng/commit/641f49df624a58cff695272cee673efbe9dae8c4))
+- *(lumen)* Verify scheduled jobs bookmark authorization - ([d89e110](https://github.com/snapetech-org/seerrng/commit/d89e110071c962b62553a822afa21fc780c155c3))
+- *(lumen)* Verify companion software bookmarks with a real session - ([10aed6c](https://github.com/snapetech-org/seerrng/commit/10aed6ca68e626e9ee68a778101e4b246af2fb72))
+- *(lumen)* Verify software bookmarks with a real session - ([26f27a9](https://github.com/snapetech-org/seerrng/commit/26f27a9170be2844dd2e9c98ea911a70e90bc76e))
+- *(lumen)* Verify bundled personal overlay colors - ([85b2c6c](https://github.com/snapetech-org/seerrng/commit/85b2c6cf05ffdc32043a8c69afe527863b309d20))
+- *(lumen)* Record matched personal theme renders - ([e4c8b27](https://github.com/snapetech-org/seerrng/commit/e4c8b2742bf523dc22bd200af545064c35939f8b))
+- *(lumen)* Record bundled theme merge verification - ([c3ad2bc](https://github.com/snapetech-org/seerrng/commit/c3ad2bc0fb14316b387c26d19bf2bf7aa9158b9f))
+- *(lumen)* Prepare valid release notes for parity work - ([4d32ed2](https://github.com/snapetech-org/seerrng/commit/4d32ed291b153b79d40bdd2d34a229c2502f157c))
+- *(lumen)* Verify About update links in both deployments - ([62de93c](https://github.com/snapetech-org/seerrng/commit/62de93c3de3aa342c47b6431d1f85964863a16a4))
+- *(lumen)* Record live Markdown release note renders - ([cc7e67a](https://github.com/snapetech-org/seerrng/commit/cc7e67a74715098a538e66a2ca60c55c89c37334))
+- *(lumen)* Record production Markdown release note verification - ([156f46d](https://github.com/snapetech-org/seerrng/commit/156f46dc8746a3cec1c4d996678e3d12d3fe1df6))
+- *(lumen)* Verify matched biography text wrapping - ([aab2fcf](https://github.com/snapetech-org/seerrng/commit/aab2fcf48aa25c59e88ec19a95fe507a44d20a7c))
+- *(lumen)* Record standalone production wrapping checks - ([39a49c5](https://github.com/snapetech-org/seerrng/commit/39a49c510817cb19c3be9a141257f10d9c289911))
+- *(lumen)* Verify About release history in production deployments - ([6b80cc5](https://github.com/snapetech-org/seerrng/commit/6b80cc57d5f51e26a6687c4ee62aa4422af042e5))
+- *(lumen)* Record bundled continuation season checks - ([0f7a7a6](https://github.com/snapetech-org/seerrng/commit/0f7a7a629d5eac9d01f027972551bd94b82b6b84))
+- *(lumen)* Record bundled continuation estimate checks - ([16e3ccc](https://github.com/snapetech-org/seerrng/commit/16e3ccc981024e6041f8f63dbc355c097f4113d7))
+- *(lumen)* Record bundled and live AniList continuation checks - ([f885b0f](https://github.com/snapetech-org/seerrng/commit/f885b0feabb9e07f0d9ee36edc7284f03d2bb31e))
+- *(lumen)* Record live AniList franchise identity checks - ([516aa0f](https://github.com/snapetech-org/seerrng/commit/516aa0f5d94ab9767e3dc6891d1ca3d9c676d1e5))
+- *(lumen)* Verify live AniList feed fields and cover delivery - ([9a8642e](https://github.com/snapetech-org/seerrng/commit/9a8642e6bb639e5e7075c6a41da8083da993ba1d))
+- *(lumen)* Record live AniList cover proxy verification - ([aec0d8a](https://github.com/snapetech-org/seerrng/commit/aec0d8a1d2509a53aa3d00cdeab5e4232e730989))
+- *(lumen)* Record bundled AniList cover verification - ([c4345a0](https://github.com/snapetech-org/seerrng/commit/c4345a01d3a6a632196cf30c58fc23b2f733c27b))
+- *(lumen)* Record bundled AniList discovery verification - ([3f7a595](https://github.com/snapetech-org/seerrng/commit/3f7a5959cddb9ae09424c9aaa95a96f1e8a2d067))
+- *(lumen)* Record bundled franchise game curation checks - ([501d51f](https://github.com/snapetech-org/seerrng/commit/501d51fad7f306a159661a9b26bdd9a4c02c1223))
+- *(lumen)* Record bundled franchise link verification - ([68b75cd](https://github.com/snapetech-org/seerrng/commit/68b75cda04e0202b407048508b88ba0d22986af0))
+- *(lumen)* Record bundled anime continuation checks - ([6543f03](https://github.com/snapetech-org/seerrng/commit/6543f033f2d3429e3dea30b85819c6dc734a0472))
+- *(lumen)* Record bundled discovery follow verification - ([71a134b](https://github.com/snapetech-org/seerrng/commit/71a134b316360dd802698346acdb29b491cd53e6))
+- *(lumen)* Reconcile household and recommendation parity evidence - ([217af06](https://github.com/snapetech-org/seerrng/commit/217af0600410eb905c3a9a557eb00cc63c73921a))
+- *(lumen)* Audit personal discovery account parity - ([cc6bbc0](https://github.com/snapetech-org/seerrng/commit/cc6bbc003b629888ead0c571a6f458e2994ef49b))
+- *(lumen)* Record server authorization checks - ([a675fdb](https://github.com/snapetech-org/seerrng/commit/a675fdb41dc0696ce57bdf4fa44db40aca216894))
+- *(lumen)* Record bundled browser regression results - ([f2040bf](https://github.com/snapetech-org/seerrng/commit/f2040bfa5df0a5106de9e5d11b18fe0f444f1314))
+- *(lumen)* Record full desktop and iPhone regression results - ([670b2bc](https://github.com/snapetech-org/seerrng/commit/670b2bcb17aff005105732e12d9c5e8bf274f25f))
+- *(lumen)* Clarify zero-value request quota settings - ([1dde576](https://github.com/snapetech-org/seerrng/commit/1dde5760a2b5b50f6d352fb9ebfa19061317e246))
+- *(lumen)* Verify Classic watch invites through bundled sign-in - ([2086793](https://github.com/snapetech-org/seerrng/commit/2086793f9ffcc045e192c5e9d45e3f4324d89083))
+- *(lumen)* Qualify sign-in links through nginx and CSRF - ([99e67b8](https://github.com/snapetech-org/seerrng/commit/99e67b86d1892c11495d96e97093036cf9f334b8))
+- *(lumen)* Verify sign-in links against real sessions - ([cde41e7](https://github.com/snapetech-org/seerrng/commit/cde41e72bfcf1313a026056203aff79c58af9e33))
+- *(lumen)* Record bookmark and sign-in parity evidence - ([42b2ac0](https://github.com/snapetech-org/seerrng/commit/42b2ac006814df8f94e21e351aca43c840e844a1))
+- *(lumen)* Record bundled setup category validation - ([1543b83](https://github.com/snapetech-org/seerrng/commit/1543b832b132df3f3b3cd6869892af0a4a0e9003))
+- *(lumen)* Identify remaining native workflow entry points - ([6d2acb6](https://github.com/snapetech-org/seerrng/commit/6d2acb6214f5aa850f77f4388935cb434d0e2001))
+- *(lumen)* Inventory native workflow parity - ([d03070b](https://github.com/snapetech-org/seerrng/commit/d03070ba03adfc122b6ddef93fb221711b32a41a))
+- *(release)* Validate Lumen release notes - ([f676032](https://github.com/snapetech-org/seerrng/commit/f67603299202058647e01027a07f25320e825e44))
+- *(release)* Place unreleased Lumen attribution in the current section - ([3ef1170](https://github.com/snapetech-org/seerrng/commit/3ef117030074f98a2a4f4f1c135221f8563eda1b))
+- *(release)* Add metadata to unreleased Lumen and security notes - ([94ff97d](https://github.com/snapetech-org/seerrng/commit/94ff97d46d5216954dc9bcf244247718562b6d90))
+- *(release)* Use valid fragment metadata - ([679c003](https://github.com/snapetech-org/seerrng/commit/679c0030a08b8a8e3c70b62648e62a2c84ed6344))
+- *(release)* Record advisory withdrawal as a new fragment - ([ef0e2ee](https://github.com/snapetech-org/seerrng/commit/ef0e2ee5a60edcfeb265f3a3ef81d67796798319))
+- *(release)* Summarize recent Lumen workflow coverage - ([d5bc7b0](https://github.com/snapetech-org/seerrng/commit/d5bc7b05d8402662200f2212171c48afdf436fdd))
+- Record GitHub-managed CodeQL setup - ([814facb](https://github.com/snapetech-org/seerrng/commit/814facbe7b3d53eacccc9757cf5191396ce18a26))
+
+### ⚡ Performance
+- *(lumen)* Load Game Finder only on its route - ([cab6f9a](https://github.com/snapetech-org/seerrng/commit/cab6f9ae8917762b0f5e8e0f1eb8429e5d6a9949))
+
+### 🧪 Testing
+- *(auth)* Verify sign-in links preserve an existing session - ([09b755e](https://github.com/snapetech-org/seerrng/commit/09b755e8a77958f485766d7088bbb500cbeedb4f))
+- *(ci)* Guard owner PR validation trust boundaries - ([870693a](https://github.com/snapetech-org/seerrng/commit/870693aebd8aef80e4feca28fdd672682e6c3990))
+- *(franchise)* Verify AniList relation identities in API responses - ([4bbfe2f](https://github.com/snapetech-org/seerrng/commit/4bbfe2f47d7b9c48f4ea38f9586c4bcf9b25802a))
+- *(franchise)* Verify authorized Lumen link persistence - ([9e5ad70](https://github.com/snapetech-org/seerrng/commit/9e5ad703211a923b27b5c20fbdb70277b0bf579b))
+- *(lumen)* Cover Arabic tracking accounts - ([1720773](https://github.com/snapetech-org/seerrng/commit/1720773db8cd2ccdcf55ab31512b6298438e84a3))
+- *(lumen)* Match linked account visual state - ([b33f8e3](https://github.com/snapetech-org/seerrng/commit/b33f8e3eb4bbb2d970b182d5895640bb50d5bab1))
+- *(lumen)* Cover per-user game navigation gate - ([135f424](https://github.com/snapetech-org/seerrng/commit/135f4240bdd932a6a5bb2ea4a7c5363a7fed29f8))
+- *(lumen)* Verify genre artwork in directories - ([c4264fa](https://github.com/snapetech-org/seerrng/commit/c4264fae99809085cade31ff2611fc022349d8b0))
+- *(lumen)* Verify reader issue report payloads - ([8d079ff](https://github.com/snapetech-org/seerrng/commit/8d079ffac1ad4e7f6daf80df47437b224e7867e3))
+- *(lumen)* Cover reader issue reporting - ([f9dea2b](https://github.com/snapetech-org/seerrng/commit/f9dea2b0322dcddb5420f75c19e48891bb647af0))
+- *(lumen)* Cover request retry permissions - ([eca0e54](https://github.com/snapetech-org/seerrng/commit/eca0e54d23d3d53afd0330205d74cbdf53ac90f9))
+- *(lumen)* Cover optional catalog navigation - ([578ff79](https://github.com/snapetech-org/seerrng/commit/578ff7939950c710214d0f14f16e04fbc968fea4))
+- *(lumen)* Qualify audiobook detail downloads - ([783d49a](https://github.com/snapetech-org/seerrng/commit/783d49a86a5c74981981a53c50e745b983530cef))
+- *(lumen)* Qualify reader detail downloads - ([4eeb9f3](https://github.com/snapetech-org/seerrng/commit/4eeb9f3bea15ad9884a7d853071537154d2ef4b5))
+- *(lumen)* Cover movie and series genre directories - ([3a36818](https://github.com/snapetech-org/seerrng/commit/3a36818fc6f8fcfacd645b142b2bb7094f83e36a))
+- *(lumen)* Cover comic poster watchlist identity - ([6aabc7f](https://github.com/snapetech-org/seerrng/commit/6aabc7fbc6b3e9b23f2954e9c7ad35158ce803e6))
+- *(lumen)* Qualify poster watchlist on bundled mount - ([4856525](https://github.com/snapetech-org/seerrng/commit/4856525d6be3ff4f7945d768ebc11f181b93f910))
+- *(lumen)* Qualify issues and blocklist bundle - ([ecd84f1](https://github.com/snapetech-org/seerrng/commit/ecd84f1fcd979b7226d5846a3b915c43debe91d5))
+- *(lumen)* Qualify Coming Soon on bundled mount - ([48e5d02](https://github.com/snapetech-org/seerrng/commit/48e5d02588ef04efc137af575e03e853a400bb08))
+- *(lumen)* Qualify calendar on bundled mount - ([2e52711](https://github.com/snapetech-org/seerrng/commit/2e527118c8cbabb93c9f114a5d6773133e2dfa54))
+- *(lumen)* Cover browser push registration - ([8c2b3c0](https://github.com/snapetech-org/seerrng/commit/8c2b3c0ce894532f4a6c2feecac469e45978a07d))
+- *(lumen)* Qualify watchlist on bundled mount - ([03835fb](https://github.com/snapetech-org/seerrng/commit/03835fbc21f7bbec3a8be6fbd899b24855a2e1a5))
+- *(lumen)* Qualify navigation and display widths - ([b74b9dc](https://github.com/snapetech-org/seerrng/commit/b74b9dcdfde65630f7963b687fc7de5b22ec52c5))
+- *(lumen)* Qualify admin operations in bundle - ([a56ca5d](https://github.com/snapetech-org/seerrng/commit/a56ca5d322984952d31695eeb540f1b31daded66))
+- *(lumen)* Qualify setup in bundle - ([9ad2d96](https://github.com/snapetech-org/seerrng/commit/9ad2d96e335836ff1df816ab880d5a6c05db4715))
+- *(lumen)* Qualify watch sessions in bundle - ([e3b2e70](https://github.com/snapetech-org/seerrng/commit/e3b2e70f315bb26820bc7379325ee0ba407c58ff))
+- *(lumen)* Qualify fresh bundle workflows - ([768f308](https://github.com/snapetech-org/seerrng/commit/768f3084ebd61315be1e196f63c74e0216eb1093))
+- *(lumen)* Qualify override rules in bundle - ([b074c0e](https://github.com/snapetech-org/seerrng/commit/b074c0e751748a201971755388d159afa9384399))
+- *(lumen)* Qualify account bookmarks in bundle - ([0345654](https://github.com/snapetech-org/seerrng/commit/0345654deb9e0d791be3c216b5ee574cf858cdea))
+- *(lumen)* Qualify managed users in bundle - ([1a02415](https://github.com/snapetech-org/seerrng/commit/1a02415b92f9ab6ce84ee544f3ee1944ba0a11d6))
+- *(lumen)* Qualify account flows in bundle - ([116218e](https://github.com/snapetech-org/seerrng/commit/116218e05b8163de6afe216f04b770a64e6d1d94))
+- *(lumen)* Qualify acquisition flows in bundle - ([7dadf28](https://github.com/snapetech-org/seerrng/commit/7dadf28c2d0d4ff711dc62d41adfc6aaad1ee0a5))
+- *(lumen)* Qualify request flows in bundled mount - ([21df0bc](https://github.com/snapetech-org/seerrng/commit/21df0bc1e0f2f5905c99f8e58a66e3679b82720c))
+- *(lumen)* Cover focused request moderation - ([c86f9dc](https://github.com/snapetech-org/seerrng/commit/c86f9dcf3e3be47ca3fea5e2ae0d2ba56f1291b2))
+- *(lumen)* Cover reader shelves for book groups - ([96d10af](https://github.com/snapetech-org/seerrng/commit/96d10afb4e23c589529683b73cb7486b3ca5cf24))
+- *(lumen)* Qualify collection flows in bundled mount - ([43c80dd](https://github.com/snapetech-org/seerrng/commit/43c80dda31021ecc1b4b30bb6e536150deaee0d0))
+- *(lumen)* Verify adult navigation permissions - ([5120127](https://github.com/snapetech-org/seerrng/commit/512012732297865c92da2b4c1a1cde6a329f2c06))
+- *(lumen)* Cover poster request permissions - ([60f385f](https://github.com/snapetech-org/seerrng/commit/60f385f8d0fbedf3c795a49d4a0249065310e599))
+- *(lumen)* Verify Share navigation permissions - ([23c38eb](https://github.com/snapetech-org/seerrng/commit/23c38eb532020b879d3a7966ecc33a82ef14a981))
+- *(lumen)* Cover software swipe categories - ([4432e09](https://github.com/snapetech-org/seerrng/commit/4432e09affd407b9fa71cf3eb796ef5619590cb4))
+- *(lumen)* Verify software history narrow layout - ([a364f3a](https://github.com/snapetech-org/seerrng/commit/a364f3a13418aba59cb983d3d29a46970413e0ec))
+- *(lumen)* Cover software request management actions - ([2b5b5fe](https://github.com/snapetech-org/seerrng/commit/2b5b5feeba6a7179b66e5d7ba7a5deee4856c94a))
+- *(lumen)* Cover software request history permissions - ([4d88ce5](https://github.com/snapetech-org/seerrng/commit/4d88ce59bb6eaefef503a26a811654008a811738))
+- *(lumen)* Verify saved item mobile recovery layout - ([0ed8c1d](https://github.com/snapetech-org/seerrng/commit/0ed8c1d15a2f28ccf46df3535707da0b1af83ef0))
+- *(lumen)* Cover unavailable media server saved states - ([ea8416d](https://github.com/snapetech-org/seerrng/commit/ea8416dcc2652367f16594056bc56ef2e2bebf77))
+- *(lumen)* Cover media admin permissions [release-note: none] - ([add69fd](https://github.com/snapetech-org/seerrng/commit/add69fd83daf2442573e70ef6d39d8a531d25bdb))
+- *(lumen)* Verify media settings save recovery [release-note: none] - ([6bcd0e8](https://github.com/snapetech-org/seerrng/commit/6bcd0e8fed0cd31d0a011fba85ac9c8ba1012d70))
+- *(lumen)* Verify preference save recovery - ([eaa23be](https://github.com/snapetech-org/seerrng/commit/eaa23be9619c0d6cdf73383f8166587e17415959))
+- *(lumen)* Cover account permission roles - ([eb57532](https://github.com/snapetech-org/seerrng/commit/eb57532103fd1965f79f4f858a371b06c65eeea6))
+- *(lumen)* Cover focused request cancellation - ([8e8c084](https://github.com/snapetech-org/seerrng/commit/8e8c084c82fdc80a9eb435e6ebad950af3e45331))
+- *(lumen)* Cover cross-media poster watchlists - ([c1fc5a6](https://github.com/snapetech-org/seerrng/commit/c1fc5a60bd404c9a1a2d0beca026a4f248b3104e))
+- *(lumen)* Cover cross-media Blocklist identities - ([28fd5e9](https://github.com/snapetech-org/seerrng/commit/28fd5e95b8a1e440eaab66b7f8bf956e61d280e7))
+- *(lumen)* Verify Swipe software search cursors - ([e323d75](https://github.com/snapetech-org/seerrng/commit/e323d75fb1d8bd547724960e2bb977e36033c0c9))
+- *(lumen)* Verify saved frontend choices across restart - ([8a36af8](https://github.com/snapetech-org/seerrng/commit/8a36af87ee4024ecd631f89369df9b93b9f7a4cd))
+- *(lumen)* Measure genre picker rows relative to their surface - ([6931d1e](https://github.com/snapetech-org/seerrng/commit/6931d1ea07e273a895436a46d9d0ec7ef6013cb9))
+- *(lumen)* Align availability and collection fixtures with search - ([80c088b](https://github.com/snapetech-org/seerrng/commit/80c088b3806fdce66d66b74161332790e58b36ab))
+- *(lumen)* Verify companion override rule management - ([2a0c1bd](https://github.com/snapetech-org/seerrng/commit/2a0c1bd857caabec699232e1f2ed0d6147c44b0a))
+- *(lumen)* Verify software bookmark requester isolation - ([df426fd](https://github.com/snapetech-org/seerrng/commit/df426fdd5522a397ccf61e4dfa393803a7a46c2c))
+- *(lumen)* Verify theme color readback and bundled settings - ([21c2a7e](https://github.com/snapetech-org/seerrng/commit/21c2a7ea243de3241c6fb84e58ed7a17b9abc5f3))
+- *(lumen)* Verify Account Settings in bundled deployment - ([ee41af3](https://github.com/snapetech-org/seerrng/commit/ee41af377ec6270ee9594b072c16b0d298b400ab))
+- *(lumen)* Verify shared long prose in bundled build - ([d29d048](https://github.com/snapetech-org/seerrng/commit/d29d048e6db4820306c472c93588b6bb4fc7d644))
+- *(lumen)* Verify provider match explanations in both deployments - ([9485fba](https://github.com/snapetech-org/seerrng/commit/9485fbabc80825f4c00bb11bf849cf2801270bed))
+- *(lumen)* Verify provider discovery in both deployments - ([7ff8902](https://github.com/snapetech-org/seerrng/commit/7ff8902b80feff78deec2de7f72a01106b1d222a))
+- *(lumen)* Verify book follows preserve narration selection - ([5e7576f](https://github.com/snapetech-org/seerrng/commit/5e7576f70ca15de10fae5849844fd7f8f376a9bd))
+- *(lumen)* Verify Following in both deployments - ([361d217](https://github.com/snapetech-org/seerrng/commit/361d21757c7a74805691bde8e27e983e81c0a76e))
+- *(lumen)* Verify profiles and book recommendations in both deployments - ([edea61d](https://github.com/snapetech-org/seerrng/commit/edea61df35748a178d57823d13cfe67359d402cf))
+- *(lumen)* Verify Game Finder in both deployments - ([9ef3682](https://github.com/snapetech-org/seerrng/commit/9ef3682d6f3e8274f5abda275ab22f027b232948))
+- *(lumen)* Verify tracking workflows in the bundled frontend - ([5970721](https://github.com/snapetech-org/seerrng/commit/597072189573af7a49b85bf29e45ad81b6165744))
+- *(lumen)* Verify release calendar timezone semantics - ([417db3b](https://github.com/snapetech-org/seerrng/commit/417db3b77db1cf7e728e3ce85dcad7c0cc850283))
+- *(lumen)* Verify bookmarked owned episodes stay unselected - ([5e3a786](https://github.com/snapetech-org/seerrng/commit/5e3a7865067226fec24eeba8c1e51eeeccb87185))
+- *(lumen)* Verify episode picker fallback for owned seasons - ([a21ad80](https://github.com/snapetech-org/seerrng/commit/a21ad80c0c6fa92c33a89bfb6b661ed9b54841a1))
+- *(lumen)* Verify access revocation during 4K refresh - ([9ee1fcd](https://github.com/snapetech-org/seerrng/commit/9ee1fcd24a11359da263dd16ac6d497c12f0c8ea))
+- *(lumen)* Verify independent delegated household access - ([a3f0d2e](https://github.com/snapetech-org/seerrng/commit/a3f0d2eb541f3981a0e89f79debf973848b810c1))
+- *(lumen)* Verify profile picture upload recovery - ([14327fd](https://github.com/snapetech-org/seerrng/commit/14327fd47f9c8588be0f97b58ebe485a3b321711))
+- *(lumen)* Verify profile avatar persistence on the server - ([8d1dcf0](https://github.com/snapetech-org/seerrng/commit/8d1dcf0f7e89dd7d89f3aaffb64e8b9cc60ca76e))
+- *(lumen)* Align workflow checks with current controls - ([f27d865](https://github.com/snapetech-org/seerrng/commit/f27d865d030425a9e7c9780bdecbee57772e9b2b))
+- *(lumen)* Verify requester scope reaches the request API - ([31b1c45](https://github.com/snapetech-org/seerrng/commit/31b1c45746ab528b4dd732e42070ac6f3d32309b))
+- *(lumen)* Verify Coming Soon media scope end to end - ([e1814fc](https://github.com/snapetech-org/seerrng/commit/e1814fc8ea078903834c3bb8d82512e601377a80))
+- *(lumen)* Seed remembered sign-in with fixed fixture values - ([58328bc](https://github.com/snapetech-org/seerrng/commit/58328bc74a540d9f6e1d2fe7d52205ca58579888))
+- *(lumen)* Cover request download copy links - ([da11267](https://github.com/snapetech-org/seerrng/commit/da112677bbad9230ace4f6e711aeb54a71198d4a))
+- *(lumen)* Cover first-run Plex setup - ([f63337e](https://github.com/snapetech-org/seerrng/commit/f63337e13d47415c64ad0460734c931d278af2a0))
+- *(lumen)* Cover Emby setup in both deployments - ([73e93cc](https://github.com/snapetech-org/seerrng/commit/73e93ccc20719a4f4b2549d083d7715401422587))
+- *(lumen)* Verify saving a request service during setup - ([e5f37aa](https://github.com/snapetech-org/seerrng/commit/e5f37aae0e66d115d88fbe6b0337cd2b79e9eac3))
+- *(lumen)* Verify recommendation audiobook navigation - ([fbae487](https://github.com/snapetech-org/seerrng/commit/fbae4872e81de7043334c59d6ab847a59a5a48d0))
+- *(lumen)* Repair configuration and browse recovery fixtures - ([0aa48d1](https://github.com/snapetech-org/seerrng/commit/0aa48d16ecee845d9b0421eec046ab3519227963))
+- *(lumen)* Verify watch session membership and playback links - ([3c0da6c](https://github.com/snapetech-org/seerrng/commit/3c0da6c460e1dd17bc458c96009f49a88053f5dd))
+- *(lumen)* Verify track request cancellation in both deployments - ([a09e88b](https://github.com/snapetech-org/seerrng/commit/a09e88bb016794c04b4b7cde87e013980baa0258))
+- *(lumen)* Verify partial playlist retry - ([3a3ceb3](https://github.com/snapetech-org/seerrng/commit/3a3ceb3cb0086707a787d75aaac8741db59360be))
+- *(lumen)* Verify Share Target in both deployments - ([574e087](https://github.com/snapetech-org/seerrng/commit/574e0878d176c5908bd350430977f06f134f8544))
+- *(lumen)* Verify decline and concurrent TV access review - ([4ebd806](https://github.com/snapetech-org/seerrng/commit/4ebd806b3bac98eaa862b9aafd8eec98b786e819))
+- *(lumen)* Verify series library availability routing - ([6216dd8](https://github.com/snapetech-org/seerrng/commit/6216dd862b378020eac8b6be6076b75ec43e7ca4))
+- *(lumen)* Verify featured series request recovery - ([b7d9429](https://github.com/snapetech-org/seerrng/commit/b7d9429700ce4e643a2aecd79fea56725b7fcbee))
+- *(lumen)* Verify staged requests from Coming Soon - ([dd665f0](https://github.com/snapetech-org/seerrng/commit/dd665f0cbb4ce8ea686966dbdf5fca645190e143))
+- Generate per-run issue session secret - ([f0e71d2](https://github.com/snapetech-org/seerrng/commit/f0e71d20ae98156ae571f109b90fe7aadb1ed137))
+
+### ⚙️ Miscellaneous Tasks
+- *(i18n)* Refresh TV route message source map - ([2aefbea](https://github.com/snapetech-org/seerrng/commit/2aefbead8185ad0223a8dd85853c5c8872ac99fa))
+- *(lumen)* Allow the full browser validation suite to finish - ([4d939ab](https://github.com/snapetech-org/seerrng/commit/4d939ab7b421b5e1b49a8d801eb08f5248ffedf2))
+
 ## Unreleased
 
 - **Lumen:** Discover Watchlist opens the viewer-filtered discovery list and supports local title search, media filtering, and sorting. SeerrNG independently extends the watchlist behavior [@JamyPatch44](https://github.com/JamyPatch44) contributed to upstream Seerr in [PR #3506](https://github.com/seerr-team/seerr/pull/3506).
@@ -7072,6 +8359,10 @@ This cumulative release note covers v3.71.4 through v3.72.7, including changes r
 
 - Search result navigation and service-availability states are preserved during refreshes.
 - Touch scrolling, book request cards, and Servarr connection tests now behave correctly.
+
+## [3.5.2](https://github.com/seerr-team/seerr/releases/tag/v3.5.2) - 2026-11-12
+
+This is the upstream Seerr v3.5.2 release record, published by [@seerr-team](https://github.com/seerr-team); it is an imported upstream tag, not a SeerrNG release. See the [original release notes](https://github.com/seerr-team/seerr/releases/tag/v3.5.2).
 
 ## [3.5.1](https://github.com/snapetech/seerrng/compare/v3.5.0...v3.5.1) - 2026-07-17
 
