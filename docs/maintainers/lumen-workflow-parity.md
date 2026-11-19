@@ -3113,9 +3113,10 @@ authorized roles see Adult while viewers with no permission or generic
 
 The mobile You page now shows My Games only when at least one supported game
 category is enabled for the signed-in account and its catalog is available.
-Fixture runs verify the hidden global-disabled state makes no game-catalog request,
-and the enabled state keeps the exact link available. Eight cases passed across
-desktop, iPhone, Android, and tablet in standalone and bundled Lumen. Matching
+Fixture runs verify global and per-user disabled states make no game-catalog
+request, and the enabled state keeps the exact link available. Twelve cases
+passed across desktop, iPhone, Android, and tablet in standalone Lumen; the
+original eight cases passed in bundled Lumen. Matching
 390 × 844 CSS-pixel baseline and candidate screenshots are retained under
 `/mnt/disks/scratch/codex-task-scratch/seerrng-lumen-game-navigation-20261119/`.
 
@@ -4100,8 +4101,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. Reader Issue Reports add four cases per deployment for book, comic, magazine and music detail controls. Game Library Navigation adds eight cases per deployment for enabled and disabled categories. The selected current-source set now totals 727 passing cases and 21
-expected skips per deployment; native visual comparison and live effects remain
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. Reader Issue Reports add four cases per deployment for book, comic, magazine and music detail controls. Game Library Navigation adds 12 standalone cases and eight bundled cases for globally and per-user disabled categories and enabled destinations. The selected current-source set now totals 731 standalone passing cases and 727 bundled passing cases, with 21 expected skips per deployment; native visual comparison and live effects remain
 open.
 
 The complete standalone Lumen browser suite passed at `11faf2052`: 2,892

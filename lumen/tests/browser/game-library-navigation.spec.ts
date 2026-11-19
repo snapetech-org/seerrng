@@ -3,7 +3,11 @@ import { expect, test, type Page } from '@playwright/test';
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
 
-async function fixture(page: Page, gamesEnabled: boolean) {
+async function fixture(
+  page: Page,
+  globalGamesEnabled: boolean,
+  userGamesEnabled = true
+) {
   let gameCatalogRequests = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -24,9 +28,9 @@ async function fixture(page: Page, gamesEnabled: boolean) {
           softwareEnabled: true,
           romarrEnabled: true,
           enabledMediaCategories: {
-            game: gamesEnabled,
-            retro: gamesEnabled,
-            modern: gamesEnabled,
+            game: globalGamesEnabled,
+            retro: globalGamesEnabled,
+            modern: globalGamesEnabled,
           },
         },
       });
@@ -34,9 +38,9 @@ async function fixture(page: Page, gamesEnabled: boolean) {
       return route.fulfill({
         json: {
           enabledMediaCategories: {
-            game: true,
-            retro: true,
-            modern: true,
+            game: userGamesEnabled,
+            retro: userGamesEnabled,
+            modern: userGamesEnabled,
           },
         },
       });
@@ -64,6 +68,17 @@ test('globally disabled game categories omit My Games from You', async ({
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
+
+test('user-disabled game categories omit My Games from You', async ({
+  page,
+}) => {
+  const gameCatalogRequests = await fixture(page, true, false);
+  await page.goto(appPath('/me'));
+  await expect(
+    page.getByRole('link', { name: 'Open My Games', exact: true })
+  ).toHaveCount(0);
+  expect(gameCatalogRequests()).toBe(0);
 });
 
 test('enabled game catalogs keep My Games reachable from You', async ({
