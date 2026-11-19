@@ -5888,7 +5888,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 510,
+          "line": 517,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an invalid paginated book list.'",
@@ -14391,7 +14391,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 472,
+          "line": 479,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit did not return a Kobo collection ID.'",
@@ -25173,7 +25173,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 399,
+          "line": 406,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Reader service did not return a grouping count.'",
@@ -30957,14 +30957,6 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 520,
-          "kind": "app-error-candidate",
-          "field": "message",
-          "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
-          "captured": []
-        },
-        {
-          "path": "server/api/readerDelivery.ts",
           "line": 527,
           "kind": "app-error-candidate",
           "field": "message",
@@ -30973,7 +30965,15 @@
         },
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 546,
+          "line": 534,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
+          "captured": []
+        },
+        {
+          "path": "server/api/readerDelivery.ts",
+          "line": 553,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This BookOrbit Kobo collection exceeds SeerrNG’s safe 50,000-book sync limit.'",
@@ -49930,7 +49930,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 537,
+          "line": 544,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookOrbit returned an incomplete paginated book list.'",
@@ -65680,7 +65680,7 @@
       "callsites": [
         {
           "path": "server/api/readerDelivery.ts",
-          "line": 439,
+          "line": 446,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A BookOrbit Collection already uses the managed Kobo collection name.'",

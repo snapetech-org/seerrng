@@ -304,6 +304,16 @@ fixture query from November to December 2026. The isolated desktop could not
 reach the preview, so verification used a dedicated Agent GUI VM session.
 The eight-case calendar suite passes on desktop, iPhone, Android, and tablet in standalone Lumen and the production Express `/lumen/` mount. Narrow native-matched and live-provider visual acceptance remains open.
 
+The calendar title, filter labels and choices, release type, availability,
+episode scope, partial/error/empty states, and date-change copy now follow the
+saved English, French, or Arabic locale. Dates use the saved locale as well.
+Twelve localization cases passed on desktop, iPhone, Android, and tablet; the
+existing eight-case calendar suite still passes. English/French desktop
+screenshots and French iPhone plus Arabic desktop/iPhone renders were reviewed
+against the same fixtures; there is no overflow or geometry change. The native
+month input's displayed month name remains controlled by the browser's UI
+locale, and live-provider plus matched-native visual checks remain open.
+
 ### My Media browse increment
 
 Lumen serves `/library` in both deployments and exposes My Media in desktop

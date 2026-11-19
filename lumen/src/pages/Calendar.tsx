@@ -5,35 +5,33 @@ import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const MEDIA = [
-  ['', 'All Media'],
-  ['movie', 'Movies'],
-  ['tv', 'Series'],
-  ['music', 'Music Albums'],
-  ['book', 'Books'],
-  ['comic', 'Comics'],
-  ['magazine', 'Magazines'],
-  ['software', 'Games and Emulation'],
+  ['', 'allMedia'],
+  ['movie', 'movies'],
+  ['tv', 'series'],
+  ['music', 'albums'],
+  ['book', 'books'],
+  ['comic', 'comics'],
+  ['magazine', 'magazines'],
+  ['software', 'games'],
 ] as const;
-
-const DATE_TYPES = {
-  air: 'Episode release',
-  digital: 'Digital release',
-  physical: 'Physical release',
-  theatrical: 'Theatrical release',
-  album: 'Album release',
-  book: 'Book release',
-  issue: 'Issue release',
-  game: 'Game release',
-};
 
 interface Release {
   id: string;
   title: string;
   startsAt: string;
   allDay: boolean;
-  dateType: keyof typeof DATE_TYPES;
+  dateType:
+    | 'air'
+    | 'digital'
+    | 'physical'
+    | 'theatrical'
+    | 'album'
+    | 'book'
+    | 'issue'
+    | 'game';
   mediaType: Exclude<(typeof MEDIA)[number][0], ''>;
   available: boolean;
   is4k: boolean;
@@ -69,11 +67,6 @@ interface CalendarResult {
 const PAGE_SIZE = 25;
 const FIRST_MONTH = '0001-01';
 const LAST_MONTH = '9999-11';
-const CATEGORY_LABEL = {
-  game: 'PC game',
-  retro: 'Retro emulation',
-  modern: 'Modern emulation',
-};
 const monthValue = (date: Date) =>
   `${String(date.getFullYear()).padStart(4, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
@@ -85,10 +78,10 @@ function moveMonth(month: string, step: number) {
   return monthValue(date);
 }
 
-function displayDate(value: string, allDay: boolean) {
+function displayDate(value: string, allDay: boolean, locale: string) {
   const date = new Date(value);
   if (Number.isNaN(date.valueOf())) return value;
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: 'medium',
     ...(allDay ? { timeZone: 'UTC' } : { timeStyle: 'short' }),
   }).format(date);
@@ -128,6 +121,7 @@ function releaseHref(item: Release) {
 }
 
 function CalendarResults({ path }: { path: string }) {
+  const { locale, t } = useLumenLocale();
   const {
     data: response,
     error: loadError,
@@ -140,13 +134,22 @@ function CalendarResults({ path }: { path: string }) {
       : null;
   const error =
     loadError ||
-    (response && !data ? 'Invalid release calendar response.' : null);
+    (response && !data
+      ? t(
+          'lumen.calendar.invalidResponse',
+          'Invalid release calendar response.'
+        )
+      : null);
   if (!data) {
     return error ? (
-      <ServiceNote error={error} what="releases" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.calendar.releases', 'releases')}
+        retry={reload}
+      />
     ) : (
       <p className="note" role="status">
-        Loading releases…
+        {t('lumen.calendar.loading', 'Loading releases…')}
       </p>
     );
   }
@@ -157,23 +160,39 @@ function CalendarResults({ path }: { path: string }) {
         <ServiceNote
           error={
             loadError
-              ? `Retry failed: ${loadError} Showing the previous results.`
-              : 'Some release sources could not be reached. Their releases may be missing.'
+              ? t(
+                  'lumen.calendar.retryFailed',
+                  'Retry failed: {error} Showing the previous results.',
+                  { error: loadError }
+                )
+              : t(
+                  'lumen.calendar.partialSources',
+                  'Some release sources could not be reached. Their releases may be missing.'
+                )
           }
-          what="all release sources"
+          what={t('lumen.calendar.allSources', 'all release sources')}
           retry={reload}
         />
       )}
       {data.truncated && (
         <p className="note" role="status">
-          Result limit reached. Choose a media type to see more releases.
+          {t(
+            'lumen.calendar.truncated',
+            'Result limit reached. Choose a media type to see more releases.'
+          )}
         </p>
       )}
       {!data.results.length ? (
         <p className="note">
           {data.partialSources.length
-            ? 'No releases were returned by the sources that responded.'
-            : 'No releases match this month and scope.'}
+            ? t(
+                'lumen.calendar.noReturned',
+                'No releases were returned by the sources that responded.'
+              )
+            : t(
+                'lumen.calendar.noMatches',
+                'No releases match this month and scope.'
+              )}
         </p>
       ) : (
         <ol className="setlist">
@@ -182,15 +201,48 @@ function CalendarResults({ path }: { path: string }) {
             const episode =
               release.seasonNumber !== undefined &&
               release.episodeNumber !== undefined
-                ? `Season ${release.seasonNumber}, Episode ${release.episodeNumber}`
+                ? t(
+                    'lumen.calendar.episode',
+                    'Season {season}, Episode {episode}',
+                    {
+                      season: release.seasonNumber,
+                      episode: release.episodeNumber,
+                    }
+                  )
                 : null;
+            const dateType = (
+              {
+                air: 'episodeRelease',
+                digital: 'digitalRelease',
+                physical: 'physicalRelease',
+                theatrical: 'theatricalRelease',
+                album: 'albumRelease',
+                book: 'bookRelease',
+                issue: 'issueRelease',
+                game: 'gameRelease',
+              } as const
+            )[release.dateType];
             const summary = [
               release.artistName,
               release.authorName,
-              release.bookFormat === 'audiobook' ? 'Audiobook' : undefined,
+              release.bookFormat === 'audiobook'
+                ? t('lumen.calendar.audiobook', 'Audiobook')
+                : undefined,
               release.softwareCategory &&
-                CATEGORY_LABEL[release.softwareCategory],
-              release.platformName && `Requested for ${release.platformName}`,
+                t(
+                  `lumen.calendar.category.${release.softwareCategory}`,
+                  (
+                    {
+                      game: 'PC game',
+                      retro: 'Retro emulation',
+                      modern: 'Modern emulation',
+                    } as const
+                  )[release.softwareCategory]
+                ),
+              release.platformName &&
+                t('lumen.calendar.requestedFor', 'Requested for {platform}', {
+                  platform: release.platformName,
+                }),
               episode,
               release.episodeTitle,
             ]
@@ -208,26 +260,38 @@ function CalendarResults({ path }: { path: string }) {
                   )}
                   <small>
                     <time dateTime={release.startsAt}>
-                      {displayDate(release.startsAt, release.allDay)}
+                      {displayDate(release.startsAt, release.allDay, locale)}
                     </time>
                     {' · '}
-                    {DATE_TYPES[release.dateType]}
+                    {t(`lumen.calendar.dateType.${dateType}`, dateType)}
                   </small>
                   {summary && <small>{summary}</small>}
                   {release.dateChanges?.map((change) => (
                     <small key={`${change.changedAt}:${change.startsAt}`}>
-                      Date changed from{' '}
-                      {displayDate(
-                        change.previousStartsAt,
-                        change.previousAllDay
-                      )}{' '}
-                      to {displayDate(change.startsAt, change.allDay)} on{' '}
-                      {displayDate(change.changedAt, false)}.
+                      {t(
+                        'lumen.calendar.changedFrom',
+                        'Date changed from {previous} to {date} on {changed}.',
+                        {
+                          previous: displayDate(
+                            change.previousStartsAt,
+                            change.previousAllDay,
+                            locale
+                          ),
+                          date: displayDate(
+                            change.startsAt,
+                            change.allDay,
+                            locale
+                          ),
+                          changed: displayDate(change.changedAt, false, locale),
+                        }
+                      )}
                     </small>
                   ))}
                 </div>
                 <Pill k={release.available ? 'ok' : 'neutral'}>
-                  {release.available ? 'Available' : 'Upcoming'}
+                  {release.available
+                    ? t('lumen.calendar.available', 'Available')
+                    : t('lumen.calendar.upcoming', 'Upcoming')}
                   {release.is4k ? ' · 4K' : ''}
                 </Pill>
               </li>
@@ -240,7 +304,7 @@ function CalendarResults({ path }: { path: string }) {
           className="btn btn-tonal btn-sm"
           onClick={() => setLimit(limit + PAGE_SIZE)}
         >
-          Show More Releases
+          {t('lumen.calendar.showMore', 'Show More Releases')}
         </button>
       )}
     </>
@@ -248,6 +312,7 @@ function CalendarResults({ path }: { path: string }) {
 }
 
 export default function Calendar() {
+  const { locale, t } = useLumenLocale();
   const { user } = useAuth();
   const admin = isAdministrator(user?.permissions);
   const canSeeAll = canViewAllRequests(user?.permissions);
@@ -283,20 +348,24 @@ export default function Calendar() {
   return (
     <>
       <header className="ph">
-        <h1>Release Calendar</h1>
+        <h1>{t('lumen.calendar.title', 'Release Calendar')}</h1>
       </header>
-      <div className="toolbar" aria-label="Calendar Filters">
+      <div
+        className="toolbar"
+        aria-label={t('lumen.calendar.filters', 'Calendar Filters')}
+      >
         <button
           className="btn btn-quiet btn-sm"
           disabled={month <= FIRST_MONTH}
           onClick={() => setMonth(moveMonth(month, -1))}
         >
-          Previous Month
+          {t('lumen.calendar.previousMonth', 'Previous Month')}
         </button>
         <label className="sel">
-          <span className="lbl">Month</span>
+          <span className="lbl">{t('lumen.calendar.month', 'Month')}</span>
           <input
             type="month"
+            lang={locale}
             min={FIRST_MONTH}
             max={LAST_MONTH}
             value={month}
@@ -316,31 +385,37 @@ export default function Calendar() {
           disabled={month >= LAST_MONTH}
           onClick={() => setMonth(moveMonth(month, 1))}
         >
-          Next Month
+          {t('lumen.calendar.nextMonth', 'Next Month')}
         </button>
         {canSeeAll && (
           <label className="sel">
-            <span className="lbl">Scope</span>
+            <span className="lbl">{t('lumen.calendar.scope', 'Scope')}</span>
             <select
               value={scope}
               onChange={(event) =>
                 update('scope', event.target.value === 'all' ? 'all' : '')
               }
             >
-              <option value="mine">My Requests</option>
-              <option value="all">All Monitored Releases</option>
+              <option value="mine">
+                {t('lumen.calendar.myRequests', 'My Requests')}
+              </option>
+              <option value="all">
+                {t('lumen.calendar.allMonitored', 'All Monitored Releases')}
+              </option>
             </select>
           </label>
         )}
         <label className="sel">
-          <span className="lbl">Media Type</span>
+          <span className="lbl">
+            {t('lumen.calendar.mediaType', 'Media Type')}
+          </span>
           <select
             value={medium}
             onChange={(event) => update('mediaType', event.target.value)}
           >
-            {MEDIA.map(([value, title]) => (
+            {MEDIA.map(([value, key]) => (
               <option key={value} value={value}>
-                {title}
+                {t(`lumen.calendar.media.${key}`, key)}
               </option>
             ))}
           </select>
@@ -354,7 +429,10 @@ export default function Calendar() {
                 update('includeUnmonitored', event.target.checked ? 'true' : '')
               }
             />
-            Include Unmonitored Titles
+            {t(
+              'lumen.calendar.includeUnmonitored',
+              'Include Unmonitored Titles'
+            )}
           </label>
         )}
       </div>
