@@ -2310,10 +2310,22 @@ directory. Verified two server tests and ten tests against the built
 standalone proxy image, including direct requests to the Swipe and admin
 entry points. The previous browser fixtures cover rendering inside the app.
 
-Native Plex and Jellyfin connection forms still need Lumen coverage before
-their legacy bookmarks can move. The classic Services page also includes
-software acquisition, reader delivery, recognition, Tunerr, override rules,
-and connection import controls that need separate coverage.
+Plex and Jellyfin connection settings are available in Administration → Media
+Server Libraries. The page includes the shared connection editor, Plex server
+discovery, Jellyfin bridge sign-in, Tautulli settings, library management, and
+scan controls. The standalone proxy and bundled Express frontend route the
+legacy Plex and Jellyfin settings bookmarks to this page. On `d15b3720a`, the
+production build and 24 browser cases passed across desktop, iPhone, Android,
+and tablet. The fixtures cover Plex discovery and save, Jellyfin credential
+preservation and bridge sign-in, Tautulli save and disconnect, and library and
+scan actions for Plex, Jellyfin, and Emby. They do not exercise live provider
+writes or compare the pages against matched native settings renders.
+
+The remaining Services workflows have dedicated Administration pages for
+software acquisition, reader delivery, recognition, Tunerr, request override
+rules, and connection hosts. Their validation is tracked with each page below;
+the presence of an Administration route alone does not establish behavioral
+parity.
 
 Administration now includes Share and Image Recognition. The page uses the
 existing administrator API to configure Share to Request, local OCR, vision
