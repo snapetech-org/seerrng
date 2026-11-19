@@ -4,7 +4,8 @@ async function fixture(
   page: Page,
   status: Record<string, unknown> | undefined,
   legacy = false,
-  unavailable = false
+  unavailable = false,
+  permissions = 2
 ) {
   const calls: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
@@ -19,7 +20,7 @@ async function fixture(
       });
     if (path === '/auth/me')
       return r.fulfill({
-        json: { id: 1, displayName: 'reader', permissions: 2 },
+        json: { id: 1, displayName: 'reader', permissions },
       });
     if (path === '/settings/public')
       return r.fulfill({
@@ -522,4 +523,48 @@ test('a bookmarked TV request shows its season and episode selection', async ({
     /Season 2.*Episodes 3, 5 · Approved/,
     /Season 4.*All episodes · Waiting for approval/,
   ]);
+});
+
+test('a focused request link keeps its resolved title in the owner cancel confirmation', async ({
+  page,
+}) => {
+  await fixture(page, undefined, false, false, 0);
+  let cancelled = 0;
+  await page.route('**/api/v1/request/status/616', (route) =>
+    route.fulfill({
+      json: {
+        request: {
+          id: 616,
+          type: 'book',
+          status: 1,
+          bookFormat: 'ebook',
+          is4k: false,
+          createdAt: '2026-11-18T12:00:00Z',
+          requestedBy: { id: 1, displayName: 'reader' },
+          media: {
+            mediaType: 'book',
+            status: 2,
+            identifiers: [{ provider: 'openlibrary', value: 'OL616W' }],
+          },
+        },
+        current: { stage: 'requested', attempt: 1 },
+        history: { results: [], total: 0 },
+      },
+    })
+  );
+  await page.route('**/api/v1/request/616', (route) => {
+    if (route.request().method() !== 'DELETE') return route.fallback();
+    cancelled++;
+    return route.fulfill({ status: 204 });
+  });
+
+  await page.goto('/requests?requestId=616');
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  await history.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(
+    page.getByText(/Requested audio won’t be fetched/)
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel request' }).click();
+  await expect(page.getByText('Request cancelled')).toBeVisible();
+  expect(cancelled).toBe(1);
 });

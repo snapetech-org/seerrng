@@ -622,6 +622,12 @@ classic preference, invalid or duplicate IDs, and the frontend lock.
 Native visual comparison, mobile and bundled browser checks, software
 request links, and full management from focused links remain open.
 
+The focused request link also preserves owner cancellation when the request is
+absent from the current list. A browser regression confirms the title resolved
+from request media appears in the confirmation and the exact request is deleted
+after confirmation. This case passes on desktop, iPhone, Android, and tablet;
+the remaining action and role matrix is still open.
+
 ### Software request history increment
 
 Software request rows and `softwareRequestId` notification links open the
