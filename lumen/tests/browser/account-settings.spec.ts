@@ -253,6 +253,8 @@ test('account theme colors preserve stored overrides for other controls', async 
   if (await page.locator('.side').isVisible()) {
     const sidebar = page.locator('.side');
     const width = (await sidebar.boundingBox())?.width;
+    await expect(sidebar).toHaveCSS('background-image', 'none');
+    await expect(sidebar).toHaveCSS('background-color', 'rgb(20, 23, 29)');
     await expect(sidebar).toHaveCSS('border-right-color', 'rgb(42, 48, 59)');
     await page.getByLabel('Sidebar Background Start').fill('#233446');
     await page.getByLabel('Sidebar Background End').fill('#0d1927');
@@ -268,6 +270,12 @@ test('account theme colors preserve stored overrides for other controls', async 
     const navLink = sidebar.locator('a:not([aria-current])').first();
     await navLink.hover();
     await expect(navLink).toHaveCSS('background-color', 'rgb(41, 53, 77)');
+    await page.getByLabel('Sidebar Background End').fill('');
+    await save.click();
+    await expect(sidebar).toHaveCSS(
+      'background-image',
+      'linear-gradient(rgb(35, 52, 70), rgb(20, 23, 29))'
+    );
     for (const label of [
       'Sidebar Background Start',
       'Sidebar Background End',
@@ -278,6 +286,7 @@ test('account theme colors preserve stored overrides for other controls', async 
     }
     await save.click();
     await expect(sidebar).toHaveCSS('border-right-color', 'rgb(42, 48, 59)');
+    await expect(sidebar).toHaveCSS('background-image', 'none');
   }
   await background.fill('');
   await save.click();

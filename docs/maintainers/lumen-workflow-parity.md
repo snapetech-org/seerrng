@@ -1827,6 +1827,13 @@ then restored the default divider after clearing the overrides.
 The 390-pixel account check used the mobile layout, where the desktop
 sidebar is hidden.
 
+The desktop sidebar uses a solid fill until a valid gradient color is
+set. One saved endpoint blends into the regular sidebar surface. The
+standalone and bundled desktop and iPhone account checks passed.
+Matched 1440-pixel bundled screenshots retained the 248-pixel sidebar
+width and the same default and customized surface colors. These
+checks measured computed paint and geometry without timing rendering.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the

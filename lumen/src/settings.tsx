@@ -236,6 +236,11 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
       const value = overrides?.[key];
       if (isThemeColor(value)) root.style.setProperty(property, value);
     }
+    root.toggleAttribute(
+      'data-sidebar-gradient',
+      isThemeColor(overrides?.['--theme-sidebar-start']) ||
+        isThemeColor(overrides?.['--theme-sidebar-end'])
+    );
     if (prefs.theme === 'system') delete root.dataset.theme;
     else root.dataset.theme = prefs.theme;
     const paintBar = () =>
@@ -250,6 +255,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     media?.addEventListener('change', paintBar);
     return () => {
       media?.removeEventListener('change', paintBar);
+      root.removeAttribute('data-sidebar-gradient');
       for (const [, property] of themeColors)
         root.style.removeProperty(property);
     };

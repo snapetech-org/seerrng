@@ -1962,7 +1962,10 @@ body.is-detail .toast {
     height: 100dvh;
     padding: 24px 14px;
     border-right: 1px solid var(--sidebar-border, var(--line));
-    background: linear-gradient(
+    background: var(--surface);
+  }
+  :root[data-sidebar-gradient] .side {
+    background-image: linear-gradient(
       to bottom,
       var(--sidebar-start, var(--surface)),
       var(--sidebar-end, var(--surface))
