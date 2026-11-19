@@ -3548,3 +3548,7 @@ same visibility rules as Music discovery. Matched browser fixtures at
 and See All link stayed in place while available and blocklisted albums
 were removed. Genre and chart links kept their filters. This check
 used the standalone production build and synthetic catalogue responses.
+The bundled production build from `264e3e1ff` also passed both viewport
+checks through the Express mount at `/lumen/`. Its See All links stayed
+under the bundled base path and opened the same filtered Music results.
+Browser fixtures supplied session, settings, and catalogue responses.
