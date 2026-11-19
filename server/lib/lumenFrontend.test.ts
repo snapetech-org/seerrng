@@ -143,6 +143,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(legacyProwlarr.headers.location, '/lumen/admin/prowlarr');
     for (const [target, service] of [
       ['download-clients-settings-title', 'download-clients'],
+      [
+        'download-clients-interval',
+        'download-clients#download-clients-interval',
+      ],
       ['slskdn-settings-title', 'soulseek'],
       ['tunerr-settings-title', 'tunerr'],
       ['reader-settings-title', 'reader-delivery'],

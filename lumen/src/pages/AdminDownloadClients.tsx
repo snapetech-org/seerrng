@@ -7,6 +7,8 @@ import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
+const refreshIntervalId = 'download-clients-interval';
+
 const endpoint = '/settings/download-clients';
 const types = {
   qbittorrent: ['qBittorrent', 8080],
@@ -183,6 +185,14 @@ function Editor({
     }
   }
 
+  useEffect(() => {
+    if (!inSetup && window.location.hash === `#${refreshIntervalId}`) {
+      document
+        .getElementById(refreshIntervalId)
+        ?.scrollIntoView({ block: 'center' });
+    }
+  }, [inSetup]);
+
   return (
     <Section title="Live Download Progress">
       {inSetup && (
@@ -208,6 +218,7 @@ function Editor({
           <label className="set cfg-row">
             <span>Refresh Interval (Seconds)</span>
             <input
+              id={inSetup ? undefined : refreshIntervalId}
               className="cfg-input"
               type="number"
               required

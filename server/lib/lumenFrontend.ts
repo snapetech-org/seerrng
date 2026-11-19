@@ -955,6 +955,10 @@ export const mountLumenFrontend = (
       const target = req.query.settingsSearchTarget;
       const targets = [
         [/^prowlarr(?:-|$)/, 'prowlarr'],
+        [
+          /^download-clients-interval$/,
+          'download-clients#download-clients-interval',
+        ],
         [/^download-clients-/, 'download-clients'],
         [/^slskdn-/, 'soulseek'],
         [/^tunerr-/, 'tunerr'],

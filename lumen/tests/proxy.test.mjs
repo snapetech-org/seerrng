@@ -197,7 +197,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/coming-soon/?media=tv&extra=1', '/soon?media=tv'],
       ['/discover/movies/upcoming/', '/soon?media=movie'],
       ['/discover/tv/upcoming', '/soon?media=tv'],
-      ['/discover/trending?mediaType=audiobook', '/audiobooks?mediaType=audiobook'],
+      [
+        '/discover/trending?mediaType=audiobook',
+        '/audiobooks?mediaType=audiobook',
+      ],
       [
         '/discover/trending?mediaType=audiobook&libraryView=missing&narrator=Reader',
         '/audiobooks?show=not&mediaType=audiobook&libraryView=missing&narrator=Reader',
@@ -266,6 +269,10 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ...[
         ['prowlarr-settings-title', 'prowlarr'],
         ['download-clients-settings-title', 'download-clients'],
+        [
+          'download-clients-interval',
+          'download-clients#download-clients-interval',
+        ],
         ['slskdn-settings-title', 'soulseek'],
         ['tunerr-settings-title', 'tunerr'],
         ['reader-settings-title', 'reader-delivery'],

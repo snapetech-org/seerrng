@@ -3691,3 +3691,9 @@ scrolls its credential control into view. Both destinations also passed
 desktop and iPhone checks through bundled Express and standalone nginx
 with real local sign-in and an isolated settings database. Live Spotify
 and Steam setup remain unverified.
+
+The Classic download-client refresh interval bookmark opened the actual
+interval field after local sign-in in both the bundled Express app and
+standalone nginx companion. Desktop and iPhone runs used the real settings
+endpoint with an isolated instance and no download clients configured.
+Matched renders retained the baseline form layout at both widths.
