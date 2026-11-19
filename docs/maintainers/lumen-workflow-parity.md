@@ -325,9 +325,11 @@ submissions open the new discussion.
 
 Headed Chrome at 1440 × 1000 rendered the standalone movie sheet and confirmed
 a report with a synthetic API that accepted only the exact internal media ID,
-type, quality, and description. The native comparison, mobile and bundled
-layouts, and other media branches remain visually unverified. Editing or
-deleting reports and comments remains open.
+type, quality, and description. Standalone and bundled fixture runs now check
+book, comic, magazine and album report controls, their issue-type choices and
+reader-specific reason lists across desktop, iPhone, Android and tablet. Native
+visual comparison remains open. Editing or deleting reports and comments
+remains open.
 
 Manage Issues operators can now search for and select a report owner in the
 issue sheet. The reporter-search endpoint requires Manage Issues, a two-character
@@ -4089,7 +4091,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. The selected current-source set now totals 715 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across ebook/audiobook, comic and magazine formats. Optional Catalog Navigation adds four cases per deployment. Request Retry adds eight cases per deployment across request media types and owner/permission denials. Reader Issue Reports add four cases per deployment for book, comic, magazine and music detail controls. The selected current-source set now totals 719 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
