@@ -3511,3 +3511,14 @@ pixel-identical to the baseline in both viewports. The populated picker
 used the shared toolbar and select styling with no horizontal overflow.
 Live MusicBrainz and native operating-system select menus were outside
 this check.
+
+A follow-up live MusicBrainz run on `1209b9646` passed after local
+sign-in in bundled Express and standalone nginx at 1440 CSS pixels.
+Searching for Phoenix showed distinct French indie band and Romanian
+rock band options. Selecting the French band returned 20 live releases
+on the first page in each deployment, all credited to the selected
+MusicBrainz artist ID. MusicBrainz returned HTTP 503 on the initial
+bundled lookup. The picker exposed Retry Artist Lookup and that retry
+succeeded. The isolated configuration supplied a synthetic Lidarr
+entry for category availability. No Lidarr library or quality lookup
+was exercised.
