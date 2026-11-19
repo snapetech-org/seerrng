@@ -8131,6 +8131,10 @@ components:
         running:
           type: boolean
           example: false
+        canCancel:
+          type: boolean
+          description: Whether the current run can be canceled on this instance.
+          example: false
     PersonDetails:
       type: object
       properties:
@@ -14592,6 +14596,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Job'
+        '409':
+          description: The job has no cancellation handler or is running on another instance.
   /settings/jobs/{jobId}/schedule:
     post:
       summary: Modify job schedule

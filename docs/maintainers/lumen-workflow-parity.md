@@ -3609,3 +3609,11 @@ real settings routes invoked and canceled the fixture exactly once.
 The enabled state and edited schedule were visible after reload and
 present in the isolated settings files. Production jobs and provider
 connections were outside the check.
+
+Scheduled Jobs now shows when a running job cannot be canceled.
+SeerrNG reports cancellation availability for local runs with handlers
+and returns HTTP 409 for runs leased by another instance or jobs with
+no cancellation handler. Standalone desktop and iPhone fixtures
+verified the disabled action and retained controls for a cancellable
+job. Matched renders reused the existing action row and button styling.
+Two API regression checks verified the unavailable cases.

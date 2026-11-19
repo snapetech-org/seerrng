@@ -14,6 +14,7 @@ interface Job {
   cronSchedule: string;
   enabled: boolean;
   running: boolean;
+  canCancel?: boolean;
   nextExecutionTime: string | null;
 }
 
@@ -253,7 +254,7 @@ export default function AdminJobs() {
                   </button>
                   <button
                     className="btn btn-tonal btn-sm"
-                    disabled={busy}
+                    disabled={busy || (job.running && job.canCancel === false)}
                     onClick={() =>
                       setPending({
                         job,
@@ -261,7 +262,11 @@ export default function AdminJobs() {
                       })
                     }
                   >
-                    {job.running ? 'Cancel Job' : 'Run Now'}
+                    {job.running
+                      ? job.canCancel === false
+                        ? 'Cancellation Unavailable'
+                        : 'Cancel Job'
+                      : 'Run Now'}
                   </button>
                 </div>
               )}

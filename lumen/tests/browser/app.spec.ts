@@ -6237,15 +6237,29 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
     cronSchedule: '0 */15 * * * *',
     enabled: true,
     running: false,
+    canCancel: false,
   };
   let runs = 0;
   await page.route('**/api/v1/settings/jobs', (route) =>
-    route.fulfill({ json: [job] })
+    route.fulfill({
+      json: [
+        job,
+        {
+          ...job,
+          id: 'fixed',
+          name: 'Non-Cancellable Job',
+          running: true,
+          cronSchedule: '0 0 4 * * *',
+          canCancel: false,
+        },
+      ],
+    })
   );
   await page.route('**/api/v1/settings/jobs/sample/run', (route) => {
     expect(route.request().method()).toBe('POST');
     runs++;
     job.running = true;
+    job.canCancel = true;
     return route.fulfill({ json: job });
   });
   await page.route('**/api/v1/settings/jobs/sample/schedule', (route) => {
@@ -6256,6 +6270,9 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Scheduled Jobs' }).click();
+  await expect(
+    page.getByRole('button', { name: 'Cancellation Unavailable' })
+  ).toBeDisabled();
   await page.getByRole('button', { name: 'Run Now' }).click();
   expect(runs).toBe(0);
   await page
@@ -6264,7 +6281,11 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
     .click();
   await expect(page.getByRole('button', { name: 'Cancel Job' })).toBeVisible();
   expect(runs).toBe(1);
-  await page.getByRole('button', { name: 'Edit Schedule' }).click();
+  await page
+    .getByRole('listitem')
+    .filter({ hasText: 'Fixture Job' })
+    .getByRole('button', { name: 'Edit Schedule' })
+    .click();
   await expect(page.getByLabel('Frequency')).toHaveValue('15');
   await page.getByLabel('Frequency').selectOption('20');
   await expect(page.getByLabel('Cron Schedule')).toHaveValue('0 */20 * * * *');

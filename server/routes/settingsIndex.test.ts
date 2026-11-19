@@ -3295,11 +3295,33 @@ describe('Settings route input validation', () => {
 
     assert.strictEqual(statusRes.status, 200);
     assert.strictEqual(statusRes.body[0].running, true);
+    assert.strictEqual(statusRes.body[0].canCancel, false);
     assert.strictEqual(runRes.status, 409);
     assert.strictEqual(cancelRes.status, 409);
     assert.match(cancelRes.body.message, /another instance/);
     assert.strictEqual(invoked, false);
     assert.strictEqual(cancelled, false);
+  });
+
+  it('reports and rejects cancellation for a running job with no handler', async () => {
+    scheduledJobs.push({
+      id: 'radarr-scan',
+      name: 'Radarr Scan',
+      type: 'process',
+      interval: 'hours',
+      cronSchedule: '0 0 * * *',
+      scope: 'instance',
+      running: () => true,
+      job: { nextInvocation: () => null } as never,
+    });
+
+    const status = await request(app).get('/settings/jobs');
+    assert.equal(status.status, 200);
+    assert.equal(status.body[0].running, true);
+    assert.equal(status.body[0].canCancel, false);
+    const cancel = await request(app).post('/settings/jobs/radarr-scan/cancel');
+    assert.equal(cancel.status, 409);
+    assert.match(cancel.body.message, /cannot be canceled/);
   });
 
   it('restores the active job schedule when persistence fails', async () => {

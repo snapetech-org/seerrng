@@ -331,19 +331,23 @@ const findScheduledJob = (value: unknown) => {
 const getScheduledJobResponse = (
   scheduledJob: (typeof scheduledJobs)[number],
   activeLeaseNames: ReadonlySet<string> = new Set()
-) => ({
-  id: scheduledJob.id,
-  name: scheduledJob.name,
-  type: scheduledJob.type,
-  interval: scheduledJob.interval,
-  cronSchedule: scheduledJob.cronSchedule,
-  enabled: getSettings().jobs[scheduledJob.id]?.enabled !== false,
-  nextExecutionTime: scheduledJob.job.nextInvocation(),
-  running:
-    isTrackedJobRunning(scheduledJob.name) ||
-    (scheduledJob.running ? scheduledJob.running() : false) ||
-    activeLeaseNames.has(getScheduledJobLeaseName(scheduledJob.name)),
-});
+) => {
+  const locallyRunning =
+    isTrackedJobRunning(scheduledJob.name) || scheduledJob.running?.() === true;
+  return {
+    id: scheduledJob.id,
+    name: scheduledJob.name,
+    type: scheduledJob.type,
+    interval: scheduledJob.interval,
+    cronSchedule: scheduledJob.cronSchedule,
+    enabled: getSettings().jobs[scheduledJob.id]?.enabled !== false,
+    nextExecutionTime: scheduledJob.job.nextInvocation(),
+    running:
+      locallyRunning ||
+      activeLeaseNames.has(getScheduledJobLeaseName(scheduledJob.name)),
+    canCancel: locallyRunning && Boolean(scheduledJob.cancelFn),
+  };
+};
 
 const getActiveScheduledJobLeaseNames = async (
   jobs: readonly (typeof scheduledJobs)[number][]
@@ -3058,9 +3062,9 @@ settingsRoutes.post<{ jobId: JobId }>(
         });
       }
 
-      if (scheduledJob.cancelFn) {
-        scheduledJob.cancelFn();
-      }
+      if (!scheduledJob.cancelFn)
+        return next({ status: 409, message: 'This job cannot be canceled.' });
+      scheduledJob.cancelFn();
 
       return res
         .status(200)
@@ -3161,7 +3165,9 @@ settingsRoutes.post<{ jobId: JobId }>(
       scheduledJob.job.cancel();
     }
 
-    return res.status(200).json(getScheduledJobResponse(scheduledJob));
+    return res
+      .status(200)
+      .json(await getScheduledJobResponseWithLease(scheduledJob));
   }
 );
 
