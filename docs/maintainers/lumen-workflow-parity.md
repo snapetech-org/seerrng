@@ -3593,3 +3593,10 @@ and the window to seven days. Both values survived reload. Clearing the
 two fields restored inheritance, verified by nulls from the real user
 settings API and blank controls after reload. The runs used isolated
 SQLite users and the production session and CSRF middleware.
+
+The bundled quota labels from `0b91da544` also passed at 390 and
+1440 CSS pixels through the Classic user settings bookmark and real
+local sign-in. The user settings API returned isolated instance quota
+defaults for movies, books, and music. Lumen described them as
+unlimited, one request across all time, and four requests per seven
+days. The member's blank override remained distinct from each default.
