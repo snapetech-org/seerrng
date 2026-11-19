@@ -3957,8 +3957,9 @@ and deleted a Lidarr rule, and created and reloaded Sonarr and Bookshelf
 rules. The Sonarr case saved the legacy language profile and the Bookshelf
 case retained its text genre. The tests proxied real sign-in and rule
 mutations to an isolated Express server. Provider choice and metadata
-responses were fixtures. The regular browser suite now checks the payload
-for multiple language and production-country selections.
+responses were fixtures. The regular browser suite checks the payload for
+multiple language and production-country selections in both standalone and
+bundled production deployments, across desktop, iPhone, Android, and tablet.
 
 The Classic `/settings/services#prowlarr` bookmark reaches Prowlarr Settings
 after local sign-in in both production deployments. Browser checks covered

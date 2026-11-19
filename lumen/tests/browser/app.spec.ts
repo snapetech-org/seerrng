@@ -6337,7 +6337,7 @@ test('override rules save multiple language and country selections', async ({
   await page.route('**/api/v1/overrideRule', (route) =>
     route.fulfill({ json: route.request().method() === 'GET' ? [] : { id: 1 } })
   );
-  await page.goto('/admin/override-rules');
+  await page.goto(testAppPath('/admin/override-rules'));
   await page.getByRole('button', { name: 'New Override Rule' }).click();
   const choice = (name: string) =>
     page.getByRole('combobox', { name, exact: true });
