@@ -276,6 +276,343 @@
 - **Lumen:** Lumen keeps your episode selection and explains what happened when the server adds no episodes to a request.
 - **Lumen:** Lumen resets game request selections when the title or catalog changes and offers a retry when game details fail to load.
 - **Lumen:** Lumen now scrolls interactive controls clear of the fixed mobile navigation, so controls near the end of a page remain reachable on phones and tablets. Open genre menus also stay anchored when selecting filters changes the control width, keeping their options on screen and clickable.
+- **Lumen:** Lumen keeps recommendation feed form actions clear of setting labels on small screens, so the create button remains tappable. Genre picker browser checks now validate the phone bottom sheet as well as the desktop popover.
+- **Lumen Navigation:** Lumen now applies SeerrNG request permissions to navigation links and quick-request actions across supported media types, so users only see actions their account can perform.
+- **Lumen:** Lumen confirms TV requests only when SeerrNG returns a request ID, so a response that adds no seasons no longer appears successful.
+- **Lumen:** Legacy software bookmarks now open Lumen's catalog or the matching game, including DAT-backed titles. Game details also read the catalog API's current response format.
+- **Lumen:** Swipe bookmarks now open Lumen in the standalone companion and when an account is locked to the bundled Lumen interface.
+- **Lumen Navigation:** Lumen now shows Swipe in desktop and mobile navigation only when Swipe is enabled and the signed-in user can request media.
+- **Lumen:** Swipe and Share keep series available to retry when SeerrNG adds no seasons.
+- **Lumen:** TV collection requests report when SeerrNG adds no seasons for a selected series.
+- **Lumen:** Password and Episode Queue bookmarks now open the matching settings section in bundled and standalone Lumen. Profile save feedback stays visible while Lumen refreshes the saved settings.
+- **Lumen:** Classic ebook and audiobook discovery bookmarks now retain their In Library or Not Yet selection when opened in bundled or standalone Lumen.
+- **Lumen:** Classic bookmarks for catalog titles, discovery, requests, account settings, and supported administration pages now open the matching Lumen views when bundled Lumen is the default. Bundled and standalone Lumen preserve supported request and discovery filters, and legacy watch-session invites keep their join destination.
+- **Lumen:** The bundled Lumen lock preserves supported book, comic, album, and artist bookmarks. Both Lumen deployments recognize the native audiobook format parameter on book links.
+- **Lumen:** Catalogs keep the titles already loaded and offer Retry if a server sends the wrong page. Retrying fetches a fresh response for the requested page.
+- **Lumen:** Lumen can remove SeerrNG entries from a combined watchlist while preserving matching Plex entries.
+- **Lumen:** Coming Soon now shows which feed failed and lets you retry it while keeping results from the other feed visible.
+- **Lumen:** Movie and TV discovery, Trending, and Coming Soon stop offering more results when it reaches the last page the movie or TV catalog can serve.
+- **Lumen:** Configured movie and TV shelves on Discover now respect the instance’s visibility settings. Shelves based on a saved search can still show requested titles.
+- **Lumen:** Lumen labels the current registered browser and can disable its push notifications without unsubscribing other devices.
+- **Lumen:** Editing a disabled job’s schedule keeps it disabled until an administrator enables it again.
+- **Discovery:** Lumen now applies administrator Discover defaults before loading home shelves. Disabled shelves no longer issue unnecessary catalog requests or briefly appear with default settings.
+- **Lumen:** Classic download-client refresh interval bookmarks open the equivalent control directly in Lumen. The control is also available from Administration search.
+- **Lumen:** Bundled Lumen preserves Bookshelf links with lookup hints and magazine bookmarks containing punctuation.
+- **Lumen:** Opening a fresh SeerrNG installation at its home address now starts the bundled Lumen setup wizard when Lumen is the default interface.
+- **Lumen:** Per-user quota settings now describe inherited limits as unlimited, all-time, or time-limited according to the server’s actual policy.
+- **Lumen:** Returning from an issue discussion now restores the active issue filters, search, and page. If the saved page no longer exists, Lumen opens the last available page with those filters. Bundled Lumen also preserves these settings when redirecting an issue discussion bookmark.
+- **Lumen:** Scheduled Jobs shows when a run cannot be canceled, including jobs running on a different SeerrNG instance.
+- **Lumen:** A failed attempt to enable a scheduled job now leaves it disabled. This applies to invalid schedules and settings write failures.
+- **Lumen:** Lumen's scheduled job presets describe when cron actually runs. The hourly picker no longer offers 48- or 72-hour presets, which ran daily.
+- **Lumen:** Existing book series bookmarks now open the matching series in the Lumen companion and in bundled Lumen when frontend lock is enabled.
+- **Lumen:** The Lumen companion opens Administration from existing Services settings bookmarks. Bundled and companion Lumen both open Prowlarr Settings from its older settings search link.
+- **Lumen:** Expanded System Logs details stay attached to the same entry when new logs arrive during a refresh.
+- **Lumen:** System Logs remembers each administrator’s severity and page size in the browser. It includes Classic’s 10-row page size. Search terms remain temporary.
+- **Lumen:** Existing Plex and Jellyfin settings bookmarks open the Media Server Libraries page in bundled and standalone Lumen.
+- **Lumen:** Music discovery and configured Music shelves respect the instance’s available and blocklisted title visibility settings. Explicit MP3 and FLAC library filters still show matching available albums.
+- **Lumen:** Music discovery now honors the exact artist filter alongside the MP3 or FLAC library filter.
+- **Lumen:** Lumen now lets you add books, music, comics, and magazines to your Watchlist from catalog cards, alongside movies and TV. Poster actions check the current title state before changing the Watchlist.
+- **Lumen:** Classic Prowlarr bookmarks now open Prowlarr Settings directly in bundled and companion Lumen.
+- **Lumen:** Lumen shows the media title on direct Request History links, even when the request is outside the current list.
+- **Lumen:** Included Lumen shows the cause of a storage write failure and the SeerrNG process UID and GID when available. Rechecking storage keeps your draft.
+- **Lumen:** System Logs keeps the selected page in the address so reloading or opening a Classic page bookmark preserves the page. Log search text stays out of the address.
+- **Lumen:** Classic Trending bookmarks retain their music, ebook, and audiobook filters when opened in Lumen.
+- **Lumen:** Administrators can save a single default request quota field even when the other field has never been configured. Lumen shows the effective zero value for unset fields.
+- **Lumen:** Lumen opens a user's requests from the user directory and existing request bookmarks with the requester already selected.
+- **Lumen:** Lumen returns to the last available watchlist page when a removal empties the final page, while keeping the active filters.
+- **Requests:** TV request forms now fall back to TMDB when the configured metadata provider cannot load season episodes, so temporary provider failures are less likely to block requests for large series.
+
+#### Security
+
+- **Lumen Security:** Lumen's shared configuration now requires an interactive SeerrNG admin session. Client API keys and bearer tokens cannot authorize shared settings changes.
+- **Lumen:** Updated the Lumen companion image to nginx 1.30.7 for upstream security fixes.
+- **Notifications:** Notification preferences now reject event masks outside the supported numeric range, including integers that would wrap during bitwise validation.
+- **Auth:** OIDC sign-in now encrypts the temporary data stored in its correlation cookie and enforces the cookie's ten-minute lifetime on the server.
+- **Metadata:** Hardened external title and ISBN lookup by reading named HTML metadata attributes with fixed patterns.
+- **Lumen:** Lumen validates same-origin artwork paths before passing them to the browser and preserves query strings on valid image URLs.
+- **Lumen:** Lumen validates artwork URLs on shared cover cards and uses the drawn cover when a request's artwork URL is unsupported. Same-origin artwork is limited to the image proxy and dedicated cover endpoints. Other same-origin paths use the artwork fallback. Artwork on shared cards and the affected detail screens loads without sending the page address as a referrer.
+- **Lumen:** Movie trailer links in Lumen now use validated YouTube video IDs and open only the YouTube watch page.
+- **Lumen:** Lumen validates reader service addresses and limits Kavita links to series pages.
+- **Lumen:** Lumen validates artwork in shared detail headers, extra-category cards, and game screenshots before rendering it.
+- **Lumen:** Bundled Lumen page loads now use a per-client rate limit. Static assets and missing asset responses use their existing paths.
+- **Dependencies:** GitHub withdrew the [Picomatch advisory](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) associated with the repeated-extglob patch. The app and documentation builds still treat those patterns as literal text.
+- **Image Proxy:** Public image and avatar fetches now connect directly so SeerrNG's destination checks apply to the socket. These fetches bypass the configured outbound forward proxy.
+- **Release:** Main and release image publishing no longer share GitHub Actions BuildKit caches, and their Trivy scans fetch fresh vulnerability databases. Preview publishing and the standalone Trivy scanner also avoid these shared caches. Trusted Docker jobs also disable the setup actions' Buildx binary and QEMU image caches.
+
+### User-facing changes
+
+#### Added
+
+- **Lumen:** Lumen now synchronizes each user's theme, Discover shelves, and personal display and request preferences through SeerrNG's authenticated user settings. Existing browser preferences migrate to the account, server values take precedence across devices, and administrator defaults and locks remain in effect. Failed loads and saves can be retried.
+- **Lumen:** Lumen now translates its administrator directory and Administration index in French and Arabic. Search, category labels, settings destinations, and Open actions follow the selected account language, including right-to-left Arabic layout.
+- **Lumen:** Lumen's Administration entry opens an in-app settings directory, with links to users, system caches, and other administrator tools.
+- **Lumen:** Lumen book details now link to author bibliographies and book series. Administrators can manage reader shelves from both pages.
+- **Lumen:** Lumen book series can be filtered by format, publication year, subject, rating, and language while preserving reading order.
+- **Lumen:** Authorized users can choose a book service, profiles, root folder, and tags for bulk book requests in Lumen. Users with delegated request permissions can also choose the requester.
+- **Lumen:** Lumen now accepts bulk ebook and audiobook requests from author and series pages and shows which requests were created, skipped, or failed.
+- **Lumen:** Administrators can preview and manage Grimmory and BookOrbit reader shelves from a selected comic or manga edition in Lumen.
+- **Lumen:** Coming Soon can ask for approval when a movie or TV request exceeds your quota.
+- **Lumen:** Lumen can refresh series and music collection availability against a configured media server without leaving the collection page.
+- **Lumen:** Lumen can open series collections and artist discographies from title details and existing collection bookmarks.
+- **Lumen:** Users can choose English, French, or Arabic as their saved display language in Account Settings. Lumen applies it to the account page and signed-in You hub, including navigation, request preferences, and media-server summary.
+- **Lumen:** Request individual episodes from Lumen's TV detail pages when partial requests are enabled.
+- **Lumen:** Lumen movie and series details can find matching Live TV airings and request a single airing or a series recording when Tunerr is configured.
+- **Lumen:** Lumen music collections and artist discographies can be filtered by release type, genre, and release year.
+- **Lumen:** Request selected releases in MP3 or FLAC from Lumen music collections and artist discographies.
+- **Lumen:** Lumen poster quick requests can ask for approval after a movie or TV quota denial.
+- **Lumen:** Pending quota exceptions are labeled Over Quota in Lumen's request list and history.
+- **Lumen:** Lumen administrators can configure Grimmory and BookOrbit, choose a preferred reader, test grouping access, and manage existing reader shelves.
+- **Lumen:** Lumen ebook, audiobook, comic, and magazine details can open the configured Grimmory or BookOrbit library.
+- **Lumen:** Lumen administrators can configure Share to Request, local text recognition, vision providers, and image size limits from Administration.
+- **Lumen:** Lumen has a Recordings page for viewing scheduled and past recordings, canceling eligible requests, and approving or declining requests with the appropriate permissions.
+- **Lumen Navigation:** Lumen now provides a permission-aware Share & Identify entry in the desktop navigation and on the mobile You page for users who can submit requests.
+- **Lumen:** Lumen administrators can configure and test ROMarrNG and QuestarrNG, choose an emulation catalog, manage platform groups and IGDB matches, and configure Steam library import.
+- **Lumen:** Choose a Sonarr language profile or metadata language in Lumen's advanced TV request controls when the destination server supports it.
+- **Lumen:** Choose the Sonarr season order in Lumen's advanced single-series requests when multiple orders are available.
+- **Lumen:** Lumen users can follow or unfollow Tunerr sports teams from Recordings and reach the controls from Sports.
+- **Lumen:** Lumen administrators can configure Tunerr, test deck and guide connectivity separately, and connect or synchronize Sportarr feeds.
+- **Lumen:** Request selected series from Lumen TV collections with season eligibility, quality selection, quota checks, and per-series results.
+- **Lumen:** Filter movie and TV collection requests by release year, genre, rating, and language. TV collections also support series status, and native TV collection requests now receive the metadata needed for status and language filters.
+- **Lumen:** Request approval from movie and TV detail pages when your request would exceed your quota.
+- **Lumen:** Eligible request managers can explicitly ignore a configured quota when submitting advanced movie or TV requests in Lumen.
+- **Lumen:** Customize the selected Radarr or Sonarr server's tags in Lumen's advanced movie and TV request controls.
+- **Lumen:** About now shows recent releases, identifies the installed version, and opens formatted release notes on demand. Development builds with an available update link to the GitHub commit comparison.
+- **Lumen:** Lumen now offers Account Settings under You. Update your display name, supported email and metadata preferences, or set or change your local password.
+- **Lumen:** Account Settings shows your account type and whether you are an owner, administrator, or user.
+- **Lumen:** Find Spotify Playlist Import and Steam Library Import directly from Lumen Administration search.
+- **Lumen:** Search the Lumen Administration directory to find settings pages or open individual controls such as 4K requests, the application API key, and default quotas.
+- **Lumen:** Explore exact AniList franchises from Provider Discovery, including titles without a TMDB match. Browse manga and novel continuations by season, see when a volume is unconfirmed, and follow future translated volumes. Franchise curators can link directly to Bookshelf volumes and IGDB games.
+- **Lumen:** Open Music discovery from an artist page with the exact artist already selected, then narrow results by library quality, release type, or date.
+- **Lumen:** Blocklist managers can now add or remove supported titles directly from Lumen media details. The controls use each title’s exact media identity and refresh the request state after the change.
+- **Lumen:** Lumen now lets authorized users browse and filter the Blocklist. Managers can remove entries after confirmation.
+- **Lumen:** Lumen can now filter household book requests by ebook or audiobook format.
+- **Lumen:** Open Hardcover recommendation feeds from Lumen Books or Audiobooks, refine the results, and create a personalized feed from your feedback.
+- **Lumen:** Lumen administrators can test and manage ChaptarrNG, BookshelfNG, other Readarr-compatible services, Bindery, and BookOrbit request destinations.
+- **Lumen:** Lumen now supports personal browser push event preferences and removal of registered browser devices.
+- **Lumen:** Lumen can register a compatible browser for push notifications over a secure connection.
+- **Lumen:** Lumen now supports selecting and requesting multiple eligible movies from a collection in HD or 4K. Each title shows its individual request outcome.
+- **Lumen:** System Caches shows the server's image cache location and distinguishes unavailable DNS diagnostics from an empty cache.
+- **Lumen:** Lumen now shares SeerrNG's poster title visibility preferences for movies, series, music and books. Manage them under Account Settings.
+- **Lumen:** Lumen Movies and Series now offer one action to clear discovery filters and reset sorting.
+- **Lumen:** Create, list, and revoke scoped client tokens in Lumen under You → Account Settings → Client Tokens. New token values are available to copy once.
+- **Lumen:** Lumen can now play selected collection movies on an authorized media-server device or prepare a playlist for the selected quality and titles.
+- **Lumen:** Lumen can now queue a movie collection in release order, keeping one or two unwatched movies ahead. Users can choose an eligible quality, check progress, and stop or restart their own queue.
+- **Lumen:** Open Collector Picks from Lumen Music to see releases shared by trusted collectors, open matched albums, and follow artist releases.
+- **Lumen:** Administrators can manage and test Mylar, Kapowarr, and BackIssue connections in Lumen, including library scanning and supported search and root folder settings.
+- **Lumen:** Coming Soon now honors the instance’s shared-availability display setting while keeping existing copies ineligible for duplicate requests.
+- **Lumen:** Migrate companion-local logos and icons with the Lumen configuration draft. Bundled Lumen validates the replacement images before publishing the settings.
+- **Lumen:** Bundled Lumen can load a companion configuration export into an administrator draft for review before saving.
+- **Lumen:** Lumen movie and series details now offer expandable cast and crew lists with character names, crew jobs, and links to person pages.
+- **Lumen:** Administrators can manage saved connection hosts in Lumen and reuse them in the shared request service editor. Saved hosts are also available in Prowlarr, reader, request integration, and media server connection forms.
+- **Lumen:** Lumen General Settings can select the default SeerrNG interface, configure the standalone companion URL, and manage the bundled Lumen lock for non-administrators.
+- **Lumen:** Lumen administrators can set default request limits and quota windows for accounts that inherit instance quotas.
+- **Lumen:** Administrators can set the default media categories for inheriting accounts from Lumen’s Media Categories page.
+- **Lumen:** Lumen administrators can edit and confirm the default permissions assigned to new accounts.
+- **Lumen:** Authorized users can open another user's watchlist in Lumen. The read-only view supports the same title filters and pagination as the personal watchlist where supported, and existing user watchlist bookmarks open the matching list.
+- **Lumen:** Lumen now supports personal Discord mention and event settings.
+- **Lumen:** Lumen administrators can configure and test Discord and Slack notifications, including Slack approval actions. The Discord settings API now retains thread IDs.
+- **Lumen:** Lumen Movies and Series now let you choose HD or 4K when filtering by availability. Compatible available-title views now query the library directly.
+- **Lumen:** Lumen administrators can configure and clear Trakt, AniList, Simkl, and MDBList credentials from Discovery Integrations.
+- **Lumen:** Lumen Movies and Series can now filter discovery by country of origin. Production countries on title details now link directly to the corresponding filter.
+- **Lumen:** Lumen Movies and Series now let you filter discovery by original language.
+- **Lumen:** Lumen Discovery Integrations now supports publishing, replacing, downloading, and deleting shared title-match packs.
+- **Lumen:** Lumen profile settings now expose personal discover and streaming regions and original language.
+- **Lumen:** Lumen Movies and Series can now filter discovery by release date range.
+- **Lumen:** Lumen Movies and Series can now filter discovery by runtime in minutes.
+- **Lumen:** Lumen Movies and Series can now filter discovery by minimum and maximum TMDB vote counts.
+- **Lumen:** Administrators can configure and test live download clients and adjust the refresh interval in Lumen. The Requests page now updates download percentages live when a configured download client reports progress. Movie and series detail pages now show live download progress for HD and 4K.
+- **Lumen:** Users with Manage Downloads access can open Lumen's Download Inbox to see active acquisition warnings, resolved items, and their recorded intervention history.
+- **Lumen:** Lumen's Download Inbox now supports previewing files, choosing an existing library match, submitting manual imports, and reviewing and confirming download rejections.
+- **Lumen:** Lumen now lets signed-in users choose their email notification events in Account Settings.
+- **Lumen:** Lumen now lets users manage the OpenPGP public key for their notification email.
+- **Lumen:** Lumen admins can enable individual episode file tracking. Series pages can show reported HD and 4K files by season when tracking is enabled.
+- **Lumen:** Lumen’s episode availability panel marks or hides shared HD and 4K file reports independently using the season’s viewer coverage.
+- **Lumen:** Start setup in the Lumen companion or at the bundled Lumen setup URL. Sign in as the first administrator, enable a media library, and finish initialization in Lumen.
+- **Lumen:** Lumen now offers eligible media request actions directly from Request History.
+- **Lumen:** Lumen Request History now shows and can refresh detailed download and import progress.
+- **Lumen:** Users with request access can follow or unfollow a person directly from their Lumen detail page. Updates appear in Following.
+- **Lumen:** Users with request access can open Following in Lumen to read updates, mark them seen, and manage notifications and automatic book requests for existing subscriptions. Follow story expansions from a PC game’s details. Expansion updates open the base game directly.
+- **Lumen:** Follow movie and series genres, production companies, TV networks, authors, and solo audiobook narrators directly in Lumen. Following explains why updates appeared, opens exact catalog targets where available, and marks updates seen when opened.
+- **Lumen:** Game Finder supports filtered QuestarrNG searches, including excluded themes, and lets you save searches and opt into notifications for new matches. Emulated game details link to translations and hacks for the selected game and console.
+- **Lumen:** When QuestarrNG supplies game content, Lumen shows PC game editions and add-ons. Select an edition or request missing add-ons even if you already own the base game. Open request history directly after submitting. It shows the selected edition or add-ons by name when the catalog has them, with IGDB IDs as a fallback.
+- **Lumen:** Lumen General Settings now controls image caching and automatic version checks. The server also persists and validates the Version Check switch in the native interface.
+- **Lumen:** Lumen administrators can edit the SeerrNG application title and public URL from General Settings, alongside the existing instance request controls.
+- **Lumen:** Browse movie and series genres in Lumen and open filtered results for any listed genre. Existing genre-directory bookmarks open the corresponding Lumen directory.
+- **Lumen:** With Tautulli configured, Plex account owners and administrators can see total plays and recently watched titles on Lumen household profiles.
+- **Lumen:** Lumen household profiles show recent requests and watchlist previews when the viewer has permission to see them.
+- **Lumen:** Lumen now lists household software and game requests under Requests → Everyone → Software for accounts with permission to view household requests.
+- **Lumen:** Users with Manage Requests access can open a prefilled Prowlarr search from Lumen movie, series, book, audiobook, music, comic, magazine, and game pages.
+- **Lumen:** Lumen now offers Indexer Search to users with Manage Requests access. Search your configured Prowlarr indexers by media category, browse release results, and send a release to Prowlarr’s download client.
+- **Lumen:** Lumen administrators can configure the instance Age Gate, including the default restriction, movie and series rating limits, and ratings country.
+- **Lumen:** Administrators can manage instance-wide media category switches in Lumen. Existing Media Categories bookmarks open the Lumen page in both deployments.
+- **Lumen:** Lumen administrators can configure and test instance-wide email and Web Push notifications.
+- **Lumen:** Lumen admins can now enable or disable person-page bulk movie requests under Instance Request Settings.
+- **Lumen:** Lumen General Settings can manage local and media-server sign-in and require Quick Connect for Jellyfin. Changes keep at least one sign-in method enabled.
+- **Lumen:** Issue details now link to the affected book, album, comic, or magazine when the report has a catalog identifier.
+- **Lumen:** Lumen now has an Issues list and discussion view. Authorized users can browse and search reports, and users with edit access can add comments, resolve, or reopen them.
+- **Lumen:** Lumen now lets eligible users edit their own issue descriptions and replies, and confirm deletion of issues or replies they have permission to remove.
+- **Lumen:** Lumen Issues can filter by media type, issue type, and reporting period. Saved links preserve filters, search, and pagination.
+- **Lumen:** Lumen Issues supports sorting and media-specific filters for year, genre, studio, network, and album type.
+- **Lumen:** Lumen issue managers can now create an issue report on behalf of another account. Search and choose the account in the report form; the report remains subject to server permission checks.
+- **Lumen:** Administrators can configure, test, and disconnect Jellystat from Lumen.
+- **Lumen:** Administrators can configure and test LazyLibrarian magazine services directly in Lumen, including library scans and automatic searches on approval.
+- **Lumen:** With tracking writes enabled, you can update watched status and ratings, and save episode progress on AniList. Trakt and Simkl also support updating watched status for individual episodes.
+- **Lumen:** My Media can scan Trakt, AniList, and Simkl shelves for exact catalog matches. You can stop after a batch and continue from the next page. My Media also imports and exports private title-match files. Library links remember the selected source, shelf, and filters. You can also search for, save, or reset an individual title match in My Media.
+- **Lumen:** Lumen administrators can preview, confirm, and monitor BookshelfNG library path migrations for books and audiobooks.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Lidarr and Whisparr services, including Lidarr metadata profiles.
+- **Lumen:** Lumen now offers Incomplete, Needs attention, Unavailable and Completed filters for household media requests.
+- **Lumen:** Lumen Account Settings now lists linked sign-in methods and supports eligible account unlinking and Jellyfin or Emby credential linking.
+- **Lumen:** Lumen can control whether eligible media server users may sign in before an administrator imports their accounts. Native Users settings bookmarks open Lumen General Settings in both deployments.
+- **Lumen:** Lumen administrators can update Plex, Jellyfin, and Emby connection settings and manage Jellyfin bridge sign-in from Media Server Libraries.
+- **Lumen:** Lumen administrators can refresh Plex, Jellyfin, or Emby libraries, manage which libraries are indexed, change episode order, and monitor full library scans.
+- **Lumen:** Lumen administrators can configure and test Telegram, Pushbullet, and Pushover notifications and choose their notification events.
+- **Lumen:** Lumen administrators can select and test TV and anime metadata providers, test music providers, set Cover Art Archive request limits, and manage book language restrictions.
+- **Lumen Navigation:** Lumen adds a permission-aware Indexer Search link to the mobile You menu for accounts that can search indexers.
+- **Lumen:** Lumen now opens movie collections from search and movie details. Browse collection members and, with Manage Blocklist access, block or unblock a collection after confirmation.
+- **Lumen:** Movie details now apply the shared-availability setting separately to HD and 4K copies, including playback actions and availability labels.
+- **Lumen:** Lumen movie details now link production studios to matching discovery results.
+- **Lumen:** Search for an artist from Music discovery and choose an exact MusicBrainz match, with disambiguation for artists who share a name. You can also apply the artist name as text.
+- **Lumen:** My Media in Lumen lets you browse connected Plex, Jellyfin, Emby, Trakt, AniList, and Simkl libraries, switch shelves, and open titles with a confirmed SeerrNG catalog match.
+- **Lumen:** Administrators can configure, test, and disconnect Navidrome from Lumen and control whether its music library is scanned.
+- **Lumen:** Lumen administrators can now manage DNS caching, outbound proxy settings, administrator sign-in restrictions, and HTTP and HTTPS transport from Network Settings.
+- **Lumen:** Lumen now lets you add or remove Open Library books, MusicBrainz albums, ComicVine editions, and magazines from the local Watchlist on their detail screens.
+- **Lumen:** Lumen notification administration now offers direct channel links. Existing notification settings bookmarks open the corresponding channel in bundled and standalone Lumen.
+- **Lumen:** Lumen administrators can configure and test Gotify, ntfy, and Apprise. The ntfy settings API now retains notification tags.
+- **Lumen:** Lumen can now link an OpenID Connect identity from Account Settings. Register the exact callback URL for the Lumen deployment in your provider.
+- **Lumen:** Lumen can now sign in through configured OpenID Connect providers and return to the page the user originally opened.
+- **Lumen:** Administrators can inspect, create, edit, and delete request override rules in Lumen.
+- **Lumen:** Lumen now supports requesting a local-account recovery email and resetting the password from the recovery link.
+- **Lumen:** Eligible Lumen users can now request all movies credited to a person when their SeerrNG instance enables person-page bulk requests.
+- **Lumen:** Lumen person pages now show full cast and crew filmographies with media filters and credit sorting.
+- **Lumen:** Customize six personal theme colors in Account Settings. Classic Advanced Theme bookmarks open the editor, and edits preserve other stored Classic overrides.
+- **Lumen:** Lumen now shows your SeerrNG and Plex Watchlist. On local lists, you can filter and sort saved titles and remove entries directly from Lumen.
+- **Lumen:** Lumen administrators can discover Plex servers, review reachable connections, and populate the connection form from a selected address.
+- **Watchlist:** Movie and series posters now offer a Watchlist action on desktop and touch layouts. The first poster action checks current membership before changing it, and catalog browsing does not fetch details for every card.
+- **Lumen:** Lumen now supports linking Plex or linking Jellyfin with Quick Connect from Account Settings.
+- **Lumen:** Lumen administrators can configure and test a Prowlarr connection, view indexer diagnostics, and set the default search limit.
+- **Lumen:** Lumen Prowlarr Settings now supports category mappings, category-specific indexer assignments, and per-indexer search limits.
+- **Lumen:** Lumen now supports personal Pushbullet notification settings.
+- **Lumen:** Lumen now supports personal Pushover credential, sound and event settings.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Radarr request destinations, including quality profiles, root folders, and tags.
+- **Lumen:** Lumen can now find downloadable request files from ebook, audiobook, comic edition and magazine detail pages.
+- **Lumen:** Administrators can configure, test, and disconnect Audiobookshelf and Kavita from Lumen and select the Audiobookshelf library to scan.
+- **Lumen:** Administrators can configure and test the ReadMeABook connection in Lumen. Administrators can approve or deny ReadMeABook requests and inspect the acquisition dashboard in Lumen.
+- **Lumen:** Lumen now has a Release Calendar for movie, series, music, book, comic, magazine, and game releases, with month and media filters and scope controls based on your permissions.
+- **Lumen:** Lumen users with issue reporting permission can report problems from movie, series, book, album, comic and magazine pages. Reports can identify the affected video quality, seasons, episodes, or publication issue type.
+- **Lumen:** Lumen can now filter household media requests by date added.
+- **Lumen:** Lumen now lets user managers set Episode Queue length on individual TV requests and identifies requests created automatically by the queue.
+- **Lumen:** Lumen can now look up and download available request files from Request History.
+- **Lumen:** Lumen now shows request history with the current stage, timestamps and retry attempts from the Requests screen.
+- **Lumen:** Lumen now opens request history from direct and notification links, even when the request is outside the current list.
+- **Lumen:** Lumen can now filter household media requests by media type alongside status and requester.
+- **Lumen:** Lumen now lets eligible requesters retry their own failed or unavailable requests and shows known reasons for request dispatch failures.
+- **Lumen:** Lumen can now search household media requests alongside the current filters.
+- **Lumen:** Lumen can now sort household media requests by date added, last update, or title.
+- **Lumen:** Lumen can now filter household media and software requests by requester.
+- **Lumen:** Lumen now keeps previous-season watch-rule feedback beside the season picker and links to account settings when playback account linking is required.
+- **Lumen:** Network links on Lumen series details now open discovery filtered to that network. The Series grid also lets you choose a network directly.
+- **Lumen:** Lumen series details now use season and quality coverage to mark or hide shared availability without offering duplicate season requests.
+- **Lumen:** Administrators can configure download clients and Prowlarr during first-run Lumen setup.
+- **Lumen:** Administrators can set the instance and default user media categories during first-run Lumen setup.
+- **Lumen:** Configure Radarr, Sonarr, Lidarr, and book request services during first-run Lumen setup.
+- **Lumen:** Lumen video posters and featured cards now mark or hide shared copies according to the instance availability setting.
+- **Lumen:** Lumen General Settings can configure how SeerrNG displays availability for copies a viewer did not request.
+- **Lumen:** Administrators can create and revoke one-time Lumen sign-in links, manage the application API key, configure metadata and Spotify credentials, edit library path mappings, and set discovery regions, languages, and visibility defaults from Lumen. Trailer links use the configured YouTube player when one is set.
+- **Lumen:** My Software lets users browse and filter their own game and software requests. Coming Soon can show additional pages of movies and series. Discover, Movies, Series, Trending, and Coming Soon honor the instance's visibility defaults. The explicit library view still shows owned titles.
+- **Lumen:** Lumen can now filter household software requests by category and status.
+- **Lumen:** Lumen now offers software request moderation and recovery actions from Software Request History, including confirmation for uncertain downloads.
+- **Lumen:** Lumen now opens software request history and downloads from request rows and notification links.
+- **Lumen:** Lumen administrators can add, test, edit, and remove Sonarr request destinations, including separate anime settings and version-specific language controls.
+- **Lumen:** Administrators can configure and test the Soulseek connection in Lumen and see which slskdN capabilities are available.
+- **Lumen:** Lumen league details now show paginated Sportarr events and their file status. Bundled Lumen preserves canonical Sportarr league bookmarks.
+- **Lumen:** Administrators can configure and test Sportarr connections and select a sports quality profile in Lumen.
+- **Lumen:** Lumen series details now confirm which seasons SeerrNG accepted, including when a whole-series request stages only eligible seasons. Quick series requests also report the accepted seasons.
+- **Lumen:** Lumen can now select or clear multiple streaming subscriptions in the current search results.
+- **Lumen:** Lumen Account Settings now lets users choose their streaming subscriptions for SeerrNG request rules.
+- **Lumen:** Lumen Movies and Series can now search for subject tags and include or exclude them from discovery results.
+- **Lumen:** Swipe adds catalog decks for audiobooks, comics, magazines, music, sports, and adult media. Swipe adds deck search and category-specific filters, including tracked and public magazine catalogs. Swipe now supports retro games, apps, and PC game decks with request target selection.
+- **Lumen:** Swipe History can restore individual passed or seen titles and clear decisions by category. Administrators can enable Swipe and configure and test its ranking provider in Lumen. Swipe recommendation decks support keyboard shortcuts and directional touch gestures.
+- **Lumen:** Lumen now offers Swipe recommendation decks for movies, series, and books, with request, pass, seen or read, and undo actions. Swipe users can change their series and book request defaults, recommendation sources, and taste notes in Lumen. Swipe users can select favorite titles from their library and request history to guide recommendations.
+- **Lumen:** Plex administrators can configure Tautulli from Lumen’s Media Server Libraries page.
+- **Lumen:** Lumen now supports personal Telegram notification settings.
+- **Lumen:** Lumen now offers a Title View toggle while browsing movies, series, music, books, audiobooks, search results, and supported Discover shelves.
+- **Lumen:** Open Linked Accounts in Lumen to connect or disconnect Trakt, AniList, and Simkl, and choose whether SeerrNG may write to each account. Trakt connections use the configured HTTPS application address. You can reconnect a provider from its account row. The existing connection is replaced after authorization succeeds.
+- **Lumen:** Lumen TV details now let each viewer add or remove the whole series from their linked Plex Watchlist or Jellyfin/Emby Favorites. The action is separate from SeerrNG's own Watchlist, follows the selected quality, and confirms changes against the existing authenticated API.
+- **Lumen:** Lumen Account Settings now exposes the previous-season watch requirement and the account’s Episode Queue default, with changes gated by existing SeerrNG permissions.
+- **Lumen:** Lumen movie and series details now have cast and crew panels that can be pinned open using the same preferences as SeerrNG.
+- **Lumen:** Lumen admins can now manage global 4K, partial series requests, special episodes, and previous-season watch rules. Series details offer specials when the instance allows them.
+- **Lumen:** Lumen movie and series details now show subject tags in a pinnable panel. Select a tag to browse matching titles.
+- **Lumen:** Users with a local SeerrNG Watchlist can add and remove movies and series directly from their Lumen detail pages.
+- **Lumen:** Watch-session hosts can remove guests or end a room, and guests can leave from Lumen. Watch-session hosts can select movie genres and edit a draft session’s title and filters from Lumen.
+- **Lumen:** Lumen now lists private watch sessions and lets users create movie sessions and choose whether to contribute their watchlist. Watch-session hosts can create and revoke invitation links in Lumen, and guests can use those links to join. Watch-session members can vote on movies, change their votes, and open group matches in Lumen.
+- **Lumen:** Lumen Account Settings now lets eligible users manage watchlist auto-requests for Plex movies and series, music, books, comics, and magazines. Account Settings remains available if a streaming provider endpoint returns an unexpected response format.
+- **Lumen:** Lumen administrators can configure and test generic webhook notifications, including JSON payload templates, authorization, custom headers, and URL variables.
+- **Lumen:** Lumen opens Whisparr scenes from Requests using the saved request destination.
+- **Lumen:** Lumen preserves the Whisparr source on scene cards and native bookmarks. Users without destination selection permission still request through the instance’s default Whisparr server.
+
+#### Changed
+
+- **Lumen:** Lumen now translates shared search prompts, Back labels, missing-page recovery text, and media-server sign-in guidance in French and Arabic.
+- **Lumen:** Lumen's configured Live TV Recordings page and navigation now use the saved display locale, including right-to-left layouts. The filters, recording statuses and actions, and Followed Teams controls are localized in English, French, and Arabic.
+- **Lumen:** Lumen's Blocklist now localizes filters, entry details, removal confirmation, feedback, and dates in English, French, and Arabic.
+- **Lumen:** Lumen's Release Calendar now localizes filters, release descriptions, statuses, feedback, and dates in English, French, and Arabic using the saved account language.
+- **Lumen:** Lumen's Coming Soon feed now localizes filters, dates, media types, request actions, confirmations, and submission status in English, French, and Arabic.
+- **Lumen:** Lumen's Following page now localizes feed controls, access states, and update reason messages in English, French, and Arabic.
+- **Lumen:** Lumen's issue report form now follows the saved English, French, or Arabic language across controls, reason choices, account selection, episode labels, and feedback.
+- **Lumen:** Lumen now localizes issue filters, report statuses, discussions, confirmations, accessibility labels, and timestamps in English, French, and Arabic. Its locale bundle keeps English fallback strings shared, reducing the main bundle while adding these translations.
+- **Lumen:** Linked Accounts now translates its sign-in, media-server linking, and unlinking controls in English, French, and Arabic.
+- **Lumen:** Lumen now shows localized names for optional catalog categories in the sidebar and Discover shortcuts in English, French, and Arabic.
+- **Lumen:** Lumen now translates linked tracking account controls and authorization feedback in English, French, and Arabic.
+- **Lumen:** Lumen’s TV Request Settings page now translates the season-watch policy, approval queue, and Episode Queue controls using SeerrNG’s locale catalog. Failed Episode Queue saves keep the selected value available for retry and show an Episode Queue-specific error.
+- **Lumen:** Classic personal permissions bookmarks open a read-only summary of the signed-in account’s permissions in Lumen.
+- **Lumen:** Lumen opens a newly created recommendation feed and keeps the form available for retry if Hardcover rejects creation. Lumen’s recommendation feed form supports descriptions, preferred and avoided genres, series position, and a preference for less popular books. An unavailable recommendation bookmark can be retried or cleared without losing the selected book format.
+- **Lumen:** Bookshelf matches opened from a recommendation keep their edition format and title lookup hint. Switching between ebook and audiobook details preserves the Bookshelf lookup title. Opening a Bookshelf result from Share preserves the resolved title and edition format. Bookshelf cards in search and discovery carry the title needed to open the matching edition.
+- **Lumen:** Book Series catalog links also retain the matched Bookshelf title and selected format. Release Calendar links preserve the Bookshelf title for local book releases. Request links carry the resolved Bookshelf title and format, including when Lumen restores a cached row. Switching formats from an older Bookshelf bookmark carries forward the title resolved on the detail page.
+- **Lumen:** Bundled Lumen redirects older padded Bookshelf bookmarks to the book and keeps the title and format. Book details show verified Bookshelf and Open Library ratings, using the same lookup title as the book itself. Book search keeps working if its optional series lookup returns an incomplete response. The series panel offers its own retry.
+- **Lumen:** Lumen keeps the last successful recommendation results and feedback selections if a refresh fails, and displays the error beside the feed. Opening a recommendation feed updates the URL so it can be bookmarked and restored on reload. Recommendation bookmarks also restore the selected ebook or audiobook format.
+- **Lumen:** Release Calendar saves the selected month and filters in the URL. Shared links still respect each viewer’s permissions. Bundled Lumen keeps calendar filters when redirecting older calendar links. Incomplete release responses show a Retry button. A failed retry keeps the prior results visible and explains the failure.
+- **Lumen:** Lumen Comics preserves Classic catalogue bookmarks and supports filtering by title, publisher, start year, and issue count. Lumen displays ComicVine indexing progress and refreshes catalogue results once indexing finishes.
+- **Lumen:** Coming Soon bookmarks keep their movie or TV scope when redirected to Lumen.
+- **Lumen:** Lumen keeps the genre picker inside the viewport when the filter button sits near a window edge. Compact filters also stay within the page at narrow widths, including Comics at 360 px.
+- **Lumen:** An incomplete playback activity response now stays within that panel, where it can be retried without interrupting the profile. An incomplete watchlist preview can be retried independently of other profile panels. Recent Requests also offers its own retry when the profile API returns an incomplete list. The You menu links directly to My Profile, including for members without administrative access.
+- **Lumen:** Classic profile bookmarks open My Profile in bundled and standalone Lumen. Household profiles show account email to the owner and authorized user managers, and show user IDs to request managers. Household profiles show supported profile pictures through the SeerrNG avatar proxy and fall back to initials if the picture is unavailable.
+- **Lumen:** Local account owners can upload a JPEG, PNG, or WebP profile picture from My Profile. The signed-in account picture also appears in Lumen navigation and refreshes after an upload. Recent Requests on household profiles shows each request’s status before opening its history. Pending requests over quota show the same Over Quota label in household previews and on the Requests page.
+- **Lumen:** Recent Requests shows the same media and quality labels as the main Requests page.
+- **Lumen:** Lumen household profiles show when the member joined and link to the appropriate account settings for viewers with edit access. Opening and closing request history from a household profile keeps the request list scoped to that member. Playback activity explains when recent plays have no catalog titles to display while keeping the total play count visible.
+- **Lumen:** Lumen issue lists now show the affected movie, series, album, book, comic, or magazine title and year when available. Title metadata loads as a row approaches the viewport and links to the matching media detail page.
+- **Lumen:** Choose a configured magazine service from the Lumen discovery request confirmation when advanced request options are permitted. Magazine details use the same permission-aware request confirmation and service selection as discovery. Magazine request confirmations show approval requirements and the remaining request quota. A reached quota disables submission.
+- **Lumen:** Magazine request confirmation checks for an existing request, library availability, or a blocklist entry before offering submission.
+- **Lumen:** Lumen Magazines preserves Classic discovery searches and lets users switch between tracked titles and the public catalogue. Request a magazine by title from Lumen discovery, even when it is missing from the catalogue results. Start public magazine discovery from suggested title searches.
+- **Lumen:** Lumen preserves Classic Music discovery bookmarks, including search, artist, release type, audio quality, release dates, and ascending sort orders. Edit genre, artist, audio quality, and release date filters directly in Lumen Music. Select multiple MusicBrainz release types in Lumen Music, including compilations and soundtracks.
+- **Lumen:** Lumen labels requests for both book formats as Ebook and Audiobook in the Requests list and household previews. Request History shows the requested book format even when opened directly from a bookmark.
+- **Lumen:** Request History links to the resolved catalog title and retains the Bookshelf lookup title and format. Series request links open the 4K selection for viewers who have access to it. Changing series quality keeps the bookmark’s season anchor and other query parameters. Bundled redirects preserve an explicit 4K series selection.
+- **Lumen:** Movie request links prefer the 4K playback copy when it is available to the viewer, including through bundled redirects. A 4K movie bookmark explains when 4K playback is unavailable while retaining other available playback controls. An open 4K movie bookmark refreshes a pending or processing copy while the page is visible, so the 4K Watch link appears when the copy arrives.
+- **Lumen:** Visible 4K series bookmarks now refresh pending seasons without jumping back to the season anchor on each update. Release Calendar links preserve the 4K selection for movie and series entries. TV episode entries in Release Calendar open the corresponding season row when it is visible. Each season in TV Request History links directly to its row and keeps the requested video quality.
+- **Lumen:** The episode picker starts at the bookmarked season when that season is eligible to request. Release Calendar carries the episode number to the series detail page. The picker selects that episode if it is eligible when opened. Bundled TV redirects retain a valid episode selection from an older link.
+- **Lumen:** Request History shows the 4K label for movie and series requests, including from a direct request link. TV Request History lists requested seasons, specials, and selected episodes. Each requested TV season shows its own approval status when available. Incomplete Request History responses can be retried without leaving the dialog.
+- **Lumen:** Default Request Quotas explains the difference between unlimited requests and a quota that counts requests across all time. The user-defaults bookmark also links directly to the default permission editor. Classic Steam API key search links jump to Steam Library Import in Lumen. Classic service category bookmarks open the corresponding group of Lumen administration pages.
+- **Lumen:** Lumen Administration lets administrators switch between service categories and the full settings list.
+- **Lumen:** Classic service settings search links open the matching administration page in bundled and standalone Lumen. Classic user-default settings bookmarks jump directly to default request quotas in Lumen General Settings. Default Request Quotas links directly to Default User Categories so both sets of user defaults are reachable from the Classic bookmark.
+- **Lumen:** League follow confirmations show the shared TV request quota and disable submission when it has been reached. Eligible users can choose another Sportarr service when the default service already follows the league. League follow confirmations explain whether the request is automatically approved or requires approval.
+- **Lumen:** League details explain when events are unavailable and show season and local broadcast time for scheduled events. Lumen league schedules show the total number of events and identify recordings split across multiple files. Failed league follow requests show the error in the confirmation and keep the selected service available for retry.
+- **Lumen:** Lumen preserves the selected page of a league schedule in the address so it can be bookmarked and reopened. If a bookmarked event page no longer exists, Lumen opens the last available page.
+- **Lumen:** Lumen preserves Classic league and adult discovery search text when opening bookmarks. Adult discovery preserves bookmarked Whisparr service filters and offers a service selector for multi-service installations. Adult discovery identifies incomplete Whisparr results while keeping available matches visible. Lumen confirms league follows and lets eligible users choose their Sportarr service.
+- **Lumen:** Standalone request bookmarks keep the explicit software category when an older media type filter is also present. Request bookmarks use an explicit ebook or audiobook format when a legacy audiobook media filter is also present.
+- **Lumen:** Standalone Lumen preserves the requester from the path of a Classic user request bookmark, even if the link contains conflicting requester filters. Bundled request bookmarks retain title searches and explicit book formats when opening Lumen. Bundled request bookmarks keep Lumen’s sort order, selected tab, and software filters when opening from an older request URL.
+- **Interface:** Swipe now keeps title search visible above deck filters, so searches are easier to find and remain applied when you change advanced filters.
+
+#### Fixed
+
+- **Reader Delivery:** SeerrNG can confirm the number of books on a saved BookOrbit live shelf even when BookOrbit requires app attestation for its mobile shelf view.
+- **Discover:** Discover now honors a user's saved Discover Region in Lumen and native SeerrNG.
+- **Lumen:** Lumen now shows advanced movie and TV request options and the quick-request preference to accounts with the Advanced Requests permission.
+- **Lumen:** Lumen decodes entities in ComicVine descriptions once, preserving text intended to display literally.
+- **Lumen:** Lumen now shows comic download percentages when the queue reports total and remaining bytes. Comic details also refresh while an active download page is open.
+- **Lumen:** The Lumen search bar now uses a comics and manga prompt while browsing Comics/Manga.
+- **Lumen:** Editing a TV request in Lumen preserves the previously selected episodes and leaves declined seasons unselected.
+- **Lumen:** Lumen keeps your episode selection and explains what happened when the server adds no episodes to a request.
+- **Lumen:** Lumen resets game request selections when the title or catalog changes and offers a retry when game details fail to load.
+- **Lumen:** Lumen now scrolls interactive controls clear of the fixed mobile navigation, so controls near the end of a page remain reachable on phones and tablets. Open genre menus also stay anchored when selecting filters changes the control width, keeping their options on screen and clickable.
 - **Lumen Navigation:** Lumen now applies SeerrNG request permissions to navigation links and quick-request actions across supported media types, so users only see actions their account can perform.
 - **Lumen:** Lumen confirms TV requests only when SeerrNG returns a request ID, so a response that adds no seasons no longer appears successful.
 - **Lumen:** Legacy software bookmarks now open Lumen's catalog or the matching game, including DAT-backed titles. Game details also read the catalog API's current response format.
