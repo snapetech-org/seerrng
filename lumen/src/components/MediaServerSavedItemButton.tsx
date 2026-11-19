@@ -30,8 +30,10 @@ const statusOf = (value: unknown, serverType: number): SavedItemStatus => {
     status.serverType !== serverType ||
     status.kind !== expectedKind ||
     typeof status.available !== 'boolean' ||
-    (status.available && typeof status.saved !== 'boolean') ||
-    (!status.available && status.saved !== undefined) ||
+    (status.available &&
+      (typeof status.saved !== 'boolean' || status.reason !== undefined)) ||
+    (!status.available &&
+      (status.saved !== undefined || status.reason === undefined)) ||
     (status.reason !== undefined &&
       status.reason !== 'account-not-linked' &&
       status.reason !== 'series-not-found')

@@ -34,7 +34,11 @@ const series = {
 async function fixture(
   page: Page,
   serverType = 1,
-  opts: { failInitialRead?: boolean; fourK?: boolean } = {}
+  opts: {
+    failInitialRead?: boolean;
+    fourK?: boolean;
+    unavailableReason?: 'account-not-linked' | 'series-not-found';
+  } = {}
 ) {
   let saved = false;
   let failInitialRead = opts.failInitialRead ?? false;
@@ -92,8 +96,10 @@ async function fixture(
           json: {
             serverType,
             kind: serverType === 1 ? 'watchlist' : 'favorites',
-            available: true,
-            saved,
+            available: !opts.unavailableReason,
+            ...(opts.unavailableReason
+              ? { reason: opts.unavailableReason }
+              : { saved }),
           },
         });
       }
@@ -103,8 +109,10 @@ async function fixture(
         json: {
           serverType,
           kind: serverType === 1 ? 'watchlist' : 'favorites',
-          available: true,
-          saved,
+          available: !opts.unavailableReason,
+          ...(opts.unavailableReason
+            ? { reason: opts.unavailableReason }
+            : { saved }),
         },
       });
     }
@@ -208,5 +216,37 @@ test('unconfigured media servers do not show or query a saved action', async ({
     page.getByRole('button', { name: /Favorites|Plex Watchlist/ })
   ).toHaveCount(0);
   expect(reads).toEqual([]);
+  expect(writes).toEqual([]);
+});
+
+test('an unlinked account offers recovery without attempting a write', async ({
+  page,
+}) => {
+  const { writes } = await fixture(page, 1, {
+    unavailableReason: 'account-not-linked',
+  });
+  await page.goto('/tv/202');
+  await expect(
+    page.getByRole('button', { name: 'Plex Watchlist unavailable' })
+  ).toBeDisabled();
+  await expect(
+    page.getByRole('link', { name: 'Link Plex Account' })
+  ).toHaveAttribute('href', '/me/account/linked-accounts');
+  expect(writes).toEqual([]);
+});
+
+test('a series absent from the viewer catalog has a disabled explained action', async ({
+  page,
+}) => {
+  const { writes } = await fixture(page, 2, {
+    unavailableReason: 'series-not-found',
+  });
+  await page.goto('/tv/202');
+  await expect(
+    page.getByRole('button', { name: 'Jellyfin Favorites unavailable' })
+  ).toBeDisabled();
+  await expect(
+    page.getByText('Not in your accessible Jellyfin catalog.')
+  ).toBeVisible();
   expect(writes).toEqual([]);
 });
