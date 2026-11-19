@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 test('Indexer Search is reachable from the permission-aware mobile You menu', async ({
   page,
 }) => {
@@ -20,7 +23,7 @@ test('Indexer Search is reachable from the permission-aware mobile You menu', as
     });
   });
 
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
   if (!desktop) {
     await page
@@ -58,7 +61,7 @@ test('Indexer Search is absent from the You menu without permission', async ({
     })
   );
 
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   await expect(
     page.getByRole('link', { name: 'Open Indexer Search', exact: true })
   ).toHaveCount(0);
@@ -123,7 +126,7 @@ test('indexer search honors enabled categories, submitted pagination and one-use
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/indexer-search?category=adult&query=Dune');
+  await page.goto(appPath('/indexer-search?category=adult&query=Dune'));
   await expect(
     page.getByRole('combobox', { name: 'Media Category' })
   ).toHaveValue('ebook');
@@ -167,7 +170,7 @@ test('indexer search rejects a direct route without Manage Requests', async ({
       json: path.endsWith('/auth/me') ? { id: 2, permissions: 32 } : {},
     });
   });
-  await page.goto('/indexer-search');
+  await page.goto(appPath('/indexer-search'));
   await expect(
     page.getByText('You need Manage Requests permission to search indexers.')
   ).toBeVisible();
@@ -208,7 +211,7 @@ for (const permissions of [16, 32]) {
       if (path === '/indexer-search/search') searches++;
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto('/movie/20');
+    await page.goto(appPath('/movie/20'));
     await expect(
       page.getByRole('heading', { name: 'Dune & Friends' })
     ).toBeVisible();

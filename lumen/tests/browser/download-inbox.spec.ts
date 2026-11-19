@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 for (const permissions of [32, 8796093022208]) {
   test(`download visibility follows the current account permission ${permissions}`, async ({
     page,
@@ -50,14 +53,14 @@ for (const permissions of [32, 8796093022208]) {
       });
     });
 
-    await page.goto('/me');
+    await page.goto(appPath('/me'));
     const entry = page.getByRole('link', { name: 'Open Download Inbox' });
     if (permissions === 32) {
       await expect(
         page.getByRole('heading', { name: 'You', exact: true })
       ).toBeVisible();
       await expect(entry).toHaveCount(0);
-      await page.goto('/downloads');
+      await page.goto(appPath('/downloads'));
       await expect(
         page.getByText('Manage Downloads permission is required.')
       ).toBeVisible();
@@ -158,7 +161,7 @@ test('manual import sends the chosen target and only eligible files, while rejec
           : {},
     });
   });
-  await page.goto('/downloads');
+  await page.goto(appPath('/downloads'));
   await page.getByRole('button', { name: 'Preview Files' }).click();
   const sheet = page.getByRole('dialog', { name: 'Preview Download Files' });
   await expect(

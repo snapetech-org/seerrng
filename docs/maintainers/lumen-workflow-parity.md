@@ -3986,6 +3986,17 @@ baseline and candidate layouts; the new row uses the existing settings-list
 owner with no horizontal overflow. Live Prowlarr handoff and bundled visual
 acceptance remain open.
 
+Indexer Search and Download Inbox suites now also run against bundled Lumen at
+the Express `/lumen/` mount. The 36-case combined suite passed in both
+standalone and bundled deployments across desktop, iPhone, Android, and tablet.
+It covers the permission-gated mobile entry, direct-route denial, category
+filtering, one-use handoff, Inbox visibility and denial, pagination, action
+history, manual import, and rejection. Captures and isolated server logs are
+retained under
+`/mnt/disks/scratch/codex-task-scratch/seerrng-lumen-bundled-parity-20261119/`.
+Live Prowlarr and download-client effects and native-matched visual acceptance
+remain unverified.
+
 ### Viewer-scoped TV media-server saved items
 
 TV details in Lumen now expose the existing viewer-scoped media-server saved
