@@ -568,3 +568,64 @@ test('a focused request link keeps its resolved title in the owner cancel confir
   await expect(page.getByText('Request cancelled')).toBeVisible();
   expect(cancelled).toBe(1);
 });
+
+test('a request manager can approve a focused request missing from the list', async ({
+  page,
+}) => {
+  let status = 1;
+  const approvals: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Manager', permissions: 16 },
+      });
+    if (path === '/request')
+      return route.fulfill({
+        json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+      });
+    if (path === '/request/status/617')
+      return route.fulfill({
+        json: {
+          request: {
+            id: 617,
+            type: 'movie',
+            status,
+            is4k: false,
+            createdAt: '2026-11-18T12:00:00Z',
+            requestedBy: { id: 99, displayName: 'Other User' },
+            media: { mediaType: 'movie', tmdbId: 617, status: 1 },
+          },
+          current: {
+            stage: status === 1 ? 'requested' : 'approved',
+            attempt: 1,
+          },
+          history: { results: [], total: 0 },
+        },
+      });
+    if (path === '/request/617/approve' && request.method() === 'POST') {
+      approvals.push(path);
+      status = 2;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/requests?requestId=617');
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  await expect(history.getByRole('button', { name: 'Approve' })).toBeVisible();
+  await expect(history.getByRole('button', { name: 'Decline' })).toBeVisible();
+  await history.getByRole('button', { name: 'Approve' }).click();
+  await expect(page.getByText('Request approved')).toBeVisible();
+  await expect.poll(() => approvals).toEqual(['/request/617/approve']);
+  await expect(
+    page.getByRole('dialog', { name: 'Request history' }).getByRole('button', {
+      name: 'Approve',
+    })
+  ).toHaveCount(0);
+});

@@ -649,6 +649,13 @@ from request media appears in the confirmation and the exact request is deleted
 after confirmation. This case passes on desktop, iPhone, Android, and tablet;
 the remaining action and role matrix is still open.
 
+A request manager can also approve a pending request from a focused link when
+the request is absent from the loaded list. The four-viewport regression
+verifies that approve and decline are offered to the manager, approval targets
+the exact request, and the refreshed history reflects the new state. This
+closes the direct-link approval case; the broader request action and role
+matrix remains open.
+
 ### Software request history increment
 
 Software request rows and `softwareRequestId` notification links open the
