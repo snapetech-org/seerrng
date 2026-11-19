@@ -1387,6 +1387,9 @@ describe('User route input validation', () => {
     const maskRes = await agent.post('/user/2/settings/notifications').send({
       notificationTypes: { pushbullet: Number.MAX_SAFE_INTEGER },
     });
+    const oversizedMaskRes = await agent
+      .post('/user/2/settings/notifications')
+      .send({ notificationTypes: { pushbullet: 2 ** 32 + 2 } });
     const unknownBitRes = await agent
       .post('/user/2/settings/notifications')
       .send({
@@ -1403,6 +1406,11 @@ describe('User route input validation', () => {
     );
     assert.strictEqual(maskRes.status, 400);
     assert.match(maskRes.body.message, /notificationTypes\.pushbullet/i);
+    assert.strictEqual(oversizedMaskRes.status, 400);
+    assert.match(
+      oversizedMaskRes.body.message,
+      /notificationTypes\.pushbullet/i
+    );
     assert.strictEqual(unknownBitRes.status, 400);
     assert.match(unknownBitRes.body.message, /notificationTypes\.pushbullet/i);
     assert.strictEqual(shapeRes.status, 400);

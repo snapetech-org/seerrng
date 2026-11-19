@@ -29,6 +29,13 @@ export const ALL_NOTIFICATIONS = Object.values(Notification)
   .filter((v) => !isNaN(Number(v)))
   .reduce((a, v) => a + Number(v), 0);
 
+export const isNotificationMask = (value: unknown): value is number =>
+  typeof value === 'number' &&
+  Number.isInteger(value) &&
+  value >= 0 &&
+  value <= ALL_NOTIFICATIONS &&
+  (value & ~ALL_NOTIFICATIONS) === 0;
+
 // convert between DB representation (JSON string) into typescript array
 const jsonArrayTransformer = {
   from: (v: string | null): string[] => {
@@ -65,13 +72,9 @@ const sanitizeNotificationTypes = (
   const input = value as Record<string, unknown>;
   const sanitized: Partial<NotificationAgentTypes> = {};
   for (const key of allowedNotificationAgentKeys) {
+    if (!Object.hasOwn(input, key)) continue;
     const mask = input[key];
-    if (
-      typeof mask === 'number' &&
-      Number.isInteger(mask) &&
-      mask >= 0 &&
-      (mask & ~ALL_NOTIFICATIONS) === 0
-    ) {
+    if (isNotificationMask(mask)) {
       sanitized[key] = mask;
     }
   }

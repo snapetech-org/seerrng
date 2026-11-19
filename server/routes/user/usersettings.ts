@@ -26,7 +26,7 @@ import dataSource, { getRepository } from '@server/datasource';
 import { LinkedAccount } from '@server/entity/LinkedAccount';
 import { MediaRequest } from '@server/entity/MediaRequest';
 import { User } from '@server/entity/User';
-import { ALL_NOTIFICATIONS, UserSettings } from '@server/entity/UserSettings';
+import { UserSettings, isNotificationMask } from '@server/entity/UserSettings';
 import type {
   CardTextVisibility,
   DetailDisclosureMediaType,
@@ -1557,17 +1557,13 @@ const parseNotificationTypes = (
     UserSettingsNotificationsResponse['notificationTypes']
   > = {};
   for (const key of allowedKeys) {
+    if (!hasOwn(value, key)) continue;
     const rawValue = value[key as keyof typeof value];
 
     if (rawValue === undefined || rawValue === null) {
       continue;
     }
-    if (
-      typeof rawValue !== 'number' ||
-      !Number.isInteger(rawValue) ||
-      rawValue < 0 ||
-      (rawValue & ~ALL_NOTIFICATIONS) !== 0
-    ) {
+    if (!isNotificationMask(rawValue)) {
       return { error: `notificationTypes.${key} must be valid.` };
     }
     parsed[key] = rawValue;
@@ -3416,11 +3412,10 @@ userSettingsRoutes.post<{ id: string }, UserSettingsNotificationsResponse>(
               });
             }
           }
-          user.settings.notificationTypes = Object.assign(
-            {},
-            user.settings.notificationTypes,
-            preservedBody.notificationTypes
-          );
+          user.settings.notificationTypes = {
+            ...user.settings.notificationTypes,
+            ...preservedBody.notificationTypes,
+          };
 
           await userRepository.save(user);
 

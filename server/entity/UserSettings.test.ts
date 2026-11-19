@@ -64,6 +64,7 @@ describe('deserializeNotificationTypes', () => {
           email: 'all',
           pushover: 4,
           pushbullet: 1,
+          telegram: 2 ** 32 + 2,
           unexpected: ALL_NOTIFICATIONS,
         })
       ),

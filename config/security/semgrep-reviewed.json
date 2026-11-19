@@ -38,8 +38,8 @@
   {
     "rule": "javascript.express.security.express-data-exfiltration.express-data-exfiltration",
     "path": "server/routes/user/usersettings.ts",
-    "sha256": "de50ac97decb66428a5da181ea2592418a68328e85139bc4d832e889706468b2",
-    "count": 3,
+    "sha256": "0027bfe71c922dc22e29a433b0e23b1b7db6f065c170cb3006095e80cfa025a0",
+    "count": 2,
     "owner": "SeerrNG maintainers",
     "expires": "2027-02-07",
     "reason": "The actor/target authorization and validation precede an explicit fixed field allowlist. Returned settings pass secret redaction; owner-controlled preference updates are intentional."
@@ -66,15 +66,6 @@
     "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
     "path": "server/lib/liveTv/xmltv.ts",
     "sha256": "9febefa3e540671290bbeab42133ae0a519a954687d4f16f3a4289d01752e392",
-    "count": 1,
-    "owner": "SeerrNG maintainers",
-    "expires": "2027-02-07",
-    "reason": "The dynamic literal is escaped with escapeRegExp before constructing the regular expression; input sizes are bounded by the caller."
-  },
-  {
-    "rule": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
-    "path": "server/lib/resolve/fetchSafe.ts",
-    "sha256": "005dedb4d890ea1588abb04655bab6e64ad9f19496dc804e565466d5e8df46f5",
     "count": 1,
     "owner": "SeerrNG maintainers",
     "expires": "2027-02-07",
