@@ -3585,3 +3585,11 @@ administrator saved a movie limit, the value survived reload, and the
 isolated settings file contained only the edited quota field. A member
 with a valid CSRF token received the API's permission denial, and the
 saved value stayed intact. Matched renders preserved the form geometry.
+
+Per-user request quotas also passed the Classic user-settings bookmark
+in bundled desktop and standalone iPhone Lumen. After local sign-in,
+the administrator set a household member's movie limit to explicit zero
+and the window to seven days. Both values survived reload. Clearing the
+two fields restored inheritance, verified by nulls from the real user
+settings API and blank controls after reload. The runs used isolated
+SQLite users and the production session and CSRF middleware.
