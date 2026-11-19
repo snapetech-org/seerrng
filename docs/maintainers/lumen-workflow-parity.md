@@ -174,9 +174,10 @@ Narrow and bundled visual acceptance remains open.
 Lumen serves `/library` in both deployments and exposes My Media in desktop
 navigation and under You. It lists libraries from connected Plex, Jellyfin,
 Emby, Trakt, AniList, and Simkl accounts, preserves server cursors, and opens
-only confirmed catalog identities. Linking accounts, identity repair and
-mapping packs, provider tracking writes, library sharing, and the standalone
-watchlist workflows remain open. Narrow and bundled visual acceptance remains
+only confirmed catalog identities. Linking accounts, identity repair
+and mapping packs, provider tracking writes, library sharing, and poster-based
+Watchlist actions remain open. The dedicated personal and delegated Watchlist
+flows now pass in standalone and bundled browser suites. Narrow and bundled visual acceptance remains
 open.
 
 Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
@@ -192,8 +193,9 @@ The personal Watchlist reads the signed-in user's existing SeerrNG and Plex
 watchlist. For local lists it supports title, media, and sort filters, shareable
 filter and page URLs, and removal with confirmed catalog identity. Combined
 lists preserve provider order and avoid offering local removal for rows whose
-ownership source cannot be distinguished. Watchlist creation from details and
-posters, delegated watchlists, and combined-list local actions remain open.
+ownership source cannot be distinguished. Watchlist creation from detail pages is covered for video and books. Poster-based
+actions remain open; delegated access and combined-list local removal are now
+covered in standalone and bundled browser suites.
 
 Headed Chrome at 1440 × 1000 verified a movie filter opened from a bookmarked
 URL, cleared it to show a second item, and removed the movie through the
@@ -1849,12 +1851,12 @@ View permission. The directory link requires access to the directory as well.
 The view uses the existing authorized user endpoint and shares the filter,
 pagination, catalogue-link, and recovery controls with the personal list.
 
-TypeScript, the production build, and 28 standalone watchlist browser cases
-passed across desktop, iPhone, Android, and tablet presets. The cases include
-directory entry, filtering and pagination on the selected account, absence of
-removal, and no watchlist request on a denied direct visit. Express and nginx
-tests verified bookmark redirects. Bundled workflow rendering, live Plex, and
-matched native visual acceptance remain unverified.
+Thirty-six watchlist browser cases passed in both standalone Lumen and the
+production Express `/lumen/` mount across desktop, iPhone, Android, and tablet.
+They include directory entry, filtering and pagination on the selected account,
+absence of removal, and no watchlist request on a denied direct visit. Express
+and nginx tests verified bookmark redirects. Live Plex and matched native visual
+acceptance remain open.
 
 The user directory and native user-request bookmarks open the existing
 Requests screen with the selected requester. Supported status and media
@@ -2102,12 +2104,12 @@ acceptance remains open.
 
 Combined watchlists now identify SeerrNG and Plex rows. Lumen can remove
 a confirmed local entry and reload the list so any matching Plex entry
-stays visible. Thirty-two standalone watchlist cases and nine server
-watchlist cases passed. Live Plex and matched visual acceptance remain open.
+stays visible. Thirty-six standalone and 36 bundled watchlist browser cases and nine server
+watchlist cases passed. Live Plex and matched native visual acceptance remain open.
 
 Watchlist pagination now reconciles out-of-range pages after the server
 reports a smaller result set. This keeps active filters when removal
-empties the final page. All 36 standalone watchlist browser cases passed.
+empties the final page. All 36 standalone and 36 bundled watchlist browser cases passed.
 Matched native visual acceptance remains open.
 
 The bundled frontend lock now redirects supported book, comic, album, and
