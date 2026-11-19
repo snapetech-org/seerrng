@@ -829,12 +829,16 @@ export const mountLumenFrontend = (
     const useDefault = req.query.interface === 'default';
     if (useDefault) res.clearCookie(classicCookie, { path: '/' });
     if (
-      !isInitialized() ||
-      (!useDefault &&
-        !enforceFrontend() &&
-        req.cookies?.[classicCookie] === 'classic')
+      !useDefault &&
+      !enforceFrontend() &&
+      req.cookies?.[classicCookie] === 'classic'
     ) {
       return next();
+    }
+    if (!isInitialized()) {
+      return frontend() === 'lumen'
+        ? res.set('Cache-Control', 'no-store').redirect(302, '/lumen/setup')
+        : next();
     }
     res.set('Cache-Control', 'no-store');
     if (frontend() === 'lumen') return res.redirect(302, '/lumen/');

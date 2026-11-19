@@ -56,3 +56,9 @@ references from one companion export. Save stayed disabled after uploading the
 logo alone, and a rejected upload and a simulated failed configuration save
 left the existing shared configuration intact. After retry, the saved settings
 referenced two distinct PNGs served by the bundled branding endpoint.
+
+Fresh bundled installations now enter the Lumen wizard from the server home
+address. Route tests verify the explicit Classic entry and switching back to
+the default. Desktop and iPhone checks rendered the production bundle through
+Express, with pixel-identical wizard screens for the home redirect and direct
+setup link. The final published image remains to be qualified.

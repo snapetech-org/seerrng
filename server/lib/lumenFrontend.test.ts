@@ -476,6 +476,22 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     );
     initialized = false;
     assert.equal((await request(app).get('/')).text, 'Native interface');
+    frontend = 'lumen';
+    const firstRun = await request(app).get('/');
+    assert.equal(firstRun.status, 302);
+    assert.equal(firstRun.headers.location, '/lumen/setup');
+    assert.equal(firstRun.headers['cache-control'], 'no-store');
+    assert.equal(
+      (await request(app).get('/?interface=classic')).text,
+      'Native interface'
+    );
+    const classicFirstRun = request.agent(app);
+    await classicFirstRun.get('/seerrng');
+    assert.equal((await classicFirstRun.get('/')).text, 'Native interface');
+    assert.equal(
+      (await classicFirstRun.get('/?interface=default')).headers.location,
+      '/lumen/setup'
+    );
     assert.equal(
       (await request(app).get('/lumen')).headers.location,
       '/lumen/'
