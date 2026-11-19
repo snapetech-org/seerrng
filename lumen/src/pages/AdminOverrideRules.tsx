@@ -30,6 +30,12 @@ const fields = [
 type Rule = { id: number } & Partial<Record<ServiceKey, number | null>> &
   Partial<Record<(typeof fields)[number][0], string | number | null>>;
 type Service = { id: number; name: string };
+type DestinationOptions = {
+  profiles: { id: number; name: string }[];
+  languageProfiles?: { id: number; name: string }[] | null;
+  rootFolders: { path?: string }[];
+  tags: { id: number; label: string }[];
+};
 
 function RulesForService({
   rules,
@@ -129,6 +135,29 @@ function RuleEditor({
     serviceSelect.current?.focus();
   }, []);
   const [targetKey, targetId] = target.split(':');
+  const provider = serviceTypes.find(([key]) => key === targetKey)?.[1];
+  const destination = useApi<DestinationOptions>(
+    provider && /^\d+$/.test(targetId)
+      ? `/service/${provider}/${targetId}`
+      : null,
+    { currentPathOnly: true }
+  );
+  const serviceChoices = destination.data && {
+    profileId: destination.data.profiles.map(({ id, name }) => [
+      String(id),
+      name,
+    ]),
+    languageProfileId: (destination.data.languageProfiles ?? []).map(
+      ({ id, name }) => [String(id), name]
+    ),
+    rootFolder: destination.data.rootFolders.flatMap(({ path }) =>
+      path ? [[path, path]] : []
+    ),
+  };
+  const selectedTags = values.tags
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean);
   const catalog =
     targetKey === 'lidarrServiceId' || targetKey === 'readarrServiceId';
   const visibleFields = fields.filter(
@@ -257,12 +286,53 @@ function RuleEditor({
         </div>
         {target && (
           <>
+            <ServiceNote
+              what="destination choices"
+              error={destination.error}
+              retry={destination.reload}
+            />
             <p className="note">
               Every populated condition must match. Use commas to enter multiple
               values.
             </p>
             <div className="setlist">
               {visibleFields.map(([field, label]) => {
+                if (
+                  serviceChoices &&
+                  (field === 'profileId' ||
+                    field === 'languageProfileId' ||
+                    field === 'rootFolder')
+                ) {
+                  const choices = serviceChoices[field];
+                  return (
+                    <label className="set cfg-row" key={field}>
+                      <b>{label.replace(' ID', '')}</b>
+                      <select
+                        className="cfg-select"
+                        disabled={busy}
+                        value={values[field]}
+                        onChange={(event) =>
+                          setValues({ ...values, [field]: event.target.value })
+                        }
+                      >
+                        <option value="">Use service default</option>
+                        {values[field] &&
+                          !choices.some(
+                            ([value]) => value === values[field]
+                          ) && (
+                            <option value={values[field]}>
+                              Saved value ({values[field]})
+                            </option>
+                          )}
+                        {choices.map(([value, name]) => (
+                          <option key={value} value={value}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  );
+                }
                 const number =
                   field === 'profileId' || field === 'languageProfileId';
                 const display =
@@ -293,6 +363,31 @@ function RuleEditor({
                 );
               })}
             </div>
+            {!!destination.data?.tags.length && (
+              <Section title="Service Tags">
+                <div className="setlist">
+                  {destination.data.tags.map(({ id, label }) => {
+                    const value = String(id);
+                    return (
+                      <label className="set cfg-row" key={id}>
+                        <b>{label}</b>
+                        <input
+                          type="checkbox"
+                          checked={selectedTags.includes(value)}
+                          disabled={busy}
+                          onChange={(event) => {
+                            const tags = event.target.checked
+                              ? [...selectedTags, value]
+                              : selectedTags.filter((tag) => tag !== value);
+                            setValues({ ...values, tags: tags.join(',') });
+                          }}
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              </Section>
+            )}
           </>
         )}
         {failure && (

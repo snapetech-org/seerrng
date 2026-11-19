@@ -3717,3 +3717,10 @@ database. The original rule stayed present. The editor exposes the existing
 service-specific condition and destination fields. Operator-friendly lookup
 selectors, coverage for the other service types, and companion mutation
 verification remain open.
+
+The rule editor loads destination choices from the selected service and offers
+named quality profiles, legacy Sonarr language profiles, root folders and
+tags. Bundled desktop and iPhone checks supplied isolated Lidarr destination
+responses, chose the named options, saved through the real override API,
+and verified the same profile and tag on edit after reloading. Other
+providers, named condition selectors, and companion verification remain open.
