@@ -3007,10 +3007,11 @@ permissions separately from bookmark routing.
 Native SeerrNG exposes Share & Identify from Discover to users with request
 access (including administrators). Lumen now provides the same permission-gated
 desktop menu entry and a Discover link on the mobile You page. Eight focused
-browser checks passed across desktop, iPhone, Android, and tablet, including
-the no-request-access state and confirming that the mobile link clears the
-fixed tab bar after scrolling. Baseline and candidate screenshots are retained
-under `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/share-navigation/`.
+Twelve focused navigation checks passed across desktop, iPhone, Android, and
+tablet. They cover request-only users, admin-only users, and the no-request-
+access state, and confirm that the mobile link clears the fixed tab bar after
+scrolling. Baseline and candidate screenshots are retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/share-navigation/`.
 This verifies navigation and page rendering with fixtures; live link
 recognition, provider behavior, and matched visual acceptance remain open.
 
