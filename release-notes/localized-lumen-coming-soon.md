@@ -1,0 +1,1 @@
+Lumen's Coming Soon feed now localizes its filters, month and day labels, media types, request action, direct movie request confirmation, and submitted status in English, French, and Arabic using the saved account locale.

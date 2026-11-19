@@ -661,5 +661,22 @@
   "lumen.calendar.available",
   "lumen.calendar.upcoming",
   "lumen.calendar.showMore",
-  "lumen.calendar.changedFrom"
+  "lumen.calendar.changedFrom",
+  "lumen.soon.title",
+  "lumen.soon.description",
+  "lumen.soon.media",
+  "lumen.soon.all",
+  "lumen.soon.movieTitle",
+  "lumen.soon.seriesTitle",
+  "lumen.soon.movie",
+  "lumen.soon.movies",
+  "lumen.soon.series",
+  "lumen.soon.loading",
+  "lumen.soon.empty",
+  "lumen.soon.approvalRequested",
+  "lumen.soon.requestedMovie",
+  "lumen.soon.requestFailed",
+  "lumen.soon.request",
+  "lumen.soon.showMore",
+  "lumen.soon.requested"
 ]

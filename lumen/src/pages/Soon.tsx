@@ -20,27 +20,14 @@ import {
 } from '../discoveryVisibility';
 import { friendlyError } from '../errors';
 import { usePaged, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { seriesRequestSummary } from '../seriesRequestSummary';
 import { useVideoAvailability } from '../videoAvailability';
 
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 // upcoming movies and series, grouped by month, requestable ahead of release
 export default function Soon() {
+  const { locale, t } = useLumenLocale();
   const { user } = useAuth();
   const serverName = useMediaServerName();
   const availability = useVideoAvailability();
@@ -53,8 +40,16 @@ export default function Soon() {
   );
   const tvList = usePaged<TitleResult>(showTv ? '/discover/tv/upcoming' : null);
   const lists = [
-    { label: 'upcoming movies', visible: showMovies, list: movieList },
-    { label: 'upcoming series', visible: showTv, list: tvList },
+    {
+      label: t('lumen.soon.movies', 'upcoming movies'),
+      visible: showMovies,
+      list: movieList,
+    },
+    {
+      label: t('lumen.soon.series', 'upcoming series'),
+      visible: showTv,
+      list: tvList,
+    },
   ].filter(({ visible }) => visible);
   const loading = lists.some(({ list }) => !list.page && !list.error);
   const allSelectedListsLoaded = lists.every(
@@ -110,7 +105,13 @@ export default function Soon() {
         toast(seriesRequestSummary(title, await requestSeries(it.id)));
       } else {
         await requestMovie(it.id);
-        toast(`Requested ${title}. It downloads when it’s out.`);
+        toast(
+          t(
+            'lumen.soon.requestedMovie',
+            'Requested {title}. It downloads when it’s out.',
+            { title }
+          )
+        );
       }
     } catch (e) {
       unask();
@@ -119,7 +120,10 @@ export default function Soon() {
         setChoice((current) => current ?? { title: it, streamingDenial });
       else if (user && !canManageRequests(user.permissions) && isQuotaDenial(e))
         setChoice((current) => current ?? { title: it, quotaDenied: true });
-      else toast(friendlyError(e, 'Request failed'));
+      else
+        toast(
+          friendlyError(e, t('lumen.soon.requestFailed', 'Request failed'))
+        );
     }
   };
 
@@ -128,38 +132,46 @@ export default function Soon() {
       <header className="ph">
         <div className="ph-row">
           <div>
-            <h1>Coming soon</h1>
+            <h1>{t('lumen.soon.title', 'Coming soon')}</h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">Request ahead and it downloads the day it’s out.</p>
-        <nav className="toolbar" aria-label="Upcoming Media">
+        <p className="sub">
+          {t(
+            'lumen.soon.description',
+            'Request ahead and it downloads the day it’s out.'
+          )}
+        </p>
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.soon.media', 'Upcoming Media')}
+        >
           <Link
             className="chip"
             aria-current={showMovies && showTv ? 'page' : undefined}
             to="/soon"
           >
-            All
+            {t('lumen.soon.all', 'All')}
           </Link>
           <Link
             className="chip"
             aria-current={!showTv ? 'page' : undefined}
             to="/soon?media=movie"
           >
-            Movies
+            {t('lumen.soon.movieTitle', 'Movies')}
           </Link>
           <Link
             className="chip"
             aria-current={!showMovies ? 'page' : undefined}
             to="/soon?media=tv"
           >
-            Series
+            {t('lumen.soon.seriesTitle', 'Series')}
           </Link>
         </nav>
       </header>
       {loading && (
         <p className="note" role="status">
-          Loading upcoming titles…
+          {t('lumen.soon.loading', 'Loading upcoming titles…')}
         </p>
       )}
       {lists.map(({ label, list }) => (
@@ -171,7 +183,9 @@ export default function Soon() {
         />
       ))}
       {allSelectedListsLoaded && !months.size && (
-        <p className="note">No upcoming titles found.</p>
+        <p className="note">
+          {t('lumen.soon.empty', 'No upcoming titles found.')}
+        </p>
       )}
       {choosing && (
         <RequestSheet
@@ -183,14 +197,22 @@ export default function Soon() {
             setAsked((a) => new Set(a).add(choosing.mediaType + choosing.id));
             toast(
               quotaException
-                ? `Approval requested for ${choosing.title || choosing.name}`
+                ? t(
+                    'lumen.soon.approvalRequested',
+                    'Approval requested for {title}',
+                    { title: choosing.title || choosing.name || '' }
+                  )
                 : choosing.mediaType === 'tv'
                   ? seriesRequestSummary(
                       choosing.name || 'this series',
                       series,
                       is4k
                     )
-                  : `Requested ${choosing.title || choosing.name}. It downloads when it’s out.`
+                  : t(
+                      'lumen.soon.requestedMovie',
+                      'Requested {title}. It downloads when it’s out.',
+                      { title: choosing.title || choosing.name || '' }
+                    )
             );
             setChoice(undefined);
           }}
@@ -199,14 +221,21 @@ export default function Soon() {
       {[...months].map(([k, list]) => (
         <section className="month" key={k}>
           <h2>
-            {MONTHS[+k.slice(5) - 1]} {k.slice(0, 4)}
+            {new Intl.DateTimeFormat(locale, { month: 'long' }).format(
+              new Date(Number(k.slice(0, 4)), Number(k.slice(5, 7)) - 1, 1)
+            )}{' '}
+            {k.slice(0, 4)}
           </h2>
           <div className="sl">
             {list.map((it) => {
               const s =
                 statusOf(it.mediaInfo, false, serverName) ||
                 (asked.has(it.mediaType + it.id)
-                  ? ({ k: 'wait', word: 'Requested', ico: 'clock' } as const)
+                  ? ({
+                      k: 'wait',
+                      word: t('lumen.soon.requested', 'Requested'),
+                      ico: 'clock',
+                    } as const)
                   : null);
               const visible =
                 s?.k === 'ok'
@@ -216,9 +245,15 @@ export default function Soon() {
                 <div className="si" key={it.mediaType + it.id}>
                   <div className="date">
                     <small>
-                      {MONTHS[+it.date.slice(5, 7) - 1]
-                        .slice(0, 3)
-                        .toUpperCase()}
+                      {new Intl.DateTimeFormat(locale, { month: 'short' })
+                        .format(
+                          new Date(
+                            Number(it.date.slice(0, 4)),
+                            Number(it.date.slice(5, 7)) - 1,
+                            1
+                          )
+                        )
+                        .toLocaleUpperCase(locale)}
                     </small>
                     <b>{+it.date.slice(8)}</b>
                   </div>
@@ -238,7 +273,9 @@ export default function Soon() {
                       </Link>
                     </div>
                     <div className="sub">
-                      {it.mediaType === 'tv' ? 'Series' : 'Movie'}
+                      {it.mediaType === 'tv'
+                        ? t('lumen.soon.seriesTitle', 'Series')
+                        : t('lumen.soon.movie', 'Movie')}
                     </div>
                     <div className="act">
                       {s ? (
@@ -259,7 +296,7 @@ export default function Soon() {
                           }
                         >
                           <Icon name="plus" size="sm" />
-                          Request
+                          {t('lumen.soon.request', 'Request')}
                         </button>
                       )}
                     </div>
@@ -278,7 +315,11 @@ export default function Soon() {
               disabled={list.loading}
               onClick={list.more}
             >
-              {list.loading ? 'Loading…' : `Show more ${label}`}
+              {list.loading
+                ? t('lumen.soon.loading', 'Loading…')
+                : t('lumen.soon.showMore', 'Show more {media}', {
+                    media: label,
+                  })}
             </button>
           </div>
         ) : null

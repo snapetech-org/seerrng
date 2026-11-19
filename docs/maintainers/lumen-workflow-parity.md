@@ -1345,6 +1345,16 @@ retries the affected feed while keeping successful results visible. The
 standalone browser fixture verified a series-only failure and recovery on
 four viewport presets. Bundled and native visual comparisons remain open.
 
+The Coming Soon route now localizes its title, intro, media scope, month
+headings and day labels, item media type, request button, direct movie request
+toast, and locally submitted status in English, French, and Arabic. Twelve
+fixture cases passed across desktop, iPhone, Android, and tablet, including the
+exact movie request payload. The existing Coming Soon title/request suite
+passed nine cases with three expected desktop-only skips. French iPhone and
+Arabic desktop/iPhone renders were reviewed; no overflow or card geometry
+changes were needed. Request-option sheets, series confirmation copy, provider
+statuses, bundled production mounting, and native-matched visuals remain open.
+
 ### Video genre exclusion
 
 Movie and series grids expose genre exclusion through SeerrNG's discovery
