@@ -119,7 +119,7 @@ for (const theme of ['persiusNG', 'seerrOrig', 'seerrNGJ']) {
   }
 }
 
-test('movie discovery retains loaded titles when revalidation is denied', async ({
+test('movie discovery retains loaded titles when the next query is denied', async ({
   page,
 }, info) => {
   expect(
@@ -161,11 +161,10 @@ test('movie discovery retains loaded titles when revalidation is denied', async 
     .first();
   await expect(title).toBeVisible();
   denied = true;
-  // Let Chromium deliver both connection-change events before checking SWR revalidation.
-  await page.context().setOffline(true);
-  await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(false);
-  await page.context().setOffline(false);
-  await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(true);
+  await page
+    .getByRole('combobox', { name: 'Sort', exact: true })
+    .selectOption('vote_average.desc');
+  await expect(page).toHaveURL(/sortBy=vote_average.desc/);
   await expect
     .poll(() => failures, { timeout: 10_000, intervals: [250, 500, 1000] })
     .toBeGreaterThan(0);
