@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-type RequestState = 'pending' | 'failed' | 'approved';
+type RequestState =
+  'pending' | 'failed' | 'approved' | 'downloading' | 'cancelled';
 
 async function openHistory(
   page: Page,
@@ -57,7 +58,16 @@ async function openHistory(
           assets: [],
         },
       });
-    const actionMatch = path.match(/^\/request\/software\/status\/71\/(\w+)$/);
+    if (
+      path === '/request/software/status/71' &&
+      request.method() === 'DELETE'
+    ) {
+      writes.push({ action: 'clear', body: null });
+      return route.fulfill({ status: 204, body: '' });
+    }
+    const actionMatch = path.match(
+      /^\/request\/software\/status\/71\/([\w-]+)$/
+    );
     if (actionMatch && request.method() === 'POST') {
       const action = actionMatch[1];
       const body = request.postDataJSON();
@@ -148,4 +158,58 @@ test('retry requires explicit confirmation when provider state is uncertain', as
       { action: 'retry', body: { confirmNoExistingDownload: false } },
       { action: 'retry', body: { confirmNoExistingDownload: true } },
     ]);
+});
+
+test('a request manager can decline after reviewing the confirmation', async ({
+  page,
+}) => {
+  const { dialog, writes } = await openHistory(page, 16, 2, 'pending');
+  await dialog.getByRole('button', { name: 'Decline' }).click();
+  await expect(
+    dialog.getByText('Decline this software request?')
+  ).toBeVisible();
+  await dialog.getByRole('button', { name: 'Confirm Decline' }).click();
+  await expect.poll(() => writes).toEqual([{ action: 'decline', body: null }]);
+});
+
+test('a request manager can cancel a downloading software request', async ({
+  page,
+}) => {
+  const { dialog, writes } = await openHistory(page, 16, 2, 'downloading');
+  await dialog.getByRole('button', { name: 'Cancel Request' }).click();
+  await expect(dialog.getByText('Cancel this software request?')).toBeVisible();
+  await dialog.getByRole('button', { name: 'Confirm Cancel Request' }).click();
+  await expect
+    .poll(() => writes)
+    .toEqual([
+      { action: 'cancel', body: { confirmNoExistingDownload: false } },
+    ]);
+});
+
+test('a request manager can stop tracking after confirmation', async ({
+  page,
+}) => {
+  const { dialog, writes } = await openHistory(page, 16, 2, 'downloading');
+  await dialog.getByRole('button', { name: 'Stop Tracking' }).click();
+  await expect(
+    dialog.getByText(/Remove this request and its history/)
+  ).toBeVisible();
+  await dialog.getByRole('button', { name: 'Confirm Stop Tracking' }).click();
+  await expect(dialog).toHaveCount(0);
+  expect(writes).toEqual([{ action: 'stop-tracking', body: null }]);
+});
+
+test('a request manager can clear cancelled request history after confirmation', async ({
+  page,
+}) => {
+  const { dialog, writes } = await openHistory(page, 16, 2, 'cancelled');
+  await dialog.getByRole('button', { name: 'Clear History' }).click();
+  await expect(
+    dialog.getByText(
+      'Permanently clear this cancelled request and its history?'
+    )
+  ).toBeVisible();
+  await dialog.getByRole('button', { name: 'Confirm Clear History' }).click();
+  await expect(dialog).toHaveCount(0);
+  expect(writes).toEqual([{ action: 'clear', body: null }]);
 });

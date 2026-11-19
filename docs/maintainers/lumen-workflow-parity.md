@@ -658,13 +658,13 @@ permission, request state, and provider capabilities. When the server cannot
 confirm a previous handoff, retry or cancellation waits for the user to check
 the download queue and history and explicitly confirm there is no match.
 
-Browser fixtures across desktop, iPhone, Android, and tablet verify that
-owners can withdraw pending requests, request managers can approve pending
-requests, and view-only users receive no mutation controls. An owner retry
-waits for explicit confirmation after a synthetic 409 and sends the verified
-confirmation before retrying. Native visual comparison, bundled deployment,
-delegated role variants, remaining action states, and live provider behavior
-remain unverified.
+Browser fixtures across desktop, iPhone, Android, and tablet verify owner,
+request-manager, and view-only permissions across approval, decline,
+withdrawal, retry, cancellation, stop tracking, and clearing cancelled
+history. Retry and cancellation send a no-existing-download confirmation only
+after a synthetic 409 makes provider state uncertain. Native visual comparison,
+bundled deployment, administrator-specific variants, and live provider
+behavior remain unverified.
 
 ### Household software requests increment
 
