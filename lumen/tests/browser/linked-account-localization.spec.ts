@@ -16,6 +16,13 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
   page,
 }, info) => {
   let discoveryConfigured = false;
+  const locale = process.env.LUMEN_DISCOVERY_LOCALE === 'ar' ? 'ar' : 'fr';
+  const translated = (english: string, french: string, arabic: string) =>
+    process.env.LUMEN_CAPTURE_MODE === 'candidate'
+      ? locale === 'ar'
+        ? arabic
+        : french
+      : english;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(
@@ -30,7 +37,7 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
         json: { mediaServerType: 3, applicationTitle: 'SeerrNG' },
       });
     if (path === '/user/2/settings/main')
-      return route.fulfill({ json: { locale: 'fr' } });
+      return route.fulfill({ json: { locale } });
     if (path === '/user/2/settings/linked-accounts')
       return route.fulfill({ json: [] });
     if (path === '/user/2/settings/password')
@@ -47,45 +54,58 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
       });
     if (path === '/integrations/discovery/accounts')
       return route.fulfill({ json: { accounts: [] } });
-    if (path === '/integrations/discovery/accounts')
-      return route.fulfill({ json: { accounts: [] } });
     return route.fulfill({ json: {} });
   });
 
   await page.goto('/me/account/linked-accounts');
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
   await expect(
     page.getByRole('heading', {
-      name: candidate ? 'Comptes liés' : 'Linked Accounts',
+      name: translated('Linked Accounts', 'Comptes liés', 'الحسابات المرتبطة'),
     })
   ).toBeVisible();
   await expect(
     page.getByRole('heading', {
-      name: candidate ? 'Méthodes de connexion' : 'Sign-in Methods',
+      name: translated(
+        'Sign-in Methods',
+        'Méthodes de connexion',
+        'طرق تسجيل الدخول'
+      ),
     })
   ).toBeVisible();
   await expect(
     page.getByRole('heading', {
-      name: candidate ? 'Comptes de suivi' : 'Tracking Accounts',
+      name: translated(
+        'Tracking Accounts',
+        'Comptes de suivi',
+        'حسابات التتبع'
+      ),
     })
   ).toBeVisible();
   await expect(
     page.getByText(
-      candidate
-        ? 'Aucun compte de suivi n’est connecté.'
-        : 'No tracking accounts are connected.'
+      translated(
+        'No tracking accounts are connected.',
+        'Aucun compte de suivi n’est connecté.',
+        'لا توجد حسابات تتبع متصلة.'
+      )
     )
   ).toBeVisible();
   await expect(
     page.getByLabel(
-      candidate
-        ? 'Nom d’utilisateur du serveur multimédia'
-        : 'Media Server Username'
+      translated(
+        'Media Server Username',
+        'Nom d’utilisateur du serveur multimédia',
+        'اسم مستخدم خادم الوسائط'
+      )
     )
   ).toBeVisible();
   await expect(
     page.getByLabel(
-      candidate ? 'Mot de passe du serveur multimédia' : 'Media Server Password'
+      translated(
+        'Media Server Password',
+        'Mot de passe du serveur multimédia',
+        'كلمة مرور خادم الوسائط'
+      )
     )
   ).toBeVisible();
   await expect
@@ -101,7 +121,11 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
   await page.reload();
   await expect(
     page.getByRole('button', {
-      name: candidate ? 'Connecter AniList' : 'Connect AniList',
+      name: translated(
+        'Connect AniList',
+        'Connecter AniList',
+        'الاتصال بـ AniList'
+      ),
     })
   ).toBeVisible();
   await page.route(
@@ -110,12 +134,18 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
   );
   await page
     .getByRole('button', {
-      name: candidate ? 'Connecter AniList' : 'Connect AniList',
+      name: translated(
+        'Connect AniList',
+        'Connecter AniList',
+        'الاتصال بـ AniList'
+      ),
     })
     .click();
   await expect(page.getByRole('alert')).toHaveText(
-    candidate
-      ? 'Le serveur a rencontré un problème. Réessayez dans un instant.'
-      : 'The server had a problem. Try again in a moment.'
+    translated(
+      'The server had a problem. Try again in a moment.',
+      'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      'حدثت مشكلة في الخادم. حاول مرة أخرى بعد قليل.'
+    )
   );
 });

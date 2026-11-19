@@ -4277,9 +4277,12 @@ Arabic rendering, and bundled-mount visuals remain open.
 
 Tracking Accounts now localizes provider setup guidance, account states,
 write-preference and disconnect actions, AniList/Trakt/Simkl authorization
-flows, and their errors in English, French, and Arabic. The Linked Accounts
-fixture verifies translated empty state and provider actions in French across
-desktop, iPhone, Android, and tablet, with no horizontal overflow; matching
-desktop and iPhone candidate renders preserve existing control owners and
-layout. Live provider authorization, linked-account readback, Arabic visual
-review, and bundled-mount acceptance remain open.
+flows, and their errors in English, French, and Arabic. French and Arabic
+fixtures verify the translated empty state, provider actions, and server error
+across desktop, iPhone, Android, and tablet, with no horizontal overflow.
+Matching French desktop and iPhone baseline/candidate renders preserve the
+existing control owners and layout; Arabic desktop and iPhone RTL candidates
+were inspected. Live provider authorization, linked-account readback,
+native-matched Arabic visuals, and bundled-mount acceptance remain open.
+Evidence is retained under
+`/mnt/disks/scratch/codex-task-scratch/seerrng-discovery-accounts-localization-visual-20261119/`.
