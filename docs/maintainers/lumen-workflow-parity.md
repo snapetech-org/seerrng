@@ -3022,6 +3022,16 @@ scrolling. Baseline and candidate screenshots are retained under
 This verifies navigation and page rendering with fixtures; live link
 recognition, provider behavior, and matched visual acceptance remain open.
 
+The native request-gated Book Recommendations, Collector Picks, Game Finder,
+and Translations and Hacks shortcuts are also permission-gated in Lumen's
+Books, Music, and Games headers. Forty-eight browser checks covered viewers,
+request users, and administrators across desktop, iPhone, Android, and tablet.
+Baseline and candidate desktop screenshots are retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-entry-navigation/candidate-final/`
+(with pre-change desktop captures in the sibling `baseline/` directory).
+The screenshots confirm that only the restricted shortcuts disappear for
+viewers; provider behavior and matched native visual acceptance remain open.
+
 The standalone production-preview suites for Issues, Blocklist, Download Inbox,
 and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
 and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise

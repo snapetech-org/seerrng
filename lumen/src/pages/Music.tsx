@@ -4,7 +4,12 @@ import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
-import { DetailTop, Facts, Pill } from '../components/detail';
+import {
+  canUseRequestAccess,
+  DetailTop,
+  Facts,
+  Pill,
+} from '../components/detail';
 import {
   ExtraCard,
   ExtraGate,
@@ -274,9 +279,11 @@ export function Music() {
         <Link className="btn btn-quiet btn-sm" to="/music/playlist-import">
           Import Playlist
         </Link>
-        <Link className="btn btn-quiet btn-sm" to="/music/collectors">
-          Collector Picks
-        </Link>
+        {canUseRequestAccess(user?.permissions) && (
+          <Link className="btn btn-quiet btn-sm" to="/music/collectors">
+            Collector Picks
+          </Link>
+        )}
         <label className="sel">
           <span className="lbl">Sort</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>

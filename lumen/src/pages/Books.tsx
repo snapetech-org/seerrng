@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type BookResult, type Paged } from '../api';
+import { useAuth } from '../auth';
 import {
   BookCard,
   GridSkeleton,
@@ -10,6 +11,7 @@ import {
   Section,
 } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
+import { canUseRequestAccess } from '../components/detail';
 import { GenrePicker } from '../components/GenrePicker';
 import { Avatar } from '../components/Shell';
 import {
@@ -114,6 +116,7 @@ const SCREENFUL = 18;
 // "See all" opens the full list with that sort, ?sort= (and ?show=, ?genre=) in the address.
 export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
   const [p] = useSearchParams();
+  const { user } = useAuth();
   const { prefs } = usePrefs();
   const audio = format === 'audiobook';
   const requestedFormat = p.get('format');
@@ -185,9 +188,11 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/books/recommendations">
-            Book Recommendations
-          </Link>
+          {canUseRequestAccess(user?.permissions) && (
+            <Link className="btn btn-quiet btn-sm" to="/books/recommendations">
+              Book Recommendations
+            </Link>
+          )}
           <Link
             className="btn btn-quiet btn-sm"
             to={`/book-series?format=${format}`}
