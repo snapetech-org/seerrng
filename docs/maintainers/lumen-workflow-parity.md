@@ -2222,17 +2222,22 @@ remain unverified.
 Evidence is retained under
 `/mnt/disks/scratch/codex-task-scratch/lumen-swipe-search-duplicate.Px1n2C/`.
 
-Swipe now opens the permitted retro games, apps, and PC games decks. Software
+Swipe opens the permitted retro games, apps, and PC games decks. Software
 requests use the selected system or OS and architecture, and the deck follows
 the server's page continuation. Native and Lumen share the request payload
-builder. Compared the PC game and magazine decks across desktop, iPhone 13,
-Pixel 7, and iPad Pro 11. The production build, 42 native tests, and 20 browser
-checks passed. The fixtures verified PC target selection, offset pagination,
-and title-search cursor continuation with the query retained. Live acquisition
-effects remain unverified.
+builder. The existing suite covers PC target selection, offset pagination, and
+title-search cursor continuation. A focused four-viewport browser case now
+also verifies a software genre filter, all three category-specific target
+payloads, and request submission for Retro, Modern, and PC Game cards. Captures
+at desktop, iPhone, Android, and tablet show the selected target and request
+actions after scrolling them into view; the fixed mobile tabs clear the action
+row. The production build passed. Live acquisition effects and the bundled
+Express `/lumen/` workflow remain unverified.
 
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-software-20261118/`.
+The new viewport captures are retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/swipe-software/final/`.
 
 ### Watch sessions
 
@@ -3906,10 +3911,12 @@ passed, 108 configured skips, and 0 failures across 3,000 desktop, iPhone,
 Android, and tablet cases. The run found two stale Watchlist test labels and
 confirmed both passed after updating the selectors. Subsequent focused suites
 on the saved-item and software-request-history increments passed 32 cases each
-across the same four viewport presets. The standalone Lumen TypeScript/production build passed after adding the
-unavailable-state validation. The SeerrNG production build passed on the
-feature commit after synchronizing the API message source catalog; that
-catalog commit also passed the i18n and current-batch contract checks. Exact
-latest-head hosted validation remains in progress;
-live provider behavior, bundled/native visual comparisons, and the broader
-workflow gaps in the inventory remain open.
+across the same four viewport presets. The standalone Lumen TypeScript/
+production build passed after adding the unavailable-state validation. The
+SeerrNG production build passed on the feature commit after synchronizing the
+API message source catalog; that catalog commit also passed the i18n and
+current-batch contract checks. The software-deck regression increment passed
+on desktop, iPhone, Android, and tablet and the Lumen production build passed.
+Exact latest-head hosted validation remains in progress; live provider
+behavior, bundled/native visual comparisons, and the broader workflow gaps in
+the inventory remain open.
