@@ -1163,13 +1163,12 @@ visual comparisons remain open.
 Shared movie and series discovery URLs now preserve included and excluded
 subject-tag lists. Clearing the tag filter keeps adjacent filters intact.
 Eight standalone browser checks covered both shared lists and the existing
-detail-to-discovery tag link. Interactive keyword selection remains open.
-
-Movies and Series now offer interactive subject-tag search and selection
-through SeerrNG's keyword endpoint. Users can include, exclude, move and
-remove tags while preserving other filters. Standalone browser checks
-verified the Movies interaction and shared links at four viewport presets.
-Live keyword results and bundled and native visual comparisons remain open.
+detail-to-discovery tag link. Movies and Series also offer interactive
+subject-tag search through SeerrNG's keyword endpoint. Users can include,
+exclude, move, and remove tags while preserving other filters. Standalone
+browser checks verified the Movies interaction and shared links at four
+viewport presets. Live keyword results and bundled and native visual
+comparisons remain open.
 
 Subject-tag search follows the native keyword endpoint's pagination contract.
 Standalone browser checks verified reaching page two, returning to page
