@@ -1834,7 +1834,9 @@ open the matching panel for the selected user. Delegated notification settings
 reuse the personal forms. Browser registration stays with the signed-in user.
 The 52 managed-user browser checks passed against standalone Vite and the
 production Express `/lumen/` mount across desktop, iPhone, Android, and tablet
-projects. They use fixture APIs; live providers and matched native visual
+projects. The account-permissions bookmark also passed in both deployments.
+Together, all 56 selected account and managed-user checks passed on the bundled
+mount. They use fixture APIs; live providers and matched native visual
 comparison remain unverified.
 
 ### Delegated watchlists
