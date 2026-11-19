@@ -326,9 +326,10 @@ submissions open the new discussion.
 Headed Chrome at 1440 × 1000 rendered the standalone movie sheet and confirmed
 a report with a synthetic API that accepted only the exact internal media ID,
 type, quality, and description. Standalone and bundled fixture runs now check
-book, comic, magazine and album report controls, their issue-type choices and
-reader-specific reason lists across desktop, iPhone, Android and tablet. Native
-visual comparison remains open. Editing or deleting reports and comments
+book, comic, magazine and album reports, including their issue-type choices,
+reader-specific reason lists, and exact internal media ID and subtype payloads
+across desktop, iPhone, Android and tablet. Native visual comparison remains
+open. Editing or deleting reports and comments
 remains open.
 
 Manage Issues operators can now search for and select a report owner in the
