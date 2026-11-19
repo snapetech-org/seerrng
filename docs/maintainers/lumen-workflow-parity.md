@@ -595,8 +595,8 @@ TVDB season mismatch requires manual recovery in native SeerrNG.
 Headed Chrome at 1440 × 1000 verified the standalone personal request list
 using a synthetic API. An eligible TV request changed from Failed to
 Searching after Retry. An owner season mismatch and another user's request
-both lacked the Retry action. Native baseline comparison, mobile, bundled,
-other media and quality combinations, and live service checks remain open.
+both lacked the Retry action. Native baseline comparison, 4K quality paths,
+and live service checks remain open.
 
 The browser matrix now covers owner retry for movie, series, music, book,
 comic, magazine, sports and adult failures, plus denial for missing type
