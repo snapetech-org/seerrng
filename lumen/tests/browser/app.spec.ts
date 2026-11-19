@@ -752,30 +752,27 @@ test('movie posters distinguish or hide shared copies without offering duplicate
   );
   await page.route(/\/api\/v1\/discover\/movies(?:\?|$)/, (route) =>
     route.fulfill({
-      json: {
-        totalPages: 1,
-        results: [
-          {
-            id: 90,
-            title: 'Shared Movie',
-            mediaType: 'movie',
-            mediaInfo: {
-              status: 5,
-              viewerRequestCoverage: { standard: false },
-              mediaUrl: 'https://plex.example.test/shared',
-            },
+      json: paged([
+        {
+          id: 90,
+          title: 'Shared Movie',
+          mediaType: 'movie',
+          mediaInfo: {
+            status: 5,
+            viewerRequestCoverage: { standard: false },
+            mediaUrl: 'https://plex.example.test/shared',
           },
-          {
-            id: 91,
-            title: 'Viewer Movie',
-            mediaType: 'movie',
-            mediaInfo: {
-              status: 5,
-              viewerRequestCoverage: { standard: true },
-            },
+        },
+        {
+          id: 91,
+          title: 'Viewer Movie',
+          mediaType: 'movie',
+          mediaInfo: {
+            status: 5,
+            viewerRequestCoverage: { standard: true },
           },
-        ],
-      },
+        },
+      ]),
     })
   );
   await page.goto('/movies');

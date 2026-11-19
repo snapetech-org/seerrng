@@ -14,6 +14,9 @@ test('collections are reachable from search and blocklist as one collection', as
     if (path === '/search')
       return route.fulfill({
         json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
           results: [
             { id: 30, mediaType: 'collection', title: 'Example Collection' },
           ],
@@ -43,7 +46,7 @@ test('collections are reachable from search and blocklist as one collection', as
       return route.fulfill({ json: { count: Number(blocked) } });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/search?f=movie&q=example');
+  await page.goto('/search?q=example');
   await page.getByRole('link', { name: 'Example Collection' }).click();
   await expect(
     page.getByRole('heading', { name: 'Example Collection' })

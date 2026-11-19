@@ -338,7 +338,7 @@ Collection actions and automatic rule setup remain open.
 
 ### Movie collection and collection Blocklist increment
 
-Movie details and All or Movies search results open a Lumen collection page
+Movie details and All search results open a Lumen collection page
 in both route configurations. The page uses native collection membership and
 release ordering. Member cards retain individual request and Blocklist
 state. Managers can confirm collection-wide Blocklist changes using the
