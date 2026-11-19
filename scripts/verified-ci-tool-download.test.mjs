@@ -109,10 +109,15 @@ test('release bootstrappers preserve scanner, signing identity and wrapper check
     .steps[0].run;
   assert.match(scanner, /v0\.74\.0:X64/);
   assert.match(scanner, /v0\.76\.2:ARM64/);
-  for (const workflow of ['lumen.yml', 'lumen-release.yml']) {
-    const source = read('.github/workflows/' + workflow);
-    assert.match(source, /uses: \.\/\.github\/actions\/setup-trivy/);
-    assert.match(source, /version: latest/);
+  for (const [workflow, job, version] of [
+    ['lumen.yml', 'lumen', 'v0.76.2'],
+    ['lumen-release.yml', 'native-image', 'latest'],
+  ]) {
+    const config = parse(read('.github/workflows/' + workflow));
+    const setup = config.jobs[job].steps.find(
+      (step) => step.uses === './.github/actions/setup-trivy'
+    );
+    assert.equal(setup?.with?.version, version);
   }
   assert.match(
     scanner,
