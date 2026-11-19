@@ -669,6 +669,7 @@ const getLocalAvailableMusic = async ({
   itemsPerPage,
   query,
   artist,
+  artistId,
   genreFilter,
   releaseTypeFilter,
   releaseDateGte,
@@ -681,6 +682,7 @@ const getLocalAvailableMusic = async ({
   itemsPerPage: number;
   query: string;
   artist?: string;
+  artistId?: string;
   genreFilter: string[];
   releaseTypeFilter: string[];
   releaseDateGte?: string;
@@ -706,13 +708,14 @@ const getLocalAvailableMusic = async ({
   const sortAscending = sortByValue.endsWith('.asc');
   const sortByBase = sortByValue.replace(/\.(?:asc|desc)$/, '');
 
-  // Scanned local metadata only stores the primary type. Resolve secondary
-  // membership in bounded catalogue batches, before local pagination.
+  // Scanned metadata stores artist names and primary types. Resolve exact
+  // artist and secondary type membership before local pagination.
   const secondaryTypes = releaseTypeFilter.filter(
     (type) => musicReleaseTypeField(type) === 'secondarytype'
   );
-  const secondaryMatches = new Set<string>();
-  if (secondaryTypes.length) {
+  let artistMatches: Set<string> | undefined;
+  let secondaryMatches: Set<string> | undefined;
+  if (artistId || secondaryTypes.length) {
     const ids = media
       .filter((item) =>
         getAvailableMusicQualities(
@@ -731,15 +734,29 @@ const getLocalAvailableMusic = async ({
       (_, index) => ids.slice(index * 100, index * 100 + 100)
     );
     const api = new MusicBrainz();
-    const results = await mapWithConcurrency(batches, 2, (batch) =>
-      api.searchAlbumWithTotal({
-        query: `(${batch.map((id) => `rgid:"${id}"`).join(' OR ')}) AND ${buildMusicAlbumSearchQuery('', { releaseType: secondaryTypes.join(',') })}`,
-        limit: 100,
-        offset: 0,
-      })
-    );
-    for (const result of results)
-      for (const album of result.results) secondaryMatches.add(album.id);
+    const findMatchingIds = async (filter: string) => {
+      const results = await mapWithConcurrency(batches, 2, (batch) =>
+        api.searchAlbumWithTotal({
+          query: `(${batch.map((id) => `rgid:"${id}"`).join(' OR ')}) AND ${filter}`,
+          limit: 100,
+          offset: 0,
+        })
+      );
+      return new Set(
+        results.flatMap(({ results }) => results.map(({ id }) => id))
+      );
+    };
+    if (artistId)
+      artistMatches = await findMatchingIds(
+        buildMusicAlbumSearchQuery('', { artistId })
+      );
+    if (secondaryTypes.length)
+      secondaryMatches = await findMatchingIds(
+        buildMusicAlbumSearchQuery('', {
+          artistId,
+          releaseType: secondaryTypes.join(','),
+        })
+      );
   }
 
   const matches = media
@@ -776,7 +793,10 @@ const getLocalAvailableMusic = async ({
         albumType,
       }) =>
         Boolean(searchMetadata?.title) &&
-        (!artist || matchesAllSearchTerms([searchMetadata?.artist], artist)) &&
+        (!artistMatches || artistMatches.has(item.mbId ?? '')) &&
+        (artistId ||
+          !artist ||
+          matchesAllSearchTerms([searchMetadata?.artist], artist)) &&
         availableQualities.includes(requestedQuality as 'MP3' | 'FLAC') &&
         (!query ||
           matchesAllSearchTerms(
@@ -786,7 +806,7 @@ const getLocalAvailableMusic = async ({
         (!releaseTypeFilter.length ||
           releaseTypeFilter.some((type) =>
             musicReleaseTypeField(type) === 'secondarytype'
-              ? secondaryMatches.has(item.mbId ?? '')
+              ? secondaryMatches?.has(item.mbId ?? '')
               : type.toLocaleLowerCase() === albumType.toLocaleLowerCase()
           )) &&
         (!genreFilter.length ||
@@ -3475,6 +3495,7 @@ discoverRoutes.get('/music', async (req, res) => {
           itemsPerPage,
           query,
           artist: musicFilters.artist,
+          artistId: musicFilters.artistId,
           genreFilter,
           releaseTypeFilter,
           releaseDateGte,

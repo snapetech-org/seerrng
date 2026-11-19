@@ -2560,6 +2560,30 @@ describe('GET /discover/music', () => {
       assert.strictEqual(searchAlbum.mock.callCount(), 0);
       assert.strictEqual(getTopAlbums.mock.callCount(), 0);
       assert.strictEqual(getFreshReleases.mock.callCount(), 0);
+
+      const artistId = '79239441-bfd5-4981-a70c-55c3f15c1287';
+      const searchExactArtist = mock.method(
+        MusicBrainz.prototype,
+        'searchAlbumWithTotal',
+        async ({ query }: { query: string }) => {
+          assert.ok(query.includes(`arid:"${artistId}"`));
+          const matches = query.includes(`rgid:"${mp3Album.mbId}"`);
+          return {
+            totalResults: matches ? 1 : 0,
+            results: matches ? [{ id: mp3Album.mbId }] : [],
+          };
+        }
+      );
+      const [matching, excluded] = await Promise.all([
+        agent.get('/discover/music').query({ availability: 'mp3', artistId }),
+        agent.get('/discover/music').query({ availability: 'flac', artistId }),
+      ]);
+      assert.equal(matching.status, 200);
+      assert.equal(matching.body.totalResults, 1);
+      assert.equal(matching.body.results[0].id, mp3Album.mbId);
+      assert.equal(excluded.status, 200);
+      assert.equal(excluded.body.totalResults, 0);
+      assert.equal(searchExactArtist.mock.callCount(), 2);
     } finally {
       settings.lidarr = previousLidarr;
     }
