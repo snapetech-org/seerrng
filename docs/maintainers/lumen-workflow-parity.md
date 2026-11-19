@@ -3641,3 +3641,10 @@ an injected settings write failure returned HTTP 500 and left the job
 disabled, with the corrected expression intact. The next enable
 succeeded and registered an invocation. Both runs used isolated
 scheduler jobs and real local sign-in.
+
+System Logs bookmarks on `3040909f4` passed real log reads in bundled
+desktop and standalone iPhone Lumen. Both followed a Classic page-two
+bookmark through local sign-in, sent offset 25 to the protected logs
+route, and showed the second page from 60 synthetic entries written
+to the isolated machine log. Reload kept page two. Searching returned
+to page one and did not put the search term in the address.
