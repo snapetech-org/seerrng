@@ -3600,3 +3600,12 @@ local sign-in. The user settings API returned isolated instance quota
 defaults for movies, books, and music. Lumen described them as
 unlimited, one request across all time, and four requests per seven
 days. The member's blank override remained distinct from each default.
+
+The Scheduled Jobs bookmark also passed real administrative actions in
+bundled desktop and standalone iPhone Lumen. After local sign-in, the
+administrator ran and canceled an isolated scheduler job, disabled and
+re-enabled its schedule, and saved a different cron expression. The
+real settings routes invoked and canceled the fixture exactly once.
+The enabled state and edited schedule were visible after reload and
+present in the isolated settings files. Production jobs and provider
+connections were outside the check.
