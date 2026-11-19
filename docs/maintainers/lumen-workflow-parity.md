@@ -3724,3 +3724,9 @@ tags. Bundled desktop and iPhone checks supplied isolated Lidarr destination
 responses, chose the named options, saved through the real override API,
 and verified the same profile and tag on edit after reloading. Other
 providers, named condition selectors, and companion verification remain open.
+
+The override rule editor now resolves users, video genres, languages,
+production countries and video keywords by name. Bundled desktop and iPhone
+checks used local sign-in, the real user lookup and rule API, and fixture
+metadata. Creating a Radarr rule persisted all five named conditions,
+including two languages and two production countries in the API format.

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
-import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
+import { KeywordResults } from '../components/SubjectTagFilter';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 
@@ -104,6 +105,189 @@ function RulesForService({
   );
 }
 
+function ConditionChoices({
+  provider,
+  values,
+  onChange,
+  busy,
+}: {
+  provider: (typeof serviceTypes)[number][1];
+  values: Record<string, string>;
+  onChange: (field: string, value: string) => void;
+  busy: boolean;
+}) {
+  const video = provider === 'radarr' || provider === 'sonarr';
+  const [userSearch, setUserSearch] = useState('');
+  const [userQuery, setUserQuery] = useState('');
+  const [keywordSearch, setKeywordSearch] = useState('');
+  const [keywordQuery, setKeywordQuery] = useState('');
+  const [keywordPage, setKeywordPage] = useState(1);
+  const users = useApi<{ results: { id: number; displayName: string }[] }>(
+    `/user?take=50&sort=displayname&q=${encodeURIComponent(userQuery)}`,
+    { currentPathOnly: true }
+  );
+  const genres = useApi<{ id: number; name: string }[]>(
+    video ? `/genres/${provider === 'radarr' ? 'movie' : 'tv'}` : null,
+    { currentPathOnly: true }
+  );
+  const languages = useApi<{ iso_639_1: string; english_name: string }[]>(
+    provider !== 'lidarr' ? '/languages' : null
+  );
+  const countries = useApi<{ iso_3166_1: string; english_name: string }[]>(
+    video ? '/regions' : null
+  );
+  const picked = (field: string) =>
+    values[field]
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean);
+  function toggle(field: string, value: string) {
+    const current = picked(field);
+    onChange(
+      field,
+      (current.includes(value)
+        ? current.filter((item) => item !== value)
+        : [...current, value]
+      ).join(',')
+    );
+  }
+  const choices = [
+    [
+      'users',
+      'User',
+      users.data?.results.map(({ id, displayName }) => [
+        String(id),
+        displayName,
+      ]),
+    ],
+    ['genre', 'Genre', genres.data?.map(({ id, name }) => [String(id), name])],
+    [
+      'language',
+      'Language',
+      languages.data?.map(({ iso_639_1, english_name }) => [
+        iso_639_1,
+        english_name,
+      ]),
+    ],
+    [
+      'productionCountries',
+      'Production Country',
+      countries.data?.map(({ iso_3166_1, english_name }) => [
+        iso_3166_1,
+        english_name,
+      ]),
+    ],
+  ] as const;
+
+  return (
+    <Section title="Find Conditions by Name">
+      {(
+        [
+          ['users', users],
+          ['genres', genres],
+          ['languages', languages],
+          ['production countries', countries],
+        ] as const
+      ).map(([what, lookup]) => (
+        <ServiceNote
+          key={what}
+          what={what}
+          error={lookup.error}
+          retry={lookup.reload}
+        />
+      ))}
+      <div className="toolbar">
+        <label className="sel">
+          Search Users
+          <input
+            className="cfg-input"
+            type="search"
+            value={userSearch}
+            maxLength={80}
+            disabled={busy}
+            onChange={(event) => setUserSearch(event.target.value)}
+          />
+        </label>
+        <button
+          className="btn btn-tonal btn-sm"
+          type="button"
+          disabled={busy}
+          onClick={() => setUserQuery(userSearch.trim())}
+        >
+          Find Users
+        </button>
+      </div>
+      <div className="setlist">
+        {choices.map(
+          ([field, label, options]) =>
+            options && (
+              <label className="set cfg-row" key={field}>
+                <b>{label}</b>
+                <select
+                  className="cfg-select"
+                  value=""
+                  disabled={busy}
+                  onChange={(event) => {
+                    if (event.target.value) toggle(field, event.target.value);
+                  }}
+                >
+                  <option value="">Choose to add or remove</option>
+                  {[...options]
+                    .sort((a, b) => a[1].localeCompare(b[1]))
+                    .map(([id, name]) => (
+                      <option key={id} value={id}>
+                        {name}
+                        {picked(field).includes(id) ? ' (selected)' : ''}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            )
+        )}
+      </div>
+      {video && (
+        <>
+          <div className="toolbar">
+            <label className="sel">
+              Search Keywords
+              <input
+                className="cfg-input"
+                type="search"
+                value={keywordSearch}
+                maxLength={100}
+                disabled={busy}
+                onChange={(event) => setKeywordSearch(event.target.value)}
+              />
+            </label>
+            <button
+              className="btn btn-tonal btn-sm"
+              type="button"
+              disabled={busy || !keywordSearch.trim()}
+              onClick={() => {
+                setKeywordPage(1);
+                setKeywordQuery(keywordSearch.trim());
+              }}
+            >
+              Find Keywords
+            </button>
+          </div>
+          {keywordQuery && (
+            <KeywordResults
+              query={keywordQuery}
+              page={keywordPage}
+              selected={picked('keywords')}
+              toggle={({ id }) => toggle('keywords', String(id))}
+              setPage={setKeywordPage}
+              disabled={busy}
+              limit={100}
+            />
+          )}
+        </>
+      )}
+    </Section>
+  );
+}
+
 function RuleEditor({
   rule,
   onSaved,
@@ -124,7 +308,15 @@ function RuleEditor({
   });
   const [values, setValues] = useState(() =>
     Object.fromEntries(
-      fields.map(([field]) => [field, String(rule?.[field] ?? '')])
+      fields.map(([field]) => {
+        const value = String(rule?.[field] ?? '');
+        return [
+          field,
+          field === 'language' || field === 'productionCountries'
+            ? value.replaceAll('|', ',')
+            : value,
+        ];
+      })
     )
   );
   const [busy, setBusy] = useState(false);
@@ -200,7 +392,9 @@ function RuleEditor({
           value
             ? field === 'profileId' || field === 'languageProfileId'
               ? Number(value)
-              : value
+              : field === 'language' || field === 'productionCountries'
+                ? value.replaceAll(',', '|')
+                : value
             : null,
         ];
       });
@@ -363,6 +557,17 @@ function RuleEditor({
                 );
               })}
             </div>
+            {provider && (
+              <ConditionChoices
+                key={provider}
+                provider={provider}
+                busy={busy}
+                values={values}
+                onChange={(field, value) =>
+                  setValues((previous) => ({ ...previous, [field]: value }))
+                }
+              />
+            )}
             {!!destination.data?.tags.length && (
               <Section title="Service Tags">
                 <div className="setlist">
