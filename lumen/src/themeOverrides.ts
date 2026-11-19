@@ -8,6 +8,7 @@ export const themeColors = [
   ['--theme-sidebar-end', '--sidebar-end', 'Sidebar Background End'],
   ['--theme-sidebar-border', '--sidebar-border', 'Sidebar Border'],
   ['--theme-sidebar-hover', '--sidebar-hover', 'Sidebar Hover Background'],
+  ['--theme-searchbar-scrolled', '--topbar-scrolled', 'Scrolled Search Header'],
   ['--theme-heading-text', '--ink', 'Primary Text'],
   ['--palette-blue', '--accent', 'Accent'],
 ] as const;

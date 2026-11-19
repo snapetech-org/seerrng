@@ -185,18 +185,24 @@ export default function Shell({ children }: { children: ReactNode }) {
   const navType = useNavigationType();
   const back = useBack();
   const entry = useRef(loc.key);
+  const topbar = useRef<HTMLDivElement>(null);
   entry.current = loc.key;
   useEffect(() => {
     history.scrollRestoration = 'manual';
     let raf = 0;
     const save = () => {
       cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() =>
-        scrollSpots.set(entry.current, window.scrollY)
-      );
+      raf = requestAnimationFrame(() => {
+        const offset = window.scrollY;
+        scrollSpots.set(entry.current, offset);
+        topbar.current?.toggleAttribute('data-scrolled', offset > 0);
+      });
     };
     window.addEventListener('scroll', save, { passive: true });
-    return () => window.removeEventListener('scroll', save);
+    return () => {
+      window.removeEventListener('scroll', save);
+      cancelAnimationFrame(raf);
+    };
   }, []);
   const lastPath = useRef(loc.pathname);
   useEffect(() => {
@@ -400,7 +406,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           </Link>
         </nav>
         <div className="main">
-          <div className="topbar">
+          <div className="topbar" ref={topbar}>
             <button
               className="icon-btn tb-back"
               aria-label="Back"

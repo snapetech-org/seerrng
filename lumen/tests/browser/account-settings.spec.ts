@@ -251,6 +251,27 @@ test('account theme colors preserve stored overrides for other controls', async 
   await page.reload();
   await expect(background).toHaveValue('#112233');
   if (await page.locator('.side').isVisible()) {
+    const header = page.locator('.topbar');
+    await expect(header).toHaveCSS(
+      'background-color',
+      'rgba(24, 27, 34, 0.72)'
+    );
+    const headerHeight = (await header.boundingBox())?.height;
+    const scrolledColor = page.getByLabel('Scrolled Search Header');
+    await scrolledColor.fill('#26354a');
+    await save.click();
+    await page.evaluate(() => window.scrollTo(0, 300));
+    await expect(header).toHaveCSS('background-color', 'rgb(38, 53, 74)');
+    await expect(header).toHaveCSS('backdrop-filter', 'none');
+    expect((await header.boundingBox())?.height).toBe(headerHeight);
+    await scrolledColor.fill('');
+    await save.click();
+    await expect(header).toHaveCSS('background-color', 'rgb(20, 23, 29)');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(header).toHaveCSS(
+      'background-color',
+      'rgba(24, 27, 34, 0.72)'
+    );
     const sidebar = page.locator('.side');
     const width = (await sidebar.boundingBox())?.width;
     await expect(sidebar).toHaveCSS('background-image', 'none');

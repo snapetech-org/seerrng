@@ -1834,6 +1834,15 @@ Matched 1440-pixel bundled screenshots retained the 248-pixel sidebar
 width and the same default and customized surface colors. These
 checks measured computed paint and geometry without timing rendering.
 
+The desktop search header honors the saved Classic scrolled header
+color and uses the regular surface when that override is cleared.
+Scrolling disables backdrop blur on the header, and returning to
+the top restores the original glass treatment. Eight standalone
+account tests and two focused bundled tests passed. At 1440 CSS
+pixels the bundled header stayed 71 pixels tall in all three states.
+The 390-pixel tests covered the account editor where the desktop
+header is hidden. Rendering time was not measured.
+
 ### About release history
 
 About loads the public GitHub release history on demand, identifies the
