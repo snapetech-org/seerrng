@@ -15,6 +15,7 @@ async function capture(page: Page, info: TestInfo) {
 test('Linked Accounts exposes translated sign-in and recovery controls', async ({
   page,
 }, info) => {
+  let discoveryConfigured = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(
@@ -36,11 +37,13 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
       return route.fulfill({ json: { hasPassword: true } });
     if (path === '/integrations/discovery/configuration')
       return route.fulfill({
-        json: {
-          anilist: { configured: true },
-          simkl: { configured: true },
-          trakt: { configured: true },
-        },
+        json: discoveryConfigured
+          ? {
+              anilist: { configured: true },
+              simkl: { configured: true },
+              trakt: { configured: true },
+            }
+          : {},
       });
     if (path === '/integrations/discovery/accounts')
       return route.fulfill({ json: { accounts: [] } });
@@ -74,11 +77,6 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
     )
   ).toBeVisible();
   await expect(
-    page.getByRole('button', {
-      name: candidate ? 'Connecter AniList' : 'Connect AniList',
-    })
-  ).toBeVisible();
-  await expect(
     page.getByLabel(
       candidate
         ? 'Nom d’utilisateur du serveur multimédia'
@@ -98,4 +96,12 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
     )
     .toBe(true);
   await capture(page, info);
+
+  discoveryConfigured = true;
+  await page.reload();
+  await expect(
+    page.getByRole('button', {
+      name: candidate ? 'Connecter AniList' : 'Connect AniList',
+    })
+  ).toBeVisible();
 });
