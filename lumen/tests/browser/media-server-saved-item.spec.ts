@@ -221,7 +221,7 @@ test('unconfigured media servers do not show or query a saved action', async ({
 
 test('an unlinked account offers recovery without attempting a write', async ({
   page,
-}) => {
+}, info) => {
   const { writes } = await fixture(page, 1, {
     unavailableReason: 'account-not-linked',
   });
@@ -232,6 +232,16 @@ test('an unlinked account offers recovery without attempting a write', async ({
   await expect(
     page.getByRole('link', { name: 'Link Plex Account' })
   ).toHaveAttribute('href', '/me/account/linked-accounts');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  await page.screenshot({
+    path: info.outputPath('tv-saved-item-unlinked.png'),
+    fullPage: true,
+    animations: 'disabled',
+  });
   expect(writes).toEqual([]);
 });
 

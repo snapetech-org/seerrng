@@ -3888,5 +3888,7 @@ rendered at `/tv/202` in the loaded Plex state and compared at desktop (1440 ×
 1274), iPhone (1170 × 3495; baseline 3339), Android (1082 × 2922), and
 tablet (1668 × 2416; baseline 2388).
 The existing mobile detail action wraps onto its own row; surrounding detail
-layout and sticky playback control remain intact. Live provider behavior and
-bundled acceptance remain open.
+layout and sticky playback control remain intact. The unlinked-account state
+was also rendered at all four presets; its recovery link wraps below the
+unavailable action on iPhone, and browser checks confirm no horizontal
+overflow. Live provider behavior and bundled acceptance remain open.
