@@ -142,3 +142,170 @@ test('movie detail adds and removes the exact blocked title and refreshes reques
     '?mediaType=movie',
   ]);
 });
+
+test('detail Blocklist actions send the canonical identity for every supported media type', async ({
+  page,
+}) => {
+  const cases = [
+    {
+      route: '/tv/30',
+      mediaType: 'tv',
+      id: '30',
+      title: 'Example Series',
+      detailPath: '/tv/30',
+      detail: { id: 30, name: 'Example Series', genres: [], seasons: [] },
+      identity: { tmdbId: 30 },
+    },
+    {
+      route: '/music/album-22',
+      mediaType: 'music',
+      id: 'album-22',
+      title: 'Example Album',
+      detailPath: '/music/album-22',
+      detail: {
+        id: 'album-22',
+        title: 'Example Album',
+        artist: { id: 'artist-2', name: 'Example Artist' },
+        tracks: [],
+      },
+      identity: {
+        externalId: 'album-22',
+        externalProvider: 'musicbrainz',
+      },
+    },
+    {
+      route: '/book/ol123w',
+      mediaType: 'book',
+      id: 'OL123W',
+      title: 'Example Book',
+      detailPath: '/book/ol123w',
+      detail: {
+        id: 'OL123W',
+        title: 'Example Book',
+        description: 'A fixture book.',
+      },
+      identity: {
+        externalId: 'OL123W',
+        externalProvider: 'openlibrary',
+      },
+    },
+    {
+      route: '/comic/al-105778',
+      mediaType: 'comic',
+      id: '130799',
+      title: 'Example Comic',
+      detailPath: '/comic/130799',
+      detail: { id: '130799', title: 'Example Comic' },
+      work: {
+        id: 'al-105778',
+        mediaType: 'comic',
+        kind: 'manga',
+        title: 'Example Comic',
+        editionsResolved: true,
+        recommendedId: '130799',
+        editions: [
+          {
+            id: '130799',
+            title: 'Example Comic',
+            publisher: 'Fixture Press',
+            language: 'en',
+            languageName: 'English',
+            recommended: true,
+          },
+        ],
+      },
+      identity: {
+        externalId: '130799',
+        externalProvider: 'comicvine',
+      },
+    },
+    {
+      route: '/magazine/Fixture%20Magazine',
+      mediaType: 'magazine',
+      id: 'fixture magazine',
+      title: 'Fixture Magazine',
+      detailPath: '/magazine/Fixture%20Magazine',
+      detail: {
+        id: 'Fixture Magazine',
+        title: 'Fixture Magazine',
+        issues: [],
+      },
+      identity: {
+        externalId: 'fixture magazine',
+        externalProvider: 'lazylibrarian',
+      },
+    },
+  ] as const;
+  let active: (typeof cases)[number] = cases[0];
+  let blocked = false;
+  const writes: unknown[] = [];
+
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          initialized: true,
+          booksEnabled: true,
+          musicEnabled: true,
+          enabledMediaCategories: {
+            book: true,
+            comic: true,
+            magazine: true,
+            music: true,
+          },
+        },
+      });
+    if (path === active.detailPath)
+      return route.fulfill({
+        json: { ...active.detail, mediaInfo: { status: blocked ? 6 : 1 } },
+      });
+    if ('work' in active && path === '/comic/work/al-105778')
+      return route.fulfill({ json: active.work });
+    if (path.startsWith('/blocklist/') && url.searchParams.has('mediaType')) {
+      if (request.method() === 'GET')
+        return blocked
+          ? route.fulfill({ json: { id: 99 } })
+          : route.fulfill({ status: 404, json: { message: 'Not found' } });
+      if (request.method() === 'DELETE') {
+        blocked = false;
+        return route.fulfill({ status: 204 });
+      }
+    }
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    if (path === '/blocklist' && request.method() === 'POST') {
+      const payload = request.postDataJSON();
+      expect(payload).toEqual({
+        mediaType: active.mediaType,
+        title: active.title,
+        ...active.identity,
+      });
+      writes.push(payload);
+      blocked = true;
+      return route.fulfill({ status: 201 });
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  for (const item of cases) {
+    active = item;
+    blocked = false;
+    const before = writes.length;
+    await page.goto(item.route);
+    await page.getByRole('button', { name: 'Add to Blocklist' }).click();
+    await page
+      .getByRole('alertdialog')
+      .getByRole('button', { name: 'Add to Blocklist' })
+      .click();
+    await expect(
+      page.getByRole('button', { name: 'Remove from Blocklist' })
+    ).toBeVisible();
+    await expect.poll(() => writes.length).toBe(before + 1);
+  }
+});

@@ -346,9 +346,9 @@ confirm removal using the affected entry's TMDB or external identity.
 
 Headed Chrome at 1440 × 1000 verified the standalone list, exact encoded
 external ID removal, and empty navigation state against a fixture. Mobile and
-bundled visual checks and the rendered native comparison remain open. Adding
-entries from media details, collection actions, and automatic rule setup
-remain open.
+bundled visual checks and the rendered native comparison remain open. The
+detail and collection add actions and administrator automatic-rule settings
+are implemented below; their remaining gap is rendered acceptance.
 
 ### Blocklist media detail increment
 
@@ -357,13 +357,17 @@ Open Library book, ComicVine edition, and magazine details. The action looks
 up the exact canonical identity and rechecks the detail, entry, and
 navigation count after a change. Request controls reflect Blocklisted after
 detail refresh. Bookshelf-only records without a supported Open Library work
-identity are excluded from the detail action.
+identity are excluded from the detail action. Browser fixtures now assert the
+exact add identity for all six supported media types across desktop, iPhone,
+Android, and tablet, alongside the movie add/remove and request-state flow.
+The Blocklist API's supported scope is movie, TV, music, book, comic, and
+magazine; other Lumen catalogs have no native Blocklist contract.
 
 Headed Chrome at 1440 × 1000 compared the standalone movie detail with its
 previous build. The synthetic API confirmed an empty 201 add response and
 204 removal, and the UI switched both the request button and navigation after
-readback. Other media, mobile, and bundled visual acceptance remain open.
-Collection actions and automatic rule setup remain open.
+readback. Mobile and bundled visual acceptance and a rendered native
+comparison remain open.
 
 ### Movie collection and collection Blocklist increment
 
@@ -3813,8 +3817,10 @@ The parity inventory previously listed automatic Blocklist rule setup as
 unfinished. Lumen's administrator Discovery page already configures keyword
 IDs, movie and TV genres, and the per-rule page limit; its browser regression
 preserves stored genre selections and verifies changed-field persistence.
-Remaining Blocklist parity is media/action coverage plus mobile matched and
-bundled acceptance.
+Movie, curated TV, and music collection actions are also implemented and have
+browser coverage. The media identity tests cover all six server-supported
+Blocklist types. Remaining Blocklist parity is mobile and bundled acceptance
+and rendered comparison with native SeerrNG.
 
 The Accounts inventory also overstated missing functionality. Lumen has TV
 request access settings, per-user Episode Queue defaults, maturity limits, and
