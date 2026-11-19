@@ -16,6 +16,7 @@ import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
 import { usePublicSettings } from './hooks';
+import { LumenLocaleProvider } from './i18n';
 import { canSearchIndexers } from './indexerPermissions';
 import { clearLoginLinkFromAddress } from './loginLink';
 import { MediaServerProvider } from './mediaServer';
@@ -175,8 +176,10 @@ function App() {
     );
   if (user === undefined) return <div className="boot" aria-busy="true" />;
   if (user === null) return <Login />;
+  // prettier-ignore
   return (
-    <Shell>
+    <LumenLocaleProvider userId={user.id}>
+      <Shell>
       <PageBoundary key={location.pathname}>
         <Routes>
           <Route path="/login" element={<Navigate to="/" replace />} />
@@ -1228,7 +1231,8 @@ function App() {
           <Route path="*" element={<Placeholder title="Page not found" />} />
         </Routes>
       </PageBoundary>
-    </Shell>
+      </Shell>
+    </LumenLocaleProvider>
   );
 }
 

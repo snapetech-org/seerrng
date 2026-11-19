@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predev": "node scripts/generate-locale-data.mjs",
+    "prebuild": "node scripts/generate-locale-data.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "node --test tests/*.test.mjs",

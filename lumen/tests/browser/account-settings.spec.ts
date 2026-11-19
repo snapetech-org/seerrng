@@ -149,6 +149,66 @@ test('account settings preserve failed profile edits and save only changes and p
   await expect(page.getByLabel('New Password')).toHaveValue('');
 });
 
+test('display language persists and localizes the shell and account settings', async ({
+  page,
+}) => {
+  const profile = { username: 'Viewer', locale: null as string | null };
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          displayName: profile.username,
+          permissions: 32,
+          userType: 2,
+        },
+      });
+    if (path === '/user/2/settings/main') {
+      if (request.method() === 'POST') {
+        const body = request.postDataJSON();
+        writes.push(body);
+        Object.assign(profile, body);
+      }
+      return route.fulfill({ json: profile });
+    }
+    if (path === '/languages') return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('./me/account'));
+  const language = page.getByRole('combobox', { name: 'Display Language' });
+  await expect(language).toHaveValue('');
+  await language.selectOption('fr');
+  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(page.getByText('Profile saved.')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
+  await expect(
+    page.getByRole('combobox', { name: "Langue d'affichage" })
+  ).toHaveValue('fr');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
+  expect(writes).toEqual([{ locale: 'fr' }]);
+
+  await page.reload();
+  await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await expect(
+    page.getByRole('combobox', { name: "Langue d'affichage" })
+  ).toHaveValue('fr');
+
+  await page
+    .getByRole('combobox', { name: "Langue d'affichage" })
+    .selectOption('ar');
+  await page.getByRole('button', { name: 'Save Profile' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await expect(page.getByRole('link', { name: 'اكتشف' })).toBeVisible();
+});
+
 test('watchlist preferences honor account type and category permissions and persist false', async ({
   page,
 }) => {

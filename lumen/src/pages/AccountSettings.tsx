@@ -8,6 +8,7 @@ import { CardTitlePreferences } from '../components/CardTitlePreferences';
 import { ServiceNote } from '../components/extra';
 import { StreamingSubscriptions } from '../components/StreamingSubscriptions';
 import { useApi, usePublicSettings } from '../hooks';
+import { lumenLocales, useLumenLocale } from '../i18n';
 import { permissionOptions } from '../permissionOptions';
 import { sessionGeneration } from '../sessionState';
 
@@ -85,6 +86,7 @@ function languageDraft(preferences?: PreferredLanguages | null) {
 interface Profile extends Partial<Record<WatchlistField, boolean | null>> {
   username?: string | null;
   email?: string | null;
+  locale?: string | null;
   metadataLocale?: string | null;
   preferredLanguages?: PreferredLanguages | null;
   formatRegion?: string | null;
@@ -104,6 +106,7 @@ function profileDraft(profile: Profile) {
     watchlistSyncMagazines: profile.watchlistSyncMagazines ?? false,
     username: profile.username ?? '',
     email: profile.email ?? '',
+    locale: profile.locale ?? '',
     metadataLocale: profile.metadataLocale ?? '',
     preferredLanguages: languageDraft(profile.preferredLanguages),
     formatRegion: profile.formatRegion ?? '',
@@ -130,6 +133,7 @@ function ProfileForm({
   onSaved: () => void;
 }) {
   const { refresh, user } = useAuth();
+  const { setLocale: setLumenLocale, t } = useLumenLocale();
   const languages =
     useApi<{ iso_639_1: string; english_name: string }[]>('/languages');
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
@@ -190,12 +194,14 @@ function ProfileForm({
   );
   const editable = [
     ...fields.filter(({ key }) => key !== 'email' || !plex),
+    { key: 'locale', label: 'Display Language' } as const,
     ...visibleWatchlists,
   ];
   const normalized = {
     ...draft,
     username: draft.username.trim(),
     email: draft.email.trim(),
+    locale: draft.locale.trim(),
     metadataLocale: draft.metadataLocale.trim(),
     formatRegion: draft.formatRegion.trim().toUpperCase(),
     discoverRegion: normalizeRegion(draft.discoverRegion),
@@ -241,6 +247,7 @@ function ProfileForm({
         if (generation !== sessionGeneration()) return;
         setSaved(confirmed);
         setDraft(confirmed);
+        setLumenLocale(confirmed.locale || null);
         onSaved();
         if (
           changes.every(({ key }) => confirmed[key] === normalized[key]) &&
@@ -285,6 +292,48 @@ function ProfileForm({
       }}
     >
       <div className="setlist">
+        <label className="set cfg-row">
+          <span>
+            <b>
+              {t(
+                'components.UserProfile.UserSettings.UserGeneralSettings.applanguage',
+                'Display Language'
+              )}
+            </b>
+            <small>
+              {t(
+                'components.UserProfile.UserSettings.UserGeneralSettings.languageBrowserDefault',
+                'Use Browser Language ({language})',
+                { language: navigator.language }
+              )}
+            </small>
+          </span>
+          <select
+            className="cfg-input"
+            aria-label={t(
+              'components.UserProfile.UserSettings.UserGeneralSettings.applanguage',
+              'Display Language'
+            )}
+            value={draft.locale}
+            disabled={busy}
+            onChange={(event) =>
+              setDraft({ ...draft, locale: event.target.value })
+            }
+          >
+            <option value="">
+              {t(
+                'components.UserProfile.UserSettings.UserGeneralSettings.languageBrowserDefault',
+                'Use Browser Language ({language})',
+                { language: navigator.language }
+              )}
+            </option>
+            {lumenLocales.map(({ tag, nativeName }) => (
+              <option key={tag} value={tag}>
+                {nativeName}
+              </option>
+            ))}
+          </select>
+        </label>
         {fields.map(({ key, label, max, ...field }) => (
           <label className="set cfg-row" key={key}>
             <span>
@@ -517,6 +566,7 @@ function PasswordForm({
 
 function Settings({ id, plex }: { id: number; plex: boolean }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const accountType = user?.userType ? accountTypes[user.userType] : undefined;
   const role =
     user?.id === 1
@@ -552,7 +602,12 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
   }, [hash, loaded]);
   return (
     <>
-      <Section title="Profile">
+      <Section
+        title={t(
+          'components.UserProfile.UserSettings.UserGeneralSettings.generalsettings',
+          'General Settings'
+        )}
+      >
         <dl className="setlist">
           {accountType && (
             <div className="set">
@@ -643,10 +698,11 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
 
 export default function AccountSettings() {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   return (
     <>
       <header className="ph">
-        <h1>Account Settings</h1>
+        <h1>{t('i18n.usersettings', 'User Settings')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="#advanced-theme">

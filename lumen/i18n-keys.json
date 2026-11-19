@@ -1,0 +1,21 @@
+[
+  "components.Layout.Sidebar.discover",
+  "components.Layout.Sidebar.browsemovies",
+  "components.Layout.Sidebar.browsetv",
+  "components.Layout.Sidebar.browsebooks",
+  "components.Layout.Sidebar.browseaudiobooks",
+  "components.Layout.Sidebar.requests",
+  "components.Layout.Sidebar.myMedia",
+  "components.Layout.Sidebar.comingSoon",
+  "components.Layout.UserDropdown.myprofile",
+  "i18n.searchLabel",
+  "i18n.usersettings",
+  "components.UserProfile.UserSettings.UserGeneralSettings.generalsettings",
+  "components.UserProfile.UserSettings.UserGeneralSettings.applanguage",
+  "components.UserProfile.UserSettings.UserGeneralSettings.languageDefault",
+  "components.UserProfile.UserSettings.UserGeneralSettings.languageBrowserDefault",
+  "components.UserProfile.UserSettings.UserGeneralSettings.save",
+  "components.Persius.loading",
+  "components.Persius.retry",
+  "i18n.close"
+]
