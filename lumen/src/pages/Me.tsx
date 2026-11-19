@@ -60,11 +60,13 @@ function Toggle({
       aria-checked={on}
       aria-disabled={isLocked}
       tabIndex={isLocked ? -1 : 0}
-      onClick={() => !isLocked && set(path, !on)}
+      onClick={() => {
+        if (!isLocked) void set(path, !on).catch(() => {});
+      }}
       onKeyDown={(e) => {
         if (!isLocked && (e.key === ' ' || e.key === 'Enter')) {
           e.preventDefault();
-          set(path, !on);
+          void set(path, !on).catch(() => {});
         }
       }}
     >
@@ -89,7 +91,15 @@ export default function Me() {
   const liveTv = useLiveTvStatus();
   const showBlocklist = useBlocklistNavigation();
   const toast = useToast();
-  const { prefs, set, reset, locked, seerrPublicUrl } = usePrefs();
+  const {
+    prefs,
+    set,
+    reset,
+    locked,
+    seerrPublicUrl,
+    preferenceSaveError,
+    retryPreferenceSave,
+  } = usePrefs();
   const extras = useExtras();
   const [askReset, setAskReset] = useState(false);
   const full = fullSeerrUrl(seerrPublicUrl);
@@ -109,6 +119,19 @@ export default function Me() {
           </div>
         </div>
       </header>
+      {preferenceSaveError && (
+        <div className="empty" role="alert">
+          <b>
+            {me(
+              'preferencesSaveFailure',
+              'Lumen preferences could not be synced to your account.'
+            )}
+          </b>
+          <button className="btn btn-tonal" onClick={retryPreferenceSave}>
+            {me('retry', 'Retry')}
+          </button>
+        </div>
+      )}
       <div className="me-card">
         <span className="avatar">
           <AvatarContent
@@ -434,7 +457,7 @@ export default function Me() {
                   key={v}
                   disabled={locked.has('theme')}
                   aria-pressed={prefs.theme === v}
-                  onClick={() => set('theme', v)}
+                  onClick={() => void set('theme', v).catch(() => {})}
                 >
                   {me(
                     `theme.${v}`,
@@ -549,7 +572,7 @@ export default function Me() {
           onClose={() => setAskReset(false)}
           onConfirm={() => {
             setAskReset(false);
-            reset();
+            void reset().catch(() => {});
           }}
         />
       )}

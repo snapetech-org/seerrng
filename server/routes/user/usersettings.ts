@@ -34,6 +34,7 @@ import type {
   MovieMaturityLimit,
   TvMaturityLimit,
   TvSeasonWatchGateAccessResponse,
+  UserLumenPreferences,
   UserPreferredLanguages,
   UserRequestRootFolders,
   UserSettingsCardTextResponse,
@@ -45,6 +46,7 @@ import type {
   UserVideoMaturityPolicyResponse,
 } from '@server/interfaces/api/userSettingsInterfaces';
 import {
+  LUMEN_DISCOVER_ROWS,
   mediaFilterScopes,
   mediaFilterValues,
   type MediaFilterScope,
@@ -1286,6 +1288,70 @@ const parseRequestRootFolders = (
   return { value };
 };
 
+const lumenPreferenceBooleanFields = [
+  'narratorChoice',
+  'hoverRequest',
+  'wholeSeriesDefault',
+  'showBooks',
+  'requestOptions',
+] as const;
+const parseLumenPreferences = (
+  input: unknown
+): { value: UserLumenPreferences | null } | { error: string } => {
+  if (input === null) return { value: null };
+  if (!input || typeof input !== 'object' || Array.isArray(input)) {
+    return { error: 'lumenPreferences must be an object or null.' };
+  }
+  const source = input as Record<string, unknown>;
+  const allowed = new Set([...lumenPreferenceBooleanFields, 'theme', 'rows']);
+  if (Object.keys(source).some((key) => !allowed.has(key))) {
+    return { error: 'lumenPreferences contains an unsupported preference.' };
+  }
+
+  const value: UserLumenPreferences = {};
+  for (const key of lumenPreferenceBooleanFields) {
+    if (!hasOwn(source, key)) continue;
+    if (typeof source[key] !== 'boolean') {
+      return { error: `lumenPreferences.${key} must be a boolean.` };
+    }
+    value[key] = source[key];
+  }
+
+  if (hasOwn(source, 'theme')) {
+    if (!['dark', 'light', 'system'].includes(source.theme as string)) {
+      return {
+        error: 'lumenPreferences.theme must be dark, light, or system.',
+      };
+    }
+    value.theme = source.theme as NonNullable<UserLumenPreferences['theme']>;
+  }
+
+  if (hasOwn(source, 'rows')) {
+    const rows = source.rows;
+    if (!rows || typeof rows !== 'object' || Array.isArray(rows)) {
+      return { error: 'lumenPreferences.rows must be an object.' };
+    }
+    const rowValues = rows as Record<string, unknown>;
+    if (
+      Object.keys(rowValues).some(
+        (key) => !(LUMEN_DISCOVER_ROWS as readonly string[]).includes(key)
+      )
+    ) {
+      return { error: 'lumenPreferences.rows contains an unknown row.' };
+    }
+    value.rows = {};
+    for (const row of LUMEN_DISCOVER_ROWS) {
+      if (!hasOwn(rowValues, row)) continue;
+      if (typeof rowValues[row] !== 'boolean') {
+        return { error: `lumenPreferences.rows.${row} must be a boolean.` };
+      }
+      value.rows[row] = rowValues[row] as boolean;
+    }
+  }
+
+  return { value };
+};
+
 const parseGeneralSettingsBody = (
   body: unknown
 ):
@@ -1521,6 +1587,16 @@ const parseGeneralSettingsBody = (
       return parsedRequestRootFolders;
     }
     value.requestRootFolders = parsedRequestRootFolders.value;
+  }
+
+  if (hasOwn(bodyObject, 'lumenPreferences')) {
+    const parsedLumenPreferences = parseLumenPreferences(
+      bodyObject.lumenPreferences
+    );
+    if ('error' in parsedLumenPreferences) {
+      return parsedLumenPreferences;
+    }
+    value.lumenPreferences = parsedLumenPreferences.value;
   }
 
   return { value };
@@ -1854,6 +1930,9 @@ userSettingsRoutes.get<{ id: string }, UserSettingsGeneralResponse>(
               user.settings?.streamingSubscriptionProviderIds ?? [],
             originalLanguage: user.settings?.originalLanguage,
             preferredLanguages: user.settings?.preferredLanguages,
+            ...(user.settings?.lumenPreferences
+              ? { lumenPreferences: user.settings.lumenPreferences }
+              : {}),
             enabledMediaCategories: getUserEnabledMediaCategories(user),
             usesDefaultEnabledMediaCategories: !user.hasPermission(
               Permission.ADMIN
@@ -2097,6 +2176,9 @@ userSettingsRoutes.post<
           if (hasOwn(body, 'requestRootFolders')) {
             user.settings.requestRootFolders = body.requestRootFolders ?? {};
           }
+          if (hasOwn(body, 'lumenPreferences')) {
+            user.settings.lumenPreferences = body.lumenPreferences ?? null;
+          }
 
           const savedUser = await userRepository.save(user);
 
@@ -2112,6 +2194,9 @@ userSettingsRoutes.post<
               savedUser.settings?.streamingSubscriptionProviderIds ?? [],
             originalLanguage: savedUser.settings?.originalLanguage,
             preferredLanguages: savedUser.settings?.preferredLanguages,
+            ...(savedUser.settings?.lumenPreferences
+              ? { lumenPreferences: savedUser.settings.lumenPreferences }
+              : {}),
             enabledMediaCategories: getUserEnabledMediaCategories(savedUser),
             usesDefaultEnabledMediaCategories: !savedUser.hasPermission(
               Permission.ADMIN

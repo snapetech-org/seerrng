@@ -13,7 +13,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
-| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. | Finish per-category provider gating, filter and paging edges, empty/error states, saved discovery settings, and native-matched visual acceptance. Verify remaining live provider data separately. |
+| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls now sync through the authenticated SeerrNG user settings API. | Finish per-category provider gating, filter and paging edges, empty/error states, and native-matched visual acceptance. Verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. | Complete remaining cross-provider mutations, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
@@ -22,6 +22,22 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings now persists the native per-user display locale, and the shell/account headings have an initial translated message slice. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
+
+### Account-synced Lumen preferences
+
+Theme, Discover shelf visibility, and personal request/display choices now load
+from and save to the signed-in user's SeerrNG settings. Existing browser copies
+are used only to migrate preferences from older Lumen versions and remain a
+local mirror. Server values override that copy on other devices. Administrator
+defaults and locks remain authoritative. The settings endpoint validates the
+supported fields and rows, and clearing preferences restores administrator
+defaults. Save and load failures remain visible with a retry action.
+
+Route and migration tests pass for validation, authenticated persistence,
+readback, reset, and upgrade-safe schema changes. Browser fixtures pass across
+desktop, iPhone, Android, and tablet for server precedence, admin locks,
+reload, reset, and failed-save retry. Standalone production build and TypeScript
+checks pass. Live multi-device and bundled production-mount checks remain open.
 
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request

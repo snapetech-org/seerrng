@@ -1069,3 +1069,65 @@ describe('per-user media category preferences (issues #363 and #365)', () => {
     }
   });
 });
+
+describe('per-user Lumen preferences', () => {
+  it('persists only supported preference values through the authenticated settings endpoint', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'friend@seerr.dev',
+      'test1234'
+    );
+    const preferences = {
+      rows: { hero: false, comingSoon: true },
+      narratorChoice: false,
+      hoverRequest: true,
+      wholeSeriesDefault: false,
+      showBooks: true,
+      requestOptions: false,
+      theme: 'light',
+    };
+    const saved = await request(app)
+      .post(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie)
+      .send({ lumenPreferences: preferences });
+    assert.equal(saved.status, 200, JSON.stringify(saved.body));
+    assert.deepEqual(saved.body.lumenPreferences, preferences);
+
+    const loaded = await request(app)
+      .get(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie);
+    assert.equal(loaded.status, 200);
+    assert.deepEqual(loaded.body.lumenPreferences, preferences);
+
+    const reset = await request(app)
+      .post(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie)
+      .send({ lumenPreferences: null });
+    assert.equal(reset.status, 200);
+    const afterReset = await request(app)
+      .get(`/user/${userId}/settings/main`)
+      .set('Cookie', sessionCookie);
+    assert.equal(afterReset.status, 200);
+    assert.equal('lumenPreferences' in afterReset.body, false);
+  });
+
+  it('rejects unsupported or malformed Lumen preference values', async () => {
+    const { sessionCookie, userId } = await loginAs(
+      'friend@seerr.dev',
+      'test1234'
+    );
+    const invalid = [
+      { unknownSetting: true },
+      { theme: 'auto' },
+      { hoverRequest: 'false' },
+      { rows: { missingRow: true } },
+      { rows: { hero: 1 } },
+    ];
+    for (const lumenPreferences of invalid) {
+      const response = await request(app)
+        .post(`/user/${userId}/settings/main`)
+        .set('Cookie', sessionCookie)
+        .send({ lumenPreferences });
+      assert.equal(response.status, 400, JSON.stringify(lumenPreferences));
+    }
+  });
+});

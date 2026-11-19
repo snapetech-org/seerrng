@@ -5,6 +5,7 @@ import type {
   MovieMaturityLimit,
   NotificationAgentTypes,
   TvMaturityLimit,
+  UserLumenPreferences,
   UserMediaFilterPins,
   UserPreferredLanguages,
   UserRequestRootFolders,
@@ -158,6 +159,9 @@ export class UserSettings {
 
   @Column({ type: 'simple-json', nullable: true })
   public enabledMediaCategories?: Partial<EnabledMediaCategories> | null;
+
+  @Column({ type: 'simple-json', nullable: true })
+  public lumenPreferences?: UserLumenPreferences | null;
 
   @Column({ type: 'boolean', nullable: true })
   public showIndexerDetails?: boolean | null;

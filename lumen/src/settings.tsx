@@ -4,9 +4,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
+import { api } from './api';
 import { useAuth } from './auth';
 import { forgetLumenConfig, readLumenConfig } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
@@ -89,10 +91,12 @@ interface Ctx {
   seerrPublicUrl?: string;
   audiobookshelfUrl?: string;
   kavitaUrl?: string;
-  set: (path: string, value: boolean | string) => void;
-  reset: () => void;
+  set: (path: string, value: boolean | string) => Promise<void>;
+  reset: () => Promise<void>;
   // the admin page saved a new lumen-config.json: use it now, without a reload
   adminSaved: (c: AdminConfig) => void;
+  preferenceSaveError: string | null;
+  retryPreferenceSave: () => void;
 }
 const C = createContext<Ctx>({
   prefs: DEFAULT_PREFS,
@@ -100,9 +104,11 @@ const C = createContext<Ctx>({
   adminConfigState: 'loading',
   retryAdminConfig: () => {},
   locked: new Set(),
-  set: () => {},
-  reset: () => {},
+  set: async () => {},
+  reset: async () => {},
   adminSaved: () => {},
+  preferenceSaveError: null,
+  retryPreferenceSave: () => {},
 });
 export const usePrefs = () => useContext(C);
 
@@ -111,6 +117,29 @@ const record = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : {};
+const cleanPrefs = (value: unknown): Partial<Prefs> => {
+  const source = record(value);
+  const clean: Partial<Prefs> = {};
+  for (const key of [
+    'narratorChoice',
+    'hoverRequest',
+    'wholeSeriesDefault',
+    'showBooks',
+    'requestOptions',
+  ] as const)
+    if (typeof source[key] === 'boolean') clean[key] = source[key];
+  if (['dark', 'light', 'system'].includes(source.theme as string))
+    clean.theme = source.theme as Prefs['theme'];
+  if (source.rows && typeof source.rows === 'object') {
+    const rows = record(source.rows);
+    clean.rows = Object.fromEntries(
+      (Object.keys(DEFAULT_PREFS.rows) as DiscoverRow[])
+        .filter((key) => typeof rows[key] === 'boolean')
+        .map((key) => [key, rows[key]])
+    ) as Partial<Prefs>['rows'];
+  }
+  return clean;
+};
 const merge = (
   base: Prefs,
   over?: AdminConfig['defaults'] | Partial<Prefs>
@@ -132,15 +161,26 @@ const merge = (
 
 export function PrefsProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const key = user ? preferenceKey(user.id) : null;
+  const userId = user?.id;
+  const key = userId ? preferenceKey(userId) : null;
   const [admin, setAdmin] = useState<AdminConfig>({});
   const [mine, setMine] = useState<Partial<Prefs>>(() => {
     try {
-      return JSON.parse((key ? localStorage.getItem(key) : null) || '{}');
+      return cleanPrefs(
+        JSON.parse((key ? localStorage.getItem(key) : null) || '{}')
+      );
     } catch {
       return {};
     }
   });
+  const mineRef = useRef(mine);
+  const latestSaveRef = useRef<Partial<Prefs> | 'load' | 'reset' | null>(null);
+  const saveQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const preferenceRevisionRef = useRef(0);
+  const [preferenceSaveError, setPreferenceSaveError] = useState<string | null>(
+    null
+  );
+  const [preferenceLoadAttempt, setPreferenceLoadAttempt] = useState(0);
   const [adminState, setAdminState] = useState<AdminConfigState>('loading');
   const [adminAttempt, setAdminAttempt] = useState(0);
   useEffect(() => {
@@ -162,6 +202,107 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     forgetLumenConfig();
     setAdminAttempt((n) => n + 1);
   }, []);
+
+  const persistMine = useCallback(
+    (next: Partial<Prefs> | null): Promise<void> => {
+      if (!userId || !key) return Promise.resolve();
+      const marker = next ?? 'reset';
+      latestSaveRef.current = marker;
+      setPreferenceSaveError(null);
+      const write = saveQueueRef.current
+        .catch(() => {})
+        .then(async () => {
+          await api(`/user/${userId}/settings/main`, {
+            method: 'POST',
+            body: JSON.stringify({ lumenPreferences: next }),
+          });
+        })
+        .catch((error: unknown) => {
+          if (latestSaveRef.current === marker)
+            setPreferenceSaveError(
+              error instanceof Error
+                ? error.message
+                : 'Could not save Lumen preferences.'
+            );
+          throw error;
+        });
+      saveQueueRef.current = write;
+      return write;
+    },
+    [key, userId]
+  );
+
+  const retryPreferenceSave = useCallback(() => {
+    if (latestSaveRef.current === 'load') {
+      setPreferenceLoadAttempt((attempt) => attempt + 1);
+      return;
+    }
+    if (latestSaveRef.current === 'reset') {
+      void persistMine(null).catch(() => {});
+      return;
+    }
+    if (latestSaveRef.current)
+      void persistMine(latestSaveRef.current).catch(() => {});
+  }, [persistMine]);
+
+  useEffect(() => {
+    if (!key || !userId) {
+      mineRef.current = {};
+      setMine({});
+      latestSaveRef.current = null;
+      setPreferenceSaveError(null);
+      return;
+    }
+
+    let live = true;
+    const revision = preferenceRevisionRef.current;
+    let local: Partial<Prefs> = {};
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored) local = cleanPrefs(JSON.parse(stored));
+    } catch {
+      local = {};
+    }
+    mineRef.current = local;
+    setMine(local);
+    latestSaveRef.current = null;
+    setPreferenceSaveError(null);
+
+    void api<{ lumenPreferences?: unknown }>(`/user/${userId}/settings/main`)
+      .then(async (settings) => {
+        if (!live || revision !== preferenceRevisionRef.current) return;
+        if (settings.lumenPreferences != null) {
+          const saved = cleanPrefs(settings.lumenPreferences);
+          mineRef.current = saved;
+          latestSaveRef.current = saved;
+          setMine(saved);
+          try {
+            localStorage.setItem(key, JSON.stringify(saved));
+          } catch {
+            // The authenticated server copy remains authoritative.
+          }
+          return;
+        }
+
+        // Upgrade preferences saved by earlier Lumen versions in this browser.
+        if (Object.keys(local).length) await persistMine(local);
+        else latestSaveRef.current = {};
+      })
+      .catch((error: unknown) => {
+        if (live && revision === preferenceRevisionRef.current) {
+          latestSaveRef.current = 'load';
+          setPreferenceSaveError(
+            error instanceof Error
+              ? error.message
+              : 'Could not load Lumen preferences.'
+          );
+        }
+      });
+
+    return () => {
+      live = false;
+    };
+  }, [key, persistMine, preferenceLoadAttempt, userId]);
 
   const locked = useMemo(
     () =>
@@ -197,33 +338,37 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   }, [admin, mine, locked]);
 
   const set = useCallback(
-    (path: string, value: boolean | string) => {
-      setMine((m) => {
-        const next: Partial<Prefs> = { ...m };
-        if (path.startsWith('rows.'))
-          next.rows = {
-            ...(m.rows || {}),
-            [path.slice(5)]: value,
-          } as Prefs['rows'];
-        else (next as Record<string, unknown>)[path] = value;
-        try {
-          if (key) localStorage.setItem(key, JSON.stringify(next));
-        } catch {
-          /* Keep in-memory preferences when browser storage is blocked. */
-        }
-        return next;
-      });
+    (path: string, value: boolean | string): Promise<void> => {
+      const next: Partial<Prefs> = { ...mineRef.current };
+      if (path.startsWith('rows.'))
+        next.rows = {
+          ...(mineRef.current.rows || {}),
+          [path.slice(5)]: value,
+        } as Prefs['rows'];
+      else (next as Record<string, unknown>)[path] = value;
+      mineRef.current = next;
+      preferenceRevisionRef.current += 1;
+      setMine(next);
+      try {
+        if (key) localStorage.setItem(key, JSON.stringify(next));
+      } catch {
+        /* Keep in-memory preferences when browser storage is blocked. */
+      }
+      return persistMine(next);
     },
-    [key]
+    [key, persistMine]
   );
-  const reset = useCallback(() => {
+  const reset = useCallback((): Promise<void> => {
+    mineRef.current = {};
+    preferenceRevisionRef.current += 1;
+    setMine({});
     try {
       if (key) localStorage.removeItem(key);
     } catch {
       /* Storage may be blocked. */
     }
-    setMine({});
-  }, [key]);
+    return persistMine(null);
+  }, [key, persistMine]);
 
   const overrides = user?.settings?.advancedThemeOverrides;
 
@@ -274,6 +419,8 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
         kavitaUrl: admin.kavitaUrl,
         set,
         reset,
+        preferenceSaveError,
+        retryPreferenceSave,
         adminSaved: (c: AdminConfig) => {
           forgetLumenConfig();
           setAdmin(c);

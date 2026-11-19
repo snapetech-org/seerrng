@@ -261,6 +261,8 @@ export const localeData = [
         'المشكلات وقوائم المتابعة والإعدادات وأدوات الإدارة',
       'lumen.me.signOutFailure': 'تعذر تسجيل الخروج. حاول مرة أخرى.',
       'lumen.me.signOut': 'تسجيل الخروج',
+      'lumen.me.preferencesSaveFailure': 'تعذر مزامنة تفضيلات Lumen مع حسابك.',
+      'lumen.me.retry': 'إعادة المحاولة',
     },
   },
   {
@@ -2842,6 +2844,9 @@ export const localeData = [
         'Problèmes, listes de suivi, paramètres et outils d’administration',
       'lumen.me.signOutFailure': 'Impossible de se déconnecter. Réessayez.',
       'lumen.me.signOut': 'Se déconnecter',
+      'lumen.me.preferencesSaveFailure':
+        'Impossible de synchroniser les préférences Lumen avec votre compte.',
+      'lumen.me.retry': 'Réessayer',
     },
   },
   {

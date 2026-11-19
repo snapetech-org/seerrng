@@ -184,5 +184,7 @@
   "lumen.me.fullSeerrNG",
   "lumen.me.fullSeerrDescription",
   "lumen.me.signOutFailure",
-  "lumen.me.signOut"
+  "lumen.me.signOut",
+  "lumen.me.preferencesSaveFailure",
+  "lumen.me.retry"
 ]

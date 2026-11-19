@@ -62,6 +62,27 @@ export interface UserSettingsCardTextResponse {
 
 export type UserRequestRootFolders = Record<string, string>;
 
+export const LUMEN_DISCOVER_ROWS = [
+  'hero',
+  'newOnPlex',
+  'trendingMovies',
+  'popularSeries',
+  'audiobooks',
+  'books',
+  'comingSoon',
+  'genres',
+] as const;
+export type LumenDiscoverRow = (typeof LUMEN_DISCOVER_ROWS)[number];
+export interface UserLumenPreferences {
+  rows?: Partial<Record<LumenDiscoverRow, boolean>>;
+  narratorChoice?: boolean;
+  hoverRequest?: boolean;
+  wholeSeriesDefault?: boolean;
+  showBooks?: boolean;
+  requestOptions?: boolean;
+  theme?: 'dark' | 'light' | 'system';
+}
+
 export type TvSeasonWatchGateStatus =
   'off' | 'pending' | 'approved' | 'enabled' | 'denied';
 
@@ -187,6 +208,7 @@ export interface UserSettingsGeneralResponse {
   watchlistSyncMagazines?: boolean;
   cardTextVisibility?: UserSettingsCardTextResponse;
   requestRootFolders?: UserRequestRootFolders;
+  lumenPreferences?: UserLumenPreferences | null;
 }
 
 export type NotificationAgentTypes = Record<NotificationAgentKey, number>;
