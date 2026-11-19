@@ -13,7 +13,7 @@ const fields = [
 ] as const;
 
 type Category = keyof typeof categories;
-type Quota = Record<(typeof fields)[number][0], number>;
+type Quota = Partial<Record<(typeof fields)[number][0], number>>;
 export type DefaultQuotas = Partial<Record<Category, Quota>>;
 type Draft = Partial<Record<keyof Quota, string>>;
 
@@ -46,7 +46,8 @@ export default function DefaultRequestQuotas({
   const draft = drafts[category];
   const changed = fields.flatMap(([key]) => {
     const raw = draft?.[key];
-    return raw !== undefined && (raw === '' || Number(raw) !== quota?.[key])
+    return raw !== undefined &&
+      (raw === '' || Number(raw) !== (quota?.[key] ?? 0))
       ? [[key, raw] as const]
       : [];
   });
@@ -154,7 +155,7 @@ export default function DefaultRequestQuotas({
               max={10000}
               required
               disabled={busy}
-              value={draft?.[key] ?? quota[key]}
+              value={draft?.[key] ?? quota[key] ?? 0}
               onChange={(event) => {
                 const value = event.target.value;
                 setDrafts((current) => ({

@@ -6107,6 +6107,7 @@ test('General Settings saves default request quotas without changing other media
   const defaultQuotas = {
     movie: { quotaLimit: 4, quotaDays: 7 },
     adult: { quotaLimit: 1, quotaDays: 14 },
+    book: {},
   };
   const writes: unknown[] = [];
   await page.route('**/api/v1/settings/main', (route) => {
@@ -6114,6 +6115,7 @@ test('General Settings saves default request quotas without changing other media
       const body = route.request().postDataJSON();
       writes.push(body);
       Object.assign(defaultQuotas.adult, body.defaultQuotas.adult);
+      Object.assign(defaultQuotas.book, body.defaultQuotas.book);
     }
     return route.fulfill({
       json: {
@@ -6158,6 +6160,13 @@ test('General Settings saves default request quotas without changing other media
   await category.selectOption('adult');
   await expect(limit).toHaveValue('0');
   await expect(days).toHaveValue('0');
+  await category.selectOption('book');
+  await expect(limit).toHaveValue('0');
+  await expect(days).toHaveValue('0');
+  await limit.fill('3');
+  await save.click();
+  await expect(page.getByText('Default request quota saved.')).toBeVisible();
+  expect(writes.at(-1)).toEqual({ defaultQuotas: { book: { quotaLimit: 3 } } });
   await page.getByRole('link', { name: 'Default User Categories' }).click();
   await expect(page).toHaveURL(/\/admin\/categories#default-user-categories$/);
   await expect(

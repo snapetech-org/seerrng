@@ -3575,3 +3575,13 @@ Express movie route received page 1 from a synthetic TMDB provider on
 its first request for page 2. Lumen kept the first page visible and
 offered Retry. Retry sent a fresh page 2 request and displayed its
 title once. Live TMDB behavior was outside the check.
+
+The Classic default quota bookmark also exercised real writes in the
+bundled desktop and standalone iPhone production builds. Fresh settings
+store empty quota objects. The baseline rendered a blank required field
+and blocked a one-field save. Lumen now displays effective zeros for
+unset fields and sends only the edited value. In each deployment the
+administrator saved a movie limit, the value survived reload, and the
+isolated settings file contained only the edited quota field. A member
+with a valid CSRF token received the API's permission denial, and the
+saved value stayed intact. Matched renders preserved the form geometry.
