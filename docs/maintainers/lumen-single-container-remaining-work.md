@@ -20,20 +20,21 @@ from native pages to Lumen, while native sign-in and administrator access remain
 available. Both controls are off unless an administrator enables them, and
 switching away from included Lumen clears the lock.
 
-The corrective candidate makes P's dark Lumen presentation the fresh-install
-default. It preserves native root access on upgrades unless the administrator
-selects another interface. **Automatic adoption for all existing users remains
-unfinished.** That distinction prevents a repeat of #629, where an independently
-configured companion was silently displaced.
+Fresh installs default to the bundled dark Lumen interface. On upgrade,
+SeerrNG preserves native home access for existing installations with no
+saved choice. Explicit native, bundled Lumen, and companion choices are
+retained. Administrators can choose bundled Lumen in General Settings.
+This policy preserves the upgrade behavior documented in issue #629. A
+disk-backed regression verifies the fresh default, the legacy fallback,
+and all three explicit choices after reloading from disk.
 
 | Remaining work | Acceptance |
 | --- | --- |
-| Distinguish compatibility defaults from deliberate interface selections, then safely adopt included Lumen for existing installations/accounts | Fresh and legacy unset choices enter Lumen; explicit native/external choices survive upgrade and restart; native escape works before sign-in |
 | Qualify the complete rollout against published images | Fresh and real upgrade configs, old/new accounts, dark default and saved choices, same-origin auth, direct links, optional companion and native escape at phone/tablet/desktop sizes |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
-Included Lumen now reports a real storage write probe, the effective UID/GID where available, and the applicable storage error. Bundled desktop and iPhone checks with real sign-in simulated a disk-full diagnostic, then used the actual successful probe to confirm recheck enabled Save and retained the draft. Route tests covered an unusable config path and an intact saved configuration. Bundled Lumen imports a companion configuration export into a draft. For companion-local branding, supply the logo or icon as PNG, JPEG or WebP. The raster upload prepares the asset, and Save for everyone publishes its reference with the other settings. Read the saved settings back before retiring the companion. Automatic adoption and published-image rollout qualification remain open. Physical Plex or
+Included Lumen now reports a real storage write probe, the effective UID/GID where available, and the applicable storage error. Bundled desktop and iPhone checks with real sign-in simulated a disk-full diagnostic, then used the actual successful probe to confirm recheck enabled Save and retained the draft. Route tests covered an unusable config path and an intact saved configuration. Bundled Lumen imports a companion configuration export into a draft. For companion-local branding, supply the logo or icon as PNG, JPEG or WebP. The raster upload prepares the asset, and Save for everyone publishes its reference with the other settings. Read the saved settings back before retiring the companion. Published-image rollout qualification remains open. Physical Plex or
 Jellyfin playback and real household-provider mutations require separate evidence.
 
 ## Sources and attribution
