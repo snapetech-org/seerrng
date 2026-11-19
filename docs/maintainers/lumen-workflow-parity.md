@@ -3625,3 +3625,10 @@ handler and one locally cancellable fixture. Lumen disabled the first
 action. Running and canceling the second fixture through the real API
 returned it to Idle. No production jobs or provider connections were
 used.
+
+On `32b2b6797`, the Classic Scheduled Jobs bookmark passed disabled
+schedule editing in bundled desktop and standalone iPhone Lumen.
+The isolated job stayed disabled without a next invocation after the
+administrator saved a cron change and reloaded. Enabling the job then
+registered its next invocation with the edited schedule. Both runs
+used real sign-in and settings routes with an isolated scheduler job.
