@@ -621,12 +621,13 @@ user's available requests using the exact stored media ID. The picker keeps
 ebook and audiobook files separate even when the request covers both. Multiple
 matching requests can be inspected individually using the shared file list.
 
-Standalone Chrome at 1440 × 1000 verified the ebook detail entry point. A
-synthetic response included another user's request, another media ID and an
-audiobook-only request. Only the matching combined request was queried for
-files and only its ebook appeared. Native visual comparison, mobile, bundled
-and live provider verification remain open, along with browser coverage for
-the other reader categories.
+Standalone and bundled Chrome verified book, comic and magazine detail
+entry points across desktop, iPhone, Android and tablet projects. Synthetic
+responses include another user's request, another media ID and an
+audiobook-only request. Only the matching request is queried for files; the
+book picker returns its ebook and excludes the audiobook, while comic and
+magazine links use their exact request and file IDs. Native visual comparison
+and live provider verification remain open.
 
 ### Request deep links increment
 
@@ -4075,7 +4076,7 @@ comparison.
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. The selected current-source set now totals 699 passing cases and 21
+to 3840px. Calendar adds eight cases on both deployments, including month/filter URL state, administrator scope denial, partial/error/empty states and normalized movie, series and audiobook links. Coming Soon adds 14 passing cases and six expected viewport skips per deployment. Issues, Blocklist, and Download Inbox add 72 passing cases per deployment. Poster Watchlist adds 28 passing cases on both deployments. You-menu Coming Soon adds four cases per deployment. Movie and Series Genre Directory adds eight cases per deployment. Reader detail downloads add four cases per deployment across books, comics and magazines. The selected current-source set now totals 703 passing cases and 21
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
