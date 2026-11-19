@@ -3015,6 +3015,14 @@ TMDB by default and includes credits when requested. Eight browser
 fixture checks across both deployments covered direct and filtered
 searches. Whole-result ordering and matched visual review remain open.
 
+Movies and Series title searches now page through the corresponding
+provider catalog, matching Classic's scope. Collections are available
+from All. Scoped searches skip credit lookups unless a credit sort is
+selected. Server fixtures verified provider page counts, the credit
+opt-out, and existing collection rules. Desktop and iPhone browser
+fixtures verified sort readback on page two and a reset to page one
+when changing scope.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express

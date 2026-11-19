@@ -4157,11 +4157,14 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   await fixtures(page);
   const queries: string[] = [];
   const types: (string | null)[] = [];
+  const creditFlags: (string | null)[] = [];
   await page.route(/\/api\/v1\/search\?/, (route) => {
     const params = new URL(route.request().url()).searchParams;
     queries.push(params.get('query') ?? '');
     const type = params.get('type');
     types.push(type);
+    const includeCredits = params.get('includeCredits');
+    creditFlags.push(includeCredits);
     return route.fulfill({
       json: paged([
         { ...movie, title: 'Bookmark Film' },
@@ -4171,7 +4174,9 @@ test('native search bookmarks retain the decoded term and media scope', async ({
           name: 'Bookmark Series',
           firstAirDate: '2020-03-01',
           voteAverage: 7.12,
-          ...(type === 'tv' ? { writers: ['Zara'], directors: ['Ada'] } : {}),
+          ...(type === 'tv' && includeCredits !== 'false'
+            ? { writers: ['Zara'], directors: ['Ada'] }
+            : {}),
         },
         {
           id: 203,
@@ -4179,7 +4184,9 @@ test('native search bookmarks retain the decoded term and media scope', async ({
           name: 'Another Series',
           firstAirDate: '2024-03-01',
           voteAverage: 7.9,
-          ...(type === 'tv' ? { writers: ['Ada'], directors: ['Zara'] } : {}),
+          ...(type === 'tv' && includeCredits !== 'false'
+            ? { writers: ['Ada'], directors: ['Zara'] }
+            : {}),
         },
         { id: 204, mediaType: 'tv', name: 'Undated Series' },
       ]),
@@ -4197,6 +4204,8 @@ test('native search bookmarks retain the decoded term and media scope', async ({
     0
   );
   expect(queries).toContain('A & B');
+  expect(types.at(-1)).toBe('tv');
+  expect(creditFlags.at(-1)).toBe('false');
   const seriesLinks = page.getByRole('link', {
     name: /^(Bookmark|Another|Undated) Series$/,
   });
@@ -4218,6 +4227,7 @@ test('native search bookmarks retain the decoded term and media scope', async ({
   await page.getByLabel('Sort Results').selectOption('writer:asc');
   await expect(seriesLinks.first()).toHaveAccessibleName('Another Series');
   expect(types.at(-1)).toBe('tv');
+  expect(creditFlags.at(-1)).toBeNull();
   await page.getByLabel('Sort Results').selectOption('director:asc');
   await expect(seriesLinks.first()).toHaveAccessibleName('Bookmark Series');
   await expect(seriesLinks.last()).toHaveAccessibleName('Undated Series');
@@ -8025,7 +8035,7 @@ test('regular video search links to later pages and resets on scope change', asy
       },
     });
   });
-  await page.goto('/search?q=Test');
+  await page.goto('./search?q=Test&sort=title&order=desc');
   await expect(
     page.getByRole('link', { name: 'First Page Film' })
   ).toBeVisible();
@@ -8034,10 +8044,12 @@ test('regular video search links to later pages and resets on scope change', asy
     page.getByRole('link', { name: 'Second Page Film' })
   ).toBeVisible();
   await expect(page).toHaveURL(/page=2$/);
+  await expect(page.getByLabel('Sort Results')).toHaveValue('title:desc');
   await page.reload();
   await expect(
     page.getByRole('link', { name: 'Second Page Film' })
   ).toBeVisible();
+  await expect(page.getByLabel('Sort Results')).toHaveValue('title:desc');
   await page
     .getByRole('group', { name: 'Search in' })
     .getByRole('button', { name: 'Movies' })
@@ -8045,7 +8057,7 @@ test('regular video search links to later pages and resets on scope change', asy
   await expect(
     page.getByRole('link', { name: 'First Page Film' })
   ).toBeVisible();
-  await expect(page).toHaveURL(/q=Test&f=movie$/);
+  await expect(page).toHaveURL(/q=Test&sort=title&order=desc&f=movie$/);
 });
 
 test('scoped book and comic searches retain their catalogue page in the URL', async ({

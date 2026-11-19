@@ -120,11 +120,11 @@ export function scopedSearchPath(
     filters.set('type', 'music');
     return `/search?${filters}`;
   }
-  const scoped =
-    scope === 'author' ||
-    scope === 'magazine' ||
-    ((scope === 'movie' || scope === 'tv') && sortByCredit);
-  return `/search?query=${encodeURIComponent(term)}&page=${page}${scoped ? '&type=' + scope : ''}`;
+  const video = scope === 'movie' || scope === 'tv';
+  const scoped = scope === 'author' || scope === 'magazine' || video;
+  const query = `/search?query=${encodeURIComponent(term)}&page=${page}`;
+  if (!scoped) return query;
+  return `${query}&type=${scope}${video && !sortByCredit ? '&includeCredits=false' : ''}`;
 }
 
 export function activeMusicSearchFilters(params: URLSearchParams) {

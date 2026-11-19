@@ -389,8 +389,7 @@ function SearchResults({
           return mediaType === 'album' || mediaType === 'artist';
         if (f === 'author' || f === 'tv' || f === 'magazine' || f === 'sports')
           return mediaType === f;
-        if (f === 'movie')
-          return mediaType === 'movie' || mediaType === 'collection';
+        if (f === 'movie') return mediaType === 'movie';
         return (
           mediaType === 'movie' ||
           mediaType === 'tv' ||

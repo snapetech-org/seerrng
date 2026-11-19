@@ -18745,6 +18745,12 @@ paths:
               - magazine
             description: Filter results by media type. When omitted, all types are returned.
         - in: query
+          name: includeCredits
+          description: Set to false to skip writer and director lookups for a scoped video search.
+          schema:
+            type: string
+            enum: ['false']
+        - in: query
           name: format
           schema:
             type: string

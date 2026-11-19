@@ -1356,7 +1356,8 @@ searchRoutes.get('/', async (req, res, next) => {
         : result
     );
     const creditEnrichedResults =
-      typeFilter === 'movie' || typeFilter === 'tv'
+      req.query.includeCredits !== 'false' &&
+      (typeFilter === 'movie' || typeFilter === 'tv')
         ? await enrichSearchCredits(
             tmdb,
             qualityEnrichedResults,

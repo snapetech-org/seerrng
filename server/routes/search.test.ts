@@ -216,13 +216,17 @@ describe('GET /search', () => {
       const agent = await loginAs('friend@seerr.dev', 'test1234');
       const res = await agent
         .get('/search')
-        .query({ query: 'filtered', type, page: 2 });
+        .query({ query: 'filtered', type, page: 2, includeCredits: 'false' });
       assert.equal(res.status, 200);
       assert.equal(res.body.results[0]?.mediaType, type);
       assert.equal(res.body.totalPages, 5);
       assert.equal(res.body.totalResults, 83);
-      assert.ok(endpoints.includes(endpoint));
-      assert.ok(!endpoints.includes('/search/multi'));
+      assert.equal(endpoints.join(','), endpoint);
+      await agent
+        .get('/search')
+        .query({ query: 'filtered', type, page: 2 })
+        .expect(200);
+      assert.ok(endpoints.includes(`/${type}/12345`));
     });
   }
 
