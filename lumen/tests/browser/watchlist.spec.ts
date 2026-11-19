@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
 test('directory Watchlist and Requests links scope reads to the selected user', async ({
   page,
 }) => {
@@ -8,7 +13,7 @@ test('directory Watchlist and Requests links scope reads to the selected user', 
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     switch (path) {
       case '/auth/me':
         return route.fulfill({
@@ -50,14 +55,14 @@ test('directory Watchlist and Requests links scope reads to the selected user', 
     }
   });
 
-  await page.goto('/admin/users');
+  await page.goto(testAppPath('/admin/users'));
   await page.getByRole('link', { name: 'View Watchlist for Viewer' }).click();
   await expect(
     page.getByRole('heading', { name: 'User Watchlist' })
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Example Movie' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', testAppPath('/movie/20'));
   await expect(
     page.getByRole('button', { name: /remove.*watchlist/i })
   ).toHaveCount(0);
@@ -88,7 +93,7 @@ test('a user manager without watchlist authority cannot load another user’s wa
         : {},
     });
   });
-  await page.goto('/watchlist/user/19');
+  await page.goto(testAppPath('/watchlist/user/19'));
   await expect(page.getByText('This watchlist is unavailable.')).toBeVisible();
   expect(requested).toBe(false);
 });
@@ -102,7 +107,7 @@ for (const combined of [false, true]) {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
       const url = new URL(route.request().url());
-      const path = url.pathname.slice('/api/v1'.length);
+      const path = testApiPath(route.request().url());
       if (path === '/user/1/watchlist') {
         queries.push(url.searchParams);
         return route.fulfill({
@@ -136,14 +141,14 @@ for (const combined of [false, true]) {
             : {},
       });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page.getByRole('link', { name: 'Open Watchlist' }).click();
     await expect(
       page.getByRole('heading', { name: 'Watchlist' })
     ).toBeVisible();
     await expect(
       page.getByRole('link', { name: 'Example Movie' })
-    ).toHaveAttribute('href', '/movie/20');
+    ).toHaveAttribute('href', testAppPath('/movie/20'));
     if (combined) {
       await expect(
         page.getByText('Plex and SeerrNG items share this list.', {
@@ -228,7 +233,7 @@ test('Watchlist returns to the last page after removing its final entry', async 
         : {},
     });
   });
-  await page.goto('/watchlist?search=Movie&page=2');
+  await page.goto(testAppPath('/watchlist?search=Movie&page=2'));
   await page
     .getByRole('button', { name: 'Remove Last Movie from Watchlist' })
     .click();
@@ -274,7 +279,7 @@ test('combined Watchlist removes the SeerrNG entry and retains its Plex match', 
         : {},
     });
   });
-  await page.goto('/watchlist');
+  await page.goto(testAppPath('/watchlist'));
   const remove = page.getByRole('button', {
     name: 'Remove Example Movie from Watchlist',
   });
@@ -282,7 +287,7 @@ test('combined Watchlist removes the SeerrNG entry and retains its Plex match', 
   await expect(remove).toHaveCount(0);
   await expect(
     page.getByRole('link', { name: 'Example Movie' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', testAppPath('/movie/20'));
   expect(removed).toBe(true);
 });
 
@@ -295,7 +300,7 @@ test('video Watchlist action confirms the current title and server response', as
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path === '/watchlist' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual({
         tmdbId: 20,
@@ -325,7 +330,7 @@ test('video Watchlist action confirms the current title and server response', as
             : { results: [] },
     });
   });
-  await page.goto('/movie/20');
+  await page.goto(testAppPath('/movie/20'));
   await page
     .getByRole('button', { name: 'Add Example Movie to your Watchlist' })
     .click();
@@ -356,7 +361,7 @@ test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf 
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = decodeURIComponent(url.pathname.slice(7));
+    const path = decodeURIComponent(testApiPath(route.request().url()));
     if (path === '/watchlist' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual({
         mediaType: 'book',
@@ -394,7 +399,7 @@ test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf 
               : {},
     });
   });
-  await page.goto(`/book/${work}`);
+  await page.goto(testAppPath(`/book/${work}`));
   const add = page.getByRole('button', {
     name: 'Add Example Book to your Watchlist',
   });
@@ -406,7 +411,7 @@ test('Watchlist uses the Open Library work ID and never substitutes a Bookshelf 
   await remove.click();
   await expect(add).toBeVisible();
   expect(writes).toBe(2);
-  await page.goto(`/book/${encodeURIComponent(bookshelf)}`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(bookshelf)}`));
   await expect(
     page.getByRole('heading', { name: 'Example Book' })
   ).toBeVisible();
@@ -421,7 +426,7 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = testApiPath(route.request().url());
     if (path.endsWith('/watchlist')) {
       paths.push(path + url.search);
       return route.fulfill({
@@ -455,7 +460,7 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
     });
   });
 
-  await page.goto('/watchlist');
+  await page.goto(testAppPath('/watchlist'));
   await expect(page.getByRole('link', { name: 'Series Result' })).toBeVisible();
   await page.getByRole('link', { name: 'Discover Watchlist' }).click();
   await expect(
@@ -463,7 +468,7 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Movie Result' })
-  ).toHaveAttribute('href', '/movie/20');
+  ).toHaveAttribute('href', testAppPath('/movie/20'));
   await expect(page.getByRole('link', { name: 'Series Result' })).toHaveCount(
     0
   );

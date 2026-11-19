@@ -198,7 +198,7 @@ posters, delegated watchlists, and combined-list local actions remain open.
 Headed Chrome at 1440 × 1000 verified a movie filter opened from a bookmarked
 URL, cleared it to show a second item, and removed the movie through the
 fixture API. The remaining book was still shown after the server response.
-Narrow, combined Plex, and bundled visual checks remain open.
+Narrow and combined Plex behavior is now fixture-covered in standalone and bundled browser runs. Native-matched visual acceptance remains open.
 
 Movie and series details now offer the local Watchlist action. The action
 checks current membership and title identity before writing and uses the
@@ -206,8 +206,7 @@ existing authenticated SeerrNG endpoint. Plex Watchlist actions, poster
 controls, and the other media categories remain open.
 
 Headed Chrome at 1440 × 1000 rendered the local-account movie action and
-verified Add and Remove against a synthetic API. The series and narrow
-renders, the unavailable branches, and bundled visual acceptance remain open.
+verified Add and Remove against a synthetic API. The unavailable branches and native-matched visual acceptance remain open; series and narrow layouts are covered by the watchlist browser suite.
 
 The local detail action now also covers Open Library works, MusicBrainz
 release groups, ComicVine editions, and magazines. It uses the same permission
@@ -230,15 +229,13 @@ of an already-saved movie without a mutation, and Plex-account exclusion.
 Baseline and candidate movie poster renders were captured at matching viewport
 sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
-Live provider effects, native-matched visual acceptance, and bundled deployment
-verification remain open.
+Live provider effects and native-matched visual acceptance remain open. The complete watchlist suite now passes under both standalone Lumen and the production Express `/lumen/` mount.
 
 Album and magazine poster actions also passed exact-identity add checks on
 desktop, iPhone, Android, and tablet. The book poster test covers Open Library
 work identity. Comic poster actions are available only when the browse result
 provides a supported edition identity; the comic detail action remains covered
-separately. Native-matched visual acceptance and bundled deployment verification
-remain open.
+separately. Native-matched visual acceptance remains open. The complete watchlist suite now passes under both standalone Lumen and the production Express `/lumen/` mount.
 
 Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in
@@ -4049,14 +4046,14 @@ passed across desktop, iPhone, Android, and tablet. Another 60 account,
 managed-user, and override-rule cases passed through the same production
 Express `/lumen/` mount. Watch Sessions and Setup added 20 cases each on both
 deployments, bringing the selected current-source qualification set to 476
-cases per deployment. These fixture-backed runs qualify the bundled asset and
+cases per deployment. Watchlist adds 36 cases on both deployments across user-scoped, personal, combined Plex, video/book identity, discovery filters, and pagination flows. These fixture-backed runs qualify the bundled asset and
 mount behavior; they do not replace live-provider checks or native visual
 comparison.
 
 Administration, compact-height navigation, and wide-display geometry added
 45 passing cases and 15 expected skips per deployment. These checks cover
 administrator entry and denial, mobile tab clearance, and Discover widths up
-to 3840px. The selected current-source set now totals 521 passing cases and 15
+to 3840px. The selected current-source set now totals 557 passing cases and 15
 expected skips per deployment; native visual comparison and live effects remain
 open.
 
