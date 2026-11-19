@@ -4,7 +4,6 @@ import {
   isValidHttpUrl,
 } from '@server/utils/security';
 import axios from 'axios';
-import { escapeRegExp } from 'lodash';
 
 const MAX_BYTES = 2 * 1024 * 1024;
 const TIMEOUT_MS = 5_000;
@@ -98,15 +97,30 @@ export interface PageMetadata {
   type?: string;
 }
 
-const metaContent = (html: string, rawProperty: string): string | undefined => {
-  const property = escapeRegExp(rawProperty);
-  const pattern = new RegExp(
-    `<meta[^>]+(?:property|name)=["']${property}["'][^>]*content=["']([^"']*)["']|<meta[^>]+content=["']([^"']*)["'][^>]*(?:property|name)=["']${property}["']`,
-    'i'
-  );
-  const match = html.match(pattern);
-  const value = match?.[1] ?? match?.[2];
-  return value ? decodeEntities(value).trim() : undefined;
+const metadataNames = new Set(['og:title', 'books:isbn', 'isbn']);
+
+const readMetaContents = (html: string): Map<string, string> => {
+  const contents = new Map<string, string>();
+  for (const [, tag] of html.matchAll(/<meta(\s[^<>]*)>/gi)) {
+    const attributes = new Map<string, string>();
+    for (const [, name, doubleQuoted, singleQuoted] of tag.matchAll(
+      /\s([^\s=/]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g
+    )) {
+      const key = name.toLowerCase();
+      if (!attributes.has(key)) {
+        attributes.set(key, doubleQuoted ?? singleQuoted);
+      }
+    }
+    const content = attributes.get('content');
+    if (!content) continue;
+    for (const attribute of ['property', 'name']) {
+      const key = attributes.get(attribute)?.toLowerCase();
+      if (key && metadataNames.has(key) && !contents.has(key)) {
+        contents.set(key, decodeEntities(content).trim());
+      }
+    }
+  }
+  return contents;
 };
 
 const asArray = <T>(value: T | T[] | undefined): T[] =>
@@ -165,7 +179,8 @@ export const extractPageMetadata = (html: string): PageMetadata => {
       if (year) result.year ??= Number(year);
     }
   }
-  const metadataTitle = metaContent(html, 'og:title');
+  const meta = readMetaContents(html);
+  const metadataTitle = meta.get('og:title');
   const pageTitle = html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1];
   const ogTitle = metadataTitle ?? pageTitle;
   if (!result.title && ogTitle) {
@@ -173,7 +188,7 @@ export const extractPageMetadata = (html: string): PageMetadata => {
       metadataTitle === undefined ? decodeEntities(ogTitle).trim() : ogTitle;
   }
   if (!result.isbn) {
-    const isbn = metaContent(html, 'books:isbn') ?? metaContent(html, 'isbn');
+    const isbn = meta.get('books:isbn') ?? meta.get('isbn');
     if (isbn) result.isbn = isbn.replace(/[^0-9Xx]/g, '');
   }
   if (!result.year && result.title) {

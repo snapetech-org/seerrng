@@ -161,6 +161,17 @@ describe('page metadata', () => {
     );
   });
 
+  it('reads only metadata attributes and preserves the first matching value', () => {
+    const metadata = extractPageMetadata(`
+      <meta data-property="og:title" content="Ignored">
+      <meta content="Reader's Guide" PROPERTY='OG:TITLE'>
+      <meta property="og:title" content="Later title">
+      <meta name="isbn" content="978-0-547-92822-7">
+    `);
+    assert.equal(metadata.title, "Reader's Guide");
+    assert.equal(metadata.isbn, '9780547928227');
+  });
+
   it('decodes HTML entities once and preserves invalid numeric references', () => {
     const metadata = extractPageMetadata(
       '<meta property="og:title" content="&amp;lt;script&amp;gt; &#x110000;">'
