@@ -3394,6 +3394,15 @@ corresponding settings, logs, and Sonarr configuration reads returned HTTP
 200 for administrators and HTTP 403 for members. These were read-only
 checks with synthetic accounts and no external providers.
 
+Production builds from `99f606ee1` passed eight browser checks for Classic
+book discovery bookmarks across bundled Express and standalone nginx at
+390 and 1440 CSS pixels. After real local sign-in, the ebook bookmark
+selected In Library and displayed the owned fixture. The other bookmark
+switched to audiobooks, selected Not Yet, retained the narrator filter in
+the discovery API request, and displayed only the unowned fixture. Both
+catalogue and library responses were synthetic. Live book services were
+outside this check.
+
 The older increment notes describe the state at delivery. Use the table above for
 these workflows and current route, permission, and browser evidence when
 rechecking the original inventory. A continuation audit must include both
