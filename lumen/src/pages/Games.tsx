@@ -434,7 +434,7 @@ function GameDetailView({
       setBusy(false);
     }
   };
-  const main =
+  const main = canUseRequestAccess(user?.permissions) ? (
     baseBlocked || done ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s?.ico || 'clock'} />
@@ -449,7 +449,8 @@ function GameDetailView({
         <Icon name="plus" />
         Request
       </button>
-    );
+    )
+  ) : null;
 
   const screenshots = [
     ...new Set(

@@ -5,6 +5,7 @@ import { MoreOnScroll, Section, type Stat } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
+  canRequestAdult,
   DetailTop,
   Facts,
 } from '../components/detail';
@@ -672,7 +673,7 @@ export function SceneDetail() {
     );
   if (!x) return <div className="detail-loading" aria-busy="true" />;
   const s = extraStat(sceneMedia);
-  const main = destination && (
+  const main = destination && canRequestAdult(user?.permissions) && (
     <RequestButton
       key={destination.serviceId}
       stat={destination === x ? s : extraStat(otherDestinationMedia)}

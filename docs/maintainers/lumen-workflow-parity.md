@@ -3032,6 +3032,17 @@ in `baseline/`, `candidate-final/`, `detail-baseline/`, and `detail-final/`.
 The screenshots confirm that only the restricted shortcuts disappear for
 viewers; provider behavior and matched native visual acceptance remain open.
 
+Request buttons on software game details, album details, and adult-scene
+details now follow the native permission masks (`REQUEST`; `REQUEST` or
+`REQUEST_MUSIC`; and `ADMIN`, `MANAGE_REQUESTS`, or `REQUEST_ADULT`,
+respectively). Forty-four browser checks covered viewers, admins, and each
+media-specific request role across desktop, iPhone, Android, and tablet.
+Baseline and candidate desktop screens are retained under
+`/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/request-action-permissions/`.
+They show the unsupported request buttons removed while detail and status
+content stays in place. Provider behavior and bundled visual acceptance remain
+open.
+
 The standalone production-preview suites for Issues, Blocklist, Download Inbox,
 and Watch Sessions passed 80 browser cases across desktop, iPhone, Android,
 and tablet on SeerrNG `add8e24c1`. These fixture-backed interactions exercise

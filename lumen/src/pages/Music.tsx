@@ -5,6 +5,7 @@ import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
 import { CardTitleToggle } from '../components/CardTitleToggle';
 import {
+  canRequestMusic,
   canUseRequestAccess,
   DetailTop,
   Facts,
@@ -449,13 +450,13 @@ export function AlbumDetail() {
     .slice(0, 4)
     .map((t) => t.tag);
   const total = (a.tracks || []).reduce((n, t) => n + (t.length || 0), 0);
-  const main = (
+  const main = canRequestMusic(user?.permissions) ? (
     <RequestButton
       stat={s}
       label="Request album"
       request={() => requestExtra('music', a.id)}
     />
-  );
+  ) : null;
   return (
     <ExtraGate k="music">
       <article className="detail">

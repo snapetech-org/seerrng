@@ -456,6 +456,7 @@ export const ActionBar = ({
 const MANAGE = 2 | 16; // ADMIN | MANAGE_REQUESTS
 const REQUEST_VIEW = 16384;
 const REQUEST_ACCESS = 2 | 32; // ADMIN | REQUEST
+const ADMIN_REQUEST = 2n;
 interface Server {
   id: number;
   name: string;
@@ -494,6 +495,14 @@ export const canViewAllRequests = (permissions?: number) =>
 export const canUseRequestAccess = (permissions?: number) =>
   (permissionBits(permissions) & REQUEST_ACCESS) !== 0;
 export const canUseShare = canUseRequestAccess;
+export const canRequestMusic = (permissions?: number) =>
+  (BigInt(permissionBits(permissions)) &
+    (ADMIN_REQUEST | 32n | 4294967296n)) !==
+  0n;
+export const canRequestAdult = (permissions?: number) =>
+  (BigInt(permissionBits(permissions)) &
+    (ADMIN_REQUEST | 16n | 140737488355328n)) !==
+  0n;
 export const canRequestMovies = (permissions?: number) =>
   (permissionBits(permissions) & (2 | 32 | 262144)) !== 0;
 export const canRequestSeries = (permissions?: number) =>
