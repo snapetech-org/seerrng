@@ -503,6 +503,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     [...q.keys()].every((key) =>
       [
         'sortBy',
+        'search',
         'genre',
         'excludeGenre',
         'withRuntimeGte',

@@ -7428,7 +7428,7 @@ test('Discover and Movies apply visibility defaults while the library view still
       });
     }
   );
-  await page.goto('/');
+  await page.goto('./');
   const rail = page.getByRole('heading', {
     name: 'Trending movies',
     exact: true,
@@ -7444,7 +7444,7 @@ test('Discover and Movies apply visibility defaults while the library view still
   ]) {
     await expect(page.getByRole('link', { name: title })).toHaveCount(0);
   }
-  await page.goto('/movies');
+  await page.goto('./movies');
   await expect(
     page.getByRole('link', { name: 'Visible fixture' })
   ).toBeVisible();
@@ -7457,6 +7457,30 @@ test('Discover and Movies apply visibility defaults while the library view still
   }
   await page.getByRole('button', { name: /^On / }).click();
   await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
+  const librarySearch = page.waitForRequest((request) => {
+    const url = new URL(request.url());
+    return (
+      url.pathname === '/api/v1/discover/movies' &&
+      url.searchParams.get('availability') === 'hd' &&
+      url.searchParams.get('search') === 'fixture'
+    );
+  });
+  await page
+    .getByRole('searchbox', { name: 'Title', exact: true })
+    .fill('fixture');
+  await page.getByRole('button', { name: 'Apply Title' }).click();
+  await librarySearch;
+  await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Visible fixture' })).toHaveCount(
+    0
+  );
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+  await expect(
+    page.getByRole('link', { name: 'Requested fixture' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Blocked fixture' })).toHaveCount(
+    0
+  );
 });
 
 test('Trending and Coming Soon apply discovery visibility and keep later pages reachable', async ({

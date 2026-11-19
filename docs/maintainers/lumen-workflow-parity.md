@@ -2925,6 +2925,14 @@ Two server routing tests and four focused browser fixture checks
 passed across standalone and bundled Lumen. Bundled screenshots
 covered the 390- and 1440-pixel title filter layout.
 
+Title searches in the owned view now use SeerrNG's local catalog
+when the existing library sort and filters are supported. Eight
+browser fixture checks passed across standalone and bundled Lumen
+at 390 and 1440 CSS pixels. The movie cases verified the combined
+title and availability request, then returned to the full catalog and
+confirmed that explicit title searches show requested matches while
+still hiding blocklisted titles.
+
 Music now links to Collector Picks. Lumen reuses the music category gate
 and shows recommendation reasons, trusted collector counts, matched
 albums, and confirmed artist follows. The production build, two Express
