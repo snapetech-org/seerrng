@@ -3499,3 +3499,15 @@ pixels showed the existing action row wrapping without horizontal
 overflow. Tests used real local sign-in and synthetic artist and
 discovery responses. Live music providers and the Classic in-place
 artist picker workflow remain outside this check.
+
+Music discovery now offers an in-place artist lookup. It identifies
+same-name artists with MusicBrainz disambiguation, preserves the other
+draft filters when selecting a result, and still accepts free text.
+The bundled and standalone production builds each passed desktop and
+iPhone checks after real local sign-in using fixture search responses.
+The checks applied an exact artist with FLAC, then changed to free text
+and verified that the stale artist ID was omitted. Idle screenshots were
+pixel-identical to the baseline in both viewports. The populated picker
+used the shared toolbar and select styling with no horizontal overflow.
+Live MusicBrainz and native operating-system select menus were outside
+this check.

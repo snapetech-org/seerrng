@@ -73,6 +73,95 @@ const MUSIC_FILTERS = [
   { key: 'primaryReleaseDateLte', label: 'Released Through', type: 'date' },
 ] as const;
 
+function MusicArtistFilter({
+  artist,
+  artistId,
+}: {
+  artist: string;
+  artistId: string;
+}) {
+  const [name, setName] = useState(artist);
+  const [selectedId, setSelectedId] = useState(artistId);
+  const [term, setTerm] = useState('');
+  const [debouncedTerm, setDebouncedTerm] = useState('');
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedTerm(term), 350);
+    return () => clearTimeout(timer);
+  }, [term]);
+  const path =
+    term && term === debouncedTerm
+      ? '/search?' + new URLSearchParams({ query: term, type: 'artist' })
+      : null;
+  const lookup = useApi<{
+    results: {
+      id: string;
+      mediaType: string;
+      name: string;
+      disambiguation?: string;
+    }[];
+  }>(path, { currentPathOnly: true });
+  const matches =
+    lookup.data?.results.filter((result) => result.mediaType === 'artist') ??
+    [];
+  return (
+    <>
+      <label className="sel">
+        <span className="lbl">Artist</span>
+        <input
+          className="cfg-input"
+          type="search"
+          name="artist"
+          maxLength={256}
+          value={name}
+          onChange={(event) => {
+            setName(event.currentTarget.value);
+            setTerm(event.currentTarget.value.trim());
+            setSelectedId('');
+          }}
+        />
+      </label>
+      <input type="hidden" name="artistId" value={selectedId} />
+      {matches.length > 0 && (
+        <label className="sel">
+          <span className="lbl">Artist Match</span>
+          <select
+            value={selectedId}
+            onChange={(event) => {
+              const match = matches.find(
+                ({ id }) => id === event.currentTarget.value
+              );
+              setSelectedId(match?.id ?? '');
+              if (match) setName(match.name);
+            }}
+          >
+            <option value="">Use Artist Text</option>
+            {matches.map((match) => (
+              <option key={match.id} value={match.id}>
+                {match.name}
+                {match.disambiguation ? ` (${match.disambiguation})` : ''}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {lookup.error && (
+        <button
+          className="btn btn-quiet btn-sm"
+          type="button"
+          onClick={lookup.reload}
+        >
+          Retry Artist Lookup
+        </button>
+      )}
+      {lookup.data && matches.length === 0 && (
+        <span className="note" role="status">
+          No matching artists.
+        </span>
+      )}
+    </>
+  );
+}
+
 const big = (n?: number) =>
   !n
     ? ''
@@ -200,29 +289,36 @@ export function Music() {
           const next = new URLSearchParams(p);
           for (const key of [
             ...MUSIC_FILTERS.map((field) => field.key),
+            'artistId',
             'availability',
           ]) {
             const value = String(form.get(key) ?? '').trim();
             if (value) next.set(key, value);
             else next.delete(key);
           }
-          if ((next.get('artist') ?? '') !== (filters.get('artist') ?? ''))
-            next.delete('artistId');
           setP(next, { replace: true });
         }}
       >
-        {MUSIC_FILTERS.map(({ key, label, type }) => (
-          <label className="sel" key={key}>
-            <span className="lbl">{label}</span>
-            <input
-              className="cfg-input"
-              type={type}
-              name={key}
-              defaultValue={filters.get(key) ?? ''}
-              maxLength={type === 'search' ? 256 : undefined}
+        {MUSIC_FILTERS.map(({ key, label, type }) =>
+          key === 'artist' ? (
+            <MusicArtistFilter
+              key={key}
+              artist={filters.get(key) ?? ''}
+              artistId={filters.get('artistId') ?? ''}
             />
-          </label>
-        ))}
+          ) : (
+            <label className="sel" key={key}>
+              <span className="lbl">{label}</span>
+              <input
+                className="cfg-input"
+                type={type}
+                name={key}
+                defaultValue={filters.get(key) ?? ''}
+                maxLength={type === 'search' ? 256 : undefined}
+              />
+            </label>
+          )
+        )}
         <label className="sel">
           <span className="lbl">In Library</span>
           <select
