@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. | Audit the full role matrix and failed-save recovery across user settings; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. | Complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ## Delivery and verification
@@ -943,7 +943,13 @@ music auto-requests without seeing the Plex movie or ungranted book control.
 The exact false value persisted through page reload at desktop, iPhone,
 Android and tablet viewport presets. The fixtures also surfaced a provider
 response shape that could crash Account Settings, which is now handled.
-Live automatic requests, bundled and native visual comparison remain open.
+An expanded permission matrix passed 24 standalone browser cases across
+desktop, iPhone, Android and tablet: no auto-request permission, movie-only
+permission for a Plex member, music-only permission for a local member, the
+global auto-request permission, local administrator, and Plex administrator.
+It verifies category visibility, Plex-only controls and email editability.
+Live automatic requests, the remaining account-settings role/save cases,
+bundled behavior and native visual comparison remain open.
 
 ### Personal card title preferences increment
 

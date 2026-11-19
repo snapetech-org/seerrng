@@ -188,6 +188,109 @@ test('watchlist preferences honor account type and category permissions and pers
   await expect(music).not.toBeChecked();
 });
 
+for (const scenario of [
+  {
+    name: 'member without watchlist permissions',
+    permissions: 32,
+    userType: 2,
+    visible: [],
+    emailDisabled: false,
+  },
+  {
+    name: 'Plex member with movie sync permission',
+    permissions: 16777216,
+    userType: 1,
+    visible: ['Auto-Request Movies'],
+    emailDisabled: true,
+  },
+  {
+    name: 'local member with music sync permission',
+    permissions: 8589934592,
+    userType: 2,
+    visible: ['Auto-Request Music'],
+    emailDisabled: false,
+  },
+  {
+    name: 'local member with global auto-request permission',
+    permissions: 8388608,
+    userType: 2,
+    visible: [
+      'Auto-Request Music',
+      'Auto-Request Books',
+      'Auto-Request Comics',
+      'Auto-Request Magazines',
+    ],
+    emailDisabled: false,
+  },
+  {
+    name: 'local administrator',
+    permissions: 2,
+    userType: 2,
+    visible: [
+      'Auto-Request Music',
+      'Auto-Request Books',
+      'Auto-Request Comics',
+      'Auto-Request Magazines',
+    ],
+    emailDisabled: false,
+  },
+  {
+    name: 'Plex administrator',
+    permissions: 2,
+    userType: 1,
+    visible: [
+      'Auto-Request Movies',
+      'Auto-Request Series',
+      'Auto-Request Music',
+      'Auto-Request Books',
+      'Auto-Request Comics',
+      'Auto-Request Magazines',
+    ],
+    emailDisabled: true,
+  },
+]) {
+  test(`account preference controls match the ${scenario.name} role`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const requestUrl = new URL(route.request().url());
+      const path = requestUrl.pathname.slice('/api/v1'.length);
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: {
+            id: 2,
+            displayName: 'Viewer',
+            permissions: scenario.permissions,
+            userType: scenario.userType,
+          },
+        });
+      if (path === '/user/2/settings/main')
+        return route.fulfill({ json: { username: 'Viewer' } });
+      if (path === '/languages') return route.fulfill({ json: [] });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto('./me/account');
+    for (const label of [
+      'Auto-Request Movies',
+      'Auto-Request Series',
+      'Auto-Request Music',
+      'Auto-Request Books',
+      'Auto-Request Comics',
+      'Auto-Request Magazines',
+    ]) {
+      const control = page.getByRole('checkbox', { name: label });
+      await expect(control).toHaveCount(
+        scenario.visible.includes(label) ? 1 : 0
+      );
+    }
+    if (scenario.emailDisabled)
+      await expect(page.getByLabel('Email')).toBeDisabled();
+    else await expect(page.getByLabel('Email')).toBeEnabled();
+  });
+}
+
 test('account theme colors preserve stored overrides for other controls', async ({
   page,
 }) => {
