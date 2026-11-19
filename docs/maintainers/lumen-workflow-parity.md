@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, and several per-user request policies have dedicated routes. | Finish per-user TV/Episode Queue, maturity and delegated-user management parity; qualify provider authorization, persistence/recovery, and native-matched/bundled visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. | Audit the full role matrix and failed-save recovery across user settings; qualify provider authorization, persistence/readback, and native-matched/bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ## Delivery and verification
@@ -3796,6 +3796,14 @@ IDs, movie and TV genres, and the per-rule page limit; its browser regression
 preserves stored genre selections and verifies changed-field persistence.
 Remaining Blocklist parity is media/action coverage plus mobile matched and
 bundled acceptance.
+
+The Accounts inventory also overstated missing functionality. Lumen has TV
+request access settings, per-user Episode Queue defaults, maturity limits, and
+delegated user management. Focused browser fixtures passed 12 cases across
+desktop, iPhone, Android, and tablet for Episode Queue persistence, clearing
+one maturity limit without changing the other, and delegating only permissions
+the manager holds. Remaining work is a full role and failed-save audit across
+user settings, plus native-matched and bundled acceptance.
 
 Indexer Search was present in the desktop sidebar but missing from the mobile
 You menu. The You page now exposes it under Acquisition only when the signed-in
