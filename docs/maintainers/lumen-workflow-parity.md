@@ -1832,8 +1832,10 @@ companion and bundled deployments. Profile, password, permissions, maturity,
 Episode Queue, linked accounts, TV request access, and notification bookmarks
 open the matching panel for the selected user. Delegated notification settings
 reuse the personal forms. Browser registration stays with the signed-in user.
-Standalone fixtures cover the managed settings actions. Live providers, full
-bundled user workflows, and matched native visual comparison remain unverified.
+The 52 managed-user browser checks passed against standalone Vite and the
+production Express `/lumen/` mount across desktop, iPhone, Android, and tablet
+projects. They use fixture APIs; live providers and matched native visual
+comparison remain unverified.
 
 ### Delegated watchlists
 

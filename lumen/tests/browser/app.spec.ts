@@ -6726,6 +6726,9 @@ test('About SeerrNG shows installed version and respects disabled update checks'
   expect(checks).toBe(0);
 });
 
+const userAdminPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 test('Users lets delegated managers search without exposing the directory to members', async ({
   page,
 }) => {
@@ -6755,7 +6758,7 @@ test('Users lets delegated managers search without exposing the directory to mem
       },
     });
   });
-  await page.goto('/me');
+  await page.goto(userAdminPath('/me'));
   await page.getByRole('link', { name: 'Open Users', exact: true }).click();
   await expect(page.getByText('Owner Initial')).toBeVisible();
   await page.getByLabel('Search Users').fill('Owner & admin');
@@ -6763,7 +6766,7 @@ test('Users lets delegated managers search without exposing the directory to mem
   await expect(page.getByText('Owner Match')).toBeVisible();
   expect(reads).toBe(2);
   permissions = 32;
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await expect(page).toHaveURL(/\/me$/);
   await expect(
     page.getByRole('link', { name: 'Open Users', exact: true })
@@ -6803,7 +6806,7 @@ test('Users creates a local account with a password setup link', async ({
       });
     return route.fulfill({ status: 201, json: account });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Create Local User' }).click();
   await page.getByLabel('Username', { exact: true }).fill('New Member');
   await page.getByLabel('Email', { exact: true }).fill('member@example.test');
@@ -6845,7 +6848,7 @@ test('Users sets an Episode Queue default for the selected account', async ({
     }
     return route.fulfill({ json: { defaultEpisodeCount: count } });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page
     .getByRole('button', { name: 'Episode Queue', exact: true })
     .click();
@@ -6889,7 +6892,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
     }
     return route.fulfill({ json: quotas });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Request Quotas' }).click();
   await expect(
     page.getByText('Server default unlimited requests')
@@ -6950,7 +6953,7 @@ test('Users changes media categories and indexer visibility independently', asyn
       },
     });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page
     .getByRole('button', { name: 'Media Categories', exact: true })
     .click();
@@ -7008,7 +7011,7 @@ test('Users clears one maturity limit and preserves the other', async ({
     }
     return route.fulfill({ json: policy });
   });
-  await page.goto('/admin/users/19/maturity');
+  await page.goto(userAdminPath('/admin/users/19/maturity'));
   await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG');
   await page.getByLabel('Movie Rating Limit').selectOption('');
   await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
@@ -7077,7 +7080,7 @@ test('Users delegates only held permissions and preserves high permission bits',
     }
     return route.fulfill({ json: target });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Permissions', exact: true }).click();
   await expect(
     page.getByRole('checkbox', { name: 'Manage Settings', exact: true })
@@ -7144,7 +7147,7 @@ test('Users protects administrators and confirms deletion of the selected member
     deleted = true;
     return route.fulfill({ status: 200, json: people[2] });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await expect(page.getByText('Second Admin')).toBeVisible();
   const remove = page.getByRole('button', { name: 'Delete User', exact: true });
   await expect(remove).toHaveCount(1);
@@ -7186,7 +7189,7 @@ test('Users imports and syncs selected Emby accounts', async ({ page }) => {
     writes++;
     return route.fulfill({ json: { createdUsers: [{}], refreshedUsers: 1 } });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Import Emby Users' }).click();
   await page.getByRole('checkbox', { name: 'New Viewer' }).check();
   await expect(page.getByText('Existing Viewer')).toHaveCount(0);
@@ -7234,7 +7237,7 @@ test('Users sends exact Plex selections and confirms the all-account sync', asyn
           : { createdUsers: [], refreshedUsers: 1 },
     });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Import Plex Users' }).click();
   await page.getByRole('checkbox', { name: 'Plex Friend' }).check();
   await page
@@ -7278,7 +7281,7 @@ test('Users edits a username without writing other profile settings', async ({
     }
     return route.fulfill({ json: { username } });
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await page.getByRole('button', { name: 'Edit Profile' }).click();
   await expect(page.getByLabel('Username')).toHaveValue('Existing Viewer');
   await page.getByLabel('Username').fill(' Renamed Viewer ');
@@ -7330,7 +7333,7 @@ test('Users edits local email and keeps Plex email provider-managed', async ({
       json: { username: 'Plex Viewer', email: 'plex@example.test' },
     })
   );
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   const plex = page.getByRole('listitem').filter({ hasText: 'Plex Viewer' });
   await plex.getByRole('button', { name: 'Edit Profile' }).click();
   await expect(plex.getByLabel('Username')).toHaveValue('Plex Viewer');
@@ -7373,7 +7376,7 @@ test('Users confirms a managed local password and clears the form after saving',
     name: 'Set Local Password',
     exact: true,
   });
-  await page.goto('/admin/users');
+  await page.goto(userAdminPath('/admin/users'));
   await expect(action).toHaveCount(1);
   await action.click();
   const password = page.getByLabel('New Local Password', { exact: true });
