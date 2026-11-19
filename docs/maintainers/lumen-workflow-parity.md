@@ -3034,6 +3034,12 @@ in `baseline/`, `candidate-final/`, `detail-baseline/`, and `detail-final/`.
 The screenshots confirm that only the restricted shortcuts disappear for
 viewers; provider behavior and matched native visual acceptance remain open.
 
+The Adult category menu follows the native `ADMIN`, `MANAGE_REQUESTS`, or
+`REQUEST_ADULT` gate through Lumen's authenticated Adult catalogue probe. Twenty
+browser checks across desktop, iPhone, Android, and tablet confirmed the
+authorized roles see Adult while viewers with no permission or generic
+`REQUEST` do not.
+
 Request buttons on software game details, album details, and adult-scene
 details now follow the native permission masks (`REQUEST`; `REQUEST` or
 `REQUEST_MUSIC`; and `ADMIN`, `MANAGE_REQUESTS`, or `REQUEST_ADULT`,
