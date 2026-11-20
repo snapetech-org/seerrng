@@ -345,6 +345,10 @@ test.describe('Episode Queue season loading', () => {
       await page.evaluate(() => (window as any).next.router.push('/tv/1396'));
       await page.getByRole('button', { name: 'Request', exact: true }).click();
       const dialog = page.getByRole('dialog');
+      await expect(dialog).toBeVisible();
+      await expect
+        .poll(() => batches)
+        .toEqual(['1,2,3,4,5', '2,3,4,5', '6,7,8,9,10', '11,12,13']);
       await expect(
         dialog.getByText('Episodes Could Not Be Loaded')
       ).toHaveCount(0);
@@ -356,12 +360,6 @@ test.describe('Episode Queue season loading', () => {
       await expect(
         dialog.getByRole('button', { name: 'Deselect episode 1: Pilot' })
       ).toBeVisible();
-      expect(batches).toEqual([
-        '1,2,3,4,5',
-        '2,3,4,5',
-        '6,7,8,9,10',
-        '11,12,13',
-      ]);
       await page.screenshot({
         path: info.outputPath('episode-queue.png'),
         animations: 'disabled',
