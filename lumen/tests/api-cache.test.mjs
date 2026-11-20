@@ -243,7 +243,11 @@ test('marking everything stale also tells anything kept outside the cache', () =
 test('network settings, TLS status, and playback activity always require fresh data', (t) => {
   session.resetSessionState(4);
   t.after(() => session.resetSessionState(null));
-  for (const path of ['/settings/network', '/status/tls', '/user/19/watch_data']) {
+  for (const path of [
+    '/settings/network',
+    '/status/tls',
+    '/user/19/watch_data',
+  ]) {
     cache.remember(path, { configured: true });
     assert.equal(cache.cached(path), undefined);
   }
