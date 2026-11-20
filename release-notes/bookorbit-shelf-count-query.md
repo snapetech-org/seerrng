@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-SeerrNG can confirm the number of books on a saved BookOrbit live shelf even when BookOrbit requires app attestation for its mobile shelf view.
+SeerrNG verifies a saved BookOrbit live shelf's count through the authenticated scope query, including when the shelf is empty. Existing connections need no configuration changes.
