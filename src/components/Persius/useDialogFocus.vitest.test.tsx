@@ -10,7 +10,7 @@ const Dialog = ({ name, close }: { name: string; close: () => void }) => {
   const ref = useRef<HTMLDivElement>(null);
   useDialogFocus(ref, true, close);
   return (
-    <div ref={ref} role="dialog" aria-modal="true">
+    <div ref={ref} role="dialog" aria-modal="true" tabIndex={-1}>
       <button>{name} first</button>
       <button>{name} last</button>
     </div>
@@ -105,7 +105,7 @@ test('waits for a transitioning dialog to mount before moving focus, and cancels
     const ref = useRef<HTMLDivElement>(null);
     useDialogFocus(ref, true);
     return visible ? (
-      <div ref={ref} role="dialog" aria-modal="true">
+      <div ref={ref} role="dialog" aria-modal="true" tabIndex={-1}>
         <button>Ready</button>
       </div>
     ) : null;
@@ -122,7 +122,9 @@ test('waits for a transitioning dialog to mount before moving focus, and cancels
   expect(frames.size).toBe(1);
   await act(async () => root.render(<DelayedDialog visible />));
   await advance();
-  expect(document.activeElement?.textContent).toBe('Ready');
+  expect(document.activeElement).toBe(
+    document.querySelector('[role="dialog"]')
+  );
   await act(async () =>
     root.render(<DelayedDialog visible={false} key="pending" />)
   );
@@ -137,7 +139,7 @@ test('restores focus when asynchronous dialog content replaces the focused contr
     const ref = useRef<HTMLDivElement>(null);
     useDialogFocus(ref, true);
     return (
-      <div ref={ref} role="dialog" aria-modal="true">
+      <div ref={ref} role="dialog" aria-modal="true" tabIndex={-1}>
         {ready ? <button>Ready</button> : <a href="#loading">Loading</a>}
       </div>
     );
@@ -146,14 +148,18 @@ test('restores focus when asynchronous dialog content replaces the focused contr
   expect(document.activeElement?.textContent).toBe('Loading');
   await act(async () => root.render(<DynamicDialog ready />));
   await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
-  expect(document.activeElement?.textContent).toBe('Ready');
+  expect(document.activeElement).toBe(
+    document.querySelector('[role="dialog"]')
+  );
 });
 
 test('keeps focus in the topmost dialog when focus moves outside it', async () => {
   await act(async () => root.render(<Dialog name="current" close={vi.fn()} />));
   document.getElementById('trigger')!.focus();
   await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
-  expect(document.activeElement?.textContent).toBe('current first');
+  expect(document.activeElement).toBe(
+    document.querySelector('[role="dialog"]')
+  );
 });
 
 test('focuses the dialog itself while asynchronous content has no controls', async () => {
@@ -183,7 +189,13 @@ test('waits for a mounted dialog to become visible before focusing it', async ()
     const ref = useRef<HTMLDivElement>(null);
     useDialogFocus(ref, true);
     return (
-      <div ref={ref} role="dialog" aria-modal="true" aria-hidden={!ready}>
+      <div
+        ref={ref}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!ready}
+        tabIndex={-1}
+      >
         <button>Ready</button>
       </div>
     );
@@ -199,5 +211,7 @@ test('waits for a mounted dialog to become visible before focusing it', async ()
   expect(frames.size).toBe(1);
   await act(async () => root.render(<TransitionDialog ready />));
   await advance();
-  expect(document.activeElement?.textContent).toBe('Ready');
+  expect(document.activeElement).toBe(
+    document.querySelector('[role="dialog"]')
+  );
 });

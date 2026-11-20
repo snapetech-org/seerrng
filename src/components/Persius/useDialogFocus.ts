@@ -47,7 +47,7 @@ export default function useDialogFocus(
       }
       if (dialog && dialogs.at(-1) !== dialog) return;
       if (dialog?.contains(document.activeElement)) return;
-      (focusable()[0] ?? dialog)?.focus();
+      dialog?.focus();
       if (!dialog?.contains(document.activeElement)) {
         frame = requestAnimationFrame(focusWhenMounted);
       }
@@ -60,7 +60,7 @@ export default function useDialogFocus(
         (event.target instanceof window.Node && dialog.contains(event.target))
       )
         return;
-      focusable()[0]?.focus();
+      dialog.focus();
     };
     frame = requestAnimationFrame(focusWhenMounted);
     const observer = new window.MutationObserver(() => {
@@ -70,7 +70,7 @@ export default function useDialogFocus(
         visibleDialogs().at(-1) === dialog &&
         !dialog.contains(document.activeElement)
       )
-        (focusable()[0] ?? dialog)?.focus();
+        dialog.focus();
     });
     if (ref.current)
       observer.observe(ref.current, {
@@ -103,7 +103,11 @@ export default function useDialogFocus(
         event.preventDefault();
         return;
       }
-      if (event.shiftKey && document.activeElement === first) {
+      if (
+        event.shiftKey &&
+        (document.activeElement === first ||
+          document.activeElement === ref.current)
+      ) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
