@@ -76,9 +76,7 @@ export function GenrePicker({
     const maxLeft = viewportWidth - 16 - box.offsetWidth;
     const preferred =
       anchor.left > maxLeft ? anchor.right - box.offsetWidth : anchor.left;
-    setPopoverOffset(
-      Math.max(16, Math.min(preferred, maxLeft)) - anchor.left
-    );
+    setPopoverOffset(Math.max(16, Math.min(preferred, maxLeft)) - anchor.left);
   }, []);
   const close = (focusButton: boolean) => {
     refocus.current = focusButton;
