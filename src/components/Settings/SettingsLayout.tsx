@@ -728,6 +728,20 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
             // without a visible Save action after the field is already dirty.
             if (hasSaveActions && event.nativeEvent.isTrusted) setDirty(true);
           }}
+          onClickCapture={(event) => {
+            // Toggle controls can update managed form state from a click
+            // without emitting a native change event. Show Save immediately;
+            // the managed-form observer reconciles it with Formik's dirty flag.
+            if (
+              hasSaveActions &&
+              event.nativeEvent.isTrusted &&
+              event.target instanceof Element &&
+              event.target.closest(
+                'form[data-settings-dirty] button[aria-pressed], form[data-settings-dirty] [role="switch"], form[data-settings-dirty] [role="checkbox"]'
+              )
+            )
+              setDirty(true);
+          }}
           onSubmitCapture={(event) => {
             if (
               !(event.target instanceof HTMLFormElement) ||

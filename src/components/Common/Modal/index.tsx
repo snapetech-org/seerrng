@@ -152,6 +152,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             data-alignment={alignTop ? 'top' : 'center'}
             role="dialog"
             aria-modal="true"
+            tabIndex={-1}
             aria-labelledby={title || subTitle ? 'modal-headline' : undefined}
             aria-label={!title && !subTitle ? ariaLabel : undefined}
             as="div"

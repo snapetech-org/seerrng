@@ -155,3 +155,16 @@ test('keeps focus in the topmost dialog when focus moves outside it', async () =
   await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
   expect(document.activeElement?.textContent).toBe('current first');
 });
+
+test('focuses the dialog itself while asynchronous content has no controls', async () => {
+  const EmptyDialog = () => {
+    const ref = useRef<HTMLDivElement>(null);
+    useDialogFocus(ref, true);
+    return <div ref={ref} role="dialog" aria-modal="true" tabIndex={-1} />;
+  };
+
+  await act(async () => root.render(<EmptyDialog />));
+  expect(document.activeElement).toBe(
+    document.querySelector('[role="dialog"]')
+  );
+});

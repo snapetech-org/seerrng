@@ -41,7 +41,7 @@ export default function useDialogFocus(
       const dialogs = visibleDialogs();
       if (dialog && dialogs.at(-1) !== dialog) return;
       if (dialog?.contains(document.activeElement)) return;
-      focusable()[0]?.focus();
+      (focusable()[0] ?? dialog)?.focus();
       if (!dialog?.contains(document.activeElement)) {
         frame = requestAnimationFrame(focusWhenMounted);
       }
@@ -64,7 +64,7 @@ export default function useDialogFocus(
         visibleDialogs().at(-1) === dialog &&
         !dialog.contains(document.activeElement)
       )
-        focusable()[0]?.focus();
+        (focusable()[0] ?? dialog)?.focus();
     });
     if (ref.current)
       observer.observe(ref.current, {

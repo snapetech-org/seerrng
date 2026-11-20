@@ -81,6 +81,9 @@ for (const width of [1440, 390]) {
     });
     await page.goto('/users/1/requests');
     await page.locator('select#filter').selectOption('approved');
+    const requestCard = page.locator('[data-interface-role="request-card"]');
+    await expect(requestCard).toBeAttached();
+    await requestCard.scrollIntoViewIfNeeded();
     await expect(
       page.getByText('Retained Film', { exact: true })
     ).toBeVisible();
