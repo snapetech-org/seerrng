@@ -33,7 +33,7 @@ for (const width of [1440, 390]) {
     const row = {
       id: 9102,
       type: 'movie',
-      status: 5,
+      status: MediaRequestStatus.PENDING,
       is4k: false,
       media,
       requestedBy: { id: 1, displayName: 'Admin', avatar: '' },

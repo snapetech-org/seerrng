@@ -261,7 +261,7 @@ for (const width of process.env.SEERR_EPISODE_WIDTHS?.split(',').map(
 
 test.describe('Episode Queue season loading', () => {
   for (const width of [390, 1440]) {
-    test(`a 13-season series can be requested after a season lookup fails at ${width}px`, async ({
+    test(`a 13-season series recovers from a partial season lookup at ${width}px`, async ({
       page,
       baseURL,
     }, info) => {
@@ -314,10 +314,11 @@ test.describe('Episode Queue season loading', () => {
           'seasonNumbers'
         );
         batches.push(numbers ?? '');
-        const loaded =
-          batches.length === 1
-            ? [1]
-            : Array.from({ length: 12 }, (_, i) => i + 2);
+        const requested = (numbers ?? '')
+          .split(',')
+          .filter(Boolean)
+          .map(Number);
+        const loaded = batches.length === 1 ? [1] : requested;
         return route.fulfill({
           json: loaded.map((seasonNumber) => ({
             id: seasonNumber,
@@ -346,25 +347,20 @@ test.describe('Episode Queue season loading', () => {
       const dialog = page.getByRole('dialog');
       await expect(
         dialog.getByText('Episodes Could Not Be Loaded')
-      ).toBeVisible();
-      await expect(dialog.getByTestId('modal-ok-button')).toBeDisabled();
+      ).toHaveCount(0);
       await dialog.getByRole('button', { name: 'Expand Season 01' }).click();
       await dialog
         .getByRole('button', { name: 'Select episode 1: Pilot' })
         .click();
       await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
-      await dialog.getByRole('button', { name: 'Retry', exact: true }).click();
-      await expect(
-        dialog.getByText('Episodes Could Not Be Loaded')
-      ).toHaveCount(0);
       await expect(
         dialog.getByRole('button', { name: 'Deselect episode 1: Pilot' })
       ).toBeVisible();
       expect(batches).toEqual([
         '1,2,3,4,5',
+        '2,3,4,5',
         '6,7,8,9,10',
         '11,12,13',
-        '2,3,4,5',
       ]);
       await page.screenshot({
         path: info.outputPath('episode-queue.png'),
