@@ -553,6 +553,14 @@ test('Chocolatey packages only verified Windows release archives', () => {
     "${{ format('action:{0}:pool:{1}:tag:{2}', inputs.action_tag, inputs.runner_pool_tag, inputs.tag) }}"
   );
   assert.equal(workflow.on.workflow_dispatch.inputs.tag.required, true);
+  assert.equal(
+    workflow.on.workflow_dispatch.inputs.resubmit_existing.default,
+    false
+  );
+  assert.equal(
+    workflow.on.workflow_dispatch.inputs.resubmit_existing.type,
+    'boolean'
+  );
   assert.deepEqual(workflow.on.workflow_dispatch.inputs.action_tag.options, [
     'release',
   ]);
@@ -582,6 +590,8 @@ test('Chocolatey packages only verified Windows release archives', () => {
   assert.match(steps, /Get-FileHash[\s\S]*SHA-256 mismatch/u);
   assert.match(steps, /CHOCOLATEY_API_KEY/u);
   assert.match(steps, /choco push/u);
+  assert.match(submitStep.run, /RESUBMIT_EXISTING -eq 'true'/u);
+  assert.match(submitStep.run, /--force/u);
 });
 
 test('Launchpad retries for the same release tag are serialized', () => {

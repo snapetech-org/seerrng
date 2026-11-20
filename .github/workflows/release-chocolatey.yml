@@ -20,6 +20,11 @@ on:
       tag:
         description: Stable release tag, for example v3.41.2
         required: true
+      resubmit_existing:
+        description: Re-submit this exact package version after Chocolatey moderation requests an update
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -157,6 +162,7 @@ jobs:
         env:
           CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
           VERSION: ${{ steps.version.outputs.version }}
+          RESUBMIT_EXISTING: ${{ inputs.resubmit_existing }}
         run: |
           $ErrorActionPreference = 'Stop'
           if ([string]::IsNullOrWhiteSpace($env:CHOCOLATEY_API_KEY)) {
@@ -171,7 +177,14 @@ jobs:
           if (-not (Test-Path -LiteralPath $packagePath)) { throw "The package was not found at $packagePath." }
 
           $apiKey = $apiKeyGuid.ToString('D')
-          choco push $packagePath `
-            --source 'https://push.chocolatey.org/' `
-            --api-key $apiKey
+          if ($env:RESUBMIT_EXISTING -eq 'true') {
+            choco push $packagePath `
+              --source 'https://push.chocolatey.org/' `
+              --api-key $apiKey `
+              --force
+          } else {
+            choco push $packagePath `
+              --source 'https://push.chocolatey.org/' `
+              --api-key $apiKey
+          }
           if ($LASTEXITCODE -ne 0) { throw 'Chocolatey rejected the SeerrNG package submission.' }
