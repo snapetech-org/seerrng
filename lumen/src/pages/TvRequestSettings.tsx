@@ -257,6 +257,18 @@ function episodeAheadLabel(
   return t(key, fallback, { count });
 }
 
+function episodeOptionLabel(
+  count: number,
+  locale: string,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const plural = new Intl.PluralRules(locale).select(count);
+  const key = `lumen.tvRequests.episodeOption.${plural}`;
+  const fallback = plural === 'one' ? '{count} episode' : '{count} episodes';
+  const formattedCount = new Intl.NumberFormat(locale).format(count);
+  return t(key, fallback, { count: formattedCount });
+}
+
 function RequestSettings({
   id,
   permissions,
@@ -520,7 +532,7 @@ function RequestSettings({
                     </option>
                     {[1, 2, 3, 4, 5].map((value) => (
                       <option key={value} value={value}>
-                        {value} {value === 1 ? 'episode' : 'episodes'}
+                        {episodeOptionLabel(value, locale, t)}
                       </option>
                     ))}
                   </select>

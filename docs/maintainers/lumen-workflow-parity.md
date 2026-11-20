@@ -4379,6 +4379,16 @@ per-account season-watch gate and viewers and user managers retain its request
 action. All four role combinations pass on desktop, iPhone, Android, and tablet.
 The remaining account routes still need their own complete role matrix.
 
+The user-manager dropdown's episode-count labels now follow the selected locale
+instead of always using English. Browser checks cover every 1–5 option in
+Arabic and French; English remains the baseline. Candidate renders of the same
+manager state were inspected against the retained English desktop and iPhone
+baseline screenshots, including the selected value, RTL page direction, and
+overflow. The native select's expanded menu is OS-rendered, so its platform
+menu presentation is excluded from screenshot acceptance; its option text is
+verified through the browser DOM. Live settings readback and bundled-mount
+visuals remain open.
+
 ### Keep the open genre popover anchored after selection
 
 The tablet workflow exposed a stale horizontal offset: selecting a genre changes

@@ -313,3 +313,77 @@ test('TV request account controls follow the viewer permission matrix', async ({
 
   expect(reviewRequests).toEqual(['User manager', 'Administrator']);
 });
+
+test('Episode Queue options use Arabic and French plural forms', async ({
+  page,
+}, info) => {
+  let locale = 'en';
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Manager', permissions: 8, userType: 2 },
+      });
+    if (path === '/user/2/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/user/2/settings/tv-season-watch-gate')
+      return route.fulfill({ json: { status: 'off', globallyEnabled: false } });
+    if (path === '/user/2/settings/episode-queue')
+      return route.fulfill({ json: { defaultEpisodeCount: 2 } });
+    if (path === '/user/tv-season-watch-gate-requests')
+      return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/me/account/tv-requests');
+  const queueSelect = page.getByRole('combobox', {
+    name: 'Episodes to keep requested',
+  });
+  await expect(queueSelect).toHaveValue('2');
+  await captureSettings(page, info, 'en-manager-options-baseline');
+
+  for (const [language, direction, heading, labels] of [
+    [
+      'ar',
+      'rtl',
+      'إعدادات طلبات التلفاز',
+      ['1 حلقة', '2 حلقتين', '3 حلقات', '4 حلقات', '5 حلقات'],
+    ],
+    [
+      'fr',
+      'ltr',
+      'Paramètres des demandes TV',
+      ['1 épisode', '2 épisodes', '3 épisodes', '4 épisodes', '5 épisodes'],
+    ],
+  ] as const) {
+    locale = language;
+    await page.reload();
+    await expect(
+      page.getByRole('heading', { name: heading, exact: true })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('dir', direction);
+    const localizedSelect = page.getByRole('combobox', {
+      name:
+        language === 'ar'
+          ? 'عدد الحلقات المطلوب الاحتفاظ بها'
+          : 'Épisodes à maintenir en demande',
+    });
+    await expect(localizedSelect).toHaveValue('2');
+    for (const [index, label] of labels.entries()) {
+      await expect(
+        localizedSelect.locator(`option[value="${index + 1}"]`)
+      ).toHaveText(label);
+    }
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth
+        )
+      )
+      .toBe(true);
+    await captureSettings(page, info, `${language}-manager-options-candidate`);
+  }
+});
