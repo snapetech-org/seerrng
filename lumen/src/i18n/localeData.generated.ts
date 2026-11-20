@@ -330,6 +330,23 @@ export const localeData = [
       'lumen.account.themeEditColors': 'تعديل ألوان المظهر',
       'lumen.account.themeEditAll': 'تعديل كل التجاوزات',
       'lumen.account.themeOverrideJson': 'JSON لتجاوزات المظهر',
+      'lumen.account.themeColor.accent': 'لون التمييز',
+      'lumen.account.themeColor.primaryText': 'النص الأساسي',
+      'lumen.account.themeColor.scrolledSearchHeader':
+        'ترويسة البحث بعد التمرير',
+      'lumen.account.themeColor.sidebarHoverBackground':
+        'خلفية الشريط الجانبي عند التمرير',
+      'lumen.account.themeColor.sidebarBorder': 'حد الشريط الجانبي',
+      'lumen.account.themeColor.sidebarBackgroundEnd':
+        'نهاية تدرج خلفية الشريط الجانبي',
+      'lumen.account.themeColor.sidebarBackgroundStart':
+        'بداية تدرج خلفية الشريط الجانبي',
+      'lumen.account.themeColor.menuDialogBackground':
+        'خلفية القوائم ومربعات الحوار',
+      'lumen.account.themeColor.border': 'الحد',
+      'lumen.account.themeColor.raisedSurface': 'السطح المرتفع',
+      'lumen.account.themeColor.surface': 'السطح',
+      'lumen.account.themeColor.pageBackground': 'خلفية الصفحة',
       'lumen.me.signedInTo': 'تم تسجيل الدخول إلى SeerrNG',
       'lumen.me.userManagement': 'إدارة المستخدمين',
       'lumen.me.users': 'المستخدمون',
@@ -1861,6 +1878,21 @@ export const localeData = [
       'lumen.account.themeEditColors': 'Edit Theme Colors',
       'lumen.account.themeEditAll': 'Edit All Overrides',
       'lumen.account.themeOverrideJson': 'Theme Override JSON',
+      'lumen.account.themeColor.accent': 'Accent',
+      'lumen.account.themeColor.primaryText': 'Primary Text',
+      'lumen.account.themeColor.scrolledSearchHeader': 'Scrolled Search Header',
+      'lumen.account.themeColor.sidebarHoverBackground':
+        'Sidebar Hover Background',
+      'lumen.account.themeColor.sidebarBorder': 'Sidebar Border',
+      'lumen.account.themeColor.sidebarBackgroundEnd': 'Sidebar Background End',
+      'lumen.account.themeColor.sidebarBackgroundStart':
+        'Sidebar Background Start',
+      'lumen.account.themeColor.menuDialogBackground':
+        'Menu and Dialog Background',
+      'lumen.account.themeColor.border': 'Border',
+      'lumen.account.themeColor.raisedSurface': 'Raised Surface',
+      'lumen.account.themeColor.surface': 'Surface',
+      'lumen.account.themeColor.pageBackground': 'Page Background',
       'lumen.admin.allSettingsTools': 'All Settings and Tools',
       'lumen.admin.administrationCategories': 'Administration Categories',
       'lumen.admin.searchSettings': 'Search Settings',
@@ -3516,6 +3548,23 @@ export const localeData = [
       'lumen.account.themeEditColors': 'Modifier les couleurs du thème',
       'lumen.account.themeEditAll': 'Modifier toutes les préférences',
       'lumen.account.themeOverrideJson': 'JSON des préférences du thème',
+      'lumen.account.themeColor.accent': 'Couleur d’accentuation',
+      'lumen.account.themeColor.primaryText': 'Texte principal',
+      'lumen.account.themeColor.scrolledSearchHeader':
+        'En-tête de recherche après défilement',
+      'lumen.account.themeColor.sidebarHoverBackground':
+        'Arrière-plan au survol de la barre latérale',
+      'lumen.account.themeColor.sidebarBorder': 'Bordure de la barre latérale',
+      'lumen.account.themeColor.sidebarBackgroundEnd':
+        'Fin du dégradé d’arrière-plan de la barre latérale',
+      'lumen.account.themeColor.sidebarBackgroundStart':
+        'Début du dégradé d’arrière-plan de la barre latérale',
+      'lumen.account.themeColor.menuDialogBackground':
+        'Arrière-plan des menus et des boîtes de dialogue',
+      'lumen.account.themeColor.border': 'Bordure',
+      'lumen.account.themeColor.raisedSurface': 'Surface surélevée',
+      'lumen.account.themeColor.surface': 'Surface',
+      'lumen.account.themeColor.pageBackground': 'Arrière-plan de la page',
       'lumen.me.signedInTo': 'Connecté à SeerrNG',
       'lumen.me.userManagement': 'Gestion des utilisateurs',
       'lumen.me.users': 'Utilisateurs',

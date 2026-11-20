@@ -487,7 +487,19 @@
     "lumen.recordings.loadingTeams": "Loading followed teams…",
     "lumen.recordings.loadingSchedules": "Loading team schedules…",
     "lumen.recordings.teamSchedules": "team schedules",
-    "lumen.recordings.maxFollowedTeams": "You can follow up to 20 teams."
+    "lumen.recordings.maxFollowedTeams": "You can follow up to 20 teams.",
+    "lumen.account.themeColor.pageBackground": "Page Background",
+    "lumen.account.themeColor.surface": "Surface",
+    "lumen.account.themeColor.raisedSurface": "Raised Surface",
+    "lumen.account.themeColor.border": "Border",
+    "lumen.account.themeColor.menuDialogBackground": "Menu and Dialog Background",
+    "lumen.account.themeColor.sidebarBackgroundStart": "Sidebar Background Start",
+    "lumen.account.themeColor.sidebarBackgroundEnd": "Sidebar Background End",
+    "lumen.account.themeColor.sidebarBorder": "Sidebar Border",
+    "lumen.account.themeColor.sidebarHoverBackground": "Sidebar Hover Background",
+    "lumen.account.themeColor.scrolledSearchHeader": "Scrolled Search Header",
+    "lumen.account.themeColor.primaryText": "Primary Text",
+    "lumen.account.themeColor.accent": "Accent"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1047,7 +1059,19 @@
     "lumen.recordings.loadingTeams": "Chargement des équipes suivies…",
     "lumen.recordings.loadingSchedules": "Chargement des calendriers des équipes…",
     "lumen.recordings.teamSchedules": "calendriers des équipes",
-    "lumen.recordings.maxFollowedTeams": "Vous pouvez suivre jusqu’à 20 équipes."
+    "lumen.recordings.maxFollowedTeams": "Vous pouvez suivre jusqu’à 20 équipes.",
+    "lumen.account.themeColor.pageBackground": "Arrière-plan de la page",
+    "lumen.account.themeColor.surface": "Surface",
+    "lumen.account.themeColor.raisedSurface": "Surface surélevée",
+    "lumen.account.themeColor.border": "Bordure",
+    "lumen.account.themeColor.menuDialogBackground": "Arrière-plan des menus et des boîtes de dialogue",
+    "lumen.account.themeColor.sidebarBackgroundStart": "Début du dégradé d’arrière-plan de la barre latérale",
+    "lumen.account.themeColor.sidebarBackgroundEnd": "Fin du dégradé d’arrière-plan de la barre latérale",
+    "lumen.account.themeColor.sidebarBorder": "Bordure de la barre latérale",
+    "lumen.account.themeColor.sidebarHoverBackground": "Arrière-plan au survol de la barre latérale",
+    "lumen.account.themeColor.scrolledSearchHeader": "En-tête de recherche après défilement",
+    "lumen.account.themeColor.primaryText": "Texte principal",
+    "lumen.account.themeColor.accent": "Couleur d’accentuation"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -1607,6 +1631,18 @@
     "lumen.recordings.loadingTeams": "جارٍ تحميل الفرق التي تتابعها…",
     "lumen.recordings.loadingSchedules": "جارٍ تحميل جداول الفرق…",
     "lumen.recordings.teamSchedules": "جداول الفرق",
-    "lumen.recordings.maxFollowedTeams": "يمكنك متابعة 20 فريقًا كحد أقصى."
+    "lumen.recordings.maxFollowedTeams": "يمكنك متابعة 20 فريقًا كحد أقصى.",
+    "lumen.account.themeColor.pageBackground": "خلفية الصفحة",
+    "lumen.account.themeColor.surface": "السطح",
+    "lumen.account.themeColor.raisedSurface": "السطح المرتفع",
+    "lumen.account.themeColor.border": "الحد",
+    "lumen.account.themeColor.menuDialogBackground": "خلفية القوائم ومربعات الحوار",
+    "lumen.account.themeColor.sidebarBackgroundStart": "بداية تدرج خلفية الشريط الجانبي",
+    "lumen.account.themeColor.sidebarBackgroundEnd": "نهاية تدرج خلفية الشريط الجانبي",
+    "lumen.account.themeColor.sidebarBorder": "حد الشريط الجانبي",
+    "lumen.account.themeColor.sidebarHoverBackground": "خلفية الشريط الجانبي عند التمرير",
+    "lumen.account.themeColor.scrolledSearchHeader": "ترويسة البحث بعد التمرير",
+    "lumen.account.themeColor.primaryText": "النص الأساسي",
+    "lumen.account.themeColor.accent": "لون التمييز"
   }
 }

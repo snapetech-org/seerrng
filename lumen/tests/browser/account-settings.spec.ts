@@ -678,3 +678,92 @@ test('account theme colors preserve stored overrides for other controls', async 
   ).toBeVisible();
   expect(overrides).toEqual({ '--theme-page-spotlight-strength': 0.75 });
 });
+
+test('account theme override controls follow the selected Lumen locale', async ({
+  page,
+}) => {
+  let locale = 'fr';
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    const responses: Record<string, object> = {
+      '/api/v1/auth/me': {
+        id: 2,
+        displayName: 'Viewer',
+        permissions: 32,
+        userType: 2,
+        settings: { advancedThemeOverrides: {} },
+      },
+      '/api/v1/user/2/settings/main': { username: 'Viewer', locale },
+      '/api/v1/user/2/settings/password': { hasPassword: true },
+      '/api/v1/languages': [],
+    };
+    return route.fulfill({ json: responses[pathname] ?? {} });
+  });
+
+  await page.goto(appPath('./me/account#advanced-theme'));
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await page.locator('#advanced-theme').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/theme-overrides-fr-${page.viewportSize()?.width}.png`,
+    });
+  for (const label of [
+    'Arrière-plan de la page',
+    'Surface',
+    'Surface surélevée',
+    'Bordure',
+    'Arrière-plan des menus et des boîtes de dialogue',
+    'Début du dégradé d’arrière-plan de la barre latérale',
+    'Fin du dégradé d’arrière-plan de la barre latérale',
+    'Bordure de la barre latérale',
+    'Arrière-plan au survol de la barre latérale',
+    'En-tête de recherche après défilement',
+    'Texte principal',
+    'Couleur d’accentuation',
+  ]) {
+    await expect(page.getByLabel(label, { exact: true })).toBeVisible();
+  }
+  await expect(
+    page.getByRole('button', { name: 'Enregistrer les couleurs du thème' })
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+
+  locale = 'ar';
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await page.locator('#advanced-theme').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/theme-overrides-ar-${page.viewportSize()?.width}.png`,
+    });
+  for (const label of [
+    'خلفية الصفحة',
+    'السطح',
+    'السطح المرتفع',
+    'الحد',
+    'خلفية القوائم ومربعات الحوار',
+    'بداية تدرج خلفية الشريط الجانبي',
+    'نهاية تدرج خلفية الشريط الجانبي',
+    'حد الشريط الجانبي',
+    'خلفية الشريط الجانبي عند التمرير',
+    'ترويسة البحث بعد التمرير',
+    'النص الأساسي',
+    'لون التمييز',
+  ]) {
+    await expect(page.getByLabel(label, { exact: true })).toBeVisible();
+  }
+  await expect(
+    page.getByRole('button', { name: 'حفظ ألوان المظهر' })
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+});

@@ -193,9 +193,9 @@ export default function AccountThemeOverrides() {
           </label>
         ) : (
           <div className="setlist">
-            {themeColors.map(([key, , label]) => (
+            {themeColors.map(([key, , label, messageKey]) => (
               <label className="set cfg-row" key={key}>
-                <b>{label}</b>
+                <b>{t(messageKey, label)}</b>
                 <input
                   className="cfg-input"
                   value={draft[key] ?? saved?.[key] ?? ''}
