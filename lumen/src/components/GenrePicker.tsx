@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -63,9 +64,22 @@ export function GenrePicker({
   const [popoverOffset, setPopoverOffset] = useState(0);
   const title = labels?.title ?? 'Genres';
   const allLabel = labels?.all ?? 'All genres';
+  const pickedKey = picked.join('\u0000');
   const summary = picked.length ? genreSummary(picked, options) : allLabel;
   const text =
     exclusion?.active && picked.length ? `Exclude ${summary}` : summary;
+  const positionPopover = useCallback(() => {
+    const box = pop.current;
+    const anchor = wrap.current?.getBoundingClientRect();
+    if (!box || !anchor) return;
+    const viewportWidth = document.documentElement.clientWidth;
+    const maxLeft = viewportWidth - 16 - box.offsetWidth;
+    const preferred =
+      anchor.left > maxLeft ? anchor.right - box.offsetWidth : anchor.left;
+    setPopoverOffset(
+      Math.max(16, Math.min(preferred, maxLeft)) - anchor.left
+    );
+  }, []);
   const close = (focusButton: boolean) => {
     refocus.current = focusButton;
     setOpen(false);
@@ -83,19 +97,10 @@ export function GenrePicker({
   useLayoutEffect(() => {
     if (!open || phone) return;
     const box = pop.current;
-    const position = () => {
-      const anchor = wrap.current?.getBoundingClientRect();
-      if (!box || !anchor) return;
-      const maxLeft = window.innerWidth - 16 - box.offsetWidth;
-      const preferred =
-        anchor.left > maxLeft ? anchor.right - box.offsetWidth : anchor.left;
-      setPopoverOffset(
-        Math.max(16, Math.min(preferred, maxLeft)) - anchor.left
-      );
-    };
-    position();
-    window.addEventListener('resize', position);
-    const observer = new ResizeObserver(position);
+    positionPopover();
+    window.addEventListener('resize', positionPopover);
+    window.addEventListener('scroll', positionPopover, true);
+    const observer = new ResizeObserver(positionPopover);
     if (wrap.current) observer.observe(wrap.current);
     if (box) observer.observe(box);
     (
@@ -118,13 +123,21 @@ export function GenrePicker({
     document.addEventListener('focusin', outside);
     document.addEventListener('keydown', onKey);
     return () => {
-      window.removeEventListener('resize', position);
+      window.removeEventListener('resize', positionPopover);
+      window.removeEventListener('scroll', positionPopover, true);
       observer.disconnect();
       document.removeEventListener('pointerdown', outside);
       document.removeEventListener('focusin', outside);
       document.removeEventListener('keydown', onKey);
     };
-  }, [open, phone]);
+  }, [open, phone, positionPopover]);
+
+  // Filtering can replace the landing rows with a full list while the picker stays open.
+  // That route reflow can move its anchor without changing the anchor's size, so the
+  // ResizeObserver above will not notice it. Reposition synchronously after each pick.
+  useLayoutEffect(() => {
+    if (open && !phone) positionPopover();
+  }, [open, phone, pickedKey, positionPopover]);
 
   const toggle = (v: string) =>
     onChange(
