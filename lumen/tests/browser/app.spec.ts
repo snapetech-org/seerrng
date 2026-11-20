@@ -6048,6 +6048,17 @@ test('book recommendations open a newly created feed', async ({ page }) => {
   expect(createBox!.y).toBeGreaterThanOrEqual(
     settingBox!.y + settingBox!.height
   );
+  expect(
+    await create.evaluate((button) => {
+      const box = button.getBoundingClientRect();
+      return (
+        document.elementFromPoint(
+          box.x + box.width / 2,
+          box.y + box.height / 2
+        ) === button
+      );
+    })
+  ).toBe(true);
   await create.click();
   await expect(page.getByRole('alert')).toHaveText(
     'Hardcover rejected your API token.'
