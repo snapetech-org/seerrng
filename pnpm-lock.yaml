@@ -363,8 +363,8 @@ importers:
         specifier: 1.4.10
         version: 1.4.10(@types/express@5.0.6)
       '@types/country-flag-icons':
-        specifier: 1.2.2
-        version: 1.2.2
+        specifier: 1.6.20
+        version: 1.6.20
       '@types/csurf':
         specifier: 1.11.5
         version: 1.11.5
@@ -2621,8 +2621,9 @@ packages:
   '@types/cookiejar@2.1.5':
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
 
-  '@types/country-flag-icons@1.2.2':
-    resolution: {integrity: sha512-CefEn/J336TBDp7NX8JqzlDtCBOsm8M3r1Li0gEOt0HOMHF1XemNyrx9lSHjsafcb1yYWybU0N8ZAXuyCaND0w==}
+  '@types/country-flag-icons@1.6.20':
+    resolution: {integrity: sha512-rpQPv1G0MlBPEGHL3IxKP1X68uzs+LBK/5IMaEVr6fC0VmX0lYyUvjvCJTCs7P7Xlqfc5k5tRDVv2X1bNPNXnA==}
+    deprecated: This is a stub types definition. country-flag-icons provides its own type definitions, so you do not need this installed.
 
   '@types/csurf@1.11.5':
     resolution: {integrity: sha512-5rw87+5YGixyL2W8wblSUl5DSZi5YOlXE6Awwn2ofLvqKr/1LruKffrQipeJKUX44VaxKj8m5es3vfhltJTOoA==}
@@ -9368,7 +9369,9 @@ snapshots:
 
   '@types/cookiejar@2.1.5': {}
 
-  '@types/country-flag-icons@1.2.2': {}
+  '@types/country-flag-icons@1.6.20':
+    dependencies:
+      country-flag-icons: 1.6.20
 
   '@types/csurf@1.11.5':
     dependencies:

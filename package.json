@@ -177,7 +177,7 @@
     "@types/bcrypt": "6.0.0",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "1.4.10",
-    "@types/country-flag-icons": "1.2.2",
+    "@types/country-flag-icons": "1.6.20",
     "@types/csurf": "1.11.5",
     "@types/email-templates": "10.0.4",
     "@types/eslint-plugin-jsx-a11y": "^6.10.1",
