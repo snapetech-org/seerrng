@@ -148,3 +148,10 @@ test('restores focus when asynchronous dialog content replaces the focused contr
   await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
   expect(document.activeElement?.textContent).toBe('Ready');
 });
+
+test('keeps focus in the topmost dialog when focus moves outside it', async () => {
+  await act(async () => root.render(<Dialog name="current" close={vi.fn()} />));
+  document.getElementById('trigger')!.focus();
+  await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
+  expect(document.activeElement?.textContent).toBe('current first');
+});

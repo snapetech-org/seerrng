@@ -46,6 +46,16 @@ export default function useDialogFocus(
         frame = requestAnimationFrame(focusWhenMounted);
       }
     };
+    const onFocusIn = (event: FocusEvent) => {
+      const dialog = ref.current;
+      if (
+        !dialog ||
+        visibleDialogs().at(-1) !== dialog ||
+        (event.target instanceof window.Node && dialog.contains(event.target))
+      )
+        return;
+      focusable()[0]?.focus();
+    };
     frame = requestAnimationFrame(focusWhenMounted);
     const observer = new window.MutationObserver(() => {
       const dialog = ref.current;
@@ -57,7 +67,19 @@ export default function useDialogFocus(
         focusable()[0]?.focus();
     });
     if (ref.current)
-      observer.observe(ref.current, { childList: true, subtree: true });
+      observer.observe(ref.current, {
+        attributes: true,
+        attributeFilter: [
+          'aria-hidden',
+          'class',
+          'disabled',
+          'hidden',
+          'style',
+          'tabindex',
+        ],
+        childList: true,
+        subtree: true,
+      });
     const onKey = (event: KeyboardEvent) => {
       if (event.defaultPrevented) return;
       const dialogs = visibleDialogs();
@@ -84,11 +106,13 @@ export default function useDialogFocus(
       }
     };
     document.addEventListener('keydown', onKey);
+    document.addEventListener('focusin', onFocusIn);
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
       document.removeEventListener('keydown', onKey);
+      document.removeEventListener('focusin', onFocusIn);
       if (previous?.isConnected) previous.focus();
     };
   }, [enabled, ref]);
