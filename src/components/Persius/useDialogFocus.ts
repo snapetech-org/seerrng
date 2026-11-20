@@ -14,6 +14,15 @@ export default function useDialogFocus(
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
+    const visibleDialogs = () =>
+      Array.from(
+        document.querySelectorAll<HTMLElement>('[aria-modal="true"]')
+      ).filter(
+        (dialog) =>
+          !dialog.hidden &&
+          dialog.getAttribute('aria-hidden') !== 'true' &&
+          dialog.getClientRects().length > 0
+      );
     const focusable = () =>
       Array.from(
         ref.current?.querySelectorAll<HTMLElement>(
@@ -29,8 +38,8 @@ export default function useDialogFocus(
     const focusWhenMounted = () => {
       if (disposed) return;
       const dialog = ref.current;
-      const dialogs = document.querySelectorAll('[aria-modal="true"]');
-      if (dialog && dialogs[dialogs.length - 1] !== dialog) return;
+      const dialogs = visibleDialogs();
+      if (dialog && dialogs.at(-1) !== dialog) return;
       if (dialog?.contains(document.activeElement)) return;
       focusable()[0]?.focus();
       if (!dialog?.contains(document.activeElement)) {
@@ -38,10 +47,21 @@ export default function useDialogFocus(
       }
     };
     frame = requestAnimationFrame(focusWhenMounted);
+    const observer = new window.MutationObserver(() => {
+      const dialog = ref.current;
+      if (
+        dialog &&
+        visibleDialogs().at(-1) === dialog &&
+        !dialog.contains(document.activeElement)
+      )
+        focusable()[0]?.focus();
+    });
+    if (ref.current)
+      observer.observe(ref.current, { childList: true, subtree: true });
     const onKey = (event: KeyboardEvent) => {
       if (event.defaultPrevented) return;
-      const dialogs = document.querySelectorAll('[aria-modal="true"]');
-      if (dialogs[dialogs.length - 1] !== ref.current) return;
+      const dialogs = visibleDialogs();
+      if (dialogs.at(-1) !== ref.current) return;
       if (event.key === 'Escape' && dismiss.current) {
         event.preventDefault();
         dismiss.current();
@@ -67,6 +87,7 @@ export default function useDialogFocus(
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
+      observer.disconnect();
       document.removeEventListener('keydown', onKey);
       if (previous?.isConnected) previous.focus();
     };

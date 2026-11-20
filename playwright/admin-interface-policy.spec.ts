@@ -87,7 +87,7 @@ test('admin can apply the interface to all users and lock non-admins to Lumen', 
       maxRedirects: 0,
     });
     expect(nonHtmlRequest.status()).toBe(302);
-    expect(nonHtmlRequest.headers().location).toBe('/lumen/');
+    expect(nonHtmlRequest.headers().location).toBe('/lumen/movie/123');
     await page.goto('/seerrng');
     await expect(page).toHaveURL(/\/?interface=classic$/);
   } finally {

@@ -8,6 +8,7 @@
 
 - **Lumen:** Hardcover recommendation feeds can be created on mobile without the submit action intercepting form input. Lumen waits for authentication to settle before checking category availability, avoiding a duplicate request during sign-in initialization.
 - **Discovery Integrations:** Connecting a Trakt, AniList, or Simkl account from the full settings page now sends the required JSON request body, avoiding an unsupported-media-type error.
+- **Lumen:** Modal dialogs keep keyboard focus inside the dialog when asynchronously loaded content replaces the currently focused control.
 
 ## [3.72.39](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.39) - 2026-11-19
 

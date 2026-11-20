@@ -170,7 +170,13 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             new URL(r.url()).pathname === endpoint &&
             ['POST', 'PUT'].includes(r.request().method())
         );
-        await save.click();
+        if (theme === 'seerrOrig') {
+          // The SeerrOrig footer unmounts after a successful save, so dispatch
+          // the final click without waiting for that locator to stay attached.
+          await save.dispatchEvent('click');
+        } else {
+          await save.click();
+        }
         expect((await restore).status()).toBe(200);
         await expectSettingsClean(page, save);
         await page.reload();

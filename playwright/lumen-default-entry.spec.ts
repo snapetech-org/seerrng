@@ -81,7 +81,7 @@ for (const width of [390, 1440]) {
       await page
         .locator('.set')
         .filter({ hasText: 'Full SeerrNG' })
-        .getByRole('link', { name: 'Open', exact: true })
+        .getByRole('link', { name: 'Open Full SeerrNG', exact: true })
         .click();
       await expect(page).toHaveURL(/\/$/);
       await expect(page.locator('html')).toHaveAttribute(

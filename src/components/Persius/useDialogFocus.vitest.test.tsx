@@ -131,3 +131,20 @@ test('waits for a transitioning dialog to mount before moving focus, and cancels
   expect(frames.size).toBe(0);
   expect(document.activeElement?.id).toBe('trigger');
 });
+
+test('restores focus when asynchronous dialog content replaces the focused control', async () => {
+  const DynamicDialog = ({ ready }: { ready: boolean }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useDialogFocus(ref, true);
+    return (
+      <div ref={ref} role="dialog" aria-modal="true">
+        {ready ? <button>Ready</button> : <a href="#loading">Loading</a>}
+      </div>
+    );
+  };
+  await act(async () => root.render(<DynamicDialog ready={false} />));
+  expect(document.activeElement?.textContent).toBe('Loading');
+  await act(async () => root.render(<DynamicDialog ready />));
+  await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
+  expect(document.activeElement?.textContent).toBe('Ready');
+});

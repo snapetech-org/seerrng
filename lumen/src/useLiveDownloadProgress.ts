@@ -1,11 +1,11 @@
 import { useEffect, useReducer } from 'react';
-import { MediaStatus, type DownloadItem, type MediaInfo } from './api';
 import {
   isLiveDownloadToken,
   liveDownloadStore,
   toInfoHash,
   type LiveDownload,
-} from './liveDownloadStore';
+} from '../../src/utils/liveDownloadStore';
+import { MediaStatus, type DownloadItem, type MediaInfo } from './api';
 
 export function downloadSubscriptionId(
   item: { liveDownloadToken?: string; downloadId?: string },
