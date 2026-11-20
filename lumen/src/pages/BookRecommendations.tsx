@@ -439,7 +439,7 @@ export default function BookRecommendations() {
           )}
           <Section title="Create a Recommendation Feed">
             <form
-              className="setlist"
+              className="setlist recommendation-form"
               onSubmit={(event) => {
                 event.preventDefault();
                 void create();
@@ -497,7 +497,7 @@ export default function BookRecommendations() {
                   </option>
                 </select>
               </label>
-              <div className="set">
+              <div className="set recommendation-preference">
                 <label htmlFor="recommendation-create-less-popular">
                   Prefer Less Popular Books
                 </label>

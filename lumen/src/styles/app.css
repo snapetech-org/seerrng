@@ -1754,6 +1754,17 @@ a.person:hover {
   box-shadow: 0 0 0 1px var(--line);
   overflow: hidden;
 }
+.setlist.recommendation-form {
+  display: flex;
+  flex-direction: column;
+}
+.recommendation-preference {
+  pointer-events: none;
+}
+.recommendation-preference > label,
+.recommendation-preference > input {
+  pointer-events: auto;
+}
 .set {
   display: flex;
   flex-wrap: wrap;

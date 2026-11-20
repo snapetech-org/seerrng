@@ -6041,6 +6041,7 @@ test('book recommendations open a newly created feed', async ({ page }) => {
     ).toBe(true);
   }
   await lessPopular.check();
+  await create.scrollIntoViewIfNeeded();
   const settingBox = await lessPopular.boundingBox();
   const createBox = await create.boundingBox();
   expect(settingBox).not.toBeNull();

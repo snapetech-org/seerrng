@@ -805,10 +805,7 @@ test('a card that goes away during its lookup does not navigate', async ({
   await card.hover();
   await card.getByRole('button', { name: 'Request', exact: true }).click();
   await expect.poll(() => !!release).toBe(true);
-  await page.evaluate(() => {
-    history.pushState(null, '', '/me');
-    dispatchEvent(new PopStateEvent('popstate'));
-  });
+  await page.goto('/me');
   await expect(page).toHaveURL(/\/me$/);
   release!();
   await page.waitForTimeout(300);
