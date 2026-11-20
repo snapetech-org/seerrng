@@ -1765,7 +1765,7 @@ a.person:hover {
 .recommendation-form > .set {
   pointer-events: auto;
 }
-.recommendation-preference {
+.recommendation-form > .recommendation-preference {
   pointer-events: none;
 }
 .recommendation-preference > label,
