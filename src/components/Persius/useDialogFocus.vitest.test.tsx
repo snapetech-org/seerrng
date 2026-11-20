@@ -168,3 +168,36 @@ test('focuses the dialog itself while asynchronous content has no controls', asy
     document.querySelector('[role="dialog"]')
   );
 });
+
+test('waits for a mounted dialog to become visible before focusing it', async () => {
+  const frames = new Map<number, FrameRequestCallback>();
+  let nextFrame = 0;
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    frames.set(++nextFrame, callback);
+    return nextFrame;
+  });
+  vi.stubGlobal('cancelAnimationFrame', (frame: number) =>
+    frames.delete(frame)
+  );
+  const TransitionDialog = ({ ready }: { ready: boolean }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    useDialogFocus(ref, true);
+    return (
+      <div ref={ref} role="dialog" aria-modal="true" aria-hidden={!ready}>
+        <button>Ready</button>
+      </div>
+    );
+  };
+  const advance = async () => {
+    const callbacks = [...frames.values()];
+    frames.clear();
+    await act(async () => callbacks.forEach((callback) => callback(0)));
+  };
+
+  await act(async () => root.render(<TransitionDialog ready={false} />));
+  await advance();
+  expect(frames.size).toBe(1);
+  await act(async () => root.render(<TransitionDialog ready />));
+  await advance();
+  expect(document.activeElement?.textContent).toBe('Ready');
+});

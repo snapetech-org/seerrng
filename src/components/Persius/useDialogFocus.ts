@@ -39,6 +39,12 @@ export default function useDialogFocus(
       if (disposed) return;
       const dialog = ref.current;
       const dialogs = visibleDialogs();
+      if (dialog && !dialogs.includes(dialog)) {
+        // A mounted dialog can still be hidden during its enter transition.
+        // Keep checking until it participates in the visible modal stack.
+        frame = requestAnimationFrame(focusWhenMounted);
+        return;
+      }
       if (dialog && dialogs.at(-1) !== dialog) return;
       if (dialog?.contains(document.activeElement)) return;
       (focusable()[0] ?? dialog)?.focus();
