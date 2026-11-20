@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { MediaRequestStatus } from '@server/constants/media';
 
 for (const width of [1440, 390]) {
   test(`removing provider media preserves request history at ${width}px`, async ({
@@ -20,7 +21,7 @@ for (const width of [1440, 390]) {
       id: 9101,
       mediaType: 'movie',
       tmdbId: 550,
-      status: 5,
+      status: MediaRequestStatus.PENDING,
       status4k: 1,
       serviceId: 1,
       externalServiceId: 77,
