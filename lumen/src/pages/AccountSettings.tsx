@@ -829,9 +829,9 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           <p className="note">This account has administrator access.</p>
         ) : grants.length ? (
           <ul className="setlist">
-            {grants.map(([bit, label]) => (
+            {grants.map(([bit, label, messageKey]) => (
               <li className="set" key={String(bit)}>
-                {label}
+                {t(messageKey, label)}
               </li>
             ))}
           </ul>

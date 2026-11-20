@@ -870,3 +870,77 @@ test('password form uses the selected locale for its save action and failure', a
     page.getByRole('button', { name: 'Enregistrer le mot de passe' })
   ).toBeVisible();
 });
+
+test('account permission names follow the selected Lumen locale', async ({
+  page,
+}) => {
+  let locale = 'fr';
+  const permissions = 4 + 16 + 32 + 64 + 2199023255552;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    const responses: Record<string, object> = {
+      '/api/v1/auth/me': {
+        id: 2,
+        displayName: 'Viewer',
+        permissions,
+        userType: 2,
+      },
+      '/api/v1/user/2/settings/main': { username: 'Viewer', locale },
+      '/api/v1/user/2/settings/password': { hasPassword: true },
+    };
+    return route.fulfill({ json: responses[pathname] ?? {} });
+  });
+
+  await page.goto(appPath('./me/account#account-permissions'));
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await page.locator('#account-permissions').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/account-permissions-fr-${page.viewportSize()?.width}.png`,
+    });
+  for (const label of [
+    'Gérer les paramètres',
+    'Gérer les demandes',
+    'Demander',
+    'Voter',
+    'Demander des magazines',
+  ]) {
+    await expect(
+      page.locator('#account-permissions').getByText(label, { exact: true })
+    ).toBeVisible();
+  }
+  expect(
+    await page.locator('body').evaluate((body) => {
+      const root = document.documentElement;
+      return Math.max(body.scrollWidth, root.scrollWidth) <= root.clientWidth;
+    })
+  ).toBe(true);
+
+  locale = 'ar';
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await page.locator('#account-permissions').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/account-permissions-ar-${page.viewportSize()?.width}.png`,
+    });
+  for (const label of [
+    'إدارة الإعدادات',
+    'إدارة الطلبات',
+    'طلب',
+    'التصويت',
+    'طلب المجلات',
+  ]) {
+    await expect(
+      page.locator('#account-permissions').getByText(label, { exact: true })
+    ).toBeVisible();
+  }
+  expect(
+    await page.locator('body').evaluate((body) => {
+      const root = document.documentElement;
+      return Math.max(body.scrollWidth, root.scrollWidth) <= root.clientWidth;
+    })
+  ).toBe(true);
+});

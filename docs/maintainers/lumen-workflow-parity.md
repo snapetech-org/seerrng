@@ -125,7 +125,7 @@ screenshots were compared at 1440 × 900; English, French, and Arabic phone
 screenshots were inspected at 390 × 844. No horizontal overflow appeared.
 
 This is still a partial localization: remaining account actions, notices,
-permission names, and most other Lumen routes remain English. The twelve theme
+and most other Lumen routes remain English. The twelve theme
 color controls now have locale message IDs and human-written French and Arabic
 labels, verified in account settings; other locales use the English fallback.
 Locale overrides have not received independent human linguistic review, and
@@ -145,8 +145,21 @@ in French and Arabic; they preserve the existing settings rows and input
 geometry without adding styles. Password forms now translate the save action,
 missing-local-password notice, and forbidden/unconfirmed failure messages in
 French and Arabic. Browser fixtures cover 403 and 503 responses, including the
-first-password state, across all four viewport projects. Some permission names
-and less common account-screen copy remain English. Locale-specific overrides
+first-password state, across all four viewport projects. Permission names now
+follow the active locale in Account Settings, Default User Permissions, and
+managed user permission editors. Existing SeerrNG permission catalog messages
+provide translations; Manage Settings and Vote have explicit English, French,
+and Arabic overrides. Browser coverage checks the Account Settings summary in
+French and Arabic and both administrator editors in French. It exercises the
+account permissions section, expanded default permissions, and an open managed
+user permission editor at desktop (1440 × 900), iPhone (390 × 844), Android
+(412 × 915), and tablet (834 × 1194) viewports. Baseline and candidate captures
+were compared at matching viewports; the existing row and checkbox geometry is
+unchanged and Arabic shows no horizontal overflow. Evidence is retained at
+`seerrng-lumen-theme-locale-20261120/baseline/permissions/`,
+`seerrng-lumen-theme-locale-20261120/baseline/admin-permissions/`, and
+`seerrng-lumen-theme-locale-20261120/candidate/permissions/`. Less common
+account-screen copy remains English. Locale-specific overrides
 are currently human-written only for English, French, and Arabic; independent
 linguistic review and full bundled-suite qualification remain open. Candidate
 captures from these increments are retained in

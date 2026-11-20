@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { permissionOptions } from '../permissionOptions';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
@@ -12,6 +13,7 @@ export default function DefaultUserPermissions({
 }: {
   initial: number;
 }) {
+  const { t } = useLumenLocale();
   const { hash } = useLocation();
   const editor = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -75,9 +77,9 @@ export default function DefaultUserPermissions({
           <p className="note">This default grants full administrator access.</p>
         )}
         <div className="setlist" role="group" aria-label="Default Permissions">
-          {permissionOptions.map(([bit, label]) => (
+          {permissionOptions.map(([bit, label, messageKey]) => (
             <label className="set" key={label}>
-              <span>{label}</span>
+              <span>{t(messageKey, label)}</span>
               <input
                 type="checkbox"
                 checked={(draft & bit) !== 0n}

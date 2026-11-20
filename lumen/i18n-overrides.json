@@ -503,7 +503,9 @@
     "lumen.account.savePassword": "Save Password",
     "lumen.account.noLocalPassword": "This account does not have a local password.",
     "lumen.account.passwordChangeForbidden": "Check your current password and account permissions.",
-    "lumen.account.passwordChangeUnconfirmed": "Could not confirm the password change. Check your credentials before trying again."
+    "lumen.account.passwordChangeUnconfirmed": "Could not confirm the password change. Check your credentials before trying again.",
+    "lumen.permission.manageSettings": "Manage Settings",
+    "lumen.permission.vote": "Vote"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1079,7 +1081,9 @@
     "lumen.account.savePassword": "Enregistrer le mot de passe",
     "lumen.account.noLocalPassword": "Ce compte ne possède pas de mot de passe local.",
     "lumen.account.passwordChangeForbidden": "Vérifiez votre mot de passe actuel et les autorisations de votre compte.",
-    "lumen.account.passwordChangeUnconfirmed": "Impossible de confirmer le changement de mot de passe. Vérifiez vos identifiants avant de réessayer."
+    "lumen.account.passwordChangeUnconfirmed": "Impossible de confirmer le changement de mot de passe. Vérifiez vos identifiants avant de réessayer.",
+    "lumen.permission.manageSettings": "Gérer les paramètres",
+    "lumen.permission.vote": "Voter"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -1655,6 +1659,8 @@
     "lumen.account.savePassword": "حفظ كلمة المرور",
     "lumen.account.noLocalPassword": "هذا الحساب لا يملك كلمة مرور محلية.",
     "lumen.account.passwordChangeForbidden": "تحقق من كلمة المرور الحالية وصلاحيات الحساب.",
-    "lumen.account.passwordChangeUnconfirmed": "تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة."
+    "lumen.account.passwordChangeUnconfirmed": "تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة.",
+    "lumen.permission.manageSettings": "إدارة الإعدادات",
+    "lumen.permission.vote": "التصويت"
   }
 }

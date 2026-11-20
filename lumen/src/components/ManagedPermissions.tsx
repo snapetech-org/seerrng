@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { permissionOptions } from '../permissionOptions';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
@@ -26,6 +27,7 @@ export default function ManagedPermissions({
   actorPermissions: number;
   onSaved: () => void;
 }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/permissions`;
   const { data, error, reload } = useApi<{
     permissions: number;
@@ -156,7 +158,7 @@ export default function ManagedPermissions({
             role="group"
             aria-label="Explicit Permissions"
           >
-            {permissionOptions.map(([bit, label]) => {
+            {permissionOptions.map(([bit, label, messageKey]) => {
               const checked = (current & bit) !== 0n;
               const disabled =
                 busy ||
@@ -166,7 +168,7 @@ export default function ManagedPermissions({
                 (bit !== 2n && targetAdmin);
               return (
                 <label className="set" key={label}>
-                  <span>{label}</span>
+                  <span>{t(messageKey, label)}</span>
                   <input
                     type="checkbox"
                     checked={checked}

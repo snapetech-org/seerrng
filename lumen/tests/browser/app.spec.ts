@@ -6503,6 +6503,9 @@ test('General Settings confirms default permissions and preserves higher permiss
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
   let defaultPermissions = 4398046511104 + 32;
   const writes: unknown[] = [];
   await page.route('**/api/v1/settings/main', (route) => {
@@ -6525,14 +6528,24 @@ test('General Settings confirms default permissions and preserves higher permiss
   await expect(
     page.getByRole('heading', { name: 'Default User Permissions' })
   ).toBeInViewport();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/default-user-permissions-fr-${page.viewportSize()?.width}.png`,
+    });
+  expect(
+    await page.locator('body').evaluate((body) => {
+      const root = document.documentElement;
+      return Math.max(body.scrollWidth, root.scrollWidth) <= root.clientWidth;
+    })
+  ).toBe(true);
   await expect(
-    page.getByRole('checkbox', { name: 'Admin', exact: true })
+    page.getByRole('checkbox', { name: 'Administrateur', exact: true })
   ).toBeDisabled();
   await expect(
-    page.getByRole('checkbox', { name: 'Auto Request Magazine' })
+    page.getByRole('checkbox', { name: 'Demande automatique de magazines' })
   ).toBeChecked();
   await page
-    .getByRole('checkbox', { name: 'Request Book', exact: true })
+    .getByRole('checkbox', { name: 'Demande de livres', exact: true })
     .check();
   await page.getByRole('button', { name: 'Save Default Permissions' }).click();
   expect(writes).toEqual([]);
@@ -6546,7 +6559,7 @@ test('General Settings confirms default permissions and preserves higher permiss
   ]);
   await page.reload();
   await expect(
-    page.getByRole('checkbox', { name: 'Request Book', exact: true })
+    page.getByRole('checkbox', { name: 'Demande de livres', exact: true })
   ).toBeChecked();
 });
 
@@ -7067,6 +7080,9 @@ test('Users delegates only held permissions and preserves high permission bits',
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/user/8/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
   const requestMusic = 4294967296;
   const target = {
     id: 19,
@@ -7122,11 +7138,24 @@ test('Users delegates only held permissions and preserves high permission bits',
   });
   await page.goto(testAppPath('/admin/users'));
   await page.getByRole('button', { name: 'Permissions', exact: true }).click();
-  await expect(
-    page.getByRole('checkbox', { name: 'Manage Settings', exact: true })
-  ).toBeDisabled();
+  const settingsPermission = page.getByRole('checkbox', {
+    name: 'Gérer les paramètres',
+    exact: true,
+  });
+  await expect(settingsPermission).toBeDisabled();
+  await settingsPermission.scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/managed-permissions-fr-${page.viewportSize()?.width}.png`,
+    });
+  expect(
+    await page.locator('body').evaluate((body) => {
+      const root = document.documentElement;
+      return Math.max(body.scrollWidth, root.scrollWidth) <= root.clientWidth;
+    })
+  ).toBe(true);
   const music = page.getByRole('checkbox', {
-    name: 'Request Music',
+    name: 'Demander de la musique',
     exact: true,
   });
   await music.check();

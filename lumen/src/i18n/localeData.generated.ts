@@ -283,6 +283,59 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'مسلسلات',
       'i18n.next': 'التالي',
       'i18n.previous': 'السابق',
+      'components.PermissionEdit.admin': 'مدير',
+      'components.PermissionEdit.advancedrequest': 'طلبات متقدمة',
+      'components.PermissionEdit.autoapprove': 'موافقة تلقائية',
+      'components.PermissionEdit.autoapprove4k': 'موافقة تلقائية لجودة ال4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'موافقة تلقائية للأفلام بجودة 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'موافقة تلقائية للمسلسلات بجودة 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'الموافقة التلقائية على الوسائط للبالغين',
+      'components.PermissionEdit.autoapproveBooks':
+        'الموافقة التلقائية على الكتب',
+      'components.PermissionEdit.autoapproveComics':
+        'الموافقة التلقائية على القصص المصورة',
+      'components.PermissionEdit.autoapproveMagazines':
+        'الموافقة التلقائية على المجلات',
+      'components.PermissionEdit.autoapproveMovies': 'موافقة تلقائية للأفلام',
+      'components.PermissionEdit.autoapproveMusic':
+        'الموافقة التلقائية على الموسيقى',
+      'components.PermissionEdit.autoapproveSeries': 'موافقة تلقائية للمسلسلات',
+      'components.PermissionEdit.autoapproveSports':
+        'الموافقة التلقائية على الرياضة',
+      'components.PermissionEdit.autorequest': 'طلب تلقائي',
+      'components.PermissionEdit.autorequestBooks': 'طلب الكتب تلقائيًا',
+      'components.PermissionEdit.autorequestComics':
+        'طلب القصص المصوّرة تلقائيًا',
+      'components.PermissionEdit.autorequestMagazines': 'مجلات الطلب التلقائي',
+      'components.PermissionEdit.autorequestMovies': 'طلبات تلقائية للأفلام',
+      'components.PermissionEdit.autorequestMusic': 'طلب الموسيقى التلقائي',
+      'components.PermissionEdit.autorequestSeries': 'طلبات تلقائية للمسلسلات',
+      'components.PermissionEdit.createissues': 'الإبلاغ عن وجود مشاكل',
+      'components.PermissionEdit.manageblocklist': 'إدارة قائمة الحظر',
+      'components.PermissionEdit.managedownloads': 'إدارة التنزيلات',
+      'components.PermissionEdit.manageissues': 'إدارة المشاكل',
+      'components.PermissionEdit.managerequests': 'إدارة الطلبات',
+      'components.PermissionEdit.request': 'طلب',
+      'components.PermissionEdit.request4k': 'طلب بجودة 4K',
+      'components.PermissionEdit.request4kMovies': 'طلب أفلام بجودة 4K',
+      'components.PermissionEdit.request4kTv': 'طلب مسلسلات بجودة 4K',
+      'components.PermissionEdit.requestAdult': 'طلب الوسائط للبالغين',
+      'components.PermissionEdit.requestBooks': 'طلب الكتب',
+      'components.PermissionEdit.requestComics': 'طلب القصص المصوّرة',
+      'components.PermissionEdit.requestMagazines': 'طلب المجلات',
+      'components.PermissionEdit.requestMovies': 'طلب أفلام',
+      'components.PermissionEdit.requestMusic': 'طلب الموسيقى',
+      'components.PermissionEdit.requestSports': 'طلب الرياضة',
+      'components.PermissionEdit.requestTv': 'طلب مسلسلات',
+      'components.PermissionEdit.users': 'إدارة المستخدمين',
+      'components.PermissionEdit.viewblocklistedItems': 'عرض الوسائط المحظورة.',
+      'components.PermissionEdit.viewissues': 'الإطلاع على المشاكل',
+      'components.PermissionEdit.viewrecent': 'رؤية ماتم إضافته مؤخراً',
+      'components.PermissionEdit.viewrequests': 'الإطلاع على الطلبات',
+      'components.PermissionEdit.viewwatchlists': 'عرض قوائم المشاهدة',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -928,6 +981,8 @@ export const localeData = [
       'lumen.recordings.loadingSchedules': 'جارٍ تحميل جداول الفرق…',
       'lumen.recordings.teamSchedules': 'جداول الفرق',
       'lumen.recordings.maxFollowedTeams': 'يمكنك متابعة 20 فريقًا كحد أقصى.',
+      'lumen.permission.manageSettings': 'إدارة الإعدادات',
+      'lumen.permission.vote': 'التصويت',
     },
   },
   {
@@ -1011,6 +1066,41 @@ export const localeData = [
         'Нямате външни акаунти, свързани с вашия профил.',
       'i18n.next': 'Напред',
       'i18n.previous': 'Назад',
+      'components.PermissionEdit.admin': 'Администратор',
+      'components.PermissionEdit.advancedrequest':
+        'Допълнителни настройки за заявки',
+      'components.PermissionEdit.autoapprove': 'Автоматично одобрение',
+      'components.PermissionEdit.autoapprove4k': 'Автоматично одобрение (4K)',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Автоматично одобрение (4K филми)',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Автоматично одобрение (4K сериали)',
+      'components.PermissionEdit.autoapproveMovies':
+        'Автоматично одобрение на филми',
+      'components.PermissionEdit.autoapproveSeries':
+        'Автоматично одобрение на сериали',
+      'components.PermissionEdit.autorequest': 'Автоматична заявка',
+      'components.PermissionEdit.autorequestMovies':
+        'Автоматична заявка на филми',
+      'components.PermissionEdit.autorequestSeries':
+        'Автоматична заявка на сериали',
+      'components.PermissionEdit.createissues': 'Докладване на проблеми',
+      'components.PermissionEdit.manageblocklist':
+        'Управление на списъка с блокирани',
+      'components.PermissionEdit.manageissues': 'Управление на проблемите',
+      'components.PermissionEdit.managerequests': 'Управление на заявки',
+      'components.PermissionEdit.request': 'Заявка',
+      'components.PermissionEdit.request4k': 'Заявка в 4K',
+      'components.PermissionEdit.request4kMovies': 'Заявка за 4K филми',
+      'components.PermissionEdit.request4kTv': 'Заявка за 4K сериали',
+      'components.PermissionEdit.requestMovies': 'Заявка за филми',
+      'components.PermissionEdit.requestTv': 'Заявка за сериали',
+      'components.PermissionEdit.users': 'Управление на потребители',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Преглед на блокирана медия.',
+      'components.PermissionEdit.viewissues': 'Преглед на проблемите',
+      'components.PermissionEdit.viewrecent': 'Преглед на наскоро добавените',
+      'components.PermissionEdit.viewrequests': 'Преглед на заявките',
     },
   },
   {
@@ -1078,6 +1168,43 @@ export const localeData = [
       'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel·la',
       'i18n.next': 'Endavant',
       'i18n.previous': 'Endarrere',
+      'components.PermissionEdit.admin': 'Administrador',
+      'components.PermissionEdit.advancedrequest': 'Sol·licituds avançades',
+      'components.PermissionEdit.autoapprove': 'Aprovació automàtica',
+      'components.PermissionEdit.autoapprove4k': 'Aprovació automàtica 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprova automàticament pel·lícules 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Aprovació automàtica Sèries en 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprovació automàtica de pel·lícules',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprovació automàtica de sèries',
+      'components.PermissionEdit.autorequest': 'Sol·licitud automàtica',
+      'components.PermissionEdit.autorequestMovies':
+        'Sol·licitud automàtica de pel·lícules',
+      'components.PermissionEdit.autorequestSeries':
+        'Sol·licitud automàtica de sèrie',
+      'components.PermissionEdit.createissues': "Informa d'incidències",
+      'components.PermissionEdit.manageblocklist':
+        'Gestionar la llista de bloquejats',
+      'components.PermissionEdit.manageissues': 'Gestiona les incidències',
+      'components.PermissionEdit.managerequests': 'Gestiona les sol·licituds',
+      'components.PermissionEdit.request': 'Sol·licitud',
+      'components.PermissionEdit.request4k': 'Sol·licita 4K',
+      'components.PermissionEdit.request4kMovies':
+        'Sol·licitud de pel·lícules en 4K',
+      'components.PermissionEdit.request4kTv': 'Sol·licita Sèrie en 4K',
+      'components.PermissionEdit.requestMovies': 'Sol·liciteu pel·lícules',
+      'components.PermissionEdit.requestTv': 'Sol·licita sèries',
+      'components.PermissionEdit.users': 'Gestiona els usuaris',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Veure contingut bloquejat.',
+      'components.PermissionEdit.viewissues': 'Veure altres incidències',
+      'components.PermissionEdit.viewrecent': 'Veure afegits recentment',
+      'components.PermissionEdit.viewrequests': 'Veure sol·licituds',
+      'components.PermissionEdit.viewwatchlists':
+        'Veure les llistes de seguiment de Plex',
     },
   },
   {
@@ -1161,6 +1288,39 @@ export const localeData = [
         'Nemáte žádné externí účty propojené s vaším účtem.',
       'i18n.next': 'Další',
       'i18n.previous': 'Předchozí',
+      'components.PermissionEdit.admin': 'Správce',
+      'components.PermissionEdit.advancedrequest': 'Pokročilé žádosti',
+      'components.PermissionEdit.autoapprove': 'Automatické schválení',
+      'components.PermissionEdit.autoapprove4k': 'Automatické schválení 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatické schvalování 4K filmů',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatické schválení 4K seriálů',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automaticky schvalovat filmy',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automaticky schvalovat seriály',
+      'components.PermissionEdit.autorequest': 'Automatické vyžádání',
+      'components.PermissionEdit.autorequestMovies':
+        'Automatické vyžádání filmů',
+      'components.PermissionEdit.autorequestSeries':
+        'Automatické vyžádání seriálu',
+      'components.PermissionEdit.createissues': 'Nahlásit problémy',
+      'components.PermissionEdit.manageblocklist': 'Spravovat blokované',
+      'components.PermissionEdit.manageissues': 'Spravovat problémy',
+      'components.PermissionEdit.managerequests': 'Spravovat žádosti',
+      'components.PermissionEdit.request': 'Žádost',
+      'components.PermissionEdit.request4k': 'Žádost 4K',
+      'components.PermissionEdit.request4kMovies': 'Žádost o filmy 4K',
+      'components.PermissionEdit.request4kTv': 'Žádost o seriály 4K',
+      'components.PermissionEdit.requestMovies': 'Žádost o filmy',
+      'components.PermissionEdit.requestTv': 'Žádost o seriály',
+      'components.PermissionEdit.users': 'Spravovat uživatele',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Zobrazit zablokovaná média',
+      'components.PermissionEdit.viewissues': 'Zobrazit problémy',
+      'components.PermissionEdit.viewrecent': 'Zobrazit naposledy přidané',
+      'components.PermissionEdit.viewrequests': 'Zobrazit žádosti',
     },
   },
   {
@@ -1243,6 +1403,33 @@ export const localeData = [
         'Du har ingen eksterne konti knyttet til din konto.',
       'i18n.next': 'Næste',
       'i18n.previous': 'Forrige',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Avancerede anmodninger',
+      'components.PermissionEdit.autoapprove': 'Auto-godkendelse',
+      'components.PermissionEdit.autoapprove4k': 'Auto-godkend 4K',
+      'components.PermissionEdit.autoapprove4kMovies': 'Auto-godkend 4K-film',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto-godkend 4K-serier',
+      'components.PermissionEdit.autoapproveMovies': 'Auto-godkend film',
+      'components.PermissionEdit.autoapproveSeries': 'Auto-godkend serier',
+      'components.PermissionEdit.autorequest': 'Auto-anmodning',
+      'components.PermissionEdit.autorequestMovies': 'Auto-anmodning om film',
+      'components.PermissionEdit.autorequestSeries': 'Auto-anmodning om serier',
+      'components.PermissionEdit.createissues': 'Rapportere problemer',
+      'components.PermissionEdit.manageblocklist':
+        'Administrere skjulningsliste',
+      'components.PermissionEdit.manageissues': 'Administrere problemer',
+      'components.PermissionEdit.managerequests': 'Administrere anmodninger',
+      'components.PermissionEdit.request': 'Anmode',
+      'components.PermissionEdit.request4k': 'Anmode om 4K',
+      'components.PermissionEdit.request4kMovies': 'Anmode om 4K-film',
+      'components.PermissionEdit.request4kTv': 'Anmode om 4K-serier',
+      'components.PermissionEdit.requestMovies': 'Anmode om film',
+      'components.PermissionEdit.requestTv': 'Anmode om serier',
+      'components.PermissionEdit.users': 'Administrere brugere',
+      'components.PermissionEdit.viewblocklistedItems': 'Se skjulte medier.',
+      'components.PermissionEdit.viewissues': 'Vis problemer',
+      'components.PermissionEdit.viewrecent': 'Se senest tilføjede',
+      'components.PermissionEdit.viewrequests': 'Se anmodninger',
     },
   },
   {
@@ -1538,6 +1725,68 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serien',
       'i18n.next': 'Weiter',
       'i18n.previous': 'Zurück',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Erweiterte Anfragen',
+      'components.PermissionEdit.autoapprove': 'Automatische Genehmigung',
+      'components.PermissionEdit.autoapprove4k':
+        'Automatische Genehmigung von 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatische Genehmigung von 4K Filmen',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatische Genehmigung von 4K Serien',
+      'components.PermissionEdit.autoapproveAdult':
+        'Erwachsenenmedien automatisch genehmigen',
+      'components.PermissionEdit.autoapproveBooks':
+        'Bücher automatisch genehmigen',
+      'components.PermissionEdit.autoapproveComics':
+        'Comics automatisch genehmigen',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Zeitschriften automatisch genehmigen',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automatische Genehmigung von Filmen',
+      'components.PermissionEdit.autoapproveMusic':
+        'Musik automatisch genehmigen',
+      'components.PermissionEdit.autoapproveSeries':
+        'Serien automatisch genehmigen',
+      'components.PermissionEdit.autoapproveSports':
+        'Sport automatisch genehmigen',
+      'components.PermissionEdit.autorequest': 'Automatisch anfragen',
+      'components.PermissionEdit.autorequestBooks':
+        'Bücher automatisch anfragen',
+      'components.PermissionEdit.autorequestComics':
+        'Comics automatisch anfordern',
+      'components.PermissionEdit.autorequestMagazines':
+        'Zeitschriften automatisch anfragen',
+      'components.PermissionEdit.autorequestMovies':
+        'Filme automatisch anfragen',
+      'components.PermissionEdit.autorequestMusic':
+        'Musik automatisch anfragen',
+      'components.PermissionEdit.autorequestSeries':
+        'Serien automatisch anfragen',
+      'components.PermissionEdit.createissues': 'Probleme melden',
+      'components.PermissionEdit.manageblocklist': 'Sperrliste verwalten',
+      'components.PermissionEdit.managedownloads': 'Downloads verwalten',
+      'components.PermissionEdit.manageissues': 'Probleme verwalten',
+      'components.PermissionEdit.managerequests': 'Anfragen verwalten',
+      'components.PermissionEdit.request': 'Anfragen senden',
+      'components.PermissionEdit.request4k': '4K anfragen',
+      'components.PermissionEdit.request4kMovies': '4K-Filme anfragen',
+      'components.PermissionEdit.request4kTv': '4K-Serien anfragen',
+      'components.PermissionEdit.requestAdult': 'Erwachsenenmedien anfordern',
+      'components.PermissionEdit.requestBooks': 'Bücher anfragen',
+      'components.PermissionEdit.requestComics': 'Comics beantragen',
+      'components.PermissionEdit.requestMagazines': 'Magazine anfordern',
+      'components.PermissionEdit.requestMovies': 'Filme anfragen',
+      'components.PermissionEdit.requestMusic': 'Musik anfordern',
+      'components.PermissionEdit.requestSports': 'Sportinhalte anfragen',
+      'components.PermissionEdit.requestTv': 'Serien anfragen',
+      'components.PermissionEdit.users': 'Benutzer verwalten',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Medien auf der Sperrliste anzeigen.',
+      'components.PermissionEdit.viewissues': 'Probleme ansehen',
+      'components.PermissionEdit.viewrecent': 'Kürzlich hinzugefügt anzeigen',
+      'components.PermissionEdit.viewrequests': 'Anfragen anzeigen',
+      'components.PermissionEdit.viewwatchlists': 'Watchlists anzeigen',
     },
   },
   {
@@ -1838,6 +2087,53 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'i18n.next': 'Next',
       'i18n.previous': 'Previous',
+      'components.PermissionEdit.admin': 'Admin',
+      'components.PermissionEdit.advancedrequest': 'Advanced Requests',
+      'components.PermissionEdit.autoapprove': 'Auto-Approve',
+      'components.PermissionEdit.autoapprove4k': 'Auto-Approve 4K',
+      'components.PermissionEdit.autoapprove4kMovies': 'Auto-Approve 4K Movies',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto-Approve 4K Series',
+      'components.PermissionEdit.autoapproveAdult': 'Auto-Approve Adult Media',
+      'components.PermissionEdit.autoapproveBooks': 'Auto-Approve Books',
+      'components.PermissionEdit.autoapproveComics': 'Auto-Approve Comics',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Auto-Approve Magazines',
+      'components.PermissionEdit.autoapproveMovies': 'Auto-Approve Movies',
+      'components.PermissionEdit.autoapproveMusic': 'Auto-Approve Music',
+      'components.PermissionEdit.autoapproveSeries': 'Auto-Approve Series',
+      'components.PermissionEdit.autoapproveSports': 'Auto-Approve Sports',
+      'components.PermissionEdit.autorequest': 'Auto-Request',
+      'components.PermissionEdit.autorequestBooks': 'Auto-Request Books',
+      'components.PermissionEdit.autorequestComics': 'Auto-Request Comics',
+      'components.PermissionEdit.autorequestMagazines':
+        'Auto-Request Magazines',
+      'components.PermissionEdit.autorequestMovies': 'Auto-Request Movies',
+      'components.PermissionEdit.autorequestMusic': 'Auto-Request Music',
+      'components.PermissionEdit.autorequestSeries': 'Auto-Request Series',
+      'components.PermissionEdit.createissues': 'Report Issues',
+      'components.PermissionEdit.manageblocklist': 'Manage Blocklist',
+      'components.PermissionEdit.managedownloads': 'Manage Downloads',
+      'components.PermissionEdit.manageissues': 'Manage Issues',
+      'components.PermissionEdit.managerequests': 'Manage Requests',
+      'components.PermissionEdit.request': 'Request',
+      'components.PermissionEdit.request4k': 'Request 4K',
+      'components.PermissionEdit.request4kMovies': 'Request 4K Movies',
+      'components.PermissionEdit.request4kTv': 'Request 4K Series',
+      'components.PermissionEdit.requestAdult': 'Request Adult Media',
+      'components.PermissionEdit.requestBooks': 'Request Books',
+      'components.PermissionEdit.requestComics': 'Request Comics',
+      'components.PermissionEdit.requestMagazines': 'Request Magazines',
+      'components.PermissionEdit.requestMovies': 'Request Movies',
+      'components.PermissionEdit.requestMusic': 'Request Music',
+      'components.PermissionEdit.requestSports': 'Request Sports',
+      'components.PermissionEdit.requestTv': 'Request Series',
+      'components.PermissionEdit.users': 'Manage Users',
+      'components.PermissionEdit.viewblocklistedItems':
+        'View blocklisted media.',
+      'components.PermissionEdit.viewissues': 'View Issues',
+      'components.PermissionEdit.viewrecent': 'View Recently Added',
+      'components.PermissionEdit.viewrequests': 'View Requests',
+      'components.PermissionEdit.viewwatchlists': 'View Watchlists',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -2429,6 +2725,8 @@ export const localeData = [
       'lumen.recordings.loadingSchedules': 'Loading team schedules…',
       'lumen.recordings.teamSchedules': 'team schedules',
       'lumen.recordings.maxFollowedTeams': 'You can follow up to 20 teams.',
+      'lumen.permission.manageSettings': 'Manage Settings',
+      'lumen.permission.vote': 'Vote',
     },
   },
   {
@@ -2491,6 +2789,35 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Ρόλος',
       'i18n.next': 'Επόμενο',
       'i18n.previous': 'Προηγούμενο',
+      'components.PermissionEdit.admin': 'Διαχειριστής',
+      'components.PermissionEdit.advancedrequest': 'Αιτήματα για Προχωρημένους',
+      'components.PermissionEdit.autoapprove': 'Αυτό-Έγκριση',
+      'components.PermissionEdit.autoapprove4k': 'Αυτόματη Έγκριση 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Αυτόματη Έγκριση Ταινιών 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Αυτόματη έγκριση Σειρών 4K',
+      'components.PermissionEdit.autoapproveMovies': 'Αυτόματη έγκριση Ταινιών',
+      'components.PermissionEdit.autoapproveSeries': 'Αυτόματη έγκριση Σειρών',
+      'components.PermissionEdit.autorequest': 'Αυτόματη αίτηση',
+      'components.PermissionEdit.autorequestMovies': 'Αυτόματη αίτηση ταινιών',
+      'components.PermissionEdit.autorequestSeries': 'Αυτόματη αίτηση σειρών',
+      'components.PermissionEdit.createissues': 'Αναφορά προβλημάτων',
+      'components.PermissionEdit.manageissues': 'Διαχείριση προβλημάτων',
+      'components.PermissionEdit.managerequests': 'Διαχείριση Αιτημάτων',
+      'components.PermissionEdit.request': 'Αίτημα',
+      'components.PermissionEdit.request4k': 'Αίτημα για 4K',
+      'components.PermissionEdit.request4kMovies': 'Αιτήματα για 4K Ταινίες',
+      'components.PermissionEdit.request4kTv': 'Αιτήματα για 4K Σειρές',
+      'components.PermissionEdit.requestMovies': 'Αιτήματα για Ταινίες',
+      'components.PermissionEdit.requestTv': 'Αιτήματα για Σειρές',
+      'components.PermissionEdit.users': 'Διαχείριση Χρηστών',
+      'components.PermissionEdit.viewissues': 'Προβολή προβλημάτων',
+      'components.PermissionEdit.viewrecent':
+        'Προβολή αυτών που προστέθηκαν πρόσφατα',
+      'components.PermissionEdit.viewrequests': 'Προβολή Αιτημάτων',
+      'components.PermissionEdit.viewwatchlists':
+        'Προβολή λιστών παρακολούθησης Plex',
     },
   },
   {
@@ -2782,6 +3109,67 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'i18n.next': 'Adelante',
       'i18n.previous': 'Anterior',
+      'components.PermissionEdit.admin': 'Administrador',
+      'components.PermissionEdit.advancedrequest': 'Solicitudes Avanzadas',
+      'components.PermissionEdit.autoapprove': 'Auto-Aprobación',
+      'components.PermissionEdit.autoapprove4k': 'Auto-Aprobación 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprobación automática de películas 4K',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto-Aprueba Series 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Aprobar automáticamente medios para adultos',
+      'components.PermissionEdit.autoapproveBooks': 'Libros Auto-Aprobar',
+      'components.PermissionEdit.autoapproveComics':
+        'Aprobación automática de cómics',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Aprobar revistas automáticamente',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprobar películas automáticamente',
+      'components.PermissionEdit.autoapproveMusic': 'Autoaprobar música',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprobar series automáticamente',
+      'components.PermissionEdit.autoapproveSports':
+        'Aprobación automática de solicitudes deportivas',
+      'components.PermissionEdit.autorequest': 'Solicitar automáticamente',
+      'components.PermissionEdit.autorequestBooks':
+        'Solicitar libros automáticamente',
+      'components.PermissionEdit.autorequestComics':
+        'Solicitar cómics automáticamente',
+      'components.PermissionEdit.autorequestMagazines':
+        'Solicitar revistas automáticamente',
+      'components.PermissionEdit.autorequestMovies':
+        'Solicitar Películas automáticamente',
+      'components.PermissionEdit.autorequestMusic':
+        'Solicitar música automáticamente',
+      'components.PermissionEdit.autorequestSeries':
+        'Solicitar series automáticamente',
+      'components.PermissionEdit.createissues': 'Informar de problemas',
+      'components.PermissionEdit.manageblocklist':
+        'Gestionar la lista de bloqueo',
+      'components.PermissionEdit.managedownloads': 'Administrar Descargas',
+      'components.PermissionEdit.manageissues': 'Administrar incidencias',
+      'components.PermissionEdit.managerequests': 'Gestionar Solicitudes',
+      'components.PermissionEdit.request': 'Solicitar',
+      'components.PermissionEdit.request4k': 'Solicitar 4K',
+      'components.PermissionEdit.request4kMovies': 'Solicitar películas 4K',
+      'components.PermissionEdit.request4kTv': 'Solicitar series en 4K',
+      'components.PermissionEdit.requestAdult': 'Solicitar medios para adultos',
+      'components.PermissionEdit.requestBooks': 'Solicitar libros',
+      'components.PermissionEdit.requestComics': 'Solicitud de cómics',
+      'components.PermissionEdit.requestMagazines': 'Solicitar revistas',
+      'components.PermissionEdit.requestMovies': 'Solicitar películas',
+      'components.PermissionEdit.requestMusic': 'Solicitud de música',
+      'components.PermissionEdit.requestSports':
+        'Solicitar contenido deportivo',
+      'components.PermissionEdit.requestTv': 'Solicitar Series',
+      'components.PermissionEdit.users': 'Gestión de Usuarios',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Ver contenido bloqueado.',
+      'components.PermissionEdit.viewissues': 'Ver incidencias',
+      'components.PermissionEdit.viewrecent':
+        'Ver contenido añadido recientemente',
+      'components.PermissionEdit.viewrequests': 'Ver Solicitudes',
+      'components.PermissionEdit.viewwatchlists': 'Ver listas de seguimiento',
     },
   },
   {
@@ -3073,6 +3461,60 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serie',
       'i18n.next': 'Adelante',
       'i18n.previous': 'Anterior',
+      'components.PermissionEdit.admin': 'Administrador',
+      'components.PermissionEdit.advancedrequest': 'Solicitudes Avanzadas',
+      'components.PermissionEdit.autoapprove': 'Auto-Aprobación',
+      'components.PermissionEdit.autoapprove4k': 'Auto-Aprobación 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Auto-Aprueba Películas 4K',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto-Aprueba Series 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Aprobar automáticamente medios para adultos',
+      'components.PermissionEdit.autoapproveBooks': 'Libros Auto-Aprobar',
+      'components.PermissionEdit.autoapproveComics': 'Comics Auto-Approve',
+      'components.PermissionEdit.autoapproveMagazines': 'Revistas Auto-Approve',
+      'components.PermissionEdit.autoapproveMovies': 'Auto-Aprueba Películas',
+      'components.PermissionEdit.autoapproveMusic':
+        'Aprobar música automáticamente',
+      'components.PermissionEdit.autoapproveSeries': 'Auto-Aprueba Series',
+      'components.PermissionEdit.autoapproveSports':
+        'Aprobar deportes automáticamente',
+      'components.PermissionEdit.autorequest': 'Auto solicitar',
+      'components.PermissionEdit.autorequestBooks': 'Libros Auto-Solicitud',
+      'components.PermissionEdit.autorequestComics':
+        'Cómics de solicitud automática',
+      'components.PermissionEdit.autorequestMagazines':
+        'Revistas de solicitud automática',
+      'components.PermissionEdit.autorequestMovies':
+        'Solicitar Películas automáticamente',
+      'components.PermissionEdit.autorequestMusic': 'Música de Auto-Solicitud',
+      'components.PermissionEdit.autorequestSeries':
+        'Solicitar series automáticamente',
+      'components.PermissionEdit.createissues': 'Cuestiones de informe',
+      'components.PermissionEdit.manageblocklist':
+        'Administrar lista de bloqueo',
+      'components.PermissionEdit.managedownloads': 'Administrar Descargas',
+      'components.PermissionEdit.manageissues': 'Cuestiones de gestión',
+      'components.PermissionEdit.managerequests': 'Gestionar Solicitudes',
+      'components.PermissionEdit.request': 'Solicitar',
+      'components.PermissionEdit.request4k': 'Solicitar 4K',
+      'components.PermissionEdit.request4kMovies': 'Solicita Películas 4K',
+      'components.PermissionEdit.request4kTv': 'Pedir Series 4K',
+      'components.PermissionEdit.requestAdult': 'Solicitar medios para adultos',
+      'components.PermissionEdit.requestBooks': 'Solicitar libros',
+      'components.PermissionEdit.requestComics': 'Solicitud de cómics',
+      'components.PermissionEdit.requestMagazines': 'Solicitud Revistas',
+      'components.PermissionEdit.requestMovies': 'Solicitar películas',
+      'components.PermissionEdit.requestMusic': 'Solicitud de música',
+      'components.PermissionEdit.requestSports': 'Solicitud de deportes',
+      'components.PermissionEdit.requestTv': 'Solicitar Series',
+      'components.PermissionEdit.users': 'Gestión de Usuarios',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Vea los medios bloqueados.',
+      'components.PermissionEdit.viewissues': 'Ver problemas',
+      'components.PermissionEdit.viewrecent': 'Ver recientemente añadido',
+      'components.PermissionEdit.viewrequests': 'Ver Solicitudes',
+      'components.PermissionEdit.viewwatchlists': 'Ver listas de seguimiento',
     },
   },
   {
@@ -3155,6 +3597,39 @@ export const localeData = [
         'Sinu kontoga pole lingitud ühtegi välist kontot.',
       'i18n.next': 'Järgmine',
       'i18n.previous': 'Eelmine',
+      'components.PermissionEdit.admin': 'Administraator',
+      'components.PermissionEdit.advancedrequest': 'Täpsemad taotlused',
+      'components.PermissionEdit.autoapprove': 'Automaatne heakskiit',
+      'components.PermissionEdit.autoapprove4k': 'Automaatne 4K heakskiit',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automaatne 4K filmide heakskiit',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automaatne 4K sarjade heakskiit',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automaatne filmide heakskiit',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automaatne sarjade heakskiit',
+      'components.PermissionEdit.autorequest': 'Automaatne-Taotlus',
+      'components.PermissionEdit.autorequestMovies':
+        'Automaatne filmide taotlus',
+      'components.PermissionEdit.autorequestSeries':
+        'Automaatne sarjade taotlus',
+      'components.PermissionEdit.createissues': 'Probleemidest teatamine',
+      'components.PermissionEdit.manageblocklist': 'Musta nimekirja haldamine',
+      'components.PermissionEdit.manageissues': 'Probleemide haldamine',
+      'components.PermissionEdit.managerequests': 'Taotluste haldamine',
+      'components.PermissionEdit.request': 'Taotlemine',
+      'components.PermissionEdit.request4k': '4K taotlemine',
+      'components.PermissionEdit.request4kMovies': '4K filmide taotlemine',
+      'components.PermissionEdit.request4kTv': '4K sarjade taotlemine',
+      'components.PermissionEdit.requestMovies': 'Filmide taotlemine',
+      'components.PermissionEdit.requestTv': 'Sarjade taotlemine',
+      'components.PermissionEdit.users': 'Kasutajate haldamine',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Blokeeritud meedia vaatamine.',
+      'components.PermissionEdit.viewissues': 'Probleemide vaatamine',
+      'components.PermissionEdit.viewrecent': 'Viimati lisatute vaatamine',
+      'components.PermissionEdit.viewrequests': 'Taotluste vaatamine',
     },
   },
   {
@@ -3213,6 +3688,35 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rooli',
       'i18n.next': 'Seuraava',
       'i18n.previous': 'Edellinen',
+      'components.PermissionEdit.admin': 'Ylläpitäjä',
+      'components.PermissionEdit.advancedrequest': 'Pyynnön lisäasetukset',
+      'components.PermissionEdit.autoapprove': 'Auto-hyväksy',
+      'components.PermissionEdit.autoapprove4k': 'Auto-hyväksy 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Auto-hyväksy 4K elokuvat',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto-hyväksy 4K sarjat',
+      'components.PermissionEdit.autoapproveMovies': 'Auto-hyväksy elokuvat',
+      'components.PermissionEdit.autoapproveSeries': 'Auto-hyväksy sarjat',
+      'components.PermissionEdit.autorequest': 'Auto-pyydä',
+      'components.PermissionEdit.autorequestMovies':
+        'Automaattiset elokuvapyynnöt',
+      'components.PermissionEdit.autorequestSeries':
+        'Automaattiset sarjapyynnöt',
+      'components.PermissionEdit.createissues': 'Raportoi ongelmista',
+      'components.PermissionEdit.manageblocklist': 'Hallinnoi estolistaa',
+      'components.PermissionEdit.manageissues': 'Hallinnoi ongelmia',
+      'components.PermissionEdit.managerequests': 'Hallinnoi pyyntöjä',
+      'components.PermissionEdit.request': 'Pyydä',
+      'components.PermissionEdit.request4k': 'Pyydä 4K-laadulla',
+      'components.PermissionEdit.request4kMovies': 'Pyydä 4K elokuvia',
+      'components.PermissionEdit.request4kTv': 'Pyydä 4K sarjoja',
+      'components.PermissionEdit.requestMovies': 'Pyydä elokuvia',
+      'components.PermissionEdit.requestTv': 'Pyydä sarjoja',
+      'components.PermissionEdit.users': 'Hallinnoi käyttäjiä',
+      'components.PermissionEdit.viewblocklistedItems': 'Näytä estetty media.',
+      'components.PermissionEdit.viewissues': 'Näytä ongelmat',
+      'components.PermissionEdit.viewrecent': 'Näytä viimeksi lisätyt',
+      'components.PermissionEdit.viewrequests': 'Näytä pyynnöt',
     },
   },
   {
@@ -3504,6 +4008,70 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
       'i18n.next': 'Suivant',
       'i18n.previous': 'Précédent',
+      'components.PermissionEdit.admin': 'Administrateur',
+      'components.PermissionEdit.advancedrequest': 'Demandes avancées',
+      'components.PermissionEdit.autoapprove': 'Valider automatiquement',
+      'components.PermissionEdit.autoapprove4k':
+        'Valider automatiquement en 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Valider automatiquement les films 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Valider automatiquement les séries 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Approbation automatique des médias pour adultes',
+      'components.PermissionEdit.autoapproveBooks':
+        'Approuver automatiquement les livres',
+      'components.PermissionEdit.autoapproveComics':
+        'Approuver automatiquement les bandes dessinées',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Approbation automatique des magazines',
+      'components.PermissionEdit.autoapproveMovies':
+        'Valider automatiquement les films',
+      'components.PermissionEdit.autoapproveMusic':
+        'Approbation automatique de la musique',
+      'components.PermissionEdit.autoapproveSeries':
+        'Valider automatiquement les séries',
+      'components.PermissionEdit.autoapproveSports':
+        'Approbation automatique des sports',
+      'components.PermissionEdit.autorequest': 'Demande automatique',
+      'components.PermissionEdit.autorequestBooks':
+        'Demande automatique de livres',
+      'components.PermissionEdit.autorequestComics':
+        'Demande automatique de bandes dessinées',
+      'components.PermissionEdit.autorequestMagazines':
+        'Demande automatique de magazines',
+      'components.PermissionEdit.autorequestMovies':
+        'Demander automatiquement les films',
+      'components.PermissionEdit.autorequestMusic':
+        'Demande automatique de musique',
+      'components.PermissionEdit.autorequestSeries':
+        'Demander automatiquement les séries',
+      'components.PermissionEdit.createissues': 'Signaler des problèmes',
+      'components.PermissionEdit.manageblocklist': 'Gérer la liste de blocage',
+      'components.PermissionEdit.managedownloads': 'Gérer les téléchargements',
+      'components.PermissionEdit.manageissues': 'Gérer les problèmes',
+      'components.PermissionEdit.managerequests': 'Gérer les demandes',
+      'components.PermissionEdit.request': 'Demander',
+      'components.PermissionEdit.request4k': 'Demander en 4K',
+      'components.PermissionEdit.request4kMovies': 'Demander des films en 4K',
+      'components.PermissionEdit.request4kTv': 'Demander des séries en 4K',
+      'components.PermissionEdit.requestAdult':
+        'Demander des médias pour adultes',
+      'components.PermissionEdit.requestBooks': 'Demande de livres',
+      'components.PermissionEdit.requestComics': 'Demander des BD',
+      'components.PermissionEdit.requestMagazines': 'Demander des magazines',
+      'components.PermissionEdit.requestMovies': 'Demander des films',
+      'components.PermissionEdit.requestMusic': 'Demander de la musique',
+      'components.PermissionEdit.requestSports': 'Demander du contenu sportif',
+      'components.PermissionEdit.requestTv': 'Demander des séries',
+      'components.PermissionEdit.users': 'Gérer les utilisateurs',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Voir les médias bloqués.',
+      'components.PermissionEdit.viewissues': 'Afficher les problèmes',
+      'components.PermissionEdit.viewrecent': 'Voir les ajouts récents',
+      'components.PermissionEdit.viewrequests': 'Voir les demandes',
+      'components.PermissionEdit.viewwatchlists':
+        'Afficher les listes de surveillance',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -4205,6 +4773,8 @@ export const localeData = [
       'lumen.recordings.teamSchedules': 'calendriers des équipes',
       'lumen.recordings.maxFollowedTeams':
         'Vous pouvez suivre jusqu’à 20 équipes.',
+      'lumen.permission.manageSettings': 'Gérer les paramètres',
+      'lumen.permission.vote': 'Voter',
     },
   },
   {
@@ -4268,6 +4838,40 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
       'i18n.next': 'Dalje',
       'i18n.previous': 'Prethodno',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Napredni zahtjevi',
+      'components.PermissionEdit.autoapprove': 'Automatsko odobravanje',
+      'components.PermissionEdit.autoapprove4k': 'Automatsko odobravanje 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatsko odobravanje 4K filmova',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatsko odobravanje serija u 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automatsko odobravanje filmova',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automatsko odobravanje serija',
+      'components.PermissionEdit.autorequest': 'Automatsko zahtijevanje',
+      'components.PermissionEdit.autorequestMovies':
+        'Automatsko zahtijevanje filmova',
+      'components.PermissionEdit.autorequestSeries':
+        'Automatsko zahtijevanje serija',
+      'components.PermissionEdit.createissues': 'Prijavljivanje problema',
+      'components.PermissionEdit.manageissues': 'Upravljanje problemima',
+      'components.PermissionEdit.managerequests': 'Upravljaj zahtjevima',
+      'components.PermissionEdit.request': 'Zahtjev',
+      'components.PermissionEdit.request4k': 'Zahtjev za 4K rezoluciju',
+      'components.PermissionEdit.request4kMovies':
+        'Zahtjev za filmove u 4K rezoluciji',
+      'components.PermissionEdit.request4kTv':
+        'Zahtjev za serije u 4K rezoluciji',
+      'components.PermissionEdit.requestMovies': 'Zahtjev za filmovima',
+      'components.PermissionEdit.requestTv': 'Zahtjev za serijama',
+      'components.PermissionEdit.users': 'Upravljanje korisnicima',
+      'components.PermissionEdit.viewissues': 'Prikaz problema',
+      'components.PermissionEdit.viewrecent': 'Prikaz nedavno dodanih',
+      'components.PermissionEdit.viewrequests': 'Prikaz zahtjeva',
+      'components.PermissionEdit.viewwatchlists':
+        'Prikaži Plex popise gledanja',
     },
   },
   {
@@ -4282,6 +4886,31 @@ export const localeData = [
       'components.Layout.Sidebar.issues': 'מקרים',
       'i18n.usersettings': 'הגדרות משתמש',
       'i18n.previous': 'קודם',
+      'components.PermissionEdit.admin': 'מנהל',
+      'components.PermissionEdit.advancedrequest': 'בקשות מתקדמות',
+      'components.PermissionEdit.autoapprove': 'אישור אוטומטי',
+      'components.PermissionEdit.autoapprove4k': 'אישור אוטומטי של 4K',
+      'components.PermissionEdit.autoapprove4kMovies': 'אישור אוטומטי סרטי 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'אישור אוטומטי של סדרות 4K',
+      'components.PermissionEdit.autoapproveMovies': 'אישור סרטים אוטומטי',
+      'components.PermissionEdit.autoapproveSeries': 'אישור סדרות אוטומטי',
+      'components.PermissionEdit.autorequest': 'בקשה אוטומטית',
+      'components.PermissionEdit.autorequestMovies': 'בקשת סרטים אוטומטית',
+      'components.PermissionEdit.autorequestSeries': 'בקשת סדרות אוטומטית',
+      'components.PermissionEdit.createissues': 'דיווח על בעיות',
+      'components.PermissionEdit.manageissues': 'ניהול בעיות',
+      'components.PermissionEdit.managerequests': 'ניהול בקשות',
+      'components.PermissionEdit.request': 'בקשה',
+      'components.PermissionEdit.request4k': 'בקשת 4K',
+      'components.PermissionEdit.request4kMovies': 'בקשת סרטי 4K',
+      'components.PermissionEdit.request4kTv': 'בקשת סדרות 4K',
+      'components.PermissionEdit.requestMovies': 'בקשת סרטים',
+      'components.PermissionEdit.requestTv': 'בקשת סדרה',
+      'components.PermissionEdit.users': 'ניהול משתמשים',
+      'components.PermissionEdit.viewissues': 'צפייה בבעיות',
+      'components.PermissionEdit.viewrecent': 'צפייה בנוסף לאחרונה',
+      'components.PermissionEdit.viewrequests': 'צפייה בבקשות',
     },
   },
   {
@@ -4573,6 +5202,58 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'श्रृंखला',
       'i18n.next': 'अगला',
       'i18n.previous': 'पिछला',
+      'components.PermissionEdit.admin': 'व्यवस्थापक',
+      'components.PermissionEdit.advancedrequest': 'उन्नत अनुरोध',
+      'components.PermissionEdit.autoapprove': 'स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapprove4k': '4K के लिए स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapprove4kMovies':
+        '4K फ़िल्मों की स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapprove4kSeries': 'ऑटो-Approve 4K शृंखला',
+      'components.PermissionEdit.autoapproveAdult':
+        'वयस्क सामग्री की स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapproveBooks':
+        'किताबों के अनुरोधों को स्वतः मंज़ूरी दें',
+      'components.PermissionEdit.autoapproveComics':
+        'कॉमिक्स की स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapproveMagazines':
+        'पत्रिकाओं की स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapproveMovies': 'ऑटो-Approve सिनेमा',
+      'components.PermissionEdit.autoapproveMusic':
+        'संगीत को स्वतः स्वीकृत करें',
+      'components.PermissionEdit.autoapproveSeries': 'सीरीज़ की स्वतः स्वीकृति',
+      'components.PermissionEdit.autoapproveSports': 'ऑटो-Approve खेल',
+      'components.PermissionEdit.autorequest': 'स्वचालित अनुरोध',
+      'components.PermissionEdit.autorequestBooks': 'स्वचालित पुस्तक अनुरोध',
+      'components.PermissionEdit.autorequestComics': 'स्वचालित कॉमिक अनुरोध',
+      'components.PermissionEdit.autorequestMagazines':
+        'स्वचालित पत्रिका अनुरोध',
+      'components.PermissionEdit.autorequestMovies': 'स्वचालित फ़िल्म अनुरोध',
+      'components.PermissionEdit.autorequestMusic': 'स्वचालित संगीत अनुरोध',
+      'components.PermissionEdit.autorequestSeries': 'स्वचालित सीरीज़ अनुरोध',
+      'components.PermissionEdit.createissues': 'समस्याओं की रिपोर्ट करें',
+      'components.PermissionEdit.manageblocklist': 'ब्लॉकलिस्ट प्रबंधित करें',
+      'components.PermissionEdit.managedownloads': 'डाउनलोड प्रबंधित करें',
+      'components.PermissionEdit.manageissues': 'समस्याएँ प्रबंधित करें',
+      'components.PermissionEdit.managerequests': 'अनुरोध प्रबंधित करें',
+      'components.PermissionEdit.request': 'अनुरोध',
+      'components.PermissionEdit.request4k': '4K के लिए अनुरोध करें',
+      'components.PermissionEdit.request4kMovies': '4K फ़िल्मों का अनुरोध करें',
+      'components.PermissionEdit.request4kTv': '4K सीरीज़ का अनुरोध करें',
+      'components.PermissionEdit.requestAdult': 'वयस्क मीडिया का अनुरोध',
+      'components.PermissionEdit.requestBooks': 'पुस्तकों का अनुरोध करें',
+      'components.PermissionEdit.requestComics': 'कॉमिक्स का अनुरोध करें',
+      'components.PermissionEdit.requestMagazines': 'पत्रिकाओं का अनुरोध करें',
+      'components.PermissionEdit.requestMovies': 'फ़िल्मों का अनुरोध करें',
+      'components.PermissionEdit.requestMusic': 'संगीत का अनुरोध करें',
+      'components.PermissionEdit.requestSports': 'खेलों का अनुरोध करें',
+      'components.PermissionEdit.requestTv': 'सीरीज़ का अनुरोध करें',
+      'components.PermissionEdit.users': 'उपयोगकर्ता प्रबंधित करें',
+      'components.PermissionEdit.viewblocklistedItems':
+        'ब्लॉकलिस्टेड मीडिया देखें।',
+      'components.PermissionEdit.viewissues': 'मुद्दे देखें',
+      'components.PermissionEdit.viewrecent': 'हाल में जोड़ी गई सामग्री देखें',
+      'components.PermissionEdit.viewrequests': 'अनुरोध देखें',
+      'components.PermissionEdit.viewwatchlists': 'वॉचलिस्ट देखें',
     },
   },
   {
@@ -4657,6 +5338,39 @@ export const localeData = [
         'Nincs külső fiókja, amely a fiókjához lenne kapcsolva.',
       'i18n.next': 'Következő',
       'i18n.previous': 'Előző',
+      'components.PermissionEdit.admin': 'Admin',
+      'components.PermissionEdit.advancedrequest': 'Speciális kérések',
+      'components.PermissionEdit.autoapprove': 'Automatikus jóváhagyás',
+      'components.PermissionEdit.autoapprove4k': 'Automatikus jóváhagyás 4k',
+      'components.PermissionEdit.autoapprove4kMovies':
+        '4K filmek automatikus jóváhagyása',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatikus jóváhagyás 4k sorozatok',
+      'components.PermissionEdit.autoapproveMovies':
+        'Filmek automatikus jóváhagyása',
+      'components.PermissionEdit.autoapproveSeries':
+        'Sorozatok automatikus jóváhagyása',
+      'components.PermissionEdit.autorequest': 'Automatikus kérés',
+      'components.PermissionEdit.autorequestMovies':
+        'Filmek automatikus kérése',
+      'components.PermissionEdit.autorequestSeries':
+        'Automatikus kérés sorozatok',
+      'components.PermissionEdit.createissues': 'Problémák Bejelentése',
+      'components.PermissionEdit.manageblocklist': 'Tiltólista kezelése',
+      'components.PermissionEdit.manageissues': 'Problémák Kezelése',
+      'components.PermissionEdit.managerequests': 'Kérések kezelése',
+      'components.PermissionEdit.request': 'Kérés',
+      'components.PermissionEdit.request4k': 'Kérés 4K-ban',
+      'components.PermissionEdit.request4kMovies': 'Kérés - 4K filmek',
+      'components.PermissionEdit.request4kTv': 'Kérés - 4K sorozatok',
+      'components.PermissionEdit.requestMovies': 'Filmek kérése',
+      'components.PermissionEdit.requestTv': 'Sorozatok kérése',
+      'components.PermissionEdit.users': 'Felhasználók kezelése',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Tiltólistára tett média megtekintése.',
+      'components.PermissionEdit.viewissues': 'Problémák Megtekintése',
+      'components.PermissionEdit.viewrecent': 'Nemrég hozzáadott megtekintése',
+      'components.PermissionEdit.viewrequests': 'Kérések megtekintése',
     },
   },
   {
@@ -4945,6 +5659,65 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serial',
       'i18n.next': 'Berikutnya',
       'i18n.previous': 'Sebelumnya',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Permintaan Lanjutan',
+      'components.PermissionEdit.autoapprove': 'Persetujuan Otomatis',
+      'components.PermissionEdit.autoapprove4k':
+        'Persetujuan Otomatis untuk 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Persetujuan Otomatis untuk Film 4K',
+      'components.PermissionEdit.autoapprove4kSeries': 'Auto- Approve Seri 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Otomasi Persetujuan Media Dewasa',
+      'components.PermissionEdit.autoapproveBooks':
+        'Setujui permintaan buku secara otomatis',
+      'components.PermissionEdit.autoapproveComics':
+        'Persetujuan Otomatis untuk Komik',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Persetujuan Otomatis untuk Majalah',
+      'components.PermissionEdit.autoapproveMovies':
+        'Setujui film secara otomatis',
+      'components.PermissionEdit.autoapproveMusic':
+        'Persetujuan Otomatis untuk Musik',
+      'components.PermissionEdit.autoapproveSeries':
+        'Setujui serial secara otomatis',
+      'components.PermissionEdit.autoapproveSports':
+        'Persetujuan Otomatis untuk Olahraga',
+      'components.PermissionEdit.autorequest': 'Permintaan Otomatis',
+      'components.PermissionEdit.autorequestBooks': 'Permintaan Buku Otomatis',
+      'components.PermissionEdit.autorequestComics':
+        'Permintaan Komik Otomatis',
+      'components.PermissionEdit.autorequestMagazines':
+        'Permintaan Majalah Otomatis',
+      'components.PermissionEdit.autorequestMovies': 'Permintaan Film Otomatis',
+      'components.PermissionEdit.autorequestMusic': 'Permintaan Musik Otomatis',
+      'components.PermissionEdit.autorequestSeries':
+        'Permintaan Serial Otomatis',
+      'components.PermissionEdit.createissues': 'Laporkan Masalah',
+      'components.PermissionEdit.manageblocklist': 'Kelola daftar blokir',
+      'components.PermissionEdit.managedownloads': 'Kelola Unduhan',
+      'components.PermissionEdit.manageissues': 'Kelola Masalah',
+      'components.PermissionEdit.managerequests': 'Kelola Permintaan',
+      'components.PermissionEdit.request': 'Minta',
+      'components.PermissionEdit.request4k': 'Permintaan 4K',
+      'components.PermissionEdit.request4kMovies': 'Permintaan Film 4K',
+      'components.PermissionEdit.request4kTv': 'Permintaan Seri 4K',
+      'components.PermissionEdit.requestAdult': 'Minta Media Dewasa',
+      'components.PermissionEdit.requestBooks': 'Permintaan Buku',
+      'components.PermissionEdit.requestComics': 'Permintaan Komik',
+      'components.PermissionEdit.requestMagazines': 'Permintaan Majalah',
+      'components.PermissionEdit.requestMovies': 'Permintaan Film',
+      'components.PermissionEdit.requestMusic': 'Permintaan Musik',
+      'components.PermissionEdit.requestSports': 'Permintaan Olahraga',
+      'components.PermissionEdit.requestTv': 'Ajukan Permintaan Serial',
+      'components.PermissionEdit.users': 'Kelola Pengguna',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Lihat media yang masuk daftar blokir.',
+      'components.PermissionEdit.viewissues': 'Lihat Masalah',
+      'components.PermissionEdit.viewrecent':
+        'Lihat Media yang Baru Ditambahkan',
+      'components.PermissionEdit.viewrequests': 'Lihat Permintaan',
+      'components.PermissionEdit.viewwatchlists': 'Lihat daftar tontonan',
     },
   },
   {
@@ -5028,6 +5801,39 @@ export const localeData = [
         'Non hai alcun account esterno collegato al tuo account.',
       'i18n.next': 'Avanti',
       'i18n.previous': 'Precedente',
+      'components.PermissionEdit.admin': 'Amministratore',
+      'components.PermissionEdit.advancedrequest': 'Richieste avanzate',
+      'components.PermissionEdit.autoapprove': 'Approvazione automatica',
+      'components.PermissionEdit.autoapprove4k': 'Auto-approva 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Auto-approva i film in 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Auto-approva le serie in 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Approva Automaticamente i Film',
+      'components.PermissionEdit.autoapproveSeries':
+        'Approva Automaticamente le Serie',
+      'components.PermissionEdit.autorequest': 'Richiesta automatica',
+      'components.PermissionEdit.autorequestMovies':
+        'Richiesta automatica dei film',
+      'components.PermissionEdit.autorequestSeries':
+        'Richiesta automatica di serie',
+      'components.PermissionEdit.createissues': 'Segnala problemi',
+      'components.PermissionEdit.manageblocklist': 'Gestisci blocklist',
+      'components.PermissionEdit.manageissues': 'Gestisci segnalazioni',
+      'components.PermissionEdit.managerequests': 'Gestisci Richieste',
+      'components.PermissionEdit.request': 'Richiesta',
+      'components.PermissionEdit.request4k': 'Richiesta 4K',
+      'components.PermissionEdit.request4kMovies': 'Rechiedi film in 4K',
+      'components.PermissionEdit.request4kTv': 'Richiedi serie in 4K',
+      'components.PermissionEdit.requestMovies': 'Richiedi Film',
+      'components.PermissionEdit.requestTv': 'Richiedi Serie',
+      'components.PermissionEdit.users': 'Gestisci gli utenti',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Visualizza i contenuti multimediali bloccati.',
+      'components.PermissionEdit.viewissues': 'Guarda segnalazione',
+      'components.PermissionEdit.viewrecent': 'Visualizza Aggiunti Recenti',
+      'components.PermissionEdit.viewrequests': 'Visualizza le richieste',
     },
   },
   {
@@ -5316,6 +6122,58 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'シリーズ',
       'i18n.next': '次',
       'i18n.previous': '前',
+      'components.PermissionEdit.admin': '管理者',
+      'components.PermissionEdit.advancedrequest': 'アドバンスド・リクエスト',
+      'components.PermissionEdit.autoapprove': '自動承認',
+      'components.PermissionEdit.autoapprove4k': '4Kの自動承認',
+      'components.PermissionEdit.autoapprove4kMovies':
+        '4K映画の自動的に承認する',
+      'components.PermissionEdit.autoapprove4kSeries':
+        '4K シリーズを自動的に承認する',
+      'components.PermissionEdit.autoapproveAdult':
+        '成人向けメディアの自動承認',
+      'components.PermissionEdit.autoapproveBooks': '自動承認書籍',
+      'components.PermissionEdit.autoapproveComics': '自動承認コミック',
+      'components.PermissionEdit.autoapproveMagazines': '自動承認マガジン',
+      'components.PermissionEdit.autoapproveMovies': '映画を自動的に承認する',
+      'components.PermissionEdit.autoapproveMusic': '自動承認音楽',
+      'components.PermissionEdit.autoapproveSeries':
+        'シリーズを自動的に承認する',
+      'components.PermissionEdit.autoapproveSports': '自動承認スポーツ',
+      'components.PermissionEdit.autorequest': '自動リクエスト',
+      'components.PermissionEdit.autorequestBooks': '書籍の自動リクエスト',
+      'components.PermissionEdit.autorequestComics': 'オートリクエストコミック',
+      'components.PermissionEdit.autorequestMagazines':
+        'オートリクエストマガジン',
+      'components.PermissionEdit.autorequestMovies': '映画の自動リクエスト',
+      'components.PermissionEdit.autorequestMusic':
+        'オートリクエスト・ミュージック',
+      'components.PermissionEdit.autorequestSeries': 'シリーズの自動リクエスト',
+      'components.PermissionEdit.createissues': '問題を報告',
+      'components.PermissionEdit.manageblocklist': 'ブロックリストの管理',
+      'components.PermissionEdit.managedownloads': 'ダウンロードの管理',
+      'components.PermissionEdit.manageissues': '問題を管理',
+      'components.PermissionEdit.managerequests': 'リクエストを管理',
+      'components.PermissionEdit.request': 'リクエスト',
+      'components.PermissionEdit.request4k': '4K をリクエスト',
+      'components.PermissionEdit.request4kMovies': '4K映画をリクエスト',
+      'components.PermissionEdit.request4kTv': '4K シリーズをリクエスト',
+      'components.PermissionEdit.requestAdult': '成人向けメディアのリクエスト',
+      'components.PermissionEdit.requestBooks': '書籍をリクエスト',
+      'components.PermissionEdit.requestComics': 'コミックのリクエスト',
+      'components.PermissionEdit.requestMagazines': '雑誌のリクエスト',
+      'components.PermissionEdit.requestMovies': '映画をリクエスト',
+      'components.PermissionEdit.requestMusic': '音楽をリクエスト',
+      'components.PermissionEdit.requestSports':
+        'スポーツコンテンツをリクエスト',
+      'components.PermissionEdit.requestTv': 'シリーズをリクエスト',
+      'components.PermissionEdit.users': 'ユーザー管理',
+      'components.PermissionEdit.viewblocklistedItems':
+        'ブロックリストに登録されたメディアを表示します。',
+      'components.PermissionEdit.viewissues': '問題を表示',
+      'components.PermissionEdit.viewrecent': '最近の追加を表示',
+      'components.PermissionEdit.viewrequests': 'リクエストを見る',
+      'components.PermissionEdit.viewwatchlists': 'ウォッチリストを見る',
     },
   },
   {
@@ -5599,6 +6457,51 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '시리즈',
       'i18n.next': '다음',
       'i18n.previous': '이전',
+      'components.PermissionEdit.admin': '관리자',
+      'components.PermissionEdit.advancedrequest': '고급 요청',
+      'components.PermissionEdit.autoapprove': '자동 승인',
+      'components.PermissionEdit.autoapprove4k': '4K 자동 승인',
+      'components.PermissionEdit.autoapprove4kMovies': '4K 영화 자동 승인',
+      'components.PermissionEdit.autoapprove4kSeries': '4K 시리즈 자동 승인',
+      'components.PermissionEdit.autoapproveAdult': '성인 미디어 자동 승인',
+      'components.PermissionEdit.autoapproveBooks': '도서 자동 승인',
+      'components.PermissionEdit.autoapproveComics': '만화 자동 승인',
+      'components.PermissionEdit.autoapproveMagazines': '잡지 자동 승인',
+      'components.PermissionEdit.autoapproveMovies': '영화 자동 승인',
+      'components.PermissionEdit.autoapproveMusic': '음악 자동 승인',
+      'components.PermissionEdit.autoapproveSeries': '시리즈 자동 승인',
+      'components.PermissionEdit.autoapproveSports': '스포츠 자동 승인',
+      'components.PermissionEdit.autorequest': '자동 요청',
+      'components.PermissionEdit.autorequestBooks': '책 자동 요청',
+      'components.PermissionEdit.autorequestComics': '만화 자동 요청',
+      'components.PermissionEdit.autorequestMagazines': '잡지 자동 요청',
+      'components.PermissionEdit.autorequestMovies': '영화 자동 요청',
+      'components.PermissionEdit.autorequestMusic': '음악 자동 요청',
+      'components.PermissionEdit.autorequestSeries': '시리즈 자동 요청',
+      'components.PermissionEdit.createissues': '이슈 보고',
+      'components.PermissionEdit.manageblocklist': '블록리스트 관리',
+      'components.PermissionEdit.managedownloads': '다운로드 관리',
+      'components.PermissionEdit.manageissues': '이슈 관리',
+      'components.PermissionEdit.managerequests': '요청 관리',
+      'components.PermissionEdit.request': '요청',
+      'components.PermissionEdit.request4k': '4K 요청',
+      'components.PermissionEdit.request4kMovies': '4K 영화 요청',
+      'components.PermissionEdit.request4kTv': '4K 시리즈 요청',
+      'components.PermissionEdit.requestAdult': '성인 미디어 요청',
+      'components.PermissionEdit.requestBooks': '책 요청',
+      'components.PermissionEdit.requestComics': '만화 요청',
+      'components.PermissionEdit.requestMagazines': '잡지 요청',
+      'components.PermissionEdit.requestMovies': '영화 요청',
+      'components.PermissionEdit.requestMusic': '음악 요청',
+      'components.PermissionEdit.requestSports': '스포츠 콘텐츠 요청',
+      'components.PermissionEdit.requestTv': '시리즈 요청',
+      'components.PermissionEdit.users': '사용자 관리',
+      'components.PermissionEdit.viewblocklistedItems':
+        '차단 목록에 등록된 미디어 보기',
+      'components.PermissionEdit.viewissues': '이슈 보기',
+      'components.PermissionEdit.viewrecent': '최근 추가된 항목 보기',
+      'components.PermissionEdit.viewrequests': '요청 보기',
+      'components.PermissionEdit.viewwatchlists': '관심 목록 보기',
     },
   },
   {
@@ -5629,6 +6532,32 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolė',
       'i18n.next': 'Kitas',
       'i18n.previous': 'Ankstesnis',
+      'components.PermissionEdit.admin': 'Administratorius',
+      'components.PermissionEdit.advancedrequest': 'Detalesnės rezervacijos',
+      'components.PermissionEdit.autoapprove': 'Auto patvirtinti',
+      'components.PermissionEdit.autoapprove4k': 'Auto patvirtinti 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Auto-patvirtinti 4K filmus',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatiškai patvirtinti 4K serialų rezervacijas',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automatiškai patvirtinti 4K filmus',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automatiškai patvirtinti serialą',
+      'components.PermissionEdit.autorequest': 'Auto rezervacija',
+      'components.PermissionEdit.createissues': 'Pateikti problemas',
+      'components.PermissionEdit.manageissues': 'Valdyti problemas',
+      'components.PermissionEdit.managerequests': 'Valdyti rezervacijas',
+      'components.PermissionEdit.request': 'Rezervuoti',
+      'components.PermissionEdit.request4k': 'Rezervuoti 4k',
+      'components.PermissionEdit.request4kMovies': 'Rezervuoti 4K filmus',
+      'components.PermissionEdit.request4kTv': 'Rezervuoti 4K Serialus',
+      'components.PermissionEdit.requestMovies': 'Rezervuoti filmus',
+      'components.PermissionEdit.requestTv': 'Rezervuoti serialus',
+      'components.PermissionEdit.users': 'Valdyti vartotojus',
+      'components.PermissionEdit.viewissues': 'Peržiūrėti problemas',
+      'components.PermissionEdit.viewrecent': 'Peržiūrėti neseniai pridėtus',
+      'components.PermissionEdit.viewrequests': 'Peržiūrėti rezervacijas',
     },
   },
   {
@@ -5690,6 +6619,37 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Rolle',
       'i18n.next': 'Neste',
       'i18n.previous': 'Forrige',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Avanserte Forespørsler',
+      'components.PermissionEdit.autoapprove': 'Godkjenn Automagisk',
+      'components.PermissionEdit.autoapprove4k': 'Godkjenn 4K Automagisk',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automagisk godkjenning av filmer i 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automagisk godkjenning av serier i 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Godkjenn filmforespørsler automagisk',
+      'components.PermissionEdit.autoapproveSeries':
+        'Godkjenn serieforespørsler automagisk',
+      'components.PermissionEdit.autorequest': 'Auto-Forespørsel',
+      'components.PermissionEdit.autorequestMovies':
+        'Forespør Serier Automagisk',
+      'components.PermissionEdit.autorequestSeries':
+        'Forespør Serier Automagisk',
+      'components.PermissionEdit.createissues': 'Rapporter Avvik',
+      'components.PermissionEdit.manageissues': 'Administrer Avvik',
+      'components.PermissionEdit.managerequests': 'Administrer Forespørsler',
+      'components.PermissionEdit.request': 'Forespør',
+      'components.PermissionEdit.request4k': 'Forespør i 4K',
+      'components.PermissionEdit.request4kMovies': 'Forespør Filmer i 4K',
+      'components.PermissionEdit.request4kTv': 'Forespør Serier i 4K',
+      'components.PermissionEdit.requestMovies': 'Forespør Filmer',
+      'components.PermissionEdit.requestTv': 'Forespør Serier',
+      'components.PermissionEdit.users': 'Administrer Brukere',
+      'components.PermissionEdit.viewissues': 'Vis Avvik',
+      'components.PermissionEdit.viewrecent': 'Vis nylig lag til',
+      'components.PermissionEdit.viewrequests': 'Vis Forespørsler',
+      'components.PermissionEdit.viewwatchlists': 'Vis Visningsliste',
     },
   },
   {
@@ -5774,6 +6734,40 @@ export const localeData = [
         'Er zijn geen externe accounts aan je account gekoppeld.',
       'i18n.next': 'Volgende',
       'i18n.previous': 'Vorige',
+      'components.PermissionEdit.admin': 'Beheerder',
+      'components.PermissionEdit.advancedrequest': 'Geavanceerde aanvragen',
+      'components.PermissionEdit.autoapprove': 'Automatische goedkeuring',
+      'components.PermissionEdit.autoapprove4k': 'Automatische goedkeuring 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatische goedkeuring van films in 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Series automatisch goedkeuren',
+      'components.PermissionEdit.autoapproveMovies':
+        'Films automatisch goedkeuren',
+      'components.PermissionEdit.autoapproveSeries':
+        'Series automatisch goedkeuren',
+      'components.PermissionEdit.autorequest': 'Automatisch aanvragen',
+      'components.PermissionEdit.autorequestMovies':
+        'Films automatisch aanvragen',
+      'components.PermissionEdit.autorequestSeries':
+        'Series automatisch aanvragen',
+      'components.PermissionEdit.createissues': 'Problemen melden',
+      'components.PermissionEdit.manageblocklist': 'Blokkeerlijst beheren',
+      'components.PermissionEdit.manageissues': 'Problemen beheren',
+      'components.PermissionEdit.managerequests': 'Aanvragen beheren',
+      'components.PermissionEdit.request': 'Aanvragen',
+      'components.PermissionEdit.request4k': '4K aanvragen',
+      'components.PermissionEdit.request4kMovies': '4K-films aanvragen',
+      'components.PermissionEdit.request4kTv': '4K-series aanvragen',
+      'components.PermissionEdit.requestMovies': 'Films aanvragen',
+      'components.PermissionEdit.requestTv': 'Series aanvragen',
+      'components.PermissionEdit.users': 'Gebruikers beheren',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Geblokkeerde media weergeven.',
+      'components.PermissionEdit.viewissues': 'Problemen weergeven',
+      'components.PermissionEdit.viewrecent': 'Onlangs toegevoegd weergeven',
+      'components.PermissionEdit.viewrequests': 'Aanvragen weergeven',
+      'components.PermissionEdit.viewwatchlists': 'Plex-kijklijsten weergeven',
     },
   },
   {
@@ -5858,6 +6852,39 @@ export const localeData = [
         'Nie masz żadnych kont zewnętrznych powiązanych z Twoim kontem.',
       'i18n.next': 'Następny',
       'i18n.previous': 'Poprzedni',
+      'components.PermissionEdit.admin': 'Admin',
+      'components.PermissionEdit.advancedrequest': 'Zaawansowane prośby',
+      'components.PermissionEdit.autoapprove': 'Automatycznie zatwierdzaj',
+      'components.PermissionEdit.autoapprove4k': 'Automatycznie zatwierdzaj 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatyczne zatwierdzanie filmów 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatyczne zatwierdzanie seriali 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automatyczne zatwierdzanie filmów',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automatyczne zatwierdzanie seriali',
+      'components.PermissionEdit.autorequest': 'Automatyczna prośba',
+      'components.PermissionEdit.autorequestMovies':
+        'Filmy z próśb automatycznych',
+      'components.PermissionEdit.autorequestSeries':
+        'Automatyczna prośba o serial',
+      'components.PermissionEdit.createissues': 'Zgłoś problemy',
+      'components.PermissionEdit.manageblocklist': 'Zarządzaj czarną listą',
+      'components.PermissionEdit.manageissues': 'Zarządzaj problemami',
+      'components.PermissionEdit.managerequests': 'Zarządzaj prośbami',
+      'components.PermissionEdit.request': 'Prośba',
+      'components.PermissionEdit.request4k': 'Poproś o 4K',
+      'components.PermissionEdit.request4kMovies': 'Poproś o filmy 4K',
+      'components.PermissionEdit.request4kTv': 'Poproś o serial w 4K',
+      'components.PermissionEdit.requestMovies': 'Poproś o filmy',
+      'components.PermissionEdit.requestTv': 'Poproś o serial',
+      'components.PermissionEdit.users': 'Zarządzanie użytkownikami',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Zobacz media z czarnej listy.',
+      'components.PermissionEdit.viewissues': 'Wyświetl problemy',
+      'components.PermissionEdit.viewrecent': 'Wyświetl ostatnio dodane',
+      'components.PermissionEdit.viewrequests': 'Wyświetl prośby',
     },
   },
   {
@@ -6148,6 +7175,64 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
       'i18n.next': 'Próxima',
       'i18n.previous': 'Anterior',
+      'components.PermissionEdit.admin': 'Administrador',
+      'components.PermissionEdit.advancedrequest': 'Solicitações Avançadas',
+      'components.PermissionEdit.autoapprove': 'Aprovar Automaticamente',
+      'components.PermissionEdit.autoapprove4k': 'Aprovar 4K Automaticamente',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprovar Automaticamente Filmes em 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Aprovar Automaticamente Séries em 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Aprovação Automática de Mídia Adulta',
+      'components.PermissionEdit.autoapproveBooks': 'Auto-aprovar livros',
+      'components.PermissionEdit.autoapproveComics': 'Auto-aprovar quadrinhos',
+      'components.PermissionEdit.autoapproveMagazines': 'Auto-aprovar revistas',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprovar Filmes Automaticamente',
+      'components.PermissionEdit.autoapproveMusic':
+        'Aprovação automática de música',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprovar Séries Automaticamente',
+      'components.PermissionEdit.autoapproveSports': 'Auto-aprovar esportes',
+      'components.PermissionEdit.autorequest': 'Solicitar Automaticamente',
+      'components.PermissionEdit.autorequestBooks':
+        'Solicitar livros automaticamente',
+      'components.PermissionEdit.autorequestComics':
+        'Solicitar quadrinhos automaticamente',
+      'components.PermissionEdit.autorequestMagazines':
+        'Solicitar revistas automaticamente',
+      'components.PermissionEdit.autorequestMovies':
+        'Solicitar Filmes Automaticamente',
+      'components.PermissionEdit.autorequestMusic':
+        'Solicitar música automaticamente',
+      'components.PermissionEdit.autorequestSeries':
+        'Solicitar Séries Automaticamente',
+      'components.PermissionEdit.createissues': 'Reportar Problemas',
+      'components.PermissionEdit.manageblocklist':
+        'Gerenciar Lista de Bloqueio',
+      'components.PermissionEdit.managedownloads': 'Gerenciar downloads',
+      'components.PermissionEdit.manageissues': 'Gerenciar Problemas',
+      'components.PermissionEdit.managerequests': 'Gerenciar Solicitações',
+      'components.PermissionEdit.request': 'Solicitar',
+      'components.PermissionEdit.request4k': 'Solicitar 4K',
+      'components.PermissionEdit.request4kMovies': 'Solicitar Filmes em 4K',
+      'components.PermissionEdit.request4kTv': 'Solicitar Séries em 4K',
+      'components.PermissionEdit.requestAdult': 'Solicitar Mídia Adulta',
+      'components.PermissionEdit.requestBooks': 'Solicitar livros',
+      'components.PermissionEdit.requestComics': 'Solicitar quadrinhos',
+      'components.PermissionEdit.requestMagazines': 'Solicitar Revistas',
+      'components.PermissionEdit.requestMovies': 'Solicitar Filmes',
+      'components.PermissionEdit.requestMusic': 'Pedir Música',
+      'components.PermissionEdit.requestSports': 'Solicitar conteúdo esportivo',
+      'components.PermissionEdit.requestTv': 'Solicitar Séries',
+      'components.PermissionEdit.users': 'Gerenciar Usuários',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Ver mídia na lista de bloqueio.',
+      'components.PermissionEdit.viewissues': 'Ver Problemas',
+      'components.PermissionEdit.viewrecent': 'Ver Recentemente Adicionados',
+      'components.PermissionEdit.viewrequests': 'Visualizar Solicitações',
+      'components.PermissionEdit.viewwatchlists': 'Ver listas para assistir',
     },
   },
   {
@@ -6231,6 +7316,40 @@ export const localeData = [
         'Não tem nenhuma conta externa associada à sua conta.',
       'i18n.next': 'Próxima',
       'i18n.previous': 'Anterior',
+      'components.PermissionEdit.admin': 'Administrador',
+      'components.PermissionEdit.advancedrequest': 'Pedidos Avançados',
+      'components.PermissionEdit.autoapprove': 'Aprovar Automaticamente',
+      'components.PermissionEdit.autoapprove4k': 'Aprovar 4K Automaticamente',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprovar Filmes 4K Automaticamente',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Aprovar Séries 4K Automaticamente',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprovar Filmes Automaticamente',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprovar Séries Automaticamente',
+      'components.PermissionEdit.autorequest': 'Solicitar Automaticamente',
+      'components.PermissionEdit.autorequestMovies':
+        'Solicitar Filmes Automaticamente',
+      'components.PermissionEdit.autorequestSeries':
+        'Solicitar Séries Automaticamente',
+      'components.PermissionEdit.createissues': 'Reportar Problemas',
+      'components.PermissionEdit.manageblocklist': 'Gerir lista de bloqueio',
+      'components.PermissionEdit.manageissues': 'Gerir Problemas',
+      'components.PermissionEdit.managerequests': 'Gerir Pedidos',
+      'components.PermissionEdit.request': 'Pedir',
+      'components.PermissionEdit.request4k': 'Pedir 4K',
+      'components.PermissionEdit.request4kMovies': 'Pedir Filmes 4K',
+      'components.PermissionEdit.request4kTv': 'Pedir Séries 4K',
+      'components.PermissionEdit.requestMovies': 'Pedir Filmes',
+      'components.PermissionEdit.requestTv': 'Pedir Séries',
+      'components.PermissionEdit.users': 'Gerir Utilizadores',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Ver os média bloqueados.',
+      'components.PermissionEdit.viewissues': 'Ver Problemas',
+      'components.PermissionEdit.viewrecent': 'Ver Recentemente Adicionados',
+      'components.PermissionEdit.viewrequests': 'Ver Pedidos',
+      'components.PermissionEdit.viewwatchlists': 'Ver lista para ver do Plex',
     },
   },
   {
@@ -6263,6 +7382,41 @@ export const localeData = [
       'components.UserProfile.UserSettings.menuPermissions': 'Permisiuni',
       'components.UserProfile.UserSettings.menuNotifications': 'Notificări',
       'i18n.previous': 'Precedent',
+      'components.PermissionEdit.admin': 'Admin',
+      'components.PermissionEdit.advancedrequest': 'Solicitări Avansate',
+      'components.PermissionEdit.autoapprove': 'Aprobare Automată',
+      'components.PermissionEdit.autoapprove4k': 'Aprobare Automată 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprobare Automată a Filmelor 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Aprobare Automată a Serialelor 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprobare Automată a Filmelor',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprobare Automată a Serialelor',
+      'components.PermissionEdit.autorequest': 'Solicitare Automată',
+      'components.PermissionEdit.autorequestMovies': 'Solicitați Automat Filme',
+      'components.PermissionEdit.autorequestSeries':
+        'Solicită Automat Seriale TV',
+      'components.PermissionEdit.createissues': 'Raportați Probleme',
+      'components.PermissionEdit.manageblocklist':
+        'Gestionează lista de materiale blocate',
+      'components.PermissionEdit.manageissues': 'Gestionarea Problemelor',
+      'components.PermissionEdit.managerequests': 'Gestionați Solicitările',
+      'components.PermissionEdit.request': 'Solicitați',
+      'components.PermissionEdit.request4k': 'Solicitați 4K',
+      'components.PermissionEdit.request4kMovies': 'Solicitați Filme 4K',
+      'components.PermissionEdit.request4kTv': 'Solicitați Seria TV în 4K',
+      'components.PermissionEdit.requestMovies': 'Solicită Filme',
+      'components.PermissionEdit.requestTv': 'Solicită Seria',
+      'components.PermissionEdit.users': 'Gestionare Utilizatori',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Vizualizează materialele blocate.',
+      'components.PermissionEdit.viewissues': 'Vedeți Problemele',
+      'components.PermissionEdit.viewrecent': 'Vezi Adăugate Recent',
+      'components.PermissionEdit.viewrequests': 'Vizualizați Solicitările',
+      'components.PermissionEdit.viewwatchlists':
+        'Vizualizați Listele de Urmărire Plex',
     },
   },
   {
@@ -6348,6 +7502,40 @@ export const localeData = [
         'У вас нет ни одного привязанного внешнего аккаунта.',
       'i18n.next': 'Следующая',
       'i18n.previous': 'Предыдущая',
+      'components.PermissionEdit.admin': 'Администратор',
+      'components.PermissionEdit.advancedrequest': 'Расширенные запросы',
+      'components.PermissionEdit.autoapprove': 'Автоматическое одобрение',
+      'components.PermissionEdit.autoapprove4k': 'Автоматическое одобрение 4К',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Автоматическое одобрение 4К фильмов',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Автоматическое одобрение 4К сериалов',
+      'components.PermissionEdit.autoapproveMovies':
+        'Автоматическое одобрение фильмов',
+      'components.PermissionEdit.autoapproveSeries':
+        'Автоматическое одобрение сериалов',
+      'components.PermissionEdit.autorequest': 'Авто запрос',
+      'components.PermissionEdit.autorequestMovies': 'Авто запрос фильмов',
+      'components.PermissionEdit.autorequestSeries': 'Авто запрос сериалов',
+      'components.PermissionEdit.createissues': 'Сообщения о проблемах',
+      'components.PermissionEdit.manageblocklist':
+        'Управление списком блокировок',
+      'components.PermissionEdit.manageissues': 'Управление проблемами',
+      'components.PermissionEdit.managerequests': 'Управление запросами',
+      'components.PermissionEdit.request': 'Запросы',
+      'components.PermissionEdit.request4k': 'Запросы 4K',
+      'components.PermissionEdit.request4kMovies': 'Запросы фильмов в 4К',
+      'components.PermissionEdit.request4kTv': 'Запросы сериалов в 4К',
+      'components.PermissionEdit.requestMovies': 'Запросы фильмов',
+      'components.PermissionEdit.requestTv': 'Запросы сериалов',
+      'components.PermissionEdit.users': 'Управление пользователями',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Просмотр заблокированного контента.',
+      'components.PermissionEdit.viewissues': 'Просмотр проблем',
+      'components.PermissionEdit.viewrecent': 'Просмотр недавно добавленного',
+      'components.PermissionEdit.viewrequests': 'Просмотр запросов',
+      'components.PermissionEdit.viewwatchlists':
+        'Просмотр списков просмотра Plex',
     },
   },
   {
@@ -6405,6 +7593,38 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Roli',
       'i18n.next': 'Tjetra',
       'i18n.previous': 'Para',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Kërkesa të Avancuara',
+      'components.PermissionEdit.autoapprove': 'Aprovo automatikisht',
+      'components.PermissionEdit.autoapprove4k': 'Aprovo automatikisht 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Aprovo automatikisht Filmat 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Aprovo automatikisht Serialet 4K',
+      'components.PermissionEdit.autoapproveMovies':
+        'Aprovo automatikisht filmat',
+      'components.PermissionEdit.autoapproveSeries':
+        'Aprovo automatikisht Serialet',
+      'components.PermissionEdit.autorequest': 'Auto-Kërkesë',
+      'components.PermissionEdit.autorequestMovies':
+        'Kërkesë automatike për filma',
+      'components.PermissionEdit.autorequestSeries':
+        'Kërkesa Automatike Serialesh',
+      'components.PermissionEdit.createissues': 'Raporto Problemet',
+      'components.PermissionEdit.manageissues': 'Menaxho Problemet',
+      'components.PermissionEdit.managerequests': 'Menaxho Kërkesat',
+      'components.PermissionEdit.request': 'Kërkesë',
+      'components.PermissionEdit.request4k': 'Kërkesë 4K',
+      'components.PermissionEdit.request4kMovies': 'Kërko filma 4K',
+      'components.PermissionEdit.request4kTv': 'Kërko Seriale 4K',
+      'components.PermissionEdit.requestMovies': 'Kërko Filma',
+      'components.PermissionEdit.requestTv': 'Kërko Serialin',
+      'components.PermissionEdit.users': 'Menaxho Përdoruesit',
+      'components.PermissionEdit.viewissues': 'Shiko Problemet',
+      'components.PermissionEdit.viewrecent': 'Shiko Shtuar së fundi',
+      'components.PermissionEdit.viewrequests': 'Shikoni Kërkesat',
+      'components.PermissionEdit.viewwatchlists':
+        'Shiko listat e shikimit të Plex',
     },
   },
   {
@@ -6458,6 +7678,23 @@ export const localeData = [
       'components.UserProfile.UserSettings.UserGeneralSettings.role': 'Uloga',
       'i18n.next': 'Sledeći',
       'i18n.previous': 'Prethodni',
+      'components.PermissionEdit.admin': 'Administrator',
+      'components.PermissionEdit.advancedrequest': 'Napredni zahtevi',
+      'components.PermissionEdit.autoapprove': 'Automatsko odobrenje',
+      'components.PermissionEdit.autoapprove4k': 'Automatsko odobrenje 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Automatski odobri 4K filmove',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Automatski odobri 4K serije',
+      'components.PermissionEdit.autoapproveMovies':
+        'Automatsko odobrenje filmova',
+      'components.PermissionEdit.autoapproveSeries':
+        'Automatsko odobrenje serija',
+      'components.PermissionEdit.managerequests': 'Upravljajte zahtevima',
+      'components.PermissionEdit.request': 'Zahtev',
+      'components.PermissionEdit.request4k': 'Zahtevajte 4K',
+      'components.PermissionEdit.users': 'Upravljajte korisnica',
+      'components.PermissionEdit.viewrequests': 'Pogledaj zahteve',
     },
   },
   {
@@ -6541,6 +7778,39 @@ export const localeData = [
         'Du har inte några externa konton länkade till ditt konto.',
       'i18n.next': 'Nästa',
       'i18n.previous': 'Föregående',
+      'components.PermissionEdit.admin': 'Admin',
+      'components.PermissionEdit.advancedrequest': 'Avancerade förfrågningar',
+      'components.PermissionEdit.autoapprove': 'Godkänn automatiskt',
+      'components.PermissionEdit.autoapprove4k': 'Godkänn automatiskt 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Godkänn filmer i 4K automatiskt',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Godkänn serier i 4K automatiskt',
+      'components.PermissionEdit.autoapproveMovies':
+        'Godkänn filmer automatiskt',
+      'components.PermissionEdit.autoapproveSeries':
+        'Godkänn serier automatiskt',
+      'components.PermissionEdit.autorequest': 'Automatisk förfrågan',
+      'components.PermissionEdit.autorequestMovies':
+        'Automatisk förfrågan för filmer',
+      'components.PermissionEdit.autorequestSeries':
+        'Automatisk förfrågan för serier',
+      'components.PermissionEdit.createissues': 'Skapa ärenden',
+      'components.PermissionEdit.manageblocklist': 'Hantera blocklista',
+      'components.PermissionEdit.manageissues': 'Hantera ärenden',
+      'components.PermissionEdit.managerequests': 'Hantera förfrågningar',
+      'components.PermissionEdit.request': 'Göra förfrågningar',
+      'components.PermissionEdit.request4k': 'Göra 4K-förfrågningar',
+      'components.PermissionEdit.request4kMovies': 'Göra 4K-filmförfrågningar',
+      'components.PermissionEdit.request4kTv': 'Göra 4K-serieförfrågningar',
+      'components.PermissionEdit.requestMovies': 'Göra filmförfrågningar',
+      'components.PermissionEdit.requestTv': 'Göra serieförfrågningar',
+      'components.PermissionEdit.users': 'Hantera användare',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Visa blockerade medier.',
+      'components.PermissionEdit.viewissues': 'Visa ärenden',
+      'components.PermissionEdit.viewrecent': 'Se nyligen tillagda',
+      'components.PermissionEdit.viewrequests': 'Visa förfrågningar',
     },
   },
   {
@@ -6624,6 +7894,37 @@ export const localeData = [
         'Hesabınıza bağlı harici hesap yok.',
       'i18n.next': 'Sonraki',
       'i18n.previous': 'Önceki',
+      'components.PermissionEdit.admin': 'Yönetici',
+      'components.PermissionEdit.advancedrequest': 'Gelişmiş Talepler',
+      'components.PermissionEdit.autoapprove': 'Otomatik Onayla',
+      'components.PermissionEdit.autoapprove4k': '4K Otomatik Onayla',
+      'components.PermissionEdit.autoapprove4kMovies':
+        '4K Filmleri Otomatik Onayla',
+      'components.PermissionEdit.autoapprove4kSeries':
+        '4K Dizileri Otomatik Onayla',
+      'components.PermissionEdit.autoapproveMovies': 'Filmleri Otomatik Onayla',
+      'components.PermissionEdit.autoapproveSeries': 'Dizileri Otomatik Onayla',
+      'components.PermissionEdit.autorequest': 'Otomatik Talep',
+      'components.PermissionEdit.autorequestMovies':
+        'Filmleri Otomatik Talep Et',
+      'components.PermissionEdit.autorequestSeries':
+        'Dizileri Otomatik Talep Et',
+      'components.PermissionEdit.createissues': 'Sorun Bildir',
+      'components.PermissionEdit.manageblocklist': 'Engelleme Listesini Yönet',
+      'components.PermissionEdit.manageissues': 'Sorunları Yönet',
+      'components.PermissionEdit.managerequests': 'Talepleri Yönet',
+      'components.PermissionEdit.request': 'Talep Et',
+      'components.PermissionEdit.request4k': '4K Talep Et',
+      'components.PermissionEdit.request4kMovies': '4K Film Talep Et',
+      'components.PermissionEdit.request4kTv': '4K Dizi Talep Et',
+      'components.PermissionEdit.requestMovies': 'Film Talep Et',
+      'components.PermissionEdit.requestTv': 'Dizi Talep Et',
+      'components.PermissionEdit.users': 'Kullanıcıları Yönet',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Engellenen medyayı görüntüle.',
+      'components.PermissionEdit.viewissues': 'Sorunları Görüntüle',
+      'components.PermissionEdit.viewrecent': 'Son Eklenenleri Görüntüle',
+      'components.PermissionEdit.viewrequests': 'Talepleri Görüntüle',
     },
   },
   {
@@ -6707,6 +8008,38 @@ export const localeData = [
         "У вас немає зовнішніх облікових записів, пов'язаних з вашим обліковим записом.",
       'i18n.next': 'Наступна',
       'i18n.previous': 'Попередня',
+      'components.PermissionEdit.admin': 'Адміністратор',
+      'components.PermissionEdit.advancedrequest': 'Розширені запити',
+      'components.PermissionEdit.autoapprove': 'Автоматичне схвалення',
+      'components.PermissionEdit.autoapprove4k': 'Автоматичне схвалення 4К',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Автоматичне схвалення фільмів 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Автоматичне схвалення 4К серіалів',
+      'components.PermissionEdit.autoapproveMovies':
+        'Автоматичне схвалення фільмів',
+      'components.PermissionEdit.autoapproveSeries':
+        'Автоматичне схвалення серіалів',
+      'components.PermissionEdit.autorequest': 'Автоматичний запит',
+      'components.PermissionEdit.autorequestMovies':
+        'Автоматичний запит фільмів',
+      'components.PermissionEdit.autorequestSeries':
+        'Автоматичний запит Серіалів',
+      'components.PermissionEdit.createissues': 'Повідомлення про проблеми',
+      'components.PermissionEdit.manageissues': 'Управління проблемами',
+      'components.PermissionEdit.managerequests': 'Керування запитами',
+      'components.PermissionEdit.request': 'Запити',
+      'components.PermissionEdit.request4k': 'Запити 4K',
+      'components.PermissionEdit.request4kMovies': 'Запити фільмів у 4К',
+      'components.PermissionEdit.request4kTv': 'Запити серіалів у 4К',
+      'components.PermissionEdit.requestMovies': 'Запити фільмів',
+      'components.PermissionEdit.requestTv': 'Запити серіалів',
+      'components.PermissionEdit.users': 'Керування користувачами',
+      'components.PermissionEdit.viewissues': 'Перегляд проблем',
+      'components.PermissionEdit.viewrecent': 'Переглянути нещодавно додані',
+      'components.PermissionEdit.viewrequests': 'Перегляд запитів',
+      'components.PermissionEdit.viewwatchlists':
+        'Перегляд списків переглядів Plex',
     },
   },
   {
@@ -6990,6 +8323,50 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '剧集',
       'i18n.next': '下一页',
       'i18n.previous': '上一页',
+      'components.PermissionEdit.admin': '管理员',
+      'components.PermissionEdit.advancedrequest': '进阶请求',
+      'components.PermissionEdit.autoapprove': '自动批准',
+      'components.PermissionEdit.autoapprove4k': '自动批准 4K',
+      'components.PermissionEdit.autoapprove4kMovies': '4K 电影自动批准',
+      'components.PermissionEdit.autoapprove4kSeries': '4K 电视节目自动批准',
+      'components.PermissionEdit.autoapproveAdult': '自动批准成人媒体',
+      'components.PermissionEdit.autoapproveBooks': '自动批准图书',
+      'components.PermissionEdit.autoapproveComics': '自动批准漫画',
+      'components.PermissionEdit.autoapproveMagazines': '自动批准杂志',
+      'components.PermissionEdit.autoapproveMovies': '电影自动批准',
+      'components.PermissionEdit.autoapproveMusic': '自动批准音乐',
+      'components.PermissionEdit.autoapproveSeries': '电视节目自动批准',
+      'components.PermissionEdit.autoapproveSports': '自动批准体育类请求',
+      'components.PermissionEdit.autorequest': '自动请求',
+      'components.PermissionEdit.autorequestBooks': '自动请求书籍',
+      'components.PermissionEdit.autorequestComics': '自动请求漫画',
+      'components.PermissionEdit.autorequestMagazines': '自动请求杂志',
+      'components.PermissionEdit.autorequestMovies': '电影自动请求',
+      'components.PermissionEdit.autorequestMusic': '自动请求音乐',
+      'components.PermissionEdit.autorequestSeries': '电视节目自动请求',
+      'components.PermissionEdit.createissues': '报告问题',
+      'components.PermissionEdit.manageblocklist': '管理屏蔽列表',
+      'components.PermissionEdit.managedownloads': '管理下载',
+      'components.PermissionEdit.manageissues': '管理问题',
+      'components.PermissionEdit.managerequests': '请求管理',
+      'components.PermissionEdit.request': '提交请求',
+      'components.PermissionEdit.request4k': '提交 4K 请求',
+      'components.PermissionEdit.request4kMovies': '提交 4K 电影请求',
+      'components.PermissionEdit.request4kTv': '提交 4K 电视节目请求',
+      'components.PermissionEdit.requestAdult': '请求成人媒体',
+      'components.PermissionEdit.requestBooks': '请求图书',
+      'components.PermissionEdit.requestComics': '请求漫画',
+      'components.PermissionEdit.requestMagazines': '请求杂志',
+      'components.PermissionEdit.requestMovies': '提交电影请求',
+      'components.PermissionEdit.requestMusic': '请求音乐',
+      'components.PermissionEdit.requestSports': '请求体育内容',
+      'components.PermissionEdit.requestTv': '提交电视节目请求',
+      'components.PermissionEdit.users': '用户管理',
+      'components.PermissionEdit.viewblocklistedItems': '查看被屏蔽的媒体。',
+      'components.PermissionEdit.viewissues': '查看问题',
+      'components.PermissionEdit.viewrecent': '查看最近添加的内容',
+      'components.PermissionEdit.viewrequests': '查看请求',
+      'components.PermissionEdit.viewwatchlists': '查看关注列表',
     },
   },
   {
@@ -7273,6 +8650,50 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '影集',
       'i18n.next': '下一頁',
       'i18n.previous': '上一頁',
+      'components.PermissionEdit.admin': '管理員',
+      'components.PermissionEdit.advancedrequest': '進階請求',
+      'components.PermissionEdit.autoapprove': '自動批准',
+      'components.PermissionEdit.autoapprove4k': '自動批准 4K',
+      'components.PermissionEdit.autoapprove4kMovies': '4K 電影自動批准',
+      'components.PermissionEdit.autoapprove4kSeries': '4K 影集自動批准',
+      'components.PermissionEdit.autoapproveAdult': '自動核准成人媒體',
+      'components.PermissionEdit.autoapproveBooks': '自動核准書籍',
+      'components.PermissionEdit.autoapproveComics': '自動核准漫畫',
+      'components.PermissionEdit.autoapproveMagazines': '自動核准雜誌',
+      'components.PermissionEdit.autoapproveMovies': '電影自動批准',
+      'components.PermissionEdit.autoapproveMusic': '自動核准音樂',
+      'components.PermissionEdit.autoapproveSeries': '影集自動批准',
+      'components.PermissionEdit.autoapproveSports': '自動核准體育類請求',
+      'components.PermissionEdit.autorequest': '自動提出請求',
+      'components.PermissionEdit.autorequestBooks': '自動請求書籍',
+      'components.PermissionEdit.autorequestComics': '自動請求漫畫',
+      'components.PermissionEdit.autorequestMagazines': '自動要求雜誌',
+      'components.PermissionEdit.autorequestMovies': '自動提出電影請求',
+      'components.PermissionEdit.autorequestMusic': '自動要求音樂',
+      'components.PermissionEdit.autorequestSeries': '自動提出影集請求',
+      'components.PermissionEdit.createissues': '報告問題',
+      'components.PermissionEdit.manageblocklist': '管理封鎖清單',
+      'components.PermissionEdit.managedownloads': '管理下載',
+      'components.PermissionEdit.manageissues': '管理問題',
+      'components.PermissionEdit.managerequests': '管理請求',
+      'components.PermissionEdit.request': '提出請求',
+      'components.PermissionEdit.request4k': '提出 4K 請求',
+      'components.PermissionEdit.request4kMovies': '提出 4K 電影請求',
+      'components.PermissionEdit.request4kTv': '提出 4K 影集請求',
+      'components.PermissionEdit.requestAdult': '請求成人媒體',
+      'components.PermissionEdit.requestBooks': '請求書籍',
+      'components.PermissionEdit.requestComics': '請求漫畫',
+      'components.PermissionEdit.requestMagazines': '要求雜志',
+      'components.PermissionEdit.requestMovies': '提出電影請求',
+      'components.PermissionEdit.requestMusic': '要求音樂',
+      'components.PermissionEdit.requestSports': '請求體育內容',
+      'components.PermissionEdit.requestTv': '提出影集請求',
+      'components.PermissionEdit.users': '管理使用者',
+      'components.PermissionEdit.viewblocklistedItems': '檢視已封鎖的媒體。',
+      'components.PermissionEdit.viewissues': '查看問題',
+      'components.PermissionEdit.viewrecent': '查看最近新增',
+      'components.PermissionEdit.viewrequests': '查看請求',
+      'components.PermissionEdit.viewwatchlists': '檢視觀看清單',
     },
   },
   {
@@ -7562,6 +8983,63 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Loạt phim',
       'i18n.next': 'Tiếp theo',
       'i18n.previous': 'Trước',
+      'components.PermissionEdit.admin': 'Quản trị',
+      'components.PermissionEdit.advancedrequest': 'Yêu cầu cấp cao',
+      'components.PermissionEdit.autoapprove': 'Tự động phê duyệt',
+      'components.PermissionEdit.autoapprove4k': 'Tự động phê duyệt 4K',
+      'components.PermissionEdit.autoapprove4kMovies':
+        'Tự động phê duyệt phim 4K',
+      'components.PermissionEdit.autoapprove4kSeries':
+        'Tự động phê duyệt phim bộ 4K',
+      'components.PermissionEdit.autoapproveAdult':
+        'Tự động phê duyệt nội dung người lớn',
+      'components.PermissionEdit.autoapproveBooks': 'Tự động phê duyệt sách',
+      'components.PermissionEdit.autoapproveComics':
+        'Tự động phê duyệt truyện tranh',
+      'components.PermissionEdit.autoapproveMagazines':
+        'Tự động phê duyệt tạp chí',
+      'components.PermissionEdit.autoapproveMovies': 'Tự động phê duyệt phim',
+      'components.PermissionEdit.autoapproveMusic': 'Tự động phê duyệt âm nhạc',
+      'components.PermissionEdit.autoapproveSeries':
+        'Tự động phê duyệt phim bộ',
+      'components.PermissionEdit.autoapproveSports':
+        'Tự động phê duyệt các yêu cầu thể thao',
+      'components.PermissionEdit.autorequest': 'Tự động gửi yêu cầu',
+      'components.PermissionEdit.autorequestBooks': 'Tự động gửi yêu cầu sách',
+      'components.PermissionEdit.autorequestComics':
+        'Tự động gửi yêu cầu truyện tranh',
+      'components.PermissionEdit.autorequestMagazines':
+        'Tự động gửi yêu cầu tạp chí',
+      'components.PermissionEdit.autorequestMovies': 'Tự động gửi yêu cầu phim',
+      'components.PermissionEdit.autorequestMusic':
+        'Tự động gửi yêu cầu âm nhạc',
+      'components.PermissionEdit.autorequestSeries':
+        'Tự động gửi yêu cầu phim bộ',
+      'components.PermissionEdit.createissues': 'Báo cáo sự cố',
+      'components.PermissionEdit.manageblocklist': 'Quản lý danh sách chặn',
+      'components.PermissionEdit.managedownloads': 'Quản lý tải xuống',
+      'components.PermissionEdit.manageissues': 'Quản lý vấn đề',
+      'components.PermissionEdit.managerequests': 'Quản lý yêu cầu',
+      'components.PermissionEdit.request': 'Yêu cầu',
+      'components.PermissionEdit.request4k': 'Yêu cầu 4K',
+      'components.PermissionEdit.request4kMovies': 'Yêu cầu phim 4K',
+      'components.PermissionEdit.request4kTv': 'Yêu cầu phim bộ 4K',
+      'components.PermissionEdit.requestAdult': 'Yêu cầu nội dung người lớn',
+      'components.PermissionEdit.requestBooks': 'Yêu cầu sách',
+      'components.PermissionEdit.requestComics': 'Yêu cầu truyện tranh',
+      'components.PermissionEdit.requestMagazines': 'Yêu cầu tạp chí',
+      'components.PermissionEdit.requestMovies': 'Yêu cầu phim',
+      'components.PermissionEdit.requestMusic': 'Yêu cầu âm nhạc',
+      'components.PermissionEdit.requestSports': 'Yêu cầu thể thao',
+      'components.PermissionEdit.requestTv': 'Yêu cầu phim bộ',
+      'components.PermissionEdit.users': 'Quản lý người dùng',
+      'components.PermissionEdit.viewblocklistedItems':
+        'Xem nội dung trong danh sách chặn.',
+      'components.PermissionEdit.viewissues': 'Xem vấn đề',
+      'components.PermissionEdit.viewrecent':
+        'Xem nội dung mới được thêm gần đây',
+      'components.PermissionEdit.viewrequests': 'Xem yêu cầu',
+      'components.PermissionEdit.viewwatchlists': 'Xem danh sách theo dõi',
     },
   },
 ] as const;
