@@ -51,6 +51,7 @@ import {
   type SoftwareRequest,
 } from '../extras';
 import { useApi, usePullToRefresh } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import type { LiveDownload } from '../liveDownloadStore';
 import { canRetryRequest, requestFailureMessage } from '../requestRetry';
@@ -1155,6 +1156,7 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
 }
 
 export default function Requests() {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
   const toast = useToast();
@@ -1656,7 +1658,7 @@ export default function Requests() {
             disabled={acting !== null}
             onClick={() => setQueueEdit(x)}
           >
-            Episode Queue
+            {t('components.Requests.episodeQueue', 'Episode Queue')}
           </button>
         )}
         {canRetryRequest(x.r, user, manage) && (
@@ -1666,7 +1668,7 @@ export default function Requests() {
             onClick={() => decide(x.r.id, 'retry')}
           >
             <Icon name="refresh" size="sm" />
-            Retry
+            {t('components.Requests.retry', 'Retry')}
           </button>
         )}
         {moderate && x.r.id > 0 ? (
@@ -1679,7 +1681,7 @@ export default function Requests() {
                   onClick={() => decide(x.r.id, 'approve')}
                 >
                   <Icon name="check" size="sm" />
-                  Approve
+                  {t('components.Requests.approve', 'Approve')}
                 </button>
                 <button
                   className="btn btn-sm btn-quiet"
@@ -1693,7 +1695,7 @@ export default function Requests() {
                   }
                 >
                   <Icon name="x" size="sm" />
-                  Decline
+                  {t('components.Requests.decline', 'Decline')}
                 </button>
               </>
             )}
@@ -1704,7 +1706,7 @@ export default function Requests() {
                   disabled={acting !== null}
                   onClick={() => setEditing(x)}
                 >
-                  Change
+                  {t('lumen.requestHistory.changeRequest', 'Change')}
                 </button>
               )}
             <button
@@ -1718,7 +1720,7 @@ export default function Requests() {
                 })
               }
             >
-              Remove
+              {t('lumen.requestHistory.removeRequest', 'Remove')}
             </button>
           </>
         ) : st.k === 'ok' &&

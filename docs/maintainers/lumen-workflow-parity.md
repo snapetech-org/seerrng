@@ -894,6 +894,20 @@ is retained in
 This checks the Lumen history surface; it does not replace the native request
 dialog's baseline/candidate comparison or cover other Lumen sheets.
 
+The history sheet now follows the saved Lumen locale for its title, progress and
+stage labels, season and episode summaries, dates, status actions, and request
+actions. Existing SeerrNG locale catalog entries are reused where available;
+Lumen-specific copy has verified English, French, and Arabic overrides. Locale
+coverage was checked on desktop, iPhone, Android, and tablet. Baseline and
+candidate renders were compared at 1440 × 900 and the iPhone 13 viewport, with
+Arabic RTL and the prior French layout inspected. All 12 locale/viewport cases
+passed, as did the 4-case 620 × 803 containment regression and the request-status
+and permission matrix passed all 176 cases after updating the accessible-name
+assertions to match the localized shared-catalog title.
+Provider-supplied lifecycle messages remain as returned by the service. Other
+request and software-history copy, live provider handoff, and bundled/native
+visual comparison remain open.
+
 ### Request file downloads increment
 
 Request History offers an on-demand file lookup for available movies, series,

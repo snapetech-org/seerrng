@@ -466,7 +466,7 @@ test('available request history finds download copies on demand and links the se
     });
   });
   await page.goto(appPath('/requests?requestId=614'));
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   const find = history.getByRole('button', { name: 'Find Download Files' });
   await expect(find).toBeVisible();
   expect(lookups).toBe(0);
@@ -506,7 +506,7 @@ test('a bookmarked TV request shows its season and episode selection', async ({
     });
   });
   await page.goto(appPath('/requests?requestId=615'));
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   await expect(
     history.getByText('Invalid request history response.')
   ).toBeVisible();
@@ -524,7 +524,7 @@ test('a bookmarked TV request shows its season and episode selection', async ({
   await expect(seasons.getByRole('listitem')).toHaveText([
     /Specials.*Episodes 2 · Declined/,
     /Season 2.*Episodes 3, 5 · Approved/,
-    /Season 4.*All episodes · Waiting for approval/,
+    /Season 4.*All Episodes · Waiting for approval/,
   ]);
 });
 
@@ -564,10 +564,8 @@ test('request history remains contained and scrollable at the 620px dialog width
     })
   );
   await page.goto(appPath('/requests?requestId=618'));
-  const history = page.getByRole('dialog', { name: 'Request history' });
-  await expect(
-    history.getByRole('heading', { name: 'Request History' })
-  ).toBeVisible();
+  const history = page.getByRole('dialog', { name: 'History' });
+  await expect(history.getByRole('heading', { name: 'History' })).toBeVisible();
   await expect(history.getByText('Season 1')).toBeVisible();
   await expect(history.locator('.set')).toHaveCount(9);
 
@@ -624,7 +622,7 @@ test('a focused request link keeps its resolved title in the owner cancel confir
   });
 
   await page.goto(appPath('/requests?requestId=616'));
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   await history.getByRole('button', { name: 'Cancel', exact: true }).click();
   await expect(
     page.getByText(/Requested audio won’t be fetched/)
@@ -682,14 +680,14 @@ test('a request manager can approve a focused request missing from the list', as
   });
 
   await page.goto(appPath('/requests?requestId=617'));
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   await expect(history.getByRole('button', { name: 'Approve' })).toBeVisible();
   await expect(history.getByRole('button', { name: 'Decline' })).toBeVisible();
   await history.getByRole('button', { name: 'Approve' }).click();
   await expect(page.getByText('Request approved')).toBeVisible();
   await expect.poll(() => approvals).toEqual(['/request/617/approve']);
   await expect(
-    page.getByRole('dialog', { name: 'Request history' }).getByRole('button', {
+    page.getByRole('dialog', { name: 'History' }).getByRole('button', {
       name: 'Approve',
     })
   ).toHaveCount(0);
