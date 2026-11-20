@@ -13,6 +13,12 @@ for (const width of [1440, 390]) {
         data: { email: 'admin@seerr.dev', password: 'test1234' },
       });
     expect(login.status()).toBe(200);
+    const theme = await page
+      .context()
+      .request.post(`${baseURL}/api/v1/user/1/settings/interface-theme`, {
+        data: { theme: 'seerrOrig' },
+      });
+    expect(theme.status()).toBe(200);
     const deletes: string[] = [];
     let detailReads = 0;
     let listReads = 0;
