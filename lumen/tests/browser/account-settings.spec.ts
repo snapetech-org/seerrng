@@ -767,3 +767,106 @@ test('account theme override controls follow the selected Lumen locale', async (
     )
     .toBe(true);
 });
+
+test('password form uses the selected locale for its save action and failure', async ({
+  page,
+}) => {
+  let locale = 'fr';
+  let hasPassword = true;
+  let passwordResponseStatus = 403;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const { pathname } = new URL(request.url());
+    if (pathname === '/api/v1/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Viewer', permissions: 32, userType: 2 },
+      });
+    if (pathname === '/api/v1/user/2/settings/main')
+      return route.fulfill({ json: { username: 'Viewer', locale } });
+    if (pathname === '/api/v1/user/2/settings/password')
+      return request.method() === 'POST'
+        ? route.fulfill({ status: passwordResponseStatus, json: {} })
+        : route.fulfill({ json: { hasPassword } });
+    return route.fulfill({ json: {} });
+  });
+
+  async function submitInvalidCredentials() {
+    const fields = page.locator('#password input[type="password"]');
+    await fields.nth(0).fill('old-pass');
+    await fields.nth(1).fill('new-password-123');
+    await fields.nth(2).fill('new-password-123');
+    const saveLabel =
+      locale === 'fr'
+        ? 'Enregistrer le mot de passe'
+        : locale === 'ar'
+          ? 'حفظ كلمة المرور'
+          : 'Save Password';
+    await page.getByRole('button', { name: saveLabel }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+  }
+
+  await page.goto(appPath('./me/account#password'));
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await page.locator('#password').scrollIntoViewIfNeeded();
+  await submitInvalidCredentials();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/password-fr-${page.viewportSize()?.width}.png`,
+    });
+  await expect(
+    page.getByRole('button', { name: 'Enregistrer le mot de passe' })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Vérifiez votre mot de passe actuel et les autorisations de votre compte.'
+    )
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+
+  locale = 'ar';
+  passwordResponseStatus = 503;
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await page.locator('#password').scrollIntoViewIfNeeded();
+  await submitInvalidCredentials();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/password-ar-${page.viewportSize()?.width}.png`,
+    });
+  await expect(
+    page.getByRole('button', { name: 'حفظ كلمة المرور' })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة.'
+    )
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+
+  locale = 'fr';
+  hasPassword = false;
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await page.locator('#password').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/password-no-local-fr-${page.viewportSize()?.width}.png`,
+    });
+  await expect(
+    page.getByText('Ce compte ne possède pas de mot de passe local.')
+  ).toBeVisible();
+  await expect(page.locator('#password input[type="password"]')).toHaveCount(2);
+  await expect(
+    page.getByRole('button', { name: 'Enregistrer le mot de passe' })
+  ).toBeVisible();
+});

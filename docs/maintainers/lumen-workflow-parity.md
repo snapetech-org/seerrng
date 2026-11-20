@@ -142,11 +142,14 @@ issues, Blocklist, Swipe, calendar, and watch sessions. French and Arabic
 browser assertions cover these labels and updated desktop and phone screenshots
 were inspected. The theme color labels were checked at desktop and iPhone widths
 in French and Arabic; they preserve the existing settings rows and input
-geometry without adding styles. Password help/actions, some permission names,
+geometry without adding styles. Password forms now translate the save action,
+missing-local-password notice, and forbidden/unconfirmed failure messages in
+French and Arabic. Browser fixtures cover 403 and 503 responses, including the
+first-password state, across all four viewport projects. Some permission names
 and less common account-screen copy remain English. Locale-specific overrides
 are currently human-written only for English, French, and Arabic; independent
 linguistic review and full bundled-suite qualification remain open. Candidate
-captures from this increment are retained in
+captures from these increments are retained in
 `seerrng-lumen-theme-locale-20261120`.
 
 The signed-in You hub now localizes its section headings, destinations, theme

@@ -562,8 +562,14 @@ function PasswordForm({
       if (generation !== sessionGeneration()) return;
       setFailure(
         error instanceof ApiError && error.status === 403
-          ? 'Check your current password and account permissions.'
-          : 'Could not confirm the password change. Check your credentials before trying again.'
+          ? t(
+              'lumen.account.passwordChangeForbidden',
+              'Check your current password and account permissions.'
+            )
+          : t(
+              'lumen.account.passwordChangeUnconfirmed',
+              'Could not confirm the password change. Check your credentials before trying again.'
+            )
       );
     } finally {
       setCurrent('');
@@ -582,7 +588,12 @@ function PasswordForm({
       }}
     >
       {!hasPassword && (
-        <p className="note">This account does not have a local password.</p>
+        <p className="note">
+          {t(
+            'lumen.account.noLocalPassword',
+            'This account does not have a local password.'
+          )}
+        </p>
       )}
       <div className="setlist">
         {hasPassword && (
@@ -663,7 +674,7 @@ function PasswordForm({
       )}
       <div className="toolbar">
         <button className="btn btn-primary btn-sm" disabled={busy || !valid}>
-          Save Password
+          {t('lumen.account.savePassword', 'Save Password')}
         </button>
       </div>
     </form>

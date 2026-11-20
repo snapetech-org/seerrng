@@ -316,6 +316,12 @@ export const localeData = [
       'lumen.account.saving': 'جارٍ الحفظ…',
       'lumen.account.tvRequestSettings': 'إعدادات طلبات التلفاز',
       'lumen.account.backToYou': 'العودة إلى صفحتك',
+      'lumen.account.savePassword': 'حفظ كلمة المرور',
+      'lumen.account.noLocalPassword': 'هذا الحساب لا يملك كلمة مرور محلية.',
+      'lumen.account.passwordChangeForbidden':
+        'تحقق من كلمة المرور الحالية وصلاحيات الحساب.',
+      'lumen.account.passwordChangeUnconfirmed':
+        'تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة.',
       'lumen.account.saveThemeColors': 'حفظ ألوان المظهر',
       'lumen.account.themeOverrideConfirmFailure':
         'قبل الخادم الحفظ، لكن تعذر على Lumen تأكيد الألوان المحدّثة.',
@@ -1864,6 +1870,13 @@ export const localeData = [
       'lumen.account.saving': 'Saving…',
       'lumen.account.tvRequestSettings': 'TV Request Settings',
       'lumen.account.backToYou': 'Back to You',
+      'lumen.account.savePassword': 'Save Password',
+      'lumen.account.noLocalPassword':
+        'This account does not have a local password.',
+      'lumen.account.passwordChangeForbidden':
+        'Check your current password and account permissions.',
+      'lumen.account.passwordChangeUnconfirmed':
+        'Could not confirm the password change. Check your credentials before trying again.',
       'lumen.account.saveThemeColors': 'Save Theme Colors',
       'lumen.account.themeOverrideConfirmFailure':
         'The server accepted the save, but Lumen could not confirm the updated colors.',
@@ -3533,6 +3546,13 @@ export const localeData = [
       'lumen.account.saving': 'Enregistrement…',
       'lumen.account.tvRequestSettings': 'Paramètres des demandes TV',
       'lumen.account.backToYou': 'Retour à votre espace',
+      'lumen.account.savePassword': 'Enregistrer le mot de passe',
+      'lumen.account.noLocalPassword':
+        'Ce compte ne possède pas de mot de passe local.',
+      'lumen.account.passwordChangeForbidden':
+        'Vérifiez votre mot de passe actuel et les autorisations de votre compte.',
+      'lumen.account.passwordChangeUnconfirmed':
+        'Impossible de confirmer le changement de mot de passe. Vérifiez vos identifiants avant de réessayer.',
       'lumen.account.saveThemeColors': 'Enregistrer les couleurs du thème',
       'lumen.account.themeOverrideConfirmFailure':
         'Le serveur a accepté l’enregistrement, mais Lumen n’a pas pu confirmer les nouvelles couleurs.',

@@ -499,7 +499,11 @@
     "lumen.account.themeColor.sidebarHoverBackground": "Sidebar Hover Background",
     "lumen.account.themeColor.scrolledSearchHeader": "Scrolled Search Header",
     "lumen.account.themeColor.primaryText": "Primary Text",
-    "lumen.account.themeColor.accent": "Accent"
+    "lumen.account.themeColor.accent": "Accent",
+    "lumen.account.savePassword": "Save Password",
+    "lumen.account.noLocalPassword": "This account does not have a local password.",
+    "lumen.account.passwordChangeForbidden": "Check your current password and account permissions.",
+    "lumen.account.passwordChangeUnconfirmed": "Could not confirm the password change. Check your credentials before trying again."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1071,7 +1075,11 @@
     "lumen.account.themeColor.sidebarHoverBackground": "Arrière-plan au survol de la barre latérale",
     "lumen.account.themeColor.scrolledSearchHeader": "En-tête de recherche après défilement",
     "lumen.account.themeColor.primaryText": "Texte principal",
-    "lumen.account.themeColor.accent": "Couleur d’accentuation"
+    "lumen.account.themeColor.accent": "Couleur d’accentuation",
+    "lumen.account.savePassword": "Enregistrer le mot de passe",
+    "lumen.account.noLocalPassword": "Ce compte ne possède pas de mot de passe local.",
+    "lumen.account.passwordChangeForbidden": "Vérifiez votre mot de passe actuel et les autorisations de votre compte.",
+    "lumen.account.passwordChangeUnconfirmed": "Impossible de confirmer le changement de mot de passe. Vérifiez vos identifiants avant de réessayer."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -1643,6 +1651,10 @@
     "lumen.account.themeColor.sidebarHoverBackground": "خلفية الشريط الجانبي عند التمرير",
     "lumen.account.themeColor.scrolledSearchHeader": "ترويسة البحث بعد التمرير",
     "lumen.account.themeColor.primaryText": "النص الأساسي",
-    "lumen.account.themeColor.accent": "لون التمييز"
+    "lumen.account.themeColor.accent": "لون التمييز",
+    "lumen.account.savePassword": "حفظ كلمة المرور",
+    "lumen.account.noLocalPassword": "هذا الحساب لا يملك كلمة مرور محلية.",
+    "lumen.account.passwordChangeForbidden": "تحقق من كلمة المرور الحالية وصلاحيات الحساب.",
+    "lumen.account.passwordChangeUnconfirmed": "تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة."
   }
 }
