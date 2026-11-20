@@ -50,10 +50,13 @@ export const openAdminNativeRoute = async (
 
 /** Native settings hide their clean save footer; the other themes keep it disabled. */
 export const expectSettingsClean = async (page: Page, save: Locator) => {
-  if (
-    (await page.locator('html').getAttribute('data-interface-theme')) ===
-    'seerrOrig'
-  ) {
+  const account = await (await page.request.get('/api/v1/auth/me')).json();
+  const theme = account.settings?.interfaceTheme ?? 'seerrOrig';
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-interface-theme',
+    theme
+  );
+  if (theme === 'seerrOrig') {
     await expect(save).toBeHidden();
   } else {
     await expect(save).toBeDisabled();
