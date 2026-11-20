@@ -33,7 +33,7 @@ for (const width of [1440, 390]) {
     const row = {
       id: 9102,
       type: 'movie',
-      status: MediaRequestStatus.PENDING,
+      status: MediaRequestStatus.APPROVED,
       is4k: false,
       media,
       requestedBy: { id: 1, displayName: 'Admin', avatar: '' },
@@ -74,6 +74,7 @@ for (const width of [1440, 390]) {
       return route.fulfill({ status: 204 });
     });
     await page.goto('/users/1/requests');
+    await page.locator('select#filter').selectOption('approved');
     await expect(
       page.getByText('Retained Film', { exact: true })
     ).toBeVisible();
