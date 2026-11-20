@@ -358,6 +358,39 @@ export const localeData = [
       'components.Requests.statusUpdated': 'تم تحديث الحالة',
       'i18n.unknown': 'غير معروف',
       'components.Requests.history': 'التاريخ',
+      'components.RequestStatus.SoftwareRequests.approve': 'موافقة',
+      'components.RequestStatus.SoftwareRequests.approved': 'تمت الموافقة عليه',
+      'components.RequestStatus.SoftwareRequests.available': 'متاح',
+      'components.RequestStatus.SoftwareRequests.cancel': 'إلغاء',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'ملغى',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'حذف الطلب الملغى',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'هل تريد حذف هذا الطلب الملغى؟',
+      'components.RequestStatus.SoftwareRequests.decline': 'رفض',
+      'components.RequestStatus.SoftwareRequests.declined': 'تم رفضه',
+      'components.RequestStatus.SoftwareRequests.downloadCopies': 'تنزيل النسخ',
+      'components.RequestStatus.SoftwareRequests.downloading': 'جارٍ التنزيل',
+      'components.RequestStatus.SoftwareRequests.failed': 'فشل',
+      'components.RequestStatus.SoftwareRequests.history': 'سجل الحالة',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'جارٍ تحميل سجل الحالة…',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'جارٍ التحقق من الاستيراد',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'تعذر تحديث طلب البرنامج هذا.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'لا تتوفر تحديثات حالة محفوظة.',
+      'components.RequestStatus.SoftwareRequests.pending': 'في انتظار الموافقة',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'إزالة من الطلبات',
+      'components.RequestStatus.SoftwareRequests.retry': 'إعادة المحاولة',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'لا يمكن للمزوّد تأكيد ما إذا كان التنزيل السابق قد بدأ. تحقّق من قائمة الانتظار والسجل في عميل التنزيل. لا تتابع إلا إذا لم يوجد تنزيل مطابق.',
+      'components.RequestStatus.SoftwareRequests.searching': 'جارٍ البحث',
+      'components.RequestStatus.SoftwareRequests.title': 'طلبات البرامج',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'سحب الطلب',
+      'i18n.back': 'عودة',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1190,6 +1223,23 @@ export const localeData = [
       'lumen.requestHistory.requestedSeasons': 'المواسم المطلوبة',
       'lumen.requestHistory.changeRequest': 'تغيير',
       'lumen.requestHistory.removeRequest': 'إزالة الطلب',
+      'lumen.softwareHistory.confirmDecline': 'هل تريد رفض طلب البرنامج هذا؟',
+      'lumen.softwareHistory.confirmWithdraw':
+        'هل تريد سحب طلب البرنامج المعلّق هذا؟',
+      'lumen.softwareHistory.confirmCancel': 'هل تريد إلغاء طلب البرنامج هذا؟',
+      'lumen.softwareHistory.confirmStopTracking':
+        'هل تريد إزالة هذا الطلب وسجله من SeerrNG؟ سيستمر التنزيل لدى المزوّد.',
+      'lumen.softwareHistory.confirmAction': 'تأكيد: {action}',
+      'lumen.softwareHistory.confirmAfterNoDownload':
+        'لم يُعثر على تنزيل — {action}',
+      'lumen.softwareHistory.selectionEdition': 'الإصدار الكامل',
+      'lumen.softwareHistory.selectionOneAddon': 'إضافة واحدة',
+      'lumen.softwareHistory.selectionManyAddons': '{count} إضافات',
+      'lumen.softwareHistory.selectionAddons': 'الإضافات المحددة',
+      'lumen.softwareHistory.openPatchVersion': 'فتح إصدار التصحيح المطلوب',
+      'lumen.softwareHistory.openPatchProject': 'فتح مشروع التصحيح',
+      'lumen.softwareHistory.keepOriginal': 'الاحتفاظ بالأصل',
+      'lumen.softwareHistory.replaceOriginal': 'استبدال الأصل',
     },
   },
   {
@@ -1309,6 +1359,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Преглед на наскоро добавените',
       'components.PermissionEdit.viewrequests': 'Преглед на заявките',
       'components.IssueDetails.allepisodes': 'Всички епизоди',
+      'i18n.back': 'Назад',
     },
   },
   {
@@ -1414,6 +1465,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Veure les llistes de seguiment de Plex',
       'components.IssueDetails.allepisodes': 'Tots els episodis',
+      'i18n.back': 'Torna',
     },
   },
   {
@@ -1531,6 +1583,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Zobrazit naposledy přidané',
       'components.PermissionEdit.viewrequests': 'Zobrazit žádosti',
       'components.IssueDetails.allepisodes': 'Všechny epizody',
+      'i18n.back': 'Zpět',
     },
   },
   {
@@ -1641,6 +1694,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Se senest tilføjede',
       'components.PermissionEdit.viewrequests': 'Se anmodninger',
       'components.IssueDetails.allepisodes': 'Alle episoder',
+      'i18n.back': 'Tilbage',
     },
   },
   {
@@ -2020,6 +2074,42 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Status aktualisiert',
       'i18n.unknown': 'Unbekannt',
       'components.Requests.history': 'Geschichte',
+      'components.RequestStatus.SoftwareRequests.approve': 'Genehmigen',
+      'components.RequestStatus.SoftwareRequests.approved': 'Genehmigt',
+      'components.RequestStatus.SoftwareRequests.available': 'Verfügbar',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Abbrechen',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Storniert',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Stornierte Anfrage entfernen',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Diese stornierte Anfrage entfernen?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Ablehnen',
+      'components.RequestStatus.SoftwareRequests.declined': 'Abgelehnt',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Kopien herunterladen',
+      'components.RequestStatus.SoftwareRequests.downloading':
+        'Wird heruntergeladen',
+      'components.RequestStatus.SoftwareRequests.failed': 'Fehlgeschlagen',
+      'components.RequestStatus.SoftwareRequests.history': 'Verlauf',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Statusverlauf wird geladen…',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Import wird überprüft…',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'Diese Softwareanfrage konnte nicht aktualisiert werden.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'Es sind keine gespeicherten Status-Updates verfügbar.',
+      'components.RequestStatus.SoftwareRequests.pending':
+        'Ausstehende Genehmigung',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Aus Anfragen entfernen',
+      'components.RequestStatus.SoftwareRequests.retry': 'Erneut versuchen',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'Der Anbieter kann nicht bestätigen, ob der vorherige Download begonnen hat. Überprüfen Sie die Warteschlange und den Verlauf des Download-Clients. Fahren Sie nur fort, wenn kein passender Download vorhanden ist.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Suche läuft',
+      'components.RequestStatus.SoftwareRequests.title': 'Softwareanfragen',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Zurückziehen',
+      'i18n.back': 'Zurück',
     },
   },
   {
@@ -2390,6 +2480,39 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Status Updated',
       'i18n.unknown': 'Unknown',
       'components.Requests.history': 'History',
+      'components.RequestStatus.SoftwareRequests.approve': 'Approve',
+      'components.RequestStatus.SoftwareRequests.approved': 'Approved',
+      'components.RequestStatus.SoftwareRequests.available': 'Available',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Cancel',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Cancelled',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Clear cancelled request',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Clear This Cancelled Request?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Decline',
+      'components.RequestStatus.SoftwareRequests.declined': 'Declined',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Download copies',
+      'components.RequestStatus.SoftwareRequests.downloading': 'Downloading',
+      'components.RequestStatus.SoftwareRequests.failed': 'Failed',
+      'components.RequestStatus.SoftwareRequests.history': 'History',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Loading status history…',
+      'components.RequestStatus.SoftwareRequests.importing': 'Verifying Import',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'This software request could not be updated.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'No saved status updates are available.',
+      'components.RequestStatus.SoftwareRequests.pending': 'Pending Approval',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Remove from Requests',
+      'components.RequestStatus.SoftwareRequests.retry': 'Retry',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'The provider cannot confirm whether the previous download started. Check the download client’s queue and history. Continue only if no matching download exists.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Searching',
+      'components.RequestStatus.SoftwareRequests.title': 'Software Requests',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Withdraw',
+      'i18n.back': 'Back',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3172,6 +3295,23 @@ export const localeData = [
       'lumen.requestHistory.requestedSeasons': 'Requested seasons',
       'lumen.requestHistory.changeRequest': 'Change',
       'lumen.requestHistory.removeRequest': 'Remove',
+      'lumen.softwareHistory.confirmDecline': 'Decline this software request?',
+      'lumen.softwareHistory.confirmWithdraw':
+        'Withdraw this pending software request?',
+      'lumen.softwareHistory.confirmCancel': 'Cancel this software request?',
+      'lumen.softwareHistory.confirmStopTracking':
+        'Remove this request and its history from SeerrNG? The provider download will continue.',
+      'lumen.softwareHistory.confirmAction': 'Confirm {action}',
+      'lumen.softwareHistory.confirmAfterNoDownload':
+        'No Download Found — {action}',
+      'lumen.softwareHistory.selectionEdition': 'Complete Edition',
+      'lumen.softwareHistory.selectionOneAddon': '1 Add-on',
+      'lumen.softwareHistory.selectionManyAddons': '{count} Add-ons',
+      'lumen.softwareHistory.selectionAddons': 'Selected Add-ons',
+      'lumen.softwareHistory.openPatchVersion': 'Open Requested Patch Version',
+      'lumen.softwareHistory.openPatchProject': 'Open Patch Project',
+      'lumen.softwareHistory.keepOriginal': 'Keep original',
+      'lumen.softwareHistory.replaceOriginal': 'Replace original',
     },
   },
   {
@@ -3264,6 +3404,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Προβολή λιστών παρακολούθησης Plex',
       'components.IssueDetails.allepisodes': 'Όλα τα επεισόδια',
+      'i18n.back': 'Πίσω',
     },
   },
   {
@@ -3638,6 +3779,42 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Estado actualizado',
       'i18n.unknown': 'Desconocido',
       'components.Requests.history': 'Historia',
+      'components.RequestStatus.SoftwareRequests.approve': 'Aprobar',
+      'components.RequestStatus.SoftwareRequests.approved': 'Aprobado',
+      'components.RequestStatus.SoftwareRequests.available': 'Disponible',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Cancelar',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Cancelada',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Eliminar solicitud cancelada',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        '¿Eliminar esta solicitud cancelada?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Rechazar',
+      'components.RequestStatus.SoftwareRequests.declined': 'Rechazada',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Descargar copias',
+      'components.RequestStatus.SoftwareRequests.downloading': 'Descargando',
+      'components.RequestStatus.SoftwareRequests.failed': 'Fallido',
+      'components.RequestStatus.SoftwareRequests.history': 'Historial',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Cargando el historial de estados…',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Verificando importación',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'No se pudo actualizar esta solicitud de software.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'No hay actualizaciones de estado guardadas disponibles.',
+      'components.RequestStatus.SoftwareRequests.pending':
+        'Aprobación pendiente',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Quitar de solicitudes',
+      'components.RequestStatus.SoftwareRequests.retry': 'Reintentar',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'El proveedor no puede confirmar si la descarga anterior se inició. Compruebe la cola y el historial del cliente de descargas. Continúe solo si no hay ninguna descarga coincidente.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Buscando',
+      'components.RequestStatus.SoftwareRequests.title':
+        'Solicitudes de software',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Retirar',
+      'i18n.back': 'Atrás',
     },
   },
   {
@@ -4005,6 +4182,42 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Estado actualizado',
       'i18n.unknown': 'Desconocido',
       'components.Requests.history': 'Historia',
+      'components.RequestStatus.SoftwareRequests.approve': 'Aprobar',
+      'components.RequestStatus.SoftwareRequests.approved': 'Aprobado',
+      'components.RequestStatus.SoftwareRequests.available': 'Disponible',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Cancelar',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Cancelada',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Solicitud cancelada',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        '¿Despejar esta solicitud cancelada?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Rechazar',
+      'components.RequestStatus.SoftwareRequests.declined': 'Rechazado',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Descargar copias',
+      'components.RequestStatus.SoftwareRequests.downloading': 'Descarga',
+      'components.RequestStatus.SoftwareRequests.failed': 'Fallido',
+      'components.RequestStatus.SoftwareRequests.history': 'Historia',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Historial de estado de carga...',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Importación verificadora',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'Esta solicitud de software no podría actualizarse.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'No hay actualizaciones de estado guardadas disponibles.',
+      'components.RequestStatus.SoftwareRequests.pending':
+        'Aprobación pendiente',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Quitar de las solicitudes',
+      'components.RequestStatus.SoftwareRequests.retry': 'Reintentar',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'El proveedor no puede confirmar si la descarga anterior comenzó. Compruebe la cola e historia del cliente de descarga. Continúe sólo si no existe ninguna descarga coincidente.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Búsqueda',
+      'components.RequestStatus.SoftwareRequests.title':
+        'Solicitudes de software',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Retirada',
+      'i18n.back': 'Atrás',
     },
   },
   {
@@ -4121,6 +4334,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Viimati lisatute vaatamine',
       'components.PermissionEdit.viewrequests': 'Taotluste vaatamine',
       'components.IssueDetails.allepisodes': 'Kõik osad',
+      'i18n.back': 'Tagasi',
     },
   },
   {
@@ -4209,6 +4423,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Näytä viimeksi lisätyt',
       'components.PermissionEdit.viewrequests': 'Näytä pyynnöt',
       'components.IssueDetails.allepisodes': 'Kaikki jaksot',
+      'i18n.back': 'Takaisin',
     },
   },
   {
@@ -4586,6 +4801,44 @@ export const localeData = [
       'components.Requests.statusUpdated': 'État mis à jour',
       'i18n.unknown': 'Inconnu',
       'components.Requests.history': 'Historique',
+      'components.RequestStatus.SoftwareRequests.approve': 'Approuver',
+      'components.RequestStatus.SoftwareRequests.approved': 'Validé',
+      'components.RequestStatus.SoftwareRequests.available': 'Disponible',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Annuler',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Annulée',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Effacer la demande annulée',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Supprimer cette demande annulée ?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Refuser',
+      'components.RequestStatus.SoftwareRequests.declined': 'Refusée',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Télécharger des copies',
+      'components.RequestStatus.SoftwareRequests.downloading':
+        'Téléchargement en cours',
+      'components.RequestStatus.SoftwareRequests.failed': 'Échec',
+      'components.RequestStatus.SoftwareRequests.history': 'Historique',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        "Chargement de l'historique du statut...",
+      'components.RequestStatus.SoftwareRequests.importing':
+        "Vérification de l'importation",
+      'components.RequestStatus.SoftwareRequests.manageError':
+        "Cette demande de logiciel n'a pas pu être mise à jour.",
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        "Aucune mise à jour d'état enregistrée n'est disponible.",
+      'components.RequestStatus.SoftwareRequests.pending':
+        'En attente d’approbation',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Retirer des demandes',
+      'components.RequestStatus.SoftwareRequests.retry': 'Réessayer',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'Le fournisseur ne peut pas confirmer si le téléchargement précédent a commencé. Vérifiez la file d’attente et l’historique du client de téléchargement. Ne continuez que si aucun téléchargement correspondant n’existe.',
+      'components.RequestStatus.SoftwareRequests.searching':
+        'Recherche en cours',
+      'components.RequestStatus.SoftwareRequests.title':
+        'Demandes de logiciels',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Retirer',
+      'i18n.back': 'Retour',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -5497,6 +5750,26 @@ export const localeData = [
       'lumen.requestHistory.requestedSeasons': 'Saisons demandées',
       'lumen.requestHistory.changeRequest': 'Modifier',
       'lumen.requestHistory.removeRequest': 'Retirer la demande',
+      'lumen.softwareHistory.confirmDecline':
+        'Refuser cette demande de logiciel ?',
+      'lumen.softwareHistory.confirmWithdraw':
+        'Retirer cette demande de logiciel en attente ?',
+      'lumen.softwareHistory.confirmCancel':
+        'Annuler cette demande de logiciel ?',
+      'lumen.softwareHistory.confirmStopTracking':
+        'Retirer cette demande et son historique de SeerrNG ? Le téléchargement chez le fournisseur continuera.',
+      'lumen.softwareHistory.confirmAction': 'Confirmer : {action}',
+      'lumen.softwareHistory.confirmAfterNoDownload':
+        'Aucun téléchargement trouvé — {action}',
+      'lumen.softwareHistory.selectionEdition': 'Édition complète',
+      'lumen.softwareHistory.selectionOneAddon': '1 extension',
+      'lumen.softwareHistory.selectionManyAddons': '{count} extensions',
+      'lumen.softwareHistory.selectionAddons': 'Extensions sélectionnées',
+      'lumen.softwareHistory.openPatchVersion':
+        'Ouvrir la version du correctif demandée',
+      'lumen.softwareHistory.openPatchProject': 'Ouvrir le projet du correctif',
+      'lumen.softwareHistory.keepOriginal': 'Conserver l’original',
+      'lumen.softwareHistory.replaceOriginal': 'Remplacer l’original',
     },
   },
   {
@@ -5595,6 +5868,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Prikaži Plex popise gledanja',
       'components.IssueDetails.allepisodes': 'Sve Epizode',
+      'i18n.back': 'Natrag',
     },
   },
   {
@@ -6000,6 +6274,41 @@ export const localeData = [
       'components.Requests.statusUpdated': 'स्थिति अद्यतन',
       'i18n.unknown': 'अज्ञात',
       'components.Requests.history': 'इतिहास',
+      'components.RequestStatus.SoftwareRequests.approve': 'मंज़ूर करें',
+      'components.RequestStatus.SoftwareRequests.approved': 'मंज़ूर',
+      'components.RequestStatus.SoftwareRequests.available': 'उपलब्ध',
+      'components.RequestStatus.SoftwareRequests.cancel': 'रद्द करें',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'रद्द किया गया',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'रद्द किया गया अनुरोध हटाएँ',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'क्या आप इस रद्द किए गए अनुरोध को हटाना चाहते हैं?',
+      'components.RequestStatus.SoftwareRequests.decline': 'अस्वीकार करें',
+      'components.RequestStatus.SoftwareRequests.declined': 'अस्वीकृत',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'प्रतिलिपियाँ डाउनलोड करें',
+      'components.RequestStatus.SoftwareRequests.downloading':
+        'डाउनलोड हो रहा है',
+      'components.RequestStatus.SoftwareRequests.failed': 'विफल',
+      'components.RequestStatus.SoftwareRequests.history': 'इतिहास',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'स्थिति इतिहास लोड हो रहा है...',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'आयात का सत्यापन हो रहा है',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'यह सॉफ़्टवेयर अनुरोध अपडेट नहीं किया जा सका।',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'स्थिति के कोई सहेजे गए अपडेट उपलब्ध नहीं हैं।',
+      'components.RequestStatus.SoftwareRequests.pending': 'लंबित स्वीकृति',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'अनुरोधों से हटाएँ',
+      'components.RequestStatus.SoftwareRequests.retry': 'पुनः प्रयास करें',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'प्रदाता यह पुष्टि नहीं कर सकता कि पिछला डाउनलोड शुरू हुआ था या नहीं। डाउनलोड क्लाइंट की कतार और इतिहास जाँचें। केवल तभी जारी रखें जब कोई मेल खाता डाउनलोड मौजूद न हो।',
+      'components.RequestStatus.SoftwareRequests.searching': 'खोज जारी है',
+      'components.RequestStatus.SoftwareRequests.title': 'सॉफ्टवेयर अनुरोध',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'वापस लें',
+      'i18n.back': 'वापस',
     },
   },
   {
@@ -6118,6 +6427,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Nemrég hozzáadott megtekintése',
       'components.PermissionEdit.viewrequests': 'Kérések megtekintése',
       'components.IssueDetails.allepisodes': 'Minden epizód',
+      'i18n.back': 'Vissza',
     },
   },
   {
@@ -6487,6 +6797,43 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Status Diperbarui',
       'i18n.unknown': 'yang tidak diketahui',
       'components.Requests.history': 'Riwayat',
+      'components.RequestStatus.SoftwareRequests.approve': 'Setujui',
+      'components.RequestStatus.SoftwareRequests.approved': 'Disetujui',
+      'components.RequestStatus.SoftwareRequests.available': 'Tersedia',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Batal',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Dibatalkan',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Hapus permintaan yang dibatalkan',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Hapus permintaan yang sudah dibatalkan ini?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Tolak',
+      'components.RequestStatus.SoftwareRequests.declined': 'Ditolak',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Unduh salinan',
+      'components.RequestStatus.SoftwareRequests.downloading':
+        'Sedang mengunduh',
+      'components.RequestStatus.SoftwareRequests.failed': 'Gagal',
+      'components.RequestStatus.SoftwareRequests.history': 'Riwayat',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Memuat riwayat status...',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Memverifikasi impor',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'Permintaan perangkat lunak ini tidak dapat diperbarui.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'Tidak ada pembaruan status tersimpan yang tersedia.',
+      'components.RequestStatus.SoftwareRequests.pending':
+        'Persetujuan Tertunda',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Hapus dari Permintaan',
+      'components.RequestStatus.SoftwareRequests.retry': 'Coba lagi',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'Penyedia tidak dapat memastikan apakah unduhan sebelumnya sudah dimulai. Periksa antrean dan riwayat klien unduhan. Lanjutkan hanya jika tidak ada unduhan yang cocok.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Mencari',
+      'components.RequestStatus.SoftwareRequests.title':
+        'Permintaan Perangkat Lunak',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Tarik permintaan',
+      'i18n.back': 'Kembali',
     },
   },
   {
@@ -6604,6 +6951,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Visualizza Aggiunti Recenti',
       'components.PermissionEdit.viewrequests': 'Visualizza le richieste',
       'components.IssueDetails.allepisodes': 'Tutti gli episodi',
+      'i18n.back': 'Indietro',
     },
   },
   {
@@ -6966,6 +7314,40 @@ export const localeData = [
       'components.Requests.statusUpdated': 'ステータス更新',
       'i18n.unknown': '不明',
       'components.Requests.history': '履歴',
+      'components.RequestStatus.SoftwareRequests.approve': '承認',
+      'components.RequestStatus.SoftwareRequests.approved': '承認済み',
+      'components.RequestStatus.SoftwareRequests.available': '利用可能',
+      'components.RequestStatus.SoftwareRequests.cancel': 'キャンセル',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'キャンセル済み',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'キャンセル済みのリクエストを削除',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'キャンセル済みのリクエストを削除しますか？',
+      'components.RequestStatus.SoftwareRequests.decline': '拒否する',
+      'components.RequestStatus.SoftwareRequests.declined': '拒否済み',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'コピーをダウンロード',
+      'components.RequestStatus.SoftwareRequests.downloading': 'ダウンロード中',
+      'components.RequestStatus.SoftwareRequests.failed': '失敗',
+      'components.RequestStatus.SoftwareRequests.history': '履歴',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'ステータス履歴を読み込んでいます…',
+      'components.RequestStatus.SoftwareRequests.importing': 'インポートの検証',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'このソフトウェアリクエストを更新できませんでした。',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        '保存済みのステータス更新はありません。',
+      'components.RequestStatus.SoftwareRequests.pending': '承認待ち',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'リクエスト一覧から削除',
+      'components.RequestStatus.SoftwareRequests.retry': '再試行',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'プロバイダーは以前のダウンロードが開始されたか確認できません。ダウンロードクライアントのキューと履歴を確認してください。一致するダウンロードがない場合にのみ続行してください。',
+      'components.RequestStatus.SoftwareRequests.searching': '検索中',
+      'components.RequestStatus.SoftwareRequests.title':
+        'ソフトウェアのリクエスト',
+      'components.RequestStatus.SoftwareRequests.withdraw': '取り下げる',
+      'i18n.back': '戻る',
     },
   },
   {
@@ -7316,6 +7698,39 @@ export const localeData = [
       'components.Requests.statusUpdated': '상태 업데이트',
       'i18n.unknown': '알려지지 않은',
       'components.Requests.history': '기록',
+      'components.RequestStatus.SoftwareRequests.approve': '승인',
+      'components.RequestStatus.SoftwareRequests.approved': '승인됨',
+      'components.RequestStatus.SoftwareRequests.available': '사용 가능',
+      'components.RequestStatus.SoftwareRequests.cancel': '취소',
+      'components.RequestStatus.SoftwareRequests.cancelled': '취소됨',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        '취소된 요청 삭제',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        '취소된 요청을 삭제하시겠습니까?',
+      'components.RequestStatus.SoftwareRequests.decline': '거절',
+      'components.RequestStatus.SoftwareRequests.declined': '거부됨',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        '복사본 다운로드',
+      'components.RequestStatus.SoftwareRequests.downloading': '다운로드 중',
+      'components.RequestStatus.SoftwareRequests.failed': '실패',
+      'components.RequestStatus.SoftwareRequests.history': '이력',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        '상태 기록을 불러오는 중…',
+      'components.RequestStatus.SoftwareRequests.importing': '가져오기 검증 중',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        '이 소프트웨어 요청을 업데이트하지 못했습니다.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        '저장된 상태 업데이트는 없습니다.',
+      'components.RequestStatus.SoftwareRequests.pending': '승인 대기 중',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        '요청 목록에서 제거',
+      'components.RequestStatus.SoftwareRequests.retry': '다시 시도',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        '공급자는 이전 다운로드가 시작됐는지 확인할 수 없습니다. 다운로드 클라이언트의 대기열과 기록을 확인하세요. 일치하는 다운로드가 없을 때만 계속하세요.',
+      'components.RequestStatus.SoftwareRequests.searching': '검색 중',
+      'components.RequestStatus.SoftwareRequests.title': '소프트웨어 요청',
+      'components.RequestStatus.SoftwareRequests.withdraw': '요청 철회',
+      'i18n.back': '뒤로',
     },
   },
   {
@@ -7373,6 +7788,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Peržiūrėti neseniai pridėtus',
       'components.PermissionEdit.viewrequests': 'Peržiūrėti rezervacijas',
       'components.IssueDetails.allepisodes': 'Visi epizodai',
+      'i18n.back': 'Atgal',
     },
   },
   {
@@ -7466,6 +7882,7 @@ export const localeData = [
       'components.PermissionEdit.viewrequests': 'Vis Forespørsler',
       'components.PermissionEdit.viewwatchlists': 'Vis Visningsliste',
       'components.IssueDetails.allepisodes': 'Alle Episoder',
+      'i18n.back': 'Tilbake',
     },
   },
   {
@@ -7585,6 +8002,7 @@ export const localeData = [
       'components.PermissionEdit.viewrequests': 'Aanvragen weergeven',
       'components.PermissionEdit.viewwatchlists': 'Plex-kijklijsten weergeven',
       'components.IssueDetails.allepisodes': 'Alle afleveringen',
+      'i18n.back': 'Terug',
     },
   },
   {
@@ -7703,6 +8121,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Wyświetl ostatnio dodane',
       'components.PermissionEdit.viewrequests': 'Wyświetl prośby',
       'components.IssueDetails.allepisodes': 'Wszystkie odcinki',
+      'i18n.back': 'Powrót',
     },
   },
   {
@@ -8073,6 +8492,41 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Status atualizado',
       'i18n.unknown': 'Desconhecido',
       'components.Requests.history': 'História',
+      'components.RequestStatus.SoftwareRequests.approve': 'Aprovar',
+      'components.RequestStatus.SoftwareRequests.approved': 'Aprovada',
+      'components.RequestStatus.SoftwareRequests.available': 'Disponível',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Cancelar',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Cancelado',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Excluir pedido cancelado',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Limpar este pedido cancelado?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Rejeitar',
+      'components.RequestStatus.SoftwareRequests.declined': 'Rejeitado',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Baixar cópias',
+      'components.RequestStatus.SoftwareRequests.downloading': 'Baixando',
+      'components.RequestStatus.SoftwareRequests.failed': 'Falhou',
+      'components.RequestStatus.SoftwareRequests.history': 'História',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Carregando histórico de status...',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Verificando Importação',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'Este pedido de software não pôde ser atualizado.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'Nenhuma atualização de status salva está disponível.',
+      'components.RequestStatus.SoftwareRequests.pending': 'Aprovação pendente',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Remover dos pedidos',
+      'components.RequestStatus.SoftwareRequests.retry': 'Tentar novamente',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'O provedor não pode confirmar se o download anterior começou. Verifique a fila e o histórico do cliente. Continue apenas se não houver nenhum download correspondente.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Buscando',
+      'components.RequestStatus.SoftwareRequests.title':
+        'Solicitações de software',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Retirar',
+      'i18n.back': 'Voltar',
     },
   },
   {
@@ -8191,6 +8645,7 @@ export const localeData = [
       'components.PermissionEdit.viewrequests': 'Ver Pedidos',
       'components.PermissionEdit.viewwatchlists': 'Ver lista para ver do Plex',
       'components.IssueDetails.allepisodes': 'Todos Episódios',
+      'i18n.back': 'Voltar',
     },
   },
   {
@@ -8379,6 +8834,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Просмотр списков просмотра Plex',
       'components.IssueDetails.allepisodes': 'Все эпизоды',
+      'i18n.back': 'Назад',
     },
   },
   {
@@ -8469,6 +8925,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Shiko listat e shikimit të Plex',
       'components.IssueDetails.allepisodes': 'Të gjithë Episodet',
+      'i18n.back': 'Mbrapa.',
     },
   },
   {
@@ -8540,6 +8997,7 @@ export const localeData = [
       'components.PermissionEdit.users': 'Upravljajte korisnica',
       'components.PermissionEdit.viewrequests': 'Pogledaj zahteve',
       'components.IssueDetails.allepisodes': 'Sve epizode',
+      'i18n.back': 'Nazad',
     },
   },
   {
@@ -8657,6 +9115,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Se nyligen tillagda',
       'components.PermissionEdit.viewrequests': 'Visa förfrågningar',
       'components.IssueDetails.allepisodes': 'Alla avsnitt',
+      'i18n.back': 'Bakåt',
     },
   },
   {
@@ -8772,6 +9231,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'Son Eklenenleri Görüntüle',
       'components.PermissionEdit.viewrequests': 'Talepleri Görüntüle',
       'components.IssueDetails.allepisodes': 'Tüm Bölümler',
+      'i18n.back': 'Geri',
     },
   },
   {
@@ -8888,6 +9348,7 @@ export const localeData = [
       'components.PermissionEdit.viewwatchlists':
         'Перегляд списків переглядів Plex',
       'components.IssueDetails.allepisodes': 'Всі епізоди',
+      'i18n.back': 'Назад',
     },
   },
   {
@@ -9237,6 +9698,38 @@ export const localeData = [
       'components.Requests.statusUpdated': '状态已更新',
       'i18n.unknown': '未知',
       'components.Requests.history': '历史',
+      'components.RequestStatus.SoftwareRequests.approve': '批准',
+      'components.RequestStatus.SoftwareRequests.approved': '已批准',
+      'components.RequestStatus.SoftwareRequests.available': '可用',
+      'components.RequestStatus.SoftwareRequests.cancel': '取消',
+      'components.RequestStatus.SoftwareRequests.cancelled': '已取消',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        '清除已取消的请求',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        '要删除这项已取消的请求吗？',
+      'components.RequestStatus.SoftwareRequests.decline': '拒绝',
+      'components.RequestStatus.SoftwareRequests.declined': '已拒绝',
+      'components.RequestStatus.SoftwareRequests.downloadCopies': '下载副本',
+      'components.RequestStatus.SoftwareRequests.downloading': '正在下载',
+      'components.RequestStatus.SoftwareRequests.failed': '失败',
+      'components.RequestStatus.SoftwareRequests.history': '历史记录',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        '正在加载状态历史…',
+      'components.RequestStatus.SoftwareRequests.importing': '正在验证导入',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        '此软件请求无法更新。',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        '没有可用的已保存状态更新。',
+      'components.RequestStatus.SoftwareRequests.pending': '待核准',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        '从请求中移除',
+      'components.RequestStatus.SoftwareRequests.retry': '重试',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        '提供商无法确认之前的下载是否已开始。请检查下载客户端的队列和历史记录。只有确认没有匹配的下载后才能继续。',
+      'components.RequestStatus.SoftwareRequests.searching': '搜索中',
+      'components.RequestStatus.SoftwareRequests.title': '软件请求',
+      'components.RequestStatus.SoftwareRequests.withdraw': '撤回',
+      'i18n.back': '返回',
     },
   },
   {
@@ -9586,6 +10079,38 @@ export const localeData = [
       'components.Requests.statusUpdated': '狀態已更新',
       'i18n.unknown': '未知',
       'components.Requests.history': '歷史',
+      'components.RequestStatus.SoftwareRequests.approve': '批准',
+      'components.RequestStatus.SoftwareRequests.approved': '獲批准',
+      'components.RequestStatus.SoftwareRequests.available': '可用',
+      'components.RequestStatus.SoftwareRequests.cancel': '取消',
+      'components.RequestStatus.SoftwareRequests.cancelled': '已取消',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        '清除已取消的請求',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        '要清除這項已取消的請求嗎？',
+      'components.RequestStatus.SoftwareRequests.decline': '拒絕',
+      'components.RequestStatus.SoftwareRequests.declined': '已拒絕',
+      'components.RequestStatus.SoftwareRequests.downloadCopies': '下載副本',
+      'components.RequestStatus.SoftwareRequests.downloading': '下載中',
+      'components.RequestStatus.SoftwareRequests.failed': '失敗',
+      'components.RequestStatus.SoftwareRequests.history': '歷史',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        '正在載入狀態歷史…',
+      'components.RequestStatus.SoftwareRequests.importing': '正在驗證匯入',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        '此軟體請求無法更新。',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        '目前沒有可用的已儲存狀態更新。',
+      'components.RequestStatus.SoftwareRequests.pending': '待核准',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        '從請求中移除',
+      'components.RequestStatus.SoftwareRequests.retry': '重試',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        '提供者無法確認上次下載是否已開始。請檢查下載用戶端的佇列與歷史紀錄。只有在沒有相符下載時才繼續。',
+      'components.RequestStatus.SoftwareRequests.searching': '搜尋中',
+      'components.RequestStatus.SoftwareRequests.title': '軟體請求',
+      'components.RequestStatus.SoftwareRequests.withdraw': '撤回',
+      'i18n.back': '返回',
     },
   },
   {
@@ -9954,6 +10479,40 @@ export const localeData = [
       'components.Requests.statusUpdated': 'Trạng thái đã cập nhật',
       'i18n.unknown': 'Không biết',
       'components.Requests.history': 'Lịch sử',
+      'components.RequestStatus.SoftwareRequests.approve': 'Phê duyệt',
+      'components.RequestStatus.SoftwareRequests.approved': 'Đã phê duyệt',
+      'components.RequestStatus.SoftwareRequests.available': 'Có sẵn',
+      'components.RequestStatus.SoftwareRequests.cancel': 'Hủy',
+      'components.RequestStatus.SoftwareRequests.cancelled': 'Đã hủy',
+      'components.RequestStatus.SoftwareRequests.clearCancelled':
+        'Xoá yêu cầu bị hủy',
+      'components.RequestStatus.SoftwareRequests.clearCancelledTitle':
+        'Xóa yêu cầu bị hủy?',
+      'components.RequestStatus.SoftwareRequests.decline': 'Từ chối',
+      'components.RequestStatus.SoftwareRequests.declined': 'Đã từ chối',
+      'components.RequestStatus.SoftwareRequests.downloadCopies':
+        'Tải về các bản sao',
+      'components.RequestStatus.SoftwareRequests.downloading': 'Đang tải về',
+      'components.RequestStatus.SoftwareRequests.failed': 'Thất bại',
+      'components.RequestStatus.SoftwareRequests.history': 'Lịch sử',
+      'components.RequestStatus.SoftwareRequests.historyLoading':
+        'Đang tải lịch sử trạng thái...',
+      'components.RequestStatus.SoftwareRequests.importing':
+        'Đang xác minh dữ liệu nhập',
+      'components.RequestStatus.SoftwareRequests.manageError':
+        'Không thể cập nhật yêu cầu phần mềm này.',
+      'components.RequestStatus.SoftwareRequests.noHistory':
+        'Không có bản cập nhật trạng thái đã lưu.',
+      'components.RequestStatus.SoftwareRequests.pending': 'Đang chờ phê duyệt',
+      'components.RequestStatus.SoftwareRequests.removeFromRequests':
+        'Xóa khỏi yêu cầu',
+      'components.RequestStatus.SoftwareRequests.retry': 'Thử lại',
+      'components.RequestStatus.SoftwareRequests.retryCheckRequired':
+        'Nhà cung cấp không thể xác nhận liệu lượt tải xuống trước đó đã bắt đầu hay chưa. Hãy kiểm tra hàng đợi và lịch sử của trình tải xuống. Chỉ tiếp tục nếu không có lượt tải xuống nào trùng khớp.',
+      'components.RequestStatus.SoftwareRequests.searching': 'Đang tìm kiếm',
+      'components.RequestStatus.SoftwareRequests.title': 'Yêu cầu phần mềm',
+      'components.RequestStatus.SoftwareRequests.withdraw': 'Rút yêu cầu',
+      'i18n.back': 'Quay lại',
     },
   },
 ] as const;

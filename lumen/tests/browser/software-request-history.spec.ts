@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 type RequestState =
   'pending' | 'failed' | 'approved' | 'downloading' | 'cancelled';
@@ -10,6 +10,11 @@ async function openHistory(
   state: RequestState,
   onAction?: (action: string, body: unknown) => 'confirmation-required' | 'ok'
 ) {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_SOFTWARE_HISTORY_LOCALE ?? ''
+  )
+    ? process.env.LUMEN_SOFTWARE_HISTORY_LOCALE!
+    : 'en';
   const writes: { action: string; body: unknown }[] = [];
   let currentState = state;
   await page.route('**/lumen-config.json', (route) =>
@@ -30,12 +35,16 @@ async function openHistory(
         },
       });
     if (/^\/user\/\d+\/settings\/main$/.test(path))
-      return route.fulfill({ json: {} });
+      return route.fulfill({ json: { locale } });
     if (path === '/settings/public')
       return route.fulfill({
         json: { softwareEnabled: true, enabledMediaCategories: { game: true } },
       });
     if (path === '/settings/discover') return route.fulfill({ json: [] });
+    if (path === '/request')
+      return route.fulfill({
+        json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+      });
     if (path === '/request/count')
       return route.fulfill({ json: { pending: 0 } });
     if (path === '/blocklist/count')
@@ -54,8 +63,10 @@ async function openHistory(
             requestedBy: { id: ownerId },
             actions: { retry: true, cancel: true },
           },
-          history: [],
-          assets: [],
+          history: [
+            { id: 1, status: 'searching', createdAt: '2026-11-20T12:00:00Z' },
+          ],
+          assets: [{ id: 'fixture-asset', name: 'Fixture Software Asset' }],
         },
       });
     if (
@@ -88,7 +99,7 @@ async function openHistory(
     return route.fulfill({ json: {} });
   });
   await page.goto('/requests?softwareRequestId=71');
-  const dialog = page.getByRole('dialog', { name: 'Software request history' });
+  const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Fixture Software Request')).toBeVisible();
   expect(
@@ -110,7 +121,7 @@ test('software request history exposes only owner actions for a pending request'
   await expect(
     dialog.getByText('Withdraw this pending software request?')
   ).toBeVisible();
-  await dialog.getByRole('button', { name: 'Go Back' }).click();
+  await dialog.getByRole('button', { name: 'Back' }).click();
   expect(writes).toEqual([]);
 });
 
@@ -118,7 +129,9 @@ test('a view-only user sees history without mutation controls', async ({
   page,
 }) => {
   const { dialog, writes } = await openHistory(page, 16384, 2, 'pending');
-  await expect(dialog.getByText('Pending', { exact: true })).toBeVisible();
+  await expect(
+    dialog.getByText('Pending Approval', { exact: true })
+  ).toBeVisible();
   await expect(
     dialog.getByRole('button', { name: /Approve|Decline|Withdraw/ })
   ).toHaveCount(0);
@@ -184,9 +197,9 @@ test('a request manager can cancel a downloading software request', async ({
   page,
 }) => {
   const { dialog, writes } = await openHistory(page, 16, 2, 'downloading');
-  await dialog.getByRole('button', { name: 'Cancel Request' }).click();
+  await dialog.getByRole('button', { name: 'Cancel' }).click();
   await expect(dialog.getByText('Cancel this software request?')).toBeVisible();
-  await dialog.getByRole('button', { name: 'Confirm Cancel Request' }).click();
+  await dialog.getByRole('button', { name: 'Confirm Cancel' }).click();
   await expect
     .poll(() => writes)
     .toEqual([
@@ -198,11 +211,13 @@ test('a request manager can stop tracking after confirmation', async ({
   page,
 }) => {
   const { dialog, writes } = await openHistory(page, 16, 2, 'downloading');
-  await dialog.getByRole('button', { name: 'Stop Tracking' }).click();
+  await dialog.getByRole('button', { name: 'Remove from Requests' }).click();
   await expect(
     dialog.getByText(/Remove this request and its history/)
   ).toBeVisible();
-  await dialog.getByRole('button', { name: 'Confirm Stop Tracking' }).click();
+  await dialog
+    .getByRole('button', { name: 'Confirm Remove from Requests' })
+    .click();
   await expect(dialog).toHaveCount(0);
   expect(writes).toEqual([{ action: 'stop-tracking', body: null }]);
 });
@@ -211,13 +226,88 @@ test('a request manager can clear cancelled request history after confirmation',
   page,
 }) => {
   const { dialog, writes } = await openHistory(page, 16, 2, 'cancelled');
-  await dialog.getByRole('button', { name: 'Clear History' }).click();
-  await expect(
-    dialog.getByText(
-      'Permanently clear this cancelled request and its history?'
-    )
-  ).toBeVisible();
-  await dialog.getByRole('button', { name: 'Confirm Clear History' }).click();
+  await dialog.getByRole('button', { name: 'Clear cancelled request' }).click();
+  await expect(dialog.getByText('Clear This Cancelled Request?')).toBeVisible();
+  await dialog
+    .getByRole('button', { name: 'Confirm Clear cancelled request' })
+    .click();
   await expect(dialog).toHaveCount(0);
   expect(writes).toEqual([{ action: 'clear', body: null }]);
+});
+
+test('software request history follows the saved locale and viewport', async ({
+  page,
+}, info: TestInfo) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_SOFTWARE_HISTORY_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_SOFTWARE_HISTORY_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const expected = (
+    english: string,
+    french: string,
+    arabic: string,
+    baselineEnglish = english
+  ) =>
+    candidate
+      ? locale === 'ar'
+        ? arabic
+        : locale === 'fr'
+          ? french
+          : english
+      : baselineEnglish;
+  const { dialog } = await openHistory(page, 32, 1, 'failed');
+  await expect(dialog).toHaveAttribute(
+    'aria-label',
+    expected('History', 'Historique', 'سجل الحالة', 'Software request history')
+  );
+  await expect(
+    dialog.getByRole('heading', {
+      name: expected(
+        'History',
+        'Historique',
+        'سجل الحالة',
+        'Software Request History'
+      ),
+    })
+  ).toBeVisible();
+  await expect(
+    dialog.getByText(expected('Failed', 'Échec', 'فشل'), { exact: true })
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('button', {
+      name: expected('Retry', 'Réessayer', 'إعادة المحاولة'),
+    })
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('heading', {
+      name: expected(
+        'Download copies',
+        'Télécharger des copies',
+        'تنزيل النسخ',
+        'Download Files'
+      ),
+    })
+  ).toBeVisible();
+  await expect(page.getByText("Couldn't load requests")).toHaveCount(0);
+  await expect(
+    dialog.getByText(
+      expected('Searching', 'Recherche en cours', 'جارٍ البحث'),
+      {
+        exact: true,
+      }
+    )
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  const screenshotDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (screenshotDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${screenshotDir}/software-history-${locale}-${info.project.name}.png`,
+      fullPage: true,
+    });
 });

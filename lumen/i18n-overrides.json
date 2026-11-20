@@ -650,7 +650,21 @@
     "lumen.requestHistory.nextAttempt": "Next attempt",
     "lumen.requestHistory.requestedSeasons": "Requested seasons",
     "lumen.requestHistory.changeRequest": "Change",
-    "lumen.requestHistory.removeRequest": "Remove"
+    "lumen.requestHistory.removeRequest": "Remove",
+    "lumen.softwareHistory.confirmDecline": "Decline this software request?",
+    "lumen.softwareHistory.confirmWithdraw": "Withdraw this pending software request?",
+    "lumen.softwareHistory.confirmCancel": "Cancel this software request?",
+    "lumen.softwareHistory.confirmStopTracking": "Remove this request and its history from SeerrNG? The provider download will continue.",
+    "lumen.softwareHistory.confirmAction": "Confirm {action}",
+    "lumen.softwareHistory.confirmAfterNoDownload": "No Download Found — {action}",
+    "lumen.softwareHistory.selectionEdition": "Complete Edition",
+    "lumen.softwareHistory.selectionOneAddon": "1 Add-on",
+    "lumen.softwareHistory.selectionManyAddons": "{count} Add-ons",
+    "lumen.softwareHistory.selectionAddons": "Selected Add-ons",
+    "lumen.softwareHistory.openPatchVersion": "Open Requested Patch Version",
+    "lumen.softwareHistory.openPatchProject": "Open Patch Project",
+    "lumen.softwareHistory.keepOriginal": "Keep original",
+    "lumen.softwareHistory.replaceOriginal": "Replace original"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1373,7 +1387,21 @@
     "lumen.requestHistory.nextAttempt": "Prochaine tentative",
     "lumen.requestHistory.requestedSeasons": "Saisons demandées",
     "lumen.requestHistory.changeRequest": "Modifier",
-    "lumen.requestHistory.removeRequest": "Retirer la demande"
+    "lumen.requestHistory.removeRequest": "Retirer la demande",
+    "lumen.softwareHistory.confirmDecline": "Refuser cette demande de logiciel ?",
+    "lumen.softwareHistory.confirmWithdraw": "Retirer cette demande de logiciel en attente ?",
+    "lumen.softwareHistory.confirmCancel": "Annuler cette demande de logiciel ?",
+    "lumen.softwareHistory.confirmStopTracking": "Retirer cette demande et son historique de SeerrNG ? Le téléchargement chez le fournisseur continuera.",
+    "lumen.softwareHistory.confirmAction": "Confirmer : {action}",
+    "lumen.softwareHistory.confirmAfterNoDownload": "Aucun téléchargement trouvé — {action}",
+    "lumen.softwareHistory.selectionEdition": "Édition complète",
+    "lumen.softwareHistory.selectionOneAddon": "1 extension",
+    "lumen.softwareHistory.selectionManyAddons": "{count} extensions",
+    "lumen.softwareHistory.selectionAddons": "Extensions sélectionnées",
+    "lumen.softwareHistory.openPatchVersion": "Ouvrir la version du correctif demandée",
+    "lumen.softwareHistory.openPatchProject": "Ouvrir le projet du correctif",
+    "lumen.softwareHistory.keepOriginal": "Conserver l’original",
+    "lumen.softwareHistory.replaceOriginal": "Remplacer l’original"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -2096,6 +2124,20 @@
     "lumen.requestHistory.nextAttempt": "المحاولة التالية",
     "lumen.requestHistory.requestedSeasons": "المواسم المطلوبة",
     "lumen.requestHistory.changeRequest": "تغيير",
-    "lumen.requestHistory.removeRequest": "إزالة الطلب"
+    "lumen.requestHistory.removeRequest": "إزالة الطلب",
+    "lumen.softwareHistory.confirmDecline": "هل تريد رفض طلب البرنامج هذا؟",
+    "lumen.softwareHistory.confirmWithdraw": "هل تريد سحب طلب البرنامج المعلّق هذا؟",
+    "lumen.softwareHistory.confirmCancel": "هل تريد إلغاء طلب البرنامج هذا؟",
+    "lumen.softwareHistory.confirmStopTracking": "هل تريد إزالة هذا الطلب وسجله من SeerrNG؟ سيستمر التنزيل لدى المزوّد.",
+    "lumen.softwareHistory.confirmAction": "تأكيد: {action}",
+    "lumen.softwareHistory.confirmAfterNoDownload": "لم يُعثر على تنزيل — {action}",
+    "lumen.softwareHistory.selectionEdition": "الإصدار الكامل",
+    "lumen.softwareHistory.selectionOneAddon": "إضافة واحدة",
+    "lumen.softwareHistory.selectionManyAddons": "{count} إضافات",
+    "lumen.softwareHistory.selectionAddons": "الإضافات المحددة",
+    "lumen.softwareHistory.openPatchVersion": "فتح إصدار التصحيح المطلوب",
+    "lumen.softwareHistory.openPatchProject": "فتح مشروع التصحيح",
+    "lumen.softwareHistory.keepOriginal": "الاحتفاظ بالأصل",
+    "lumen.softwareHistory.replaceOriginal": "استبدال الأصل"
   }
 }

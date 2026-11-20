@@ -977,6 +977,21 @@ Server routing tests cover the bundled redirect. Native comparison,
 mobile, bundled browser checks, live providers, and software moderation
 and recovery actions remain open.
 
+The software-history sheet now follows the saved locale for its title, known
+lifecycle states, permission-eligible actions, download heading, history dates,
+and error fallback. It reuses SeerrNG's translated catalog entries for those
+labels; Lumen-specific selection details and confirmation wording have English,
+French, and Arabic overrides. Existing owner, manager, provider-capability, and
+uncertain-download confirmation checks remain in force. The localized candidate
+and prior English sheet were rendered with the same fixture at 1440 × 900 and
+the iPhone 13 viewport; French and Arabic desktop/phone renders were inspected,
+and all 12 locale/viewport assertions passed. The full software-history action
+suite passed all 36 cases across desktop, iPhone, Android, and tablet. Unique
+Lumen confirmation copy falls back to English in other supported locales, and
+native-matched, bundled, live-provider, and independent linguistic review
+remain open. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-history-layout-20261120/`.
+
 ### Software request actions increment
 
 Software Request History offers approval, decline, withdrawal, cancellation,

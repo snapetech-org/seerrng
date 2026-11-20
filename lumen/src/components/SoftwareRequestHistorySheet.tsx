@@ -6,11 +6,11 @@ import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import {
   patchHref,
-  softwareSelectionLabel,
   useGameContentCatalog,
   type SoftwareRequest,
 } from '../extras';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { canManageRequests } from './detail';
 import { ServiceNote } from './extra';
@@ -33,28 +33,54 @@ interface SoftwareHistory extends SoftwareRequest {
   bundle?: { name: string } | null;
 }
 
-const statusLabel = (value: string) =>
-  value.replace(/[_-]+/g, ' ').replace(/^./, (first) => first.toUpperCase());
-
-const labels = {
-  approve: 'Approve',
-  decline: 'Decline',
-  withdraw: 'Withdraw',
-  cancel: 'Cancel Request',
-  retry: 'Retry',
-  'stop-tracking': 'Stop Tracking',
-  clear: 'Clear History',
+const statusMessageIds: Record<string, string> = {
+  pending: 'components.RequestStatus.SoftwareRequests.pending',
+  approved: 'components.RequestStatus.SoftwareRequests.approved',
+  searching: 'components.RequestStatus.SoftwareRequests.searching',
+  downloading: 'components.RequestStatus.SoftwareRequests.downloading',
+  importing: 'components.RequestStatus.SoftwareRequests.importing',
+  available: 'components.RequestStatus.SoftwareRequests.available',
+  failed: 'components.RequestStatus.SoftwareRequests.failed',
+  declined: 'components.RequestStatus.SoftwareRequests.declined',
+  cancelled: 'components.RequestStatus.SoftwareRequests.cancelled',
 };
-
-type Action = keyof typeof labels;
-const confirmation = {
-  decline: 'Decline this software request?',
-  withdraw: 'Withdraw this pending software request?',
-  cancel: 'Cancel this software request?',
+const actionMessageIds: Record<string, string> = {
+  approve: 'components.RequestStatus.SoftwareRequests.approve',
+  decline: 'components.RequestStatus.SoftwareRequests.decline',
+  withdraw: 'components.RequestStatus.SoftwareRequests.withdraw',
+  cancel: 'components.RequestStatus.SoftwareRequests.cancel',
+  retry: 'components.RequestStatus.SoftwareRequests.retry',
   'stop-tracking':
-    'Remove this request and its history from SeerrNG? The provider download will continue.',
-  clear: 'Permanently clear this cancelled request and its history?',
+    'components.RequestStatus.SoftwareRequests.removeFromRequests',
+  clear: 'components.RequestStatus.SoftwareRequests.clearCancelled',
 };
+
+type Action =
+  | 'approve'
+  | 'decline'
+  | 'withdraw'
+  | 'cancel'
+  | 'retry'
+  | 'stop-tracking'
+  | 'clear';
+type ConfirmationAction = Exclude<Action, 'approve'>;
+const confirmationMessageIds: Record<ConfirmationAction, string> = {
+  decline: 'lumen.softwareHistory.confirmDecline',
+  withdraw: 'lumen.softwareHistory.confirmWithdraw',
+  cancel: 'lumen.softwareHistory.confirmCancel',
+  retry: 'components.RequestStatus.SoftwareRequests.retryCheckRequired',
+  'stop-tracking': 'lumen.softwareHistory.confirmStopTracking',
+  clear: 'components.RequestStatus.SoftwareRequests.clearCancelledTitle',
+};
+
+function statusLabel(value: string, t: ReturnType<typeof useLumenLocale>['t']) {
+  const id = statusMessageIds[value];
+  return id
+    ? t(id, value)
+    : value
+        .replace(/[_-]+/g, ' ')
+        .replace(/^./, (first) => first.toUpperCase());
+}
 
 export function SoftwareRequestHistorySheet({
   id,
@@ -65,11 +91,12 @@ export function SoftwareRequestHistorySheet({
   close: () => void;
   changed: () => void;
 }) {
+  const { locale, t } = useLumenLocale();
   const ref = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
-  const [confirm, setConfirm] = useState<Action | null>(null);
+  const [confirm, setConfirm] = useState<ConfirmationAction | null>(null);
   const [uncertain, setUncertain] = useState(false);
   const [failure, setFailure] = useState('');
   const dismiss = () => {
@@ -170,7 +197,13 @@ export function SoftwareRequestHistorySheet({
         setUncertain(true);
       } else {
         setFailure(
-          friendlyError(cause, 'Could not update the software request.')
+          friendlyError(
+            cause,
+            t(
+              'components.RequestStatus.SoftwareRequests.manageError',
+              'This software request could not be updated.'
+            )
+          )
         );
         setConfirm(null);
         setUncertain(false);
@@ -190,22 +223,36 @@ export function SoftwareRequestHistorySheet({
         ref={ref}
         role="dialog"
         aria-modal="true"
-        aria-label="Software request history"
+        aria-label={t(
+          'components.RequestStatus.SoftwareRequests.history',
+          'History'
+        )}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>Software Request History</h2>
+            <h2>
+              {t(
+                'components.RequestStatus.SoftwareRequests.history',
+                'History'
+              )}
+            </h2>
             <p className="note">{data?.request.title ?? `Request #${id}`}</p>
           </header>
           <ServiceNote
             error={error}
-            what="software request history"
+            what={t(
+              'components.RequestStatus.SoftwareRequests.title',
+              'Software Requests'
+            )}
             retry={reload}
           />
           {!data && !error && (
             <p className="note" role="status">
-              Loading software request history…
+              {t(
+                'components.RequestStatus.SoftwareRequests.historyLoading',
+                'Loading status history…'
+              )}
             </p>
           )}
           {failure && (
@@ -216,13 +263,29 @@ export function SoftwareRequestHistorySheet({
           {data && (
             <>
               <p className="note">
-                {statusLabel(data.status)}
+                {statusLabel(data.status, t)}
                 {data.request.platform?.name &&
                   ` · ${data.request.platform.name}`}
               </p>
               {selection?.kind === 'game-content' && (
                 <p className="note">
-                  {softwareSelectionLabel(selection)}
+                  {selection.mode === 'edition'
+                    ? t(
+                        'lumen.softwareHistory.selectionEdition',
+                        'Complete Edition'
+                      )
+                    : (selection.addonIds?.length ?? 0) === 1
+                      ? t('lumen.softwareHistory.selectionOneAddon', '1 Add-on')
+                      : (selection.addonIds?.length ?? 0) > 1
+                        ? t(
+                            'lumen.softwareHistory.selectionManyAddons',
+                            '{count} Add-ons',
+                            { count: selection.addonIds?.length ?? 0 }
+                          )
+                        : t(
+                            'lumen.softwareHistory.selectionAddons',
+                            'Selected Add-ons'
+                          )}
                   {requestedEdition &&
                     ` · ${editionTitle || `IGDB edition ${requestedEdition}`}`}
                   {!!requestedAddons?.length &&
@@ -240,12 +303,23 @@ export function SoftwareRequestHistorySheet({
                   {project && (
                     <Link className="chip" to={project}>
                       {patch.versionId
-                        ? 'Open Requested Patch Version'
-                        : 'Open Patch Project'}
+                        ? t(
+                            'lumen.softwareHistory.openPatchVersion',
+                            'Open Requested Patch Version'
+                          )
+                        : t(
+                            'lumen.softwareHistory.openPatchProject',
+                            'Open Patch Project'
+                          )}
                     </Link>
                   )}
                   <span className="note">
-                    {patch.keepOriginal ? 'Keep original' : 'Replace original'}
+                    {patch.keepOriginal
+                      ? t('lumen.softwareHistory.keepOriginal', 'Keep original')
+                      : t(
+                          'lumen.softwareHistory.replaceOriginal',
+                          'Replace original'
+                        )}
                   </span>
                 </div>
               )}
@@ -253,8 +327,16 @@ export function SoftwareRequestHistorySheet({
                 <>
                   <p className="note">
                     {uncertain
-                      ? 'The provider could not confirm whether a download started. Check the download client’s queue and history. Continue only if there is no matching download.'
-                      : confirmation[confirm as keyof typeof confirmation]}
+                      ? t(
+                          'components.RequestStatus.SoftwareRequests.retryCheckRequired',
+                          'The provider cannot confirm whether the previous download started. Check the download client’s queue and history. Continue only if no matching download exists.'
+                        )
+                      : t(
+                          confirmationMessageIds[confirm],
+                          confirm === 'clear'
+                            ? 'Permanently clear this cancelled request and its history?'
+                            : 'Confirm this software request action?'
+                        )}
                   </p>
                   <div className="rqa">
                     <button
@@ -265,7 +347,7 @@ export function SoftwareRequestHistorySheet({
                         setUncertain(false);
                       }}
                     >
-                      Go Back
+                      {t('i18n.back', 'Go Back')}
                     </button>
                     <button
                       className="btn btn-tonal btn-sm"
@@ -273,8 +355,20 @@ export function SoftwareRequestHistorySheet({
                       onClick={() => void run(confirm, uncertain)}
                     >
                       {uncertain
-                        ? `No Download Found — ${labels[confirm]}`
-                        : `Confirm ${labels[confirm]}`}
+                        ? t(
+                            'lumen.softwareHistory.confirmAfterNoDownload',
+                            'No Download Found — {action}',
+                            {
+                              action: t(actionMessageIds[confirm], confirm),
+                            }
+                          )
+                        : t(
+                            'lumen.softwareHistory.confirmAction',
+                            'Confirm {action}',
+                            {
+                              action: t(actionMessageIds[confirm], confirm),
+                            }
+                          )}
                     </button>
                   </div>
                 </>
@@ -291,15 +385,25 @@ export function SoftwareRequestHistorySheet({
                           : setConfirm(action)
                       }
                     >
-                      {labels[action]}
+                      {t(actionMessageIds[action], action)}
                     </button>
                   ))}
                 </div>
               )}
               {data.message && <p className="note">{data.message}</p>}
               {(data.assets.length > 0 || data.bundle) && (
-                <section aria-label="Downloads">
-                  <h3>Download Files</h3>
+                <section
+                  aria-label={t(
+                    'components.RequestStatus.SoftwareRequests.downloadCopies',
+                    'Download copies'
+                  )}
+                >
+                  <h3>
+                    {t(
+                      'components.RequestStatus.SoftwareRequests.downloadCopies',
+                      'Download copies'
+                    )}
+                  </h3>
                   <ul className="setlist">
                     {data.assets
                       .filter(({ id }) => id && id !== '.' && id !== '..')
@@ -333,10 +437,10 @@ export function SoftwareRequestHistorySheet({
                   {[...data.history].reverse().map((event) => (
                     <li className="set" key={event.id}>
                       <div>
-                        <b>{statusLabel(event.status)}</b>
+                        <b>{statusLabel(event.status, t)}</b>
                         <div className="note">
                           <time dateTime={event.createdAt}>
-                            {new Date(event.createdAt).toLocaleString()}
+                            {new Date(event.createdAt).toLocaleString(locale)}
                           </time>
                         </div>
                         {event.message && (
@@ -348,14 +452,17 @@ export function SoftwareRequestHistorySheet({
                 </ol>
               ) : (
                 <p className="note">
-                  No history has been recorded for this request.
+                  {t(
+                    'components.RequestStatus.SoftwareRequests.noHistory',
+                    'No saved status updates are available.'
+                  )}
                 </p>
               )}
             </>
           )}
           <div className="pk-foot">
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
-              Close
+              {t('i18n.close', 'Close')}
             </button>
           </div>
         </div>
