@@ -799,11 +799,26 @@ routes incoming recovery links to bundled Lumen when selected, honoring
 the native preference when allowed. Recovery links on the SeerrNG origin
 keep using that origin for externally configured frontends.
 
-Headed Chrome at 1440 × 1000 verified standalone request and reset forms using
-a synthetic API, including mismatched confirmation and successful POSTs.
-The server tests verified bundled link routing and native and external
-fallback. Live SMTP, mobile and bundled browser rendering, and native
-visual comparison remain open.
+The logged-out forms now follow the browser's supported language without
+requesting account settings. Their labels, actions, completion messages, and
+429/503 errors are localized in French and Arabic; Arabic sets the document
+direction to RTL. Fixture-backed browser checks cover local password-match
+validation, translated rate-limit and mail-unavailable errors, successful
+reset, and the privacy-preserving recovery response. Eight cases passed across
+desktop, iPhone, Android, and tablet using standalone production preview.
+
+Baseline English request and confirmation forms were captured before the
+localization change at 1440 × 900 and iPhone CSS 390 × 664. Candidate French
+request and Arabic confirmation forms were captured at 1440 × 900, iPhone
+390 × 664, Android 412 × 915, and tablet 834 × 1194. Rendered screenshots
+were inspected against the baseline for card geometry, control alignment,
+text wrapping, direction, and overflow; strings wrap naturally and no
+horizontal overflow was found. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reset-password-localization-20261120/`.
+
+The synthetic API does not verify live SMTP delivery or production password
+reset behavior. Headed native-matched and bundled-browser comparison,
+delegated account behavior, live SMTP, and end-to-end recovery remain open.
 
 ### Request retry increment
 

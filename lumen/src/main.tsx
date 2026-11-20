@@ -149,18 +149,20 @@ function App() {
   }
   if (resetLink || resetRequest) {
     return (
-      <Suspense fallback={<div className="boot" aria-busy="true" />}>
-        <Routes>
-          <Route
-            path="/resetpassword"
-            element={<ResetPassword key="request" />}
-          />
-          <Route
-            path="/resetpassword/:guid"
-            element={<ResetPassword key={location.pathname} />}
-          />
-        </Routes>
-      </Suspense>
+      <LumenLocaleProvider userId={user?.id}>
+        <Suspense fallback={<div className="boot" aria-busy="true" />}>
+          <Routes>
+            <Route
+              path="/resetpassword"
+              element={<ResetPassword key="request" />}
+            />
+            <Route
+              path="/resetpassword/:guid"
+              element={<ResetPassword key={location.pathname} />}
+            />
+          </Routes>
+        </Suspense>
+      </LumenLocaleProvider>
     );
   }
   if (!embedded && settings?.initialized === false)

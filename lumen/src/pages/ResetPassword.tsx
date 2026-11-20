@@ -2,8 +2,10 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { BrandMark } from '../components/brand';
+import { useLumenLocale } from '../i18n';
 
 export default function ResetPassword() {
+  const { t } = useLumenLocale();
   const { guid } = useParams();
   const submitting = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -16,7 +18,9 @@ export default function ResetPassword() {
     const fields = new FormData(event.currentTarget);
     const password = fields.get('password');
     if (guid && password !== fields.get('confirmPassword')) {
-      setError('The passwords must match.');
+      setError(
+        t('lumen.resetPassword.passwordsMustMatch', 'The passwords must match.')
+      );
       return;
     }
 
@@ -40,12 +44,24 @@ export default function ResetPassword() {
     } catch (failure) {
       setError(
         failure instanceof ApiError && failure.status === 429
-          ? 'Too many attempts. Wait a moment and try again.'
+          ? t(
+              'lumen.resetPassword.tooManyAttempts',
+              'Too many attempts. Wait a moment and try again.'
+            )
           : failure instanceof ApiError && failure.status === 503 && !guid
-            ? 'Password recovery email is unavailable. Contact your administrator.'
+            ? t(
+                'lumen.resetPassword.emailUnavailable',
+                'Password recovery email is unavailable. Contact your administrator.'
+              )
             : guid
-              ? 'Could not reset your password. Try again or request a new link.'
-              : 'Could not request a reset link. Please try again.'
+              ? t(
+                  'lumen.resetPassword.resetFailure',
+                  'Could not reset your password. Try again or request a new link.'
+                )
+              : t(
+                  'lumen.resetPassword.requestFailure',
+                  'Could not request a reset link. Please try again.'
+                )
       );
     } finally {
       submitting.current = false;
@@ -59,19 +75,25 @@ export default function ResetPassword() {
         <div className="brand">
           <BrandMark />
         </div>
-        <h1>Reset your password</h1>
+        <h1>{t('lumen.resetPassword.title', 'Reset your password')}</h1>
         {done ? (
           <p className="sub" role="status">
             {guid
-              ? 'Your password has been reset.'
-              : 'If that address is associated with an account, you’ll receive a password reset link.'}
+              ? t(
+                  'lumen.resetPassword.passwordReset',
+                  'Your password has been reset.'
+                )
+              : t(
+                  'lumen.resetPassword.requested',
+                  'If that address is associated with an account, you’ll receive a password reset link.'
+                )}
           </p>
         ) : (
           <form className="login-local" onSubmit={submit}>
             {guid ? (
               <>
                 <label>
-                  New password
+                  {t('lumen.resetPassword.newPassword', 'New password')}
                   <input
                     name="password"
                     type="password"
@@ -82,7 +104,7 @@ export default function ResetPassword() {
                   />
                 </label>
                 <label>
-                  Confirm password
+                  {t('lumen.resetPassword.confirmPassword', 'Confirm password')}
                   <input
                     name="confirmPassword"
                     type="password"
@@ -95,7 +117,7 @@ export default function ResetPassword() {
               </>
             ) : (
               <label>
-                Email
+                {t('lumen.resetPassword.email', 'Email')}
                 <input
                   name="email"
                   type="email"
@@ -111,17 +133,19 @@ export default function ResetPassword() {
               </p>
             )}
             <button className="btn btn-tonal" disabled={busy}>
-              {guid ? 'Reset password' : 'Email recovery link'}
+              {guid
+                ? t('lumen.resetPassword.resetAction', 'Reset password')
+                : t('lumen.resetPassword.requestAction', 'Email recovery link')}
             </button>
           </form>
         )}
         {guid && !done && (
           <Link className="btn btn-quiet btn-sm" to="/resetpassword">
-            Request a new link
+            {t('lumen.resetPassword.requestNewLink', 'Request a new link')}
           </Link>
         )}
         <Link className="btn btn-quiet btn-sm" to="/login">
-          Back to sign in
+          {t('lumen.resetPassword.backToSignIn', 'Back to sign in')}
         </Link>
       </div>
     </main>

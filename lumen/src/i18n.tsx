@@ -67,13 +67,18 @@ export function LumenLocaleProvider({
   userId,
   children,
 }: {
-  userId: number;
+  userId?: number | null;
   children: ReactNode;
 }) {
   const [requestedLocale, setRequestedLocale] = useState<string | null>(null);
   const [locale, setActiveLocale] = useState<LumenLocale>(browserLocale);
 
   useEffect(() => {
+    if (userId == null) {
+      setRequestedLocale(null);
+      setActiveLocale(browserLocale());
+      return;
+    }
     let live = true;
     void api<{ locale?: string | null }>(`/user/${userId}/settings/main`)
       .then(({ locale: saved }) => {

@@ -860,5 +860,20 @@
   "lumen.clientTokens.limitReached",
   "lumen.clientTokens.createFailure",
   "lumen.clientTokens.copied",
-  "lumen.clientTokens.copyFailure"
+  "lumen.clientTokens.copyFailure",
+  "lumen.resetPassword.passwordsMustMatch",
+  "lumen.resetPassword.tooManyAttempts",
+  "lumen.resetPassword.emailUnavailable",
+  "lumen.resetPassword.resetFailure",
+  "lumen.resetPassword.requestFailure",
+  "lumen.resetPassword.title",
+  "lumen.resetPassword.passwordReset",
+  "lumen.resetPassword.requested",
+  "lumen.resetPassword.newPassword",
+  "lumen.resetPassword.confirmPassword",
+  "lumen.resetPassword.email",
+  "lumen.resetPassword.resetAction",
+  "lumen.resetPassword.requestAction",
+  "lumen.resetPassword.requestNewLink",
+  "lumen.resetPassword.backToSignIn"
 ]

@@ -1074,6 +1074,26 @@ export const localeData = [
         'تعذّر تأكيد إنشاء الرمز. تحقق من قائمتك قبل المحاولة مجدداً.',
       'lumen.clientTokens.copied': 'تم نسخ الرمز.',
       'lumen.clientTokens.copyFailure': 'انسخ الرمز يدوياً من الحقل.',
+      'lumen.resetPassword.passwordsMustMatch': 'يجب أن تتطابق كلمتا المرور.',
+      'lumen.resetPassword.tooManyAttempts':
+        'محاولات كثيرة جدًا. انتظر قليلًا ثم حاول مرة أخرى.',
+      'lumen.resetPassword.emailUnavailable':
+        'بريد استعادة كلمة المرور غير متاح. اتصل بالمسؤول.',
+      'lumen.resetPassword.resetFailure':
+        'تعذرت إعادة تعيين كلمة المرور. حاول مرة أخرى أو اطلب رابطًا جديدًا.',
+      'lumen.resetPassword.requestFailure':
+        'تعذر طلب رابط إعادة التعيين. يُرجى المحاولة مرة أخرى.',
+      'lumen.resetPassword.title': 'إعادة تعيين كلمة المرور',
+      'lumen.resetPassword.passwordReset': 'تمت إعادة تعيين كلمة المرور.',
+      'lumen.resetPassword.requested':
+        'إذا كان هذا العنوان مرتبطًا بحساب، فستتلقى رابطًا لإعادة تعيين كلمة المرور.',
+      'lumen.resetPassword.newPassword': 'كلمة مرور جديدة',
+      'lumen.resetPassword.confirmPassword': 'تأكيد كلمة المرور',
+      'lumen.resetPassword.email': 'البريد الإلكتروني',
+      'lumen.resetPassword.resetAction': 'إعادة تعيين كلمة المرور',
+      'lumen.resetPassword.requestAction': 'إرسال رابط الاستعادة',
+      'lumen.resetPassword.requestNewLink': 'طلب رابط جديد',
+      'lumen.resetPassword.backToSignIn': 'العودة إلى تسجيل الدخول',
     },
   },
   {
@@ -2912,6 +2932,26 @@ export const localeData = [
       'lumen.clientTokens.copied': 'Token copied.',
       'lumen.clientTokens.copyFailure':
         'Copy the token manually from the field.',
+      'lumen.resetPassword.passwordsMustMatch': 'The passwords must match.',
+      'lumen.resetPassword.tooManyAttempts':
+        'Too many attempts. Wait a moment and try again.',
+      'lumen.resetPassword.emailUnavailable':
+        'Password recovery email is unavailable. Contact your administrator.',
+      'lumen.resetPassword.resetFailure':
+        'Could not reset your password. Try again or request a new link.',
+      'lumen.resetPassword.requestFailure':
+        'Could not request a reset link. Please try again.',
+      'lumen.resetPassword.title': 'Reset Your Password',
+      'lumen.resetPassword.passwordReset': 'Your password has been reset.',
+      'lumen.resetPassword.requested':
+        'If that address is associated with an account, you’ll receive a password reset link.',
+      'lumen.resetPassword.newPassword': 'New Password',
+      'lumen.resetPassword.confirmPassword': 'Confirm Password',
+      'lumen.resetPassword.email': 'Email',
+      'lumen.resetPassword.resetAction': 'Reset Password',
+      'lumen.resetPassword.requestAction': 'Email Recovery Link',
+      'lumen.resetPassword.requestNewLink': 'Request a New Link',
+      'lumen.resetPassword.backToSignIn': 'Back to Sign In',
     },
   },
   {
@@ -5063,6 +5103,28 @@ export const localeData = [
       'lumen.clientTokens.copied': 'Jeton copié.',
       'lumen.clientTokens.copyFailure':
         'Copiez manuellement le jeton depuis le champ.',
+      'lumen.resetPassword.passwordsMustMatch':
+        'Les mots de passe doivent correspondre.',
+      'lumen.resetPassword.tooManyAttempts':
+        'Trop de tentatives. Patientez un instant, puis réessayez.',
+      'lumen.resetPassword.emailUnavailable':
+        'Le courriel de récupération du mot de passe est indisponible. Contactez votre administrateur.',
+      'lumen.resetPassword.resetFailure':
+        'Impossible de réinitialiser votre mot de passe. Réessayez ou demandez un nouveau lien.',
+      'lumen.resetPassword.requestFailure':
+        'Impossible de demander un lien de réinitialisation. Veuillez réessayer.',
+      'lumen.resetPassword.title': 'Réinitialiser Votre Mot de Passe',
+      'lumen.resetPassword.passwordReset':
+        'Votre mot de passe a été réinitialisé.',
+      'lumen.resetPassword.requested':
+        'Si cette adresse est associée à un compte, vous recevrez un lien de réinitialisation du mot de passe.',
+      'lumen.resetPassword.newPassword': 'Nouveau Mot de Passe',
+      'lumen.resetPassword.confirmPassword': 'Confirmer le Mot de Passe',
+      'lumen.resetPassword.email': 'Courriel',
+      'lumen.resetPassword.resetAction': 'Réinitialiser le Mot de Passe',
+      'lumen.resetPassword.requestAction': 'Envoyer le Lien de Récupération',
+      'lumen.resetPassword.requestNewLink': 'Demander un Nouveau Lien',
+      'lumen.resetPassword.backToSignIn': 'Retour à la Connexion',
     },
   },
   {
