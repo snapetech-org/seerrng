@@ -361,18 +361,22 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
 export function ServiceNote({
   error,
   what,
+  title,
+  retryLabel,
   retry,
   retryDisabled = false,
 }: {
   error: string | null;
   what: string;
+  title?: string;
+  retryLabel?: string;
   retry?: () => void;
   retryDisabled?: boolean;
 }) {
   if (!error) return null;
   return (
     <div className="empty" role={retry ? 'alert' : undefined}>
-      <b>Couldn’t load {what}</b>
+      <b>{title ?? `Couldn’t load ${what}`}</b>
       {retry ? <p>{error}</p> : error}
       {retry && (
         <button
@@ -380,7 +384,7 @@ export function ServiceNote({
           onClick={retry}
           disabled={retryDisabled}
         >
-          Retry
+          {retryLabel ?? 'Retry'}
         </button>
       )}
     </div>

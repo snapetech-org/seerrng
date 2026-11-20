@@ -138,6 +138,40 @@ function profileDraft(profile: Profile) {
   };
 }
 
+function accountLoadError(
+  error: string | null,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (!error) return null;
+  const genericMessages = [
+    ['Your session ended. Sign in again.', 'lumen.account.loadSessionExpired'],
+    ['You don’t have permission to do that.', 'lumen.account.loadForbidden'],
+    [
+      'The server took too long to answer. Try again.',
+      'lumen.account.loadTimeout',
+    ],
+    [
+      'Too many requests. Wait a minute and try again.',
+      'lumen.account.loadRateLimited',
+    ],
+    [
+      'The server had a problem. Try again in a moment.',
+      'lumen.account.loadServerFailure',
+    ],
+    [
+      'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.account.loadNetworkFailure',
+    ],
+    [
+      'You’re offline. Check your connection and try again.',
+      'lumen.account.loadOffline',
+    ],
+    ['Failed to load', 'lumen.account.loadUnknownFailure'],
+  ] as const;
+  const match = genericMessages.find(([message]) => message === error);
+  return match ? t(match[1], error) : error;
+}
+
 function normalizeRegion(value: string) {
   const trimmed = value.trim();
   return trimmed.toLowerCase() === 'all' ? 'all' : trimmed.toUpperCase();
@@ -308,12 +342,18 @@ function ProfileForm({
           setNotice('profile-saved');
         } else {
           setFailure(
-            'SeerrNG saved different values. Review the updated profile.'
+            t(
+              'lumen.account.profileSaveMismatch',
+              'SeerrNG saved different values. Review the updated profile.'
+            )
           );
         }
       } catch {
         setFailure(
-          'SeerrNG accepted the save, but the updated profile could not be loaded.'
+          t(
+            'lumen.account.profileConfirmFailure',
+            'SeerrNG accepted the save, but the updated profile could not be loaded.'
+          )
         );
       }
       await refresh();
@@ -321,8 +361,14 @@ function ProfileForm({
       if (generation === sessionGeneration()) {
         setFailure(
           error instanceof ApiError && error.status === 403
-            ? 'You do not have permission to change these settings.'
-            : 'Could not save the profile. Check the values and try again.'
+            ? t(
+                'lumen.account.profileSaveForbidden',
+                'You do not have permission to change these settings.'
+              )
+            : t(
+                'lumen.account.profileSaveFailure',
+                'Could not save the profile. Check the values and try again.'
+              )
         );
       }
     } finally {
@@ -386,7 +432,11 @@ function ProfileForm({
             <span>
               <b>{t(labelKey, label)}</b>
               {'help' in field && <small>{t(field.helpKey, field.help)}</small>}
-              {plex && key === 'email' && <small>Managed by Plex.</small>}
+              {plex && key === 'email' && (
+                <small>
+                  {t('lumen.account.managedByPlex', 'Managed by Plex.')}
+                </small>
+              )}
             </span>
             <input
               className="cfg-input"
@@ -402,8 +452,13 @@ function ProfileForm({
           </label>
         ))}
         <ServiceNote
-          error={languages.error}
+          error={accountLoadError(languages.error, t)}
           what="media languages"
+          title={t(
+            'lumen.account.loadMediaLanguagesFailure',
+            'Could not load media languages'
+          )}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={languages.reload}
         />
         {preferredLanguageFields.map(([key, label, messageKey]) => {
@@ -469,7 +524,10 @@ function ProfileForm({
                       helpKey,
                       `Automatically request titles added to ${source}.`
                     )
-                  : `Automatically request titles added to ${source}.`}
+                  : t(
+                      'lumen.account.plexWatchlistTip',
+                      `Automatically request titles added to ${source}.`
+                    )}
               </small>
             </span>
             <input
@@ -766,8 +824,13 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           </div>
         </dl>
         <ServiceNote
-          error={profile.error}
+          error={accountLoadError(profile.error, t)}
           what="profile settings"
+          title={t(
+            'lumen.account.loadProfileFailure',
+            'Could not load profile settings'
+          )}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={profile.reload}
         />
         {profile.data ? (
@@ -780,7 +843,10 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
         ) : (
           !profile.error && (
             <p className="note" role="status">
-              Loading profile settings…
+              {t(
+                'lumen.account.loadingProfileSettings',
+                'Loading profile settings…'
+              )}
             </p>
           )
         )}
@@ -801,8 +867,13 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
         id="password"
       >
         <ServiceNote
-          error={password.error}
+          error={accountLoadError(password.error, t)}
           what="password settings"
+          title={t(
+            'lumen.account.loadPasswordFailure',
+            'Could not load password settings'
+          )}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={password.reload}
         />
         {password.data ? (
@@ -813,7 +884,10 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
         ) : (
           !password.error && (
             <p className="note" role="status">
-              Loading password settings…
+              {t(
+                'lumen.account.loadingPasswordSettings',
+                'Loading password settings…'
+              )}
             </p>
           )
         )}
@@ -826,7 +900,12 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
         id="account-permissions"
       >
         {isAdministrator(mask) ? (
-          <p className="note">This account has administrator access.</p>
+          <p className="note">
+            {t(
+              'lumen.account.administratorAccess',
+              'This account has administrator access.'
+            )}
+          </p>
         ) : grants.length ? (
           <ul className="setlist">
             {grants.map(([bit, label, messageKey]) => (
@@ -837,7 +916,10 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
           </ul>
         ) : (
           <p className="note">
-            No additional permissions are assigned to this account.
+            {t(
+              'lumen.account.noAdditionalPermissions',
+              'No additional permissions are assigned to this account.'
+            )}
           </p>
         )}
       </Section>

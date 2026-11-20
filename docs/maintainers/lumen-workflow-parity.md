@@ -165,6 +165,21 @@ linguistic review and full bundled-suite qualification remain open. Candidate
 captures from these increments are retained in
 `seerrng-lumen-theme-locale-20261120`.
 
+The account profile now localizes save rejection, permission denial, mismatched
+server readback, and failed confirmation, plus Plex-managed email, profile and
+password loading/retry states, administrator and empty-permission notices, and
+media-language failure messages. Generic HTTP load failures use localized
+status-specific text while descriptive server messages remain intact. French
+and Arabic fixtures cover 403, 503, save mismatch, unreadable readback, Plex
+account, missing permissions, and language-service failure states across
+desktop (1440 × 900), iPhone (390 × 844), Android (412 × 915), and tablet
+(834 × 1194). Matched baseline/candidate captures for French and Arabic at
+desktop and iPhone were inspected; translations changed copy only, and the RTL
+layout has no horizontal overflow. Evidence is retained at
+`seerrng-lumen-theme-locale-20261120/baseline/account/` and
+`seerrng-lumen-theme-locale-20261120/candidate/account/`. Remaining less common
+account copy and localization outside these audited Lumen surfaces remain open.
+
 The signed-in You hub now localizes its section headings, destinations, theme
 choices, request preference controls, Discover rows, reset confirmation,
 media-server summary, sign-out action, and accessible link names. French and

@@ -375,6 +375,41 @@ export const localeData = [
         'تحقق من كلمة المرور الحالية وصلاحيات الحساب.',
       'lumen.account.passwordChangeUnconfirmed':
         'تعذر تأكيد تغيير كلمة المرور. تحقق من بيانات اعتمادك قبل إعادة المحاولة.',
+      'lumen.account.profileSaveMismatch':
+        'حفظ SeerrNG قيماً مختلفة. راجع الملف الشخصي المحدّث.',
+      'lumen.account.profileConfirmFailure':
+        'قبل SeerrNG الحفظ، لكن تعذّر تحميل الملف الشخصي المحدّث.',
+      'lumen.account.profileSaveForbidden':
+        'ليست لديك صلاحية لتغيير هذه الإعدادات.',
+      'lumen.account.profileSaveFailure':
+        'تعذّر حفظ الملف الشخصي. تحقق من القيم وحاول مجدداً.',
+      'lumen.account.managedByPlex': 'تدير Plex هذا الإعداد.',
+      'lumen.account.loadMediaLanguagesFailure': 'تعذّر تحميل لغات الوسائط',
+      'lumen.account.plexWatchlistTip':
+        'اطلب تلقائياً العناوين المضافة إلى قائمة متابعة Plex.',
+      'lumen.account.loadProfileFailure': 'تعذّر تحميل إعدادات الملف الشخصي',
+      'lumen.account.loadingProfileSettings':
+        'جارٍ تحميل إعدادات الملف الشخصي…',
+      'lumen.account.loadPasswordFailure': 'تعذّر تحميل إعدادات كلمة المرور',
+      'lumen.account.loadingPasswordSettings':
+        'جارٍ تحميل إعدادات كلمة المرور…',
+      'lumen.account.administratorAccess': 'يملك هذا الحساب صلاحيات المسؤول.',
+      'lumen.account.noAdditionalPermissions':
+        'لم تُمنح لهذا الحساب صلاحيات إضافية.',
+      'lumen.account.retry': 'إعادة المحاولة',
+      'lumen.account.loadSessionExpired': 'انتهت جلستك. سجّل الدخول مجدداً.',
+      'lumen.account.loadForbidden': 'ليست لديك صلاحية لعرض هذه المعلومات.',
+      'lumen.account.loadTimeout':
+        'استغرق الخادم وقتاً طويلاً للرد. حاول مجدداً.',
+      'lumen.account.loadRateLimited':
+        'عدد الطلبات كبير جداً. انتظر دقيقة ثم حاول مجدداً.',
+      'lumen.account.loadServerFailure':
+        'واجه الخادم مشكلة. حاول مجدداً بعد قليل.',
+      'lumen.account.loadNetworkFailure':
+        'تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مجدداً.',
+      'lumen.account.loadOffline':
+        'أنت غير متصل بالإنترنت. تحقق من اتصالك وحاول مجدداً.',
+      'lumen.account.loadUnknownFailure': 'تعذّر تحميل هذه المعلومات.',
       'lumen.account.saveThemeColors': 'حفظ ألوان المظهر',
       'lumen.account.themeOverrideConfirmFailure':
         'قبل الخادم الحفظ، لكن تعذر على Lumen تأكيد الألوان المحدّثة.',
@@ -2173,6 +2208,42 @@ export const localeData = [
         'Check your current password and account permissions.',
       'lumen.account.passwordChangeUnconfirmed':
         'Could not confirm the password change. Check your credentials before trying again.',
+      'lumen.account.profileSaveMismatch':
+        'SeerrNG saved different values. Review the updated profile.',
+      'lumen.account.profileConfirmFailure':
+        'SeerrNG accepted the save, but the updated profile could not be loaded.',
+      'lumen.account.profileSaveForbidden':
+        'You do not have permission to change these settings.',
+      'lumen.account.profileSaveFailure':
+        'Could not save the profile. Check the values and try again.',
+      'lumen.account.managedByPlex': 'Managed by Plex.',
+      'lumen.account.loadMediaLanguagesFailure':
+        'Could not load media languages',
+      'lumen.account.plexWatchlistTip':
+        'Automatically request titles added to the Plex Watchlist.',
+      'lumen.account.loadProfileFailure': 'Could not load profile settings',
+      'lumen.account.loadingProfileSettings': 'Loading profile settings…',
+      'lumen.account.loadPasswordFailure': 'Could not load password settings',
+      'lumen.account.loadingPasswordSettings': 'Loading password settings…',
+      'lumen.account.administratorAccess':
+        'This account has administrator access.',
+      'lumen.account.noAdditionalPermissions':
+        'No additional permissions are assigned to this account.',
+      'lumen.account.retry': 'Retry',
+      'lumen.account.loadSessionExpired': 'Your session ended. Sign in again.',
+      'lumen.account.loadForbidden':
+        'You do not have permission to view this information.',
+      'lumen.account.loadTimeout':
+        'The server took too long to answer. Try again.',
+      'lumen.account.loadRateLimited':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.account.loadServerFailure':
+        'The server had a problem. Try again in a moment.',
+      'lumen.account.loadNetworkFailure':
+        'Couldn’t reach the server. Check your connection and try again.',
+      'lumen.account.loadOffline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.account.loadUnknownFailure': 'Could not load this information.',
       'lumen.account.saveThemeColors': 'Save Theme Colors',
       'lumen.account.themeOverrideConfirmFailure':
         'The server accepted the save, but Lumen could not confirm the updated colors.',
@@ -4121,6 +4192,48 @@ export const localeData = [
         'Vérifiez votre mot de passe actuel et les autorisations de votre compte.',
       'lumen.account.passwordChangeUnconfirmed':
         'Impossible de confirmer le changement de mot de passe. Vérifiez vos identifiants avant de réessayer.',
+      'lumen.account.profileSaveMismatch':
+        'SeerrNG a enregistré des valeurs différentes. Vérifiez le profil mis à jour.',
+      'lumen.account.profileConfirmFailure':
+        'SeerrNG a accepté l’enregistrement, mais le profil mis à jour n’a pas pu être chargé.',
+      'lumen.account.profileSaveForbidden':
+        'Vous n’avez pas l’autorisation de modifier ces paramètres.',
+      'lumen.account.profileSaveFailure':
+        'Impossible d’enregistrer le profil. Vérifiez les valeurs et réessayez.',
+      'lumen.account.managedByPlex': 'Géré par Plex.',
+      'lumen.account.loadMediaLanguagesFailure':
+        'Impossible de charger les langues des médias',
+      'lumen.account.plexWatchlistTip':
+        'Demander automatiquement les titres ajoutés à la liste de suivi Plex.',
+      'lumen.account.loadProfileFailure':
+        'Impossible de charger les paramètres du profil',
+      'lumen.account.loadingProfileSettings':
+        'Chargement des paramètres du profil…',
+      'lumen.account.loadPasswordFailure':
+        'Impossible de charger les paramètres du mot de passe',
+      'lumen.account.loadingPasswordSettings':
+        'Chargement des paramètres du mot de passe…',
+      'lumen.account.administratorAccess':
+        'Ce compte dispose des droits d’administration.',
+      'lumen.account.noAdditionalPermissions':
+        'Aucune autorisation supplémentaire n’est attribuée à ce compte.',
+      'lumen.account.retry': 'Réessayer',
+      'lumen.account.loadSessionExpired':
+        'Votre session a expiré. Reconnectez-vous.',
+      'lumen.account.loadForbidden':
+        'Vous n’avez pas l’autorisation de consulter ces informations.',
+      'lumen.account.loadTimeout':
+        'Le serveur a mis trop de temps à répondre. Réessayez.',
+      'lumen.account.loadRateLimited':
+        'Trop de requêtes. Attendez une minute, puis réessayez.',
+      'lumen.account.loadServerFailure':
+        'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      'lumen.account.loadNetworkFailure':
+        'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
+      'lumen.account.loadOffline':
+        'Vous êtes hors ligne. Vérifiez votre connexion et réessayez.',
+      'lumen.account.loadUnknownFailure':
+        'Impossible de charger ces informations.',
       'lumen.account.saveThemeColors': 'Enregistrer les couleurs du thème',
       'lumen.account.themeOverrideConfirmFailure':
         'Le serveur a accepté l’enregistrement, mais Lumen n’a pas pu confirmer les nouvelles couleurs.',

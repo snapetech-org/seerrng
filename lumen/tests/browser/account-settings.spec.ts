@@ -149,6 +149,123 @@ test('account settings preserve failed profile edits and save only changes and p
   await expect(page.getByLabel('New Password')).toHaveValue('');
 });
 
+for (const locale of ['fr', 'ar']) {
+  test(`account profile actions and notices are localized in ${locale}`, async ({
+    page,
+  }, testInfo) => {
+    const profile = {
+      username: 'Viewer',
+      email: 'viewer@example.test',
+      locale,
+    };
+    let postCount = 0;
+    let failReadback = false;
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: {
+            id: 2,
+            displayName: profile.username,
+            permissions: 0,
+            userType: 1,
+          },
+        });
+      if (path === '/user/2/settings/main') {
+        if (request.method() === 'POST') {
+          postCount += 1;
+          if (postCount === 1) return route.fulfill({ status: 503, json: {} });
+          if (postCount === 2) return route.fulfill({ status: 403, json: {} });
+          const body = request.postDataJSON() as { username: string };
+          profile.username =
+            postCount === 3 ? 'Server Accepted' : body.username;
+          if (postCount === 4) failReadback = true;
+          return route.fulfill({ json: profile });
+        }
+        if (failReadback) {
+          failReadback = false;
+          return route.fulfill({ status: 503, json: {} });
+        }
+        return route.fulfill({
+          json: profile,
+        });
+      }
+      if (path === '/user/2/settings/password')
+        return route.fulfill({ json: { hasPassword: false } });
+      if (path === '/languages')
+        return route.fulfill({ status: 503, json: {} });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto(appPath('./me/account'));
+    const expected =
+      locale === 'fr'
+        ? {
+            label: 'Nom affiché',
+            save: 'Enregistrer les modifications',
+            failure:
+              'Impossible d’enregistrer le profil. Vérifiez les valeurs et réessayez.',
+            forbidden:
+              'Vous n’avez pas l’autorisation de modifier ces paramètres.',
+            mismatch:
+              'SeerrNG a enregistré des valeurs différentes. Vérifiez le profil mis à jour.',
+            confirm:
+              'SeerrNG a accepté l’enregistrement, mais le profil mis à jour n’a pas pu être chargé.',
+            languages: 'Impossible de charger les langues des médias',
+            serverFailure:
+              'Le serveur a rencontré un problème. Réessayez dans un instant.',
+            retry: 'Réessayer',
+            plex: 'Géré par Plex.',
+            noPermissions:
+              'Aucune autorisation supplémentaire n’est attribuée à ce compte.',
+          }
+        : {
+            label: 'إسم العرض',
+            save: 'حفظ التغييرات',
+            failure: 'تعذّر حفظ الملف الشخصي. تحقق من القيم وحاول مجدداً.',
+            forbidden: 'ليست لديك صلاحية لتغيير هذه الإعدادات.',
+            mismatch: 'حفظ SeerrNG قيماً مختلفة. راجع الملف الشخصي المحدّث.',
+            confirm: 'قبل SeerrNG الحفظ، لكن تعذّر تحميل الملف الشخصي المحدّث.',
+            languages: 'تعذّر تحميل لغات الوسائط',
+            serverFailure: 'واجه الخادم مشكلة. حاول مجدداً بعد قليل.',
+            retry: 'إعادة المحاولة',
+            plex: 'تدير Plex هذا الإعداد.',
+            noPermissions: 'لم تُمنح لهذا الحساب صلاحيات إضافية.',
+          };
+    await expect(page.getByText(expected.languages)).toBeVisible();
+    await expect(page.getByText(expected.serverFailure)).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: expected.retry }).first()
+    ).toBeVisible();
+    await expect(page.getByText(expected.plex)).toBeVisible();
+    await expect(page.getByText(expected.noPermissions)).toBeVisible();
+    await page.getByLabel(expected.label).fill('First Attempt');
+    const save = page.getByRole('button', { name: expected.save });
+    await save.click();
+    await expect(page.getByText(expected.failure)).toBeVisible();
+    if (
+      process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+      ['desktop', 'iphone'].includes(testInfo.project.name)
+    ) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${locale}-${testInfo.project.name}-profile-error.png`,
+        fullPage: true,
+      });
+    }
+    await page.getByLabel(expected.label).fill('Forbidden Attempt');
+    await save.click();
+    await expect(page.getByText(expected.forbidden)).toBeVisible();
+    await page.getByLabel(expected.label).fill('Mismatched Attempt');
+    await save.click();
+    await expect(page.getByText(expected.mismatch)).toBeVisible();
+    await page.getByLabel(expected.label).fill('Unreadable Attempt');
+    await save.click();
+    await expect(page.getByText(expected.confirm)).toBeVisible();
+  });
+}
+
 test('display language persists and localizes the shell and account settings', async ({
   page,
 }, testInfo) => {
