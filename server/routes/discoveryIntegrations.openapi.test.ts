@@ -51,9 +51,9 @@ describe('discovery integration OpenAPI contracts', () => {
     );
     assert.equal(
       (
-        await request(app).post(
-          '/api/v1/integrations/discovery/accounts/trakt/connect'
-        )
+        await request(app)
+          .post('/api/v1/integrations/discovery/accounts/trakt/connect')
+          .send({})
       ).status,
       200
     );
@@ -269,9 +269,9 @@ describe('discovery integration OpenAPI contracts', () => {
     );
     assert.equal(
       (
-        await request(app).post(
-          '/api/v1/integrations/discovery/accounts/other/connect'
-        )
+        await request(app)
+          .post('/api/v1/integrations/discovery/accounts/other/connect')
+          .send({})
       ).status,
       400
     );

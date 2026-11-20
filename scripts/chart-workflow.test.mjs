@@ -64,7 +64,7 @@ test('chart and tooling validation use the current CI triggers and tools', () =>
   assert.equal(checkout.with['fetch-tags'], true);
   assert.equal(
     helmSetup.uses,
-    'azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310'
+    'azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e'
   );
   assert.equal(
     ciWorkflow.jobs.helm.uses,
