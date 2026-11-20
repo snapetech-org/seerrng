@@ -722,16 +722,11 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
             hasSaveActions ? 'settings-page-has-actions' : ''
           }`}
           onChangeCapture={(event) => {
-            const form =
-              event.target instanceof HTMLElement
-                ? event.target.closest('form')
-                : null;
-            if (
-              hasSaveActions &&
-              event.nativeEvent.isTrusted &&
-              !form?.hasAttribute('data-settings-dirty')
-            )
-              setDirty(true);
+            // Show the shared save action during the same user interaction.
+            // Managed forms publish their exact dirty state asynchronously;
+            // waiting only for that mutation can leave classic-theme settings
+            // without a visible Save action after the field is already dirty.
+            if (hasSaveActions && event.nativeEvent.isTrusted) setDirty(true);
           }}
           onSubmitCapture={(event) => {
             if (
