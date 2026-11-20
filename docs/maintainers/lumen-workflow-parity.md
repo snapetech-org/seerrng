@@ -696,10 +696,21 @@ tokens with a selected expiry, and revoke after confirmation. The creation
 secret stays in component state and disappears when dismissed or when the
 user leaves the page.
 
-Headed Chrome at 1440 × 1000 verified standalone list loading, creation of
-a seven-day Discover token, one-time display, and revocation with synthetic
-data. Clipboard use, native comparison, mobile and bundled visual checks,
-and an external client round trip remain open.
+Headed Chrome at 1440 × 1000 verified standalone list loading, creation of a
+seven-day Discover token, one-time display, and revocation with synthetic
+data. The screen now localizes its description, loading and retry states,
+token creation and expiry controls, one-time secret notice, clipboard
+feedback, token scopes and dates, and the confirmation-based revocation flow
+in French and Arabic. Browser fixtures verify failed-list retry, locale-aware
+creation, copying a synthetic token, copy failure, dismissing its one-time
+display, and canceling and confirming revocation across desktop, iPhone,
+Android, and tablet projects. French and Arabic desktop (1440 × 900) and
+iPhone (390 × 844) baseline/candidate renders were inspected; existing page,
+form, and sheet owners remain intact, and RTL has no horizontal overflow.
+Candidate evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-client-token-localization-20261120/candidate/`;
+matching native comparison, bundled visual checks, and an external client
+round trip remain open.
 
 ### Linked accounts increment
 

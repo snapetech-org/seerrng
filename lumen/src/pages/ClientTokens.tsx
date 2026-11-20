@@ -6,6 +6,7 @@ import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Scope = 'discover' | 'request';
@@ -23,7 +24,33 @@ const ACCESS = {
   request: ['request'],
 };
 
+function localizedLoadError(
+  error: string | null,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (!error) return null;
+  const messages: Record<string, string> = {
+    'Your session ended. Sign in again.':
+      'lumen.clientTokens.loadSessionExpired',
+    'You don’t have permission to do that.': 'lumen.clientTokens.loadForbidden',
+    'The server took too long to answer. Try again.':
+      'lumen.clientTokens.loadTimeout',
+    'Too many requests. Wait a minute and try again.':
+      'lumen.clientTokens.loadRateLimited',
+    'The server had a problem. Try again in a moment.':
+      'lumen.clientTokens.loadServerFailure',
+    'Couldn’t reach the server. Check your connection and try again.':
+      'lumen.clientTokens.loadNetworkFailure',
+    'You’re offline. Check your connection and try again.':
+      'lumen.clientTokens.loadOffline',
+    'Failed to load': 'lumen.clientTokens.loadUnknownFailure',
+  };
+  const key = messages[error];
+  return key ? t(key, error) : error;
+}
+
 function TokenSettings() {
+  const { locale, t } = useLumenLocale();
   const { data, error, reload, refresh } = useApi<ClientToken[]>(PATH);
   const [name, setName] = useState('');
   const [access, setAccess] = useState<keyof typeof ACCESS>('both');
@@ -50,7 +77,7 @@ function TokenSettings() {
         await api<void>(`${PATH}/${target.id}`, { method: 'DELETE' });
         if (sessionGeneration() !== generation) return;
         setRevoked((ids) => [...ids, target.id]);
-        setNotice('Token revoked.');
+        setNotice(t('lumen.clientTokens.revoked', 'Token revoked.'));
       } else {
         const response = await api<{ token: string }>(PATH, {
           method: 'POST',
@@ -75,10 +102,19 @@ function TokenSettings() {
       if (sessionGeneration() !== generation) return;
       setFailure(
         target
-          ? 'Could not confirm revocation. Refresh the list before trying again.'
+          ? t(
+              'lumen.clientTokens.revokeFailure',
+              'Could not confirm revocation. Refresh the list before trying again.'
+            )
           : err instanceof ApiError && err.status === 409
-            ? 'Revoke an existing client token before creating another.'
-            : 'Could not confirm token creation. Check your token list before trying again.'
+            ? t(
+                'lumen.clientTokens.limitReached',
+                'Revoke an existing client token before creating another.'
+              )
+            : t(
+                'lumen.clientTokens.createFailure',
+                'Could not confirm token creation. Check your token list before trying again.'
+              )
       );
       reload();
     } finally {
@@ -92,23 +128,38 @@ function TokenSettings() {
     if (!created) return;
     try {
       await navigator.clipboard.writeText(created);
-      setNotice('Token copied.');
+      setNotice(t('lumen.clientTokens.copied', 'Token copied.'));
     } catch {
-      setFailure('Copy the token manually from the field.');
+      setFailure(
+        t(
+          'lumen.clientTokens.copyFailure',
+          'Copy the token manually from the field.'
+        )
+      );
     }
   }
 
   return (
     <>
       <p className="note">
-        Connect a client with your account’s Discover or Request access. Up to
-        ten unexpired tokens are allowed. Changing your password invalidates
-        them.
+        {t(
+          'lumen.clientTokens.description',
+          'Connect a client with your account’s Discover or Request access. Up to ten unexpired tokens are allowed. Changing your password invalidates them.'
+        )}
       </p>
-      <ServiceNote error={error} what="client tokens" retry={reload} />
+      <ServiceNote
+        error={localizedLoadError(error, t)}
+        what="client tokens"
+        title={t(
+          'lumen.clientTokens.loadFailureTitle',
+          'Could not load client tokens'
+        )}
+        retryLabel={t('lumen.clientTokens.retry', 'Retry')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading client tokens…
+          {t('lumen.clientTokens.loading', 'Loading client tokens…')}
         </p>
       )}
       {failure && (
@@ -122,13 +173,19 @@ function TokenSettings() {
         </p>
       )}
       {created && (
-        <Section title="New Token">
+        <Section title={t('lumen.clientTokens.newToken', 'New Token')}>
           <p className="note">
-            Copy this token now. SeerrNG shows it only once.
+            {t(
+              'lumen.clientTokens.secretShownOnce',
+              'Copy this token now. SeerrNG shows it only once.'
+            )}
           </p>
           <textarea
             className="cfg-json"
-            aria-label="New Client Token"
+            aria-label={t(
+              'lumen.clientTokens.newTokenLabel',
+              'New Client Token'
+            )}
             rows={2}
             value={created}
             readOnly
@@ -140,7 +197,7 @@ function TokenSettings() {
               className="btn btn-tonal btn-sm"
               onClick={() => void copy()}
             >
-              Copy Token
+              {t('lumen.clientTokens.copyToken', 'Copy Token')}
             </button>
             <button
               className="btn btn-quiet btn-sm"
@@ -150,12 +207,12 @@ function TokenSettings() {
                 setFailure('');
               }}
             >
-              Dismiss Token
+              {t('lumen.clientTokens.dismissToken', 'Dismiss Token')}
             </button>
           </div>
         </Section>
       )}
-      <Section title="Create Token">
+      <Section title={t('lumen.clientTokens.createToken', 'Create Token')}>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -164,7 +221,7 @@ function TokenSettings() {
         >
           <div className="setlist">
             <label className="set cfg-row">
-              <b>Token Name</b>
+              <b>{t('lumen.clientTokens.tokenName', 'Token Name')}</b>
               <input
                 className="cfg-input"
                 maxLength={80}
@@ -175,7 +232,7 @@ function TokenSettings() {
               />
             </label>
             <label className="set cfg-row">
-              <b>Access</b>
+              <b>{t('lumen.clientTokens.access', 'Access')}</b>
               <select
                 className="cfg-select"
                 value={access}
@@ -184,13 +241,22 @@ function TokenSettings() {
                   setAccess(event.target.value as keyof typeof ACCESS)
                 }
               >
-                <option value="both">Discover and Request</option>
-                <option value="discover">Discover Only</option>
-                <option value="request">Request Only</option>
+                <option value="both">
+                  {t(
+                    'lumen.clientTokens.discoverAndRequest',
+                    'Discover and Request'
+                  )}
+                </option>
+                <option value="discover">
+                  {t('lumen.clientTokens.discoverOnly', 'Discover Only')}
+                </option>
+                <option value="request">
+                  {t('lumen.clientTokens.requestOnly', 'Request Only')}
+                </option>
               </select>
             </label>
             <label className="set cfg-row">
-              <b>Expires After</b>
+              <b>{t('lumen.clientTokens.expiresAfter', 'Expires After')}</b>
               <select
                 className="cfg-select"
                 value={days}
@@ -199,7 +265,13 @@ function TokenSettings() {
               >
                 {[1, 7, 30, 90].map((value) => (
                   <option key={value} value={value}>
-                    {value} {value === 1 ? 'day' : 'days'}
+                    {t(
+                      value === 1
+                        ? 'lumen.clientTokens.day'
+                        : 'lumen.clientTokens.days',
+                      value === 1 ? 'day' : 'days',
+                      { count: value }
+                    )}
                   </option>
                 ))}
               </select>
@@ -210,13 +282,17 @@ function TokenSettings() {
               className="btn btn-primary btn-sm"
               disabled={busy || !canCreate}
             >
-              Create Token
+              {t('lumen.clientTokens.createToken', 'Create Token')}
             </button>
           </div>
         </form>
       </Section>
-      <Section title="Your Tokens">
-        {tokens?.length === 0 && <p className="note">No client tokens yet.</p>}
+      <Section title={t('lumen.clientTokens.yourTokens', 'Your Tokens')}>
+        {tokens?.length === 0 && (
+          <p className="note">
+            {t('lumen.clientTokens.empty', 'No client tokens yet.')}
+          </p>
+        )}
         {!!tokens?.length && (
           <ul className="setlist">
             {tokens.map((token) => {
@@ -228,24 +304,35 @@ function TokenSettings() {
                     <small>
                       {token.scopes
                         .map((scope) =>
-                          scope === 'discover' ? 'Discover' : 'Request'
+                          scope === 'discover'
+                            ? t('lumen.clientTokens.discover', 'Discover')
+                            : t('lumen.clientTokens.request', 'Request')
                         )
                         .join(', ')}
                     </small>
                     {Number.isFinite(expiry.valueOf()) && (
                       <small>
-                        {expiry.valueOf() <= Date.now() ? 'Expired' : 'Expires'}{' '}
-                        {expiry.toLocaleDateString()}
+                        {t(
+                          expiry.valueOf() <= Date.now()
+                            ? 'lumen.clientTokens.expired'
+                            : 'lumen.clientTokens.expires',
+                          expiry.valueOf() <= Date.now() ? 'Expired' : 'Expires'
+                        )}{' '}
+                        {expiry.toLocaleDateString(locale)}
                       </small>
                     )}
                   </div>
                   <button
                     className="btn btn-quiet btn-sm"
-                    aria-label={`Revoke token ${token.name}`}
+                    aria-label={t(
+                      'lumen.clientTokens.revokeNamed',
+                      'Revoke token {name}',
+                      { name: token.name }
+                    )}
                     disabled={busy || !!created}
                     onClick={() => setTarget(token)}
                   >
-                    Revoke
+                    {t('lumen.clientTokens.revoke', 'Revoke')}
                   </button>
                 </li>
               );
@@ -255,9 +342,14 @@ function TokenSettings() {
       </Section>
       {target && (
         <ConfirmSheet
-          title="Revoke this token?"
-          body={`“${target.name}” will lose access immediately.`}
-          confirm="Revoke Token"
+          title={t('lumen.clientTokens.revokeTitle', 'Revoke this token?')}
+          body={t(
+            'lumen.clientTokens.revokeBody',
+            '“{name}” will lose access immediately.',
+            { name: target.name }
+          )}
+          confirm={t('lumen.clientTokens.revokeToken', 'Revoke Token')}
+          cancel={t('lumen.clientTokens.keepToken', 'Keep Token')}
           busy={busy}
           onConfirm={() => void change()}
           onClose={() => {
@@ -270,15 +362,16 @@ function TokenSettings() {
 }
 
 export default function ClientTokens() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   return (
     <>
       <header className="ph">
-        <h1>Client Tokens</h1>
+        <h1>{t('lumen.clientTokens.title', 'Client Tokens')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me/account">
-          Back to Account Settings
+          {t('lumen.account.backToSettings', 'Back to Account Settings')}
         </Link>
       </div>
       {user && <TokenSettings key={user.id} />}
