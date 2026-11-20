@@ -1761,6 +1761,13 @@ a.person:hover {
 .recommendation-form {
   margin: 0;
 }
+.recommendation-preference {
+  pointer-events: none;
+}
+.recommendation-preference > label,
+.recommendation-preference > input {
+  pointer-events: auto;
+}
 .set {
   display: flex;
   flex-wrap: wrap;
