@@ -1,56 +1,41 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
 
-const administratorRoutes = [
-  '/admin',
-  '/admin/about',
-  '/admin/audiobookshelf',
-  '/admin/backissue',
-  '/admin/caches',
-  '/admin/categories',
-  '/admin/connection-hosts',
-  '/admin/discovery',
-  '/admin/download-clients',
-  '/admin/general',
-  '/admin/jellystat',
-  '/admin/jobs',
-  '/admin/kapowarr',
-  '/admin/kavita',
-  '/admin/lazylibrarian',
-  '/admin/library-migration',
-  '/admin/lidarr',
-  '/admin/logs',
-  '/admin/media-libraries',
-  '/admin/metadata',
-  '/admin/mylar',
-  '/admin/navidrome',
-  '/admin/network',
-  '/admin/notifications',
-  '/admin/notifications/webhook',
-  '/admin/override-rules',
-  '/admin/prowlarr',
-  '/admin/radarr',
-  '/admin/readarr',
-  '/admin/reader-delivery',
-  '/admin/readmeabook',
-  '/admin/recognition',
-  '/admin/software-acquisition',
-  '/admin/sonarr',
-  '/admin/soulseek',
-  '/admin/sportarr',
-  '/admin/swipe',
-  '/admin/tunerr',
-  '/admin/users',
-  '/admin/users/1',
-  '/admin/users/1/permissions',
-  '/admin/whisparr',
-];
+const routerSource = readFileSync(
+  new URL('../../src/main.tsx', import.meta.url),
+  'utf8'
+);
+const routePatterns = [
+  ...routerSource.matchAll(/<Route\s+path="(\/admin[^"]*)"/g),
+].map(([, path]) => path);
+
+function expandRoute(pattern: string): string[] {
+  return pattern.split('/').reduce<string[]>(
+    (routes, segment) => {
+      if (!segment) return routes;
+      if (!segment.startsWith(':'))
+        return routes.map((route) => `${route}/${segment}`);
+      const optional = segment.endsWith('?');
+      const value = segment.slice(1, optional ? -1 : undefined);
+      const sample = value === 'userId' ? '1' : 'webhook';
+      return [
+        ...(optional ? routes : []),
+        ...routes.map((route) => `${route}/${sample}`),
+      ];
+    },
+    ['']
+  );
+}
+
+const administratorRoutes = [...new Set(routePatterns.flatMap(expandRoute))];
 
 test('every administrator route denies direct access to a standard user', async ({
   page,
 }) => {
+  expect(routePatterns.length).toBeGreaterThan(0);
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })

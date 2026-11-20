@@ -2198,14 +2198,15 @@ save recovery, and clearing the public URL. Live configuration writes,
 bundled workflow rendering, matched native visual acceptance, and the
 remaining instance settings are open.
 
-The direct-route permission audit now covers every administrator route in
-Lumen's router, including optional notification and user-management paths. A
-standard signed-in user is redirected to `/me` from all 42 route variants in
-the standalone Vite preview and the production Lumen build served under
-`/lumen/`, across desktop, iPhone, Android, and tablet. API responses were
-fixtures, so this verifies client-side route gating only; API authorization,
-administrator workflow correctness, Express-mounted behavior, and matched
-native visuals remain separate checks.
+The direct-route permission audit derives routes from Lumen's router, so newly
+added administrator routes enter the standard-user check automatically. The
+current 39 route patterns expand to 43 direct URLs, including optional
+notification and user-management paths. A standard signed-in user is redirected
+to `/me` from every URL in the standalone Vite preview and the production Lumen
+build served under `/lumen/`, across desktop, iPhone, Android, and tablet. API
+responses were fixtures, so this verifies client-side route gating only; API
+authorization, administrator workflow correctness, Express-mounted behavior,
+and matched native visuals remain separate checks.
 
 General Settings also exposes image caching and automatic version checks.
 The shared settings endpoint now validates and persists the version-check
