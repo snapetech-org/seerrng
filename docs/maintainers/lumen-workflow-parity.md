@@ -4371,6 +4371,14 @@ remain intact. Evidence is retained under
 Live settings readback, provider authorization, bundled-mount visuals, and the
 broader account role matrix remain open.
 
+TV Request Settings now has explicit viewer, user-manager, request-manager,
+and administrator permission coverage. Browser fixtures verify that user
+managers and administrators alone see the access-review queue and account
+Episode Queue editor, while request managers and administrators bypass the
+per-account season-watch gate and viewers and user managers retain its request
+action. All four role combinations pass on desktop, iPhone, Android, and tablet.
+The remaining account routes still need their own complete role matrix.
+
 ### Keep the open genre popover anchored after selection
 
 The tablet workflow exposed a stale horizontal offset: selecting a genre changes
