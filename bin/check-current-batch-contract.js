@@ -106,6 +106,7 @@ const fileNames = [
   'src/components/Discover/DiscoverTv/index.tsx',
   'src/components/Discover/DiscoverMusic/index.tsx',
   'src/components/Discover/DiscoverBooks/index.tsx',
+  'lumen/src/discoverStudios.ts',
   'src/pages/discover/books/index.tsx',
   'src/hooks/useUpdateQueryParams.ts',
   'src/hooks/useDiscover.ts',

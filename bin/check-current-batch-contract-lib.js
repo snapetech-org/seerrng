@@ -6072,7 +6072,7 @@ const validateCurrentBatchContract = (files) => {
     );
   }
   for (const fileName of [
-    'src/components/Discover/StudioSlider/index.tsx',
+    'lumen/src/discoverStudios.ts',
     'src/components/Discover/NetworkSlider/index.tsx',
   ]) {
     requireText(
@@ -7266,7 +7266,7 @@ const validateCurrentBatchContract = (files) => {
     'the shared UI standard must preserve valid navigation semantics'
   );
   requireText(
-    'src/components/Discover/StudioSlider/index.tsx',
+    'lumen/src/discoverStudios.ts',
     "image: '/images/company-logos/dc-studios.png'",
     'the supplied color DC Studios logo must be used by Discover'
   );
