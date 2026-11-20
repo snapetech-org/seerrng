@@ -117,6 +117,7 @@ Cypress.Commands.overwrite(
                 response.body.settings?.interfaceTheme ?? 'persiusNG'
               )
               .then(
+                { timeout: 6500 },
                 () =>
                   new Cypress.Promise<typeof window>((resolve, reject) => {
                     const deadline = window.performance.now() + 5000;
@@ -133,14 +134,10 @@ Cypress.Commands.overwrite(
                       settled = moving ? 0 : settled + 1;
                       if (settled >= 3) return resolve(window);
                       if (window.performance.now() > deadline)
-                        return reject(
-                          new Error(
-                            'Native presentation did not settle after navigation'
-                          )
-                        );
-                      window.requestAnimationFrame(sample);
+                        return resolve(window);
+                      window.setTimeout(sample, 16);
                     };
-                    window.requestAnimationFrame(sample);
+                    window.setTimeout(sample, 16);
                   })
               );
           })

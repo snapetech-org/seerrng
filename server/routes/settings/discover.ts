@@ -1,8 +1,8 @@
 import {
   DiscoverSliderType,
   isTmdbPublicListId,
+  MAX_DISCOVER_COMPANY_DATA_LENGTH,
   MAX_DISCOVER_KEYWORD_IDS,
-  MAX_DISCOVER_NETWORK_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDER_TITLE_LENGTH,
   MAX_DISCOVER_SLIDERS,
@@ -12,6 +12,7 @@ import dataSource, { getRepository } from '@server/datasource';
 import DiscoverSlider from '@server/entity/DiscoverSlider';
 import { parseDiscoverNetworkList } from '@server/lib/discoverNetworks';
 import { runDiscoverSliderMutation } from '@server/lib/discoverSliderMutation';
+import { parseDiscoverStudioList } from '@server/lib/discoverStudios';
 import { Permission } from '@server/lib/permissions';
 import logger from '@server/logger';
 import { authorizedMutation } from '@server/middleware/authorizedMutation';
@@ -83,10 +84,13 @@ const parseCustomSlider = (
   const data = parseBoundedString(slider.data, {
     fieldName: 'Slider data',
     maxLength:
-      slider.type === DiscoverSliderType.NETWORKS
-        ? MAX_DISCOVER_NETWORK_DATA_LENGTH
+      slider.type === DiscoverSliderType.NETWORKS ||
+      slider.type === DiscoverSliderType.STUDIOS
+        ? MAX_DISCOVER_COMPANY_DATA_LENGTH
         : MAX_DISCOVER_SLIDER_DATA_LENGTH,
-    required: slider.type !== DiscoverSliderType.NETWORKS,
+    required:
+      slider.type !== DiscoverSliderType.NETWORKS &&
+      slider.type !== DiscoverSliderType.STUDIOS,
   });
 
   if ('error' in data) {
@@ -104,6 +108,12 @@ const parseCustomSlider = (
       return networks;
     }
     normalizedData = networks.value;
+  } else if (slider.type === DiscoverSliderType.STUDIOS) {
+    const studios = parseDiscoverStudioList(data.value);
+    if ('error' in studios) {
+      return studios;
+    }
+    normalizedData = studios.value;
   } else if (
     slider.type === DiscoverSliderType.TMDB_MOVIE_KEYWORD ||
     slider.type === DiscoverSliderType.TMDB_TV_KEYWORD
@@ -401,10 +411,17 @@ discoverSettingRoutes.put(
           current.title = parsedSlider.value.title;
           current.data = parsedSlider.value.data;
           current.type = parsedSlider.value.type;
-        } else if (current.type === DiscoverSliderType.NETWORKS) {
-          if (parsedSlider.value.type !== DiscoverSliderType.NETWORKS) {
+        } else if (
+          current.type === DiscoverSliderType.NETWORKS ||
+          current.type === DiscoverSliderType.STUDIOS
+        ) {
+          if (parsedSlider.value.type !== current.type) {
             throw new SliderValidationError(
-              'Built-in Networks data must use the Networks slider type.'
+              `Built-in ${
+                current.type === DiscoverSliderType.NETWORKS
+                  ? 'Networks'
+                  : 'Studios'
+              } slider type must match.`
             );
           }
           current.data = parsedSlider.value.data;

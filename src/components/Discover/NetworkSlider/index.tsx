@@ -1,11 +1,10 @@
 import CompanyCard from '@app/components/CompanyCard';
 import Slider from '@app/components/Slider';
 import defineMessages from '@app/utils/defineMessages';
-import type { DiscoverNetworkData } from '@server/constants/discover';
 import { readDiscoverNetworkList } from '@server/lib/discoverNetworks';
 import { useIntl } from 'react-intl';
 
-import { tvNetworks } from '@lumen/discoverNetworks';
+import { defaultDiscoverNetworks, tvNetworks } from '@lumen/discoverNetworks';
 
 const messages = defineMessages('components.Discover.NetworkSlider', {
   networks: 'Networks',
@@ -14,21 +13,7 @@ const messages = defineMessages('components.Discover.NetworkSlider', {
 
 export { tvNetworks };
 
-export const defaultDiscoverNetworks: DiscoverNetworkData[] = tvNetworks.map(
-  (network) => {
-    const imagePath = new URL(network.image).pathname;
-    const logoBasePath = '/t/p/original';
-
-    return {
-      id: Number(network.url.slice(network.url.lastIndexOf('/') + 1)),
-      name: network.name,
-      logoPath: imagePath.startsWith(`${logoBasePath}/`)
-        ? imagePath.slice(logoBasePath.length)
-        : '',
-      logoTone: network.logoTone,
-    };
-  }
-);
+export { defaultDiscoverNetworks };
 
 const NetworkSlider = ({ data }: { data?: string }) => {
   const intl = useIntl();

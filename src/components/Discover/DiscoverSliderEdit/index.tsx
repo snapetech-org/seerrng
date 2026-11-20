@@ -3,9 +3,9 @@ import SlideCheckbox from '@app/components/Common/SlideCheckbox';
 import Tag from '@app/components/Common/Tag';
 import Tooltip from '@app/components/Common/Tooltip';
 import CompanyTag from '@app/components/CompanyTag';
-import CreateSlider from '@app/components/Discover/CreateSlider';
-import NetworkSliderEditor from '@app/components/Discover/NetworkSlider/Editor';
+import CompanySliderEditor from '@app/components/Discover/CompanySliderEditor';
 import { sliderTitles } from '@app/components/Discover/constants';
+import CreateSlider from '@app/components/Discover/CreateSlider';
 import GenreTag from '@app/components/GenreTag';
 import KeywordTag from '@app/components/KeywordTag';
 import useToasts from '@app/hooks/useToasts';
@@ -274,7 +274,8 @@ const DiscoverSliderEdit = ({
         </div>
         <div className="flex items-center space-x-2">
           {(!slider.isBuiltIn ||
-            slider.type === DiscoverSliderType.NETWORKS) && (
+            slider.type === DiscoverSliderType.NETWORKS ||
+            slider.type === DiscoverSliderType.STUDIOS) && (
             <>
               {!isEditing ? (
                 <Button
@@ -359,8 +360,14 @@ const DiscoverSliderEdit = ({
       </div>
       {isEditing ? (
         <div className="p-4">
-          {slider.type === DiscoverSliderType.NETWORKS ? (
-            <NetworkSliderEditor
+          {slider.type === DiscoverSliderType.NETWORKS ||
+          slider.type === DiscoverSliderType.STUDIOS ? (
+            <CompanySliderEditor
+              kind={
+                slider.type === DiscoverSliderType.NETWORKS
+                  ? 'network'
+                  : 'studio'
+              }
               sliderId={slider.id}
               data={slider.data}
               onSaved={(updatedSlider) => {

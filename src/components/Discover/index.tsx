@@ -472,7 +472,7 @@ const Discover = ({ initialSliders }: DiscoverProps) => {
             );
             break;
           case DiscoverSliderType.STUDIOS:
-            sliderComponent = <StudioSlider />;
+            sliderComponent = <StudioSlider data={slider.data} />;
             break;
           case DiscoverSliderType.POPULAR_TV:
             sliderComponent = (

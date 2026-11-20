@@ -599,6 +599,31 @@
       ]
     },
     {
+      "key": "m028b00c83e10022f81e8",
+      "id": "utils.ApiMessage.m028b00c83e10022f81e8",
+      "source": "{value0} IDs must be positive safe integers.",
+      "defaultMessage": "{value0} IDs must be positive safe integers.",
+      "sourceHash": "028b00c83e10022f81e86074c2cec4e8bf3beed599d71f2c8b7ce2d40e483052",
+      "parts": ["", " IDs must be positive safe integers."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 111,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${singular} IDs must be positive safe integers.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m0292c6ce0331db353002",
       "id": "utils.ApiMessage.m0292c6ce0331db353002",
       "source": "A requested title cannot be undone here. Cancel the request from Requests instead.",
@@ -2586,6 +2611,36 @@
       ]
     },
     {
+      "key": "m0a8d2cf409a67d8673b6",
+      "id": "utils.ApiMessage.m0a8d2cf409a67d8673b6",
+      "source": "{value0} data must be {value1} characters or fewer.",
+      "defaultMessage": "{value0} data must be {value1} characters or fewer.",
+      "sourceHash": "0a8d2cf409a67d8673b62aff5cd9f169f31712a02e6ca041557a5fd01124c483",
+      "parts": ["", " data must be ", " characters or fewer."],
+      "parameterCount": 2,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 73,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${plural} data must be ${MAX_DISCOVER_COMPANY_DATA_LENGTH} characters or fewer.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "plural",
+              "disposition": "opaque captured value; preserve verbatim"
+            },
+            {
+              "name": "value1",
+              "expression": "MAX_DISCOVER_COMPANY_DATA_LENGTH",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m0a91dddb078b5a3efd04",
       "id": "utils.ApiMessage.m0a91dddb078b5a3efd04",
       "source": "Download copy could not be streamed.",
@@ -3248,7 +3303,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 195,
+          "line": 205,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'ListenBrainz chart is invalid.'",
@@ -3731,7 +3786,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 142,
+          "line": 152,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Slider provider id must be a positive decimal id.'",
@@ -6206,25 +6261,6 @@
       ]
     },
     {
-      "key": "m164b6383a2f1eadcf14b",
-      "id": "utils.ApiMessage.m164b6383a2f1eadcf14b",
-      "source": "Networks data must be a valid JSON array.",
-      "defaultMessage": "Networks data must be a valid JSON array.",
-      "sourceHash": "164b6383a2f1eadcf14b162cded55b2229433179515ca963e1b5970320909cf5",
-      "parts": ["Networks data must be a valid JSON array."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 61,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Networks data must be a valid JSON array.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m165966f13122fa9e74ac",
       "id": "utils.ApiMessage.m165966f13122fa9e74ac",
       "source": "[TMDB] Failed to fetch discover TV: {value0}",
@@ -7315,7 +7351,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 250,
+          "line": 260,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Slider does not exist.'",
@@ -12961,6 +12997,25 @@
       ]
     },
     {
+      "key": "m2d296648e9c1920d03c6",
+      "id": "utils.ApiMessage.m2d296648e9c1920d03c6",
+      "source": "Built-in Networks slider type must match.",
+      "defaultMessage": "Built-in Networks slider type must match.",
+      "sourceHash": "2d296648e9c1920d03c6ab1d857cc782a56f5d92ea09fa729117180fdd38ff74",
+      "parts": ["Built-in Networks slider type must match."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/settings/discover.ts",
+          "line": 420,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "`Built-in ${\n                current.type === DiscoverSliderType.NETWORKS\n                  ? 'Networks'\n                  : 'Studios'\n              } slider type must match.`",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m2d43198e24baad05654f",
       "id": "utils.ApiMessage.m2d43198e24baad05654f",
       "source": "OIDC authorization redirect must be a URL string.",
@@ -16518,33 +16573,6 @@
       ]
     },
     {
-      "key": "m3c0e933c5c58865b3c0e",
-      "id": "utils.ApiMessage.m3c0e933c5c58865b3c0e",
-      "source": "Networks data must be a JSON array.",
-      "defaultMessage": "Networks data must be a JSON array.",
-      "sourceHash": "3c0e933c5c58865b3c0e5406483bc880e3f738e88b5f5d8cb9659495598cd9dc",
-      "parts": ["Networks data must be a JSON array."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 44,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Networks data must be a JSON array.'",
-          "captured": []
-        },
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 65,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Networks data must be a JSON array.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m3c17a6ccd61e05f56768",
       "id": "utils.ApiMessage.m3c17a6ccd61e05f56768",
       "source": "You do not have permission to make sports requests.",
@@ -17492,25 +17520,6 @@
       ]
     },
     {
-      "key": "m3fb930670c8ec18818da",
-      "id": "utils.ApiMessage.m3fb930670c8ec18818da",
-      "source": "Network IDs must be positive safe integers.",
-      "defaultMessage": "Network IDs must be positive safe integers.",
-      "sourceHash": "3fb930670c8ec18818dad2a83e0438ececde8562b5badb4e2c8e16e6190e791d",
-      "parts": ["Network IDs must be positive safe integers."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 86,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Network IDs must be positive safe integers.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m3fc6cea7345af0719403",
       "id": "utils.ApiMessage.m3fc6cea7345af0719403",
       "source": "Bindery did not confirm the request withdrawal.",
@@ -18247,7 +18256,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 122,
+          "line": 132,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Slider keywords must be positive decimal ids.'",
@@ -20917,6 +20926,45 @@
           "field": "message",
           "expression": "error instanceof Error\n            ? error.message\n            : 'Could not connect to Kavita.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m4d2a03cde9eaeb5c484d",
+      "id": "utils.ApiMessage.m4d2a03cde9eaeb5c484d",
+      "source": "{value0} data must be a JSON array.",
+      "defaultMessage": "{value0} data must be a JSON array.",
+      "sourceHash": "4d2a03cde9eaeb5c484dd3f44e6f3ddac626968ee46407c469c7679481b59843",
+      "parts": ["", " data must be a JSON array."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 68,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${plural} data must be a JSON array.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "plural",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        },
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 89,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${plural} data must be a JSON array.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "plural",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -23789,25 +23837,6 @@
       ]
     },
     {
-      "key": "m57ad0c7f70b4a43f7d0c",
-      "id": "utils.ApiMessage.m57ad0c7f70b4a43f7d0c",
-      "source": "Network logo tone is invalid.",
-      "defaultMessage": "Network logo tone is invalid.",
-      "sourceHash": "57ad0c7f70b4a43f7d0cd6a675d59305bfb60898e7882dea136c1e343804c939",
-      "parts": ["Network logo tone is invalid."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 112,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Network logo tone is invalid.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m57b720661afb3794f460",
       "id": "utils.ApiMessage.m57b720661afb3794f460",
       "source": "Choose a valid Swipe category.",
@@ -24325,6 +24354,31 @@
       ]
     },
     {
+      "key": "m58e73cf3faa98140c27e",
+      "id": "utils.ApiMessage.m58e73cf3faa98140c27e",
+      "source": "{value0} logo paths are invalid.",
+      "defaultMessage": "{value0} logo paths are invalid.",
+      "sourceHash": "58e73cf3faa98140c27e8ed936fd244b797c5461f5bb5e6350a75760e743eabb",
+      "parts": ["", " logo paths are invalid."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 130,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${singular} logo paths are invalid.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "m590def2c8b90f7d2af11",
       "id": "utils.ApiMessage.m590def2c8b90f7d2af11",
       "source": "showIndexerDetails must be a boolean or null.",
@@ -24399,6 +24453,36 @@
           "field": "message",
           "expression": "bookFormat === 'audiobook'\n              ? 'The configured audiobook catalog is unavailable. Please try again.'\n              : 'Open Library and configured book catalogs are unavailable. Please try again.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m595e0321a27548d655a8",
+      "id": "utils.ApiMessage.m595e0321a27548d655a8",
+      "source": "{value0} are limited to {value1} entries.",
+      "defaultMessage": "{value0} are limited to {value1} entries.",
+      "sourceHash": "595e0321a27548d655a89f1b79562b81b25099a3d30caf90ac58eaeb31e07018",
+      "parts": ["", " are limited to ", " entries."],
+      "parameterCount": 2,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 94,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${plural} are limited to ${MAX_DISCOVER_COMPANIES} entries.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "plural",
+              "disposition": "opaque captured value; preserve verbatim"
+            },
+            {
+              "name": "value1",
+              "expression": "MAX_DISCOVER_COMPANIES",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -25154,7 +25238,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 236,
+          "line": 246,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Slider id is invalid.'",
@@ -25325,7 +25409,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 276,
+          "line": 286,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Maximum number of sliders reached.'",
@@ -25333,7 +25417,7 @@
         },
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 330,
+          "line": 340,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Maximum number of sliders reached.'",
@@ -25520,25 +25604,6 @@
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bindery returned an invalid request queue page.'",
-          "captured": []
-        }
-      ]
-    },
-    {
-      "key": "m5e57f29102d03d495147",
-      "id": "utils.ApiMessage.m5e57f29102d03d495147",
-      "source": "Network logo paths are invalid.",
-      "defaultMessage": "Network logo paths are invalid.",
-      "sourceHash": "5e57f29102d03d495147067b1c494d038e595e8c57762bc5d9e90a7e0304dfd3",
-      "parts": ["Network logo paths are invalid."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 104,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Network logo paths are invalid.'",
           "captured": []
         }
       ]
@@ -28016,7 +28081,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 383,
+          "line": 393,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Slider not found or cannot be updated.'",
@@ -28024,7 +28089,7 @@
         },
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 425,
+          "line": 442,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Slider not found or cannot be updated.'",
@@ -28710,7 +28775,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 189,
+          "line": 199,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Search slider data must be ${MAX_TMDB_SEARCH_LENGTH} characters or fewer.`",
@@ -28735,7 +28800,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 114,
+          "line": 124,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Slider keywords are limited to ${MAX_DISCOVER_KEYWORD_IDS} ids.`",
@@ -30580,31 +30645,6 @@
       ]
     },
     {
-      "key": "m7091533027a704aa65a1",
-      "id": "utils.ApiMessage.m7091533027a704aa65a1",
-      "source": "Networks data must be {value0} characters or fewer.",
-      "defaultMessage": "Networks data must be {value0} characters or fewer.",
-      "sourceHash": "7091533027a704aa65a1cc203453415cffa16f6a8526936b148af95420039c52",
-      "parts": ["Networks data must be ", " characters or fewer."],
-      "parameterCount": 1,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 49,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "`Networks data must be ${MAX_DISCOVER_NETWORK_DATA_LENGTH} characters or fewer.`",
-          "captured": [
-            {
-              "name": "value0",
-              "expression": "MAX_DISCOVER_NETWORK_DATA_LENGTH",
-              "disposition": "opaque captured value; preserve verbatim"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "key": "m70c225306c9048b5fe01",
       "id": "utils.ApiMessage.m70c225306c9048b5fe01",
       "source": "Unable to retrieve Pushover sounds.",
@@ -31783,7 +31823,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 126,
+          "line": 136,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Slider keyword id is invalid.'",
@@ -32112,7 +32152,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 438,
+          "line": 455,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Slider not found or cannot be deleted.'",
@@ -32120,7 +32160,7 @@
         },
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 456,
+          "line": 473,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Slider not found or cannot be deleted.'",
@@ -32810,7 +32850,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 97,
+          "line": 101,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Slider type is invalid.'",
@@ -34123,6 +34163,25 @@
       ]
     },
     {
+      "key": "m7cbd009841c99af49510",
+      "id": "utils.ApiMessage.m7cbd009841c99af49510",
+      "source": "Built-in Studios slider type must match.",
+      "defaultMessage": "Built-in Studios slider type must match.",
+      "sourceHash": "7cbd009841c99af495108b8b1d1066f5e95f2ba189d39a8c40931b59f86e003f",
+      "parts": ["Built-in Studios slider type must match."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/routes/settings/discover.ts",
+          "line": 420,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "`Built-in ${\n                current.type === DiscoverSliderType.NETWORKS\n                  ? 'Networks'\n                  : 'Studios'\n              } slider type must match.`",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m7ce579261ee11275bb92",
       "id": "utils.ApiMessage.m7ce579261ee11275bb92",
       "source": "Incomplete sync authority",
@@ -35146,7 +35205,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 213,
+          "line": 223,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid request body.'",
@@ -36480,31 +36539,6 @@
       ]
     },
     {
-      "key": "m86fd68e30e47fe615000",
-      "id": "utils.ApiMessage.m86fd68e30e47fe615000",
-      "source": "Networks are limited to {value0} entries.",
-      "defaultMessage": "Networks are limited to {value0} entries.",
-      "sourceHash": "86fd68e30e47fe61500033dc978d65fd67ad3fc858270c2e9aabaebe8361ae83",
-      "parts": ["Networks are limited to ", " entries."],
-      "parameterCount": 1,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 70,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "`Networks are limited to ${MAX_DISCOVER_NETWORKS} entries.`",
-          "captured": [
-            {
-              "name": "value0",
-              "expression": "MAX_DISCOVER_NETWORKS",
-              "disposition": "opaque captured value; preserve verbatim"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "key": "m8711eaf32d1e6fa5d825",
       "id": "utils.ApiMessage.m8711eaf32d1e6fa5d825",
       "source": "Requester-tag requests cannot be edited. Cancel the request and submit it again if needed.",
@@ -37749,7 +37783,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 170,
+          "line": 180,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Streaming slider provider id is invalid.'",
@@ -37944,7 +37978,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 355,
+          "line": 365,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to add slider.'",
@@ -40261,25 +40295,6 @@
       ]
     },
     {
-      "key": "m979476df209086cfa61b",
-      "id": "utils.ApiMessage.m979476df209086cfa61b",
-      "source": "Network IDs must be unique.",
-      "defaultMessage": "Network IDs must be unique.",
-      "sourceHash": "979476df209086cfa61b88f47d84165e7006d870f2c124a8445f71081f06d421",
-      "parts": ["Network IDs must be unique."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 90,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Network IDs must be unique.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m97c48a19ea70f4ce7daa",
       "id": "utils.ApiMessage.m97c48a19ea70f4ce7daa",
       "source": "Request canceled.",
@@ -41562,25 +41577,6 @@
       ]
     },
     {
-      "key": "m9e3d30db5cfafab2f2b7",
-      "id": "utils.ApiMessage.m9e3d30db5cfafab2f2b7",
-      "source": "Built-in Networks data must use the Networks slider type.",
-      "defaultMessage": "Built-in Networks data must use the Networks slider type.",
-      "sourceHash": "9e3d30db5cfafab2f2b76a5c398da005f4b6e19926bc768b1048425ffc2b9efe",
-      "parts": ["Built-in Networks data must use the Networks slider type."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/routes/settings/discover.ts",
-          "line": 407,
-          "kind": "app-error-candidate",
-          "field": "message",
-          "expression": "'Built-in Networks data must use the Networks slider type.'",
-          "captured": []
-        }
-      ]
-    },
-    {
       "key": "m9e466aa7ff61918a2a50",
       "id": "utils.ApiMessage.m9e466aa7ff61918a2a50",
       "source": "Choose a valid search result.",
@@ -42746,25 +42742,6 @@
           "kind": "message-helper-return",
           "field": "message",
           "expression": "'BookOrbit rejected the account or it cannot manage Collections. Check the account credentials and permissions.'",
-          "captured": []
-        }
-      ]
-    },
-    {
-      "key": "ma26e00752a807e08d15c",
-      "id": "utils.ApiMessage.ma26e00752a807e08d15c",
-      "source": "Each network must be an object.",
-      "defaultMessage": "Each network must be an object.",
-      "sourceHash": "a26e00752a807e08d15c5eda31d1872c9368120743abe319b2be554a66718581",
-      "parts": ["Each network must be an object."],
-      "parameterCount": 0,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 79,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "'Each network must be an object.'",
           "captured": []
         }
       ]
@@ -44257,7 +44234,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 162,
+          "line": 172,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`Streaming sliders require 1 to ${MAX_STREAMING_PROVIDERS} providers.`",
@@ -46982,7 +46959,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 239,
+          "line": 249,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Slider ids must be unique.'",
@@ -47627,7 +47604,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 153,
+          "line": 163,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Streaming slider data must contain a two-letter region and provider ids.'",
@@ -51240,7 +51217,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 181,
+          "line": 191,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`TMDB list ID must be a positive decimal ID of ${MAX_TMDB_PUBLIC_LIST_ID_LENGTH} digits or fewer.`",
@@ -51598,6 +51575,36 @@
           "field": "message",
           "expression": "'Unable to retrieve backdrops.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mc6ccd18cca3b9da1cb2b",
+      "id": "utils.ApiMessage.mc6ccd18cca3b9da1cb2b",
+      "source": "{value0} names must be 1 to {value1} characters.",
+      "defaultMessage": "{value0} names must be 1 to {value1} characters.",
+      "sourceHash": "c6ccd18cca3b9da1cb2bdec3b00e75e8eb6ea7c13120bd557a0122e1ecd253fe",
+      "parts": ["", " names must be 1 to ", " characters."],
+      "parameterCount": 2,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 125,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${singular} names must be 1 to ${MAX_DISCOVER_COMPANY_NAME_LENGTH} characters.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular",
+              "disposition": "opaque captured value; preserve verbatim"
+            },
+            {
+              "name": "value1",
+              "expression": "MAX_DISCOVER_COMPANY_NAME_LENGTH",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -52844,6 +52851,31 @@
           "field": "lastError",
           "expression": "failedCount > 0\n          ? 'Tunerr could not record this airing.'\n          : 'Tunerr did not record this airing. Check that its recorder is running with recording rules enabled.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mcb5258b8bb27ba6b0e2a",
+      "id": "utils.ApiMessage.mcb5258b8bb27ba6b0e2a",
+      "source": "Each {value0} must be an object.",
+      "defaultMessage": "Each {value0} must be an object.",
+      "sourceHash": "cb5258b8bb27ba6b0e2a367a44e6356ac7690ee70980b0bfdf0d13bfa03070fd",
+      "parts": ["Each ", " must be an object."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 103,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`Each ${singular.toLowerCase()} must be an object.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular.toLowerCase()",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -57621,6 +57653,31 @@
       ]
     },
     {
+      "key": "mdc0e7bbe34bad603b49d",
+      "id": "utils.ApiMessage.mdc0e7bbe34bad603b49d",
+      "source": "{value0} data must be a valid JSON array.",
+      "defaultMessage": "{value0} data must be a valid JSON array.",
+      "sourceHash": "dc0e7bbe34bad603b49d974c780cf153c1af332ced96ed5f2e3991716a77a1d5",
+      "parts": ["", " data must be a valid JSON array."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 85,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${plural} data must be a valid JSON array.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "plural",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "mdc20a00a4b703b3e85ab",
       "id": "utils.ApiMessage.mdc20a00a4b703b3e85ab",
       "source": "Tunerr is still building its guide. Try again shortly.",
@@ -60116,31 +60173,6 @@
       ]
     },
     {
-      "key": "me6486f634a471d422913",
-      "id": "utils.ApiMessage.me6486f634a471d422913",
-      "source": "Network names must be 1 to {value0} characters.",
-      "defaultMessage": "Network names must be 1 to {value0} characters.",
-      "sourceHash": "e6486f634a471d4229134958b81808d48d1226899a6598f4e5463f54d8980dc7",
-      "parts": ["Network names must be 1 to ", " characters."],
-      "parameterCount": 1,
-      "callsites": [
-        {
-          "path": "server/lib/discoverNetworks.ts",
-          "line": 99,
-          "kind": "authored-message-field",
-          "field": "error",
-          "expression": "`Network names must be 1 to ${MAX_DISCOVER_NETWORK_NAME_LENGTH} characters.`",
-          "captured": [
-            {
-              "name": "value0",
-              "expression": "MAX_DISCOVER_NETWORK_NAME_LENGTH",
-              "disposition": "opaque captured value; preserve verbatim"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "key": "me65048e5db1fce5d67d1",
       "id": "utils.ApiMessage.me65048e5db1fce5d67d1",
       "source": "Image disk cache byte limit must be positive.",
@@ -61239,7 +61271,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 55,
+          "line": 56,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Slider must be an object.'",
@@ -64990,6 +65022,31 @@
       ]
     },
     {
+      "key": "mf57a76e24a8d78648dc0",
+      "id": "utils.ApiMessage.mf57a76e24a8d78648dc0",
+      "source": "{value0} logo tone is invalid.",
+      "defaultMessage": "{value0} logo tone is invalid.",
+      "sourceHash": "f57a76e24a8d78648dc0cb4e755cdf3101894dbbb5b84d430db6c1aada7df836",
+      "parts": ["", " logo tone is invalid."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 138,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${singular} logo tone is invalid.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "mf5a6f3b6770b4bc02866",
       "id": "utils.ApiMessage.mf5a6f3b6770b4bc02866",
       "source": "Bookshelf returned no book ID after its pending add.",
@@ -65275,7 +65332,7 @@
       "callsites": [
         {
           "path": "server/routes/settings/discover.ts",
-          "line": 311,
+          "line": 321,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to update sliders.'",
@@ -67121,6 +67178,31 @@
           "field": "message",
           "expression": "'Unable to retrieve collection.'",
           "captured": []
+        }
+      ]
+    },
+    {
+      "key": "mfe9c9f9123a3e9be0422",
+      "id": "utils.ApiMessage.mfe9c9f9123a3e9be0422",
+      "source": "{value0} IDs must be unique.",
+      "defaultMessage": "{value0} IDs must be unique.",
+      "sourceHash": "fe9c9f9123a3e9be0422bb2d1581141572d5cd26a984a7edf5a5b7751c12c872",
+      "parts": ["", " IDs must be unique."],
+      "parameterCount": 1,
+      "callsites": [
+        {
+          "path": "server/lib/discoverCompanyList.ts",
+          "line": 116,
+          "kind": "authored-message-field",
+          "field": "error",
+          "expression": "`${singular} IDs must be unique.`",
+          "captured": [
+            {
+              "name": "value0",
+              "expression": "singular",
+              "disposition": "opaque captured value; preserve verbatim"
+            }
+          ]
         }
       ]
     },
@@ -83798,19 +83880,10 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 230,
+      "line": 240,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "parsedSliderObject.error",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/settings/discover.ts",
-      "line": 261,
-      "kind": "app-error-candidate",
-      "field": "message",
-      "expression": "parsedSlider.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -83825,7 +83898,16 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 302,
+      "line": 281,
+      "kind": "app-error-candidate",
+      "field": "message",
+      "expression": "parsedSlider.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/settings/discover.ts",
+      "line": 312,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -83834,7 +83916,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 305,
+      "line": 315,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -83843,7 +83925,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 309,
+      "line": 319,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -83852,7 +83934,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 309,
+      "line": 319,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -83861,7 +83943,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 322,
+      "line": 332,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSlider.error",
@@ -83870,7 +83952,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 349,
+      "line": 359,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -83879,7 +83961,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 353,
+      "line": 363,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -83888,7 +83970,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 353,
+      "line": 363,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -83897,7 +83979,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 390,
+      "line": 400,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSlider.error",
@@ -83906,7 +83988,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 419,
+      "line": 436,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -83915,7 +83997,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 423,
+      "line": 440,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -83924,7 +84006,7 @@
     },
     {
       "path": "server/routes/settings/discover.ts",
-      "line": 454,
+      "line": 471,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",

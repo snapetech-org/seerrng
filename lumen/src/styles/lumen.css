@@ -499,6 +499,66 @@ h3 {
 .rail > * {
   scroll-snap-align: start;
 }
+.company-logo-card {
+  flex: none;
+  width: 136px;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  text-align: center;
+  transition:
+    border-color 0.18s var(--ease),
+    background-color 0.18s var(--ease),
+    color 0.18s var(--ease);
+}
+.company-logo-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-3);
+  color: var(--ink);
+}
+.company-logo-card.white-logo-card {
+  border-color: #2a303b;
+  background: #14171d;
+  color: #f1f3f7;
+}
+.company-logo-card.white-logo-card:hover {
+  border-color: #596680;
+  background: #1b1f27;
+}
+.company-logo-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.company-logo-card-art {
+  display: grid;
+  width: 100%;
+  height: 42px;
+  place-items: center;
+}
+.company-logo-card-art img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.company-logo-card-art img.white-logo {
+  filter: brightness(0) invert(1);
+}
+.company-logo-card-name {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .sec-head {
   display: flex;
   align-items: baseline;

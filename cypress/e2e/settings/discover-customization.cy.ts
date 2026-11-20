@@ -9,7 +9,7 @@ describe('Discover Customization', () => {
 
     cy.get('[data-testid=discover-start-editing]').click();
 
-    cy.get('[data-testid=create-slider-header')
+    cy.get('[data-testid=create-slider-header]')
       .should('contain', 'Create New Slider')
       .scrollIntoView();
 

@@ -1,6 +1,6 @@
 # Upstream source attribution
 
-This ledger publicly credits 197 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
+This ledger publicly credits 198 source records from [seerr-team/seerr](https://github.com/seerr-team/seerr) that informed implemented behavior, maintained documentation, release notes, or active plans in this fork.
 
 The linked people made their reports, suggestions, discussions, or code contributions to the upstream project. This is source credit only: it does not claim that they contributed directly to this fork, endorsed it, or participated in the fork integration.
 
@@ -73,6 +73,8 @@ composition; SeerrNG-only quota and watchlist categories remain in a collapsed
 extension area.
 
 ## Integrated or verified upstream sources
+
+- [PR #3571](https://github.com/seerr-team/seerr/pull/3571) — “feat(ui): customizable networks and studios sliders on the discovery page,” proposed upstream by [@kieckhafer](https://github.com/kieckhafer). SeerrNG independently adapted the configurable built-in Networks and Studios shelves, including TMDB-ID entry, ordered lists, removal, and reset to defaults; the contributor contributed or suggested this behavior to upstream Seerr and did not contribute directly to or endorse this fork.
 
 These records were already identified as incorporated, adapted, or verified in SeerrNG.
 The source files below come from the Seerr v3.5.1 snapshot prepared for the upstream project by [@gauthier-th](https://github.com/gauthier-th), who contributed that release to Seerr. SeerrNG independently adapted the listed presentation patterns; this credit does not imply participation in or endorsement of SeerrNG.
@@ -283,4 +285,4 @@ The source files below come from the Seerr v3.5.1 snapshot prepared for the upst
 These additional records are cited by maintained fork source, documentation, release notes, or plans. They are credited as idea/provenance sources without claiming complete implementation.
 
 
-_Attribution ledger refreshed 2026-11-13; 197 source records._
+_Attribution ledger refreshed 2026-11-20; 198 source records._

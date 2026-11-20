@@ -33,6 +33,7 @@ export const apiMessages: Record<
   m0241319749bac03fc36b: 'Invalid collection member.',
   m0289a1e95c6976f8679c:
     '[Readarr] Failed to retrieve cover for author {value0}: {value1}',
+  m028b00c83e10022f81e8: '{value0} IDs must be positive safe integers.',
   m0292c6ce0331db353002:
     'A requested title cannot be undone here. Cancel the request from Requests instead.',
   m02ad0e74d47c538a824c: 'Google Books is unavailable. Try again shortly.',
@@ -139,6 +140,7 @@ export const apiMessages: Record<
   m0a6934b7f1d7b01a6d47:
     'Request for this comic already exists at the selected destination.',
   m0a7f8033d335e75b99fc: 'Unable to test metadata providers.',
+  m0a8d2cf409a67d8673b6: '{value0} data must be {value1} characters or fewer.',
   m0a91dddb078b5a3efd04: 'Download copy could not be streamed.',
   m0aa8cd8137e243b98286: 'Media does not exist.',
   m0ab8059e668dfc25cd21: '{value0} must be a valid Open Library resource ID.',
@@ -324,7 +326,6 @@ export const apiMessages: Record<
   m15ed38183ca1293d7d75: 'Trakt token refresh failed with status {value0}',
   m16089a78ef9d9e133a9f: '{value0} also makes music',
   m163f877daacdb8641337: 'Movie Quota exceeded.',
-  m164b6383a2f1eadcf14b: 'Networks data must be a valid JSON array.',
   m165966f13122fa9e74ac: '[TMDB] Failed to fetch discover TV: {value0}',
   m165ce9ad76e7ff229347: '[Sonarr] Failed to retrieve series by ID: {value0}',
   m16661f9d6d6a501d0e38: 'Unable to enable availability notifications.',
@@ -630,6 +631,7 @@ export const apiMessages: Record<
     'The selected anime quality profile does not exist on the Sonarr server.',
   m2ccfbbd572d8fd0732da: 'Could not load Episode Queue access.',
   m2d172f5d5d4ad20e985a: 'This league is already monitored in Sportarr.',
+  m2d296648e9c1920d03c6: 'Built-in Networks slider type must match.',
   m2d43198e24baad05654f: 'OIDC authorization redirect must be a URL string.',
   m2d5a07cc05df685d978c:
     'Service is still referenced by {value0}. Open Requests and delete or reassign the linked requests before removing this server. Request IDs: {value1}. Deleting a request does not delete its library files.',
@@ -840,7 +842,6 @@ export const apiMessages: Record<
   m3bd505f5648e5f84efef: 'Enter a supported Spotify or YouTube playlist URL.',
   m3bd6b452f0db4ad96520: 'Invalid collection ID.',
   m3bf8f7c959f1d030155f: 'Enter a valid BookOrbit hostname or HTTP address.',
-  m3c0e933c5c58865b3c0e: 'Networks data must be a JSON array.',
   m3c17a6ccd61e05f56768: 'You do not have permission to make sports requests.',
   m3c23f166654165806458:
     '[Tautulli] Failed to fetch media watch stats: {value0}',
@@ -896,7 +897,6 @@ export const apiMessages: Record<
     'Audiobookshelf library exceeds the {value0}-item scan limit. Orphan cleanup was skipped.',
   m3fa8e0cc25c57b934f12: 'Request user no longer exists.',
   m3fb2105d7f28911e7410: '[{value0}] Failed to retrieve tags: {value1}',
-  m3fb930670c8ec18818da: 'Network IDs must be positive safe integers.',
   m3fc6cea7345af0719403: 'Bindery did not confirm the request withdrawal.',
   m3fd2e22a54f045c0c908:
     'You already have an active request for this media on the selected service.',
@@ -1083,6 +1083,7 @@ export const apiMessages: Record<
     'A valid software category and catalog title are required.',
   m4cf7aa014cb8380548c4: 'Book server series metadata is unavailable.',
   m4cfecb7d2efaacdc8a6c: 'Could not connect to Kavita.',
+  m4d2a03cde9eaeb5c484d: '{value0} data must be a JSON array.',
   m4d42e64ae7072f77f003: 'Choose a valid source folder.',
   m4d46b2241240c02f52a7: 'Invalid Discogs release identity',
   m4d4a7857fa672e925b64: 'Reader service did not return an access token.',
@@ -1241,7 +1242,6 @@ export const apiMessages: Record<
   m5771820a8ec3d4330d40: 'Magazine Quota exceeded.',
   m57764c9b86953e997583: 'Please sign in.',
   m57872b95dc2a1921b03d: 'Invalid client token ID.',
-  m57ad0c7f70b4a43f7d0c: 'Network logo tone is invalid.',
   m57b720661afb3794f460: 'Choose a valid Swipe category.',
   m57bc3094569f770d0126: 'Mylar3 did not return an issue file.',
   m57d58973306d11c328c7: 'enabledMediaCategories must be an object.',
@@ -1269,11 +1269,13 @@ export const apiMessages: Record<
   m58ca5ead5465774d1911: 'The vision provider returned HTTP {value0}.',
   m58cc0af8b9cf2a23c4bd: 'A valid user ID is required for a security read.',
   m58d3c977f18d617c1088: 'Series catalog not found.',
+  m58e73cf3faa98140c27e: '{value0} logo paths are invalid.',
   m590def2c8b90f7d2af11: 'showIndexerDetails must be a boolean or null.',
   m59270ae9fcdb0f57f3d1: 'Provider read cancelled',
   m59487f06e706527dfbb5: '[Whisparr] Failed to accept the scene request.',
   m594a332a6901f1f3e31b:
     'Open Library and configured book catalogs are unavailable. Please try again.',
+  m595e0321a27548d655a8: '{value0} are limited to {value1} entries.',
   m5982fd2f9194f7d12a44: 'The start date must be on or before the end date.',
   m598e51772ee6293dfa91: 'Navidrome URL must be a valid HTTP or HTTPS address.',
   m598f6ef74576799a3399: '{value0} exceeds {value1} bytes',
@@ -1337,7 +1339,6 @@ export const apiMessages: Record<
   m5dff9c8adab47b90ccca: 'Hardcover could not create that personalized feed.',
   m5e23517cbe62963d59ba: 'Unable to save the external request list.',
   m5e51867cd9d4b7756213: 'Bindery returned an invalid request queue page.',
-  m5e57f29102d03d495147: 'Network logo paths are invalid.',
   m5e597c671934f98ba7e7:
     'ComicVine, the service used for comic searches, timed out or is unavailable. Please try again.',
   m5e65ca7b0aea2d5cf878: 'Unable to retrieve book ratings.',
@@ -1598,7 +1599,6 @@ export const apiMessages: Record<
   m7067519feb4baecd6515: 'Cannot verify these collections for removal.',
   m70812ae29b0928bd6f79: 'A collection selection is required.',
   m7081bc61408bc210801b: '[TMDB] Failed to fetch TV similar: {value0}',
-  m7091533027a704aa65a1: 'Networks data must be {value0} characters or fewer.',
   m70c225306c9048b5fe01: 'Unable to retrieve Pushover sounds.',
   m70d66a2134dafad0b2a8: 'streamingRequestPolicy must be an object.',
   m70efa40e528b43acf278: 'Unable to retrieve series by genre.',
@@ -1795,6 +1795,7 @@ export const apiMessages: Record<
   m7c9dbff093cefa291c26: 'Tunerr guide returned HTTP {value0}.',
   m7cab25427314a67c3744:
     'The configured theme install path is not a directory.',
+  m7cbd009841c99af49510: 'Built-in Studios slider type must match.',
   m7ce579261ee11275bb92: 'Incomplete sync authority',
   m7ce950d099e2c053599b: 'This comic is blocklisted.',
   m7d270560cf01e66938b7: 'Failed to register subscription.',
@@ -1925,7 +1926,6 @@ export const apiMessages: Record<
   m86da75946dc3dab2d5e3: 'Software request could not be removed from Requests.',
   m86dbb849a99791b1f375: 'OIDC callback URL is invalid',
   m86ef7165a71067efa0b8: 'This title is not linked to a Jellyfin item.',
-  m86fd68e30e47fe615000: 'Networks are limited to {value0} entries.',
   m8711eaf32d1e6fa5d825:
     'Requester-tag requests cannot be edited. Cancel the request and submit it again if needed.',
   m871c001e8134481fbe99:
@@ -2135,7 +2135,6 @@ export const apiMessages: Record<
   m9760cdc030df23b63561:
     'Too many redirects resolving Cover Art Archive metadata',
   m978e97dcd4931655b3df: 'Season not found.',
-  m979476df209086cfa61b: 'Network IDs must be unique.',
   m97c48a19ea70f4ce7daa: 'Request canceled.',
   m97ce79cf1b448bb59c9a: 'Log symlink escapes log directory: {value0}',
   m982cad4f3ac2bba0ca27: 'Webhook payload must be valid JSON.',
@@ -2214,8 +2213,6 @@ export const apiMessages: Record<
   m9e12f34f9ebb0cb9b2c1: 'Interface theme preference was not confirmed.',
   m9e2701a8b0d0be36e3d2:
     'Music search is temporarily unavailable. Please try again.',
-  m9e3d30db5cfafab2f2b7:
-    'Built-in Networks data must use the Networks slider type.',
   m9e466aa7ff61918a2a50: 'Choose a valid search result.',
   m9e7793112c6b59b090d6: 'Media server returned an invalid seasons response.',
   m9e7d3e200013419f1374: 'Saved host names must be unique.',
@@ -2283,7 +2280,6 @@ export const apiMessages: Record<
   ma257b88b5fffba6bb986: 'Unconfirmed action',
   ma25f73e98da1f005a6cc:
     'BookOrbit rejected the account or it cannot manage Collections. Check the account credentials and permissions.',
-  ma26e00752a807e08d15c: 'Each network must be an object.',
   ma296111d2974acf6fa9f:
     '{value0} must be a positive integer no greater than {value1}.',
   ma2b796059b34ba0aa0e9: 'The Plex server identifier is unavailable.',
@@ -2772,6 +2768,7 @@ export const apiMessages: Record<
   mc67c0b5ccc30a3d1a37b: 'Nearby listener overlap',
   mc69a4fe5b2fc988387a8: 'Prowlarr settings must be an object.',
   mc6b460eb2c9987b6bc00: 'Unable to retrieve backdrops.',
+  mc6ccd18cca3b9da1cb2b: '{value0} names must be 1 to {value1} characters.',
   mc6fd2925e4f5a70edb0a: 'Rendered webhook payload exceeds maximum size.',
   mc7114dc5829c1face927:
     'ChaptarrNG is preparing the requested ebook while it imports the author.',
@@ -2846,6 +2843,7 @@ export const apiMessages: Record<
   mcb0aff8b6fe59e1bca1d:
     'Audiobookshelf returned an incomplete library scan. Orphan cleanup was skipped.',
   mcb116fdee8c92888f9f3: 'Tunerr could not record this airing.',
+  mcb5258b8bb27ba6b0e2a: 'Each {value0} must be an object.',
   mcb75b9451e232f209c91: '[ListenBrainz] Invalid MusicBrainz album ID',
   mcb9e107c1301e210b9aa:
     'Spotify playlist integration is not configured by an administrator.',
@@ -3089,6 +3087,7 @@ export const apiMessages: Record<
   mdbc50be9555df9136484: '[Whisparr] Failed to retrieve scene cover: {value0}',
   mdbed0734ef0c515ca10c: 'Open Library ISBN results are invalid.',
   mdbed660665e68971fcf3: 'Notification outbox user {value0} no longer exists.',
+  mdc0e7bbe34bad603b49d: '{value0} data must be a valid JSON array.',
   mdc20a00a4b703b3e85ab:
     'Tunerr is still building its guide. Try again shortly.',
   mdc2771801e8457b3948e: 'Paste a link or describe the song.',
@@ -3234,7 +3233,6 @@ export const apiMessages: Record<
   me63f133e76f88f6c5256: '{value0} appears in this',
   me6443323b8c6c799f982:
     'A valid category, search query, and limit are required.',
-  me6486f634a471d422913: 'Network names must be 1 to {value0} characters.',
   me65048e5db1fce5d67d1: 'Image disk cache byte limit must be positive.',
   me650a5323320080896a6: 'Media server configuration changed.',
   me658061e93bbfc8741ce:
@@ -3459,6 +3457,7 @@ export const apiMessages: Record<
     'Edition policy is only valid for book requests, and a release choice only for books and music.',
   mf55d312f880ad097d9b8: 'Invalid TV request access decision.',
   mf5714a23ebf20c6dca53: 'You can add up to {value0} external lists.',
+  mf57a76e24a8d78648dc0: '{value0} logo tone is invalid.',
   mf5a6f3b6770b4bc02866: 'Bookshelf returned no book ID after its pending add.',
   mf5bab80cf495ae47ec80: 'Jellystat URL must be a valid HTTP or HTTPS address.',
   mf5c8388e8b9a605c5ad9: 'A valid category and limit are required.',
@@ -3578,6 +3577,7 @@ export const apiMessages: Record<
   mfe40a5c0d7edbd1c63bf: '{value0} must be a boolean.',
   mfe57df7951ee7f5b4129: 'Prowlarr port must be between 1 and 65535.',
   mfe946fcb733d4aaf5b76: 'Unable to retrieve collection.',
+  mfe9c9f9123a3e9be0422: '{value0} IDs must be unique.',
   mfeae31a496f123e1aea8: 'TMDB returned a different title.',
   mfeb49720d6e977114503:
     'The request was retried and is waiting to be dispatched.',

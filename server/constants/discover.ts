@@ -1,11 +1,14 @@
 import type DiscoverSlider from '@server/entity/DiscoverSlider';
 
-export interface DiscoverNetworkData {
+export interface DiscoverCompanyData {
   id: number;
   name: string;
   logoPath: string;
   logoTone?: 'color' | 'white';
 }
+
+export type DiscoverNetworkData = DiscoverCompanyData;
+export type DiscoverStudioData = DiscoverCompanyData;
 
 export enum DiscoverSliderType {
   RECENTLY_ADDED = 1,
@@ -53,10 +56,22 @@ export const isTmdbPublicListId = (value: unknown): value is string =>
   /^[1-9]\d*$/.test(value) &&
   Number(value) <= MAX_TMDB_PUBLIC_LIST_ID;
 
-export const MAX_DISCOVER_NETWORKS = 50;
-export const MAX_DISCOVER_NETWORK_NAME_LENGTH = 100;
-export const MAX_DISCOVER_NETWORK_LOGO_PATH_LENGTH = 200;
-export const MAX_DISCOVER_NETWORK_DATA_LENGTH = 25_000;
+export const MAX_DISCOVER_COMPANIES = 50;
+export const MAX_DISCOVER_COMPANY_NAME_LENGTH = 100;
+export const MAX_DISCOVER_COMPANY_LOGO_PATH_LENGTH = 200;
+export const MAX_DISCOVER_COMPANY_DATA_LENGTH = 25_000;
+export const MAX_DISCOVER_NETWORKS = MAX_DISCOVER_COMPANIES;
+export const MAX_DISCOVER_NETWORK_NAME_LENGTH =
+  MAX_DISCOVER_COMPANY_NAME_LENGTH;
+export const MAX_DISCOVER_NETWORK_LOGO_PATH_LENGTH =
+  MAX_DISCOVER_COMPANY_LOGO_PATH_LENGTH;
+export const MAX_DISCOVER_NETWORK_DATA_LENGTH =
+  MAX_DISCOVER_COMPANY_DATA_LENGTH;
+export const MAX_DISCOVER_STUDIOS = MAX_DISCOVER_COMPANIES;
+export const MAX_DISCOVER_STUDIO_NAME_LENGTH = MAX_DISCOVER_COMPANY_NAME_LENGTH;
+export const MAX_DISCOVER_STUDIO_LOGO_PATH_LENGTH =
+  MAX_DISCOVER_COMPANY_LOGO_PATH_LENGTH;
+export const MAX_DISCOVER_STUDIO_DATA_LENGTH = MAX_DISCOVER_COMPANY_DATA_LENGTH;
 
 export const defaultSliders: Partial<DiscoverSlider>[] = [
   {

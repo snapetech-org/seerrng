@@ -7,6 +7,7 @@ import {
   MAX_DISCOVER_NETWORKS,
   MAX_DISCOVER_SLIDER_DATA_LENGTH,
   MAX_DISCOVER_SLIDERS,
+  MAX_DISCOVER_STUDIOS,
   MAX_TMDB_PUBLIC_LIST_ID,
 } from '@server/constants/discover';
 import { getRepository } from '@server/datasource';
@@ -700,6 +701,90 @@ describe('built-in Networks slider configuration', () => {
     assert.equal(
       (await repository.findOneByOrFail({ id: networksSlider.id })).data,
       '[]'
+    );
+  });
+});
+
+describe('built-in Studios slider configuration', () => {
+  const studioList = (count: number) =>
+    Array.from({ length: count }, (_, index) => ({
+      id: index + 1,
+      name: `Studio ${index + 1}`,
+      logoPath: `/studio-${index + 1}.png`,
+    }));
+
+  const getBuiltInStudiosSlider = async () => {
+    const repository = getRepository(DiscoverSlider);
+    await DiscoverSlider.bootstrapSliders(repository);
+    return repository.findOneByOrFail({
+      isBuiltIn: true,
+      type: DiscoverSliderType.STUDIOS,
+    });
+  };
+
+  it('stores ordered metadata for up to 50 studios on the built-in row', async () => {
+    const slider = await getBuiltInStudiosSlider();
+    const studios = studioList(MAX_DISCOVER_STUDIOS);
+    const response = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: JSON.stringify(studios),
+        title: 'Studios',
+        type: DiscoverSliderType.STUDIOS,
+      });
+
+    assert.equal(response.status, 200);
+    assert.deepStrictEqual(JSON.parse(response.body.data), studios);
+    const stored = await getRepository(DiscoverSlider).findOneByOrFail({
+      id: slider.id,
+    });
+    assert.deepStrictEqual(JSON.parse(stored.data!), studios);
+    assert.equal(stored.title, null);
+    assert.equal(stored.type, DiscoverSliderType.STUDIOS);
+  });
+
+  it('rejects unsafe or mismatched studio updates without replacing saved data', async () => {
+    const slider = await getBuiltInStudiosSlider();
+    const repository = getRepository(DiscoverSlider);
+    const existingData = JSON.stringify(studioList(2));
+    await repository.update(slider.id, { data: existingData });
+
+    for (const data of [
+      JSON.stringify([studioList(1)[0], studioList(1)[0]]),
+      JSON.stringify([
+        { ...studioList(1)[0], logoPath: 'https://example.com/logo.png' },
+      ]),
+      JSON.stringify(studioList(MAX_DISCOVER_STUDIOS + 1)),
+      '{invalid-json',
+    ]) {
+      const response = await request(app)
+        .put(`/settings/discover/${slider.id}`)
+        .send({
+          ...customSliderPayload,
+          data,
+          title: 'Studios',
+          type: DiscoverSliderType.STUDIOS,
+        });
+      assert.equal(response.status, 400);
+      assert.equal(
+        (await repository.findOneByOrFail({ id: slider.id })).data,
+        existingData
+      );
+    }
+
+    const mismatchedType = await request(app)
+      .put(`/settings/discover/${slider.id}`)
+      .send({
+        ...customSliderPayload,
+        data: '123',
+        title: 'Studios',
+        type: DiscoverSliderType.TMDB_STUDIO,
+      });
+    assert.equal(mismatchedType.status, 400);
+    assert.equal(
+      (await repository.findOneByOrFail({ id: slider.id })).data,
+      existingData
     );
   });
 });

@@ -4,6 +4,10 @@
 
 ### User-facing changes
 
+#### Added
+
+- **Discover:** Administrators can now customize the built-in Studios shelf by TMDB company ID, reorder or remove entries, and restore the defaults. The same editor is shared with Networks.
+
 #### Fixed
 
 - **Lumen:** Hardcover recommendation feeds can be created on mobile without the submit action intercepting form input. Lumen waits for authentication to settle before checking category availability, avoiding a duplicate request during sign-in initialization.

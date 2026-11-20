@@ -5,6 +5,13 @@ interface Network {
   logoTone?: 'color' | 'white';
 }
 
+export interface DiscoverCompanyData {
+  id: number;
+  name: string;
+  logoPath: string;
+  logoTone?: 'color' | 'white';
+}
+
 export const tvNetworks: Network[] = [
   {
     name: 'Netflix',
@@ -149,3 +156,19 @@ export const tvNetworks: Network[] = [
     logoTone: 'white',
   },
 ];
+
+export const defaultDiscoverNetworks: DiscoverCompanyData[] = tvNetworks.map(
+  (network) => {
+    const imagePath = new URL(network.image).pathname;
+    const logoBasePath = '/t/p/original';
+
+    return {
+      id: Number(network.url.slice(network.url.lastIndexOf('/') + 1)),
+      name: network.name,
+      logoPath: imagePath.startsWith(`${logoBasePath}/`)
+        ? imagePath.slice(logoBasePath.length)
+        : '',
+      logoTone: network.logoTone,
+    };
+  }
+);

@@ -1,6 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import type { BookResult, Paged, VideoSearchResult } from '../api';
+import { Link } from 'react-router-dom';
+import {
+  tmdbImg,
+  type BookResult,
+  type Paged,
+  type VideoSearchResult,
+} from '../api';
 import { useAuth } from '../auth';
+import {
+  readDiscoverCompanyList,
+  type DiscoverCompanyKind,
+} from '../discoverCompanies';
+import {
+  defaultDiscoverNetworks,
+  type DiscoverCompanyData,
+} from '../discoverNetworks';
+import { defaultDiscoverStudios } from '../discoverStudios';
 import {
   discoveryVisibility,
   showDiscoveryTitle,
@@ -37,6 +52,8 @@ const MUSIC_GENRE = 25;
 const MUSIC_CHART = 26;
 const chartSorts = new Set(['popular.week', 'popular.month', 'popular.year']);
 const TMDB_LIST = 28;
+const STUDIOS = 8;
+const NETWORKS = 12;
 const positiveId = (value: string, max = 1_000_000_000) =>
   /^[1-9]\d{0,9}$/.test(value) && Number(value) <= max;
 
@@ -229,6 +246,52 @@ function DiscoverShelf({
   );
 }
 
+function CompanyShelf({
+  title,
+  companies,
+  kind,
+}: {
+  title: string;
+  companies: readonly DiscoverCompanyData[];
+  kind: DiscoverCompanyKind;
+}) {
+  if (companies.length === 0) return null;
+  const isStudio = kind === 'studio';
+  const basePath = isStudio ? '/movies?studio=' : '/series?network=';
+  const restoreId = isStudio
+    ? 'configured-discover-studios'
+    : 'configured-discover-networks';
+
+  return (
+    <Section title={title} link={['See all', isStudio ? '/movies' : '/series']}>
+      <Rail restoreId={restoreId}>
+        {companies.map((company) => (
+          <Link
+            key={`${kind}-${company.id}`}
+            className={`company-logo-card ${company.logoTone === 'white' ? 'white-logo-card' : ''}`}
+            to={`${basePath}${company.id}`}
+            aria-label={`Browse ${isStudio ? 'movies' : 'series'} from ${company.name}`}
+          >
+            <span className="company-logo-card-art">
+              <img
+                src={
+                  company.logoPath.startsWith('/images/')
+                    ? company.logoPath
+                    : tmdbImg(company.logoPath, 'original')
+                }
+                alt=""
+                loading="lazy"
+                className={company.logoTone === 'white' ? 'white-logo' : ''}
+              />
+            </span>
+            <span className="company-logo-card-name">{company.name}</span>
+          </Link>
+        ))}
+      </Rail>
+    </Section>
+  );
+}
+
 export function ConfiguredDiscoverShelves({
   showBooks,
   showMusic,
@@ -263,6 +326,32 @@ export function ConfiguredDiscoverShelves({
     .filter((slider) => slider.enabled)
     .sort((a, b) => a.order - b.order)
     .map((slider) => {
+      const companyKind: DiscoverCompanyKind | undefined =
+        slider.type === STUDIOS
+          ? 'studio'
+          : slider.type === NETWORKS
+            ? 'network'
+            : undefined;
+      if (companyKind) {
+        const isStudio = companyKind === 'studio';
+        if (categories?.[isStudio ? 'movie' : 'tv'] === false) return null;
+        const defaults = isStudio
+          ? defaultDiscoverStudios
+          : defaultDiscoverNetworks;
+        const { companies } = readDiscoverCompanyList(
+          slider.data,
+          defaults,
+          companyKind
+        );
+        return (
+          <CompanyShelf
+            key={`${slider.id}:${companyKind}`}
+            title={slider.title || (isStudio ? 'Studios' : 'Networks')}
+            companies={companies}
+            kind={companyKind}
+          />
+        );
+      }
       const destination = shelfDestination(
         slider,
         categories,
