@@ -4358,6 +4358,19 @@ native-matched Arabic visuals, and bundled-mount acceptance remain open.
 Evidence is retained under
 `/mnt/disks/scratch/codex-task-scratch/seerrng-discovery-accounts-localization-visual-20261119/`.
 
+Arabic Episode Queue copy on TV Request Settings now uses the locale's complete
+plural selection. The previous implementation sent Arabic `two` and `few`
+counts through the generic `other` message, so common values read incorrectly.
+Browser fixtures verify the dual form at 2, the few form at 3, and singular at
+1, alongside RTL direction, viewer-only controls, and no horizontal overflow.
+The focused suite passes on desktop, iPhone, Android, and tablet. Matching
+English and Arabic viewer-state baseline/candidate renders were inspected at
+desktop and iPhone sizes; alignment, control geometry, surfaces, and navigation
+remain intact. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-settings-arabic-7626894f/`.
+Live settings readback, provider authorization, bundled-mount visuals, and the
+broader account role matrix remain open.
+
 ### Keep the open genre popover anchored after selection
 
 The tablet workflow exposed a stale horizontal offset: selecting a genre changes

@@ -1227,6 +1227,8 @@
     "lumen.account.backToSettings": "العودة إلى إعدادات الحساب",
     "lumen.tvRequests.loadingAccess": "جارٍ تحميل إعدادات طلبات التلفاز…",
     "lumen.tvRequests.episodeAhead.one": "حلقة قادمة: {count}",
+    "lumen.tvRequests.episodeAhead.two": "الحلقتان القادمتان",
+    "lumen.tvRequests.episodeAhead.few": "{count} حلقات قادمة",
     "lumen.tvRequests.episodeAhead.other": "حلقات قادمة: {count}",
     "lumen.account.linked.signInMethods": "طرق تسجيل الدخول",
     "lumen.account.linked.localPassword": "كلمة المرور المحلية",

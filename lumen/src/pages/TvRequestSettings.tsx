@@ -251,7 +251,7 @@ function episodeAheadLabel(
   t: ReturnType<typeof useLumenLocale>['t']
 ) {
   const plural = new Intl.PluralRules(locale).select(count);
-  const key = `lumen.tvRequests.episodeAhead.${plural === 'one' ? 'one' : 'other'}`;
+  const key = `lumen.tvRequests.episodeAhead.${plural}`;
   const fallback =
     plural === 'one' ? '{count} episode ahead' : '{count} episodes ahead';
   return t(key, fallback, { count });

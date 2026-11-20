@@ -312,6 +312,8 @@
   "lumen.account.backToSettings",
   "lumen.tvRequests.loadingAccess",
   "lumen.tvRequests.episodeAhead.one",
+  "lumen.tvRequests.episodeAhead.two",
+  "lumen.tvRequests.episodeAhead.few",
   "lumen.tvRequests.episodeAhead.other",
   "components.UserProfile.UserSettings.UserEpisodeQueueSettings.error",
   "components.UserProfile.UserSettings.UserEpisodeQueueSettings.modalOff",

@@ -63,6 +63,65 @@ test('TV request settings localize the policy and keep viewer controls read-only
   await captureSettings(page, info, 'fr');
 });
 
+test('Arabic TV request settings use RTL and native Arabic plural forms', async ({
+  page,
+}, info) => {
+  let locale = 'en';
+  let episodeCount = 2;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Viewer', permissions: 0, userType: 2 },
+      });
+    if (path === '/user/2/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/user/2/settings/tv-season-watch-gate')
+      return route.fulfill({ json: { status: 'off', globallyEnabled: false } });
+    if (path === '/user/2/settings/episode-queue')
+      return route.fulfill({ json: { defaultEpisodeCount: episodeCount } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/me/account/tv-requests');
+  await expect(page.getByText('2 episodes ahead')).toBeVisible();
+  await captureSettings(page, info, 'ar-en-baseline');
+
+  locale = 'ar';
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'إعدادات طلبات التلفاز', exact: true })
+  ).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await expect(page.getByText('يتطلب موافقة', { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'طلب الموافقة' })
+  ).toBeVisible();
+  await expect(
+    page.getByText('الحلقتان القادمتان', { exact: true })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'حفظ الافتراضي' })).toHaveCount(
+    0
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    )
+    .toBe(true);
+  await captureSettings(page, info, 'ar-candidate');
+
+  episodeCount = 3;
+  await page.reload();
+  await expect(page.getByText('3 حلقات قادمة', { exact: true })).toBeVisible();
+  episodeCount = 1;
+  await page.reload();
+  await expect(page.getByText('حلقة قادمة: 1', { exact: true })).toBeVisible();
+});
+
 test('user managers can review access and save the account Episode Queue default', async ({
   page,
 }, info) => {
