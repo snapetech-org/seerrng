@@ -883,6 +883,17 @@ events across two attempts, newest first, and dismissal with Escape.
 Native visual comparison, mobile, bundled, delegated browser verification,
 and the software-request and download-file history workflows remain open.
 
+The Lumen history sheet was also checked at 620 × 803, the viewport used by
+the native request-dialog sizing report. A browser regression exercises a TV
+request with a selected season and eight long lifecycle events, verifies the
+sheet stays within the viewport and scrolls its own contents, and captures the
+settled render. At this width the layout is intentionally a full-width bottom
+sheet rather than a centered dialog. No Lumen style change was needed. Evidence
+is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-history-layout-20261120/`.
+This checks the Lumen history surface; it does not replace the native request
+dialog's baseline/candidate comparison or cover other Lumen sheets.
+
 ### Request file downloads increment
 
 Request History offers an on-demand file lookup for available movies, series,

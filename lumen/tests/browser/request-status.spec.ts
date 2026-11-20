@@ -528,6 +528,68 @@ test('a bookmarked TV request shows its season and episode selection', async ({
   ]);
 });
 
+test('request history remains contained and scrollable at the 620px dialog width', async ({
+  page,
+}) => {
+  await fixture(page, undefined);
+  await page.setViewportSize({ width: 620, height: 803 });
+  const historyMessage =
+    'The request is still being processed by the selected media service. '.repeat(
+      8
+    );
+  await page.route('**/api/v1/request/status/618', (route) =>
+    route.fulfill({
+      json: {
+        request: {
+          id: 618,
+          type: 'tv',
+          status: 2,
+          is4k: false,
+          requestedBy: { id: 1, displayName: 'Reader' },
+          media: { mediaType: 'tv', tmdbId: 22, status: 2 },
+          seasons: [{ seasonNumber: 1, episodeNumbers: [1, 2, 3], status: 2 }],
+        },
+        current: { stage: 'downloading', attempt: 2, message: historyMessage },
+        history: {
+          total: 8,
+          results: Array.from({ length: 8 }, (_, index) => ({
+            id: index + 1,
+            stage: 'downloading',
+            attempt: index + 1,
+            createdAt: '2026-11-20T12:00:00Z',
+            message: historyMessage,
+          })),
+        },
+      },
+    })
+  );
+  await page.goto(appPath('/requests?requestId=618'));
+  const history = page.getByRole('dialog', { name: 'Request history' });
+  await expect(
+    history.getByRole('heading', { name: 'Request History' })
+  ).toBeVisible();
+  await expect(history.getByText('Season 1')).toBeVisible();
+  await expect(history.locator('.set')).toHaveCount(9);
+
+  const geometry = await page.evaluate(() => {
+    const sheet = document.querySelector<HTMLElement>('.sheet')!;
+    return {
+      viewportWidth: window.innerWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      sheetLeft: sheet.getBoundingClientRect().left,
+      sheetRight: sheet.getBoundingClientRect().right,
+      clientHeight: sheet.clientHeight,
+      scrollHeight: sheet.scrollHeight,
+    };
+  });
+  expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth);
+  expect(geometry.sheetLeft).toBeGreaterThanOrEqual(0);
+  expect(geometry.sheetRight).toBeLessThanOrEqual(geometry.viewportWidth);
+  expect(geometry.scrollHeight).toBeGreaterThan(geometry.clientHeight);
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: process.env.LUMEN_VISUAL_EVIDENCE });
+});
+
 test('a focused request link keeps its resolved title in the owner cancel confirmation', async ({
   page,
 }) => {
