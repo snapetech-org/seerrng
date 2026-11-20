@@ -98,31 +98,33 @@ const RequestSeasonEpisodeTree = ({
       const missing = seasonNumbers.filter(
         (number) => !loaded.some((season) => season.seasonNumber === number)
       );
-      for (
-        let start = 0;
-        start < missing.length;
-        start += Math.min(5, REQUEST_SEASON_BATCH_SIZE)
-      ) {
-        const batch = missing.slice(
-          start,
-          start + Math.min(5, REQUEST_SEASON_BATCH_SIZE)
-        );
-        try {
-          const response = await axios.get<SeasonWithEpisodes[]>(
-            `/api/v1/tv/${tvId}/seasons`,
-            { params: { seasonNumbers: batch.join(',') } }
-          );
-          loaded.push(
-            ...response.data.filter(
+      const batchSize = Math.min(5, REQUEST_SEASON_BATCH_SIZE);
+      for (let start = 0; start < missing.length; start += batchSize) {
+        let pending = missing.slice(start, start + batchSize);
+        for (let attempt = 0; attempt < 2 && pending.length > 0; attempt++) {
+          try {
+            const response = await axios.get<SeasonWithEpisodes[]>(
+              `/api/v1/tv/${tvId}/seasons`,
+              { params: { seasonNumbers: pending.join(',') } }
+            );
+            const received = response.data.filter(
               (season) =>
-                batch.includes(season.seasonNumber) &&
+                pending.includes(season.seasonNumber) &&
                 Array.isArray(season.episodes) &&
                 season.episodes.length > 0
-            )
-          );
-        } catch {
-          // Keep seasons from earlier batches and surface a retry on incomplete data.
-          break;
+            );
+            loaded.push(...received);
+            pending = pending.filter(
+              (number) =>
+                !loaded.some((season) => season.seasonNumber === number)
+            );
+          } catch {
+            // Retry transient provider/proxy failures once, then continue loading
+            // later batches while preserving any seasons already returned.
+          }
+          if (pending.length > 0 && attempt === 0) {
+            await new Promise((resolve) => setTimeout(resolve, 250));
+          }
         }
       }
       return loaded;

@@ -144,22 +144,27 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             },
           })
         );
-        await page.route(`**/api/v1/tv/${id}/seasons?*`, (route) =>
-          route.fulfill({
-            json: [
-              {
-                seasonNumber: 1,
-                episodes: [1, 2].map((number) => ({
-                  id: number,
-                  seasonNumber: 1,
-                  episodeNumber: number,
-                  name: `Episode ${number}`,
-                  airDate: '1971-09-15',
-                })),
-              },
-            ],
-          })
-        );
+        let seasonRequests = 0;
+        await page.route(`**/api/v1/tv/${id}/seasons?*`, (route) => {
+          seasonRequests++;
+          return route.fulfill({
+            json:
+              seasonRequests === 1
+                ? []
+                : [
+                    {
+                      seasonNumber: 1,
+                      episodes: [1, 2].map((number) => ({
+                        id: number,
+                        seasonNumber: 1,
+                        episodeNumber: number,
+                        name: `Episode ${number}`,
+                        airDate: '1971-09-15',
+                      })),
+                    },
+                  ],
+          });
+        });
         await page.route(`**/api/v1/${mediaType}/${id}`, (route) =>
           route.fulfill({ json: details })
         );
@@ -239,6 +244,12 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         const dialog = page.getByRole('dialog');
         await expect(dialog).toBeVisible();
         await page.waitForTimeout(350);
+        if (mediaType === 'tv') {
+          expect(seasonRequests).toBe(2);
+          await expect(
+            dialog.getByText('Episodes Could Not Be Loaded', { exact: true })
+          ).toHaveCount(0);
+        }
         if (theme === 'seerrOrig') {
           expect(
             await dialog.evaluate((node) => node.scrollWidth)
@@ -249,6 +260,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
               exact: true,
             });
             await expect(choice).toBeEnabled();
+            await expect(choice).toBeChecked();
             await choice.uncheck();
             await expect(dialog.getByTestId('modal-ok-button')).toBeDisabled();
             await choice.check();

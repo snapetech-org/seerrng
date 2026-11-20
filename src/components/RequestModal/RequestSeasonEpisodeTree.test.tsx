@@ -281,7 +281,14 @@ it('loads 13 seasons in bounded batches and permits an explicit queue start afte
     swr.data = await swr.fetcher!();
     expect(
       swr.get.mock.calls.map((call) => call[1].params.seasonNumbers)
-    ).toEqual(['1,2,3,4,5', '6,7,8,9,10']);
+    ).toEqual([
+      '1,2,3,4,5',
+      '2,3,4,5',
+      '6,7,8,9,10',
+      '6,7,8,9,10',
+      '11,12,13',
+      '11,12,13',
+    ]);
     await ui.render();
     expect(ui.ready).toHaveBeenLastCalledWith(false);
     expect(ui.changed).not.toHaveBeenCalled();
@@ -336,6 +343,78 @@ it('loads a 29-season series in six bounded requests without changing the starti
     ).toBe(true);
     expect(ui.ready).toHaveBeenLastCalledWith(true);
     expect(ui.changed).not.toHaveBeenCalled();
+  } finally {
+    await ui.close();
+    swr.get.mockReset();
+  }
+});
+
+it('retries only missing seasons from a partial large-series response', async () => {
+  const visibleSeasons = Array.from({ length: 13 }, (_, seasonNumber) => ({
+    ...seasons[1],
+    seasonNumber,
+    episodeCount: 1,
+  }));
+  const responseFor = (numbers: number[]) => ({
+    data: numbers.map((seasonNumber) => ({
+      seasonNumber,
+      episodes: [
+        {
+          id: seasonNumber + 1000,
+          episodeNumber: 1,
+          name: 'Episode',
+          airDate: null,
+        },
+      ],
+    })),
+  });
+  swr.get
+    .mockResolvedValueOnce({ data: responseFor([0, 1, 2, 3]).data })
+    .mockResolvedValueOnce(responseFor([4]))
+    .mockImplementation(async (_url, options) =>
+      responseFor(options.params.seasonNumbers.split(',').map(Number))
+    );
+  const ui = await setup([], {}, { visibleSeasons });
+  try {
+    swr.data = await swr.fetcher!();
+    await ui.render();
+    expect(swr.data).toHaveLength(13);
+    expect(
+      swr.get.mock.calls.map((call) => call[1].params.seasonNumbers)
+    ).toEqual(['0,1,2,3,4', '4', '5,6,7,8,9', '10,11,12']);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
+  } finally {
+    await ui.close();
+    swr.get.mockReset();
+  }
+});
+
+it('retries a transient failed season batch before leaving the tree incomplete', async () => {
+  const response = {
+    data: [0, 1].map((seasonNumber) => ({
+      seasonNumber,
+      episodes: [
+        {
+          id: seasonNumber + 1000,
+          episodeNumber: 1,
+          name: 'Episode',
+          airDate: null,
+        },
+      ],
+    })),
+  };
+  swr.get
+    .mockRejectedValueOnce(new Error('Temporary provider timeout'))
+    .mockResolvedValueOnce(response);
+  const ui = await setup();
+  try {
+    swr.data = await swr.fetcher!();
+    await ui.render();
+    expect(swr.data).toHaveLength(2);
+    expect(swr.get).toHaveBeenCalledTimes(2);
+    expect(swr.get.mock.calls[0][1].params.seasonNumbers).toBe('0,1');
+    expect(swr.get.mock.calls[1][1].params.seasonNumbers).toBe('0,1');
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
   } finally {
     await ui.close();
     swr.get.mockReset();
