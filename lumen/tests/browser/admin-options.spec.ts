@@ -344,10 +344,10 @@ test('late category probes remain scoped to the account that started them', asyn
   await page
     .getByRole('button', { name: 'Continue with Jellyfin', exact: true })
     .click();
-  await page.getByLabel('Jellyfin username', { exact: true }).fill('viewer2');
+  await page.getByLabel('Jellyfin Username', { exact: true }).fill('viewer2');
   await page.getByLabel('Password', { exact: true }).fill('fixture-password');
   await page
-    .getByRole('button', { name: 'Sign in with Jellyfin', exact: true })
+    .getByRole('button', { name: 'Sign In with Jellyfin', exact: true })
     .click();
   const cached = (id: number) =>
     page.evaluate(
@@ -387,7 +387,7 @@ test('sign-in form without media server names', async ({ page }) => {
   await expect(page.getByText(/Jellyfin/)).toHaveCount(0);
   await page.getByLabel('Username', { exact: true }).fill('grandma');
   await page.getByLabel('Password').fill('pw');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -848,7 +848,7 @@ test('sign-in errors are written in words', async ({ page }) => {
   await page.goto('/');
   await page.getByLabel('Username', { exact: true }).fill('grandma');
   await page.getByLabel('Password').fill('nope');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(page.getByRole('alert')).toHaveText(
     'That username or password isn’t right.'
   );
@@ -1586,7 +1586,7 @@ test('a busy sign-in visibly disables the shared primary action', async ({
   await page.goto('/');
   await page.getByLabel('Username', { exact: true }).fill('grandma');
   await page.getByLabel('Password').fill('pw');
-  const submit = page.getByRole('button', { name: 'Sign in', exact: true });
+  const submit = page.getByRole('button', { name: 'Sign In', exact: true });
   await expect(submit).toHaveCSS('opacity', '1');
   await submit.click();
   try {

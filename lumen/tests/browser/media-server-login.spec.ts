@@ -106,16 +106,16 @@ for (const [type, name] of [
       .getByRole('button', { name: `Continue with ${name}`, exact: true })
       .click();
     await expect(
-      page.getByRole('button', { name: `Sign in with ${name}`, exact: true })
+      page.getByRole('button', { name: `Sign In with ${name}`, exact: true })
     ).toBeVisible();
     await page.screenshot({
       path: info.outputPath(`${name}-login.png`),
       fullPage: true,
     });
-    await page.getByLabel(`${name} username`, { exact: true }).fill('viewer');
+    await page.getByLabel(`${name} Username`, { exact: true }).fill('viewer');
     await page.getByLabel('Password', { exact: true }).fill('fixture-password');
     await page
-      .getByRole('button', { name: `Sign in with ${name}`, exact: true })
+      .getByRole('button', { name: `Sign In with ${name}`, exact: true })
       .click();
     await expect(page).not.toHaveURL(/\/login/);
     expect(

@@ -107,9 +107,9 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
     'href',
     'https://jf.example.com/web/index.html#!/forgotpassword.html'
   );
-  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('secret');
-  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await page.getByRole('button', { name: 'Sign In with Jellyfin' }).click();
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -148,9 +148,9 @@ test('the next sign-in opens the way this device last signed in', async ({
   await fixtures(page, { serverType: 2 });
   await page.goto('/');
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
-  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('secret');
-  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await page.getByRole('button', { name: 'Sign In with Jellyfin' }).click();
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -158,7 +158,7 @@ test('the next sign-in opens the way this device last signed in', async ({
   // signed out again (fresh fixtures): straight to the Jellyfin boxes, other ways still there
   await fixtures(page, { serverType: 2 });
   await page.goto('/');
-  await expect(page.getByLabel('Jellyfin username')).toBeVisible();
+  await expect(page.getByLabel('Jellyfin Username')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toHaveCount(0);
@@ -167,7 +167,7 @@ test('the next sign-in opens the way this device last signed in', async ({
     .click();
   await page.getByLabel('Email').fill('alice@example.com');
   await page.getByLabel('Password').fill('secret');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -191,9 +191,9 @@ test('a failed sign-in is not remembered', async ({ page }) => {
   );
   await page.goto('/');
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
-  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('wrong');
-  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await page.getByRole('button', { name: 'Sign In with Jellyfin' }).click();
   await expect(page.getByRole('alert')).toContainText('isn’t right');
   await page.goto('/');
   await expect(
@@ -252,7 +252,7 @@ test('Emby uses its own name and has no Quick Connect', async ({ page }) => {
   await fixtures(page, { serverType: 3 });
   await page.goto('/');
   await page.getByRole('button', { name: 'Continue with Emby' }).click();
-  await expect(page.getByLabel('Emby username')).toBeVisible();
+  await expect(page.getByLabel('Emby Username')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Use Quick Connect instead' })
   ).toHaveCount(0);
@@ -278,7 +278,7 @@ for (const method of ['server', 'local'] as const) {
       await page.emulateMedia({ colorScheme });
       await page.goto('/');
       await expect(
-        page.getByLabel(method === 'server' ? 'Jellyfin username' : 'Email')
+        page.getByLabel(method === 'server' ? 'Jellyfin Username' : 'Email')
       ).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       await page.screenshot({
@@ -335,9 +335,9 @@ test('invalid or blocked remembered-method storage cannot prevent sign-in', asyn
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible();
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
-  await page.getByLabel('Jellyfin username').fill('alice');
+  await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('synthetic-password');
-  await page.getByRole('button', { name: 'Sign in with Jellyfin' }).click();
+  await page.getByRole('button', { name: 'Sign In with Jellyfin' }).click();
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();

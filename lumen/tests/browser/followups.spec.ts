@@ -165,7 +165,7 @@ test('signing in does not ask for the public settings again', async ({
   await page.goto('/');
   await page.getByLabel('Username', { exact: true }).fill('fam');
   await page.getByLabel('Password').fill('secret');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(page.locator('.navchips')).toBeVisible();
   await page.waitForTimeout(1000);
   expect(counts['/settings/public']).toBe(1);

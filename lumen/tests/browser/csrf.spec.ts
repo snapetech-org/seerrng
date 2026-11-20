@@ -43,7 +43,7 @@ test('Lumen sends the current SeerrNG CSRF cookie on sign-in', async ({
   if (await alternate.isVisible()) await alternate.click();
   await email.fill('family@fixture.invalid');
   await page.getByLabel('Password', { exact: true }).fill('example-password');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(page.locator('.app')).toBeVisible();
   expect(signedIn).toBe(true);
 });

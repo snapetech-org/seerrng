@@ -337,7 +337,7 @@ test('account changes clear private API responses and preferences without reload
   await page.getByLabel('Email', { exact: true }).fill('friend@example.test');
   await page.getByLabel('Password', { exact: true }).fill('fixture-only');
   fixture.hold();
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   // Login keeps the current route (/me); the new account must start with its own preferences.
   await expect(
     page
@@ -491,7 +491,7 @@ test('recent searches discard shared history and stay with their account', async
     .click();
   await page.getByLabel('Email', { exact: true }).fill('friend@example.test');
   await page.getByLabel('Password', { exact: true }).fill('fixture-only');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'You', exact: true })
   ).toBeVisible();
@@ -1100,13 +1100,13 @@ test('the companion sign-in screen offers native access before authentication', 
   );
   await page.goto('/');
   await expect(
-    page.getByRole('link', { name: 'Open full SeerrNG', exact: true })
+    page.getByRole('link', { name: 'Open Full SeerrNG', exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Open full SeerrNG', exact: true })
+    page.getByRole('link', { name: 'Open Full SeerrNG', exact: true })
   ).toHaveAttribute('href', '/seerrng');
   await expect(
-    page.getByText('Lumen companion', { exact: true })
+    page.getByText('Lumen Companion', { exact: true })
   ).toBeVisible();
 });
 
@@ -6241,7 +6241,7 @@ test('account permissions bookmarks show the signed-in users assigned permission
   const section = page.locator('#account-permissions');
   await expect(section.getByRole('heading')).toBeInViewport();
   await expect(
-    section.getByText('Request Magazine', { exact: true })
+    section.getByText('Request Magazines', { exact: true })
   ).toBeVisible();
   await expect(section.getByRole('checkbox')).toHaveCount(0);
 });
