@@ -343,6 +343,12 @@ test.describe('Episode Queue season loading', () => {
 
       await page.goto('/');
       await page.evaluate(() => (window as any).next.router.push('/tv/1396'));
+      await expect(
+        page.getByRole('heading', {
+          name: 'American Horror Story (2011)',
+          exact: true,
+        })
+      ).toBeVisible();
       await page.getByRole('button', { name: 'Request', exact: true }).click();
       const dialog = page.getByRole('dialog');
       await expect(dialog).toBeVisible();
