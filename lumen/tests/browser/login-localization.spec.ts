@@ -1,6 +1,9 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const publicSettings = {
   initialized: true,
   mediaServerType: 2,
@@ -58,7 +61,7 @@ test('French sign-in localizes the entry, form, and authentication failures', as
   const fixture = await mockSignedOutLogin(page, (attempt) =>
     attempt === 1 ? 401 : 429
   );
-  await page.goto('/');
+  await page.goto(appPath('/'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
   await expect(
@@ -108,7 +111,7 @@ test('French sign-in localizes the entry, form, and authentication failures', as
     .toBe(true);
   await expect(
     page.getByRole('link', { name: 'Mot de passe oublié ?' })
-  ).toHaveAttribute('href', '/resetpassword');
+  ).toHaveAttribute('href', appPath('/resetpassword'));
   await page.getByLabel('Courriel').fill('viewer@example.test');
   await page.getByLabel('Mot de passe').fill('incorrect');
   await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
@@ -133,7 +136,7 @@ test('Arabic sign-in localizes Jellyfin and email modes with right-to-left layou
     });
   });
   const fixture = await mockSignedOutLogin(page, () => 429);
-  await page.goto('/');
+  await page.goto(appPath('/'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(
@@ -197,7 +200,7 @@ test('French sign-in translates configured identity provider actions', async ({
     ...publicSettings,
     openIdProviders: [{ slug: 'home', name: 'Home Login' }],
   });
-  await page.goto('/');
+  await page.goto(appPath('/'));
   await expect(
     page.getByRole('button', { name: 'Se connecter avec Home Login' })
   ).toBeVisible();
@@ -231,7 +234,7 @@ test('French sign-in recovery screen is localized and retries authentication', a
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/');
+  await page.goto(appPath('/'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(page.getByRole('alert')).toContainText(
     'Impossible de joindre le serveur. Vérifiez votre connexion, puis réessayez.'

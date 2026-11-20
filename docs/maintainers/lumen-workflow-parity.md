@@ -845,9 +845,11 @@ No layout styles changed. Evidence is retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-login-localization-20261120/`.
 
 Live Plex/Jellyfin, Quick Connect approval, OIDC callback, actual credentials,
-and SeerrNG's bundled production mount remain unverified. Other locales use
-the English fallback; independent linguistic review and localization of other
-routes remain open.
+and the SeerrNG Express mount remain unverified. The freshly built production
+bundle was also served under `/lumen/`; the same 16 fixture cases passed there,
+including mounted forgot-password routing. Other locales use the English
+fallback; independent linguistic review and localization of other routes
+remain open.
 
 ### Request retry increment
 
