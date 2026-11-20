@@ -1,0 +1,1 @@
+Fix creating Hardcover recommendation feeds on mobile by keeping the submit action outside the form's hit surface while associating it with the form. Wait for authentication to settle before probing Lumen category availability, preventing a duplicate check during sign-in initialization.

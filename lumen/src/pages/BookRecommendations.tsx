@@ -438,85 +438,90 @@ export default function BookRecommendations() {
             </Section>
           )}
           <Section title="Create a Recommendation Feed">
-            <form
-              className="setlist recommendation-form"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void create();
-              }}
-            >
-              <label className="set">
-                Title
-                <input
-                  required
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                />
-              </label>
-              <label className="set">
-                Mood (optional)
-                <input
-                  value={mood}
-                  onChange={(event) => setMood(event.target.value)}
-                />
-              </label>
-              <label className="set">
-                Description (optional)
-                <textarea
-                  value={description}
-                  maxLength={500}
-                  onChange={(event) => setDescription(event.target.value)}
-                />
-              </label>
-              <label className="set">
-                Genres to Include
-                <input
-                  value={genres}
-                  onChange={(event) => setGenres(event.target.value)}
-                  placeholder="Comma-separated genres"
-                />
-              </label>
-              <label className="set">
-                Genres to Avoid
-                <input
-                  value={avoidGenres}
-                  onChange={(event) => setAvoidGenres(event.target.value)}
-                  placeholder="Comma-separated genres"
-                />
-              </label>
-              <label className="set">
-                Series Position
-                <select
-                  value={seriesPosition}
-                  onChange={(event) => setSeriesPosition(event.target.value)}
-                >
-                  <option value="">Any position</option>
-                  <option value="standalone">Standalones only</option>
-                  <option value="first_or_standalone">
-                    Standalones and first books
-                  </option>
-                </select>
-              </label>
-              <div className="set recommendation-preference">
-                <label htmlFor="recommendation-create-less-popular">
-                  Prefer Less Popular Books
+            <div className="setlist recommendation-feed-form">
+              <form
+                id="recommendation-feed-form"
+                className="recommendation-form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void create();
+                }}
+              >
+                <label className="set">
+                  Title
+                  <input
+                    required
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                  />
                 </label>
-                <input
-                  id="recommendation-create-less-popular"
-                  type="checkbox"
-                  checked={createLessPopular}
-                  onChange={(event) =>
-                    setCreateLessPopular(event.target.checked)
-                  }
-                />
-              </div>
+                <label className="set">
+                  Mood (optional)
+                  <input
+                    value={mood}
+                    onChange={(event) => setMood(event.target.value)}
+                  />
+                </label>
+                <label className="set">
+                  Description (optional)
+                  <textarea
+                    value={description}
+                    maxLength={500}
+                    onChange={(event) => setDescription(event.target.value)}
+                  />
+                </label>
+                <label className="set">
+                  Genres to Include
+                  <input
+                    value={genres}
+                    onChange={(event) => setGenres(event.target.value)}
+                    placeholder="Comma-separated genres"
+                  />
+                </label>
+                <label className="set">
+                  Genres to Avoid
+                  <input
+                    value={avoidGenres}
+                    onChange={(event) => setAvoidGenres(event.target.value)}
+                    placeholder="Comma-separated genres"
+                  />
+                </label>
+                <label className="set">
+                  Series Position
+                  <select
+                    value={seriesPosition}
+                    onChange={(event) => setSeriesPosition(event.target.value)}
+                  >
+                    <option value="">Any position</option>
+                    <option value="standalone">Standalones only</option>
+                    <option value="first_or_standalone">
+                      Standalones and first books
+                    </option>
+                  </select>
+                </label>
+                <div className="set recommendation-preference">
+                  <label htmlFor="recommendation-create-less-popular">
+                    Prefer Less Popular Books
+                  </label>
+                  <input
+                    id="recommendation-create-less-popular"
+                    type="checkbox"
+                    checked={createLessPopular}
+                    onChange={(event) =>
+                      setCreateLessPopular(event.target.checked)
+                    }
+                  />
+                </div>
+              </form>
               <button
                 className="btn btn-quiet btn-sm"
+                type="submit"
+                form="recommendation-feed-form"
                 disabled={busy || !title.trim()}
               >
                 Create on Hardcover
               </button>
-            </form>
+            </div>
             {createError && (
               <p className="note" role="alert">
                 {createError}

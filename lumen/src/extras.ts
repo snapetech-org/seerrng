@@ -176,7 +176,8 @@ export function useExtras() {
   const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
     user ? `/user/${user.id}/settings/main` : null
   );
-  const userSettled = !user || !!mine.data || !!mine.error;
+  const userSettled =
+    user !== undefined && (!user || !!mine.data || !!mine.error);
   const own = mine.data?.enabledMediaCategories;
   const global = pub?.enabledMediaCategories || {};
   // a category must be on for the whole server *and* for this account
