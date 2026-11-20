@@ -47,7 +47,7 @@ const cases = [
     route: 'notifications/apprise',
     endpoint: 'notifications/apprise',
     field: 'url',
-    value: 'http://127.0.0.1:55199',
+    value: 'http://127.0.0.1:55200',
   },
   {
     route: 'notifications/pushbullet',
