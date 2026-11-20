@@ -457,7 +457,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1030,
+          "line": 1032,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned invalid metadata'",
@@ -560,7 +560,7 @@
         },
         {
           "path": "server/api/plexapi.ts",
-          "line": 843,
+          "line": 845,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid collection member.'",
@@ -993,7 +993,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 640,
+          "line": 647,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No ID provided'",
@@ -5452,7 +5452,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 697,
+          "line": 699,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Album lookup exceeded its limit.'",
@@ -5592,7 +5592,7 @@
         },
         {
           "path": "server/api/plexapi.ts",
-          "line": 793,
+          "line": 795,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid collection members.'",
@@ -7587,7 +7587,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 646,
+          "line": 648,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Ambiguous provider-ID lookup.'",
@@ -8820,7 +8820,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 209,
+          "line": 216,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid collection member'",
@@ -10133,7 +10133,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1104,
+          "line": 1106,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A Plex server and at least one media item are required.'",
@@ -11778,7 +11778,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 612,
+          "line": 614,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Plex lookup seed.'",
@@ -18061,7 +18061,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1066,
+          "line": 1068,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex episode inventory is incomplete'",
@@ -18781,7 +18781,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 137,
+          "line": 138,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned incomplete library metadata.'",
@@ -19665,7 +19665,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 132,
+          "line": 133,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library response.'",
@@ -21476,7 +21476,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1228,
+          "line": 1230,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex did not create the replacement playlist.'",
@@ -21858,7 +21858,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 1194,
+          "line": 1327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unable to find TMDB ID'",
@@ -22113,7 +22113,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 510,
+          "line": 512,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library entry.'",
@@ -22121,7 +22121,7 @@
         },
         {
           "path": "server/api/plexapi.ts",
-          "line": 515,
+          "line": 517,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library entry.'",
@@ -23173,7 +23173,7 @@
         },
         {
           "path": "server/api/plexapi.ts",
-          "line": 788,
+          "line": 790,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Collection removal was not confirmed.'",
@@ -24983,7 +24983,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 493,
+          "line": 495,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library list.'",
@@ -31057,7 +31057,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 120,
+          "line": 121,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned invalid collection metadata.'",
@@ -37371,7 +37371,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 639,
+          "line": 641,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid provider-ID lookup.'",
@@ -37905,7 +37905,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 486,
+          "line": 488,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library container.'",
@@ -42413,7 +42413,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 663,
+          "line": 665,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex movie lookup exceeded its limit.'",
@@ -43332,7 +43332,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 781,
+          "line": 783,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Collection identity changed.'",
@@ -44627,7 +44627,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 653,
+          "line": 655,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unverified Plex identity.'",
@@ -47985,7 +47985,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 770,
+          "line": 772,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex collection lookup exceeded its limit.'",
@@ -48110,7 +48110,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 975,
+          "line": 982,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown provider error'",
@@ -49421,7 +49421,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1145,
+          "line": 1147,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'A playlist name, Plex server, and at least one media item are required.'",
@@ -50687,7 +50687,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 848,
+          "line": 850,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex collection membership exceeded its limit.'",
@@ -51372,7 +51372,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1005,
+          "line": 1007,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid Plex season identity'",
@@ -53958,7 +53958,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 1125,
+          "line": 1127,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex did not create a playable queue.'",
@@ -55641,7 +55641,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 235,
+          "line": 242,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Collection member identity changed'",
@@ -58223,7 +58223,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 735,
+          "line": 737,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex did not identify the collection.'",
@@ -58774,7 +58774,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 446,
+          "line": 453,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Sync was aborted.'",
@@ -58974,7 +58974,7 @@
       "callsites": [
         {
           "path": "server/api/plexapi.ts",
-          "line": 502,
+          "line": 504,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Plex returned an invalid library count.'",
@@ -61656,7 +61656,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 450,
+          "line": 457,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'New session was started. Old session aborted.'",
@@ -61762,7 +61762,7 @@
       "callsites": [
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 1058,
+          "line": 1146,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'No Guid metadata for this title. Skipping. (Try refreshing the metadata in Plex for this media!)'",
@@ -66748,7 +66748,7 @@
         },
         {
           "path": "server/lib/scanners/plex/index.ts",
-          "line": 222,
+          "line": 229,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Media server owner unavailable'",
@@ -69219,7 +69219,7 @@
     },
     {
       "path": "server/api/plexapi.ts",
-      "line": 472,
+      "line": 474,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      MediaContainer: {\n        machineIdentifier: boundedPlexText(\n          mediaContainer.machineIdentifier,\n          128\n        ),\n        friendlyName: boundedPlexText(mediaContainer.friendlyName, 512),\n      },\n    }",
@@ -69228,7 +69228,7 @@
     },
     {
       "path": "server/api/plexapi.ts",
-      "line": 923,
+      "line": 925,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "e.message",
@@ -69237,7 +69237,7 @@
     },
     {
       "path": "server/api/plexapi.ts",
-      "line": 927,
+      "line": 929,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "502",
@@ -69246,7 +69246,7 @@
     },
     {
       "path": "server/api/plexapi.ts",
-      "line": 930,
+      "line": 932,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "e.response.status",
@@ -75951,7 +75951,7 @@
     },
     {
       "path": "server/lib/scanners/plex/index.ts",
-      "line": 241,
+      "line": 248,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      running: this.running,\n      progress: this.progress,\n      total: this.totalSize ?? 0,\n      currentLibrary: this.currentLibrary,\n      libraries: this.libraries,\n    }",
@@ -75960,7 +75960,7 @@
     },
     {
       "path": "server/lib/scanners/plex/index.ts",
-      "line": 539,
+      "line": 546,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "String(e)",
@@ -75969,7 +75969,7 @@
     },
     {
       "path": "server/lib/scanners/plex/index.ts",
-      "line": 572,
+      "line": 579,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75978,10 +75978,46 @@
     },
     {
       "path": "server/lib/scanners/plex/index.ts",
-      "line": 975,
+      "line": 982,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown provider error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/plex/index.ts",
+      "line": 1185,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/plex/index.ts",
+      "line": 1185,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/plex/index.ts",
+      "line": 1230,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/scanners/plex/index.ts",
+      "line": 1230,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },

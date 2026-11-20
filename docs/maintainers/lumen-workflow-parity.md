@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. Signed-out Lumen login and password recovery now follow the browser's supported locale in French and Arabic. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Account-synced Lumen preferences
@@ -819,6 +819,35 @@ horizontal overflow was found. Evidence is retained in
 The synthetic API does not verify live SMTP delivery or production password
 reset behavior. Headed native-matched and bundled-browser comparison,
 delegated account behavior, live SMTP, and end-to-end recovery remain open.
+
+### Local sign-in localization increment
+
+Signed-out Lumen login now follows the browser's supported locale without
+requesting user settings. The entry page, local email form, Jellyfin credential
+form, Quick Connect instructions and actions, forgot-password link, configured
+OIDC action, known authentication errors, and offline retry state use stable
+locale IDs. Known error codes are translated while unrecognized provider
+messages remain available to the user. French and Arabic use human-written
+overrides, and Arabic sets RTL direction.
+
+Sixteen fixture-backed browser cases passed across desktop, iPhone, Android,
+and tablet. They verify French local sign-in failures and 429 handling, Arabic
+Jellyfin-to-email mode switching, RTL, a translated OIDC action, offline retry,
+and that signed-out routes never request account locale settings. The English
+baseline and French/Arabic candidate login screen were rendered with matching
+synthetic server configuration at desktop (1440 × 900), iPhone (390 × 664 CSS
+pixels), Android (412 × 915), and tablet (834 × 1194). Matched
+baseline/candidate renders were inspected at every viewport for card geometry,
+button sizing, wrapping, RTL alignment, and overflow. A regression check compares document
+width to the emulated viewport width, catching a French-label overflow that the
+initial window-width check missed; the shorter French action label now fits.
+No layout styles changed. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-login-localization-20261120/`.
+
+Live Plex/Jellyfin, Quick Connect approval, OIDC callback, actual credentials,
+and SeerrNG's bundled production mount remain unverified. Other locales use
+the English fallback; independent linguistic review and localization of other
+routes remain open.
 
 ### Request retry increment
 

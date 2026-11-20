@@ -1094,6 +1094,53 @@ export const localeData = [
       'lumen.resetPassword.requestAction': 'إرسال رابط الاستعادة',
       'lumen.resetPassword.requestNewLink': 'طلب رابط جديد',
       'lumen.resetPassword.backToSignIn': 'العودة إلى تسجيل الدخول',
+      'lumen.login.back': 'رجوع',
+      'lumen.login.cancel': 'إلغاء',
+      'lumen.login.companion': 'رفيق Lumen',
+      'lumen.login.continueLink': 'المتابعة باستخدام رابط تسجيل الدخول',
+      'lumen.login.continueServer': 'المتابعة باستخدام {serverName}',
+      'lumen.login.disabled': 'تسجيل الدخول معطّل. اتصل بالمسؤول.',
+      'lumen.login.email': 'البريد الإلكتروني',
+      'lumen.login.errorConnection':
+        'تعذر الاتصال بـ {serverName}. حاول مرة أخرى بعد قليل.',
+      'lumen.login.errorCredentials': 'اسم المستخدم أو كلمة المرور غير صحيحة.',
+      'lumen.login.errorEmail': 'أدخل عنوان بريد إلكتروني صالحًا.',
+      'lumen.login.errorNoAccess':
+        'لا يملك هذا الحساب صلاحية الوصول بعد. اطلب من مسؤول الخادم إضافته.',
+      'lumen.login.errorTooMany':
+        'محاولات تسجيل دخول كثيرة جدًا. انتظر بضع دقائق ثم حاول مجددًا.',
+      'lumen.login.errorUnknown': 'حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.',
+      'lumen.login.familySubtitle':
+        'استخدم اسم المستخدم وكلمة المرور اللذين تستخدمهما للمشاهدة.',
+      'lumen.login.forgotPassword': 'هل نسيت كلمة المرور؟',
+      'lumen.login.included': 'Lumen مضمّن مع SeerrNG',
+      'lumen.login.moreOptions': 'خيارات تسجيل دخول إضافية',
+      'lumen.login.oidcCallbackFailure':
+        'تعذر إكمال تسجيل الدخول عبر OpenID Connect. ابدأ من جديد.',
+      'lumen.login.oidcStartFailure':
+        'تعذر بدء تسجيل الدخول عبر OpenID Connect. تحقق من إعداد المزوّد وعنوان SeerrNG.',
+      'lumen.login.openFullSeerr': 'فتح SeerrNG الكامل',
+      'lumen.login.password': 'كلمة المرور',
+      'lumen.login.quickGettingCode': 'جارٍ الحصول على رمز…',
+      'lumen.login.quickInstructions':
+        'في {serverName}، افتح الإعدادات ← Quick Connect وأدخل هذا الرمز.',
+      'lumen.login.quickWaiting': 'بانتظار الموافقة…',
+      'lumen.login.serverSubtitle':
+        'استخدم الحساب نفسه الذي تستخدمه مع {serverName}.',
+      'lumen.login.serverUsername': 'اسم مستخدم {serverName}',
+      'lumen.login.signIn': 'تسجيل الدخول',
+      'lumen.login.signInProvider': 'تسجيل الدخول باستخدام {providerName}',
+      'lumen.login.signInServer': 'تسجيل الدخول باستخدام {serverName}',
+      'lumen.login.signInWithCode': 'تسجيل الدخول باستخدام رمز',
+      'lumen.login.titleBooks': 'سجّل الدخول لطلب الأفلام والمسلسلات والكتب',
+      'lumen.login.titleVideo': 'سجّل الدخول لطلب الأفلام والمسلسلات',
+      'lumen.login.useEmailInstead': 'استخدام البريد الإلكتروني وكلمة المرور',
+      'lumen.login.useQuickConnect': 'استخدام Quick Connect',
+      'lumen.login.useServerInstead': 'استخدام حساب {serverName}',
+      'lumen.login.username': 'اسم المستخدم',
+      'lumen.login.retry': 'إعادة المحاولة',
+      'lumen.login.serverUnreachable':
+        'تعذر الاتصال بالخادم. تحقق من اتصالك ثم حاول مرة أخرى.',
     },
   },
   {
@@ -2952,6 +2999,54 @@ export const localeData = [
       'lumen.resetPassword.requestAction': 'Email Recovery Link',
       'lumen.resetPassword.requestNewLink': 'Request a New Link',
       'lumen.resetPassword.backToSignIn': 'Back to Sign In',
+      'lumen.login.back': 'Back',
+      'lumen.login.cancel': 'Cancel',
+      'lumen.login.companion': 'Lumen Companion',
+      'lumen.login.continueLink': 'Continue with Sign-In Link',
+      'lumen.login.continueServer': 'Continue with {serverName}',
+      'lumen.login.disabled':
+        'Sign-in is disabled. Contact your administrator.',
+      'lumen.login.email': 'Email',
+      'lumen.login.errorConnection':
+        'Couldn’t reach {serverName}. Try again in a moment.',
+      'lumen.login.errorCredentials': 'That username or password isn’t right.',
+      'lumen.login.errorEmail': 'Enter a valid email address.',
+      'lumen.login.errorNoAccess':
+        'This account doesn’t have access yet. Ask whoever runs this server to add you.',
+      'lumen.login.errorTooMany':
+        'Too many sign-in attempts. Wait a few minutes and try again.',
+      'lumen.login.errorUnknown': 'Something went wrong signing in. Try again.',
+      'lumen.login.familySubtitle':
+        'Use the username and password you watch with.',
+      'lumen.login.forgotPassword': 'Forgot Password?',
+      'lumen.login.included': 'Lumen Included with SeerrNG',
+      'lumen.login.moreOptions': 'More Sign-In Options',
+      'lumen.login.oidcCallbackFailure':
+        'OpenID Connect sign-in could not be completed. Start again.',
+      'lumen.login.oidcStartFailure':
+        'Could not start OpenID Connect sign-in. Check the provider configuration and SeerrNG application URL.',
+      'lumen.login.openFullSeerr': 'Open Full SeerrNG',
+      'lumen.login.password': 'Password',
+      'lumen.login.quickGettingCode': 'Getting a Code…',
+      'lumen.login.quickInstructions':
+        'On {serverName}, open Settings → Quick Connect and enter this code.',
+      'lumen.login.quickWaiting': 'Waiting for Approval…',
+      'lumen.login.serverSubtitle':
+        'Use the same account you use for {serverName}.',
+      'lumen.login.serverUsername': '{serverName} Username',
+      'lumen.login.signIn': 'Sign In',
+      'lumen.login.signInProvider': 'Sign In with {providerName}',
+      'lumen.login.signInServer': 'Sign In with {serverName}',
+      'lumen.login.signInWithCode': 'Sign In with a Code',
+      'lumen.login.titleBooks': 'Sign In to Request Movies, Series and Books',
+      'lumen.login.titleVideo': 'Sign In to Request Movies and Series',
+      'lumen.login.useEmailInstead': 'Use an Email and Password Instead',
+      'lumen.login.useQuickConnect': 'Use Quick Connect Instead',
+      'lumen.login.useServerInstead': 'Use Your {serverName} Account Instead',
+      'lumen.login.username': 'Username',
+      'lumen.login.retry': 'Retry',
+      'lumen.login.serverUnreachable':
+        'Can’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -5125,6 +5220,58 @@ export const localeData = [
       'lumen.resetPassword.requestAction': 'Envoyer le Lien de Récupération',
       'lumen.resetPassword.requestNewLink': 'Demander un Nouveau Lien',
       'lumen.resetPassword.backToSignIn': 'Retour à la Connexion',
+      'lumen.login.back': 'Retour',
+      'lumen.login.cancel': 'Annuler',
+      'lumen.login.companion': 'Compagnon Lumen',
+      'lumen.login.continueLink': 'Continuer avec le lien de connexion',
+      'lumen.login.continueServer': 'Continuer avec {serverName}',
+      'lumen.login.disabled':
+        'La connexion est désactivée. Contactez votre administrateur.',
+      'lumen.login.email': 'Courriel',
+      'lumen.login.errorConnection':
+        'Impossible de joindre {serverName}. Réessayez dans un instant.',
+      'lumen.login.errorCredentials':
+        'Ce nom d’utilisateur ou ce mot de passe est incorrect.',
+      'lumen.login.errorEmail': 'Saisissez une adresse courriel valide.',
+      'lumen.login.errorNoAccess':
+        'Ce compte n’a pas encore accès au serveur. Demandez à son administrateur de vous ajouter.',
+      'lumen.login.errorTooMany':
+        'Trop de tentatives de connexion. Patientez quelques minutes, puis réessayez.',
+      'lumen.login.errorUnknown':
+        'Une erreur est survenue lors de la connexion. Réessayez.',
+      'lumen.login.familySubtitle':
+        'Utilisez le nom d’utilisateur et le mot de passe de votre compte de visionnement.',
+      'lumen.login.forgotPassword': 'Mot de passe oublié ?',
+      'lumen.login.included': 'Lumen inclus avec SeerrNG',
+      'lumen.login.moreOptions': 'Autres options de connexion',
+      'lumen.login.oidcCallbackFailure':
+        'La connexion OpenID Connect a échoué. Recommencez.',
+      'lumen.login.oidcStartFailure':
+        'Impossible de démarrer la connexion OpenID Connect. Vérifiez la configuration du fournisseur et l’URL de SeerrNG.',
+      'lumen.login.openFullSeerr': 'Ouvrir SeerrNG complet',
+      'lumen.login.password': 'Mot de passe',
+      'lumen.login.quickGettingCode': 'Obtention d’un code…',
+      'lumen.login.quickInstructions':
+        'Dans {serverName}, ouvrez Paramètres → Quick Connect et saisissez ce code.',
+      'lumen.login.quickWaiting': 'En attente de l’approbation…',
+      'lumen.login.serverSubtitle':
+        'Utilisez le même compte que pour {serverName}.',
+      'lumen.login.serverUsername': 'Nom d’utilisateur {serverName}',
+      'lumen.login.signIn': 'Se connecter',
+      'lumen.login.signInProvider': 'Se connecter avec {providerName}',
+      'lumen.login.signInServer': 'Se connecter avec {serverName}',
+      'lumen.login.signInWithCode': 'Se connecter avec un code',
+      'lumen.login.titleBooks':
+        'Connectez-vous pour demander des films, séries et livres',
+      'lumen.login.titleVideo':
+        'Connectez-vous pour demander des films et des séries',
+      'lumen.login.useEmailInstead': 'Avec courriel et mot de passe',
+      'lumen.login.useQuickConnect': 'Utiliser Quick Connect',
+      'lumen.login.useServerInstead': 'Utiliser votre compte {serverName}',
+      'lumen.login.username': 'Nom d’utilisateur',
+      'lumen.login.retry': 'Réessayer',
+      'lumen.login.serverUnreachable':
+        'Impossible de joindre le serveur. Vérifiez votre connexion, puis réessayez.',
     },
   },
   {

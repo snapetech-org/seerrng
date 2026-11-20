@@ -13,6 +13,7 @@ import { BrandMark } from '../components/brand';
 import { fullSeerrUrl } from '../components/Shell';
 import { embedded } from '../deployment';
 import { usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { clearLoginLinkFromAddress } from '../loginLink';
 import { mediaServer, services, site } from '../mediaServer';
 import { completeOidc, readOidcCallback, startOidcSignIn } from '../oidc';
@@ -42,28 +43,53 @@ function rememberSignIn(m: Method) {
 }
 
 // SeerrNG answers sign-in failures with codes like INVALID_CREDENTIALS; say it in words
-export function friendly(e: unknown, serverName: string): string {
+export function friendly(
+  e: unknown,
+  serverName: string,
+  t: (
+    id: string,
+    fallback?: string,
+    values?: Record<string, string | number>
+  ) => string = (_id, fallback) => fallback ?? ''
+): string {
   const msg = e instanceof Error ? e.message : '';
   if (e instanceof ApiError && e.status === 429)
-    return 'Too many sign-in attempts. Wait a few minutes and try again.';
+    return t(
+      'lumen.login.errorTooMany',
+      'Too many sign-in attempts. Wait a few minutes and try again.'
+    );
   switch (msg) {
     case 'INVALID_CREDENTIALS':
-      return 'That username or password isn’t right.';
+      return t(
+        'lumen.login.errorCredentials',
+        'That username or password isn’t right.'
+      );
     case 'INVALID_EMAIL':
-      return 'Enter a valid email address.';
+      return t('lumen.login.errorEmail', 'Enter a valid email address.');
     case 'CONNECTION_ERROR':
-      return `Couldn’t reach ${serverName}. Try again in a moment.`;
+      return t(
+        'lumen.login.errorConnection',
+        'Couldn’t reach {serverName}. Try again in a moment.',
+        { serverName }
+      );
     case 'UNAUTHORIZED':
     case 'Access denied.':
-      return 'This account doesn’t have access yet. Ask whoever runs this server to add you.';
+      return t(
+        'lumen.login.errorNoAccess',
+        'This account doesn’t have access yet. Ask whoever runs this server to add you.'
+      );
     case 'UNKNOWN':
     case '':
-      return 'Something went wrong signing in. Try again.';
+      return t(
+        'lumen.login.errorUnknown',
+        'Something went wrong signing in. Try again.'
+      );
   }
   return msg;
 }
 
 export default function Login() {
+  const { t } = useLumenLocale();
   const { seerrPublicUrl } = usePrefs();
   const { refresh } = useAuth();
   const location = useLocation();
@@ -128,7 +154,12 @@ export default function Login() {
       })
       .catch(() => {
         if (live)
-          setErr('OpenID Connect sign-in could not be completed. Start again.');
+          setErr(
+            t(
+              'lumen.login.oidcCallbackFailure',
+              'OpenID Connect sign-in could not be completed. Start again.'
+            )
+          );
       })
       .finally(() => {
         if (live) {
@@ -139,7 +170,7 @@ export default function Login() {
     return () => {
       live = false;
     };
-  }, [callback, navigate, refresh]);
+  }, [callback, navigate, refresh, t]);
 
   async function oidc(slug: string) {
     if (active.current) return;
@@ -155,7 +186,10 @@ export default function Login() {
       );
     } catch {
       setErr(
-        'Could not start OpenID Connect sign-in. Check the provider configuration and SeerrNG application URL.'
+        t(
+          'lumen.login.oidcStartFailure',
+          'Could not start OpenID Connect sign-in. Check the provider configuration and SeerrNG application URL.'
+        )
       );
       active.current = false;
       setBusy(false);
@@ -180,7 +214,7 @@ export default function Login() {
       await refresh();
     } catch (e) {
       if (!(e instanceof QuickConnectCancelled))
-        setErr(friendly(e, server.name));
+        setErr(friendly(e, server.name, t));
     } finally {
       active.current = false;
       setBusy(false);
@@ -267,14 +301,27 @@ export default function Login() {
         </div>
         <h1>
           {services().books
-            ? 'Sign in to request movies, series and books'
-            : 'Sign in to request movies and series'}
+            ? t(
+                'lumen.login.titleBooks',
+                'Sign In to Request Movies, Series and Books'
+              )
+            : t(
+                'lumen.login.titleVideo',
+                'Sign In to Request Movies and Series'
+              )}
         </h1>
         {server.serverLogin && (
           <p className="sub">
             {family
-              ? 'Use the username and password you watch with.'
-              : `Use the same account you use for ${server.name}.`}
+              ? t(
+                  'lumen.login.familySubtitle',
+                  'Use the username and password you watch with.'
+                )
+              : t(
+                  'lumen.login.serverSubtitle',
+                  'Use the same account you use for {serverName}.',
+                  { serverName: server.name }
+                )}
           </p>
         )}
 
@@ -290,7 +337,7 @@ export default function Login() {
             disabled={busy}
             onClick={useLoginLink}
           >
-            Continue with sign-in link
+            {t('lumen.login.continueLink', 'Continue with Sign-In Link')}
           </button>
         )}
 
@@ -299,23 +346,34 @@ export default function Login() {
             {code ? (
               <>
                 <p className="sub">
-                  Open {server.name} on a device where you're signed in, go to{' '}
-                  <b>Settings → Quick Connect</b> and enter this code:
+                  {t(
+                    'lumen.login.quickInstructions',
+                    'On {serverName}, open Settings → Quick Connect and enter this code.',
+                    { serverName: server.name }
+                  )}
                 </p>
                 <output className="login-code">{code}</output>
-                <p className="login-wait">Waiting for approval…</p>
+                <p className="login-wait">
+                  {t('lumen.login.quickWaiting', 'Waiting for Approval…')}
+                </p>
               </>
             ) : (
-              <p className="login-wait">Getting a code…</p>
+              <p className="login-wait">
+                {t('lumen.login.quickGettingCode', 'Getting a Code…')}
+              </p>
             )}
             <button className="btn btn-quiet btn-sm" onClick={cancelQuick}>
-              Cancel
+              {t('lumen.login.cancel', 'Cancel')}
             </button>
           </div>
         ) : mode === 'server' ? (
           <form className="login-local" onSubmit={jellyfin}>
             <label>
-              {family ? 'Username' : `${server.name} username`}
+              {family
+                ? t('lumen.login.username', 'Username')
+                : t('lumen.login.serverUsername', '{serverName} Username', {
+                    serverName: server.name,
+                  })}
               <input
                 name="username"
                 autoComplete="username"
@@ -327,7 +385,7 @@ export default function Login() {
               />
             </label>
             <label>
-              Password
+              {t('lumen.login.password', 'Password')}
               <input
                 name="password"
                 type="password"
@@ -336,7 +394,11 @@ export default function Login() {
               />
             </label>
             <button className="btn btn-primary login-primary" disabled={busy}>
-              {family ? 'Sign in' : `Sign in with ${server.name}`}
+              {family
+                ? t('lumen.login.signIn', 'Sign In')
+                : t('lumen.login.signInServer', 'Sign In with {serverName}', {
+                    serverName: server.name,
+                  })}
             </button>
             <div className="login-links">
               {server.quickConnect && (
@@ -346,7 +408,12 @@ export default function Login() {
                   disabled={busy}
                   onClick={quick}
                 >
-                  {family ? 'Sign in with a code' : 'Use Quick Connect instead'}
+                  {family
+                    ? t('lumen.login.signInWithCode', 'Sign In with a Code')
+                    : t(
+                        'lumen.login.useQuickConnect',
+                        'Use Quick Connect Instead'
+                      )}
                 </button>
               )}
               {server.forgotPasswordUrl && (
@@ -355,7 +422,7 @@ export default function Login() {
                   href={server.forgotPasswordUrl}
                   rel="noreferrer"
                 >
-                  Forgot password?
+                  {t('lumen.login.forgotPassword', 'Forgot Password?')}
                 </a>
               )}
             </div>
@@ -363,7 +430,7 @@ export default function Login() {
         ) : mode === 'local' ? (
           <form className="login-local" onSubmit={local}>
             <label>
-              Email
+              {t('lumen.login.email', 'Email')}
               <input
                 name="email"
                 type="email"
@@ -373,7 +440,7 @@ export default function Login() {
               />
             </label>
             <label>
-              Password
+              {t('lumen.login.password', 'Password')}
               <input
                 name="password"
                 type="password"
@@ -383,11 +450,11 @@ export default function Login() {
               />
             </label>
             <button className="btn btn-tonal" disabled={busy}>
-              Sign in
+              {t('lumen.login.signIn', 'Sign In')}
             </button>
             {publicSettings?.emailEnabled && (
               <Link className="btn btn-quiet btn-sm" to="/resetpassword">
-                Forgot password?
+                {t('lumen.login.forgotPassword', 'Forgot Password?')}
               </Link>
             )}
           </form>
@@ -398,7 +465,9 @@ export default function Login() {
               disabled={busy}
               onClick={primary}
             >
-              Continue with {server.name}
+              {t('lumen.login.continueServer', 'Continue with {serverName}', {
+                serverName: server.name,
+              })}
             </button>
           )
         )}
@@ -407,7 +476,10 @@ export default function Login() {
           (!server.serverLogin && !server.localLogin
             ? providers.length === 0 && (
                 <p className="sub" role="status">
-                  Sign-in is disabled. Contact your administrator.
+                  {t(
+                    'lumen.login.disabled',
+                    'Sign-in is disabled. Contact your administrator.'
+                  )}
                 </p>
               )
             : mode === 'local'
@@ -418,8 +490,12 @@ export default function Login() {
                     onClick={() => setMode(home)}
                   >
                     {family
-                      ? 'Back'
-                      : `Use your ${server.name} account instead`}
+                      ? t('lumen.login.back', 'Back')
+                      : t(
+                          'lumen.login.useServerInstead',
+                          'Use Your {serverName} Account Instead',
+                          { serverName: server.name }
+                        )}
                   </button>
                 )
               : server.localLogin && (
@@ -428,7 +504,10 @@ export default function Login() {
                     disabled={busy}
                     onClick={() => setMode('local')}
                   >
-                    Use an email and password instead
+                    {t(
+                      'lumen.login.useEmailInstead',
+                      'Use an Email and Password Instead'
+                    )}
                   </button>
                 ))}
         {mode !== 'quick' &&
@@ -439,19 +518,23 @@ export default function Login() {
               disabled={busy}
               onClick={() => void oidc(slug)}
             >
-              Sign in with {name}
+              {t('lumen.login.signInProvider', 'Sign In with {providerName}', {
+                providerName: name,
+              })}
             </button>
           ))}
         {embedded && (
           <a className="btn btn-quiet btn-sm" href="/login">
-            More sign-in options
+            {t('lumen.login.moreOptions', 'More Sign-In Options')}
           </a>
         )}
         <a className="btn btn-tonal btn-sm" href={fullSeerrUrl(seerrPublicUrl)}>
-          Open full SeerrNG
+          {t('lumen.login.openFullSeerr', 'Open Full SeerrNG')}
         </a>
         <p className="sub">
-          {embedded ? 'Lumen included with SeerrNG' : 'Lumen companion'}
+          {embedded
+            ? t('lumen.login.included', 'Lumen Included with SeerrNG')
+            : t('lumen.login.companion', 'Lumen Companion')}
         </p>
       </div>
     </div>

@@ -16,7 +16,7 @@ import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
 import { usePublicSettings } from './hooks';
-import { LumenLocaleProvider } from './i18n';
+import { LumenLocaleProvider, useLumenLocale } from './i18n';
 import { canSearchIndexers } from './indexerPermissions';
 import { clearLoginLinkFromAddress } from './loginLink';
 import { MediaServerProvider } from './mediaServer';
@@ -130,6 +130,23 @@ function UserRequestsBookmark() {
   return <Navigate to={`/requests?${params}`} replace />;
 }
 
+function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
+  const { t } = useLumenLocale();
+  return (
+    <div className="boot boot-note" role="alert">
+      <p>
+        {t(
+          'lumen.login.serverUnreachable',
+          'Can’t reach the server. Check your connection and try again.'
+        )}
+      </p>
+      <button className="btn btn-primary" onClick={onRetry}>
+        {t('lumen.login.retry', 'Retry')}
+      </button>
+    </div>
+  );
+}
+
 function App() {
   const { user, unreachable, refresh } = useAuth();
   const location = useLocation();
@@ -169,15 +186,18 @@ function App() {
     return <Navigate to="/setup" replace />;
   if (unreachable && !user)
     return (
-      <div className="boot boot-note" role="alert">
-        <p>Can’t reach the server. Check your connection and try again.</p>
-        <button className="btn btn-primary" onClick={() => void refresh()}>
-          Retry
-        </button>
-      </div>
+      <LumenLocaleProvider userId={null}>
+        <ServerUnavailable onRetry={() => void refresh()} />
+      </LumenLocaleProvider>
     );
   if (user === undefined) return <div className="boot" aria-busy="true" />;
-  if (user === null) return <Login />;
+  if (user === null) {
+    return (
+      <LumenLocaleProvider userId={null}>
+        <Login />
+      </LumenLocaleProvider>
+    );
+  }
   // prettier-ignore
   return (
     <LumenLocaleProvider userId={user.id}>
