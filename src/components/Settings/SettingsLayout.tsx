@@ -254,6 +254,11 @@ const SettingsLayoutContent = ({ children }: SettingsLayoutProps) => {
     Boolean(router.query.settingsSearch || router.query.settingsSearchTarget);
 
   const setDirty = (dirty: boolean) => {
+    if (
+      !dirty &&
+      contentRef.current?.querySelector('form[data-settings-dirty="true"]')
+    )
+      return;
     dirtyRef.current = dirty;
     setHasUnsavedChanges(dirty);
   };

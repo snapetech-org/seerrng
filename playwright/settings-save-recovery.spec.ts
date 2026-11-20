@@ -159,6 +159,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
         await expectSettingsClean(page, save);
         await page.reload();
         await assertValue(replacement);
+        await expectSettingsClean(page, save);
         await edit(original);
         await expect(field.locator('xpath=ancestor::form')).toHaveAttribute(
           'data-settings-dirty',
@@ -170,13 +171,7 @@ for (const theme of ['seerrOrig', 'seerrNGJ']) {
             new URL(r.url()).pathname === endpoint &&
             ['POST', 'PUT'].includes(r.request().method())
         );
-        if (theme === 'seerrOrig') {
-          // The SeerrOrig footer unmounts after a successful save, so dispatch
-          // the final click without waiting for that locator to stay attached.
-          await save.dispatchEvent('click');
-        } else {
-          await save.click();
-        }
+        await save.click();
         expect((await restore).status()).toBe(200);
         await expectSettingsClean(page, save);
         await page.reload();
