@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
 
+test.use({ serviceWorkers: 'block' });
+
 for (const width of [1440, 390]) {
   test(`removing provider media preserves request history at ${width}px`, async ({
     page,
@@ -22,6 +24,7 @@ for (const width of [1440, 390]) {
     const deletes: string[] = [];
     let detailReads = 0;
     let listReads = 0;
+    let titleReads = 0;
     const baseline = process.env.SEERR_REQUEST_RECOVERY_BASELINE === 'true';
     const media = {
       id: 9101,
@@ -62,6 +65,19 @@ for (const width of [1440, 390]) {
       if (route.request().method() === 'GET') detailReads++;
       return route.fulfill({ json: row });
     });
+    await page.route('**/api/v1/movie/550', (route) => {
+      titleReads++;
+      return route.fulfill({
+        json: {
+          id: 550,
+          title: 'Retained Film',
+          originalTitle: 'Retained Film',
+          releaseDate: '2020-01-01',
+          genres: [],
+          mediaInfo: media,
+        },
+      });
+    });
     await page.route('**/api/v1/media/9101**', (route) => {
       if (route.request().method() === 'DELETE')
         deletes.push(new URL(route.request().url()).pathname);
@@ -72,6 +88,7 @@ for (const width of [1440, 390]) {
     const requestCard = page.locator('[data-interface-role="request-card"]');
     await expect(requestCard).toBeAttached();
     await requestCard.scrollIntoViewIfNeeded();
+    await expect.poll(() => titleReads).toBeGreaterThan(0);
     await expect(
       page.getByText('Retained Film', { exact: true })
     ).toBeVisible();
