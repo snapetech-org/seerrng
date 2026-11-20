@@ -74,6 +74,12 @@ const hamaTvdbRegex = new RegExp(/hama:\/\/tvdb[0-9]?-([0-9]+)/);
 const hamaAnidbRegex = new RegExp(/hama:\/\/anidb[0-9]?-([0-9]+)/);
 const HAMA_AGENT = 'com.plexapp.agents.hama';
 const episodeAvailabilityProviders = Object.values(MetadataProviderType);
+const normalizePlexTvTitle = (value: string): string =>
+  value
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]/gu, '');
 
 interface EpisodeAvailabilityCensus {
   source: EpisodeAvailabilitySource;
@@ -103,6 +109,7 @@ const getPlexMetadataProviderId = (
 };
 export const PLEX_SCAN_PAGE_SIZE = 50;
 export const PLEX_SCAN_ITEM_CONCURRENCY = 10;
+const MAX_PLEX_TMDB_IDENTITY_SEARCH_PAGES = 5;
 
 type PlexMovieProcessingItem = Pick<
   PlexLibraryItem,
@@ -1024,6 +1031,82 @@ export class PlexScanner
     });
   }
 
+  private async resolvePlexTvShowByTitleYear(
+    plexitem: Pick<PlexLibraryItem, 'title' | 'year'>,
+    knownIds: Pick<MediaIds, 'tvdbId' | 'imdbId'>
+  ): Promise<TmdbTvScanDetails | undefined> {
+    const title = plexitem.title.trim();
+    const normalizedTitle = normalizePlexTvTitle(title);
+    const year = plexitem.year;
+    if (
+      !normalizedTitle ||
+      typeof year !== 'number' ||
+      !Number.isSafeInteger(year)
+    ) {
+      return undefined;
+    }
+
+    const search = await this.tmdb.searchTvShows({
+      query: title,
+      page: 1,
+      year,
+      throwOnError: true,
+    });
+    if (
+      !Number.isSafeInteger(search.total_pages) ||
+      search.total_pages < 1 ||
+      search.total_pages > MAX_PLEX_TMDB_IDENTITY_SEARCH_PAGES
+    ) {
+      return undefined;
+    }
+
+    const results = [...search.results];
+    for (let page = 2; page <= search.total_pages; page += 1) {
+      const nextPage = await this.tmdb.searchTvShows({
+        query: title,
+        page,
+        year,
+        throwOnError: true,
+      });
+      if (
+        nextPage.total_pages !== search.total_pages ||
+        nextPage.total_results !== search.total_results
+      ) {
+        return undefined;
+      }
+      results.push(...nextPage.results);
+    }
+
+    const exactMatches = results.filter((result) => {
+      const titleMatches =
+        normalizePlexTvTitle(result.name) === normalizedTitle ||
+        normalizePlexTvTitle(result.original_name) === normalizedTitle;
+      if (!titleMatches) return false;
+
+      return result.first_air_date?.slice(0, 4) === String(year);
+    });
+
+    // Require a complete search result set and a unique exact title/year match.
+    // A truncated or ambiguous result cannot safely identify a library item.
+    if (search.total_results !== results.length || exactMatches.length !== 1) {
+      return undefined;
+    }
+
+    const candidate = await this.tmdb.getTvShowForScan({
+      tvId: exactMatches[0].id,
+    });
+    if (
+      (knownIds.tvdbId !== undefined &&
+        candidate.external_ids.tvdb_id !== knownIds.tvdbId) ||
+      (knownIds.imdbId !== undefined &&
+        candidate.external_ids.imdb_id !== knownIds.imdbId)
+    ) {
+      return undefined;
+    }
+
+    return candidate;
+  }
+
   private async getMediaIds(plexitem: PlexLibraryItem): Promise<MediaIds> {
     let mediaIds: Partial<MediaIds> = {};
     // Check if item is using new plex movie/tv agent
@@ -1040,11 +1123,10 @@ export class PlexScanner
       const cachedGuids = guidCache.data.get<MediaIds>(guidCacheKey);
 
       if (cachedGuids) {
-        this.log('GUIDs are cached. Skipping metadata request.', 'debug', {
+        this.log('Found a cached Plex GUID mapping.', 'debug', {
           mediaIds: cachedGuids,
           title: plexitem.title,
         });
-        mediaIds = cachedGuids;
       }
 
       const metadata =
@@ -1052,15 +1134,21 @@ export class PlexScanner
           ? plexitem
           : await this.plexClient.getMetadata(plexitem.ratingKey);
 
-      // If there is no Guid field at all, then we bail
-      if (!metadata.Guid) {
+      if (metadata.type !== 'show' && !metadata.Guid?.length && cachedGuids) {
+        mediaIds = cachedGuids;
+      }
+
+      // A matched Plex TV show can still be recovered through a strict TMDB
+      // title/year match when its provider GUIDs are missing. Other media
+      // kinds still need their normal external identifiers.
+      if (!metadata.Guid && metadata.type !== 'show') {
         throw new Error(
           'No Guid metadata for this title. Skipping. (Try refreshing the metadata in Plex for this media!)'
         );
       }
 
       // Map all IDs to MediaId object
-      metadata.Guid.forEach((ref) => {
+      (metadata.Guid ?? []).forEach((ref) => {
         if (ref.id.match(imdbRegex)) {
           mediaIds.imdbId = ref.id.match(imdbRegex)?.[1] ?? undefined;
         } else if (ref.id.match(tmdbRegex)) {
@@ -1080,10 +1168,24 @@ export class PlexScanner
       }
 
       if (mediaIds.tvdbId && !mediaIds.tmdbId) {
-        const show = await this.tmdb.getShowByTvdbIdForScan({
-          tvdbId: mediaIds.tvdbId,
-        });
-        mediaIds.tmdbId = show.id;
+        try {
+          const show = await this.tmdb.getShowByTvdbIdForScan({
+            tvdbId: mediaIds.tvdbId,
+          });
+          mediaIds.tmdbId = show.id;
+        } catch (error) {
+          this.log(
+            'Plex TVDB identifier did not resolve through TMDB; trying a title/year fallback.',
+            'warn',
+            {
+              title: metadata.title,
+              year: metadata.year,
+              tvdbId: mediaIds.tvdbId,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            }
+          );
+        }
       }
 
       // Cache GUIDs
@@ -1110,12 +1212,25 @@ export class PlexScanner
 
       // If we can find a tvdb Id, use it to resolve the tmdb id
       if (matchedtvdb) {
-        const show = await this.tmdb.getShowByTvdbIdForScan({
-          tvdbId: Number(matchedtvdb[1]),
-        });
-
         mediaIds.tvdbId = Number(matchedtvdb[1]);
-        mediaIds.tmdbId = show.id;
+        try {
+          const show = await this.tmdb.getShowByTvdbIdForScan({
+            tvdbId: mediaIds.tvdbId,
+          });
+          mediaIds.tmdbId = show.id;
+        } catch (error) {
+          this.log(
+            'Plex TVDB identifier did not resolve through TMDB; trying a title/year fallback.',
+            'warn',
+            {
+              title: plexitem.title,
+              year: plexitem.year,
+              tvdbId: mediaIds.tvdbId,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            }
+          );
+        }
       }
       // Check if the agent (for shows) is TMDB
     } else if (plexitem.guid.match(tmdbShowRegex)) {
@@ -1187,6 +1302,24 @@ export class PlexScanner
             mediaIds.imdbId = result.imdbId;
           }
         }
+      }
+    }
+
+    if (!mediaIds.tmdbId && plexitem.type === 'show' && !mediaIds.isHama) {
+      const show = await this.resolvePlexTvShowByTitleYear(plexitem, mediaIds);
+      if (show) {
+        mediaIds.tmdbId = show.id;
+        mediaIds.tvdbId ??= show.external_ids.tvdb_id;
+        mediaIds.imdbId ??= show.external_ids.imdb_id ?? undefined;
+        this.log(
+          'Resolved Plex TV show through a unique TMDB title/year match.',
+          'info',
+          {
+            title: plexitem.title,
+            year: plexitem.year,
+            tmdbId: show.id,
+          }
+        );
       }
     }
 

@@ -1,0 +1,1 @@
+Lumen password recovery now follows the browser's supported language when the visitor is signed out. French and Arabic translations cover the recovery and reset forms, validation, errors, and completion states; Arabic recovery pages use right-to-left document direction.

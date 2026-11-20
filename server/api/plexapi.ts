@@ -70,6 +70,7 @@ export interface PlexMetadata {
   guid: string;
   type: 'movie' | 'show' | 'season' | 'episode' | 'artist' | 'album' | 'track';
   title: string;
+  year?: number;
   Guid: {
     id: string;
   }[];
@@ -391,6 +392,7 @@ export const sanitizePlexMetadata = (
     guid: item.guid,
     type: item.type,
     title: item.title,
+    year: item.year,
     Guid: item.Guid ?? [],
     Children:
       includeChildren && children
