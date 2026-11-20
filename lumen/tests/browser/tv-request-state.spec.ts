@@ -49,7 +49,8 @@ async function show(
   posts: RecordedPost[] = [],
   permissions = 2,
   quota?: { limit: number; remaining: number; restricted: boolean },
-  settings: Record<string, unknown> = {}
+  settings: Record<string, unknown> = {},
+  seriesSeasons: typeof seasons = seasons
 ) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -76,8 +77,10 @@ async function show(
           externalIds: { tvdbId: 80 },
           overview: 'Rings.',
           genres: [],
-          seasons,
-          numberOfSeasons: 3,
+          seasons: seriesSeasons,
+          numberOfSeasons: seriesSeasons.filter(
+            ({ seasonNumber }) => seasonNumber > 0
+          ).length,
           firstAirDate: '2022-09-01',
           mediaInfo,
         },
@@ -529,6 +532,86 @@ test('TV detail can request missing episodes from a partly requested season', as
         seasons: [1],
         seasonRequests: [{ seasonNumber: 1, episodeNumbers: [3] }],
         bypassStreamingRequestPolicy: true,
+      },
+    },
+  ]);
+});
+
+test('large-series episode metadata can be retried without losing the deep-linked episode', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  const largeSeriesSeasons = Array.from({ length: 15 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  await show(
+    page,
+    {},
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true },
+    largeSeriesSeasons
+  );
+  await page.goto('/tv/84773?episode=3#season-15');
+  let loads = 0;
+  const loadedSeasons: string[] = [];
+  await page.route('**/api/v1/tv/84773/season/*', (route) => {
+    const seasonNumber = new URL(route.request().url()).pathname
+      .split('/')
+      .at(-1)!;
+    loadedSeasons.push(seasonNumber);
+    loads += 1;
+    if (loads === 1)
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Temporary metadata failure' },
+      });
+    return route.fulfill({
+      json: {
+        episodes: [
+          { episodeNumber: 1, name: 'First episode' },
+          { episodeNumber: 3, name: 'Deep-linked episode' },
+        ],
+      },
+    });
+  });
+  const open = page.getByRole('button', {
+    name: 'Request Episodes',
+    exact: true,
+  });
+  await open.click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(sheet.getByRole('combobox', { name: 'Season' })).toHaveValue(
+    '15'
+  );
+  const retry = sheet.getByRole('button', { name: 'Retry' });
+  await expect(retry).toBeVisible();
+  await retry.click();
+  const selectedEpisode = sheet.getByRole('checkbox', {
+    name: 'E3 Deep-linked episode',
+    exact: true,
+  });
+  await expect(selectedEpisode).toBeChecked();
+  await expect(retry).toHaveCount(0);
+  expect(loadedSeasons).toEqual(['15', '15']);
+  await sheet
+    .getByRole('button', { name: 'Request Selected Episodes' })
+    .click();
+  await expect(
+    page.getByText('Episodes requested for The Rings of Power')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [15],
+        seasonRequests: [{ seasonNumber: 15, episodeNumbers: [3] }],
       },
     },
   ]);

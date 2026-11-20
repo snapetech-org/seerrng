@@ -3109,6 +3109,15 @@ Live Sonarr remapping and request edit persistence remain unverified.
 Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sonarr-order-20261118/`.
 
+Lumen's episode request sheet loads metadata for the selected season rather
+than preloading every season. A fixture for a 15-season series now verifies
+that a temporary selected-season metadata failure can be retried, the
+deep-linked episode selection survives the retry, and submission contains
+only that season and episode. The 60-case TV request-state suite passed across
+desktop, iPhone, Android, and tablet. This confirms the client recovery path;
+it does not verify live TMDB or Sonarr responses. The test adds no layout or
+style changes, so visual comparison was not applicable.
+
 Accounts with Advanced Requests can now choose movie and TV request
 destinations and set the quick-request preference. Manage Requests still
 controls management surfaces and pending counts. Requesting on behalf
