@@ -186,7 +186,7 @@
     "@types/humanize-duration": "^3.27.4",
     "@types/js-yaml": "^4.0.9",
     "@types/jsdom": "^30.0.0",
-    "@types/lodash": "4.17.25",
+    "@types/lodash": "4.17.27",
     "@types/node": "24.19.0",
     "@types/node-schedule": "2.1.8",
     "@types/nodemailer": "^8.0.2",
