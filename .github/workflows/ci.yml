@@ -170,6 +170,13 @@ jobs:
       - name: Verify stable container alias policy
         run: node .ci-release-tooling/scripts/check-container-alias-policy.mjs
 
+      - name: Resolve latest published release baseline
+        id: published-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: echo "tag=$(.ci-release-tooling/scripts/latest-published-release-tag.sh)" >> "$GITHUB_OUTPUT"
+
       - name: Resolve validation range and PR body
         id: release-range
         env:
@@ -184,6 +191,7 @@ jobs:
           HEAD_SHA: ${{ inputs.pr_number != '' && inputs.pr_sha || github.sha }}
           BASE_SHA: ${{ steps.release-range.outputs.base_sha }}
           BODY_FILE: ${{ steps.release-range.outputs.body_file }}
+          LATEST_PUBLISHED_RELEASE_TAG: ${{ steps.published-release.outputs.tag }}
         run: |
           set -euo pipefail
           node .ci-release-tooling/scripts/check-release-notes.mjs \

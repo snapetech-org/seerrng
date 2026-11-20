@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.72.40](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.40) - 2026-11-20
+
+### User-facing changes
+
+#### Fixed
+
+- **Lumen:** Hardcover recommendation feeds can be created on mobile without the submit action intercepting form input. Lumen waits for authentication to settle before checking category availability, avoiding a duplicate request during sign-in initialization.
+
 ## [3.72.39](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.39) - 2026-11-19
 
 ### User-facing changes

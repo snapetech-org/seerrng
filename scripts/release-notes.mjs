@@ -31,6 +31,25 @@ const isReleaseNotePath = (file) =>
 
 export const isReleaseNoteFile = isReleaseNotePath;
 
+function latestReleaseNoteBaseline(head, cwd) {
+  const publishedTag = process.env.LATEST_PUBLISHED_RELEASE_TAG;
+  if (publishedTag) {
+    return /^v3\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.test(publishedTag)
+      ? publishedTag
+      : null;
+  }
+
+  try {
+    return execFileSync(
+      'git',
+      ['describe', '--tags', '--abbrev=0', '--match', 'v3.*', head],
+      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
+    ).trim();
+  } catch {
+    return null;
+  }
+}
+
 export function parseReleaseNote(file, content) {
   const errors = [];
   const normalized = content.replace(/\r\n?/gu, '\n');
@@ -180,14 +199,8 @@ export function changedReleaseNoteFiles(base, head, cwd = process.cwd()) {
 }
 
 export function isReleaseNoteShipped(file, head, cwd = process.cwd()) {
-  let latestTag;
-  try {
-    latestTag = execFileSync(
-      'git',
-      ['describe', '--tags', '--abbrev=0', '--match', 'v3.*', head],
-      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
-    ).trim();
-  } catch {
+  const latestTag = latestReleaseNoteBaseline(head, cwd);
+  if (!latestTag) {
     return false;
   }
 
@@ -203,14 +216,8 @@ export function isReleaseNoteShipped(file, head, cwd = process.cwd()) {
 }
 
 export function isShippedReleaseNoteChanged(file, head, cwd = process.cwd()) {
-  let latestTag;
-  try {
-    latestTag = execFileSync(
-      'git',
-      ['describe', '--tags', '--abbrev=0', '--match', 'v3.*', head],
-      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
-    ).trim();
-  } catch {
+  const latestTag = latestReleaseNoteBaseline(head, cwd);
+  if (!latestTag) {
     return false;
   }
 

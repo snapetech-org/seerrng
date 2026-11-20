@@ -303,6 +303,33 @@ test('release-note range discovery distinguishes additions from edits', () => {
           .includes('release-note fragments are append-only')
     );
 
+    const unpublishedTagCorrection = spawnSync(
+      process.execPath,
+      [
+        checkScript,
+        '--base',
+        secondHead,
+        '--head',
+        thirdHead,
+        '--pr-body',
+        bodyFile,
+      ],
+      {
+        cwd: repository,
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          LATEST_PUBLISHED_RELEASE_TAG: 'v3.0.0',
+        },
+      }
+    );
+    assert.equal(
+      unpublishedTagCorrection.status,
+      0,
+      unpublishedTagCorrection.stderr
+    );
+    assert.match(unpublishedTagCorrection.stdout, /Validated 1/u);
+
     runGit('tag', 'v3.0.2', thirdHead);
     runGit('rm', '--quiet', 'release-notes/books.md');
     runGit('commit', '--quiet', '-m', 'chore: archive shipped release note');
