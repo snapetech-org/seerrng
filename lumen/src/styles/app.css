@@ -1760,6 +1760,10 @@ a.person:hover {
 }
 .recommendation-form {
   margin: 0;
+  pointer-events: none;
+}
+.recommendation-form > .set {
+  pointer-events: auto;
 }
 .recommendation-preference {
   pointer-events: none;
