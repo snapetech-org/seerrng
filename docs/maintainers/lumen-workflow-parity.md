@@ -100,6 +100,16 @@ Notification Settings route. That route still contains English-only content
 and is the next account-settings localization gap. Evidence is retained at
 `seerrng-admin-users-localization-20261120/managed-account-*`.
 
+Shared notification event selectors on the administration and user notification
+pages now use SeerrNG's localized English, French, and Arabic event labels. The
+channel forms and page headings remain English-only; this small shared control
+does not close the notification settings localization gap. Browser fixtures
+confirmed the same event masks and save behavior at desktop, phone, Android, and
+tablet sizes. French and Arabic baseline/candidate captures were compared at
+1440, 390, 412, and 834 CSS pixels; the existing form geometry is preserved and
+the current mobile navigation overlap is unchanged. Evidence is retained at
+`seerrng-admin-users-localization-20261120/event-labels/`.
+
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select

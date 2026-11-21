@@ -1164,7 +1164,21 @@
     "lumen.importMediaServerUsers.confirmTitle": "{action}?",
     "lumen.importMediaServerUsers.syncBody": "Refresh linked Plex accounts and import any newly eligible Plex users.",
     "lumen.importMediaServerUsers.selectedBody": "{count} selected from {provider}.",
-    "lumen.importMediaServerUsers.goBack": "Go Back"
+    "lumen.importMediaServerUsers.goBack": "Go Back",
+    "components.NotificationTypeSelector.mediarequested": "Request awaiting approval",
+    "components.NotificationTypeSelector.mediaapproved": "Request approved",
+    "components.NotificationTypeSelector.mediaavailable": "Media available",
+    "components.NotificationTypeSelector.mediafailed": "Request failed",
+    "components.NotificationTypeSelector.mediadeclined": "Request declined",
+    "components.NotificationTypeSelector.mediaAutoApproved": "Request automatically approved",
+    "components.NotificationTypeSelector.issuecreated": "Issue reported",
+    "components.NotificationTypeSelector.issuecomment": "Issue comment added",
+    "components.NotificationTypeSelector.issueresolved": "Issue resolved",
+    "components.NotificationTypeSelector.issuereopened": "Issue reopened",
+    "components.NotificationTypeSelector.mediaautorequested": "Media automatically requested",
+    "components.NotificationTypeSelector.softwareavailable": "Software available",
+    "components.NotificationTypeSelector.softwareStatus": "Software request status changed",
+    "components.NotificationTypeSelector.mediaPendingUpdated": "Pending request updated"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2457,7 +2471,8 @@
     "lumen.importMediaServerUsers.confirmTitle": "{action} ?",
     "lumen.importMediaServerUsers.syncBody": "Actualiser les comptes Plex associés et importer tout nouvel utilisateur Plex admissible.",
     "lumen.importMediaServerUsers.selectedBody": "{count} sélectionné(s) depuis {provider}.",
-    "lumen.importMediaServerUsers.goBack": "Retour"
+    "lumen.importMediaServerUsers.goBack": "Retour",
+    "components.NotificationTypeSelector.mediaPendingUpdated": "Demande en attente mise à jour"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -3754,6 +3769,7 @@
     "lumen.importMediaServerUsers.confirmTitle": "{action}؟",
     "lumen.importMediaServerUsers.syncBody": "حدّث حسابات Plex المرتبطة واستورد أي مستخدم Plex جديد مؤهل.",
     "lumen.importMediaServerUsers.selectedBody": "تم تحديد {count} من {provider}.",
-    "lumen.importMediaServerUsers.goBack": "رجوع"
+    "lumen.importMediaServerUsers.goBack": "رجوع",
+    "components.NotificationTypeSelector.mediaPendingUpdated": "تم تحديث الطلب المعلق"
   }
 }

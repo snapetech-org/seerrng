@@ -101,6 +101,21 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
 test('messaging channels preserve credentials and independent event masks', async ({
   page,
 }, info) => {
+  const requestedLocale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE ?? ''
+  )
+    ? process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE!
+    : 'en';
+  const baseline = process.env.LUMEN_ADMIN_NOTIFICATION_BASELINE === '1';
+  const locale = requestedLocale;
+  const eventLabels = {
+    en: { approved: 'Request approved', available: 'Media available' },
+    fr: { approved: 'Demande validée', available: 'Média demandé disponible' },
+    ar: {
+      approved: 'تمت الموافقة على الطلب',
+      available: 'المحتوى المطلوب متاح',
+    },
+  }[baseline ? 'en' : locale];
   const saved: { path: string; body: unknown }[] = [];
   const agents = {
     telegram: {
@@ -140,6 +155,8 @@ test('messaging channels preserve credentials and independent event masks', asyn
     const path = new URL(request.url()).pathname;
     if (path.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/settings/main'))
+      return route.fulfill({ json: { locale } });
     if (path.endsWith('/pushover/sounds'))
       return route.fulfill({ json: [{ name: 'bell', description: 'Bell' }] });
     const channel = path.split('/').at(-1)! as keyof typeof agents;
@@ -162,7 +179,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
   await expect(
     telegram.getByRole('button', { name: 'Save Telegram' })
   ).toBeDisabled();
-  await telegram.getByLabel('Request approved').check();
+  await telegram.getByLabel(eventLabels.approved, { exact: true }).check();
   await telegram.getByLabel('Message Thread ID').fill('42');
   await telegram.getByLabel('Send Silently').check();
   await telegram.getByRole('button', { name: 'Save Telegram' }).click();
@@ -172,7 +189,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
 
   const pushbullet = page.locator('#pushbullet');
   await pushbullet.getByLabel('Channel Tag').fill('household');
-  await pushbullet.getByLabel('Media available').check();
+  await pushbullet.getByLabel(eventLabels.available, { exact: true }).check();
   await pushbullet.getByRole('button', { name: 'Save Pushbullet' }).click();
   await expect(
     pushbullet.getByText('Notification settings saved.')
@@ -217,6 +234,15 @@ test('messaging channels preserve credentials and independent event masks', asyn
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  await expect(page.locator('html')).toHaveAttribute(
+    'dir',
+    locale === 'ar' ? 'rtl' : 'ltr'
+  );
+  if (process.env.LUMEN_ADMIN_NOTIFICATION_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_NOTIFICATION_CAPTURE_DIR}/${baseline ? 'baseline' : 'candidate'}-${requestedLocale}-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await telegram.screenshot({ path: info.outputPath('telegram.png') });
 });

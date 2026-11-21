@@ -1846,5 +1846,19 @@
   "lumen.importMediaServerUsers.confirmTitle",
   "lumen.importMediaServerUsers.syncBody",
   "lumen.importMediaServerUsers.selectedBody",
-  "lumen.importMediaServerUsers.goBack"
+  "lumen.importMediaServerUsers.goBack",
+  "components.NotificationTypeSelector.mediarequested",
+  "components.NotificationTypeSelector.mediaapproved",
+  "components.NotificationTypeSelector.mediaavailable",
+  "components.NotificationTypeSelector.mediafailed",
+  "components.NotificationTypeSelector.mediadeclined",
+  "components.NotificationTypeSelector.mediaAutoApproved",
+  "components.NotificationTypeSelector.issuecreated",
+  "components.NotificationTypeSelector.issuecomment",
+  "components.NotificationTypeSelector.issueresolved",
+  "components.NotificationTypeSelector.issuereopened",
+  "components.NotificationTypeSelector.mediaautorequested",
+  "components.NotificationTypeSelector.softwareavailable",
+  "components.NotificationTypeSelector.softwareStatus",
+  "components.NotificationTypeSelector.mediaPendingUpdated"
 ]

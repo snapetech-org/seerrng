@@ -881,6 +881,28 @@ export const localeData = [
         'قد يحسّن مستوى المعالجة الأعلى ترتيب النتائج، لكنه يستغرق وقتًا أطول ويزيد التكلفة لكل مجموعة.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'اختياري للخوادم المحلية التي لا تتطلب مفتاحًا.',
+      'components.NotificationTypeSelector.mediarequested':
+        'الطلب معلق للموافقة',
+      'components.NotificationTypeSelector.mediaapproved':
+        'تمت الموافقة على الطلب',
+      'components.NotificationTypeSelector.mediaavailable':
+        'المحتوى المطلوب متاح',
+      'components.NotificationTypeSelector.mediafailed': 'فشل إنشاء الطلب',
+      'components.NotificationTypeSelector.mediadeclined': 'تم رفض الطلب',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'تم الموافقة على الطلب بشكل تلقائي',
+      'components.NotificationTypeSelector.issuecreated':
+        'تم التبليغ عن المشكلة',
+      'components.NotificationTypeSelector.issuecomment': 'تعليق على المشكلة',
+      'components.NotificationTypeSelector.issueresolved': 'تم حل المشكلة',
+      'components.NotificationTypeSelector.issuereopened':
+        'تم إعادة فتح المشكلة',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'تم تقديم الطلب بشكل تلقائي',
+      'components.NotificationTypeSelector.softwareavailable':
+        'البرمجيات المطلوبة متاحة',
+      'components.NotificationTypeSelector.softwareStatus':
+        'تحديثات طلبات البرمجيات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -2307,6 +2329,8 @@ export const localeData = [
       'lumen.importMediaServerUsers.selectedBody':
         'تم تحديد {count} من {provider}.',
       'lumen.importMediaServerUsers.goBack': 'رجوع',
+      'components.NotificationTypeSelector.mediaPendingUpdated':
+        'تم تحديث الطلب المعلق',
     },
   },
   {
@@ -2530,6 +2554,25 @@ export const localeData = [
         'Трябва да предоставите валиден минимален TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Трябва да предоставите валиден порт',
+      'components.NotificationTypeSelector.mediarequested':
+        'Заявка в очакване на одобрение',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Заявката е одобрена',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Заявката е налична',
+      'components.NotificationTypeSelector.mediafailed':
+        'Неуспешна обработка на заявката',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Заявката е отхвърлена',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Заявката е одобрена автоматично',
+      'components.NotificationTypeSelector.issuecreated': 'Докладван проблем',
+      'components.NotificationTypeSelector.issuecomment': 'Коментар на проблем',
+      'components.NotificationTypeSelector.issueresolved': 'Разрешен проблем',
+      'components.NotificationTypeSelector.issuereopened':
+        'Повторно отворен проблем',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Заявката е подадена автоматично',
     },
   },
   {
@@ -2684,6 +2727,27 @@ export const localeData = [
       'components.Settings.SettingsAbout.version': 'Versió',
       'components.Settings.SettingsNetwork.docs': 'documentació',
       'components.Settings.SettingsNetwork.network': 'Plataforma',
+      'components.NotificationTypeSelector.mediarequested':
+        "Sol·licitud pendent d'aprovació",
+      'components.NotificationTypeSelector.mediaapproved':
+        'Sol·licitud aprovada',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Sol·licitud disponible',
+      'components.NotificationTypeSelector.mediafailed':
+        "S'ha produït un error en el processament de la sol·licitud",
+      'components.NotificationTypeSelector.mediadeclined':
+        'Sol·licitud rebutjada',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Sol·licituds aprovades automàticament',
+      'components.NotificationTypeSelector.issuecreated':
+        'Incidència informada',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentari de la incidència',
+      'components.NotificationTypeSelector.issueresolved': 'Incidència resolta',
+      'components.NotificationTypeSelector.issuereopened':
+        'Incidències reobertes',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Sol·licitud enviada automàticament',
     },
   },
   {
@@ -2903,6 +2967,23 @@ export const localeData = [
         'Musíte zadat platné minimální TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Musíte zadat platný port',
+      'components.NotificationTypeSelector.mediarequested':
+        'Žádost čeká na schválení',
+      'components.NotificationTypeSelector.mediaapproved': 'Žádost schválena',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Žádost je dostupná',
+      'components.NotificationTypeSelector.mediafailed':
+        'Zpracování žádosti selhalo',
+      'components.NotificationTypeSelector.mediadeclined': 'Žádost odmítnuta',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Žádost automaticky schválena',
+      'components.NotificationTypeSelector.issuecreated': 'Problém nahlášen',
+      'components.NotificationTypeSelector.issuecomment': 'Komentář k problému',
+      'components.NotificationTypeSelector.issueresolved': 'Problém vyřešen',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problém znovu otevřen',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Žádost byla automaticky odeslána',
     },
   },
   {
@@ -3115,6 +3196,23 @@ export const localeData = [
         'Du skal angive en gyldig minimum-TLL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Du skal angive en gyldig port',
+      'components.NotificationTypeSelector.mediarequested':
+        'Anmodning afventer godkendelse',
+      'components.NotificationTypeSelector.mediaapproved': 'Anmodning godkendt',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Anmodning tilgængelig',
+      'components.NotificationTypeSelector.mediafailed':
+        'Anmodningsbehandling mislykkedes',
+      'components.NotificationTypeSelector.mediadeclined': 'Anmodning afvist',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Anmodning godkendt automatisk',
+      'components.NotificationTypeSelector.issuecreated': 'Problem rapporteret',
+      'components.NotificationTypeSelector.issuecomment':
+        'Kommentar til problem',
+      'components.NotificationTypeSelector.issueresolved': 'Problem løst',
+      'components.NotificationTypeSelector.issuereopened': 'Problem genåbnet',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Anmodning indsendt automatisk',
     },
   },
   {
@@ -4059,6 +4157,27 @@ export const localeData = [
         'Ein höherer Aufwand kann die Bestellung verbessern, dauert jedoch länger und kostet mehr pro Deck.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Optional für lokale Server, die keinen Schlüssel benötigen.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Genehmigung ausstehend',
+      'components.NotificationTypeSelector.mediaapproved': 'Anfrage genehmigt',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Angefragtes Medium verfügbar',
+      'components.NotificationTypeSelector.mediafailed':
+        'Anfrageverarbeitung fehlgeschlagen',
+      'components.NotificationTypeSelector.mediadeclined': 'Anfrage abgelehnt',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Anfrage automatisch genehmigt',
+      'components.NotificationTypeSelector.issuecreated': 'Problem gemeldet',
+      'components.NotificationTypeSelector.issuecomment': 'Problemkommentar',
+      'components.NotificationTypeSelector.issueresolved': 'Problem gelöst',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problem wiedereröffnet',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Anfrage automatisch übermittelt',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Angeforderte Software verfügbar',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Software-Anfrage-Updates',
     },
   },
   {
@@ -4970,6 +5089,26 @@ export const localeData = [
         'Higher effort can improve ordering but takes longer and costs more per deck.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Optional for local servers that do not require a key.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Request awaiting approval',
+      'components.NotificationTypeSelector.mediaapproved': 'Request approved',
+      'components.NotificationTypeSelector.mediaavailable': 'Media available',
+      'components.NotificationTypeSelector.mediafailed': 'Request failed',
+      'components.NotificationTypeSelector.mediadeclined': 'Request declined',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Request automatically approved',
+      'components.NotificationTypeSelector.issuecreated': 'Issue reported',
+      'components.NotificationTypeSelector.issuecomment': 'Issue comment added',
+      'components.NotificationTypeSelector.issueresolved': 'Issue resolved',
+      'components.NotificationTypeSelector.issuereopened': 'Issue reopened',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Media automatically requested',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Software available',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Software request status changed',
+      'components.NotificationTypeSelector.mediaPendingUpdated':
+        'Pending request updated',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -6482,6 +6621,25 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Σύνολο αιτημάτων',
       'components.Settings.SettingsAbout.uptodate': 'Ενημερωμένο',
       'components.Settings.SettingsAbout.version': 'Έκδοση',
+      'components.NotificationTypeSelector.mediarequested':
+        'Αίτημα σε αναμονή έγκρισης',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Το αίτημα εγκρίθηκε',
+      'components.NotificationTypeSelector.mediaavailable': 'Αίτημα διαθέσιμο',
+      'components.NotificationTypeSelector.mediafailed':
+        'Η επεξεργασία του αιτήματος απέτυχε',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Το αίτημα απορρίφθηκε',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Το αίτημα εγκρίθηκε αυτόματα',
+      'components.NotificationTypeSelector.issuecreated': 'Αναφέρθηκε πρόβλημα',
+      'components.NotificationTypeSelector.issuecomment': 'Σχόλιο προβλήματος',
+      'components.NotificationTypeSelector.issueresolved':
+        'Το πρόβλημα επιλύθηκε',
+      'components.NotificationTypeSelector.issuereopened':
+        'Το πρόβλημα ανοίχθηκε ξανά',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Καταχωρήθηκε αίτημα αυτόματα',
     },
   },
   {
@@ -7426,6 +7584,30 @@ export const localeData = [
         'El esfuerzo más alto puede mejorar el orden, pero tarda más y cuesta más por cubierta.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Opcional para servidores locales que no requieren una llave.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Petición pendiente de aprobar',
+      'components.NotificationTypeSelector.mediaapproved': 'Petición Aprobada',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Contenido solicitado disponible',
+      'components.NotificationTypeSelector.mediafailed':
+        'Fallo en el procesamiento de la solicitud',
+      'components.NotificationTypeSelector.mediadeclined': 'Petición Rechazada',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Petición Aprobada Automáticamente',
+      'components.NotificationTypeSelector.issuecreated':
+        'Incidencia Reportada',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentario de Incidencia',
+      'components.NotificationTypeSelector.issueresolved':
+        'Incidencia Resuelta',
+      'components.NotificationTypeSelector.issuereopened':
+        'Incidencia Reabierta',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Petición Enviada Automáticamente',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Solicitud de software disponible',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Actualizaciones de solicitudes de software',
     },
   },
   {
@@ -8360,6 +8542,29 @@ export const localeData = [
         'El esfuerzo más alto puede mejorar el orden, pero tarda más y cuesta más por cubierta.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Opcional para servidores locales que no requieren una llave.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Petición pendiente de aprobar',
+      'components.NotificationTypeSelector.mediaapproved': 'Petición Aprobada',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Petición Disponible',
+      'components.NotificationTypeSelector.mediafailed':
+        'Procesamiento de Petición Fallida',
+      'components.NotificationTypeSelector.mediadeclined': 'Petición Rechazada',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Petición Aprobada Automáticamente',
+      'components.NotificationTypeSelector.issuecreated':
+        'Incidencia Reportada',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentario de Incidencia',
+      'components.NotificationTypeSelector.issueresolved': 'Cuestión resuelta',
+      'components.NotificationTypeSelector.issuereopened':
+        'Incidencia Reabierta',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Petición Enviada Automáticamente',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Solicitud de software disponible',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Actualizaciones de la solicitud de software',
     },
   },
   {
@@ -8574,6 +8779,27 @@ export const localeData = [
         'Pead sisestama kehtiva minimaalse TTL-i',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Pead sisestama kehtiva pordinumbri',
+      'components.NotificationTypeSelector.mediarequested':
+        'Taotlus ootab heakskiitu',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Taotlus heaks kiidetud',
+      'components.NotificationTypeSelector.mediaavailable': 'Taotlus saadaval',
+      'components.NotificationTypeSelector.mediafailed':
+        'Taotluse töötlemine ebaõnnestus',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Taotlus tagasi lükatud',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Taotlus automaatselt heaks kiidetud',
+      'components.NotificationTypeSelector.issuecreated':
+        'Probleemist teatatud',
+      'components.NotificationTypeSelector.issuecomment':
+        'Probleemi kommentaar',
+      'components.NotificationTypeSelector.issueresolved':
+        'Probleem lahendatud',
+      'components.NotificationTypeSelector.issuereopened':
+        'Probleem uuesti avatud',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Taotlus automaatselt esitatud',
     },
   },
   {
@@ -8707,6 +8933,22 @@ export const localeData = [
         'Ota tuki välityspalvelimelle käyttöön',
       'components.Settings.SettingsNetwork.trustProxyTip':
         'Sallii Seerr:in rekisteröidä välityspalvelimen takana olevien asiakkaiden IP:t oikein',
+      'components.NotificationTypeSelector.mediarequested':
+        'Pyyntö odottaa hyväksymistä',
+      'components.NotificationTypeSelector.mediaapproved': 'Pyyntö hyväksytty',
+      'components.NotificationTypeSelector.mediaavailable': 'Pyyntö saatavilla',
+      'components.NotificationTypeSelector.mediafailed':
+        'Pyynnön suorittaminen epäonnistui',
+      'components.NotificationTypeSelector.mediadeclined': 'Pyyntö hylätty',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Pyyntö hyväksytään automaattisesti',
+      'components.NotificationTypeSelector.issuecreated': 'Ongelma ilmoitettu',
+      'components.NotificationTypeSelector.issuecomment': 'Ongelman kommentti',
+      'components.NotificationTypeSelector.issueresolved': 'Ongelma ratkaistu',
+      'components.NotificationTypeSelector.issuereopened':
+        'Ongelma avattu uudelleen',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Pyyntö lähetetty automaattisesti',
     },
   },
   {
@@ -9656,6 +9898,27 @@ export const localeData = [
         'Un niveau plus élevé peut améliorer le classement, mais prend plus de temps et coûte davantage par sélection.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Facultatif pour les serveurs locaux qui ne demandent pas de clé.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Demande en attente de validation',
+      'components.NotificationTypeSelector.mediaapproved': 'Demande validée',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Média demandé disponible',
+      'components.NotificationTypeSelector.mediafailed':
+        "Échec d'ajout de la demande",
+      'components.NotificationTypeSelector.mediadeclined': 'Demande refusée',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Demande validée automatiquement',
+      'components.NotificationTypeSelector.issuecreated': 'Problème signalé',
+      'components.NotificationTypeSelector.issuecomment':
+        'Commentaires du problème',
+      'components.NotificationTypeSelector.issueresolved': 'Problème résolu',
+      'components.NotificationTypeSelector.issuereopened': 'Problème rouvert',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Demande soumise automatiquement',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Demande de logiciel disponible',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Mises à jour des requêtes logicielles',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -11233,6 +11496,8 @@ export const localeData = [
       'lumen.importMediaServerUsers.selectedBody':
         '{count} sélectionné(s) depuis {provider}.',
       'lumen.importMediaServerUsers.goBack': 'Retour',
+      'components.NotificationTypeSelector.mediaPendingUpdated':
+        'Demande en attente mise à jour',
     },
   },
   {
@@ -11369,6 +11634,22 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Ukupno zahtjeva',
       'components.Settings.SettingsAbout.uptodate': 'Aktualno',
       'components.Settings.SettingsAbout.version': 'Verzija',
+      'components.NotificationTypeSelector.mediarequested':
+        'Zahtjev čeka odobrenje',
+      'components.NotificationTypeSelector.mediaapproved': 'Zahtjev odobren',
+      'components.NotificationTypeSelector.mediaavailable': 'Zahtjev dostupan',
+      'components.NotificationTypeSelector.mediafailed':
+        'Obrada zahtjeva nije uspjela',
+      'components.NotificationTypeSelector.mediadeclined': 'Zahtjev je odbijen',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Automatsko odobravanje zahtjeva',
+      'components.NotificationTypeSelector.issuecreated': 'Problem prijavljen',
+      'components.NotificationTypeSelector.issuecomment': 'Komentiraj problem',
+      'components.NotificationTypeSelector.issueresolved': 'Problem riješen',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problem ponovno otvoren',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Zahtjev je automatski poslan',
     },
   },
   {
@@ -11410,6 +11691,20 @@ export const localeData = [
       'components.PermissionEdit.viewrequests': 'צפייה בבקשות',
       'components.IssueDetails.allepisodes': 'כל הפרקים',
       'components.Settings.SettingsNetwork.proxyHostname': 'שם מארח Proxy',
+      'components.NotificationTypeSelector.mediarequested':
+        'בקשה ממתינה לאישור',
+      'components.NotificationTypeSelector.mediaapproved': 'בקשה אושרה',
+      'components.NotificationTypeSelector.mediaavailable': 'בקשה זמינה',
+      'components.NotificationTypeSelector.mediafailed': 'עיבוד הבקשה נכשל',
+      'components.NotificationTypeSelector.mediadeclined': 'בקשה נדחתה',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'בקשה אושרה אוטומטית',
+      'components.NotificationTypeSelector.issuecreated': 'מקרה חדש נפתח',
+      'components.NotificationTypeSelector.issuecomment': 'תגובה למקרה',
+      'components.NotificationTypeSelector.issueresolved': 'פנייה נפתרה',
+      'components.NotificationTypeSelector.issuereopened': 'מקרה נפתח מחדש',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'בקשה נפתחה אוטומטית',
     },
   },
   {
@@ -12316,6 +12611,29 @@ export const localeData = [
         'उच्च प्रयास आदेश में सुधार कर सकते हैं लेकिन प्रति डेक अधिक समय लगता है और लागत लेता है।',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'वैकल्पिक स्थानीय सर्वरों के लिए जिन्हें कुंजी की आवश्यकता नहीं है।',
+      'components.NotificationTypeSelector.mediarequested':
+        'अनुमोदन की प्रतीक्षा में अनुरोध',
+      'components.NotificationTypeSelector.mediaapproved': 'स्वीकृत अनुरोध',
+      'components.NotificationTypeSelector.mediaavailable':
+        'अनुरोधित मीडिया उपलब्ध',
+      'components.NotificationTypeSelector.mediafailed':
+        'अनुरोध प्रसंस्करण विफल',
+      'components.NotificationTypeSelector.mediadeclined':
+        'अनुरोध अस्वीकार किया गया',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'स्वचालित रूप से स्वीकृत अनुरोध',
+      'components.NotificationTypeSelector.issuecreated':
+        'मुद्दा रिपोर्ट किया गया',
+      'components.NotificationTypeSelector.issuecomment': 'मुद्दे पर टिप्पणी',
+      'components.NotificationTypeSelector.issueresolved': 'मुद्दा हल किया गया',
+      'components.NotificationTypeSelector.issuereopened':
+        'मुद्दा फिर से खोला गया',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'अनुरोध अपने-आप सबमिट किया गया',
+      'components.NotificationTypeSelector.softwareavailable':
+        'अनुरोधित सॉफ़्टवेयर उपलब्ध',
+      'components.NotificationTypeSelector.softwareStatus':
+        'सॉफ़्टवेयर अनुरोधों के अपडेट',
     },
   },
   {
@@ -12534,6 +12852,23 @@ export const localeData = [
         'Érvényes minimális TTL‑értéket kell megadnia',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Érvényes portot kell megadnia',
+      'components.NotificationTypeSelector.mediarequested':
+        'Kérés elfogadásra vár',
+      'components.NotificationTypeSelector.mediaapproved': 'Kérés elfogadva',
+      'components.NotificationTypeSelector.mediaavailable': 'Kérés elérhető',
+      'components.NotificationTypeSelector.mediafailed':
+        'Kérés feldolgozás sikertelen',
+      'components.NotificationTypeSelector.mediadeclined': 'Kérés elutasítva',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Kérés automatikusan jóváhagyva',
+      'components.NotificationTypeSelector.issuecreated': 'Probléma jelentve',
+      'components.NotificationTypeSelector.issuecomment':
+        'Hozzászólás a hibajegyhez',
+      'components.NotificationTypeSelector.issueresolved': 'Probléma megoldva',
+      'components.NotificationTypeSelector.issuereopened':
+        'Probléma újranyitva',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'A kérelem automatikusan elküldve',
     },
   },
   {
@@ -13460,6 +13795,27 @@ export const localeData = [
         'Usaha yang lebih tinggi dapat meningkatkan pemesanan tapi membutuhkan waktu lebih lama dan biaya lebih banyak per dek.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Opsional bagi server lokal yang tidak memerlukan kunci.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Permintaan Menunggu Persetujuan',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Permintaan Disetujui',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Media yang diminta tersedia',
+      'components.NotificationTypeSelector.mediafailed':
+        'Pemrosesan Permintaan Gagal',
+      'components.NotificationTypeSelector.mediadeclined': 'Permintaan Ditolak',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Permintaan Otomatis Disetujui',
+      'components.NotificationTypeSelector.issuecreated': 'Isu Dilaporkan',
+      'components.NotificationTypeSelector.issuecomment': 'Komentar Isu',
+      'components.NotificationTypeSelector.issueresolved': 'Isu Diselesaikan',
+      'components.NotificationTypeSelector.issuereopened': 'Isu Dibuka Ulang',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Permintaan Otomatis Dikirimkan',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Permintaan Perangkat Lunak Tersedia',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Pemutakhiran Permintaan Perangkat Lunak',
     },
   },
   {
@@ -13680,6 +14036,26 @@ export const localeData = [
         'Devi fornire un valore TTL minimo valido',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'È necessario fornire una porta valida',
+      'components.NotificationTypeSelector.mediarequested':
+        'Richiesta in attesa di approvazione',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Richiesta approvata',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Richiesta disponibile',
+      'components.NotificationTypeSelector.mediafailed':
+        'Elaborazione della richiesta non riuscita',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Richiesta rifiutata',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Richiesta approvata automaticamente',
+      'components.NotificationTypeSelector.issuecreated': 'Problema Segnalato',
+      'components.NotificationTypeSelector.issuecomment':
+        'Commenti segnalazione',
+      'components.NotificationTypeSelector.issueresolved': 'Problema risolto',
+      'components.NotificationTypeSelector.issuereopened':
+        'Segnalazione Riaperta',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Richiesta inviata automaticamente',
     },
   },
   {
@@ -14596,6 +14972,30 @@ export const localeData = [
         '注文が向上するだけでなく、デッキごとにコストを削減できます。',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'キーを必要としないローカルサーバーのための任意。',
+      'components.NotificationTypeSelector.mediarequested':
+        'リクエストは未承認',
+      'components.NotificationTypeSelector.mediaapproved':
+        'リクエストが承認された',
+      'components.NotificationTypeSelector.mediaavailable':
+        'リクエストしたメディアが利用可能',
+      'components.NotificationTypeSelector.mediafailed':
+        'リクエストの処理が失敗した',
+      'components.NotificationTypeSelector.mediadeclined':
+        'リクエストは拒否された',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        '自動承認されたリクエスト',
+      'components.NotificationTypeSelector.issuecreated':
+        'チケットが報告されました',
+      'components.NotificationTypeSelector.issuecomment': 'チケットのコメント',
+      'components.NotificationTypeSelector.issueresolved': 'チケット解決済み',
+      'components.NotificationTypeSelector.issuereopened':
+        'チケットを再度開いた',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'リクエストが自動的に送信されました',
+      'components.NotificationTypeSelector.softwareavailable':
+        'リクエストされたソフトウェアが利用可能',
+      'components.NotificationTypeSelector.softwareStatus':
+        'ソフトウェア要求の更新',
     },
   },
   {
@@ -15472,6 +15872,25 @@ export const localeData = [
         '더 높은 노력은 주문 개선을 할 수 있지만 데크 당 더 길고 비용이 들 수 있습니다.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         '키가 필요하지 않은 로컬 서버에 대한 선택.',
+      'components.NotificationTypeSelector.mediarequested':
+        '보류 중인 승인 요청',
+      'components.NotificationTypeSelector.mediaapproved': '요청 승인됨',
+      'components.NotificationTypeSelector.mediaavailable':
+        '요청한 미디어 사용 가능',
+      'components.NotificationTypeSelector.mediafailed': '요청 처리 실패',
+      'components.NotificationTypeSelector.mediadeclined': '요청 거부됨',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        '자동 승인된 요청',
+      'components.NotificationTypeSelector.issuecreated': '보고된 이슈',
+      'components.NotificationTypeSelector.issuecomment': '이슈 댓글',
+      'components.NotificationTypeSelector.issueresolved': '해결된 이슈',
+      'components.NotificationTypeSelector.issuereopened': '재개된 이슈',
+      'components.NotificationTypeSelector.mediaautorequested':
+        '자동으로 제출된 요청',
+      'components.NotificationTypeSelector.softwareavailable':
+        '요청한 소프트웨어 사용 가능',
+      'components.NotificationTypeSelector.softwareStatus':
+        '소프트웨어 요청 업데이트',
     },
   },
   {
@@ -15552,6 +15971,25 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Viso rezervacijų',
       'components.Settings.SettingsAbout.uptodate': 'Atnaujinta',
       'components.Settings.SettingsAbout.version': 'Versija',
+      'components.NotificationTypeSelector.mediarequested':
+        'Rezervacija laukia patvirtinimo',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Rezervacija patvirtinta',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Rezervacija išpildyta',
+      'components.NotificationTypeSelector.mediafailed':
+        'Rezervacijos procesas nepavyko',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Rezervacija atšaukta',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Rezervacija automatiškai patvirtina',
+      'components.NotificationTypeSelector.issuecreated':
+        'Problema iš naujo atverta',
+      'components.NotificationTypeSelector.issuecomment':
+        'Problemos komentaras',
+      'components.NotificationTypeSelector.issueresolved': 'Problema išspręsta',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problema iš naujo atverta',
     },
   },
   {
@@ -15683,6 +16121,22 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Forespørsler totalt',
       'components.Settings.SettingsAbout.uptodate': 'Oppdatert',
       'components.Settings.SettingsAbout.version': 'Versjon',
+      'components.NotificationTypeSelector.mediarequested':
+        'Forespørsel venter Godkjenning',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Forespørsel Godkjent',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Forespørsel Tilgjengelig',
+      'components.NotificationTypeSelector.mediafailed': 'Forespørsel Feilet',
+      'components.NotificationTypeSelector.mediadeclined': 'Forespørsel Avvist',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Forespørsel Automagisk Godkjent',
+      'components.NotificationTypeSelector.issuecreated': 'Avvik Rapportert',
+      'components.NotificationTypeSelector.issuecomment': 'Avvikskommentar',
+      'components.NotificationTypeSelector.issueresolved': 'Avvik Utbedret',
+      'components.NotificationTypeSelector.issuereopened': 'Avvik gjenåpnet',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Forespørsel Automagisk Forespurt',
     },
   },
   {
@@ -15906,6 +16360,24 @@ export const localeData = [
         'U moet een geldige minimale TTL-waarde opgeven',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Je dient een geldige poort op te geven',
+      'components.NotificationTypeSelector.mediarequested':
+        'Aanvraag in afwachting van goedkeuring',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Aanvraag goedgekeurd',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Aanvraag beschikbaar',
+      'components.NotificationTypeSelector.mediafailed':
+        'Verwerking van aanvraag mislukt',
+      'components.NotificationTypeSelector.mediadeclined': 'Aanvraag geweigerd',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Aanvraag automatisch goedgekeurd',
+      'components.NotificationTypeSelector.issuecreated': 'Probleem gemeld',
+      'components.NotificationTypeSelector.issuecomment': 'Reactie op probleem',
+      'components.NotificationTypeSelector.issueresolved': 'Probleem opgelost',
+      'components.NotificationTypeSelector.issuereopened':
+        'Probleem opnieuw ingediend',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Aanvraag automatisch ingediend',
     },
   },
   {
@@ -16125,6 +16597,24 @@ export const localeData = [
         'Musisz podać prawidłowy minimalny TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Musisz podać prawidłowy port',
+      'components.NotificationTypeSelector.mediarequested':
+        'Prośba o oczekuje na zatwierdzenie',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Prośba zatwierdzona',
+      'components.NotificationTypeSelector.mediaavailable': 'Dostępne',
+      'components.NotificationTypeSelector.mediafailed':
+        'Przetwarzanie żądania nie powiodło się',
+      'components.NotificationTypeSelector.mediadeclined': 'Prośba odrzucona',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Prośba o automatyczne zatwierdzenie',
+      'components.NotificationTypeSelector.issuecreated': 'Zgłoszono problem',
+      'components.NotificationTypeSelector.issuecomment':
+        'Komentarz do problemu',
+      'components.NotificationTypeSelector.issueresolved': 'Problem rozwiązany',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problem ponownie otwarty',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Prośba przesłana automatycznie',
     },
   },
   {
@@ -17058,6 +17548,29 @@ export const localeData = [
         'Um esforço maior pode melhorar a ordem, mas demora mais e custa mais por deck.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Opcional para servidores locais que não precisam de uma chave.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Solicitação com Aprovação Pendente',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Solicitação Aprovada',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Mídia solicitada disponível',
+      'components.NotificationTypeSelector.mediafailed':
+        'Falha ao Processar Solicitação',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Solicitação Recusada',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Solicitação Aprovada Automaticamente',
+      'components.NotificationTypeSelector.issuecreated': 'Problema Reportado',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentário no Problema',
+      'components.NotificationTypeSelector.issueresolved': 'Problema Resolvido',
+      'components.NotificationTypeSelector.issuereopened': 'Problema Re-aberto',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Solicitação Enviada Automaticamente',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Pedido de Software Disponível',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Atualizações de solicitações de software',
     },
   },
   {
@@ -17282,6 +17795,23 @@ export const localeData = [
         'Deve fornecer um TTL mínimo válido',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Deve fornecer uma porta válida',
+      'components.NotificationTypeSelector.mediarequested': 'Multimédia Pedida',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Multimédia Aprovada',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Multimédia Disponível',
+      'components.NotificationTypeSelector.mediafailed': 'Multimédia Falhou',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Multimédia Rejeitada',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Multimédia Aprovada Automaticamente',
+      'components.NotificationTypeSelector.issuecreated': 'Problema Reportado',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentário no Problema',
+      'components.NotificationTypeSelector.issueresolved': 'Problema Resolvido',
+      'components.NotificationTypeSelector.issuereopened': 'Problema Re-aberto',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Pedido automaticamente enviado',
     },
   },
   {
@@ -17380,6 +17910,26 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Total cereri',
       'components.Settings.SettingsAbout.uptodate': 'La zi',
       'components.Settings.SettingsAbout.version': 'Versiune',
+      'components.NotificationTypeSelector.mediarequested':
+        'Solicitarea Așteptă Aprobare',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Solicitare Aprobată',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Solicitare Disponibilă',
+      'components.NotificationTypeSelector.mediafailed':
+        'Procesarea Solicitării Eșuată',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Solicitare Refuzată',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Solicitare Aprobată Automat',
+      'components.NotificationTypeSelector.issuecreated': 'Problemă Raportată',
+      'components.NotificationTypeSelector.issuecomment':
+        'Comentariu la Problemă',
+      'components.NotificationTypeSelector.issueresolved': 'Problemă Rezolvată',
+      'components.NotificationTypeSelector.issuereopened':
+        'Problemă Redeschisă',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Solicitare Trimisă Automat',
     },
   },
   {
@@ -17606,6 +18156,27 @@ export const localeData = [
         'Необходимо ввести корректный минимальный TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Нужно указать корректный порт',
+      'components.NotificationTypeSelector.mediarequested':
+        'Запросы медиафайлов',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Одобрение медиа-запросов',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Доступны новые медиафайлы',
+      'components.NotificationTypeSelector.mediafailed':
+        'Ошибки при добавлении медиа-запросов',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Отклонение медиа-запросов',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Автоматическое одобрение медиа-запросов',
+      'components.NotificationTypeSelector.issuecreated':
+        'Проблема опубликована',
+      'components.NotificationTypeSelector.issuecomment':
+        'Комментарий к проблеме',
+      'components.NotificationTypeSelector.issueresolved': 'Проблема решена',
+      'components.NotificationTypeSelector.issuereopened':
+        'Проблема открыта заново',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Запрос отправлен автоматически',
     },
   },
   {
@@ -17731,6 +18302,23 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Kërkesat totale',
       'components.Settings.SettingsAbout.uptodate': 'E përditësuar',
       'components.Settings.SettingsAbout.version': 'Versioni',
+      'components.NotificationTypeSelector.mediarequested':
+        'Kërkesë në pritje të miratimit',
+      'components.NotificationTypeSelector.mediaapproved': 'Kërkesa u Miratua',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Kërkesa e Disponueshme',
+      'components.NotificationTypeSelector.mediafailed':
+        'Përpunimi i kërkesës dështoi',
+      'components.NotificationTypeSelector.mediadeclined': 'Kërkesa u refuzua',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Kërkesa u Miratua Automatikisht',
+      'components.NotificationTypeSelector.issuecreated':
+        'Problemi i Raportuar',
+      'components.NotificationTypeSelector.issuecomment': 'Komenti i Problemit',
+      'components.NotificationTypeSelector.issueresolved': 'Problemi u Zgjidh',
+      'components.NotificationTypeSelector.issuereopened': 'Problemi u Rihap',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Kërkesa u dorëzua automatikisht',
     },
   },
   {
@@ -17829,6 +18417,9 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Ukupno zahteva',
       'components.Settings.SettingsAbout.uptodate': 'Najsvežiji',
       'components.Settings.SettingsAbout.version': 'Verzija',
+      'components.NotificationTypeSelector.mediaapproved': 'Zahtev je odobren',
+      'components.NotificationTypeSelector.mediaavailable': 'Zahtev dostupan',
+      'components.NotificationTypeSelector.mediadeclined': 'Zahtev odbijen',
     },
   },
   {
@@ -18047,6 +18638,22 @@ export const localeData = [
         'Du måste ange ett giltigt minimalt TTL-värde',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Du måste ange en giltig port',
+      'components.NotificationTypeSelector.mediarequested':
+        'Förfrågan väntar på godkännande',
+      'components.NotificationTypeSelector.mediaapproved': 'Förfrågan godkänd',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Förfrågan tillgänglig',
+      'components.NotificationTypeSelector.mediafailed':
+        'Bearbetning av förfrågan misslyckades',
+      'components.NotificationTypeSelector.mediadeclined': 'Förfrågan nekad',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Förfrågan automatiskt godkänd',
+      'components.NotificationTypeSelector.issuecreated': 'Ärende skapat',
+      'components.NotificationTypeSelector.issuecomment': 'Ärendekommentar',
+      'components.NotificationTypeSelector.issueresolved': 'Ärende löst',
+      'components.NotificationTypeSelector.issuereopened': 'Ärende återöppnat',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Förfrågan automatiskt skickad',
     },
   },
   {
@@ -18261,6 +18868,23 @@ export const localeData = [
         'Geçerli bir minimum TTL girmelisiniz',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Geçerli bir port girmelisiniz',
+      'components.NotificationTypeSelector.mediarequested':
+        'Talep Onay Bekliyor',
+      'components.NotificationTypeSelector.mediaapproved': 'Talep Onaylandı',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Talep Kullanılabilir',
+      'components.NotificationTypeSelector.mediafailed':
+        'Talep İşleme Başarısız',
+      'components.NotificationTypeSelector.mediadeclined': 'Talep Reddedildi',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Talep Otomatik Onaylandı',
+      'components.NotificationTypeSelector.issuecreated': 'Sorun Bildirildi',
+      'components.NotificationTypeSelector.issuecomment': 'Sorun Yorumu',
+      'components.NotificationTypeSelector.issueresolved': 'Sorun Çözüldü',
+      'components.NotificationTypeSelector.issuereopened':
+        'Sorun Yeniden Açıldı',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Talep Otomatik Gönderildi',
     },
   },
   {
@@ -18469,6 +19093,27 @@ export const localeData = [
         'Дозволити Jellyseerr правильно реєструвати IP-адреси клієнтів за проксі',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Ви повинні вказати дійсний порт',
+      'components.NotificationTypeSelector.mediarequested':
+        'Запити медіафайлів',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Схвалення медіазапитів',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Доступні нові медіафайли',
+      'components.NotificationTypeSelector.mediafailed':
+        'Помилки при додаванні медіазапитів',
+      'components.NotificationTypeSelector.mediadeclined':
+        'Відхилення медіазапитів',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Автоматичне схвалення медіазапитів',
+      'components.NotificationTypeSelector.issuecreated':
+        'Проблема опублікована',
+      'components.NotificationTypeSelector.issuecomment':
+        'Коментар до проблеми',
+      'components.NotificationTypeSelector.issueresolved': 'Проблема вирішена',
+      'components.NotificationTypeSelector.issuereopened':
+        'Проблема відкрита знову',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Запит надіслано автоматично',
     },
   },
   {
@@ -19322,6 +19967,22 @@ export const localeData = [
         '更大的努力可以改善订购,但需要更长的时间,每个甲板的成本更高.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         '对不需要密钥的本地服务器可选 。',
+      'components.NotificationTypeSelector.mediarequested': '请求待批准',
+      'components.NotificationTypeSelector.mediaapproved': '请求已获批准',
+      'components.NotificationTypeSelector.mediaavailable':
+        '所请求的媒体已可用',
+      'components.NotificationTypeSelector.mediafailed': '请求处理失败',
+      'components.NotificationTypeSelector.mediadeclined': '请求被拒',
+      'components.NotificationTypeSelector.mediaAutoApproved': '自动批准的请求',
+      'components.NotificationTypeSelector.issuecreated': '问题已报告',
+      'components.NotificationTypeSelector.issuecomment': '问题评论',
+      'components.NotificationTypeSelector.issueresolved': '问题解决',
+      'components.NotificationTypeSelector.issuereopened': '问题重新开启',
+      'components.NotificationTypeSelector.mediaautorequested':
+        '自动提交的请求',
+      'components.NotificationTypeSelector.softwareavailable':
+        '所请求的软件已可用。',
+      'components.NotificationTypeSelector.softwareStatus': '软件请求更新',
     },
   },
   {
@@ -20175,6 +20836,21 @@ export const localeData = [
         '更大的努力可以改善訂單,但需要更久,每甲板成本更高。',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         '對不需要金鑰的本地伺服器可選擇 。',
+      'components.NotificationTypeSelector.mediarequested': '請求待批准',
+      'components.NotificationTypeSelector.mediaapproved': '請求獲批准',
+      'components.NotificationTypeSelector.mediaavailable':
+        '所請求的媒體已可用',
+      'components.NotificationTypeSelector.mediafailed': '請求處理失敗',
+      'components.NotificationTypeSelector.mediadeclined': '請求拒絕',
+      'components.NotificationTypeSelector.mediaAutoApproved': '自動核准的請求',
+      'components.NotificationTypeSelector.issuecreated': '問題已回報',
+      'components.NotificationTypeSelector.issuecomment': '問題評論',
+      'components.NotificationTypeSelector.issueresolved': '問題解決',
+      'components.NotificationTypeSelector.issuereopened': '問題重新開啟',
+      'components.NotificationTypeSelector.mediaautorequested': '請求自動提出',
+      'components.NotificationTypeSelector.softwareavailable':
+        '所請求的軟體已可用',
+      'components.NotificationTypeSelector.softwareStatus': '軟體要求更新',
     },
   },
   {
@@ -21090,6 +21766,29 @@ export const localeData = [
         'Nỗ lực cao hơn có thể cải thiện trật tự nhưng tốn nhiều thời gian hơn và chi phí hơn cho mỗi khoang.',
       'components.Settings.SettingsSwipe.openAiKeyHelp':
         'Tùy chọn cho máy phục vụ cục bộ không cần thiết khoá.',
+      'components.NotificationTypeSelector.mediarequested':
+        'Yêu cầu đang chờ phê duyệt',
+      'components.NotificationTypeSelector.mediaapproved':
+        'Yêu cầu được chấp nhận',
+      'components.NotificationTypeSelector.mediaavailable':
+        'Nội dung đã yêu cầu đã có sẵn',
+      'components.NotificationTypeSelector.mediafailed':
+        'Việc xử lý yêu cầu bị lỗi',
+      'components.NotificationTypeSelector.mediadeclined': 'Yêu cầu bị từ chối',
+      'components.NotificationTypeSelector.mediaAutoApproved':
+        'Yêu cầu được tự động phê duyệt',
+      'components.NotificationTypeSelector.issuecreated':
+        'Vấn đề đã được báo cáo',
+      'components.NotificationTypeSelector.issuecomment': 'Bình luận về vấn đề',
+      'components.NotificationTypeSelector.issueresolved':
+        'Vấn đề được giải quyết',
+      'components.NotificationTypeSelector.issuereopened': 'Vấn đề được mở lại',
+      'components.NotificationTypeSelector.mediaautorequested':
+        'Yêu cầu được tự động gửi',
+      'components.NotificationTypeSelector.softwareavailable':
+        'Yêu cầu phần mềm sẵn sàng',
+      'components.NotificationTypeSelector.softwareStatus':
+        'Cập nhật về các yêu cầu phần mềm',
     },
   },
 ] as const;
