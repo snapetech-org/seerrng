@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
@@ -16,6 +16,7 @@ import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import SpotifyCredentials from '../components/SpotifyCredentials';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -88,12 +89,20 @@ const switches = [
   },
 ] as const;
 
+type GeneralMessage = (
+  key: string,
+  fallback: string,
+  values?: Record<string, string | number>
+) => string;
+
 function ApplicationForm({
   initial,
   jellyfin,
+  n,
 }: {
   initial: ApplicationSettings;
   jellyfin: boolean;
+  n: GeneralMessage;
 }) {
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
@@ -152,16 +161,28 @@ function ApplicationForm({
       invalidatePublicSettings();
       forget('/settings/public');
       if (changed.some((key) => result[key] !== values[key])) {
-        setFailure('Could not confirm the saved application settings.');
+        setFailure(
+          n(
+            'lumen.adminGeneral.confirmFailure',
+            'Could not confirm the saved application settings.'
+          )
+        );
         return;
       }
       setDraft(values);
       setSaved(values);
-      setNotice('Application settings saved.');
+      setNotice(n('lumen.adminGeneral.saved', 'Application settings saved.'));
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
-          friendlyError(error, 'Could not save application settings.')
+          friendlyError(
+            error,
+            n(
+              'lumen.adminGeneral.saveFailure',
+              'Could not save application settings.'
+            ),
+            (id, fallback) => n(id, fallback)
+          )
         );
     } finally {
       pending.current = false;
@@ -180,14 +201,21 @@ function ApplicationForm({
         {textFields.map(({ key, label }) => (
           <label className="set cfg-row" key={key}>
             <span>
-              <b>{label}</b>
+              <b>{n(`lumen.adminGeneral.field.${key}`, label)}</b>
               {key === 'applicationUrl' && (
-                <small>Public address used in links sent by SeerrNG.</small>
+                <small>
+                  {n(
+                    'lumen.adminGeneral.applicationUrlHelp',
+                    'Public address used in links sent by SeerrNG.'
+                  )}
+                </small>
               )}
               {key === 'youtubeUrl' && (
                 <small>
-                  Optional URL prefix for a self-hosted YouTube player. SeerrNG
-                  appends the video ID.
+                  {n(
+                    'lumen.adminGeneral.youtubeUrlHelp',
+                    'Optional URL prefix for a self-hosted YouTube player. SeerrNG appends the video ID.'
+                  )}
                 </small>
               )}
             </span>
@@ -195,7 +223,7 @@ function ApplicationForm({
               className="cfg-input"
               type={key === 'applicationTitle' ? 'text' : 'url'}
               required={key === 'applicationTitle'}
-              aria-label={label}
+              aria-label={n(`lumen.adminGeneral.field.${key}`, label)}
               maxLength={512}
               disabled={busy}
               value={draft[key]}
@@ -204,28 +232,40 @@ function ApplicationForm({
           </label>
         ))}
         <label className="set cfg-row">
-          <b>Default Interface</b>
+          <b>{n('lumen.adminGeneral.defaultInterface', 'Default Interface')}</b>
           <select
             className="cfg-input"
-            aria-label="Default Interface"
+            aria-label={n(
+              'lumen.adminGeneral.defaultInterface',
+              'Default Interface'
+            )}
             disabled={busy}
             value={draft.defaultFrontend}
             onChange={(event) =>
               change('defaultFrontend', event.target.value as Frontend)
             }
           >
-            <option value="native">Full SeerrNG</option>
-            <option value="lumen">Bundled Lumen</option>
-            <option value="external">Standalone Lumen</option>
+            <option value="native">
+              {n('lumen.adminGeneral.fullSeerr', 'Full SeerrNG')}
+            </option>
+            <option value="lumen">
+              {n('lumen.adminGeneral.bundledLumen', 'Bundled Lumen')}
+            </option>
+            <option value="external">
+              {n('lumen.adminGeneral.standaloneLumen', 'Standalone Lumen')}
+            </option>
           </select>
         </label>
         {draft.defaultFrontend === 'external' && (
           <label className="set cfg-row">
-            <b>Lumen Companion URL</b>
+            <b>{n('lumen.adminGeneral.companionUrl', 'Lumen Companion URL')}</b>
             <input
               className="cfg-input"
               type="url"
-              aria-label="Lumen Companion URL"
+              aria-label={n(
+                'lumen.adminGeneral.companionUrl',
+                'Lumen Companion URL'
+              )}
               required
               maxLength={512}
               disabled={busy}
@@ -236,15 +276,25 @@ function ApplicationForm({
         )}
         <label className="set cfg-row">
           <span>
-            <b>Other Users’ Availability</b>
+            <b>
+              {n(
+                'lumen.adminGeneral.otherAvailability',
+                'Other Users’ Availability'
+              )}
+            </b>
             <small>
-              Choose how availability appears when the viewer has no approved or
-              completed request for that copy.
+              {n(
+                'lumen.adminGeneral.otherAvailabilityHelp',
+                'Choose how availability appears when the viewer has no approved or completed request for that copy.'
+              )}
             </small>
           </span>
           <select
             className="cfg-input"
-            aria-label="Other Users’ Availability"
+            aria-label={n(
+              'lumen.adminGeneral.otherAvailability',
+              'Other Users’ Availability'
+            )}
             disabled={busy}
             value={draft.otherUsersAvailability}
             onChange={(event) =>
@@ -254,9 +304,24 @@ function ApplicationForm({
               )
             }
           >
-            <option value="show">Show Availability for Everyone</option>
-            <option value="distinguish">Mark Shared Availability</option>
-            <option value="hide">Hide Shared Availability</option>
+            <option value="show">
+              {n(
+                'lumen.adminGeneral.availabilityShow',
+                'Show Availability for Everyone'
+              )}
+            </option>
+            <option value="distinguish">
+              {n(
+                'lumen.adminGeneral.availabilityDistinguish',
+                'Mark Shared Availability'
+              )}
+            </option>
+            <option value="hide">
+              {n(
+                'lumen.adminGeneral.availabilityHide',
+                'Hide Shared Availability'
+              )}
+            </option>
           </select>
         </label>
         {switches
@@ -271,12 +336,12 @@ function ApplicationForm({
           .map(({ key, label, help }) => (
             <label className="set cfg-row" key={key}>
               <span>
-                <b>{label}</b>
-                <small>{help}</small>
+                <b>{n(`lumen.adminGeneral.switch.${key}`, label)}</b>
+                <small>{n(`lumen.adminGeneral.help.${key}`, help)}</small>
               </span>
               <input
                 type="checkbox"
-                aria-label={label}
+                aria-label={n(`lumen.adminGeneral.switch.${key}`, label)}
                 disabled={busy}
                 checked={draft[key]}
                 onChange={(event) => change(key, event.target.checked)}
@@ -286,13 +351,18 @@ function ApplicationForm({
       </div>
       {!loginValid && (
         <p className="note" role="alert">
-          Keep at least one sign-in method enabled.
+          {n(
+            'lumen.adminGeneral.keepSignIn',
+            'Keep at least one sign-in method enabled.'
+          )}
         </p>
       )}
       {loginChanged && !draft.mediaServerLogin && draft.localLogin && (
         <p className="note">
-          Users who rely on media server sign-in need a SeerrNG password to sign
-          in.
+          {n(
+            'lumen.adminGeneral.mediaServerPasswordNeeded',
+            'Users who rely on media server sign-in need a SeerrNG password to sign in.'
+          )}
         </p>
       )}
       {failure && (
@@ -310,7 +380,7 @@ function ApplicationForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !changed.length || !valid}
         >
-          Save Application Settings
+          {n('lumen.adminGeneral.saveButton', 'Save Application Settings')}
         </button>
       </div>
     </form>
@@ -318,6 +388,20 @@ function ApplicationForm({
 }
 
 export default function AdminGeneral() {
+  const { t } = useLumenLocale();
+  const n = useCallback<GeneralMessage>(
+    (key, fallback, values) => t(key, fallback, values),
+    [t]
+  );
+  const formatError = useCallback(
+    (error: unknown, fallback: string) =>
+      friendlyError(
+        error,
+        n('lumen.adminGeneral.loadFailure', fallback),
+        (id, message) => n(id, message)
+      ),
+    [n]
+  );
   const settings = useApi<
     ApplicationSettings & {
       mediaServerType?: number;
@@ -328,28 +412,32 @@ export default function AdminGeneral() {
       spotifyClientId?: string;
       spotifyClientSecret?: string;
     }
-  >(path);
+  >(path, { formatError });
   return (
     <>
       <header className="ph">
-        <h1>General Settings</h1>
+        <h1>{n('lumen.adminGeneral.title', 'General Settings')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+            {n('lumen.adminGeneral.backToAccount', 'Back to Account')}
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/categories">
-            Media Categories
+            {n('lumen.adminGeneral.mediaCategories', 'Media Categories')}
           </Link>
         </div>
       </header>
-      <Section title="Application">
+      <Section title={n('lumen.adminGeneral.application', 'Application')}>
         <ServiceNote
           error={settings.error}
-          what="application settings"
+          what={n(
+            'lumen.adminGeneral.applicationSettings',
+            'application settings'
+          )}
           retry={settings.reload}
         />
         {settings.data ? (
           <ApplicationForm
+            n={n}
             jellyfin={settings.data.mediaServerType === 2}
             initial={{
               applicationTitle: settings.data.applicationTitle ?? '',
@@ -375,7 +463,7 @@ export default function AdminGeneral() {
         ) : (
           !settings.error && (
             <p className="note" role="status">
-              Loading application settings…
+              {n('lumen.adminGeneral.loading', 'Loading application settings…')}
             </p>
           )
         )}

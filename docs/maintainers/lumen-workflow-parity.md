@@ -5008,3 +5008,21 @@ page renders at 1440 × 900 were inspected; the existing shared layout and
 controls remain in use, and all three locales fit the viewport. Evidence is
 retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-validation-44600171238/recordings-fullpage-candidate/`.
+
+### General application settings localization
+
+The Application panel on `/admin/general` now follows the signed-in Lumen
+locale for its title, interface and availability choices, login controls,
+help text, validation, loading state, and save feedback in English, French,
+and Arabic. Existing interface routing and sign-in safeguards remain the
+same. The load-error formatter is stable across renders so `useApi` does not
+re-fetch settings on every render. Browser fixtures cover failed-save
+retention and retry, the changed-field payload, locale direction, and overflow
+at desktop, iPhone, Android, and tablet sizes. French desktop and Arabic phone
+captures were compared with the English baseline; existing panel geometry is
+retained. Other locales use English fallback. This change covers only the
+Application panel: Spotify, download-path, instance-request, quota, and
+permissions panels on this page still need their own localization and workflow
+parity review. Live settings save/readback against SeerrNG and independent
+linguistic review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
