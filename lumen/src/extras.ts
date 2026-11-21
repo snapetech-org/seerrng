@@ -248,6 +248,8 @@ export function useExtras() {
     error: pub ? null : settings.error,
     retry: settings.reload,
     enabled,
+    // raw server/account category visibility, independent of connected services
+    categoryEnabled: (category: string) => on[category] !== false,
     // until the checks answer, list none (so Games doesn't load a dead category first)
     games: !enabled('game')
       ? games

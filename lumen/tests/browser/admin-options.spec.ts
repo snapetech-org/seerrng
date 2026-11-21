@@ -160,6 +160,133 @@ test('Everyone reports a failed load and retries instead of claiming there are n
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
 
+test('disabled core categories block their direct routes before catalog requests', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {
+          movie: true,
+          tv: true,
+          ebook: true,
+          audiobook: true,
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          movie: false,
+          tv: false,
+          ebook: false,
+          audiobook: false,
+        },
+      },
+    })
+  );
+  const catalogRequests: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    const path = testApiPath(request.url());
+    if (
+      /^\/(discover\/(movies|tv|books|genreslider|trending)|movie\/|tv\/|book\/|book-series|media)/.test(
+        path
+      )
+    )
+      catalogRequests.push(path);
+  });
+
+  await page.goto(testAppPath('/'));
+  await expect(page.locator('.navchips')).toBeVisible();
+  for (const path of ['/movies', '/series', '/books', '/audiobooks']) {
+    await expect(page.locator(`.navchips a[href="${path}"]`)).toHaveCount(0);
+  }
+
+  for (const [path, label] of [
+    ['/movies', 'Movies'],
+    ['/movies/genres', 'Movies'],
+    ['/movie/1', 'Movies'],
+    ['/movie/1/similar', 'Movies'],
+    ['/series', 'Series'],
+    ['/series/genres', 'Series'],
+    ['/tv/1', 'Series'],
+    ['/tv/1/recommendations', 'Series'],
+    ['/books', 'Books'],
+    ['/audiobooks', 'Audiobooks'],
+    ['/book/1', 'Books'],
+    ['/book/1?f=audio', 'Audiobooks'],
+    ['/books/recommendations?format=audiobook', 'Audiobooks'],
+    ['/author/1', 'Books or Audiobooks'],
+    ['/book-series', 'Books or Audiobooks'],
+    ['/book-series/catalog', 'Books or Audiobooks'],
+    ['/book-series/1', 'Books or Audiobooks'],
+    ['/book-series/requests', 'Books or Audiobooks'],
+  ]) {
+    await page.goto(testAppPath(path));
+    await expect(
+      page.locator('main').getByText(label, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText('This category is turned off for your account.')
+    ).toBeVisible();
+    if (path === '/movies') {
+      await page.screenshot({
+        path: info.outputPath('disabled-movie-category.png'),
+        fullPage: true,
+      });
+    }
+  }
+  for (const label of ['Movies', 'Series', 'Books', 'Audiobooks']) {
+    await expect(
+      page
+        .getByRole('navigation', { name: 'Main' })
+        .getByRole('link', { name: label })
+    ).toHaveCount(0);
+  }
+  expect(catalogRequests).toEqual([]);
+});
+
+for (const [locale, message] of [
+  ['fr', 'Cette catégorie est désactivée pour votre compte.'],
+  ['ar', 'هذه الفئة متوقفة لحسابك.'],
+]) {
+  test(`disabled core category notice follows the ${locale} account locale`, async ({
+    page,
+  }, info) => {
+    await fixtures(page);
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({
+        json: { locale, enabledMediaCategories: { movie: false } },
+      })
+    );
+    await page.goto(testAppPath('/movies'));
+    await expect(page.getByText(message)).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: info.outputPath(`disabled-category-${locale}.png`),
+      fullPage: true,
+    });
+  });
+}
+
 for (const theme of ['light', 'dark'] as const) {
   test(`review settings, destination sheet and family sign-in in ${theme}`, async ({
     page,

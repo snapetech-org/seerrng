@@ -1452,7 +1452,10 @@
     "lumen.adminGeneral.permissions.goBack": "Go Back",
     "lumen.adminGeneral.permissions.saved": "Default permissions saved.",
     "lumen.adminGeneral.permissions.confirmFailure": "Could not confirm the saved default permissions.",
-    "lumen.adminGeneral.permissions.saveFailure": "Could not save default permissions."
+    "lumen.adminGeneral.permissions.saveFailure": "Could not save default permissions.",
+    "lumen.category.disabledForAccount": "This category is turned off for your account.",
+    "lumen.category.adminHelp": "An admin can enable it in SeerrNG under Settings › General › Media categories.",
+    "lumen.category.backDiscover": "Back to Discover"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -3064,7 +3067,10 @@
     "lumen.adminGeneral.permissions.goBack": "Retour",
     "lumen.adminGeneral.permissions.saved": "Autorisations par défaut enregistrées.",
     "lumen.adminGeneral.permissions.confirmFailure": "Impossible de confirmer l’enregistrement des autorisations par défaut.",
-    "lumen.adminGeneral.permissions.saveFailure": "Impossible d’enregistrer les autorisations par défaut."
+    "lumen.adminGeneral.permissions.saveFailure": "Impossible d’enregistrer les autorisations par défaut.",
+    "lumen.category.disabledForAccount": "Cette catégorie est désactivée pour votre compte.",
+    "lumen.category.adminHelp": "Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.",
+    "lumen.category.backDiscover": "Retour à Découvrir"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4680,6 +4686,9 @@
     "lumen.adminGeneral.permissions.goBack": "رجوع",
     "lumen.adminGeneral.permissions.saved": "تم حفظ الأذونات الافتراضية.",
     "lumen.adminGeneral.permissions.confirmFailure": "تعذر تأكيد حفظ الأذونات الافتراضية.",
-    "lumen.adminGeneral.permissions.saveFailure": "تعذر حفظ الأذونات الافتراضية."
+    "lumen.adminGeneral.permissions.saveFailure": "تعذر حفظ الأذونات الافتراضية.",
+    "lumen.category.disabledForAccount": "هذه الفئة متوقفة لحسابك.",
+    "lumen.category.adminHelp": "يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.",
+    "lumen.category.backDiscover": "العودة إلى الاستكشاف"
   }
 }

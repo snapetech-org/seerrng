@@ -2381,5 +2381,8 @@
   "lumen.adminGeneral.permissions.goBack",
   "lumen.adminGeneral.permissions.saved",
   "lumen.adminGeneral.permissions.confirmFailure",
-  "lumen.adminGeneral.permissions.saveFailure"
+  "lumen.adminGeneral.permissions.saveFailure",
+  "lumen.category.disabledForAccount",
+  "lumen.category.adminHelp",
+  "lumen.category.backDiscover"
 ]

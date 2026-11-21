@@ -5107,3 +5107,21 @@ requests. Fixtures turn categories on globally and off for the user, then open
 22 direct routes across music, comics, magazines, games, sports and adult media;
 none issues a category data request. All four viewport projects pass. SeerrNG
 continues to enforce category permissions on every API request.
+
+The same pre-mount category boundary now covers core Movies, Series, Ebooks,
+and Audiobooks browse and detail routes, including author and book-series
+search/catalog/request workflows plus the selected format for book details and
+recommendations. The primary desktop and phone navigation also
+omits categories disabled either globally or for the signed-in account. The
+browser fixture visits 18 direct routes with the categories disabled and
+checks that no catalog requests run; all four viewport projects are required for
+acceptance. Mixed-media routes such as Discover and global Search retain their
+cross-category results and filters rather than being hidden wholesale.
+Discover now applies those same per-account categories to its shortcut chips,
+movie/series/book shelves, genre and upcoming rows, and recent-media detail
+lookups. When both movie and TV are off, the combined trending and recent rows
+do not query their catalogs. The same fixture verifies that disabled-category
+Discover performs no category catalog or detail requests. French and Arabic
+disabled notices pass across all four viewport projects with RTL and overflow
+checks; screenshots and test results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/core-category-routes/`.

@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 import { AuthProvider, isAdministrator, useAuth } from './auth';
 import { ExtraGate } from './components/extra';
+import { MediaCategoryRoute } from './components/MediaCategoryRoute';
 import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
@@ -264,17 +265,19 @@ function App() {
           <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
           <Route
             path="/movies/genres"
-            element={<GenreDirectory kind="movie" />}
+            element={<MediaCategoryRoute categories={['movie']}><GenreDirectory kind="movie" /></MediaCategoryRoute>}
           />
-          <Route path="/series/genres" element={<GenreDirectory kind="tv" />} />
-          <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
+          <Route path="/series/genres" element={<MediaCategoryRoute categories={['tv']}><GenreDirectory kind="tv" /></MediaCategoryRoute>} />
+          <Route path="/movies" element={<MediaCategoryRoute categories={['movie']}><Browse key="movie" kind="movie" /></MediaCategoryRoute>} />
           <Route
             path="/author/:id"
             element={
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookGrouping kind="author" />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookGrouping kind="author" />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -284,7 +287,9 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookSeriesSearch />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesSearch />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -294,7 +299,9 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookSeriesCatalog />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesCatalog />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -304,45 +311,47 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookGrouping kind="series" />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookGrouping kind="series" />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
-          <Route path="/series" element={<Browse key="tv" kind="tv" />} />
+          <Route path="/series" element={<MediaCategoryRoute categories={['tv']}><Browse key="tv" kind="tv" /></MediaCategoryRoute>} />
           <Route
             path="/books/recommendations"
-            element={<BookRecommendations />}
+            element={<MediaCategoryRoute categories="book-recommendations"><BookRecommendations /></MediaCategoryRoute>}
           />
-          <Route path="/books" element={<Books key="ebook" format="ebook" />} />
+          <Route path="/books" element={<MediaCategoryRoute categories={['ebook']}><Books key="ebook" format="ebook" /></MediaCategoryRoute>} />
           <Route
             path="/audiobooks"
-            element={<Books key="audiobook" format="audiobook" />}
+            element={<MediaCategoryRoute categories={['audiobook']}><Books key="audiobook" format="audiobook" /></MediaCategoryRoute>}
           />
-          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/movie/:id" element={<MediaCategoryRoute categories={['movie']}><MovieDetail /></MediaCategoryRoute>} />
           <Route
             path="/movie/:id/similar"
-            element={<RelatedVideo media="movie" relation="similar" />}
+            element={<MediaCategoryRoute categories={['movie']}><RelatedVideo media="movie" relation="similar" /></MediaCategoryRoute>}
           />
           <Route
             path="/movie/:id/recommendations"
-            element={<RelatedVideo media="movie" relation="recommendations" />}
+            element={<MediaCategoryRoute categories={['movie']}><RelatedVideo media="movie" relation="recommendations" /></MediaCategoryRoute>}
           />
           <Route path="/person/:id" element={<PersonDetail />} />
-          <Route path="/tv/:id" element={<TvDetail />} />
+          <Route path="/tv/:id" element={<MediaCategoryRoute categories={['tv']}><TvDetail /></MediaCategoryRoute>} />
           <Route
             path="/tv/:id/similar"
-            element={<RelatedVideo media="tv" relation="similar" />}
+            element={<MediaCategoryRoute categories={['tv']}><RelatedVideo media="tv" relation="similar" /></MediaCategoryRoute>}
           />
           <Route
             path="/tv/:id/recommendations"
-            element={<RelatedVideo media="tv" relation="recommendations" />}
+            element={<MediaCategoryRoute categories={['tv']}><RelatedVideo media="tv" relation="recommendations" /></MediaCategoryRoute>}
           />
           <Route
             path="/movie/:id/:credit"
-            element={<VideoCredits media="movie" />}
+            element={<MediaCategoryRoute categories={['movie']}><VideoCredits media="movie" /></MediaCategoryRoute>}
           />
-          <Route path="/tv/:id/:credit" element={<VideoCredits media="tv" />} />
-          <Route path="/book/:id" element={<BookDetail />} />
+          <Route path="/tv/:id/:credit" element={<MediaCategoryRoute categories={['tv']}><VideoCredits media="tv" /></MediaCategoryRoute>} />
+          <Route path="/book/:id" element={<MediaCategoryRoute categories="book-detail"><BookDetail /></MediaCategoryRoute>} />
           <Route
             path="/music"
             element={
@@ -509,7 +518,9 @@ function App() {
                   </p>
                 }
               >
-                <BookSeriesRequests />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesRequests />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />

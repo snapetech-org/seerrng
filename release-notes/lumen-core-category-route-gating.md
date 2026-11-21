@@ -1,0 +1,1 @@
+Lumen now honors per-user and server-wide Movies, Series, Ebooks, and Audiobooks category settings in its primary navigation and direct routes. Disabled category routes display an explanation without mounting catalog pages or issuing their catalog requests.

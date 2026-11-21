@@ -295,9 +295,11 @@ function CompanyShelf({
 export function ConfiguredDiscoverShelves({
   showBooks,
   showMusic,
+  enabledCategories,
 }: {
   showBooks: boolean;
   showMusic: boolean;
+  enabledCategories: Record<string, boolean>;
 }) {
   const settings = usePublicSettings();
   const { user } = useAuth();
@@ -305,18 +307,20 @@ export function ConfiguredDiscoverShelves({
   const categories = settings?.enabledMediaCategories;
   const ebook =
     showBooks &&
+    enabledCategories.ebook !== false &&
     categories?.ebook !== false &&
     (settings?.ebookServiceEnabled ?? settings?.booksEnabled);
   const audio =
     showBooks &&
+    enabledCategories.audiobook !== false &&
     categories?.audiobook !== false &&
     (settings?.audiobookServiceEnabled ?? settings?.booksEnabled);
   const bookFormat = ebook ? 'ebook' : audio ? 'audiobook' : undefined;
   const visible =
     showMusic ||
     !!bookFormat ||
-    categories?.movie !== false ||
-    categories?.tv !== false;
+    (categories?.movie !== false && enabledCategories.movie !== false) ||
+    (categories?.tv !== false && enabledCategories.tv !== false);
   const { data } = useApi<DiscoverSlider[]>(
     visible ? '/settings/discover' : null
   );

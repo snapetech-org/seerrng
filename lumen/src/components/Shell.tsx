@@ -106,6 +106,9 @@ export default function Shell({ children }: { children: ReactNode }) {
   const swipeSettings = useApi<PublicSettings>('/settings/public', {
     keepDuringRefresh: true,
   });
+  const personalCategories = useApi<{
+    enabledMediaCategories?: Record<string, boolean>;
+  }>(user ? `/user/${user.id}/settings/main` : null);
   const swipeEnabled = swipeSettings.data?.swipeEnabled;
   const refreshPublicSettings = swipeSettings.refresh;
   useEffect(() => {
@@ -117,6 +120,20 @@ export default function Shell({ children }: { children: ReactNode }) {
       );
   }, [refreshPublicSettings]);
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
+  const navCategory: Record<string, string> = {
+    '/movies': 'movie',
+    '/series': 'tv',
+    '/books': 'ebook',
+    '/audiobooks': 'audiobook',
+  };
+  const categoryVisible = (h: string) => {
+    const key = navCategory[h];
+    return (
+      !key ||
+      (swipeSettings.data?.enabledMediaCategories?.[key] !== false &&
+        personalCategories.data?.enabledMediaCategories?.[key] !== false)
+    );
+  };
   const loc = useLocation();
   const showBlocklist = useBlocklistNavigation();
   const managesRequests = canManageRequests(user?.permissions);
@@ -298,20 +315,20 @@ export default function Shell({ children }: { children: ReactNode }) {
           >
             <BrandMark />
           </Link>
-          {SIDE.filter(([h]) => prefs.showBooks || !isBook(h)).map(
-            ([h, i, message, fallback]) => (
-              <NavLink
-                key={h}
-                to={h}
-                end={h === '/'}
-                onClick={toTop(h)}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                <Icon name={i} />
-                {t(message, fallback)}
-              </NavLink>
-            )
-          )}
+          {SIDE.filter(
+            ([h]) => (prefs.showBooks || !isBook(h)) && categoryVisible(h)
+          ).map(([h, i, message, fallback]) => (
+            <NavLink
+              key={h}
+              to={h}
+              end={h === '/'}
+              onClick={toTop(h)}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              <Icon name={i} />
+              {t(message, fallback)}
+            </NavLink>
+          ))}
           {/* music, comics, games and the rest: only the ones this server has turned on */}
           {extras.list.map((e) => (
             <NavLink
@@ -506,28 +523,28 @@ export default function Shell({ children }: { children: ReactNode }) {
         </button>
       )}
       <nav className="tabbar" aria-label="Tabs">
-        {TABS.filter(([h]) => prefs.showBooks || !isBook(h)).map(
-          ([h, i, message, fallback]) => (
-            <NavLink
-              key={h}
-              className="tab"
-              to={h}
-              end={h === '/'}
-              onClick={toTop(h)}
-            >
-              <Icon name={i} />
-              {t(message, fallback)}
-              {h === '/requests' && pendingRequests > 0 && (
-                <span
-                  className="badge"
-                  aria-label={`${pendingRequests} pending requests`}
-                >
-                  {pendingRequests}
-                </span>
-              )}
-            </NavLink>
-          )
-        )}
+        {TABS.filter(
+          ([h]) => (prefs.showBooks || !isBook(h)) && categoryVisible(h)
+        ).map(([h, i, message, fallback]) => (
+          <NavLink
+            key={h}
+            className="tab"
+            to={h}
+            end={h === '/'}
+            onClick={toTop(h)}
+          >
+            <Icon name={i} />
+            {t(message, fallback)}
+            {h === '/requests' && pendingRequests > 0 && (
+              <span
+                className="badge"
+                aria-label={`${pendingRequests} pending requests`}
+              >
+                {pendingRequests}
+              </span>
+            )}
+          </NavLink>
+        ))}
       </nav>
     </>
   );

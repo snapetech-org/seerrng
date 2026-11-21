@@ -3153,6 +3153,10 @@ export const localeData = [
         'تعذر تأكيد حفظ الأذونات الافتراضية.',
       'lumen.adminGeneral.permissions.saveFailure':
         'تعذر حفظ الأذونات الافتراضية.',
+      'lumen.category.disabledForAccount': 'هذه الفئة متوقفة لحسابك.',
+      'lumen.category.adminHelp':
+        'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.',
+      'lumen.category.backDiscover': 'العودة إلى الاستكشاف',
     },
   },
   {
@@ -10108,6 +10112,11 @@ export const localeData = [
         'Could not confirm the saved default permissions.',
       'lumen.adminGeneral.permissions.saveFailure':
         'Could not save default permissions.',
+      'lumen.category.disabledForAccount':
+        'This category is turned off for your account.',
+      'lumen.category.adminHelp':
+        'An admin can enable it in SeerrNG under Settings › General › Media categories.',
+      'lumen.category.backDiscover': 'Back to Discover',
     },
   },
   {
@@ -17642,6 +17651,11 @@ export const localeData = [
         'Impossible de confirmer l’enregistrement des autorisations par défaut.',
       'lumen.adminGeneral.permissions.saveFailure':
         'Impossible d’enregistrer les autorisations par défaut.',
+      'lumen.category.disabledForAccount':
+        'Cette catégorie est désactivée pour votre compte.',
+      'lumen.category.adminHelp':
+        'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
+      'lumen.category.backDiscover': 'Retour à Découvrir',
     },
   },
   {
