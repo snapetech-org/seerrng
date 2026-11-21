@@ -1,5 +1,8 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+
 async function capture(page: Page, info: TestInfo) {
   if (
     !process.env.LUMEN_VISUAL_CAPTURE_DIR ||
@@ -56,7 +59,7 @@ test('Release Calendar localizes filters, states, and release details', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/calendar?month=2026-11');
+  await page.goto(testAppPath('/calendar?month=2026-11'));
   const text = (english: string, french: string, arabic: string) =>
     candidate
       ? locale === 'ar'
