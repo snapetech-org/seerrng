@@ -9,6 +9,7 @@ import { ExtraCard, ExtraHeader, ServiceNote } from '../components/extra';
 import RequestLimits from '../components/RequestLimits';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { describeAll, requestRowStatus, RequestStatusPills } from './Requests';
 import { canViewUserWatchlist, itemId, type WatchlistData } from './Watchlist';
@@ -22,6 +23,7 @@ function ProfilePictureUpload({
   id: number;
   saved: () => void;
 }) {
+  const { t } = useLumenLocale();
   const input = useRef<HTMLInputElement>(null);
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -30,11 +32,21 @@ function ProfilePictureUpload({
   async function upload(file?: File) {
     if (!file || pending.current) return;
     if (!avatarTypes.includes(file.type)) {
-      setError('Choose a JPEG, PNG, or WebP image.');
+      setError(
+        t(
+          'lumen.householdProfile.pictureFormatError',
+          'Choose a JPEG, PNG, or WebP image.'
+        )
+      );
       return;
     }
     if (!file.size || file.size > 5 * 1024 * 1024) {
-      setError('Choose a nonempty picture no larger than 5 MB.');
+      setError(
+        t(
+          'lumen.householdProfile.pictureSizeError',
+          'Choose a nonempty picture no larger than 5 MB.'
+        )
+      );
       return;
     }
     const generation = sessionGeneration();
@@ -50,7 +62,15 @@ function ProfilePictureUpload({
       if (generation === sessionGeneration()) saved();
     } catch (cause) {
       if (generation === sessionGeneration())
-        setError(friendlyError(cause, 'Could not update profile picture.'));
+        setError(
+          friendlyError(
+            cause,
+            t(
+              'lumen.householdProfile.pictureUpdateError',
+              'Could not update profile picture.'
+            )
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -76,7 +96,9 @@ function ProfilePictureUpload({
         disabled={busy}
         onClick={() => input.current?.click()}
       >
-        {busy ? 'Uploading Picture…' : 'Change Profile Picture'}
+        {busy
+          ? t('lumen.householdProfile.uploadingPicture', 'Uploading Picture…')
+          : t('lumen.householdProfile.changePicture', 'Change Profile Picture')}
       </button>
       {error && (
         <p className="note" role="alert">
@@ -88,6 +110,7 @@ function ProfilePictureUpload({
 }
 
 function RecentRequests({ id, own }: { id: number; own: boolean }) {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const requestScope = own ? 'tab=all' : `requestedBy=${id}`;
   const requests = useApi<{ results: RequestItem[] }>(
@@ -101,8 +124,18 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
     : undefined;
   const error =
     requests.error ||
-    (requests.data && !results ? 'Invalid recent requests response.' : null) ||
-    (descriptionError ? 'Could not load request titles.' : null);
+    (requests.data && !results
+      ? t(
+          'lumen.householdProfile.invalidRequests',
+          'Invalid recent requests response.'
+        )
+      : null) ||
+    (descriptionError
+      ? t(
+          'lumen.householdProfile.requestTitlesError',
+          'Could not load request titles.'
+        )
+      : null);
   useEffect(() => {
     let active = true;
     if (results) {
@@ -122,19 +155,31 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
   }, [results]);
 
   return (
-    <Section title="Recent Requests">
+    <Section
+      title={t('lumen.householdProfile.recentRequests', 'Recent Requests')}
+    >
       <ServiceNote
         error={error}
-        what="recent requests"
+        what={t(
+          'lumen.householdProfile.recentRequestsLower',
+          'recent requests'
+        )}
+        title={t(
+          'lumen.householdProfile.requestsLoadError',
+          'Could not load recent requests'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
         retry={requests.reload}
       />
       {!error && !rows && (
         <p className="note" role="status">
-          Loading requests…
+          {t('lumen.householdProfile.loadingRequests', 'Loading requests…')}
         </p>
       )}
       {results && rows?.length === 0 && (
-        <p className="note">No requests yet.</p>
+        <p className="note">
+          {t('lumen.householdProfile.noRequests', 'No requests yet.')}
+        </p>
       )}
       {results && !!rows?.length && (
         <ul className="setlist">
@@ -159,13 +204,14 @@ function RecentRequests({ id, own }: { id: number; own: boolean }) {
         </ul>
       )}
       <Link className="btn btn-quiet btn-sm" to={`/requests?${requestScope}`}>
-        View Requests
+        {t('components.PermissionEdit.viewrequests', 'View Requests')}
       </Link>
     </Section>
   );
 }
 
 function WatchlistPreview({ id, own }: { id: number; own: boolean }) {
+  const { t } = useLumenLocale();
   const watchlist = useApi<WatchlistData>(`/user/${id}/watchlist`, {
     currentPathOnly: true,
   });
@@ -174,17 +220,36 @@ function WatchlistPreview({ id, own }: { id: number; own: boolean }) {
     : undefined;
   const error =
     watchlist.error ||
-    (watchlist.data && !items ? 'Invalid watchlist response.' : null);
+    (watchlist.data && !items
+      ? t(
+          'lumen.householdProfile.invalidWatchlist',
+          'Invalid watchlist response.'
+        )
+      : null);
   return (
-    <Section title="Watchlist">
-      <ServiceNote error={error} what="watchlist" retry={watchlist.reload} />
+    <Section title={t('lumen.householdProfile.watchlist', 'Watchlist')}>
+      <ServiceNote
+        error={error}
+        what={t('lumen.householdProfile.watchlistLower', 'watchlist')}
+        title={t(
+          'lumen.householdProfile.watchlistLoadError',
+          'Could not load watchlist'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
+        retry={watchlist.reload}
+      />
       {!error && !items && (
         <p className="note" role="status">
-          Loading watchlist…
+          {t('lumen.householdProfile.loadingWatchlist', 'Loading watchlist…')}
         </p>
       )}
       {items?.length === 0 && (
-        <p className="note">No titles on this watchlist.</p>
+        <p className="note">
+          {t(
+            'lumen.householdProfile.noWatchlistTitles',
+            'No titles on this watchlist.'
+          )}
+        </p>
       )}
       {!!items?.length && (
         <ul className="setlist">
@@ -211,13 +276,14 @@ function WatchlistPreview({ id, own }: { id: number; own: boolean }) {
         className="btn btn-quiet btn-sm"
         to={own ? '/watchlist' : `/watchlist/user/${id}`}
       >
-        View Watchlist
+        {t('lumen.householdProfile.viewWatchlist', 'View Watchlist')}
       </Link>
     </Section>
   );
 }
 
 function PlaybackActivity({ id }: { id: number }) {
+  const { locale, t } = useLumenLocale();
   const activity = useApi<{
     playCount: number;
     recentlyWatched: {
@@ -239,7 +305,12 @@ function PlaybackActivity({ id }: { id: number }) {
       : null;
   const error =
     activity.error ||
-    (activity.data && !data ? 'Invalid playback activity response.' : null);
+    (activity.data && !data
+      ? t(
+          'lumen.householdProfile.invalidPlayback',
+          'Invalid playback activity response.'
+        )
+      : null);
   const watched = data?.recentlyWatched.filter(
     ({ mediaType, tmdbId }) =>
       (mediaType === 'movie' || mediaType === 'tv') &&
@@ -248,22 +319,45 @@ function PlaybackActivity({ id }: { id: number }) {
   );
 
   return (
-    <Section title="Playback Activity">
+    <Section
+      title={t('lumen.householdProfile.playbackActivity', 'Playback Activity')}
+    >
       <ServiceNote
         error={error}
-        what="playback activity"
+        what={t(
+          'lumen.householdProfile.playbackActivityLower',
+          'playback activity'
+        )}
+        title={t(
+          'lumen.householdProfile.playbackLoadError',
+          'Could not load playback activity'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
         retry={activity.reload}
       />
       {!data && !error && (
         <p className="note" role="status">
-          Loading playback activity…
+          {t(
+            'lumen.householdProfile.loadingPlayback',
+            'Loading playback activity…'
+          )}
         </p>
       )}
       {data && (
         <>
-          <p className="note">Total plays: {data.playCount.toLocaleString()}</p>
+          <p className="note">
+            {t('lumen.householdProfile.totalPlays', 'Total plays: {count}', {
+              count: data.playCount.toLocaleString(locale),
+            })}
+          </p>
           {watched?.length ? (
-            <div className="rail" aria-label="Recently watched">
+            <div
+              className="rail"
+              aria-label={t(
+                'lumen.householdProfile.recentlyWatched',
+                'Recently watched'
+              )}
+            >
               {watched.map(
                 ({ id: mediaId, tmdbId, mediaType, searchMetadata }) => (
                   <ExtraCard
@@ -272,7 +366,9 @@ function PlaybackActivity({ id }: { id: number }) {
                     img={tmdbImg(searchMetadata?.posterPath)}
                     title={
                       searchMetadata?.title ||
-                      (mediaType === 'movie' ? 'Movie' : 'Series')
+                      (mediaType === 'movie'
+                        ? t('lumen.householdProfile.movie', 'Movie')
+                        : t('lumen.householdProfile.series', 'Series'))
                     }
                     icon={mediaType === 'movie' ? 'film' : 'tv'}
                     titleKind={mediaType}
@@ -281,7 +377,12 @@ function PlaybackActivity({ id }: { id: number }) {
               )}
             </div>
           ) : (
-            <p className="note">No recently watched titles to display.</p>
+            <p className="note">
+              {t(
+                'lumen.householdProfile.noRecentlyWatched',
+                'No recently watched titles to display.'
+              )}
+            </p>
           )}
         </>
       )}
@@ -290,6 +391,7 @@ function PlaybackActivity({ id }: { id: number }) {
 }
 
 export default function HouseholdProfile() {
+  const { locale, t } = useLumenLocale();
   const { id: rawId = '' } = useParams();
   const { user, refresh } = useAuth();
   const id =
@@ -312,7 +414,7 @@ export default function HouseholdProfile() {
   const canViewQuota =
     own || ((permissions & (2 | 8)) !== 0 && (permissions & (2 | 16)) !== 0);
   const loaded = profile.data?.id === id;
-  const joined = loaded ? shortDate(profile.data?.createdAt) : '';
+  const joined = loaded ? shortDate(profile.data?.createdAt, true, locale) : '';
   const canEdit = own || (id !== 1 && (permissions & (2 | 8)) !== 0);
   const email =
     loaded && (own || (permissions & (2 | 8)) !== 0)
@@ -322,15 +424,22 @@ export default function HouseholdProfile() {
     email &&
       email.toLowerCase() !== profile.data?.displayName.toLowerCase() &&
       email,
-    joined && `Joined ${joined}`,
-    loaded && canManageRequests(permissions) && `User ID: ${id}`,
+    joined &&
+      t('lumen.householdProfile.joined', 'Joined {date}', { date: joined }),
+    loaded &&
+      canManageRequests(permissions) &&
+      t('lumen.householdProfile.userId', 'User ID: {id}', { id }),
   ]
     .filter(Boolean)
     .join(' · ');
   return (
     <>
       <ExtraHeader
-        title={loaded ? profile.data!.displayName : 'Household Profile'}
+        title={
+          loaded
+            ? profile.data!.displayName
+            : t('lumen.householdProfile.title', 'Household Profile')
+        }
         sub={subtitle}
         leading={
           loaded && (
@@ -359,14 +468,23 @@ export default function HouseholdProfile() {
             className="btn btn-quiet btn-sm"
             to={own ? '/me/account' : `/admin/users/${id}`}
           >
-            Edit Settings
+            {t('lumen.householdProfile.editSettings', 'Edit Settings')}
           </Link>
         )}
       </ExtraHeader>
-      {!valid && <p className="note">Invalid user ID.</p>}
+      {!valid && (
+        <p className="note">
+          {t('lumen.householdProfile.invalidUserId', 'Invalid user ID.')}
+        </p>
+      )}
       <ServiceNote
         error={profile.error}
-        what="household profile"
+        what={t('lumen.householdProfile.profileLower', 'household profile')}
+        title={t(
+          'lumen.householdProfile.profileLoadError',
+          'Could not load household profile'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
         retry={profile.reload}
       />
       {valid && !profile.data && !profile.error && (

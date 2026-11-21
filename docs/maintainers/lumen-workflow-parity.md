@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request history and lifecycle, title/edition identity, progress, permission-aware retry, explicit Sonarr season mapping, managed-copy cleanup that preserves history, and supported 4K paths. Lumen’s TV request state covers exact season and episode selection, quota approval, destination-specific settings, and fixture-covered season-metadata retry with selection preservation. The large-series failure in the tester screenshot remains unconfirmed against a live provider. Role fixtures cover own-request scope, read-only household visibility, manager moderation of a foreign request, owner cancellation, category-authorized retry, season mapping, and managed-copy removal in standalone and bundled deployments. | Compare each media category independently; verify live season metadata, live service handoff, and matched native visuals. Request-role evidence is in `requests-pages.spec.ts`, `request-status.spec.ts`, and `request-retry-coverage.spec.ts`; fixtures do not establish live server/provider behavior. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Verify mobile native-matched visuals. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, and personal-notification copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Translate the remaining account subroutes and fields; finish failure recovery and role/state matrices; verify real authorization, provider persistence/readback, and native-matched visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Translate remaining account subroutes and fields; finish failure recovery and role/state matrices; verify real authorization, provider persistence/readback, and native-matched visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Global Search localization
@@ -5453,4 +5453,26 @@ unmounted root routes. The combined profile, locale, linked-account, token, and
 notification suite passes all 88 cases on both standalone and bundled builds
 across desktop, iPhone, Android, and tablet projects. All writes are fixture
 responses; real account persistence and provider mutations remain separately
+unverified.
+
+
+### Household profile localization and request limits
+
+Household Profile now follows the saved account locale for profile actions,
+joined date, recent requests, watchlist, playback activity, profile-picture
+validation and upload feedback, empty states, malformed responses, and retry
+controls. Request Limits now localizes its category labels, remaining-count
+text, period, loading state, and error recovery when used on household or other
+account pages. Existing profile visibility checks, quota/request/watchlist
+API calls, and avatar upload behavior are unchanged.
+
+The household-profile role/retry suite and the new English, French, and Arabic
+localization cases pass 44/44 in both standalone Vite and the production-style
+Express `/lumen/` mount across desktop, iPhone, Android, and tablet. Matching
+English baseline/candidate renders are pixel-identical at desktop and have the
+same responsive geometry at iPhone size. French desktop and Arabic iPhone were
+inspected; no horizontal overflow was detected at the four tested viewports.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-household-profile-20261121/`.
+Live authorization, quota persistence, and independent translation review remain
 unverified.

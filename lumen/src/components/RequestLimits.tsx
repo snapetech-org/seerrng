@@ -1,4 +1,5 @@
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 
@@ -25,18 +26,24 @@ export default function RequestLimits({
   id: number;
   categories?: Category[];
 }) {
+  const { t } = useLumenLocale();
   const quota = useApi<Quota>(`/user/${id}/quota`, { currentPathOnly: true });
   const shown = categories ?? (Object.keys(labels) as Category[]);
   return (
-    <Section title="Request limits">
+    <Section title={t('lumen.requestLimits.title', 'Request limits')}>
       <ServiceNote
         error={quota.error}
-        what="request limits"
+        what={t('lumen.requestLimits.lower', 'request limits')}
+        title={t(
+          'lumen.requestLimits.loadError',
+          'Could not load request limits'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
         retry={quota.reload}
       />
       {!quota.data && !quota.error && (
         <p className="note" role="status">
-          Loading request limits…
+          {t('lumen.requestLimits.loading', 'Loading request limits…')}
         </p>
       )}
       <div className="quota">
@@ -46,15 +53,19 @@ export default function RequestLimits({
           const maximum = limit.limit ?? 0;
           return (
             <div className="qbox" key={key}>
-              <span>{labels[key]}</span>
+              <span>{t(`lumen.requestLimits.${key}`, labels[key])}</span>
               <b>
                 {maximum > 0 ? (
                   <>
                     {Math.max(0, maximum - limit.used)}{' '}
-                    <small>of {maximum} left</small>
+                    <small>
+                      {t('lumen.requestLimits.remaining', 'of {count} left', {
+                        count: maximum,
+                      })}
+                    </small>
                   </>
                 ) : (
-                  'No limit'
+                  t('lumen.requestLimits.noLimit', 'No limit')
                 )}
               </b>
               {maximum > 0 && (
@@ -67,7 +78,11 @@ export default function RequestLimits({
                 </div>
               )}
               {maximum > 0 && limit.days ? (
-                <span>Every {limit.days} days</span>
+                <span>
+                  {t('lumen.requestLimits.period', 'Every {count} days', {
+                    count: limit.days,
+                  })}
+                </span>
               ) : null}
             </div>
           );
