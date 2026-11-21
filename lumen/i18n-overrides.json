@@ -1407,7 +1407,21 @@
     "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "Allow Partial Series Requests",
     "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "Let users request individual seasons of a series.",
     "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "Allow Special Episode Requests",
-    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Include specials when users select seasons to request."
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Include specials when users select seasons to request.",
+    "lumen.adminGeneral.apiKey.title": "Application API Key",
+    "lumen.adminGeneral.apiKey.label": "API Key",
+    "lumen.adminGeneral.apiKey.reveal": "Reveal Key",
+    "lumen.adminGeneral.apiKey.hide": "Hide Key",
+    "lumen.adminGeneral.apiKey.copy": "Copy Key",
+    "lumen.adminGeneral.apiKey.regenerate": "Regenerate Key",
+    "lumen.adminGeneral.apiKey.copied": "Application API key copied.",
+    "lumen.adminGeneral.apiKey.copyFallback": "Reveal the key to copy it manually.",
+    "lumen.adminGeneral.apiKey.regenerated": "Application API key regenerated.",
+    "lumen.adminGeneral.apiKey.regenerateFailure": "Could not regenerate the API key.",
+    "lumen.adminGeneral.apiKey.confirmFailure": "Could not confirm the replacement API key.",
+    "lumen.adminGeneral.apiKey.confirmTitle": "Regenerate the application API key?",
+    "lumen.adminGeneral.apiKey.confirmBody": "The current key stops working immediately. Update any integrations that use it.",
+    "lumen.adminGeneral.apiKey.keepCurrent": "Keep Current Key"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2930,7 +2944,21 @@
     "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "Autoriser les demandes de saisons individuelles",
     "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "Permettre aux utilisateurs de demander des saisons individuelles d’une série.",
     "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "Inclure les épisodes spéciaux",
-    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Inclure les épisodes spéciaux lorsque les utilisateurs choisissent les saisons à demander."
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Inclure les épisodes spéciaux lorsque les utilisateurs choisissent les saisons à demander.",
+    "lumen.adminGeneral.apiKey.title": "Clé API de l’application",
+    "lumen.adminGeneral.apiKey.label": "Clé API",
+    "lumen.adminGeneral.apiKey.reveal": "Afficher la clé",
+    "lumen.adminGeneral.apiKey.hide": "Masquer la clé",
+    "lumen.adminGeneral.apiKey.copy": "Copier la clé",
+    "lumen.adminGeneral.apiKey.regenerate": "Régénérer la clé",
+    "lumen.adminGeneral.apiKey.copied": "Clé API de l’application copiée.",
+    "lumen.adminGeneral.apiKey.copyFallback": "Affichez la clé pour la copier manuellement.",
+    "lumen.adminGeneral.apiKey.regenerated": "Clé API de l’application régénérée.",
+    "lumen.adminGeneral.apiKey.regenerateFailure": "Impossible de régénérer la clé API.",
+    "lumen.adminGeneral.apiKey.confirmFailure": "Impossible de confirmer la nouvelle clé API.",
+    "lumen.adminGeneral.apiKey.confirmTitle": "Régénérer la clé API de l’application ?",
+    "lumen.adminGeneral.apiKey.confirmBody": "La clé actuelle cessera de fonctionner immédiatement. Mettez à jour les intégrations qui l’utilisent.",
+    "lumen.adminGeneral.apiKey.keepCurrent": "Conserver la clé actuelle"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4457,6 +4485,20 @@
     "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "السماح بطلب مواسم فردية",
     "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "السماح للمستخدمين بطلب مواسم محددة من المسلسل.",
     "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "السماح بطلب الحلقات الخاصة",
-    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "إدراج الحلقات الخاصة عند اختيار المواسم للطلب."
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "إدراج الحلقات الخاصة عند اختيار المواسم للطلب.",
+    "lumen.adminGeneral.apiKey.title": "مفتاح واجهة برمجة التطبيقات للتطبيق",
+    "lumen.adminGeneral.apiKey.label": "مفتاح API",
+    "lumen.adminGeneral.apiKey.reveal": "إظهار المفتاح",
+    "lumen.adminGeneral.apiKey.hide": "إخفاء المفتاح",
+    "lumen.adminGeneral.apiKey.copy": "نسخ المفتاح",
+    "lumen.adminGeneral.apiKey.regenerate": "إعادة إنشاء المفتاح",
+    "lumen.adminGeneral.apiKey.copied": "تم نسخ مفتاح API للتطبيق.",
+    "lumen.adminGeneral.apiKey.copyFallback": "أظهر المفتاح لنسخه يدويًا.",
+    "lumen.adminGeneral.apiKey.regenerated": "تمت إعادة إنشاء مفتاح API للتطبيق.",
+    "lumen.adminGeneral.apiKey.regenerateFailure": "تعذرت إعادة إنشاء مفتاح API.",
+    "lumen.adminGeneral.apiKey.confirmFailure": "تعذر تأكيد مفتاح API البديل.",
+    "lumen.adminGeneral.apiKey.confirmTitle": "هل تريد إعادة إنشاء مفتاح API للتطبيق؟",
+    "lumen.adminGeneral.apiKey.confirmBody": "سيتوقف المفتاح الحالي عن العمل فورًا. حدّث أي تكاملات تستخدمه.",
+    "lumen.adminGeneral.apiKey.keepCurrent": "الاحتفاظ بالمفتاح الحالي"
   }
 }

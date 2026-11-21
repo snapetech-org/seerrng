@@ -19,6 +19,11 @@ const labels = {
     enable4k: 'Enable 4K',
     requestSettingsSave: 'Save Instance Request Settings',
     requestSettingsSaved: 'Instance request settings saved.',
+    apiKeyTitle: 'Application API Key',
+    revealKey: 'Reveal Key',
+    regenerateKey: 'Regenerate Key',
+    keepKey: 'Keep Current Key',
+    confirmApiKey: 'Regenerate the application API key?',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -39,6 +44,11 @@ const labels = {
     enable4k: 'Activer le 4K',
     requestSettingsSave: 'Enregistrer les règles de demande',
     requestSettingsSaved: 'Paramètres de demande de l’instance enregistrés.',
+    apiKeyTitle: 'Clé API de l’application',
+    revealKey: 'Afficher la clé',
+    regenerateKey: 'Régénérer la clé',
+    keepKey: 'Conserver la clé actuelle',
+    confirmApiKey: 'Régénérer la clé API de l’application ?',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -58,6 +68,11 @@ const labels = {
     enable4k: 'تفعيل 4K',
     requestSettingsSave: 'حفظ إعدادات الطلب',
     requestSettingsSaved: 'تم حفظ إعدادات الطلب.',
+    apiKeyTitle: 'مفتاح واجهة برمجة التطبيقات للتطبيق',
+    revealKey: 'إظهار المفتاح',
+    regenerateKey: 'إعادة إنشاء المفتاح',
+    keepKey: 'الاحتفاظ بالمفتاح الحالي',
+    confirmApiKey: 'هل تريد إعادة إنشاء مفتاح API للتطبيق؟',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -72,6 +87,7 @@ test('general application settings localize and recover failed saves', async ({
   let spotifyClientId = '';
   let spotifyClientSecret = '';
   let downloadPathMappings: Record<string, unknown>[] = [];
+  let apiKey = 'initial-test-api-key';
   const publicSettings: Record<string, unknown> = {
     personMovieBulkRequestsEnabled: false,
     enable4k: true,
@@ -99,6 +115,10 @@ test('general application settings localize and recover failed saves', async ({
         Object.assign(publicSettings, body);
       }
       return route.fulfill({ json: publicSettings });
+    }
+    if (path === '/settings/main/regenerate') {
+      apiKey = 'replacement-test-api-key';
+      return route.fulfill({ json: { apiKey } });
     }
     if (path === '/settings/main') {
       if (request.method() === 'POST') {
@@ -129,6 +149,7 @@ test('general application settings localize and recover failed saves', async ({
           spotifyClientId,
           spotifyClientSecret,
           downloadPathMappings,
+          apiKey,
           applicationUrl: 'https://seerr.example.test',
           youtubeUrl: '',
           cacheImages: true,
@@ -240,6 +261,36 @@ test('general application settings localize and recover failed saves', async ({
     page.getByText(text.requestSettingsSaved, { exact: true })
   ).toBeVisible();
   expect(writes[4]).toEqual({ enable4k: false });
+  const apiKeyPanel = page.locator('#apiKey');
+  await expect(
+    apiKeyPanel.getByRole('heading', { name: text.apiKeyTitle })
+  ).toBeVisible();
+  await apiKeyPanel.getByRole('button', { name: text.revealKey }).click();
+  await expect(apiKeyPanel.locator('input')).toHaveValue(apiKey);
+  await apiKeyPanel.getByRole('button', { name: text.regenerateKey }).click();
+  await expect(
+    page.getByText(text.confirmApiKey, { exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: text.keepKey, exact: true }).click();
+  await expect(page.getByText(text.confirmApiKey, { exact: true })).toHaveCount(
+    0
+  );
+  await apiKeyPanel.getByRole('button', { name: text.regenerateKey }).click();
+  await page
+    .getByRole('button', { name: text.regenerateKey, exact: true })
+    .last()
+    .click();
+  await expect(
+    page.getByText(
+      locale === 'fr'
+        ? 'Clé API de l’application régénérée.'
+        : locale === 'ar'
+          ? 'تمت إعادة إنشاء مفتاح API للتطبيق.'
+          : 'Application API key regenerated.',
+      { exact: true }
+    )
+  ).toBeVisible();
+  await expect(apiKeyPanel.locator('input')).toHaveValue('••••••••••••••••');
   const widths = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,
     viewport: document.documentElement.clientWidth,

@@ -5060,3 +5060,11 @@ fixtures verify the changed-flag payload and confirmed save across desktop,
 iPhone, Android, and tablet. Live server persistence and independent linguistic
 review remain open. The API key, default quotas, and default permissions panels
 still need localization and workflow parity review.
+
+The Application API Key panel now localizes reveal/hide, copy, regeneration,
+confirmation, and feedback in English, French, and Arabic. Existing key
+replacement behavior and immediate invalidation are preserved. Browser fixtures
+cover reveal, cancel, regeneration, and the masked replacement state at desktop,
+iPhone, Android, and tablet sizes. Clipboard permission and live integration
+rotation remain unverified. Default quotas and default permissions still need
+localization and workflow parity review.

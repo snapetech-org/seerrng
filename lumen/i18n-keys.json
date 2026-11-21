@@ -2336,5 +2336,19 @@
   "lumen.adminGeneral.requestSettings.partialRequestsEnabled",
   "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp",
   "lumen.adminGeneral.requestSettings.enableSpecialEpisodes",
-  "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp"
+  "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp",
+  "lumen.adminGeneral.apiKey.title",
+  "lumen.adminGeneral.apiKey.label",
+  "lumen.adminGeneral.apiKey.reveal",
+  "lumen.adminGeneral.apiKey.hide",
+  "lumen.adminGeneral.apiKey.copy",
+  "lumen.adminGeneral.apiKey.regenerate",
+  "lumen.adminGeneral.apiKey.copied",
+  "lumen.adminGeneral.apiKey.copyFallback",
+  "lumen.adminGeneral.apiKey.regenerated",
+  "lumen.adminGeneral.apiKey.regenerateFailure",
+  "lumen.adminGeneral.apiKey.confirmFailure",
+  "lumen.adminGeneral.apiKey.confirmTitle",
+  "lumen.adminGeneral.apiKey.confirmBody",
+  "lumen.adminGeneral.apiKey.keepCurrent"
 ]

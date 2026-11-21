@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ConfirmSheet } from './ConfirmSheet';
 
 export default function ApplicationApiKey({ initial }: { initial: string }) {
+  const { t } = useLumenLocale();
   const [key, setKey] = useState(initial);
   const [revealed, setRevealed] = useState(false);
   const [confirming, setConfirming] = useState(false);
@@ -23,9 +25,16 @@ export default function ApplicationApiKey({ initial }: { initial: string }) {
     setFailure('');
     try {
       await navigator.clipboard.writeText(key);
-      setNotice('Application API key copied.');
+      setNotice(
+        t('lumen.adminGeneral.apiKey.copied', 'Application API key copied.')
+      );
     } catch {
-      setNotice('Reveal the key to copy it manually.');
+      setNotice(
+        t(
+          'lumen.adminGeneral.apiKey.copyFallback',
+          'Reveal the key to copy it manually.'
+        )
+      );
     }
   }
 
@@ -43,14 +52,32 @@ export default function ApplicationApiKey({ initial }: { initial: string }) {
         }
       );
       if (!result.apiKey || result.apiKey === key) {
-        throw new Error('Could not confirm the replacement API key.');
+        throw new Error(
+          t(
+            'lumen.adminGeneral.apiKey.confirmFailure',
+            'Could not confirm the replacement API key.'
+          )
+        );
       }
       forget('/settings/main');
       setKey(result.apiKey);
       setRevealed(false);
-      setNotice('Application API key regenerated.');
+      setNotice(
+        t(
+          'lumen.adminGeneral.apiKey.regenerated',
+          'Application API key regenerated.'
+        )
+      );
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not regenerate the API key.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.adminGeneral.apiKey.regenerateFailure',
+            'Could not regenerate the API key.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setConfirming(false);
@@ -59,10 +86,13 @@ export default function ApplicationApiKey({ initial }: { initial: string }) {
   }
 
   return (
-    <Section title="Application API Key" id="apiKey">
+    <Section
+      title={t('lumen.adminGeneral.apiKey.title', 'Application API Key')}
+      id="apiKey"
+    >
       <div className="setlist">
         <label className="set cfg-row">
-          <b>API Key</b>
+          <b>{t('lumen.adminGeneral.apiKey.label', 'API Key')}</b>
           <input
             className="cfg-input"
             value={revealed ? key : '••••••••••••••••'}
@@ -78,21 +108,23 @@ export default function ApplicationApiKey({ initial }: { initial: string }) {
           disabled={busy}
           onClick={() => setRevealed((value) => !value)}
         >
-          {revealed ? 'Hide Key' : 'Reveal Key'}
+          {revealed
+            ? t('lumen.adminGeneral.apiKey.hide', 'Hide Key')
+            : t('lumen.adminGeneral.apiKey.reveal', 'Reveal Key')}
         </button>
         <button
           className="btn btn-quiet btn-sm"
           disabled={busy}
           onClick={() => void copy()}
         >
-          Copy Key
+          {t('lumen.adminGeneral.apiKey.copy', 'Copy Key')}
         </button>
         <button
           className="btn btn-tonal btn-sm"
           disabled={busy}
           onClick={() => setConfirming(true)}
         >
-          Regenerate Key
+          {t('lumen.adminGeneral.apiKey.regenerate', 'Regenerate Key')}
         </button>
       </div>
       {notice && (
@@ -107,10 +139,19 @@ export default function ApplicationApiKey({ initial }: { initial: string }) {
       )}
       {confirming && (
         <ConfirmSheet
-          title="Regenerate the application API key?"
-          body="The current key stops working immediately. Update any integrations that use it."
-          confirm="Regenerate Key"
-          cancel="Keep Current Key"
+          title={t(
+            'lumen.adminGeneral.apiKey.confirmTitle',
+            'Regenerate the application API key?'
+          )}
+          body={t(
+            'lumen.adminGeneral.apiKey.confirmBody',
+            'The current key stops working immediately. Update any integrations that use it.'
+          )}
+          confirm={t('lumen.adminGeneral.apiKey.regenerate', 'Regenerate Key')}
+          cancel={t(
+            'lumen.adminGeneral.apiKey.keepCurrent',
+            'Keep Current Key'
+          )}
           busy={busy}
           onConfirm={() => void regenerate()}
           onClose={() => {
