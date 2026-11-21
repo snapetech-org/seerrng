@@ -317,7 +317,7 @@ test('a Following update opens its exact patch version and submits only with a c
     .getByRole('link', { name: 'Request History', exact: true })
     .click();
   const history = page.getByRole('dialog', {
-    name: 'Software request history',
+    name: 'History',
   });
   await expect(
     history.getByText('Keep original', { exact: true })

@@ -243,7 +243,7 @@ test('software request history follows the saved locale and viewport', async ({
   )
     ? (process.env.LUMEN_SOFTWARE_HISTORY_LOCALE as 'en' | 'fr' | 'ar')
     : 'en';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   const expected = (
     english: string,
     french: string,
@@ -260,16 +260,11 @@ test('software request history follows the saved locale and viewport', async ({
   const { dialog } = await openHistory(page, 32, 1, 'failed');
   await expect(dialog).toHaveAttribute(
     'aria-label',
-    expected('History', 'Historique', 'سجل الحالة', 'Software request history')
+    expected('History', 'Historique', 'سجل الحالة', 'History')
   );
   await expect(
     dialog.getByRole('heading', {
-      name: expected(
-        'History',
-        'Historique',
-        'سجل الحالة',
-        'Software Request History'
-      ),
+      name: expected('History', 'Historique', 'سجل الحالة', 'History'),
     })
   ).toBeVisible();
   await expect(

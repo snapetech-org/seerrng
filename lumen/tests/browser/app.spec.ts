@@ -2157,7 +2157,7 @@ for (const format of ['audiobook', 'both'] as const) {
       `/book/bookshelf%3A1%3Afixture?${format === 'audiobook' ? 'f=audio&' : ''}lookupTitle=Requested+Audiobook`
     );
     await page.goto('/requests?requestId=615');
-    const history = page.getByRole('dialog', { name: 'Request history' });
+    const history = page.getByRole('dialog', { name: 'History' });
     await expect(
       history.getByRole('link', { name: 'Open Title' })
     ).toHaveAttribute(
@@ -5425,7 +5425,7 @@ test('System Logs restores display preferences without retaining search text', a
   await page.goto(testAppPath('/admin/logs'));
   await page.getByRole('combobox', { name: 'Severity' }).selectOption('error');
   await page.getByRole('combobox', { name: 'Page Size' }).selectOption('10');
-  await page.getByLabel('Search Logs').fill('temporary search');
+  await page.getByLabel('Search logs').fill('temporary search');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect
     .poll(() => queries.at(-1)?.get('search'))
@@ -5437,7 +5437,7 @@ test('System Logs restores display preferences without retaining search text', a
   await expect(page.getByRole('combobox', { name: 'Page Size' })).toHaveValue(
     '10'
   );
-  await expect(page.getByLabel('Search Logs')).toHaveValue('');
+  await expect(page.getByLabel('Search logs')).toHaveValue('');
   await expect
     .poll(() => queries.at(-1)?.toString())
     .toBe('take=10&skip=0&filter=error');
@@ -5531,7 +5531,7 @@ test('System Logs filters server entries and excludes non-admins', async ({
   await expect(page.getByText('Second page result')).toBeVisible();
   await page.reload();
   await expect(page.getByText('Second page result')).toBeVisible();
-  await page.getByLabel('Search Logs').fill('a&b');
+  await page.getByLabel('Search logs').fill('a&b');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect(page.getByText('Filtered result')).toBeVisible();
   await expect(page).toHaveURL(/\/admin\/logs$/);
@@ -6311,7 +6311,7 @@ test('Administration resolves the legacy Prowlarr bookmark fragment', async ({
   await page.goto('/admin#prowlarr');
   await expect(page).toHaveURL('/admin/prowlarr');
   await expect(
-    page.getByRole('heading', { name: 'Prowlarr Settings', exact: true })
+    page.getByRole('heading', { name: 'Prowlarr indexers', exact: true })
   ).toBeVisible();
 });
 
@@ -6948,15 +6948,15 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   await page.goto(testAppPath('/admin/users'));
   await page.getByRole('button', { name: 'Request Quotas' }).click();
   await expect(
-    page.getByText('Server default unlimited requests')
+    page.getByText('Server default: unlimited requests')
   ).toBeVisible();
   await page.getByLabel('Media Type').selectOption('book');
   await expect(
-    page.getByText('Server default 1 request across all time')
+    page.getByText('Server default: 1 request across all time')
   ).toBeVisible();
   await page.getByLabel('Media Type').selectOption('music');
   await expect(
-    page.getByText('Server default 4 requests per 7 days')
+    page.getByText('Server default: 4 requests per 7 days')
   ).toBeVisible();
   await page.getByLabel('Request Limit').fill('2');
   await page.getByLabel('Quota Days').fill('14');
@@ -7591,7 +7591,7 @@ test('Managed notifications save for the selected user without touching browser 
     page.getByText('Email notification settings saved successfully!')
   ).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Registered Browser Devices' })
+    page.getByRole('heading', { name: 'Manage Devices' })
   ).toHaveCount(0);
   expect(deviceReads).toBe(0);
 });

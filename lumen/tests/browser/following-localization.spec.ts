@@ -16,7 +16,7 @@ test('Following translates feed controls and event reasons', async ({
   page,
 }, info) => {
   const locale = process.env.LUMEN_DISCOVERY_LOCALE === 'ar' ? 'ar' : 'fr';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(

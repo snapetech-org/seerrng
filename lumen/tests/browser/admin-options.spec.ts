@@ -1272,7 +1272,7 @@ test('admins see everyone’s requests and approve or decline them', async ({
   await row.scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('quota-review-list.png') });
   await row.getByRole('button', { name: 'History' }).click();
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   await expect(history.getByText('Over Quota', { exact: true })).toBeVisible();
   await settleVisuals(page);
   await page.screenshot({ path: info.outputPath('quota-review-history.png') });

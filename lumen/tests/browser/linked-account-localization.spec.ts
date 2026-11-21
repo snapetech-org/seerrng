@@ -18,7 +18,7 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
   let discoveryConfigured = false;
   const locale = process.env.LUMEN_DISCOVERY_LOCALE === 'ar' ? 'ar' : 'fr';
   const translated = (english: string, french: string, arabic: string) =>
-    process.env.LUMEN_CAPTURE_MODE === 'candidate'
+    process.env.LUMEN_CAPTURE_MODE !== 'baseline'
       ? locale === 'ar'
         ? arabic
         : french

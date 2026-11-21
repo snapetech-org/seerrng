@@ -497,7 +497,7 @@ for (const [provider, serverType] of [
     ).toBeVisible();
     await page.getByText('Configure Prowlarr', { exact: true }).click();
     await expect(
-      page.getByRole('heading', { name: 'Indexer Diagnostics' })
+      page.getByRole('heading', { name: 'Indexer connection results' })
     ).toBeVisible();
     expect(initialized).toBe(false);
     await page.getByRole('link', { name: 'Start Guided Setup' }).click();

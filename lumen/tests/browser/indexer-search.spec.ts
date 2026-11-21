@@ -332,7 +332,7 @@ test('Indexer Search follows the saved locale and localizes results and handoff'
     client: document.documentElement.clientWidth,
   }));
   expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client);
-  if (process.env.LUMEN_CAPTURE_MODE === 'candidate')
+  if (process.env.LUMEN_CAPTURE_MODE !== 'baseline')
     await page.screenshot({
       path: `${process.env.LUMEN_CAPTURE_DIR}/indexer-${locale}-${page.viewportSize()?.width}.png`,
       fullPage: true,

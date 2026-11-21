@@ -20,7 +20,7 @@ test('Issues localizes filters, states, and discussion entry points', async ({
   )
     ? (process.env.LUMEN_ISSUES_LOCALE as 'en' | 'fr' | 'ar')
     : 'fr';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname.slice(

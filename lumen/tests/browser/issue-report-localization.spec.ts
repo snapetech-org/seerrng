@@ -20,7 +20,7 @@ test('issue reporting sheet localizes controls and preserves its submission', as
   )
     ? (process.env.LUMEN_ISSUE_REPORT_LOCALE as 'en' | 'fr' | 'ar')
     : 'fr';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   let submitted: unknown;
   const issue = {
     id: 8,
