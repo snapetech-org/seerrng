@@ -5135,7 +5135,7 @@ Trending and person-detail destinations also wait for enabled movie or series
 categories before loading. The all-off fixture now visits both destinations,
 checks the category notice, and confirms no trending or person metadata request
 is sent across all four browser viewport projects. The complete admin-options
-browser file passes with 359 tests and one existing skip on the same viewport
+browser file passes with 383 cases passed and one existing skip on the same viewport
 matrix. Both standalone Lumen and packaged `/lumen/` production builds succeed.
 TMDB lists, movie/series association graphs, and TV franchises now use the same
 pre-mount category boundary; list cards also omit any disabled media type when
