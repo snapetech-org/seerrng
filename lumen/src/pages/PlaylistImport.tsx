@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { embedded } from '../deployment';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface PlaylistItem {
   id: string;
@@ -23,6 +24,7 @@ interface Playlist {
 }
 
 export default function PlaylistImport() {
+  const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const [spotifyNotice, setSpotifyNotice] = useState('');
   const [url, setUrl] = useState('');
@@ -52,9 +54,19 @@ export default function PlaylistImport() {
       const next = new URLSearchParams(params);
       next.delete('playlist');
       setParams(next, { replace: true });
-      setSpotifyNotice('Spotify disconnected.');
+      setSpotifyNotice(
+        t('lumen.playlist.disconnected', 'Spotify disconnected.')
+      );
     } catch (failure) {
-      setError(friendlyError(failure, 'Spotify could not be disconnected.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.playlist.disconnectFailure',
+            'Spotify could not be disconnected.'
+          )
+        )
+      );
     } finally {
       setBusy(false);
       working.current = false;
@@ -87,7 +99,15 @@ export default function PlaylistImport() {
       setSubmitted([]);
       setErrors({});
     } catch (failure) {
-      setError(friendlyError(failure, 'The playlist could not be resolved.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.playlist.resolveFailure',
+            'The playlist could not be resolved.'
+          )
+        )
+      );
     } finally {
       setBusy(false);
       working.current = false;
@@ -126,7 +146,13 @@ export default function PlaylistImport() {
         } catch (failure) {
           setErrors((current) => ({
             ...current,
-            [index]: friendlyError(failure, 'Could not submit this request.'),
+            [index]: friendlyError(
+              failure,
+              t(
+                'lumen.playlist.requestFailure',
+                'Could not submit this request.'
+              )
+            ),
           }));
         }
       }
@@ -139,17 +165,19 @@ export default function PlaylistImport() {
   return (
     <>
       <header className="ph">
-        <h1>Import Playlist</h1>
+        <h1>{t('lumen.playlist.title', 'Import Playlist')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/music">
-          Back to Music
+          {t('lumen.playlist.backToMusic', 'Back to Music')}
         </Link>
         <a
           className="btn btn-quiet btn-sm"
           href={`/api/v1/playlist/spotify/connect?frontend=${embedded ? 'bundled' : 'companion'}`}
         >
-          {spotify.data?.connected ? 'Reconnect Spotify' : 'Connect Spotify'}
+          {spotify.data?.connected
+            ? t('lumen.playlist.reconnect', 'Reconnect Spotify')
+            : t('lumen.playlist.connect', 'Connect Spotify')}
         </a>
         {spotify.data?.connected && (
           <button
@@ -157,7 +185,7 @@ export default function PlaylistImport() {
             disabled={busy}
             onClick={() => void disconnectSpotify()}
           >
-            Disconnect Spotify
+            {t('lumen.playlist.disconnect', 'Disconnect Spotify')}
           </button>
         )}
         {spotify.data?.displayName && <span>{spotify.data.displayName}</span>}
@@ -169,12 +197,15 @@ export default function PlaylistImport() {
       )}
       {params.get('playlist') === 'connected' && spotify.data?.connected && (
         <p className="note" role="status">
-          Spotify connected.
+          {t('lumen.playlist.connected', 'Spotify connected.')}
         </p>
       )}
       {params.get('playlist') === 'error' && (
         <p className="note" role="alert">
-          Spotify could not be connected.
+          {t(
+            'lumen.playlist.connectFailure',
+            'Spotify could not be connected.'
+          )}
         </p>
       )}
       <form
@@ -184,7 +215,9 @@ export default function PlaylistImport() {
         }}
       >
         <label className="sel">
-          <span className="lbl">Spotify or YouTube Playlist URL</span>
+          <span className="lbl">
+            {t('lumen.playlist.urlLabel', 'Spotify or YouTube Playlist URL')}
+          </span>
           <input
             className="cfg-json"
             type="url"
@@ -196,7 +229,7 @@ export default function PlaylistImport() {
         </label>
         <div className="toolbar">
           <button className="btn btn-tonal" disabled={busy || !url.trim()}>
-            Preview Matches
+            {t('lumen.playlist.preview', 'Preview Matches')}
           </button>
         </div>
       </form>
@@ -208,10 +241,16 @@ export default function PlaylistImport() {
       {playlist && (
         <Section title={playlist.name}>
           <p className="note">
-            {playlist.totalItems} tracks in the source playlist
+            {t(
+              'lumen.playlist.sourceCount',
+              '{count} tracks in the source playlist',
+              { count: playlist.totalItems }
+            )}
           </p>
           {!playlist.items.length && (
-            <p className="note">No matches to review.</p>
+            <p className="note">
+              {t('lumen.playlist.noMatches', 'No matches to review.')}
+            </p>
           )}
           {!!playlist.items.length && (
             <ul className="setlist">
@@ -224,13 +263,19 @@ export default function PlaylistImport() {
                       {item.sourceTitle}
                       {item.sourceArtist ? ` · ${item.sourceArtist}` : ''}
                     </small>
-                    <small>{item.matchReason ?? item.matchStatus}</small>
+                    <small>
+                      {item.matchReason ??
+                        t(
+                          `lumen.playlist.match.${item.matchStatus}`,
+                          item.matchStatus
+                        )}
+                    </small>
                     {errors[index] && (
                       <small role="alert">{errors[index]}</small>
                     )}
                   </div>
                   {submitted.includes(index) ? (
-                    <small>Requested</small>
+                    <small>{t('lumen.playlist.requested', 'Requested')}</small>
                   ) : (
                     requestable(item) && (
                       <label>
@@ -248,8 +293,8 @@ export default function PlaylistImport() {
                           }}
                         />
                         {item.matchStatus === 'matched'
-                          ? 'Request Album'
-                          : 'Request Track'}
+                          ? t('lumen.playlist.requestAlbum', 'Request Album')
+                          : t('lumen.playlist.requestTrack', 'Request Track')}
                       </label>
                     )
                   )}
@@ -263,10 +308,14 @@ export default function PlaylistImport() {
               disabled={busy || !selected.length}
               onClick={() => void submit()}
             >
-              Request Selected ({selected.length})
+              {t(
+                'lumen.playlist.requestSelected',
+                'Request Selected ({count})',
+                { count: selected.length }
+              )}
             </button>
             <Link to="/track-requests" className="btn btn-quiet btn-sm">
-              Track Requests
+              {t('lumen.playlist.trackRequests', 'Track Requests')}
             </Link>
           </div>
         </Section>

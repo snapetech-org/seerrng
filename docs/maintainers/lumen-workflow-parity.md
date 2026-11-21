@@ -5523,3 +5523,16 @@ layout and control geometry are unchanged. Evidence is retained
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-request-sheet-20261121/`.
 Live metadata/provider behavior and independent translation review remain
 unverified.
+
+### Playlist import localization
+
+The Spotify and YouTube playlist import page now localizes its connection,
+preview, matching, request-selection, and recovery copy in English, French, and
+Arabic. The locale affects display only: OAuth callback URL, playlist resolver,
+matched-album and unmatched-track request payloads, and permission checks are
+unchanged. Browser coverage exercises the Spotify callback and disconnect
+round-trip at desktop, iPhone, Android, and tablet sizes for each supported
+locale. Full preview/selection submission is already covered by the existing
+English workflow test. Live Spotify authorization and playlist provider
+behavior remain unverified; French/Arabic matching and submission states and
+matched baseline screenshots remain to be qualified.

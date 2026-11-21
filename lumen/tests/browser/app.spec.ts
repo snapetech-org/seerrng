@@ -5348,6 +5348,45 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
   page,
 }) => {
   await fixtures(page);
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_PLAYLIST_LOCALE ?? '')
+    ? (process.env.LUMEN_PLAYLIST_LOCALE as 'fr' | 'ar')
+    : 'en';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { locale, enabledMediaCategories: { music: true } },
+    })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  const copy = {
+    en: {
+      connected: 'Spotify connected.',
+      reconnect: 'Reconnect Spotify',
+      disconnect: 'Disconnect Spotify',
+      disconnected: 'Spotify disconnected.',
+      connect: 'Connect Spotify',
+      title: 'Import Playlist',
+    },
+    fr: {
+      connected: 'Spotify est connecté.',
+      reconnect: 'Reconnecter Spotify',
+      disconnect: 'Déconnecter Spotify',
+      disconnected: 'Spotify a été déconnecté.',
+      connect: 'Connecter Spotify',
+      title: 'Importer une playlist',
+    },
+    ar: {
+      connected: 'تم الاتصال بـ Spotify.',
+      reconnect: 'إعادة الاتصال بـ Spotify',
+      disconnect: 'قطع الاتصال بـ Spotify',
+      disconnected: 'تم قطع الاتصال بـ Spotify.',
+      connect: 'اتصال بـ Spotify',
+      title: 'استيراد قائمة تشغيل',
+    },
+  }[locale];
   let connected = true;
   await page.route('**/api/v1/soulseek/status', (route) =>
     route.fulfill({ json: { configured: false } })
@@ -5363,21 +5402,25 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
     return route.fulfill({ status: 204 });
   });
   await page.goto('/music/playlist-import?playlist=connected');
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  await expect(page.getByText(copy.connected, { exact: true })).toBeVisible();
   await expect(
-    page.getByText('Spotify connected.', { exact: true })
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'Reconnect Spotify' })
+    page.getByRole('link', { name: copy.reconnect })
   ).toHaveAttribute(
     'href',
     '/api/v1/playlist/spotify/connect?frontend=companion'
   );
-  await page.getByRole('button', { name: 'Disconnect Spotify' }).click();
+  await page.getByRole('button', { name: copy.disconnect }).click();
   await expect(
-    page.getByText('Spotify disconnected.', { exact: true })
+    page.getByText(copy.disconnected, { exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Connect Spotify', exact: true })
+    page.getByRole('link', { name: copy.connect, exact: true })
   ).toBeVisible();
   await expect(page).toHaveURL(/\/music\/playlist-import$/);
 });
@@ -6562,10 +6605,14 @@ test('General Settings confirms default permissions and preserves higher permiss
     });
   });
   await page.goto('/admin/requests#default-request-quotas');
-  await page.getByRole('link', { name: 'Autorisations par défaut des utilisateurs' }).click();
+  await page
+    .getByRole('link', { name: 'Autorisations par défaut des utilisateurs' })
+    .click();
   await expect(page).toHaveURL(/#default-user-permissions$/);
   await expect(
-    page.getByRole('heading', { name: 'Autorisations par défaut des utilisateurs' })
+    page.getByRole('heading', {
+      name: 'Autorisations par défaut des utilisateurs',
+    })
   ).toBeInViewport();
   if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
     await page.screenshot({
@@ -6586,13 +6633,17 @@ test('General Settings confirms default permissions and preserves higher permiss
   await page
     .getByRole('checkbox', { name: 'Demande de livres', exact: true })
     .check();
-  await page.getByRole('button', { name: 'Enregistrer les autorisations par défaut' }).click();
+  await page
+    .getByRole('button', { name: 'Enregistrer les autorisations par défaut' })
+    .click();
   expect(writes).toEqual([]);
   await page
     .getByRole('alertdialog')
     .getByRole('button', { name: 'Enregistrer les autorisations par défaut' })
     .click();
-  await expect(page.getByText('Autorisations par défaut enregistrées.')).toBeVisible();
+  await expect(
+    page.getByText('Autorisations par défaut enregistrées.')
+  ).toBeVisible();
   expect(writes).toEqual([
     { defaultPermissions: 4398046511104 + 34359738368 + 32 },
   ]);
