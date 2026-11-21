@@ -2073,5 +2073,9 @@
   "lumen.requestMapping.saveFailed",
   "lumen.requestMapping.success",
   "lumen.requestMapping.noSeries",
-  "lumen.requestMapping.tmdbSeasonAccessible"
+  "lumen.requestMapping.tmdbSeasonAccessible",
+  "lumen.requestHistory.removeManagedCopy",
+  "lumen.requestHistory.mediaRemoved",
+  "lumen.requestHistory.mediaRemoveFailed",
+  "lumen.requestHistory.unknownTitle"
 ]

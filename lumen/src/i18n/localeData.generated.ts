@@ -2663,6 +2663,11 @@ export const localeData = [
       'lumen.requestMapping.noSeries':
         'لم يتم العثور على مسلسل Sonarr مطابق لهذا الطلب.',
       'lumen.requestMapping.tmdbSeasonAccessible': 'موسم TMDB {season}',
+      'lumen.requestHistory.removeManagedCopy': 'إزالة من الخدمة',
+      'lumen.requestHistory.mediaRemoved':
+        'تمت إزالة النسخة المُدارة. تم الاحتفاظ بسجل الطلب.',
+      'lumen.requestHistory.mediaRemoveFailed': 'تعذر إزالة النسخة المُدارة.',
+      'lumen.requestHistory.unknownTitle': 'هذا العنصر',
     },
   },
   {
@@ -7977,6 +7982,12 @@ export const localeData = [
       'lumen.requestMapping.noSeries':
         'No matching Sonarr series was found for this request.',
       'lumen.requestMapping.tmdbSeasonAccessible': 'TMDB Season {season}',
+      'lumen.requestHistory.removeManagedCopy': 'Remove from Service',
+      'lumen.requestHistory.mediaRemoved':
+        'Managed copy removed. Request history was kept.',
+      'lumen.requestHistory.mediaRemoveFailed':
+        'Could not remove the managed copy.',
+      'lumen.requestHistory.unknownTitle': 'this item',
     },
   },
   {
@@ -14040,6 +14051,12 @@ export const localeData = [
       'lumen.requestMapping.noSeries':
         'Aucune série Sonarr correspondante n’a été trouvée pour cette demande.',
       'lumen.requestMapping.tmdbSeasonAccessible': 'Saison TMDB {season}',
+      'lumen.requestHistory.removeManagedCopy': 'Supprimer du service',
+      'lumen.requestHistory.mediaRemoved':
+        'La copie gérée a été supprimée. L’historique de la demande a été conservé.',
+      'lumen.requestHistory.mediaRemoveFailed':
+        'Impossible de supprimer la copie gérée.',
+      'lumen.requestHistory.unknownTitle': 'cet élément',
     },
   },
   {

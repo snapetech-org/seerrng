@@ -1298,7 +1298,11 @@
     "lumen.requestMapping.saveFailed": "Could not save the mapping or retry the request.",
     "lumen.requestMapping.success": "Season mapping saved and request retried.",
     "lumen.requestMapping.noSeries": "No matching Sonarr series was found for this request.",
-    "lumen.requestMapping.tmdbSeasonAccessible": "TMDB Season {season}"
+    "lumen.requestMapping.tmdbSeasonAccessible": "TMDB Season {season}",
+    "lumen.requestHistory.removeManagedCopy": "Remove from Service",
+    "lumen.requestHistory.mediaRemoved": "Managed copy removed. Request history was kept.",
+    "lumen.requestHistory.mediaRemoveFailed": "Could not remove the managed copy.",
+    "lumen.requestHistory.unknownTitle": "this item"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2712,7 +2716,11 @@
     "lumen.requestMapping.saveFailed": "Impossible d’enregistrer l’association ou de relancer la demande.",
     "lumen.requestMapping.success": "Association enregistrée et demande relancée.",
     "lumen.requestMapping.noSeries": "Aucune série Sonarr correspondante n’a été trouvée pour cette demande.",
-    "lumen.requestMapping.tmdbSeasonAccessible": "Saison TMDB {season}"
+    "lumen.requestMapping.tmdbSeasonAccessible": "Saison TMDB {season}",
+    "lumen.requestHistory.removeManagedCopy": "Supprimer du service",
+    "lumen.requestHistory.mediaRemoved": "La copie gérée a été supprimée. L’historique de la demande a été conservé.",
+    "lumen.requestHistory.mediaRemoveFailed": "Impossible de supprimer la copie gérée.",
+    "lumen.requestHistory.unknownTitle": "cet élément"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4130,6 +4138,10 @@
     "lumen.requestMapping.saveFailed": "تعذر حفظ الربط أو إعادة الطلب.",
     "lumen.requestMapping.success": "تم حفظ الربط وإعادة الطلب.",
     "lumen.requestMapping.noSeries": "لم يتم العثور على مسلسل Sonarr مطابق لهذا الطلب.",
-    "lumen.requestMapping.tmdbSeasonAccessible": "موسم TMDB {season}"
+    "lumen.requestMapping.tmdbSeasonAccessible": "موسم TMDB {season}",
+    "lumen.requestHistory.removeManagedCopy": "إزالة من الخدمة",
+    "lumen.requestHistory.mediaRemoved": "تمت إزالة النسخة المُدارة. تم الاحتفاظ بسجل الطلب.",
+    "lumen.requestHistory.mediaRemoveFailed": "تعذر إزالة النسخة المُدارة.",
+    "lumen.requestHistory.unknownTitle": "هذا العنصر"
   }
 }

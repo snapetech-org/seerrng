@@ -39,12 +39,10 @@ export function ConfirmSheet({
       >
         <div className="grab" />
         <div className="pk">
-          <div className="pk-head">
-            <div>
-              <h3>{title}</h3>
-              <span className="sub">{body}</span>
-            </div>
-          </div>
+          <header>
+            <h3>{title}</h3>
+            <span className="sub">{body}</span>
+          </header>
           {children}
           <div className="pk-foot">
             <button

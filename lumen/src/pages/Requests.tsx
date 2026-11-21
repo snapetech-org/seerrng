@@ -179,6 +179,7 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
         results: {
           request: RequestItem;
           status: NonNullable<RequestItem['currentStatus']>;
+          canRemove?: boolean;
         }[];
       }>(path.replace('/request?', '/request/status?'));
       if (
@@ -199,9 +200,10 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
       return {
         ...data,
         authoritativeStatus: true,
-        results: data.results.map(({ request, status }) => ({
+        results: data.results.map(({ request, status, canRemove }) => ({
           ...request,
           currentStatus: status,
+          canRemove,
         })),
       };
     } catch (error) {
@@ -1313,8 +1315,9 @@ export default function Requests() {
   // a decline, a cancel or a remove waits for a yes; none can be taken back
   const [confirming, setConfirming] = useState<{
     id: number;
-    how: 'decline' | 'cancel' | 'remove';
+    how: 'decline' | 'cancel' | 'remove' | 'removeMedia';
     title: string;
+    request?: RequestItem;
   } | null>(null);
   useEffect(() => {
     if (!viewAll) return;
@@ -1652,6 +1655,48 @@ export default function Requests() {
     }
   };
 
+  const removeManagedCopy = async (request: RequestItem) => {
+    if (!manage || request.canRemove !== true || !request.media.id) return;
+    const query = new URLSearchParams({ is4k: String(request.is4k) });
+    if (request.type === 'book') {
+      let format = request.bookFormat || 'ebook';
+      if (format === 'both') {
+        const ebook = request.media.externalServiceId != null;
+        const audiobook = request.media.audiobookExternalServiceId != null;
+        format = ebook !== audiobook ? (ebook ? 'ebook' : 'audiobook') : 'both';
+      }
+      query.set('format', format);
+    }
+    setActing(request.id);
+    try {
+      await api(
+        `/media/${request.media.id}/file?${query}`,
+        { method: 'DELETE' },
+        'empty'
+      );
+      forget(`/request/status/${request.id}`);
+      toast(
+        t(
+          'lumen.requestHistory.mediaRemoved',
+          'Managed copy removed. Request history was kept.'
+        )
+      );
+      setTick((value) => value + 1);
+    } catch (error) {
+      toast(
+        friendlyError(
+          error,
+          t(
+            'lumen.requestHistory.mediaRemoveFailed',
+            'Could not remove the managed copy.'
+          )
+        )
+      );
+    } finally {
+      setActing(null);
+    }
+  };
+
   const renderRequestActions = (x: Row, moderate: boolean) => {
     const st = requestRowStatus(x, serverName, liveDownloads, allowRawHashes);
     return (
@@ -1684,6 +1729,31 @@ export default function Requests() {
             {t('lumen.requestMapping.open', 'Map Seasons')}
           </button>
         )}
+        {moderate &&
+          x.r.status !== 1 &&
+          x.r.canRemove === true &&
+          Number.isSafeInteger(x.r.media.id) &&
+          (x.r.media.id ?? 0) > 0 && (
+            <button
+              className="btn btn-sm btn-quiet"
+              disabled={acting !== null}
+              onClick={() =>
+                setConfirming({
+                  id: x.r.id,
+                  how: 'removeMedia',
+                  title:
+                    x.title ||
+                    t('lumen.requestHistory.unknownTitle', 'this item'),
+                  request: x.r,
+                })
+              }
+            >
+              {t(
+                'lumen.requestHistory.removeManagedCopy',
+                'Remove from Service'
+              )}
+            </button>
+          )}
         {moderate && x.r.id > 0 ? (
           <>
             {x.r.status === 1 && (
@@ -2151,29 +2221,37 @@ export default function Requests() {
             confirming.how === 'cancel'
               ? 'Cancel this request?'
               : confirming.how === 'remove'
-                ? `Remove ${confirming.title}?`
-                : 'Decline this request?'
+                ? `Remove ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')}?`
+                : confirming.how === 'removeMedia'
+                  ? `Remove ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} from the service?`
+                  : 'Decline this request?'
           }
           body={
             confirming.how === 'cancel'
-              ? `${confirming.title} won’t be fetched. You can ask for it again later.`
+              ? `${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} won’t be fetched. You can ask for it again later.`
               : confirming.how === 'remove'
-                ? `This deletes the request for ${confirming.title} for good. It can’t be undone.`
-                : `${confirming.title} won’t be fetched, and the person who asked will see it was declined.`
+                ? `This deletes the request for ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} for good. It can’t be undone.`
+                : confirming.how === 'removeMedia'
+                  ? `This removes the managed copy of ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')}. Its SeerrNG request and history will remain.`
+                  : `${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} won’t be fetched, and the person who asked will see it was declined.`
           }
           confirm={
             confirming.how === 'cancel'
               ? 'Cancel request'
               : confirming.how === 'remove'
                 ? 'Remove request'
-                : 'Decline request'
+                : confirming.how === 'removeMedia'
+                  ? 'Remove from Service'
+                  : 'Decline request'
           }
           onClose={() => setConfirming(null)}
           onConfirm={() => {
-            const { id, how } = confirming;
+            const { id, how, request } = confirming;
             setConfirming(null);
             if (how === 'cancel') void cancel(id);
-            else void decide(id, how);
+            else if (how === 'removeMedia') {
+              if (request) void removeManagedCopy(request);
+            } else void decide(id, how);
           }}
         />
       )}

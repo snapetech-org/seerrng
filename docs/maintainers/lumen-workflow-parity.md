@@ -164,6 +164,15 @@ the manager flow, exact payload, and non-manager visibility across desktop,
 iPhone, Android and tablet. Live Sonarr/TVDB responses and visual comparison
 against native SeerrNG remain open.
 
+Request managers can also remove an eligible managed copy from its configured
+service without deleting its SeerrNG request or history. Lumen shows this
+separately from deleting the request, only when SeerrNG returns `canRemove`,
+and requires a confirmation that states the request will remain. The action
+uses the existing `/media/:id/file` route and preserves 4K and book-format
+scope. Browser fixtures verify the confirmation boundary, exact removal route,
+and continued request row. Live service removal remains unverified; native
+visual comparison is still open.
+
 The native TV request dialog now retries season metadata that fails during the
 parallel provider pass, one missing season at a time. This handles providers
 that reject concurrent season lookups while keeping the work bounded by the

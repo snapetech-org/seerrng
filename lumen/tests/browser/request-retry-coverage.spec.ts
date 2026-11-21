@@ -47,6 +47,7 @@ async function fixture(
 ) {
   const retries: string[] = [];
   const mapped: unknown[] = [];
+  const removed: string[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -60,6 +61,10 @@ async function fixture(
       retries.push(path);
       mapped.push(req.postDataJSON());
       return route.fulfill({ json: {} });
+    }
+    if (req.method() === 'DELETE' && /^\/media\/\d+\/file$/.test(path)) {
+      removed.push(`${path}${new URL(req.url()).search}`);
+      return route.fulfill({ status: 204 });
     }
     if (path.startsWith('/service/sonarr/lookup/'))
       return route.fulfill({
@@ -108,7 +113,7 @@ async function fixture(
       return route.fulfill({ json: [] });
     return route.fulfill({ json: {} });
   });
-  return { retries, mapped };
+  return { retries, mapped, removed };
 }
 
 test('owners with category permission can retry failures across media types', async ({
@@ -219,4 +224,34 @@ test('managers can map every selected TV season and retry; other users cannot ma
     await page.screenshot({
       path: testInfo.outputPath('unavailable-to-user.png'),
     });
+});
+
+test('managers can remove an eligible managed copy while preserving its request', async ({
+  page,
+}, testInfo) => {
+  const eligible = { ...request(911, 'movie'), canRemove: true };
+  const { removed } = await fixture(page, 16, [eligible]);
+  await page.goto(testAppPath('/requests?tab=everyone&show=failed'));
+  const row = page.locator('.rq').first();
+  await expect(
+    row.getByRole('button', { name: 'Remove from Service' })
+  ).toBeVisible();
+  await row.getByRole('button', { name: 'Remove from Service' }).click();
+  const confirmation = page.getByRole('alertdialog');
+  await expect(confirmation).toContainText(
+    'SeerrNG request and history will remain'
+  );
+  await expect(confirmation).toContainText('managed copy of this item');
+  await page.waitForTimeout(400);
+  if (testInfo.project.name === 'desktop' || testInfo.project.name === 'iphone')
+    await page.screenshot({
+      path: testInfo.outputPath('remove-managed-copy-confirmation.png'),
+    });
+  expect(removed).toEqual([]);
+  await confirmation
+    .getByRole('button', { name: 'Remove from Service' })
+    .click();
+  await expect(confirmation).toHaveCount(0);
+  expect(removed).toEqual(['/media/911/file?is4k=false']);
+  await expect(page.locator('.rq')).toHaveCount(1);
 });

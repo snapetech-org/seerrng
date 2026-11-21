@@ -934,6 +934,7 @@ export interface DownloadItem {
   status?: string;
 }
 export interface RequestItem {
+  canRemove?: boolean;
   quotaException?: boolean;
   serverId?: number | null;
   languageProfileId?: number | null;
