@@ -8,6 +8,31 @@ const testApiPath = (url: string) =>
 test('movie poster Watchlist action checks current state before add and remove', async ({
   page,
 }, testInfo) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_POSTER_WATCHLIST_LOCALE ?? ''
+  )
+    ? process.env.LUMEN_POSTER_WATCHLIST_LOCALE!
+    : 'en';
+  const copy = {
+    en: {
+      add: 'Add Watchlist Fixture Film to your Watchlist',
+      remove: 'Remove Watchlist Fixture Film from your Watchlist',
+      added: 'Added to Watchlist',
+      removed: 'Removed from Watchlist',
+    },
+    fr: {
+      add: 'Ajouter Watchlist Fixture Film à votre liste de suivi',
+      remove: 'Retirer Watchlist Fixture Film de votre liste de suivi',
+      added: 'Ajouté à la liste de suivi',
+      removed: 'Retiré de la liste de suivi',
+    },
+    ar: {
+      add: 'إضافة Watchlist Fixture Film إلى قائمة المتابعة',
+      remove: 'إزالة Watchlist Fixture Film من قائمة المتابعة',
+      added: 'أُضيف إلى قائمة المتابعة',
+      removed: 'أُزيل من قائمة المتابعة',
+    },
+  }[locale];
   let listed = false;
   let detailReads = 0;
   let adds = 0;
@@ -25,6 +50,8 @@ test('movie poster Watchlist action checks current state before add and remove',
           userType: 2,
         },
       });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
     if (path === '/settings/public')
       return route.fulfill({
         json: {
@@ -81,13 +108,22 @@ test('movie poster Watchlist action checks current state before add and remove',
     return route.fulfill({ json: {} });
   });
 
+  const localeResponse = page.waitForResponse((response) =>
+    new URL(response.url()).pathname.endsWith('/user/1/settings/main')
+  );
   await page.goto(testAppPath('/movies'));
+  await localeResponse;
+  await expect(page.locator('html')).toHaveAttribute('lang', locale);
+  await expect(page.locator('html')).toHaveAttribute(
+    'dir',
+    locale === 'ar' ? 'rtl' : 'ltr'
+  );
   const poster = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Watchlist Fixture Film' }),
   });
   await expect(poster).toBeVisible();
   const action = poster.getByRole('button', {
-    name: 'Add Watchlist Fixture Film to your Watchlist',
+    name: copy.add,
   });
   await poster.scrollIntoViewIfNeeded();
   if (testInfo.project.name === 'desktop') await poster.hover();
@@ -96,9 +132,18 @@ test('movie poster Watchlist action checks current state before add and remove',
 
   await action.click();
   await expect.poll(() => adds).toBe(1);
+  await expect(page.getByRole('status')).toHaveText(copy.added);
+  const captureDirectory = process.env.LUMEN_POSTER_WATCHLIST_CAPTURE_DIR;
+  if (captureDirectory) {
+    await page.screenshot({
+      path: `${captureDirectory}/${locale}-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+    return;
+  }
   await expect(
     poster.getByRole('button', {
-      name: 'Remove Watchlist Fixture Film from your Watchlist',
+      name: copy.remove,
     })
   ).toBeVisible();
   expect(detailReads).toBe(1);
@@ -106,10 +151,11 @@ test('movie poster Watchlist action checks current state before add and remove',
 
   await poster
     .getByRole('button', {
-      name: 'Remove Watchlist Fixture Film from your Watchlist',
+      name: copy.remove,
     })
     .click();
   await expect.poll(() => removes).toBe(1);
+  await expect(page.getByRole('status')).toHaveText(copy.removed);
   expect(detailReads).toBe(2);
   expect(listed).toBe(false);
 });

@@ -585,9 +585,18 @@ identities.
 Baseline and candidate movie poster renders were captured at matching viewport
 sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
-Live provider effects and native-matched visual acceptance remain open. The
-complete watchlist suite now passes under both standalone Lumen and the
-production Express `/lumen/` mount.
+The shared Watchlist action now uses translated native button labels, localized
+accessible names, and locale-aware success and recovery messages on poster and
+detail actions. English, French, and Arabic browser fixtures verify the locale,
+RTL direction, and exact add/remove labels and feedback. The full 28-case poster
+action matrix passes across desktop, iPhone, Android, and tablet; the localized
+movie add/remove case passes for French and Arabic on all four viewports. The
+same locale matrix was captured in standalone Lumen at 1440, 834, 412, and 390
+CSS pixels; Arabic toast copy fits above the mobile tabs. French and Arabic
+custom feedback currently fall back to English in other Lumen locales. Live
+provider effects and native-matched visual acceptance remain open. The complete
+watchlist suite now passes under both standalone Lumen and the production
+Express `/lumen/` mount.
 
 Comic poster actions are available only when the browse result provides a
 supported edition identity; the comic detail action remains covered separately.

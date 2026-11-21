@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api, MediaStatus, type MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { canonicalMediaId, type ManagedMediaType } from '../mediaIdentity';
 import { sessionGeneration } from '../sessionState';
@@ -28,6 +29,7 @@ export default function WatchlistButton({
   touch?: boolean;
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const toast = useToast();
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -68,7 +70,12 @@ export default function WatchlistButton({
         typeof fresh.onUserWatchlist !== 'boolean'
       ) {
         setUnavailable(true);
-        toast('Watchlist is unavailable for this title.');
+        toast(
+          t(
+            'lumen.watchlist.actionUnavailable',
+            'Watchlist is unavailable for this title.'
+          )
+        );
         return;
       }
       // Poster rows intentionally don't load detail state until the viewer acts.
@@ -93,7 +100,12 @@ export default function WatchlistButton({
           });
           if (sessionGeneration() !== session) return;
           if (!saved || !Number.isSafeInteger(saved.id) || saved.id <= 0) {
-            toast('Couldn’t confirm the Watchlist change.');
+            toast(
+              t(
+                'lumen.watchlist.actionConfirmFailure',
+                'Couldn’t confirm the Watchlist change.'
+              )
+            );
             return;
           }
         } else {
@@ -106,14 +118,23 @@ export default function WatchlistButton({
       setConfirmed(desired);
       toast(
         alreadySaved
-          ? 'Already on Watchlist'
+          ? t('lumen.watchlist.alreadySaved', 'Already on Watchlist')
           : desired
-            ? 'Added to Watchlist'
-            : 'Removed from Watchlist'
+            ? t('lumen.watchlist.actionAdded', 'Added to Watchlist')
+            : t('lumen.watchlist.actionRemoved', 'Removed from Watchlist')
       );
     } catch (error) {
       if (sessionGeneration() === session)
-        toast(friendlyError(error, 'Couldn’t update your Watchlist'));
+        toast(
+          friendlyError(
+            error,
+            t(
+              'lumen.watchlist.actionFailure',
+              'Couldn’t update your Watchlist'
+            ),
+            (id, fallback) => t(id, fallback)
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -132,15 +153,27 @@ export default function WatchlistButton({
       }
       disabled={busy}
       aria-busy={busy}
-      aria-label={
-        typeof listed === 'boolean'
-          ? `${listed ? 'Remove' : 'Add'} ${detail.title || 'title'} ${listed ? 'from' : 'to'} your Watchlist`
-          : `Add ${detail.title || 'title'} to your Watchlist`
-      }
+      aria-label={t(
+        listed === true
+          ? 'lumen.watchlist.actionRemoveTitle'
+          : 'lumen.watchlist.actionAddTitle',
+        listed === true
+          ? 'Remove {title} from your Watchlist'
+          : 'Add {title} to your Watchlist',
+        { title: detail.title || t('lumen.watchlist.titleFallback', 'title') }
+      )}
       title={
         typeof listed === 'boolean'
-          ? `${listed ? 'Remove from' : 'Add to'} Watchlist`
-          : 'Check Watchlist and toggle'
+          ? t(
+              listed
+                ? 'components.MovieDetails.removefromwatchlist'
+                : 'components.MovieDetails.addtowatchlist',
+              listed ? 'Remove From Watchlist' : 'Add To Watchlist'
+            )
+          : t(
+              'lumen.watchlist.actionCheckAndToggle',
+              'Check Watchlist and toggle'
+            )
       }
       onClick={(event) => {
         event.preventDefault();
@@ -152,7 +185,13 @@ export default function WatchlistButton({
         name={listed ? 'check' : 'star'}
         size={compact ? 'sm' : undefined}
       />
-      {!compact && (listed ? 'Remove From Watchlist' : 'Add To Watchlist')}
+      {!compact &&
+        t(
+          listed === true
+            ? 'components.MovieDetails.removefromwatchlist'
+            : 'components.MovieDetails.addtowatchlist',
+          listed === true ? 'Remove From Watchlist' : 'Add To Watchlist'
+        )}
     </button>
   );
 }

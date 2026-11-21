@@ -2239,5 +2239,17 @@
   "components.Settings.Notifications.validationTypes",
   "components.Settings.Notifications.webhookRoleId",
   "components.Settings.Notifications.webhookThreadId",
-  "components.Settings.Notifications.webhookUrl"
+  "components.Settings.Notifications.webhookUrl",
+  "components.MovieDetails.addtowatchlist",
+  "components.MovieDetails.removefromwatchlist",
+  "lumen.watchlist.actionUnavailable",
+  "lumen.watchlist.actionConfirmFailure",
+  "lumen.watchlist.alreadySaved",
+  "lumen.watchlist.actionAdded",
+  "lumen.watchlist.actionRemoved",
+  "lumen.watchlist.actionFailure",
+  "lumen.watchlist.actionAddTitle",
+  "lumen.watchlist.actionRemoveTitle",
+  "lumen.watchlist.titleFallback",
+  "lumen.watchlist.actionCheckAndToggle"
 ]

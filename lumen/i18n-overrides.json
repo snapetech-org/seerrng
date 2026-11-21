@@ -1324,7 +1324,17 @@
     "lumen.requestHistory.removeManagedCopy": "Remove from Service",
     "lumen.requestHistory.mediaRemoved": "Managed copy removed. Request history was kept.",
     "lumen.requestHistory.mediaRemoveFailed": "Could not remove the managed copy.",
-    "lumen.requestHistory.unknownTitle": "this item"
+    "lumen.requestHistory.unknownTitle": "this item",
+    "lumen.watchlist.actionUnavailable": "Watchlist is unavailable for this title.",
+    "lumen.watchlist.actionConfirmFailure": "Couldn’t confirm the Watchlist change.",
+    "lumen.watchlist.alreadySaved": "Already on Watchlist",
+    "lumen.watchlist.actionAdded": "Added to Watchlist",
+    "lumen.watchlist.actionRemoved": "Removed from Watchlist",
+    "lumen.watchlist.actionFailure": "Couldn’t update your Watchlist",
+    "lumen.watchlist.actionAddTitle": "Add {title} to your Watchlist",
+    "lumen.watchlist.actionRemoveTitle": "Remove {title} from your Watchlist",
+    "lumen.watchlist.titleFallback": "title",
+    "lumen.watchlist.actionCheckAndToggle": "Check Watchlist and toggle"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2764,7 +2774,17 @@
     "lumen.requestHistory.removeManagedCopy": "Supprimer du service",
     "lumen.requestHistory.mediaRemoved": "La copie gérée a été supprimée. L’historique de la demande a été conservé.",
     "lumen.requestHistory.mediaRemoveFailed": "Impossible de supprimer la copie gérée.",
-    "lumen.requestHistory.unknownTitle": "cet élément"
+    "lumen.requestHistory.unknownTitle": "cet élément",
+    "lumen.watchlist.actionUnavailable": "La liste de suivi n’est pas disponible pour ce titre.",
+    "lumen.watchlist.actionConfirmFailure": "Impossible de confirmer la modification de la liste de suivi.",
+    "lumen.watchlist.alreadySaved": "Déjà dans la liste de suivi",
+    "lumen.watchlist.actionAdded": "Ajouté à la liste de suivi",
+    "lumen.watchlist.actionRemoved": "Retiré de la liste de suivi",
+    "lumen.watchlist.actionFailure": "Impossible de modifier votre liste de suivi",
+    "lumen.watchlist.actionAddTitle": "Ajouter {title} à votre liste de suivi",
+    "lumen.watchlist.actionRemoveTitle": "Retirer {title} de votre liste de suivi",
+    "lumen.watchlist.titleFallback": "ce titre",
+    "lumen.watchlist.actionCheckAndToggle": "Vérifier et modifier la liste de suivi"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4208,6 +4228,16 @@
     "lumen.requestHistory.removeManagedCopy": "إزالة من الخدمة",
     "lumen.requestHistory.mediaRemoved": "تمت إزالة النسخة المُدارة. تم الاحتفاظ بسجل الطلب.",
     "lumen.requestHistory.mediaRemoveFailed": "تعذر إزالة النسخة المُدارة.",
-    "lumen.requestHistory.unknownTitle": "هذا العنصر"
+    "lumen.requestHistory.unknownTitle": "هذا العنصر",
+    "lumen.watchlist.actionUnavailable": "قائمة المتابعة غير متاحة لهذا العنوان.",
+    "lumen.watchlist.actionConfirmFailure": "تعذر تأكيد التغيير في قائمة المتابعة.",
+    "lumen.watchlist.alreadySaved": "موجود بالفعل في قائمة المتابعة",
+    "lumen.watchlist.actionAdded": "أُضيف إلى قائمة المتابعة",
+    "lumen.watchlist.actionRemoved": "أُزيل من قائمة المتابعة",
+    "lumen.watchlist.actionFailure": "تعذر تحديث قائمة المتابعة",
+    "lumen.watchlist.actionAddTitle": "إضافة {title} إلى قائمة المتابعة",
+    "lumen.watchlist.actionRemoveTitle": "إزالة {title} من قائمة المتابعة",
+    "lumen.watchlist.titleFallback": "العنوان",
+    "lumen.watchlist.actionCheckAndToggle": "التحقق من قائمة المتابعة والتبديل"
   }
 }

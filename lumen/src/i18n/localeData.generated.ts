@@ -1343,6 +1343,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'معرّف دور التنبيه',
       'components.Settings.Notifications.webhookThreadId': 'هوية الخيط',
       'components.Settings.Notifications.webhookUrl': 'خطاف الويب URL',
+      'components.MovieDetails.addtowatchlist': 'إضافة إلى قائمة المشاهدة',
+      'components.MovieDetails.removefromwatchlist': 'إزالة من قائمة المشاهدة',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -2951,6 +2953,19 @@ export const localeData = [
         'تمت إزالة النسخة المُدارة. تم الاحتفاظ بسجل الطلب.',
       'lumen.requestHistory.mediaRemoveFailed': 'تعذر إزالة النسخة المُدارة.',
       'lumen.requestHistory.unknownTitle': 'هذا العنصر',
+      'lumen.watchlist.actionUnavailable':
+        'قائمة المتابعة غير متاحة لهذا العنوان.',
+      'lumen.watchlist.actionConfirmFailure':
+        'تعذر تأكيد التغيير في قائمة المتابعة.',
+      'lumen.watchlist.alreadySaved': 'موجود بالفعل في قائمة المتابعة',
+      'lumen.watchlist.actionAdded': 'أُضيف إلى قائمة المتابعة',
+      'lumen.watchlist.actionRemoved': 'أُزيل من قائمة المتابعة',
+      'lumen.watchlist.actionFailure': 'تعذر تحديث قائمة المتابعة',
+      'lumen.watchlist.actionAddTitle': 'إضافة {title} إلى قائمة المتابعة',
+      'lumen.watchlist.actionRemoveTitle': 'إزالة {title} من قائمة المتابعة',
+      'lumen.watchlist.titleFallback': 'العنوان',
+      'lumen.watchlist.actionCheckAndToggle':
+        'التحقق من قائمة المتابعة والتبديل',
     },
   },
   {
@@ -3569,6 +3584,10 @@ export const localeData = [
         'Трябва да изберете поне един тип известие',
       'components.Settings.Notifications.webhookRoleId': 'ID на ролята',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
+      'components.MovieDetails.addtowatchlist':
+        'Добавяне към списъка за гледане',
+      'components.MovieDetails.removefromwatchlist':
+        'Премахни от списъка за гледане',
     },
   },
   {
@@ -4075,6 +4094,10 @@ export const localeData = [
         'ID de rol de notificació',
       'components.Settings.Notifications.webhookThreadId': 'ID del fil',
       'components.Settings.Notifications.webhookUrl': 'URL del Webhook',
+      'components.MovieDetails.addtowatchlist':
+        'Afegir a la llista de seguiment',
+      'components.MovieDetails.removefromwatchlist':
+        'Eliminar de la llista de seguiment',
     },
   },
   {
@@ -4692,6 +4715,9 @@ export const localeData = [
         'Musíte vybrat alespoň jeden typ oznámení',
       'components.Settings.Notifications.webhookRoleId': 'ID role oznámení',
       'components.Settings.Notifications.webhookUrl': 'Adresa URL webhooku',
+      'components.MovieDetails.addtowatchlist': 'Přidat na seznam ke zhlédnutí',
+      'components.MovieDetails.removefromwatchlist':
+        'Odebrat ze seznamu ke zhlédnutí',
     },
   },
   {
@@ -5307,6 +5333,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'Meddelelsesrolle-ID',
       'components.Settings.Notifications.webhookThreadId': 'Tråd-ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
+      'components.MovieDetails.addtowatchlist': 'Føj til Se senere-liste',
+      'components.MovieDetails.removefromwatchlist':
+        'Fjern fra Se senere-liste',
     },
   },
   {
@@ -6713,6 +6742,9 @@ export const localeData = [
         'Benachrichtigung Rollen ID',
       'components.Settings.Notifications.webhookThreadId': 'Thread-ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
+      'components.MovieDetails.addtowatchlist': 'Zur Merkliste hinzufügen',
+      'components.MovieDetails.removefromwatchlist':
+        'Von der Merkliste entfernen',
     },
   },
   {
@@ -8082,6 +8114,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'Notification Role ID',
       'components.Settings.Notifications.webhookThreadId': 'Thread ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
+      'components.MovieDetails.addtowatchlist': 'Add To Watchlist',
+      'components.MovieDetails.removefromwatchlist': 'Remove From Watchlist',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -9649,6 +9683,18 @@ export const localeData = [
       'lumen.requestHistory.mediaRemoveFailed':
         'Could not remove the managed copy.',
       'lumen.requestHistory.unknownTitle': 'this item',
+      'lumen.watchlist.actionUnavailable':
+        'Watchlist is unavailable for this title.',
+      'lumen.watchlist.actionConfirmFailure':
+        'Couldn’t confirm the Watchlist change.',
+      'lumen.watchlist.alreadySaved': 'Already on Watchlist',
+      'lumen.watchlist.actionAdded': 'Added to Watchlist',
+      'lumen.watchlist.actionRemoved': 'Removed from Watchlist',
+      'lumen.watchlist.actionFailure': 'Couldn’t update your Watchlist',
+      'lumen.watchlist.actionAddTitle': 'Add {title} to your Watchlist',
+      'lumen.watchlist.actionRemoveTitle': 'Remove {title} from your Watchlist',
+      'lumen.watchlist.titleFallback': 'title',
+      'lumen.watchlist.actionCheckAndToggle': 'Check Watchlist and toggle',
     },
   },
   {
@@ -11483,6 +11529,10 @@ export const localeData = [
         'ID de rol de notificación',
       'components.Settings.Notifications.webhookThreadId': 'ID de hilo',
       'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
+      'components.MovieDetails.addtowatchlist':
+        'Añadir a la lista de seguimiento',
+      'components.MovieDetails.removefromwatchlist':
+        'Eliminar de la lista de seguimiento',
     },
   },
   {
@@ -12882,6 +12932,10 @@ export const localeData = [
         'Notificación Papel ID',
       'components.Settings.Notifications.webhookThreadId': 'ID del hilo',
       'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
+      'components.MovieDetails.addtowatchlist':
+        'Añadir a la lista de vigilancia',
+      'components.MovieDetails.removefromwatchlist':
+        'Eliminar de la lista de vigilancia',
     },
   },
   {
@@ -13494,6 +13548,9 @@ export const localeData = [
         'Pead valima vähemalt ühe teavitustüübi',
       'components.Settings.Notifications.webhookRoleId': 'Teavituse rolli ID',
       'components.Settings.Notifications.webhookUrl': 'Veebihaagi URL',
+      'components.MovieDetails.addtowatchlist': 'Lisa vaatamisnimekirja',
+      'components.MovieDetails.removefromwatchlist':
+        'Eemalda vaatamisnimekirjast',
     },
   },
   {
@@ -13700,6 +13757,8 @@ export const localeData = [
         'Salasana',
       'components.Settings.Notifications.NotificationsNtfy.username':
         'Käyttäjänimi',
+      'components.MovieDetails.addtowatchlist': 'Lisää katselulistalle',
+      'components.MovieDetails.removefromwatchlist': 'Poista katselulistalta',
     },
   },
   {
@@ -15115,6 +15174,9 @@ export const localeData = [
         'Identifiant de rôle de notification',
       'components.Settings.Notifications.webhookThreadId': 'ID de thread',
       'components.Settings.Notifications.webhookUrl': 'URL du webhook',
+      'components.MovieDetails.addtowatchlist': 'Ajouter à la liste de suivi',
+      'components.MovieDetails.removefromwatchlist':
+        'Supprimer de la liste de suivi',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -16892,6 +16954,22 @@ export const localeData = [
       'lumen.requestHistory.mediaRemoveFailed':
         'Impossible de supprimer la copie gérée.',
       'lumen.requestHistory.unknownTitle': 'cet élément',
+      'lumen.watchlist.actionUnavailable':
+        'La liste de suivi n’est pas disponible pour ce titre.',
+      'lumen.watchlist.actionConfirmFailure':
+        'Impossible de confirmer la modification de la liste de suivi.',
+      'lumen.watchlist.alreadySaved': 'Déjà dans la liste de suivi',
+      'lumen.watchlist.actionAdded': 'Ajouté à la liste de suivi',
+      'lumen.watchlist.actionRemoved': 'Retiré de la liste de suivi',
+      'lumen.watchlist.actionFailure':
+        'Impossible de modifier votre liste de suivi',
+      'lumen.watchlist.actionAddTitle':
+        'Ajouter {title} à votre liste de suivi',
+      'lumen.watchlist.actionRemoveTitle':
+        'Retirer {title} de votre liste de suivi',
+      'lumen.watchlist.titleFallback': 'ce titre',
+      'lumen.watchlist.actionCheckAndToggle':
+        'Vérifier et modifier la liste de suivi',
     },
   },
   {
@@ -17553,6 +17631,8 @@ export const localeData = [
       'components.Settings.Notifications.validationTypes':
         'יש לבחור לפחות סוג התראות אחד',
       'components.Settings.Notifications.webhookUrl': 'URL של ה-Webhook',
+      'components.MovieDetails.addtowatchlist': 'הוספה לרשימת הצפייה',
+      'components.MovieDetails.removefromwatchlist': 'הסרה מרשימת הצפייה',
     },
   },
   {
@@ -18918,6 +18998,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'अधिसूचना रोल आईडी',
       'components.Settings.Notifications.webhookThreadId': 'थ्रेड आईडी',
       'components.Settings.Notifications.webhookUrl': 'वेबहुक URL',
+      'components.MovieDetails.addtowatchlist': 'देखने की सूची में जोड़ें',
+      'components.MovieDetails.removefromwatchlist': 'देखने की सूची से हटाएँ',
     },
   },
   {
@@ -19541,6 +19623,9 @@ export const localeData = [
         'Értesítési szerepkör azonosító',
       'components.Settings.Notifications.webhookThreadId': 'Szál azonosító',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL-cím',
+      'components.MovieDetails.addtowatchlist': 'Hozzáadás figyelőlistához',
+      'components.MovieDetails.removefromwatchlist':
+        'Eltávolítás a figyelőlistáról',
     },
   },
   {
@@ -20925,6 +21010,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'ID Peran Notifikasi',
       'components.Settings.Notifications.webhookThreadId': 'ID Thread',
       'components.Settings.Notifications.webhookUrl': 'URL Webhook',
+      'components.MovieDetails.addtowatchlist': 'Tambahkan ke daftar tontonan',
+      'components.MovieDetails.removefromwatchlist':
+        'Hapus dari daftar tontonan',
     },
   },
   {
@@ -21536,6 +21624,10 @@ export const localeData = [
         'È necessario selezionare almeno un tipo di notifica',
       'components.Settings.Notifications.webhookRoleId': 'ID ruolo di notifica',
       'components.Settings.Notifications.webhookUrl': 'URL webhook',
+      'components.MovieDetails.addtowatchlist':
+        'Aggiungi alla lista di visione',
+      'components.MovieDetails.removefromwatchlist':
+        'Rimuovi dalla lista di visione',
     },
   },
   {
@@ -22912,6 +23004,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'ロールIDの通知',
       'components.Settings.Notifications.webhookThreadId': 'スレッドID',
       'components.Settings.Notifications.webhookUrl': 'ウェブフック URL',
+      'components.MovieDetails.addtowatchlist': 'ウォッチリストに追加',
+      'components.MovieDetails.removefromwatchlist': 'ウォッチリストから削除',
     },
   },
   {
@@ -24242,6 +24336,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': '알림 역할 ID',
       'components.Settings.Notifications.webhookThreadId': '스레드 ID',
       'components.Settings.Notifications.webhookUrl': '웹훅 URL',
+      'components.MovieDetails.addtowatchlist': '관심 목록에 추가',
+      'components.MovieDetails.removefromwatchlist': '관심 목록에서 제거',
     },
   },
   {
@@ -24799,6 +24895,8 @@ export const localeData = [
       'components.Settings.Notifications.validationTypes':
         'Du må velge minst én varseltype',
       'components.Settings.Notifications.webhookUrl': 'Webhook-nettadresse',
+      'components.MovieDetails.addtowatchlist': 'Legg til i Visningsliste',
+      'components.MovieDetails.removefromwatchlist': 'Fjern fra Visningsliste',
     },
   },
   {
@@ -25425,6 +25523,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'Role-id melding',
       'components.Settings.Notifications.webhookThreadId': 'Thread ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
+      'components.MovieDetails.addtowatchlist': 'Toevoegen aan kijklijst',
+      'components.MovieDetails.removefromwatchlist':
+        'Verwijderen van kijklijst',
     },
   },
   {
@@ -26050,6 +26151,9 @@ export const localeData = [
         'Powiadomienie Role ID',
       'components.Settings.Notifications.webhookThreadId': 'ID wątku',
       'components.Settings.Notifications.webhookUrl': 'URL Webhook',
+      'components.MovieDetails.addtowatchlist': 'Dodaj do listy Do obejrzenia',
+      'components.MovieDetails.removefromwatchlist':
+        'Usuń z listy Do obejrzenia',
     },
   },
   {
@@ -27447,6 +27551,10 @@ export const localeData = [
         'Role ID da notificação',
       'components.Settings.Notifications.webhookThreadId': 'ID do tópico',
       'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
+      'components.MovieDetails.addtowatchlist':
+        'Adicionar a Lista para Assistir',
+      'components.MovieDetails.removefromwatchlist':
+        'Remover da Lista para Assistir',
     },
   },
   {
@@ -28046,6 +28154,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId':
         'ID de cargo de notificação',
       'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
+      'components.MovieDetails.addtowatchlist': 'Adicionar à lista para ver',
+      'components.MovieDetails.removefromwatchlist':
+        'Remover da lista para ver',
     },
   },
   {
@@ -28371,6 +28482,9 @@ export const localeData = [
         'Trebuie să furnizezi o adresă de email validă',
       'components.Settings.Notifications.webhookRoleId': 'ID rol notificare',
       'components.Settings.Notifications.webhookUrl': 'URL webhook',
+      'components.MovieDetails.addtowatchlist': 'Adăugați la lista de favorite',
+      'components.MovieDetails.removefromwatchlist':
+        'Eliminați din lista de favorite',
     },
   },
   {
@@ -29002,6 +29116,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'ID роли уведомления',
       'components.Settings.Notifications.webhookThreadId': 'ID треда',
       'components.Settings.Notifications.webhookUrl': 'URL веб-перехватчика',
+      'components.MovieDetails.addtowatchlist': 'Добавить в список просмотра',
+      'components.MovieDetails.removefromwatchlist':
+        'Удалить из списка просмотра',
     },
   },
   {
@@ -30186,6 +30303,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'Meddelanderoll-ID',
       'components.Settings.Notifications.webhookThreadId': 'Tråd-ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
+      'components.MovieDetails.addtowatchlist': 'Lägg till i bevakningslistan',
+      'components.MovieDetails.removefromwatchlist':
+        'Ta bort från bevakningslistan',
     },
   },
   {
@@ -30797,6 +30917,9 @@ export const localeData = [
         'En az bir bildirim türü seçmelisiniz',
       'components.Settings.Notifications.webhookRoleId': 'Bildirim Rol Kimliği',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
+      'components.MovieDetails.addtowatchlist': 'İzleme Listesine Ekle',
+      'components.MovieDetails.removefromwatchlist':
+        'İzleme Listesinden Kaldır',
     },
   },
   {
@@ -31379,6 +31502,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId':
         'ID ролі для сповіщень',
       'components.Settings.Notifications.webhookUrl': 'URL веб-перехоплювача',
+      'components.MovieDetails.addtowatchlist': 'Додати до списку перегляду',
+      'components.MovieDetails.removefromwatchlist':
+        'Видалити зі списку перегляду',
     },
   },
   {
@@ -32674,6 +32800,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': '通知角色ID',
       'components.Settings.Notifications.webhookThreadId': '线程 ID',
       'components.Settings.Notifications.webhookUrl': '网络钩子网址（URL）',
+      'components.MovieDetails.addtowatchlist': '添加到待看列表',
+      'components.MovieDetails.removefromwatchlist': '从待看列表中移除',
     },
   },
   {
@@ -33970,6 +34098,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': '通知角色 ID',
       'components.Settings.Notifications.webhookThreadId': '討論串 ID',
       'components.Settings.Notifications.webhookUrl': 'Webhook 網址',
+      'components.MovieDetails.addtowatchlist': '加入待看清單',
+      'components.MovieDetails.removefromwatchlist': '從待看清單移除',
     },
   },
   {
@@ -35345,6 +35475,8 @@ export const localeData = [
       'components.Settings.Notifications.webhookRoleId': 'Thông báo ID vai trò',
       'components.Settings.Notifications.webhookThreadId': 'Mã số Thread',
       'components.Settings.Notifications.webhookUrl': 'URL webhook',
+      'components.MovieDetails.addtowatchlist': 'Thêm vào danh sách xem',
+      'components.MovieDetails.removefromwatchlist': 'Xóa khỏi danh sách xem',
     },
   },
 ] as const;
