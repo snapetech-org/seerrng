@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+
 // SeerrNG verifies at most 32 title variants per answer and reports the rest as not available,
 // so request lists are fetched in pages small enough that every title keeps its real status.
 async function fixture(
@@ -23,7 +26,9 @@ async function fixture(
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/api/v1/**', async (r) => {
     const url = new URL(r.request().url());
-    const path = url.pathname.slice(7);
+    const path = url.pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
     if (path === '/auth/me')
       return r.fulfill({
         json: {
@@ -86,7 +91,9 @@ for (const everyone of [false, true]) {
     page,
   }) => {
     const { takes } = await fixture(page);
-    await page.goto(everyone ? '/requests?tab=everyone' : '/requests?tab=all');
+    await page.goto(
+      testAppPath(everyone ? '/requests?tab=everyone' : '/requests?tab=all')
+    );
     await expect(page.locator('.rq').first()).toBeVisible();
     await expect
       .poll(() => page.locator('.rq').count())
@@ -100,7 +107,7 @@ test('My requests loads every page so the counts are the real totals', async ({
   page,
 }) => {
   const { maxConcurrentOwnerPages } = await fixture(page, 100);
-  await page.goto('/requests?tab=all');
+  await page.goto(testAppPath('/requests?tab=all'));
   await expect(page.getByRole('button', { name: /^All\s*100$/ })).toBeVisible();
   await expect(page.locator('.rq')).toHaveCount(100);
   await expect(page.locator('.rq').first().getByRole('link')).toHaveText(
@@ -117,7 +124,7 @@ test('the Requests link shows another user’s approved movie to a read-only vie
   page,
 }) => {
   await fixture(page, 1, { permissions: 16384, requesterId: 2 });
-  await page.goto('/requests');
+  await page.goto(testAppPath('/requests'));
   const everyone = page.getByRole('button', { name: /^Everyone/ });
   const row = page.locator('.rq').filter({ hasText: 'Title 1000' });
   await expect(everyone).toHaveAttribute('aria-pressed', 'true');
@@ -137,7 +144,7 @@ test('the Requests link shows another user’s approved movie to a read-only vie
 
 test('a personal viewer stays on their own requests', async ({ page }) => {
   await fixture(page, 1, { permissions: 32, requesterId: 2 });
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await expect(page.getByRole('button', { name: /^Active/ })).toHaveAttribute(
     'aria-pressed',
     'true'
@@ -175,7 +182,7 @@ test('Classic software bookmarks use the signed-in requester without household a
     });
   });
   await page.goto(
-    '/requests/status?mediaType=retro&filter=downloading&userId=19'
+    testAppPath('/requests/status?mediaType=retro&filter=downloading&userId=19')
   );
   await expect(
     page.getByRole('button', { name: 'My Software' })
