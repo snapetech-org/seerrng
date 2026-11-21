@@ -5,7 +5,7 @@ const appPath = (path: string) => `${mount}${path}`;
 
 const appHref = (path: string, baseURL: string | undefined) => {
   const url = new URL(path, baseURL);
-  return mount + url.pathname + url.search;
+  return url.pathname + url.search + url.hash;
 };
 
 for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
@@ -46,6 +46,20 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
               permissions,
             },
           });
+        case '/user':
+          return route.fulfill({
+            json: {
+              pageInfo: { pages: 1, results: 1 },
+              results: [
+                {
+                  id: 19,
+                  displayName: 'Household Member',
+                  permissions: 0,
+                  userType: 2,
+                },
+              ],
+            },
+          });
         case '/user/19':
           return route.fulfill({
             json: {
@@ -55,6 +69,13 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
               createdAt: '2020-06-15T12:00:00.000Z',
               email: 'member@example.test',
               avatar,
+            },
+          });
+        case '/user/19/settings/main':
+          return route.fulfill({
+            json: {
+              username: 'Household Member',
+              email: 'member@example.test',
             },
           });
         case '/user/19/watch_data':
@@ -149,12 +170,12 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
       canManageRequests ? 1 : 0
     );
     const edit = page.getByRole('link', { name: 'Edit Settings' });
-    if (permissions === 2 || permissions === 24)
+    if (permissions === 2 || permissions === 24) {
       await expect(edit).toHaveAttribute(
         'href',
         appHref('admin/users/19', baseURL)
       );
-    else await expect(edit).toHaveCount(0);
+    } else await expect(edit).toHaveCount(0);
     if (permissions === 2) {
       await expect(page.getByText('Total plays: 3')).toBeVisible();
       await expect(
@@ -218,6 +239,13 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
         page.getByRole('link', { name: 'View Requests' })
       ).toHaveCount(0);
       expect(fetched).not.toContain('/user/19/requests');
+    }
+    if (permissions === 24) {
+      await page.goto(appPath('/household/19'));
+      await page.getByRole('link', { name: 'Edit Settings' }).click();
+      await expect(page).toHaveURL(appHref('admin/users/19', baseURL));
+      await page.getByRole('button', { name: 'Edit Profile' }).click();
+      await expect(page.getByLabel('Username')).toHaveValue('Household Member');
     }
   });
 }

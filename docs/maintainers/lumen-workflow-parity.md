@@ -4233,7 +4233,7 @@ permissions separately from bookmark routing.
 
 | Native entry point | Behavior still to cover |
 | --- | --- |
-| `/users/[userId]` | Both deployments map the bookmark to `/household/:id`. Standalone browser fixtures cover independent permission checks and recovery for request and watchlist previews. The managed-user editor remains a separate action. |
+| `/users/[userId]` | Both deployments map the bookmark to `/household/:id`. Browser fixtures cover independent permission checks and recovery for request and watchlist previews. “Edit Settings” routes a user manager to that member's targeted Admin Users editor; the route and profile editor are verified end to end, while regular-user access stays denied. |
 | `/discover/collectors` | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open. |
 | `/discover/book-recommendations` | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Standalone browser fixtures cover creating a personalized feed and applying feedback. |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open. |
