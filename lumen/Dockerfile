@@ -8,9 +8,9 @@ COPY . .
 RUN npm run build
 
 FROM nginx:1.30.7-alpine@sha256:bef154735288bc38d99fac41ae63730684bcc661503673a04a0f9bc526ba8598
-# The pinned image can lag Alpine's security rebuilds; refresh the runtime library
+# The pinned image can lag Alpine's security rebuilds; refresh the runtime libraries
 # used by nginx's bundled XSLT module before the unprivileged runtime stage.
-RUN apk upgrade --no-cache libxslt zlib
+RUN apk upgrade --no-cache libxml2 libxslt zlib
 # SEERR_URL (or SEERR_INTERNAL_URL) = how this container reaches SeerrNG, e.g. http://seerrng:5055
 ENV SEERR_URL=http://seerrng:5055
 # SEERR_FULL_URL (or SEERR_BROWSER_URL) = the address people open full SeerrNG at, for
