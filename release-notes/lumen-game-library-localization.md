@@ -1,0 +1,1 @@
+Lumen’s My Games workflow now follows the selected English, French, or Arabic locale across private and household libraries, game editing, catalogue matching, and Steam import. Steam sync dates use locale-aware formatting. Existing library APIs, sharing rules, and confirmation steps are unchanged.

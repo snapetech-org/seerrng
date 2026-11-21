@@ -2298,6 +2298,27 @@ standalone browser checks across desktop, iPhone, Android and tablet
 covered the simulated link return, sync, unlink and existing library
 workflows. Live Steam linking and matched visual comparisons remain open.
 
+### My Games localization
+
+The My Games page now uses Lumen’s locale catalog for its private and
+household views, progress and game type labels, manual entry editor, catalogue
+matching, Steam linking/sync/unlink states, pagination and accessible labels.
+Date formatting follows the selected locale. API paths, read/write payloads,
+sharing eligibility and confirmation steps are unchanged.
+
+The browser suite passed all 16 cases in English in both standalone and the
+production `/lumen/` mount across desktop, iPhone, Android and tablet. It
+covered private edits, sharing, removal confirmation, catalogue match retry,
+and Steam sync/unlink, including the bundled callback target. Locale-specific
+render and manual-entry form cases passed in English, French and Arabic across
+the same four viewports in the standalone build. Baseline and
+candidate empty-library captures were compared at desktop and iPhone widths;
+French and Arabic candidate captures of the empty state and add-game form
+were inspected at desktop and iPhone.
+The translated states showed no clipping or root horizontal overflow. Evidence
+is retained in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-20261121/`.
+Live provider behavior and populated-state visual comparison remain open.
+
 ### Companion bookmarks and account notifications
 
 The companion routes existing native profile, notification, media

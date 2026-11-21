@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const appPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT ? '/lumen' : ''}${path}`;
+
 test('My Games keeps private edits separate from household results', async ({
   page,
 }) => {
@@ -96,11 +99,11 @@ test('My Games keeps private edits separate from household results', async ({
     });
   });
 
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   await page.getByRole('link', { name: 'Open My Games' }).click();
   await expect(page.getByRole('link', { name: game.title })).toHaveAttribute(
     'href',
-    '/game/retro/41'
+    appPath('/game/retro/41')
   );
   await page.getByRole('button', { name: 'Edit Private Fixture' }).click();
   const share = page.getByLabel('Share With Household');
@@ -130,7 +133,7 @@ test('My Games keeps private edits separate from household results', async ({
   await page.getByRole('link', { name: 'Household Games' }).click();
   await expect(
     page.getByRole('link', { name: 'Shared Fixture' })
-  ).toHaveAttribute('href', '/game/game/22');
+  ).toHaveAttribute('href', appPath('/game/game/22'));
   await expect(page.getByText('Private Fixture')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Add a Game' })).toHaveCount(0);
   expect(writes).toBe(3);
@@ -200,7 +203,7 @@ test('catalogue matching saves the chosen identity with the current game edits',
     });
   });
 
-  await page.goto('/game-library');
+  await page.goto(appPath('/game-library'));
   await page.getByRole('button', { name: 'Edit Unmatched Game' }).click();
   await page
     .getByRole('heading', { name: 'Edit Unmatched Game' })
@@ -222,7 +225,7 @@ test('catalogue matching saves the chosen identity with the current game edits',
   await match.click();
   await expect(
     page.getByRole('link', { name: 'Correct Game' })
-  ).toHaveAttribute('href', '/game/game/57');
+  ).toHaveAttribute('href', appPath('/game/game/57'));
   expect(attempts).toBe(2);
 });
 
@@ -251,11 +254,13 @@ test('Steam import returns to My Games and refreshes ownership after sync and un
           },
         });
       case '/game-library/steam/connect':
-        expect(url.searchParams.get('frontend')).toBe('companion-lumen');
+        expect(url.searchParams.get('frontend')).toBe(
+          process.env.LUMEN_TEST_MOUNT ? 'bundled-lumen' : 'companion-lumen'
+        );
         connected = true;
         return route.fulfill({
           status: 302,
-          headers: { location: '/game-library?steam=connected' },
+          headers: { location: appPath('/game-library?steam=connected') },
         });
       case '/game-library/steam/sync':
         expect(request.method()).toBe('POST');
@@ -296,7 +301,7 @@ test('Steam import returns to My Games and refreshes ownership after sync and un
     }
   });
 
-  await page.goto('/game-library');
+  await page.goto(appPath('/game-library'));
   await page.getByText('Steam Library Import', { exact: true }).click();
   await page.getByRole('link', { name: 'Link Steam Account' }).click();
   await expect(
@@ -315,4 +320,102 @@ test('Steam import returns to My Games and refreshes ownership after sync and un
     entry.getByText('Not marked owned', { exact: false })
   ).toBeVisible();
   expect(unlinkCount).toBe(1);
+});
+
+test('My Games follows the selected Lumen locale', async ({
+  page,
+}, testInfo) => {
+  const locale = process.env.LUMEN_TEST_LOCALE ?? 'en';
+  const labels = {
+    en: {
+      title: 'My Games',
+      private: 'Private Library',
+      type: 'Game Type',
+      add: 'Add a Game',
+      titleField: 'Game Title',
+      progress: 'Progress',
+      save: 'Add Game',
+    },
+    fr: {
+      title: 'Mes jeux',
+      private: 'Bibliothèque privée',
+      type: 'Type de jeu',
+      add: 'Ajouter un jeu',
+      titleField: 'Titre du jeu',
+      progress: 'Progression',
+      save: 'Ajouter le jeu',
+    },
+    ar: {
+      title: 'ألعابي',
+      private: 'المكتبة الخاصة',
+      type: 'نوع اللعبة',
+      add: 'أضف لعبة',
+      titleField: 'عنوان اللعبة',
+      progress: 'التقدم',
+      save: 'إضافة اللعبة',
+    },
+  } as const;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Player', permissions: 32 }
+          : path === '/user/1/settings/main'
+            ? { locale, enabledMediaCategories: { game: true } }
+            : path === '/game-library'
+              ? { results: [], total: 0, nextOffset: null }
+              : {},
+    });
+  });
+  await page.goto(appPath('/game-library'));
+  await expect(
+    page.getByRole('heading', { name: labels[locale].title })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: labels[locale].private })
+  ).toBeVisible();
+  await expect(
+    page.getByText(labels[locale].type, { exact: true })
+  ).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', locale);
+  await expect(page.locator('html')).toHaveAttribute(
+    'dir',
+    locale === 'ar' ? 'rtl' : 'ltr'
+  );
+  const captureDirectory = process.env.LUMEN_CAPTURE_DIR;
+  if (
+    captureDirectory &&
+    ['fr', 'ar'].includes(locale) &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  ) {
+    const { mkdirSync } = await import('node:fs');
+    mkdirSync(captureDirectory, { recursive: true });
+    await page.screenshot({
+      path: `${captureDirectory}/game-library-${locale}-${testInfo.project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await page.getByRole('button', { name: labels[locale].add }).click();
+  await expect(
+    page.getByRole('heading', { name: labels[locale].add })
+  ).toBeVisible();
+  await expect(page.getByLabel(labels[locale].titleField)).toBeVisible();
+  await expect(page.getByLabel(labels[locale].progress).last()).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: labels[locale].save, exact: true })
+  ).toBeVisible();
+  if (
+    captureDirectory &&
+    ['fr', 'ar'].includes(locale) &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  ) {
+    await page.screenshot({
+      path: `${captureDirectory}/game-library-${locale}-${testInfo.project.name}-editor.png`,
+      fullPage: true,
+    });
+  }
 });

@@ -6,6 +6,7 @@ import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import { GAME_LABEL, type Game, type GameCategory } from '../extras';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const PROGRESS = {
   backlog: 'Backlog',
@@ -16,6 +17,16 @@ const PROGRESS = {
   dropped: 'Dropped',
 };
 const PAGE_SIZE = 48;
+
+const messageKey = (value: string) =>
+  `lumen.gameLibrary.${value
+    .replace(/[^a-zA-Z0-9]+/g, ' ')
+    .trim()
+    .split(/ +/)
+    .map((part, index) =>
+      index ? part[0].toUpperCase() + part.slice(1) : part.toLowerCase()
+    )
+    .join('')}`;
 
 interface GameEntry {
   id: number;
@@ -47,10 +58,16 @@ interface ResultPage<T> {
   nextOffset: number | null;
 }
 
-function Options({ values }: { values: Record<string, string> }) {
+function Options({
+  values,
+  translate,
+}: {
+  values: Record<string, string>;
+  translate: (value: string) => string;
+}) {
   return Object.entries(values).map(([value, label]) => (
     <option key={value} value={value}>
-      {label}
+      {translate(label)}
     </option>
   ));
 }
@@ -73,12 +90,15 @@ function CatalogMatch({
   entry,
   busy,
   match,
+  t,
 }: {
   entry: GameEntry;
   busy: boolean;
   match: (catalogId: number) => void;
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
   const [term, setTerm] = useState('');
+  const tr = (value: string) => t(messageKey(value), value);
   const query = new URLSearchParams({
     category: entry.category,
     q: term,
@@ -98,7 +118,7 @@ function CatalogMatch({
 
   return (
     <section className="setlist">
-      <h3>Link a Catalogue Game</h3>
+      <h3>{tr('Link a Catalogue Game')}</h3>
       <form
         className="toolbar"
         onSubmit={(event) => {
@@ -115,24 +135,24 @@ function CatalogMatch({
           <input
             name="q"
             type="search"
-            aria-label="Search Game Catalogue"
+            aria-label={tr('Search Game Catalogue')}
             defaultValue={entry.title}
             maxLength={120}
             required
           />
         </label>
         <button className="btn btn-tonal btn-sm" type="submit" disabled={busy}>
-          Search Catalogue
+          {tr('Search Catalogue')}
         </button>
       </form>
-      <ServiceNote error={error} what="game catalogue" retry={reload} />
+      <ServiceNote error={error} what={tr('game catalogue')} retry={reload} />
       {term && !data && !error && (
         <p className="note" role="status">
-          Searching catalogue…
+          {tr('Searching catalogue…')}
         </p>
       )}
       {results?.length === 0 && (
-        <p className="note">No linkable games found.</p>
+        <p className="note">{tr('No linkable games found.')}</p>
       )}
       {!!results?.length && (
         <ul className="setlist">
@@ -146,10 +166,12 @@ function CatalogMatch({
                 className="btn btn-quiet btn-sm"
                 type="button"
                 disabled={busy}
-                aria-label={`Link ${game.title}`}
+                aria-label={t('lumen.gameLibrary.linkNamed', 'Link {name}', {
+                  name: game.title,
+                })}
                 onClick={() => match(game.igdbId)}
               >
-                Link Game
+                {tr('Link Game')}
               </button>
             </li>
           ))}
@@ -163,11 +185,14 @@ function EntryEditor({
   entry,
   close,
   saved,
+  t,
 }: {
   entry: GameEntry | null;
   close: () => void;
   saved: () => void;
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
+  const tr = (value: string) => t(messageKey(value), value);
   const [owned, setOwned] = useState(entry?.isOwned ?? false);
   const [sharing, setSharing] = useState(entry?.shareWithHousehold ?? false);
   const [confirmRemoval, setConfirmRemoval] = useState(false);
@@ -224,10 +249,10 @@ function EntryEditor({
         friendlyError(
           error,
           catalogId
-            ? 'Couldn’t link the game'
+            ? tr('Couldn’t link the game')
             : form
-              ? 'Couldn’t save the game'
-              : 'Couldn’t remove the game'
+              ? tr('Couldn’t save the game')
+              : tr('Couldn’t remove the game')
         )
       );
     } finally {
@@ -246,30 +271,36 @@ function EntryEditor({
           void save(new FormData(event.currentTarget));
         }}
       >
-        <h2>{entry ? `Edit ${entry.title}` : 'Add a Game'}</h2>
+        <h2>
+          {entry
+            ? t('lumen.gameLibrary.editNamed', 'Edit {name}', {
+                name: entry.title,
+              })
+            : tr('Add a Game')}
+        </h2>
         <fieldset className="setlist" disabled={busy}>
           {!entry && (
             <>
               <label className="set cfg-row">
-                <b>Game Title</b>
+                <b>{tr('Game Title')}</b>
                 <input name="title" required maxLength={512} />
               </label>
               <label className="set cfg-row">
-                <b>Game Type</b>
+                <b>{tr('Game Type')}</b>
                 <select name="category" defaultValue="game">
-                  <Options values={GAME_LABEL} />
+                  <Options values={GAME_LABEL} translate={tr} />
                 </select>
               </label>
             </>
           )}
           <label className="set cfg-row">
-            <b>Progress</b>
+            <b>{tr('Progress')}</b>
             <select name="status" defaultValue={entry?.status ?? 'backlog'}>
-              <Options values={PROGRESS} />
+              <Options values={PROGRESS} translate={tr} />
             </select>
           </label>
           <label className="set cfg-row">
-            <b>Store or Copy</b>
+            <b>{tr('Store or Copy')}</b>
             <input
               name="storeName"
               maxLength={120}
@@ -277,7 +308,7 @@ function EntryEditor({
             />
           </label>
           <label className="set cfg-row">
-            <b>Platform</b>
+            <b>{tr('Platform')}</b>
             <input
               name="platformName"
               maxLength={120}
@@ -285,7 +316,9 @@ function EntryEditor({
             />
           </label>
           <label className="set cfg-row">
-            <b>{entry?.steamOwned ? 'Also Owned Outside Steam' : 'Owned'}</b>
+            <b>
+              {entry?.steamOwned ? tr('Also Owned Outside Steam') : tr('Owned')}
+            </b>
             <input
               type="checkbox"
               checked={owned}
@@ -293,7 +326,7 @@ function EntryEditor({
             />
           </label>
           <label className="set cfg-row">
-            <b>Share With Household</b>
+            <b>{tr('Share With Household')}</b>
             <input
               type="checkbox"
               checked={mayShare && sharing}
@@ -303,14 +336,14 @@ function EntryEditor({
           </label>
           <div className="toolbar">
             <button className="btn btn-tonal btn-sm" type="submit">
-              {entry ? 'Save Changes' : 'Add Game'}
+              {entry ? tr('Save Changes') : tr('Add Game')}
             </button>
             <button
               className="btn btn-quiet btn-sm"
               type="button"
               onClick={close}
             >
-              Cancel
+              {tr('Cancel')}
             </button>
             {entry && !confirmRemoval && (
               <button
@@ -335,6 +368,7 @@ function EntryEditor({
       </form>
       {entry?.catalogId === null && (
         <CatalogMatch
+          t={t}
           entry={entry}
           busy={busy}
           match={(catalogId) => {
@@ -350,10 +384,14 @@ function EntryEditor({
 function SteamLibrary({
   result,
   onChange,
+  t,
 }: {
   result: string | null;
   onChange: () => void;
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
+  const { locale } = useLumenLocale();
+  const tr = (value: string) => t(messageKey(value), value);
   const [openOnMount] = useState(
     () => result === 'connected' || result === 'error'
   );
@@ -384,17 +422,21 @@ function SteamLibrary({
           total: number;
         }>('/game-library/steam/sync', { method: 'POST' });
         toast(
-          `Steam sync complete. ${synced.imported} added, ${synced.updated} updated.`
+          t(
+            'lumen.gameLibrary.steamSyncComplete',
+            'Steam sync complete. {added} added, {updated} updated.',
+            { added: synced.imported, updated: synced.updated }
+          )
         );
       } else {
         await api('/game-library/steam', { method: 'DELETE' });
         setConfirmUnlink(false);
-        toast('Steam account unlinked.');
+        toast(tr('Steam account unlinked.'));
       }
       status.reload();
       onChange();
     } catch (error) {
-      toast(friendlyError(error, 'Couldn’t update the Steam library'));
+      toast(friendlyError(error, tr('Couldn’t update the Steam library')));
     } finally {
       pending.current = false;
       setBusy(false);
@@ -403,39 +445,50 @@ function SteamLibrary({
 
   return (
     <details className="adv" open={openOnMount}>
-      <summary>Steam Library Import</summary>
+      <summary>{tr('Steam Library Import')}</summary>
       {result === 'error' && (
         <p className="note" role="alert">
-          Steam could not be linked. Try again.
+          {tr('Steam could not be linked. Try again.')}
         </p>
       )}
       {result === 'connected' && status.data?.connected && (
         <p className="note" role="status">
-          Steam account linked. Sync to import your games.
+          {tr('Steam account linked. Sync to import your games.')}
         </p>
       )}
       <ServiceNote
         error={status.error}
-        what="Steam account status"
+        what={tr('Steam account status')}
         retry={status.reload}
       />
       {!status.data && !status.error && (
         <p className="note" role="status">
-          Loading Steam account status…
+          {tr('Loading Steam account status…')}
         </p>
       )}
       {status.data && (
         <>
           {!status.data.apiKeyConfigured && (
             <p className="note">
-              Steam import is unavailable until an administrator configures it.
+              {tr(
+                'Steam import is unavailable until an administrator configures it.'
+              )}
             </p>
           )}
           {status.data.connected && (
             <p className="note">
               {status.data.lastSyncedAt
-                ? `Last synced ${new Date(status.data.lastSyncedAt).toLocaleDateString()} · ${status.data.lastSyncCount} games`
-                : 'Steam account linked. No sync recorded yet.'}
+                ? t(
+                    'lumen.gameLibrary.lastSynced',
+                    'Last synced {date} · {count} games',
+                    {
+                      date: new Date(
+                        status.data.lastSyncedAt
+                      ).toLocaleDateString(locale),
+                      count: status.data.lastSyncCount,
+                    }
+                  )
+                : tr('Steam account linked. No sync recorded yet.')}
             </p>
           )}
           <div className="toolbar">
@@ -444,7 +497,7 @@ function SteamLibrary({
                 className="chip"
                 href={`/api/v1/game-library/steam/connect?frontend=${frontend}`}
               >
-                Link Steam Account
+                {tr('Link Steam Account')}
               </a>
             )}
             {status.data.connected && (
@@ -456,7 +509,7 @@ function SteamLibrary({
                     disabled={busy}
                     onClick={() => void change('sync')}
                   >
-                    Sync Steam Library
+                    {tr('Sync Steam Library')}
                   </button>
                 )}
                 {confirmUnlink ? (
@@ -467,7 +520,7 @@ function SteamLibrary({
                       disabled={busy}
                       onClick={() => void change('unlink')}
                     >
-                      Confirm Unlink
+                      {tr('Confirm Unlink')}
                     </button>
                     <button
                       className="btn btn-quiet btn-sm"
@@ -475,7 +528,7 @@ function SteamLibrary({
                       disabled={busy}
                       onClick={() => setConfirmUnlink(false)}
                     >
-                      Cancel
+                      {tr('Cancel')}
                     </button>
                   </>
                 ) : (
@@ -485,7 +538,7 @@ function SteamLibrary({
                     disabled={busy}
                     onClick={() => setConfirmUnlink(true)}
                   >
-                    Unlink Steam
+                    {tr('Unlink Steam')}
                   </button>
                 )}
               </>
@@ -498,6 +551,8 @@ function SteamLibrary({
 }
 
 export default function GameLibrary() {
+  const { t } = useLumenLocale();
+  const tr = (value: string) => t(messageKey(value), value);
   const [params, setParams] = useSearchParams();
   const [editor, setEditor] = useState<GameEntry | null | undefined>();
   const shared = params.get('view') === 'shared';
@@ -543,24 +598,24 @@ export default function GameLibrary() {
 
   return (
     <>
-      <ExtraHeader title="My Games">
-        <nav className="toolbar" aria-label="Game Library Views">
+      <ExtraHeader title={tr('My Games')}>
+        <nav className="toolbar" aria-label={tr('Game Library Views')}>
           <Link
             className="chip"
             aria-current={!shared ? 'page' : undefined}
             to="/game-library"
           >
-            Private Library
+            {tr('Private Library')}
           </Link>
           <Link
             className="chip"
             aria-current={shared ? 'page' : undefined}
             to="/game-library?view=shared"
           >
-            Household Games
+            {tr('Household Games')}
           </Link>
           <Link className="chip" to="/games">
-            Browse Game Catalogue
+            {tr('Browse Game Catalogue')}
           </Link>
         </nav>
       </ExtraHeader>
@@ -569,39 +624,39 @@ export default function GameLibrary() {
           <input
             name="q"
             type="search"
-            aria-label="Search Games"
+            aria-label={tr('Search Games')}
             defaultValue={search}
             maxLength={120}
           />
         </label>
         {shared ? (
           <label className="sel">
-            <span className="lbl">Owner Count</span>
+            <span className="lbl">{tr('Owner Count')}</span>
             <select name="owners" defaultValue={multipleOwners ? '' : 'all'}>
-              <option value="">2+ Owners</option>
-              <option value="all">All Shared Games</option>
+              <option value="">{tr('2+ Owners')}</option>
+              <option value="all">{tr('All Shared Games')}</option>
             </select>
           </label>
         ) : (
           <>
             <label className="sel">
-              <span className="lbl">Progress</span>
+              <span className="lbl">{tr('Progress')}</span>
               <select name="status" defaultValue={status}>
-                <option value="">All Progress</option>
-                <Options values={PROGRESS} />
+                <option value="">{tr('All Progress')}</option>
+                <Options values={PROGRESS} translate={tr} />
               </select>
             </label>
             <label className="sel">
-              <span className="lbl">Game Type</span>
+              <span className="lbl">{tr('Game Type')}</span>
               <select name="category" defaultValue={category}>
-                <option value="">All Types</option>
-                <Options values={GAME_LABEL} />
+                <option value="">{tr('All Types')}</option>
+                <Options values={GAME_LABEL} translate={tr} />
               </select>
             </label>
           </>
         )}
         <button className="btn btn-tonal btn-sm" type="submit">
-          Apply Filters
+          {tr('Apply Filters')}
         </button>
         {!shared && editor === undefined && (
           <button
@@ -609,13 +664,14 @@ export default function GameLibrary() {
             type="button"
             onClick={() => setEditor(null)}
           >
-            Add a Game
+            {tr('Add a Game')}
           </button>
         )}
       </form>
 
       {!shared && (
         <SteamLibrary
+          t={t}
           result={params.get('steam')}
           onChange={() => {
             if (params.has('steam')) {
@@ -629,6 +685,7 @@ export default function GameLibrary() {
       )}
       {!shared && editor !== undefined && (
         <EntryEditor
+          t={t}
           key={editor?.id ?? 'new'}
           entry={editor}
           close={() => setEditor(undefined)}
@@ -640,15 +697,17 @@ export default function GameLibrary() {
       )}
       <ServiceNote
         error={error}
-        what={shared ? 'household games' : 'your game library'}
+        what={tr(shared ? 'household games' : 'your game library')}
         retry={reload}
       />
       {!data && !error && (
         <p className="note" role="status">
-          Loading games…
+          {tr('Loading games…')}
         </p>
       )}
-      {data?.results.length === 0 && <p className="note">No games found.</p>}
+      {data?.results.length === 0 && (
+        <p className="note">{tr('No games found.')}</p>
+      )}
       <ul className="setlist">
         {shared
           ? household.data?.results.map((game) => (
@@ -657,13 +716,17 @@ export default function GameLibrary() {
                   <GameName game={game} />
                   <small>
                     {[
-                      GAME_LABEL[game.category],
+                      tr(GAME_LABEL[game.category]),
                       ...game.owners.map((owner) => owner.displayName),
                     ].join(' · ')}
                   </small>
                   {game.playtimeMinutes > 0 && (
                     <small>
-                      {game.playtimeMinutes} minutes played together
+                      {t(
+                        'lumen.gameLibrary.minutesPlayedTogether',
+                        '{minutes} minutes played together',
+                        { minutes: game.playtimeMinutes }
+                      )}
                     </small>
                   )}
                 </div>
@@ -675,8 +738,8 @@ export default function GameLibrary() {
                   <GameName game={game} />
                   <small>
                     {[
-                      GAME_LABEL[game.category],
-                      PROGRESS[game.status],
+                      tr(GAME_LABEL[game.category]),
+                      tr(PROGRESS[game.status]),
                       game.storeName,
                       game.platformName,
                     ]
@@ -685,52 +748,54 @@ export default function GameLibrary() {
                   </small>
                   <small>
                     {game.steamOwned
-                      ? 'Owned on Steam'
+                      ? tr('Owned on Steam')
                       : game.isOwned
-                        ? 'Owned'
-                        : 'Not marked owned'}
+                        ? tr('Owned')
+                        : tr('Not marked owned')}
                     {' · '}
                     {game.shareWithHousehold
-                      ? 'Shared with household'
-                      : 'Private'}
+                      ? tr('Shared with household')
+                      : tr('Private')}
                     {game.playtimeMinutes > 0 &&
-                      ` · ${game.playtimeMinutes} minutes played`}
+                      ` · ${t('lumen.gameLibrary.minutesPlayed', '{minutes} minutes played', { minutes: game.playtimeMinutes })}`}
                   </small>
                   {game.request && (
                     <Link
                       className="go"
                       to={`/requests?softwareRequestId=${game.request.id}`}
                     >
-                      Request History
+                      {tr('Request History')}
                     </Link>
                   )}
                 </div>
                 <button
                   className="btn btn-quiet btn-sm"
                   type="button"
-                  aria-label={`Edit ${game.title}`}
+                  aria-label={t('lumen.gameLibrary.editNamed', 'Edit {name}', {
+                    name: game.title,
+                  })}
                   onClick={() => setEditor(game)}
                 >
-                  Edit
+                  {tr('Edit')}
                 </button>
               </li>
             ))}
       </ul>
       {(offset > 0 || data?.nextOffset != null) && (
-        <nav className="toolbar" aria-label="Game Library Pages">
+        <nav className="toolbar" aria-label={tr('Game Library Pages')}>
           <button
             className="btn btn-quiet btn-sm"
             disabled={!offset}
             onClick={() => move(Math.max(0, offset - PAGE_SIZE))}
           >
-            Previous Page
+            {tr('Previous Page')}
           </button>
           <button
             className="btn btn-quiet btn-sm"
             disabled={data?.nextOffset == null}
             onClick={() => data?.nextOffset != null && move(data.nextOffset)}
           >
-            Next Page
+            {tr('Next Page')}
           </button>
         </nav>
       )}
