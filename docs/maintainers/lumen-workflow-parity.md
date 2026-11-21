@@ -5058,16 +5058,14 @@ state, save action, and save feedback in English, French, and Arabic. It retains
 the existing `/settings/public` read and `/settings/main` write contract. Browser
 fixtures verify the changed-flag payload and confirmed save across desktop,
 iPhone, Android, and tablet. Live server persistence and independent linguistic
-review remain open. Default quotas and default permissions still need
-localization and workflow parity review.
+review remain open.
 
 The Application API Key panel now localizes reveal/hide, copy, regeneration,
 confirmation, and feedback in English, French, and Arabic. Existing key
 replacement behavior and immediate invalidation are preserved. Browser fixtures
 cover reveal, cancel, regeneration, and the masked replacement state at desktop,
 iPhone, Android, and tablet sizes. Clipboard permission and live integration
-rotation remain unverified. Default quotas and default permissions still need
-localization and workflow parity review.
+rotation remain unverified.
 
 Default Request Quotas now localizes its guidance, category choices, fields,
 links, save action, and feedback in English, French, and Arabic. The existing
@@ -5079,9 +5077,10 @@ persistence remains unverified.
 Default User Permissions now localizes its heading, guidance, administrator
 warning, edit action, confirmation, and save feedback in English, French, and
 Arabic. Permission names use SeerrNG’s French and Arabic catalog entries along
-with the existing Lumen translations for app-specific permissions. The browser fixture verifies
-that a default permission is removed only after confirmation and that the exact
-bitmask is saved across desktop, iPhone, Android, and tablet. The French desktop
+with the existing Lumen translations for app-specific permissions. The browser
+fixture verifies that a default permission is removed only after confirmation
+and that the exact bitmask is saved across desktop, iPhone, Android, and tablet.
+The French desktop
 and Arabic phone captures were checked; Arabic retains the existing fixed
 navigation overlap seen in the baseline. Live permission persistence remains
 unverified. Evidence is retained at

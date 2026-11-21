@@ -2369,5 +2369,17 @@
   "lumen.adminGeneral.quotas.category.comic",
   "lumen.adminGeneral.quotas.category.magazine",
   "lumen.adminGeneral.quotas.category.software",
-  "lumen.adminGeneral.quotas.category.adult"
+  "lumen.adminGeneral.quotas.category.adult",
+  "lumen.adminGeneral.permissions.title",
+  "lumen.adminGeneral.permissions.edit",
+  "lumen.adminGeneral.permissions.help",
+  "lumen.adminGeneral.permissions.adminWarning",
+  "lumen.adminGeneral.permissions.group",
+  "lumen.adminGeneral.permissions.save",
+  "lumen.adminGeneral.permissions.confirmTitle",
+  "lumen.adminGeneral.permissions.confirmBody",
+  "lumen.adminGeneral.permissions.goBack",
+  "lumen.adminGeneral.permissions.saved",
+  "lumen.adminGeneral.permissions.confirmFailure",
+  "lumen.adminGeneral.permissions.saveFailure"
 ]
