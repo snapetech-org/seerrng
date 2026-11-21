@@ -168,7 +168,10 @@ mobile tab bar. Baseline and candidate `/admin/users` Create Local User screens
 were compared at 390, 412, and 834 CSS pixels, with initial-state geometry
 unchanged; the hidden-on-scroll state was inspected at 390 and 834. Evidence is
 retained in `seerrng-lumen-mobile-navigation-20261121/baseline/`,
-`candidate/admin-users-*`, and `candidate/results-rerun/`.
+`candidate/admin-users-*`, and `candidate/results-rerun/`. The shared behavior
+also passes on a long My Media screen across the same mobile projects; visible
+and hidden iPhone and tablet renders were inspected after the CSS transition
+completed. Those captures are in `candidate/library/`.
 
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request

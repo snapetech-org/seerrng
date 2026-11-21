@@ -94,3 +94,79 @@ test('mobile tabs yield to long forms on scroll and return on scroll up', async 
       .getByRole('link', { name: 'Requests' })
   ).toBeFocused();
 });
+
+test('mobile tabs yield on an ordinary user library screen', async ({
+  page,
+}, testInfo) => {
+  const viewport = page.viewportSize();
+  test.skip(!viewport || viewport.width >= 1040, 'Mobile tab bar only');
+
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 0, userType: 1 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          mediaServerType: 4,
+          enabledMediaCategories: { movie: true, tv: true },
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/integrations/discovery/accounts')
+      return route.fulfill({
+        json: { accounts: [{ provider: 'trakt' }], mediaServer: null },
+      });
+    if (path.startsWith('/integrations/discovery/library/trakt'))
+      return route.fulfill({
+        json: {
+          allowWrites: false,
+          items: Array.from({ length: 24 }, (_, index) => ({
+            id: `trakt:${index + 1}`,
+            sourceId: String(index + 1),
+            title: `Library Fixture ${index + 1}`,
+            mediaType: 'movie',
+            tmdbId: index + 1,
+            mappingAvailable: true,
+            identityMapped: false,
+          })),
+          hasMore: false,
+          missingMappings: 0,
+          truncated: false,
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/library?source=trakt');
+  await expect(page.getByRole('heading', { name: 'My Media' })).toBeVisible();
+  await expect(page.getByText('Library Fixture 24')).toBeVisible();
+  const captureDir = process.env.LUMEN_NAV_CAPTURE_DIR;
+  if (captureDir && ['iphone', 'tablet'].includes(testInfo.project.name))
+    await page.screenshot({
+      path: `${captureDir}/library-visible-${testInfo.project.name}.png`,
+      fullPage: true,
+    });
+  const tabs = page.locator('.tabbar');
+  await expect(tabs).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 180));
+  await page.waitForFunction(() => window.scrollY > 48);
+  await expect(tabs).toHaveAttribute('data-hidden', 'true');
+  await expect
+    .poll(() => tabs.evaluate((element) => getComputedStyle(element).opacity))
+    .toBe('0');
+  if (captureDir && ['iphone', 'tablet'].includes(testInfo.project.name))
+    await page.screenshot({
+      path: `${captureDir}/library-hidden-${testInfo.project.name}.png`,
+    });
+  await page.evaluate(() => window.scrollTo(0, 20));
+  await page.waitForFunction(() => window.scrollY <= 20);
+  await expect(tabs).not.toHaveAttribute('data-hidden');
+});
