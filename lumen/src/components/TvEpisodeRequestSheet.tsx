@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Season, SeasonRequestSelection } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useBackCloses } from './requestSheet';
 import { useDialog } from './useDialog';
@@ -40,6 +41,7 @@ export default function TvEpisodeRequestSheet({
   submit: (selection: SeasonRequestSelection) => Promise<void>;
   close: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [season, selectSeason] = useState(
     () =>
       seasons.find(({ seasonNumber }) => seasonNumber === initialSeason)
@@ -86,16 +88,22 @@ export default function TvEpisodeRequestSheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Request Episodes"
+        aria-label={t('lumen.tvEpisodeRequest.title', 'Request Episodes')}
         ref={box}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Request Episodes{is4k ? ' in 4K' : ''}</h3>
+            <h3>
+              {is4k
+                ? t('lumen.tvEpisodeRequest.title4k', 'Request Episodes in 4K')
+                : t('lumen.tvEpisodeRequest.title', 'Request Episodes')}
+            </h3>
           </header>
           <label className="sel">
-            <span className="lbl">Season</span>
+            <span className="lbl">
+              {t('lumen.tvEpisodeRequest.season', 'Season')}
+            </span>
             <select
               value={season}
               disabled={busy || !!streamingOverride}
@@ -108,20 +116,37 @@ export default function TvEpisodeRequestSheet({
                 <option key={item.seasonNumber} value={item.seasonNumber}>
                   {item.name ||
                     (item.seasonNumber === 0
-                      ? 'Specials'
-                      : `Season ${item.seasonNumber}`)}
+                      ? t('lumen.tvEpisodeRequest.specials', 'Specials')
+                      : t(
+                          'lumen.tvEpisodeRequest.seasonNumber',
+                          'Season {number}',
+                          {
+                            number: item.seasonNumber,
+                          }
+                        ))}
                 </option>
               ))}
             </select>
           </label>
-          <ServiceNote what="episodes" error={loadError} retry={reload} />
+          <ServiceNote
+            what={t('lumen.tvEpisodeRequest.episodes', 'episodes')}
+            title={t(
+              'lumen.tvEpisodeRequest.loadFailure',
+              'Could not load episodes'
+            )}
+            retryLabel={t('lumen.account.retry', 'Retry')}
+            error={loadError}
+            retry={reload}
+          />
           {!data && !loadError && (
             <p className="note" role="status">
-              Loading episodes…
+              {t('lumen.tvEpisodeRequest.loading', 'Loading episodes…')}
             </p>
           )}
           {data && !episodes.length && (
-            <p className="note">No episodes found.</p>
+            <p className="note">
+              {t('lumen.tvEpisodeRequest.empty', 'No episodes found.')}
+            </p>
           )}
           <div className="setlist">
             {episodes.map((episode) => {
@@ -132,7 +157,12 @@ export default function TvEpisodeRequestSheet({
                   <span>
                     E{number} {episode.name}
                     {!available && (
-                      <small>Already available or requested</small>
+                      <small>
+                        {t(
+                          'lumen.tvEpisodeRequest.alreadyAvailable',
+                          'Already available or requested'
+                        )}
+                      </small>
                     )}
                   </span>
                   <input
@@ -175,14 +205,26 @@ export default function TvEpisodeRequestSheet({
               }
             >
               {busy
-                ? 'Requesting…'
+                ? t('lumen.tvEpisodeRequest.requesting', 'Requesting…')
                 : streamingOverride
                   ? approval
-                    ? 'Request Approval Anyway'
-                    : 'Request Anyway'
+                    ? t(
+                        'lumen.tvEpisodeRequest.approvalAnyway',
+                        'Request Approval Anyway'
+                      )
+                    : t(
+                        'lumen.tvEpisodeRequest.requestAnyway',
+                        'Request Anyway'
+                      )
                   : approval
-                    ? 'Request Approval'
-                    : 'Request Selected Episodes'}
+                    ? t(
+                        'lumen.tvEpisodeRequest.requestApproval',
+                        'Request Approval'
+                      )
+                    : t(
+                        'lumen.tvEpisodeRequest.submit',
+                        'Request Selected Episodes'
+                      )}
             </button>
             <button
               type="button"
@@ -191,7 +233,7 @@ export default function TvEpisodeRequestSheet({
               disabled={busy}
               onClick={close}
             >
-              Close
+              {t('lumen.tvEpisodeRequest.close', 'Close')}
             </button>
           </div>
         </div>

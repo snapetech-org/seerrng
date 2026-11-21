@@ -53,6 +53,7 @@ import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings, useVisibleMediaRefresh } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seasonList, seriesRequestSummary } from '../seriesRequestSummary';
@@ -80,6 +81,7 @@ const stateOf = (status?: number): SeasonState =>
 const live = (status?: number) => status === 1 || status === 2;
 
 export default function TvDetail() {
+  const { t: translate } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
 
@@ -751,7 +753,10 @@ export default function TvDetail() {
                       setEpisodesOpen(true);
                     }}
                   >
-                    Request Episodes
+                    {translate(
+                      'lumen.tvEpisodeRequest.open',
+                      'Request Episodes'
+                    )}
                   </button>
                 </div>
               )}
