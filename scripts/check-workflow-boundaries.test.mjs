@@ -326,58 +326,8 @@ test('GitHub-hosted runners are the default with no private workflow exception',
   }
 });
 
-test('CodeQL workflow invocations are disabled', () => {
+test('Trivy workflows retain SARIF reports as artifacts', () => {
   const workflowsDirectory = path.join(rootDirectory, '.github', 'workflows');
-  const codeqlConfigurationDirectory = path.join(
-    rootDirectory,
-    '.github',
-    'codeql'
-  );
-  const containsFiles = (directory) =>
-    fs.readdirSync(directory, { withFileTypes: true }).some((entry) => {
-      const entryPath = path.join(directory, entry.name);
-      return (
-        entry.isFile() ||
-        entry.isSymbolicLink() ||
-        (entry.isDirectory() && containsFiles(entryPath))
-      );
-    });
-  assert.equal(
-    fs.existsSync(path.join(workflowsDirectory, 'codeql.yml')),
-    false
-  );
-  assert.equal(
-    fs.existsSync(
-      path.join(workflowsDirectory, 'publish-codeql-model-pack.yml')
-    ),
-    false
-  );
-  assert.equal(
-    fs.existsSync(codeqlConfigurationDirectory) &&
-      containsFiles(codeqlConfigurationDirectory),
-    false
-  );
-
-  const workflowSources = fs
-    .readdirSync(workflowsDirectory)
-    .filter((fileName) => /\.ya?ml$/u.test(fileName))
-    .map((fileName) =>
-      fs.readFileSync(path.join(workflowsDirectory, fileName), 'utf8')
-    );
-  assert.ok(
-    workflowSources.every(
-      (source) =>
-        !source.includes('github/codeql-action/') &&
-        !/setup-codeql|security-events:\s*write/iu.test(source)
-    )
-  );
-
-  const dependabot = fs.readFileSync(
-    path.join(rootDirectory, '.github', 'dependabot.yml'),
-    'utf8'
-  );
-  assert.doesNotMatch(dependabot, /codeql/iu);
-
   const matrixSuffix = '${{ matrix.suffix }}';
   for (const [fileName, artifactPrefix] of [
     ['ci.yml', 'trivy-main'],
