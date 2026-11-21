@@ -42,6 +42,26 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### User administration display
+
+The Lumen user directory now localizes its heading, search and sorting controls,
+account roles, request counts, management actions, pagination, delete
+confirmation, local-account creation, and basic profile editing in English,
+French, and Arabic. Failed local-account creation retains the entered values
+for retry. Directory and profile load failures use the active locale's shared
+error messages.
+
+Twelve standalone and twelve bundled-asset `/lumen/` browser cases passed over
+all four viewport projects. They cover the directory, account creation, failed
+submit and retry, and overflow. Twelve existing create/profile regression
+cases also passed. Matching French and Arabic baseline/candidate captures of
+`/admin/users` and the local-account form were inspected at 1440 × 900 and
+390 × 844; existing list and form geometry remains, with longer labels wrapping
+inside the same row layout. Import-provider and managed-user subpanels remain
+partly English; live directory and provider-import verification remain open.
+Evidence is retained at
+`seerrng-admin-users-localization-20261120`.
+
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select
