@@ -626,6 +626,26 @@ found. Dynamic language/country names and the rest of Browse controls remain
 open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
+### Movie and series Browse filter localization
+
+The remaining movie and series filter labels and shared filter controls now
+follow the saved English, French, or Arabic locale: network and series status,
+production studios, streaming-provider selection, subject tags, genre matching,
+content rating, original language, and the complete sort choices. The shared
+GenrePicker keeps caller-provided labels for Music release types while
+localizing its selection and match controls. Browser fixtures verify the movie
+and series filter interactions in all three locales on desktop, iPhone,
+Android, and tablet, in standalone and embedded `/lumen/` deployments (24
+cases). Additional desktop checks cover the shared genre picker on Books,
+Music, and Comics in both deployments (6 cases). Existing query parameters,
+include/exclude values, and filter application behavior are unchanged. Matched
+English baseline and candidate screens at 1440 × 900 and 390 × 844 were
+compared; French and Arabic were inspected at the same sizes. Translated labels
+fit the existing controls and no horizontal overflow was found. Movie and
+series page headings/subtitles, dynamic language/country names, and other
+non-filter Browse copy remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
 ### My Media browse increment
 
 Lumen serves `/library` in both deployments and exposes My Media in desktop

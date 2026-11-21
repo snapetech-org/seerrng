@@ -29,9 +29,30 @@ test('movie and series range filters follow the account locale', async ({
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (path === '/user/1/settings/main')
-      return route.fulfill({ json: { locale } });
+      return route.fulfill({
+        json: {
+          locale,
+          enabledMediaCategories: {
+            ebook: true,
+            audiobook: true,
+            music: true,
+            comic: true,
+          },
+        },
+      });
     if (path === '/settings/public')
-      return route.fulfill({ json: { enable4k: true } });
+      return route.fulfill({
+        json: {
+          enable4k: true,
+          musicEnabled: true,
+          enabledMediaCategories: {
+            ebook: true,
+            audiobook: true,
+            music: true,
+            comic: true,
+          },
+        },
+      });
     if (path === '/discover/movies' || path === '/discover/tv')
       return route.fulfill({
         json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
@@ -83,6 +104,127 @@ test('movie and series range filters follow the account locale', async ({
         'جرّب تغيير عوامل التصفية.'
       )
     );
+    await expect(
+      page.getByRole('combobox', {
+        name: wording('Country of Origin', 'Pays d’origine', 'بلد المنشأ'),
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('option', {
+        name: wording('Popular', 'Popularité', 'الأكثر شعبية'),
+        exact: true,
+      })
+    ).toBeAttached();
+    const genreButton = page.getByRole('button', {
+      name: wording(
+        'Genres: All genres',
+        'Genres : Tous les genres',
+        'الأنواع: كل الأنواع'
+      ),
+    });
+    await genreButton.click();
+    const genreDialog = page.getByRole('dialog', {
+      name: wording('Genres', 'Genres', 'الأنواع'),
+    });
+    await expect(
+      genreDialog.getByRole('group', {
+        name: wording(
+          'Genres to match',
+          'Genres à faire correspondre',
+          'مطابقة الأنواع'
+        ),
+      })
+    ).toBeVisible();
+    await expect(
+      genreDialog.getByRole('button', {
+        name: wording('Match any', 'Correspondre à un', 'مطابقة أي نوع'),
+      })
+    ).toBeVisible();
+    await genreDialog
+      .getByRole('button', {
+        name: wording('Done', 'Terminé', 'تم'),
+      })
+      .click();
+    if (kind === 'movie') {
+      await page
+        .getByRole('button', {
+          name: wording(
+            'Production Studios',
+            'Studios de production',
+            'استوديوهات الإنتاج'
+          ),
+        })
+        .click();
+      await expect(
+        page.getByText(
+          wording(
+            'Find Production Studios',
+            'Rechercher des studios de production',
+            'البحث عن استوديوهات الإنتاج'
+          ),
+          { exact: true }
+        )
+      ).toBeVisible();
+      await page
+        .getByRole('button', {
+          name: wording(
+            'Streaming Services',
+            'Services de streaming',
+            'خدمات البث'
+          ),
+        })
+        .click();
+      await expect(
+        page.getByRole('form', {
+          name: wording(
+            'Streaming Service Filter',
+            'Filtre des services de streaming',
+            'تصفية خدمات البث'
+          ),
+        })
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          wording(
+            'Provider Match',
+            'Correspondance des services',
+            'مطابقة الخدمة'
+          ),
+          { exact: true }
+        )
+      ).toBeVisible();
+      await page
+        .getByRole('button', {
+          name: wording('Subject Tags', 'Mots-clés', 'الوسوم'),
+        })
+        .click();
+      await expect(
+        page.getByRole('button', {
+          name: wording(
+            'Find Tags',
+            'Rechercher des mots-clés',
+            'البحث عن الوسوم'
+          ),
+        })
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          wording('Tag Match', 'Correspondance des mots-clés', 'مطابقة الوسوم'),
+          { exact: true }
+        )
+      ).toBeVisible();
+    } else {
+      await expect(
+        page.getByRole('combobox', {
+          name: wording('Network', 'Réseau', 'الشبكة'),
+        })
+      ).toBeVisible();
+      await expect(
+        page.getByRole('combobox', {
+          name: wording('Series Status', 'Statut de la série', 'حالة المسلسل'),
+        })
+      ).toBeVisible();
+    }
     const ranges = [
       {
         en: 'Release Date Filter',
@@ -212,5 +354,49 @@ test('movie and series range filters follow the account locale', async ({
       )
       .toBe(true);
     if (kind === 'movie') await capture(page, info);
+  }
+  if (info.project.name === 'desktop') {
+    for (const { path, button, title } of [
+      {
+        path: '/books',
+        button: wording(
+          'Genres: All genres',
+          'Genres : Tous les genres',
+          'الأنواع: كل الأنواع'
+        ),
+        title: wording('Genres', 'Genres', 'الأنواع'),
+      },
+      {
+        path: '/music',
+        button: wording(
+          'Release Types: Any Release Type',
+          'Release Types : Any Release Type',
+          'Release Types: Any Release Type'
+        ),
+        title: 'Release Types',
+      },
+      {
+        path: '/comics',
+        button: wording(
+          'Genres: All genres',
+          'Genres : Tous les genres',
+          'الأنواع: كل الأنواع'
+        ),
+        title: wording('Genres', 'Genres', 'الأنواع'),
+      },
+    ]) {
+      await page.goto(testAppPath(path));
+      if (path === '/comics')
+        await page.getByRole('button', { name: 'Manga' }).click();
+      const picker = page.getByRole('button', { name: button });
+      await expect(picker).toBeVisible();
+      await picker.click();
+      const dialog = page.getByRole('dialog', { name: title });
+      await expect(
+        dialog.getByRole('button', {
+          name: wording('Done', 'Terminé', 'تم'),
+        })
+      ).toBeVisible();
+    }
   }
 });

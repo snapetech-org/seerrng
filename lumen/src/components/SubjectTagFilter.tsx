@@ -13,6 +13,7 @@ export function SubjectTagFilter({
   excluded: string[];
   apply: (included: string[], excluded: string[]) => void;
 }) {
+  const { t } = useLumenLocale();
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -49,7 +50,9 @@ export function SubjectTagFilter({
         }}
       >
         <label className="sel">
-          <span className="lbl">Find Subject Tags</span>
+          <span className="lbl">
+            {t('lumen.subjectTags.searchLabel', 'Find Subject Tags')}
+          </span>
           <input
             className="cfg-input"
             type="search"
@@ -59,20 +62,29 @@ export function SubjectTagFilter({
           />
         </label>
         <button className="btn btn-tonal btn-sm" disabled={!input.trim()}>
-          Find Tags
+          {t('lumen.subjectTags.search', 'Find Tags')}
         </button>
         <label className="sel">
-          <span className="lbl">Tag Match</span>
+          <span className="lbl">
+            {t('lumen.subjectTags.match', 'Tag Match')}
+          </span>
           <select
             value={exclude ? 'exclude' : 'include'}
             onChange={(event) => setExclude(event.target.value === 'exclude')}
           >
-            <option value="include">Include</option>
-            <option value="exclude">Exclude</option>
+            <option value="include">
+              {t('lumen.subjectTags.include', 'Include')}
+            </option>
+            <option value="exclude">
+              {t('lumen.subjectTags.exclude', 'Exclude')}
+            </option>
           </select>
         </label>
       </form>
-      <div className="toolbar" aria-label="Selected Subject Tags">
+      <div
+        className="toolbar"
+        aria-label={t('lumen.subjectTags.selected', 'Selected Subject Tags')}
+      >
         {included.map((id) => (
           <button
             className="chip"
@@ -85,7 +97,9 @@ export function SubjectTagFilter({
               )
             }
           >
-            Remove included {names[id] ?? `tag #${id}`}
+            {t('lumen.subjectTags.removeIncluded', 'Remove included {name}', {
+              name: names[id] ?? `tag #${id}`,
+            })}
           </button>
         ))}
         {excluded.map((id) => (
@@ -100,7 +114,9 @@ export function SubjectTagFilter({
               )
             }
           >
-            Remove excluded {names[id] ?? `tag #${id}`}
+            {t('lumen.subjectTags.removeExcluded', 'Remove excluded {name}', {
+              name: names[id] ?? `tag #${id}`,
+            })}
           </button>
         ))}
       </div>

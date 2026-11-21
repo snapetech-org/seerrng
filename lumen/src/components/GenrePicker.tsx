@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { useDialog } from './useDialog';
 
@@ -25,11 +26,15 @@ const usePhone = () =>
 
 // what the button says: "All genres", "Fantasy", "Fantasy + 2" (or "3 genres" while the
 // names are still loading)
-export function genreSummary(picked: string[], options: GenreOption[]) {
+export function genreSummary(
+  picked: string[],
+  options: GenreOption[],
+  countLabel: (count: number) => string = (count) =>
+    `${count} genre${count > 1 ? 's' : ''}`
+) {
   if (!picked.length) return 'All genres';
   const names = picked.map((v) => options.find((o) => o.value === v)?.label);
-  if (names.some((n) => !n))
-    return `${picked.length} genre${picked.length > 1 ? 's' : ''}`;
+  if (names.some((n) => !n)) return countLabel(picked.length);
   return names.length === 1 ? names[0]! : `${names[0]} + ${names.length - 1}`;
 }
 
@@ -55,6 +60,7 @@ export function GenrePicker({
   defaultOpen?: boolean;
   labels?: { title: string; all: string };
 }) {
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(defaultOpen);
   const phone = usePhone();
   const wrap = useRef<HTMLDivElement>(null);
@@ -62,12 +68,22 @@ export function GenrePicker({
   const pop = useRef<HTMLDivElement>(null);
   const refocus = useRef(false);
   const [popoverOffset, setPopoverOffset] = useState(0);
-  const title = labels?.title ?? 'Genres';
-  const allLabel = labels?.all ?? 'All genres';
+  const title = labels?.title ?? t('lumen.genrePicker.title', 'Genres');
+  const allLabel = labels?.all ?? t('lumen.genrePicker.all', 'All genres');
   const pickedKey = picked.join('\u0000');
-  const summary = picked.length ? genreSummary(picked, options) : allLabel;
+  const summary = picked.length
+    ? genreSummary(picked, options, (count) =>
+        count === 1
+          ? t('lumen.genrePicker.oneGenre', '1 genre')
+          : t('lumen.genrePicker.count', '{count} genres', { count })
+      )
+    : allLabel;
   const text =
-    exclusion?.active && picked.length ? `Exclude ${summary}` : summary;
+    exclusion?.active && picked.length
+      ? t('lumen.genrePicker.excludeSummary', 'Exclude {summary}', {
+          summary,
+        })
+      : summary;
   const positionPopover = useCallback(() => {
     const box = pop.current;
     const anchor = wrap.current?.getBoundingClientRect();
@@ -149,26 +165,34 @@ export function GenrePicker({
         {/* always in place: a line appearing after the first tick moved the list under the finger */}
         {
           <span className="gp-count" aria-hidden={!picked.length}>
-            {picked.length ? `${picked.length} picked` : '\u00a0'}
+            {picked.length
+              ? t('lumen.genrePicker.picked', '{count} picked', {
+                  count: picked.length,
+                })
+              : '\u00a0'}
           </span>
         }
       </div>
       {/* shown from the start (off until two genres are picked) so the list never shifts */}
       {match && (
-        <div className="seg gp-match" role="group" aria-label="Genres to match">
+        <div
+          className="seg gp-match"
+          role="group"
+          aria-label={t('lumen.genrePicker.matchGroup', 'Genres to match')}
+        >
           <button
             aria-pressed={!match.all}
             disabled={picked.length < 2}
             onClick={() => match.set(false)}
           >
-            Match any
+            {t('lumen.genrePicker.matchAny', 'Match any')}
           </button>
           <button
             aria-pressed={match.all}
             disabled={picked.length < 2}
             onClick={() => match.set(true)}
           >
-            Match all
+            {t('lumen.genrePicker.matchAll', 'Match all')}
           </button>
         </div>
       )}
@@ -181,7 +205,7 @@ export function GenrePicker({
             disabled={!picked.length}
             onClick={exclusion.toggle}
           >
-            Exclude Selected Genres
+            {t('lumen.genrePicker.excludeSelected', 'Exclude Selected Genres')}
           </button>
         </div>
       )}
@@ -209,7 +233,7 @@ export function GenrePicker({
           className="btn btn-primary btn-sm"
           onClick={() => close(true)}
         >
-          Done
+          {t('lumen.genrePicker.done', 'Done')}
         </button>
       </div>
     </>
@@ -223,7 +247,10 @@ export function GenrePicker({
         className={`sel gp-btn ${picked.length ? 'on' : ''}`}
         aria-haspopup="dialog"
         aria-expanded={open}
-        aria-label={`${title}: ${text}`}
+        aria-label={t('lumen.genrePicker.buttonLabel', '{title}: {summary}', {
+          title,
+          summary: text,
+        })}
         onClick={() => (open ? close(false) : setOpen(true))}
       >
         <span className="gp-text">{text}</span>

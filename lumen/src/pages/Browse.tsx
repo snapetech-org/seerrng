@@ -242,6 +242,27 @@ const commonSorts = [
   ['vote_count.asc', 'Fewest Votes'],
 ] as const;
 
+const sortOptionMessages: Record<string, string> = {
+  'popularity.desc': 'popular',
+  'popularity.asc': 'leastPopular',
+  'vote_average.desc': 'topRated',
+  'vote_average.asc': 'lowestRated',
+  'vote_count.desc': 'mostVotes',
+  'vote_count.asc': 'fewestVotes',
+  'primary_release_date.desc': 'newest',
+  'primary_release_date.asc': 'oldest',
+  'release_date.desc': 'latestReleaseDate',
+  'release_date.asc': 'earliestReleaseDate',
+  'first_air_date.desc': 'newest',
+  'first_air_date.asc': 'oldest',
+  'original_title.asc': 'titleAZ',
+  'original_title.desc': 'titleZA',
+  'original_name.asc': 'titleAZ',
+  'original_name.desc': 'titleZA',
+  'revenue.desc': 'highestRevenue',
+  'revenue.asc': 'lowestRevenue',
+};
+
 const SORTS = {
   movie: [
     ...commonSorts,
@@ -749,13 +770,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </button>
         {kind === 'tv' && (
           <label className="sel">
-            <span className="lbl">Network</span>
+            <span className="lbl">{t('lumen.browse.network', 'Network')}</span>
             <select
-              aria-label="Network"
+              aria-label={t('lumen.browse.network', 'Network')}
               value={network}
               onChange={(event) => upd('network', event.target.value)}
             >
-              <option value="">Any Network</option>
+              <option value="">
+                {t('lumen.browse.anyNetwork', 'Any Network')}
+              </option>
               {network && !knownNetwork && (
                 <option value={network}>{networkLabel}</option>
               )}
@@ -773,7 +796,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             type="button"
             onClick={() => upd('network', '')}
           >
-            Clear Network {networkLabel}
+            {t('lumen.browse.clearNetwork', 'Clear Network {name}', {
+              name: networkLabel,
+            })}
           </button>
         )}
         {studio && (
@@ -787,7 +812,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Studio {studioLabel}
+            {t('lumen.browse.clearStudio', 'Clear Studio {name}', {
+              name: studioLabel,
+            })}
           </button>
         )}
         {kind === 'movie' && (
@@ -797,7 +824,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             aria-expanded={showStudios}
             onClick={() => setShowStudios(!showStudios)}
           >
-            Production Studios
+            {t('lumen.browse.productionStudios', 'Production Studios')}
           </button>
         )}
         {studio && (
@@ -807,7 +834,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             aria-pressed={excludeStudio}
             onClick={() => upd('excludeStudio', excludeStudio ? '' : 'true')}
           >
-            Exclude Studio
+            {t('lumen.browse.excludeStudio', 'Exclude Studio')}
           </button>
         )}
         <CardTitleToggle kinds={[kind]} />
@@ -822,7 +849,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Subject Tag
+            {t('lumen.browse.clearSubjectTags', 'Clear Subject Tags')}
           </button>
         )}
         <div
@@ -856,25 +883,37 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         {qualityEnabled && (show === 'have' || show === 'not') && (
           <label className="sel">
-            <span className="lbl">Availability Quality</span>
+            <span className="lbl">
+              {t('lumen.browse.availabilityQuality', 'Availability Quality')}
+            </span>
             <select
-              aria-label="Availability Quality"
+              aria-label={t(
+                'lumen.browse.availabilityQuality',
+                'Availability Quality'
+              )}
               value={quality}
               onChange={(event) =>
                 upd('quality', event.target.value === '4k' ? '4k' : '')
               }
             >
-              <option value="hd">HD</option>
-              <option value="4k">4K</option>
+              <option value="hd">{t('lumen.browse.hd', 'HD')}</option>
+              <option value="4k">{t('lumen.browse.4k', '4K')}</option>
             </select>
           </label>
         )}
         <label className="sel">
           <span className="lbl">{t('lumen.browse.sort', 'Sort')}</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
-            {SORTS[kind].map(([v, t]) => (
+            {SORTS[kind].map(([v, label]) => (
               <option key={v} value={v}>
-                {libraryFirst && v === 'popularity.desc' ? 'Library Order' : t}
+                {libraryFirst && v === 'popularity.desc'
+                  ? t('lumen.browse.libraryOrder', 'Library Order')
+                  : sortOptionMessages[v]
+                    ? t(
+                        `lumen.browse.sortOption.${sortOptionMessages[v]}`,
+                        label
+                      )
+                    : label}
               </option>
             ))}
           </select>
@@ -882,9 +921,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         {kind === 'tv' && (
           <>
             <label className="sel">
-              <span className="lbl">Series Status</span>
+              <span className="lbl">
+                {t('lumen.browse.seriesStatus', 'Series Status')}
+              </span>
               <select
-                aria-label="Series Status"
+                aria-label={t('lumen.browse.seriesStatus', 'Series Status')}
                 value={status}
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
@@ -897,10 +938,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Any Status</option>
+                <option value="">
+                  {t('lumen.browse.anyStatus', 'Any Status')}
+                </option>
                 {SERIES_STATUSES.map((label, index) => (
                   <option key={label} value={index}>
-                    {label}
+                    {t(`lumen.browse.seriesStatusOption.${index}`, label)}
                   </option>
                 ))}
               </select>
@@ -912,12 +955,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               aria-pressed={!!status && excludeStatus}
               onClick={() => upd('excludeStatus', excludeStatus ? '' : 'true')}
             >
-              Exclude Status
+              {t('lumen.browse.excludeStatus', 'Exclude Status')}
             </button>
           </>
         )}
         <label className="sel">
-          <span className="lbl">Content Rating</span>
+          <span className="lbl">
+            {t('lumen.browse.contentRating', 'Content Rating')}
+          </span>
           <select
             value={certificationRange ? 'range' : certification}
             onChange={(event) => {
@@ -937,11 +982,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            <option value="">Any Rating</option>
+            <option value="">
+              {t('lumen.browse.anyRating', 'Any Rating')}
+            </option>
             {certificationRange && (
               <option value="range" disabled>
-                {certificationFilters.certificationGte || 'Any'} to{' '}
-                {certificationFilters.certificationLte || 'Any'}
+                {t('lumen.browse.ratingRange', '{low} to {high}', {
+                  low:
+                    certificationFilters.certificationGte ||
+                    t('lumen.browse.any', 'Any'),
+                  high:
+                    certificationFilters.certificationLte ||
+                    t('lumen.browse.any', 'Any'),
+                })}
               </option>
             )}
             {certification &&
@@ -969,9 +1022,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </select>
         </label>
         <label className="sel">
-          <span className="lbl">Original Language</span>
+          <span className="lbl">
+            {t('lumen.browse.originalLanguage', 'Original Language')}
+          </span>
           <select
-            aria-label="Original Language"
+            aria-label={t('lumen.browse.originalLanguage', 'Original Language')}
             value={language}
             onChange={(event) => {
               const next = new URLSearchParams(p);
@@ -980,8 +1035,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            <option value="">Use Saved Default</option>
-            <option value="all">All Languages</option>
+            <option value="">
+              {t('lumen.browse.useSavedDefault', 'Use Saved Default')}
+            </option>
+            <option value="all">
+              {t('lumen.browse.allLanguages', 'All Languages')}
+            </option>
             {language &&
               language !== 'all' &&
               !languageOptions.some(
@@ -995,13 +1054,17 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </select>
         </label>
         <label className="sel">
-          <span className="lbl">Country of Origin</span>
+          <span className="lbl">
+            {t('lumen.browse.countryOfOrigin', 'Country of Origin')}
+          </span>
           <select
-            aria-label="Country of Origin"
+            aria-label={t('lumen.browse.countryOfOrigin', 'Country of Origin')}
             value={country}
             onChange={(event) => upd('country', event.target.value)}
           >
-            <option value="">Any Country</option>
+            <option value="">
+              {t('lumen.browse.anyCountry', 'Any Country')}
+            </option>
             {country &&
               !countryOptions.some(
                 ({ iso_3166_1 }) => iso_3166_1 === country
@@ -1039,7 +1102,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           className="chip"
           to={kind === 'movie' ? '/movies/genres' : '/series/genres'}
         >
-          Browse Genres
+          {t('lumen.browse.browseGenres', 'Browse Genres')}
         </Link>
         <button
           type="button"
@@ -1047,12 +1110,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           aria-expanded={showProviders}
           onClick={() => setShowProviders(!showProviders)}
         >
-          Streaming Services{providers.length ? ` (${providers.length})` : ''}
+          {t('lumen.browse.streamingServices', 'Streaming Services')}
+          {providers.length ? ` (${providers.length})` : ''}
         </button>
       </div>
       {showProviders && regionPending && (
         <p className="note" role="status">
-          Loading streaming region…
+          {t(
+            'lumen.browse.loadingStreamingRegion',
+            'Loading streaming region…'
+          )}
         </p>
       )}
       {showProviders && !regionPending && (
@@ -1083,7 +1150,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           aria-expanded={showTags}
           onClick={() => setShowTags(!showTags)}
         >
-          Subject Tags
+          {t('lumen.browse.subjectTags', 'Subject Tags')}
         </button>
       </div>
       {showTags && (
