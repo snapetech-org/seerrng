@@ -226,6 +226,14 @@ that the serial recovery returns all seasons; route and request-tree fixtures
 pass. Live-provider confirmation remains open, and this server-side fix does
 not complete Lumen's separate series-selection parity audit.
 
+Season details with an empty but valid `episodes` array now count as loaded
+metadata instead of being dropped and retried as failed. This prevents a
+zero-episode season from leaving the entire request tree in the red load-error
+state. The server route test verifies that it preserves the empty season, and
+the request-tree test verifies that this response completes loading without
+changing selections. Both focused suites pass, including the 29-season batching
+case. Actual provider responses remain to be confirmed in a live instance.
+
 Discover previously issued its default-on catalog requests before the
 asynchronous Lumen configuration loaded, even when an administrator had disabled
 every home row. It now waits for that configuration before rendering optional

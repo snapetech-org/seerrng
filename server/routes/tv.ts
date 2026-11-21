@@ -445,7 +445,7 @@ const getRequestSeason = async (
     if (
       season.season_number === seasonNumber &&
       season.id > 0 &&
-      season.episodes.length > 0
+      Array.isArray(season.episodes)
     ) {
       return season;
     }
@@ -468,7 +468,7 @@ const getRequestSeason = async (
     });
     return season.season_number === seasonNumber &&
       season.id > 0 &&
-      season.episodes.length > 0
+      Array.isArray(season.episodes)
       ? season
       : undefined;
   } catch (error) {

@@ -192,6 +192,42 @@ describe('GET /tv/:id/seasons', () => {
     }
   });
 
+  it('returns valid season metadata when the provider reports no episodes', async () => {
+    const settings = getSettings();
+    const priorProvider = settings.metadataSettings.tv;
+    settings.metadataSettings.tv = MetadataProviderType.TMDB;
+    const mockGet = mock.method as (
+      object: object,
+      key: string,
+      callback: (url: string) => Promise<unknown>
+    ) => unknown;
+    mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
+      if (url === '/tv/1413')
+        return {
+          id: 1413,
+          videos: { results: [] },
+        };
+      if (url === '/tv/1413/season/14')
+        return {
+          id: 114,
+          season_number: 14,
+          episodes: [],
+        };
+      throw new Error(`Unexpected TMDB request: ${url}`);
+    });
+    try {
+      const response = await request(validatedApp)
+        .get('/api/v1/tv/1413/seasons')
+        .query({ seasonNumbers: '14' });
+      assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+      assert.strictEqual(response.body.length, 1);
+      assert.strictEqual(response.body[0].seasonNumber, 14);
+      assert.deepStrictEqual(response.body[0].episodes, []);
+    } finally {
+      settings.metadataSettings.tv = priorProvider;
+    }
+  });
+
   it('falls back to TMDB when the configured provider cannot load a season', async () => {
     const settings = getSettings();
     const priorProvider = settings.metadataSettings.tv;
