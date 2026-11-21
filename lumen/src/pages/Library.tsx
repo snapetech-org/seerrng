@@ -9,7 +9,9 @@ import LibraryTracking from '../components/LibraryTracking';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import ProviderFailure from '../components/ProviderFailure';
 import { ServiceNote } from '../components/extra';
+import { useExtras } from '../extras';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const BASE = '/integrations/discovery';
 const SOURCE_NAMES = {
@@ -121,6 +123,9 @@ function LibraryShelf({
   matchRevision: number;
 }) {
   const native = isNative(source);
+  const extras = useExtras();
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
   const shelves: Shelf[] = native
     ? ['all', 'watched', 'unwatched', 'in-progress']
     : source === 'trakt'
@@ -131,9 +136,15 @@ function LibraryShelf({
     shelves.find((value) => value === bookmark.get('shelf')) ?? shelves[0];
   const requestedType = bookmark.get('mediaType');
   const mediaType =
-    !native && (requestedType === 'movie' || requestedType === 'tv')
+    !native &&
+    ((requestedType === 'movie' && movieEnabled) ||
+      (requestedType === 'tv' && tvEnabled))
       ? requestedType
       : '';
+  const disabledScope =
+    !native &&
+    ((requestedType === 'movie' && !movieEnabled) ||
+      (requestedType === 'tv' && !tvEnabled));
   const libraryId = bookmark.get('libraryId');
   const [libraries, setLibraries] = useState<LibraryResult['libraries']>();
   const selectedLibrary = native
@@ -150,7 +161,10 @@ function LibraryShelf({
   } else if (mediaType) {
     params.set('mediaType', mediaType);
   }
-  const path = `${BASE}/library/${source}?${params}`;
+  const path =
+    extras.ready && (movieEnabled || tvEnabled) && !disabledScope
+      ? `${BASE}/library/${source}?${params}`
+      : null;
 
   function changeFilter(key: string, value: string) {
     const next = new URLSearchParams(bookmark);
@@ -205,8 +219,8 @@ function LibraryShelf({
               }
             >
               <option value="">Movies and Series</option>
-              <option value="movie">Movies</option>
-              <option value="tv">Series</option>
+              {movieEnabled && <option value="movie">Movies</option>}
+              {tvEnabled && <option value="tv">Series</option>}
             </select>
           </label>
         )}
@@ -220,6 +234,9 @@ function LibraryShelf({
         repairPath={native ? undefined : `${BASE}/library/${source}/repair`}
         shelf={shelf}
         mediaType={mediaType}
+        movieEnabled={movieEnabled}
+        tvEnabled={tvEnabled}
+        disabledScope={disabledScope || (!movieEnabled && !tvEnabled)}
         setLibraries={setLibraries}
         choosingLibrary={native && !selectedLibrary}
         previous={() => setPaging({ scope, cursors: cursors.slice(0, -1) })}
@@ -238,12 +255,15 @@ function LibraryPage({
   repairPath,
   shelf,
   mediaType,
+  movieEnabled,
+  tvEnabled,
+  disabledScope,
   setLibraries,
   choosingLibrary,
   previous,
   next,
 }: {
-  path: string;
+  path: string | null;
   matchRevision: number;
   page: number;
   native: boolean;
@@ -251,11 +271,15 @@ function LibraryPage({
   repairPath?: string;
   shelf: Shelf;
   mediaType: string;
+  movieEnabled: boolean;
+  tvEnabled: boolean;
+  disabledScope: boolean;
   setLibraries: (libraries: LibraryResult['libraries']) => void;
   choosingLibrary: boolean;
   previous: () => void;
   next: (cursor: number) => void;
 }) {
+  const { t } = useLumenLocale();
   const {
     data: response,
     error: requestError,
@@ -266,7 +290,7 @@ function LibraryPage({
     currentPathOnly: true,
     keepDuringRefresh: true,
   });
-  const data =
+  const validResponse =
     response &&
     Array.isArray(response.items) &&
     response.items.every(
@@ -280,6 +304,16 @@ function LibraryPage({
         )))
       ? response
       : null;
+  const data = validResponse
+    ? {
+        ...validResponse,
+        items: validResponse.items.filter(
+          (item) =>
+            (item.mediaType !== 'movie' || movieEnabled) &&
+            (item.mediaType !== 'tv' || tvEnabled)
+        ),
+      }
+    : null;
   const error =
     requestError || (response && !data ? 'Invalid library response.' : null);
   const previousRevision = useRef(matchRevision);
@@ -315,10 +349,20 @@ function LibraryPage({
           retry={reload}
         />
       )}
-      {!data && !error && (
+      {disabledScope ? (
         <p className="note" role="status">
-          Loading your library…
+          {t(
+            'lumen.category.disabledForAccount',
+            'This category is turned off for your account.'
+          )}
         </p>
+      ) : (
+        !data &&
+        !error && (
+          <p className="note" role="status">
+            Loading your library…
+          </p>
+        )
       )}
       {data && choosingLibrary && !data.libraries?.length && (
         <p className="note">No media server libraries are available.</p>

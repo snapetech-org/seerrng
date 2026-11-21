@@ -5156,3 +5156,8 @@ Watchlists now filter by the signed-in account’s categories and omit disabled
 media filter options. The regression passes on all four viewports; desktop
 enabled and disabled captures were reviewed at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/watchlist-category-visual-rerun/`.
+My Media now hides movie or series library items disabled for the signed-in
+account, omits disabled tracking filters, and waits for category settings before
+requesting library pages. The four-viewport regression passes; desktop captures
+are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/library-category-visual/`.

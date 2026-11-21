@@ -655,6 +655,64 @@ test('watchlist filters categories disabled for the signed-in account', async ({
   });
 });
 
+test('My Media hides movies disabled for the signed-in account', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/integrations/discovery/accounts', (route) =>
+    route.fulfill({
+      json: {
+        accounts: [],
+        mediaServer: { provider: 'plex', connected: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/integrations/discovery/library/plex**', (route) =>
+    route.fulfill({
+      json: {
+        allowWrites: false,
+        items: [
+          { id: 'movie-1', title: 'Hidden Library Movie', mediaType: 'movie' },
+          { id: 'tv-2', title: 'Visible Library Series', mediaType: 'tv' },
+        ],
+        libraries: [{ id: 'library-1', name: 'Main Library' }],
+        hasMore: false,
+        missingMappings: 0,
+        truncated: false,
+      },
+    })
+  );
+  await page.goto(testAppPath('/library?source=plex'));
+  await expect(page.getByText('Hidden Library Movie')).toBeVisible();
+  await expect(page.getByText('Visible Library Series')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('library-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  await page.goto(testAppPath('/library?source=plex'));
+  await expect(page.getByText('Visible Library Series')).toBeVisible();
+  await expect(page.getByText('Hidden Library Movie')).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('library-disabled-candidate.png'),
+    fullPage: true,
+  });
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],
