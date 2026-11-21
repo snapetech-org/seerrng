@@ -6,26 +6,27 @@ import {
 } from '../components/DownloadActionSheet';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
-const STATES = {
-  active: 'Needs Attention',
-  failed: 'Needs Review',
-  importing: 'Import Pending',
-  rejecting: 'Rejection Pending',
-  resolved: 'Resolved',
+const STATES: Record<string, string> = {
+  active: 'downloads.activeState',
+  failed: 'downloads.failedState',
+  importing: 'downloads.importingState',
+  rejecting: 'downloads.rejectingState',
+  resolved: 'downloads.resolvedState',
 };
 
 const RESOLUTIONS: Record<string, string> = {
-  'manual-import': 'Manually imported',
-  'manual-rejection': 'Manually rejected',
-  'manual-blocklist': 'Manually blocklisted',
-  recovered: 'Recovered',
-  'no-longer-in-queue': 'No longer in the queue',
-  'configuration-changed': 'Service configuration changed',
-  'import-failed': 'Import failed',
-  'import-needs-review': 'Import completed without a confirmed file import',
-  'import-outcome-unknown': 'Import outcome unknown',
-  'rejection-outcome-unknown': 'Rejection outcome unknown',
+  'manual-import': 'downloads.imported',
+  'manual-rejection': 'downloads.rejected',
+  'manual-blocklist': 'downloads.blocked',
+  recovered: 'downloads.recovered',
+  'no-longer-in-queue': 'downloads.disappeared',
+  'configuration-changed': 'downloads.changed',
+  'import-failed': 'downloads.importFailed',
+  'import-needs-review': 'downloads.importReview',
+  'import-outcome-unknown': 'downloads.unknownImport',
+  'rejection-outcome-unknown': 'downloads.unknownReject',
 };
 
 interface DownloadWarning {
@@ -57,10 +58,10 @@ interface DownloadResponse {
   truncated: boolean;
 }
 
-function ActionTime({ value }: { value: string }) {
+function ActionTime({ value, locale }: { value: string; locale: string }) {
   const date = new Date(value);
   if (!Number.isFinite(date.valueOf())) return null;
-  return <time dateTime={value}>{date.toLocaleString()}</time>;
+  return <time dateTime={value}>{date.toLocaleString(locale)}</time>;
 }
 
 function DownloadRows({
@@ -72,6 +73,7 @@ function DownloadRows({
   page: number;
   setPage: (page: number) => void;
 }) {
+  const { locale, t } = useLumenLocale();
   const { data, error, reload } = useApi<DownloadResponse>(path);
   const [action, setAction] = useState<{
     warning: DownloadWarning;
@@ -92,7 +94,7 @@ function DownloadRows({
           disabled={!data && !error}
           onClick={reload}
         >
-          Refresh
+          {t('downloads.refresh', 'Refresh')}
         </button>
       </div>
       {notice && (
@@ -111,25 +113,38 @@ function DownloadRows({
           }}
         />
       )}
-      <ServiceNote error={error} what="download warnings" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('downloads.title', 'Download Inbox')}
+        title={t('downloads.failed', 'The inbox could not be loaded.')}
+        retryLabel={t('downloads.refresh', 'Refresh')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading download warnings…
+          {t('downloads.loading', 'Loading download warnings…')}
         </p>
       )}
       {!!data?.partialSources.length && (
         <p className="note" role="status">
-          Some acquisition services could not be checked. Their warnings may be
-          missing or out of date.
+          {t(
+            'downloads.partial',
+            'Some acquisition services could not be checked. Their warnings may be missing or out of date.'
+          )}
         </p>
       )}
       {data?.truncated && (
         <p className="note" role="status">
-          Only the first 20 acquisition services were checked.
+          {t(
+            'downloads.truncated',
+            'Only the first 20 acquisition services were checked.'
+          )}
         </p>
       )}
       {data?.results.length === 0 && (
-        <p className="note">No download warnings in this view.</p>
+        <p className="note">
+          {t('downloads.empty', 'No download warnings in this view.')}
+        </p>
       )}
       {!!data?.results.length && (
         <ul className="setlist">
@@ -144,31 +159,46 @@ function DownloadRows({
                   <small key={index}>{text}</small>
                 ))}
                 {warning.resolution && RESOLUTIONS[warning.resolution] && (
-                  <small>{RESOLUTIONS[warning.resolution]}</small>
+                  <small>{t(RESOLUTIONS[warning.resolution])}</small>
                 )}
                 {!!warning.actions?.length && (
                   <details>
-                    <summary>Action History</summary>
+                    <summary>
+                      {t('downloads.actions', 'Action history')}
+                    </summary>
                     <ol>
                       {warning.actions.map((action, index) => (
                         <li key={index}>
                           <small>
-                            <ActionTime value={action.at} /> · User{' '}
-                            {action.actorId}
+                            <ActionTime value={action.at} locale={locale} /> ·{' '}
+                            {t('downloads.actor', 'User {id}', {
+                              id: action.actorId,
+                            })}
                           </small>
                           <small>
-                            {action.action === 'import' ? 'Import' : 'Reject'}
+                            {action.action === 'import'
+                              ? t('downloads.import', 'Import selected files')
+                              : t('downloads.reject', 'Reject download')}
                             {' · '}
-                            {RESOLUTIONS[action.state] ??
-                              STATES[action.state as keyof typeof STATES] ??
-                              'Needs Review'}
+                            {t(
+                              RESOLUTIONS[action.state] ??
+                                STATES[action.state] ??
+                                'downloads.failedState',
+                              'Needs review'
+                            )}
                           </small>
                           <small>
                             {action.action === 'import'
                               ? action.options.importMode === 'move'
-                                ? 'Move'
-                                : 'Copy or hardlink'
-                              : `${action.options.blocklist ? 'Blocklist requested' : 'Release not blocklisted'} · ${action.options.removeFromClient ? 'Client removal requested' : 'Client files kept'}`}
+                                ? t(
+                                    'downloads.move',
+                                    'Move (remove source files)'
+                                  )
+                                : t(
+                                    'downloads.copy',
+                                    'Copy or hardlink (keep source files)'
+                                  )
+                              : `${t(action.options.blocklist ? 'downloads.blocklisted' : 'downloads.notBlocklisted')} · ${t(action.options.removeFromClient ? 'downloads.clientRemoved' : 'downloads.clientKept')}`}
                           </small>
                         </li>
                       ))}
@@ -183,40 +213,48 @@ function DownloadRows({
                       className="btn btn-tonal btn-sm"
                       onClick={() => begin(warning, 'import')}
                     >
-                      Preview Files
+                      {t('downloads.preview', 'Preview files')}
                     </button>
                   )}
                   <button
                     className="btn btn-quiet btn-sm"
                     onClick={() => begin(warning, 'reject')}
                   >
-                    Reject Download
+                    {t('downloads.reject', 'Reject download')}
                   </button>
                 </div>
               )}
               <Pill k={warning.state === 'resolved' ? 'neutral' : 'wait'}>
-                {STATES[warning.state] ?? 'Needs Review'}
+                {t(STATES[warning.state] ?? 'downloads.failedState')}
               </Pill>
             </li>
           ))}
         </ul>
       )}
       {(page > 1 || (data?.total ?? 0) > 25) && (
-        <nav className="toolbar" aria-label="Download Inbox Pages">
+        <nav
+          className="toolbar"
+          aria-label={t(
+            'components.Common.PaginationFooter.pagination',
+            'Pagination'
+          )}
+        >
           <button
             className="btn btn-quiet btn-sm"
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
           >
-            Previous Page
+            {t('downloads.previous', 'Previous page')}
           </button>
-          <span className="note">Page {page}</span>
+          <span className="note">
+            {t('lumen.downloads.page', 'Page {page}', { page })}
+          </span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={page >= 1000 || page * 25 >= (data?.total ?? 0)}
             onClick={() => setPage(page + 1)}
           >
-            Next Page
+            {t('downloads.next', 'Next page')}
           </button>
         </nav>
       )}
@@ -225,18 +263,23 @@ function DownloadRows({
 }
 
 export default function Downloads({ allowed }: { allowed: boolean }) {
+  const { t } = useLumenLocale();
   const [scope, setScope] = useState<'active' | 'history'>('active');
   const [page, setPage] = useState(1);
   const path = `${DOWNLOAD_INBOX_PATH}?scope=${scope}&page=${page}`;
   return (
     <>
       <header className="ph">
-        <h1>Download Inbox</h1>
+        <h1>{t('downloads.title', 'Download Inbox')}</h1>
       </header>
       {allowed ? (
         <>
           <div className="toolbar">
-            <div className="seg" role="group" aria-label="Download Inbox Views">
+            <div
+              className="seg"
+              role="group"
+              aria-label={t('downloads.title', 'Download Inbox')}
+            >
               {(['active', 'history'] as const).map((value) => (
                 <button
                   key={value}
@@ -246,7 +289,9 @@ export default function Downloads({ allowed }: { allowed: boolean }) {
                     setPage(1);
                   }}
                 >
-                  {value === 'active' ? 'Active Warnings' : 'History'}
+                  {value === 'active'
+                    ? t('downloads.active', 'Active warnings')
+                    : t('downloads.history', 'History')}
                 </button>
               ))}
             </div>
@@ -254,7 +299,7 @@ export default function Downloads({ allowed }: { allowed: boolean }) {
           <DownloadRows key={path} path={path} page={page} setPage={setPage} />
         </>
       ) : (
-        <p className="note">Manage Downloads permission is required.</p>
+        <p className="note">{t('downloads.denied')}</p>
       )}
     </>
   );

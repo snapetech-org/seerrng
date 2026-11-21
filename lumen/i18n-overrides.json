@@ -664,7 +664,12 @@
     "lumen.softwareHistory.openPatchVersion": "Open Requested Patch Version",
     "lumen.softwareHistory.openPatchProject": "Open Patch Project",
     "lumen.softwareHistory.keepOriginal": "Keep original",
-    "lumen.softwareHistory.replaceOriginal": "Replace original"
+    "lumen.softwareHistory.replaceOriginal": "Replace original",
+    "lumen.downloads.page": "Page {page}",
+    "lumen.downloads.previewFailed": "Could not preview these files.",
+    "lumen.downloads.searchFailed": "Could not search this service library.",
+    "lumen.downloads.actionFailed": "Could not confirm the action: {message} Check the current warning before retrying.",
+    "lumen.downloads.previewLoading": "Loading file preview…"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1401,7 +1406,12 @@
     "lumen.softwareHistory.openPatchVersion": "Ouvrir la version du correctif demandée",
     "lumen.softwareHistory.openPatchProject": "Ouvrir le projet du correctif",
     "lumen.softwareHistory.keepOriginal": "Conserver l’original",
-    "lumen.softwareHistory.replaceOriginal": "Remplacer l’original"
+    "lumen.softwareHistory.replaceOriginal": "Remplacer l’original",
+    "lumen.downloads.page": "Page {page}",
+    "lumen.downloads.previewFailed": "Impossible de prévisualiser ces fichiers.",
+    "lumen.downloads.searchFailed": "Impossible de rechercher dans la bibliothèque de ce service.",
+    "lumen.downloads.actionFailed": "Impossible de confirmer l’action : {message} Consultez l’avertissement actuel avant de réessayer.",
+    "lumen.downloads.previewLoading": "Chargement de l’aperçu des fichiers…"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -2138,6 +2148,11 @@
     "lumen.softwareHistory.openPatchVersion": "فتح إصدار التصحيح المطلوب",
     "lumen.softwareHistory.openPatchProject": "فتح مشروع التصحيح",
     "lumen.softwareHistory.keepOriginal": "الاحتفاظ بالأصل",
-    "lumen.softwareHistory.replaceOriginal": "استبدال الأصل"
+    "lumen.softwareHistory.replaceOriginal": "استبدال الأصل",
+    "lumen.downloads.page": "الصفحة {page}",
+    "lumen.downloads.previewFailed": "تعذّر معاينة هذه الملفات.",
+    "lumen.downloads.searchFailed": "تعذّر البحث في مكتبة هذه الخدمة.",
+    "lumen.downloads.actionFailed": "تعذّر تأكيد الإجراء: {message} راجع التحذير الحالي قبل إعادة المحاولة.",
+    "lumen.downloads.previewLoading": "جارٍ تحميل معاينة الملفات…"
   }
 }

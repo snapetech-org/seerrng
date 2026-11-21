@@ -72,13 +72,13 @@ for (const permissions of [32, 8796093022208]) {
     await expect(
       page.getByText('Current Download', { exact: true })
     ).toBeVisible();
-    await page.getByRole('button', { name: 'Next Page' }).click();
+    await page.getByRole('button', { name: 'Next page' }).click();
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2');
     await page.getByRole('button', { name: 'History', exact: true }).click();
     await expect(page.getByText('Old Download', { exact: true })).toBeVisible();
     expect(queries.at(-1)?.get('scope')).toBe('history');
     expect(queries.at(-1)?.get('page')).toBe('1');
-    await page.getByText('Action History', { exact: true }).click();
+    await page.getByText('Action history', { exact: true }).click();
     await expect(
       page.getByText('Client files kept', { exact: false })
     ).toBeVisible();
@@ -162,21 +162,21 @@ test('manual import sends the chosen target and only eligible files, while rejec
     });
   });
   await page.goto(appPath('/downloads'));
-  await page.getByRole('button', { name: 'Preview Files' }).click();
-  const sheet = page.getByRole('dialog', { name: 'Preview Download Files' });
+  await page.getByRole('button', { name: 'Preview files' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Preview files' });
   await expect(
-    sheet.getByRole('button', { name: 'Import Selected Files' })
+    sheet.getByRole('button', { name: 'Import selected files' })
   ).toBeDisabled();
-  await sheet.getByRole('button', { name: 'Search Library' }).click();
+  await sheet.getByRole('button', { name: 'Search' }).click();
   await sheet
-    .getByRole('button', { name: 'Choose Match: Matched Movie' })
+    .getByRole('button', { name: 'Choose a library match Matched Movie' })
     .click();
   await expect(sheet.getByText('Selected match: Matched Movie')).toBeVisible();
   await expect(
     sheet.getByRole('checkbox', { name: 'Select Sample.mkv' })
   ).toBeDisabled();
   await sheet.getByRole('checkbox', { name: 'Select Movie.mkv' }).check();
-  await sheet.getByRole('button', { name: 'Import Selected Files' }).click();
+  await sheet.getByRole('button', { name: 'Import selected files' }).click();
   await expect(sheet).toHaveCount(0);
   expect(posts).toEqual([
     {
@@ -189,17 +189,268 @@ test('manual import sends the chosen target and only eligible files, while rejec
       },
     },
   ]);
-  await page.getByRole('button', { name: 'Reject Download' }).click();
-  const reject = page.getByRole('dialog', { name: 'Reject Download' });
+  await page.getByRole('button', { name: 'Reject download' }).click();
+  const reject = page.getByRole('dialog', { name: 'Reject download' });
   await expect(
     reject.getByRole('checkbox', {
-      name: 'Remove the Download and Files From Its Client',
+      name: 'Remove the download and files from its download client',
     })
   ).not.toBeChecked();
-  await reject.getByRole('button', { name: 'Confirm Rejection' }).click();
+  await reject.getByRole('button', { name: 'Confirm rejection' }).click();
   await expect(reject).toHaveCount(0);
   expect(posts.at(-1)).toEqual({
     path: '/downloads/interventions/7/reject',
     body: { blocklist: true, removeFromClient: false },
   });
+});
+
+test('Download Inbox follows the saved locale at desktop and phone sizes', async ({
+  page,
+}, info) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_DOWNLOADS_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_DOWNLOADS_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const labels = {
+    en: {
+      title: 'Download Inbox',
+      active: 'Active warnings',
+      history: 'History',
+      status: 'Needs attention',
+      preview: 'Preview files',
+      reject: 'Reject download',
+      query: 'Movie, series, album, or book',
+      search: 'Search',
+      import: 'Import selected files',
+      cancel: 'Cancel',
+      confirm: 'Confirm rejection',
+      blocklist: 'Blocklist this release to avoid downloading it again',
+      remove: 'Remove the download and files from its download client',
+      resolved: 'Resolved',
+      rejected: 'Manually rejected',
+      actions: 'Action history',
+      actor: 'User 9',
+    },
+    fr: {
+      title: 'Télécharger la boîte de réception',
+      active: 'Mises en garde actives',
+      history: 'Historique',
+      status: "Besoin d'attention",
+      preview: 'Aperçu des fichiers',
+      reject: 'Rejeter le téléchargement',
+      query: 'Film, série, album ou livre',
+      search: 'Rechercher',
+      import: 'Importer les fichiers sélectionnés',
+      cancel: 'Annuler',
+      confirm: 'Confirmer le rejet',
+      blocklist:
+        'Bloquer cette version pour éviter de la télécharger à nouveau',
+      remove:
+        'Supprimer le téléchargement et les fichiers de son client de téléchargement',
+      resolved: 'Résolu',
+      rejected: 'Rejeté manuellement',
+      actions: "Historique de l'action",
+      actor: 'Utilisateur 9',
+    },
+    ar: {
+      title: 'تحميل',
+      active: 'تحذيرات نشطة',
+      history: 'التاريخ',
+      status: 'الحاجة إلى الاهتمام',
+      preview: 'ملفات ما قبل الاستعراض',
+      reject: 'التحميل',
+      query: 'فيلم أو سلسلة أو ألبوم أو كتاب',
+      search: 'بحث',
+      import: 'ملفات مختارة',
+      cancel: 'إلغاء',
+      confirm: 'الرفض',
+      blocklist: 'احظر هذا الإصدار لتجنّب تنزيله مرة أخرى',
+      remove: 'إزالة الحمولة والملفات من عميلها',
+      resolved: 'تم الحل',
+      rejected: 'رُفضت يدوياً',
+      actions: 'تاريخ العمل',
+      actor: 'مستعمل 9',
+    },
+  } as const;
+  const expected = (key: keyof (typeof labels)['en'], old: string) =>
+    candidate ? labels[locale][key] : old;
+
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/downloads/interventions') {
+      const history = url.searchParams.get('scope') === 'history';
+      return route.fulfill({
+        json: {
+          total: 30,
+          partialSources: [],
+          truncated: false,
+          results: [
+            {
+              id: 5,
+              title: 'Fixture Download',
+              serviceName: 'Movies',
+              serviceType: 'radarr',
+              state: history ? 'resolved' : 'active',
+              resolution: history ? 'manual-rejection' : null,
+              warnings: ['Fixture warning'],
+              manualImportCapable: true,
+              actions: history
+                ? [
+                    {
+                      at: '2026-11-12T12:00:00Z',
+                      actorId: 9,
+                      action: 'reject',
+                      state: 'manual-rejection',
+                      options: { blocklist: true, removeFromClient: false },
+                    },
+                  ]
+                : [],
+            },
+          ],
+        },
+      });
+    }
+    if (path === '/downloads/interventions/5/preview')
+      return route.fulfill({
+        json: {
+          target: null,
+          fingerprint: 'a'.repeat(64),
+          candidates: [],
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Operator', permissions: 8796093022208 }
+          : {},
+    });
+  });
+
+  await page.goto(appPath('/downloads'));
+  await expect(
+    page.getByRole('heading', { name: expected('title', 'Download Inbox') })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: expected('active', 'Active Warnings') })
+  ).toBeVisible();
+  await expect(
+    page.getByText('Fixture Download', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText(expected('status', 'Needs Attention'), { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: expected('preview', 'Preview Files') })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: expected('reject', 'Reject Download') })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/downloads-${candidate ? 'candidate' : 'baseline'}-${locale}-${info.project.name}.png`,
+      fullPage: true,
+    });
+  await page
+    .getByRole('button', { name: expected('preview', 'Preview Files') })
+    .click();
+  const dialogName = candidate
+    ? labels[locale].preview
+    : 'Preview Download Files';
+  const dialog = page.getByRole('dialog', { name: dialogName });
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByRole('searchbox', {
+      name: expected('query', 'Search This Service Library'),
+    })
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('button', { name: expected('search', 'Search Library') })
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('button', {
+      name: expected('import', 'Import Selected Files'),
+    })
+  ).toBeDisabled();
+  await page.waitForTimeout(350);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/downloads-action-${candidate ? 'candidate' : 'baseline'}-${locale}-${info.project.name}.png`,
+    });
+  await dialog
+    .getByRole('button', { name: expected('cancel', 'Cancel') })
+    .click();
+  await page
+    .getByRole('button', { name: expected('reject', 'Reject Download') })
+    .click();
+  const rejectDialog = page.getByRole('dialog', {
+    name: candidate ? labels[locale].reject : 'Reject Download',
+  });
+  await expect(rejectDialog).toBeVisible();
+  await expect(
+    rejectDialog.getByRole('checkbox', {
+      name: expected('blocklist', 'Blocklist This Release'),
+    })
+  ).toBeChecked();
+  await expect(
+    rejectDialog.getByRole('checkbox', {
+      name: expected('remove', 'Remove the Download and Files From Its Client'),
+    })
+  ).not.toBeChecked();
+  await expect(
+    rejectDialog.getByRole('button', {
+      name: expected('confirm', 'Confirm Rejection'),
+    })
+  ).toBeVisible();
+  await page.waitForTimeout(350);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/downloads-reject-${candidate ? 'candidate' : 'baseline'}-${locale}-${info.project.name}.png`,
+    });
+  await rejectDialog
+    .getByRole('button', { name: expected('cancel', 'Cancel') })
+    .click();
+  await page
+    .getByRole('button', { name: expected('history', 'History') })
+    .click();
+  await expect(
+    page.getByText(expected('resolved', 'Resolved'), { exact: true })
+  ).toBeVisible();
+  await expect(
+    page
+      .getByText(expected('rejected', 'Manually rejected'), { exact: true })
+      .first()
+  ).toBeVisible();
+  await page
+    .getByText(expected('actions', 'Action History'), { exact: true })
+    .click();
+  await expect(
+    page.getByText(expected('actor', 'User 9'), { exact: false })
+  ).toBeVisible();
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/downloads-history-${candidate ? 'candidate' : 'baseline'}-${locale}-${info.project.name}.png`,
+      fullPage: true,
+    });
 });

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { useDialog } from './useDialog';
 
@@ -36,6 +37,7 @@ export function DownloadActionSheet({
   close: () => void;
   finished: (message: string) => void;
 }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const writing = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -52,7 +54,9 @@ export function DownloadActionSheet({
   const [blocklist, setBlocklist] = useState(true);
   const [remove, setRemove] = useState(false);
   const importing = operation === 'import';
-  const heading = importing ? 'Preview Download Files' : 'Reject Download';
+  const heading = importing
+    ? t('downloads.preview', 'Preview files')
+    : t('downloads.reject', 'Reject download');
   const path = `${DOWNLOAD_INBOX_PATH}/${warning.id}`;
 
   const dismiss = () => {
@@ -73,10 +77,18 @@ export function DownloadActionSheet({
       })
       .catch((failure) => {
         if (!controller.signal.aborted)
-          setPreviewError(friendlyError(failure, 'Couldn’t preview files'));
+          setPreviewError(
+            friendlyError(
+              failure,
+              t(
+                'lumen.downloads.previewFailed',
+                'Could not preview these files.'
+              )
+            )
+          );
       });
     return () => controller.abort();
-  }, [importing, path, targetId, previewAttempt]);
+  }, [importing, path, targetId, previewAttempt, t]);
 
   const target = preview?.target;
   const canImport =
@@ -109,7 +121,15 @@ export function DownloadActionSheet({
       );
       setTargets(matches);
     } catch (failure) {
-      setError(friendlyError(failure, 'Couldn’t search this service library'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.downloads.searchFailed',
+            'Could not search this service library.'
+          )
+        )
+      );
     } finally {
       setSearching(false);
     }
@@ -142,13 +162,19 @@ export function DownloadActionSheet({
             [importing ? 'importing' : 'rejecting', 'resolved'].includes(
               result.state
             )
-            ? 'Action accepted. Refresh to check the acquisition service outcome.'
-            : 'The action needs review. Check the current warning before retrying.'
+            ? t('downloads.pending')
+            : t('downloads.outcome')
         );
     } catch (failure) {
       if (sessionGeneration() === session) {
-        const message = friendlyError(failure, 'Couldn’t confirm the action');
-        finished(`${message} Check the current warning before retrying.`);
+        const message = friendlyError(failure, t('downloads.outcome'));
+        finished(
+          t(
+            'lumen.downloads.actionFailed',
+            'Could not confirm the action: {message} Check the current warning before retrying.',
+            { message }
+          )
+        );
       }
     } finally {
       writing.current = false;
@@ -176,10 +202,7 @@ export function DownloadActionSheet({
           </header>
           {importing ? (
             <>
-              <p className="note">
-                Choose a library match and select eligible files. The
-                acquisition service checks quality and episode matching.
-              </p>
+              <p className="note">{t('downloads.importWarning')}</p>
               <form
                 className="toolbar"
                 onSubmit={(event) => {
@@ -190,7 +213,7 @@ export function DownloadActionSheet({
                 <label className="search">
                   <input
                     type="search"
-                    aria-label="Search This Service Library"
+                    aria-label={t('downloads.targetQuery')}
                     value={query}
                     maxLength={120}
                     disabled={busy || searching}
@@ -202,7 +225,7 @@ export function DownloadActionSheet({
                   type="submit"
                   disabled={busy || searching || query.trim().length < 2}
                 >
-                  Search Library
+                  {t('downloads.search')}
                 </button>
               </form>
               {error && (
@@ -211,9 +234,7 @@ export function DownloadActionSheet({
                 </p>
               )}
               {targets?.length === 0 && (
-                <p className="note">
-                  No matching titles in this service library.
-                </p>
+                <p className="note">{t('downloads.targetNoResults')}</p>
               )}
               {!!targets?.length && (
                 <ul className="setlist">
@@ -227,10 +248,10 @@ export function DownloadActionSheet({
                         type="button"
                         className="btn btn-quiet btn-sm"
                         disabled={busy || targetId === match.id}
-                        aria-label={`Choose Match: ${match.title}`}
+                        aria-label={`${t('downloads.targetChoose')} ${match.title}`}
                         onClick={() => chooseTarget(match.id)}
                       >
-                        Choose Match
+                        {t('downloads.targetChoose')}
                       </button>
                     </li>
                   ))}
@@ -238,13 +259,19 @@ export function DownloadActionSheet({
               )}
               {target && (
                 <p className="note">
-                  Selected match: {target.title}
-                  {target.subtitle ? ` · ${target.subtitle}` : ''}
+                  {t(
+                    'downloads.targetSelected',
+                    'Selected match: {title}{subtitle}',
+                    {
+                      title: target.title,
+                      subtitle: target.subtitle ? ` · ${target.subtitle}` : '',
+                    }
+                  )}
                 </p>
               )}
               {!preview && !previewError && (
                 <p className="note" role="status">
-                  Loading file preview…
+                  {t('lumen.downloads.previewLoading', 'Loading file preview…')}
                 </p>
               )}
               {previewError && (
@@ -260,14 +287,12 @@ export function DownloadActionSheet({
                       setPreviewAttempt((attempt) => attempt + 1);
                     }}
                   >
-                    Retry Preview
+                    {t('downloads.refresh')}
                   </button>
                 </div>
               )}
               {preview?.candidates.length === 0 && (
-                <p className="note">
-                  No files with a confirmed library match were found.
-                </p>
+                <p className="note">{t('downloads.noFiles')}</p>
               )}
               {!!preview?.candidates.length && (
                 <ul className="setlist">
@@ -276,7 +301,9 @@ export function DownloadActionSheet({
                       <label>
                         <input
                           type="checkbox"
-                          aria-label={`Select ${file.name}`}
+                          aria-label={t('downloads.select', 'Select {name}', {
+                            name: file.name,
+                          })}
                           checked={files.includes(file.id)}
                           disabled={
                             busy ||
@@ -300,7 +327,7 @@ export function DownloadActionSheet({
                           MB
                         </small>
                         {!file.eligible && (
-                          <small>Cannot import this file.</small>
+                          <small>{t('downloads.ineligible')}</small>
                         )}
                         {file.rejections.map((reason, index) => (
                           <small key={index}>{reason}</small>
@@ -311,7 +338,7 @@ export function DownloadActionSheet({
                 </ul>
               )}
               <label className="sel">
-                <span className="lbl">Import Mode</span>
+                <span className="lbl">{t('downloads.importMode')}</span>
                 <select
                   value={mode}
                   disabled={busy}
@@ -319,21 +346,15 @@ export function DownloadActionSheet({
                     setMode(event.target.value === 'move' ? 'move' : 'copy')
                   }
                 >
-                  <option value="copy">Copy or Hardlink</option>
-                  <option value="move">Move</option>
+                  <option value="copy">{t('downloads.copy')}</option>
+                  <option value="move">{t('downloads.move')}</option>
                 </select>
               </label>
-              {mode === 'move' && (
-                <p className="note">
-                  Move removes successfully imported source files.
-                </p>
-              )}
+              {mode === 'move' && <p className="note">{t('downloads.move')}</p>}
             </>
           ) : (
             <>
-              <p className="note">
-                Rejecting removes this item from the acquisition queue.
-              </p>
+              <p className="note">{t('downloads.rejection')}</p>
               <label>
                 <input
                   type="checkbox"
@@ -341,7 +362,7 @@ export function DownloadActionSheet({
                   disabled={busy}
                   onChange={(event) => setBlocklist(event.target.checked)}
                 />{' '}
-                Blocklist This Release
+                {t('downloads.blocklist')}
               </label>
               <label>
                 <input
@@ -350,7 +371,7 @@ export function DownloadActionSheet({
                   disabled={busy}
                   onChange={(event) => setRemove(event.target.checked)}
                 />{' '}
-                Remove the Download and Files From Its Client
+                {t('downloads.remove')}
               </label>
             </>
           )}
@@ -362,7 +383,7 @@ export function DownloadActionSheet({
               disabled={busy}
               onClick={dismiss}
             >
-              Cancel
+              {t('downloads.cancel')}
             </button>
             <button
               type="button"
@@ -370,7 +391,7 @@ export function DownloadActionSheet({
               disabled={busy || (importing && !canImport)}
               onClick={() => void apply()}
             >
-              {importing ? 'Import Selected Files' : 'Confirm Rejection'}
+              {importing ? t('downloads.import') : t('downloads.confirm')}
             </button>
           </div>
         </div>

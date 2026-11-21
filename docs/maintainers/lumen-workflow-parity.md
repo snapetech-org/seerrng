@@ -448,6 +448,24 @@ Headed Chrome at 1440 × 1000 verified the manual import and rejection flows
 against synthetic data. Mobile and bundled visual checks for the Download Inbox
 remain open.
 
+The Inbox and both intervention sheets now read the signed-in user's locale for
+warning states and resolutions, history, pagination, dates, service errors,
+import controls, rejection controls, and action feedback. The page reuses
+SeerrNG's `downloads.*` catalog across its supported locales; additional
+pagination and fallback-error messages have English, French, and Arabic
+overrides. Import target selection, eligible-file and fingerprint checks,
+owner permissions, blocklist defaults, and the default-off client file removal
+are unchanged. Browser coverage passes all 16 cases on the standalone app and
+all 16 on SeerrNG's `/lumen/` Express static mount. English, French, and Arabic
+saved-locale cases each pass across desktop, iPhone, Android, and tablet in
+both deployments. Matching pre-change and candidate screens were rendered with
+the same fixture at 1440 × 900 and iPhone 13 dimensions; French and Arabic
+Inbox, history, import, and rejection states were inspected. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-downloads-localization-20261120/`.
+Provider-supplied warning text remains as returned, custom fallback messages
+use English outside English, French, and Arabic, and live service handoff and
+native-matched visual acceptance remain open.
+
 ### Indexer Search increment
 
 Lumen's Indexer Search uses the existing Manage Requests permission and
