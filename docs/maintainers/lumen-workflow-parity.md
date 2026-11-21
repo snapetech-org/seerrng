@@ -5143,4 +5143,7 @@ only one of Movies or Series is enabled. Their direct routes are included in
 the all-off no-query fixture. Association results also omit disabled movie or
 series edges while retaining allowed edges; a mixed-result fixture verifies
 this when only Movies is enabled across all four viewport projects. The focused
-association test passes 4/4, and the bundled `/lumen/` production build succeeds.
+association test passes 4/4. Person filmography similarly hides disabled media
+types, and the movie bulk-request shortcut follows the account category switch;
+the focused person test passes 4/4. The bundled `/lumen/` production build
+succeeds.

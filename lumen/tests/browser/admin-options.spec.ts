@@ -390,6 +390,56 @@ test('associations hide disabled movie and series edge types', async ({
   await expect(page.getByText('Series Only')).toHaveCount(0);
 });
 
+test('person credits and movie request shortcut follow enabled categories', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        personMovieBulkRequestsEnabled: true,
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: true, tv: false } },
+    })
+  );
+  await page.route('**/api/v1/person/1', (route) =>
+    route.fulfill({
+      json: { id: 1, name: 'Credit Actor', knownForDepartment: 'Acting' },
+    })
+  );
+  await page.route('**/api/v1/person/1/combined_credits', (route) =>
+    route.fulfill({
+      json: {
+        cast: [
+          {
+            ...movie(2, 'Movie Credit'),
+            character: 'Lead',
+          },
+          {
+            id: 3,
+            name: 'Series Credit',
+            mediaType: 'tv',
+            firstAirDate: '2020-01-01',
+            voteAverage: 7,
+            voteCount: 10,
+          },
+        ],
+        crew: [],
+      },
+    })
+  );
+  await page.goto(testAppPath('/person/1'));
+  await expect(page.getByRole('link', { name: 'Movie Credit' })).toBeVisible();
+  await expect(page.getByText('Series Credit')).toHaveCount(0);
+  await expect(page.getByRole('option', { name: 'Series' })).toHaveCount(0);
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],
