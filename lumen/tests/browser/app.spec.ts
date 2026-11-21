@@ -6302,6 +6302,31 @@ test('Administration searches all settings and opens exact controls', async ({
   await search.fill('uhd');
   await page.getByRole('link', { name: 'Open 4K Requests' }).click();
   await expect(page).toHaveURL(/\/admin\/general#enable4k$/);
+  await page.route('**/api/v1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        defaultQuotas: { movie: { quotaLimit: 2, quotaDays: 7 } },
+        defaultPermissions: 32,
+      },
+    })
+  );
+  await page.goto('/admin');
+  await page
+    .getByRole('searchbox', { name: 'Search Settings' })
+    .fill('default user permissions');
+  const permissionsLink = page.getByRole('link', {
+    name: 'Open Default User Permissions',
+  });
+  await expect(permissionsLink).toHaveAttribute(
+    'href',
+    '/admin/general#default-user-permissions'
+  );
+  await permissionsLink.click();
+  await expect(page).toHaveURL(/\/admin\/general#default-user-permissions$/);
+  await expect(
+    page.locator('#default-user-permissions details')
+  ).toHaveAttribute('open', '');
 });
 
 test('Administration resolves the legacy Prowlarr bookmark fragment', async ({
