@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { quotaCategories } from '../quotaCategories';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
@@ -24,6 +25,7 @@ export default function DefaultRequestQuotas({
   initial: DefaultQuotas;
   showPermissionsLink: boolean;
 }) {
+  const { t } = useLumenLocale();
   const { hash } = useLocation();
   useEffect(() => {
     if (hash === '#default-request-quotas')
@@ -82,15 +84,30 @@ export default function DefaultRequestQuotas({
         !confirmed ||
         changed.some(([key, value]) => confirmed[key] !== Number(value))
       ) {
-        setFailure('Could not confirm the saved default quota.');
+        setFailure(
+          t(
+            'lumen.adminGeneral.quotas.confirmFailure',
+            'Could not confirm the saved default quota.'
+          )
+        );
         return;
       }
       setSaved((current) => ({ ...current, [category]: confirmed }));
       setDrafts((current) => ({ ...current, [category]: undefined }));
-      setNotice('Default request quota saved.');
+      setNotice(
+        t('lumen.adminGeneral.quotas.saved', 'Default request quota saved.')
+      );
     } catch (error) {
       if (generation === sessionGeneration()) {
-        setFailure(friendlyError(error, 'Could not save the default quota.'));
+        setFailure(
+          friendlyError(
+            error,
+            t(
+              'lumen.adminGeneral.quotas.saveFailure',
+              'Could not save the default quota.'
+            )
+          )
+        );
       }
     } finally {
       pending.current = false;
@@ -101,22 +118,29 @@ export default function DefaultRequestQuotas({
   if (!quota) return null;
   return (
     <Section
-      title="Default Request Quotas"
+      title={t('lumen.adminGeneral.quotas.title', 'Default Request Quotas')}
       id="default-request-quotas"
       link={[
-        'Default User Categories',
+        t(
+          'lumen.adminGeneral.quotas.categoriesLink',
+          'Default User Categories'
+        ),
         '/admin/categories#default-user-categories',
       ]}
     >
       <p className="note">
-        Default quotas apply to accounts without an override. A request limit of
-        0 allows unlimited requests. With a positive limit, 0 quota days counts
-        requests across all time.
+        {t(
+          'lumen.adminGeneral.quotas.help',
+          'Default quotas apply to accounts without an override. A request limit of 0 allows unlimited requests. With a positive limit, 0 quota days counts requests across all time.'
+        )}
       </p>
       {showPermissionsLink && (
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="#default-user-permissions">
-            Default User Permissions
+            {t(
+              'lumen.adminGeneral.quotas.permissionsLink',
+              'Default User Permissions'
+            )}
           </Link>
         </div>
       )}
@@ -128,7 +152,9 @@ export default function DefaultRequestQuotas({
         }}
       >
         <label className="sel">
-          <span className="lbl">Quota Media Type</span>
+          <span className="lbl">
+            {t('lumen.adminGeneral.quotas.categoryLabel', 'Quota Media Type')}
+          </span>
           <select
             value={category}
             disabled={busy}
@@ -140,14 +166,19 @@ export default function DefaultRequestQuotas({
           >
             {available.map((key) => (
               <option key={key} value={key}>
-                {categories[key]}
+                {t(
+                  `lumen.adminGeneral.quotas.category.${key}`,
+                  categories[key]
+                )}
               </option>
             ))}
           </select>
         </label>
         {fields.map(([key, label]) => (
           <label className="sel" key={key}>
-            <span className="lbl">{label}</span>
+            <span className="lbl">
+              {t(`lumen.adminGeneral.quotas.${key}`, label)}
+            </span>
             <input
               className="cfg-json"
               type="number"
@@ -172,7 +203,7 @@ export default function DefaultRequestQuotas({
           className="btn btn-primary btn-sm"
           disabled={busy || !valid || !changed.length}
         >
-          Save Default Quota
+          {t('lumen.adminGeneral.quotas.save', 'Save Default Quota')}
         </button>
       </form>
       {failure && (

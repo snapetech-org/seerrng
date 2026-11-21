@@ -5058,8 +5058,8 @@ state, save action, and save feedback in English, French, and Arabic. It retains
 the existing `/settings/public` read and `/settings/main` write contract. Browser
 fixtures verify the changed-flag payload and confirmed save across desktop,
 iPhone, Android, and tablet. Live server persistence and independent linguistic
-review remain open. The API key, default quotas, and default permissions panels
-still need localization and workflow parity review.
+review remain open. Default quotas and default permissions still need
+localization and workflow parity review.
 
 The Application API Key panel now localizes reveal/hide, copy, regeneration,
 confirmation, and feedback in English, French, and Arabic. Existing key
@@ -5068,3 +5068,11 @@ cover reveal, cancel, regeneration, and the masked replacement state at desktop,
 iPhone, Android, and tablet sizes. Clipboard permission and live integration
 rotation remain unverified. Default quotas and default permissions still need
 localization and workflow parity review.
+
+Default Request Quotas now localizes its guidance, category choices, fields,
+links, save action, and feedback in English, French, and Arabic. The existing
+partial update payload, 10,000 limit, and save confirmation remain intact.
+Browser fixtures verify an exact movie quota update across desktop, iPhone,
+Android, and tablet, and the screenshots were checked for overflow. Live quota
+persistence remains unverified. Default User Permissions is the remaining
+unlocalized editor on this page.

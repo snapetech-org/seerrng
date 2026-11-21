@@ -24,6 +24,11 @@ const labels = {
     regenerateKey: 'Regenerate Key',
     keepKey: 'Keep Current Key',
     confirmApiKey: 'Regenerate the application API key?',
+    quotaCategory: 'Quota Media Type',
+    requestLimit: 'Request Limit',
+    quotaDays: 'Quota Days',
+    saveQuota: 'Save Default Quota',
+    quotaSaved: 'Default request quota saved.',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -49,6 +54,11 @@ const labels = {
     regenerateKey: 'Régénérer la clé',
     keepKey: 'Conserver la clé actuelle',
     confirmApiKey: 'Régénérer la clé API de l’application ?',
+    quotaCategory: 'Type de média du quota',
+    requestLimit: 'Limite de demandes',
+    quotaDays: 'Jours du quota',
+    saveQuota: 'Enregistrer le quota par défaut',
+    quotaSaved: 'Quota de demande par défaut enregistré.',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -73,6 +83,11 @@ const labels = {
     regenerateKey: 'إعادة إنشاء المفتاح',
     keepKey: 'الاحتفاظ بالمفتاح الحالي',
     confirmApiKey: 'هل تريد إعادة إنشاء مفتاح API للتطبيق؟',
+    quotaCategory: 'نوع الوسائط للحصة',
+    requestLimit: 'حد الطلبات',
+    quotaDays: 'أيام الحصة',
+    saveQuota: 'حفظ الحصة الافتراضية',
+    quotaSaved: 'تم حفظ حصة الطلب الافتراضية.',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -96,6 +111,11 @@ test('general application settings localize and recover failed saves', async ({
     trackEpisodeAvailability: false,
     tvSeasonWatchGateEnabled: false,
   };
+  let defaultQuotas: Record<string, { quotaLimit: number; quotaDays: number }> =
+    {
+      movie: { quotaLimit: 2, quotaDays: 30 },
+      tv: { quotaLimit: 4, quotaDays: 30 },
+    };
   const writes: Record<string, unknown>[] = [];
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
@@ -141,6 +161,8 @@ test('general application settings localize and recover failed saves', async ({
           >[];
         if (typeof body.enable4k === 'boolean')
           Object.assign(publicSettings, { enable4k: body.enable4k });
+        if (body.defaultQuotas && typeof body.defaultQuotas === 'object')
+          defaultQuotas = { ...defaultQuotas, ...body.defaultQuotas };
       }
       return route.fulfill({
         json: {
@@ -150,6 +172,7 @@ test('general application settings localize and recover failed saves', async ({
           spotifyClientSecret,
           downloadPathMappings,
           apiKey,
+          defaultQuotas,
           applicationUrl: 'https://seerr.example.test',
           youtubeUrl: '',
           cacheImages: true,
@@ -261,6 +284,12 @@ test('general application settings localize and recover failed saves', async ({
     page.getByText(text.requestSettingsSaved, { exact: true })
   ).toBeVisible();
   expect(writes[4]).toEqual({ enable4k: false });
+  await page.getByLabel(text.requestLimit, { exact: true }).fill('3');
+  await page.getByRole('button', { name: text.saveQuota, exact: true }).click();
+  await expect(page.getByText(text.quotaSaved, { exact: true })).toBeVisible();
+  expect(writes[5]).toEqual({
+    defaultQuotas: { movie: { quotaLimit: 3 } },
+  });
   const apiKeyPanel = page.locator('#apiKey');
   await expect(
     apiKeyPanel.getByRole('heading', { name: text.apiKeyTitle })
