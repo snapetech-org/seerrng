@@ -103,12 +103,10 @@ test('Swipe settings test the provider and save enablement without resending its
   await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Swipe Settings' }).click();
   await page.getByLabel('Enable Swipe').check();
-  await page
-    .getByRole('combobox', { name: 'Ranking Effort' })
-    .selectOption('high');
-  await page.getByRole('button', { name: 'Test Ranking Provider' }).click();
+  await page.getByRole('combobox', { name: 'Effort' }).selectOption('high');
+  await page.getByRole('button', { name: 'Test AI Ordering' }).click();
   await expect(
-    page.getByText('Ranking provider connection verified.')
+    page.getByText('The AI provider answered the test request.')
   ).toBeVisible();
   await page.screenshot({
     path: info.outputPath('swipe-admin.png'),

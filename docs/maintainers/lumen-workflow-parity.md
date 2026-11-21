@@ -2487,6 +2487,26 @@ sizes; no horizontal overflow or unrelated layout changes were found. Live
 TLS restarts and network enforcement were not exercised. Evidence is retained
 at `seerrng-admin-network-localization-20261120`.
 
+### Swipe Settings
+
+The Lumen Swipe administration page now follows saved English, French, and
+Arabic locales for its provider choices, privacy guidance, model and effort
+help, key state, and feedback. Changing providers selects the appropriate
+provider-specific model default. Unsaved edits, including a newly entered key
+or a request to clear a saved key, can be discarded without sending them.
+Generic server failures use localized feedback while descriptive provider
+errors remain visible.
+
+Twelve standalone and twelve production `/lumen/` browser cases passed across
+desktop (1440 × 900), iPhone (390 × 844), Android (412 × 915), and tablet
+(834 × 1194). Fixtures covered French and Arabic rendering, provider switching,
+secret redaction, provider testing, failed-save recovery, retry, and discard.
+The existing Swipe navigation and save suite passed 20 cases. Matched baseline
+and candidate English captures were reviewed at all four viewport sizes; the
+page retained its existing row and control layout, and the shorter provider
+choice avoids select clipping. Evidence is retained at
+`seerrng-admin-swipe-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with

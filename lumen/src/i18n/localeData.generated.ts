@@ -834,6 +834,53 @@ export const localeData = [
         'يجب تقديم حد أدنى صالح لـ TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'يجب تقديم رقم منفذ صالح',
+      'components.Settings.SettingsSwipe.title': 'اكتشاف Swipe',
+      'components.Settings.SettingsSwipe.description':
+        'يعرض Swipe مجموعةً من الأفلام والمسلسلات والكتب استنادًا إلى طلباتك واختياراتك السابقة. يؤدي السحب إلى اليمين إلى إنشاء طلب عادي يخضع لقواعد الموافقة المعتادة.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'اختياري: اربط مزوّدًا للذكاء الاصطناعي لترتيب العناصر وشرح سبب اختيار عنوان. تظل الاقتراحات مستمدة من فهارس SeerrNG، وتبقى ميزة Swipe متاحة عند تعذّر المزوّد. عند التفعيل، تُرسل العناوين وملاحظات التفضيلات وسجلّ Swipe إلى المزوّد.',
+      'components.Settings.SettingsSwipe.loadError':
+        'تعذّر تحميل إعدادات Swipe.',
+      'components.Settings.SettingsSwipe.enabled': 'تفعيل Swipe',
+      'components.Settings.SettingsSwipe.aiProvider':
+        'الترتيب بالذكاء الاصطناعي',
+      'components.Settings.SettingsSwipe.aiNone': 'معطّل (ترتيب الفهرس)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi': 'خادم متوافق مع OpenAI',
+      'components.Settings.SettingsSwipe.model': 'النموذج',
+      'components.Settings.SettingsSwipe.baseUrl': 'عنوان URL الأساسي',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. للخوادم المحلية، استخدم عنوان URL المتوافق معها، مثل http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'مستوى المعالجة',
+      'components.Settings.SettingsSwipe.low': 'منخفض',
+      'components.Settings.SettingsSwipe.medium': 'متوسط',
+      'components.Settings.SettingsSwipe.high': 'مرتفع',
+      'components.Settings.SettingsSwipe.apiKey': 'مفتاح API لـ Anthropic',
+      'components.Settings.SettingsSwipe.openAiKey': 'مفتاح API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'مفتاح محفوظ — اترك الحقل فارغًا للاحتفاظ به',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'إزالة مفتاح API المحفوظ',
+      'components.Settings.SettingsSwipe.testOk':
+        'استجاب Claude لطلب الاختبار.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'استجاب مزوّد الذكاء الاصطناعي لطلب الاختبار.',
+      'components.Settings.SettingsSwipe.saveSuccess': 'تم حفظ إعدادات Swipe.',
+      'components.Settings.SettingsSwipe.saveError': 'تعذّر حفظ إعدادات Swipe.',
+      'components.Settings.SettingsSwipe.test':
+        'اختبار الترتيب بالذكاء الاصطناعي',
+      'components.Settings.SettingsSwipe.testing': 'جارٍ الاختبار…',
+      'components.Settings.SettingsSwipe.save': 'حفظ التغييرات',
+      'components.Settings.SettingsSwipe.saving': 'جارٍ الحفظ…',
+      'components.Settings.SettingsSwipe.cancel': 'تجاهل التغييرات',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'معرّف نموذج Claude. اتركه فارغًا لاستخدام النموذج الافتراضي ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'اسم النموذج الذي يتوقعه الخادم، مثل نموذج قمت بتنزيله إلى Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'قد يحسّن مستوى المعالجة الأعلى ترتيب النتائج، لكنه يستغرق وقتًا أطول ويزيد التكلفة لكل مجموعة.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'اختياري للخوادم المحلية التي لا تتطلب مفتاحًا.',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1909,6 +1956,7 @@ export const localeData = [
         'يجب أن يختلف منفذ HTTPS عن منفذ HTTP.',
       'lumen.adminNetwork.proxyRequired':
         'أدخل اسم مضيف الوكيل ومنفذه قبل تفعيل الوكيل.',
+      'lumen.adminSwipe.pageTitle': 'إعدادات Swipe',
     },
   },
   {
@@ -3613,6 +3661,54 @@ export const localeData = [
         'Es muss eine gültige minimale TTL angegeben werden',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Es muss ein gültiger Port eingetragen werden',
+      'components.Settings.SettingsSwipe.title': 'Entdecken per Wischgeste',
+      'components.Settings.SettingsSwipe.description':
+        'Die Wischfunktion zeigt einen Stapel mit Filmen, Serien und Büchern, die anhand der Anfragen und Wischentscheidungen der jeweiligen Person ausgewählt werden. Durch Wischen nach rechts wird eine normale Anfrage unter den üblichen Genehmigungsregeln gestellt.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Optional: Verbinden Sie einen KI-Anbieter, um jedes Deck zu bestellen und zu erklären, warum ein Titel ausgewählt wurde. Decks kommen immer noch nur aus den Katalogen von SeerrNG, und das Wischen funktioniert weiter, wenn der KI-Anbieter nicht verfügbar ist. Titel, Geschmacksnotizen und Swipe-Historie werden an den Anbieter gesendet, wenn dies eingeschaltet ist.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Swipe-Einstellungen konnten nicht geladen werden.',
+      'components.Settings.SettingsSwipe.enabled': 'Swipe aktivieren',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI Bestellung',
+      'components.Settings.SettingsSwipe.aiNone': 'Aus (Katalogreihenfolge)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI oder kompatibel (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Modell',
+      'components.Settings.SettingsSwipe.baseUrl': 'Basis-URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Lokale Server: ihre OpenAI-kompatible URL, zum Beispiel http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Anstrengung',
+      'components.Settings.SettingsSwipe.low': 'niedrig',
+      'components.Settings.SettingsSwipe.medium': 'Mittel',
+      'components.Settings.SettingsSwipe.high': 'hoch',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic-API-Schlüssel',
+      'components.Settings.SettingsSwipe.openAiKey': 'API-Schlüssel',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Gespeichert – leer lassen, um es beizubehalten',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Entfernen Sie den gespeicherten API-Schlüssel',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude beantwortete die Testanfrage.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'Der KI-Anbieter beantwortete die Testanfrage.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Swipe Einstellungen gespeichert.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Swipe-Einstellungen konnten nicht gespeichert werden.',
+      'components.Settings.SettingsSwipe.test': 'KI-Sortierung testen',
+      'components.Settings.SettingsSwipe.testing': 'Testen…',
+      'components.Settings.SettingsSwipe.save': 'Änderungen speichern',
+      'components.Settings.SettingsSwipe.saving': 'Speichern…',
+      'components.Settings.SettingsSwipe.cancel': 'Änderungen verwerfen',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'Claude-Modell-ID. Für den Standardwert leer lassen ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'Der Modellname, den der Server erwartet, zum Beispiel ein Modell, das Sie in Ollama gezogen haben.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Ein höherer Aufwand kann die Bestellung verbessern, dauert jedoch länger und kostet mehr pro Deck.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Optional für lokale Server, die keinen Schlüssel benötigen.',
     },
   },
   {
@@ -4478,6 +4574,52 @@ export const localeData = [
         'You must provide a valid minimum TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'You must provide a valid port',
+      'components.Settings.SettingsSwipe.title': 'Swipe Discovery',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe shows people a stack of movies, series, and books picked from their requests and swipes. Swiping right makes a normal request with the usual approval rules.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Optional: connect an AI provider to order each deck and explain why a title was picked. Decks still come only from SeerrNG’s catalogs, and swiping keeps working if the AI provider is unavailable. Titles, taste notes, and swipe history are sent to the provider when this is on.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Swipe settings could not be loaded.',
+      'components.Settings.SettingsSwipe.enabled': 'Enable Swipe',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI Ordering',
+      'components.Settings.SettingsSwipe.aiNone': 'Off (catalog order)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi': 'OpenAI-compatible',
+      'components.Settings.SettingsSwipe.model': 'Model',
+      'components.Settings.SettingsSwipe.baseUrl': 'Base URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Local servers: their OpenAI-compatible URL, for example http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Effort',
+      'components.Settings.SettingsSwipe.low': 'Low',
+      'components.Settings.SettingsSwipe.medium': 'Medium',
+      'components.Settings.SettingsSwipe.high': 'High',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic API Key',
+      'components.Settings.SettingsSwipe.openAiKey': 'API Key',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Saved — leave empty to keep it',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Remove the saved API key',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude answered the test request.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'The AI provider answered the test request.',
+      'components.Settings.SettingsSwipe.saveSuccess': 'Swipe settings saved.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Swipe settings could not be saved.',
+      'components.Settings.SettingsSwipe.test': 'Test AI Ordering',
+      'components.Settings.SettingsSwipe.testing': 'Testing…',
+      'components.Settings.SettingsSwipe.save': 'Save Changes',
+      'components.Settings.SettingsSwipe.saving': 'Saving…',
+      'components.Settings.SettingsSwipe.cancel': 'Discard Changes',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'Claude model ID. Leave empty for the default ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'The model name the server expects, for example a model you pulled into Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Higher effort can improve ordering but takes longer and costs more per deck.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Optional for local servers that do not require a key.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -5507,6 +5649,7 @@ export const localeData = [
         'The HTTPS port must differ from the HTTP port.',
       'lumen.adminNetwork.proxyRequired':
         'Enter a proxy hostname and port before enabling the proxy.',
+      'lumen.adminSwipe.pageTitle': 'Swipe Settings',
     },
   },
   {
@@ -6534,6 +6677,55 @@ export const localeData = [
         'Usted debe proporcionar un mínimo válido TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Usted debe proporcionar un puerto válido',
+      'components.Settings.SettingsSwipe.title':
+        'Descubrimiento de deslizamiento',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe muestra a la gente una pila de películas, series y libros recogidos de sus peticiones y swipes. Girar a la derecha hace una solicitud normal con las reglas de aprobación habituales.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Opcional: conectar un proveedor de inteligencia artificial para ordenar cada cubierta y explicar por qué se eligió un título. Decks todavía vienen sólo de los catálogos de SeerrNG, y girar sigue funcionando si el proveedor de AI no está disponible. Los títulos, las notas de gusto y la historia de los golpes se envían al proveedor cuando esto está encendido.',
+      'components.Settings.SettingsSwipe.loadError':
+        'No se puede cargar la configuración del cableado.',
+      'components.Settings.SettingsSwipe.enabled': 'Habilitar Deslizar',
+      'components.Settings.SettingsSwipe.aiProvider': 'Pedidos de IA',
+      'components.Settings.SettingsSwipe.aiNone': 'OFF (pedido de catálogo)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Antrópico Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI o compatible (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Modelo',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL base',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Servidores locales: su URL compatible con OpenAI, por ejemplo http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Esfuerzo',
+      'components.Settings.SettingsSwipe.low': 'Baja',
+      'components.Settings.SettingsSwipe.medium': 'Mediana',
+      'components.Settings.SettingsSwipe.high': 'Alto',
+      'components.Settings.SettingsSwipe.apiKey': 'Clave de API antropópica',
+      'components.Settings.SettingsSwipe.openAiKey': 'Clave API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Salvado - dejar vacío para mantenerlo',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Eliminar la clave de API guardada',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude respondió a la solicitud de prueba.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'El proveedor de AI respondió la solicitud de prueba.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Ajustes deslizantes guardados.',
+      'components.Settings.SettingsSwipe.saveError':
+        'No se puede guardar la configuración del cableado.',
+      'components.Settings.SettingsSwipe.test': 'Probar pedidos de IA',
+      'components.Settings.SettingsSwipe.testing': 'Probando…',
+      'components.Settings.SettingsSwipe.save': 'Guardar Cambios',
+      'components.Settings.SettingsSwipe.saving': 'Guardando…',
+      'components.Settings.SettingsSwipe.cancel': 'Cambios de disco',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'ID modelo de Claude. Deja vacío por defecto ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'El nombre del modelo que el servidor espera, por ejemplo, un modelo que se metió en Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'El esfuerzo más alto puede mejorar el orden, pero tarda más y cuesta más por cubierta.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Opcional para servidores locales que no requieren una llave.',
     },
   },
   {
@@ -7420,6 +7612,54 @@ export const localeData = [
         'Usted debe proporcionar un mínimo válido TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Usted debe proporcionar un puerto válido',
+      'components.Settings.SettingsSwipe.title': 'Deslizar descubrimiento',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe muestra a la gente una pila de películas, series y libros recogidos de sus peticiones y swipes. Girar a la derecha hace una solicitud normal con las reglas de aprobación habituales.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Opcional: conectar un proveedor de inteligencia artificial para ordenar cada cubierta y explicar por qué se eligió un título. Decks todavía vienen sólo de los catálogos de SeerrNG, y girar sigue funcionando si el proveedor de AI no está disponible. Los títulos, las notas de gusto y la historia de los golpes se envían al proveedor cuando esto está encendido.',
+      'components.Settings.SettingsSwipe.loadError':
+        'No se puede cargar la configuración del cableado.',
+      'components.Settings.SettingsSwipe.enabled': 'Habilitar deslizar',
+      'components.Settings.SettingsSwipe.aiProvider': 'Pedidos de IA',
+      'components.Settings.SettingsSwipe.aiNone': 'Apagado (orden de catálogo)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Antrópico Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI o compatible (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Modelo',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL base',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Servidores locales: su URL compatible con OpenAI, por ejemplo http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Esfuerzo',
+      'components.Settings.SettingsSwipe.low': 'Baja',
+      'components.Settings.SettingsSwipe.medium': 'Mediana',
+      'components.Settings.SettingsSwipe.high': 'Alto',
+      'components.Settings.SettingsSwipe.apiKey': 'Clave de API antropópica',
+      'components.Settings.SettingsSwipe.openAiKey': 'Clave API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Salvado - dejar vacío para mantenerlo',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Eliminar la clave de API guardada',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude respondió a la solicitud de prueba.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'El proveedor de AI respondió la solicitud de prueba.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Ajustes deslizantes guardados.',
+      'components.Settings.SettingsSwipe.saveError':
+        'No se puede guardar la configuración del cableado.',
+      'components.Settings.SettingsSwipe.test': 'Pruebe los pedidos de IA',
+      'components.Settings.SettingsSwipe.testing': 'Probando…',
+      'components.Settings.SettingsSwipe.save': 'Guardar Cambios',
+      'components.Settings.SettingsSwipe.saving': 'Guardando…',
+      'components.Settings.SettingsSwipe.cancel': 'Cambios de disco',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'ID modelo de Claude. Deja vacío por defecto ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'El nombre del modelo que el servidor espera, por ejemplo, un modelo que se metió en Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'El esfuerzo más alto puede mejorar el orden, pero tarda más y cuesta más por cubierta.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Opcional para servidores locales que no requieren una llave.',
     },
   },
   {
@@ -8668,6 +8908,54 @@ export const localeData = [
         'Vous devez fournir un TTL minimum valide',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Vous devez fournir un port valide',
+      'components.Settings.SettingsSwipe.title': 'Découverte Swipe',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe propose des films, des séries et des livres selon vos demandes et vos choix précédents. Un balayage vers la droite crée une demande normale, soumise aux règles d’approbation habituelles.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Facultatif : connectez un fournisseur d’IA pour classer les sélections et expliquer le choix d’un titre. Les sélections proviennent toujours des catalogues SeerrNG, et Swipe reste utilisable si le fournisseur est indisponible. Si cette option est activée, les titres, vos notes de goûts et votre historique Swipe sont envoyés au fournisseur.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Impossible de charger les paramètres de Swipe.',
+      'components.Settings.SettingsSwipe.enabled': 'Activer Swipe',
+      'components.Settings.SettingsSwipe.aiProvider': 'Classement par IA',
+      'components.Settings.SettingsSwipe.aiNone':
+        'Désactivé (ordre du catalogue)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic Claude',
+      'components.Settings.SettingsSwipe.aiOpenAi': 'Serveur compatible OpenAI',
+      'components.Settings.SettingsSwipe.model': 'Modèle',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL de base',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI : https://api.openai.com/v1. Serveurs locaux : leur URL compatible OpenAI, par exemple http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Niveau d’effort',
+      'components.Settings.SettingsSwipe.low': 'Faible',
+      'components.Settings.SettingsSwipe.medium': 'Moyen',
+      'components.Settings.SettingsSwipe.high': 'Élevé',
+      'components.Settings.SettingsSwipe.apiKey': 'Clé API Anthropic',
+      'components.Settings.SettingsSwipe.openAiKey': 'Clé API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Clé enregistrée — vide = conserver',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Supprimer la clé API enregistrée',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude a répondu à la demande de test.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'Le fournisseur d’IA a répondu à la demande de test.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Paramètres de Swipe enregistrés.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Impossible d’enregistrer les paramètres de Swipe.',
+      'components.Settings.SettingsSwipe.test': 'Tester le classement par IA',
+      'components.Settings.SettingsSwipe.testing': 'Test en cours…',
+      'components.Settings.SettingsSwipe.save': 'Enregistrer les modifications',
+      'components.Settings.SettingsSwipe.saving': 'Enregistrement…',
+      'components.Settings.SettingsSwipe.cancel': 'Annuler les modifications',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'Identifiant du modèle Claude. Laissez vide pour utiliser le modèle par défaut ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'Nom du modèle attendu par le serveur, par exemple un modèle disponible dans Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Un niveau plus élevé peut améliorer le classement, mais prend plus de temps et coûte davantage par sélection.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Facultatif pour les serveurs locaux qui ne demandent pas de clé.',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -9848,6 +10136,7 @@ export const localeData = [
         'Le port HTTPS doit être différent du port HTTP.',
       'lumen.adminNetwork.proxyRequired':
         'Saisissez le nom d’hôte et le port du proxy avant de l’activer.',
+      'lumen.adminSwipe.pageTitle': 'Paramètres Swipe',
     },
   },
   {
@@ -10884,6 +11173,53 @@ export const localeData = [
         'आपको एक वैध न्यूनतम टीटीएल प्रदान करना होगा',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'आपको एक वैध पोर्ट प्रदान करना होगा',
+      'components.Settings.SettingsSwipe.title': 'Swipe डिस्कवरी',
+      'components.Settings.SettingsSwipe.description':
+        'स्वाइप लोगों को उनके अनुरोधों और स्वाइप से चुनी गई फिल्मों, श्रृंखला और पुस्तकों का ढेर दिखाता है। स्वीपिंग राइट सामान्य अनुमोदन नियमों के साथ एक सामान्य अनुरोध बनाता है।',
+      'components.Settings.SettingsSwipe.aiNote':
+        'वैकल्पिक: प्रत्येक डेक को ऑर्डर करने के लिए एक एआई प्रदाता को कनेक्ट करें और समझाएं कि एक शीर्षक क्यों उठाया गया था। डेक अभी भी केवल SeerrNG के कैटलॉग से आते हैं, और अगर एआई प्रदाता अनुपलब्ध है तो स्वाइप काम करता रहता है। शीर्षकों, स्वाद नोट्स, और स्वाइप इतिहास प्रदाता को भेजा जाता है जब यह होता है।',
+      'components.Settings.SettingsSwipe.loadError':
+        'स्वाइप सेटिंग्स लोड नहीं किया जा सकता है।',
+      'components.Settings.SettingsSwipe.enabled': 'स्वाइप सक्षम करें',
+      'components.Settings.SettingsSwipe.aiProvider': 'एआई ऑर्डर',
+      'components.Settings.SettingsSwipe.aiNone': 'ऑफ (कैटलॉग ऑर्डर)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'एंथ्रोपिक क्लाउड',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI या संगत (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'आदर्श',
+      'components.Settings.SettingsSwipe.baseUrl': 'बेस URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. स्थानीय सर्वर: उनके OpenAI-compatible URL, उदाहरण के लिए http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'प्रयास',
+      'components.Settings.SettingsSwipe.low': 'कम',
+      'components.Settings.SettingsSwipe.medium': 'मध्यम',
+      'components.Settings.SettingsSwipe.high': 'उच्च',
+      'components.Settings.SettingsSwipe.apiKey': 'एंथ्रोपिक API कुंजी',
+      'components.Settings.SettingsSwipe.openAiKey': 'एपीआई कुंजी',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'सहेजा - इसे रखने के लिए खाली छोड़ दें',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'बचाया API कुंजी निकालें',
+      'components.Settings.SettingsSwipe.testOk':
+        'क्लाउड ने परीक्षण अनुरोध का जवाब दिया।',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'एआई प्रदाता ने परीक्षण अनुरोध का जवाब दिया।',
+      'components.Settings.SettingsSwipe.saveSuccess': 'Swipe सेटिंग्स बचाया।',
+      'components.Settings.SettingsSwipe.saveError':
+        'स्वाइप सेटिंग्स को बचाया नहीं जा सकता।',
+      'components.Settings.SettingsSwipe.test': 'टेस्ट एआई ऑर्डर',
+      'components.Settings.SettingsSwipe.testing': 'जांच की जा रही है…',
+      'components.Settings.SettingsSwipe.save': 'परिवर्तन सहेजें',
+      'components.Settings.SettingsSwipe.saving': 'सहेजा जा रहा है…',
+      'components.Settings.SettingsSwipe.cancel': 'डिस्कर्ड परिवर्तन',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'क्लाउड मॉडल ID डिफ़ॉल्ट के लिए खाली छोड़ दें (){model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'मॉडल का नाम सर्वर की उम्मीद है, उदाहरण के लिए एक मॉडल जिसे आपने ओलामा में खींच लिया था।',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'उच्च प्रयास आदेश में सुधार कर सकते हैं लेकिन प्रति डेक अधिक समय लगता है और लागत लेता है।',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'वैकल्पिक स्थानीय सर्वरों के लिए जिन्हें कुंजी की आवश्यकता नहीं है।',
     },
   },
   {
@@ -11980,6 +12316,54 @@ export const localeData = [
         'Anda harus memberikan TTL minimum yang valid',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Anda mesti memberikan port yang valid',
+      'components.Settings.SettingsSwipe.title': 'Gesek Penemuan',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe menunjukkan orang setumpuk film, seri, dan buku-buku yang diambil dari permintaan mereka dan swips. Berenang ke kanan membuat permintaan normal dengan aturan persetujuan biasa.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Opsional: sambungkan penyedia AI untuk memesan setiap dek dan jelaskan alasan judul dipilih. Dek masih hanya berasal dari katalog SeerrNG, dan gesekan tetap berfungsi jika penyedia AI tidak tersedia. Judul, catatan rasa, dan riwayat gesek dikirim ke penyedia saat ini aktif.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Pengaturan swipe tidak dapat dimuat.',
+      'components.Settings.SettingsSwipe.enabled': 'Aktifkan Swipe',
+      'components.Settings.SettingsSwipe.aiProvider': 'Ordering AI',
+      'components.Settings.SettingsSwipe.aiNone': 'Off (perintah katalog)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Claude antropis',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI atau kompatibel (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Model',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL Dasar',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Server lokal: URL OpenAI- kompatibel mereka, misalnya http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Kenyamanan',
+      'components.Settings.SettingsSwipe.low': 'Rendah',
+      'components.Settings.SettingsSwipe.medium': 'Sedang',
+      'components.Settings.SettingsSwipe.high': 'Tinggi',
+      'components.Settings.SettingsSwipe.apiKey': 'Kunci API Anthropic',
+      'components.Settings.SettingsSwipe.openAiKey': 'Kunci API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Simpan - tinggalkan kosong untuk menyimpannya',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Hapus kunci API yang disimpan',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude menjawab permintaan tes.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'Operator AI menjawab permintaan tes.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Pengaturan swipe disimpan.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Pengaturan swipe tidak dapat disimpan.',
+      'components.Settings.SettingsSwipe.test': 'Uji Ordering AI',
+      'components.Settings.SettingsSwipe.testing': 'Menguji…',
+      'components.Settings.SettingsSwipe.save': 'Simpan perubahan',
+      'components.Settings.SettingsSwipe.saving': 'Menyimpan…',
+      'components.Settings.SettingsSwipe.cancel': 'Abaikan Perubahan',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'Claude model ID. Tinggalkan kosong untuk baku ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'Model nama server mengharapkan, misalnya model yang Anda ditarik ke Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Usaha yang lebih tinggi dapat meningkatkan pemesanan tapi membutuhkan waktu lebih lama dan biaya lebih banyak per dek.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Opsional bagi server lokal yang tidak memerlukan kunci.',
     },
   },
   {
@@ -13068,6 +13452,54 @@ export const localeData = [
         '有効な最小TTLを指定してください',
       'components.Settings.SettingsNetwork.validationProxyPort':
         '有効なポートを指定してください',
+      'components.Settings.SettingsSwipe.title': 'スワイプディスカバリー',
+      'components.Settings.SettingsSwipe.description':
+        'スワイプは、要求やスワイプから選ぶ映画、シリーズ、書籍の積み重ねを示しています。 正しくスワイプすると、通常の承認規則で通常のリクエストが行われます。',
+      'components.Settings.SettingsSwipe.aiNote':
+        'オプション:各デッキを注文し、タイトルが選ばれる理由を説明するためにAIプロバイダを接続します。 デッキは、SeerrNG のカタログからしか出ません。また、AI プロバイダーが利用できなくなった場合、スワイプは作業を続けます。 タイトル、味覚メモ、およびスワイプ履歴は、この時にプロバイダに送信されます。',
+      'components.Settings.SettingsSwipe.loadError':
+        'スワイプ設定はロードできませんでした。',
+      'components.Settings.SettingsSwipe.enabled': 'スワイプを有効にする',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI注文',
+      'components.Settings.SettingsSwipe.aiNone': 'オフ(カタログ注文)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic クロード',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI または互換 (Ollama、LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'モデル',
+      'components.Settings.SettingsSwipe.baseUrl': 'ベースURL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'オープンAI: https://api.openai.com/v1. ローカルサーバー:OpenAI対応のURLなど http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'スタッフ',
+      'components.Settings.SettingsSwipe.low': '低い',
+      'components.Settings.SettingsSwipe.medium': 'メディア',
+      'components.Settings.SettingsSwipe.high': '高い',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic API キー',
+      'components.Settings.SettingsSwipe.openAiKey': 'APIキー',
+      'components.Settings.SettingsSwipe.savedSecret':
+        '保存 - 空のままにして保存',
+      'components.Settings.SettingsSwipe.clearSecret':
+        '保存された API キーを削除します。',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude は、テストリクエストに答えました。',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'AIプロバイダは、試験依頼に答えました。',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'スワイプ設定を保存しました。',
+      'components.Settings.SettingsSwipe.saveError':
+        'スワイプの設定は保存できません。',
+      'components.Settings.SettingsSwipe.test': 'テストAIの発注',
+      'components.Settings.SettingsSwipe.testing': 'テスト中…',
+      'components.Settings.SettingsSwipe.save': '変更を保存',
+      'components.Settings.SettingsSwipe.saving': '保存中…',
+      'components.Settings.SettingsSwipe.cancel': '破棄変更',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'クロードモデルID。 デフォルトで空にしておく(){model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'サーバが期待するモデル名です。例えば、オラマに引き込まれたモデルなどです。',
+      'components.Settings.SettingsSwipe.effortHelp':
+        '注文が向上するだけでなく、デッキごとにコストを削減できます。',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'キーを必要としないローカルサーバーのための任意。',
     },
   },
   {
@@ -13898,6 +14330,52 @@ export const localeData = [
         '유효한 최소 TTL을 제공해야 합니다.',
       'components.Settings.SettingsNetwork.validationProxyPort':
         '유효한 포트를 제공해야 합니다.',
+      'components.Settings.SettingsSwipe.title': 'Swipe 디스커버리',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe는 사람들이 영화, 시리즈, 책의 더미를보고 요청 및 소총에서 선택합니다. Swiping 권리는 일반적인 승인 규칙을 가진 정상적인 요구에 합니다.',
+      'components.Settings.SettingsSwipe.aiNote':
+        '선택: AI 공급자를 연결하여 각 갑판을 주문하고 왜 제목이 선택되었는지 설명합니다. Decks는 여전히 SeerrNG 카탈로그에서만 제공되며 AI 공급자가 사용할 수 없는 경우 swiping은 계속 작동합니다. 제목, 맛 노트, 그리고 swipe 역사는이 때 공급자에게 보내집니다.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Swipe 설정은로드 할 수 없습니다.',
+      'components.Settings.SettingsSwipe.enabled': '사용 약관',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI 주문',
+      'components.Settings.SettingsSwipe.aiNone': '오프 (catalog 순서)',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Anthropic 클로드',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI 또는 호환 (Ollama, LM 스튜디오)',
+      'components.Settings.SettingsSwipe.model': '모델',
+      'components.Settings.SettingsSwipe.baseUrl': '기본 URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        '영업시간: https://api.openai.com/v1. 로컬 서버: openAI 호환 URL, 예를 들어 http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': '노력',
+      'components.Settings.SettingsSwipe.low': '낮음',
+      'components.Settings.SettingsSwipe.medium': '보통',
+      'components.Settings.SettingsSwipe.high': '높음',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic API 키',
+      'components.Settings.SettingsSwipe.openAiKey': 'API 키',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Saved - 그것을 유지하기 위해 빈을두고',
+      'components.Settings.SettingsSwipe.clearSecret': '저장된 API 키 제거',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude는 테스트 요청에 응답했습니다.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'AI 공급자는 시험 요구에 대답했습니다.',
+      'components.Settings.SettingsSwipe.saveSuccess': 'Swipe 설정 저장.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Swipe 설정은 저장할 수 없습니다.',
+      'components.Settings.SettingsSwipe.test': 'AI 주문 테스트',
+      'components.Settings.SettingsSwipe.testing': '테스트 중…',
+      'components.Settings.SettingsSwipe.save': '변경 사항 저장',
+      'components.Settings.SettingsSwipe.saving': '저장 중…',
+      'components.Settings.SettingsSwipe.cancel': 'Discard 변경',
+      'components.Settings.SettingsSwipe.modelHelp':
+        '클로드 모델 ID. 기본값을 비우기 ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        '모델명 서버가 기대합니다. 예를 들어 Ollama로 끌어올린 모델입니다.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        '더 높은 노력은 주문 개선을 할 수 있지만 데크 당 더 길고 비용이 들 수 있습니다.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        '키가 필요하지 않은 로컬 서버에 대한 선택.',
     },
   },
   {
@@ -15436,6 +15914,54 @@ export const localeData = [
         'Você deve fornecer um TTL mínimo válido',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Você deve fornecer uma porta válida',
+      'components.Settings.SettingsSwipe.title': 'Descoberta de Swipe',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe mostra às pessoas uma pilha de filmes, séries e livros escolhidos de seus pedidos e furtos. Virar à direita faz um pedido normal com as regras habituais de aprovação.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Opcional: conecte um provedor de IA para ordenar cada convés e explicar por que um título foi escolhido. Os decks ainda vêm apenas dos catálogos da SeerrNG, e o swip continua funcionando se o provedor de IA não estiver disponível. Títulos, notas de gosto e histórico de roubo são enviados para o provedor quando isso estiver ligado.',
+      'components.Settings.SettingsSwipe.loadError':
+        'As configurações de swipe não puderam ser carregadas.',
+      'components.Settings.SettingsSwipe.enabled': 'Activar o Swipe',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI Ordenando',
+      'components.Settings.SettingsSwipe.aiNone': 'Desligado.',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Claude antrópico',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI ou compatível (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Modelo',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL base',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Servidores locais: sua URL compatível com OpenAI, por exemplo http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Esforço',
+      'components.Settings.SettingsSwipe.low': 'Baixo.',
+      'components.Settings.SettingsSwipe.medium': 'Médio.',
+      'components.Settings.SettingsSwipe.high': 'Alto.',
+      'components.Settings.SettingsSwipe.apiKey': 'Chave antrópica da API',
+      'components.Settings.SettingsSwipe.openAiKey': 'Chave de API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Salvo - deixe vazio para mantê-lo',
+      'components.Settings.SettingsSwipe.clearSecret':
+        'Remova a chave de API salva',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude respondeu ao pedido de teste.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'O fornecedor de IA respondeu ao pedido de teste.',
+      'components.Settings.SettingsSwipe.saveSuccess':
+        'Configurações de swipe salvas.',
+      'components.Settings.SettingsSwipe.saveError':
+        'As configurações de swipe não puderam ser salvas.',
+      'components.Settings.SettingsSwipe.test': 'Teste AI Ordenando',
+      'components.Settings.SettingsSwipe.testing': 'Testando…',
+      'components.Settings.SettingsSwipe.save': 'Salvar mudanças',
+      'components.Settings.SettingsSwipe.saving': 'Salvando…',
+      'components.Settings.SettingsSwipe.cancel': 'Descartar mudanças',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'Identidade modelo Claude. Deixe em branco para o padrão ({model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'O nome de modelo que o servidor espera, por exemplo, um modelo que você puxou para Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Um esforço maior pode melhorar a ordem, mas demora mais e custa mais por deck.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Opcional para servidores locais que não precisam de uma chave.',
     },
   },
   {
@@ -17658,6 +18184,48 @@ export const localeData = [
         '您必须提供有效的最小 TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         '您必须提供有效端口',
+      'components.Settings.SettingsSwipe.title': '刷新发现',
+      'components.Settings.SettingsSwipe.description':
+        'Swipe向人们展示了一叠电影,系列,以及从他们的要求和刷卡中摘取的书籍. 摇摆权以通常的审批规则提出正常请求.',
+      'components.Settings.SettingsSwipe.aiNote':
+        '可选:连接一个AI提供商,以订购每个甲板,并解释为什么选中一个标题. Decks仍然只来自SeerrNG的目录, 标题,品味笔记,和刷历史等内容在开机时发送给提供者.',
+      'components.Settings.SettingsSwipe.loadError': '无法装入刷新设置 。',
+      'components.Settings.SettingsSwipe.enabled': '启用刷新',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI 订购',
+      'components.Settings.SettingsSwipe.aiNone': '关闭( 目录命令)',
+      'components.Settings.SettingsSwipe.aiAnthropic': '安东尼·克劳德',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI 或兼容性( Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': '型号',
+      'components.Settings.SettingsSwipe.baseUrl': '基础 URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        '打开AI : https://api.openai.com/v1. 本地服务器:它们的 OpenAI 兼容 URL, 例如 http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': '任务',
+      'components.Settings.SettingsSwipe.low': '低级',
+      'components.Settings.SettingsSwipe.medium': '中型',
+      'components.Settings.SettingsSwipe.high': '高级',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic API 键',
+      'components.Settings.SettingsSwipe.openAiKey': 'API 密钥',
+      'components.Settings.SettingsSwipe.savedSecret': '保存——留空保存',
+      'components.Settings.SettingsSwipe.clearSecret': '删除已保存的 API 密钥',
+      'components.Settings.SettingsSwipe.testOk': '克劳德回答了测试请求.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'AI供应商回应测试请求.',
+      'components.Settings.SettingsSwipe.saveSuccess': '刷新设置已保存 。',
+      'components.Settings.SettingsSwipe.saveError': '无法保存刷新设置 。',
+      'components.Settings.SettingsSwipe.test': '测试AI 排序',
+      'components.Settings.SettingsSwipe.testing': '测试中…',
+      'components.Settings.SettingsSwipe.save': '保存更改',
+      'components.Settings.SettingsSwipe.saving': '正在保存...',
+      'components.Settings.SettingsSwipe.cancel': '丢弃更改',
+      'components.Settings.SettingsSwipe.modelHelp':
+        '克劳德型号ID。 为默认留空( E){model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        '服务器所期望的模型名称,例如你拉入奥拉马的模型.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        '更大的努力可以改善订购,但需要更长的时间,每个甲板的成本更高.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        '对不需要密钥的本地服务器可选 。',
     },
   },
   {
@@ -18469,6 +19037,48 @@ export const localeData = [
         '您必須提供有效的最小 TTL',
       'components.Settings.SettingsNetwork.validationProxyPort':
         '您必須提供有效的端口',
+      'components.Settings.SettingsSwipe.title': '刷新發現',
+      'components.Settings.SettingsSwipe.description':
+        '影片、系列、書本都從他們的要求中選取, 順便提出正常要求,',
+      'components.Settings.SettingsSwipe.aiNote':
+        '可選：連接 AI 提供者來訂購每套牌並解釋選擇標題的原因。套牌仍然僅來自 SeerrNG 的目錄，如果 AI 提供者不可用，刷卡仍然可以工作。啟用此功能後，標題、品味註釋和滑動歷史記錄將發送給提供者。',
+      'components.Settings.SettingsSwipe.loadError': '無法載入刷新設定值 。',
+      'components.Settings.SettingsSwipe.enabled': '開啟刷新',
+      'components.Settings.SettingsSwipe.aiProvider': 'AI 排序',
+      'components.Settings.SettingsSwipe.aiNone': '關閉( 目錄命令)',
+      'components.Settings.SettingsSwipe.aiAnthropic': '麻醉克勞德',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI 或相容( Ollama, LM Studio )',
+      'components.Settings.SettingsSwipe.model': '模型',
+      'components.Settings.SettingsSwipe.baseUrl': '基底 URL',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI : https://api.openai.com/v1. 本地伺服器: 例如, 其 OpenAI 兼容 URL http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': '努力',
+      'components.Settings.SettingsSwipe.low': '低',
+      'components.Settings.SettingsSwipe.medium': '中',
+      'components.Settings.SettingsSwipe.high': '高',
+      'components.Settings.SettingsSwipe.apiKey': 'Anthropic API 金鑰',
+      'components.Settings.SettingsSwipe.openAiKey': 'API 金鑰',
+      'components.Settings.SettingsSwipe.savedSecret': '保存 —— 留空以保留它',
+      'components.Settings.SettingsSwipe.clearSecret': '移除已儲存的 API 金鑰',
+      'components.Settings.SettingsSwipe.testOk': '克勞德回答了測試要求',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'AI提供商回應了測試要求。',
+      'components.Settings.SettingsSwipe.saveSuccess': '刷新設定值已儲存 。',
+      'components.Settings.SettingsSwipe.saveError': '刷新設定值無法儲存 。',
+      'components.Settings.SettingsSwipe.test': '測試AI 排序',
+      'components.Settings.SettingsSwipe.testing': '測試中…',
+      'components.Settings.SettingsSwipe.save': '儲存變更',
+      'components.Settings.SettingsSwipe.saving': '儲存中…',
+      'components.Settings.SettingsSwipe.cancel': '丟棄變更',
+      'components.Settings.SettingsSwipe.modelHelp':
+        '克勞德型號身份證 預設值留空( O){model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        '伺服器所期望的模型名稱, 例如你拉進奧拉瑪的模型 。',
+      'components.Settings.SettingsSwipe.effortHelp':
+        '更大的努力可以改善訂單,但需要更久,每甲板成本更高。',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        '對不需要金鑰的本地伺服器可選擇 。',
     },
   },
   {
@@ -19338,6 +19948,52 @@ export const localeData = [
         'Bạn phải cung cấp một TTL hợp lệ',
       'components.Settings.SettingsNetwork.validationProxyPort':
         'Bạn phải cung cấp một cổng hợp lệ',
+      'components.Settings.SettingsSwipe.title': 'Khám pháName',
+      'components.Settings.SettingsSwipe.description':
+        'Rửa cho người ta xem một đống phim, loạt phim và sách được chọn từ yêu cầu và trộm cắp. Làm việc đúng cách tạo ra một yêu cầu bình thường với những quy tắc thông thường.',
+      'components.Settings.SettingsSwipe.aiNote':
+        'Tùy chọn: Hãy kết nối một nhà cung cấp AI để đặt hàng và giải thích tại sao một tiêu đề được chọn. Các khoang vẫn chỉ có trong danh mục của ông SeerrNG, và tiếp tục làm việc nếu nhà cung cấp AI không có. Các tiêu đề, ghi chú thị giác và lịch sử ăn cắp được gửi cho nhà cung cấp khi chuyện này xảy ra.',
+      'components.Settings.SettingsSwipe.loadError':
+        'Không thể tải thiết lập gỡ lỗi.',
+      'components.Settings.SettingsSwipe.enabled': 'Bật',
+      'components.Settings.SettingsSwipe.aiProvider': 'Đặt hàng AI',
+      'components.Settings.SettingsSwipe.aiNone': 'Tắt',
+      'components.Settings.SettingsSwipe.aiAnthropic': 'Claude nhân tạo',
+      'components.Settings.SettingsSwipe.aiOpenAi':
+        'OpenAI hay tương thích (Ollama, LM Studio)',
+      'components.Settings.SettingsSwipe.model': 'Mô hình',
+      'components.Settings.SettingsSwipe.baseUrl': 'URL cơ bản',
+      'components.Settings.SettingsSwipe.baseUrlHelp':
+        'OpenAI: https://api.openai.com/v1. Máy phục vụ cục bộ: URL hiệu chỉnh được OpenAI, chẳng hạn http://ollama:11434/v1.',
+      'components.Settings.SettingsSwipe.effort': 'Nỗ lực',
+      'components.Settings.SettingsSwipe.low': 'Thấp',
+      'components.Settings.SettingsSwipe.medium': 'Vừa',
+      'components.Settings.SettingsSwipe.high': 'Cao',
+      'components.Settings.SettingsSwipe.apiKey': 'Khóa API nhân loại',
+      'components.Settings.SettingsSwipe.openAiKey': 'Khóa API',
+      'components.Settings.SettingsSwipe.savedSecret':
+        'Được cứu — bỏ trống để giữ nó',
+      'components.Settings.SettingsSwipe.clearSecret': 'Xóa khóa API đã lưu',
+      'components.Settings.SettingsSwipe.testOk':
+        'Claude đã trả lời yêu cầu thử thách.',
+      'components.Settings.SettingsSwipe.testOkGeneric':
+        'Nhà cung cấp AI đã đáp ứng yêu cầu thử nghiệm.',
+      'components.Settings.SettingsSwipe.saveSuccess': 'Thiết lập chốt đã lưu.',
+      'components.Settings.SettingsSwipe.saveError':
+        'Không thể lưu thiết lập gỡ lỗi.',
+      'components.Settings.SettingsSwipe.test': 'Thử nghiệm lệnh Al',
+      'components.Settings.SettingsSwipe.testing': 'Đang kiểm tra…',
+      'components.Settings.SettingsSwipe.save': 'Lưu thay đổi',
+      'components.Settings.SettingsSwipe.saving': 'Đang lưu…',
+      'components.Settings.SettingsSwipe.cancel': 'Bỏ qua các thay đổi',
+      'components.Settings.SettingsSwipe.modelHelp':
+        'ID người mẫu Claude. Bỏ rỗng theo mặc định{model}).',
+      'components.Settings.SettingsSwipe.openAiModelHelp':
+        'Tên mô hình máy chủ mong đợi, ví dụ như một mô hình mà bạn đã kéo vào Ollama.',
+      'components.Settings.SettingsSwipe.effortHelp':
+        'Nỗ lực cao hơn có thể cải thiện trật tự nhưng tốn nhiều thời gian hơn và chi phí hơn cho mỗi khoang.',
+      'components.Settings.SettingsSwipe.openAiKeyHelp':
+        'Tùy chọn cho máy phục vụ cục bộ không cần thiết khoá.',
     },
   },
 ] as const;
