@@ -5171,7 +5171,8 @@ probes. A new regression confirmed that a target movie previously disappeared
 for an authorized manager whose own Movies category was disabled; the target
 item now renders and the type filter remains available. The full
 Watchlist browser suite passes 40/40 across desktop, iPhone, Android, and tablet;
-the per-account category regression passes 4/4. Matched baseline/candidate
-renders at those viewports show unchanged layout, with the previously missing
-row visible in the candidate. Evidence is retained at
+the per-account category regression passes 4/4. Both suites also pass against
+the production Express `/lumen/` mount. Matched baseline/candidate renders at
+those viewports show unchanged layout, with the previously missing row visible
+in the candidate. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/delegated-watchlist-categories/`.
