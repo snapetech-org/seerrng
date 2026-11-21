@@ -1,5 +1,10 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${testMount}${path}`;
+const apiPath = (pathname: string) =>
+  pathname.slice(pathname.indexOf('/api/v1') + '/api/v1'.length);
+
 // shaped like the live responses: right after a request SeerrNG returns the request (with its
 // seasons) but no mediaInfo.seasons yet (those arrive once Sonarr has synced)
 const seasons = [
@@ -55,7 +60,7 @@ async function show(
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/api/v1/**', (r) => {
-    const path = new URL(r.request().url()).pathname.slice(7);
+    const path = apiPath(new URL(r.request().url()).pathname);
     if (r.request().method() !== 'GET')
       posts.push({ path, body: r.request().postDataJSON() });
     if (path === '/auth/me')
@@ -87,7 +92,7 @@ async function show(
       });
     return r.fulfill({ json: { results: [] } });
   });
-  await page.goto('/tv/84773');
+  await page.goto(appPath('/tv/84773'));
 }
 
 test('a fully requested series shows Requested and its request, not the request button @tv-request-visual', async ({
@@ -377,7 +382,7 @@ test('Sonarr language, season order, and tags follow the selected destination', 
     },
   ]);
   expect(posts[0].body).not.toHaveProperty('languageProfileId');
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   const preference = page.getByRole('switch', {
     name: /Choose server and folder on quick requests/,
   });
@@ -555,7 +560,7 @@ test('large-series episode metadata can be retried without losing the deep-linke
     { partialRequestsEnabled: true },
     largeSeriesSeasons
   );
-  await page.goto('/tv/84773?episode=3#season-15');
+  await page.goto(appPath('/tv/84773?episode=3#season-15'));
   let loads = 0;
   const loadedSeasons: string[] = [];
   await page.route('**/api/v1/tv/84773/season/*', (route) => {
@@ -719,7 +724,7 @@ for (const scenario of ['eligible', 'owned season', 'owned episode']) {
         },
       })
     );
-    await page.goto('/tv/84773?episode=3#season-2');
+    await page.goto(appPath('/tv/84773?episode=3#season-2'));
     await page
       .getByRole('button', { name: 'Request Episodes', exact: true })
       .click();
