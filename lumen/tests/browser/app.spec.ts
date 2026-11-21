@@ -6308,6 +6308,7 @@ test('Administration searches all settings and opens exact controls', async ({
         applicationTitle: 'SeerrNG',
         defaultQuotas: { movie: { quotaLimit: 2, quotaDays: 7 } },
         defaultPermissions: 32,
+        defaultEnabledMediaCategories: { movie: true, tv: true },
       },
     })
   );
@@ -6327,6 +6328,22 @@ test('Administration searches all settings and opens exact controls', async ({
   await expect(
     page.locator('#default-user-permissions details')
   ).toHaveAttribute('open', '');
+  await page.goto('/admin');
+  await page
+    .getByRole('searchbox', { name: 'Search Settings' })
+    .fill('default user categories');
+  const categoryLink = page.getByRole('link', {
+    name: 'Open Default User Categories',
+  });
+  await expect(categoryLink).toHaveAttribute(
+    'href',
+    '/admin/categories#default-user-categories'
+  );
+  await categoryLink.click();
+  await expect(page).toHaveURL(/\/admin\/categories#default-user-categories$/);
+  await expect(
+    page.getByRole('heading', { name: 'Default User Categories' })
+  ).toBeInViewport();
 });
 
 test('Administration resolves the legacy Prowlarr bookmark fragment', async ({

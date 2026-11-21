@@ -52,6 +52,7 @@ const destinationMessages: Record<string, string> = {
   'Steam Library Import': 'lumen.admin.dest.steamImport',
   'Default Request Quotas': 'lumen.admin.dest.quotas',
   'Default User Permissions': 'lumen.adminGeneral.permissions.title',
+  'Default User Categories': 'lumen.adminCategories.defaultUserCategories',
 };
 
 const destinations = [
@@ -163,6 +164,11 @@ const shortcuts = [
     'Default User Permissions',
     '/admin/general#default-user-permissions',
     'permissions roles grants access defaults',
+  ],
+  [
+    'Default User Categories',
+    '/admin/categories#default-user-categories',
+    'categories media defaults account',
   ],
   [
     'Prowlarr Settings',

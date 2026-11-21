@@ -127,6 +127,8 @@ for (const locale of [
     settings: 'Paramètres généraux',
     permissionsSearch: 'autorisations',
     permissionsLink: 'Ouvrir Autorisations par défaut des utilisateurs',
+    categorySearch: 'catégories utilisateur par défaut',
+    categoryLink: 'Ouvrir Catégories utilisateur par défaut',
     open: 'Ouvrir Paramètres généraux',
     search: 'Rechercher des paramètres',
     all: 'Tous les paramètres et outils',
@@ -149,6 +151,8 @@ for (const locale of [
     settings: 'إعدادات الشبكة',
     permissionsSearch: 'أذونات',
     permissionsLink: 'فتح أذونات المستخدمين الافتراضية',
+    categorySearch: 'الفئات الافتراضية للمستخدمين',
+    categoryLink: 'فتح الفئات الافتراضية للمستخدمين',
     open: 'فتح إعدادات الشبكة',
     search: 'البحث في الإعدادات',
     all: 'كل الإعدادات والأدوات',
@@ -237,6 +241,7 @@ for (const locale of [
           applicationTitle: 'SeerrNG',
           defaultQuotas: { movie: { quotaLimit: 2, quotaDays: 7 } },
           defaultPermissions: 32,
+          defaultEnabledMediaCategories: { movie: true, tv: true },
         },
       })
     );
@@ -259,6 +264,34 @@ for (const locale of [
     await expect(
       page.locator('#default-user-permissions details')
     ).toHaveAttribute('open', '');
+    await page.goto(testAppPath('/admin'));
+    await page
+      .getByLabel(locale.search, { exact: true })
+      .fill(locale.categorySearch);
+    const categoryLink = page.getByRole('link', {
+      name: locale.categoryLink,
+      exact: true,
+    });
+    await expect(categoryLink).toHaveAttribute(
+      'href',
+      testAppPath('/admin/categories#default-user-categories')
+    );
+    await page.screenshot({
+      path: info.outputPath(`admin-categories-search-${locale.tag}.png`),
+    });
+    await categoryLink.click();
+    await expect(page).toHaveURL(
+      /\/admin\/categories#default-user-categories$/
+    );
+    await expect(
+      page.getByRole('heading', {
+        name:
+          locale.tag === 'fr'
+            ? 'Catégories utilisateur par défaut'
+            : 'الفئات الافتراضية للمستخدمين',
+        exact: true,
+      })
+    ).toBeInViewport();
     await page.goto(testAppPath('/admin'));
     await page.getByLabel(locale.search, { exact: true }).fill(locale.settings);
     await expect(

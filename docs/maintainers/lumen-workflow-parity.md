@@ -5086,9 +5086,9 @@ navigation overlap seen in the baseline. Live permission persistence remains
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
 
-The Administration search now includes a direct Default User Permissions
-shortcut to the General Settings editor. English, French, and Arabic browser
-fixtures verify the localized search result, destination, and automatically
-expanded editor across desktop, iPhone, Android, and tablet; all twelve locale
-and viewport cases passed. Search-result captures are retained alongside the
-General Settings evidence.
+The Administration search now includes direct shortcuts to Default User
+Permissions and Default User Categories. English, French, and Arabic browser
+fixtures verify the localized search results, destinations, and automatically
+expanded permissions editor across desktop, iPhone, Android, and tablet; all
+twelve locale and viewport cases passed. Search-result captures are retained
+alongside the General Settings evidence.
