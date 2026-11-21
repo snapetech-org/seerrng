@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type Genre, type TitleResult } from '../api';
 import { useAuth } from '../auth';
@@ -327,7 +327,11 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
   return (
     <>
       <header className="ph">
-        <h1>{kind === 'movie' ? 'Movie Genres' : 'Series Genres'}</h1>
+        <h1>
+          {kind === 'movie'
+            ? t('lumen.browse.movieGenreHeading', 'Movie Genres')
+            : t('lumen.browse.seriesGenreHeading', 'Series Genres')}
+        </h1>
       </header>
       <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
       {Boolean(genres.data?.length) && (
@@ -360,7 +364,7 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
 
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const [params, setP] = useSearchParams();
   const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
@@ -459,6 +463,24 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
+  const languageNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'language' }),
+    [locale]
+  );
+  const countryNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'region' }),
+    [locale]
+  );
+  const displayName = (
+    names: Intl.DisplayNames,
+    code: string,
+    fallback: string
+  ) => {
+    const localized = names.of(code);
+    return localized && localized.toLowerCase() !== code.toLowerCase()
+      ? localized
+      : fallback;
+  };
   const ratingOptions = [
     'NR',
     ...(kind === 'movie' ? movieCertifications : tvCertifications),
@@ -651,7 +673,51 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     setShowProviders(false);
     setP(next, { replace: true });
   };
-  const word = kind === 'movie' ? 'Movies' : 'Series';
+  const word =
+    kind === 'movie'
+      ? t('lumen.browse.movieHeading', 'Movies')
+      : t('lumen.browse.seriesHeading', 'Series');
+  const searchHint =
+    kind === 'movie'
+      ? t('lumen.browse.searchMovies', 'Search movies…')
+      : t('lumen.browse.searchSeries', 'Search series…');
+  const movieRequestHint = !prefs.hoverRequest
+    ? t('lumen.browse.subtitle.openPoster', 'Open a poster to request it.')
+    : CAN_HOVER
+      ? asks
+        ? t(
+            'lumen.browse.subtitle.hoverRequest',
+            'Hover a poster to request it.'
+          )
+        : t(
+            'lumen.browse.subtitle.hoverOneClick',
+            'Hover a poster to request in one click.'
+          )
+      : asks
+        ? t(
+            'lumen.browse.subtitle.tapRequest',
+            'Tap + on a poster to request it.'
+          )
+        : t(
+            'lumen.browse.subtitle.tapOneTap',
+            'Tap + on a poster to request in one tap.'
+          );
+  const subtitle =
+    kind === 'movie'
+      ? `${movieRequestHint} ${t(
+          'lumen.browse.subtitle.serverAvailability',
+          'Everything on {server} has a green check.',
+          { server: serverName() }
+        )}`
+      : prefs.wholeSeriesDefault
+        ? t(
+            'lumen.browse.subtitle.wholeSeries',
+            'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
+          )
+        : t(
+            'lumen.browse.subtitle.selectedSeasons',
+            'Pick the seasons you want on each show’s page.'
+          );
   const followedGenre =
     !excludeGenre && picked.length === 1
       ? genres.find(({ id }) => String(id) === picked[0])
@@ -674,16 +740,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">
-          {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? (asks ? 'Hover a poster to request it.' : 'Hover a poster to request in one click.') : asks ? 'Tap + on a poster to request it.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
-            : prefs.wholeSeriesDefault
-              ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
-              : 'Pick the seasons you want on each show’s page.'}
-        </p>
+        <p className="sub">{subtitle}</p>
         <Link className="search search-ph" to={`/search?f=${kind}`}>
           <Icon name="search" />
-          <span className="ph-text">Search {word.toLowerCase()}…</span>
+          <span className="ph-text">{searchHint}</span>
         </Link>
       </header>
       <form
@@ -721,7 +781,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedGenre && (
               <FollowButton
                 key={`genre:${kind}:${followedGenre.id}`}
-                label={`Follow ${followedGenre.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedGenre.name,
+                })}
                 subject={{
                   kind: 'tmdb-genre',
                   subjectKey: `tmdb:genre:${kind}:${followedGenre.id}`,
@@ -735,7 +797,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedStudio && (
               <FollowButton
                 key={`studio:${followedStudio.id}`}
-                label={`Follow ${followedStudio.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedStudio.name,
+                })}
                 subject={{
                   kind: 'tmdb-studio',
                   subjectKey: `tmdb:studio:${followedStudio.id}`,
@@ -747,7 +811,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedNetwork && (
               <FollowButton
                 key={`network:${followedNetwork.id}`}
-                label={`Follow ${followedNetwork.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedNetwork.name,
+                })}
                 subject={{
                   kind: 'tmdb-network',
                   subjectKey: `tmdb:network:${followedNetwork.id}`,
@@ -1045,10 +1111,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               language !== 'all' &&
               !languageOptions.some(
                 (option) => option.iso_639_1 === language
-              ) && <option value={language}>{language}</option>}
+              ) && (
+                <option value={language}>
+                  {displayName(languageNames, language, language)}
+                </option>
+              )}
             {languageOptions.map(({ iso_639_1, english_name }) => (
               <option key={iso_639_1} value={iso_639_1}>
-                {english_name}
+                {displayName(languageNames, iso_639_1, english_name)}
               </option>
             ))}
           </select>
@@ -1068,10 +1138,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {country &&
               !countryOptions.some(
                 ({ iso_3166_1 }) => iso_3166_1 === country
-              ) && <option value={country}>{country}</option>}
+              ) && (
+                <option value={country}>
+                  {displayName(countryNames, country, country)}
+                </option>
+              )}
             {countryOptions.map(({ iso_3166_1, english_name }) => (
               <option key={iso_3166_1} value={iso_3166_1}>
-                {english_name}
+                {displayName(countryNames, iso_3166_1, english_name)}
               </option>
             ))}
           </select>

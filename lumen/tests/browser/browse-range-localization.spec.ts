@@ -57,6 +57,21 @@ test('movie and series range filters follow the account locale', async ({
       return route.fulfill({
         json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
       });
+    if (path === '/languages')
+      return route.fulfill({
+        json: [
+          { iso_639_1: 'en', english_name: 'English' },
+          { iso_639_1: 'fr', english_name: 'French' },
+          { iso_639_1: 'ja', english_name: 'Japanese' },
+        ],
+      });
+    if (path === '/watchproviders/regions')
+      return route.fulfill({
+        json: [
+          { iso_3166_1: 'FR', english_name: 'France' },
+          { iso_3166_1: 'US', english_name: 'United States' },
+        ],
+      });
     return route.fulfill({ json: [] });
   });
 
@@ -64,6 +79,37 @@ test('movie and series range filters follow the account locale', async ({
     baseline || locale === 'en' ? en : locale === 'fr' ? fr : ar;
   for (const kind of ['movie', 'tv'] as const) {
     await page.goto(testAppPath(kind === 'movie' ? '/movies' : '/series'));
+    await expect(
+      page.getByRole('heading', {
+        level: 1,
+        name:
+          kind === 'movie'
+            ? wording('Movies', 'Films', 'الأفلام')
+            : wording('Series', 'Séries', 'المسلسلات'),
+      })
+    ).toBeVisible();
+    await expect(page.locator('.search-ph .ph-text')).toHaveText(
+      kind === 'movie'
+        ? wording('Search movies…', 'Rechercher des films…', 'البحث عن أفلام…')
+        : wording(
+            'Search series…',
+            'Rechercher des séries…',
+            'البحث عن مسلسلات…'
+          )
+    );
+    await expect(page.locator('header.ph .sub')).toContainText(
+      kind === 'movie'
+        ? wording(
+            'Everything on',
+            'Tout ce qui se trouve sur',
+            'كل ما هو متوفر على'
+          )
+        : wording(
+            'Requesting gets the whole show.',
+            'La demande porte sur toute la série.',
+            'يشمل الطلب المسلسل كاملًا.'
+          )
+    );
     await expect(
       page.getByRole('form', {
         name: wording(
@@ -109,6 +155,18 @@ test('movie and series range filters follow the account locale', async ({
         name: wording('Country of Origin', 'Pays d’origine', 'بلد المنشأ'),
       })
     ).toBeVisible();
+    await expect(
+      page.getByRole('option', {
+        name: wording('French', 'français', 'الفرنسية'),
+        exact: true,
+      })
+    ).toBeAttached();
+    await expect(
+      page.getByRole('option', {
+        name: wording('United States', 'États-Unis', 'الولايات المتحدة'),
+        exact: true,
+      })
+    ).toBeAttached();
     await expect(
       page.getByRole('option', {
         name: wording('Popular', 'Popularité', 'الأكثر شعبية'),
@@ -354,6 +412,18 @@ test('movie and series range filters follow the account locale', async ({
       )
       .toBe(true);
     if (kind === 'movie') await capture(page, info);
+    await page.goto(
+      testAppPath(kind === 'movie' ? '/movies/genres' : '/series/genres')
+    );
+    await expect(
+      page.getByRole('heading', {
+        level: 1,
+        name:
+          kind === 'movie'
+            ? wording('Movie Genres', 'Genres de films', 'أنواع الأفلام')
+            : wording('Series Genres', 'Genres de séries', 'أنواع المسلسلات'),
+      })
+    ).toBeVisible();
   }
   if (info.project.name === 'desktop') {
     for (const { path, button, title } of [

@@ -622,7 +622,8 @@ cases pass across desktop, iPhone, Android, and tablet in standalone and
 bundled `/lumen/` deployments. Matched 1440 × 900 and 390 × 844 baseline and
 candidate screens were inspected; English geometry is unchanged, translations
 wrap within existing controls, Arabic keeps RTL, and no horizontal overflow was
-found. Dynamic language/country names and the rest of Browse controls remain
+found. Dynamic language/country names and page guidance were localized in the
+follow-up Browse page-copy increment. Other non-filter Browse copy remains
 open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
@@ -642,8 +643,25 @@ include/exclude values, and filter application behavior are unchanged. Matched
 English baseline and candidate screens at 1440 × 900 and 390 × 844 were
 compared; French and Arabic were inspected at the same sizes. Translated labels
 fit the existing controls and no horizontal overflow was found. Movie and
-series page headings/subtitles, dynamic language/country names, and other
-non-filter Browse copy remain open. Evidence is retained at
+remaining non-filter Browse copy remains open. Page heading, subtitle,
+search-hint, genre-directory heading, and dynamic language/country name
+localization are covered by the following increment. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
+### Movie and series Browse page-copy localization
+
+Movie and series page headings, search hints, request guidance, and genre
+directory headings now follow the saved English, French, or Arabic locale.
+Original-language and country options use locale-aware `Intl.DisplayNames`
+with their existing provider labels as a fallback for unknown codes. Follow
+actions also use localized verbs. Browser coverage verifies both routes and
+genre directories, their dynamic language and country names, and the existing
+filter flows in all three locales, across desktop, iPhone, Android, and tablet,
+in standalone and embedded `/lumen/` deployments (24 cases). The English
+1440 × 900 and phone captures are pixel-identical to the prior approved Browse
+baseline; French and Arabic desktop/phone renders were inspected, retain RTL,
+and have no horizontal overflow. Native date placeholders remain browser
+locale-controlled. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
 ### My Media browse increment

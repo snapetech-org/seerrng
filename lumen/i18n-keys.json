@@ -2675,5 +2675,20 @@
   "lumen.subjectTags.exclude",
   "lumen.subjectTags.selected",
   "lumen.subjectTags.removeIncluded",
-  "lumen.subjectTags.removeExcluded"
+  "lumen.subjectTags.removeExcluded",
+  "lumen.browse.movieHeading",
+  "lumen.browse.seriesHeading",
+  "lumen.browse.movieGenreHeading",
+  "lumen.browse.seriesGenreHeading",
+  "lumen.browse.searchMovies",
+  "lumen.browse.searchSeries",
+  "lumen.browse.subtitle.openPoster",
+  "lumen.browse.subtitle.hoverRequest",
+  "lumen.browse.subtitle.hoverOneClick",
+  "lumen.browse.subtitle.tapRequest",
+  "lumen.browse.subtitle.tapOneTap",
+  "lumen.browse.subtitle.serverAvailability",
+  "lumen.browse.subtitle.wholeSeries",
+  "lumen.browse.subtitle.selectedSeasons",
+  "lumen.browse.follow"
 ]

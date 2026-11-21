@@ -3489,6 +3489,26 @@ export const localeData = [
       'lumen.subjectTags.selected': 'الوسوم المحددة',
       'lumen.subjectTags.removeIncluded': 'إزالة الوسم المضمن {name}',
       'lumen.subjectTags.removeExcluded': 'إزالة الوسم المستبعد {name}',
+      'lumen.browse.movieHeading': 'الأفلام',
+      'lumen.browse.seriesHeading': 'المسلسلات',
+      'lumen.browse.movieGenreHeading': 'أنواع الأفلام',
+      'lumen.browse.seriesGenreHeading': 'أنواع المسلسلات',
+      'lumen.browse.searchMovies': 'البحث عن أفلام…',
+      'lumen.browse.searchSeries': 'البحث عن مسلسلات…',
+      'lumen.browse.subtitle.openPoster': 'افتح ملصقًا لطلبه.',
+      'lumen.browse.subtitle.hoverRequest': 'مرّر المؤشر فوق ملصق لطلبه.',
+      'lumen.browse.subtitle.hoverOneClick':
+        'مرّر المؤشر فوق ملصق لطلبه بنقرة واحدة.',
+      'lumen.browse.subtitle.tapRequest': 'اضغط على + في الملصق لطلبه.',
+      'lumen.browse.subtitle.tapOneTap':
+        'اضغط على + في الملصق لتقديم طلب بلمسة واحدة.',
+      'lumen.browse.subtitle.serverAvailability':
+        'كل ما هو متوفر على {server} تظهر بجانبه علامة خضراء.',
+      'lumen.browse.subtitle.wholeSeries':
+        'يشمل الطلب المسلسل كاملًا. هل تريد بعض المواسم فقط؟ أزل تحديد المواسم من صفحة المسلسل.',
+      'lumen.browse.subtitle.selectedSeasons':
+        'اختر المواسم التي تريدها من صفحة كل مسلسل.',
+      'lumen.browse.follow': 'متابعة {name}',
     },
   },
   {
@@ -10887,6 +10907,26 @@ export const localeData = [
       'lumen.subjectTags.selected': 'Selected Subject Tags',
       'lumen.subjectTags.removeIncluded': 'Remove included {name}',
       'lumen.subjectTags.removeExcluded': 'Remove excluded {name}',
+      'lumen.browse.movieHeading': 'Movies',
+      'lumen.browse.seriesHeading': 'Series',
+      'lumen.browse.movieGenreHeading': 'Movie Genres',
+      'lumen.browse.seriesGenreHeading': 'Series Genres',
+      'lumen.browse.searchMovies': 'Search movies…',
+      'lumen.browse.searchSeries': 'Search series…',
+      'lumen.browse.subtitle.openPoster': 'Open a poster to request it.',
+      'lumen.browse.subtitle.hoverRequest': 'Hover a poster to request it.',
+      'lumen.browse.subtitle.hoverOneClick':
+        'Hover a poster to request in one click.',
+      'lumen.browse.subtitle.tapRequest': 'Tap + on a poster to request it.',
+      'lumen.browse.subtitle.tapOneTap':
+        'Tap + on a poster to request in one tap.',
+      'lumen.browse.subtitle.serverAvailability':
+        'Everything on {server} has a green check.',
+      'lumen.browse.subtitle.wholeSeries':
+        'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.',
+      'lumen.browse.subtitle.selectedSeasons':
+        'Pick the seasons you want on each show’s page.',
+      'lumen.browse.follow': 'Follow {name}',
     },
   },
   {
@@ -19004,6 +19044,29 @@ export const localeData = [
       'lumen.subjectTags.selected': 'Mots-clés sélectionnés',
       'lumen.subjectTags.removeIncluded': 'Retirer le mot-clé inclus {name}',
       'lumen.subjectTags.removeExcluded': 'Retirer le mot-clé exclu {name}',
+      'lumen.browse.movieHeading': 'Films',
+      'lumen.browse.seriesHeading': 'Séries',
+      'lumen.browse.movieGenreHeading': 'Genres de films',
+      'lumen.browse.seriesGenreHeading': 'Genres de séries',
+      'lumen.browse.searchMovies': 'Rechercher des films…',
+      'lumen.browse.searchSeries': 'Rechercher des séries…',
+      'lumen.browse.subtitle.openPoster':
+        'Ouvrez une affiche pour en faire la demande.',
+      'lumen.browse.subtitle.hoverRequest':
+        'Survolez une affiche pour en faire la demande.',
+      'lumen.browse.subtitle.hoverOneClick':
+        'Survolez une affiche pour faire une demande en un clic.',
+      'lumen.browse.subtitle.tapRequest':
+        'Touchez + sur une affiche pour en faire la demande.',
+      'lumen.browse.subtitle.tapOneTap':
+        'Touchez + sur une affiche pour faire une demande en une touche.',
+      'lumen.browse.subtitle.serverAvailability':
+        'Tout ce qui se trouve sur {server} est indiqué par une coche verte.',
+      'lumen.browse.subtitle.wholeSeries':
+        'La demande porte sur toute la série. Vous n’en voulez qu’une partie ? Décochez les saisons sur la page de la série.',
+      'lumen.browse.subtitle.selectedSeasons':
+        'Choisissez les saisons souhaitées sur la page de chaque série.',
+      'lumen.browse.follow': 'Suivre {name}',
     },
   },
   {
