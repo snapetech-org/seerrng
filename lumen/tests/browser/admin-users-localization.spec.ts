@@ -24,6 +24,14 @@ const labels = {
     requestCount: '3 requests',
     serverProblem: 'The server had a problem. Try again in a moment.',
     created: 'Created New User.',
+    episodesAhead: 'Episodes Ahead',
+    saveDefault: 'Save Default',
+    queueConfirm: 'Save Episode Queue default for Demo User?',
+    queueGoBack: 'Go Back',
+    tvAccess: 'TV request access',
+    tvPending: 'Waiting for approval',
+    episodeQueue: 'Episode Queue',
+    tvRequestAccess: 'TV Request Access',
   },
   fr: {
     title: 'Utilisateurs',
@@ -47,6 +55,15 @@ const labels = {
     serverProblem:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
     created: 'New User a été créé.',
+    episodesAhead: 'Épisodes à l’avance',
+    saveDefault: 'Enregistrer comme valeur par défaut',
+    queueConfirm:
+      'Enregistrer la valeur par défaut de la file d’épisodes pour Demo User ?',
+    queueGoBack: 'Retour',
+    tvAccess: 'Accès aux demandes TV',
+    tvPending: 'En attente d’approbation',
+    episodeQueue: 'File d’attente des épisodes',
+    tvRequestAccess: 'Accès aux demandes TV',
   },
   ar: {
     title: 'المستخدمون',
@@ -69,6 +86,15 @@ const labels = {
     requestCount: '3 من الطلبات',
     serverProblem: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
     created: 'تم إنشاء New User.',
+    episodesAhead: 'الحلقات مقدمًا',
+    saveDefault: 'حفظ كقيمة افتراضية',
+    queueConfirm:
+      'هل تريد حفظ القيمة الافتراضية لقائمة انتظار الحلقات لـ Demo User؟',
+    queueGoBack: 'رجوع',
+    tvAccess: 'الوصول إلى طلبات التلفاز',
+    tvPending: 'بانتظار الموافقة',
+    episodeQueue: 'قائمة انتظار الحلقات',
+    tvRequestAccess: 'الوصول إلى طلبات التلفزيون',
   },
 } as const;
 const english = labels.en;
@@ -119,6 +145,16 @@ test('user directory and local-account creation use the saved locale and retain 
       }
       return route.fulfill({ json: { id: 3 } });
     }
+    if (path === '/user/2/settings/episode-queue')
+      return route.fulfill({ json: { defaultEpisodeCount: 2 } });
+    if (path === '/user/2/settings/tv-season-watch-gate')
+      return route.fulfill({
+        json: {
+          status: 'pending',
+          globallyEnabled: false,
+          requestedAt: null,
+        },
+      });
     return route.fulfill({ json: {} });
   });
 
@@ -140,6 +176,31 @@ test('user directory and local-account creation use the saved locale and retain 
     'dir',
     locale === 'ar' ? 'rtl' : 'ltr'
   );
+
+  await page
+    .getByRole('button', { name: copy.episodeQueue, exact: true })
+    .click();
+  await expect(page.getByLabel(copy.episodesAhead)).toHaveValue('2');
+  await page.getByLabel(copy.episodesAhead).selectOption('3');
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-episode-queue-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page.getByRole('button', { name: copy.saveDefault }).click();
+  await expect(
+    page.getByRole('heading', { name: copy.queueConfirm, exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: copy.queueGoBack }).click();
+  await page
+    .getByRole('button', { name: copy.tvRequestAccess, exact: true })
+    .click();
+  await expect(page.getByText(copy.tvPending, { exact: true })).toBeVisible();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-tv-access-${page.viewportSize()!.width}.png`,
+    });
+  }
 
   if (process.env.LUMEN_ADMIN_USERS_CAPTURE) {
     await page.screenshot({

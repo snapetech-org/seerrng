@@ -2161,6 +2161,32 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'عرض طلبات {name}',
       'lumen.adminUsers.viewWatchlist': 'عرض قائمة متابعة {name}',
       'lumen.adminUsers.watchlist': 'قائمة المتابعة',
+      'lumen.managedEpisodeQueue.saved':
+        'تم حفظ القيمة الافتراضية لقائمة انتظار الحلقات.',
+      'lumen.managedEpisodeQueue.saveFailure':
+        'تعذر حفظ القيمة الافتراضية لقائمة انتظار الحلقات.',
+      'lumen.managedEpisodeQueue.title':
+        'القيمة الافتراضية لقائمة انتظار الحلقات',
+      'lumen.managedEpisodeQueue.loading': 'جارٍ تحميل قائمة انتظار الحلقات…',
+      'lumen.managedEpisodeQueue.episodesAhead': 'الحلقات مقدمًا',
+      'lumen.managedEpisodeQueue.off': 'إيقاف',
+      'lumen.managedEpisodeQueue.saveDefault': 'حفظ كقيمة افتراضية',
+      'lumen.managedEpisodeQueue.confirmTitle':
+        'هل تريد حفظ القيمة الافتراضية لقائمة انتظار الحلقات لـ {name}؟',
+      'lumen.managedEpisodeQueue.confirmBody':
+        'ينطبق هذا على طلبات التلفاز التفاعلية الحالية والمستقبلية. تظل الحلقات المطلوبة بالفعل كما هي.',
+      'lumen.managedEpisodeQueue.goBack': 'رجوع',
+      'lumen.managedTvAccess.title': 'الوصول إلى طلبات التلفاز',
+      'lumen.managedTvAccess.loading': 'جارٍ تحميل الوصول إلى طلبات التلفاز…',
+      'lumen.managedTvAccess.everyone': 'مفعّل للجميع',
+      'lumen.managedTvAccess.status.off': 'الموافقة مطلوبة',
+      'lumen.managedTvAccess.status.pending': 'بانتظار الموافقة',
+      'lumen.managedTvAccess.status.approved': 'تمت الموافقة · متوقف',
+      'lumen.managedTvAccess.status.enabled': 'مفعّل لهذا الحساب',
+      'lumen.managedTvAccess.status.denied': 'تم رفض الطلب',
+      'lumen.managedTvAccess.requested': 'طُلب في {date}',
+      'lumen.managedTvAccess.refresh': 'تحديث الوصول',
+      'lumen.managedTvAccess.review': 'مراجعة طلبات الوصول إلى التلفاز',
     },
   },
   {
@@ -6063,6 +6089,30 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'View Requests for {name}',
       'lumen.adminUsers.viewWatchlist': 'View Watchlist for {name}',
       'lumen.adminUsers.watchlist': 'Watchlist',
+      'lumen.managedEpisodeQueue.saved': 'Episode Queue default saved.',
+      'lumen.managedEpisodeQueue.saveFailure':
+        'Could not save the Episode Queue default.',
+      'lumen.managedEpisodeQueue.title': 'Episode Queue default',
+      'lumen.managedEpisodeQueue.loading': 'Loading Episode Queue…',
+      'lumen.managedEpisodeQueue.episodesAhead': 'Episodes Ahead',
+      'lumen.managedEpisodeQueue.off': 'Off',
+      'lumen.managedEpisodeQueue.saveDefault': 'Save Default',
+      'lumen.managedEpisodeQueue.confirmTitle':
+        'Save Episode Queue default for {name}?',
+      'lumen.managedEpisodeQueue.confirmBody':
+        'This applies to existing and future interactive TV requests. Episodes already requested stay in place.',
+      'lumen.managedEpisodeQueue.goBack': 'Go Back',
+      'lumen.managedTvAccess.title': 'TV request access',
+      'lumen.managedTvAccess.loading': 'Loading TV request access…',
+      'lumen.managedTvAccess.everyone': 'Enabled for everyone',
+      'lumen.managedTvAccess.status.off': 'Approval needed',
+      'lumen.managedTvAccess.status.pending': 'Waiting for approval',
+      'lumen.managedTvAccess.status.approved': 'Approved · off',
+      'lumen.managedTvAccess.status.enabled': 'Enabled for this account',
+      'lumen.managedTvAccess.status.denied': 'Request declined',
+      'lumen.managedTvAccess.requested': 'Requested {date}',
+      'lumen.managedTvAccess.refresh': 'Refresh Access',
+      'lumen.managedTvAccess.review': 'Review TV Access Requests',
     },
   },
   {
@@ -10780,6 +10830,33 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'Voir les demandes de {name}',
       'lumen.adminUsers.viewWatchlist': 'Voir la liste de suivi de {name}',
       'lumen.adminUsers.watchlist': 'Liste de suivi',
+      'lumen.managedEpisodeQueue.saved':
+        'Valeur par défaut de la file d’épisodes enregistrée.',
+      'lumen.managedEpisodeQueue.saveFailure':
+        'Impossible d’enregistrer la valeur par défaut de la file d’épisodes.',
+      'lumen.managedEpisodeQueue.title':
+        'Valeur par défaut de la file d’épisodes',
+      'lumen.managedEpisodeQueue.loading': 'Chargement de la file d’épisodes…',
+      'lumen.managedEpisodeQueue.episodesAhead': 'Épisodes à l’avance',
+      'lumen.managedEpisodeQueue.off': 'Désactivé',
+      'lumen.managedEpisodeQueue.saveDefault':
+        'Enregistrer comme valeur par défaut',
+      'lumen.managedEpisodeQueue.confirmTitle':
+        'Enregistrer la valeur par défaut de la file d’épisodes pour {name} ?',
+      'lumen.managedEpisodeQueue.confirmBody':
+        'Cela s’applique aux demandes TV interactives existantes et futures. Les épisodes déjà demandés restent inchangés.',
+      'lumen.managedEpisodeQueue.goBack': 'Retour',
+      'lumen.managedTvAccess.title': 'Accès aux demandes TV',
+      'lumen.managedTvAccess.loading': 'Chargement de l’accès aux demandes TV…',
+      'lumen.managedTvAccess.everyone': 'Activé pour tout le monde',
+      'lumen.managedTvAccess.status.off': 'Approbation requise',
+      'lumen.managedTvAccess.status.pending': 'En attente d’approbation',
+      'lumen.managedTvAccess.status.approved': 'Approuvé · désactivé',
+      'lumen.managedTvAccess.status.enabled': 'Activé pour ce compte',
+      'lumen.managedTvAccess.status.denied': 'Demande refusée',
+      'lumen.managedTvAccess.requested': 'Demandé le {date}',
+      'lumen.managedTvAccess.refresh': 'Actualiser l’accès',
+      'lumen.managedTvAccess.review': 'Examiner les demandes d’accès TV',
     },
   },
   {

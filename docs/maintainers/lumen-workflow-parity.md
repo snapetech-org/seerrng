@@ -62,6 +62,20 @@ partly English; live directory and provider-import verification remain open.
 Evidence is retained at
 `seerrng-admin-users-localization-20261120`.
 
+Managed per-user Episode Queue defaults and TV request-access state now also
+follow the saved English, French, or Arabic locale. This covers load and save
+feedback, the confirmation sheet, request-access status, and review and refresh
+actions without changing the settings API, authorization, or save behavior.
+The expanded directory fixtures verify the selected queue value,
+confirmation/cancel path, access status, and RTL direction across desktop,
+iPhone, Android, and tablet. Twelve standalone production cases passed;
+French and Arabic baselines and candidates were compared at 1440 × 900 and
+390 × 844. Longer labels wrap within the existing user row. The sticky mobile
+navigation continues to cover part of the tall row as it did before. Other
+managed-user panels and provider import remain partly English. Evidence is
+retained at `seerrng-admin-users-localization-20261120/baseline-panels-*` and
+`seerrng-admin-users-localization-20261120/candidate-*`.
+
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select
