@@ -62,6 +62,21 @@ const labels = {
       'Enter both values or clear both to use the server default.',
     saveQuota: 'Save Quota',
     quotaSaved: 'Request quota saved.',
+    importUsers: 'Import Jellyfin Users',
+    importTitle: 'Import Jellyfin Users',
+    syncExistingUsers: 'Sync Existing Users',
+    importSelected: 'Import Selected Users',
+    importSelectedConfirm: 'Import Selected Users?',
+    importFailure: 'The server had a problem. Try again in a moment.',
+    importSuccess: 'Imported 1, refreshed 0.',
+    closeImport: 'Close Import',
+    linkedAccounts: 'Linked Accounts',
+    unlinkTrakt: 'Unlink Trakt',
+    unlinkConfirm: 'Unlink Trakt?',
+    unlinkAccount: 'Unlink Account',
+    unlinkFailure: 'The server had a problem. Try again in a moment.',
+    unlinked: 'Account unlinked.',
+    unlinkConfirmHeading: 'Unlink Trakt?',
   },
   fr: {
     title: 'Utilisateurs',
@@ -126,6 +141,23 @@ const labels = {
       'Saisissez les deux valeurs ou effacez-les pour utiliser la valeur par défaut du serveur.',
     saveQuota: 'Enregistrer le quota',
     quotaSaved: 'Quota de demandes enregistré.',
+    importUsers: 'Importer les utilisateurs Jellyfin',
+    importTitle: 'Importer les utilisateurs Jellyfin',
+    syncExistingUsers: 'Synchroniser les utilisateurs existants',
+    importSelected: 'Importer les utilisateurs sélectionnés',
+    importSelectedConfirm: 'Importer les utilisateurs sélectionnés ?',
+    importFailure:
+      'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    importSuccess: 'Importés : 1, actualisés : 0.',
+    closeImport: 'Fermer l’importation',
+    linkedAccounts: 'Comptes associés',
+    unlinkTrakt: 'Déconnecter Trakt',
+    unlinkConfirm: 'Déconnecter Trakt ?',
+    unlinkAccount: 'Déconnecter le compte',
+    unlinkFailure:
+      'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    unlinked: 'Compte déconnecté.',
+    unlinkConfirmHeading: 'Déconnecter Trakt ?',
   },
   ar: {
     title: 'المستخدمون',
@@ -187,6 +219,21 @@ const labels = {
       'أدخل القيمتين أو امسحهما لاستخدام الإعداد الافتراضي للخادم.',
     saveQuota: 'حفظ الحصة',
     quotaSaved: 'تم حفظ حصة الطلبات.',
+    importUsers: 'استيراد مستخدمي Jellyfin',
+    importTitle: 'استيراد مستخدمي Jellyfin',
+    syncExistingUsers: 'مزامنة المستخدمين الحاليين',
+    importSelected: 'استيراد المستخدمين المحددين',
+    importSelectedConfirm: 'استيراد المستخدمين المحددين؟',
+    importFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    importSuccess: 'تم استيراد 1 وتحديث 0.',
+    closeImport: 'إغلاق الاستيراد',
+    linkedAccounts: 'الحسابات المرتبطة',
+    unlinkTrakt: 'إلغاء ربط Trakt',
+    unlinkConfirm: 'هل تريد إلغاء ربط Trakt؟',
+    unlinkAccount: 'إلغاء ربط الحساب',
+    unlinkFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    unlinked: 'تم إلغاء ربط الحساب.',
+    unlinkConfirmHeading: 'هل تريد إلغاء ربط Trakt؟',
   },
 } as const;
 const english = labels.en;
@@ -199,6 +246,9 @@ test('user directory and local-account creation use the saved locale and retain 
     process.env.LUMEN_ADMIN_USERS_BASELINE === 'true' ? english : translated;
   let failOnce = true;
   let passwordFailOnce = true;
+  let importFailOnce = true;
+  let unlinkFailOnce = true;
+  let importedPayload: Record<string, unknown> | undefined;
   const links: {
     id: number;
     expiresAt: string;
@@ -217,7 +267,7 @@ test('user directory and local-account creation use the saved locale and retain 
       return route.fulfill({ json: { locale } });
     if (path === '/settings/public')
       return route.fulfill({
-        json: { applicationTitle: 'SeerrNG', mediaServerType: 0 },
+        json: { applicationTitle: 'SeerrNG', mediaServerType: 2 },
       });
     if (path === '/user' && request.method() === 'GET')
       return route.fulfill({
@@ -231,6 +281,8 @@ test('user directory and local-account creation use the saved locale and retain 
               permissions: 0,
               requestCount: 3,
               userType: 1,
+              jellyfinUserId: 'jellyfin-2',
+              jellyfinUsername: 'demo-jellyfin',
             },
           ],
         },
@@ -253,6 +305,44 @@ test('user directory and local-account creation use the saved locale and retain 
           requestedAt: null,
         },
       });
+    if (path === '/settings/jellyfin/users')
+      return route.fulfill({
+        json: [
+          {
+            id: 'jellyfin-new',
+            username: 'new-user',
+            title: 'New Jellyfin User',
+          },
+          { id: 'jellyfin-old', username: 'existing-user', isImported: true },
+        ],
+      });
+    if (path === '/user/import-from-jellyfin' && request.method() === 'POST') {
+      importedPayload = request.postDataJSON() as Record<string, unknown>;
+      if (importFailOnce) {
+        importFailOnce = false;
+        return route.fulfill({ status: 503, json: { message: 'unavailable' } });
+      }
+      return route.fulfill({ json: { createdUsers: [{}], refreshedUsers: 0 } });
+    }
+    if (
+      path === '/user/2/settings/linked-accounts' &&
+      request.method() === 'GET'
+    )
+      return route.fulfill({
+        json: [{ id: 9, username: 'demo-trakt', provider: { name: 'Trakt' } }],
+      });
+    if (
+      path === '/user/2/settings/linked-accounts/9' &&
+      request.method() === 'DELETE'
+    ) {
+      if (unlinkFailOnce) {
+        unlinkFailOnce = false;
+        return route.fulfill({ status: 503, json: { message: 'unavailable' } });
+      }
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/user/2/settings/password' && request.method() === 'GET')
+      return route.fulfill({ json: { hasPassword: true } });
     if (path === '/user/2/settings/main') {
       if (request.method() === 'POST')
         return route.fulfill({ status: 204, body: '' });
@@ -436,6 +526,89 @@ test('user directory and local-account creation use the saved locale and retain 
   await page.getByLabel(copy.quotaDays).fill('7');
   await page.getByRole('button', { name: copy.saveQuota, exact: true }).click();
   await expect(page.getByText(copy.quotaSaved, { exact: true })).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.importUsers, exact: true })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: copy.importTitle, exact: true })
+  ).toBeVisible();
+  await page.getByLabel(copy.syncExistingUsers).check();
+  await page.getByRole('checkbox', { name: /New Jellyfin User/ }).check();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-media-server-import-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page
+    .getByRole('button', { name: copy.importSelected, exact: true })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: copy.importSelectedConfirm, exact: true })
+  ).toBeVisible();
+  await page
+    .getByRole('button', { name: copy.queueGoBack, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.importSelected, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.importSelected, exact: true })
+    .last()
+    .click();
+  await expect(page.getByRole('alert')).toHaveText(copy.importFailure);
+  await page
+    .getByRole('button', { name: copy.importSelected, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.importSelected, exact: true })
+    .last()
+    .click();
+  await expect(
+    page.getByText(copy.importSuccess, { exact: true })
+  ).toBeVisible();
+  expect(importedPayload).toMatchObject({
+    jellyfinUserIds: ['jellyfin-new'],
+    syncExisting: true,
+  });
+  await page
+    .getByRole('button', { name: copy.closeImport, exact: true })
+    .click();
+
+  await page
+    .getByRole('button', { name: copy.linkedAccounts, exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: copy.unlinkTrakt, exact: true })
+  ).toBeVisible();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-linked-accounts-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page
+    .getByRole('button', { name: copy.unlinkTrakt, exact: true })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: copy.unlinkConfirmHeading, exact: true })
+  ).toBeVisible();
+  await page
+    .getByRole('button', { name: copy.queueGoBack, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.unlinkTrakt, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.unlinkAccount, exact: true })
+    .click();
+  await expect(page.getByRole('alert')).toHaveText(copy.unlinkFailure);
+  await page
+    .getByRole('button', { name: copy.unlinkTrakt, exact: true })
+    .click();
+  await page
+    .getByRole('button', { name: copy.unlinkAccount, exact: true })
+    .click();
+  await expect(page.getByText(copy.unlinked, { exact: true })).toBeVisible();
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
     await page.screenshot({
       path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-tv-access-${page.viewportSize()!.width}.png`,

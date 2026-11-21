@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
@@ -22,6 +23,7 @@ export default function ImportMediaServerUsers({
   onComplete: () => void;
   onClose: () => void;
 }) {
+  const { t } = useLumenLocale();
   const plex = provider === 'Plex';
   const backend = plex ? 'plex' : 'jellyfin';
   const { data, error, reload } = useApi<ProviderUser[]>(
@@ -37,7 +39,9 @@ export default function ImportMediaServerUsers({
   const eligible = (data ?? []).filter((user) => sync || !user.isImported);
   const ids = selected.filter((id) => eligible.some((user) => user.id === id));
   const syncOnly = plex && data?.length === 0;
-  const label = syncOnly ? 'Sync Existing Users' : 'Import Selected Users';
+  const label = syncOnly
+    ? t('lumen.importMediaServerUsers.sync', 'Sync Existing Users')
+    : t('lumen.importMediaServerUsers.importSelected', 'Import Selected Users');
 
   async function importUsers() {
     if (!data || (!ids.length && !syncOnly) || working.current) return;
@@ -60,12 +64,27 @@ export default function ImportMediaServerUsers({
         ? outcome.length
         : outcome.createdUsers.length;
       const refreshed = Array.isArray(outcome) ? 0 : outcome.refreshedUsers;
-      setNotice(`Imported ${added}, refreshed ${refreshed}.`);
+      setNotice(
+        t(
+          'lumen.importMediaServerUsers.imported',
+          'Imported {added}, refreshed {refreshed}.',
+          {
+            added,
+            refreshed,
+          }
+        )
+      );
       setSelected([]);
       reload();
       onComplete();
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not import users.'));
+      setFailure(
+        friendlyError(
+          error,
+          t('lumen.importMediaServerUsers.failure', 'Could not import users.'),
+          t
+        )
+      );
     } finally {
       setBusy(false);
       setConfirm(false);
@@ -74,11 +93,25 @@ export default function ImportMediaServerUsers({
   }
 
   return (
-    <Section title={`Import ${provider} Users`}>
-      <ServiceNote error={error} what={`${provider} users`} retry={reload} />
+    <Section
+      title={t(
+        'lumen.importMediaServerUsers.title',
+        'Import {provider} Users',
+        {
+          provider,
+        }
+      )}
+    >
+      <ServiceNote
+        error={error}
+        what={t('lumen.importMediaServerUsers.what', '{provider} users', {
+          provider,
+        })}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading provider users…
+          {t('lumen.importMediaServerUsers.loading', 'Loading provider users…')}
         </p>
       )}
       {failure && (
@@ -93,7 +126,12 @@ export default function ImportMediaServerUsers({
       )}
       {data && !plex && (
         <label className="set">
-          <span>Sync Existing Users</span>
+          <span>
+            {t(
+              'lumen.importMediaServerUsers.syncExisting',
+              'Sync Existing Users'
+            )}
+          </span>
           <input
             type="checkbox"
             checked={sync}
@@ -103,15 +141,37 @@ export default function ImportMediaServerUsers({
         </label>
       )}
       {data && !eligible.length && (
-        <p className="note">No new users to import.</p>
+        <p className="note">
+          {t(
+            'lumen.importMediaServerUsers.noNewUsers',
+            'No new users to import.'
+          )}
+        </p>
       )}
       {!!eligible.length && (
-        <div className="setlist" role="group" aria-label={`${provider} users`}>
+        <div
+          className="setlist"
+          role="group"
+          aria-label={t(
+            'lumen.importMediaServerUsers.userGroup',
+            '{provider} users',
+            {
+              provider,
+            }
+          )}
+        >
           {eligible.map((user) => (
             <label className="set" key={user.id}>
               <span>
                 <b>{user.title || user.username}</b>
-                {user.isImported && <small>Already Imported</small>}
+                {user.isImported && (
+                  <small>
+                    {t(
+                      'lumen.importMediaServerUsers.alreadyImported',
+                      'Already Imported'
+                    )}
+                  </small>
+                )}
               </span>
               <input
                 type="checkbox"
@@ -142,19 +202,28 @@ export default function ImportMediaServerUsers({
           disabled={busy}
           onClick={onClose}
         >
-          Close Import
+          {t('lumen.importMediaServerUsers.close', 'Close Import')}
         </button>
       </div>
       {confirm && (
         <ConfirmSheet
-          title={`${label}?`}
+          title={t('lumen.importMediaServerUsers.confirmTitle', '{action}?', {
+            action: label,
+          })}
           body={
             syncOnly
-              ? 'Refresh linked Plex accounts and import any newly eligible Plex users.'
-              : `${ids.length} selected from ${provider}.`
+              ? t(
+                  'lumen.importMediaServerUsers.syncBody',
+                  'Refresh linked Plex accounts and import any newly eligible Plex users.'
+                )
+              : t(
+                  'lumen.importMediaServerUsers.selectedBody',
+                  '{count} selected from {provider}.',
+                  { count: ids.length, provider }
+                )
           }
           confirm={label}
-          cancel="Go Back"
+          cancel={t('lumen.importMediaServerUsers.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void importUsers()}
           onClose={() => {

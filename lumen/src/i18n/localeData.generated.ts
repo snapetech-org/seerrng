@@ -2274,6 +2274,39 @@ export const localeData = [
       'lumen.managedQuotas.category.comic': 'قصص مصورة',
       'lumen.managedQuotas.category.magazine': 'مجلات',
       'lumen.managedQuotas.category.software': 'برامج',
+      'lumen.managedLinkedAccounts.unlinked': 'تم إلغاء ربط الحساب.',
+      'lumen.managedLinkedAccounts.unlinkFailure': 'تعذر إلغاء ربط الحساب.',
+      'lumen.managedLinkedAccounts.what': 'الحسابات المرتبطة',
+      'lumen.managedLinkedAccounts.passwordStatus': 'حالة كلمة المرور',
+      'lumen.managedLinkedAccounts.loading': 'جارٍ تحميل الحسابات المرتبطة…',
+      'lumen.managedLinkedAccounts.empty': 'لا توجد حسابات مرتبطة.',
+      'lumen.managedLinkedAccounts.unlink': 'إلغاء ربط {name}',
+      'lumen.managedLinkedAccounts.confirmTitle': 'هل تريد إلغاء ربط {name}؟',
+      'lumen.managedLinkedAccounts.confirmBody':
+        'سيؤدي ذلك إلى إزالة طريقة تسجيل الدخول المرتبطة بهذا الحساب.',
+      'lumen.managedLinkedAccounts.confirm': 'إلغاء ربط الحساب',
+      'lumen.managedLinkedAccounts.goBack': 'رجوع',
+      'lumen.importMediaServerUsers.sync': 'مزامنة المستخدمين الحاليين',
+      'lumen.importMediaServerUsers.importSelected':
+        'استيراد المستخدمين المحددين',
+      'lumen.importMediaServerUsers.imported':
+        'تم استيراد {added} وتحديث {refreshed}.',
+      'lumen.importMediaServerUsers.failure': 'تعذر استيراد المستخدمين.',
+      'lumen.importMediaServerUsers.title': 'استيراد مستخدمي {provider}',
+      'lumen.importMediaServerUsers.what': 'مستخدمو {provider}',
+      'lumen.importMediaServerUsers.loading': 'جارٍ تحميل مستخدمي الخدمة…',
+      'lumen.importMediaServerUsers.syncExisting': 'مزامنة المستخدمين الحاليين',
+      'lumen.importMediaServerUsers.noNewUsers':
+        'لا يوجد مستخدمون جدد لاستيرادهم.',
+      'lumen.importMediaServerUsers.userGroup': 'مستخدمو {provider}',
+      'lumen.importMediaServerUsers.alreadyImported': 'تم استيراده بالفعل',
+      'lumen.importMediaServerUsers.close': 'إغلاق الاستيراد',
+      'lumen.importMediaServerUsers.confirmTitle': '{action}؟',
+      'lumen.importMediaServerUsers.syncBody':
+        'حدّث حسابات Plex المرتبطة واستورد أي مستخدم Plex جديد مؤهل.',
+      'lumen.importMediaServerUsers.selectedBody':
+        'تم تحديد {count} من {provider}.',
+      'lumen.importMediaServerUsers.goBack': 'رجوع',
     },
   },
   {
@@ -6285,6 +6318,38 @@ export const localeData = [
       'lumen.managedQuotas.category.comic': 'Comics',
       'lumen.managedQuotas.category.magazine': 'Magazines',
       'lumen.managedQuotas.category.software': 'Software',
+      'lumen.managedLinkedAccounts.unlinked': 'Account unlinked.',
+      'lumen.managedLinkedAccounts.unlinkFailure':
+        'Could not unlink the account.',
+      'lumen.managedLinkedAccounts.what': 'linked accounts',
+      'lumen.managedLinkedAccounts.passwordStatus': 'password status',
+      'lumen.managedLinkedAccounts.loading': 'Loading linked accounts…',
+      'lumen.managedLinkedAccounts.empty': 'No linked accounts.',
+      'lumen.managedLinkedAccounts.unlink': 'Unlink {name}',
+      'lumen.managedLinkedAccounts.confirmTitle': 'Unlink {name}?',
+      'lumen.managedLinkedAccounts.confirmBody':
+        'This removes the linked sign-in method from this account.',
+      'lumen.managedLinkedAccounts.confirm': 'Unlink Account',
+      'lumen.managedLinkedAccounts.goBack': 'Go Back',
+      'lumen.importMediaServerUsers.sync': 'Sync Existing Users',
+      'lumen.importMediaServerUsers.importSelected': 'Import Selected Users',
+      'lumen.importMediaServerUsers.imported':
+        'Imported {added}, refreshed {refreshed}.',
+      'lumen.importMediaServerUsers.failure': 'Could not import users.',
+      'lumen.importMediaServerUsers.title': 'Import {provider} Users',
+      'lumen.importMediaServerUsers.what': '{provider} users',
+      'lumen.importMediaServerUsers.loading': 'Loading provider users…',
+      'lumen.importMediaServerUsers.syncExisting': 'Sync Existing Users',
+      'lumen.importMediaServerUsers.noNewUsers': 'No new users to import.',
+      'lumen.importMediaServerUsers.userGroup': '{provider} users',
+      'lumen.importMediaServerUsers.alreadyImported': 'Already Imported',
+      'lumen.importMediaServerUsers.close': 'Close Import',
+      'lumen.importMediaServerUsers.confirmTitle': '{action}?',
+      'lumen.importMediaServerUsers.syncBody':
+        'Refresh linked Plex accounts and import any newly eligible Plex users.',
+      'lumen.importMediaServerUsers.selectedBody':
+        '{count} selected from {provider}.',
+      'lumen.importMediaServerUsers.goBack': 'Go Back',
     },
   },
   {
@@ -11129,6 +11194,45 @@ export const localeData = [
       'lumen.managedQuotas.category.comic': 'Bandes dessinées',
       'lumen.managedQuotas.category.magazine': 'Magazines',
       'lumen.managedQuotas.category.software': 'Logiciels',
+      'lumen.managedLinkedAccounts.unlinked': 'Compte déconnecté.',
+      'lumen.managedLinkedAccounts.unlinkFailure':
+        'Impossible de déconnecter le compte.',
+      'lumen.managedLinkedAccounts.what': 'comptes associés',
+      'lumen.managedLinkedAccounts.passwordStatus': 'état du mot de passe',
+      'lumen.managedLinkedAccounts.loading': 'Chargement des comptes associés…',
+      'lumen.managedLinkedAccounts.empty': 'Aucun compte associé.',
+      'lumen.managedLinkedAccounts.unlink': 'Déconnecter {name}',
+      'lumen.managedLinkedAccounts.confirmTitle': 'Déconnecter {name} ?',
+      'lumen.managedLinkedAccounts.confirmBody':
+        'Cela supprime ce moyen de connexion associé à ce compte.',
+      'lumen.managedLinkedAccounts.confirm': 'Déconnecter le compte',
+      'lumen.managedLinkedAccounts.goBack': 'Retour',
+      'lumen.importMediaServerUsers.sync':
+        'Synchroniser les utilisateurs existants',
+      'lumen.importMediaServerUsers.importSelected':
+        'Importer les utilisateurs sélectionnés',
+      'lumen.importMediaServerUsers.imported':
+        'Importés : {added}, actualisés : {refreshed}.',
+      'lumen.importMediaServerUsers.failure':
+        'Impossible d’importer les utilisateurs.',
+      'lumen.importMediaServerUsers.title':
+        'Importer les utilisateurs {provider}',
+      'lumen.importMediaServerUsers.what': 'utilisateurs {provider}',
+      'lumen.importMediaServerUsers.loading':
+        'Chargement des utilisateurs du service…',
+      'lumen.importMediaServerUsers.syncExisting':
+        'Synchroniser les utilisateurs existants',
+      'lumen.importMediaServerUsers.noNewUsers':
+        'Aucun nouvel utilisateur à importer.',
+      'lumen.importMediaServerUsers.userGroup': 'utilisateurs {provider}',
+      'lumen.importMediaServerUsers.alreadyImported': 'Déjà importé',
+      'lumen.importMediaServerUsers.close': 'Fermer l’importation',
+      'lumen.importMediaServerUsers.confirmTitle': '{action} ?',
+      'lumen.importMediaServerUsers.syncBody':
+        'Actualiser les comptes Plex associés et importer tout nouvel utilisateur Plex admissible.',
+      'lumen.importMediaServerUsers.selectedBody':
+        '{count} sélectionné(s) depuis {provider}.',
+      'lumen.importMediaServerUsers.goBack': 'Retour',
     },
   },
   {

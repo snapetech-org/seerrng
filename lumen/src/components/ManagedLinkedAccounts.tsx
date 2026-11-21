@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
 
@@ -28,6 +29,7 @@ export default function ManagedLinkedAccounts({
   canUnlink: boolean;
   onSaved: () => void;
 }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/linked-accounts`;
   const linked = useApi<LinkedIdentity[]>(path);
   const password = useApi<{ hasPassword: boolean }>(
@@ -66,11 +68,20 @@ export default function ManagedLinkedAccounts({
         'empty'
       );
       setRemoved((current) => [...current, selected.key]);
-      setNotice('Account unlinked.');
+      setNotice(t('lumen.managedLinkedAccounts.unlinked', 'Account unlinked.'));
       linked.reload();
       onSaved();
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not unlink the account.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.managedLinkedAccounts.unlinkFailure',
+            'Could not unlink the account.'
+          ),
+          t
+        )
+      );
       linked.reload();
       password.reload();
     } finally {
@@ -84,17 +95,20 @@ export default function ManagedLinkedAccounts({
     <div>
       <ServiceNote
         error={linked.error}
-        what="linked accounts"
+        what={t('lumen.managedLinkedAccounts.what', 'linked accounts')}
         retry={linked.reload}
       />
       <ServiceNote
         error={password.error}
-        what="password status"
+        what={t(
+          'lumen.managedLinkedAccounts.passwordStatus',
+          'password status'
+        )}
         retry={password.reload}
       />
       {!linked.data && !linked.error && (
         <p className="note" role="status">
-          Loading linked accounts…
+          {t('lumen.managedLinkedAccounts.loading', 'Loading linked accounts…')}
         </p>
       )}
       {failure && (
@@ -108,7 +122,9 @@ export default function ManagedLinkedAccounts({
         </p>
       )}
       {linked.data && !accounts.length && (
-        <p className="note">No linked accounts.</p>
+        <p className="note">
+          {t('lumen.managedLinkedAccounts.empty', 'No linked accounts.')}
+        </p>
       )}
       {!!accounts.length && (
         <ul className="setlist">
@@ -124,7 +140,9 @@ export default function ManagedLinkedAccounts({
                   disabled={busy}
                   onClick={() => setSelected(account)}
                 >
-                  Unlink {account.name}
+                  {t('lumen.managedLinkedAccounts.unlink', 'Unlink {name}', {
+                    name: account.name,
+                  })}
                 </button>
               )}
             </li>
@@ -133,10 +151,19 @@ export default function ManagedLinkedAccounts({
       )}
       {selected && (
         <ConfirmSheet
-          title={`Unlink ${selected.name}?`}
-          body="This removes the linked sign-in method from this account."
-          confirm="Unlink Account"
-          cancel="Go Back"
+          title={t(
+            'lumen.managedLinkedAccounts.confirmTitle',
+            'Unlink {name}?',
+            {
+              name: selected.name,
+            }
+          )}
+          body={t(
+            'lumen.managedLinkedAccounts.confirmBody',
+            'This removes the linked sign-in method from this account.'
+          )}
+          confirm={t('lumen.managedLinkedAccounts.confirm', 'Unlink Account')}
+          cancel={t('lumen.managedLinkedAccounts.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void unlink()}
           onClose={() => {

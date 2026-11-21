@@ -57,8 +57,8 @@ submit and retry, and overflow. Twelve existing create/profile regression
 cases also passed. Matching French and Arabic baseline/candidate captures of
 `/admin/users` and the local-account form were inspected at 1440 × 900 and
 390 × 844; existing list and form geometry remains, with longer labels wrapping
-inside the same row layout. Provider import and linked-account subpanels remain
-partly English; live directory and provider-import verification remain open.
+inside the same row layout. Live directory, provider import, and linked-account
+verification against an actual SeerrNG instance remain open.
 Evidence is retained at
 `seerrng-admin-users-localization-20261120`.
 
@@ -71,8 +71,7 @@ confirmation/cancel path, access status, and RTL direction across desktop,
 iPhone, Android, and tablet. Twelve standalone production cases passed;
 French and Arabic baselines and candidates were compared at 1440 × 900 and
 390 × 844. Longer labels wrap within the existing user row. The sticky mobile
-navigation continues to cover part of the tall row as it did before. Other
-managed-user panels and provider import remain partly English. Evidence is
+navigation continues to cover part of the tall row as it did before. Evidence is
 retained at `seerrng-admin-users-localization-20261120/baseline-panels-*` and
 `seerrng-admin-users-localization-20261120/candidate-*`.
 
@@ -85,9 +84,21 @@ desktop, iPhone, Android, and tablet. French and Arabic baseline/candidate
 states for categories, maturity,
 and quotas were inspected at 1440 × 900 and 390 × 844. Longer labels wrap
 within the existing controls; the existing fixed mobile navigation still
-overlaps lower content in the tall user row. Linked-account management and
-provider import are the remaining managed-user display gaps. Evidence is
-retained at `seerrng-admin-users-localization-20261120/admin-settings-*`.
+overlaps lower content in the tall user row. Evidence is retained at
+`seerrng-admin-users-localization-20261120/admin-settings-*`.
+
+Media-server user import and linked-account management now also follow the
+saved locale. Fixtures verify synchronized user import selection, failed import
+retry, successful import, unlink confirmation and cancel, failed unlink retry,
+and successful unlink. Twelve standalone and twelve bundled `/lumen/` cases
+passed across desktop, iPhone, Android, and tablet. French and Arabic
+baseline/candidate renders were inspected at 1440 × 900 and 390 × 844; the
+existing user-row layout wraps longer labels without horizontal overflow.
+Actual provider import and unlink effects remain unverified against a live
+SeerrNG instance. The user notification settings panel reuses the separate
+Notification Settings route. That route still contains English-only content
+and is the next account-settings localization gap. Evidence is retained at
+`seerrng-admin-users-localization-20261120/managed-account-*`.
 
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
