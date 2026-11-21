@@ -2029,6 +2029,66 @@ export const localeData = [
       'lumen.streamingPolicy.saved': 'تم حفظ سياسة الطلب.',
       'lumen.streamingPolicy.saveFailure': 'تعذر حفظ سياسة الطلب.',
       'lumen.streamingPolicy.confirmFailure': 'تعذر تأكيد حفظ سياسة الطلب.',
+      'lumen.discoveryRegions.regions': 'المناطق',
+      'lumen.discoveryRegions.languages': 'اللغات',
+      'lumen.discoveryRegions.field.discoverRegion': 'منطقة الاستكشاف',
+      'lumen.discoveryRegions.field.streamingRegion': 'منطقة البث',
+      'lumen.discoveryRegions.field.originalLanguage': 'اللغة الأصلية',
+      'lumen.discoveryRegions.field.blocklistRegion': 'منطقة قائمة الحظر',
+      'lumen.discoveryRegions.field.blocklistLanguage': 'لغة قائمة الحظر',
+      'lumen.discoveryRegions.visibility.includeAdult':
+        'تضمين محتوى البالغين في بحث TMDB والاستكشاف',
+      'lumen.discoveryRegions.visibility.hideAvailable':
+        'إخفاء العناوين المتاحة',
+      'lumen.discoveryRegions.visibility.hideRequested':
+        'إخفاء العناوين المطلوبة',
+      'lumen.discoveryRegions.visibility.hideBlocklisted':
+        'إخفاء العناوين المحظورة عن مديري قائمة الحظر',
+      'lumen.discoveryRegions.any.region': 'أي منطقة',
+      'lumen.discoveryRegions.any.language': 'أي لغة',
+      'lumen.discoveryRegions.save': 'حفظ إعدادات منطقة الاستكشاف',
+      'lumen.discoveryRegions.saved': 'تم حفظ إعدادات منطقة الاستكشاف.',
+      'lumen.discoveryRegions.confirmFailure':
+        'تعذر تأكيد إعدادات الاستكشاف المحفوظة.',
+      'lumen.discoveryRegions.saveFailure': 'تعذر حفظ إعدادات منطقة الاستكشاف.',
+      'lumen.discoveryRegions.title': 'مناطق ولغات الاستكشاف',
+      'lumen.discoveryRegions.settings': 'إعدادات منطقة الاستكشاف',
+      'lumen.discoveryRegions.loading': 'جارٍ تحميل إعدادات منطقة الاستكشاف…',
+      'lumen.identityPacks.fileTooLarge':
+        'يجب ألا يتجاوز حجم الحزمة 5 ميبي بايت.',
+      'lumen.identityPacks.invalidFile':
+        'اختر ملف JSON مدعومًا لمطابقة العناوين.',
+      'lumen.identityPacks.readFailure': 'تعذرت قراءة الملف المحدد.',
+      'lumen.identityPacks.published':
+        'تم نشر {name}. {total} مطابقة، {imported} جديدة، {updated} معدلة، {unchanged} دون تغيير، {removed} محذوفة.',
+      'lumen.identityPacks.publishFailure':
+        'تعذر نشر الحزمة. تحقق من الملف وحاول مجددًا.',
+      'lumen.identityPacks.downloadFailure': 'تعذر تنزيل الحزمة. حاول مجددًا.',
+      'lumen.identityPacks.deleted': 'تم حذف {name} من جميع الحسابات.',
+      'lumen.identityPacks.deleteFailure': 'تعذر حذف الحزمة. حاول مجددًا.',
+      'lumen.identityPacks.title': 'مطابقات عناوين الاستكشاف المشتركة',
+      'lumen.identityPacks.help':
+        'تنطبق الحزم المشتركة على كل الحسابات. وتكون المطابقة الخاصة بالمستخدم هي المعتمدة عند التعارض.',
+      'lumen.identityPacks.what': 'حزم مطابقة العناوين المشتركة',
+      'lumen.identityPacks.loading': 'جارٍ تحميل الحزم المشتركة…',
+      'lumen.identityPacks.choose': 'اختيار ملف الحزمة',
+      'lumen.identityPacks.draftSummary':
+        'تحتوي {name} ({id}) على {count} من مطابقات العناوين.',
+      'lumen.identityPacks.replaceWarning':
+        'يؤدي النشر إلى استبدال جميع الإدخالات في أي حزمة موجودة تحمل هذا المعرّف.',
+      'lumen.identityPacks.acknowledge':
+        'أفهم أن هذه الحزمة تنطبق على جميع الحسابات.',
+      'lumen.identityPacks.replace': 'استبدال الحزمة المشتركة',
+      'lumen.identityPacks.publish': 'نشر الحزمة المشتركة',
+      'lumen.identityPacks.clear': 'مسح الملف المحدد',
+      'lumen.identityPacks.empty': 'لم يتم نشر أي حزم مشتركة.',
+      'lumen.identityPacks.packCount': '{id} · {count} من مطابقات العناوين',
+      'lumen.identityPacks.download': 'تنزيل الحزمة',
+      'lumen.identityPacks.delete': 'حذف الحزمة',
+      'lumen.identityPacks.deleteWarning':
+        'يؤدي حذف {name} إلى إزالة مطابقاتها المشتركة من جميع الحسابات.',
+      'lumen.identityPacks.confirmDelete': 'حذف الحزمة المشتركة',
+      'lumen.identityPacks.keep': 'الاحتفاظ بالحزمة المشتركة',
     },
   },
   {
@@ -5798,6 +5858,68 @@ export const localeData = [
         'Could not save streaming request policy.',
       'lumen.streamingPolicy.confirmFailure':
         'Could not confirm the saved streaming request policy.',
+      'lumen.discoveryRegions.regions': 'Regions',
+      'lumen.discoveryRegions.languages': 'languages',
+      'lumen.discoveryRegions.field.discoverRegion': 'Discover Region',
+      'lumen.discoveryRegions.field.streamingRegion': 'Streaming Region',
+      'lumen.discoveryRegions.field.originalLanguage': 'Original Language',
+      'lumen.discoveryRegions.field.blocklistRegion': 'Blocklist Region',
+      'lumen.discoveryRegions.field.blocklistLanguage': 'Blocklist Language',
+      'lumen.discoveryRegions.visibility.includeAdult':
+        'Include Adult Content in TMDB Search and Discovery',
+      'lumen.discoveryRegions.visibility.hideAvailable':
+        'Hide Available Titles',
+      'lumen.discoveryRegions.visibility.hideRequested':
+        'Hide Requested Titles',
+      'lumen.discoveryRegions.visibility.hideBlocklisted':
+        'Hide Blocklisted Titles From Blocklist Managers',
+      'lumen.discoveryRegions.any.region': 'Any region',
+      'lumen.discoveryRegions.any.language': 'Any language',
+      'lumen.discoveryRegions.save': 'Save Discovery Region Settings',
+      'lumen.discoveryRegions.saved': 'Discovery region settings saved.',
+      'lumen.discoveryRegions.confirmFailure':
+        'Could not confirm the saved discovery settings.',
+      'lumen.discoveryRegions.saveFailure':
+        'Could not save discovery region settings.',
+      'lumen.discoveryRegions.title': 'Discovery Regions and Languages',
+      'lumen.discoveryRegions.settings': 'discovery region settings',
+      'lumen.discoveryRegions.loading': 'Loading discovery region settings…',
+      'lumen.identityPacks.fileTooLarge': 'The pack must be 5 MiB or smaller.',
+      'lumen.identityPacks.invalidFile':
+        'Choose a supported title-match pack JSON file.',
+      'lumen.identityPacks.readFailure': 'Could not read the selected file.',
+      'lumen.identityPacks.published':
+        'Published {name}. {total} matches, {imported} new, {updated} changed, {unchanged} unchanged, {removed} removed.',
+      'lumen.identityPacks.publishFailure':
+        'Could not publish the pack. Check the file and try again.',
+      'lumen.identityPacks.downloadFailure':
+        'Could not download the pack. Try again.',
+      'lumen.identityPacks.deleted': 'Deleted {name} for every account.',
+      'lumen.identityPacks.deleteFailure':
+        'Could not delete the pack. Try again.',
+      'lumen.identityPacks.title': 'Shared Discovery Title Matches',
+      'lumen.identityPacks.help':
+        'Shared packs apply to every account. A user’s private match takes precedence.',
+      'lumen.identityPacks.what': 'shared title-match packs',
+      'lumen.identityPacks.loading': 'Loading shared packs…',
+      'lumen.identityPacks.choose': 'Choose Pack File',
+      'lumen.identityPacks.draftSummary':
+        '{name} ({id}) contains {count} title matches.',
+      'lumen.identityPacks.replaceWarning':
+        'Publishing replaces all entries in any existing pack with this ID.',
+      'lumen.identityPacks.acknowledge':
+        'I understand this pack applies to every account.',
+      'lumen.identityPacks.replace': 'Replace Shared Pack',
+      'lumen.identityPacks.publish': 'Publish Shared Pack',
+      'lumen.identityPacks.clear': 'Clear Selected File',
+      'lumen.identityPacks.empty': 'No shared packs have been published.',
+      'lumen.identityPacks.packCount': '{id} · {count} title matches',
+      'lumen.identityPacks.download': 'Download Pack',
+      'lumen.identityPacks.delete': 'Delete Pack',
+      'lumen.identityPacks.deleteWarning':
+        'Deleting {name} removes its shared matches for every account.',
+      'lumen.identityPacks.confirmDelete': 'Delete Shared Pack',
+      'lumen.identityPacks.keep': 'Keep Shared Pack',
     },
   },
   {
@@ -10370,6 +10492,76 @@ export const localeData = [
         'Impossible d’enregistrer la politique de demande.',
       'lumen.streamingPolicy.confirmFailure':
         'Impossible de confirmer l’enregistrement de la politique de demande.',
+      'lumen.discoveryRegions.regions': 'régions',
+      'lumen.discoveryRegions.languages': 'langues',
+      'lumen.discoveryRegions.field.discoverRegion': 'Région de découverte',
+      'lumen.discoveryRegions.field.streamingRegion': 'Région de diffusion',
+      'lumen.discoveryRegions.field.originalLanguage': 'Langue d’origine',
+      'lumen.discoveryRegions.field.blocklistRegion':
+        'Région de la liste de blocage',
+      'lumen.discoveryRegions.field.blocklistLanguage':
+        'Langue de la liste de blocage',
+      'lumen.discoveryRegions.visibility.includeAdult':
+        'Inclure le contenu pour adultes dans la recherche et la découverte TMDB',
+      'lumen.discoveryRegions.visibility.hideAvailable':
+        'Masquer les titres disponibles',
+      'lumen.discoveryRegions.visibility.hideRequested':
+        'Masquer les titres demandés',
+      'lumen.discoveryRegions.visibility.hideBlocklisted':
+        'Masquer les titres bloqués aux gestionnaires de la liste de blocage',
+      'lumen.discoveryRegions.any.region': 'Toutes les régions',
+      'lumen.discoveryRegions.any.language': 'Toutes les langues',
+      'lumen.discoveryRegions.save':
+        'Enregistrer les paramètres de région de découverte',
+      'lumen.discoveryRegions.saved':
+        'Les paramètres de région de découverte ont été enregistrés.',
+      'lumen.discoveryRegions.confirmFailure':
+        'Impossible de confirmer les paramètres de découverte enregistrés.',
+      'lumen.discoveryRegions.saveFailure':
+        'Impossible d’enregistrer les paramètres de région de découverte.',
+      'lumen.discoveryRegions.title': 'Régions et langues de découverte',
+      'lumen.discoveryRegions.settings': 'paramètres de région de découverte',
+      'lumen.discoveryRegions.loading':
+        'Chargement des paramètres de région de découverte…',
+      'lumen.identityPacks.fileTooLarge': 'Le pack doit faire 5 Mio ou moins.',
+      'lumen.identityPacks.invalidFile':
+        'Choisissez un fichier JSON de correspondances de titres compatible.',
+      'lumen.identityPacks.readFailure':
+        'Impossible de lire le fichier sélectionné.',
+      'lumen.identityPacks.published':
+        'Pack {name} publié. {total} correspondances, {imported} nouvelles, {updated} modifiées, {unchanged} inchangées, {removed} supprimées.',
+      'lumen.identityPacks.publishFailure':
+        'Impossible de publier le pack. Vérifiez le fichier et réessayez.',
+      'lumen.identityPacks.downloadFailure':
+        'Impossible de télécharger le pack. Réessayez.',
+      'lumen.identityPacks.deleted':
+        'Le pack {name} a été supprimé pour tous les comptes.',
+      'lumen.identityPacks.deleteFailure':
+        'Impossible de supprimer le pack. Réessayez.',
+      'lumen.identityPacks.title': 'Correspondances de titres partagées',
+      'lumen.identityPacks.help':
+        'Les packs partagés s’appliquent à tous les comptes. Une correspondance privée reste prioritaire.',
+      'lumen.identityPacks.what': 'packs de correspondances de titres partagés',
+      'lumen.identityPacks.loading': 'Chargement des packs partagés…',
+      'lumen.identityPacks.choose': 'Choisir un fichier de pack',
+      'lumen.identityPacks.draftSummary':
+        '{name} ({id}) contient {count} correspondances de titres.',
+      'lumen.identityPacks.replaceWarning':
+        'La publication remplace toutes les entrées d’un pack existant portant cet identifiant.',
+      'lumen.identityPacks.acknowledge':
+        'Je comprends que ce pack s’applique à tous les comptes.',
+      'lumen.identityPacks.replace': 'Remplacer le pack partagé',
+      'lumen.identityPacks.publish': 'Publier le pack partagé',
+      'lumen.identityPacks.clear': 'Effacer le fichier sélectionné',
+      'lumen.identityPacks.empty': 'Aucun pack partagé n’a été publié.',
+      'lumen.identityPacks.packCount':
+        '{id} · {count} correspondances de titres',
+      'lumen.identityPacks.download': 'Télécharger le pack',
+      'lumen.identityPacks.delete': 'Supprimer le pack',
+      'lumen.identityPacks.deleteWarning':
+        'La suppression de {name} retire ses correspondances partagées pour tous les comptes.',
+      'lumen.identityPacks.confirmDelete': 'Supprimer le pack partagé',
+      'lumen.identityPacks.keep': 'Conserver le pack partagé',
     },
   },
   {

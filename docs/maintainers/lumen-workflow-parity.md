@@ -2562,6 +2562,25 @@ desktop and phone widths. Live user-subscription decisions remain unverified.
 Evidence is retained at
 `seerrng-streaming-policy-localization-20261120`.
 
+The Discovery Regions and Languages form and Shared Discovery Title Matches
+panel now use English, French, and Arabic messages for their labels, choices,
+instructions, validation, confirmation, and save feedback. Region saves retain
+the selected draft after a service failure; shared pack publication can be
+retried without reselecting the file or repeating the account-wide acknowledgement.
+Shared pack deletion still requires its explicit confirmation.
+
+Twelve standalone and twelve bundled-asset browser cases passed across desktop,
+iPhone, Android, and tablet projects, covering all three locales, failed-save
+retry, pack publication retry, deletion, and horizontal overflow. French and
+Arabic baseline/candidate captures for `/admin/discovery` were compared at
+matching 1440 × 900 desktop and 390 × 844 iPhone viewports. Text wraps
+naturally with the existing controls and spacing; the fixed mobile navigation
+continues to overlay the lower viewport while scrolling, as it did in baseline.
+Live `/regions` and `/languages` provider results, independent translation
+review, and the full Express production `/lumen/` mount remain unverified.
+Evidence is retained at
+`seerrng-discovery-child-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with
