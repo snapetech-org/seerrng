@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
 import { sessionGeneration } from '../sessionState';
 
@@ -314,6 +315,9 @@ export default function Associations() {
       ? `/association/${mediaType}/${encodeURIComponent(id)}?includeWeak=true`
       : null
   );
+  const extras = useExtras();
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
   const [wide, setWide] = useState(() => window.matchMedia(GRAPH_VIEW).matches);
   useEffect(() => {
     const query = window.matchMedia(GRAPH_VIEW);
@@ -330,7 +334,12 @@ export default function Associations() {
   }
   const requestedType = params.get('type') ?? '';
   const filter = Object.hasOwn(labels, requestedType) ? requestedType : '';
-  const edges = data?.edges.filter((edge) => !filter || edge.type === filter);
+  const edges = data?.edges.filter(
+    (edge) =>
+      (edge.node.mediaType !== 'movie' || movieEnabled) &&
+      (edge.node.mediaType !== 'tv' || tvEnabled) &&
+      (!filter || edge.type === filter)
+  );
   return (
     <>
       <ExtraHeader

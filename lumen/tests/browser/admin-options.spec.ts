@@ -349,6 +349,47 @@ test('Search hides disabled scopes and does not query their catalogs', async ({
   expect(categoryQueries).toContain('/discover/trending');
 });
 
+test('associations hide disabled movie and series edge types', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: true, tv: false } },
+    })
+  );
+  await page.route('**/api/v1/association/movie/1**', (route) =>
+    route.fulfill({
+      json: {
+        root: { title: 'Root Movie' },
+        edges: [
+          {
+            type: 'recommended',
+            reason: 'movie edge',
+            node: { id: 2, mediaType: 'movie', title: 'Movie Only' },
+          },
+          {
+            type: 'recommended',
+            reason: 'series edge',
+            node: { id: 3, mediaType: 'tv', title: 'Series Only' },
+          },
+        ],
+      },
+    })
+  );
+  await page.goto(testAppPath('/associations/movie/1'));
+  await expect(page.getByRole('link', { name: 'Movie Only' })).toBeVisible();
+  await expect(page.getByText('Series Only')).toHaveCount(0);
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],

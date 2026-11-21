@@ -5140,4 +5140,7 @@ matrix. Both standalone Lumen and packaged `/lumen/` production builds succeed.
 TMDB lists, movie/series association graphs, and TV franchises now use the same
 pre-mount category boundary; list cards also omit any disabled media type when
 only one of Movies or Series is enabled. Their direct routes are included in
-the all-off no-query fixture.
+the all-off no-query fixture. Association results also omit disabled movie or
+series edges while retaining allowed edges; a mixed-result fixture verifies
+this when only Movies is enabled across all four viewport projects. The focused
+association test passes 4/4, and the bundled `/lumen/` production build succeeds.

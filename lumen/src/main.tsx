@@ -171,6 +171,23 @@ function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
   );
 }
 
+function AssociationRoute() {
+  const { mediaType } = useParams();
+  if (mediaType === 'movie')
+    return (
+      <MediaCategoryRoute categories={['movie']}>
+        <Associations />
+      </MediaCategoryRoute>
+    );
+  if (mediaType === 'tv')
+    return (
+      <MediaCategoryRoute categories={['tv']}>
+        <Associations />
+      </MediaCategoryRoute>
+    );
+  return <Associations />;
+}
+
 function App() {
   const { user, unreachable, refresh } = useAuth();
   const location = useLocation();
@@ -257,15 +274,7 @@ function App() {
             }
           />
           <Route path="/trending" element={<MediaCategoryRoute categories={['movie', 'tv']}><Trending /></MediaCategoryRoute>} />
-          <Route
-            path="/associations/movie/:id"
-            element={<MediaCategoryRoute categories={['movie']}><Associations /></MediaCategoryRoute>}
-          />
-          <Route
-            path="/associations/tv/:id"
-            element={<MediaCategoryRoute categories={['tv']}><Associations /></MediaCategoryRoute>}
-          />
-          <Route path="/associations/:mediaType/:id" element={<Associations />} />
+          <Route path="/associations/:mediaType/:id" element={<AssociationRoute />} />
           <Route
             path="/list/:id"
             element={<MediaCategoryRoute categories={['movie', 'tv']}><TmdbList /></MediaCategoryRoute>}
