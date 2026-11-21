@@ -18,6 +18,10 @@ const paged = (results: unknown[]) => ({
   totalResults: results.length,
   results,
 });
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
 
 async function fixtures(
   page: Page,
@@ -39,7 +43,7 @@ async function fixtures(
   );
   await page.route('**/api/v1/**', async (route) => {
     const req = route.request();
-    const path = new URL(req.url()).pathname.slice(7);
+    const path = testApiPath(req.url());
     if (req.method() === 'POST')
       posts.push({ path, body: req.postDataJSON() ?? {} });
     let status = 200;
@@ -300,6 +304,93 @@ test('malformed category probe storage does not break navigation', async ({
     .poll(() => page.evaluate(() => sessionStorage.getItem('lumen-probes:1')))
     .not.toBe('null');
   expect(errors).toEqual([]);
+});
+
+test('disabled personal categories do not mount optional catalog pages or fetch their data', async ({
+  page,
+}) => {
+  const catalogReads: string[] = [];
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: {
+          music: true,
+          comic: true,
+          magazine: true,
+          game: true,
+          retro: true,
+          modern: true,
+          sports: true,
+          adult: true,
+        },
+        musicEnabled: true,
+        comicsEnabled: true,
+        magazinesEnabled: true,
+        softwareEnabled: true,
+        romarrEnabled: true,
+        sportsEnabled: true,
+        adultEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          music: false,
+          comic: false,
+          magazine: false,
+          game: false,
+          retro: false,
+          modern: false,
+          sports: false,
+          adult: false,
+        },
+      },
+    })
+  );
+  await page.route(
+    /\/api\/v1\/(?:discover\/(?:music|comics|magazines|sports)|adult\/|request\/software\/catalog)/,
+    (route) => {
+      const path = new URL(route.request().url()).pathname.slice(
+        '/api/v1'.length
+      );
+      catalogReads.push(path);
+      return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
+    }
+  );
+
+  for (const [path, heading] of [
+    ['/music', 'Music'],
+    ['/music/playlist-import', 'Music'],
+    ['/music/collectors', 'Music'],
+    ['/music/1', 'Music'],
+    ['/collections/music/example', 'Music'],
+    ['/artist/1', 'Music'],
+    ['/identify', 'Music'],
+    ['/track-requests', 'Music'],
+    ['/comics', 'Comics/Manga'],
+    ['/comic/1', 'Comics/Manga'],
+    ['/magazines', 'Magazines'],
+    ['/magazine/Example', 'Magazines'],
+    ['/games', 'Games'],
+    ['/games/discovery', 'Games'],
+    ['/game/retro/1', 'Games'],
+    ['/patches', 'Games'],
+    ['/patches/example', 'Games'],
+    ['/software?category=retro&game=1', 'Games'],
+    ['/sports', 'Sports'],
+    ['/sportarr/1', 'Sports'],
+    ['/adult', 'Adult'],
+    ['/adult/1', 'Adult'],
+  ]) {
+    await page.goto(testAppPath(path));
+    await expect(page.getByRole('heading', { name: heading })).toBeVisible();
+    await expect(page.getByText('is turned off on this server')).toBeVisible();
+  }
+  expect(catalogReads).toEqual([]);
 });
 
 test('late category probes remain scoped to the account that started them', async ({

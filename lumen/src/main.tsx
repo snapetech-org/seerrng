@@ -1,4 +1,4 @@
-import { lazy, StrictMode, Suspense, useEffect } from 'react';
+import { lazy, StrictMode, Suspense, useEffect, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
@@ -10,11 +10,13 @@ import {
   useParams,
 } from 'react-router-dom';
 import { AuthProvider, isAdministrator, useAuth } from './auth';
+import { ExtraGate } from './components/extra';
 import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
+import type { Extra } from './extras';
 import { usePublicSettings } from './hooks';
 import { LumenLocaleProvider, useLumenLocale } from './i18n';
 import { canSearchIndexers } from './indexerPermissions';
@@ -116,6 +118,27 @@ const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
 
+function ExtraRoute({
+  category,
+  children,
+}: {
+  category: Extra;
+  children: ReactNode;
+}) {
+  return <ExtraGate k={category}>{children}</ExtraGate>;
+}
+
+function CuratedCollectionRoute() {
+  const { kind } = useParams();
+  if (kind === 'music')
+    return (
+      <ExtraRoute category="music">
+        <CuratedCollection />
+      </ExtraRoute>
+    );
+  return <CuratedCollection />;
+}
+
 function UserRequestsBookmark() {
   const { requesterId = '' } = useParams();
   const { search } = useLocation();
@@ -208,9 +231,30 @@ function App() {
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/share" element={<Share />} />
-          <Route path="/identify" element={<SongIdentify />} />
-          <Route path="/music/playlist-import" element={<PlaylistImport />} />
-          <Route path="/track-requests" element={<TrackRequests />} />
+          <Route
+            path="/identify"
+            element={
+              <ExtraRoute category="music">
+                <SongIdentify />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/playlist-import"
+            element={
+              <ExtraRoute category="music">
+                <PlaylistImport />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/track-requests"
+            element={
+              <ExtraRoute category="music">
+                <TrackRequests />
+              </ExtraRoute>
+            }
+          />
           <Route path="/trending" element={<Trending />} />
           <Route
             path="/associations/:mediaType/:id"
@@ -299,15 +343,78 @@ function App() {
           />
           <Route path="/tv/:id/:credit" element={<VideoCredits media="tv" />} />
           <Route path="/book/:id" element={<BookDetail />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/music/collectors" element={<Collectors />} />
-          <Route path="/music/:id" element={<AlbumDetail />} />
-          <Route path="/artist/:id" element={<Artist />} />
-          <Route path="/comics" element={<Comics />} />
-          <Route path="/comic/:id" element={<ComicDetail />} />
-          <Route path="/magazines" element={<Magazines />} />
-          <Route path="/magazine/:title" element={<MagazineDetail />} />
-          <Route path="/games" element={<Games />} />
+          <Route
+            path="/music"
+            element={
+              <ExtraRoute category="music">
+                <Music />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/collectors"
+            element={
+              <ExtraRoute category="music">
+                <Collectors />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/:id"
+            element={
+              <ExtraRoute category="music">
+                <AlbumDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/artist/:id"
+            element={
+              <ExtraRoute category="music">
+                <Artist />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/comics"
+            element={
+              <ExtraRoute category="comic">
+                <Comics />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/comic/:id"
+            element={
+              <ExtraRoute category="comic">
+                <ComicDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/magazines"
+            element={
+              <ExtraRoute category="magazine">
+                <Magazines />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/magazine/:title"
+            element={
+              <ExtraRoute category="magazine">
+                <MagazineDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/games"
+            element={
+              <ExtraRoute category="game">
+                <Games />
+              </ExtraRoute>
+            }
+          />
           <Route
             path="/games/discovery"
             element={
@@ -318,19 +425,77 @@ function App() {
                   </p>
                 }
               >
-                <GameDiscovery />
+                <ExtraRoute category="game">
+                  <GameDiscovery />
+                </ExtraRoute>
               </Suspense>
             }
           />
-          <Route path="/software" element={<SoftwareBookmark />} />
-          <Route path="/patches" element={<Patches />} />
-          <Route path="/patches/:id" element={<PatchDetail />} />
+          <Route
+            path="/software"
+            element={
+              <ExtraRoute category="game">
+                <SoftwareBookmark />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/patches"
+            element={
+              <ExtraRoute category="game">
+                <Patches />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/patches/:id"
+            element={
+              <ExtraRoute category="game">
+                <PatchDetail />
+              </ExtraRoute>
+            }
+          />
           <Route path="/game-library" element={<GameLibrary />} />
-          <Route path="/game/:category/:id" element={<GameDetail />} />
-          <Route path="/sports" element={<Sports />} />
-          <Route path="/sportarr/:id" element={<LeagueDetail />} />
-          <Route path="/adult" element={<Adult />} />
-          <Route path="/adult/:id" element={<SceneDetail />} />
+          <Route
+            path="/game/:category/:id"
+            element={
+              <ExtraRoute category="game">
+                <GameDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/sports"
+            element={
+              <ExtraRoute category="sports">
+                <Sports />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/sportarr/:id"
+            element={
+              <ExtraRoute category="sports">
+                <LeagueDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/adult"
+            element={
+              <ExtraRoute category="adult">
+                <Adult />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/adult/:id"
+            element={
+              <ExtraRoute category="adult">
+                <SceneDetail />
+              </ExtraRoute>
+            }
+          />
           <Route path="/search" element={<Search />} />
           <Route path="/household/:id" element={<HouseholdProfile />} />
           <Route path="/requests" element={<Requests />} />
@@ -416,7 +581,7 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <CuratedCollection />
+                <CuratedCollectionRoute />
               </Suspense>
             }
           />

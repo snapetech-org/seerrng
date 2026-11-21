@@ -5099,3 +5099,11 @@ the existing blank-means-keep behavior. Its browser fixture verifies the exact
 destination, visible field, and safety hint across desktop, iPhone, Android,
 and tablet. The full-page captures are retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/admin-menu-candidate/`.
+
+Optional media routes wait for public and signed-in account category settings
+before mounting page components. When the per-user setting disables a category,
+the existing category notice appears without starting catalog or detail
+requests. Fixtures turn categories on globally and off for the user, then open
+22 direct routes across music, comics, magazines, games, sports and adult media;
+none issues a category data request. All four viewport projects pass. SeerrNG
+continues to enforce category permissions on every API request.
