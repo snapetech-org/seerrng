@@ -5,7 +5,8 @@ import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { useApi, usePublicSettings } from '../hooks';
+import { useExtras } from '../extras';
+import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 
 const MEDIA_LABELS = {
@@ -61,7 +62,7 @@ function WatchlistPage({
   setFiltersSupported,
   canRemove,
 }: {
-  path: string;
+  path: string | null;
   label: string;
   mediaTypes: string[];
   page: number;
@@ -247,7 +248,7 @@ export default function Watchlist({
   targetUserId?: number;
 }) {
   const { user } = useAuth();
-  const settings = usePublicSettings();
+  const extras = useExtras();
   const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const [filtersSupported, setFiltersSupported] = useState<boolean>();
@@ -261,11 +262,14 @@ export default function Watchlist({
     : discover
       ? t('lumen.watchlist.discoverTitle', 'Discover Watchlist')
       : t('lumen.watchlist.title', 'Watchlist');
-  const categories = discover ? settings?.enabledMediaCategories : undefined;
+  const categoryEnabled = (type: keyof typeof MEDIA_LABELS) =>
+    !extras.ready
+      ? false
+      : type === 'book'
+        ? extras.categoryEnabled('ebook') || extras.categoryEnabled('audiobook')
+        : extras.categoryEnabled(type);
   const mediaOptions = Object.entries(MEDIA_LABELS).filter(([type]) =>
-    type === 'book'
-      ? categories?.ebook !== false || categories?.audiobook !== false
-      : categories?.[type] !== false
+    categoryEnabled(type as keyof typeof MEDIA_LABELS)
   );
   const mediaTypes = mediaOptions.map(([type]) => type);
   const requestedPage = Number(params.get('page'));
@@ -294,7 +298,7 @@ export default function Watchlist({
   const filterKey = query.toString();
   query.set('page', String(page));
   const base = discover ? '/discover' : `/user/${targetUserId ?? user.id}`;
-  const path = `${base}/watchlist?${query}`;
+  const path = extras.ready ? `${base}/watchlist?${query}` : null;
 
   return (
     <>

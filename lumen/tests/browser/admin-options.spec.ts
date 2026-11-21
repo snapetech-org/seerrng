@@ -546,6 +546,68 @@ test('calendar mixed results omit the account-disabled media type', async ({
   await expect(page.getByText('Disabled Movie Release')).toHaveCount(0);
 });
 
+test('watchlist filters categories disabled for the signed-in account', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/user/1/watchlist**', (route) =>
+    route.fulfill({
+      json: {
+        results: [
+          {
+            source: 'plex',
+            id: 1,
+            ratingKey: 'movie-1',
+            mediaType: 'movie',
+            title: 'Hidden Movie',
+            tmdbId: 1,
+          },
+          {
+            source: 'plex',
+            id: 2,
+            ratingKey: 'tv-2',
+            mediaType: 'tv',
+            title: 'Visible Series',
+            tmdbId: 2,
+          },
+        ],
+        totalPages: 1,
+        filtersSupported: true,
+      },
+    })
+  );
+  await page.goto(testAppPath('/watchlist'));
+  await expect(page.getByText('Hidden Movie')).toBeVisible();
+  await expect(page.getByText('Visible Series')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('watchlist-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  await page.goto(testAppPath('/watchlist'));
+  await expect(page.getByText('Hidden Movie')).toHaveCount(0);
+  await expect(page.getByText('Visible Series')).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Movies' })).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('watchlist-disabled-candidate.png'),
+    fullPage: true,
+  });
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],

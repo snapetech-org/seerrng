@@ -5152,3 +5152,7 @@ media filters, skips a direct disabled-category query, and filters mixed API
 responses by account categories. The direct-scope and mixed-results tests each
 pass on all four viewport projects; desktop enabled/disabled captures were
 reviewed at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/calendar-visual/`.
+Watchlists now filter by the signed-in account’s categories and omit disabled
+media filter options. The regression passes on all four viewports; desktop
+enabled and disabled captures were reviewed at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/watchlist-category-visual-rerun/`.
