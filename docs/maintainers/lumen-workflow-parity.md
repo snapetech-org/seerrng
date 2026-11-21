@@ -5696,3 +5696,24 @@ sizes, including Arabic RTL. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/adminusers-visual/`.
 Independent linguistic review, provider-backed import verification, and the
 remaining Administration destination pages are still open parity work.
+
+### Audiobookshelf and Kavita settings localization
+
+The shared Audiobookshelf and Kavita Administration connection form now follows
+the saved account locale in English, French, and Arabic. This covers page and
+section titles, connection fields, library selection and scan controls,
+connection test/save/disconnect actions, and local loading, confirmation, and
+recovery messages. The existing API paths, credential handling, library
+selection requirements, and provider authorization behavior are unchanged.
+
+The Audiobookshelf test, library selection, save payload, and disconnect flow,
+plus the Kavita test/save/disconnect lifecycle, pass in all three locales across
+desktop, iPhone, Android, and tablet in both standalone and production-style
+`/lumen/` builds (48 cases). English baseline
+and candidate captures were compared at matching desktop and iPhone viewports;
+French desktop and Arabic iPhone renders were inspected for wrapping, overflow,
+and RTL direction. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/admin-readers-baseline/`,
+`.../admin-readers-candidate/`, and `.../admin-readers-embedded/`.
+Live Audiobookshelf and Kavita server behavior and independent translation
+review remain unverified.

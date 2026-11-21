@@ -4,6 +4,7 @@ import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Provider = 'audiobookshelf' | 'kavita';
@@ -32,6 +33,7 @@ function Connection({
   provider: Provider;
   initial: Settings | null;
 }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const endpoint = `/settings/${provider}`;
   const audio = provider === 'audiobookshelf';
@@ -128,10 +130,22 @@ function Connection({
       if (generation === sessionGeneration()) {
         setNotice(
           action === 'test'
-            ? `${name} connection verified.`
+            ? t(
+                'lumen.adminReaders.connectionVerified',
+                '{service} connection verified.',
+                { service: name }
+              )
             : action === 'save'
-              ? `${name} settings saved.`
-              : `${name} disconnected.`
+              ? t(
+                  'lumen.adminReaders.settingsSaved',
+                  '{service} settings saved.',
+                  { service: name }
+                )
+              : t(
+                  'lumen.adminReaders.disconnected',
+                  '{service} disconnected.',
+                  { service: name }
+                )
         );
       }
     } catch (failure) {
@@ -139,7 +153,11 @@ function Connection({
         setError(
           failure instanceof ApiError
             ? failure.message
-            : `Could not complete the ${name} action.`
+            : t(
+                'lumen.adminReaders.actionFailed',
+                'Could not complete the {service} action.',
+                { service: name }
+              )
         );
     } finally {
       pending.current = false;
@@ -148,7 +166,11 @@ function Connection({
   }
 
   return (
-    <Section title={`${name} Connection`}>
+    <Section
+      title={t('lumen.adminReaders.connection', '{service} Connection', {
+        service: name,
+      })}
+    >
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -162,7 +184,7 @@ function Connection({
           />
           {audio && (
             <label className="set cfg-row">
-              <span>Service Name</span>
+              <span>{t('lumen.adminReaders.serviceName', 'Service Name')}</span>
               <input
                 className="cfg-input"
                 maxLength={128}
@@ -174,9 +196,12 @@ function Connection({
           )}
           {(
             [
-              ['hostname', 'Hostname'],
-              ['baseUrl', 'Base Path'],
-              ['externalUrl', 'External URL'],
+              ['hostname', t('lumen.adminReaders.hostname', 'Hostname')],
+              ['baseUrl', t('lumen.adminReaders.basePath', 'Base Path')],
+              [
+                'externalUrl',
+                t('lumen.adminReaders.externalUrl', 'External URL'),
+              ],
             ] as const
           ).map(([key, label]) => (
             <label className="set cfg-row" key={key}>
@@ -194,7 +219,7 @@ function Connection({
             </label>
           ))}
           <label className="set cfg-row">
-            <span>Port</span>
+            <span>{t('lumen.adminReaders.port', 'Port')}</span>
             <input
               className="cfg-input"
               type="number"
@@ -208,7 +233,7 @@ function Connection({
             />
           </label>
           <label className="set cfg-row">
-            <span>Use HTTPS</span>
+            <span>{t('lumen.adminReaders.useHttps', 'Use HTTPS')}</span>
             <input
               type="checkbox"
               disabled={busy}
@@ -219,14 +244,18 @@ function Connection({
             />
           </label>
           <label className="set cfg-row">
-            <span>API Key</span>
+            <span>{t('lumen.adminReaders.apiKey', 'API Key')}</span>
             <input
               className="cfg-input"
               type="password"
               autoComplete="new-password"
               disabled={busy}
               value={draft.apiKey}
-              placeholder={saved?.apiKey ? 'Saved key' : undefined}
+              placeholder={
+                saved?.apiKey
+                  ? t('lumen.adminReaders.savedKey', 'Saved key')
+                  : undefined
+              }
               onChange={(event) =>
                 updateConnection({ apiKey: event.target.value })
               }
@@ -235,7 +264,12 @@ function Connection({
           {audio && (
             <>
               <label className="set cfg-row">
-                <span>Audiobook Library</span>
+                <span>
+                  {t(
+                    'lumen.adminReaders.audiobookLibrary',
+                    'Audiobook Library'
+                  )}
+                </span>
                 <select
                   className="cfg-select"
                   disabled={busy || !available.length}
@@ -250,7 +284,9 @@ function Connection({
                     });
                   }}
                 >
-                  <option value="">Choose a Library</option>
+                  <option value="">
+                    {t('lumen.adminReaders.chooseLibrary', 'Choose a Library')}
+                  </option>
                   {available.map(({ id, name: label }) => (
                     <option key={id} value={id}>
                       {label}
@@ -259,7 +295,12 @@ function Connection({
                 </select>
               </label>
               <label className="set cfg-row">
-                <span>Enable Library Scan</span>
+                <span>
+                  {t(
+                    'lumen.adminReaders.enableLibraryScan',
+                    'Enable Library Scan'
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   disabled={busy}
@@ -274,16 +315,25 @@ function Connection({
         </div>
         {audio && !available.length && !libraries && (
           <p className="note">
-            Test the connection to load audiobook libraries.
+            {t(
+              'lumen.adminReaders.testToLoadLibraries',
+              'Test the connection to load audiobook libraries.'
+            )}
           </p>
         )}
         {libraries && (
           <p className="note" role="status">
             {libraries.length
               ? audio
-                ? 'Select the audiobook library to scan.'
+                ? t(
+                    'lumen.adminReaders.selectLibraryToScan',
+                    'Select the audiobook library to scan.'
+                  )
                 : libraries.map(({ name: label }) => label).join(', ')
-              : 'No compatible libraries found.'}
+              : t(
+                  'lumen.adminReaders.noCompatibleLibraries',
+                  'No compatible libraries found.'
+                )}
           </p>
         )}
         {notice && (
@@ -303,14 +353,14 @@ function Connection({
             disabled={busy || !ready}
             onClick={() => void submit('test')}
           >
-            Test Connection
+            {t('lumen.adminReaders.testConnection', 'Test Connection')}
           </button>
           <button
             type="submit"
             className="btn btn-primary btn-sm"
             disabled={busy || !canSave || !dirty}
           >
-            Save Changes
+            {t('lumen.adminReaders.saveChanges', 'Save Changes')}
           </button>
           {saved && !confirm && (
             <button
@@ -319,16 +369,24 @@ function Connection({
               disabled={busy}
               onClick={() => setConfirm(true)}
             >
-              Disconnect
+              {t('lumen.adminReaders.disconnect', 'Disconnect')}
             </button>
           )}
         </div>
         {confirm && (
           <>
             <p className="note">
-              Disconnect {name}?{' '}
-              {audio &&
-                'This removes availability and playback links supplied by this library.'}
+              {audio
+                ? t(
+                    'lumen.adminReaders.confirmDisconnectAudiobookshelf',
+                    'Disconnect {service}? This removes availability and playback links supplied by this library.',
+                    { service: name }
+                  )
+                : t(
+                    'lumen.adminReaders.confirmDisconnect',
+                    'Disconnect {service}?',
+                    { service: name }
+                  )}
             </p>
             <div className="toolbar">
               <button
@@ -337,7 +395,10 @@ function Connection({
                 disabled={busy}
                 onClick={() => void submit('disconnect')}
               >
-                Confirm Disconnect
+                {t(
+                  'lumen.adminReaders.confirmDisconnectButton',
+                  'Confirm Disconnect'
+                )}
               </button>
               <button
                 type="button"
@@ -345,7 +406,7 @@ function Connection({
                 disabled={busy}
                 onClick={() => setConfirm(false)}
               >
-                Keep Connection
+                {t('lumen.adminReaders.keepConnection', 'Keep Connection')}
               </button>
             </div>
           </>
@@ -356,6 +417,7 @@ function Connection({
 }
 
 export default function AdminReaders({ provider }: { provider: Provider }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const endpoint = `/settings/${provider}`;
   const [settings, setSettings] = useState<Settings | null>();
@@ -372,21 +434,36 @@ export default function AdminReaders({ provider }: { provider: Provider }) {
         if (current()) setSettings(value);
       })
       .catch(() => {
-        if (current()) setError(`Could not load the ${name} connection.`);
+        if (current())
+          setError(
+            t(
+              'lumen.adminReaders.loadFailed',
+              'Could not load the {service} connection.',
+              { service: name }
+            )
+          );
       });
     return () => controller.abort();
-  }, [attempt, endpoint, name]);
+  }, [attempt, endpoint, name, t]);
   return (
     <>
-      <h1>{name} Settings</h1>
+      <h1>
+        {t('lumen.adminReaders.title', '{service} Settings', { service: name })}
+      </h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.nav.administration', 'Administration')}
         </Link>
       </div>
       <ServiceNote
         what={`${name} settings`}
+        title={t(
+          'lumen.adminReaders.loadFailureTitle',
+          'Couldn’t load {service} settings',
+          { service: name }
+        )}
         error={error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={() => {
           setError(null);
           setAttempt((value) => value + 1);
@@ -397,7 +474,9 @@ export default function AdminReaders({ provider }: { provider: Provider }) {
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading {name} settings…
+            {t('lumen.adminReaders.loading', 'Loading {service} settings…', {
+              service: name,
+            })}
           </p>
         )
       )}
