@@ -1,0 +1,1 @@
+Lumen TV details now localize season selection and guidance, request actions, collection disclosure copy, lifecycle statuses, fact headings, and related-title controls in English, French, and Arabic. Season selection, access rules, provider data, and request behavior are unchanged.

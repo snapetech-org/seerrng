@@ -96,6 +96,12 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### TV detail actions, seasons, and facts
+
+TV detail now localizes the season heading and list accessibility name, request-selection CTA, whole-show guidance, selection shortcuts, premiere and episode labels, common lifecycle statuses, fact headings, related-title navigation, streaming-policy controls, and the Series Collections disclosure and empty/loading copy in English, French, and Arabic. Unknown provider status values and season names remain intact. Selection state, authorization, season mapping, request payloads, and collection lookup are unchanged.
+
+The combined Movie/TV fixture suite passes 24 cases across English, French, and Arabic on desktop, iPhone, Android, and tablet. It verifies localized movie actions and facts, TV season-selection transitions, request-label updates, lifecycle status, collection empty state, saved locale, and no horizontal page overflow. French desktop and Arabic phone captures were inspected. The matching pre-change comparison and bundled production mount remain unverified; live provider/collection behavior and the independent TV request mutation flow need separate qualification. Evidence: `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-option-translation-20261121/`.
+
 ### Movie detail actions and facts
 
 Movie detail now localizes its primary request and 4K actions, theater and 4K playback copy, fact labels, related-title links, and streaming-policy confirmation controls in English, French, and Arabic. Provider values, server names, certification, release-kind names, and media status values remain data-driven. Request authorization and submission behavior are unchanged.

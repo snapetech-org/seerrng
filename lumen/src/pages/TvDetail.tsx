@@ -285,12 +285,26 @@ export default function TvDetail() {
     pub?.tvSeasonWatchGateEnabled === true ||
     user?.tvSeasonWatchGateStatus === 'enabled';
   const label = !n
-    ? 'Pick seasons'
+    ? translate('lumen.tv.pickSeasons', 'Pick seasons')
     : n === missing.length && n > 1
       ? missing.length === seasons.length
-        ? 'Request entire series'
-        : `Request ${n} ${asked ? 'more' : 'missing'} seasons`
-      : `Request ${n}${asked > 0 ? ' more' : ''} season${n === 1 ? '' : 's'}`;
+        ? translate('lumen.tv.requestEntireSeries', 'Request entire series')
+        : translate(
+            asked
+              ? 'lumen.tv.requestMoreSeasons'
+              : 'lumen.tv.requestMissingSeasons',
+            asked
+              ? 'Request {count} more seasons'
+              : 'Request {count} missing seasons',
+            { count: n }
+          )
+      : n === 1
+        ? translate('lumen.tv.requestSeason', 'Request {count} season', {
+            count: n,
+          })
+        : translate('lumen.tv.requestSeasons', 'Request {count} seasons', {
+            count: n,
+          });
   const toggle = (sn: number) => {
     if (!partialOk) return;
     setSel((x) => {
@@ -467,9 +481,19 @@ export default function TvDetail() {
     (r) => r.iso_3166_1 === ratingRegion
   )?.rating;
   const statusLine = have
-    ? `${have === seasons.length ? 'Every season' : `${have} of ${seasons.length} seasons`} on ${serverName}`
+    ? have === seasons.length
+      ? translate('lumen.tv.status.everySeasonOn', 'Every season on {server}', {
+          server: serverName,
+        })
+      : translate(
+          'lumen.tv.status.seasonsOn',
+          '{have} of {total} seasons on {server}',
+          { have, total: seasons.length, server: serverName }
+        )
     : part
-      ? `Partly on ${serverName}`
+      ? translate('lumen.tv.status.partlyOn', 'Partly on {server}', {
+          server: serverName,
+        })
       : '';
   // the series' own state, as the poster glyph says it (downloading x%, requested, ...)
   const mine = statusOf(
@@ -494,7 +518,10 @@ export default function TvDetail() {
         : mode === 'distinguish'
           ? ({
               k: 'wait',
-              word: 'Available to Other Users',
+              word: translate(
+                'lumen.tv.availableOthers',
+                'Available to Other Users'
+              ),
               ico: 'user',
             } as const)
           : null
@@ -506,13 +533,15 @@ export default function TvDetail() {
   );
   const main = blocklisted ? (
     <button className="btn btn-tonal" disabled>
-      Blocklisted
+      {translate('lumen.tv.blocklisted', 'Blocklisted')}
     </button>
   ) : missing.length ? (
     <button className="btn btn-primary" disabled={!n || busy} onClick={request}>
       <Icon name="plus" />
-      {requireApproval ? 'Request Approval' : label}
-      {is4k ? ' in 4K' : ''}
+      {requireApproval
+        ? translate('lumen.tv.requestApproval', 'Request Approval')
+        : label}
+      {is4k ? translate('lumen.tv.in4k', ' in 4K') : ''}
     </button>
   ) : canPlay ? (
     <a
@@ -520,7 +549,9 @@ export default function TvDetail() {
       {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
     >
       <Icon name="play" />
-      Watch on {serverName}
+      {translate('lumen.tv.watchOn', 'Watch on {server}', {
+        server: serverName,
+      })}
     </a>
   ) : sharedAvailability ? null : (
     <button className="btn btn-tonal" disabled>
@@ -538,9 +569,15 @@ export default function TvDetail() {
         line={[
           years.join('–'),
           rating && <span className="cert">{rating}</span>,
-          `${seasons.length} season${seasons.length === 1 ? '' : 's'}`,
+          seasons.length === 1
+            ? translate('lumen.tv.oneSeason', '{count} season', { count: 1 })
+            : translate('lumen.tv.seasonCount', '{count} seasons', {
+                count: seasons.length,
+              }),
           t.episodeRunTime?.[0]
-            ? fmtRun(t.episodeRunTime[0]) + ' episodes'
+            ? translate('lumen.tv.episodesDuration', '{duration} episodes', {
+                duration: fmtRun(t.episodeRunTime[0]),
+              })
             : '',
           t.genres
             .filter((g) => g.id)
@@ -559,12 +596,24 @@ export default function TvDetail() {
           )}
           {mode === 'distinguish' && sharedAvailability && (
             <Pill k="wait" icon="user">
-              Available to Other Users
+              {translate(
+                'lumen.tv.availableOthers',
+                'Available to Other Users'
+              )}
             </Pill>
           )}
           {asked > 0 && (
             <Pill k="wait" icon="clock">
-              {asked === 1 ? '1 season' : asked + ' seasons'} requested
+              {asked === 1
+                ? translate(
+                    'lumen.tv.status.seasonRequested',
+                    '1 season requested'
+                  )
+                : translate(
+                    'lumen.tv.status.seasonsRequested',
+                    '{count} seasons requested',
+                    { count: asked }
+                  )}
             </Pill>
           )}
           {!!t.voteAverage && (
@@ -615,7 +664,9 @@ export default function TvDetail() {
               {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
             >
               <Icon name="play" />
-              Watch on {serverName}
+              {translate('lumen.tv.watchOn', 'Watch on {server}', {
+                server: serverName,
+              })}
             </a>
           )}
         </div>
@@ -628,19 +679,29 @@ export default function TvDetail() {
               return (
                 <li key={r.id}>
                   {r.status === 1 ? (
-                    'Waiting for approval'
+                    translate(
+                      'lumen.tv.waitingForApproval',
+                      'Waiting for approval'
+                    )
                   ) : mine?.k === 'dl' ? (
                     <StatLabel s={mine} />
                   ) : (
-                    'Approved'
+                    translate('lumen.tv.approved', 'Approved')
                   )}
-                  {' · requested by '}
-                  {r.requestedBy?.displayName || 'someone'}
-                  {r.createdAt ? ' on ' + shortDate(r.createdAt) : ''}
+                  {' · '}
+                  {translate('lumen.tv.requestedBy', 'requested by {name}', {
+                    name: r.requestedBy?.displayName || 'someone',
+                  })}
+                  {r.createdAt
+                    ? ' · ' +
+                      translate('lumen.tv.requestedOn', 'on {date}', {
+                        date: shortDate(r.createdAt),
+                      })
+                    : ''}
                   {ss.length
                     ? ' · ' +
                       (ss.length === seasons.length
-                        ? 'Entire series'
+                        ? translate('lumen.tv.entireSeries', 'Entire series')
                         : seasonList(ss))
                     : ''}
                 </li>
@@ -652,7 +713,10 @@ export default function TvDetail() {
           <div
             className="seg"
             role="group"
-            aria-label="Quality"
+            aria-label={translate(
+              'lumen.browse.availabilityQuality',
+              'Quality'
+            )}
             style={{ justifySelf: 'start' }}
           >
             {(
@@ -687,12 +751,14 @@ export default function TvDetail() {
             <p className="ov">{t.overview}</p>
             <div id="seasons">
               <div className="sec-head">
-                <h2>Seasons</h2>
+                <h2>{translate('lumen.tv.seasons', 'Seasons')}</h2>
               </div>
               {watchRule && (
                 <p className="note">
-                  Later seasons may require finishing the previous regular
-                  season on your linked media server.
+                  {translate(
+                    'lumen.tv.laterSeasonNote',
+                    'Later seasons may require finishing the previous regular season on your linked media server.'
+                  )}
                 </p>
               )}
               {gateFailure && (
@@ -711,13 +777,29 @@ export default function TvDetail() {
               {missing.length > 1 && (
                 <p className="note" style={{ margin: '-4px 0 12px' }}>
                   {!partialOk
-                    ? 'This server requests whole shows only.'
+                    ? translate(
+                        'lumen.tv.wholeShowOnly',
+                        'This server requests whole shows only.'
+                      )
                     : prefs.wholeSeriesDefault
                       ? (have
-                          ? 'Everything you don’t have yet is ticked.'
-                          : 'The whole show is ticked.') +
-                        ' Untick any seasons you don’t want.'
-                      : 'Tick the seasons you want.'}
+                          ? translate(
+                              'lumen.tv.everythingMissingTicked',
+                              'Everything you don’t have yet is ticked.'
+                            )
+                          : translate(
+                              'lumen.tv.wholeShowTicked',
+                              'The whole show is ticked.'
+                            )) +
+                        ' ' +
+                        translate(
+                          'lumen.tv.untickSeasons',
+                          'Untick any seasons you don’t want.'
+                        )
+                      : translate(
+                          'lumen.tv.tickSeasons',
+                          'Tick the seasons you want.'
+                        )}
                 </p>
               )}
               {partialOk && missing.length > 1 && (
@@ -727,8 +809,15 @@ export default function TvDetail() {
                     onClick={() => setSel(new Set(missing))}
                   >
                     {missing.length === seasons.length
-                      ? 'Entire series'
-                      : `All missing (${missing.length})`}
+                      ? translate(
+                          'lumen.tv.requestEntireSeries',
+                          'Request entire series'
+                        )
+                      : translate(
+                          'lumen.tv.allMissing',
+                          'All missing ({count})',
+                          { count: missing.length }
+                        )}
                   </button>
                   <button
                     className="chip"
@@ -787,7 +876,11 @@ export default function TvDetail() {
                   submit={submitEpisodes}
                 />
               )}
-              <div className="slist" role="group" aria-label="Seasons">
+              <div
+                className="slist"
+                role="group"
+                aria-label={translate('lumen.tv.seasons', 'Seasons')}
+              >
                 {seasons.map((s) => {
                   const st = stat.get(s.seasonNumber) || 'none';
                   const requested =
@@ -797,9 +890,11 @@ export default function TvDetail() {
                   const on = locked || sel.has(s.seasonNumber);
                   const yr = s.airDate
                     ? s.airDate > today
-                      ? 'Premieres ' + shortDate(s.airDate)
+                      ? translate('lumen.tv.premieres', 'Premieres {date}', {
+                          date: shortDate(s.airDate),
+                        })
                       : s.airDate.slice(0, 4)
-                    : 'TBA';
+                    : translate('lumen.tv.tba', 'TBA');
                   return (
                     <div
                       key={s.seasonNumber}
@@ -824,32 +919,54 @@ export default function TvDetail() {
                         <b>
                           {s.name ||
                             (s.seasonNumber === 0
-                              ? 'Specials'
-                              : `Season ${s.seasonNumber}`)}
+                              ? translate('lumen.tv.specials', 'Specials')
+                              : translate(
+                                  'lumen.tvEpisodeRequest.seasonNumber',
+                                  'Season {number}',
+                                  { number: s.seasonNumber }
+                                ))}
                         </b>
                         <small>
-                          {s.episodeCount} episode
-                          {s.episodeCount === 1 ? '' : 's'} · {yr}
+                          {s.episodeCount}{' '}
+                          {s.episodeCount === 1
+                            ? translate('lumen.tv.episode', 'episode')
+                            : translate('lumen.tv.episodes', 'episodes')}{' '}
+                          · {yr}
                         </small>
                       </span>
                       {shared && mode === 'distinguish' && (
                         <Pill k="wait" icon="user">
-                          Available to Other Users
+                          {translate(
+                            'lumen.tv.availableOthers',
+                            'Available to Other Users'
+                          )}
                         </Pill>
                       )}
                       {!shared && st === 'have' && (
                         <Pill k="ok" icon="check">
-                          On {serverName}
+                          {translate(
+                            'lumen.tv.status.onServer',
+                            'On {server}',
+                            { server: serverName }
+                          )}
                         </Pill>
                       )}
                       {!shared && st === 'part' && !requested && (
                         <Pill k="ok" icon="check">
-                          Partly on {serverName}
+                          {translate(
+                            'lumen.tv.status.partlyOnServer',
+                            'Partly on {server}',
+                            { server: serverName }
+                          )}
                         </Pill>
                       )}
                       {!shared && st === 'part' && requested && (
                         <Pill k="wait" icon="clock">
-                          Partly on {serverName} · Requested
+                          {translate(
+                            'lumen.tv.status.partlyRequestedOnServer',
+                            'Partly on {server} · Requested',
+                            { server: serverName }
+                          )}
                         </Pill>
                       )}
                       {requested &&
@@ -897,17 +1014,29 @@ export default function TvDetail() {
           <aside>
             <Facts
               rows={[
-                ['Streaming Providers', streamingProviders],
                 [
-                  'Original Language',
+                  translate(
+                    'lumen.tv.fact.streamingProviders',
+                    'Streaming Providers'
+                  ),
+                  streamingProviders,
+                ],
+                [
+                  translate(
+                    'lumen.tv.fact.originalLanguage',
+                    'Original Language'
+                  ),
                   originalLanguageLink(t.originalLanguage, '/series'),
                 ],
                 [
-                  'Production Countries',
+                  translate(
+                    'lumen.tv.fact.productionCountries',
+                    'Production Countries'
+                  ),
                   productionCountryLinks(t.productionCountries, '/series'),
                 ],
                 [
-                  'Network',
+                  translate('lumen.tv.fact.network', 'Network'),
                   t.networks?.length
                     ? t.networks.map(({ id, name }, index) => (
                         <span key={`${id ?? name}:${index}`}>
@@ -925,19 +1054,50 @@ export default function TvDetail() {
                     : null,
                 ],
                 [
-                  'Status',
-                  t.status === 'Returning Series' ? 'Still airing' : t.status,
+                  translate('lumen.tv.fact.status', 'Status'),
+                  t.status === 'Returning Series'
+                    ? translate('lumen.tv.fact.stillAiring', 'Still airing')
+                    : ((
+                        {
+                          Planned: translate(
+                            'lumen.browse.seriesStatusOption.1',
+                            'Planned'
+                          ),
+                          'In Production': translate(
+                            'lumen.browse.seriesStatusOption.2',
+                            'In Production'
+                          ),
+                          Ended: translate(
+                            'lumen.browse.seriesStatusOption.3',
+                            'Ended'
+                          ),
+                          Canceled: translate(
+                            'lumen.browse.seriesStatusOption.4',
+                            'Canceled'
+                          ),
+                          Pilot: translate(
+                            'lumen.browse.seriesStatusOption.5',
+                            'Pilot'
+                          ),
+                        } as Record<string, string>
+                      )[t.status ?? ''] ?? t.status),
                 ],
-                ['Episode length', fmtRun(t.episodeRunTime?.[0])],
-                ['Created by', t.createdBy?.map((c) => c.name).join(', ')],
                 [
-                  'Last aired',
+                  translate('lumen.tv.fact.episodeLength', 'Episode length'),
+                  fmtRun(t.episodeRunTime?.[0]),
+                ],
+                [
+                  translate('lumen.tv.fact.createdBy', 'Created by'),
+                  t.createdBy?.map((c) => c.name).join(', '),
+                ],
+                [
+                  translate('lumen.tv.fact.lastAired', 'Last aired'),
                   t.lastEpisodeToAir
                     ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate)}`
                     : '',
                 ],
                 [
-                  'Next episode',
+                  translate('lumen.tv.fact.nextEpisode', 'Next episode'),
                   t.nextEpisodeToAir
                     ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate)}`
                     : '',
@@ -956,14 +1116,21 @@ export default function TvDetail() {
             />
           )}
         <Section
-          title="Related Titles"
-          link={['Recommendations', `/tv/${id}/recommendations`]}
-          action={<Link to={`/tv/${id}/similar`}>Similar Series</Link>}
+          title={translate('lumen.tv.relatedTitles', 'Related Titles')}
+          link={[
+            translate('lumen.tv.recommendations', 'Recommendations'),
+            `/tv/${id}/recommendations`,
+          ]}
+          action={
+            <Link to={`/tv/${id}/similar`}>
+              {translate('lumen.tv.similar', 'Similar Series')}
+            </Link>
+          }
         >
           <div className="toolbar">
             <AssociationLink mediaType="tv" id={id} />
             <Link className="chip" to={`/franchise/tv/${id}`}>
-              Franchise
+              {translate('lumen.tv.franchise', 'Franchise')}
             </Link>
           </div>
           {!!like?.results.length && (
@@ -977,14 +1144,23 @@ export default function TvDetail() {
       </div>
       <ActionBar
         title={t.name || ''}
-        meta={statusLine || `${seasons.length} seasons`}
+        meta={
+          statusLine ||
+          translate('lumen.tv.seasonCount', '{count} seasons', {
+            count: seasons.length,
+          })
+        }
       >
         {/* phones only get this bar: keep a way to watch the seasons already there */}
         {canPlay && missing.length > 0 && (
           <a
             className="icon-btn"
-            aria-label={`Watch on ${serverName}`}
-            title={`Watch on ${serverName}`}
+            aria-label={translate('lumen.tv.watchOn', 'Watch on {server}', {
+              server: serverName,
+            })}
+            title={translate('lumen.tv.watchOn', 'Watch on {server}', {
+              server: serverName,
+            })}
             {...mediaLink(playbackMedia, !!is4k, 'tv', serverName)}
           >
             <Icon name="play" />
@@ -994,10 +1170,13 @@ export default function TvDetail() {
       </ActionBar>
       {streamingOverride?.seriesId === t.id && (
         <ConfirmSheet
-          title="Streaming Request Policy"
+          title={translate(
+            'lumen.tv.streamingPolicy',
+            'Streaming Request Policy'
+          )}
           body={streamingOverride.message}
-          confirm="Request Anyway"
-          cancel="Cancel"
+          confirm={translate('lumen.tv.requestAnyway', 'Request Anyway')}
+          cancel={translate('lumen.tv.cancel', 'Cancel')}
           onClose={() => setStreamingOverride(undefined)}
           onConfirm={() =>
             submitSeasons(streamingOverride.seasons, {
