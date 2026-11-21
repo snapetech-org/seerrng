@@ -352,6 +352,8 @@ const theAudioDbImg = (value: string) => {
 export const tmdbImg = (path: string | undefined | null, size = 'w342') => {
   if (typeof path !== 'string' || !path) return '';
   if (path.startsWith('https://')) return theAudioDbImg(path);
+  // library listings point at SeerrNG's own Radarr/Sonarr cover routes
+  if (path.startsWith('/api/v1/')) return artUrl(path) ?? '';
   if (!isSafeImagePath(path)) return '';
   const safeSize = TMDB_IMAGE_SIZES.has(size) ? size : 'w342';
   return `/imageproxy/tmdb/t/p/${safeSize}${path}`;
@@ -391,7 +393,7 @@ export function proxiedArtPath(raw: string, host: string): string | undefined {
   return u.pathname.slice(1) || undefined;
 }
 const LOCAL_ART_ROUTE =
-  /^(?:\/imageproxy\/.+|\/api\/v1\/(?:(?:sportarr|magazine)\/cover\/[^/]+\/[^/]+|(?:movie|author|adult)\/[^/]+\/cover|book-series\/covers\/image))$/;
+  /^(?:\/imageproxy\/.+|\/api\/v1\/(?:(?:sportarr|magazine)\/cover\/[^/]+\/[^/]+|(?:movie|tv|author|adult)\/[^/]+\/cover|book-series\/covers\/image))$/;
 
 function localArt(raw: string) {
   const path = raw.split(/[?#]/, 1)[0];
