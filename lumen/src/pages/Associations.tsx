@@ -1,17 +1,63 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const labels = {
-  similar: 'Similar',
-  recommended: 'Recommended',
-  'shared-person': 'Shared People',
-  'shared-genre': 'Shared Genres',
-};
+  similar: ['lumen.associations.edge.similar', 'Similar'],
+  recommended: ['lumen.associations.edge.recommended', 'Recommended'],
+  'shared-person': ['lumen.associations.edge.sharedPerson', 'Shared People'],
+  'shared-genre': ['lumen.associations.edge.sharedGenre', 'Shared Genres'],
+} as const;
+const reasonMessages = {
+  sharesGenre: ['lumen.associations.reason.sharesGenre', 'Shares {genre}'],
+  similarToneAudience: [
+    'lumen.associations.reason.similarToneAudience',
+    'Similar tone and audience',
+  ],
+  oftenRecommended: [
+    'lumen.associations.reason.oftenRecommended',
+    'Often recommended with this',
+  ],
+  nearbyListenerOverlap: [
+    'lumen.associations.reason.nearbyListenerOverlap',
+    'Nearby listener overlap',
+  ],
+  similarArtist: ['lumen.associations.reason.similarArtist', 'Similar artist'],
+  alsoByAuthor: [
+    'lumen.associations.reason.alsoByAuthor',
+    'Also by {authorName}',
+  ],
+  sameAuthor: ['lumen.associations.reason.sameAuthor', 'Same author'],
+  personScoredThis: [
+    'lumen.associations.reason.personScoredThis',
+    '{personName} scored this',
+  ],
+  personWorkedOnSound: [
+    'lumen.associations.reason.personWorkedOnSound',
+    '{personName} worked on the sound',
+  ],
+  personAppearsInThis: [
+    'lumen.associations.reason.personAppearsInThis',
+    '{personName} appears in this',
+  ],
+  personWorkedOnThis: [
+    'lumen.associations.reason.personWorkedOnThis',
+    '{personName} worked on this',
+  ],
+  personConnectedToThis: [
+    'lumen.associations.reason.personConnectedToThis',
+    '{personName} is connected to this',
+  ],
+  personAlsoMakesMusic: [
+    'lumen.associations.reason.personAlsoMakesMusic',
+    '{personName} also makes music',
+  ],
+} as const;
 const detailRoutes = {
   movie: 'movie',
   tv: 'tv',
@@ -28,6 +74,8 @@ interface AssociationGraph {
   edges: {
     type: EdgeType;
     reason: string;
+    reasonKey?: string;
+    reasonValues?: Record<string, string>;
     weight?: number;
     node: {
       id: number | string;
@@ -50,15 +98,41 @@ function validIdentity(type: string, id: string) {
 
 type AssociationEdge = AssociationGraph['edges'][number];
 
+function relationshipLabel(
+  type: EdgeType,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const [id, fallback] = labels[type];
+  return t(id, fallback);
+}
+
+function edgeReason(
+  edge: AssociationEdge,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (!edge.reasonKey || !Object.hasOwn(reasonMessages, edge.reasonKey))
+    return edge.reason;
+  const [messageId, fallback] =
+    reasonMessages[edge.reasonKey as keyof typeof reasonMessages];
+  return t(messageId, fallback, edge.reasonValues);
+}
+
 function edgeKey({ type, node }: AssociationEdge) {
   return `${type}:${node.mediaType}:${node.id}`;
 }
 
-function EdgeDetails({ edge }: { edge: AssociationEdge }) {
-  const { node, type, reason } = edge;
+function EdgeDetails({
+  edge,
+  t,
+}: {
+  edge: AssociationEdge;
+  t: ReturnType<typeof useLumenLocale>['t'];
+}) {
+  const { node, type } = edge;
   const name = node.title ?? node.name;
   const id = String(node.id);
   const format = node.bookFormat === 'audiobook' ? '?f=audio' : '';
+  const explanation = edgeReason(edge, t);
   return (
     <div>
       {validIdentity(node.mediaType, id) ? (
@@ -71,8 +145,8 @@ function EdgeDetails({ edge }: { edge: AssociationEdge }) {
       ) : (
         <b>{name}</b>
       )}
-      <small>{labels[type]}</small>
-      <small>{reason}</small>
+      <small>{relationshipLabel(type, t)}</small>
+      <small>{explanation}</small>
     </div>
   );
 }
@@ -82,9 +156,11 @@ const GRAPH_VIEW = '(min-width: 640px)';
 function RelationshipGraph({
   title,
   edges,
+  t,
 }: {
   title: string;
   edges: AssociationEdge[];
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
   const [active, setActive] = useState('');
   const center = { x: 360, y: 295 };
@@ -100,11 +176,17 @@ function RelationshipGraph({
   const selection = edges.find((edge) => edgeKey(edge) === active);
 
   return (
-    <section aria-label="Association Graph">
+    <section
+      aria-label={t('lumen.associations.graphRegion', 'Association Graph')}
+    >
       <svg
         viewBox="0 0 720 590"
         width="100%"
-        aria-label={`Relationships for ${title}`}
+        aria-label={t(
+          'lumen.associations.graphFor',
+          'Relationships for {title}',
+          { title }
+        )}
       >
         {nodes.map(({ edge, x, y }) => (
           <line
@@ -134,7 +216,7 @@ function RelationshipGraph({
               key={key}
               role="button"
               tabIndex={0}
-              aria-label={`${name}, ${labels[edge.type]}`}
+              aria-label={`${name}, ${relationshipLabel(edge.type, t)}`}
               aria-pressed={key === active}
               onClick={() => setActive(key)}
               onKeyDown={(event) => {
@@ -158,10 +240,15 @@ function RelationshipGraph({
       </svg>
       {selection ? (
         <div className="set" aria-live="polite">
-          <EdgeDetails edge={selection} />
+          <EdgeDetails edge={selection} t={t} />
         </div>
       ) : (
-        <p className="note">Select a node to see why it’s related.</p>
+        <p className="note">
+          {t(
+            'lumen.associations.selectNode',
+            'Select a node to see why it’s related.'
+          )}
+        </p>
       )}
     </section>
   );
@@ -196,6 +283,7 @@ export function CollectionAssociations({
   mediaType: 'movie' | 'tv' | 'album';
   parts: { id: string | number }[];
 }) {
+  const { t } = useLumenLocale();
   const [edges, setEdges] = useState<AssociationEdge[]>();
   const [partial, setPartial] = useState(false);
   const [filter, setFilter] = useState('');
@@ -263,42 +351,61 @@ export function CollectionAssociations({
         if (event.currentTarget.open && !edges) void load();
       }}
     >
-      <summary>Collection Associations</summary>
+      <summary>
+        {t('lumen.associations.collectionTitle', 'Collection Associations')}
+      </summary>
       {!edges && (
         <p className="note" role="status">
-          Loading associations…
+          {t('lumen.associations.loading', 'Loading associations…')}
         </p>
       )}
       {partial && (
         <ServiceNote
-          what="collection associations"
-          error="Some member associations could not be loaded."
+          what={t(
+            'lumen.associations.collectionWhat',
+            'collection associations'
+          )}
+          title={t(
+            'lumen.associations.collectionPartialTitle',
+            'Some associations could not be loaded.'
+          )}
+          error={t(
+            'lumen.associations.collectionPartial',
+            'Some collection items could not be checked. Retry to try again.'
+          )}
+          retryLabel={t('lumen.common.retry', 'Retry')}
           retry={() => void load()}
         />
       )}
       {!!edges?.length && (
         <label className="sel">
-          <span className="lbl">Relationship</span>
+          <span className="lbl">
+            {t('lumen.associations.relationship', 'Relationship')}
+          </span>
           <select
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
           >
-            <option value="">All Relationships</option>
-            {Object.entries(labels).map(([key, label]) => (
+            <option value="">
+              {t('lumen.associations.allRelationships', 'All Relationships')}
+            </option>
+            {Object.keys(labels).map((key) => (
               <option key={key} value={key}>
-                {label}
+                {relationshipLabel(key as EdgeType, t)}
               </option>
             ))}
           </select>
         </label>
       )}
       {visible?.length === 0 && !partial && (
-        <p className="note">No associations found.</p>
+        <p className="note">
+          {t('lumen.associations.empty', 'No associations found.')}
+        </p>
       )}
       <ul className="setlist">
         {visible?.map((edge) => (
           <li className="set" key={edgeKey(edge)}>
-            <EdgeDetails edge={edge} />
+            <EdgeDetails edge={edge} t={t} />
           </li>
         ))}
       </ul>
@@ -307,15 +414,26 @@ export function CollectionAssociations({
 }
 
 export default function Associations() {
+  const { t } = useLumenLocale();
   const { mediaType = '', id = '' } = useParams();
   const [params, setParams] = useSearchParams();
   const format =
     mediaType === 'book' && params.get('f') === 'audio' ? '?f=audio' : '';
   const valid = mediaType !== 'person' && validIdentity(mediaType, id);
+  const formatError = useCallback(
+    (error: unknown, fallback: string) =>
+      friendlyError(
+        error,
+        t('lumen.associations.loadError', fallback),
+        (key, fallback) => t(key, fallback)
+      ),
+    [t]
+  );
   const { data, error, reload } = useApi<AssociationGraph>(
     valid
       ? `/association/${mediaType}/${encodeURIComponent(id)}?includeWeak=true`
-      : null
+      : null,
+    { formatError }
   );
   const extras = useExtras();
   const movieEnabled = extras.categoryEnabled('movie');
@@ -347,8 +465,10 @@ export default function Associations() {
       <ExtraHeader
         title={
           data?.root.title
-            ? `Associations for ${data.root.title}`
-            : 'Associations'
+            ? t('lumen.associations.titleFor', 'Associations for {title}', {
+                title: data.root.title,
+              })
+            : t('lumen.associations.title', 'Associations')
         }
       >
         {valid && (
@@ -357,47 +477,62 @@ export default function Associations() {
               className="chip"
               to={`/${detailRoutes[mediaType as MediaType]}/${encodeURIComponent(id)}${format}`}
             >
-              Back to Details
+              {t('lumen.associations.backToDetails', 'Back to Details')}
             </Link>
           </div>
         )}
       </ExtraHeader>
       {!valid && (
         <p className="note" role="alert">
-          Invalid association title.
+          {t('lumen.associations.invalidTitle', 'Invalid association title.')}
         </p>
       )}
-      <ServiceNote error={error} what="associations" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.associations.what', 'associations')}
+        title={t('lumen.associations.loadFailed', 'Couldn’t load associations')}
+        retryLabel={t('lumen.common.retry', 'Retry')}
+        retry={reload}
+      />
       {valid && !data && !error && (
         <p className="note" role="status">
-          Loading associations…
+          {t('lumen.associations.loading', 'Loading associations…')}
         </p>
       )}
       {data && (
         <>
           <div className="toolbar">
             {wide && (
-              <div className="seg" role="group" aria-label="Association View">
+              <div
+                className="seg"
+                role="group"
+                aria-label={t('lumen.associations.view', 'Association View')}
+              >
                 <button
                   type="button"
                   aria-pressed={!graphView}
                   onClick={() => showGraph(false)}
                 >
-                  List
+                  {t('lumen.associations.list', 'List')}
                 </button>
                 <button
                   type="button"
                   aria-pressed={graphView}
                   onClick={() => showGraph(true)}
                 >
-                  Graph
+                  {t('lumen.associations.graph', 'Graph')}
                 </button>
               </div>
             )}
             <label className="sel">
-              <span className="lbl">Relationship</span>
+              <span className="lbl">
+                {t('lumen.associations.relationship', 'Relationship')}
+              </span>
               <select
-                aria-label="Relationship"
+                aria-label={t(
+                  'lumen.associations.relationship',
+                  'Relationship'
+                )}
                 value={filter}
                 onChange={(event) => {
                   const next = new URLSearchParams(params);
@@ -406,25 +541,32 @@ export default function Associations() {
                   setParams(next);
                 }}
               >
-                <option value="">All Relationships</option>
-                {Object.entries(labels).map(([key, label]) => (
+                <option value="">
+                  {t(
+                    'lumen.associations.allRelationships',
+                    'All Relationships'
+                  )}
+                </option>
+                {Object.keys(labels).map((key) => (
                   <option key={key} value={key}>
-                    {label}
+                    {relationshipLabel(key as EdgeType, t)}
                   </option>
                 ))}
               </select>
             </label>
           </div>
           {edges?.length === 0 && (
-            <p className="note">No associations found.</p>
+            <p className="note">
+              {t('lumen.associations.empty', 'No associations found.')}
+            </p>
           )}
           {graphView && edges?.length ? (
-            <RelationshipGraph title={data.root.title} edges={edges} />
+            <RelationshipGraph title={data.root.title} edges={edges} t={t} />
           ) : (
             <ul className="setlist">
               {edges?.map((edge) => (
                 <li className="set" key={edgeKey(edge)}>
-                  <EdgeDetails edge={edge} />
+                  <EdgeDetails edge={edge} t={t} />
                 </li>
               ))}
             </ul>

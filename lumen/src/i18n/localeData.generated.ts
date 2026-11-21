@@ -2307,6 +2307,53 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'عرض طلبات {name}',
       'lumen.adminUsers.viewWatchlist': 'عرض قائمة متابعة {name}',
       'lumen.adminUsers.watchlist': 'قائمة المتابعة',
+      'lumen.associations.allRelationships': 'كل العلاقات',
+      'lumen.associations.backToDetails': 'العودة إلى التفاصيل',
+      'lumen.associations.collectionPartial':
+        'تعذر التحقق من بعض عناصر المجموعة. حاول مرة أخرى.',
+      'lumen.associations.collectionPartialTitle': 'تعذر تحميل بعض الارتباطات.',
+      'lumen.associations.collectionTitle': 'ارتباطات المجموعة',
+      'lumen.associations.collectionWhat': 'ارتباطات المجموعة',
+      'lumen.associations.edge.recommended': 'موصى به',
+      'lumen.associations.edge.sharedGenre': 'أنواع مشتركة',
+      'lumen.associations.edge.sharedPerson': 'أشخاص مشتركون',
+      'lumen.associations.edge.similar': 'مشابه',
+      'lumen.associations.empty': 'لم يتم العثور على ارتباطات.',
+      'lumen.associations.graph': 'رسم بياني',
+      'lumen.associations.graphFor': 'العلاقات لـ {title}',
+      'lumen.associations.graphRegion': 'الرسم البياني للارتباطات',
+      'lumen.associations.invalidTitle': 'عنوان غير صالح لعرض الارتباطات.',
+      'lumen.associations.list': 'قائمة',
+      'lumen.associations.loadError': 'تعذر تحميل الارتباطات. حاول مرة أخرى.',
+      'lumen.associations.loadFailed': 'تعذر تحميل الارتباطات',
+      'lumen.associations.loading': 'جارٍ تحميل الارتباطات…',
+      'lumen.associations.reason.alsoByAuthor': 'عمل آخر لـ {authorName}',
+      'lumen.associations.reason.nearbyListenerOverlap':
+        'تداخل في المستمعين القريبين',
+      'lumen.associations.reason.oftenRecommended':
+        'يُوصى به غالبًا مع هذا العنوان',
+      'lumen.associations.reason.personAlsoMakesMusic':
+        'يؤلف {personName} الموسيقى أيضًا',
+      'lumen.associations.reason.personAppearsInThis':
+        'يظهر {personName} في هذا العمل',
+      'lumen.associations.reason.personConnectedToThis':
+        'يرتبط {personName} بهذا العمل',
+      'lumen.associations.reason.personScoredThis':
+        'ألّف {personName} موسيقى هذا العمل',
+      'lumen.associations.reason.personWorkedOnSound':
+        'عمل {personName} على الصوت',
+      'lumen.associations.reason.personWorkedOnThis':
+        'عمل {personName} على هذا العمل',
+      'lumen.associations.reason.sameAuthor': 'المؤلف نفسه',
+      'lumen.associations.reason.sharesGenre': 'يشترك في نوع {genre}',
+      'lumen.associations.reason.similarArtist': 'فنان مشابه',
+      'lumen.associations.reason.similarToneAudience': 'نبرة وجمهور متشابهان',
+      'lumen.associations.relationship': 'العلاقة',
+      'lumen.associations.selectNode': 'اختر عقدة لمعرفة سبب ارتباطها.',
+      'lumen.associations.title': 'الارتباطات',
+      'lumen.associations.titleFor': 'ارتباطات {title}',
+      'lumen.associations.view': 'طريقة عرض الارتباطات',
+      'lumen.associations.what': 'الارتباطات',
       'lumen.automaticBlocklist.confirmFailure':
         'تعذر تأكيد حفظ إعدادات الحظر التلقائي.',
       'lumen.automaticBlocklist.findKeywords': 'البحث عن كلمات',
@@ -2635,6 +2682,7 @@ export const localeData = [
       'lumen.clientTokens.title': 'رموز العميل',
       'lumen.clientTokens.tokenName': 'اسم الرمز',
       'lumen.clientTokens.yourTokens': 'رموزك',
+      'lumen.common.retry': 'إعادة المحاولة',
       'lumen.detail.advancedOptions': 'خيارات الطلب المتقدمة',
       'lumen.detail.confirmPinFailure':
         'تعذر تأكيد تفضيل {preference} المحفوظ.',
@@ -10478,6 +10526,54 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'View Requests for {name}',
       'lumen.adminUsers.viewWatchlist': 'View Watchlist for {name}',
       'lumen.adminUsers.watchlist': 'Watchlist',
+      'lumen.associations.allRelationships': 'All Relationships',
+      'lumen.associations.backToDetails': 'Back to Details',
+      'lumen.associations.collectionPartial':
+        'Some collection items could not be checked. Retry to try again.',
+      'lumen.associations.collectionPartialTitle':
+        'Some associations could not be loaded.',
+      'lumen.associations.collectionTitle': 'Collection Associations',
+      'lumen.associations.collectionWhat': 'collection associations',
+      'lumen.associations.edge.recommended': 'Recommended',
+      'lumen.associations.edge.sharedGenre': 'Shared Genres',
+      'lumen.associations.edge.sharedPerson': 'Shared People',
+      'lumen.associations.edge.similar': 'Similar',
+      'lumen.associations.empty': 'No associations found.',
+      'lumen.associations.graph': 'Graph',
+      'lumen.associations.graphFor': 'Relationships for {title}',
+      'lumen.associations.graphRegion': 'Association Graph',
+      'lumen.associations.invalidTitle': 'Invalid association title.',
+      'lumen.associations.list': 'List',
+      'lumen.associations.loadError': 'Could not load associations. Try again.',
+      'lumen.associations.loadFailed': 'Couldn’t load associations',
+      'lumen.associations.loading': 'Loading associations…',
+      'lumen.associations.reason.alsoByAuthor': 'Also by {authorName}',
+      'lumen.associations.reason.nearbyListenerOverlap':
+        'Nearby listener overlap',
+      'lumen.associations.reason.oftenRecommended':
+        'Often recommended with this',
+      'lumen.associations.reason.personAlsoMakesMusic':
+        '{personName} also makes music',
+      'lumen.associations.reason.personAppearsInThis':
+        '{personName} appears in this',
+      'lumen.associations.reason.personConnectedToThis':
+        '{personName} is connected to this',
+      'lumen.associations.reason.personScoredThis': '{personName} scored this',
+      'lumen.associations.reason.personWorkedOnSound':
+        '{personName} worked on the sound',
+      'lumen.associations.reason.personWorkedOnThis':
+        '{personName} worked on this',
+      'lumen.associations.reason.sameAuthor': 'Same author',
+      'lumen.associations.reason.sharesGenre': 'Shares {genre}',
+      'lumen.associations.reason.similarArtist': 'Similar artist',
+      'lumen.associations.reason.similarToneAudience':
+        'Similar tone and audience',
+      'lumen.associations.relationship': 'Relationship',
+      'lumen.associations.selectNode': 'Select a node to see why it’s related.',
+      'lumen.associations.title': 'Associations',
+      'lumen.associations.titleFor': 'Associations for {title}',
+      'lumen.associations.view': 'Association View',
+      'lumen.associations.what': 'associations',
       'lumen.automaticBlocklist.confirmFailure':
         'Could not confirm the saved blocklist settings.',
       'lumen.automaticBlocklist.findKeywords': 'Find Keywords',
@@ -10814,6 +10910,7 @@ export const localeData = [
       'lumen.clientTokens.title': 'Client Tokens',
       'lumen.clientTokens.tokenName': 'Token Name',
       'lumen.clientTokens.yourTokens': 'Your Tokens',
+      'lumen.common.retry': 'Retry',
       'lumen.detail.advancedOptions': 'Advanced Request Options',
       'lumen.detail.confirmPinFailure':
         'Could not confirm the saved {preference} preference.',
@@ -19157,6 +19254,57 @@ export const localeData = [
       'lumen.adminUsers.viewRequests': 'Voir les demandes de {name}',
       'lumen.adminUsers.viewWatchlist': 'Voir la liste de suivi de {name}',
       'lumen.adminUsers.watchlist': 'Liste de suivi',
+      'lumen.associations.allRelationships': 'Toutes les relations',
+      'lumen.associations.backToDetails': 'Retour aux détails',
+      'lumen.associations.collectionPartial':
+        'Certains éléments de la collection n’ont pas pu être vérifiés. Réessayez.',
+      'lumen.associations.collectionPartialTitle':
+        'Certaines associations n’ont pas pu être chargées.',
+      'lumen.associations.collectionTitle': 'Associations de la collection',
+      'lumen.associations.collectionWhat': 'les associations de la collection',
+      'lumen.associations.edge.recommended': 'Recommandé',
+      'lumen.associations.edge.sharedGenre': 'Genres en commun',
+      'lumen.associations.edge.sharedPerson': 'Personnes en commun',
+      'lumen.associations.edge.similar': 'Similaire',
+      'lumen.associations.empty': 'Aucune association trouvée.',
+      'lumen.associations.graph': 'Graphe',
+      'lumen.associations.graphFor': 'Relations pour {title}',
+      'lumen.associations.graphRegion': 'Graphe des associations',
+      'lumen.associations.invalidTitle':
+        'Titre invalide pour les associations.',
+      'lumen.associations.list': 'Liste',
+      'lumen.associations.loadError':
+        'Impossible de charger les associations. Réessayez.',
+      'lumen.associations.loadFailed': 'Impossible de charger les associations',
+      'lumen.associations.loading': 'Chargement des associations…',
+      'lumen.associations.reason.alsoByAuthor': 'Aussi de {authorName}',
+      'lumen.associations.reason.nearbyListenerOverlap': 'Auditeurs en commun',
+      'lumen.associations.reason.oftenRecommended':
+        'Souvent recommandé avec ce titre',
+      'lumen.associations.reason.personAlsoMakesMusic':
+        '{personName} fait aussi de la musique',
+      'lumen.associations.reason.personAppearsInThis':
+        '{personName} apparaît dans ce titre',
+      'lumen.associations.reason.personConnectedToThis':
+        '{personName} est associé à ce titre',
+      'lumen.associations.reason.personScoredThis':
+        '{personName} a composé la musique',
+      'lumen.associations.reason.personWorkedOnSound':
+        '{personName} a travaillé sur le son',
+      'lumen.associations.reason.personWorkedOnThis':
+        '{personName} a travaillé sur ce titre',
+      'lumen.associations.reason.sameAuthor': 'Même auteur',
+      'lumen.associations.reason.sharesGenre': 'Genre en commun : {genre}',
+      'lumen.associations.reason.similarArtist': 'Artiste similaire',
+      'lumen.associations.reason.similarToneAudience':
+        'Ton et public similaires',
+      'lumen.associations.relationship': 'Relation',
+      'lumen.associations.selectNode':
+        'Sélectionnez un nœud pour voir la raison de cette relation.',
+      'lumen.associations.title': 'Associations',
+      'lumen.associations.titleFor': 'Associations pour {title}',
+      'lumen.associations.view': 'Affichage des associations',
+      'lumen.associations.what': 'les associations',
       'lumen.automaticBlocklist.confirmFailure':
         'Impossible de confirmer l’enregistrement des paramètres de blocage automatique.',
       'lumen.automaticBlocklist.findKeywords': 'Rechercher des mots-clés',
@@ -19514,6 +19662,7 @@ export const localeData = [
       'lumen.clientTokens.title': 'Jetons client',
       'lumen.clientTokens.tokenName': 'Nom du jeton',
       'lumen.clientTokens.yourTokens': 'Vos jetons',
+      'lumen.common.retry': 'Réessayer',
       'lumen.detail.advancedOptions': 'Options de demande avancées',
       'lumen.detail.confirmPinFailure':
         'Impossible de confirmer la préférence {preference} enregistrée.',

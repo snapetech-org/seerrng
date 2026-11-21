@@ -4355,17 +4355,17 @@ test('movie associations preserve related identities and explanations', async ({
         },
       })
   );
-  await page.goto('/movie/101');
+  await page.goto(testAppPath('/movie/101'));
   await page.getByRole('link', { name: 'Explore Associations' }).click();
   await expect(
     page.getByRole('heading', { name: 'Associations for The Test Film' })
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Related Series' })
-  ).toHaveAttribute('href', '/tv/101');
+  ).toHaveAttribute('href', testAppPath('/tv/101'));
   await expect(
     page.getByRole('link', { name: 'Related Person' })
-  ).toHaveAttribute('href', '/person/101');
+  ).toHaveAttribute('href', testAppPath('/person/101'));
   await page.getByLabel('Relationship').selectOption('shared-person');
   await expect(page.getByRole('link', { name: 'Related Series' })).toHaveCount(
     0
@@ -4384,7 +4384,7 @@ test('movie associations preserve related identities and explanations', async ({
     await expect(node).toHaveAttribute('aria-pressed', 'true');
     await expect(
       graph.getByRole('link', { name: 'Related Person' })
-    ).toHaveAttribute('href', '/person/101');
+    ).toHaveAttribute('href', testAppPath('/person/101'));
     await expect(graph.getByText('Worked on the soundtrack')).toBeVisible();
     await page.getByRole('button', { name: 'List', exact: true }).click();
     await expect(graph).toHaveCount(0);
@@ -4395,11 +4395,278 @@ test('movie associations preserve related identities and explanations', async ({
     await expect(
       page.getByRole('button', { name: 'Graph', exact: true })
     ).toHaveCount(0);
-    await page.goto('/associations/movie/101?view=graph');
+    await page.goto(testAppPath('/associations/movie/101?view=graph'));
     await expect(
       page.getByRole('link', { name: 'Related Person' })
     ).toBeVisible();
   }
+});
+
+test('Associations localize relationship filters, graph controls, and generated reasons', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locale = ['fr', 'ar'].includes(
+    process.env.LUMEN_ASSOCIATIONS_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_ASSOCIATIONS_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      title: 'Associations for The Test Film',
+      back: 'Back to Details',
+      relationship: 'Relationship',
+      all: 'All Relationships',
+      similar: 'Similar',
+      sharedPerson: 'Shared People',
+      graph: 'Graph',
+      graphRegion: 'Association Graph',
+      list: 'List',
+      selectNode: 'Select a node to see why it’s related.',
+      personReason: 'Nora scored this',
+      invalid: 'Invalid association title.',
+      loadFailed: 'Couldn’t load associations',
+      loadError: 'Could not load associations. Try again.',
+      retry: 'Retry',
+      empty: 'No associations found.',
+    },
+    fr: {
+      title: 'Associations pour The Test Film',
+      back: 'Retour aux détails',
+      relationship: 'Relation',
+      all: 'Toutes les relations',
+      similar: 'Similaire',
+      sharedPerson: 'Personnes en commun',
+      graph: 'Graphe',
+      graphRegion: 'Graphe des associations',
+      list: 'Liste',
+      selectNode: 'Sélectionnez un nœud pour voir la raison de cette relation.',
+      personReason: 'Nora a composé la musique',
+      invalid: 'Titre invalide pour les associations.',
+      loadFailed: 'Impossible de charger les associations',
+      loadError: 'Impossible de charger les associations. Réessayez.',
+      retry: 'Réessayer',
+      empty: 'Aucune association trouvée.',
+    },
+    ar: {
+      title: 'ارتباطات The Test Film',
+      back: 'العودة إلى التفاصيل',
+      relationship: 'العلاقة',
+      all: 'كل العلاقات',
+      similar: 'مشابه',
+      sharedPerson: 'أشخاص مشتركون',
+      graph: 'رسم بياني',
+      graphRegion: 'الرسم البياني للارتباطات',
+      list: 'قائمة',
+      selectNode: 'اختر عقدة لمعرفة سبب ارتباطها.',
+      personReason: 'ألّف Nora موسيقى هذا العمل',
+      invalid: 'عنوان غير صالح لعرض الارتباطات.',
+      loadFailed: 'تعذر تحميل الارتباطات',
+      loadError: 'تعذر تحميل الارتباطات. حاول مرة أخرى.',
+      retry: 'إعادة المحاولة',
+      empty: 'لم يتم العثور على ارتباطات.',
+    },
+  }[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { movie: true } } })
+  );
+  await page.route(
+    '**/api/v1/association/movie/101?includeWeak=true',
+    (route) =>
+      route.fulfill({
+        json: {
+          root: { title: 'The Test Film' },
+          edges: [
+            {
+              type: 'similar',
+              reason: 'Similar tone and audience',
+              reasonKey: 'similarToneAudience',
+              node: { mediaType: 'movie', id: 102, title: 'Similar Film' },
+            },
+            {
+              type: 'shared-person',
+              reason: 'Nora scored this',
+              reasonKey: 'personScoredThis',
+              reasonValues: { personName: 'Nora' },
+              node: { mediaType: 'person', id: 103, name: 'Nora' },
+            },
+            {
+              type: 'shared-person',
+              reason: 'A provider-specific explanation',
+              reasonKey: 'constructor',
+              node: { mediaType: 'book', id: 'OL123W', title: 'Related Book' },
+            },
+          ],
+        },
+      })
+  );
+  let allowRetry = false;
+  await page.route(
+    '**/api/v1/association/movie/104?includeWeak=true',
+    (route) => {
+      if (!allowRetry) {
+        return route.fulfill({ status: 404, json: { message: 'Not found' } });
+      }
+      return route.fulfill({
+        json: { root: { title: 'The Test Film' }, edges: [] },
+      });
+    }
+  );
+
+  await page.goto(testAppPath('/associations/movie/101'));
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  await expect(page.getByRole('link', { name: copy.back })).toHaveAttribute(
+    'href',
+    testAppPath('/movie/101')
+  );
+  const relationship = page.getByRole('combobox', {
+    name: copy.relationship,
+  });
+  await expect(relationship.locator('option').first()).toHaveText(copy.all);
+  await expect(
+    relationship.locator('option', { hasText: copy.similar })
+  ).toHaveCount(1);
+  await expect(
+    relationship.locator('option', { hasText: copy.sharedPerson })
+  ).toHaveCount(1);
+  await expect(page.getByText(copy.personReason)).toBeVisible();
+  await expect(page.getByText('A provider-specific explanation')).toBeVisible();
+  if (process.env.LUMEN_ASSOCIATIONS_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ASSOCIATIONS_CAPTURE}-list-${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await relationship.selectOption('shared-person');
+  await expect(page.getByRole('link', { name: 'Similar Film' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Nora' })).toBeVisible();
+
+  if ((page.viewportSize()?.width ?? 0) >= 640) {
+    await page.getByRole('button', { name: copy.graph, exact: true }).click();
+    const graph = page.getByRole('region', { name: copy.graphRegion });
+    await expect(graph.getByText(copy.selectNode)).toBeVisible();
+    const node = graph.getByRole('button', {
+      name: `Nora, ${copy.sharedPerson}`,
+    });
+    await node.focus();
+    await page.keyboard.press('Enter');
+    await expect(node).toHaveAttribute('aria-pressed', 'true');
+    await expect(graph.getByText(copy.personReason)).toBeVisible();
+    if (process.env.LUMEN_ASSOCIATIONS_CAPTURE) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_ASSOCIATIONS_CAPTURE}-graph-${locale}-${test.info().project.name}.png`,
+        fullPage: true,
+      });
+    }
+    await page.getByRole('button', { name: copy.list, exact: true }).click();
+    await expect(page.getByRole('link', { name: 'Nora' })).toBeVisible();
+  } else {
+    await expect(
+      page.getByRole('button', { name: copy.graph, exact: true })
+    ).toHaveCount(0);
+  }
+  await page.goto(testAppPath('/associations/movie/not-a-number'));
+  await expect(page.getByText(copy.invalid)).toBeVisible();
+  await page.goto(testAppPath('/associations/movie/104'));
+  await expect(page.getByText(copy.loadFailed, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.loadError)).toBeVisible();
+  allowRetry = true;
+  await page.getByRole('button', { name: copy.retry }).click();
+  await expect(page.getByText(copy.empty)).toBeVisible();
+});
+
+test('Collection Associations localize partial-load recovery and retry', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locale = ['fr', 'ar'].includes(
+    process.env.LUMEN_ASSOCIATIONS_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_ASSOCIATIONS_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      disclosure: 'Collection Associations',
+      failedTitle: 'Some associations could not be loaded.',
+      failed: 'Some collection items could not be checked. Retry to try again.',
+      retry: 'Retry',
+      relationship: 'Relationship',
+      related: 'Related Film',
+      reason: 'Often recommended with this',
+    },
+    fr: {
+      disclosure: 'Associations de la collection',
+      failedTitle: 'Certaines associations n’ont pas pu être chargées.',
+      failed:
+        'Certains éléments de la collection n’ont pas pu être vérifiés. Réessayez.',
+      retry: 'Réessayer',
+      relationship: 'Relation',
+      related: 'Related Film',
+      reason: 'Souvent recommandé avec ce titre',
+    },
+    ar: {
+      disclosure: 'ارتباطات المجموعة',
+      failedTitle: 'تعذر تحميل بعض الارتباطات.',
+      failed: 'تعذر التحقق من بعض عناصر المجموعة. حاول مرة أخرى.',
+      retry: 'إعادة المحاولة',
+      relationship: 'العلاقة',
+      related: 'Related Film',
+      reason: 'يُوصى به غالبًا مع هذا العنوان',
+    },
+  }[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { movie: true } } })
+  );
+  await page.route('**/api/v1/collection/55', (route) =>
+    route.fulfill({
+      json: {
+        id: 55,
+        name: 'Fixture Collection',
+        parts: [
+          { id: 101, title: 'First Member', mediaType: 'movie' },
+          { id: 102, title: 'Second Member', mediaType: 'movie' },
+        ],
+      },
+    })
+  );
+  let failed = false;
+  await page.route('**/api/v1/association/movie/*', (route) => {
+    const id = new URL(route.request().url()).pathname.split('/').at(-1);
+    if (id === '101' && !failed) {
+      failed = true;
+      return route.fulfill({
+        status: 503,
+        json: { message: 'temporary failure' },
+      });
+    }
+    return route.fulfill({
+      json: {
+        root: { title: 'Fixture Collection' },
+        edges:
+          id === '102'
+            ? [
+                {
+                  type: 'recommended',
+                  reason: 'Often recommended with this',
+                  reasonKey: 'oftenRecommended',
+                  node: { mediaType: 'movie', id: 103, title: 'Related Film' },
+                },
+              ]
+            : [],
+      },
+    });
+  });
+
+  await page.goto(testAppPath('/collection/55'));
+  await page.getByText(copy.disclosure, { exact: true }).click();
+  const partial = page.getByRole('alert').filter({ hasText: copy.failedTitle });
+  await expect(partial).toContainText(copy.failed);
+  await partial.getByRole('button', { name: copy.retry }).click();
+  await expect(page.getByRole('link', { name: copy.related })).toBeVisible();
+  await expect(page.getByText(copy.reason)).toBeVisible();
+  await expect(
+    page.getByRole('combobox', { name: copy.relationship })
+  ).toBeVisible();
 });
 
 test('music and Open Library book details open Associations with exact identity', async ({
@@ -4502,7 +4769,7 @@ test('music and Open Library book details open Associations with exact identity'
     'href',
     testAppPath(`/associations/artist/${artist}`)
   );
-  await page.goto('/book/OL123W?format=audiobook');
+  await page.goto(testAppPath('/book/OL123W?format=audiobook'));
   await association.click();
   await expect(
     page.getByRole('heading', { name: 'Associations for Fixture Book' })
@@ -4510,7 +4777,7 @@ test('music and Open Library book details open Associations with exact identity'
   await page.getByLabel('Relationship').selectOption('recommended');
   await expect(
     page.getByRole('link', { name: 'Back to Details' })
-  ).toHaveAttribute('href', '/book/OL123W?f=audio');
+  ).toHaveAttribute('href', testAppPath('/book/OL123W?f=audio'));
   await page.route('**/api/v1/book/bookshelf%3A1%3Afixture', (route) =>
     route.fulfill({
       json: {
@@ -4520,10 +4787,10 @@ test('music and Open Library book details open Associations with exact identity'
       },
     })
   );
-  await page.goto('/book/bookshelf%3A1%3Afixture');
+  await page.goto(testAppPath('/book/bookshelf%3A1%3Afixture'));
   await expect(page.getByRole('link', { name: /^Audiobook / })).toHaveAttribute(
     'href',
-    '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Book'
+    testAppPath('/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Book')
   );
   await page.route(
     '**/api/v1/book/bookshelf%3A1%3Afixture/ratings?lookupTitle=Local+Book',
@@ -4537,7 +4804,9 @@ test('music and Open Library book details open Associations with exact identity'
         },
       })
   );
-  await page.goto('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book');
+  await page.goto(
+    testAppPath('/book/bookshelf%3A1%3Afixture?lookupTitle=Local+Book')
+  );
   await expect(page.getByRole('heading', { name: 'Local Book' })).toBeVisible();
   await expect(
     page.getByRole('link', { name: '4.2/5 · Open Library' })

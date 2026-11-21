@@ -5657,3 +5657,23 @@ the states were inspected at desktop and iPhone sizes in all three locales.
 Geometry was compared against the pre-fix baseline at matching desktop and
 iPhone viewports; the Arabic URL label no longer overlaps the URL field. Live
 Spotify authorization and playlist provider behavior remain unverified.
+
+### Associations route localization
+
+The standalone Associations route now follows the saved account language for
+its title, navigation, relationship filters, graph controls and accessibility
+labels, loading and empty states, and collection association disclosure and
+partial-load retry. Server-provided reason identifiers and values are rendered
+through the matching locale message; unknown reason identifiers retain the
+server-provided explanation. API requests, relationship filtering, exact media
+identities, and graph selection behavior are unchanged.
+
+The route localization and collection retry cases pass in English, French, and
+Arabic at desktop, iPhone, Android, and tablet sizes in both standalone and
+production-style embedded builds (24 cases per build). Existing movie, music,
+and book association flows also pass in both builds. French desktop list and
+graph states and the Arabic iPhone list state were inspected; matching baseline
+and candidate captures show no layout or geometry changes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/`.
+Live association-provider responses and independent translation review remain
+unverified.

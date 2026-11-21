@@ -14,6 +14,7 @@
 - **Discovery Integrations:** Connecting a Trakt, AniList, or Simkl account from the full settings page now sends the required JSON request body, avoiding an unsupported-media-type error.
 - **Lumen:** Modal dialogs keep keyboard focus inside the dialog when asynchronously loaded content replaces the currently focused control.
 - **Lumen:** Shared Prowlarr search, association, and Blocklist actions now follow the selected English, French, or Arabic language across media detail pages.
+- **Lumen:** The Associations page now translates relationship filters, graph controls, generated explanations, and collection retry feedback in English, French, and Arabic.
 - **Reader Delivery:** Saved BookOrbit live shelf counts now use the authenticated scope query, including for empty shelves; existing connections need no configuration changes.
 - **Settings:** The Save action stays available while forms still contain unsaved changes, including in SeerrOrig.
 
