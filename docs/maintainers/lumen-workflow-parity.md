@@ -138,6 +138,15 @@ available-ebook, authoritative Available membership, format-specific downloads,
 TV season selection, cancellation, and approval. Other request-audit items in
 the table remain open.
 
+The native TV request dialog now retries season metadata that fails during the
+parallel provider pass, one missing season at a time. This handles providers
+that reject concurrent season lookups while keeping the work bounded by the
+requested season count and preserving the user's selection until every season
+is available. A 15-season API fixture forces concurrency failures and verifies
+that the serial recovery returns all seasons; route and request-tree fixtures
+pass. Live-provider confirmation remains open, and this server-side fix does
+not complete Lumen's separate series-selection parity audit.
+
 Discover previously issued its default-on catalog requests before the
 asynchronous Lumen configuration loaded, even when an administrator had disabled
 every home row. It now waits for that configuration before rendering optional
