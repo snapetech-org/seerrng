@@ -58,6 +58,21 @@ RTL direction. Live provider states and independent linguistic review remain
 open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/status-localization/`.
 
+### Watchlist display localization
+
+Lumen Watchlist, Discover Watchlist, and delegated user-watchlist screens now
+localize their headings, filters, media and sort choices, pagination, removal
+actions, empty/loading copy, and generic removal failures in English, French,
+and Arabic. Arabic retains RTL direction. Filtering, ownership, safe removal,
+and combined Plex/SeerrNG list behavior are unchanged. Browser fixtures pass for
+the populated list and a failed removal across desktop, iPhone, Android, and
+tablet; 36 existing Watchlist regression cases pass across the same viewports.
+English, French, and Arabic baseline/candidate captures were compared at 1440
+and 390 CSS pixels; geometry is unchanged and the Arabic screen has no
+horizontal overflow. Other Lumen locales use the English fallback, and live
+provider and independent linguistic review remain open. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/watchlist-localization/`.
+
 ### User administration display
 
 The Lumen user directory now localizes its heading, search and sorting controls,
