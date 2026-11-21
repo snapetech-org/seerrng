@@ -292,13 +292,25 @@ const MON = [
 ];
 // "Mar 11", or "Mar 11, 2027" when the date is in another year than this one (`year: false` for
 // callers that print the year themselves)
-export const shortDate = (d?: string, year = true) =>
-  d
-    ? `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}` +
-      (year && +d.slice(0, 4) !== new Date().getFullYear()
-        ? `, ${+d.slice(0, 4)}`
-        : '')
-    : '';
+export const shortDate = (d?: string, year = true, locale?: string) => {
+  if (!d) return '';
+  if (locale) {
+    const date = new Date(`${d.slice(0, 10)}T12:00:00Z`);
+    const includeYear =
+      year && date.getUTCFullYear() !== new Date().getFullYear();
+    return date.toLocaleDateString(locale, {
+      month: 'short',
+      day: 'numeric',
+      ...(includeYear ? { year: 'numeric' as const } : {}),
+    });
+  }
+  return (
+    `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}` +
+    (year && +d.slice(0, 4) !== new Date().getFullYear()
+      ? `, ${+d.slice(0, 4)}`
+      : '')
+  );
+};
 
 // local request state so a card flips to "Requested" straight away
 function useRequested(initial: Stat) {

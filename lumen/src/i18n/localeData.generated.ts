@@ -1465,6 +1465,7 @@ export const localeData = [
         'تحتوي الحزم على معرّفات عناصر المزوّد ومطابقات الكتالوج فقط. ولا تتضمن بيانات اعتماد الحساب مطلقًا.',
       'components.IdentityMappingPackControls.title':
         'مطابقات العناوين الشخصية',
+      'i18n.providerDiscovery': 'الكشف عن المورد',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1485,6 +1486,7 @@ export const localeData = [
       'lumen.nav.lumenSettings': 'إعدادات Lumen',
       'lumen.nav.seerrAdministration': 'إدارة SeerrNG',
       'lumen.nav.signedIn': 'تم تسجيل الدخول',
+      'components.Persius.retry': 'إعادة المحاولة',
       'lumen.account.cardTitleOnHover': 'عند التحويم أو التركيز',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.',
@@ -3320,6 +3322,34 @@ export const localeData = [
       'lumen.myMedia.tracking.providerEpisodeStatus':
         'حالة الحلقات لدى المزوّد',
       'lumen.myMedia.couldNotLoad': 'تعذر تحميل {what}',
+      'components.Persius.discover': 'اكتشف',
+      'components.Persius.searchAll': 'أفلام ومسلسلات وكتب ورواة…',
+      'components.Persius.comingSoon': 'قريبًا',
+      'components.Persius.popularNow': 'الأكثر رواجًا الآن',
+      'components.Persius.popularSeries': 'مسلسلات رائجة',
+      'components.Persius.popularMovies': 'أفلام رائجة',
+      'components.Persius.popularAudio': 'كتب صوتية رائجة',
+      'components.Persius.seeAll': 'عرض الكل',
+      'components.Persius.failed': 'تعذر تحميل هذا القسم.',
+      'components.Persius.empty': 'لا توجد عناوين لعرضها.',
+      'components.Persius.genres': 'الأنواع',
+      'components.Persius.movies': 'أفلام',
+      'components.Persius.series': 'مسلسلات',
+      'components.Persius.books': 'كتب',
+      'components.Persius.audiobooks': 'كتب صوتية',
+      'lumen.discover.popularBooks': 'كتب رائجة',
+      'lumen.discover.trendingThisWeek': 'الرائج هذا الأسبوع',
+      'lumen.discover.trending': 'رائج',
+      'lumen.discover.newOn': 'جديد على {server}',
+      'lumen.discover.added': 'أُضيف {date}',
+      'lumen.discover.browseByGenre': 'تصفح حسب النوع',
+      'lumen.discover.noPopularTitles': 'لا توجد عناوين رائجة متاحة',
+      'lumen.discover.searchVideo': 'أفلام ومسلسلات…',
+      'lumen.cards.titleView': 'عرض العناوين',
+      'lumen.cards.titleViewAction': '{view}: {action}',
+      'lumen.cards.titleViewAlways': 'إظهار عناوين الملصقات دائمًا',
+      'lumen.cards.titleViewOnHover':
+        'إظهار عناوين الملصقات عند المرور أو التركيز',
     },
   },
   {
@@ -7240,6 +7270,7 @@ export const localeData = [
         'Pakete enthalten nur IDs von Anbietereinträgen und Katalogzuordnungen. Kontozugangsdaten sind niemals enthalten.',
       'components.IdentityMappingPackControls.title':
         'Persönliche Titelzuordnungen',
+      'i18n.providerDiscovery': 'Anbieter Discovery',
     },
   },
   {
@@ -8733,6 +8764,22 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         'Packs contain provider item IDs and catalog matches only. Account credentials are never included.',
       'components.IdentityMappingPackControls.title': 'Personal title matches',
+      'components.Persius.discover': 'Discover',
+      'components.Persius.searchAll': 'Movies, series, books, narrators…',
+      'components.Persius.comingSoon': 'Coming Soon',
+      'components.Persius.popularNow': 'Popular Right Now',
+      'components.Persius.popularSeries': 'Popular Series',
+      'components.Persius.popularMovies': 'Popular Movies',
+      'components.Persius.popularAudio': 'Popular Audiobooks',
+      'components.Persius.seeAll': 'See All',
+      'components.Persius.failed': 'This section could not be loaded.',
+      'components.Persius.empty': 'No titles to show.',
+      'components.Persius.genres': 'Genres',
+      'components.Persius.movies': 'Movies',
+      'components.Persius.series': 'Series',
+      'components.Persius.books': 'Books',
+      'components.Persius.audiobooks': 'Audiobooks',
+      'i18n.providerDiscovery': 'Provider Discovery',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -10549,6 +10596,18 @@ export const localeData = [
       'lumen.myMedia.tracking.seasonEpisodes': 'season episodes',
       'lumen.myMedia.tracking.providerEpisodeStatus': 'provider episode status',
       'lumen.myMedia.couldNotLoad': 'Could not load {what}',
+      'lumen.discover.popularBooks': 'Popular Books',
+      'lumen.discover.trendingThisWeek': 'Trending This Week',
+      'lumen.discover.trending': 'Trending',
+      'lumen.discover.newOn': 'New on {server}',
+      'lumen.discover.added': 'Added {date}',
+      'lumen.discover.browseByGenre': 'Browse by Genre',
+      'lumen.discover.noPopularTitles': 'No popular titles available',
+      'lumen.discover.searchVideo': 'Movies and series…',
+      'lumen.cards.titleView': 'Title View',
+      'lumen.cards.titleViewAction': '{view}: {action}',
+      'lumen.cards.titleViewAlways': 'Always show poster titles',
+      'lumen.cards.titleViewOnHover': 'Show poster titles on hover or focus',
     },
   },
   {
@@ -12519,6 +12578,7 @@ export const localeData = [
         'Los paquetes contienen solo los ID de los elementos del proveedor y las coincidencias del catálogo. Nunca incluyen credenciales de la cuenta.',
       'components.IdentityMappingPackControls.title':
         'Coincidencias de títulos personales',
+      'i18n.providerDiscovery': 'Proveedor Discovery',
     },
   },
   {
@@ -14049,6 +14109,7 @@ export const localeData = [
         'Los paquetes contienen identificaciones de productos del proveedor y coincidencias de catálogo solamente. Las credenciales de cuenta nunca se incluyen.',
       'components.IdentityMappingPackControls.title':
         'Cerillas de título personal',
+      'i18n.providerDiscovery': 'Proveedor Discovery',
     },
   },
   {
@@ -16428,6 +16489,7 @@ export const localeData = [
         "Les paquets contiennent uniquement des ID d'item du fournisseur et des correspondances de catalogue. Les justificatifs de compte ne sont jamais inclus.",
       'components.IdentityMappingPackControls.title':
         'Correspondance des titres personnels',
+      'i18n.providerDiscovery': 'Découverte du fournisseur',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -16450,6 +16512,7 @@ export const localeData = [
       'lumen.nav.signedIn': 'Connecté',
       'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
         'Abonnements aux services de streaming',
+      'components.Persius.retry': 'Réessayer',
       'lumen.account.cardTitleOnHover': 'Au survol ou au focus clavier',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Impossible de confirmer les préférences de titre enregistrées.',
@@ -18489,6 +18552,35 @@ export const localeData = [
       'lumen.myMedia.tracking.providerEpisodeStatus':
         'statut des épisodes chez le fournisseur',
       'lumen.myMedia.couldNotLoad': 'Impossible de charger {what}',
+      'components.Persius.discover': 'Découvrir',
+      'components.Persius.searchAll': 'Films, séries, livres, narrateurs…',
+      'components.Persius.comingSoon': 'À venir',
+      'components.Persius.popularNow': 'Populaires en ce moment',
+      'components.Persius.popularSeries': 'Séries populaires',
+      'components.Persius.popularMovies': 'Films populaires',
+      'components.Persius.popularAudio': 'Livres audio populaires',
+      'components.Persius.seeAll': 'Tout voir',
+      'components.Persius.failed': 'Impossible de charger cette section.',
+      'components.Persius.empty': 'Aucun titre à afficher.',
+      'components.Persius.genres': 'Genres',
+      'components.Persius.movies': 'Films',
+      'components.Persius.series': 'Séries',
+      'components.Persius.books': 'Livres',
+      'components.Persius.audiobooks': 'Livres audio',
+      'lumen.discover.popularBooks': 'Livres populaires',
+      'lumen.discover.trendingThisWeek': 'Tendances de la semaine',
+      'lumen.discover.trending': 'Tendances',
+      'lumen.discover.newOn': 'Nouveautés sur {server}',
+      'lumen.discover.added': 'Ajouté le {date}',
+      'lumen.discover.browseByGenre': 'Parcourir par genre',
+      'lumen.discover.noPopularTitles': 'Aucun titre populaire disponible',
+      'lumen.discover.searchVideo': 'Films et séries…',
+      'lumen.cards.titleView': 'Affichage des titres',
+      'lumen.cards.titleViewAction': '{view} : {action}',
+      'lumen.cards.titleViewAlways':
+        'Toujours afficher les titres des affiches',
+      'lumen.cards.titleViewOnHover':
+        'Afficher les titres au survol ou au focus',
     },
   },
   {
@@ -20643,6 +20735,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         'पैक में केवल प्रदाता आइटम आईडी और कैटलॉग मैच होते हैं। खाता क्रेडेंशियल कभी शामिल नहीं होते हैं।',
       'components.IdentityMappingPackControls.title': 'व्यक्तिगत शीर्षक-मिलान',
+      'i18n.providerDiscovery': 'प्रदाता डिस्कवरी',
     },
   },
   {
@@ -22781,6 +22874,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         'Paket berisi ID butir penyedia dan katalog yang cocok saja. Kredensial akun tidak pernah disertakan.',
       'components.IdentityMappingPackControls.title': 'Kecocokan judul pribadi',
+      'i18n.providerDiscovery': 'Discovery Penyedia',
     },
   },
   {
@@ -24901,6 +24995,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         'パックには、プロバイダのアイテムIDとカタログのマッチのみが含まれています。 アカウントの資格情報は含まれていません。',
       'components.IdentityMappingPackControls.title': '個人用タイトル照合',
+      'i18n.providerDiscovery': 'プロバイダー検索',
     },
   },
   {
@@ -26354,6 +26449,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         '팩에는 제공자 항목 ID와 카탈로그 매칭만 포함됩니다. 계정 인증 정보는 절대 포함되지 않습니다.',
       'components.IdentityMappingPackControls.title': '개인 제목 매칭',
+      'i18n.providerDiscovery': '제공자 검색',
     },
   },
   {
@@ -29709,6 +29805,7 @@ export const localeData = [
         'Os pacotes contêm apenas IDs de itens dos provedores e correspondências no catálogo. As credenciais da conta nunca são incluídas.',
       'components.IdentityMappingPackControls.title':
         'Correspondências de títulos pessoais',
+      'i18n.providerDiscovery': 'Descoberta de provedores',
     },
   },
   {
@@ -35087,6 +35184,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         '包装只包含提供者项目ID和目录匹配. 账户证书从未包括在内。',
       'components.IdentityMappingPackControls.title': '个人标题匹配项',
+      'i18n.providerDiscovery': '服务提供方探索',
     },
   },
   {
@@ -36496,6 +36594,7 @@ export const localeData = [
       'components.IdentityMappingPackControls.privacy':
         '包中只包含提供者項目ID和目錄匹配 。 帳號憑證從未包含 。',
       'components.IdentityMappingPackControls.title': '個人標題比對項',
+      'i18n.providerDiscovery': '服務供應商探索',
     },
   },
   {
@@ -38001,6 +38100,7 @@ export const localeData = [
         'Các gói chỉ chứa ID mục của nhà cung cấp và kết quả đối sánh trong danh mục. Thông tin đăng nhập tài khoản không bao giờ được đưa vào.',
       'components.IdentityMappingPackControls.title':
         'Đối sánh tiêu đề cá nhân',
+      'i18n.providerDiscovery': 'Khám phá nhà cung cấp',
     },
   },
 ] as const;

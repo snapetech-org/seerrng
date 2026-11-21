@@ -13,7 +13,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
-| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. | Finish remaining filter and paging edges, empty/error states, and native-matched visual acceptance. Verify remaining live provider data separately. |
+| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. Discover shell labels, shelf headings, empty/error/retry states, recent-media dates, and card title-view actions follow English, French, and Arabic locale in standalone and bundled deployments. | Finish remaining filter and paging edges, other route localization, native-matched visual acceptance, and verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. My Media supports account recovery, private identity mapping packs, tracking updates, and resumable scans. Delegated Watchlists and ambiguous combined-list ownership are covered. | Verify live provider mutations, determine whether a separate delegated library-sharing workflow exists in native SeerrNG, and complete native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
@@ -264,6 +264,18 @@ desktop, iPhone, Android, and tablet widths. The same native link and chip
 owners remain in place; candidate renders were checked against English-label
 baselines with no clipping or horizontal overflow. Independent linguistic
 review and full-production-mount verification remain open.
+
+Discover's remaining visible shell copy now uses the account locale, including
+the search prompt, quick links, shelf headings, section links, empty and failed
+states, retry actions, recent-media dates, and the shared card title-view
+control. The shared title control is also checked on Movies, a second consumer.
+English, French, and Arabic browser fixtures cover success, empty, failure,
+retry, dates, and both title-control states at desktop, iPhone, Android, and
+tablet sizes against standalone production and the Express `/lumen/` mount.
+Matched baseline/candidate captures show unchanged geometry and no new clipping
+or overflow. This is fixture-based UI evidence; provider results and independent
+linguistic review remain open. Evidence is retained at
+`seerrng-lumen-discover-localization-20261121` in task scratch.
 
 ## Delivery and verification
 

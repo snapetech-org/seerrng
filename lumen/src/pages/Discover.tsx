@@ -92,27 +92,30 @@ function useNewOnPlex(
 
 // a row that failed says so instead of loading forever
 // a row that failed for a passing reason (rate limit, outage) can be asked again
-const RowError = ({ retry }: { retry: () => void }) => (
-  <div className="empty">
-    <span>Couldn’t load this row</span>
-    <button className="btn btn-tonal btn-sm" onClick={retry}>
-      Retry
-    </button>
-  </div>
-);
+const RowError = ({ retry }: { retry: () => void }) => {
+  const { t } = useLumenLocale();
+  return (
+    <div className="empty">
+      <span>{t('components.Persius.failed')}</span>
+      <button className="btn btn-tonal btn-sm" onClick={retry}>
+        {t('components.Persius.retry')}
+      </button>
+    </div>
+  );
+};
 
-const CHIPS: [IconName, string, string][] = [
-  ['film', 'Movies', '/movies'],
-  ['tv', 'Series', '/series'],
-  ['book', 'Books', '/books'],
-  ['headphones', 'Audiobooks', '/audiobooks'],
-  ['cal', 'Coming soon', '/soon'],
-  ['list', 'Provider Discovery', '/providers'],
-  ['list', 'Share', '/share'],
+const CHIPS: [IconName, string, string, string][] = [
+  ['film', 'components.Persius.movies', 'Movies', '/movies'],
+  ['tv', 'components.Persius.series', 'Series', '/series'],
+  ['book', 'components.Persius.books', 'Books', '/books'],
+  ['headphones', 'components.Persius.audiobooks', 'Audiobooks', '/audiobooks'],
+  ['cal', 'components.Persius.comingSoon', 'Coming soon', '/soon'],
+  ['list', 'i18n.providerDiscovery', 'Provider Discovery', '/providers'],
+  ['list', 'components.Layout.Sidebar.share', 'Share', '/share'],
 ];
 
 export default function Discover() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { prefs, adminConfigState } = usePrefs();
   const extras = useExtras();
@@ -201,7 +204,7 @@ export default function Discover() {
     )
     .filter(visible)
     .slice(0, 6);
-  const today = new Date().toLocaleDateString(undefined, {
+  const today = new Date().toLocaleDateString(locale, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -218,7 +221,7 @@ export default function Discover() {
         <div className="ph-row">
           <div>
             <div className="eyebrow">{today}</div>
-            <h1>Discover</h1>
+            <h1>{t('components.Persius.discover')}</h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
@@ -226,24 +229,24 @@ export default function Discover() {
           <Icon name="search" />
           <span className="ph-text">
             {books_
-              ? 'Movies, series, books, narrators…'
-              : 'Movies and series…'}
+              ? t('components.Persius.searchAll')
+              : t('lumen.discover.searchVideo', undefined)}
           </span>
         </Link>
         {preferencesReady && categorySettingsReady && (
           <div className="chips navchips">
             {CHIPS.filter(
-              ([, , h]) =>
+              ([, , , h]) =>
                 (books_ || (h !== '/books' && h !== '/audiobooks')) &&
                 (h !== '/movies' || movieEnabled) &&
                 (h !== '/series' || tvEnabled) &&
                 (h !== '/books' || ebookEnabled) &&
                 (h !== '/audiobooks' || audiobookEnabled) &&
                 (h !== '/share' || canUseShare(user?.permissions))
-            ).map(([i, t, h]) => (
+            ).map(([i, message, fallback, h]) => (
               <Link key={h} className="chip" to={h}>
                 <Icon name={i} />
-                {t}
+                {t(message, fallback)}
               </Link>
             ))}
             {extras.list.map((e) => (
@@ -268,7 +271,10 @@ export default function Discover() {
         categorySettingsReady &&
         on.hero &&
         (movieEnabled || tvEnabled) && (
-          <Section title="Popular right now" link={['See all', '/trending']}>
+          <Section
+            title={t('components.Persius.popularNow')}
+            link={[t('components.Persius.seeAll'), '/trending']}
+          >
             {hero.length ? (
               <Rail className="feat-rail" restoreId="featured">
                 {hero.map((it, i) => (
@@ -277,10 +283,10 @@ export default function Discover() {
                     it={it}
                     eyebrow={
                       i === 0
-                        ? 'Trending this week'
+                        ? t('lumen.discover.trendingThisWeek')
                         : it.mediaType === 'tv'
-                          ? 'Popular series'
-                          : 'Trending'
+                          ? t('components.Persius.popularSeries')
+                          : t('lumen.discover.trending')
                     }
                     lazy={i > 1}
                   />
@@ -288,16 +294,16 @@ export default function Discover() {
               </Rail>
             ) : trending.error ? (
               <div className="empty">
-                <span>Couldn’t load popular titles</span>
+                <span>{t('components.Persius.failed')}</span>
                 <button
                   className="btn btn-tonal btn-sm"
                   onClick={trending.reload}
                 >
-                  Retry
+                  {t('components.Persius.retry')}
                 </button>
               </div>
             ) : trending.data ? (
-              <div className="empty">No popular titles available</div>
+              <div className="empty">{t('lumen.discover.noPopularTitles')}</div>
             ) : (
               <RailSkeleton n={3} />
             )}
@@ -311,8 +317,8 @@ export default function Discover() {
         recentAllowed &&
         fresh?.length !== 0 && (
           <Section
-            title={`New on ${serverName}`}
-            link={['See all', '/movies?show=plex']}
+            title={t('lumen.discover.newOn', undefined, { server: serverName })}
+            link={[t('components.Persius.seeAll'), '/movies?show=plex']}
             action={
               fresh?.length ? (
                 <CardTitleToggle
@@ -337,7 +343,9 @@ export default function Discover() {
                     it={m}
                     meta={
                       m.added
-                        ? 'Added ' + shortDate(m.added.slice(0, 10))
+                        ? t('lumen.discover.added', undefined, {
+                            date: shortDate(m.added.slice(0, 10), true, locale),
+                          })
                         : undefined
                     }
                   />
@@ -355,9 +363,9 @@ export default function Discover() {
         on.trendingMovies &&
         !empty(movieCards) && (
           <Section
-            title="Trending movies"
+            title={t('components.Persius.popularMovies')}
             action={<CardTitleToggle kinds={['movie']} />}
-            link={['See all', '/movies']}
+            link={[t('components.Persius.seeAll'), '/movies']}
           >
             {movieCards ? (
               <Rail restoreId="movies">
@@ -379,9 +387,9 @@ export default function Discover() {
         on.popularSeries &&
         !empty(seriesCards) && (
           <Section
-            title="Popular series"
+            title={t('components.Persius.popularSeries')}
             action={<CardTitleToggle kinds={['tv']} />}
-            link={['See all', '/series']}
+            link={[t('components.Persius.seeAll'), '/series']}
           >
             {seriesCards ? (
               <Rail restoreId="series">
@@ -404,9 +412,9 @@ export default function Discover() {
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
           <Section
-            title="Popular audiobooks"
+            title={t('components.Persius.popularAudio')}
             action={<CardTitleToggle kinds={['book']} />}
-            link={['See all', '/audiobooks']}
+            link={[t('components.Persius.seeAll'), '/audiobooks']}
           >
             {audio.data ? (
               <Rail restoreId="audiobooks">
@@ -429,9 +437,9 @@ export default function Discover() {
         on.books &&
         !empty(books.data ? ebookCards : undefined) && (
           <Section
-            title="Popular books"
+            title={t('lumen.discover.popularBooks')}
             action={<CardTitleToggle kinds={['book']} />}
-            link={['See all', '/books']}
+            link={[t('components.Persius.seeAll'), '/books']}
           >
             {books.data ? (
               <Rail restoreId="books">
@@ -456,9 +464,9 @@ export default function Discover() {
         on.comingSoon &&
         !empty(upcomingCards) && (
           <Section
-            title="Coming soon"
+            title={t('components.Persius.comingSoon')}
             action={<CardTitleToggle kinds={['movie']} />}
-            link={['See all', '/soon']}
+            link={[t('components.Persius.seeAll'), '/soon']}
           >
             {upcomingCards ? (
               <Rail restoreId="coming-soon">
@@ -496,7 +504,7 @@ export default function Discover() {
         movieEnabled &&
         on.genres &&
         genres.data && (
-          <Section title="Browse by genre">
+          <Section title={t('lumen.discover.browseByGenre')}>
             <GenreTiles genres={genres.data.slice(0, 12)} browse="/movies" />
           </Section>
         )}

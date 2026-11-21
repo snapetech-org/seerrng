@@ -1173,7 +1173,7 @@ test('card title preferences save only changed categories and apply to posters',
   await page.goto('/movies');
   await expect(title).toBeVisible();
   const toggle = page.getByRole('button', {
-    name: 'Title View: Always show poster titles',
+    name: 'Title View: Show poster titles on hover or focus',
   });
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   reject = true;
@@ -1186,7 +1186,11 @@ test('card title preferences save only changed categories and apply to posters',
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   reject = false;
   await toggle.click();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(
+    page.getByRole('button', {
+      name: 'Title View: Always show poster titles',
+    })
+  ).toHaveAttribute('aria-pressed', 'false');
   expect(writes).toEqual([
     { movie: 'always' },
     { movie: 'hover' },
