@@ -2444,6 +2444,22 @@ standalone General Settings and About browser cases passed. The browser
 cases verified that false values remain selected after reloading and that
 About skips update checks when disabled.
 
+### Connection Hosts
+
+The administrator-managed Connection Hosts page now follows the saved French
+and Arabic locales, including field labels, add/remove/discard actions, save
+feedback, load failures, and server-side validation errors. Its guidance says
+that saved entries contain a hostname or IP without a scheme or port, do not
+test or open a connection, and leave service-specific settings untouched.
+Eight standalone and eight production `/lumen/` browser cases passed across
+desktop (1440 × 900), iPhone (390 × 844), Android (412 × 915), and tablet
+(834 × 1194). Fixtures covered add, edit, remove, discard, 503 recovery,
+duplicate-name validation, save/reload readback, and clearing the final host.
+French and Arabic
+baseline/candidate captures were compared at matching desktop and iPhone
+viewports; the responsive fields and controls fit without horizontal overflow.
+Evidence is retained at `seerrng-admin-connection-hosts-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with

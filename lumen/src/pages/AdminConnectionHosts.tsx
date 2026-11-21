@@ -3,10 +3,67 @@ import { Link } from 'react-router-dom';
 import { api, ApiError, connectionHostsPath, type Host } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
-function HostEditor({ initial }: { initial: Host[] }) {
+function formatSaveError(
+  error: unknown,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (error instanceof ApiError) {
+    const validation: Record<string, [string, string]> = {
+      'Settings body must be an object.': [
+        'lumen.adminConnectionHosts.invalidPayload',
+        'The saved hosts are invalid.',
+      ],
+      'hosts must be an array with at most 16 entries.': [
+        'lumen.adminConnectionHosts.maximumHosts',
+        'Save at most 16 connection hosts.',
+      ],
+      'Each saved host must include a name and hostname.': [
+        'lumen.adminConnectionHosts.requiredFields',
+        'Each saved host needs a name and hostname.',
+      ],
+      'Each saved host needs a name up to 64 characters and a hostname or IP address without a scheme or port.':
+        [
+          'lumen.adminConnectionHosts.invalidHost',
+          'Enter a host name up to 64 characters and a hostname or IP address without a scheme or port.',
+        ],
+      'Saved hostnames must not include a port.': [
+        'lumen.adminConnectionHosts.portIncluded',
+        'Saved hostnames must not include a port.',
+      ],
+      'Each saved hostname or IP address must be valid.': [
+        'lumen.adminConnectionHosts.invalidAddress',
+        'Enter a valid saved hostname or IP address.',
+      ],
+      'Saved host names must be unique.': [
+        'lumen.adminConnectionHosts.duplicateName',
+        'Saved host names must be unique.',
+      ],
+    };
+    const message = validation[error.message];
+    if (message) return t(message[0], message[1]);
+  }
+  return friendlyError(
+    error,
+    t(
+      'lumen.adminConnectionHosts.saveFailure',
+      'Could not save connection hosts.'
+    ),
+    t
+  );
+}
+
+function HostEditor({
+  initial,
+  t,
+}: {
+  initial: Host[];
+  t: ReturnType<typeof useLumenLocale>['t'];
+}) {
   // Row keys stay stable while names are edited or rows are removed.
   const nextKey = useRef(initial.length);
   const [saved, setSaved] = useState(initial);
@@ -41,14 +98,12 @@ function HostEditor({ initial }: { initial: Host[] }) {
       if (generation !== sessionGeneration()) return;
       setSaved(result);
       reset(result);
-      setMessage('Connection hosts saved.');
+      setMessage(
+        t('lumen.adminConnectionHosts.saved', 'Connection hosts saved.')
+      );
     } catch (failure) {
       if (generation === sessionGeneration())
-        setError(
-          failure instanceof ApiError
-            ? failure.message
-            : 'Could not save connection hosts.'
-        );
+        setError(formatSaveError(failure, t));
     } finally {
       pending.current = false;
       setBusy(false);
@@ -56,10 +111,14 @@ function HostEditor({ initial }: { initial: Host[] }) {
   }
 
   return (
-    <Section title="Saved Hosts">
+    <Section
+      title={t('lumen.adminConnectionHosts.sectionTitle', 'Saved Hosts')}
+    >
       <p className="note">
-        Save hostnames or IP addresses to reuse in service settings. Enter the
-        address without a scheme or port.
+        {t(
+          'lumen.adminConnectionHosts.description',
+          'Save hostnames or IP addresses to reuse in service settings. Enter the address without a scheme or port.'
+        )}
       </p>
       <form
         onSubmit={(event) => {
@@ -68,13 +127,22 @@ function HostEditor({ initial }: { initial: Host[] }) {
         }}
       >
         {rows.length === 0 && (
-          <p className="note">No connection hosts saved.</p>
+          <p className="note">
+            {t(
+              'lumen.adminConnectionHosts.empty',
+              'No connection hosts saved.'
+            )}
+          </p>
         )}
         {rows.map((row, index) => (
           <div className="setlist" key={row.key}>
             {(['name', 'hostname'] as const).map((field) => (
               <label className="set cfg-row" key={field}>
-                <span>{field === 'name' ? 'Name' : 'Hostname'}</span>
+                <span>
+                  {field === 'name'
+                    ? t('lumen.adminConnectionHosts.name', 'Name')
+                    : t('lumen.adminConnectionHosts.hostname', 'Hostname')}
+                </span>
                 <input
                   className="cfg-input"
                   required
@@ -98,12 +166,16 @@ function HostEditor({ initial }: { initial: Host[] }) {
                 type="button"
                 className="btn btn-quiet btn-sm"
                 disabled={busy}
-                aria-label={`Remove Host ${index + 1}`}
+                aria-label={t(
+                  'lumen.adminConnectionHosts.removeHost',
+                  'Remove host {index}',
+                  { index: index + 1 }
+                )}
                 onClick={() =>
                   setRows(rows.filter((item) => item.key !== row.key))
                 }
               >
-                Remove Host
+                {t('lumen.adminConnectionHosts.remove', 'Remove Host')}
               </button>
             </div>
           </div>
@@ -130,14 +202,14 @@ function HostEditor({ initial }: { initial: Host[] }) {
               ])
             }
           >
-            Add Host
+            {t('lumen.adminConnectionHosts.add', 'Add Host')}
           </button>
           <button
             type="submit"
             className="btn btn-primary btn-sm"
             disabled={busy || !dirty}
           >
-            Save Changes
+            {t('lumen.adminConnectionHosts.save', 'Save Changes')}
           </button>
           <button
             type="button"
@@ -145,7 +217,7 @@ function HostEditor({ initial }: { initial: Host[] }) {
             disabled={busy || !dirty}
             onClick={() => reset(saved)}
           >
-            Discard Changes
+            {t('lumen.adminConnectionHosts.discard', 'Discard Changes')}
           </button>
         </div>
       </form>
@@ -154,26 +226,35 @@ function HostEditor({ initial }: { initial: Host[] }) {
 }
 
 export default function AdminConnectionHosts() {
+  const { t } = useLumenLocale();
   const hosts = useApi<Host[]>(connectionHostsPath);
   return (
     <>
-      <h1>Connection Hosts</h1>
+      <h1>{t('lumen.adminConnectionHosts.title', 'Connection Hosts')}</h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+          {t('lumen.adminConnectionHosts.backToAccount', 'Back to Account')}
         </Link>
       </div>
       <ServiceNote
-        what="connection hosts"
+        what={t('lumen.adminConnectionHosts.what', 'connection hosts')}
+        title={t(
+          'lumen.adminConnectionHosts.loadFailureTitle',
+          'Could not load connection hosts'
+        )}
+        retryLabel={t('lumen.adminConnectionHosts.retry', 'Retry')}
         error={hosts.error}
         retry={hosts.reload}
       />
       {hosts.data ? (
-        <HostEditor initial={hosts.data} />
+        <HostEditor initial={hosts.data} t={t} />
       ) : (
         !hosts.error && (
           <p className="note" role="status">
-            Loading connection hosts…
+            {t(
+              'lumen.adminConnectionHosts.loading',
+              'Loading connection hosts…'
+            )}
           </p>
         )
       )}
