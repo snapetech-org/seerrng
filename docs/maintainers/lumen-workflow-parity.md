@@ -554,6 +554,22 @@ production bundle served by Express at `/lumen/`. The bundled frontend
 redirects the Classic `/discover/games` entry point to Game Finder. Live
 QuestarrNG effects and matched visual verification remain open.
 
+### Game Finder localization
+
+Game Finder now localizes its filter names, input guidance, search and saved
+search actions, match and retry states, loading and empty copy, and delete
+confirmation in English, French, and Arabic. The browser fixture exercises the
+complete search, pagination recovery, save/readback, rerun, and confirmed delete
+workflow in all three locales across desktop, iPhone, Android, and tablet in
+standalone production and the bundled Express `/lumen/` mount (24 cases total).
+It verifies RTL direction for Arabic, no horizontal overflow, and the existing
+exact discovery and saved-search payloads. Candidate French desktop and
+phone and Arabic desktop and phone captures were inspected; the lengthy French
+phone labels were shortened to fit the existing field layout. No matching
+pre-change screenshots were available, so visual comparison remains unverified.
+Live QuestarrNG effects and independent linguistic review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-finder-localization-20261121/`.
+
 ### Following feed increment
 
 Lumen has a Following route, with a desktop sidebar link and a Library entry

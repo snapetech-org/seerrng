@@ -8,6 +8,7 @@ import { ExtraGate, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const base = '/game-content';
@@ -51,6 +52,7 @@ function split(raw?: string) {
 }
 
 export default function GameDiscovery() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const canSave = canViewFollowing(user?.permissions);
   const saved = useApi<{ results: SavedSearch[] }>(
@@ -78,7 +80,9 @@ export default function GameDiscovery() {
       : undefined;
   const savedError =
     saved.error ||
-    (saved.data && !savedRows ? 'Invalid saved searches response.' : null);
+    (saved.data && !savedRows
+      ? t('lumen.gameFinder.invalidSaved', 'Invalid saved searches response.')
+      : null);
   const pending = useRef(false);
   const [draft, setDraft] = useState<Draft>({});
   const [name, setName] = useState('');
@@ -151,7 +155,12 @@ export default function GameDiscovery() {
           }),
         });
         if (response?.available === false)
-          throw new Error('Game Finder could not reach QuestarrNG.');
+          throw new Error(
+            t(
+              'lumen.gameFinder.questarrUnavailable',
+              'Game Finder could not reach QuestarrNG.'
+            )
+          );
         if (
           response?.available !== true ||
           !Array.isArray(response.results) ||
@@ -159,7 +168,12 @@ export default function GameDiscovery() {
             (item) => typeof item?.game?.title === 'string'
           )
         )
-          throw new Error('Invalid game discovery response.');
+          throw new Error(
+            t(
+              'lumen.gameFinder.invalidResponse',
+              'Invalid game discovery response.'
+            )
+          );
         return response;
       },
       (response) => {
@@ -173,7 +187,7 @@ export default function GameDiscovery() {
             : response
         );
       },
-      'Could not run game discovery.',
+      t('lumen.gameFinder.searchFailure', 'Could not run game discovery.'),
       () => setFailedSearch({ criteria, cursor })
     );
   }
@@ -194,11 +208,11 @@ export default function GameDiscovery() {
   return (
     <ExtraGate k="game">
       <header className="ph">
-        <h1>Game Finder</h1>
+        <h1>{t('lumen.gameFinder.title', 'Game Finder')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/games">
-          Browse Games
+          {t('lumen.gameFinder.browseGames', 'Browse Games')}
         </Link>
       </div>
       <form
@@ -209,7 +223,9 @@ export default function GameDiscovery() {
       >
         <div className="toolbar">
           <label className="sel">
-            <span className="lbl">Keywords</span>
+            <span className="lbl">
+              {t('lumen.gameFinder.keywords', 'Keywords')}
+            </span>
             <input
               value={draft.text ?? ''}
               maxLength={200}
@@ -221,10 +237,15 @@ export default function GameDiscovery() {
           {[...facets, ['excludeThemes', 'Exclude Themes'] as const].map(
             ([key, label]) => (
               <label key={key} className="sel">
-                <span className="lbl">{label}</span>
+                <span className="lbl">
+                  {t(`lumen.gameFinder.facet.${key}`, label)}
+                </span>
                 <input
                   value={draft[key] ?? ''}
-                  placeholder="Comma-separated"
+                  placeholder={t(
+                    'lumen.gameFinder.commaSeparated',
+                    'Comma-separated'
+                  )}
                   onChange={(event) =>
                     setDraft({ ...draft, [key]: event.target.value })
                   }
@@ -239,7 +260,9 @@ export default function GameDiscovery() {
             ] as const
           ).map(([key, label, max]) => (
             <label key={key} className="sel">
-              <span className="lbl">{label}</span>
+              <span className="lbl">
+                {t(`lumen.gameFinder.filter.${key}`, label)}
+              </span>
               <input
                 type="number"
                 min={1}
@@ -256,13 +279,15 @@ export default function GameDiscovery() {
             type="submit"
             disabled={busy || !canSearch}
           >
-            Show Matches
+            {t('lumen.gameFinder.showMatches', 'Show Matches')}
           </button>
         </div>
         {canSave && (
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Search Name</span>
+              <span className="lbl">
+                {t('lumen.gameFinder.searchName', 'Search Name')}
+              </span>
               <input
                 maxLength={120}
                 value={name}
@@ -275,7 +300,7 @@ export default function GameDiscovery() {
                 checked={notify}
                 onChange={(event) => setNotify(event.target.checked)}
               />{' '}
-              Notify Me of New Matches
+              {t('lumen.gameFinder.notify', 'Notify Me of New Matches')}
             </label>
             <button
               className="btn btn-tonal btn-sm"
@@ -294,22 +319,38 @@ export default function GameDiscovery() {
                     }),
                   () => {
                     setName('');
-                    setNotice('Search saved.');
+                    setNotice(t('lumen.gameFinder.saved', 'Search saved.'));
                     saved.reload();
                   },
-                  'Could not save the search.'
+                  t(
+                    'lumen.gameFinder.saveFailure',
+                    'Could not save the search.'
+                  )
                 )
               }
             >
-              Save Search
+              {t('lumen.gameFinder.saveSearch', 'Save Search')}
             </button>
           </div>
         )}
       </form>
       {failure && failedSearch ? (
         <ServiceNote
-          error={result ? `${failure} Showing the previous matches.` : failure}
-          what={failedSearch.cursor ? 'more games' : 'matching games'}
+          error={
+            result
+              ? t(
+                  'lumen.gameFinder.showingPrevious',
+                  '{error} Showing the previous matches.',
+                  { error: failure }
+                )
+              : failure
+          }
+          what={t(
+            failedSearch.cursor
+              ? 'lumen.gameFinder.moreGames'
+              : 'lumen.gameFinder.matchingGames',
+            failedSearch.cursor ? 'more games' : 'matching games'
+          )}
           retry={() => void run(failedSearch.criteria, failedSearch.cursor)}
         />
       ) : (
@@ -325,9 +366,11 @@ export default function GameDiscovery() {
         </p>
       )}
       {result?.available && (
-        <Section title="Matches">
+        <Section title={t('lumen.gameFinder.matches', 'Matches')}>
           {result.results.length === 0 && (
-            <p className="note">No games match these filters.</p>
+            <p className="note">
+              {t('lumen.gameFinder.noMatches', 'No games match these filters.')}
+            </p>
           )}
           <ul className="setlist">
             {result.results.map(({ game, reasons }, index) => (
@@ -359,25 +402,27 @@ export default function GameDiscovery() {
                 void run(submitted, result.nextCursor ?? undefined)
               }
             >
-              Load More Matches
+              {t('lumen.gameFinder.loadMore', 'Load More Matches')}
             </button>
           )}
         </Section>
       )}
       {canSave && (
-        <Section title="Saved Searches">
+        <Section title={t('lumen.gameFinder.savedSearches', 'Saved Searches')}>
           <ServiceNote
             error={savedError}
-            what="saved searches"
+            what={t('lumen.gameFinder.savedSearchesLower', 'saved searches')}
             retry={saved.reload}
           />
           {!savedRows && !savedError && (
             <p className="note" role="status">
-              Loading saved searches…
+              {t('lumen.gameFinder.loadingSaved', 'Loading saved searches…')}
             </p>
           )}
           {savedRows?.length === 0 && (
-            <p className="note">No saved searches yet.</p>
+            <p className="note">
+              {t('lumen.gameFinder.noSaved', 'No saved searches yet.')}
+            </p>
           )}
           {!!savedRows?.length && (
             <ul className="setlist">
@@ -389,14 +434,18 @@ export default function GameDiscovery() {
                     disabled={busy}
                     onClick={() => load(entry)}
                   >
-                    Run {entry.name}
+                    {t('lumen.gameFinder.runSearch', 'Run {name}', {
+                      name: entry.name,
+                    })}
                   </button>
                   <button
                     className="btn btn-quiet btn-sm"
                     disabled={busy}
                     onClick={() => setRemove(entry)}
                   >
-                    Delete {entry.name}
+                    {t('lumen.gameFinder.deleteNamedSearch', 'Delete {name}', {
+                      name: entry.name,
+                    })}
                   </button>
                 </li>
               ))}
@@ -406,10 +455,10 @@ export default function GameDiscovery() {
       )}
       {remove && (
         <ConfirmSheet
-          title="Delete Saved Search?"
+          title={t('lumen.gameFinder.deleteTitle', 'Delete Saved Search?')}
           body={remove.name}
-          confirm="Delete Search"
-          cancel="Keep Search"
+          confirm={t('lumen.gameFinder.deleteConfirm', 'Delete Search')}
+          cancel={t('lumen.gameFinder.deleteCancel', 'Keep Search')}
           busy={busy}
           onClose={() => {
             if (!pending.current) setRemove(undefined);
@@ -421,7 +470,10 @@ export default function GameDiscovery() {
                 setRemove(undefined);
                 saved.reload();
               },
-              'Could not delete the search.'
+              t(
+                'lumen.gameFinder.deleteFailure',
+                'Could not delete the search.'
+              )
             )
           }
         />
