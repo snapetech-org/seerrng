@@ -6,9 +6,11 @@ import DefaultUserPermissions from '../components/DefaultUserPermissions';
 import { ServiceNote } from '../components/extra';
 import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 // Request rules, quotas and the permissions new accounts start with, in one place.
 export default function AdminRequestDefaults() {
+  const { t } = useLumenLocale();
   const settings = useApi<{
     defaultQuotas?: DefaultQuotas;
     defaultPermissions?: number;
@@ -17,7 +19,7 @@ export default function AdminRequestDefaults() {
   return (
     <>
       <header className="ph">
-        <h1>Request Defaults</h1>
+        <h1>{t('lumen.adminGeneral.requestDefaults.title', 'Request Defaults')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
             Administration

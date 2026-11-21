@@ -1862,7 +1862,8 @@
     "lumen.adminSettings.imageTooLarge": "Choose an image of up to 2 MB.",
     "lumen.adminSettings.imageDraftAdded": "Image added to your draft.",
     "lumen.adminSettings.imageSaveSuccess": "{asset} uploaded and saved for everyone.",
-    "lumen.adminSettings.uploadFailed": "Couldn’t upload"
+    "lumen.adminSettings.uploadFailed": "Couldn’t upload",
+    "lumen.adminGeneral.requestDefaults.title": "Request Defaults"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -3884,7 +3885,8 @@
     "lumen.adminSettings.imageTooLarge": "Choisissez une image de 2 Mo maximum.",
     "lumen.adminSettings.imageDraftAdded": "Image ajoutée à votre brouillon.",
     "lumen.adminSettings.imageSaveSuccess": "{asset} téléversé et enregistré pour tout le monde.",
-    "lumen.adminSettings.uploadFailed": "Téléversement impossible"
+    "lumen.adminSettings.uploadFailed": "Téléversement impossible",
+    "lumen.adminGeneral.requestDefaults.title": "Paramètres par défaut des demandes"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -5910,6 +5912,7 @@
     "lumen.adminSettings.imageTooLarge": "اختر صورة بحجم يصل إلى 2 ميغابايت.",
     "lumen.adminSettings.imageDraftAdded": "تمت إضافة الصورة إلى مسودتك.",
     "lumen.adminSettings.imageSaveSuccess": "تم رفع {asset} وحفظه للجميع.",
-    "lumen.adminSettings.uploadFailed": "تعذّر الرفع"
+    "lumen.adminSettings.uploadFailed": "تعذّر الرفع",
+    "lumen.adminGeneral.requestDefaults.title": "إعدادات الطلبات الافتراضية"
   }
 }

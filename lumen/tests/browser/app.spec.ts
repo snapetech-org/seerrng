@@ -6562,10 +6562,10 @@ test('General Settings confirms default permissions and preserves higher permiss
     });
   });
   await page.goto('/admin/requests#default-request-quotas');
-  await page.getByRole('link', { name: 'Default User Permissions' }).click();
+  await page.getByRole('link', { name: 'Autorisations par défaut des utilisateurs' }).click();
   await expect(page).toHaveURL(/#default-user-permissions$/);
   await expect(
-    page.getByRole('heading', { name: 'Default User Permissions' })
+    page.getByRole('heading', { name: 'Autorisations par défaut des utilisateurs' })
   ).toBeInViewport();
   if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
     await page.screenshot({
@@ -6586,13 +6586,13 @@ test('General Settings confirms default permissions and preserves higher permiss
   await page
     .getByRole('checkbox', { name: 'Demande de livres', exact: true })
     .check();
-  await page.getByRole('button', { name: 'Save Default Permissions' }).click();
+  await page.getByRole('button', { name: 'Enregistrer les autorisations par défaut' }).click();
   expect(writes).toEqual([]);
   await page
     .getByRole('alertdialog')
-    .getByRole('button', { name: 'Save Default Permissions' })
+    .getByRole('button', { name: 'Enregistrer les autorisations par défaut' })
     .click();
-  await expect(page.getByText('Default permissions saved.')).toBeVisible();
+  await expect(page.getByText('Autorisations par défaut enregistrées.')).toBeVisible();
   expect(writes).toEqual([
     { defaultPermissions: 4398046511104 + 34359738368 + 32 },
   ]);

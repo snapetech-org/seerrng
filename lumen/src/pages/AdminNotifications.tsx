@@ -8,6 +8,7 @@ import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { Icon } from '../icons';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -1183,17 +1184,20 @@ export default function AdminNotifications() {
         <h1>{message('title', 'Instance Notifications')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {t('lumen.nav.administration', 'Administration')}
           </Link>
         </div>
       </header>
-      <nav className="chips wrap" aria-label="Notification Channels">
+      <nav
+        className="chips wrap"
+        aria-label={message('channels', 'Notification Channels')}
+      >
         <Link
           className="chip"
           to="/admin/notifications"
           aria-current={!channel ? 'page' : undefined}
         >
-          All Channels
+          {message('allChannels', 'All Channels')}
         </Link>
         {channels.map((item) => (
           <Link
@@ -1213,11 +1217,7 @@ export default function AdminNotifications() {
           {message('unknownChannel', 'Unknown notification channel.')}
         </p>
       ) : (
-        <Section title="Channels">
-          <p className="note">
-            Pick a channel to set it up. Each channel has its own events and
-            test message.
-          </p>
+        <Section title={message('channels', 'Channels')}>
           <div className="setlist">
             {channels.map((item) => (
               <div className="set" key={item}>
@@ -1225,9 +1225,9 @@ export default function AdminNotifications() {
                 <Link
                   className="go"
                   to={`/admin/notifications/${item}`}
-                  aria-label={`Open ${titles[item]}`}
+                  aria-label={`${t('lumen.admin.open', 'Open')} ${titles[item]}`}
                 >
-                  Open <Icon name="chev" size="sm" />
+                  {t('lumen.admin.open', 'Open')} <Icon name="chev" size="sm" />
                 </Link>
               </div>
             ))}

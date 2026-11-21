@@ -19,8 +19,10 @@ import {
   shortDate,
   TitleCard,
 } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
-import { useShareAvailable } from '../components/detail';
+import { canUseShare } from '../components/detail';
+import { ServiceNote } from '../components/extra';
 import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
 import {
@@ -177,7 +179,6 @@ export default function Discover() {
       : null
   );
   const { user } = useAuth();
-  const shareAvailable = useShareAvailable(user?.permissions);
   const recentAllowed = canSeeRecent(user?.permissions);
   const fresh = useNewOnPlex(
     preferencesReady &&
@@ -237,8 +238,12 @@ export default function Discover() {
             {CHIPS.filter(
               ([, , , h]) =>
                 (books_ || (h !== '/books' && h !== '/audiobooks')) &&
-                (h !== '/share' || shareAvailable)
-            ).map(([i, t, h]) => (
+                (h !== '/movies' || movieEnabled) &&
+                (h !== '/series' || tvEnabled) &&
+                (h !== '/books' || ebookEnabled) &&
+                (h !== '/audiobooks' || audiobookEnabled) &&
+                (h !== '/share' || canUseShare(user?.permissions))
+            ).map(([i, message, fallback, h]) => (
               <Link key={h} className="chip" to={h}>
                 <Icon name={i} />
                 {t(message, fallback)}
@@ -312,8 +317,23 @@ export default function Discover() {
         recentAllowed &&
         fresh?.length !== 0 && (
           <Section
-            title={`New on ${serverName}`}
-            link={['See all', '/movies?show=plex']}
+            title={t('lumen.discover.newOn', undefined, { server: serverName })}
+            link={[t('components.Persius.seeAll'), '/movies?show=plex']}
+            action={
+              fresh?.length ? (
+                <CardTitleToggle
+                  kinds={[
+                    ...new Set(
+                      fresh.map((item) =>
+                        item.mediaType === 'tv'
+                          ? ('tv' as const)
+                          : ('movie' as const)
+                      )
+                    ),
+                  ]}
+                />
+              ) : undefined
+            }
           >
             {fresh ? (
               <Rail restoreId="recent">
@@ -337,37 +357,53 @@ export default function Discover() {
           </Section>
         )}
 
-      {preferencesReady && on.trendingMovies && !empty(movieCards) && (
-        <Section title="Trending movies" link={['See all', '/movies']}>
-          {movieCards ? (
-            <Rail restoreId="movies">
-              {movieCards.map((m) => (
-                <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
-              ))}
-            </Rail>
-          ) : movies.error ? (
-            <RowError retry={movies.reload} />
-          ) : (
-            <RailSkeleton />
-          )}
-        </Section>
-      )}
+      {preferencesReady &&
+        categorySettingsReady &&
+        movieEnabled &&
+        on.trendingMovies &&
+        !empty(movieCards) && (
+          <Section
+            title={t('components.Persius.popularMovies')}
+            action={<CardTitleToggle kinds={['movie']} />}
+            link={[t('components.Persius.seeAll'), '/movies']}
+          >
+            {movieCards ? (
+              <Rail restoreId="movies">
+                {movieCards.map((m) => (
+                  <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
+                ))}
+              </Rail>
+            ) : movies.error ? (
+              <RowError retry={movies.reload} />
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
 
-      {preferencesReady && on.popularSeries && !empty(seriesCards) && (
-        <Section title="Popular series" link={['See all', '/series']}>
-          {seriesCards ? (
-            <Rail restoreId="series">
-              {seriesCards.map((t) => (
-                <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
-              ))}
-            </Rail>
-          ) : series.error ? (
-            <RowError retry={series.reload} />
-          ) : (
-            <RailSkeleton />
-          )}
-        </Section>
-      )}
+      {preferencesReady &&
+        categorySettingsReady &&
+        tvEnabled &&
+        on.popularSeries &&
+        !empty(seriesCards) && (
+          <Section
+            title={t('components.Persius.popularSeries')}
+            action={<CardTitleToggle kinds={['tv']} />}
+            link={[t('components.Persius.seeAll'), '/series']}
+          >
+            {seriesCards ? (
+              <Rail restoreId="series">
+                {seriesCards.map((t) => (
+                  <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
+                ))}
+              </Rail>
+            ) : series.error ? (
+              <RowError retry={series.reload} />
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
 
       {preferencesReady &&
         books_ &&
@@ -375,7 +411,11 @@ export default function Discover() {
         audiobookEnabled &&
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
-          <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
+          <Section
+            title={t('components.Persius.popularAudio')}
+            action={<CardTitleToggle kinds={['book']} />}
+            link={[t('components.Persius.seeAll'), '/audiobooks']}
+          >
             {audio.data ? (
               <Rail restoreId="audiobooks">
                 {withCovers(audio.data).map((b) => (
@@ -396,7 +436,11 @@ export default function Discover() {
         ebookEnabled &&
         on.books &&
         !empty(books.data ? ebookCards : undefined) && (
-          <Section title="Popular books" link={['See all', '/books']}>
+          <Section
+            title={t('lumen.discover.popularBooks')}
+            action={<CardTitleToggle kinds={['book']} />}
+            link={[t('components.Persius.seeAll'), '/books']}
+          >
             {books.data ? (
               <Rail restoreId="books">
                 {ebookCards.map((b) => (
@@ -414,25 +458,33 @@ export default function Discover() {
           </Section>
         )}
 
-      {preferencesReady && on.comingSoon && !empty(upcomingCards) && (
-        <Section title="Coming soon" link={['See all', '/soon']}>
-          {upcomingCards ? (
-            <Rail restoreId="coming-soon">
-              {upcomingCards.map((m) => (
-                <TitleCard
-                  key={m.id}
-                  it={{ ...m, mediaType: 'movie' }}
-                  meta={shortDate(m.releaseDate)}
-                />
-              ))}
-            </Rail>
-          ) : soon.error ? (
-            <RowError retry={soon.reload} />
-          ) : (
-            <RailSkeleton />
-          )}
-        </Section>
-      )}
+      {preferencesReady &&
+        categorySettingsReady &&
+        movieEnabled &&
+        on.comingSoon &&
+        !empty(upcomingCards) && (
+          <Section
+            title={t('components.Persius.comingSoon')}
+            action={<CardTitleToggle kinds={['movie']} />}
+            link={[t('components.Persius.seeAll'), '/soon']}
+          >
+            {upcomingCards ? (
+              <Rail restoreId="coming-soon">
+                {upcomingCards.map((m) => (
+                  <TitleCard
+                    key={m.id}
+                    it={{ ...m, mediaType: 'movie' }}
+                    meta={shortDate(m.releaseDate)}
+                  />
+                ))}
+              </Rail>
+            ) : soon.error ? (
+              <RowError retry={soon.reload} />
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
 
       {preferencesReady && categorySettingsReady && (
         <ConfiguredDiscoverShelves

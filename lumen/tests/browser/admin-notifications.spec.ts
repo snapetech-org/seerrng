@@ -80,17 +80,17 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     page.getByLabel('Use public Seerr logo instead of instance logo')
   ).toBeChecked();
   await save.click();
-  await expect(page.getByText('Notification settings saved.')).toBeVisible();
+  await expect(page.getByText('Email notification settings saved successfully!')).toBeVisible();
   await page
     .getByRole('navigation', { name: 'Notification Channels' })
     .getByRole('link', { name: 'Web Push', exact: true })
     .click();
   await page
-    .getByRole('checkbox', { name: 'Enable Notifications' })
+    .getByRole('checkbox', { name: 'Enable Agent' })
     .last()
     .check();
   await page.getByRole('button', { name: 'Save Web Push' }).click();
-  await expect(page.getByText('Notification settings saved.')).toBeVisible();
+  await expect(page.getByText('Web push notification settings saved successfully!')).toBeVisible();
   expect(writes.at(-1)).toEqual({
     path: 'webpush',
     body: { enabled: true, embedPoster: false, options: {} },
@@ -518,7 +518,7 @@ test('server notification channels save and test with their own options', async 
   await expect(ntfy.getByLabel('Token', { exact: true })).toHaveValue('');
   await ntfy.getByLabel('Tags').fill('bell,house');
   await ntfy.getByRole('button', { name: 'Send ntfy Test' }).click();
-  await expect(ntfy.getByText('Test notification sent.')).toBeVisible();
+  await expect(ntfy.getByText('Ntfy test notification sent!')).toBeVisible();
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await ntfy.screenshot({ path: info.outputPath('ntfy.png') });
 

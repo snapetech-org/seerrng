@@ -129,7 +129,7 @@ export default function DefaultRequestQuotas({
       ]}
       action={
         showPermissionsLink ? (
-          <Link to="#default-user-permissions">Default User Permissions</Link>
+          <Link to="#default-user-permissions">{t('lumen.adminGeneral.quotas.permissionsLink', 'Default User Permissions')}</Link>
         ) : undefined
       }
     >

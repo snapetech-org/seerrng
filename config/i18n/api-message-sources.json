@@ -285,7 +285,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 507,
+          "line": 509,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Provide 1 to 20 valid season numbers.'",
@@ -375,7 +375,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3272,
+          "line": 3277,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup author: ${e.message}`",
@@ -579,7 +579,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2549,
+          "line": 2554,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for author ${authorId}: ${\n        lastError instanceof Error ? lastError.message : 'No poster path worked'\n      }`",
@@ -1402,7 +1402,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1948,
+          "line": 1953,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid book ID.'",
@@ -1659,7 +1659,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1847,
+          "line": 1852,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series cover content type.'",
@@ -3284,7 +3284,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 422,
+          "line": 424,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie recommendations.'",
@@ -3509,7 +3509,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3431,
+          "line": 3436,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned an invalid pending add ID.'",
@@ -3805,7 +3805,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1824,
+          "line": 1829,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series cover path.'",
@@ -4333,7 +4333,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2400,
+          "line": 2405,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book files: ${error.message}`",
@@ -4773,7 +4773,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 323,
+          "line": 325,
           "kind": "response-body",
           "field": "body",
           "expression": "'Movie cover not found'",
@@ -4781,7 +4781,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 345,
+          "line": 347,
           "kind": "response-body",
           "field": "body",
           "expression": "'Movie cover not found'",
@@ -5414,7 +5414,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3576,
+          "line": 3581,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination cannot add an edition alongside.'",
@@ -6175,7 +6175,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 552,
+          "line": 554,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie ratings.'",
@@ -6183,7 +6183,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 629,
+          "line": 631,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve movie ratings.'",
@@ -7252,7 +7252,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1999,
+          "line": 2004,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book server edition metadata is unavailable.'",
@@ -11553,7 +11553,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 343,
+          "line": 345,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11657,7 +11657,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 397,
+          "line": 399,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11835,7 +11835,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3755,
+          "line": 3760,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to remove book: ${e.message}`",
@@ -12101,7 +12101,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1572,
+          "line": 1577,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid author ID.'",
@@ -13079,7 +13079,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 839,
+          "line": 841,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve similar series.'",
@@ -14236,7 +14236,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3112,
+          "line": 3117,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to lookup book: ${e.message}`",
@@ -14522,7 +14522,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2251,
+          "line": 2256,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an incomplete media-move preview.'",
@@ -16074,7 +16074,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2376,
+          "line": 2381,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book ${bookId}: ${e.message}`",
@@ -16093,7 +16093,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2424,
+          "line": 2429,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve book ${bookId}: ${e.message}`",
@@ -16740,7 +16740,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2146,
+          "line": 2151,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve a book page: ${getReadarrErrorMessage(error)}`",
@@ -17216,7 +17216,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3779,
+          "line": 3784,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to start book search: ${getReadarrErrorMessage(e)}`",
@@ -17319,7 +17319,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1541,
+          "line": 1546,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned a non-advancing library page'",
@@ -19309,7 +19309,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3437,
+          "line": 3442,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr queued author preparation without advertising pending-import support. Update ChaptarrNG before retrying this request.'",
@@ -19347,7 +19347,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2231,
+          "line": 2236,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move preview.'",
@@ -20902,7 +20902,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1598,
+          "line": 1603,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book server series metadata is unavailable.'",
@@ -21076,7 +21076,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 539,
+          "line": 541,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Rotten Tomatoes ratings not found.'",
@@ -21084,7 +21084,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 875,
+          "line": 877,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Rotten Tomatoes ratings not found.'",
@@ -21204,7 +21204,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 525,
+          "line": 530,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "status ? `${message} (status ${status})` : message",
@@ -21223,7 +21223,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 525,
+          "line": 530,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "status ? `${message} (status ${status})` : message",
@@ -21242,7 +21242,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 525,
+          "line": 530,
           "kind": "message-helper-return",
           "field": "message",
           "expression": "status ? `${message} (status ${status})` : message",
@@ -22016,7 +22016,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2127,
+          "line": 2132,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Readarr returned an invalid paged library response.'",
@@ -22628,7 +22628,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3255,
+          "line": 3260,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to cancel pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -24590,7 +24590,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1972,
+          "line": 1977,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid book server member.'",
@@ -24680,7 +24680,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1490,
+          "line": 1495,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Chaptarr returned an invalid paged library response'",
@@ -27831,7 +27831,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 974,
+          "line": 979,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve system status: ${getReadarrErrorMessage(e)}`",
@@ -28062,7 +28062,7 @@
       "callsites": [
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 729,
+          "line": 736,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured Bookshelf catalogs are unavailable.'",
@@ -28825,7 +28825,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1773,
+          "line": 1778,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid series catalog ID.'",
@@ -29185,7 +29185,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1531,
+          "line": 1536,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned an empty page before the reported library total of ${totalCount}`",
@@ -29199,7 +29199,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1531,
+          "line": 1536,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned an empty page before the reported library total of ${totalCount}`",
@@ -29387,7 +29387,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 500,
+          "line": 502,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve similar movies.'",
@@ -29593,7 +29593,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2566,
+          "line": 2571,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve editions for book ${bookId}: ${e.message}`",
@@ -33110,7 +33110,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3585,
+          "line": 3590,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'An additional edition requires an explicit selection.'",
@@ -34760,7 +34760,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1743,
+          "line": 1748,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Catalog book identity does not match the requested work and format.'",
@@ -34855,7 +34855,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3225,
+          "line": 3230,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve pending Chaptarr import ${pendingId}: ${getReadarrErrorMessage(error)}`",
@@ -38515,7 +38515,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 694,
+          "line": 696,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -38523,7 +38523,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 771,
+          "line": 773,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -38531,7 +38531,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 849,
+          "line": 851,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -38539,7 +38539,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 864,
+          "line": 866,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -38547,7 +38547,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 899,
+          "line": 901,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -38555,7 +38555,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 912,
+          "line": 914,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40262,7 +40262,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 491,
+          "line": 493,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -40270,7 +40270,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 522,
+          "line": 524,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -40278,7 +40278,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 607,
+          "line": 609,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -40286,7 +40286,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 618,
+          "line": 620,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -41099,7 +41099,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3580,
+          "line": 3585,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This destination no longer supports additional editions.'",
@@ -45377,7 +45377,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2549,
+          "line": 2554,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for author ${authorId}: ${\n        lastError instanceof Error ? lastError.message : 'No poster path worked'\n      }`",
@@ -45960,7 +45960,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 608,
+          "line": 610,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -45968,7 +45968,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 934,
+          "line": 936,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -47047,7 +47047,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2486,
+          "line": 2491,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for book ${bookId}: ${\n        lastError instanceof Error ? lastError.message : 'No cover path worked'\n      }`",
@@ -47830,7 +47830,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2495,
+          "line": 2500,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'[Readarr] Invalid author ID for cover lookup.'",
@@ -47893,7 +47893,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2331,
+          "line": 2336,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move command.'",
@@ -47901,7 +47901,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2337,
+          "line": 2342,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'BookshelfNG returned an invalid media-move command.'",
@@ -49696,7 +49696,7 @@
       "callsites": [
         {
           "path": "server/routes/movie.ts",
-          "line": 608,
+          "line": 610,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -49704,7 +49704,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 934,
+          "line": 936,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -51435,7 +51435,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3602,
+          "line": 3607,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The selected additional edition is missing from the catalog.'",
@@ -52077,7 +52077,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3488,
+          "line": 3493,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to add book: ${getReadarrErrorMessage(e)}`",
@@ -52432,7 +52432,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1508,
+          "line": 1513,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned offset ${responseOffset} when SeerrNG requested ${offset}`",
@@ -52451,7 +52451,7 @@
         },
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1508,
+          "line": 1513,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr returned offset ${responseOffset} when SeerrNG requested ${offset}`",
@@ -57342,7 +57342,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 762,
+          "line": 764,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series recommendations.'",
@@ -58463,7 +58463,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 598,
+          "line": 600,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve season.'",
@@ -58471,7 +58471,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 685,
+          "line": 687,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve season.'",
@@ -58686,7 +58686,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1293,
+          "line": 1298,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve metadata profiles: ${e.message}`",
@@ -59502,7 +59502,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 353,
+          "line": 355,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59510,7 +59510,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 431,
+          "line": 433,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59518,7 +59518,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 513,
+          "line": 515,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59526,7 +59526,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 528,
+          "line": 530,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59534,7 +59534,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 567,
+          "line": 569,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59542,7 +59542,7 @@
         },
         {
           "path": "server/routes/movie.ts",
-          "line": 582,
+          "line": 584,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Movie not found.'",
@@ -59651,7 +59651,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 368,
+          "line": 370,
           "kind": "response-body",
           "field": "body",
           "expression": "'Series cover not found'",
@@ -59659,7 +59659,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 377,
+          "line": 379,
           "kind": "response-body",
           "field": "body",
           "expression": "'Series cover not found'",
@@ -59667,7 +59667,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 399,
+          "line": 401,
           "kind": "response-body",
           "field": "body",
           "expression": "'Series cover not found'",
@@ -59905,7 +59905,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 3470,
+          "line": 3475,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Bookshelf returned an invalid book response.'",
@@ -61697,7 +61697,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1560,
+          "line": 1565,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Chaptarr library scan reached the ${MAX_SERVARR_LIBRARY_RESULTS}-book safety limit before confirming the library was complete`",
@@ -62112,7 +62112,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 1322,
+          "line": 1327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve development config: ${e.message}`",
@@ -62906,7 +62906,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2486,
+          "line": 2491,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve cover for book ${bookId}: ${\n        lastError instanceof Error ? lastError.message : 'No cover path worked'\n      }`",
@@ -63182,7 +63182,7 @@
       "callsites": [
         {
           "path": "server/api/servarr/readarr.ts",
-          "line": 2085,
+          "line": 2090,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[Readarr] Failed to retrieve books: ${e.message}`",
@@ -63496,7 +63496,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 888,
+          "line": 890,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series ratings.'",
@@ -63504,7 +63504,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 953,
+          "line": 955,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series ratings.'",
@@ -64801,7 +64801,7 @@
       "callsites": [
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 783,
+          "line": 790,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -64809,7 +64809,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 825,
+          "line": 832,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -64817,7 +64817,7 @@
         },
         {
           "path": "server/utils/bookshelfCatalog.ts",
-          "line": 873,
+          "line": 880,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Configured audiobook catalogs are unavailable.'",
@@ -69399,7 +69399,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 396,
+      "line": 401,
       "kind": "authored-message-field",
       "field": "warnings",
       "expression": "Array.isArray(record.warnings)\n      ? record.warnings\n          .slice(0, 100)\n          .flatMap((warning) =>\n            typeof warning === 'string' ? [boundedMediaMoveText(warning)] : []\n          )\n      : []",
@@ -69408,7 +69408,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 510,
+      "line": 515,
       "kind": "authored-message-variable",
       "field": "getReadarrErrorMessage",
       "expression": "(error: unknown): string => {\n  if (!axios.isAxiosError(error)) {\n    return error instanceof Error ? error.message : String(error);\n  }\n\n  const status = error.response?.status;\n  const data = error.response?.data as\n    { message?: unknown; errorMessage?: unknown } | undefined;\n  const message =\n    typeof data?.message === 'string'\n      ? data.message\n      : typeof data?.errorMessage === 'string'\n        ? data.errorMessage\n        : error.message;\n\n  return status ? `${message} (status ${status})` : message;\n}",
@@ -69417,7 +69417,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 512,
+      "line": 517,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69426,7 +69426,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 512,
+      "line": 517,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69435,7 +69435,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 519,
+      "line": 524,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data?.message === 'string'\n      ? data.message\n      : typeof data?.errorMessage === 'string'\n        ? data.errorMessage\n        : error.message",
@@ -69444,7 +69444,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 519,
+      "line": 524,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data?.message === 'string'\n      ? data.message\n      : typeof data?.errorMessage === 'string'\n        ? data.errorMessage\n        : error.message",
@@ -69453,7 +69453,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 519,
+      "line": 524,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data?.message === 'string'\n      ? data.message\n      : typeof data?.errorMessage === 'string'\n        ? data.errorMessage\n        : error.message",
@@ -69462,7 +69462,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 525,
+      "line": 530,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "status ? `${message} (status ${status})` : message",
@@ -69471,7 +69471,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 525,
+      "line": 530,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "status ? `${message} (status ${status})` : message",
@@ -69480,7 +69480,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 525,
+      "line": 530,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "status ? `${message} (status ${status})` : message",
@@ -69489,7 +69489,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 543,
+      "line": 548,
       "kind": "authored-message-variable",
       "field": "isMissingRowServerError",
       "expression": "(error: unknown): boolean => {\n  const response = (\n    error as { response?: { status?: unknown; data?: unknown } } | undefined\n  )?.response;\n  if (response?.status !== 500) return false;\n  const data = response.data;\n  const message =\n    typeof data === 'string'\n      ? data\n      : isRecord(data) && typeof data.message === 'string'\n        ? data.message\n        : '';\n  return /expected query to return 1 rows? but returned 0/i.test(message);\n}",
@@ -69498,7 +69498,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 547,
+      "line": 552,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "false",
@@ -69507,7 +69507,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 550,
+      "line": 555,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data === 'string'\n      ? data\n      : isRecord(data) && typeof data.message === 'string'\n        ? data.message\n        : ''",
@@ -69516,7 +69516,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 550,
+      "line": 555,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data === 'string'\n      ? data\n      : isRecord(data) && typeof data.message === 'string'\n        ? data.message\n        : ''",
@@ -69525,7 +69525,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 550,
+      "line": 555,
       "kind": "authored-message-variable",
       "field": "message",
       "expression": "typeof data === 'string'\n      ? data\n      : isRecord(data) && typeof data.message === 'string'\n        ? data.message\n        : ''",
@@ -69534,7 +69534,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 555,
+      "line": 560,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "/expected query to return 1 rows? but returned 0/i.test(message)",
@@ -69543,7 +69543,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 785,
+      "line": 790,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "status.appName?.trim().toLowerCase() === 'chaptarr'",
@@ -69552,7 +69552,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 963,
+      "line": 968,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "super.getSystemStatus()",
@@ -69561,7 +69561,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 968,
+      "line": 973,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "this.detectedSystemStatus as Pick<\n        SystemStatus,\n        'appName' | 'version' | 'urlBase'\n      >",
@@ -69570,7 +69570,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1416,
+      "line": 1421,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69579,7 +69579,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1416,
+      "line": 1421,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69588,7 +69588,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1436,
+      "line": 1441,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69597,7 +69597,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 1436,
+      "line": 1441,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69606,7 +69606,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2278,
+      "line": 2283,
       "kind": "authored-message-field",
       "field": "warnings",
       "expression": "Array.isArray(record.warnings)\n        ? record.warnings\n            .slice(0, 100)\n            .flatMap((warning) =>\n              typeof warning === 'string' ? [boundedMediaMoveText(warning)] : []\n            )\n        : []",
@@ -69615,7 +69615,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2343,
+      "line": 2348,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "boundedMediaMoveText(record.message)",
@@ -69624,7 +69624,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2828,
+      "line": 2833,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69633,7 +69633,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2828,
+      "line": 2833,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69642,7 +69642,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2868,
+      "line": 2873,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69651,7 +69651,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2868,
+      "line": 2873,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69660,7 +69660,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2979,
+      "line": 2984,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69669,7 +69669,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 2979,
+      "line": 2984,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69678,7 +69678,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3047,
+      "line": 3052,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69687,7 +69687,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3047,
+      "line": 3052,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69696,7 +69696,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3106,
+      "line": 3111,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69705,7 +69705,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3106,
+      "line": 3111,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -69714,7 +69714,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3198,
+      "line": 3203,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "readText(response[camel] ?? response[pascal])",
@@ -69723,7 +69723,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3217,
+      "line": 3222,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "status('lastError', 'LastError')",
@@ -69732,7 +69732,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3447,
+      "line": 3452,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69741,7 +69741,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3447,
+      "line": 3452,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "typeof (postedBook.message ?? postedBook.Message) === 'string'\n                ? String(postedBook.message ?? postedBook.Message).slice(\n                    0,\n                    10_000\n                  )\n                : undefined",
@@ -69750,7 +69750,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3672,
+      "line": 3677,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69759,7 +69759,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3701,
+      "line": 3706,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -69768,7 +69768,7 @@
     },
     {
       "path": "server/api/servarr/readarr.ts",
-      "line": 3774,
+      "line": 3779,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "getReadarrErrorMessage(e)",
@@ -80955,7 +80955,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 336,
+      "line": 338,
       "kind": "response-body",
       "field": "body",
       "expression": "cover.imageBuffer",
@@ -80964,7 +80964,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 343,
+      "line": 345,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -80973,7 +80973,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 357,
+      "line": 359,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -80982,7 +80982,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 366,
+      "line": 368,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedShuffleSeed.error",
@@ -80991,7 +80991,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 417,
+      "line": 419,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81000,7 +81000,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 435,
+      "line": 437,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -81009,7 +81009,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 444,
+      "line": 446,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedShuffleSeed.error",
@@ -81018,7 +81018,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 495,
+      "line": 497,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81027,7 +81027,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 547,
+      "line": 549,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -81036,7 +81036,7 @@
     },
     {
       "path": "server/routes/movie.ts",
-      "line": 624,
+      "line": 626,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -87408,7 +87408,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 390,
+      "line": 392,
       "kind": "response-body",
       "field": "body",
       "expression": "cover.imageBuffer",
@@ -87417,7 +87417,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 397,
+      "line": 399,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -87426,7 +87426,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 457,
+      "line": 459,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87435,7 +87435,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 457,
+      "line": 459,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87444,7 +87444,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 479,
+      "line": 481,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87453,7 +87453,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 479,
+      "line": 481,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87462,7 +87462,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 515,
+      "line": 517,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -87471,7 +87471,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 548,
+      "line": 550,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87480,7 +87480,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 548,
+      "line": 550,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87489,7 +87489,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 581,
+      "line": 583,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87498,7 +87498,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 581,
+      "line": 583,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87507,7 +87507,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 596,
+      "line": 598,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87516,7 +87516,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 596,
+      "line": 598,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87525,7 +87525,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 611,
+      "line": 613,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -87534,7 +87534,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 679,
+      "line": 681,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -87543,7 +87543,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 698,
+      "line": 700,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -87552,7 +87552,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 707,
+      "line": 709,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedShuffleSeed.error",
@@ -87561,7 +87561,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 757,
+      "line": 759,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -87570,7 +87570,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 775,
+      "line": 777,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -87579,7 +87579,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 784,
+      "line": 786,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedShuffleSeed.error",
@@ -87588,7 +87588,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 834,
+      "line": 836,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -87597,7 +87597,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 883,
+      "line": 885,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -87606,7 +87606,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 948,
+      "line": 950,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -87615,7 +87615,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 948,
+      "line": 950,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -88974,7 +88974,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 975,
+      "line": 982,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -88983,7 +88983,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 975,
+      "line": 982,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
