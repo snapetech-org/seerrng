@@ -404,10 +404,33 @@ test('My Games follows the selected Lumen locale', async ({
     page.getByRole('heading', { name: labels[locale].add })
   ).toBeVisible();
   await expect(page.getByLabel(labels[locale].titleField)).toBeVisible();
-  await expect(page.getByLabel(labels[locale].progress).last()).toBeVisible();
-  await expect(
-    page.getByRole('button', { name: labels[locale].save, exact: true })
-  ).toBeVisible();
+  const progress = page.getByLabel(labels[locale].progress).last();
+  await expect(progress).toBeVisible();
+  await progress.evaluate((element) =>
+    element.scrollIntoView({ block: 'end', behavior: 'instant' })
+  );
+  if ((page.viewportSize()?.width ?? 1440) < 1040) {
+    const field = await progress.boundingBox();
+    const tabbar = await page.locator('.tabbar').boundingBox();
+    expect(field).not.toBeNull();
+    expect(tabbar).not.toBeNull();
+    expect(field!.y + field!.height).toBeLessThanOrEqual(tabbar!.y);
+  }
+  const save = page.getByRole('button', {
+    name: labels[locale].save,
+    exact: true,
+  });
+  await expect(save).toBeVisible();
+  await save.evaluate((element) =>
+    element.scrollIntoView({ block: 'end', behavior: 'instant' })
+  );
+  if ((page.viewportSize()?.width ?? 1440) < 1040) {
+    const button = await save.boundingBox();
+    const tabbar = await page.locator('.tabbar').boundingBox();
+    expect(button).not.toBeNull();
+    expect(tabbar).not.toBeNull();
+    expect(button!.y + button!.height).toBeLessThanOrEqual(tabbar!.y);
+  }
   if (
     captureDirectory &&
     ['fr', 'ar'].includes(locale) &&
@@ -415,7 +438,6 @@ test('My Games follows the selected Lumen locale', async ({
   ) {
     await page.screenshot({
       path: `${captureDirectory}/game-library-${locale}-${testInfo.project.name}-editor.png`,
-      fullPage: true,
     });
   }
 });

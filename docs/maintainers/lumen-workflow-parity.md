@@ -2315,7 +2315,8 @@ the same four viewports in the standalone build. Baseline and
 candidate empty-library captures were compared at desktop and iPhone widths;
 French and Arabic candidate captures of the empty state and add-game form
 were inspected at desktop and iPhone.
-The translated states showed no clipping or root horizontal overflow. Evidence
+The translated states showed no root horizontal overflow. Mobile add-form checks
+scroll the progress control and submit button clear of the fixed tab bar. Evidence
 is retained in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-20261121/`.
 Live provider behavior and populated-state visual comparison remain open.
 
