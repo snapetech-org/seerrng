@@ -3046,6 +3046,19 @@ export const localeData = [
         'تعذر حفظ بيانات اعتماد Spotify.',
       'lumen.adminGeneral.spotify.confirmFailure':
         'تعذر تأكيد حفظ بيانات اعتماد Spotify.',
+      'lumen.adminGeneral.downloadMappings.title': 'تنزيل النسخ',
+      'lumen.adminGeneral.downloadMappings.field': 'تعيينات مسارات المكتبة',
+      'lumen.adminGeneral.downloadMappings.help':
+        'أدخل مصفوفة JSON. يتضمن كل تعيين serviceType وserviceId اختياريًا وremoteRoot وlocalRoot. استخدم جذور مكتبة محددة؛ يعرض SeerrNG الملفات الموجودة ضمن جذر معيّن فقط.',
+      'lumen.adminGeneral.downloadMappings.jsonError':
+        'أدخل مصفوفة JSON تضم 100 تعيين مسار كحد أقصى.',
+      'lumen.adminGeneral.downloadMappings.saveButton': 'حفظ المسارات',
+      'lumen.adminGeneral.downloadMappings.saved':
+        'تم حفظ تعيينات مسارات المكتبة.',
+      'lumen.adminGeneral.downloadMappings.confirmFailure':
+        'تعذر تأكيد حفظ تعيينات المسارات.',
+      'lumen.adminGeneral.downloadMappings.saveFailure':
+        'تعذر حفظ تعيينات مسارات المكتبة.',
     },
   },
   {
@@ -9856,6 +9869,20 @@ export const localeData = [
         'Could not save Spotify credentials.',
       'lumen.adminGeneral.spotify.confirmFailure':
         'Could not confirm saved Spotify credentials.',
+      'lumen.adminGeneral.downloadMappings.title': 'Download Copies',
+      'lumen.adminGeneral.downloadMappings.field': 'Library Path Mappings',
+      'lumen.adminGeneral.downloadMappings.help':
+        'Enter a JSON array. Each mapping has serviceType, optional serviceId, remoteRoot, and localRoot. Use narrow library roots; SeerrNG only offers files that resolve inside a mapped root.',
+      'lumen.adminGeneral.downloadMappings.jsonError':
+        'Enter a JSON array with at most 100 path mappings.',
+      'lumen.adminGeneral.downloadMappings.saveButton':
+        'Save Library Path Mappings',
+      'lumen.adminGeneral.downloadMappings.saved':
+        'Library path mappings saved.',
+      'lumen.adminGeneral.downloadMappings.confirmFailure':
+        'Could not confirm the saved path mappings.',
+      'lumen.adminGeneral.downloadMappings.saveFailure':
+        'Could not save library path mappings.',
     },
   },
   {
@@ -17230,6 +17257,20 @@ export const localeData = [
         'Impossible d’enregistrer les identifiants Spotify.',
       'lumen.adminGeneral.spotify.confirmFailure':
         'Impossible de confirmer l’enregistrement des identifiants Spotify.',
+      'lumen.adminGeneral.downloadMappings.title': 'Télécharger des copies',
+      'lumen.adminGeneral.downloadMappings.field':
+        'Mappages des chemins de bibliothèque',
+      'lumen.adminGeneral.downloadMappings.help':
+        'Saisissez un tableau JSON. Chaque mappage comprend serviceType, serviceId facultatif, remoteRoot et localRoot. Utilisez des racines de bibliothèque restreintes; SeerrNG ne propose que les fichiers situés dans une racine mappée.',
+      'lumen.adminGeneral.downloadMappings.jsonError':
+        'Saisissez un tableau JSON contenant au maximum 100 mappages de chemins.',
+      'lumen.adminGeneral.downloadMappings.saveButton': 'Enregistrer',
+      'lumen.adminGeneral.downloadMappings.saved':
+        'Mappages des chemins de bibliothèque enregistrés.',
+      'lumen.adminGeneral.downloadMappings.confirmFailure':
+        'Impossible de confirmer l’enregistrement des mappages de chemins.',
+      'lumen.adminGeneral.downloadMappings.saveFailure':
+        'Impossible d’enregistrer les mappages de chemins de bibliothèque.',
     },
   },
   {

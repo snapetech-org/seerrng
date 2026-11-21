@@ -2306,5 +2306,13 @@
   "lumen.adminGeneral.spotify.saveButton",
   "lumen.adminGeneral.spotify.saved",
   "lumen.adminGeneral.spotify.saveFailure",
-  "lumen.adminGeneral.spotify.confirmFailure"
+  "lumen.adminGeneral.spotify.confirmFailure",
+  "lumen.adminGeneral.downloadMappings.title",
+  "lumen.adminGeneral.downloadMappings.field",
+  "lumen.adminGeneral.downloadMappings.help",
+  "lumen.adminGeneral.downloadMappings.jsonError",
+  "lumen.adminGeneral.downloadMappings.saveButton",
+  "lumen.adminGeneral.downloadMappings.saved",
+  "lumen.adminGeneral.downloadMappings.confirmFailure",
+  "lumen.adminGeneral.downloadMappings.saveFailure"
 ]

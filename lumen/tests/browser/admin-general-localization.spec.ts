@@ -12,6 +12,10 @@ const labels = {
     spotifyId: 'Spotify Client ID',
     spotifySecret: 'Spotify Client Secret',
     spotifySave: 'Save Spotify Credentials',
+    mappingsLabel: 'Library Path Mappings',
+    mappingsSave: 'Save Library Path Mappings',
+    mappingsSaved: 'Library path mappings saved.',
+    mappingsError: 'Enter a JSON array with at most 100 path mappings.',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -24,6 +28,11 @@ const labels = {
     spotifyId: 'Spotify ID client',
     spotifySecret: 'Code secret client Spotify',
     spotifySave: 'Enregistrer les identifiants Spotify',
+    mappingsLabel: 'Mappages des chemins de bibliothèque',
+    mappingsSave: 'Enregistrer',
+    mappingsSaved: 'Mappages des chemins de bibliothèque enregistrés.',
+    mappingsError:
+      'Saisissez un tableau JSON contenant au maximum 100 mappages de chemins.',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -36,6 +45,10 @@ const labels = {
     spotifyId: 'معرف العميل Spotify',
     spotifySecret: 'Spotify سر العميل',
     spotifySave: 'حفظ بيانات اعتماد Spotify',
+    mappingsLabel: 'تعيينات مسارات المكتبة',
+    mappingsSave: 'حفظ المسارات',
+    mappingsSaved: 'تم حفظ تعيينات مسارات المكتبة.',
+    mappingsError: 'أدخل مصفوفة JSON تضم 100 تعيين مسار كحد أقصى.',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -49,6 +62,7 @@ test('general application settings localize and recover failed saves', async ({
   let title = 'SeerrNG';
   let spotifyClientId = '';
   let spotifyClientSecret = '';
+  let downloadPathMappings: Record<string, unknown>[] = [];
   const writes: Record<string, unknown>[] = [];
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
@@ -75,12 +89,18 @@ test('general application settings localize and recover failed saves', async ({
           spotifyClientId = body.spotifyClientId;
         if (typeof body.spotifyClientSecret === 'string')
           spotifyClientSecret = body.spotifyClientSecret;
+        if (Array.isArray(body.downloadPathMappings))
+          downloadPathMappings = body.downloadPathMappings as Record<
+            string,
+            unknown
+          >[];
       }
       return route.fulfill({
         json: {
           applicationTitle: title,
           spotifyClientId,
           spotifyClientSecret,
+          downloadPathMappings,
           applicationUrl: 'https://seerr.example.test',
           youtubeUrl: '',
           cacheImages: true,
@@ -133,8 +153,12 @@ test('general application settings localize and recover failed saves', async ({
     { applicationTitle: 'Household SeerrNG' },
     { applicationTitle: 'Household SeerrNG' },
   ]);
-  await page.getByLabel(new RegExp(text.spotifyId)).fill('spotify-client');
-  await page.getByLabel(new RegExp(text.spotifySecret)).fill('spotify-secret');
+  await page
+    .getByRole('textbox', { name: text.spotifyId })
+    .fill('spotify-client');
+  await page
+    .getByRole('textbox', { name: text.spotifySecret })
+    .fill('spotify-secret');
   await page
     .getByRole('button', { name: text.spotifySave, exact: true })
     .click();
@@ -152,6 +176,34 @@ test('general application settings localize and recover failed saves', async ({
     spotifyClientId: 'spotify-client',
     spotifyClientSecret: 'spotify-secret',
   });
+  await page
+    .getByRole('textbox', { name: text.mappingsLabel })
+    .fill(
+      '[{"serviceType":"radarr","remoteRoot":"/remote","localRoot":"/media"}]'
+    );
+  await page
+    .getByRole('button', { name: text.mappingsSave, exact: true })
+    .click();
+  await expect(
+    page.getByText(text.mappingsSaved, { exact: true })
+  ).toBeVisible();
+  expect(writes[3]).toMatchObject({
+    downloadPathMappings: [
+      {
+        serviceType: 'radarr',
+        remoteRoot: '/remote',
+        localRoot: '/media',
+      },
+    ],
+  });
+  await page
+    .getByRole('textbox', { name: text.mappingsLabel })
+    .fill('not JSON');
+  await page
+    .getByRole('button', { name: text.mappingsSave, exact: true })
+    .click();
+  await expect(page.getByRole('alert')).toContainText(text.mappingsError);
+  expect(writes).toHaveLength(4);
   const widths = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,
     viewport: document.documentElement.clientWidth,

@@ -5021,8 +5021,8 @@ retention and retry, the changed-field payload, locale direction, and overflow
 at desktop, iPhone, Android, and tablet sizes. French desktop and Arabic phone
 captures were compared with the English baseline; existing panel geometry is
 retained. Other locales use English fallback. This change covers only the
-Application panel; Download Copies, instance request policy, quotas, and
-permissions still need their own localization and workflow parity review. Live settings save/readback against SeerrNG and independent
+Application panel; instance request policy, quotas, and permissions still need
+their own localization and workflow parity review. Live settings save/readback against SeerrNG and independent
 linguistic review remain open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
 
@@ -5037,3 +5037,18 @@ candidate renders show the added guidance inside the existing field rows;
 Arabic shows the same fixed navigation overlap present in the English baseline.
 Live Spotify authorization and credential readback remain unverified, and the
 upstream Arabic Spotify labels have not had independent linguistic review.
+
+
+The Download Copies panel now localizes its path-mapping editor, setup guidance,
+JSON validation, save feedback, and section title in English, French, and Arabic.
+It retains the 100-entry bound, exact mapping payload, read-only-root guidance,
+and only reports success after the API confirms the saved list. Browser fixtures
+verify valid save and malformed JSON rejection without an API write across
+desktop, iPhone, Android, and tablet; all 12 locale/viewport cases pass with no
+horizontal overflow. The French mobile save label was shortened after the first
+comparison exposed a 39-pixel overflow. English baseline and English/French/Arabic
+candidate captures at 1440, 834, 412, and 390 CSS pixels were inspected; existing
+field ownership and panel geometry are retained. Arabic still has the shared fixed
+navigation overlap visible in the English baseline. Live filesystem mapping and
+file-download behavior remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
