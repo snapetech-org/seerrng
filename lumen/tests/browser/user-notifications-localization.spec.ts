@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_USER_NOTIFICATIONS_LOCALE ?? ''
 )
@@ -118,7 +121,9 @@ test('personal notification controls follow the account locale and preserve chan
   );
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Fixture User', permissions: 0 },
@@ -157,7 +162,7 @@ test('personal notification controls follow the account locale and preserve chan
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/notifications');
+  await page.goto(appPath('/me/account/notifications'));
   await expect(
     page.getByRole('heading', { name: pageLabels.title })
   ).toBeVisible();

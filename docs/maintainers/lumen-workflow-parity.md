@@ -5435,3 +5435,16 @@ the native administration directory. Regression coverage passes for the
 standalone and bundled builds: 60 navigation cases per build and 12 settings
 cases per build across English, French, and Arabic and desktop, iPhone, Android,
 and tablet viewports.
+
+### Qualify account workflows at the bundled mount
+
+The saved-locale account test now brings the mobile tab bar back into view before
+checking its localized links; the bar correctly yields while a long settings form
+is scrolled. Client Tokens, Linked Accounts, and personal Notifications browser
+fixtures now prepend the `/lumen/` mount and normalize mounted API paths, so the
+same tests exercise the packaged frontend instead of accidentally opening
+unmounted root routes. The combined profile, locale, linked-account, token, and
+notification suite passes all 88 cases on both standalone and bundled builds
+across desktop, iPhone, Android, and tablet projects. All writes are fixture
+responses; real account persistence and provider mutations remain separately
+unverified.

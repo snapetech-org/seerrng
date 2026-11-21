@@ -316,6 +316,9 @@ test('display language persists and localizes the shell and account settings', a
   await expect(
     page.getByText('Les paramètres ont été enregistrés !')
   ).toBeVisible();
+  // The mobile tab bar yields while scrolling through this long form. Return to
+  // its visible state before checking the newly localized navigation labels.
+  await page.evaluate(() => window.scrollTo(0, 0));
   await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Demandes' }).first()
@@ -405,6 +408,7 @@ test('display language persists and localizes the shell and account settings', a
     .click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await page.evaluate(() => window.scrollTo(0, 0));
   await expect(page.getByRole('link', { name: 'اكتشف' })).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'الطلبات' }).first()

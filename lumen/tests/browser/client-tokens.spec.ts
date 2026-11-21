@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 test('client tokens display the secret once and revoke after confirmation', async ({
   page,
 }) => {
@@ -14,7 +17,9 @@ test('client tokens display the secret once and revoke after confirmation', asyn
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
     if (path === '/auth/client-tokens') {
@@ -39,7 +44,7 @@ test('client tokens display the secret once and revoke after confirmation', asyn
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/me/account');
+  await page.goto(appPath('/me/account'));
   await page.getByRole('link', { name: 'Client Tokens' }).click();
   await page.getByLabel('Token Name').fill('Fixture Client');
   await page
@@ -177,7 +182,9 @@ for (const locale of ['fr', 'ar'] as const) {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
-      const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+      const path = new URL(request.url()).pathname
+        .replace(/^\/lumen(?=\/)/, '')
+        .slice('/api/v1'.length);
       if (path === '/auth/me')
         return route.fulfill({
           json: { id: 2, permissions: 32, userType: 2 },
@@ -223,7 +230,7 @@ for (const locale of ['fr', 'ar'] as const) {
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('/me/account/client-tokens');
+    await page.goto(appPath('/me/account/client-tokens'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     if (locale === 'ar')
       await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');

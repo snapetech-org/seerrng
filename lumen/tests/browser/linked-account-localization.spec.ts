@@ -1,5 +1,8 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 async function capture(page: Page, info: TestInfo) {
   if (
     !process.env.LUMEN_VISUAL_CAPTURE_DIR ||
@@ -25,9 +28,9 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
       : english;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 2, displayName: 'Viewer', permissions: 32, userType: 2 },
@@ -57,7 +60,7 @@ test('Linked Accounts exposes translated sign-in and recovery controls', async (
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/linked-accounts');
+  await page.goto(appPath('/me/account/linked-accounts'));
   await expect(
     page.getByRole('heading', {
       name: translated('Linked Accounts', 'Comptes liés', 'الحسابات المرتبطة'),
