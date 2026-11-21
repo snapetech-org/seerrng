@@ -485,7 +485,9 @@ export const mapBookshelfBook = (
           result.author.authorName ?? result.authorTitle ?? ''
         )
       : undefined,
-    posterPath: realCoverUrl(image?.remoteUrl ?? image?.url),
+    posterPath:
+      realCoverUrl(image?.remoteUrl ?? image?.url) ??
+      realCoverUrl(publicCoverUrl(result.remoteCover)),
     isbn13: isbnCandidates.find((candidate) => candidate.isbn.length === 13)
       ?.isbn,
     firstPublishYear: releaseYear > 1 ? releaseYear : undefined,
@@ -508,6 +510,11 @@ const PLACEHOLDER_COVER =
   /\/images\/I\/01RmK\+J4pJL\.|\/nophoto\/|no[-_]image[-_]available/i;
 export const realCoverUrl = (url?: string | null) =>
   url && !PLACEHOLDER_COVER.test(url) ? url : undefined;
+
+// ChaptarrNG's remote cover can also hold one of its own local paths, which
+// clients outside ChaptarrNG cannot load.
+const publicCoverUrl = (url?: string | null) =>
+  url && /^https?:\/\//i.test(url) ? url : undefined;
 
 export const searchBookshelfAuthors = async (
   servers: ReadarrSettings[],
