@@ -2319,6 +2319,14 @@ native visual comparison remain open.
 
 ### Administrator system logs
 
+The route boundary now has a matrix fixture for all 39 administrator
+destinations. Standard users do not see the administrator entry, and direct
+navigation redirects them to `/me`; administrators retain the route and can
+reach SeerrNG Administration from the desktop sidebar or the mobile You page.
+The matrix passes in desktop, iPhone, Android, and tablet viewport projects.
+It verifies Lumen's client routing boundary; server-side API authorization and
+each settings page's feature-specific permissions remain separate checks.
+
 The Account administration section opens System Logs inside Lumen.
 Administrators can search and filter logs, page through results, inspect
 structured data, copy an entry, and opt into live refresh. Log responses
