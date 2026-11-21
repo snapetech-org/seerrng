@@ -2507,6 +2507,24 @@ page retained its existing row and control layout, and the shorter provider
 choice avoids select clipping. Evidence is retained at
 `seerrng-admin-swipe-localization-20261120`.
 
+### Discovery Integration Credentials
+
+The provider credential editor now localizes its title, instructions, provider
+names, fields, configured state, clear actions, loading state, and save feedback
+in English, French, and Arabic. Trakt, AniList, Simkl, and MDBList secrets
+remain masked; clearing one provider stages empty values for only that provider.
+Failed saves retain the staged values for retry, and permission failures have
+their own localized message.
+
+Twelve standalone and twelve bundled browser cases passed across desktop,
+iPhone, Android, and tablet viewports. They cover all three locales, secret
+masking, clearing credentials, failed-save recovery, and successful retry.
+Matched baseline and candidate captures were reviewed at desktop and mobile
+sizes; the existing geometry is unchanged. The neighboring Discovery Regions,
+Automatic Blocklist, Streaming Request Policy, and Shared Discovery Title
+Matches tools remain separate localization and workflow-parity work. Evidence
+is retained at `seerrng-admin-discovery-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with

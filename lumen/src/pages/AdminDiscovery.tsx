@@ -8,6 +8,7 @@ import StreamingRequestPolicy from '../components/StreamingRequestPolicy';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const path = '/integrations/discovery/configuration';
@@ -29,6 +30,7 @@ type Configuration = Record<
 type Changes = Record<string, Record<string, string>>;
 
 function DiscoveryForm({ initial }: { initial: Configuration }) {
+  const { t } = useLumenLocale();
   const [current, setCurrent] = useState(initial);
   const [changes, setChanges] = useState<Changes>({});
   const [busy, setBusy] = useState(false);
@@ -65,8 +67,14 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
       if (generation !== sessionGeneration()) return;
       setFailure(
         error instanceof ApiError && error.status === 403
-          ? 'You do not have permission to change integration credentials.'
-          : 'Could not save discovery credentials. Try again.'
+          ? t(
+              'lumen.adminDiscovery.forbidden',
+              'You do not have permission to change integration credentials.'
+            )
+          : t(
+              'lumen.adminDiscovery.saveFailure',
+              'Could not save discovery credentials. Try again.'
+            )
       );
     } finally {
       pending.current = false;
@@ -82,9 +90,14 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
       }}
     >
       {providers.map(({ id, name, fields }) => (
-        <Section key={id} title={name}>
+        <Section
+          key={id}
+          title={t(`lumen.adminDiscovery.provider.${id}`, name)}
+        >
           <p className="note">
-            {current[id].configured ? 'Configured' : 'Unconfigured'}
+            {current[id].configured
+              ? t('lumen.adminDiscovery.configured', 'Configured')
+              : t('lumen.adminDiscovery.unconfigured', 'Not configured')}
           </p>
           <div className="setlist">
             {fields.map((field) => {
@@ -92,7 +105,9 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
               const fieldId = `discovery-${id}-${field}`;
               return (
                 <label key={field} className="set cfg-row" htmlFor={fieldId}>
-                  <span>{labels[field]}</span>
+                  <span>
+                    {t(`lumen.adminDiscovery.field.${field}`, labels[field])}
+                  </span>
                   <input
                     id={fieldId}
                     className="cfg-input"
@@ -136,7 +151,9 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
                 )
               }
             >
-              Clear {name} Credentials
+              {t('lumen.adminDiscovery.clear', 'Clear {provider} credentials', {
+                provider: t(`lumen.adminDiscovery.provider.${id}`, name),
+              })}
             </button>
           </div>
         </Section>
@@ -148,12 +165,14 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
       )}
       {saved && (
         <p className="note" role="status">
-          Discovery credentials saved.
+          {t('lumen.adminDiscovery.saved', 'Discovery credentials saved.')}
         </p>
       )}
       <div className="toolbar">
         <button className="btn btn-primary btn-sm" disabled={busy || !dirty}>
-          {busy ? 'Saving…' : 'Save Discovery Credentials'}
+          {busy
+            ? t('lumen.adminDiscovery.saving', 'Saving…')
+            : t('lumen.adminDiscovery.save', 'Save Discovery Credentials')}
         </button>
       </div>
     </form>
@@ -161,34 +180,40 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
 }
 
 export default function AdminDiscovery() {
+  const { t } = useLumenLocale();
   const settings = useApi<Configuration>(path);
   return (
     <>
       <header className="ph">
-        <h1>Discovery Integrations</h1>
+        <h1>{t('lumen.adminDiscovery.title', 'Discovery Integrations')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+            {t('lumen.adminDiscovery.back', 'Back to Account')}
           </Link>
         </div>
       </header>
       <ServiceNote
         error={settings.error}
-        what="discovery credentials"
+        what={t('lumen.adminDiscovery.credentials', 'discovery credentials')}
         retry={settings.reload}
       />
       {settings.data ? (
         <>
           <p className="note">
-            Enter new credentials or use Clear to remove a provider’s saved
-            credentials. Select Save to apply changes.
+            {t(
+              'lumen.adminDiscovery.help',
+              'Enter new credentials or use Clear to remove a provider’s saved credentials. Select Save to apply changes.'
+            )}
           </p>
           <DiscoveryForm initial={settings.data} />
         </>
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading discovery credentials…
+            {t(
+              'lumen.adminDiscovery.loading',
+              'Loading discovery credentials…'
+            )}
           </p>
         )
       )}

@@ -1957,6 +1957,29 @@ export const localeData = [
       'lumen.adminNetwork.proxyRequired':
         'أدخل اسم مضيف الوكيل ومنفذه قبل تفعيل الوكيل.',
       'lumen.adminSwipe.pageTitle': 'إعدادات Swipe',
+      'lumen.adminDiscovery.title': 'تكاملات الاستكشاف',
+      'lumen.adminDiscovery.back': 'العودة إلى الحساب',
+      'lumen.adminDiscovery.credentials': 'بيانات اعتماد الاستكشاف',
+      'lumen.adminDiscovery.help':
+        'أدخل بيانات اعتماد جديدة أو استخدم مسح لإزالة البيانات المحفوظة لموفر. اختر حفظ لتطبيق التغييرات.',
+      'lumen.adminDiscovery.configured': 'تم الإعداد',
+      'lumen.adminDiscovery.unconfigured': 'لم يتم الإعداد',
+      'lumen.adminDiscovery.field.clientId': 'معرّف العميل',
+      'lumen.adminDiscovery.field.clientSecret': 'سر العميل',
+      'lumen.adminDiscovery.field.apiKey': 'مفتاح API',
+      'lumen.adminDiscovery.provider.trakt': 'Trakt',
+      'lumen.adminDiscovery.provider.anilist': 'AniList',
+      'lumen.adminDiscovery.provider.simkl': 'Simkl',
+      'lumen.adminDiscovery.provider.mdblist': 'MDBList',
+      'lumen.adminDiscovery.clear': 'مسح بيانات اعتماد {provider}',
+      'lumen.adminDiscovery.saved': 'تم حفظ بيانات اعتماد الاستكشاف.',
+      'lumen.adminDiscovery.save': 'حفظ بيانات اعتماد الاستكشاف',
+      'lumen.adminDiscovery.saving': 'جارٍ الحفظ…',
+      'lumen.adminDiscovery.saveFailure':
+        'تعذر حفظ بيانات اعتماد الاستكشاف. حاول مرة أخرى.',
+      'lumen.adminDiscovery.forbidden':
+        'ليس لديك إذن لتغيير بيانات اعتماد التكامل.',
+      'lumen.adminDiscovery.loading': 'جارٍ تحميل بيانات اعتماد الاستكشاف…',
     },
   },
   {
@@ -5650,6 +5673,29 @@ export const localeData = [
       'lumen.adminNetwork.proxyRequired':
         'Enter a proxy hostname and port before enabling the proxy.',
       'lumen.adminSwipe.pageTitle': 'Swipe Settings',
+      'lumen.adminDiscovery.title': 'Discovery Integrations',
+      'lumen.adminDiscovery.back': 'Back to Account',
+      'lumen.adminDiscovery.credentials': 'discovery credentials',
+      'lumen.adminDiscovery.help':
+        'Enter new credentials or use Clear to remove a provider’s saved credentials. Select Save to apply changes.',
+      'lumen.adminDiscovery.configured': 'Configured',
+      'lumen.adminDiscovery.unconfigured': 'Not configured',
+      'lumen.adminDiscovery.field.clientId': 'Client ID',
+      'lumen.adminDiscovery.field.clientSecret': 'Client Secret',
+      'lumen.adminDiscovery.field.apiKey': 'API Key',
+      'lumen.adminDiscovery.provider.trakt': 'Trakt',
+      'lumen.adminDiscovery.provider.anilist': 'AniList',
+      'lumen.adminDiscovery.provider.simkl': 'Simkl',
+      'lumen.adminDiscovery.provider.mdblist': 'MDBList',
+      'lumen.adminDiscovery.clear': 'Clear {provider} Credentials',
+      'lumen.adminDiscovery.saved': 'Discovery credentials saved.',
+      'lumen.adminDiscovery.save': 'Save Discovery Credentials',
+      'lumen.adminDiscovery.saving': 'Saving…',
+      'lumen.adminDiscovery.saveFailure':
+        'Could not save discovery credentials. Try again.',
+      'lumen.adminDiscovery.forbidden':
+        'You do not have permission to change integration credentials.',
+      'lumen.adminDiscovery.loading': 'Loading discovery credentials…',
     },
   },
   {
@@ -10137,6 +10183,31 @@ export const localeData = [
       'lumen.adminNetwork.proxyRequired':
         'Saisissez le nom d’hôte et le port du proxy avant de l’activer.',
       'lumen.adminSwipe.pageTitle': 'Paramètres Swipe',
+      'lumen.adminDiscovery.title': 'Intégrations de découverte',
+      'lumen.adminDiscovery.back': 'Retour au compte',
+      'lumen.adminDiscovery.credentials': 'identifiants de découverte',
+      'lumen.adminDiscovery.help':
+        'Saisissez de nouveaux identifiants ou utilisez Effacer pour supprimer ceux enregistrés chez un fournisseur. Sélectionnez Enregistrer pour appliquer les modifications.',
+      'lumen.adminDiscovery.configured': 'Configuré',
+      'lumen.adminDiscovery.unconfigured': 'Non configuré',
+      'lumen.adminDiscovery.field.clientId': 'ID client',
+      'lumen.adminDiscovery.field.clientSecret': 'Clé secrète client',
+      'lumen.adminDiscovery.field.apiKey': 'Clé API',
+      'lumen.adminDiscovery.provider.trakt': 'Trakt',
+      'lumen.adminDiscovery.provider.anilist': 'AniList',
+      'lumen.adminDiscovery.provider.simkl': 'Simkl',
+      'lumen.adminDiscovery.provider.mdblist': 'MDBList',
+      'lumen.adminDiscovery.clear': 'Effacer les identifiants de {provider}',
+      'lumen.adminDiscovery.saved':
+        'Les identifiants de découverte ont été enregistrés.',
+      'lumen.adminDiscovery.save': 'Enregistrer les identifiants de découverte',
+      'lumen.adminDiscovery.saving': 'Enregistrement…',
+      'lumen.adminDiscovery.saveFailure':
+        'Impossible d’enregistrer les identifiants de découverte. Réessayez.',
+      'lumen.adminDiscovery.forbidden':
+        'Vous n’avez pas l’autorisation de modifier les identifiants d’intégration.',
+      'lumen.adminDiscovery.loading':
+        'Chargement des identifiants de découverte…',
     },
   },
   {
