@@ -2525,6 +2525,25 @@ Automatic Blocklist, Streaming Request Policy, and Shared Discovery Title
 Matches tools remain separate localization and workflow-parity work. Evidence
 is retained at `seerrng-admin-discovery-localization-20261120`.
 
+### Automatic Blocklist
+
+The Automatic Blocklist settings and shared keyword-search results now follow
+the saved English, French, and Arabic locale, including genre labels, search,
+page limits, paging feedback, and save confirmation. Keyword results are shared
+with Discover filters and request override rules, so their labels use the same
+translations at those entry points. Invalid keyword IDs and page limits still
+block saving, selected keywords carry across result pages, and failed saves
+retain the draft for retry. A long French save label was shortened after the
+phone-width check caught horizontal overflow.
+
+Twelve standalone and twelve production-asset `/lumen/` browser cases passed
+across desktop, iPhone, Android, and tablet projects. The existing Discovery
+administration regression suite passed 12 cases. English baseline/candidate
+captures were rendered at matching sizes and reviewed at desktop and phone
+widths; the underlying controls and spacing were unchanged. Live keyword and
+genre provider results remain unverified. Evidence is retained at
+`seerrng-admin-blocklist-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with
