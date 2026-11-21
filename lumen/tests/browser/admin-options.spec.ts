@@ -197,7 +197,7 @@ test('disabled core categories block their direct routes before catalog requests
     if (!request.url().includes('/api/v1/')) return;
     const path = testApiPath(request.url());
     if (
-      /^\/(discover\/(movies|tv|books|list|genreslider|trending)|movie\/|tv\/|person\/|association\/|franchise\/|book\/|book-series|media)/.test(
+      /^\/(discover\/(movies|tv|books|list|upcoming|genreslider|trending)|movie\/|tv\/|person\/|association\/|franchise\/|book\/|book-series|media)/.test(
         path
       )
     )
@@ -247,6 +247,7 @@ test('disabled core categories block their direct routes before catalog requests
   for (const path of [
     '/trending',
     '/person/1',
+    '/soon',
     '/list/1',
     '/associations/movie/1',
     '/associations/tv/1',

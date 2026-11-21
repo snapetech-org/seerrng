@@ -5146,4 +5146,5 @@ this when only Movies is enabled across all four viewport projects. The focused
 association test passes 4/4. Person filmography similarly hides disabled media
 types, and the movie bulk-request shortcut follows the account category switch;
 the focused person test passes 4/4. The bundled `/lumen/` production build
-succeeds.
+succeeds. The movie-only Coming Soon page also waits for Movies to be enabled;
+the all-off route fixture covers its no-query behavior.
