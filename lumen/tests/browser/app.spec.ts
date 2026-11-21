@@ -4038,6 +4038,163 @@ test('Music discovery localizes provider failure and empty recovery states', asy
   expect(attempts).toBe(2);
 });
 
+test('Music album and artist details localize their controls and metadata', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locale = ['fr', 'ar'].includes(
+    process.env.LUMEN_MUSIC_DETAIL_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_MUSIC_DETAIL_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      request: 'Request album',
+      discography: 'View Discography',
+      tracks: 'Tracks',
+      plays: '1K plays',
+      trackCount: '1 track',
+      artist: 'Artist',
+      released: 'Released',
+      label: 'Label',
+      type: 'Type',
+      albums: 'Albums',
+      since: 'Since 1990',
+      releaseCount: '1 release',
+      filter: 'Filter Music by Artist',
+    },
+    fr: {
+      request: 'Demander l’album',
+      discography: 'Voir la discographie',
+      tracks: 'Pistes',
+      plays: '1K écoutes',
+      trackCount: '1 piste',
+      artist: 'Artiste',
+      released: 'Date de sortie',
+      label: 'Label',
+      type: 'Type',
+      albums: 'Albums',
+      since: 'Depuis 1990',
+      releaseCount: '1 sortie',
+      filter: 'Filtrer la musique par artiste',
+    },
+    ar: {
+      request: 'طلب الألبوم',
+      discography: 'عرض تسجيلات الفنان',
+      tracks: 'المقاطع',
+      plays: '1K استماع',
+      trackCount: '1 مقطع',
+      artist: 'الفنان',
+      released: 'تاريخ الإصدار',
+      label: 'شركة الإنتاج',
+      type: 'النوع',
+      albums: 'الألبومات',
+      since: 'منذ 1990',
+      releaseCount: '1 إصدار',
+      filter: 'تصفية الموسيقى حسب الفنان',
+    },
+  }[locale];
+  const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
+  const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  await page.route(`**/api/v1/music/${album}`, (route) =>
+    route.fulfill({
+      json: {
+        id: album,
+        title: 'Fixture Album',
+        artist: { id: artist, name: 'Fixture Artist' },
+        releaseDate: '2024-02-03',
+        recordLabel: 'Fixture Records',
+        type: 'Album',
+        stats: { totalListenCount: 1200 },
+        tracks: [
+          {
+            position: 1,
+            name: 'Fixture Track',
+            length: 180,
+            totalListenCount: 120,
+          },
+        ],
+      },
+    })
+  );
+  await page.route(`**/api/v1/artist/${artist}`, (route) =>
+    route.fulfill({
+      json: {
+        artist: {
+          id: artist,
+          name: 'Fixture Artist',
+          type: 'Person',
+          area: 'Fixture City',
+          beginYear: 1990,
+        },
+        releaseGroups: [
+          {
+            id: album,
+            title: 'Fixture Album',
+            'primary-type': 'Album',
+            posterPath: '/qa-poster.png',
+            artist: { id: artist, name: 'Fixture Artist' },
+          },
+        ],
+      },
+    })
+  );
+
+  await page.goto(testAppPath(`/music/${album}`));
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Album' })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: copy.request })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: copy.discography })
+  ).toBeVisible();
+  await expect(page.getByText(copy.tracks, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.plays, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.trackCount, { exact: true })).toBeVisible();
+  for (const label of [copy.artist, copy.released, copy.label, copy.type])
+    await expect(page.getByText(label, { exact: true })).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
+  if (process.env.LUMEN_MUSIC_DETAIL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MUSIC_DETAIL_CAPTURE}-album-${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+
+  await page.goto(testAppPath(`/artist/${artist}`));
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Artist' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: copy.discography })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: copy.filter })).toBeVisible();
+  await expect(page.getByRole('heading', { name: copy.albums })).toBeVisible();
+  await expect(page.getByText(copy.since, { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(copy.releaseCount, { exact: true })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
+  if (process.env.LUMEN_MUSIC_DETAIL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MUSIC_DETAIL_CAPTURE}-artist-${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+});
+
 test('configured music shelves preserve genre and yearly chart in Music', async ({
   page,
 }) => {
@@ -4236,14 +4393,42 @@ test('music and Open Library book details open Associations with exact identity'
       json: {
         id: album,
         title: 'Fixture Album',
-        artist: { id: artist, name: 'Fixture Artist' },
-        tracks: [],
+        artist: { id: artist, name: 'Fixture Artist', area: 'Fixture City' },
+        releaseDate: '2024-02-03',
+        recordLabel: 'Fixture Records',
+        type: 'Album',
+        stats: { totalListenCount: 1200 },
+        tracks: [
+          {
+            position: 1,
+            name: 'Fixture Track',
+            length: 180,
+            totalListenCount: 120,
+          },
+        ],
       },
     })
   );
   await page.route(`**/api/v1/artist/${artist}`, (route) =>
     route.fulfill({
-      json: { artist: { name: 'Fixture Artist' }, releaseGroups: [] },
+      json: {
+        artist: {
+          id: artist,
+          name: 'Fixture Artist',
+          type: 'Person',
+          area: 'Fixture City',
+          beginYear: 1990,
+        },
+        releaseGroups: [
+          {
+            id: album,
+            title: 'Fixture Album',
+            'primary-type': 'Album',
+            posterPath: '/qa-poster.png',
+            artist: { id: artist, name: 'Fixture Artist' },
+          },
+        ],
+      },
     })
   );
   await page.route('**/api/v1/book/OL123W', (route) =>
@@ -4269,15 +4454,21 @@ test('music and Open Library book details open Associations with exact identity'
   );
 
   const association = page.getByRole('link', { name: 'Explore Associations' });
-  await page.goto(`/music/${album}`);
+  await page.goto(testAppPath(`/music/${album}`));
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Album' })
+  ).toBeVisible();
   await expect(association).toHaveAttribute(
     'href',
-    `/associations/album/${album}`
+    testAppPath(`/associations/album/${album}`)
   );
-  await page.goto(`/artist/${artist}`);
+  await page.goto(testAppPath(`/artist/${artist}`));
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Artist' })
+  ).toBeVisible();
   await expect(association).toHaveAttribute(
     'href',
-    `/associations/artist/${artist}`
+    testAppPath(`/associations/artist/${artist}`)
   );
   await page.goto('/book/OL123W?format=audiobook');
   await association.click();
