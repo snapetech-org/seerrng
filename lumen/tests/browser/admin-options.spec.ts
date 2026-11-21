@@ -441,6 +441,111 @@ test('person credits and movie request shortcut follow enabled categories', asyn
   await expect(page.getByRole('option', { name: 'Series' })).toHaveCount(0);
 });
 
+test('calendar hides disabled media filters and skips a disabled direct scope', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/calendar**', (route) =>
+    route.fulfill({
+      json: { partialSources: [], truncated: false, results: [] },
+    })
+  );
+  const calendarRequests: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    if (testApiPath(request.url()).startsWith('/calendar'))
+      calendarRequests.push(request.url());
+  });
+  await page.goto(testAppPath('/calendar'));
+  await expect(
+    page.getByText('No releases match this month and scope.')
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('calendar-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  calendarRequests.length = 0;
+  await page.goto(testAppPath('/calendar?mediaType=movie'));
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Movies' })).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('calendar-disabled-candidate.png'),
+    fullPage: true,
+  });
+  expect(calendarRequests).toEqual([]);
+});
+
+test('calendar mixed results omit the account-disabled media type', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: false, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/calendar**', (route) =>
+    route.fulfill({
+      json: {
+        partialSources: [],
+        truncated: false,
+        results: [
+          {
+            id: 'movie:1',
+            title: 'Disabled Movie Release',
+            startsAt: '2026-11-25T00:00:00.000Z',
+            allDay: true,
+            dateType: 'digital',
+            mediaType: 'movie',
+            available: false,
+            is4k: false,
+            tmdbId: 1,
+          },
+          {
+            id: 'tv:2',
+            title: 'Enabled Series Release',
+            startsAt: '2026-11-26T00:00:00.000Z',
+            allDay: true,
+            dateType: 'air',
+            mediaType: 'tv',
+            available: false,
+            is4k: false,
+            tmdbId: 2,
+          },
+        ],
+      },
+    })
+  );
+  await page.goto(testAppPath('/calendar'));
+  await expect(page.getByText('Enabled Series Release')).toBeVisible();
+  await expect(page.getByText('Disabled Movie Release')).toHaveCount(0);
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],

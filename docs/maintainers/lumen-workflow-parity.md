@@ -5147,4 +5147,8 @@ association test passes 4/4. Person filmography similarly hides disabled media
 types, and the movie bulk-request shortcut follows the account category switch;
 the focused person test passes 4/4. The bundled `/lumen/` production build
 succeeds. The movie-only Coming Soon page also waits for Movies to be enabled;
-the all-off route fixture covers its no-query behavior.
+the all-off route fixture covers its no-query behavior. Calendar removes disabled
+media filters, skips a direct disabled-category query, and filters mixed API
+responses by account categories. The direct-scope and mixed-results tests each
+pass on all four viewport projects; desktop enabled/disabled captures were
+reviewed at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/calendar-visual/`.
