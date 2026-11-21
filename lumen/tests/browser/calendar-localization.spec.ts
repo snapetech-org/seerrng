@@ -74,6 +74,17 @@ test('Release Calendar localizes filters, states, and release details', async ({
       ),
     })
   ).toBeVisible();
+  if (process.env.LUMEN_CALENDAR_EXPECT_DESCRIPTION !== '0')
+    await expect(
+      page.getByText(
+        text(
+          'Upcoming movie, series, music, book, comic, magazine, PC game, and emulation releases from your acquisition services.',
+          'Prochaines sorties de films, séries, musique, livres, BD, magazines, jeux PC et émulation depuis vos services connectés.',
+          'الإصدارات القادمة للأفلام والمسلسلات والموسيقى والكتب والقصص المصورة والمجلات وألعاب الكمبيوتر والمحاكاة من خدماتك المتصلة.'
+        ),
+        { exact: true }
+      )
+    ).toBeVisible();
   await expect(
     page.getByRole('combobox', {
       name: text('Media Type', 'Type de média', 'نوع الوسائط'),

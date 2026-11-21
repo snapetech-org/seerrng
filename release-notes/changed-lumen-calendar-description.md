@@ -1,0 +1,1 @@
+Lumen's Release Calendar now explains which movie, series, music, book, comic, magazine, and game releases it displays from connected services. The description follows the saved English, French, or Arabic locale.

@@ -350,6 +350,12 @@ export default function Calendar() {
       <header className="ph">
         <h1>{t('lumen.calendar.title', 'Release Calendar')}</h1>
       </header>
+      <p className="note">
+        {t(
+          'lumen.calendar.description',
+          'Upcoming movie, series, music, book, comic, magazine, PC game, and emulation releases from your acquisition services.'
+        )}
+      </p>
       <div
         className="toolbar"
         aria-label={t('lumen.calendar.filters', 'Calendar Filters')}

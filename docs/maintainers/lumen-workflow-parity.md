@@ -16,7 +16,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls now sync through the authenticated SeerrNG user settings API. | Finish per-category provider gating, filter and paging edges, empty/error states, and native-matched visual acceptance. Verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. | Complete remaining cross-provider mutations, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
-| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
+| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
@@ -461,6 +461,16 @@ screenshots and French iPhone plus Arabic desktop/iPhone renders were reviewed
 against the same fixtures; there is no overflow or geometry change. The native
 month input's displayed month name remains controlled by the browser's UI
 locale, and live-provider plus matched-native visual checks remain open.
+
+Lumen's Release Calendar now includes the same explanation of supported release
+categories as native SeerrNG. English, French, and Arabic use the Lumen locale
+overrides. Twelve browser cases verify the localized description and existing
+calendar states across desktop, iPhone, Android, and tablet. French desktop and
+iPhone plus Arabic desktop and iPhone baseline/candidate screenshots were
+inspected; the description wraps without horizontal overflow and Arabic keeps
+RTL direction. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/calendar-description/`.
+Production `/lumen/` rendering and native-matched visual comparison remain open.
 
 ### My Media browse increment
 

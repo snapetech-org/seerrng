@@ -675,6 +675,7 @@
   "lumen.issueReport.submit",
   "lumen.issueReport.media",
   "lumen.calendar.title",
+  "lumen.calendar.description",
   "lumen.calendar.filters",
   "lumen.calendar.previousMonth",
   "lumen.calendar.month",

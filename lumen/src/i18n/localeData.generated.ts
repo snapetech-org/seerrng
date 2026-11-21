@@ -1698,6 +1698,8 @@ export const localeData = [
       'lumen.issueReport.submit': 'إرسال البلاغ',
       'lumen.issueReport.media': 'وسيط',
       'lumen.calendar.title': 'تقويم الإصدارات',
+      'lumen.calendar.description':
+        'الإصدارات القادمة للأفلام والمسلسلات والموسيقى والكتب والقصص المصورة والمجلات وألعاب الكمبيوتر والمحاكاة من خدماتك المتصلة.',
       'lumen.calendar.filters': 'عوامل تصفية التقويم',
       'lumen.calendar.previousMonth': 'الشهر السابق',
       'lumen.calendar.month': 'الشهر',
@@ -6975,6 +6977,8 @@ export const localeData = [
       'lumen.issueReport.submit': 'Submit Report',
       'lumen.issueReport.media': 'Media',
       'lumen.calendar.title': 'Release Calendar',
+      'lumen.calendar.description':
+        'Upcoming movie, series, music, book, comic, magazine, PC game, and emulation releases from your acquisition services.',
       'lumen.calendar.filters': 'Calendar Filters',
       'lumen.calendar.previousMonth': 'Previous Month',
       'lumen.calendar.month': 'Month',
@@ -12913,6 +12917,8 @@ export const localeData = [
       'lumen.issueReport.submit': 'Envoyer le signalement',
       'lumen.issueReport.media': 'Média',
       'lumen.calendar.title': 'Calendrier des sorties',
+      'lumen.calendar.description':
+        'Prochaines sorties de films, séries, musique, livres, BD, magazines, jeux PC et émulation depuis vos services connectés.',
       'lumen.calendar.filters': 'Filtres du calendrier',
       'lumen.calendar.previousMonth': 'Mois précédent',
       'lumen.calendar.month': 'Mois',
