@@ -48,6 +48,7 @@ async function fixture(
   const retries: string[] = [];
   const mapped: unknown[] = [];
   const removed: string[] = [];
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -255,3 +256,80 @@ test('managers can remove an eligible managed copy while preserving its request'
   expect(removed).toEqual(['/media/911/file?is4k=false']);
   await expect(page.locator('.rq')).toHaveCount(1);
 });
+
+const managedCopyScopes = [
+  {
+    label: 'a 4K movie',
+    id: 912,
+    type: 'movie',
+    is4k: true,
+    expected: '/media/912/file?is4k=true',
+    media: {},
+  },
+  {
+    label: 'an audiobook request',
+    id: 913,
+    type: 'book',
+    bookFormat: 'audiobook',
+    expected: '/media/913/file?is4k=false&format=audiobook',
+    media: { audiobookServiceId: 3, audiobookExternalServiceId: 30 },
+  },
+  {
+    label: 'both linked book formats',
+    id: 914,
+    type: 'book',
+    bookFormat: 'both',
+    expected: '/media/914/file?is4k=false&format=both',
+    media: {
+      serviceId: 3,
+      externalServiceId: 31,
+      audiobookServiceId: 3,
+      audiobookExternalServiceId: 32,
+    },
+  },
+  {
+    label: 'the only linked ebook format',
+    id: 915,
+    type: 'book',
+    bookFormat: 'both',
+    expected: '/media/915/file?is4k=false&format=ebook',
+    media: { serviceId: 3, externalServiceId: 33 },
+  },
+  {
+    label: 'the only linked audiobook format',
+    id: 916,
+    type: 'book',
+    bookFormat: 'both',
+    expected: '/media/916/file?is4k=false&format=audiobook',
+    media: { audiobookServiceId: 3, audiobookExternalServiceId: 34 },
+  },
+] as const;
+
+for (const scope of managedCopyScopes) {
+  test(`managed-copy removal preserves ${scope.label} scope`, async ({
+    page,
+  }) => {
+    const rowRequest = {
+      ...request(scope.id, scope.type),
+      canRemove: true,
+      is4k: 'is4k' in scope ? scope.is4k : false,
+      ...('bookFormat' in scope ? { bookFormat: scope.bookFormat } : {}),
+      media: {
+        ...request(scope.id, scope.type).media,
+        ...scope.media,
+      },
+    };
+    const { removed } = await fixture(page, 16, [rowRequest]);
+    await page.goto(testAppPath('/requests?tab=everyone&show=failed'));
+    const row = page.locator('.rq').first();
+    await expect(row).toBeVisible();
+    await row.getByRole('button', { name: 'Remove from Service' }).click();
+    await page
+      .getByRole('alertdialog')
+      .getByRole('button', { name: 'Remove from Service' })
+      .click();
+    await expect(page.getByRole('alertdialog')).toHaveCount(0);
+    expect(removed).toEqual([scope.expected]);
+    await expect(page.locator('.rq')).toHaveCount(1);
+  });
+}

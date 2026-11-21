@@ -170,7 +170,10 @@ separately from deleting the request, only when SeerrNG returns `canRemove`,
 and requires a confirmation that states the request will remain. The action
 uses the existing `/media/:id/file` route and preserves 4K and book-format
 scope. Browser fixtures verify the confirmation boundary, exact removal route,
-and continued request row. Live service removal remains unverified; native
+and continued request row. The expanded matrix also checks exact `is4k=true`
+video scope and `audiobook`, `both`, ebook-only, and audiobook-only book
+queries. All 36 retry, mapping, and removal cases pass across desktop, iPhone,
+Android, and tablet. Live service removal remains unverified; native
 visual comparison is still open. The shared confirmation owner was compared
 before and after at desktop (1440 × 900) and iPhone (390 × 844) with the same
 request and dialog state. The previous `.pk-head` grid squeezed the title and
