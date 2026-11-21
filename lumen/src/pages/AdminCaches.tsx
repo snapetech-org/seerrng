@@ -6,6 +6,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface CacheResponse {
   apiCaches: {
@@ -30,12 +31,12 @@ interface CacheResponse {
 }
 
 const dnsMetrics = {
-  size: 'Size',
-  hits: 'Hits',
-  misses: 'Misses',
-  failures: 'Failures',
-  ipv4Fallbacks: 'IPv4 Fallbacks',
-  hitRate: 'Hit Rate',
+  size: 'lumen.adminCaches.metric.size',
+  hits: 'cachehits',
+  misses: 'dnscachemisses',
+  failures: 'failures',
+  ipv4Fallbacks: 'ipv4Fallbacks',
+  hitRate: 'hitRate',
 };
 
 interface Selection {
@@ -45,6 +46,7 @@ interface Selection {
 }
 
 export default function AdminCaches() {
+  const { locale, t } = useLumenLocale();
   const { data, error, reload } = useApi<CacheResponse>('/settings/cache', {
     keepDuringRefresh: true,
   });
@@ -67,9 +69,22 @@ export default function AdminCaches() {
     setNotice('');
     try {
       await api(path, { method: 'POST' }, 'empty');
-      setNotice(`Flushed ${selection.name}.`);
+      setNotice(
+        selection.kind === 'dns'
+          ? t('lumen.adminCaches.dnsFlushed', 'Flushed {name}.', {
+              name: selection.name,
+            })
+          : t('lumen.adminCaches.cacheFlushed', 'Flushed {name}.', {
+              name: selection.name,
+            })
+      );
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not flush this cache.'));
+      setFailure(
+        friendlyError(
+          error,
+          t('lumen.adminCaches.flushFailure', 'Could not flush this cache.')
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -83,21 +98,25 @@ export default function AdminCaches() {
   return (
     <>
       <header className="ph">
-        <h1>System Caches</h1>
+        <h1>{t('lumen.adminCaches.title', 'System Caches')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin/jobs">
-          Scheduled Jobs
+          {t('lumen.adminCaches.scheduledJobs', 'Scheduled Jobs')}
         </Link>
         <button
           className="btn btn-quiet btn-sm"
           disabled={busy}
           onClick={reload}
         >
-          Refresh
+          {t('lumen.adminCaches.refresh', 'Refresh')}
         </button>
       </div>
-      <ServiceNote error={error} what="system caches" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.adminCaches.systemCaches', 'system caches')}
+        retry={reload}
+      />
       {failure && (
         <p className="note" role="alert">
           {failure}
@@ -110,13 +129,17 @@ export default function AdminCaches() {
       )}
       {!data && !error && (
         <p className="note" role="status">
-          Loading system caches…
+          {t('lumen.adminCaches.loading', 'Loading system caches…')}
         </p>
       )}
       {data && (
         <>
-          <Section title="API Caches">
-            {!data.apiCaches.length && <p className="note">No API caches.</p>}
+          <Section title={t('lumen.adminCaches.apiCaches', 'API Caches')}>
+            {!data.apiCaches.length && (
+              <p className="note">
+                {t('lumen.adminCaches.noApiCaches', 'No API caches.')}
+              </p>
+            )}
             {!!data.apiCaches.length && (
               <ul className="setlist">
                 {data.apiCaches.map(({ id, name, stats }) => (
@@ -124,12 +147,27 @@ export default function AdminCaches() {
                     <div>
                       <b>{name}</b>
                       <small>
-                        {stats.hits} hits · {stats.misses} misses · {stats.keys}{' '}
-                        keys
+                        {stats.hits.toLocaleString(locale)}{' '}
+                        {t(
+                          'components.Settings.SettingsJobsCache.cachehits',
+                          'hits'
+                        )}{' '}
+                        · {stats.misses.toLocaleString(locale)}{' '}
+                        {t(
+                          'components.Settings.SettingsJobsCache.cachemisses',
+                          'misses'
+                        )}{' '}
+                        · {stats.keys.toLocaleString(locale)}{' '}
+                        {t(
+                          'components.Settings.SettingsJobsCache.cachekeys',
+                          'keys'
+                        )}
                       </small>
                       <small>
-                        {stats.ksize.toLocaleString()} key bytes ·{' '}
-                        {stats.vsize.toLocaleString()} value bytes
+                        {stats.ksize.toLocaleString(locale)}{' '}
+                        {t('lumen.adminCaches.keyBytes', 'key bytes')} ·{' '}
+                        {stats.vsize.toLocaleString(locale)}{' '}
+                        {t('lumen.adminCaches.valueBytes', 'value bytes')}
                       </small>
                     </div>
                     <button
@@ -137,17 +175,20 @@ export default function AdminCaches() {
                       disabled={busy}
                       onClick={() => setSelection({ kind: 'api', id, name })}
                     >
-                      Flush Cache
+                      {t(
+                        'components.Settings.SettingsJobsCache.flushcache',
+                        'Flush Cache'
+                      )}
                     </button>
                   </li>
                 ))}
               </ul>
             )}
           </Section>
-          <Section title="Image Caches">
+          <Section title={t('lumen.adminCaches.imageCaches', 'Image Caches')}>
             {config?.appDataPath && (
               <p className="note">
-                Disk cache location{' '}
+                {t('lumen.adminCaches.diskLocation', 'Disk cache location')}{' '}
                 <code>
                   {config.appDataPath.replace(/[\\/]+$/, '')}/cache/images
                 </code>
@@ -156,30 +197,51 @@ export default function AdminCaches() {
             <ul className="setlist">
               {Object.entries(data.imageCache).map(([id, cache]) => (
                 <li className="set" key={id}>
-                  <b>{id === 'tmdb' ? 'TMDB Images' : 'Avatars'}</b>
+                  <b>
+                    {id === 'tmdb'
+                      ? t('lumen.adminCaches.tmdbImages', 'TMDB Images')
+                      : t('lumen.adminCaches.avatars', 'Avatars')}
+                  </b>
                   <small>
-                    {cache.imageCount.toLocaleString()} images ·{' '}
-                    {cache.size.toLocaleString()} bytes
+                    {cache.imageCount.toLocaleString(locale)}{' '}
+                    {t(
+                      'components.Settings.SettingsJobsCache.imagecachecount',
+                      'images cached'
+                    )}{' '}
+                    · {cache.size.toLocaleString(locale)}{' '}
+                    {t('lumen.adminCaches.bytes', 'bytes')}
                   </small>
                 </li>
               ))}
             </ul>
           </Section>
-          <Section title="DNS Cache">
+          <Section
+            title={t(
+              'components.Settings.SettingsJobsCache.dnsCache',
+              'DNS Cache'
+            )}
+          >
             {data.dnsCache?.stats && (
               <ul className="setlist">
-                {Object.entries(dnsMetrics).map(([key, label]) => {
+                {Object.entries(dnsMetrics).map(([key, message]) => {
                   const value = data.dnsCache?.stats?.[key];
                   return value === undefined ? null : (
                     <li className="set" key={key}>
-                      <b>{label}</b>
+                      <b>
+                        {t(
+                          message.startsWith('lumen.')
+                            ? message
+                            : `components.Settings.SettingsJobsCache.${message}`,
+                          key
+                        )}
+                      </b>
                       <small>
                         {key === 'hitRate'
-                          ? value.toLocaleString(undefined, {
+                          ? value.toLocaleString(locale, {
                               style: 'percent',
                               maximumFractionDigits: 2,
                             })
-                          : value.toLocaleString()}
+                          : value.toLocaleString(locale)}
                       </small>
                     </li>
                   );
@@ -187,10 +249,17 @@ export default function AdminCaches() {
               </ul>
             )}
             {!dnsAvailable && (
-              <p className="note">DNS cache data is unavailable.</p>
+              <p className="note">
+                {t(
+                  'lumen.adminCaches.dnsUnavailable',
+                  'DNS cache data is unavailable.'
+                )}
+              </p>
             )}
             {dnsAvailable && !dnsEntries.length && (
-              <p className="note">No DNS cache entries.</p>
+              <p className="note">
+                {t('lumen.adminCaches.noDnsEntries', 'No DNS cache entries.')}
+              </p>
             )}
             {!!dnsEntries.length && (
               <ul className="setlist">
@@ -200,10 +269,23 @@ export default function AdminCaches() {
                       <b>{hostname}</b>
                       <small>
                         {entry.activeAddress} ·{' '}
-                        {Math.floor(entry.age / 1000).toLocaleString()}s old
+                        {t('lumen.adminCaches.secondsOld', '{count}s old', {
+                          count: Math.floor(entry.age / 1000).toLocaleString(
+                            locale
+                          ),
+                        })}
                       </small>
                       <small>
-                        {entry.hits} hits · {entry.misses} misses
+                        {entry.hits.toLocaleString(locale)}{' '}
+                        {t(
+                          'components.Settings.SettingsJobsCache.dnscachehits',
+                          'hits'
+                        )}{' '}
+                        · {entry.misses.toLocaleString(locale)}{' '}
+                        {t(
+                          'components.Settings.SettingsJobsCache.dnscachemisses',
+                          'misses'
+                        )}
                       </small>
                     </div>
                     <button
@@ -217,7 +299,7 @@ export default function AdminCaches() {
                         })
                       }
                     >
-                      Flush DNS Entry
+                      {t('lumen.adminCaches.flushDnsEntry', 'Flush DNS Entry')}
                     </button>
                   </li>
                 ))}
@@ -228,10 +310,10 @@ export default function AdminCaches() {
       )}
       {data && selection && (
         <ConfirmSheet
-          title="Flush Cache?"
+          title={t('lumen.adminCaches.confirmFlush', 'Flush Cache?')}
           body={selection.name}
-          confirm="Flush"
-          cancel="Go Back"
+          confirm={t('lumen.adminCaches.flush', 'Flush')}
+          cancel={t('lumen.adminJobs.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void flush()}
           onClose={() => {

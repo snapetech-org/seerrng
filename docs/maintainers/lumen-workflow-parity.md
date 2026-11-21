@@ -543,6 +543,22 @@ Evidence is retained in
 Live scheduler effects, independent linguistic review, and native-matched
 visual acceptance remain open.
 
+Administrator System Caches now follow the saved account locale for API cache
+metrics, image-cache information, DNS statistics, flush confirmations, and
+success or error feedback. SeerrNG's existing cache catalog supplies shared
+metric identifiers; French and Arabic Lumen overrides use cache-specific
+wording, with English, French, and Arabic messages for the remaining labels.
+Cache reads, the app-data path lookup, DNS and API flush endpoints,
+confirmation-before-write, and refresh/readback remain intact. Eight localized
+DNS flush/readback cases pass in standalone and bundled Lumen for French and
+Arabic across desktop, iPhone, Android, and tablet. The existing cache workflow
+also passes in both deployments across those four viewports. French desktop
+and Arabic iPhone baseline/candidate renders were inspected, and all tested
+viewports avoid horizontal overflow. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-caches-localization-20261120/`.
+Live cache-service effects, independent linguistic review, and native-matched
+visual acceptance remain open.
+
 The same Manage Requests permission now exposes a Search Prowlarr shortcut in
 movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
 The shortcut prefills the media category and title without submitting a search.
