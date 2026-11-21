@@ -942,12 +942,14 @@ export function MoreOnScroll({
   more,
   error,
   retry,
+  labels,
 }: {
   done: boolean;
   loading: boolean;
   more: () => void;
   error?: string | null;
   retry?: () => void;
+  labels?: { error: string; retry: string; loading: string };
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const latest = useRef({ done, loading, more });
@@ -977,16 +979,16 @@ export function MoreOnScroll({
   if (error && retry)
     return (
       <div className="more-scroll" role="alert">
-        Couldn’t load more.{' '}
+        {labels?.error ?? 'Couldn’t load more.'}{' '}
         <button className="btn btn-tonal btn-sm" onClick={retry}>
-          Retry
+          {labels?.retry ?? 'Retry'}
         </button>
       </div>
     );
   if (done) return null;
   return (
     <div ref={ref} className="more-scroll" aria-live="polite">
-      {loading ? 'Loading more…' : ''}
+      {loading ? (labels?.loading ?? 'Loading more…') : ''}
     </div>
   );
 }

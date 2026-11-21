@@ -3817,13 +3817,73 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
   page,
 }) => {
   await fixtures(page);
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_MUSIC_LOCALE ?? '')
+    ? (process.env.LUMEN_MUSIC_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      title: 'Music',
+      subtitle: 'Request an album and it lands in your music library.',
+      search: 'Search albums and artists…',
+      sort: 'Sort',
+      releaseTypes: 'Release Types',
+      anyReleaseType: 'Any Release Type',
+      filters: 'Music Discovery Filters',
+      artist: 'Artist',
+      releasedFrom: 'Released From',
+      releasedThrough: 'Released Through',
+      inLibrary: 'In Library',
+      apply: 'Apply Music Filters',
+      clear: 'Clear Music Filters',
+      done: 'Done',
+      soundtrack: 'Soundtrack',
+      compilation: 'Compilation',
+    },
+    fr: {
+      title: 'Musique',
+      subtitle:
+        'Demandez un album pour l’ajouter à votre bibliothèque musicale.',
+      search: 'Rechercher des albums et des artistes…',
+      sort: 'Trier',
+      releaseTypes: 'Types de sorties',
+      anyReleaseType: 'Tous les types de sorties',
+      filters: 'Filtres de découverte musicale',
+      artist: 'Artiste',
+      releasedFrom: 'Sortie à partir du',
+      releasedThrough: 'Sortie jusqu’au',
+      inLibrary: 'Dans la bibliothèque',
+      apply: 'Appliquer les filtres musicaux',
+      clear: 'Effacer les filtres musicaux',
+      done: 'Terminé',
+      soundtrack: 'Bande originale',
+      compilation: 'Compilation',
+    },
+    ar: {
+      title: 'الموسيقى',
+      subtitle: 'اطلب ألبومًا لإضافته إلى مكتبتك الموسيقية.',
+      search: 'ابحث عن الألبومات والفنانين…',
+      sort: 'الترتيب',
+      releaseTypes: 'أنواع الإصدارات',
+      anyReleaseType: 'أي نوع إصدار',
+      filters: 'فلاتر اكتشاف الموسيقى',
+      artist: 'الفنان',
+      releasedFrom: 'صدر من',
+      releasedThrough: 'صدر حتى',
+      inLibrary: 'في المكتبة',
+      apply: 'تطبيق فلاتر الموسيقى',
+      clear: 'مسح فلاتر الموسيقى',
+      done: 'تم',
+      soundtrack: 'موسيقى تصويرية',
+      compilation: 'تجميعة',
+    },
+  }[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
       json: { musicEnabled: true, enabledMediaCategories: { music: true } },
     })
-  );
-  await page.route('**/api/v1/user/1/settings/main', (route) =>
-    route.fulfill({ json: { enabledMediaCategories: { music: true } } })
   );
   const artistId = '5b36cb67-befa-41ca-a91d-a6dcf1f68062';
   const filters = {
@@ -3847,13 +3907,14 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
     search: query,
     releaseType: 'EP,Soundtrack',
   });
-  await page.goto('/music?' + params);
-  await expect(page.getByPlaceholder('Search albums and artists…')).toHaveValue(
-    query
-  );
+  await page.goto(testAppPath('/music?' + params));
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  await expect(page.getByText(copy.subtitle)).toBeVisible();
+  await expect(page.getByPlaceholder(copy.search)).toHaveValue(query);
   await expect(
-    page.getByRole('combobox', { name: 'Sort', exact: true })
+    page.getByRole('combobox', { name: copy.sort, exact: true })
   ).toHaveValue(filters.sortBy);
+  await expect(page.getByRole('form', { name: copy.filters })).toBeVisible();
   await expect
     .poll(() =>
       observed.some(
@@ -3865,39 +3926,41 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
       )
     )
     .toBe(true);
-  await page
-    .getByRole('button', { name: 'Release Types: EP + 1', exact: true })
-    .click();
-  const releaseTypes = page.getByRole('dialog', { name: 'Release Types' });
+  await page.getByRole('button', { name: /EP \+ 1$/ }).click();
+  const releaseTypes = page.getByRole('dialog', { name: copy.releaseTypes });
   await expect(
     releaseTypes.getByRole('button', { name: 'EP', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(
-    releaseTypes.getByRole('button', { name: 'Soundtrack', exact: true })
+    releaseTypes.getByRole('button', { name: copy.soundtrack, exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
   await releaseTypes
-    .getByRole('button', { name: 'Compilation', exact: true })
+    .getByRole('button', { name: copy.compilation, exact: true })
     .click();
   await expect
     .poll(() => observed.at(-1)?.get('releaseType'))
     .toBe('ep,soundtrack,compilation');
   await releaseTypes
-    .getByRole('button', { name: 'Any Release Type', exact: true })
+    .getByRole('button', { name: copy.anyReleaseType, exact: true })
     .click();
   await expect.poll(() => observed.at(-1)?.get('releaseType')).toBeNull();
-  await releaseTypes.getByRole('button', { name: 'Done', exact: true }).click();
-  const form = page.getByRole('form', { name: 'Music Discovery Filters' });
-  await expect(form.getByRole('searchbox', { name: 'Artist' })).toHaveValue(
+  await releaseTypes
+    .getByRole('button', { name: copy.done, exact: true })
+    .click();
+  const form = page.getByRole('form', { name: copy.filters });
+  await expect(form.getByRole('searchbox', { name: copy.artist })).toHaveValue(
     filters.artist
   );
-  await expect(form.getByRole('combobox', { name: 'In Library' })).toHaveValue(
-    'flac'
-  );
-  await form.getByRole('searchbox', { name: 'Artist' }).fill('New Artist');
-  await form.getByLabel('Released From').fill('2001-01-01');
-  await form.getByLabel('Released Through').fill('2010-12-31');
-  await form.getByRole('combobox', { name: 'In Library' }).selectOption('mp3');
-  await form.getByRole('button', { name: 'Apply Music Filters' }).click();
+  await expect(
+    form.getByRole('combobox', { name: copy.inLibrary })
+  ).toHaveValue('flac');
+  await form.getByRole('searchbox', { name: copy.artist }).fill('New Artist');
+  await form.getByLabel(copy.releasedFrom).fill('2001-01-01');
+  await form.getByLabel(copy.releasedThrough).fill('2010-12-31');
+  await form
+    .getByRole('combobox', { name: copy.inLibrary })
+    .selectOption('mp3');
+  await form.getByRole('button', { name: copy.apply }).click();
   await expect
     .poll(() => Object.fromEntries(observed.at(-1) ?? []))
     .toMatchObject({
@@ -3908,9 +3971,71 @@ test('Classic music discovery bookmarks retain catalogue filters', async ({
       query,
     });
   expect(observed.at(-1)?.has('artistId')).toBe(false);
-  await form.getByRole('button', { name: 'Clear Music Filters' }).click();
+  await form.getByRole('button', { name: copy.clear }).click();
   await expect.poll(() => observed.at(-1)?.has('availability')).toBe(false);
   expect(observed.at(-1)?.get('query')).toBe(query);
+  if (process.env.LUMEN_MUSIC_BASELINE_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MUSIC_BASELINE_CAPTURE}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  if (process.env.LUMEN_MUSIC_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MUSIC_CAPTURE}-${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+});
+
+test('Music discovery localizes provider failure and empty recovery states', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_MUSIC_LOCALE ?? '')
+    ? (process.env.LUMEN_MUSIC_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      title: 'Could not load music',
+      loadMore: 'Couldn’t load more.',
+      retry: 'Retry',
+      empty: 'Nothing here',
+    },
+    fr: {
+      title: 'Impossible de charger la musique',
+      loadMore: 'Impossible de charger la suite.',
+      retry: 'Réessayer',
+      empty: 'Aucun résultat',
+    },
+    ar: {
+      title: 'تعذر تحميل الموسيقى',
+      loadMore: 'تعذر تحميل المزيد.',
+      retry: 'إعادة المحاولة',
+      empty: 'لا توجد نتائج',
+    },
+  }[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  let attempts = 0;
+  await page.route('**/api/v1/discover/music?*', (route) =>
+    ++attempts === 1
+      ? route.fulfill({ status: 503, json: { message: 'temporary failure' } })
+      : route.fulfill({ json: paged([]) })
+  );
+  await page.goto(testAppPath('/music'));
+  await expect(page.getByText(copy.title)).toBeVisible();
+  const recovery = page.getByRole('alert').filter({ hasText: copy.loadMore });
+  await expect(recovery).toBeVisible();
+  await recovery.getByRole('button', { name: copy.retry }).click();
+  await expect(page.getByText(copy.empty)).toBeVisible();
+  expect(attempts).toBe(2);
 });
 
 test('configured music shelves preserve genre and yearly chart in Music', async ({
