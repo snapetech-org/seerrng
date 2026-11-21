@@ -29,6 +29,10 @@ const labels = {
     quotaDays: 'Quota Days',
     saveQuota: 'Save Default Quota',
     quotaSaved: 'Default request quota saved.',
+    permissionRequest: 'Request',
+    savePermissions: 'Save Default Permissions',
+    confirmPermissions: 'Save Default Permissions?',
+    editPermissions: 'Edit Default Permissions',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -59,6 +63,10 @@ const labels = {
     quotaDays: 'Jours du quota',
     saveQuota: 'Enregistrer le quota par défaut',
     quotaSaved: 'Quota de demande par défaut enregistré.',
+    permissionRequest: 'Demander',
+    savePermissions: 'Enregistrer les autorisations par défaut',
+    confirmPermissions: 'Enregistrer les autorisations par défaut ?',
+    editPermissions: 'Modifier les autorisations par défaut',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -88,6 +96,10 @@ const labels = {
     quotaDays: 'أيام الحصة',
     saveQuota: 'حفظ الحصة الافتراضية',
     quotaSaved: 'تم حفظ حصة الطلب الافتراضية.',
+    permissionRequest: 'طلب',
+    savePermissions: 'حفظ الأذونات الافتراضية',
+    confirmPermissions: 'هل تريد حفظ الأذونات الافتراضية؟',
+    editPermissions: 'تحرير الأذونات الافتراضية',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -116,6 +128,7 @@ test('general application settings localize and recover failed saves', async ({
       movie: { quotaLimit: 2, quotaDays: 30 },
       tv: { quotaLimit: 4, quotaDays: 30 },
     };
+  let defaultPermissions = 32;
   const writes: Record<string, unknown>[] = [];
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
@@ -163,6 +176,8 @@ test('general application settings localize and recover failed saves', async ({
           Object.assign(publicSettings, { enable4k: body.enable4k });
         if (body.defaultQuotas && typeof body.defaultQuotas === 'object')
           defaultQuotas = { ...defaultQuotas, ...body.defaultQuotas };
+        if (typeof body.defaultPermissions === 'number')
+          defaultPermissions = body.defaultPermissions;
       }
       return route.fulfill({
         json: {
@@ -173,6 +188,7 @@ test('general application settings localize and recover failed saves', async ({
           downloadPathMappings,
           apiKey,
           defaultQuotas,
+          defaultPermissions,
           applicationUrl: 'https://seerr.example.test',
           youtubeUrl: '',
           cacheImages: true,
@@ -290,6 +306,30 @@ test('general application settings localize and recover failed saves', async ({
   expect(writes[5]).toEqual({
     defaultQuotas: { movie: { quotaLimit: 3 } },
   });
+  const permissions = page.locator('#default-user-permissions');
+  await permissions.getByText(text.editPermissions, { exact: true }).click();
+  await permissions.getByText(text.permissionRequest, { exact: true }).click();
+  await permissions
+    .getByRole('button', { name: text.savePermissions, exact: true })
+    .click();
+  const permissionConfirm = page.getByRole('alertdialog', {
+    name: text.confirmPermissions,
+  });
+  await expect(permissionConfirm).toBeVisible();
+  await permissionConfirm
+    .getByRole('button', { name: text.savePermissions, exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      locale === 'fr'
+        ? 'Autorisations par défaut enregistrées.'
+        : locale === 'ar'
+          ? 'تم حفظ الأذونات الافتراضية.'
+          : 'Default permissions saved.',
+      { exact: true }
+    )
+  ).toBeVisible();
+  expect(writes[6]).toEqual({ defaultPermissions: 0 });
   const apiKeyPanel = page.locator('#apiKey');
   await expect(
     apiKeyPanel.getByRole('heading', { name: text.apiKeyTitle })

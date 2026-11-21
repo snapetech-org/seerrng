@@ -3135,6 +3135,24 @@ export const localeData = [
       'lumen.adminGeneral.quotas.category.magazine': 'المجلات',
       'lumen.adminGeneral.quotas.category.software': 'البرامج',
       'lumen.adminGeneral.quotas.category.adult': 'للبالغين',
+      'lumen.adminGeneral.permissions.title': 'أذونات المستخدمين الافتراضية',
+      'lumen.adminGeneral.permissions.edit': 'تحرير الأذونات الافتراضية',
+      'lumen.adminGeneral.permissions.help':
+        'يُعيّن SeerrNG هذه الأذونات للحسابات الجديدة التي تستخدم الإعدادات الافتراضية للمثيل.',
+      'lumen.adminGeneral.permissions.adminWarning':
+        'يمنح هذا الإعداد صلاحيات المسؤول الكاملة.',
+      'lumen.adminGeneral.permissions.group': 'الأذونات الافتراضية',
+      'lumen.adminGeneral.permissions.save': 'حفظ الأذونات الافتراضية',
+      'lumen.adminGeneral.permissions.confirmTitle':
+        'هل تريد حفظ الأذونات الافتراضية؟',
+      'lumen.adminGeneral.permissions.confirmBody':
+        'ستحصل الحسابات الجديدة التي تستخدم الإعدادات الافتراضية للمثيل على هذه الأذونات.',
+      'lumen.adminGeneral.permissions.goBack': 'رجوع',
+      'lumen.adminGeneral.permissions.saved': 'تم حفظ الأذونات الافتراضية.',
+      'lumen.adminGeneral.permissions.confirmFailure':
+        'تعذر تأكيد حفظ الأذونات الافتراضية.',
+      'lumen.adminGeneral.permissions.saveFailure':
+        'تعذر حفظ الأذونات الافتراضية.',
     },
   },
   {
@@ -10072,6 +10090,24 @@ export const localeData = [
       'lumen.adminGeneral.quotas.category.magazine': 'Magazines',
       'lumen.adminGeneral.quotas.category.software': 'Software',
       'lumen.adminGeneral.quotas.category.adult': 'Adult',
+      'lumen.adminGeneral.permissions.title': 'Default User Permissions',
+      'lumen.adminGeneral.permissions.edit': 'Edit Default Permissions',
+      'lumen.adminGeneral.permissions.help':
+        'SeerrNG assigns these permissions to new accounts that use the instance defaults.',
+      'lumen.adminGeneral.permissions.adminWarning':
+        'This default grants full administrator access.',
+      'lumen.adminGeneral.permissions.group': 'Default Permissions',
+      'lumen.adminGeneral.permissions.save': 'Save Default Permissions',
+      'lumen.adminGeneral.permissions.confirmTitle':
+        'Save Default Permissions?',
+      'lumen.adminGeneral.permissions.confirmBody':
+        'New accounts using the instance defaults will receive these permissions.',
+      'lumen.adminGeneral.permissions.goBack': 'Go Back',
+      'lumen.adminGeneral.permissions.saved': 'Default permissions saved.',
+      'lumen.adminGeneral.permissions.confirmFailure':
+        'Could not confirm the saved default permissions.',
+      'lumen.adminGeneral.permissions.saveFailure':
+        'Could not save default permissions.',
     },
   },
   {
@@ -17584,6 +17620,28 @@ export const localeData = [
       'lumen.adminGeneral.quotas.category.magazine': 'Magazines',
       'lumen.adminGeneral.quotas.category.software': 'Logiciels',
       'lumen.adminGeneral.quotas.category.adult': 'Adulte',
+      'lumen.adminGeneral.permissions.title':
+        'Autorisations par défaut des utilisateurs',
+      'lumen.adminGeneral.permissions.edit':
+        'Modifier les autorisations par défaut',
+      'lumen.adminGeneral.permissions.help':
+        'SeerrNG attribue ces autorisations aux nouveaux comptes qui utilisent les paramètres par défaut de l’instance.',
+      'lumen.adminGeneral.permissions.adminWarning':
+        'Ce réglage accorde un accès administrateur complet.',
+      'lumen.adminGeneral.permissions.group': 'Autorisations par défaut',
+      'lumen.adminGeneral.permissions.save':
+        'Enregistrer les autorisations par défaut',
+      'lumen.adminGeneral.permissions.confirmTitle':
+        'Enregistrer les autorisations par défaut ?',
+      'lumen.adminGeneral.permissions.confirmBody':
+        'Les nouveaux comptes utilisant les paramètres par défaut de l’instance recevront ces autorisations.',
+      'lumen.adminGeneral.permissions.goBack': 'Retour',
+      'lumen.adminGeneral.permissions.saved':
+        'Autorisations par défaut enregistrées.',
+      'lumen.adminGeneral.permissions.confirmFailure':
+        'Impossible de confirmer l’enregistrement des autorisations par défaut.',
+      'lumen.adminGeneral.permissions.saveFailure':
+        'Impossible d’enregistrer les autorisations par défaut.',
     },
   },
   {

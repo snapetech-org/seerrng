@@ -5074,5 +5074,15 @@ links, save action, and feedback in English, French, and Arabic. The existing
 partial update payload, 10,000 limit, and save confirmation remain intact.
 Browser fixtures verify an exact movie quota update across desktop, iPhone,
 Android, and tablet, and the screenshots were checked for overflow. Live quota
-persistence remains unverified. Default User Permissions is the remaining
-unlocalized editor on this page.
+persistence remains unverified.
+
+Default User Permissions now localizes its heading, guidance, administrator
+warning, edit action, confirmation, and save feedback in English, French, and
+Arabic. Permission names use SeerrNG’s French and Arabic catalog entries along
+with the existing Lumen translations for app-specific permissions. The browser fixture verifies
+that a default permission is removed only after confirmation and that the exact
+bitmask is saved across desktop, iPhone, Android, and tablet. The French desktop
+and Arabic phone captures were checked; Arabic retains the existing fixed
+navigation overlap seen in the baseline. Live permission persistence remains
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
