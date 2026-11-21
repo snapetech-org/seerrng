@@ -20,7 +20,7 @@ import {
 } from '../api';
 import { forget } from '../apiCache';
 import { isAdministrator, useAuth, useMediaServerName } from '../auth';
-import { Cover, shortDate } from '../components/cards';
+import { Cover, shortDate, StatLabel } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canManageRequests,
@@ -298,7 +298,7 @@ export function RequestStatusPills({
   return (
     <>
       <Pill k={status.k} icon={status.ico}>
-        {status.word}
+        <StatLabel s={status} />
       </Pill>
       {request.status === 1 && request.quotaException && (
         <Pill k="wait">Over Quota</Pill>

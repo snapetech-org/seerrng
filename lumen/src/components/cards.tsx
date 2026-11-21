@@ -35,6 +35,7 @@ import {
   useBookStates,
   useOwnedBooks,
 } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import { scrollBehavior } from '../motion';
 import { seriesRequestSummary } from '../seriesRequestSummary';
@@ -173,13 +174,63 @@ export const withoutPending4k = (mi?: MediaInfo): MediaInfo | undefined =>
     mi.status4k === MediaStatus.PROCESSING)
     ? { ...mi, status4k: undefined, downloadStatus4k: undefined }
     : mi;
-export const Glyph = ({ s }: { s: Stat }) =>
-  s ? (
-    <span className={`glyph ${s.k}`} title={s.word}>
+export const Glyph = ({ s }: { s: Stat }) => {
+  const { t } = useLumenLocale();
+  return s ? (
+    <span className={`glyph ${s.k}`} title={statusLabel(s, t)}>
       <Icon name={s.ico} />
-      <span className="sr">{s.word}</span>
+      <span className="sr">{statusLabel(s, t)}</span>
     </span>
   ) : null;
+};
+
+export function statusLabel(
+  s: { word: string } | null,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (!s) return '';
+  if (s.word === 'Blocklisted') return t('lumen.status.blocklisted', s.word);
+  if (s.word === 'In library') return t('lumen.status.inLibrary', s.word);
+  if (s.word === 'Requested') return t('lumen.status.requested', s.word);
+  if (s.word === 'Downloading') return t('lumen.status.downloading', s.word);
+  if (s.word === 'Queued') return t('lumen.status.queued', s.word);
+  if (s.word === 'Available to Other Users')
+    return t('lumen.status.shared', s.word);
+  if (s.word === 'Partly in library')
+    return t('lumen.status.partlyInLibrary', s.word);
+  const onServer = /^On (.+)$/.exec(s.word);
+  if (onServer)
+    return t('lumen.status.onServer', 'On {server}', {
+      server: onServer[1],
+    });
+  const partlyOnServer = /^Partly on (.+)$/.exec(s.word);
+  if (partlyOnServer)
+    return t('lumen.status.partlyOnServer', 'Partly on {server}', {
+      server: partlyOnServer[1],
+    });
+  const downloading = /^Downloading (\d+)%$/.exec(s.word);
+  if (downloading)
+    return t('lumen.status.downloadingPercent', 'Downloading {percent}%', {
+      percent: downloading[1],
+    });
+  const allInLibrary = /^All (\d+) in library$/.exec(s.word);
+  if (allInLibrary)
+    return t('lumen.status.allInLibrary', 'All {count} in library', {
+      count: allInLibrary[1],
+    });
+  const owned = /^(\d+) of (\d+) in library$/.exec(s.word);
+  if (owned)
+    return t('lumen.status.ownedInLibrary', '{owned} of {total} in library', {
+      owned: owned[1],
+      total: owned[2],
+    });
+  return s.word;
+}
+
+export function StatLabel({ s }: { s: { word: string } | null }) {
+  const { t } = useLumenLocale();
+  return statusLabel(s, t);
+}
 
 // one request at a time: a double click must not send it twice (the second comes back as an
 // error after the first worked). Every request button on a card shares the same guard.
@@ -364,7 +415,7 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     qb = (
       <button className="qbtn done" disabled>
         <Icon name={s.ico} size="sm" />
-        {s.word}
+        <StatLabel s={s} />
       </button>
     );
   else if (tv && !prefs.wholeSeriesDefault)
@@ -592,7 +643,7 @@ export function BookCard({ b }: { b: BookResult }) {
                 ) : s && !ownershipUnknown ? (
                   <button className="qbtn done" disabled>
                     <Icon name={s.ico} size="sm" />
-                    {s.word}
+                    <StatLabel s={s} />
                   </button>
                 ) : straight ? (
                   <button className="qbtn go" disabled={busy} onClick={request}>
@@ -712,7 +763,7 @@ export function FeatCard({
             (shown || done) && (
               <span className="btn go done">
                 <Icon name={shown?.ico || 'clock'} size="sm" />
-                {shown?.word || done}
+                {done || <StatLabel s={shown} />}
               </span>
             )
           ) : quick.allowed && tv && !prefs.wholeSeriesDefault ? (

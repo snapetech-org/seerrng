@@ -10,6 +10,7 @@ import {
   RailSkeleton,
   Section,
   shortDate,
+  StatLabel,
 } from '../components/cards';
 import {
   ComicCard,
@@ -720,7 +721,7 @@ export function ComicDetail() {
     ) : s ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s.ico} />
-        {s.word}
+        <StatLabel s={s} />
       </button>
     ) : !mayRequest ? null : (
       <button className="btn btn-primary" disabled={busy} onClick={request}>
@@ -906,13 +907,13 @@ export function ComicDetail() {
                               {st?.k === 'ok' && (
                                 <span className="tag own">
                                   <Icon name="check" />
-                                  {st.word}
+                                  <StatLabel s={st} />
                                 </span>
                               )}
                               {st && st.k !== 'ok' && (
                                 <span className="tag wait">
                                   <Icon name={st.ico} />
-                                  {st.word}
+                                  <StatLabel s={st} />
                                 </span>
                               )}
                             </div>
@@ -1346,7 +1347,7 @@ export function MagazineDetail() {
     m.requestable === false ? null : s || requested === m.title ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s?.ico || 'clock'} />
-        {s?.word || 'Requested'}
+        <StatLabel s={s ?? { word: 'Requested' }} />
       </button>
     ) : mayRequest ? (
       <button

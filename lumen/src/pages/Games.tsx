@@ -8,7 +8,12 @@ import {
 } from 'react-router-dom';
 import { api, artUrl } from '../api';
 import { useAuth } from '../auth';
-import { GridSkeleton, MoreOnScroll, type Stat } from '../components/cards';
+import {
+  GridSkeleton,
+  MoreOnScroll,
+  StatLabel,
+  type Stat,
+} from '../components/cards';
 import {
   canUseRequestAccess,
   DetailTop,
@@ -438,7 +443,7 @@ function GameDetailView({
     baseBlocked || done ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s?.ico || 'clock'} />
-        {done || s?.word}
+        {done || <StatLabel s={s} />}
       </button>
     ) : (
       <button

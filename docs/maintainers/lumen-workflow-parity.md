@@ -42,6 +42,22 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### Shared media status labels
+
+The shared poster, request, detail and category status displays now translate
+the common library and request states using the signed-in account locale.
+This includes server availability, partial availability, shared availability,
+queued and downloading progress, request state, blocklist state, and library
+counts. The underlying status selection and media-server availability rules
+are unchanged.
+
+Status fixtures pass in English, French and Arabic across desktop, iPhone,
+Android and tablet. Baseline/candidate captures for the same account, title and
+viewport confirm unchanged geometry and no horizontal overflow; Arabic keeps
+RTL direction. Live provider states and independent linguistic review remain
+open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/status-localization/`.
+
 ### User administration display
 
 The Lumen user directory now localizes its heading, search and sorting controls,

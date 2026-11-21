@@ -20,6 +20,7 @@ import {
   Rail,
   Section,
   shortDate,
+  StatLabel,
   statusOf,
   TitleCard,
 } from '../components/cards';
@@ -522,7 +523,7 @@ export default function TvDetail() {
   ) : sharedAvailability ? null : (
     <button className="btn btn-tonal" disabled>
       <Icon name={mine?.ico || 'clock'} />
-      {mine?.word || 'Requested'}
+      <StatLabel s={mine ?? { word: 'Requested' }} />
     </button>
   );
   return (
@@ -624,11 +625,13 @@ export default function TvDetail() {
                 .map((x) => x.seasonNumber);
               return (
                 <li key={r.id}>
-                  {r.status === 1
-                    ? 'Waiting for approval'
-                    : mine?.k === 'dl'
-                      ? mine.word
-                      : 'Approved'}
+                  {r.status === 1 ? (
+                    'Waiting for approval'
+                  ) : mine?.k === 'dl' ? (
+                    <StatLabel s={mine} />
+                  ) : (
+                    'Approved'
+                  )}
                   {' · requested by '}
                   {r.requestedBy?.displayName || 'someone'}
                   {r.createdAt ? ' on ' + shortDate(r.createdAt) : ''}

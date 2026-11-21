@@ -18,6 +18,7 @@ import {
   Rail,
   Section,
   shortDate,
+  StatLabel,
   statusOf,
   TitleCard,
   withoutPending4k,
@@ -247,7 +248,7 @@ export default function MovieDetail() {
     visibleStatus && (
       <button className="btn btn-tonal" disabled>
         <Icon name={visibleStatus.ico} />
-        {visibleStatus.word}
+        <StatLabel s={visibleStatus} />
       </button>
     )
   ) : (
@@ -306,7 +307,7 @@ export default function MovieDetail() {
         <div className="dstatus">
           {visibleStatus && (
             <Pill k={visibleStatus.k} icon={visibleStatus.ico}>
-              {visibleStatus.word}
+              <StatLabel s={visibleStatus} />
             </Pill>
           )}
           {visible4k && (
@@ -323,7 +324,13 @@ export default function MovieDetail() {
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
             <Pill k={progress4k?.k ?? 'wait'} icon={progress4k?.ico ?? 'clock'}>
-              {progress4k ? `4K · ${progress4k.word}` : '4K requested'}
+              {progress4k ? (
+                <>
+                  4K · <StatLabel s={progress4k} />
+                </>
+              ) : (
+                '4K requested'
+              )}
             </Pill>
           )}
           {!!m.voteAverage && (

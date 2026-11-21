@@ -12,7 +12,7 @@ import {
 } from '../extras';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
-import { Cover, Glyph, TouchQuick, type Stat } from './cards';
+import { Cover, Glyph, StatLabel, TouchQuick, type Stat } from './cards';
 import { canRequestComic } from './detail';
 import { comicState } from './extra';
 import { useToast } from './toast';
@@ -210,7 +210,9 @@ export function ComicCard({ w }: { w: ComicWork }) {
                           aria-hidden="true"
                         >
                           <Icon name="book" size="sm" />
-                          <span className="ql">{s.word}</span>
+                          <span className="ql">
+                            <StatLabel s={s} />
+                          </span>
                         </Link>
                       )}
                       {readHref && !complete && readGhost}
@@ -220,7 +222,9 @@ export function ComicCard({ w }: { w: ComicWork }) {
                     <>
                       <button className="qbtn done" disabled>
                         <Icon name={s.ico} size="sm" />
-                        <span className="ql">{s.word}</span>
+                        <span className="ql">
+                          <StatLabel s={s} />
+                        </span>
                       </button>
                       {readHref && readGhost}
                     </>
