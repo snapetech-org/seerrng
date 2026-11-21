@@ -2909,6 +2909,11 @@ request access and the mobile link's clearance above the fixed tabs. Baseline
 and candidate captures are retained under
 `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/swipe-navigation/`.
 
+A separate four-viewport regression check now verifies that the administrator's
+global disable switch removes Swipe from both the desktop sidebar and the You
+page even for a requester. This fixture covers standalone Lumen; the existing
+permission matrix also runs against the production bundled deployment.
+
 The production build and four browser checks passed with synthetic movie
 recommendations across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The checks
 covered request payloads, pass, and undo. Dedicated browser cases also cover
