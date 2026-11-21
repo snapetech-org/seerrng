@@ -13,6 +13,7 @@
 - **Lumen:** Hardcover recommendation feeds can be created on mobile without the submit action intercepting form input. Lumen waits for authentication to settle before checking category availability, avoiding a duplicate request during sign-in initialization.
 - **Discovery Integrations:** Connecting a Trakt, AniList, or Simkl account from the full settings page now sends the required JSON request body, avoiding an unsupported-media-type error.
 - **Lumen:** Modal dialogs keep keyboard focus inside the dialog when asynchronously loaded content replaces the currently focused control.
+- **Lumen:** Shared Prowlarr search, association, and Blocklist actions now follow the selected English, French, or Arabic language across media detail pages.
 - **Reader Delivery:** Saved BookOrbit live shelf counts now use the authenticated scope query, including for empty shelves; existing connections need no configuration changes.
 - **Settings:** The Save action stays available while forms still contain unsaved changes, including in SeerrOrig.
 

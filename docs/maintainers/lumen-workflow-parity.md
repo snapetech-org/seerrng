@@ -777,10 +777,15 @@ embedded production builds across all three locales and four viewport projects
 (24 cases). It verifies localized labels and actions, count formatting, facts,
 artist release grouping, and no horizontal overflow. French desktop and Arabic
 phone baseline/candidate captures were inspected; the visual layout remains
-within the existing composition. The shared Indexer Search, Association, and
-Blocklist action labels still use their own shared component copy and remain an
-open localization gap. Live MusicBrainz/Lidarr behavior and independent
-translation review remain open. Evidence is retained at
+within the existing composition. Shared Indexer Search, Association, and
+Blocklist actions now use the selected English, French, or Arabic locale in all
+consumers, including movie, TV, book, comic, magazine, music, and game details.
+Blocklist confirmation copy, interpolated title guidance, retry action, and
+success/failure feedback are localized at the shared owner. Live
+MusicBrainz/Lidarr behavior and independent translation review remain open.
+The French desktop and Arabic phone candidate screenshots were compared with
+the previous detail captures at matching viewports; the longer labels reflow
+the action row naturally without horizontal overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-detail-localization-20261121/`.
 
 ### Movie and series Browse page-copy localization

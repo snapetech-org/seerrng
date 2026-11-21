@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useExtras } from '../extras';
 import { cachedApi, useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const labels = {
@@ -175,6 +176,7 @@ export function AssociationLink({
   id?: string;
   audio?: boolean;
 }) {
+  const { t } = useLumenLocale();
   if (!id || !validIdentity(mediaType, id)) return null;
   if (mediaType === 'book' && !/^OL\d+[WM]$/i.test(id)) return null;
   return (
@@ -182,7 +184,7 @@ export function AssociationLink({
       className="chip"
       to={`/associations/${mediaType}/${encodeURIComponent(id)}${audio ? '?f=audio' : ''}`}
     >
-      Explore Associations
+      {t('lumen.actions.exploreAssociations', 'Explore Associations')}
     </Link>
   );
 }

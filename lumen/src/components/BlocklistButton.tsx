@@ -3,6 +3,7 @@ import { api } from '../api';
 import { useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canonicalMediaId, type ManagedMediaType } from '../mediaIdentity';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
@@ -26,6 +27,7 @@ function BlocklistAction({
   title: string;
   onChange: () => void;
 }) {
+  const { t } = useLumenLocale();
   const path = `/blocklist/${encodeURIComponent(id)}?mediaType=${mediaType}`;
   const { data, error, errorStatus, reload } = useApi<{ id: number }>(path);
   const [choice, setChoice] = useState<'add' | 'remove'>();
@@ -63,14 +65,17 @@ function BlocklistAction({
       if (sessionGeneration() === session) {
         toast(
           choice === 'add'
-            ? 'Added to the Blocklist.'
-            : 'Removed from the Blocklist.'
+            ? t('lumen.blocklist.action.added', 'Added to the Blocklist.')
+            : t('lumen.blocklist.action.removed', 'Removed from the Blocklist.')
         );
       }
     } catch {
       if (sessionGeneration() === session) {
         toast(
-          'Could not confirm the Blocklist change. The title will refresh.'
+          t(
+            'lumen.blocklist.action.changeUnconfirmed',
+            'Could not confirm the Blocklist change. The title will refresh.'
+          )
         );
       }
     } finally {
@@ -88,10 +93,13 @@ function BlocklistAction({
   if (!action)
     return error ? (
       <button className="btn btn-quiet btn-sm" onClick={reload}>
-        Retry Blocklist Check
+        {t('lumen.blocklist.action.retryCheck', 'Retry Blocklist Check')}
       </button>
     ) : null;
-  const label = action === 'add' ? 'Add to Blocklist' : 'Remove from Blocklist';
+  const label =
+    action === 'add'
+      ? t('lumen.blocklist.action.add', 'Add to Blocklist')
+      : t('lumen.blocklist.action.remove', 'Remove from Blocklist');
   return (
     <>
       <button
@@ -105,16 +113,29 @@ function BlocklistAction({
         <ConfirmSheet
           title={
             choice === 'add'
-              ? 'Add to the Blocklist?'
-              : 'Remove from the Blocklist?'
+              ? t('lumen.blocklist.action.addQuestion', 'Add to the Blocklist?')
+              : t(
+                  'lumen.blocklist.action.removeQuestion',
+                  'Remove from the Blocklist?'
+                )
           }
           body={
             choice === 'add'
-              ? `New requests for “${title}” will be blocked.`
-              : `“${title}” can be requested again after removal.`
+              ? t(
+                  'lumen.blocklist.action.addBody',
+                  'New requests for “{title}” will be blocked.',
+                  { title }
+                )
+              : t(
+                  'lumen.blocklist.action.removeBody',
+                  '“{title}” can be requested again after removal.',
+                  { title }
+                )
           }
           confirm={
-            choice === 'add' ? 'Add to Blocklist' : 'Remove from Blocklist'
+            choice === 'add'
+              ? t('lumen.blocklist.action.add', 'Add to Blocklist')
+              : t('lumen.blocklist.action.remove', 'Remove from Blocklist')
           }
           busy={busy}
           onConfirm={() => void apply()}
@@ -140,6 +161,7 @@ export default function BlocklistButton({
   title?: string;
   onChange: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   if (
     !canManageBlocklist(user?.permissions) ||
@@ -155,7 +177,9 @@ export default function BlocklistButton({
       key={`${mediaType}:${canonical}`}
       mediaType={mediaType}
       id={canonical}
-      title={title?.trim() || 'This title'}
+      title={
+        title?.trim() || t('lumen.blocklist.action.fallbackTitle', 'This title')
+      }
       onChange={onChange}
     />
   );

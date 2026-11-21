@@ -2310,7 +2310,20 @@
     "lumen.music.trackCountOne": "{count} track",
     "lumen.music.trackCountMany": "{count} tracks",
     "lumen.music.releaseCountOne": "{count} release",
-    "lumen.music.releaseCountMany": "{count} releases"
+    "lumen.music.releaseCountMany": "{count} releases",
+    "lumen.actions.searchProwlarr": "Search Prowlarr",
+    "lumen.actions.exploreAssociations": "Explore Associations",
+    "lumen.blocklist.action.add": "Add to Blocklist",
+    "lumen.blocklist.action.remove": "Remove from Blocklist",
+    "lumen.blocklist.action.retryCheck": "Retry Blocklist Check",
+    "lumen.blocklist.action.addQuestion": "Add to the Blocklist?",
+    "lumen.blocklist.action.removeQuestion": "Remove from the Blocklist?",
+    "lumen.blocklist.action.addBody": "New requests for “{title}” will be blocked.",
+    "lumen.blocklist.action.removeBody": "“{title}” can be requested again after removal.",
+    "lumen.blocklist.action.added": "Added to the Blocklist.",
+    "lumen.blocklist.action.removed": "Removed from the Blocklist.",
+    "lumen.blocklist.action.changeUnconfirmed": "Could not confirm the Blocklist change. The title will refresh.",
+    "lumen.blocklist.action.fallbackTitle": "This title"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -4782,7 +4795,20 @@
     "lumen.music.trackCountOne": "{count} piste",
     "lumen.music.trackCountMany": "{count} pistes",
     "lumen.music.releaseCountOne": "{count} sortie",
-    "lumen.music.releaseCountMany": "{count} sorties"
+    "lumen.music.releaseCountMany": "{count} sorties",
+    "lumen.actions.searchProwlarr": "Rechercher avec Prowlarr",
+    "lumen.actions.exploreAssociations": "Explorer les associations",
+    "lumen.blocklist.action.add": "Ajouter à la liste de blocage",
+    "lumen.blocklist.action.remove": "Retirer de la liste de blocage",
+    "lumen.blocklist.action.retryCheck": "Réessayer la vérification de la liste de blocage",
+    "lumen.blocklist.action.addQuestion": "Ajouter à la liste de blocage ?",
+    "lumen.blocklist.action.removeQuestion": "Retirer de la liste de blocage ?",
+    "lumen.blocklist.action.addBody": "Les nouvelles demandes pour « {title} » seront bloquées.",
+    "lumen.blocklist.action.removeBody": "« {title} » pourra de nouveau être demandé après son retrait.",
+    "lumen.blocklist.action.added": "Ajouté à la liste de blocage.",
+    "lumen.blocklist.action.removed": "Retiré de la liste de blocage.",
+    "lumen.blocklist.action.changeUnconfirmed": "Impossible de confirmer la modification de la liste de blocage. Le titre sera actualisé.",
+    "lumen.blocklist.action.fallbackTitle": "Ce titre"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -7258,6 +7284,19 @@
     "lumen.music.trackCountOne": "{count} مقطع",
     "lumen.music.trackCountMany": "{count} مقاطع",
     "lumen.music.releaseCountOne": "{count} إصدار",
-    "lumen.music.releaseCountMany": "{count} إصدارات"
+    "lumen.music.releaseCountMany": "{count} إصدارات",
+    "lumen.actions.searchProwlarr": "البحث في Prowlarr",
+    "lumen.actions.exploreAssociations": "استكشاف الارتباطات",
+    "lumen.blocklist.action.add": "إضافة إلى قائمة الحظر",
+    "lumen.blocklist.action.remove": "إزالة من قائمة الحظر",
+    "lumen.blocklist.action.retryCheck": "إعادة محاولة التحقق من قائمة الحظر",
+    "lumen.blocklist.action.addQuestion": "إضافة إلى قائمة الحظر؟",
+    "lumen.blocklist.action.removeQuestion": "إزالة من قائمة الحظر؟",
+    "lumen.blocklist.action.addBody": "سيتم حظر الطلبات الجديدة لـ «{title}».",
+    "lumen.blocklist.action.removeBody": "يمكن طلب «{title}» مجددًا بعد إزالته.",
+    "lumen.blocklist.action.added": "تمت الإضافة إلى قائمة الحظر.",
+    "lumen.blocklist.action.removed": "تمت الإزالة من قائمة الحظر.",
+    "lumen.blocklist.action.changeUnconfirmed": "تعذر تأكيد تغيير قائمة الحظر. سيتم تحديث العنوان.",
+    "lumen.blocklist.action.fallbackTitle": "هذا العنوان"
   }
 }

@@ -4062,6 +4062,10 @@ test('Music album and artist details localize their controls and metadata', asyn
       since: 'Since 1990',
       releaseCount: '1 release',
       filter: 'Filter Music by Artist',
+      search: 'Search Prowlarr',
+      associations: 'Explore Associations',
+      blocklist: 'Add to Blocklist',
+      blocklistQuestion: 'Add to the Blocklist?',
     },
     fr: {
       request: 'Demander l’album',
@@ -4077,6 +4081,10 @@ test('Music album and artist details localize their controls and metadata', asyn
       since: 'Depuis 1990',
       releaseCount: '1 sortie',
       filter: 'Filtrer la musique par artiste',
+      search: 'Rechercher avec Prowlarr',
+      associations: 'Explorer les associations',
+      blocklist: 'Ajouter à la liste de blocage',
+      blocklistQuestion: 'Ajouter à la liste de blocage ?',
     },
     ar: {
       request: 'طلب الألبوم',
@@ -4092,12 +4100,19 @@ test('Music album and artist details localize their controls and metadata', asyn
       since: 'منذ 1990',
       releaseCount: '1 إصدار',
       filter: 'تصفية الموسيقى حسب الفنان',
+      search: 'البحث في Prowlarr',
+      associations: 'استكشاف الارتباطات',
+      blocklist: 'إضافة إلى قائمة الحظر',
+      blocklistQuestion: 'إضافة إلى قائمة الحظر؟',
     },
   }[locale];
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
   await page.route('**/api/v1/user/1/settings/main', (route) =>
     route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, permissions: 268435474 } })
   );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
@@ -4124,6 +4139,9 @@ test('Music album and artist details localize their controls and metadata', asyn
         ],
       },
     })
+  );
+  await page.route(`**/api/v1/blocklist/${album}?mediaType=music`, (route) =>
+    route.fulfill({ status: 404, json: { message: 'Not blocklisted' } })
   );
   await page.route(`**/api/v1/artist/${artist}`, (route) =>
     route.fulfill({
@@ -4153,6 +4171,20 @@ test('Music album and artist details localize their controls and metadata', asyn
     page.getByRole('heading', { name: 'Fixture Album' })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: copy.request })).toBeVisible();
+  await expect(page.getByRole('link', { name: copy.search })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: copy.associations })
+  ).toBeVisible();
+  const blocklist = page.getByRole('button', { name: copy.blocklist });
+  await expect(blocklist).toBeVisible();
+  await blocklist.click();
+  await expect(page.getByRole('alertdialog')).toContainText(
+    copy.blocklistQuestion
+  );
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Keep it' })
+    .click();
   await expect(
     page.getByRole('link', { name: copy.discography })
   ).toBeVisible();
