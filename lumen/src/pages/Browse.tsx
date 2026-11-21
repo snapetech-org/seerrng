@@ -20,6 +20,7 @@ import {
 } from '../discoveryVisibility';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePaged, type PublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { serverName } from '../mediaServer';
@@ -58,6 +59,7 @@ function integerBound(value: string | null) {
 
 const RANGE_FILTERS = {
   dates: {
+    key: 'dates',
     name: 'Release Dates',
     label: 'Release Date Filter',
     low: 'Released On or After',
@@ -66,6 +68,7 @@ const RANGE_FILTERS = {
     input: { type: 'date' },
   },
   rating: {
+    key: 'rating',
     name: 'Rating',
     label: 'TMDB Rating Filter',
     low: 'Minimum Rating',
@@ -74,6 +77,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '10', step: '0.1' },
   },
   runtime: {
+    key: 'runtime',
     name: 'Runtime',
     label: 'Runtime Filter',
     low: 'Minimum Runtime (Minutes)',
@@ -82,6 +86,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '999999999', step: '1' },
   },
   votes: {
+    key: 'votes',
     name: 'Vote Count',
     label: 'TMDB Vote Count Filter',
     low: 'Minimum Votes',
@@ -104,9 +109,13 @@ function RangeFilter({
   invalidSaved?: boolean;
   apply: (min: string, max: string) => void;
 }) {
+  const { t } = useLumenLocale();
   const [low, setLow] = useState(min);
   const [high, setHigh] = useState(max);
   const filter = RANGE_FILTERS[kind];
+  const message = (field: 'name' | 'label' | 'low' | 'high') =>
+    t(`lumen.browse.range.${filter.key}.${field}`, filter[field]);
+  const name = message('name');
   const reversed =
     !!low &&
     !!high &&
@@ -114,14 +123,14 @@ function RangeFilter({
   return (
     <form
       className="toolbar"
-      aria-label={filter.label}
+      aria-label={message('label')}
       onSubmit={(event) => {
         event.preventDefault();
         if (!reversed) apply(filter.normalize(low), filter.normalize(high));
       }}
     >
       <label className="sel">
-        <span className="lbl">{filter.low}</span>
+        <span className="lbl">{message('low')}</span>
         <input
           className="cfg-input"
           {...filter.input}
@@ -130,7 +139,7 @@ function RangeFilter({
         />
       </label>
       <label className="sel">
-        <span className="lbl">{filter.high}</span>
+        <span className="lbl">{message('high')}</span>
         <input
           className="cfg-input"
           {...filter.input}
@@ -139,7 +148,7 @@ function RangeFilter({
         />
       </label>
       <button className="btn btn-tonal btn-sm" disabled={reversed}>
-        Apply {filter.name}
+        {t('lumen.browse.range.apply', 'Apply {name}', { name })}
       </button>
       {(invalidSaved || min || max || low || high) && (
         <button
@@ -151,18 +160,23 @@ function RangeFilter({
             apply('', '');
           }}
         >
-          Clear {filter.name}
+          {t('lumen.browse.range.clear', 'Clear {name}', { name })}
         </button>
       )}
       {reversed && (
         <p className="note" role="alert">
-          The lower bound must be at or below the upper bound.
+          {t(
+            'lumen.browse.range.invalidOrder',
+            'The lower bound must be at or below the upper bound.'
+          )}
         </p>
       )}
       {invalidSaved && !reversed && (
         <p className="note" role="alert">
-          The saved date filter contains an invalid date. Enter a valid date or
-          clear the filter.
+          {t(
+            'lumen.browse.range.invalidSavedDate',
+            'The saved date filter contains an invalid date. Enter a valid date or clear the filter.'
+          )}
         </p>
       )}
     </form>

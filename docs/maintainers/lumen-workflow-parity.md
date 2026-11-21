@@ -594,6 +594,22 @@ RTL direction. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/calendar-description/`.
 Production `/lumen/` rendering and native-matched visual comparison remain open.
 
+### Movie and series range-filter localization
+
+Movie and series Browse range controls now use the saved Lumen locale for
+release-date, rating, runtime, and vote-count labels, their Apply/Clear actions,
+and invalid-range/date feedback. English, French, and Arabic are covered. The
+browser spec passes 12 cases across desktop, iPhone, Android, and tablet in
+standalone and embedded `/lumen/` deployments. For `/movies` and `/series`, the
+empty range-filter state and the reversed-date validation state were checked.
+The embedded English baseline built from `78f372fcd` was compared with the
+current English, French, and Arabic candidates at 390 × 844 and 1440 × 900.
+Translated controls wrap within the existing layout, with no horizontal
+overflow or CSS/geometry change. The native date input's placeholder remains
+controlled by the browser locale. Other Browse controls and route copy remain
+untranslated and are still open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-ranges-20261121/`.
+
 ### My Media browse increment
 
 Lumen serves `/library` in both deployments and exposes My Media in desktop
