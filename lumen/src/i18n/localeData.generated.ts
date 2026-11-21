@@ -636,6 +636,32 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'معدّل الإصابة',
       'components.Settings.SettingsJobsCache.imagecachecount': 'صور مخزنة',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'استرجاعات IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion': 'مثبّت',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'الأحدث',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'بيانات الاصدار غير متوفرة حاليا.',
+      'components.Settings.SettingsAbout.Releases.releases': 'إصدارات',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'رؤية المحتوى على GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'حول SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'مكان تخزين البيانات',
+      'components.Settings.SettingsAbout.documentation': 'الوثائق',
+      'components.Settings.SettingsAbout.githubdiscussions': 'نقاشات GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'تم تصميم SeerrNG لإدارة الوسائط الشخصية بشكل قانوني. لا يتغاضى المشروع عن القرصنة أو انتهاك حقوق النشر. يتحمل المستخدمون مسؤولية الالتزام بالقوانين والتراخيص وشروط الخدمة المعمول بها في منطقتهم.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'الاستخدام القانوني',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'نَسب البيانات الوصفية',
+      'components.Settings.SettingsAbout.supportdevelopment': 'الدعم الإنمائي',
+      'components.Settings.SettingsAbout.timezone': 'المنطقة الزمنية',
+      'components.Settings.SettingsAbout.totalmedia': 'المجموع الكلي للمحتوى',
+      'components.Settings.SettingsAbout.totalrequests': 'مجموع الطلبات',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'يستخدم هذا المنتج TMDB وواجهات TMDB البرمجية، لكن TMDB لا يؤيده ولا يصدّقه ولا يوافق عليه بأي شكل آخر. <ApiTermsLink>شروط استخدام واجهة TMDB البرمجية</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'تعذّر التحقق من التحديثات',
+      'components.Settings.SettingsAbout.uptodate': 'مُحدّث',
+      'components.Settings.SettingsAbout.version': 'النسخة',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1601,6 +1627,26 @@ export const localeData = [
       'lumen.adminCaches.cacheFlushed': 'تم مسح {name}.',
       'lumen.adminCaches.dnsFlushed': 'تم مسح إدخال DNS ‏{name}.',
       'lumen.adminCaches.metric.size': 'الحجم',
+      'lumen.adminAbout.backToAccount': 'العودة إلى الحساب',
+      'lumen.adminAbout.serverInformation': 'معلومات الخادم',
+      'lumen.adminAbout.serverInformationTitle': 'معلومات الخادم',
+      'lumen.adminAbout.loadingServerInformation': 'جارٍ تحميل معلومات الخادم…',
+      'lumen.adminAbout.unavailable': 'غير متاح',
+      'lumen.adminAbout.versionCheckDisabled': 'التحقق من الإصدار معطّل',
+      'lumen.adminAbout.updateAvailable': 'يتوفر تحديث',
+      'lumen.adminAbout.supportAndReleases': 'الدعم والإصدارات',
+      'lumen.adminAbout.releaseNotes': 'ملاحظات الإصدار',
+      'lumen.adminAbout.discord': 'Discord',
+      'lumen.adminAbout.releaseHistory.title': 'سجل الإصدارات',
+      'lumen.adminAbout.releaseHistory.show': 'عرض الإصدارات',
+      'lumen.adminAbout.releaseHistory.hide': 'إخفاء الإصدارات',
+      'lumen.adminAbout.releaseHistory.loadingNotes':
+        'جارٍ تحميل ملاحظات الإصدار…',
+      'lumen.adminAbout.releaseHistory.failure': 'تعذّر تحميل سجل الإصدارات.',
+      'lumen.adminAbout.releaseHistory.retry': 'إعادة المحاولة',
+      'lumen.adminAbout.releaseHistory.loading': 'جارٍ تحميل الإصدارات…',
+      'lumen.adminAbout.developmentBuild':
+        'يعمل هذا الخادم بإصدار مخصص للتطوير.',
     },
   },
   {
@@ -1749,6 +1795,22 @@ export const localeData = [
         'Кеширани изображения',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Резервни IPv4 адреси',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Най-нова',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Понастоящем няма налични данни за изданието.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Издания',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Преглед в GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'За Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Директория за данни',
+      'components.Settings.SettingsAbout.documentation': 'Документация',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Дискусии в GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Часова зона',
+      'components.Settings.SettingsAbout.totalmedia': 'Общо медия',
+      'components.Settings.SettingsAbout.totalrequests': 'Общо заявки',
+      'components.Settings.SettingsAbout.uptodate': 'Актуална версия',
+      'components.Settings.SettingsAbout.version': 'Версия',
     },
   },
   {
@@ -1885,6 +1947,22 @@ export const localeData = [
         'Imatges a la memòria cau',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         "Alternatives d'IPv4",
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Última versió',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'La informació de la versió no està disponible.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versions',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Visualitza a GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Quant a Seer',
+      'components.Settings.SettingsAbout.appDataPath': 'Directori de dades',
+      'components.Settings.SettingsAbout.documentation': 'Documentació',
+      'components.Settings.SettingsAbout.githubdiscussions': 'Debats de GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Zona horària',
+      'components.Settings.SettingsAbout.totalmedia': 'Total de contingut',
+      'components.Settings.SettingsAbout.totalrequests': 'Sol·licituds totals',
+      'components.Settings.SettingsAbout.uptodate': 'Actualitzat',
+      'components.Settings.SettingsAbout.version': 'Versió',
     },
   },
   {
@@ -2031,6 +2109,22 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Obrázky v mezipaměti',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Záložní IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Nejnovější',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Údaje o vydání jsou aktuálně nedostupné.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Vydání',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Zobrazit na GitHubu',
+      'components.Settings.SettingsAbout.aboutseerr': 'A aplikaci Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Adresář dat',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentace',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Diskuze na GitHubu',
+      'components.Settings.SettingsAbout.timezone': 'Časové pásmo',
+      'components.Settings.SettingsAbout.totalmedia': 'Celkem médií',
+      'components.Settings.SettingsAbout.totalrequests': 'Celkem žádostí',
+      'components.Settings.SettingsAbout.uptodate': 'Aktuální',
+      'components.Settings.SettingsAbout.version': 'Verze',
     },
   },
   {
@@ -2169,6 +2263,23 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Cachelagrede billeder',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-reserver',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Nyeste',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Udgivelsesdata er i øjeblikket ikke tilgængelige.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Udgivelser',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Vis på GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Om Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Datamappe',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentation',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub-diskussioner',
+      'components.Settings.SettingsAbout.timezone': 'Tidszone',
+      'components.Settings.SettingsAbout.totalmedia': 'Samlet antal medier',
+      'components.Settings.SettingsAbout.totalrequests':
+        'Samlet antal anmodninger',
+      'components.Settings.SettingsAbout.uptodate': 'Opdateret',
+      'components.Settings.SettingsAbout.version': 'Version',
     },
   },
   {
@@ -2852,6 +2963,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Bilder im Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-Fallbacks',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Installiert',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Neueste',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Informationen der Version nicht verfügbar.',
+      'components.Settings.SettingsAbout.Releases.releases':
+        'Veröffentlichungen',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Auf GitHub anzeigen',
+      'components.Settings.SettingsAbout.aboutseerr': 'Über SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Datenverzeichnis',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentation',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub-Diskussionen',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG ist für rechtmäßiges persönliches Medienmanagement gedacht. Das Projekt duldet keine Piraterie oder Urheberrechtsverletzungen. Die Benutzer sind für die Einhaltung der geltenden Gesetze, Lizenzen und Servicebedingungen in ihrer Region verantwortlich.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Rechtmäßige Nutzung',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Metadatenzuordnung',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Entwicklung unterstützen',
+      'components.Settings.SettingsAbout.timezone': 'Zeitzone',
+      'components.Settings.SettingsAbout.totalmedia': 'Medien insgesamt',
+      'components.Settings.SettingsAbout.totalrequests': 'Anfragen insgesamt',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Dieses Produkt verwendet TMDB und die TMDB-APIs, wird jedoch von TMDB weder unterstützt noch zertifiziert oder anderweitig genehmigt. <ApiTermsLink>Nutzungsbedingungen der TMDB API</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Updates konnten nicht geprüft werden',
+      'components.Settings.SettingsAbout.uptodate': 'Auf dem neuesten Stand',
+      'components.Settings.SettingsAbout.version': 'Version',
     },
   },
   {
@@ -3512,6 +3653,35 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'Hit Rate',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Images Cached',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 Fallbacks',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Installed',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Latest',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Release data is currently unavailable.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Releases',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'View on GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'About SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Data Directory',
+      'components.Settings.SettingsAbout.documentation': 'Documentation',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub Discussions',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG is intended for lawful personal media management. The project does not condone piracy or copyright infringement. Users are responsible for complying with applicable laws, licenses, and service terms in their region.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Legal Use',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Metadata attribution',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Support Development',
+      'components.Settings.SettingsAbout.timezone': 'Time Zone',
+      'components.Settings.SettingsAbout.totalmedia': 'Total Media',
+      'components.Settings.SettingsAbout.totalrequests': 'Total Requests',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'This product uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB. <ApiTermsLink>TMDB API terms</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Could not check for updates',
+      'components.Settings.SettingsAbout.uptodate': 'Up to Date',
+      'components.Settings.SettingsAbout.version': 'Version',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4428,6 +4598,27 @@ export const localeData = [
       'lumen.adminCaches.cacheFlushed': 'Flushed {name}.',
       'lumen.adminCaches.dnsFlushed': 'Flushed {name}.',
       'lumen.adminCaches.metric.size': 'Size',
+      'lumen.adminAbout.backToAccount': 'Back to Account',
+      'lumen.adminAbout.serverInformation': 'server information',
+      'lumen.adminAbout.serverInformationTitle': 'Server Information',
+      'lumen.adminAbout.loadingServerInformation':
+        'Loading server information…',
+      'lumen.adminAbout.unavailable': 'Unavailable',
+      'lumen.adminAbout.versionCheckDisabled': 'Version check disabled',
+      'lumen.adminAbout.updateAvailable': 'Update available',
+      'lumen.adminAbout.supportAndReleases': 'Support and Releases',
+      'lumen.adminAbout.releaseNotes': 'Release Notes',
+      'lumen.adminAbout.discord': 'Discord',
+      'lumen.adminAbout.releaseHistory.title': 'Release History',
+      'lumen.adminAbout.releaseHistory.show': 'Show Releases',
+      'lumen.adminAbout.releaseHistory.hide': 'Hide Releases',
+      'lumen.adminAbout.releaseHistory.loadingNotes': 'Loading release notes…',
+      'lumen.adminAbout.releaseHistory.failure':
+        'Release history could not be loaded.',
+      'lumen.adminAbout.releaseHistory.retry': 'Retry',
+      'lumen.adminAbout.releaseHistory.loading': 'Loading releases…',
+      'lumen.adminAbout.developmentBuild':
+        'This server is running a development build.',
     },
   },
   {
@@ -4544,6 +4735,22 @@ export const localeData = [
         'Εκκαθάριση κρυφής μνήμης',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Οι εικόνες έγιναν cache',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Πιο πρόσφατη',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Τα δεδομένα έκδοσης δεν είναι διαθέσιμα αυτή τη στιγμή.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Εκδόσεις',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Προβολή στο GitHub',
+      'components.Settings.SettingsAbout.appDataPath': 'Κατάλογος Δεδομένων',
+      'components.Settings.SettingsAbout.documentation': 'Εγχειρίδιο',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Συζητήσεις στο GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Ζώνη ώρας',
+      'components.Settings.SettingsAbout.totalmedia': 'Σύνολο μέσων',
+      'components.Settings.SettingsAbout.totalrequests': 'Σύνολο αιτημάτων',
+      'components.Settings.SettingsAbout.uptodate': 'Ενημερωμένο',
+      'components.Settings.SettingsAbout.version': 'Έκδοση',
     },
   },
   {
@@ -5224,6 +5431,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imágenes en caché',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Fallbacks IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Instalado',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Última Versión',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'La fecha de lanzamiento no está actualmente disponible.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versiones',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Ver en GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Acerca de SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Directorio de datos',
+      'components.Settings.SettingsAbout.documentation': 'Documentación',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discursiones en GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG está destinado a la gestión legal de los medios personales. El proyecto no tolera la piratería ni la violación de derechos de autor. Los usuarios son responsables de cumplir con las leyes, licencias y términos de servicio aplicables en su región.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Atribución de metadatos',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Apoyo al desarrollo',
+      'components.Settings.SettingsAbout.timezone': 'Zona horaria',
+      'components.Settings.SettingsAbout.totalmedia': 'Contenido Total',
+      'components.Settings.SettingsAbout.totalrequests': 'Peticiones Totales',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Este producto usa TMDB y sus API, pero TMDB no lo respalda, certifica ni aprueba de ninguna otra forma. <ApiTermsLink>Términos de la API de TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'No se pudo verificar actualizaciones',
+      'components.Settings.SettingsAbout.uptodate': 'Actualizado',
+      'components.Settings.SettingsAbout.version': 'Versión',
     },
   },
   {
@@ -5896,6 +6133,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imágenes en caché',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Reservas de IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Instalado',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Última Versión',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'La fecha de lanzamiento no está actualmente disponible.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versiones',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Ver en GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Acerca de SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Directorio de datos',
+      'components.Settings.SettingsAbout.documentation': 'Documentación',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discursiones en GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG está destinado a la gestión legal de los medios personales. El proyecto no tolera la piratería ni la violación de derechos de autor. Los usuarios son responsables de cumplir con las leyes, licencias y términos de servicio aplicables en su región.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Atribución de metadatos',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Apoyo al desarrollo',
+      'components.Settings.SettingsAbout.timezone': 'Zona horaria',
+      'components.Settings.SettingsAbout.totalmedia': 'Contenido Total',
+      'components.Settings.SettingsAbout.totalrequests': 'Peticiones Totales',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Este producto usa TMDB y sus API, pero TMDB no lo respalda, certifica ni aprueba de ninguna otra forma. <ApiTermsLink>Términos de la API de TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'No se pudo verificar actualizaciones',
+      'components.Settings.SettingsAbout.uptodate': 'Actualizado',
+      'components.Settings.SettingsAbout.version': 'Versión',
     },
   },
   {
@@ -6040,6 +6307,21 @@ export const localeData = [
         'Puhverdatud pilte',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'IPv4-varulahendused',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Uusim',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Väljalaskeandmed pole hetkel saadaval.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Väljalasked',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Vaata GitHubis',
+      'components.Settings.SettingsAbout.aboutseerr': 'Lähemalt Seerrist',
+      'components.Settings.SettingsAbout.appDataPath': 'Andmete kataloog',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentatsioon',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHubi arutelud',
+      'components.Settings.SettingsAbout.timezone': 'Ajavöönd',
+      'components.Settings.SettingsAbout.totalmedia': 'Meediat kokku',
+      'components.Settings.SettingsAbout.totalrequests': 'Taotlusi kokku',
+      'components.Settings.SettingsAbout.uptodate': 'Ajakohane',
+      'components.Settings.SettingsAbout.version': 'Versioon',
     },
   },
   {
@@ -6148,6 +6430,22 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'Osumisprosentti',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Kuvia välimuistissa',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Viimeisin',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Julkaisupäivämäärää ei tiedossa.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Julkaisut',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Näytä GitHub:issa',
+      'components.Settings.SettingsAbout.aboutseerr': 'Tietoa Seerr:istä',
+      'components.Settings.SettingsAbout.appDataPath': 'Datakansio',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentaatio',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub keskustelut',
+      'components.Settings.SettingsAbout.timezone': 'Aikavyöhyke',
+      'components.Settings.SettingsAbout.totalmedia': 'Mediaa yhteensä',
+      'components.Settings.SettingsAbout.totalrequests': 'Pyyntöjä yhteensä',
+      'components.Settings.SettingsAbout.uptodate': 'Ajan tasalla',
+      'components.Settings.SettingsAbout.version': 'Versio',
     },
   },
   {
@@ -6832,6 +7130,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'Taux de succès',
       'components.Settings.SettingsJobsCache.imagecachecount': 'images',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Recours à IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Installée',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Dernière version',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Les données de version sont actuellement indisponibles.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versions',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Voir sur GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'À propos de SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Répertoire de données',
+      'components.Settings.SettingsAbout.documentation': 'Documentation',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discussions GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        "SeerrNG est destiné à la gestion légale des médias personnels. Le projet ne tolère pas le piratage ou la violation du droit d'auteur. Les utilisateurs sont responsables de se conformer aux lois, licences et conditions de service applicables dans leur région.",
+      'components.Settings.SettingsAbout.legalUseTitle': 'Utilisation légale',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Attribution des métadonnées',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Appui au développement',
+      'components.Settings.SettingsAbout.timezone': 'Fuseau horaire',
+      'components.Settings.SettingsAbout.totalmedia': 'Total des médias',
+      'components.Settings.SettingsAbout.totalrequests': 'Total des demandes',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Ce produit utilise TMDB et ses API, mais n’est ni soutenu, ni certifié, ni approuvé d’une autre manière par TMDB. <ApiTermsLink>Conditions d’utilisation de l’API TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Impossible de vérifier les mises à jour',
+      'components.Settings.SettingsAbout.uptodate': 'À jour',
+      'components.Settings.SettingsAbout.version': 'Version',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -7888,6 +8216,29 @@ export const localeData = [
       'lumen.adminCaches.cacheFlushed': 'Cache {name} vidé.',
       'lumen.adminCaches.dnsFlushed': 'Entrée DNS {name} vidée.',
       'lumen.adminCaches.metric.size': 'Taille',
+      'lumen.adminAbout.backToAccount': 'Retour au compte',
+      'lumen.adminAbout.serverInformation': 'informations du serveur',
+      'lumen.adminAbout.serverInformationTitle': 'Informations du serveur',
+      'lumen.adminAbout.loadingServerInformation':
+        'Chargement des informations du serveur…',
+      'lumen.adminAbout.unavailable': 'Indisponible',
+      'lumen.adminAbout.versionCheckDisabled':
+        'Vérification de la version désactivée',
+      'lumen.adminAbout.updateAvailable': 'Mise à jour disponible',
+      'lumen.adminAbout.supportAndReleases': 'Assistance et versions',
+      'lumen.adminAbout.releaseNotes': 'Notes de version',
+      'lumen.adminAbout.discord': 'Discord',
+      'lumen.adminAbout.releaseHistory.title': 'Historique des versions',
+      'lumen.adminAbout.releaseHistory.show': 'Afficher les versions',
+      'lumen.adminAbout.releaseHistory.hide': 'Masquer les versions',
+      'lumen.adminAbout.releaseHistory.loadingNotes':
+        'Chargement des notes de version…',
+      'lumen.adminAbout.releaseHistory.failure':
+        'Impossible de charger l’historique des versions.',
+      'lumen.adminAbout.releaseHistory.retry': 'Réessayer',
+      'lumen.adminAbout.releaseHistory.loading': 'Chargement des versions…',
+      'lumen.adminAbout.developmentBuild':
+        'Ce serveur utilise une version de développement.',
     },
   },
   {
@@ -8009,6 +8360,21 @@ export const localeData = [
         'Isprazni predmemoriju',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Slike spremljene u predmemoriju',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Najnovije',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Podaci izdanja trenutačno nisu nedostupni.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Izdanja',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Prikaz na GitHubu',
+      'components.Settings.SettingsAbout.appDataPath': 'Mapa podataka',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentacija',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Rasprave na GitHubu',
+      'components.Settings.SettingsAbout.timezone': 'Vremenska zona',
+      'components.Settings.SettingsAbout.totalmedia': 'Ukupno medija',
+      'components.Settings.SettingsAbout.totalrequests': 'Ukupno zahtjeva',
+      'components.Settings.SettingsAbout.uptodate': 'Aktualno',
+      'components.Settings.SettingsAbout.version': 'Verzija',
     },
   },
   {
@@ -8702,6 +9068,32 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'हिट दर',
       'components.Settings.SettingsJobsCache.imagecachecount': 'तस्वीरें',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 फ़ॉलबैक',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'इंस्टॉल किया गया',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'नवीनतम',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'वर्तमान में जारी डेटा अनुपलब्ध है।',
+      'components.Settings.SettingsAbout.Releases.releases': 'रिलीज',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'GitHub पर देखें',
+      'components.Settings.SettingsAbout.aboutseerr': 'SeerrNG के बारे में',
+      'components.Settings.SettingsAbout.appDataPath': 'डेटा निर्देशिका',
+      'components.Settings.SettingsAbout.documentation': 'दस्तावेज़ीकरण',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHub चर्चा',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG वैध व्यक्तिगत मीडिया प्रबंधन के लिए है। परियोजना चोरी या कॉपीराइट उल्लंघन की अनुमति नहीं देती है। उपयोगकर्ता अपने क्षेत्र में लागू कानूनों, लाइसेंस और सेवा शर्तों का अनुपालन करने के लिए जिम्मेदार हैं।',
+      'components.Settings.SettingsAbout.legalUseTitle': 'कानूनी उपयोग',
+      'components.Settings.SettingsAbout.metadataAttribution': 'मेटाडेटा श्रेय',
+      'components.Settings.SettingsAbout.supportdevelopment': 'समर्थन विकास',
+      'components.Settings.SettingsAbout.timezone': 'समय क्षेत्र',
+      'components.Settings.SettingsAbout.totalmedia': 'कुल मीडिया',
+      'components.Settings.SettingsAbout.totalrequests': 'कुल अनुरोध',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'यह उत्पाद TMDB और TMDB API का उपयोग करता है, लेकिन TMDB इसका समर्थन, प्रमाणन या किसी अन्य रूप में अनुमोदन नहीं करता। <ApiTermsLink>TMDB API की शर्तें</ApiTermsLink>।',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'अपडेट की जांच नहीं की जा सकी',
+      'components.Settings.SettingsAbout.uptodate': 'तारीख तक',
+      'components.Settings.SettingsAbout.version': 'संस्करण',
     },
   },
   {
@@ -8847,6 +9239,22 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Képek gyorsítótárban',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 tartalék',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Legújabb',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Megjelenési adatok nem állnak rendelkezésre.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Kiadások',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Megtekintés a GitHubon',
+      'components.Settings.SettingsAbout.aboutseerr': 'A Seerr-ről',
+      'components.Settings.SettingsAbout.appDataPath': 'Adatkönyvtár',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentáció',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub‑beszélgetések',
+      'components.Settings.SettingsAbout.timezone': 'Időzóna',
+      'components.Settings.SettingsAbout.totalmedia': 'Teljes média',
+      'components.Settings.SettingsAbout.totalrequests': 'Összes kérés',
+      'components.Settings.SettingsAbout.uptodate': 'Naprakész',
+      'components.Settings.SettingsAbout.version': 'Verzió',
     },
   },
   {
@@ -9513,6 +9921,34 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'Laju Tekan',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Cache Gambar',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Fallbacks IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Terpasang',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Terbaru',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Data rilis saat ini tidak tersedia.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Berhenti',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Tilik di GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Tentang SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Direktori Data',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentasi',
+      'components.Settings.SettingsAbout.githubdiscussions': 'Diskusi GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG ditujukan untuk manajemen media pribadi yang sah. Proyek ini tidak membenarkan pembajakan atau pelanggaran hak cipta. Pengguna bertanggung jawab untuk melayani dengan hukum yang berlaku, lisensi, dan persyaratan layanan di wilayah mereka.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Penggunaan yang sah',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Atribusi metadata',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Pengembangan Dukungan',
+      'components.Settings.SettingsAbout.timezone': 'Zona Waktu',
+      'components.Settings.SettingsAbout.totalmedia': 'Media Total',
+      'components.Settings.SettingsAbout.totalrequests': 'Permintaan Total',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Produk ini menggunakan TMDB dan API TMDB, tetapi tidak didukung, disertifikasi, atau disetujui dengan cara lain oleh TMDB. <ApiTermsLink>Ketentuan API TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Gagal memeriksa pembaruan',
+      'components.Settings.SettingsAbout.uptodate': 'Sampai Tanggal',
+      'components.Settings.SettingsAbout.version': 'Versi',
     },
   },
   {
@@ -9659,6 +10095,23 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Immagini memorizzate nella cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Ripiega su IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Versione più recente',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Dati di versione non sono momentaneamente disponibili.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versioni',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Visualizza su GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Informazioni su Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Cartella applicazione',
+      'components.Settings.SettingsAbout.documentation': 'Documentazione',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discussioni su GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Fuso Orario',
+      'components.Settings.SettingsAbout.totalmedia': 'Media totali',
+      'components.Settings.SettingsAbout.totalrequests': 'Totale richieste',
+      'components.Settings.SettingsAbout.uptodate': 'Aggiornato',
+      'components.Settings.SettingsAbout.version': 'Versione',
     },
   },
   {
@@ -10317,6 +10770,35 @@ export const localeData = [
         'キャッシュされた画像',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'IPv4フォールバック',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'インストール済み',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        '最新のバージョン',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'リリースデータがありません。',
+      'components.Settings.SettingsAbout.Releases.releases': 'リリース',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'GitHub で見る',
+      'components.Settings.SettingsAbout.aboutseerr': 'SeerrNG について',
+      'components.Settings.SettingsAbout.appDataPath': 'データディレクトリ',
+      'components.Settings.SettingsAbout.documentation': 'ドキュメント',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub ディスカッション',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNGは、適法な個人情報管理を目的としています。 プロジェクトは著作権侵害や著作権侵害を禁じません。 ユーザーは、その地域の適用される法律、ライセンス、およびサービス規約を遵守する責任を負います。',
+      'components.Settings.SettingsAbout.legalUseTitle': '法的使用について',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'メタデータの帰属表示',
+      'components.Settings.SettingsAbout.supportdevelopment': 'サポート開発',
+      'components.Settings.SettingsAbout.timezone': 'タイムゾーン',
+      'components.Settings.SettingsAbout.totalmedia': '総メディア数',
+      'components.Settings.SettingsAbout.totalrequests': '総リクエスト数',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        '本製品はTMDBおよびTMDB APIを使用していますが、TMDBによる推奨、認定、その他の承認を受けたものではありません。<ApiTermsLink>TMDB API利用規約</ApiTermsLink>。',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        '更新を確認できませんでした',
+      'components.Settings.SettingsAbout.uptodate': '最新',
+      'components.Settings.SettingsAbout.version': 'バージョン',
     },
   },
   {
@@ -10949,6 +11431,32 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': '적중률',
       'components.Settings.SettingsJobsCache.imagecachecount': '저장된 이미지',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 가을',
+      'components.Settings.SettingsAbout.Releases.installedversion': '설치됨',
+      'components.Settings.SettingsAbout.Releases.latestversion': '최신',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        '현재 출시 데이터를 사용할 수 없습니다.',
+      'components.Settings.SettingsAbout.Releases.releases': '출시',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'GitHub에서 보기',
+      'components.Settings.SettingsAbout.aboutseerr': 'SeerrNG 정보',
+      'components.Settings.SettingsAbout.appDataPath': '데이터 디렉토리',
+      'components.Settings.SettingsAbout.documentation': '문서',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHub 토론',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG는 합법적인 개인 미디어 관리를 위한 것입니다. 프로젝트는 condone piracy 또는 저작권 침해가 아닙니다. 사용자는 해당 지역의 적용 가능한 법률, 라이센스 및 서비스 약관을 준수합니다.',
+      'components.Settings.SettingsAbout.legalUseTitle': '법적 사용',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        '메타데이터 출처 표시',
+      'components.Settings.SettingsAbout.supportdevelopment': '지원 개발',
+      'components.Settings.SettingsAbout.timezone': '시간대',
+      'components.Settings.SettingsAbout.totalmedia': '전체 미디어',
+      'components.Settings.SettingsAbout.totalrequests': '총 요청 수',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        '이 제품은 TMDB 및 TMDB API를 사용하지만 TMDB의 보증, 인증 또는 기타 승인을 받지 않았습니다. <ApiTermsLink>TMDB API 이용 약관</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        '업데이트를 확인할 수 없습니다',
+      'components.Settings.SettingsAbout.uptodate': '최신',
+      'components.Settings.SettingsAbout.version': '버전',
     },
   },
   {
@@ -11018,6 +11526,17 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachehits': 'Kvietimai',
       'components.Settings.SettingsJobsCache.cachekeys': 'Viso raktų',
       'components.Settings.SettingsJobsCache.cachemisses': 'Praleisti',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Vėliausia',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Išleidimo data šiuo metu neprieinama.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Leidimai',
+      'components.Settings.SettingsAbout.appDataPath': 'Duomenų aplankas',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentacija',
+      'components.Settings.SettingsAbout.timezone': 'Laiko zona',
+      'components.Settings.SettingsAbout.totalmedia': 'Viso medijos',
+      'components.Settings.SettingsAbout.totalrequests': 'Viso rezervacijų',
+      'components.Settings.SettingsAbout.uptodate': 'Atnaujinta',
+      'components.Settings.SettingsAbout.version': 'Versija',
     },
   },
   {
@@ -11132,6 +11651,23 @@ export const localeData = [
         'Totalt antall nøkkler',
       'components.Settings.SettingsJobsCache.cachemisses': 'Bom',
       'components.Settings.SettingsJobsCache.flushcache': 'Tøm mellomlager',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Siste versjon',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Utgivelsesdata er for øyeblikket utilgjengelig.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Utgivelser',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Vis på GitHub',
+      'components.Settings.SettingsAbout.appDataPath': 'Datakatalog',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentasjon',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Diskuter på GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Tidssone',
+      'components.Settings.SettingsAbout.totalmedia':
+        'Totalt antall tilgjengelig',
+      'components.Settings.SettingsAbout.totalrequests': 'Forespørsler totalt',
+      'components.Settings.SettingsAbout.uptodate': 'Oppdatert',
+      'components.Settings.SettingsAbout.version': 'Versjon',
     },
   },
   {
@@ -11280,6 +11816,23 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Afbeeldingen in cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-fallbacks',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Nieuwste',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Versiegegevens zijn momenteel niet beschikbaar.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versies',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Bekijken op GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Over Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Gegevensmap',
+      'components.Settings.SettingsAbout.documentation': 'Documentatie',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub-discussies',
+      'components.Settings.SettingsAbout.timezone': 'Tijdzone',
+      'components.Settings.SettingsAbout.totalmedia': 'Totaal aantal media',
+      'components.Settings.SettingsAbout.totalrequests':
+        'Totaal aantal aanvragen',
+      'components.Settings.SettingsAbout.uptodate': 'Bijgewerkt',
+      'components.Settings.SettingsAbout.version': 'Versie',
     },
   },
   {
@@ -11427,6 +11980,22 @@ export const localeData = [
         'Zbuforowane obrazy',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Przełączenia awaryjne na IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Najnowszy',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Dane o wydaniu są obecnie niedostępne.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Wydania',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Zobacz na GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'O Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Katalog danych',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentacja',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Dyskusje na GitHubie',
+      'components.Settings.SettingsAbout.timezone': 'Strefa czasowa',
+      'components.Settings.SettingsAbout.totalmedia': 'Multimedia ogółem',
+      'components.Settings.SettingsAbout.totalrequests': 'Łączna liczba próśb',
+      'components.Settings.SettingsAbout.uptodate': 'Aktualne',
+      'components.Settings.SettingsAbout.version': 'Wersja',
     },
   },
   {
@@ -12096,6 +12665,37 @@ export const localeData = [
         'Imagens Armazenadas em Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Alternativos IPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Instalado',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Última Versão',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Informações de versão indisponíveis.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versões',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Ver no GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Sobre o SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Configurações',
+      'components.Settings.SettingsAbout.documentation': 'Documentação',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discussões no GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG é destinado a gerenciamento de mídia pessoal legal. O projeto não tolera pirataria ou violação de direitos autorais. Usuários são responsáveis por cumprir as leis, licenças e termos de serviço aplicáveis em sua região.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Atribuição de metadados',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Apoio ao Desenvolvimento',
+      'components.Settings.SettingsAbout.timezone': 'Fuso Horário',
+      'components.Settings.SettingsAbout.totalmedia': 'Total de Títulos',
+      'components.Settings.SettingsAbout.totalrequests':
+        'Total de Solicitações',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Este produto usa o TMDB e suas APIs, mas não é endossado, certificado ou aprovado de qualquer outra forma pelo TMDB. <ApiTermsLink>Termos de uso da API do TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Não foi possível verificar atualizações',
+      'components.Settings.SettingsAbout.uptodate': 'Atualizado',
+      'components.Settings.SettingsAbout.version': 'Versão',
     },
   },
   {
@@ -12242,6 +12842,23 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imagens Armazenadas em Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Recursos a IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Última Versão',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Os dados de versão estão atualmente indisponíveis.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versões',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Ver no GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Sobre Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Configurações',
+      'components.Settings.SettingsAbout.documentation': 'Documentação',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Discussões no GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Fuso Horário',
+      'components.Settings.SettingsAbout.totalmedia': 'Total de Multimédia',
+      'components.Settings.SettingsAbout.totalrequests': 'Todos os Pedidos',
+      'components.Settings.SettingsAbout.uptodate': 'Atualizado',
+      'components.Settings.SettingsAbout.version': 'Versão',
     },
   },
   {
@@ -12325,6 +12942,21 @@ export const localeData = [
         'Imagini stocate în cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Fallback-uri IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Ultima',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Nu sunt disponibile informații despre release.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Release-uri',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Vizualizează pe GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Despre Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Directorul de date',
+      'components.Settings.SettingsAbout.documentation': 'Documentație',
+      'components.Settings.SettingsAbout.githubdiscussions': 'Discuții GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Fus orar',
+      'components.Settings.SettingsAbout.totalmedia': 'Total materiale',
+      'components.Settings.SettingsAbout.totalrequests': 'Total cereri',
+      'components.Settings.SettingsAbout.uptodate': 'La zi',
+      'components.Settings.SettingsAbout.version': 'Versiune',
     },
   },
   {
@@ -12476,6 +13108,22 @@ export const localeData = [
         'Изображений кэшированно',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Переходов на IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Последняя',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Данные о релизе в настоящее время недоступны.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Релизы',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Посмотреть на GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'О Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Папка конфигурации',
+      'components.Settings.SettingsAbout.documentation': 'Документация',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Обсуждения на GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Часовой пояс',
+      'components.Settings.SettingsAbout.totalmedia': 'Всего мультимедиа',
+      'components.Settings.SettingsAbout.totalrequests': 'Всего запросов',
+      'components.Settings.SettingsAbout.uptodate': 'Актуальная',
+      'components.Settings.SettingsAbout.version': 'Версия',
     },
   },
   {
@@ -12585,6 +13233,22 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachekeys': 'Çelësat totalë',
       'components.Settings.SettingsJobsCache.cachemisses': 'Mungesa',
       'components.Settings.SettingsJobsCache.flushcache': 'Pastro Cache',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'E fundit',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Të dhënat e lëshimit nuk janë të disponueshme.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Lëshimet',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Shikoni në GitHub',
+      'components.Settings.SettingsAbout.appDataPath':
+        'Direktoria e të dhënave',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentacioni',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Diskutimet e GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Zona Kohore',
+      'components.Settings.SettingsAbout.totalmedia': 'Media totale',
+      'components.Settings.SettingsAbout.totalrequests': 'Kërkesat totale',
+      'components.Settings.SettingsAbout.uptodate': 'E përditësuar',
+      'components.Settings.SettingsAbout.version': 'Versioni',
     },
   },
   {
@@ -12672,6 +13336,17 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachekeys': 'Ukupno ključeva',
       'components.Settings.SettingsJobsCache.cachemisses': 'Gospođica',
       'components.Settings.SettingsJobsCache.flushcache': 'Obriši keš',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Najnovije',
+      'components.Settings.SettingsAbout.Releases.releases': 'Izdanja',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Pogledaj na GitHub',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentacija',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHub rasprave',
+      'components.Settings.SettingsAbout.timezone': 'Vremenska zona',
+      'components.Settings.SettingsAbout.totalmedia': 'Ukupno medija',
+      'components.Settings.SettingsAbout.totalrequests': 'Ukupno zahteva',
+      'components.Settings.SettingsAbout.uptodate': 'Najsvežiji',
+      'components.Settings.SettingsAbout.version': 'Verzija',
     },
   },
   {
@@ -12816,6 +13491,25 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': 'Träffratio',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Bilder cachade',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-reserv',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        'Senaste versionen',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Versionsdata är för närvarande inte tillgänglig.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Versioner',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Visa på GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Om Seerr',
+      'components.Settings.SettingsAbout.appDataPath': 'Datakatalog',
+      'components.Settings.SettingsAbout.documentation': 'Dokumentation',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub-diskussioner',
+      'components.Settings.SettingsAbout.timezone': 'Tidszon',
+      'components.Settings.SettingsAbout.totalmedia':
+        'Totalt antal mediaobjekt',
+      'components.Settings.SettingsAbout.totalrequests':
+        'Totalt antal förfrågningar',
+      'components.Settings.SettingsAbout.uptodate': 'Uppdaterad',
+      'components.Settings.SettingsAbout.version': 'Version',
     },
   },
   {
@@ -12958,6 +13652,22 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Önbelleğe Alınan Resimler',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 Yedekleri',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'En Son',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Sürüm verileri şu anda kullanılamıyor.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Sürümler',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        "GitHub'da Görüntüle",
+      'components.Settings.SettingsAbout.aboutseerr': 'Seerr Hakkında',
+      'components.Settings.SettingsAbout.appDataPath': 'Veri Dizini',
+      'components.Settings.SettingsAbout.documentation': 'Belgeler',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'GitHub Tartışmaları',
+      'components.Settings.SettingsAbout.timezone': 'Saat Dilimi',
+      'components.Settings.SettingsAbout.totalmedia': 'Toplam Medya',
+      'components.Settings.SettingsAbout.totalrequests': 'Toplam Talepler',
+      'components.Settings.SettingsAbout.uptodate': 'Güncel',
+      'components.Settings.SettingsAbout.version': 'Sürüm',
     },
   },
   {
@@ -13104,6 +13814,21 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Зображення кешовані',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Запасні IPv4',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Остання',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        'Дані про реліз наразі недоступні.',
+      'components.Settings.SettingsAbout.Releases.releases': 'Релізи',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Подивитися на GitHub',
+      'components.Settings.SettingsAbout.appDataPath': 'Каталог даних',
+      'components.Settings.SettingsAbout.documentation': 'Документація',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Обговорення на GitHub',
+      'components.Settings.SettingsAbout.timezone': 'Часовий пояс',
+      'components.Settings.SettingsAbout.totalmedia': 'Усього мультимедіа',
+      'components.Settings.SettingsAbout.totalrequests': 'Усього запитів',
+      'components.Settings.SettingsAbout.uptodate': 'Актуальна',
+      'components.Settings.SettingsAbout.version': 'Версія',
     },
   },
   {
@@ -13723,6 +14448,32 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': '点击率',
       'components.Settings.SettingsJobsCache.imagecachecount': '已缓存图片',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 退缩',
+      'components.Settings.SettingsAbout.Releases.installedversion': '已安装',
+      'components.Settings.SettingsAbout.Releases.latestversion':
+        '最新软件版本',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        '软件发行数据当前不可用。',
+      'components.Settings.SettingsAbout.Releases.releases': '软件版本',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        '在 GitHub 上查看',
+      'components.Settings.SettingsAbout.aboutseerr': '关于 SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': '数据目录',
+      'components.Settings.SettingsAbout.documentation': '文档',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHub 讨论区',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG 用于合法的个人媒体管理。 该项目不容许盗版或侵犯版权。 用户有责任遵守本地区适用的法律、许可证和服务条款。',
+      'components.Settings.SettingsAbout.legalUseTitle': '合法使用',
+      'components.Settings.SettingsAbout.metadataAttribution': '元数据来源标注',
+      'components.Settings.SettingsAbout.supportdevelopment': '支助发展',
+      'components.Settings.SettingsAbout.timezone': '时区',
+      'components.Settings.SettingsAbout.totalmedia': '媒体数',
+      'components.Settings.SettingsAbout.totalrequests': '请求数',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        '本产品使用 TMDB 及其 API，但未获得 TMDB 的认可、认证或其他形式的批准。<ApiTermsLink>TMDB API 使用条款</ApiTermsLink>。',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        '无法检查更新',
+      'components.Settings.SettingsAbout.uptodate': '最新',
+      'components.Settings.SettingsAbout.version': '软件版本',
     },
   },
   {
@@ -14341,6 +15092,32 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.hitRate': '命中率',
       'components.Settings.SettingsJobsCache.imagecachecount': '快取的影像',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 後退',
+      'components.Settings.SettingsAbout.Releases.installedversion': '已安裝',
+      'components.Settings.SettingsAbout.Releases.latestversion': '最新版本',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        '無法獲取軟體版本資料。',
+      'components.Settings.SettingsAbout.Releases.releases': '軟體版本',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        '在 GitHub 上查看',
+      'components.Settings.SettingsAbout.aboutseerr': '關於 SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': '資料目錄',
+      'components.Settings.SettingsAbout.documentation': '使用說明',
+      'components.Settings.SettingsAbout.githubdiscussions': 'GitHub 討論區',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG 用于合法的个人媒体管理。 该项目不容许盗版或侵犯版权。 用户有责任遵守本地区适用的法律、许可证和服务条款。',
+      'components.Settings.SettingsAbout.legalUseTitle': '合法使用',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        '中繼資料來源標示',
+      'components.Settings.SettingsAbout.supportdevelopment': '支助发展',
+      'components.Settings.SettingsAbout.timezone': '時區',
+      'components.Settings.SettingsAbout.totalmedia': '媒體數',
+      'components.Settings.SettingsAbout.totalrequests': '請求數',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        '本產品使用 TMDB 及其 API，但未獲得 TMDB 的背書、認證或其他形式的核准。<ApiTermsLink>TMDB API 使用條款</ApiTermsLink>。',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        '無法檢查更新',
+      'components.Settings.SettingsAbout.uptodate': '最新',
+      'components.Settings.SettingsAbout.version': '軟體版本',
     },
   },
   {
@@ -15002,6 +15779,35 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Hình ảnh được lưu vào bộ nhớ đệm',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Gặp lỗi lPv4',
+      'components.Settings.SettingsAbout.Releases.installedversion':
+        'Đã cài đặt',
+      'components.Settings.SettingsAbout.Releases.latestversion': 'Mới nhất',
+      'components.Settings.SettingsAbout.Releases.releasedataMissing':
+        '@ info/ rich',
+      'components.Settings.SettingsAbout.Releases.releases': 'Phát hành',
+      'components.Settings.SettingsAbout.Releases.viewongithub':
+        'Xem trên GitHub',
+      'components.Settings.SettingsAbout.aboutseerr': 'Giới thiệu về SeerrNG',
+      'components.Settings.SettingsAbout.appDataPath': 'Thư mục dữ liệu',
+      'components.Settings.SettingsAbout.documentation': 'Tài liệu',
+      'components.Settings.SettingsAbout.githubdiscussions':
+        'Cuộc thảo luận GitHub',
+      'components.Settings.SettingsAbout.legalUse':
+        'SeerrNG có mục đích quản lý truyền thông cá nhân hợp pháp. Dự án này không cho phép cướp bóc hay vi phạm bản quyền. Người dùng chịu trách nhiệm về việc tuân thủ luật pháp, giấy phép và dịch vụ trong khu vực của họ.',
+      'components.Settings.SettingsAbout.legalUseTitle': 'Sử dụng hợp pháp',
+      'components.Settings.SettingsAbout.metadataAttribution':
+        'Ghi nguồn siêu dữ liệu',
+      'components.Settings.SettingsAbout.supportdevelopment':
+        'Hỗ trợ phát triển',
+      'components.Settings.SettingsAbout.timezone': 'Vùng làm việc',
+      'components.Settings.SettingsAbout.totalmedia': 'Tổng phương tiện',
+      'components.Settings.SettingsAbout.totalrequests': 'Tổng yêu cầu',
+      'components.Settings.SettingsAbout.tmdbAttributionCopy':
+        'Sản phẩm này sử dụng TMDB và các API của TMDB nhưng không được TMDB chứng thực, chứng nhận hoặc phê duyệt dưới bất kỳ hình thức nào. <ApiTermsLink>Điều khoản API TMDB</ApiTermsLink>.',
+      'components.Settings.SettingsAbout.updateCheckUnavailable':
+        'Không thể kiểm tra bản cập nhật',
+      'components.Settings.SettingsAbout.uptodate': 'Cập nhật đầy đủ',
+      'components.Settings.SettingsAbout.version': 'Phiên bản',
     },
   },
 ] as const;

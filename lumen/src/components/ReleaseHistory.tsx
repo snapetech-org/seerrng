@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 
 const releasesUrl =
@@ -53,6 +54,7 @@ function ReleaseRow({
   latest: boolean;
   installed: string;
 }) {
+  const { t } = useLumenLocale();
   const [expanded, setExpanded] = useState(false);
   const { tag, title, notes } = release;
 
@@ -61,14 +63,25 @@ function ReleaseRow({
       <details onToggle={(event) => setExpanded(event.currentTarget.open)}>
         <summary>
           {title}
-          {latest ? ' · Latest' : ''}
+          {latest
+            ? ` · ${t('components.Settings.SettingsAbout.Releases.latestversion', 'Latest')}`
+            : ''}
           {tag.replace(/^v/, '') === installed.replace(/^v/, '')
-            ? ' · Installed'
+            ? ` · ${t('components.Settings.SettingsAbout.Releases.installedversion', 'Installed')}`
             : ''}
         </summary>
         {expanded && notes && (
           <div className="ov long">
-            <Suspense fallback={<p role="status">Loading release notes…</p>}>
+            <Suspense
+              fallback={
+                <p role="status">
+                  {t(
+                    'lumen.adminAbout.releaseHistory.loadingNotes',
+                    'Loading release notes…'
+                  )}
+                </p>
+              }
+            >
               <Markdown
                 skipHtml
                 disallowedElements={['img']}
@@ -80,7 +93,10 @@ function ReleaseRow({
           </div>
         )}
         <a className="go" href={releasePage + encodeURIComponent(tag)}>
-          View on GitHub
+          {t(
+            'components.Settings.SettingsAbout.Releases.viewongithub',
+            'View on GitHub'
+          )}
         </a>
       </details>
     </li>
@@ -88,6 +104,7 @@ function ReleaseRow({
 }
 
 export default function ReleaseHistory({ installed }: { installed: string }) {
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(false);
   const [releases, setReleases] = useState<Release[]>();
   const [failed, setFailed] = useState(false);
@@ -109,7 +126,7 @@ export default function ReleaseHistory({ installed }: { installed: string }) {
 
   return (
     <Section
-      title="Release History"
+      title={t('lumen.adminAbout.releaseHistory.title', 'Release History')}
       action={
         <button
           className="btn btn-quiet btn-sm"
@@ -117,7 +134,9 @@ export default function ReleaseHistory({ installed }: { installed: string }) {
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
-          {open ? 'Hide Releases' : 'Show Releases'}
+          {open
+            ? t('lumen.adminAbout.releaseHistory.hide', 'Hide Releases')
+            : t('lumen.adminAbout.releaseHistory.show', 'Show Releases')}
         </button>
       }
     >
@@ -125,21 +144,32 @@ export default function ReleaseHistory({ installed }: { installed: string }) {
         <>
           {failed ? (
             <p className="note" role="alert">
-              Release history could not be loaded.{' '}
+              {t(
+                'lumen.adminAbout.releaseHistory.failure',
+                'Release history could not be loaded.'
+              )}{' '}
               <button
                 className="btn btn-quiet btn-sm"
                 type="button"
                 onClick={() => setFailed(false)}
               >
-                Retry
+                {t('lumen.adminAbout.releaseHistory.retry', 'Retry')}
               </button>
             </p>
           ) : !releases ? (
             <p className="note" role="status">
-              Loading releases…
+              {t(
+                'lumen.adminAbout.releaseHistory.loading',
+                'Loading releases…'
+              )}
             </p>
           ) : releases.length === 0 ? (
-            <p className="note">No releases available.</p>
+            <p className="note">
+              {t(
+                'components.Settings.SettingsAbout.Releases.releasedataMissing',
+                'No releases available.'
+              )}
+            </p>
           ) : (
             <ul className="setlist">
               {releases.map((release, index) => (

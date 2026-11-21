@@ -3,10 +3,12 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import ReleaseHistory from '../components/ReleaseHistory';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const project = 'https://github.com/snapetech-org/seerrng';
 
 export default function AdminAbout() {
+  const { locale, t } = useLumenLocale();
   const settings = usePublicSettings();
   const about = useApi<{
     version: string;
@@ -26,59 +28,118 @@ export default function AdminAbout() {
   const releases = project + '/releases';
   let updateHref = releases;
   let update = '';
-  if (settings?.versionCheck === false) update = 'Version check disabled';
-  else if (status.error) update = 'Could not check for updates';
-  else if (status.data && status.data.commitTag !== 'local') {
-    update = !status.data.updateCheckSucceeded
-      ? 'Could not check for updates'
+  let updateState:
+    'disabled' | 'unavailable' | 'available' | 'current' | undefined;
+  if (settings?.versionCheck === false) {
+    updateState = 'disabled';
+    update = t(
+      'lumen.adminAbout.versionCheckDisabled',
+      'Version check disabled'
+    );
+  } else if (status.error) {
+    updateState = 'unavailable';
+    update = t(
+      'components.Settings.SettingsAbout.updateCheckUnavailable',
+      'Could not check for updates'
+    );
+  } else if (status.data && status.data.commitTag !== 'local') {
+    updateState = !status.data.updateCheckSucceeded
+      ? 'unavailable'
       : status.data.updateAvailable
-        ? 'Update available'
-        : 'Up to date';
+        ? 'available'
+        : 'current';
+    update =
+      updateState === 'unavailable'
+        ? t(
+            'components.Settings.SettingsAbout.updateCheckUnavailable',
+            'Could not check for updates'
+          )
+        : updateState === 'available'
+          ? t('lumen.adminAbout.updateAvailable', 'Update available')
+          : t('components.Settings.SettingsAbout.uptodate', 'Up to date');
   }
 
   if (
     developmentBuild &&
-    (update === 'Up to date' || update === 'Version check disabled')
+    (updateState === 'current' || updateState === 'disabled')
   )
     updateHref = project + '/commits/main';
   if (
     developmentBuild &&
-    update === 'Update available' &&
+    updateState === 'available' &&
     commit &&
     /^[a-f0-9]{7,40}$/i.test(commit)
   )
     updateHref = `${project}/compare/${commit}...main`;
 
   const rows = about.data && [
-    ['Version', about.data.version],
-    ['Total Media', about.data.totalMediaItems.toLocaleString()],
-    ['Total Requests', about.data.totalRequests.toLocaleString()],
-    ['Data Directory', about.data.appDataPath],
-    ['Time Zone', about.data.tz || 'Unavailable'],
+    [
+      t('components.Settings.SettingsAbout.version', 'Version'),
+      about.data.version,
+    ],
+    [
+      t('components.Settings.SettingsAbout.totalmedia', 'Total Media'),
+      about.data.totalMediaItems.toLocaleString(locale),
+    ],
+    [
+      t('components.Settings.SettingsAbout.totalrequests', 'Total Requests'),
+      about.data.totalRequests.toLocaleString(locale),
+    ],
+    [
+      t('components.Settings.SettingsAbout.appDataPath', 'Data Directory'),
+      about.data.appDataPath,
+    ],
+    [
+      t('components.Settings.SettingsAbout.timezone', 'Time Zone'),
+      about.data.tz || t('lumen.adminAbout.unavailable', 'Unavailable'),
+    ],
   ];
+  const tmdbAttribution = t(
+    'components.Settings.SettingsAbout.tmdbAttributionCopy',
+    'This product uses TMDB and its APIs, but TMDB does not endorse or certify SeerrNG. <ApiTermsLink>TMDB API terms</ApiTermsLink>.'
+  );
+  const tmdbTerms = tmdbAttribution.match(
+    /^(.*)<ApiTermsLink>(.*?)<\/ApiTermsLink>(.*)$/s
+  );
+  const tmdbAttributionBody = tmdbTerms
+    ? `${tmdbTerms[1]}${tmdbTerms[3]}`
+        .replace(/\s+(\p{P})/gu, '$1')
+        .replace(/(\p{P})\1+/gu, '$1')
+        .trim()
+    : tmdbAttribution;
 
   return (
     <>
       <header className="ph">
-        <h1>About SeerrNG</h1>
+        <h1>
+          {t('components.Settings.SettingsAbout.aboutseerr', 'About SeerrNG')}
+        </h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+          {t('lumen.adminAbout.backToAccount', 'Back to Account')}
         </Link>
       </div>
       <ServiceNote
         error={about.error}
-        what="server information"
+        what={t('lumen.adminAbout.serverInformation', 'server information')}
         retry={about.reload}
       />
       {!about.data && !about.error && (
         <p className="note" role="status">
-          Loading server information…
+          {t(
+            'lumen.adminAbout.loadingServerInformation',
+            'Loading server information…'
+          )}
         </p>
       )}
       {rows && (
-        <Section title="Server Information">
+        <Section
+          title={t(
+            'lumen.adminAbout.serverInformationTitle',
+            'Server Information'
+          )}
+        >
           <dl className="setlist">
             {rows.map(([label, value]) => (
               <div className="set" key={label}>
@@ -99,56 +160,80 @@ export default function AdminAbout() {
             </p>
           )}
           {developmentBuild && (
-            <p className="note">This server is running a development build.</p>
+            <p className="note">
+              {t(
+                'lumen.adminAbout.developmentBuild',
+                'This server is running a development build.'
+              )}
+            </p>
           )}
         </Section>
       )}
-      <Section title="Support and Releases">
+      <Section
+        title={t('lumen.adminAbout.supportAndReleases', 'Support and Releases')}
+      >
         <div className="toolbar">
           <a className="btn btn-quiet btn-sm" href={project + '/releases'}>
-            Release Notes
+            {t('lumen.adminAbout.releaseNotes', 'Release Notes')}
           </a>
           <a
             className="btn btn-quiet btn-sm"
             href={project + '/tree/main/docs'}
           >
-            Documentation
+            {t(
+              'components.Settings.SettingsAbout.documentation',
+              'Documentation'
+            )}
           </a>
           <a className="btn btn-quiet btn-sm" href={project + '/discussions'}>
-            GitHub Discussions
+            {t(
+              'components.Settings.SettingsAbout.githubdiscussions',
+              'GitHub Discussions'
+            )}
           </a>
           <a
             className="btn btn-quiet btn-sm"
             href="https://discord.gg/5PyXBfvS6T"
           >
-            Discord
+            {t('lumen.adminAbout.discord', 'Discord')}
           </a>
           <a
             className="btn btn-quiet btn-sm"
             href="https://ko-fi.com/snapetech"
           >
-            Support Development
+            {t(
+              'components.Settings.SettingsAbout.supportdevelopment',
+              'Support Development'
+            )}
           </a>
         </div>
       </Section>
       {about.data && <ReleaseHistory installed={about.data.version} />}
-      <Section title="Legal Use">
+      <Section
+        title={t(
+          'components.Settings.SettingsAbout.legalUseTitle',
+          'Legal Use'
+        )}
+      >
         <p className="note">
-          SeerrNG is intended for lawful personal media management. Users are
-          responsible for complying with applicable laws, licenses, and service
-          terms in their region.
+          {t(
+            'components.Settings.SettingsAbout.legalUse',
+            'SeerrNG is intended for lawful personal media management. Users are responsible for complying with applicable laws, licenses, and service terms in their region.'
+          )}
         </p>
       </Section>
-      <Section title="Metadata Attribution">
-        <p className="note">
-          SeerrNG uses The Movie Database API. TMDB does not endorse or certify
-          SeerrNG.
-        </p>
+      <Section
+        title={t(
+          'components.Settings.SettingsAbout.metadataAttribution',
+          'Metadata Attribution'
+        )}
+      >
+        <p className="note">{tmdbAttributionBody}</p>
         <a
           className="btn btn-quiet btn-sm"
           href="https://www.themoviedb.org/api-terms-of-use"
         >
-          TMDB API Terms
+          {tmdbTerms?.[2] ?? 'TMDB API Terms'}
         </a>
       </Section>
     </>

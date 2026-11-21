@@ -2411,6 +2411,8 @@ guidance. Eight browser cases passed in each production deployment with
 fixtures, including the development comparison destination. Matched
 visual review of the update link and guidance remains open.
 
+About and Release History now follow the saved French and Arabic locales, including version metrics, update and development-build status, support and legal copy, release-history controls, loading and retry feedback, and version markers. Update destinations now depend on a stable status value instead of translated display text. Removing the inline TMDB terms link also normalizes punctuation while preserving the separate terms button. Eight browser cases per deployment passed against standalone and embedded production builds at desktop (1440 × 900), iPhone (390 × 844), Android (412 × 915), and tablet (834 × 1194). Three existing About and navigation cases also passed against the embedded `/lumen/` mount. Fixture-based GitHub release responses verify lazy loading, retry, notes, links, and development comparison behavior. Matched French desktop and Arabic iPhone baseline/candidate captures were inspected; no new clipping or horizontal overflow was found. Live release-history requests and independent linguistic review remain open. Evidence is retained at `seerrng-lumen-admin-about-localization-20261120`.
+
 ### Instance General Settings
 
 The administration menu opens a Lumen General Settings page for the
