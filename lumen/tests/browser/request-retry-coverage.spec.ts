@@ -46,6 +46,7 @@ async function fixture(
   requests: ReturnType<typeof request>[]
 ) {
   const retries: string[] = [];
+  const mapped: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -57,8 +58,27 @@ async function fixture(
       .replace(/^\/api\/v1/, '');
     if (req.method() === 'POST' && /^\/request\/\d+\/retry$/.test(path)) {
       retries.push(path);
+      mapped.push(req.postDataJSON());
       return route.fulfill({ json: {} });
     }
+    if (path.startsWith('/service/sonarr/lookup/'))
+      return route.fulfill({
+        json: [
+          {
+            title: 'Mapped Show',
+            year: 2020,
+            tvdbId: 42,
+            seasonType: 'standard',
+          },
+        ],
+      });
+    if (path === '/service/tvdb/seasons/42')
+      return route.fulfill({
+        json: [
+          { seasonNumber: 1, year: 2020 },
+          { seasonNumber: 2, year: 2021 },
+        ],
+      });
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Owner', permissions, userType: 2 },
@@ -88,7 +108,7 @@ async function fixture(
       return route.fulfill({ json: [] });
     return route.fulfill({ json: {} });
   });
-  return retries;
+  return { retries, mapped };
 }
 
 test('owners with category permission can retry failures across media types', async ({
@@ -101,7 +121,7 @@ test('owners with category permission can retry failures across media types', as
     (mask, [, permission]) => mask + permission,
     standardPermission
   );
-  const retries = await fixture(page, permissions, requests);
+  const { retries } = await fixture(page, permissions, requests);
   await page.goto(testAppPath('/requests?tab=active'));
 
   for (const [index] of requests.entries()) {
@@ -123,7 +143,7 @@ test('retry stays hidden without type permission, for another owner, and on TVDB
     request(802, 'movie', 2),
     request(803, 'tv', 1, 'tvdb_season_mismatch'),
   ];
-  const retries = await fixture(page, 524288, requests);
+  const { retries } = await fixture(page, 524288, requests);
   await page.goto(testAppPath('/requests?tab=active'));
 
   for (const [index] of requests.entries()) {
@@ -134,4 +154,69 @@ test('retry stays hidden without type permission, for another owner, and on TVDB
     ).toHaveCount(0);
   }
   expect(retries).toEqual([]);
+});
+
+test('managers can map every selected TV season and retry; other users cannot map', async ({
+  page,
+}, testInfo) => {
+  const failed = {
+    ...request(901, 'tv', 2, 'tvdb_season_mismatch'),
+    seasons: [
+      { seasonNumber: 1, status: 2 },
+      { seasonNumber: 2, status: 2 },
+    ],
+    serverId: 7,
+  };
+  const { mapped } = await fixture(page, 16, [failed]);
+  await page.goto(testAppPath('/requests?tab=everyone&show=failed'));
+  const row = page.locator('.rq').first();
+  await expect(row.getByRole('button', { name: 'Map Seasons' })).toBeVisible();
+  if (testInfo.project.name === 'desktop' || testInfo.project.name === 'iphone')
+    await page.screenshot({
+      path: testInfo.outputPath('mapping-request-row.png'),
+    });
+  await row.getByRole('button', { name: 'Map Seasons' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Map TV Seasons' });
+  await expect(dialog.getByLabel('Sonarr Series')).toContainText('Mapped Show');
+  await dialog.getByLabel('Sonarr Series').selectOption('42');
+  await expect(dialog.getByLabel('TMDB Season 1')).toBeVisible();
+  const mapButton = dialog.getByRole('button', {
+    name: 'Map Seasons and Retry',
+  });
+  await expect(mapButton).toBeDisabled();
+  await page.waitForTimeout(350);
+  if (testInfo.project.name === 'desktop' || testInfo.project.name === 'iphone')
+    await page.screenshot({ path: testInfo.outputPath('mapping-dialog.png') });
+  await dialog.getByLabel('TMDB Season 1').selectOption('1');
+  await dialog.getByLabel('TMDB Season 2').selectOption('2');
+  await expect(mapButton).toBeEnabled();
+  await mapButton.click();
+  await expect(dialog).toHaveCount(0);
+  expect(mapped).toEqual([
+    {
+      tvdbId: 42,
+      seasonType: 'standard',
+      seasonMappings: [
+        { seasonNumber: 1, externalSeasonNumber: 1 },
+        { seasonNumber: 2, externalSeasonNumber: 2 },
+      ],
+    },
+  ]);
+
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+  const regular = {
+    ...request(902, 'tv', 1, 'tvdb_id_unresolved'),
+    seasons: [{ seasonNumber: 1, status: 2 }],
+  };
+  await fixture(page, 524288, [regular]);
+  await page.goto(testAppPath('/requests?tab=active'));
+  const regularRow = page.locator('.rq').first();
+  await expect(regularRow).toBeVisible();
+  await expect(
+    regularRow.getByRole('button', { name: 'Map Seasons' })
+  ).toHaveCount(0);
+  if (testInfo.project.name === 'desktop' || testInfo.project.name === 'iphone')
+    await page.screenshot({
+      path: testInfo.outputPath('unavailable-to-user.png'),
+    });
 });

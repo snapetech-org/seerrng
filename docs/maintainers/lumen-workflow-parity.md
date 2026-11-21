@@ -153,6 +153,17 @@ available-ebook, authoritative Available membership, format-specific downloads,
 TV season selection, cancellation, and approval. Other request-audit items in
 the table remain open.
 
+Managers can now recover failed TV requests with `tvdb_id_unresolved` or
+`tvdb_season_mismatch` by selecting the exact Sonarr series and mapping every
+active requested TMDB season to a unique TVDB or Sonarr-order season. Lumen
+uses SeerrNG's existing lookup and official-season endpoints, then submits the
+same strict mapping payload to the existing retry endpoint; server permission,
+request-state, service and mapping validation remain authoritative. The action
+is hidden for non-managers and unsupported failures. Browser fixtures verify
+the manager flow, exact payload, and non-manager visibility across desktop,
+iPhone, Android and tablet. Live Sonarr/TVDB responses and visual comparison
+against native SeerrNG remain open.
+
 The native TV request dialog now retries season metadata that fails during the
 parallel provider pass, one missing season at a time. This handles providers
 that reject concurrent season lookups while keeping the work bounded by the

@@ -1,0 +1,1 @@
+Lumen managers can now map requested TV seasons to the selected Sonarr series' TVDB or alternate season order and retry failed requests caused by unresolved TVDB identity or mismatched season numbering.

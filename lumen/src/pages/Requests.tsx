@@ -35,6 +35,9 @@ import RequestHistorySheet from '../components/RequestHistorySheet';
 import { Avatar } from '../components/Shell';
 import { SoftwareRequestHistorySheet } from '../components/SoftwareRequestHistorySheet';
 import { useToast } from '../components/toast';
+import TvSeasonMappingSheet, {
+  canMapTvSeasons,
+} from '../components/TvSeasonMappingSheet';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import {
@@ -1305,6 +1308,7 @@ export default function Requests() {
   const [historyRevision, setHistoryRevision] = useState(0);
   const [acting, setActing] = useState<number | null>(null);
   const [queueEdit, setQueueEdit] = useState<Row | null>(null);
+  const [mapping, setMapping] = useState<Row | null>(null);
   const [editing, setEditing] = useState<Row | null>(null);
   // a decline, a cancel or a remove waits for a yes; none can be taken back
   const [confirming, setConfirming] = useState<{
@@ -1669,6 +1673,15 @@ export default function Requests() {
           >
             <Icon name="refresh" size="sm" />
             {t('components.Requests.retry', 'Retry')}
+          </button>
+        )}
+        {manage && x.r.id > 0 && canMapTvSeasons(x.r) && (
+          <button
+            className="btn btn-sm btn-quiet"
+            disabled={acting !== null}
+            onClick={() => setMapping(x)}
+          >
+            {t('lumen.requestMapping.open', 'Map Seasons')}
           </button>
         )}
         {moderate && x.r.id > 0 ? (
@@ -2181,7 +2194,8 @@ export default function Requests() {
         requestKey === 'requestId' &&
         !confirming &&
         !editing &&
-        !queueEdit && (
+        !queueEdit &&
+        !mapping && (
           <RequestHistorySheet
             key={`${focusedId}:${historyRevision}`}
             id={focusedId}
@@ -2230,6 +2244,24 @@ export default function Requests() {
             setQueueEdit(null);
             toast('Episode Queue saved.');
             setTick((t) => t + 1);
+          }}
+        />
+      )}
+      {mapping && (
+        <TvSeasonMappingSheet
+          request={mapping.r}
+          title={mapping.title}
+          close={() => setMapping(null)}
+          saved={() => {
+            forget(`/request/status/${mapping.r.id}`);
+            setMapping(null);
+            setTick((value) => value + 1);
+            toast(
+              t(
+                'lumen.requestMapping.success',
+                'Season mapping saved and request retried.'
+              )
+            );
           }}
         />
       )}
