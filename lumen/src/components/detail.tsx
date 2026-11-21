@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import { sessionGeneration } from '../sessionState';
 import { Glyph, type Stat } from './cards';
@@ -565,6 +566,7 @@ export function AdvancedOptions({
   inline?: boolean; // always open, no "Advanced" toggle (the quick-request sheet)
   onReady?: (ready: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const allowed = canChooseRequestOptions(user?.permissions);
   const svc = kind === 'movie' ? 'radarr' : 'sonarr';
@@ -801,18 +803,29 @@ export function AdvancedOptions({
   const body = (
     <>
       {err && <p className="note">{err}</p>}
-      {!servers && !err && open && <p className="note">Loading servers…</p>}
+      {!servers && !err && open && (
+        <p className="note">
+          {t('lumen.detail.loadingServers', 'Loading servers…')}
+        </p>
+      )}
       {none && !err && (
         <p className="note">
-          No {svc === 'radarr' ? 'Radarr' : 'Sonarr'} server to choose; SeerrNG
-          uses its defaults.
+          {t(
+            'lumen.detail.noServer',
+            'No {service} server to choose; SeerrNG uses its defaults.',
+            {
+              service: svc === 'radarr' ? 'Radarr' : 'Sonarr',
+            }
+          )}
         </p>
       )}
       {servers && !none && (
         <div className="adv-grid">
           {asAllowed && !!people?.length && user && (
             <label className="sel">
-              <span className="lbl">Request as</span>
+              <span className="lbl">
+                {t('lumen.detail.requestAs', 'Request as')}
+              </span>
               <select
                 value={asUser ?? user.id}
                 onChange={(e) => {
@@ -820,7 +833,9 @@ export function AdvancedOptions({
                   setAsUser(Number(e.target.value));
                 }}
               >
-                <option value={user.id}>Me ({user.displayName})</option>
+                <option value={user.id}>
+                  {t('lumen.detail.me', 'Me')} ({user.displayName})
+                </option>
                 {people
                   .filter((x) => x.id !== user.id)
                   .map((x) => (
@@ -832,7 +847,7 @@ export function AdvancedOptions({
             </label>
           )}
           <label className="sel">
-            <span className="lbl">Server</span>
+            <span className="lbl">{t('lumen.detail.server', 'Server')}</span>
             <select
               value={o.serverId ?? ''}
               onChange={(e) => {
@@ -845,7 +860,9 @@ export function AdvancedOptions({
                 <option key={s.id} value={s.id}>
                   {s.name}
                   {allow4k && s.is4k && !/4k/i.test(s.name) ? ' · 4K' : ''}
-                  {s.isDefault ? ' (default)' : ''}
+                  {s.isDefault
+                    ? ` (${t('lumen.detail.default', 'default')})`
+                    : ''}
                 </option>
               ))}
             </select>
@@ -853,7 +870,9 @@ export function AdvancedOptions({
           {detail && (
             <>
               <label className="sel">
-                <span className="lbl">Quality</span>
+                <span className="lbl">
+                  {t('lumen.detail.quality', 'Quality')}
+                </span>
                 <select
                   value={o.profileId ?? ''}
                   onChange={(e) =>
@@ -868,7 +887,9 @@ export function AdvancedOptions({
                 </select>
               </label>
               <label className="sel">
-                <span className="lbl">Folder</span>
+                <span className="lbl">
+                  {t('lumen.detail.folder', 'Folder')}
+                </span>
                 <select
                   value={o.rootFolder ?? ''}
                   onChange={(e) =>
@@ -884,7 +905,9 @@ export function AdvancedOptions({
               </label>
               {kind === 'tv' && !!detail.languageProfiles?.length && (
                 <label className="sel">
-                  <span className="lbl">Language Profile</span>
+                  <span className="lbl">
+                    {t('lumen.detail.languageProfile', 'Language Profile')}
+                  </span>
                   <select
                     value={o.languageProfileId ?? ''}
                     onChange={(event) => {
@@ -897,7 +920,7 @@ export function AdvancedOptions({
                     }}
                   >
                     <option value="" disabled>
-                      Sonarr Default
+                      {t('lumen.detail.sonarrDefault', 'Sonarr Default')}
                     </option>
                     {detail.languageProfiles.map(({ id, name }) => (
                       <option key={id} value={id}>
@@ -909,7 +932,9 @@ export function AdvancedOptions({
               )}
               {kind === 'tv' && !!detail.metadataLanguages?.length && (
                 <label className="sel">
-                  <span className="lbl">Metadata Language</span>
+                  <span className="lbl">
+                    {t('lumen.detail.metadataLanguage', 'Metadata Language')}
+                  </span>
                   <select
                     value={o.metadataLanguageId ?? ''}
                     onChange={(event) => {
@@ -921,7 +946,9 @@ export function AdvancedOptions({
                       }));
                     }}
                   >
-                    <option value="">Sonarr Default</option>
+                    <option value="">
+                      {t('lumen.detail.sonarrDefault', 'Sonarr Default')}
+                    </option>
                     {detail.metadataLanguages.map(({ id, name }) => (
                       <option key={id} value={id}>
                         {name}
@@ -932,14 +959,18 @@ export function AdvancedOptions({
               )}
               {lookupPath && seasonTypes.length > 1 && (
                 <label className="sel">
-                  <span className="lbl">Season Order</span>
+                  <span className="lbl">
+                    {t('lumen.detail.seasonOrder', 'Season Order')}
+                  </span>
                   <select
                     value={selectedOrder ?? ''}
                     onChange={(event) =>
                       setOrder({ path: lookupPath, type: event.target.value })
                     }
                   >
-                    <option value="">Sonarr Default</option>
+                    <option value="">
+                      {t('lumen.detail.sonarrDefault', 'Sonarr Default')}
+                    </option>
                     {seasonTypes.map(({ type, name }) => (
                       <option key={type} value={type}>
                         {name === type ? name : `${name} (${type})`}
@@ -955,7 +986,7 @@ export function AdvancedOptions({
       {canOverrideQuota && (
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Ignore Request Quota</span>
+            <span>{t('lumen.detail.ignoreQuota', 'Ignore Request Quota')}</span>
             <input
               type="checkbox"
               checked={ignoreQuota}
@@ -965,8 +996,13 @@ export function AdvancedOptions({
         </div>
       )}
       {!!detail?.tags?.length && (
-        <div role="group" aria-label="Request Tags">
-          <p className="note">Request Tags</p>
+        <div
+          role="group"
+          aria-label={t('lumen.detail.requestTags', 'Request Tags')}
+        >
+          <p className="note">
+            {t('lumen.detail.requestTags', 'Request Tags')}
+          </p>
           <div className="setlist">
             {detail.tags.map(({ id, label }) => (
               <label key={id} className="set cfg-row">
@@ -1002,7 +1038,7 @@ export function AdvancedOptions({
     >
       <summary>
         <Icon name="info" size="sm" />
-        Advanced Request Options
+        {t('lumen.detail.advancedOptions', 'Advanced Request Options')}
       </summary>
       {body}
     </details>

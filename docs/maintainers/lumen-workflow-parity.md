@@ -96,6 +96,12 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### Movie and TV request option localization
+
+The shared request-options disclosure on movie and TV detail pages now localizes its title, loading and no-server copy, requester, server, quality profile, folder, language and season-order controls, default labels, quota override, and request tags in English, French, and Arabic. Server names, quality profile names, folders, metadata values, permission checks, and request payloads remain supplied by their existing owners.
+
+The fixture-driven movie detail check passes in English, French, and Arabic on desktop, iPhone, Android, and tablet (12 cases); it verifies the saved locale, core control labels, and no horizontal page overflow. Captures at 1440 CSS pixels (French) and 390 CSS pixels (Arabic) were inspected. A matched pre-change screenshot comparison and the companion production mount remain unverified; fixtures do not prove live server behavior or independent linguistic review. Evidence: `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-options-20261121/`.
+
 ### Shared media status labels
 
 The shared poster, request, detail and category status displays now translate

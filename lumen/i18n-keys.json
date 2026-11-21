@@ -2947,5 +2947,20 @@
   "lumen.watchlist.userTitle",
   "pages.profile.advancedTheme.save",
   "pages.profile.advancedTheme.saved",
-  "pages.profile.advancedTheme.title"
+  "pages.profile.advancedTheme.title",
+  "lumen.detail.loadingServers",
+  "lumen.detail.noServer",
+  "lumen.detail.requestAs",
+  "lumen.detail.me",
+  "lumen.detail.server",
+  "lumen.detail.default",
+  "lumen.detail.quality",
+  "lumen.detail.folder",
+  "lumen.detail.languageProfile",
+  "lumen.detail.sonarrDefault",
+  "lumen.detail.metadataLanguage",
+  "lumen.detail.seasonOrder",
+  "lumen.detail.ignoreQuota",
+  "lumen.detail.requestTags",
+  "lumen.detail.advancedOptions"
 ]

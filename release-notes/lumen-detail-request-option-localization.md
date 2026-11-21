@@ -1,0 +1,1 @@
+Lumen now shows the shared movie and TV request options in English, French, and Arabic. Server, quality profile, folder, language, season order, quota, requester, and tag controls use the saved Lumen locale; request settings and submission behavior are unchanged.
