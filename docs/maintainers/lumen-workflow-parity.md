@@ -223,8 +223,15 @@ that reject concurrent season lookups while keeping the work bounded by the
 requested season count and preserving the user's selection until every season
 is available. A 15-season API fixture forces concurrency failures and verifies
 that the serial recovery returns all seasons; route and request-tree fixtures
-pass. Live-provider confirmation remains open, and this server-side fix does
-not complete Lumen's separate series-selection parity audit.
+pass. The native full-app Playwright workflow also passes for a 13-season
+series at 390 and 1440 CSS pixels: a partial first batch recovers the missing
+seasons, the user selects an episode, and the submitted request retains the
+exact season and episode. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-20261121/native-large-series/`.
+This fixture proves the partial-response and request-selection path, not the
+live provider outage shown in the user's screenshot. Live-provider confirmation
+remains open, and this server-side fix does not complete Lumen's separate
+series-selection parity audit.
 
 Season details with an empty but valid `episodes` array now count as loaded
 metadata instead of being dropped and retried as failed. This prevents a
