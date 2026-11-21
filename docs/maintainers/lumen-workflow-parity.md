@@ -158,6 +158,18 @@ The focused admin notifications browser suite is in
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-notifications-20261121/`;
 the English baseline and French/Arabic candidate renders were compared at 1440,
 834, 412, and 390 CSS pixels.
+
+The shared mobile tab bar now yields while users scroll down through long pages,
+so it no longer covers form actions or search controls. It returns on upward
+scroll, at the top or page end, and remains available while keyboard focus is
+inside it. The existing bar geometry and initial state are unchanged. Browser
+fixtures passed on iPhone, Android, and tablet; desktop skipped because it has no
+mobile tab bar. Baseline and candidate `/admin/users` Create Local User screens
+were compared at 390, 412, and 834 CSS pixels, with initial-state geometry
+unchanged; the hidden-on-scroll state was inspected at 390 and 834. Evidence is
+retained in `seerrng-lumen-mobile-navigation-20261121/baseline/`,
+`candidate/admin-users-*`, and `candidate/results-rerun/`.
+
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select
