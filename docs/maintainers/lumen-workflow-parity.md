@@ -5425,3 +5425,13 @@ This does not exercise the full authenticated production server middleware or
 live tracking-provider effects. Delegated library-sharing behavior (if that
 capability exists in native SeerrNG) and matched native visual acceptance also
 remain open.
+
+### Keep Lumen settings messages separate from native administration
+
+The Lumen settings page now uses its own `lumen.adminSettings.*` message
+namespace. The shared `lumen.admin.title` key remains the SeerrNG Administration
+navigation title, so localizing Lumen settings cannot replace the heading in
+the native administration directory. Regression coverage passes for the
+standalone and bundled builds: 60 navigation cases per build and 12 settings
+cases per build across English, French, and Arabic and desktop, iPhone, Android,
+and tablet viewports.

@@ -77,7 +77,7 @@ function Row({
 }) {
   const { t } = useLumenLocale();
   const admin = (key: string, fallback: string) =>
-    t(`lumen.admin.${key}`, fallback);
+    t(`lumen.adminSettings.${key}`, fallback);
   const value = `${on ? 'on' : 'off'}${locked ? '-locked' : ''}`;
   return (
     <label className="set cfg-row">
@@ -119,7 +119,7 @@ function Upload({
 }) {
   const { t } = useLumenLocale();
   const admin = (key: string, fallback: string) =>
-    t(`lumen.admin.${key}`, fallback);
+    t(`lumen.adminSettings.${key}`, fallback);
   const label =
     kind === 'logo' ? admin('logo', 'Logo') : admin('tabIcon', 'Tab icon');
   return ready ? (
@@ -171,7 +171,7 @@ export default function LumenSettings() {
     key: string,
     fallback: string,
     values?: Record<string, string | number>
-  ) => t(`lumen.admin.${key}`, fallback, values);
+  ) => t(`lumen.adminSettings.${key}`, fallback, values);
   const { adminConfig, adminConfigState, retryAdminConfig, adminSaved } =
     usePrefs();
   const toast = useToast();
