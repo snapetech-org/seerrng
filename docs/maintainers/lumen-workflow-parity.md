@@ -5052,3 +5052,11 @@ field ownership and panel geometry are retained. Arabic still has the shared fix
 navigation overlap visible in the English baseline. Live filesystem mapping and
 file-download behavior remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
+
+Instance Request Settings now localizes its policy choices, descriptions, loading
+state, save action, and save feedback in English, French, and Arabic. It retains
+the existing `/settings/public` read and `/settings/main` write contract. Browser
+fixtures verify the changed-flag payload and confirmed save across desktop,
+iPhone, Android, and tablet. Live server persistence and independent linguistic
+review remain open. The API key, default quotas, and default permissions panels
+still need localization and workflow parity review.

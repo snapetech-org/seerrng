@@ -1348,6 +1348,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'معرف العميل Spotify',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify سر العميل',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'السماح لجميع الأفلام من صفحة شخص',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'دع المستخدمين يطلبون كل فيلم مدرج على صفحة شخص وترسل الطلبات في بطاريات تبلغ 100، ولا تزال تتبع التصاريح العادية وتطالب بحصص.',
+      'components.Settings.SettingsMain.enable4k': 'تفعيل 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'يتحكم هذا المفتاح العام في طلبات الأفلام والتلفزيون بدقة 4K، وتقارير المشكلات، وتتبع التوفر المنفصل. خيار "خادم 4K" على اتصال Radarr أو Sonarr يحدد فقط نسخة منفصلة لـ 4K؛ ولا يفعّل 4K. عند الإيقاف، تُخفى خيارات 4K وتتوقف المسحقات المستقبلية عن تسجيل 4K بشكل منفصل. تُحتفظ بسجلات الطلبات والمشكلات الحالية.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'السماح بالطلبات الجزئية للمسلسلات (بمعنى مسلسل لم ينتهي عرض الموسم بالكامل)',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'السماح بطلبات الحلقات الخاصة',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'تطلب مشاهدة الموسم السابق',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'عند التفعيل، تنطبق هذه القاعدة على الجميع. وإلا، يمكن للمستخدمين طلب الموافقة من الملف الشخصي → قاعدة مواسم التلفزيون، ثم تفعيلها لحسابهم الخاص. إيقافها لا يزيل موافقتهم. تتطلب طلبات المواسم اللاحقة مشاهدة جميع حلقات الموسم العادي السابق. تُستثنى الحلقات الخاصة؛ يتم التحقق من التشغيل مقابل حساب Plex أو Jellyfin أو Emby المرتبط بالطالب. يمكن للمسؤولين ومديري الطلبات تجاوز القاعدة.',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -3059,6 +3074,26 @@ export const localeData = [
         'تعذر تأكيد حفظ تعيينات المسارات.',
       'lumen.adminGeneral.downloadMappings.saveFailure':
         'تعذر حفظ تعيينات مسارات المكتبة.',
+      'lumen.adminGeneral.requestSettings.title': 'إعدادات طلب المثيل',
+      'lumen.adminGeneral.requestSettings.saveButton': 'حفظ إعدادات الطلب',
+      'lumen.adminGeneral.requestSettings.saved': 'تم حفظ إعدادات الطلب.',
+      'lumen.adminGeneral.requestSettings.confirmFailure':
+        'تعذر تأكيد حفظ إعدادات الطلب.',
+      'lumen.adminGeneral.requestSettings.saveFailure':
+        'تعذر حفظ إعدادات الطلب. حاول مجددًا.',
+      'lumen.adminGeneral.requestSettings.loading': 'جارٍ تحميل إعدادات الطلب…',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
+        'تتبع توفر كل حلقة',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp':
+        'سجّل ملفات الحلقات أثناء فحص Sonarr وPlex وJellyfin وEmby. يتطلب تتبع Sonarr خدمة TheTVDB. طابق ترقيم الحلقات في كل مكتبة تلفزيونية مع موفر بياناتها الوصفية.',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabled':
+        'السماح بطلب مواسم فردية',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp':
+        'السماح للمستخدمين بطلب مواسم محددة من المسلسل.',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodes':
+        'السماح بطلب الحلقات الخاصة',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp':
+        'إدراج الحلقات الخاصة عند اختيار المواسم للطلب.',
     },
   },
   {
@@ -3681,6 +3716,10 @@ export const localeData = [
         'Добавяне към списъка за гледане',
       'components.MovieDetails.removefromwatchlist':
         'Премахни от списъка за гледане',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Разрешаване на частични заявки за сериали',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Разрешаване на заявки за специални епизоди',
     },
   },
   {
@@ -4191,6 +4230,8 @@ export const localeData = [
         'Afegir a la llista de seguiment',
       'components.MovieDetails.removefromwatchlist':
         'Eliminar de la llista de seguiment',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Permet sol·licituds parcials de sèries',
     },
   },
   {
@@ -4811,6 +4852,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Přidat na seznam ke zhlédnutí',
       'components.MovieDetails.removefromwatchlist':
         'Odebrat ze seznamu ke zhlédnutí',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Povolit částečné požadavky na seriály',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Povolit žádosti o speciální epizody',
     },
   },
   {
@@ -5429,6 +5474,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Føj til Se senere-liste',
       'components.MovieDetails.removefromwatchlist':
         'Fjern fra Se senere-liste',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Tillad anmodninger om delvise serier',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Tillad anmodninger om særlige episoder',
     },
   },
   {
@@ -6841,6 +6890,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify-Client-ID',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify-Client-Secret',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Anfragen aller Filme auf einer Personenseite zulassen',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Lassen Sie Benutzer jeden Film anfordern, der auf einer Personenseite aufgeführt ist. Anfragen werden in Chargen von 100 gesendet und folgen immer noch den normalen Berechtigungen und Anforderungskontingenten.',
+      'components.Settings.SettingsMain.enable4k': '4K aktivieren',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Dieser globale Schalter steuert 4K-Film- und TV-Anforderungen, Fehlerberichte und die separate Verfolgung der Verfügbarkeit. Die Option „4K-Server“ bei einer Radarr- oder Sonarr-Verbindung markiert nur eine separate Instanz für 4K; sie aktiviert 4K nicht. Wenn deaktiviert, werden 4K-Optionen ausgeblendet und zukünftige Scans erfassen 4K nicht mehr separat. Bestehende Anforderungs- und Fehleraufzeichnungen bleiben erhalten.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Teilweise Serienanfragen zulassen',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Anfragen zu Spezial-Folgen zulassen',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Ansehen der vorherigen Staffel erforderlich',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Wenn aktiviert, gilt diese Regel für alle. Andernfalls können Benutzer eine Genehmigung über Profil → TV-Staffelregel anfordern und sie für ihr eigenes Konto aktivieren. Das Deaktivieren entfernt ihre Genehmigung nicht. Anforderungen für spätere Staffeln erfordern, dass jede Episode der vorherigen regulären Staffel angesehen wurde. Specials sind ausgenommen; die Wiedergabe wird anhand des verknüpften Plex-, Jellyfin- oder Emby-Kontos des Anforders geprüft. Administratoren und Anforderungsverwalter können die Regel außer Kraft setzen.',
     },
   },
   {
@@ -8215,6 +8279,25 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify Client ID',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify Client Secret',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Allow Requesting All Movies From a Person Page',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Let users request every movie listed on a person page. Requests are sent in batches of 100 and still follow normal permissions and request quotas.',
+      'components.Settings.SettingsMain.enable4k': 'Enable 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'This global switch controls 4K movie and TV requests, issue reports, and separate availability tracking. The “4K Server” option on a Radarr or Sonarr connection only marks a separate instance for 4K; it does not enable 4K. When off, 4K options are hidden and future scans stop recording 4K separately. Existing request and issue records are retained.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Allow Partial Series Requests',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Allow Special Episodes Requests',
+      'components.Settings.SettingsMain.trackEpisodeAvailability':
+        'Track Individual Episode Availability',
+      'components.Settings.SettingsMain.trackEpisodeAvailabilityTip':
+        'Record which TV episodes have files in Sonarr, Plex, Jellyfin, or Emby during library scans. Sonarr tracking requires TheTVDB. For each media-server TV library, configure its episode numbering order to match the selected TV or anime metadata provider. Incomplete scans keep the last complete results; 4K indicators require Enable 4K.',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Require the Previous Season to Be Watched',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'When enabled, this rule applies to everyone. Otherwise, users can request approval from Profile → TV Season Rule, then turn it on for their own account. Turning it off does not remove their approval. Later-season requests require every episode of the previous regular season to be watched. Specials are excluded; playback is checked against the requester’s linked Plex, Jellyfin, or Emby account. Administrators and request managers can override the rule.',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -9883,6 +9966,29 @@ export const localeData = [
         'Could not confirm the saved path mappings.',
       'lumen.adminGeneral.downloadMappings.saveFailure':
         'Could not save library path mappings.',
+      'lumen.adminGeneral.requestSettings.title': 'Instance Request Settings',
+      'lumen.adminGeneral.requestSettings.saveButton':
+        'Save Instance Request Settings',
+      'lumen.adminGeneral.requestSettings.saved':
+        'Instance request settings saved.',
+      'lumen.adminGeneral.requestSettings.confirmFailure':
+        'Could not confirm the saved request settings.',
+      'lumen.adminGeneral.requestSettings.saveFailure':
+        'Could not save the instance request settings. Try again.',
+      'lumen.adminGeneral.requestSettings.loading':
+        'Loading instance request settings…',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
+        'Track Individual Episode Availability',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp':
+        'Record episode files during Sonarr, Plex, Jellyfin, and Emby scans. Sonarr tracking requires TheTVDB. Match each TV library’s episode numbering to its metadata provider.',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabled':
+        'Allow Partial Series Requests',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp':
+        'Let users request individual seasons of a series.',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodes':
+        'Allow Special Episode Requests',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp':
+        'Include specials when users select seasons to request.',
     },
   },
   {
@@ -10305,6 +10411,8 @@ export const localeData = [
       'components.Settings.Notifications.validationTypes':
         'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Επιτρέψτε τις αιτήσεων σειρών μερικώς',
     },
   },
   {
@@ -11725,6 +11833,21 @@ export const localeData = [
         'Spotify ID de cliente',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify Secreto del cliente',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Permitir solicitar todas las películas de una página de la persona',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Deje que los usuarios soliciten cada película lista en una página de persona. Las solicitudes se envían en lotes de 100 y siguen los permisos normales y solicitan cuotas.',
+      'components.Settings.SettingsMain.enable4k': 'Habilitar 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Este interruptor global controla las solicitudes de películas y TV en 4K, los informes de problemas y el seguimiento de disponibilidad separado. La opción "Servidor 4K" en una conexión Radarr o Sonarr solo marca una instancia separada para 4K; no habilita 4K. Cuando está desactivado, las opciones de 4K se ocultan y los escaneos futuros dejan de registrar 4K por separado. Los registros existentes de solicitudes y problemas se conservan.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Permitir Solicitudes Parciales de Series',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Permitir la petición de episodios especiales',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Requerir que la temporada anterior haya sido vista',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Cuando está habilitado, esta regla se aplica a todos. De lo contrario, los usuarios pueden solicitar aprobación desde Perfil → Regla de temporada de TV, y luego activarla para su propia cuenta. Desactivarla no elimina su aprobación. Las solicitudes de temporadas posteriores requieren que todos los episodios de la temporada regular anterior hayan sido vistos. Los especiales están excluidos; la reproducción se verifica contra la cuenta de Plex, Jellyfin o Emby vinculada del solicitante. Los administradores y gestores de solicitudes pueden anular la regla.',
     },
   },
   {
@@ -13132,6 +13255,21 @@ export const localeData = [
         'Spotify ID de cliente',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify Secreto del cliente',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Permitir solicitar todas las películas de una página de la persona',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Deje que los usuarios soliciten cada película lista en una página de persona. Las solicitudes se envían en lotes de 100 y siguen los permisos normales y solicitan cuotas.',
+      'components.Settings.SettingsMain.enable4k': 'Habilitar 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Este interruptor global controla las solicitudes de películas y TV en 4K, los informes de problemas y el seguimiento de disponibilidad separado. La opción "Servidor 4K" en una conexión Radarr o Sonarr solo marca una instancia separada para 4K; no habilita 4K. Cuando está desactivado, las opciones de 4K se ocultan y los escaneos futuros dejan de registrar 4K por separado. Los registros existentes de solicitudes y problemas se conservan.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Permitir Solicitudes Parciales de Series',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Permitir las solicitudes especiales de Episodios',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Requerir que la temporada anterior haya sido vista',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Cuando está habilitado, esta regla se aplica a todos. De lo contrario, los usuarios pueden solicitar aprobación desde Perfil → Regla de temporada de TV, y luego activarla para su propia cuenta. Desactivarla no elimina su aprobación. Las solicitudes de temporadas posteriores requieren que todos los episodios de la temporada regular anterior hayan sido vistos. Los especiales están excluidos; la reproducción se verifica contra la cuenta de Plex, Jellyfin o Emby vinculada del solicitante. Los administradores y gestores de solicitudes pueden anular la regla.',
     },
   },
   {
@@ -13747,6 +13885,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Lisa vaatamisnimekirja',
       'components.MovieDetails.removefromwatchlist':
         'Eemalda vaatamisnimekirjast',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Luba sarjade osaline taotlemine',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Luba eriepisoodide taotlemine',
     },
   },
   {
@@ -13955,6 +14097,10 @@ export const localeData = [
         'Käyttäjänimi',
       'components.MovieDetails.addtowatchlist': 'Lisää katselulistalle',
       'components.MovieDetails.removefromwatchlist': 'Poista katselulistalta',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Salli osittaiset sarjojen pyynnöt',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Salli erikoisjaksojen pyynnöt',
     },
   },
   {
@@ -15376,6 +15522,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify ID client',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Code secret client Spotify',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        "Permettre de demander tous les films d'une page de personne",
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Laissez les utilisateurs demander chaque film listé sur une page de personne. Les demandes sont envoyées en lots de 100 et suivent toujours les autorisations normales et les quotas de demande.',
+      'components.Settings.SettingsMain.enable4k': 'Activer le 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        "Cette bascule globale contrôle les demandes de films et de TV en 4K, les rapports de problèmes et le suivi de disponibilité séparé. L'option « Serveur 4K » sur une connexion Radarr ou Sonarr ne marque qu'une instance séparée pour le 4K ; elle n'active pas le 4K. Lorsque désactivé, les options 4K sont masquées et les scans futurs cessent d'enregistrer le 4K séparément. Les enregistrements de demandes et de problèmes existants sont conservés.",
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Autoriser les demandes partielles de séries',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        "Autoriser les demandes d'épisodes spéciaux",
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Exiger que la saison précédente soit visionnée',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        "Lorsqu'activé, cette règle s'applique à tout le monde. Sinon, les utilisateurs peuvent demander une approbation via Profil → Règle des saisons TV, puis l'activer pour leur propre compte. La désactivation ne retire pas leur approbation. Les demandes pour les saisons ultérieures exigent que tous les épisodes de la saison régulière précédente aient été visionnés. Les épisodes spéciaux sont exclus ; la lecture est vérifiée par rapport au compte Plex, Jellyfin ou Emby lié du demandeur. Les administrateurs et les gestionnaires de demandes peuvent outrepasser la règle.",
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -17271,6 +17432,30 @@ export const localeData = [
         'Impossible de confirmer l’enregistrement des mappages de chemins.',
       'lumen.adminGeneral.downloadMappings.saveFailure':
         'Impossible d’enregistrer les mappages de chemins de bibliothèque.',
+      'lumen.adminGeneral.requestSettings.title':
+        'Paramètres de demande de l’instance',
+      'lumen.adminGeneral.requestSettings.saveButton':
+        'Enregistrer les règles de demande',
+      'lumen.adminGeneral.requestSettings.saved':
+        'Paramètres de demande de l’instance enregistrés.',
+      'lumen.adminGeneral.requestSettings.confirmFailure':
+        'Impossible de confirmer l’enregistrement des règles de demande.',
+      'lumen.adminGeneral.requestSettings.saveFailure':
+        'Impossible d’enregistrer les règles de demande. Réessayez.',
+      'lumen.adminGeneral.requestSettings.loading':
+        'Chargement des paramètres de demande…',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
+        'Suivre la disponibilité de chaque épisode',
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp':
+        'Enregistrer les fichiers des épisodes pendant les analyses Sonarr, Plex, Jellyfin et Emby. Le suivi Sonarr nécessite TheTVDB. Faites correspondre la numérotation des épisodes de chaque bibliothèque TV à son fournisseur de métadonnées.',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabled':
+        'Autoriser les demandes de saisons individuelles',
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp':
+        'Permettre aux utilisateurs de demander des saisons individuelles d’une série.',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodes':
+        'Inclure les épisodes spéciaux',
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp':
+        'Inclure les épisodes spéciaux lorsque les utilisateurs choisissent les saisons à demander.',
     },
   },
   {
@@ -17690,6 +17875,8 @@ export const localeData = [
       'components.Settings.Notifications.validationTypes':
         'Moraš odabrati barem jednu vrstu obavijesti',
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Dopusti djelomične zahtjeve za seriju',
     },
   },
   {
@@ -19304,6 +19491,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify क्लाइंट ID',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify क्लाइंट गुप्त',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'एक व्यक्ति पृष्ठ से सभी फिल्मों का अनुरोध करने की अनुमति दें',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'उपयोगकर्ता प्रत्येक फिल्म को किसी व्यक्ति के पेज पर सूचीबद्ध करने का अनुरोध करते हैं। अनुरोध 100 बैच में भेजे जाते हैं और फिर भी सामान्य अनुमतियों और अनुरोध कोटा का पालन करते हैं।',
+      'components.Settings.SettingsMain.enable4k': '4K सक्षम करें',
+      'components.Settings.SettingsMain.enable4kTip':
+        'यह वैश्विक स्विच 4K फिल्म और टीवी अनुरोधों, समस्या रिपोर्टों और अलग उपलब्धता ट्रैकिंग को नियंत्रित करता है। Radarr या Sonarr कनेक्शन पर “4K सर्वर” विकल्प केवल 4K के लिए एक अलग इंस्टेंस को चिह्नित करता है; यह 4K को सक्षम नहीं करता है। जब बंद हो, तो 4K विकल्प छिप जाते हैं और भविष्य के स्कैन 4K को अलग से रिकॉर्ड करना बंद कर देते हैं। मौजूदा अनुरोध और समस्या रिकॉर्ड संरक्षित रहते हैं।',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'आंशिक श्रृंखला अनुरोध की अनुमति दें',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'विशेष एपिसोड अनुरोध की अनुमति दें',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'पिछली सीज़न को देखना आवश्यक है',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'जब सक्षम किया जाता है, तो यह नियम सभी पर लागू होता है। अन्यथा, उपयोगकर्ता प्रोफ़ाइल → टीवी सीज़न नियम से अनुमोदन का अनुरोध कर सकते हैं, फिर अपने खाते के लिए इसे चालू कर सकते हैं। इसे बंद करने से उनका अनुमोदन हटाया नहीं जाता है। बाद की सीज़न के अनुरोधों के लिए पिछली नियमित सीज़न के सभी एपिसोड देखे जाने चाहिए। स्पेशल शामिल नहीं हैं; प्लेबैक अनुरोधकर्ता के लिंक किए गए Plex, Jellyfin, या Emby खाते के विरुद्ध जाँचा जाता है। प्रशासक और अनुरोध प्रबंधक नियम को ओवरराइड कर सकते हैं।',
     },
   },
   {
@@ -19930,6 +20132,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Hozzáadás figyelőlistához',
       'components.MovieDetails.removefromwatchlist':
         'Eltávolítás a figyelőlistáról',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Részenkénti sorozatkérések engedélyezése',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Különkiadás epizódok kérésének engedélyezése',
     },
   },
   {
@@ -21320,6 +21526,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'ID Klien Spotify',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Rahasia Klien Spotify',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Izinkan Meminta Semua Film Dari Halaman Orang',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Biarkan pengguna meminta setiap film yang tercantum di halaman orang. Permintaan dikirim dalam batch 100 dan masih mengikuti izin normal dan meminta kuota.',
+      'components.Settings.SettingsMain.enable4k': 'Aktifkan 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Saklar global ini mengontrol permintaan film dan TV 4K, laporan masalah, dan pelacakan ketersediaan terpisah. Opsi “Server 4K” pada koneksi Radarr atau Sonarr hanya menandai instance terpisah untuk 4K; tidak mengaktifkan 4K. Saat nonaktif, opsi 4K disembunyikan dan pemindaian masa depan berhenti mencatat 4K secara terpisah. Catatan permintaan dan masalah yang ada tetap dipertahankan.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Ijinkan Permintaan Seri Parsial',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Izinkan Permintaan Episoda Khusus',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Wajibkan Musim Sebelumnya Ditonton',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Saat diaktifkan, aturan ini berlaku untuk semua orang. Jika tidak, pengguna dapat meminta persetujuan dari Profil → Aturan Musim TV, lalu mengaktifkannya untuk akun mereka sendiri. Mematikkannya tidak menghapus persetujuan mereka. Permintaan musim berikutnya memerlukan semua episode musim reguler sebelumnya ditonton. Spesial dikecualikan; pemutaran diperiksa terhadap akun Plex, Jellyfin, atau Emby yang terhubung peminta. Administrator dan manajer permintaan dapat mengabaikan aturan.',
     },
   },
   {
@@ -21935,6 +22156,10 @@ export const localeData = [
         'Aggiungi alla lista di visione',
       'components.MovieDetails.removefromwatchlist':
         'Rimuovi dalla lista di visione',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Consenti richieste parziali di serie',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Consenti richieste di episodi speciali',
     },
   },
   {
@@ -23316,6 +23541,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotifyクライアントシークレット',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        '人ページからすべての映画をリクエストすることを可能にします',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        '利用者は、個人ページに記載された全ての映画をリクエストします。 リクエストは、100 のバッチで送信され、通常権限とリクエストのクォータに従います。',
+      'components.Settings.SettingsMain.enable4k': '4Kを有効にする',
+      'components.Settings.SettingsMain.enable4kTip':
+        'このグローバルスイッチは、4Kの映画やテレビのリクエスト、問題報告、および個別の可用性追跡を制御します。Radarr または Sonarr 接続の「4Kサーバー」オプションは、4K用の個別インスタンスをマークするだけであり、4Kを有効にしません。オフの場合、4Kオプションは非表示になり、将来のスキャンで4Kの個別記録が停止します。既存のリクエストおよび問題記録は保持されます。',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        '部分的なシリーズリクエストを許可する',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'スペシャルエピソードのリクエストを許可する',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        '前シーズン視聴の必須化',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        '有効にすると、このルールはすべてのユーザーに適用されます。無効の場合、ユーザーはプロフィール → TVシーズンルールから承認をリクエストし、自分のアカウントで有効にできます。無効にしても承認は削除されません。後続シーズンのリクエストには、直前の通常シーズンの全エピソードの視聴が必要です。スペシャルは対象外です。再生状況は、リクエスト者の紐付けられた Plex、Jellyfin、または Emby アカウントに対して確認されます。管理者およびリクエストマネージャーはルールをオーバーライドできます。',
     },
   },
   {
@@ -24652,6 +24892,21 @@ export const localeData = [
         'Spotify 클라이언트 ID',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify 클라이언트 비밀',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        '요청 모든 영화에서 사람의 페이지',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        '사용자 요청 모든 영화에 나열된 사람 페이지. 요청은 100의 배치에서 보내지고 여전히 정상적인 허가 및 요청 인용을 따릅니다.',
+      'components.Settings.SettingsMain.enable4k': '4K 활성화',
+      'components.Settings.SettingsMain.enable4kTip':
+        '이 전역 스위치는 4K 영화 및 TV 요청, 문제 보고 및 개별 가용성 추적을 제어합니다. Radarr 또는 Sonarr 연결의 “4K 서버” 옵션은 4K를 위한 별도 인스턴스만 표시하며, 4K를 활성화하지 않습니다. 꺼져 있을 때, 4K 옵션은 숨겨지고 향후 스캔은 4K를 별도로 기록하지 않습니다. 기존 요청 및 문제 기록은 유지됩니다.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        '부분 시리즈 요청 허용',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        '특별한 에피소드 요청',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        '이전 시즌 시청 필수',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        '활성화되면 이 규칙은 모든 사람에게 적용됩니다. 그렇지 않으면, 사용자는 프로필 → TV 시즌 규칙에서 승인을 요청한 후 자신의 계정에 대해 활성화할 수 있습니다. 비활성화해도 그들의 승인이 제거되지 않습니다. 후속 시즌 요청에는 이전 정규 시즌의 모든 에피소드를 시청해야 합니다. 스페셜은 제외되며, 재생은 요청자의 연결된 Plex, Jellyfin 또는 Emby 계정에 대해 확인됩니다. 관리자와 요청 관리자는 규칙을 무시할 수 있습니다.',
     },
   },
   {
@@ -25840,6 +26095,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Toevoegen aan kijklijst',
       'components.MovieDetails.removefromwatchlist':
         'Verwijderen van kijklijst',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Gedeeltelijke serie-aanvragen toestaan',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Aanvragen voor speciale afleveringen toestaan',
     },
   },
   {
@@ -26468,6 +26727,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Dodaj do listy Do obejrzenia',
       'components.MovieDetails.removefromwatchlist':
         'Usuń z listy Do obejrzenia',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Zezwalaj na częściowe żądania seriali',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Zezwalaj na żądania odcinków specjalnych',
     },
   },
   {
@@ -27873,6 +28136,21 @@ export const localeData = [
         'ID do Cliente Spotify',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Segredo do Cliente Spotify',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Permitir a solicitação de todos os filmes de uma página de pessoas',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Deixe os usuários pedirem todos os filmes listados em uma página pessoal. Pedidos são enviados em lotes de 100 e ainda seguem permissões normais e pedidos de quotas.',
+      'components.Settings.SettingsMain.enable4k': 'Ativar 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Esta chave global controla solicitações de filmes e TV em 4K, relatórios de problemas e rastreamento de disponibilidade separado. A opção “Servidor 4K” em uma conexão Radarr ou Sonarr apenas marca uma instância separada para 4K; ela não ativa o 4K. Quando desativado, as opções de 4K são ocultadas e varreduras futuras param de registrar 4K separadamente. Registros existentes de solicitações e problemas são mantidos.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Permitir Solicitações Parciais de Séries',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Permitir pedidos de episódios especias',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Exigir que a Temporada Anterior Seja Assistida',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Quando ativado, esta regra se aplica a todos. Caso contrário, os usuários podem solicitar aprovação em Perfil → Regra de Temporada de TV e ativá-la para sua própria conta. Desativá-la não remove a aprovação deles. Solicitações de temporadas posteriores exigem que todos os episódios da temporada regular anterior tenham sido assistidos. Especiais são excluídos; a reprodução é verificada contra a conta Plex, Jellyfin ou Emby vinculada do solicitante. Administradores e gerentes de solicitações podem ignorar a regra.',
     },
   },
   {
@@ -28475,6 +28753,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Adicionar à lista para ver',
       'components.MovieDetails.removefromwatchlist':
         'Remover da lista para ver',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Permitir Solicitações Parciais de Séries',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Permitir pedidos de episódios especiais',
     },
   },
   {
@@ -29437,6 +29719,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Добавить в список просмотра',
       'components.MovieDetails.removefromwatchlist':
         'Удалить из списка просмотра',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Разрешить запрашивать сериалы частично',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Разрешить запрашивать спец. эпизоды',
     },
   },
   {
@@ -30624,6 +30910,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Lägg till i bevakningslistan',
       'components.MovieDetails.removefromwatchlist':
         'Ta bort från bevakningslistan',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Tillåt partiella serieförfrågningar',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Tillåt förfrågningar om specialavsnitt',
     },
   },
   {
@@ -31238,6 +31528,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'İzleme Listesine Ekle',
       'components.MovieDetails.removefromwatchlist':
         'İzleme Listesinden Kaldır',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Kısmi Dizi Taleplerini İzin Ver',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Özel Bölüm Taleplerini İzin Ver',
     },
   },
   {
@@ -31823,6 +32117,10 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Додати до списку перегляду',
       'components.MovieDetails.removefromwatchlist':
         'Видалити зі списку перегляду',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Дозволити запитувати серіали частково',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Дозволити запити на спеціальні епізоди',
     },
   },
   {
@@ -33123,6 +33421,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify 客户端机密',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        '允许从个人页面请求全部电影',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        '让用户要求每部在个人页面上列出的电影. 请求分100批发送,仍然遵循正常的许可和要求配额.',
+      'components.Settings.SettingsMain.enable4k': '启用 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        '此全局开关控制 4K 电影和电视请求、问题报告以及独立的可用性跟踪。Radarr 或 Sonarr 连接上的“4K 服务器”选项仅标记一个用于 4K 的独立实例；它不会启用 4K。关闭时，4K 选项将被隐藏，未来的扫描将停止单独记录 4K。现有的请求和问题记录将保留。',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        '允许部分剧集请求',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        '允许特别剧集请求',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        '要求观看上一季',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        '启用后，此规则适用于所有人。否则，用户可以从个人资料 → 电视季规则请求批准，然后为其自己的账户启用。关闭不会移除他们的批准。后续季度的请求要求上一常规季的所有剧集均已观看。特别篇除外；播放情况将针对请求者关联的 Plex、Jellyfin 或 Emby 账户进行检查。管理员和请求管理员可以覆盖此规则。',
     },
   },
   {
@@ -34424,6 +34737,21 @@ export const localeData = [
       'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Spotify 客户端机密',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        '允許從個人頁面要求所有電影',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        '讓使用者要求每部在個人頁面上列出的影片。 要求分批提出,',
+      'components.Settings.SettingsMain.enable4k': '啟用 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        '此全域開關控制 4K 電影和影集請求、問題報告及獨立的可用性追蹤。Radarr 或 Sonarr 連線上的「4K 伺服器」選項僅標記獨立的 4K 實例；它不會啟用 4K。關閉時，4K 選項將被隱藏，且未來的掃描將停止單獨記錄 4K。現有的請求和問題記錄將被保留。',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        '允許不完整的影集請求',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        '允許特殊集目要求',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        '要求前季已觀看',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        '啟用時，此規則適用於所有人。否則，使用者可從「個人檔案 → 影集季規則」請求核准，然後為其帳戶開啟。關閉不會移除其核准。後續季的請求要求前一個常規季的所有集數已觀看。特別篇除外；播放狀態將針對請求者連結的 Plex、Jellyfin 或 Emby 帳戶進行檢查。管理員和請求管理員可覆蓋此規則。',
     },
   },
   {
@@ -35805,6 +36133,21 @@ export const localeData = [
         'ID khách hàng Spotify',
       'components.Settings.SettingsMain.spotifyClientSecret':
         'Bí mật khách hàng Spotify',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabled':
+        'Cho phép yêu cầu mọi phim ảnh từ một trang web',
+      'components.Settings.SettingsMain.personMovieBulkRequestsEnabledTip':
+        'Hãy để người dùng yêu cầu mọi phim được liệt kê trên trang cá nhân. Yêu cầu được gửi theo từng mẻ 100 và vẫn theo lệnh thông thường và yêu cầu chỉ tiêu.',
+      'components.Settings.SettingsMain.enable4k': 'Bật 4K',
+      'components.Settings.SettingsMain.enable4kTip':
+        'Công tắc toàn cục này kiểm soát yêu cầu phim và TV 4K, báo cáo sự cố, và theo dõi khả năng có sẵn riêng biệt. Tùy chọn “Máy chủ 4K” trên kết nối Radarr hoặc Sonarr chỉ đánh dấu một phiên bản riêng cho 4K; nó không bật 4K. Khi tắt, các tùy chọn 4K sẽ bị ẩn và các lần quét trong tương lai sẽ ngừng ghi nhận 4K riêng biệt. Các bản ghi yêu cầu và sự cố hiện có sẽ được giữ lại.',
+      'components.Settings.SettingsMain.partialRequestsEnabled':
+        'Cho phép yêu cầu theo phần',
+      'components.Settings.SettingsMain.enableSpecialEpisodes':
+        'Cho phép mục đặc biệt yêu cầu',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabled':
+        'Yêu cầu phải xem xong mùa trước',
+      'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
+        'Khi bật, quy tắc này áp dụng cho tất cả mọi người. Nếu không, người dùng có thể yêu cầu phê duyệt từ Hồ sơ → Quy tắc mùa TV, sau đó bật nó cho tài khoản của họ. Tắt nó sẽ không xóa quyền phê duyệt của họ. Các yêu cầu cho mùa sau yêu cầu tất cả các tập của mùa thường trước đó phải được xem. Các tập đặc biệt bị loại trừ; việc phát được kiểm tra đối với tài khoản Plex, Jellyfin, hoặc Emby liên kết của người yêu cầu. Quản trị viên và quản lý yêu cầu có thể vượt qua quy tắc.',
     },
   },
 ] as const;

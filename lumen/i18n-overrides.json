@@ -1395,7 +1395,19 @@
     "lumen.adminGeneral.downloadMappings.saveButton": "Save Library Path Mappings",
     "lumen.adminGeneral.downloadMappings.saved": "Library path mappings saved.",
     "lumen.adminGeneral.downloadMappings.confirmFailure": "Could not confirm the saved path mappings.",
-    "lumen.adminGeneral.downloadMappings.saveFailure": "Could not save library path mappings."
+    "lumen.adminGeneral.downloadMappings.saveFailure": "Could not save library path mappings.",
+    "lumen.adminGeneral.requestSettings.title": "Instance Request Settings",
+    "lumen.adminGeneral.requestSettings.saveButton": "Save Instance Request Settings",
+    "lumen.adminGeneral.requestSettings.saved": "Instance request settings saved.",
+    "lumen.adminGeneral.requestSettings.confirmFailure": "Could not confirm the saved request settings.",
+    "lumen.adminGeneral.requestSettings.saveFailure": "Could not save the instance request settings. Try again.",
+    "lumen.adminGeneral.requestSettings.loading": "Loading instance request settings…",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailability": "Track Individual Episode Availability",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp": "Record episode files during Sonarr, Plex, Jellyfin, and Emby scans. Sonarr tracking requires TheTVDB. Match each TV library’s episode numbering to its metadata provider.",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "Allow Partial Series Requests",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "Let users request individual seasons of a series.",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "Allow Special Episode Requests",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Include specials when users select seasons to request."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2906,7 +2918,19 @@
     "lumen.adminGeneral.downloadMappings.saveButton": "Enregistrer",
     "lumen.adminGeneral.downloadMappings.saved": "Mappages des chemins de bibliothèque enregistrés.",
     "lumen.adminGeneral.downloadMappings.confirmFailure": "Impossible de confirmer l’enregistrement des mappages de chemins.",
-    "lumen.adminGeneral.downloadMappings.saveFailure": "Impossible d’enregistrer les mappages de chemins de bibliothèque."
+    "lumen.adminGeneral.downloadMappings.saveFailure": "Impossible d’enregistrer les mappages de chemins de bibliothèque.",
+    "lumen.adminGeneral.requestSettings.title": "Paramètres de demande de l’instance",
+    "lumen.adminGeneral.requestSettings.saveButton": "Enregistrer les règles de demande",
+    "lumen.adminGeneral.requestSettings.saved": "Paramètres de demande de l’instance enregistrés.",
+    "lumen.adminGeneral.requestSettings.confirmFailure": "Impossible de confirmer l’enregistrement des règles de demande.",
+    "lumen.adminGeneral.requestSettings.saveFailure": "Impossible d’enregistrer les règles de demande. Réessayez.",
+    "lumen.adminGeneral.requestSettings.loading": "Chargement des paramètres de demande…",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailability": "Suivre la disponibilité de chaque épisode",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp": "Enregistrer les fichiers des épisodes pendant les analyses Sonarr, Plex, Jellyfin et Emby. Le suivi Sonarr nécessite TheTVDB. Faites correspondre la numérotation des épisodes de chaque bibliothèque TV à son fournisseur de métadonnées.",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "Autoriser les demandes de saisons individuelles",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "Permettre aux utilisateurs de demander des saisons individuelles d’une série.",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "Inclure les épisodes spéciaux",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "Inclure les épisodes spéciaux lorsque les utilisateurs choisissent les saisons à demander."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4421,6 +4445,18 @@
     "lumen.adminGeneral.downloadMappings.saveButton": "حفظ المسارات",
     "lumen.adminGeneral.downloadMappings.saved": "تم حفظ تعيينات مسارات المكتبة.",
     "lumen.adminGeneral.downloadMappings.confirmFailure": "تعذر تأكيد حفظ تعيينات المسارات.",
-    "lumen.adminGeneral.downloadMappings.saveFailure": "تعذر حفظ تعيينات مسارات المكتبة."
+    "lumen.adminGeneral.downloadMappings.saveFailure": "تعذر حفظ تعيينات مسارات المكتبة.",
+    "lumen.adminGeneral.requestSettings.title": "إعدادات طلب المثيل",
+    "lumen.adminGeneral.requestSettings.saveButton": "حفظ إعدادات الطلب",
+    "lumen.adminGeneral.requestSettings.saved": "تم حفظ إعدادات الطلب.",
+    "lumen.adminGeneral.requestSettings.confirmFailure": "تعذر تأكيد حفظ إعدادات الطلب.",
+    "lumen.adminGeneral.requestSettings.saveFailure": "تعذر حفظ إعدادات الطلب. حاول مجددًا.",
+    "lumen.adminGeneral.requestSettings.loading": "جارٍ تحميل إعدادات الطلب…",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailability": "تتبع توفر كل حلقة",
+    "lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp": "سجّل ملفات الحلقات أثناء فحص Sonarr وPlex وJellyfin وEmby. يتطلب تتبع Sonarr خدمة TheTVDB. طابق ترقيم الحلقات في كل مكتبة تلفزيونية مع موفر بياناتها الوصفية.",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabled": "السماح بطلب مواسم فردية",
+    "lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp": "السماح للمستخدمين بطلب مواسم محددة من المسلسل.",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodes": "السماح بطلب الحلقات الخاصة",
+    "lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp": "إدراج الحلقات الخاصة عند اختيار المواسم للطلب."
   }
 }
