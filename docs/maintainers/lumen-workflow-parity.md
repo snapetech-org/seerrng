@@ -127,14 +127,21 @@ baseline/candidate renders were inspected at 1440 × 900 and 390 × 844; the
 existing user-row layout wraps longer labels without horizontal overflow.
 Actual provider import and unlink effects remain unverified against a live
 SeerrNG instance. The user notification settings panel reuses the separate
-Notification Settings route. That route still contains English-only content
-and is the next account-settings localization gap. Evidence is retained at
-`seerrng-admin-users-localization-20261120/managed-account-*`.
+Notification Settings route. That route was localized in `1eea80e33` and has
+English, French, and Arabic coverage for channel preferences, public-key save
+and removal, Telegram settings, browser-device removal, RTL direction, and
+overflow across desktop, iPhone, Android, and tablet. The French and Arabic
+four-viewport cases were rerun against the current standalone build and passed
+8/8. The delegated notification panel uses the same forms. The separate
+administrator notification page still has English-only channel forms and
+headings; localizing those controls remains open. Evidence is retained at
+`seerrng-admin-users-localization-20261120/managed-account-*` and in
+`user-notifications-localization.spec.ts`.
 
 Shared notification event selectors on the administration and user notification
 pages now use SeerrNG's localized English, French, and Arabic event labels. The
-channel forms and page headings remain English-only; this small shared control
-does not close the notification settings localization gap. Browser fixtures
+administrator channel forms and page headings remain English-only; this shared
+control does not close the administrator notification-page localization gap. Browser fixtures
 confirmed the same event masks and save behavior at desktop, phone, Android, and
 tablet sizes. French and Arabic baseline/candidate captures were compared at
 1440, 390, 412, and 834 CSS pixels; the existing form geometry is preserved and
