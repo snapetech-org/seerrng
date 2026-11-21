@@ -7,6 +7,7 @@ import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useToast } from '../components/toast';
 import { isCompanionBrandingPath, parseCompanionConfig } from '../configImport';
 import { embedded, lumenAdminUrl } from '../deployment';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
 import {
@@ -137,6 +138,7 @@ const clone = (c: AdminConfig): AdminConfig =>
 
 export default function LumenSettings() {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const { adminConfig, adminConfigState, retryAdminConfig, adminSaved } =
     usePrefs();
   const toast = useToast();
@@ -715,12 +717,18 @@ export default function LumenSettings() {
         </div>
       </Section>
 
-      <Section title="Discover rows">
+      <Section title={t('lumen.me.discoverRows', 'Discover rows')}>
         <div className="setlist">
           {(Object.keys(DISCOVER_ROWS) as DiscoverRow[]).map((r) => (
             <Row
               key={r}
-              title={discoverRowLabel(r)}
+              title={t(
+                r === 'newOnPlex'
+                  ? 'lumen.me.row.newOnServer'
+                  : `lumen.me.row.${r}`,
+                discoverRowLabel(r),
+                r === 'newOnPlex' ? { server: mediaServer().name } : undefined
+              )}
               on={rows[r]}
               {...row(`rows.${r}`)}
             />

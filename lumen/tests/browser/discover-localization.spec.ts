@@ -220,3 +220,72 @@ test('Discover shell, shelves, and recovery follow the account locale', async ({
       animations: 'disabled',
     });
 });
+
+test('administrator Discover row controls follow the account locale', async ({
+  page,
+}, info) => {
+  const settingsLocale = (process.env.LUMEN_SETTINGS_LOCALE ?? 'en') as
+    'en' | 'fr' | 'ar';
+  const localeLabels = {
+    en: ['Discover rows', 'Popular right now', 'New on Plex'],
+    fr: [
+      'Sections de découverte',
+      'Populaires en ce moment',
+      'Nouveautés sur Plex',
+    ],
+    ar: ['أقسام الاستكشاف', 'الأكثر رواجًا الآن', 'جديد على Plex'],
+  }[settingsLocale];
+  const expected = process.env.LUMEN_DISCOVER_BASELINE
+    ? ['Discover rows', 'Popular right now', 'New on Plex']
+    : localeLabels;
+
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: { mediaServerName: 'Plex' } })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          displayName: 'Fixture Admin',
+          permissions: 2,
+          settings: {},
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: settingsLocale } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          mediaServerType: 1,
+          movie4kEnabled: false,
+          series4kEnabled: false,
+          partialRequestsEnabled: true,
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          audiobookServiceEnabled: true,
+          enabledMediaCategories: {},
+        },
+      });
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
+    return route.fulfill({ json: [] });
+  });
+
+  await page.goto(
+    process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
+      ? '/lumen/me/lumen'
+      : '/me/lumen'
+  );
+  for (const label of expected)
+    await expect(page.getByText(label).first()).toBeVisible();
+  if (process.env.LUMEN_DISCOVER_CAPTURE)
+    await page.screenshot({
+      path: info.outputPath(`admin-discover-${settingsLocale}.png`),
+      fullPage: true,
+      animations: 'disabled',
+    });
+});

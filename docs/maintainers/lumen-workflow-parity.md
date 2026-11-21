@@ -21,7 +21,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. Signed-out Lumen login and password recovery now follow the browser's supported locale in French and Arabic. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
-| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
+| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. The admin Lumen settings page uses the signed-in locale for Discover row headings and row labels. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Account-synced Lumen preferences
 
@@ -276,6 +276,12 @@ Matched baseline/candidate captures show unchanged geometry and no new clipping
 or overflow. This is fixture-based UI evidence; provider results and independent
 linguistic review remain open. Evidence is retained at
 `seerrng-lumen-discover-localization-20261121` in task scratch.
+
+The administrator's Lumen settings page now uses the same translated Discover
+row labels as personal settings. English, French, and Arabic standalone and
+bundled browser cases pass on desktop, iPhone, Android, and tablet. Matched
+before/after captures show the same layout and no clipping from translated row
+labels; broader settings-page localization and visual review remain open.
 
 ## Delivery and verification
 
