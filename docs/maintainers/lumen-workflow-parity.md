@@ -297,8 +297,14 @@ exact season and episode. Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-20261121/native-large-series/`.
 This fixture proves the partial-response and request-selection path, not the
 live provider outage shown in the user's screenshot. Live-provider confirmation
-remains open, and this server-side fix does not complete Lumen's separate
-series-selection parity audit.
+remains open. Lumen now separately verifies the series-selection counterpart:
+a 15-season series exposes all seasons, deep-links to season 15, selects all
+seasons, and submits the exact whole-series payload. The same browser suite
+also verifies failed episode metadata can be retried without losing the
+deep-linked episode. The 64-case TV request-state suite passes in standalone
+Lumen and the Express `/lumen/` mount across desktop, iPhone, Android, and
+tablet. These fixture cases close the selection and retry coverage gap; live
+provider behavior and native-matched visual acceptance remain open.
 
 Season details with an empty but valid `episodes` array now count as loaded
 metadata instead of being dropped and retried as failed. This prevents a

@@ -168,6 +168,50 @@ test('a partly requested series keeps the other seasons requestable @tv-request-
   expect(posts).toEqual([]);
 });
 
+// release-note: none
+test('a large series selects all fifteen seasons and submits the whole-series request', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  const largeSeriesSeasons = Array.from({ length: 15 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  await show(
+    page,
+    { status: 1, seasons: [], requests: [] },
+    posts,
+    2,
+    undefined,
+    {},
+    largeSeriesSeasons
+  );
+  await page.goto(appPath('/tv/84773#season-15'));
+  const rows = page.locator('.srow');
+  await expect(rows).toHaveCount(15);
+  await expect(rows.nth(14)).toHaveAttribute('id', 'season-15');
+  await rows.nth(14).scrollIntoViewIfNeeded();
+  await page
+    .getByRole('button', { name: 'Entire series', exact: true })
+    .click();
+  for (let index = 0; index < 15; index++)
+    await expect(rows.nth(index)).toHaveAttribute('aria-checked', 'true');
+  const request = page.getByRole('button', {
+    name: 'Request entire series',
+    exact: true,
+  });
+  await expect(request).toBeEnabled();
+  await request.click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: { mediaType: 'tv', mediaId: 84773, seasons: 'all' },
+    },
+  ]);
+});
+
 test('a partial season with a live request stays locked and keeps playback available', async ({
   page,
 }) => {
