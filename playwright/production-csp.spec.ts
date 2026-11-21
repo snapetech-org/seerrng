@@ -36,7 +36,7 @@ for (const frontend of ['native', 'lumen'] as const) {
       await (
         frontend === 'native'
           ? page.getByTestId('local-signin-button')
-          : page.getByRole('button', { name: 'Sign in', exact: true })
+          : page.getByRole('button', { name: 'Sign In', exact: true })
       ).click();
       await expect(email).toBeEnabled();
       await expect(
