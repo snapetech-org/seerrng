@@ -1369,7 +1369,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             'lumen.browse.checkedPopular',
             'Checked the {count} most popular {media}.',
             {
-              count: (list.page * 20).toLocaleString(),
+              count: (list.page * 20).toLocaleString(locale),
               media: word.toLowerCase(),
             }
           )}

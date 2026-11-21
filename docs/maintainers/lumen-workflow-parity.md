@@ -642,8 +642,8 @@ Music, and Comics in both deployments (6 cases). Existing query parameters,
 include/exclude values, and filter application behavior are unchanged. Matched
 English baseline and candidate screens at 1440 × 900 and 390 × 844 were
 compared; French and Arabic were inspected at the same sizes. Translated labels
-fit the existing controls and no horizontal overflow was found. Movie and
-remaining non-filter Browse copy remains open. Page heading, subtitle,
+fit the existing controls and no horizontal overflow was found. Remaining
+non-filter Browse copy remains open. Page heading, subtitle,
 search-hint, genre-directory heading, and dynamic language/country name
 localization are covered by the following increment. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
@@ -662,6 +662,23 @@ in standalone and embedded `/lumen/` deployments (24 cases). The English
 baseline; French and Arabic desktop/phone renders were inspected, retain RTL,
 and have no horizontal overflow. Native date placeholders remain browser
 locale-controlled. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
+### Bounded Browse availability paging
+
+Movie and series availability views that require local filtering now report the
+number of catalog entries checked using the saved account locale. Their
+existing five-page scan cap remains intact; the localized Look Further action
+advances the cap by another five pages. A browser regression returns an empty
+provider catalog, verifies the exact five-page initial bound, resumes at page
+six, and proves the next stop occurs at page ten. English, French, and Arabic
+fixtures pass across desktop, iPhone, Android, and tablet, in standalone and
+embedded `/lumen/` deployments (24 cases). This verifies client paging against
+fixtures, not live provider latency or server rate-limit behavior. Screenshots
+show the English capped state pixel-identical to baseline commit `a40c10922`
+at desktop and iPhone viewports; French and Arabic desktop and phone states
+were inspected, including the long result summary and continuation button.
+Results and screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
 ### My Media browse increment
