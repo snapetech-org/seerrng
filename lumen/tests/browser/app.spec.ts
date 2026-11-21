@@ -5205,11 +5205,77 @@ test('Song identification polls and requests the exact recording', async ({
   page,
 }) => {
   await fixtures(page);
-  const empty = { id: 'run-1', albums: [], tracks: [] };
-  let submitted: unknown;
-  await page.route('**/api/v1/soulseek/status', (route) =>
-    route.fulfill({ json: { configured: true, canRequest: true } })
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_SONG_LOCALE ?? '')
+    ? (process.env.LUMEN_SONG_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copyByLocale = {
+    en: {
+      title: 'Identify a Song',
+      source: 'Link or Description',
+      identify: 'Identify',
+      queue: 'Waiting in queue (position 2)',
+      albums: 'Albums',
+      tracks: 'Tracks',
+      exact: 'Exact match',
+      open: 'Open Album',
+      request: 'Request Track',
+      requested: 'Track Requested',
+    },
+    fr: {
+      title: 'Identifier un titre',
+      source: 'Lien ou description',
+      identify: 'Identifier',
+      queue: 'En attente dans la file (position 2)',
+      albums: 'Albums',
+      tracks: 'Titres',
+      exact: 'Correspondance exacte',
+      open: 'Ouvrir l’album',
+      request: 'Demander le titre',
+      requested: 'Titre demandé',
+    },
+    ar: {
+      title: 'التعرّف على أغنية',
+      source: 'رابط أو وصف',
+      identify: 'تعرّف',
+      queue: 'بانتظارك في قائمة الانتظار (الموضع 2)',
+      albums: 'الألبومات',
+      tracks: 'المقاطع',
+      exact: 'تطابق تام',
+      open: 'فتح الألبوم',
+      request: 'طلب المقطع',
+      requested: 'تم طلب المقطع',
+    },
+  };
+  const copy = process.env.LUMEN_SONG_BASELINE
+    ? copyByLocale.en
+    : copyByLocale[locale];
+  let statusChecks = 0;
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
   );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  const empty = {
+    id: 'run-1',
+    albums: [
+      {
+        releaseId: 'release-1',
+        releaseGroupId: 'album-group',
+        title: 'An album',
+        artist: 'An artist',
+        isExact: true,
+      },
+    ],
+    tracks: [],
+  };
+  let submitted: unknown;
+  await page.route('**/api/v1/soulseek/status', (route) => {
+    statusChecks += 1;
+    return route.fulfill({ json: { configured: true, canRequest: true } });
+  });
   await page.route('**/api/v1/soulseek/songid', (route) => {
     expect(route.request().postDataJSON()).toEqual({
       source: 'A song description',
@@ -5239,17 +5305,46 @@ test('Song identification polls and requests the exact recording', async ({
     submitted = route.request().postDataJSON();
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/identify?source=A+song+description');
-  await expect(page.getByLabel('Link or Description')).toHaveValue(
-    'A song description'
-  );
-  await page.getByRole('button', { name: 'Identify', exact: true }).click();
-  await expect(page.getByText('Waiting in queue (position 2)')).toBeVisible();
-  await page
-    .getByRole('button', { name: 'Request Track', exact: true })
-    .click();
+  await page.goto(testAppPath('/identify?source=A+song+description'));
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  await expect(page.getByLabel(copy.source)).toHaveValue('A song description');
+  await page.getByRole('button', { name: copy.identify, exact: true }).click();
+  await expect(page.getByText(copy.queue)).toBeVisible();
+  await expect(page.getByRole('heading', { name: copy.albums })).toBeVisible();
+  await expect(page.getByRole('heading', { name: copy.tracks })).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Track Requested' })
+    page.locator('small').filter({ hasText: copy.exact })
+  ).toHaveCount(2);
+  await expect(page.getByRole('link', { name: copy.open })).toHaveAttribute(
+    'href',
+    testAppPath('/music/album-group')
+  );
+  const requestButton = page.getByRole('button', {
+    name: copy.request,
+    exact: true,
+  });
+  const tabbar = page.locator('.tabbar');
+  if (await tabbar.isVisible()) {
+    await requestButton.scrollIntoViewIfNeeded();
+    const [actionBounds, tabbarBounds] = await Promise.all([
+      requestButton.boundingBox(),
+      tabbar.boundingBox(),
+    ]);
+    expect(actionBounds).not.toBeNull();
+    expect(tabbarBounds).not.toBeNull();
+    expect(actionBounds!.y + actionBounds!.height).toBeLessThanOrEqual(
+      tabbarBounds!.y
+    );
+  }
+  if (process.env.LUMEN_SONG_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_SONG_CAPTURE}-${process.env.LUMEN_SONG_BASELINE ? `baseline-${locale}` : locale}-${test.info().project.name}.png`,
+      fullPage: false,
+    });
+  }
+  await requestButton.click();
+  await expect(
+    page.getByRole('button', { name: copy.requested })
   ).toBeDisabled();
   expect(submitted).toEqual({
     tracks: [
@@ -5261,6 +5356,74 @@ test('Song identification polls and requests the exact recording', async ({
       },
     ],
   });
+  expect(statusChecks).toBe(1);
+});
+
+test('Song identification localizes provider failure and retry states', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_SONG_LOCALE ?? '')
+    ? (process.env.LUMEN_SONG_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copyByLocale = {
+    en: {
+      title: 'Identify a Song',
+      source: 'Link or Description',
+      identify: 'Identify',
+      failure: 'The server had a problem. Try again in a moment.',
+      noMatches: 'No matching recordings were found.',
+    },
+    fr: {
+      title: 'Identifier un titre',
+      source: 'Lien ou description',
+      identify: 'Identifier',
+      failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      noMatches: 'Aucun enregistrement correspondant n’a été trouvé.',
+    },
+    ar: {
+      title: 'التعرّف على أغنية',
+      source: 'رابط أو وصف',
+      identify: 'تعرّف',
+      failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+      noMatches: 'لم يتم العثور على تسجيلات مطابقة.',
+    },
+  };
+  const copy = copyByLocale[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  let statusChecks = 0;
+  await page.route('**/api/v1/soulseek/status', (route) => {
+    statusChecks += 1;
+    return route.fulfill({ json: { configured: true, canRequest: true } });
+  });
+  let attempts = 0;
+  await page.route('**/api/v1/soulseek/songid', (route) => {
+    if (++attempts === 1) return route.fulfill({ status: 503, json: {} });
+    return route.fulfill({
+      json: { id: 'run-2', status: 'completed', albums: [], tracks: [] },
+    });
+  });
+  await page.goto(testAppPath('/identify'));
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  await page.getByLabel(copy.source).fill('A song description');
+  await page.getByRole('button', { name: copy.identify }).click();
+  await expect(page.getByRole('alert')).toContainText(copy.failure);
+  if (process.env.LUMEN_SONG_ERROR_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_SONG_ERROR_CAPTURE}-${locale}-${test.info().project.name}.png`,
+    });
+  }
+  await page.getByRole('button', { name: copy.identify }).click();
+  await expect(page.getByText(copy.noMatches, { exact: true })).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  expect(statusChecks).toBe(1);
 });
 
 test('Playlist Import reviews matches and retries only failed requests', async ({

@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface Track {
   recordingId: string;
@@ -33,6 +34,7 @@ interface SongRun {
 const finished = new Set(['completed', 'failed', 'cancelled']);
 
 export default function SongIdentify() {
+  const { t } = useLumenLocale();
   const [params] = useSearchParams();
   const [source, setSource] = useState(() =>
     (params.get('source') ?? '').slice(0, 2048)
@@ -43,8 +45,18 @@ export default function SongIdentify() {
   const [pollError, setPollError] = useState('');
   const [requested, setRequested] = useState<string[]>([]);
   const working = useRef(false);
+  const formatServiceError = useCallback(
+    (failure: unknown, fallback: string) =>
+      friendlyError(
+        failure,
+        t('lumen.songIdentify.availabilityFailure', fallback),
+        (id, text) => t(id, text)
+      ),
+    [t]
+  );
   const service = useApi<{ configured: boolean; canRequest: boolean }>(
-    '/soulseek/status'
+    '/soulseek/status',
+    { formatError: formatServiceError }
   );
   const canRequest = service.data?.configured && service.data.canRequest;
   const running = !!run && !finished.has(run.status);
@@ -64,7 +76,14 @@ export default function SongIdentify() {
       } catch (failure) {
         if (!controller.signal.aborted)
           setPollError(
-            friendlyError(failure, 'Could not read identification progress.')
+            friendlyError(
+              failure,
+              t(
+                'lumen.songIdentify.pollFailure',
+                'Could not read identification progress.'
+              ),
+              (id, fallback) => t(id, fallback)
+            )
           );
       }
     }, 3000);
@@ -96,7 +115,13 @@ export default function SongIdentify() {
       );
       setRequested([]);
     } catch (failure) {
-      setError(friendlyError(failure, 'Song identification failed.'));
+      setError(
+        friendlyError(
+          failure,
+          t('lumen.songIdentify.startFailure', 'Song identification failed.'),
+          (id, fallback) => t(id, fallback)
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -125,7 +150,16 @@ export default function SongIdentify() {
       });
       setRequested((current) => [...current, track.recordingId]);
     } catch (failure) {
-      setError(friendlyError(failure, 'The track could not be requested.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.songIdentify.requestFailure',
+            'The track could not be requested.'
+          ),
+          (id, fallback) => t(id, fallback)
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -136,26 +170,40 @@ export default function SongIdentify() {
   return (
     <>
       <header className="ph">
-        <h1>Identify a Song</h1>
+        <h1>{t('lumen.songIdentify.title', 'Identify a Song')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/track-requests">
-          Track Requests
+          {t('lumen.songIdentify.trackRequests', 'Track Requests')}
         </Link>
       </div>
       <ServiceNote
         error={service.error}
-        what="song identification availability"
+        what={t(
+          'lumen.songIdentify.availability',
+          'song identification availability'
+        )}
+        title={t(
+          'lumen.songIdentify.availabilityTitle',
+          'Song identification is unavailable'
+        )}
+        retryLabel={t('lumen.songIdentify.retry', 'Retry')}
         retry={service.reload}
       />
       {service.data?.configured === false && (
         <p className="note">
-          Song identification requires an administrator to connect slskdN.
+          {t(
+            'lumen.songIdentify.requiresService',
+            'Song identification requires an administrator to connect slskdN.'
+          )}
         </p>
       )}
       {service.data?.configured && !service.data.canRequest && (
         <p className="note">
-          Song identification requires track request access.
+          {t(
+            'lumen.songIdentify.requiresAccess',
+            'Song identification requires track request access.'
+          )}
         </p>
       )}
       {canRequest && (
@@ -165,10 +213,12 @@ export default function SongIdentify() {
             void start();
           }}
         >
-          <label className="sel">
-            <span className="lbl">Link or Description</span>
+          <label className="cfg-row">
+            <span>
+              {t('lumen.songIdentify.sourceLabel', 'Link or Description')}
+            </span>
             <textarea
-              className="cfg-json"
+              className="cfg-input"
               rows={2}
               maxLength={2048}
               value={source}
@@ -181,7 +231,9 @@ export default function SongIdentify() {
               className="btn btn-tonal"
               disabled={busy || identifying || !source.trim()}
             >
-              {identifying ? 'Identifying…' : 'Identify'}
+              {identifying
+                ? t('lumen.songIdentify.identifying', 'Identifying…')
+                : t('lumen.songIdentify.identify', 'Identify')}
             </button>
           </div>
         </form>
@@ -193,28 +245,45 @@ export default function SongIdentify() {
       )}
       <ServiceNote
         error={pollError || null}
-        what="identification progress"
+        what={t('lumen.songIdentify.progressName', 'identification progress')}
+        title={t(
+          'lumen.songIdentify.progressTitle',
+          'Could not load identification progress'
+        )}
+        retryLabel={t('lumen.songIdentify.retry', 'Retry')}
         retry={() => setPollError('')}
       />
       {run && identifying && (
         <p className="note" role="status">
           {run.queuePosition
-            ? `Waiting in queue (position ${run.queuePosition})`
+            ? t(
+                'lumen.songIdentify.queuePosition',
+                'Waiting in queue (position {position})',
+                {
+                  position: run.queuePosition,
+                }
+              )
             : `${run.stage ?? run.status} · ${Math.round(run.percentComplete ?? 0)}%`}
         </p>
       )}
       {run && !running && run.status !== 'completed' && (
         <p className="note" role="alert">
-          {run.summary ?? 'Song identification failed.'}
+          {run.summary ??
+            t('lumen.songIdentify.failed', 'Song identification failed.')}
         </p>
       )}
       {run?.status === 'completed' && (
         <>
           {!run.albums.length && !run.tracks.length && (
-            <p className="note">No matching recordings were found.</p>
+            <p className="note">
+              {t(
+                'lumen.songIdentify.noMatches',
+                'No matching recordings were found.'
+              )}
+            </p>
           )}
           {!!run.albums.length && (
-            <Section title="Albums">
+            <Section title={t('lumen.songIdentify.albums', 'Albums')}>
               <ul className="setlist">
                 {run.albums.map((album) => (
                   <li className="set" key={album.releaseId}>
@@ -222,7 +291,9 @@ export default function SongIdentify() {
                       <b>{album.title}</b>
                       <small>
                         {album.artist}
-                        {album.isExact ? ' · Exact match' : ''}
+                        {album.isExact
+                          ? ` · ${t('lumen.songIdentify.exactMatch', 'Exact match')}`
+                          : ''}
                       </small>
                     </div>
                     {album.releaseGroupId && (
@@ -230,7 +301,7 @@ export default function SongIdentify() {
                         className="btn btn-quiet btn-sm"
                         to={`/music/${encodeURIComponent(album.releaseGroupId)}`}
                       >
-                        Open Album
+                        {t('lumen.songIdentify.openAlbum', 'Open Album')}
                       </Link>
                     )}
                   </li>
@@ -239,7 +310,7 @@ export default function SongIdentify() {
             </Section>
           )}
           {!!run.tracks.length && (
-            <Section title="Tracks">
+            <Section title={t('lumen.songIdentify.tracks', 'Tracks')}>
               <ul className="setlist">
                 {run.tracks.map((track) => (
                   <li className="set" key={track.recordingId}>
@@ -247,7 +318,9 @@ export default function SongIdentify() {
                       <b>{track.title}</b>
                       <small>
                         {track.artist}
-                        {track.isExact ? ' · Exact match' : ''}
+                        {track.isExact
+                          ? ` · ${t('lumen.songIdentify.exactMatch', 'Exact match')}`
+                          : ''}
                       </small>
                     </div>
                     <button
@@ -260,8 +333,11 @@ export default function SongIdentify() {
                       onClick={() => void requestTrack(track)}
                     >
                       {requested.includes(track.recordingId)
-                        ? 'Track Requested'
-                        : 'Request Track'}
+                        ? t(
+                            'lumen.songIdentify.trackRequested',
+                            'Track Requested'
+                          )
+                        : t('lumen.songIdentify.requestTrack', 'Request Track')}
                     </button>
                   </li>
                 ))}

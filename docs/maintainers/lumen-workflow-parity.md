@@ -2686,10 +2686,23 @@ identification remain open.
 Track Requests links to Identify a Song. Lumen restores the source from
 recognition bookmarks, shows queued and running progress, and offers
 matched album links and exact recording requests through the existing
-SongID and Soulseek endpoints. Eight standalone browser fixtures passed
-for identification and the track queue across four viewport presets.
-Live services, bundled rendering, and matched native visual comparison
-remain open.
+SongID and Soulseek endpoints. The route now localizes its form, queue
+position, album/track sections, exact-match labels, request state, service
+availability, and recovery messages in English, French, and Arabic. The
+multiline input uses the shared configuration-row layout, keeping its label
+and source text separate on phones. Request authorization and API payloads
+are unchanged.
+
+The browser flows verify the source restored from the URL, queue polling,
+matched album link, exact-match display, exact recording request body, provider
+failure and retry, and the mobile request button clearing the fixed tab bar.
+All 48 cases pass across standalone and embedded production builds for three
+locales and four viewport presets. French desktop and phone baseline/candidate
+screenshots were compared; Arabic desktop and phone candidates were inspected.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-song-identification-20261121/`.
+Live SongID/Soulseek services, independent translation review, and matched
+native visual comparison remain open.
 
 ### Playlist import review
 
