@@ -108,6 +108,20 @@ async function fixture(
           results: requests,
         },
       });
+    if (path === '/request/status')
+      return route.fulfill({
+        json: {
+          pageInfo: { pages: 1, results: requests.length },
+          results: requests.map(({ canRemove, ...item }) => ({
+            request: item,
+            status: item.currentStatus ?? {
+              stage: 'queued',
+              percent: null,
+            },
+            canRemove,
+          })),
+        },
+      });
     if (path.startsWith('/user/1/settings/main'))
       return route.fulfill({ json: {} });
     if (path.startsWith('/service/') || path.startsWith('/genres/'))
@@ -255,6 +269,18 @@ test('managers can remove an eligible managed copy while preserving its request'
   await expect(confirmation).toHaveCount(0);
   expect(removed).toEqual(['/media/911/file?is4k=false']);
   await expect(page.locator('.rq')).toHaveCount(1);
+});
+
+test('the status timeline projection carries managed-copy eligibility', async ({
+  page,
+}) => {
+  const eligible = { ...request(917, 'movie'), canRemove: true };
+  await fixture(page, 16, [eligible]);
+  await page.goto(testAppPath('/requests?tab=everyone&show=attention'));
+  const row = page.locator('.rq').first();
+  await expect(
+    row.getByRole('button', { name: 'Remove from Service' })
+  ).toBeVisible();
 });
 
 const managedCopyScopes = [
