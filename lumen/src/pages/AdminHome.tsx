@@ -53,6 +53,7 @@ const destinationMessages: Record<string, string> = {
   'Default Request Quotas': 'lumen.admin.dest.quotas',
   'Default User Permissions': 'lumen.adminGeneral.permissions.title',
   'Default User Categories': 'lumen.adminCategories.defaultUserCategories',
+  'Proxy Password': 'components.Settings.SettingsNetwork.proxyPassword',
 };
 
 const destinations = [
@@ -169,6 +170,11 @@ const shortcuts = [
     'Default User Categories',
     '/admin/categories#default-user-categories',
     'categories media defaults account',
+  ],
+  [
+    'Proxy Password',
+    '/admin/network#proxy.password',
+    'outbound proxy credentials secret password',
   ],
   [
     'Prowlarr Settings',

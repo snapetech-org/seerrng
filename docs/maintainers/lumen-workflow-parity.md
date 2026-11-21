@@ -5092,3 +5092,10 @@ fixtures verify the localized search results, destinations, and automatically
 expanded permissions editor across desktop, iPhone, Android, and tablet; all
 twelve locale and viewport cases passed. Search-result captures are retained
 alongside the General Settings evidence.
+
+Administration search also opens the Outbound Proxy password field directly.
+The field is an explicit fragment target, displays no saved secret, and retains
+the existing blank-means-keep behavior. Its browser fixture verifies the exact
+destination, visible field, and safety hint across desktop, iPhone, Android,
+and tablet. The full-page captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/admin-menu-candidate/`.

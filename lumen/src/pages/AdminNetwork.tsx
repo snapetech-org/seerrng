@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
@@ -594,7 +594,7 @@ function NetworkForm({
                 (id === 'proxy.password' &&
                   draft['proxy.clearPassword'] === true);
               return (
-                <label key={id} className="set cfg-row">
+                <label key={id} id={id} className="set cfg-row">
                   <span>
                     <b>{label}</b>
                     {help && <small>{help}</small>}
@@ -715,6 +715,13 @@ export default function AdminNetwork() {
   const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   const tls = useApi<{ environmentOverrides?: string[] }>('/status/tls');
+  useEffect(() => {
+    if (!settings.data || !window.location.hash) return;
+    const target = document.getElementById(
+      decodeURIComponent(window.location.hash.slice(1))
+    );
+    target?.scrollIntoView({ block: 'center' });
+  }, [settings.data]);
   return (
     <>
       <header className="ph">
