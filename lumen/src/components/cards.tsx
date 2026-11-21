@@ -193,6 +193,7 @@ export function statusLabel(
   if (s.word === 'In library') return t('lumen.status.inLibrary', s.word);
   if (s.word === 'Requested') return t('lumen.status.requested', s.word);
   if (s.word === 'Downloading') return t('lumen.status.downloading', s.word);
+  if (s.word === 'Complete') return t('lumen.status.complete', s.word);
   if (s.word === 'Queued') return t('lumen.status.queued', s.word);
   if (s.word === 'Available to Other Users')
     return t('lumen.status.shared', s.word);

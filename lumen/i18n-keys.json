@@ -30,6 +30,7 @@
   "lumen.status.inLibrary",
   "lumen.status.requested",
   "lumen.status.downloading",
+  "lumen.status.complete",
   "components.Layout.Sidebar.calendar",
   "components.Layout.Sidebar.gamesLibrary",
   "components.LiveTv.RecordingList.title",
