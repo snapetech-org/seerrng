@@ -5199,3 +5199,17 @@ the production Express `/lumen/` mount. Matched baseline/candidate renders at
 those viewports show unchanged layout, with the previously missing row visible
 in the candidate. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/delegated-watchlist-categories/`.
+
+My Media now uses the SeerrNG locale catalog for its library filters, provider
+states, identity matching, and private-pack controls, and Lumen's English,
+French, and Arabic translations for its added scan and tracking workflows.
+Connected-account recovery headings and malformed-response messages are also
+localized. The browser suite passes 44/44 across desktop, iPhone, Android, and
+tablet; the locale and recovery assertions also pass 8/8 each for French and
+Arabic. Baseline and candidate renders were compared at desktop and phone sizes
+for French and Arabic; layout geometry and horizontal fit remain stable. The
+screenshots and Playwright results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-localized/`.
+Live tracking-provider effects, production Express `/lumen/` verification,
+delegated library-sharing behavior, and matched native visual acceptance remain
+open.

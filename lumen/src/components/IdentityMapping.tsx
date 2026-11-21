@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api, type Paged, type TitleResult } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useToast } from './toast';
 
@@ -34,6 +35,7 @@ export default function IdentityMapping({
   item: MappingCandidate;
   updated: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(false);
   const [matches, setMatches] = useState<{ term: string; type: string }>();
   const [busy, setBusy] = useState(false);
@@ -44,6 +46,15 @@ export default function IdentityMapping({
       ? `/search?${new URLSearchParams({ query: matches.term, type: matches.type, page: '1' })}`
       : null,
     { currentPathOnly: true }
+  );
+  const results = (
+    Array.isArray(search.data?.results) ? search.data.results : []
+  ).filter(
+    (result) =>
+      result?.mediaType === matches?.type &&
+      Number.isSafeInteger(result.id) &&
+      result.id > 0 &&
+      result.id <= 1_000_000_000
   );
 
   async function change(id?: number) {
@@ -72,7 +83,15 @@ export default function IdentityMapping({
       setMatches(undefined);
       updated();
     } catch (cause) {
-      toast(friendlyError(cause, 'Couldn’t update the provider match'));
+      toast(
+        friendlyError(
+          cause,
+          t(
+            'components.IdentityMappingControls.saveFailed',
+            'The match could not be saved. Try again.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -92,7 +111,15 @@ export default function IdentityMapping({
             setMatches(undefined);
           }}
         >
-          {videoHref(item) ? 'Change Match' : 'Match Title'}
+          {videoHref(item)
+            ? t(
+                'components.IdentityMappingControls.change',
+                'Change title match'
+              )
+            : t(
+                'components.IdentityMappingControls.match',
+                'Match catalog title'
+              )}
         </button>
         {item.identityMapped && (
           <button
@@ -101,7 +128,7 @@ export default function IdentityMapping({
             disabled={busy}
             onClick={() => void change()}
           >
-            Reset Match
+            {t('components.IdentityMappingControls.reset', 'Reset title match')}
           </button>
         )}
       </div>
@@ -124,7 +151,14 @@ export default function IdentityMapping({
               <input
                 name="query"
                 type="search"
-                aria-label="Find a Match"
+                aria-label={t(
+                  'components.IdentityMappingControls.searchLabel',
+                  'Search SeerrNG catalog'
+                )}
+                placeholder={t(
+                  'components.IdentityMappingControls.searchHint',
+                  'Enter at least two characters.'
+                )}
                 defaultValue={item.title}
                 required
                 minLength={2}
@@ -133,15 +167,27 @@ export default function IdentityMapping({
               />
             </label>
             <label className="sel">
-              <span className="lbl">Media Type</span>
+              <span className="lbl">
+                {t(
+                  'components.IdentityMappingControls.mediaTypeLabel',
+                  'Catalog media type'
+                )}
+              </span>
               <select
                 name="type"
-                aria-label="Match Media Type"
+                aria-label={t(
+                  'components.IdentityMappingControls.mediaTypeLabel',
+                  'Catalog media type'
+                )}
                 defaultValue={item.mediaType ?? 'movie'}
                 disabled={busy}
               >
-                <option value="movie">Movies</option>
-                <option value="tv">Series</option>
+                <option value="movie">
+                  {t('components.IdentityMappingControls.movie', 'Movie')}
+                </option>
+                <option value="tv">
+                  {t('components.IdentityMappingControls.series', 'Series')}
+                </option>
               </select>
             </label>
             <button
@@ -149,32 +195,29 @@ export default function IdentityMapping({
               type="submit"
               disabled={busy}
             >
-              Search Matches
+              {t('i18n.searchLabel', 'Search')}
             </button>
           </form>
           {matches && (
             <ServiceNote
               error={search.error}
-              what="catalogue matches"
+              what={t('lumen.myMedia.catalogMatches', 'catalogue matches')}
+              title={t('lumen.myMedia.couldNotLoad', 'Could not load {what}', {
+                what: t('lumen.myMedia.catalogMatches', 'catalogue matches'),
+              })}
               retry={search.reload}
             />
           )}
           {matches && !search.data && !search.error && (
             <p className="note" role="status">
-              Searching for matches…
+              {t('components.IdentityMappingControls.searching', 'Searching…')}
             </p>
           )}
-          {matches && search.data && (
-            <ul className="setlist">
-              {(Array.isArray(search.data.results) ? search.data.results : [])
-                .filter(
-                  (result) =>
-                    result?.mediaType === matches.type &&
-                    Number.isSafeInteger(result.id) &&
-                    result.id > 0 &&
-                    result.id <= 1_000_000_000
-                )
-                .map((result) => {
+          {matches &&
+            search.data &&
+            (results.length ? (
+              <ul className="setlist">
+                {results.map((result) => {
                   const title =
                     result.title ?? result.name ?? String(result.id);
                   return (
@@ -193,16 +236,26 @@ export default function IdentityMapping({
                         className="btn btn-tonal btn-sm"
                         type="button"
                         disabled={busy}
-                        aria-label={`Match ${title}`}
+                        aria-label={`${t('components.IdentityMappingControls.useMatch', 'Use this match')}: ${title}`}
                         onClick={() => void change(result.id)}
                       >
-                        Use Match
+                        {t(
+                          'components.IdentityMappingControls.useMatch',
+                          'Use this match'
+                        )}
                       </button>
                     </li>
                   );
                 })}
-            </ul>
-          )}
+              </ul>
+            ) : (
+              <p className="note">
+                {t(
+                  'components.IdentityMappingControls.noResults',
+                  'No matching titles were found.'
+                )}
+              </p>
+            ))}
         </>
       )}
     </div>

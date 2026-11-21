@@ -1363,6 +1363,108 @@ export const localeData = [
         'تطلب مشاهدة الموسم السابق',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'عند التفعيل، تنطبق هذه القاعدة على الجميع. وإلا، يمكن للمستخدمين طلب الموافقة من الملف الشخصي → قاعدة مواسم التلفزيون، ثم تفعيلها لحسابهم الخاص. إيقافها لا يزيل موافقتهم. تتطلب طلبات المواسم اللاحقة مشاهدة جميع حلقات الموسم العادي السابق. تُستثنى الحلقات الخاصة؛ يتم التحقق من التشغيل مقابل حساب Plex أو Jellyfin أو Emby المرتبط بالطالب. يمكن للمسؤولين ومديري الطلبات تجاوز القاعدة.',
+      'library.accounts': 'الحسابات المرتبطة بالمشروع',
+      'library.all': 'جميع الألقاب',
+      'library.allTypes': 'الأفلام والسلاسل',
+      'library.completed': 'مكتمل',
+      'library.completedState': 'مكتمل',
+      'library.disconnected':
+        'اتصل بحساب تتبع تحت حسابات (لينكد) لتصفية مكتبته',
+      'library.dropped': 'أسقط',
+      'library.empty': 'لا ألقاب تطابق هذا الرف',
+      'library.failed':
+        'مكتبتك لا يمكن تحميلها تحقق من اتصال المزود وحاول مرة أخرى',
+      'library.in-progress': 'قيد التنفيذ',
+      'library.limit':
+        'وصلت هذه الصفحة إلى حد الأمان تابعي التالى إذا كان متاحاً أو أنهي التصفيق في تطبيقك',
+      'library.loading': 'وضع مكتبتك...',
+      'library.mediaType': 'نوع الوسائط',
+      'library.movies': 'أفلام',
+      'library.next': 'الصفحة التالية',
+      'library.page': 'الصفحة {page}',
+      'library.planning': 'التخطيط للمشاهدة',
+      'library.previous': 'الصفحة السابقة',
+      'library.provider': 'مصدر المكتبة',
+      'library.rated': 'رُميت',
+      'library.rating': 'تقديرك: {rating}/10',
+      'library.repair': 'ابحثوا عن مباريات الهوية في هذه المكتبة',
+      'library.repairComplete': 'تم مسح المكتبة',
+      'library.repairContinue': 'مواصلة المسح',
+      'library.repairDescription':
+        'مسح كل صفحة فريدة IMDb أو مباريات التلفزيون المباريات المؤكدة تم حفظها لمباريات لقبك الخاص، والألقاب بدون تطابق واضح لا تزال متاحة للتطابق اليدوي.',
+      'library.repairFailed':
+        'تم إيقاف المسح في الصفحة {page}يمكنك الاستمرار من هناك',
+      'library.repairLimit':
+        'تم بلوغ الحد الأقصى للمطابقات الخاصة للعناوين. لم تُحفظ المطابقات الدقيقة اللاحقة.',
+      'library.repairPaused': 'تم إيقاف المسح الضوئي مؤقتًا في الصفحة {page}.',
+      'library.repairRunning': 'صفحة المسح {page}…',
+      'library.repairStop': 'توقف بعد هذه الدفعة',
+      'library.repairStopping': 'وقف بعد هذه الدفعة...',
+      'library.repairSummary':
+        'تم مسحها {scanned} اللقب، وجدت {matched} مباريات متطابقة {saved} تطابق اللقب الخاص',
+      'library.repairTruncated':
+        'بلغت مكتبة مزود الخدمة حد الفحص البالغ 500 صفحة في SeerrNG. تابع التصفح في تطبيق مزود الخدمة.',
+      'library.retry': 'إعادة المحاولة',
+      'library.series': 'مسلسلات',
+      'library.shelf': 'رف',
+      'library.title': 'مكتبي',
+      'library.total': '{count}/{total} حلقات شاهدت',
+      'library.unmapped':
+        'وتحتفظ بعض العناوين بهوية مقدميها الأصليين إلى أن يتم تأكيد تطابق الكتالوج.',
+      'library.unwatched': 'غير مُراقب',
+      'library.unwatchedState': 'غير مُراقب',
+      'library.watched': 'راقب',
+      'library.watchedState': 'مشاهدة الحلقات',
+      'library.watching': 'مشاهدة',
+      'components.IdentityMappingControls.change': 'تغيير مطابقة العنوان',
+      'components.IdentityMappingControls.match': 'طابق العنوان مع الكتالوج',
+      'components.IdentityMappingControls.mediaTypeLabel': 'نوع وسائط الإعلام',
+      'components.IdentityMappingControls.movie': 'فيلم',
+      'components.IdentityMappingControls.noResults':
+        'لم يتم العثور على عناوين مطابقة.',
+      'components.IdentityMappingControls.reset': 'إعادة تعيين مطابقة العنوان',
+      'components.IdentityMappingControls.resetFailed':
+        'تعذّرت إعادة تعيين مطابقة العنوان. حاول مرة أخرى.',
+      'components.IdentityMappingControls.resetSaved':
+        'تمت إعادة تعيين مطابقة العنوان.',
+      'components.IdentityMappingControls.saveFailed':
+        'تعذّر حفظ المطابقة. حاول مرة أخرى.',
+      'components.IdentityMappingControls.saved': 'تم حفظ مطابقة العنوان.',
+      'components.IdentityMappingControls.searchFailed':
+        'فشل البحث في الكتالوج. حاول مرة أخرى.',
+      'components.IdentityMappingControls.searchHint': 'أدخل حرفين على الأقل.',
+      'components.IdentityMappingControls.searchLabel':
+        'ابحث في كتالوج SeerrNG',
+      'components.IdentityMappingControls.searching': 'البحث...',
+      'components.IdentityMappingControls.series': 'مسلسلات',
+      'components.IdentityMappingControls.useMatch': 'استخدم هذه المطابقة',
+      'components.IdentityMappingPackControls.clear': 'إزالة الملف المحدد',
+      'components.IdentityMappingPackControls.description':
+        'صدّر مطابقات العناوين الخاصة بك أو استعدها لخدمات Trakt وAniList وSimkl وMDBList وPlex وJellyfin وEmby.',
+      'components.IdentityMappingPackControls.export': 'تصدير مطابقات العناوين',
+      'components.IdentityMappingPackControls.exportFailed':
+        'تعذّر تصدير مطابقات العناوين. حاول مرة أخرى.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} يحتوي على {count} من مطابقات العناوين.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'يجب ألا يتجاوز حجم ملف مطابقة العناوين 5 MiB.',
+      'components.IdentityMappingPackControls.import':
+        'استيراد مطابقات العناوين',
+      'components.IdentityMappingPackControls.importDescription':
+        'تضيف عملية الاستيراد مطابقات جديدة وتحدّث المطابقات التي لها عنصر المزوّد نفسه. وتظل جميع المطابقات المستوردة خاصة بحسابك.',
+      'components.IdentityMappingPackControls.importFailed':
+        'تعذّر استيراد حزمة مطابقات العناوين. تحقق من الملف وحاول مرة أخرى.',
+      'components.IdentityMappingPackControls.importLabel':
+        'اختر حزمة مطابقات العناوين من SeerrNG.',
+      'components.IdentityMappingPackControls.imported':
+        'تم استيراد {imported} وتحديث {updated} وترك {unchanged} دون تغيير.',
+      'components.IdentityMappingPackControls.importing': 'جاري الإستيراد…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'اختر ملف JSON مدعومًا لمطابقة العنوان SeerrNG.',
+      'components.IdentityMappingPackControls.privacy':
+        'تحتوي الحزم على معرّفات عناصر المزوّد ومطابقات الكتالوج فقط. ولا تتضمن بيانات اعتماد الحساب مطلقًا.',
+      'components.IdentityMappingPackControls.title':
+        'مطابقات العناوين الشخصية',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -3157,6 +3259,67 @@ export const localeData = [
       'lumen.category.adminHelp':
         'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.',
       'lumen.category.backDiscover': 'العودة إلى الاستكشاف',
+      'lumen.myMedia.noSource': 'اربط خادم وسائط أو حساب تتبع لتصفح مكتبتك.',
+      'lumen.myMedia.noLibraries': 'لا تتوفر مكتبات لخادم الوسائط.',
+      'lumen.myMedia.pages': 'صفحات المكتبة',
+      'lumen.myMedia.scanFailed': 'تعذر فحص المكتبة. حاول مرة أخرى.',
+      'lumen.myMedia.scan': 'فحص المكتبة',
+      'lumen.myMedia.enableWrites': 'هل تريد تحديث التتبع من وسائطي؟',
+      'lumen.myMedia.enableWritesLink': 'فعّل الكتابة في الحسابات المرتبطة',
+      'lumen.myMedia.tracking.update': 'تحديث التتبع',
+      'lumen.myMedia.tracking.markWatched': 'تحديد كمشاهد',
+      'lumen.myMedia.tracking.markUnwatched': 'تحديد كغير مشاهد',
+      'lumen.myMedia.tracking.rating': 'التقييم (0–10)',
+      'lumen.myMedia.tracking.saveRating': 'حفظ التقييم',
+      'lumen.myMedia.tracking.episodesWatched': 'الحلقات المشاهدة',
+      'lumen.myMedia.tracking.saveProgress': 'حفظ التقدم',
+      'lumen.myMedia.tracking.individualEpisodes': 'تتبع الحلقات الفردية',
+      'lumen.myMedia.tracking.loadingSeasons': 'جارٍ تحميل المواسم…',
+      'lumen.myMedia.tracking.noSeasons': 'لا تتوفر مواسم.',
+      'lumen.myMedia.tracking.loadingEpisodes': 'جارٍ تحميل الحلقات…',
+      'lumen.myMedia.tracking.noEpisodes': 'لا تتوفر حلقات.',
+      'lumen.myMedia.tracking.season': 'الموسم المتتبّع',
+      'lumen.myMedia.tracking.episode': 'الحلقة المتتبّعة',
+      'lumen.myMedia.tracking.markEpisodeWatched': 'تحديد الحلقة كمشاهدة',
+      'lumen.myMedia.tracking.markEpisodeUnwatched': 'تحديد الحلقة كغير مشاهدة',
+      'lumen.myMedia.tracking.watched': 'تمت المشاهدة لدى المزوّد.',
+      'lumen.myMedia.tracking.unwatched': 'لم تتم المشاهدة لدى المزوّد.',
+      'lumen.myMedia.tracking.unavailable': 'حالة المشاهدة غير متاحة.',
+      'lumen.myMedia.tracking.loadingStatus':
+        'جارٍ تحميل حالة الحلقة لدى المزوّد…',
+      'lumen.myMedia.tracking.updated': 'تم تحديث التتبع لدى المزوّد.',
+      'lumen.myMedia.tracking.pending':
+        'لا يزال المزوّد يعالج التحديث. تحقق من حسابك قبل إعادة المحاولة.',
+      'lumen.myMedia.tracking.notConfirmed':
+        'لم يؤكد المزوّد التحديث. تحقق من حسابك قبل إعادة المحاولة.',
+      'lumen.myMedia.tracking.confirmFailed':
+        'تعذر تأكيد تحديث التتبع. تحقق من حسابك قبل إعادة المحاولة.',
+      'lumen.myMedia.tracking.episodeConfirmTitle':
+        'هل تريد تحديد الحلقة كغير مشاهدة؟',
+      'lumen.myMedia.tracking.watchedConfirmTitle': 'هل تريد التحديد كمشاهد؟',
+      'lumen.myMedia.tracking.unwatchedConfirmTitle':
+        'هل تريد التحديد كغير مشاهد؟',
+      'lumen.myMedia.tracking.episodeConfirmBody':
+        'إزالة حالة المشاهدة عن {title}، الموسم {season}، الحلقة {episode}؟',
+      'lumen.myMedia.tracking.confirmBody':
+        'تحديث حالة مشاهدة {title} على حساب التتبع؟',
+      'lumen.myMedia.tracking.cancel': 'إلغاء',
+      'lumen.myMedia.manageAccounts': 'إدارة الحسابات المرتبطة',
+      'lumen.myMedia.invalidLibrary': 'استجابة المكتبة غير صالحة.',
+      'lumen.myMedia.invalidAccounts': 'استجابة الحسابات المرتبطة غير صالحة.',
+      'lumen.myMedia.yourLibrary': 'مكتبتك',
+      'lumen.myMedia.catalogMatches': 'نتائج الكتالوج المطابقة',
+      'lumen.myMedia.scanInvalidNext': 'أعاد فحص المكتبة صفحة تالية غير صالحة.',
+      'lumen.myMedia.tracking.invalidSeasons': 'استجابة المواسم غير صالحة.',
+      'lumen.myMedia.tracking.invalidEpisodes': 'استجابة الحلقات غير صالحة.',
+      'lumen.myMedia.tracking.invalidStatus':
+        'استجابة حالة المشاهدة من المزوّد غير صالحة.',
+      'lumen.myMedia.tracking.rejected': 'تم رفض تحديث التتبع.',
+      'lumen.myMedia.tracking.seriesSeasons': 'مواسم المسلسل',
+      'lumen.myMedia.tracking.seasonEpisodes': 'حلقات الموسم',
+      'lumen.myMedia.tracking.providerEpisodeStatus':
+        'حالة الحلقات لدى المزوّد',
+      'lumen.myMedia.couldNotLoad': 'تعذر تحميل {what}',
     },
   },
   {
@@ -6968,6 +7131,115 @@ export const localeData = [
         'Ansehen der vorherigen Staffel erforderlich',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Wenn aktiviert, gilt diese Regel für alle. Andernfalls können Benutzer eine Genehmigung über Profil → TV-Staffelregel anfordern und sie für ihr eigenes Konto aktivieren. Das Deaktivieren entfernt ihre Genehmigung nicht. Anforderungen für spätere Staffeln erfordern, dass jede Episode der vorherigen regulären Staffel angesehen wurde. Specials sind ausgenommen; die Wiedergabe wird anhand des verknüpften Plex-, Jellyfin- oder Emby-Kontos des Anforders geprüft. Administratoren und Anforderungsverwalter können die Regel außer Kraft setzen.',
+      'library.accounts': 'Verwalten von verbundenen Konten',
+      'library.all': 'Alle Titel',
+      'library.allTypes': 'Filme und Serien',
+      'library.completed': 'Abgeschlossen',
+      'library.completedState': 'Abgeschlossen',
+      'library.disconnected':
+        'Verbinden Sie ein Tracking-Konto unter Linked Accounts, um die Bibliothek zu durchsuchen.',
+      'library.dropped': 'Abgebrochen',
+      'library.empty': 'Keine Titel passen zu diesem Regal.',
+      'library.failed':
+        'Ihre Bibliothek konnte nicht geladen werden. Überprüfen Sie die Provider-Verbindung und versuchen Sie es erneut.',
+      'library.in-progress': 'Im Gange',
+      'library.limit':
+        'Diese Seite hat eine Sicherheitsgrenze erreicht. Fahren Sie mit Next fort, wenn verfügbar, oder beenden Sie das Surfen in Ihrer Provider-App.',
+      'library.loading': 'Laden Sie Ihre Bibliothek...',
+      'library.mediaType': 'Medientyp',
+      'library.movies': 'Filme',
+      'library.next': 'Nächste Seite',
+      'library.page': 'Seite {page}',
+      'library.planning': 'Zum Ansehen vorgemerkt',
+      'library.previous': 'Vorherige Seite',
+      'library.provider': 'Bibliotheksquelle',
+      'library.rated': 'Bewertet',
+      'library.rating': 'Ihre Bewertung: {rating}/10',
+      'library.repair':
+        'Finden Sie genaue ID-Übereinstimmungen in dieser Bibliothek',
+      'library.repairComplete': 'Bibliotheksscan abgeschlossen.',
+      'library.repairContinue': 'Scan fortsetzen',
+      'library.repairDescription':
+        'Scannen Sie jede Seite nach einzigartigen IMDb- oder TVDB-Matches. Bestätigte Übereinstimmungen werden in Ihren privaten Titelübereinstimmungen gespeichert; Titel ohne klare genaue Übereinstimmung bleiben für manuelle Übereinstimmungen verfügbar.',
+      'library.repairFailed':
+        'Der Scan stoppte auf Seite {page}. Von dort aus können Sie weitermachen.',
+      'library.repairLimit':
+        'Ihr privates Titel-Match-Limit wurde erreicht. Später genaue Übereinstimmungen wurden nicht gespeichert.',
+      'library.repairPaused': 'Scan angehalten auf Seite {page}.',
+      'library.repairRunning': 'Seite {page} wird gescannt…',
+      'library.repairStop': 'Stopp nach dieser Charge',
+      'library.repairStopping': 'Der Scan wird nach diesem Stapel beendet …',
+      'library.repairSummary':
+        '{scanned} Titel gescannt, {matched} exakte Übereinstimmungen gefunden und {saved} private Titelzuordnungen gespeichert.',
+      'library.repairTruncated':
+        'Die Anbieterbibliothek erreichte das 500-seitige Scan-Limit von SeerrNG. Surfen Sie weiter in der Provider-App.',
+      'library.retry': 'Erneut versuchen',
+      'library.series': 'Serien',
+      'library.shelf': 'Regal',
+      'library.title': 'Meine Bibliothek',
+      'library.total': '{count}/{total} Episoden angesehen',
+      'library.unmapped':
+        'Einige Titel behalten ihre ursprüngliche Anbieteridentität, bis eine Katalogübereinstimmung bestätigt wird.',
+      'library.unwatched': 'Nicht angesehen',
+      'library.unwatchedState': 'Nicht angesehen',
+      'library.watched': 'Angesehen',
+      'library.watchedState': 'Angesehene Episoden',
+      'library.watching': 'Wird angesehen',
+      'components.IdentityMappingControls.change':
+        'Titelübereinstimmung ändern',
+      'components.IdentityMappingControls.match': 'Katalogtitel zuordnen',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Art des Katalogmediums',
+      'components.IdentityMappingControls.movie': 'Film',
+      'components.IdentityMappingControls.noResults':
+        'Es wurden keine passenden Titel gefunden.',
+      'components.IdentityMappingControls.reset': 'Titelzuordnung zurücksetzen',
+      'components.IdentityMappingControls.resetFailed':
+        'Die Zuordnung konnte nicht zurückgesetzt werden. Versuchen Sie es erneut.',
+      'components.IdentityMappingControls.resetSaved':
+        'Titelzuordnung zurückgesetzt.',
+      'components.IdentityMappingControls.saveFailed':
+        'Die Zuordnung konnte nicht gespeichert werden. Versuchen Sie es erneut.',
+      'components.IdentityMappingControls.saved': 'Titelzuordnung gespeichert.',
+      'components.IdentityMappingControls.searchFailed':
+        'Die Katalogsuche ist fehlgeschlagen. Versuchen Sie es noch einmal.',
+      'components.IdentityMappingControls.searchHint':
+        'Geben Sie mindestens zwei Zeichen ein.',
+      'components.IdentityMappingControls.searchLabel':
+        'SeerrNG-Katalog durchsuchen',
+      'components.IdentityMappingControls.searching': 'Suche...',
+      'components.IdentityMappingControls.series': 'Serien',
+      'components.IdentityMappingControls.useMatch':
+        'Diese Zuordnung verwenden',
+      'components.IdentityMappingPackControls.clear':
+        'Ausgewählte Datei löschen',
+      'components.IdentityMappingPackControls.description':
+        'Exportieren Sie Ihre privaten Titelzuordnungen für Titel von Trakt, AniList, Simkl, MDBList, Plex, Jellyfin und Emby oder stellen Sie sie wieder her.',
+      'components.IdentityMappingPackControls.export':
+        'Titelzuordnungen exportieren',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Ihre Titelzuordnungen konnten nicht exportiert werden. Versuchen Sie es erneut.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} enthält {count} Titelzuordnungen.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'Die Titelzuordnungsdatei darf höchstens 5 MiB groß sein.',
+      'components.IdentityMappingPackControls.import':
+        'Titelzuordnungen importieren',
+      'components.IdentityMappingPackControls.importDescription':
+        'Import fügt neue Übereinstimmungen hinzu und aktualisiert Übereinstimmungen mit demselben Anbieterelement. Alle importierten Übereinstimmungen bleiben für Ihr Konto privat.',
+      'components.IdentityMappingPackControls.importFailed':
+        'Das Paket mit Titelzuordnungen konnte nicht importiert werden. Prüfen Sie die Datei und versuchen Sie es erneut.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Wählen Sie ein SeerrNG-Paket mit Titelzuordnungen aus.',
+      'components.IdentityMappingPackControls.imported':
+        '{imported} importiert, {updated} aktualisiert und {unchanged} unverändert belassen.',
+      'components.IdentityMappingPackControls.importing': 'Importieren…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Wählen Sie eine unterstützte SeerrNG-JSON-Datei mit Titelzuordnungen aus.',
+      'components.IdentityMappingPackControls.privacy':
+        'Pakete enthalten nur IDs von Anbietereinträgen und Katalogzuordnungen. Kontozugangsdaten sind niemals enthalten.',
+      'components.IdentityMappingPackControls.title':
+        'Persönliche Titelzuordnungen',
     },
   },
   {
@@ -8361,6 +8633,106 @@ export const localeData = [
         'Require the Previous Season to Be Watched',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'When enabled, this rule applies to everyone. Otherwise, users can request approval from Profile → TV Season Rule, then turn it on for their own account. Turning it off does not remove their approval. Later-season requests require every episode of the previous regular season to be watched. Specials are excluded; playback is checked against the requester’s linked Plex, Jellyfin, or Emby account. Administrators and request managers can override the rule.',
+      'library.accounts': 'Manage connected accounts',
+      'library.all': 'All titles',
+      'library.allTypes': 'Movies and series',
+      'library.completed': 'Completed',
+      'library.completedState': 'Completed',
+      'library.disconnected':
+        'Connect a tracking account under Linked Accounts to browse its library.',
+      'library.dropped': 'Dropped',
+      'library.empty': 'No titles match this shelf.',
+      'library.failed':
+        'Your library could not be loaded. Check the provider connection and try again.',
+      'library.in-progress': 'In progress',
+      'library.limit':
+        'This page reached a safety limit. Continue with Next if available, or finish browsing in your provider app.',
+      'library.loading': 'Loading your library…',
+      'library.mediaType': 'Media type',
+      'library.movies': 'Movies',
+      'library.next': 'Next page',
+      'library.page': 'Page {page}',
+      'library.planning': 'Planning to watch',
+      'library.previous': 'Previous page',
+      'library.provider': 'Library source',
+      'library.rated': 'Rated',
+      'library.rating': 'Your rating: {rating}/10',
+      'library.repair': 'Find exact ID matches across this library',
+      'library.repairComplete': 'Library scan complete.',
+      'library.repairContinue': 'Continue scan',
+      'library.repairDescription':
+        'Scan every page for unique IMDb or TVDB matches. Confirmed matches are saved to your private title matches; titles without a clear exact match remain available for manual matching.',
+      'library.repairFailed':
+        'The scan stopped at page {page}. You can continue from there.',
+      'library.repairLimit':
+        'Your private title-match limit was reached. Later exact matches were not saved.',
+      'library.repairPaused': 'Scan paused at page {page}.',
+      'library.repairRunning': 'Scanning page {page}…',
+      'library.repairStop': 'Stop after this batch',
+      'library.repairStopping': 'Stopping after this batch…',
+      'library.repairSummary':
+        'Scanned {scanned} titles, found {matched} exact matches, and saved {saved} private title matches.',
+      'library.repairTruncated':
+        'The provider library reached SeerrNG’s 500-page scan limit. Continue browsing in the provider app.',
+      'library.retry': 'Retry',
+      'library.series': 'Series',
+      'library.shelf': 'Shelf',
+      'library.title': 'My Media',
+      'library.total': '{count}/{total} episodes watched',
+      'library.unmapped':
+        'Some titles retain their original provider identity until a catalog match is confirmed.',
+      'library.unwatched': 'Unwatched',
+      'library.unwatchedState': 'Unwatched',
+      'library.watched': 'Watched',
+      'library.watchedState': 'Watched episodes',
+      'library.watching': 'Watching',
+      'components.IdentityMappingControls.change': 'Change title match',
+      'components.IdentityMappingControls.match': 'Match catalog title',
+      'components.IdentityMappingControls.mediaTypeLabel': 'Catalog media type',
+      'components.IdentityMappingControls.movie': 'Movie',
+      'components.IdentityMappingControls.noResults':
+        'No matching titles were found.',
+      'components.IdentityMappingControls.reset': 'Reset title match',
+      'components.IdentityMappingControls.resetFailed':
+        'The match could not be reset. Try again.',
+      'components.IdentityMappingControls.resetSaved': 'Title match reset.',
+      'components.IdentityMappingControls.saveFailed':
+        'The match could not be saved. Try again.',
+      'components.IdentityMappingControls.saved': 'Title match saved.',
+      'components.IdentityMappingControls.searchFailed':
+        'The catalog search failed. Try again.',
+      'components.IdentityMappingControls.searchHint':
+        'Enter at least two characters.',
+      'components.IdentityMappingControls.searchLabel':
+        'Search SeerrNG catalog',
+      'components.IdentityMappingControls.searching': 'Searching…',
+      'components.IdentityMappingControls.series': 'Series',
+      'components.IdentityMappingControls.useMatch': 'Use this match',
+      'components.IdentityMappingPackControls.clear': 'Clear selected file',
+      'components.IdentityMappingPackControls.description':
+        'Export or restore your private matches for Trakt, AniList, Simkl, MDBList, Plex, Jellyfin, and Emby titles.',
+      'components.IdentityMappingPackControls.export': 'Export title matches',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Your title matches could not be exported. Try again.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} contains {count} title matches.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'The title-match file must be 5 MiB or smaller.',
+      'components.IdentityMappingPackControls.import': 'Import title matches',
+      'components.IdentityMappingPackControls.importDescription':
+        'Import adds new matches and updates matches with the same provider item. All imported matches remain private to your account.',
+      'components.IdentityMappingPackControls.importFailed':
+        'The title-match pack could not be imported. Check the file and try again.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Choose a SeerrNG title-match pack',
+      'components.IdentityMappingPackControls.imported':
+        'Imported {imported}, updated {updated}, and left {unchanged} unchanged.',
+      'components.IdentityMappingPackControls.importing': 'Importing…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Choose a supported SeerrNG title-match JSON file.',
+      'components.IdentityMappingPackControls.privacy':
+        'Packs contain provider item IDs and catalog matches only. Account credentials are never included.',
+      'components.IdentityMappingPackControls.title': 'Personal title matches',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -10117,6 +10489,66 @@ export const localeData = [
       'lumen.category.adminHelp':
         'An admin can enable it in SeerrNG under Settings › General › Media categories.',
       'lumen.category.backDiscover': 'Back to Discover',
+      'lumen.myMedia.noSource':
+        'Link a media server or tracking account to browse your library.',
+      'lumen.myMedia.noLibraries': 'No media server libraries are available.',
+      'lumen.myMedia.pages': 'Library pages',
+      'lumen.myMedia.scanFailed': 'Could not scan the library. Try again.',
+      'lumen.myMedia.scan': 'Scan Library',
+      'lumen.myMedia.enableWrites': 'Want to update tracking from My Media?',
+      'lumen.myMedia.enableWritesLink': 'Enable writes in Linked Accounts',
+      'lumen.myMedia.tracking.update': 'Update Tracking',
+      'lumen.myMedia.tracking.markWatched': 'Mark Watched',
+      'lumen.myMedia.tracking.markUnwatched': 'Mark Unwatched',
+      'lumen.myMedia.tracking.rating': 'Rating (0–10)',
+      'lumen.myMedia.tracking.saveRating': 'Save Rating',
+      'lumen.myMedia.tracking.episodesWatched': 'Episodes Watched',
+      'lumen.myMedia.tracking.saveProgress': 'Save Progress',
+      'lumen.myMedia.tracking.individualEpisodes': 'Track Individual Episodes',
+      'lumen.myMedia.tracking.loadingSeasons': 'Loading seasons…',
+      'lumen.myMedia.tracking.noSeasons': 'No seasons are available.',
+      'lumen.myMedia.tracking.loadingEpisodes': 'Loading episodes…',
+      'lumen.myMedia.tracking.noEpisodes': 'No episodes are available.',
+      'lumen.myMedia.tracking.season': 'Tracking Season',
+      'lumen.myMedia.tracking.episode': 'Tracking Episode',
+      'lumen.myMedia.tracking.markEpisodeWatched': 'Mark Episode Watched',
+      'lumen.myMedia.tracking.markEpisodeUnwatched': 'Mark Episode Unwatched',
+      'lumen.myMedia.tracking.watched': 'Watched on provider.',
+      'lumen.myMedia.tracking.unwatched': 'Unwatched on provider.',
+      'lumen.myMedia.tracking.unavailable': 'Watch status unavailable.',
+      'lumen.myMedia.tracking.loadingStatus':
+        'Loading provider episode status…',
+      'lumen.myMedia.tracking.updated': 'Provider tracking updated.',
+      'lumen.myMedia.tracking.pending':
+        'The provider is still processing the update. Check your account before retrying.',
+      'lumen.myMedia.tracking.notConfirmed':
+        'The provider did not confirm the update. Check your account before retrying.',
+      'lumen.myMedia.tracking.confirmFailed':
+        'Could not confirm the tracking update. Check your account before retrying.',
+      'lumen.myMedia.tracking.episodeConfirmTitle': 'Mark Episode Unwatched?',
+      'lumen.myMedia.tracking.watchedConfirmTitle': 'Mark Watched?',
+      'lumen.myMedia.tracking.unwatchedConfirmTitle': 'Mark Unwatched?',
+      'lumen.myMedia.tracking.episodeConfirmBody':
+        'Remove watched status for {title}, season {season}, episode {episode}?',
+      'lumen.myMedia.tracking.confirmBody':
+        'Update watched status for {title} on your tracking account?',
+      'lumen.myMedia.tracking.cancel': 'Cancel',
+      'lumen.myMedia.manageAccounts': 'Manage Linked Accounts',
+      'lumen.myMedia.invalidLibrary': 'Invalid library response.',
+      'lumen.myMedia.invalidAccounts': 'Invalid connected accounts response.',
+      'lumen.myMedia.yourLibrary': 'your library',
+      'lumen.myMedia.catalogMatches': 'catalogue matches',
+      'lumen.myMedia.scanInvalidNext':
+        'The library scan returned an invalid next page.',
+      'lumen.myMedia.tracking.invalidSeasons': 'Invalid seasons response.',
+      'lumen.myMedia.tracking.invalidEpisodes': 'Invalid episodes response.',
+      'lumen.myMedia.tracking.invalidStatus':
+        'Invalid provider watch status response.',
+      'lumen.myMedia.tracking.rejected': 'The tracking update was rejected.',
+      'lumen.myMedia.tracking.seriesSeasons': 'series seasons',
+      'lumen.myMedia.tracking.seasonEpisodes': 'season episodes',
+      'lumen.myMedia.tracking.providerEpisodeStatus': 'provider episode status',
+      'lumen.myMedia.couldNotLoad': 'Could not load {what}',
     },
   },
   {
@@ -11976,6 +12408,117 @@ export const localeData = [
         'Requerir que la temporada anterior haya sido vista',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Cuando está habilitado, esta regla se aplica a todos. De lo contrario, los usuarios pueden solicitar aprobación desde Perfil → Regla de temporada de TV, y luego activarla para su propia cuenta. Desactivarla no elimina su aprobación. Las solicitudes de temporadas posteriores requieren que todos los episodios de la temporada regular anterior hayan sido vistos. Los especiales están excluidos; la reproducción se verifica contra la cuenta de Plex, Jellyfin o Emby vinculada del solicitante. Los administradores y gestores de solicitudes pueden anular la regla.',
+      'library.accounts': 'Gestionar cuentas conectadas',
+      'library.all': 'Todos los títulos',
+      'library.allTypes': 'Cine y series',
+      'library.completed': 'Completado',
+      'library.completedState': 'Completado',
+      'library.disconnected':
+        'Conecta una cuenta de seguimiento bajo Cuentas Vinculadas para navegar por su biblioteca.',
+      'library.dropped': 'Suelto',
+      'library.empty': 'Ningún título coincide con este estante.',
+      'library.failed':
+        'Tu biblioteca no podría ser cargada. Revise la conexión del proveedor e inténtelo de nuevo.',
+      'library.in-progress': 'En curso',
+      'library.limit':
+        'Esta página alcanzó un límite de seguridad. Continúe con Next si está disponible o termine de navegar en la aplicación de su proveedor.',
+      'library.loading': 'Cargando tu biblioteca...',
+      'library.mediaType': 'Tipo de contenido',
+      'library.movies': 'Películas',
+      'library.next': 'Página siguiente',
+      'library.page': 'Página {page}',
+      'library.planning': 'Planificación para ver',
+      'library.previous': 'Página anterior',
+      'library.provider': 'Fuente de la biblioteca',
+      'library.rated': 'Valorado',
+      'library.rating': 'Su calificación: {rating}/10',
+      'library.repair':
+        'Encontrar coincidencias de identificación exactas en esta biblioteca',
+      'library.repairComplete': 'Escaneo de biblioteca completo.',
+      'library.repairContinue': 'Continuar el escaneo',
+      'library.repairDescription':
+        'Escanee cada página para partidos únicos de IMDb o TVDB. Los partidos confirmados se guardan en los partidos de título privado; los títulos sin un partido exacto claro permanecen disponibles para el ajuste manual.',
+      'library.repairFailed':
+        'El escáner se detuvo en la página {page}Puedes continuar desde allí.',
+      'library.repairLimit':
+        'Se llegó a su límite privado de títulos. Más tarde no se guardaron coincidencias exactas.',
+      'library.repairPaused': 'Escáner pausado en la página {page}.',
+      'library.repairRunning': 'Página de exploración {page}…',
+      'library.repairStop': 'Para después de este lote',
+      'library.repairStopping': 'Parar después de este lote...',
+      'library.repairSummary':
+        'Scanned {scanned} títulos, encontrados {matched} coincidencias exactas, y guardado {saved} partidos de título privado.',
+      'library.repairTruncated':
+        'La biblioteca del proveedor alcanzó el límite de 500 páginas de SeerrNG. Continuar navegando en la aplicación del proveedor.',
+      'library.retry': 'Reintentar',
+      'library.series': 'Serie',
+      'library.shelf': 'Estante',
+      'library.title': 'Mi biblioteca',
+      'library.total': '{count}/{total} episodios observados',
+      'library.unmapped':
+        'Algunos títulos conservan su identidad original de proveedor hasta que se confirme un partido de catálogo.',
+      'library.unwatched': 'Sin vigilancia',
+      'library.unwatchedState': 'Sin vigilancia',
+      'library.watched': 'Vigilado',
+      'library.watchedState': 'Vigilados episodios',
+      'library.watching': 'Mirando',
+      'components.IdentityMappingControls.change':
+        'Cambiar coincidencia de título',
+      'components.IdentityMappingControls.match':
+        'Buscar coincidencias en el catálogo',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Tipo de medio de catálogo',
+      'components.IdentityMappingControls.movie': 'Película',
+      'components.IdentityMappingControls.noResults':
+        'No se encontraron títulos coincidentes.',
+      'components.IdentityMappingControls.reset':
+        'Restablecer coincidencia de título',
+      'components.IdentityMappingControls.resetFailed':
+        'No se pudo restablecer la coincidencia. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.resetSaved':
+        'Coincidencia de título restablecida.',
+      'components.IdentityMappingControls.saveFailed':
+        'No se pudo guardar la coincidencia. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.saved':
+        'Coincidencia de título guardada.',
+      'components.IdentityMappingControls.searchFailed':
+        'La búsqueda del catálogo falló. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.searchHint':
+        'Introduzca al menos dos caracteres.',
+      'components.IdentityMappingControls.searchLabel':
+        'Buscar en el catálogo de SeerrNG',
+      'components.IdentityMappingControls.searching': 'Buscando...',
+      'components.IdentityMappingControls.series': 'Series',
+      'components.IdentityMappingControls.useMatch': 'Usar esta coincidencia',
+      'components.IdentityMappingPackControls.clear':
+        'Borrar el archivo seleccionado',
+      'components.IdentityMappingPackControls.description':
+        'Exporta o restaura tus coincidencias privadas de títulos de Trakt, AniList, Simkl, MDBList, Plex, Jellyfin y Emby.',
+      'components.IdentityMappingPackControls.export':
+        'Exportar coincidencias de títulos',
+      'components.IdentityMappingPackControls.exportFailed':
+        'No se pudieron exportar tus coincidencias de títulos. Inténtalo de nuevo.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} contiene {count} coincidencias de títulos.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'El archivo de coincidencias de títulos debe tener un tamaño máximo de 5 MiB.',
+      'components.IdentityMappingPackControls.import':
+        'Importar coincidencias de títulos',
+      'components.IdentityMappingPackControls.importDescription':
+        'Al importar, se añaden coincidencias y se actualizan las que corresponden al mismo elemento del proveedor. Todas las coincidencias importadas son privadas de tu cuenta.',
+      'components.IdentityMappingPackControls.importFailed':
+        'No se pudo importar el paquete de coincidencias de títulos. Revisa el archivo e intenta de nuevo.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Elija un paquete de coincidencias de títulos de SeerrNG',
+      'components.IdentityMappingPackControls.imported':
+        'Importadas: {imported}; actualizadas: {updated}; sin cambios: {unchanged}.',
+      'components.IdentityMappingPackControls.importing': 'Importando…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Elige un archivo JSON de coincidencias de títulos compatible con SeerrNG.',
+      'components.IdentityMappingPackControls.privacy':
+        'Los paquetes contienen solo los ID de los elementos del proveedor y las coincidencias del catálogo. Nunca incluyen credenciales de la cuenta.',
+      'components.IdentityMappingPackControls.title':
+        'Coincidencias de títulos personales',
     },
   },
   {
@@ -13398,6 +13941,114 @@ export const localeData = [
         'Requerir que la temporada anterior haya sido vista',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Cuando está habilitado, esta regla se aplica a todos. De lo contrario, los usuarios pueden solicitar aprobación desde Perfil → Regla de temporada de TV, y luego activarla para su propia cuenta. Desactivarla no elimina su aprobación. Las solicitudes de temporadas posteriores requieren que todos los episodios de la temporada regular anterior hayan sido vistos. Los especiales están excluidos; la reproducción se verifica contra la cuenta de Plex, Jellyfin o Emby vinculada del solicitante. Los administradores y gestores de solicitudes pueden anular la regla.',
+      'library.accounts': 'Gestionar cuentas conectadas',
+      'library.all': 'Todos los títulos',
+      'library.allTypes': 'Cine y series',
+      'library.completed': 'Completado',
+      'library.completedState': 'Completado',
+      'library.disconnected':
+        'Conecta una cuenta de seguimiento bajo Cuentas Vinculadas para navegar por su biblioteca.',
+      'library.dropped': 'Suelto',
+      'library.empty': 'Ningún título coincide con este estante.',
+      'library.failed':
+        'Tu biblioteca no podría ser cargada. Revise la conexión del proveedor e inténtelo de nuevo.',
+      'library.in-progress': 'En curso',
+      'library.limit':
+        'Esta página alcanzó un límite de seguridad. Continúe con Next si está disponible o termine de navegar en la aplicación de su proveedor.',
+      'library.loading': 'Cargando tu biblioteca...',
+      'library.mediaType': 'Tipo de contenido',
+      'library.movies': 'Películas',
+      'library.next': 'Página siguiente',
+      'library.page': 'Página {page}',
+      'library.planning': 'Planificación para ver',
+      'library.previous': 'Página anterior',
+      'library.provider': 'Fuente de la biblioteca',
+      'library.rated': 'Clasificado',
+      'library.rating': 'Su calificación: {rating}/10',
+      'library.repair':
+        'Encontrar coincidencias de identificación exactas en esta biblioteca',
+      'library.repairComplete': 'Escaneo de biblioteca completo.',
+      'library.repairContinue': 'Continuar el escaneo',
+      'library.repairDescription':
+        'Escanee cada página para partidos únicos de IMDb o TVDB. Los partidos confirmados se guardan en los partidos de título privado; los títulos sin un partido exacto claro permanecen disponibles para el ajuste manual.',
+      'library.repairFailed':
+        'El escáner se detuvo en la página {page}Puedes continuar desde allí.',
+      'library.repairLimit':
+        'Se llegó a su límite privado de títulos. Más tarde no se guardaron coincidencias exactas.',
+      'library.repairPaused': 'Escáner pausado en la página {page}.',
+      'library.repairRunning': 'Página de exploración {page}…',
+      'library.repairStop': 'Para después de este lote',
+      'library.repairStopping': 'Parar después de este lote...',
+      'library.repairSummary':
+        'Scanned {scanned} títulos, encontrados {matched} coincidencias exactas, y guardado {saved} partidos de título privado.',
+      'library.repairTruncated':
+        'La biblioteca del proveedor alcanzó el límite de 500 páginas de SeerrNG. Continuar navegando en la aplicación del proveedor.',
+      'library.retry': 'Reintentar',
+      'library.series': 'Serie',
+      'library.shelf': 'Estante',
+      'library.title': 'Mi biblioteca',
+      'library.total': '{count}/{total} episodios observados',
+      'library.unmapped':
+        'Algunos títulos conservan su identidad original de proveedor hasta que se confirme un partido de catálogo.',
+      'library.unwatched': 'Sin vigilancia',
+      'library.unwatchedState': 'Sin vigilancia',
+      'library.watched': 'Vigilado',
+      'library.watchedState': 'Vigilados episodios',
+      'library.watching': 'Mirando',
+      'components.IdentityMappingControls.change': 'Cambiar el título',
+      'components.IdentityMappingControls.match':
+        'Título del catálogo de partido',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Tipo de medio de catálogo',
+      'components.IdentityMappingControls.movie': 'Película',
+      'components.IdentityMappingControls.noResults':
+        'No se encontraron títulos iguales.',
+      'components.IdentityMappingControls.reset':
+        'Reiniciar el título del partido',
+      'components.IdentityMappingControls.resetFailed':
+        'El partido no pudo ser reajustado. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.resetSaved': 'Reiniciar el título.',
+      'components.IdentityMappingControls.saveFailed':
+        'El partido no pudo ser salvado. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.saved':
+        'El partido del título guardado.',
+      'components.IdentityMappingControls.searchFailed':
+        'La búsqueda del catálogo falló. Inténtalo de nuevo.',
+      'components.IdentityMappingControls.searchHint':
+        'Introduzca al menos dos caracteres.',
+      'components.IdentityMappingControls.searchLabel':
+        'Búsqueda SeerrNG catálogo',
+      'components.IdentityMappingControls.searching': 'Buscando...',
+      'components.IdentityMappingControls.series': 'Serie',
+      'components.IdentityMappingControls.useMatch': 'Use este partido',
+      'components.IdentityMappingPackControls.clear':
+        'Borrar el archivo seleccionado',
+      'components.IdentityMappingPackControls.description':
+        'Exportar o restaurar sus partidos privados para los títulos de Trakt, AniList, Simkl, MDBList, Plex, Jellyfin y Emby.',
+      'components.IdentityMappingPackControls.export': 'Títulos de exportación',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Tus partidos de título no podrían ser exportados. Inténtalo de nuevo.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} contiene {count} fósforos.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'El archivo del título de búsqueda debe ser 5 MiB o menor.',
+      'components.IdentityMappingPackControls.import':
+        'Cerillas de título de importación',
+      'components.IdentityMappingPackControls.importDescription':
+        'Importación agrega nuevos partidos y actualizaciones coincide con el mismo artículo del proveedor. Todos los partidos importados siguen siendo privados a su cuenta.',
+      'components.IdentityMappingPackControls.importFailed':
+        'No se podía importar el paquete de títulos. Revisa el archivo e intenta de nuevo.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Elija un paquete de título de SeerrNG',
+      'components.IdentityMappingPackControls.imported':
+        'Importados {imported}, actualizado {updated}, y izquierda {unchanged} sin cambios.',
+      'components.IdentityMappingPackControls.importing': 'Importando…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Elija un archivo JSON compatible con el título SeerrNG.',
+      'components.IdentityMappingPackControls.privacy':
+        'Los paquetes contienen identificaciones de productos del proveedor y coincidencias de catálogo solamente. Las credenciales de cuenta nunca se incluyen.',
+      'components.IdentityMappingPackControls.title':
+        'Cerillas de título personal',
     },
   },
   {
@@ -15665,6 +16316,118 @@ export const localeData = [
         'Exiger que la saison précédente soit visionnée',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         "Lorsqu'activé, cette règle s'applique à tout le monde. Sinon, les utilisateurs peuvent demander une approbation via Profil → Règle des saisons TV, puis l'activer pour leur propre compte. La désactivation ne retire pas leur approbation. Les demandes pour les saisons ultérieures exigent que tous les épisodes de la saison régulière précédente aient été visionnés. Les épisodes spéciaux sont exclus ; la lecture est vérifiée par rapport au compte Plex, Jellyfin ou Emby lié du demandeur. Les administrateurs et les gestionnaires de demandes peuvent outrepasser la règle.",
+      'library.accounts': 'Gérer les comptes connectés',
+      'library.all': 'Tous les titres',
+      'library.allTypes': 'Films et séries',
+      'library.completed': 'Terminé',
+      'library.completedState': 'Terminé',
+      'library.disconnected':
+        'Connectez un compte de suivi sous Comptes liés pour parcourir sa bibliothèque.',
+      'library.dropped': 'Décroché',
+      'library.empty': 'Aucun titre ne correspond à cette étagère.',
+      'library.failed':
+        'Votre bibliothèque ne pouvait pas être chargée. Vérifiez la connexion du fournisseur et essayez à nouveau.',
+      'library.in-progress': 'En cours',
+      'library.limit':
+        'Cette page a atteint une limite de sécurité. Continuer avec Next si disponible, ou terminer la navigation dans votre application fournisseur.',
+      'library.loading': 'Chargement de votre bibliothèque...',
+      'library.mediaType': 'Type de média',
+      'library.movies': 'Films',
+      'library.next': 'Page suivante',
+      'library.page': 'Page {page}',
+      'library.planning': 'Prévoyons de regarder',
+      'library.previous': 'Page précédente',
+      'library.provider': 'Source de la bibliothèque',
+      'library.rated': 'Échéance',
+      'library.rating': 'Votre note: {rating}/10',
+      'library.repair':
+        "Trouver des correspondances d'identification exactes dans cette bibliothèque",
+      'library.repairComplete': 'Analyse de bibliothèque terminée.',
+      'library.repairContinue': "Continuer l'analyse",
+      'library.repairDescription':
+        'Scannez chaque page pour des correspondances IMDb ou TVDB uniques. Les matches confirmés sont enregistrés dans vos matches privés de titres ; les titres sans match précis restent disponibles pour les matches manuels.',
+      'library.repairFailed':
+        "Le scan s'est arrêté à la page {page}. Vous pouvez continuer à partir de là.",
+      'library.repairLimit':
+        "Votre limite de titre privé a été atteinte. Plus tard, les correspondances exactes n'ont pas été enregistrées.",
+      'library.repairPaused': 'Balayage interrompu à la page {page}.',
+      'library.repairRunning': 'Page de numérisation {page}…',
+      'library.repairStop': 'Arrête après ce lot',
+      'library.repairStopping': 'Arrêter après ce lot...',
+      'library.repairSummary':
+        'Scanné {scanned} titres trouvés {matched} des correspondances exactes et enregistrées {saved} Des matchs de titres privés.',
+      'library.repairTruncated':
+        "La bibliothèque du fournisseur a atteint la limite de numérisation de 500 pages de SeerrNG. Continuez à naviguer dans l'application fournisseur.",
+      'library.retry': 'Réessayer',
+      'library.series': 'Séries',
+      'library.shelf': 'Étagère',
+      'library.title': 'Ma bibliothèque',
+      'library.total': '{count}/{total} épisodes regardés',
+      'library.unmapped':
+        "Certains titres conservent leur identité originale jusqu'à ce qu'une correspondance de catalogue soit confirmée.",
+      'library.unwatched': 'Non surveillé',
+      'library.unwatchedState': 'Non surveillé',
+      'library.watched': 'Surveillé',
+      'library.watchedState': 'Épisodes surveillés',
+      'library.watching': 'Regarder',
+      'components.IdentityMappingControls.change':
+        'Modifier la correspondance de titre',
+      'components.IdentityMappingControls.match':
+        'Associer à un titre du catalogue',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Type de média du catalogue',
+      'components.IdentityMappingControls.movie': 'Film',
+      'components.IdentityMappingControls.noResults':
+        "Aucun titre correspondant n'a été trouvé.",
+      'components.IdentityMappingControls.reset':
+        'Réinitialiser la correspondance de titre',
+      'components.IdentityMappingControls.resetFailed':
+        'La correspondance de titre n’a pas pu être réinitialisée. Réessayez.',
+      'components.IdentityMappingControls.resetSaved':
+        'Correspondance de titre réinitialisée.',
+      'components.IdentityMappingControls.saveFailed':
+        'La correspondance de titre n’a pas pu être enregistrée. Réessayez.',
+      'components.IdentityMappingControls.saved':
+        'Correspondance de titre enregistrée.',
+      'components.IdentityMappingControls.searchFailed':
+        'La recherche du catalogue a échoué. Essaie encore.',
+      'components.IdentityMappingControls.searchHint':
+        'Saisissez au moins deux caractères.',
+      'components.IdentityMappingControls.searchLabel':
+        'Rechercher le catalogue SeerrNG',
+      'components.IdentityMappingControls.searching': 'Recherche...',
+      'components.IdentityMappingControls.series': 'Séries',
+      'components.IdentityMappingControls.useMatch':
+        'Utiliser cette correspondance',
+      'components.IdentityMappingPackControls.clear':
+        'Effacer le fichier sélectionné',
+      'components.IdentityMappingPackControls.description':
+        'Exportez ou restaurez vos matchs privés pour Trakt, AniList, Simkl, MDBList, Plex, Jellyfin et Emby.',
+      'components.IdentityMappingPackControls.export':
+        'Exporter les correspondances de titres',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Impossible d’exporter vos correspondances de titres. Réessayez.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} contient {count} correspondances de titres.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'Le fichier de correspondances de titres ne doit pas dépasser 5 MiB.',
+      'components.IdentityMappingPackControls.import':
+        'Importer les correspondances de titres',
+      'components.IdentityMappingPackControls.importDescription':
+        'L’importation ajoute de nouvelles correspondances et met à jour celles qui partagent le même élément fournisseur. Toutes les correspondances importées restent privées dans votre compte.',
+      'components.IdentityMappingPackControls.importFailed':
+        'Le pack de correspondances de titres n’a pas pu être importé. Vérifiez le fichier et réessayez.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Choisissez un pack SeerrNG de correspondances de titres.',
+      'components.IdentityMappingPackControls.imported':
+        'Correspondances importées : {imported}, mises à jour : {updated}, laissées inchangées : {unchanged}.',
+      'components.IdentityMappingPackControls.importing': 'Importation…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Choisissez un fichier JSON prenant en charge SeerrNG title-match.',
+      'components.IdentityMappingPackControls.privacy':
+        "Les paquets contiennent uniquement des ID d'item du fournisseur et des correspondances de catalogue. Les justificatifs de compte ne sont jamais inclus.",
+      'components.IdentityMappingPackControls.title':
+        'Correspondance des titres personnels',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -17656,6 +18419,76 @@ export const localeData = [
       'lumen.category.adminHelp':
         'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
       'lumen.category.backDiscover': 'Retour à Découvrir',
+      'lumen.myMedia.noSource':
+        'Associez un serveur multimédia ou un compte de suivi pour parcourir votre bibliothèque.',
+      'lumen.myMedia.noLibraries':
+        'Aucune bibliothèque de serveur multimédia n’est disponible.',
+      'lumen.myMedia.pages': 'Pages de la bibliothèque',
+      'lumen.myMedia.scanFailed':
+        'Impossible d’analyser la bibliothèque. Réessayez.',
+      'lumen.myMedia.scan': 'Analyser la bibliothèque',
+      'lumen.myMedia.enableWrites':
+        'Vous souhaitez mettre à jour le suivi depuis Mes médias ?',
+      'lumen.myMedia.enableWritesLink':
+        'Autoriser les écritures dans Comptes liés',
+      'lumen.myMedia.tracking.update': 'Mettre à jour le suivi',
+      'lumen.myMedia.tracking.markWatched': 'Marquer comme vu',
+      'lumen.myMedia.tracking.markUnwatched': 'Marquer comme non vu',
+      'lumen.myMedia.tracking.rating': 'Note (0–10)',
+      'lumen.myMedia.tracking.saveRating': 'Enregistrer la note',
+      'lumen.myMedia.tracking.episodesWatched': 'Épisodes vus',
+      'lumen.myMedia.tracking.saveProgress': 'Enregistrer la progression',
+      'lumen.myMedia.tracking.individualEpisodes':
+        'Suivre les épisodes individuellement',
+      'lumen.myMedia.tracking.loadingSeasons': 'Chargement des saisons…',
+      'lumen.myMedia.tracking.noSeasons': 'Aucune saison n’est disponible.',
+      'lumen.myMedia.tracking.loadingEpisodes': 'Chargement des épisodes…',
+      'lumen.myMedia.tracking.noEpisodes': 'Aucun épisode n’est disponible.',
+      'lumen.myMedia.tracking.season': 'Saison suivie',
+      'lumen.myMedia.tracking.episode': 'Épisode suivi',
+      'lumen.myMedia.tracking.markEpisodeWatched': 'Marquer l’épisode comme vu',
+      'lumen.myMedia.tracking.markEpisodeUnwatched':
+        'Marquer l’épisode comme non vu',
+      'lumen.myMedia.tracking.watched': 'Vu chez le fournisseur.',
+      'lumen.myMedia.tracking.unwatched': 'Non vu chez le fournisseur.',
+      'lumen.myMedia.tracking.unavailable': 'État de visionnage indisponible.',
+      'lumen.myMedia.tracking.loadingStatus':
+        'Chargement de l’état de l’épisode chez le fournisseur…',
+      'lumen.myMedia.tracking.updated': 'Suivi du fournisseur mis à jour.',
+      'lumen.myMedia.tracking.pending':
+        'Le fournisseur traite encore la mise à jour. Vérifiez votre compte avant de réessayer.',
+      'lumen.myMedia.tracking.notConfirmed':
+        'Le fournisseur n’a pas confirmé la mise à jour. Vérifiez votre compte avant de réessayer.',
+      'lumen.myMedia.tracking.confirmFailed':
+        'Impossible de confirmer la mise à jour du suivi. Vérifiez votre compte avant de réessayer.',
+      'lumen.myMedia.tracking.episodeConfirmTitle':
+        'Marquer l’épisode comme non vu ?',
+      'lumen.myMedia.tracking.watchedConfirmTitle': 'Marquer comme vu ?',
+      'lumen.myMedia.tracking.unwatchedConfirmTitle': 'Marquer comme non vu ?',
+      'lumen.myMedia.tracking.episodeConfirmBody':
+        'Retirer l’état vu de {title}, saison {season}, épisode {episode} ?',
+      'lumen.myMedia.tracking.confirmBody':
+        'Mettre à jour l’état de visionnage de {title} sur votre compte de suivi ?',
+      'lumen.myMedia.tracking.cancel': 'Annuler',
+      'lumen.myMedia.manageAccounts': 'Gérer les comptes liés',
+      'lumen.myMedia.invalidLibrary': 'Réponse de bibliothèque invalide.',
+      'lumen.myMedia.invalidAccounts': 'Réponse des comptes liés invalide.',
+      'lumen.myMedia.yourLibrary': 'votre bibliothèque',
+      'lumen.myMedia.catalogMatches': 'résultats correspondants du catalogue',
+      'lumen.myMedia.scanInvalidNext':
+        'Le scan de la bibliothèque a renvoyé une page suivante invalide.',
+      'lumen.myMedia.tracking.invalidSeasons': 'Réponse des saisons invalide.',
+      'lumen.myMedia.tracking.invalidEpisodes':
+        'Réponse des épisodes invalide.',
+      'lumen.myMedia.tracking.invalidStatus':
+        'Réponse de statut de visionnage du fournisseur invalide.',
+      'lumen.myMedia.tracking.rejected':
+        'La mise à jour du suivi a été refusée.',
+      'lumen.myMedia.tracking.seriesSeasons': 'saisons de la série',
+      'lumen.myMedia.tracking.seasonEpisodes': 'épisodes de la saison',
+      'lumen.myMedia.tracking.providerEpisodeStatus':
+        'statut des épisodes chez le fournisseur',
+      'lumen.myMedia.couldNotLoad': 'Impossible de charger {what}',
     },
   },
   {
@@ -19706,6 +20539,110 @@ export const localeData = [
         'पिछली सीज़न को देखना आवश्यक है',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'जब सक्षम किया जाता है, तो यह नियम सभी पर लागू होता है। अन्यथा, उपयोगकर्ता प्रोफ़ाइल → टीवी सीज़न नियम से अनुमोदन का अनुरोध कर सकते हैं, फिर अपने खाते के लिए इसे चालू कर सकते हैं। इसे बंद करने से उनका अनुमोदन हटाया नहीं जाता है। बाद की सीज़न के अनुरोधों के लिए पिछली नियमित सीज़न के सभी एपिसोड देखे जाने चाहिए। स्पेशल शामिल नहीं हैं; प्लेबैक अनुरोधकर्ता के लिंक किए गए Plex, Jellyfin, या Emby खाते के विरुद्ध जाँचा जाता है। प्रशासक और अनुरोध प्रबंधक नियम को ओवरराइड कर सकते हैं।',
+      'library.accounts': 'संबद्ध खातों का प्रबंधन',
+      'library.all': 'सभी शीर्षक',
+      'library.allTypes': 'सिनेमा और श्रृंखला',
+      'library.completed': 'पूरा हुआ',
+      'library.completedState': 'पूरा हुआ',
+      'library.disconnected':
+        'अपने पुस्तकालय को ब्राउज़ करने के लिए लिंक्ड खातों के तहत ट्रैकिंग खाता कनेक्ट करें।',
+      'library.dropped': 'गिराना',
+      'library.empty': 'कोई शीर्षक इस शेल्फ से मेल नहीं खाता है।',
+      'library.failed':
+        'आपकी लाइब्रेरी लोड नहीं की जा सकती। प्रदाता कनेक्शन की जाँच करें और फिर से प्रयास करें।',
+      'library.in-progress': 'प्रगति में',
+      'library.limit':
+        'यह पृष्ठ सुरक्षा सीमा तक पहुंच गया। यदि उपलब्ध हो, या आपके प्रदाता ऐप में ब्राउज़िंग समाप्त करें, तो अगला जारी रखें।',
+      'library.loading': 'अपनी लाइब्रेरी लोड हो रहा है...',
+      'library.mediaType': 'मीडिया प्रकार',
+      'library.movies': 'फ़िल्में',
+      'library.next': 'अगला पृष्ठ',
+      'library.page': 'पृष्ठ {page}',
+      'library.planning': 'देखने की योजना',
+      'library.previous': 'पिछला पृष्ठ',
+      'library.provider': 'पुस्तकालय',
+      'library.rated': 'रेटेड',
+      'library.rating': 'आपकी रेटिंग: {rating}/10',
+      'library.repair': 'इस पुस्तकालय में सटीक आईडी मैच खोजें',
+      'library.repairComplete': 'लाइब्रेरी स्कैन पूरा।',
+      'library.repairContinue': 'पढ़ना',
+      'library.repairDescription':
+        'अद्वितीय IMDb या TVDB मैचों के लिए हर पेज को स्कैन करें। पुष्टि की गई मैच आपके निजी शीर्षक मैचों में सहेजे जाते हैं; एक स्पष्ट सटीक मैच के बिना शीर्षक मैनुअल मिलान के लिए उपलब्ध रहते हैं।',
+      'library.repairFailed':
+        'स्कैन पेज पर बंद कर दिया {page}आप वहाँ से जारी रह सकते हैं।',
+      'library.repairLimit':
+        'आपकी निजी शीर्षक-मैच सीमा तक पहुंच गई थी। बाद में सटीक मैच बचाया नहीं गया था।',
+      'library.repairPaused': 'पृष्ठ पर स्कैन करना {page}.',
+      'library.repairRunning': 'स्कैनिंग पेज {page}…',
+      'library.repairStop': 'इस बैच के बाद बंद करो',
+      'library.repairStopping': 'इस बैच के बाद रुकना ...',
+      'library.repairSummary':
+        'स्कैन {scanned} शीर्षक, पाया {matched} सटीक मैच, और बचाया {saved} निजी शीर्षक मैच।',
+      'library.repairTruncated':
+        'प्रदाता लाइब्रेरी SeerrNG की 500-page स्कैन की सीमा तक पहुंच गई। प्रदाता ऐप में ब्राउज़ करना जारी रखें।',
+      'library.retry': 'पुनः प्रयास करें',
+      'library.series': 'श्रृंखला',
+      'library.shelf': 'शेल्फ',
+      'library.title': 'मेरी लाइब्रेरी',
+      'library.total': '{count}/{total} एपिसोड देखा',
+      'library.unmapped':
+        'कुछ खिताब अपने मूल प्रदाता पहचान को बनाए रखते हैं जब तक कि कैटलॉग मैच की पुष्टि नहीं की जाती है।',
+      'library.unwatched': 'नहीं देखा गया',
+      'library.unwatchedState': 'नहीं देखा गया',
+      'library.watched': 'देखो',
+      'library.watchedState': 'देखा प्रकरण',
+      'library.watching': 'देखना',
+      'components.IdentityMappingControls.change': 'शीर्षक मिलान बदलें',
+      'components.IdentityMappingControls.match':
+        'कैटलॉग के शीर्षक से मिलान करें',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'कैटलॉग मीडिया प्रकार',
+      'components.IdentityMappingControls.movie': 'फ़िल्म',
+      'components.IdentityMappingControls.noResults':
+        'कोई मेल खाता शीर्षक नहीं मिला।',
+      'components.IdentityMappingControls.reset': 'शीर्षक मिलान रीसेट करें',
+      'components.IdentityMappingControls.resetFailed':
+        'शीर्षक मिलान रीसेट नहीं किया जा सका। फिर से कोशिश करें।',
+      'components.IdentityMappingControls.resetSaved':
+        'शीर्षक मिलान रीसेट हो गया।',
+      'components.IdentityMappingControls.saveFailed':
+        'शीर्षक मिलान सहेजा नहीं जा सका। फिर से कोशिश करें।',
+      'components.IdentityMappingControls.saved': 'शीर्षक मिलान सहेजा गया।',
+      'components.IdentityMappingControls.searchFailed':
+        'कैटलॉग में खोज विफल रही। फिर से कोशिश करें।',
+      'components.IdentityMappingControls.searchHint':
+        'कम से कम दो अक्षर दर्ज करें।',
+      'components.IdentityMappingControls.searchLabel': 'SeerrNG कैटलॉग खोजें',
+      'components.IdentityMappingControls.searching': 'खोज...',
+      'components.IdentityMappingControls.series': 'श्रृंखला',
+      'components.IdentityMappingControls.useMatch': 'इस मिलान का उपयोग करें',
+      'components.IdentityMappingPackControls.clear': 'चयनित फ़ाइल साफ़ करें',
+      'components.IdentityMappingPackControls.description':
+        'Trakt, AniList, Simkl, MDBList, Plex, Jellyfin और Emby के शीर्षकों के लिए अपने निजी शीर्षक-मिलान निर्यात या पुनर्स्थापित करें।',
+      'components.IdentityMappingPackControls.export':
+        'शीर्षक-मिलान निर्यात करें',
+      'components.IdentityMappingPackControls.exportFailed':
+        'आपके शीर्षक-मिलान निर्यात नहीं किए जा सके। फिर कोशिश करें।',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} में {count} शीर्षक-मिलान हैं।',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'शीर्षक-मिलान फ़ाइल का आकार 5 MiB या उससे कम होना चाहिए।',
+      'components.IdentityMappingPackControls.import': 'शीर्षक-मिलान आयात करें',
+      'components.IdentityMappingPackControls.importDescription':
+        'आयात से नए शीर्षक-मिलान जुड़ते हैं और उसी प्रदाता आइटम वाले मिलान अपडेट होते हैं। सभी आयातित मिलान आपके खाते में निजी रहते हैं।',
+      'components.IdentityMappingPackControls.importFailed':
+        'शीर्षक-मिलान पैक आयात नहीं किया जा सका। फ़ाइल जाँचें और फिर कोशिश करें।',
+      'components.IdentityMappingPackControls.importLabel':
+        'एक SeerrNG शीर्षक-मैच पैक चुनें',
+      'components.IdentityMappingPackControls.imported':
+        'आयात किए गए: {imported}, अपडेट किए गए: {updated}, बिना बदले छोड़े गए: {unchanged}.',
+      'components.IdentityMappingPackControls.importing':
+        'आयात किया जा रहा है…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'एक समर्थित SeerrNG शीर्षक-मैच JSON फ़ाइल चुनें।',
+      'components.IdentityMappingPackControls.privacy':
+        'पैक में केवल प्रदाता आइटम आईडी और कैटलॉग मैच होते हैं। खाता क्रेडेंशियल कभी शामिल नहीं होते हैं।',
+      'components.IdentityMappingPackControls.title': 'व्यक्तिगत शीर्षक-मिलान',
     },
   },
   {
@@ -21741,6 +22678,109 @@ export const localeData = [
         'Wajibkan Musim Sebelumnya Ditonton',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Saat diaktifkan, aturan ini berlaku untuk semua orang. Jika tidak, pengguna dapat meminta persetujuan dari Profil → Aturan Musim TV, lalu mengaktifkannya untuk akun mereka sendiri. Mematikkannya tidak menghapus persetujuan mereka. Permintaan musim berikutnya memerlukan semua episode musim reguler sebelumnya ditonton. Spesial dikecualikan; pemutaran diperiksa terhadap akun Plex, Jellyfin, atau Emby yang terhubung peminta. Administrator dan manajer permintaan dapat mengabaikan aturan.',
+      'library.accounts': 'Kelola akun yang tersambung',
+      'library.all': 'Semua judul',
+      'library.allTypes': 'Film dan seri',
+      'library.completed': 'Selesai',
+      'library.completedState': 'Selesai',
+      'library.disconnected':
+        'Hubungkan akun pelacakan di bawah Akun Terkait untuk menelusuri perpustakaannya.',
+      'library.dropped': 'Turun',
+      'library.empty': 'Tidak ada judul yang cocok dengan rak ini.',
+      'library.failed':
+        'Perpustakaan Anda tidak dapat dimuat. Periksa koneksi penyedia dan coba lagi.',
+      'library.in-progress': 'Dalam proses',
+      'library.limit':
+        'Halaman ini mencapai batas keamanan. Lanjutkan dengan Berikutnya jika tersedia, atau selesai browsing dalam aplikasi penyedia Anda.',
+      'library.loading': 'Memuat pustaka Anda...',
+      'library.mediaType': 'Jenis media',
+      'library.movies': 'Film',
+      'library.next': 'Halaman berikutnya',
+      'library.page': 'Halaman {page}',
+      'library.planning': 'Berencana untuk menonton',
+      'library.previous': 'Halaman sebelumnya',
+      'library.provider': 'Sumber pustaka',
+      'library.rated': 'Laju',
+      'library.rating': 'Rating Anda: {rating}/10',
+      'library.repair': 'Cari ID yang cocok di seluruh pustaka ini',
+      'library.repairComplete': 'Pemindaian perpustakaan selesai.',
+      'library.repairContinue': 'Lanjutkan pemindaian',
+      'library.repairDescription':
+        'Pindai setiap halaman untuk unik IMDb atau pencocokan TVDB. Cocok dikonfirmasi disimpan ke pertandingan judul pribadi Anda; judul tanpa kecocokan yang tepat tetap tersedia untuk pencocokan manual.',
+      'library.repairFailed':
+        'Pemindaian berhenti di halaman {page}Anda dapat melanjutkan dari sana.',
+      'library.repairLimit':
+        'Gelar pribadimu sudah mencapai batas pertandingan. Korek yang tepat kemudian tidak disimpan.',
+      'library.repairPaused': 'Pindai jeda di halaman {page}.',
+      'library.repairRunning': 'Memindai halaman {page}…',
+      'library.repairStop': 'Berhenti setelah batch ini',
+      'library.repairStopping': 'Berhenti setelah batch ini...',
+      'library.repairSummary':
+        'Dipindai {scanned} Judul, ditemukan {matched} persis cocok, dan disimpan {saved} gelar pribadi cocok.',
+      'library.repairTruncated':
+        'Pustaka penyedia mencapai batas pemindaian SeerrNG 500- halaman. Lanjutkan menelusuri dalam aplikasi penyedia.',
+      'library.retry': 'Coba lagi',
+      'library.series': 'Serial',
+      'library.shelf': 'Rak',
+      'library.title': 'Pustaka',
+      'library.total': '{count}/{total} episode diawasi',
+      'library.unmapped':
+        'Beberapa judul mempertahankan identitas penyedia asli mereka sampai cocok katalog dikonfirmasi.',
+      'library.unwatched': 'Belum diawasi',
+      'library.unwatchedState': 'Belum diawasi',
+      'library.watched': 'Menonton',
+      'library.watchedState': 'Episoda yang diamati',
+      'library.watching': 'Menonton',
+      'components.IdentityMappingControls.change': 'Ubah kecocokan judul',
+      'components.IdentityMappingControls.match':
+        'Cocokkan dengan judul di katalog',
+      'components.IdentityMappingControls.mediaTypeLabel': 'Tipe media Katalog',
+      'components.IdentityMappingControls.movie': 'Film',
+      'components.IdentityMappingControls.noResults':
+        'Tidak ditemukan judul yang cocok.',
+      'components.IdentityMappingControls.reset': 'Atur ulang kecocokan judul',
+      'components.IdentityMappingControls.resetFailed':
+        'Kecocokan judul tidak dapat diatur ulang. Coba lagi.',
+      'components.IdentityMappingControls.resetSaved':
+        'Kecocokan judul berhasil diatur ulang.',
+      'components.IdentityMappingControls.saveFailed':
+        'Kecocokan judul tidak dapat disimpan. Coba lagi.',
+      'components.IdentityMappingControls.saved':
+        'Kecocokan judul berhasil disimpan.',
+      'components.IdentityMappingControls.searchFailed':
+        'Pencarian katalog gagal. Coba lagi.',
+      'components.IdentityMappingControls.searchHint':
+        'Masukkan setidaknya dua karakter.',
+      'components.IdentityMappingControls.searchLabel': 'Cari katalog SeerrNG',
+      'components.IdentityMappingControls.searching': 'Mencari...',
+      'components.IdentityMappingControls.series': 'Serial',
+      'components.IdentityMappingControls.useMatch': 'Gunakan kecocokan ini',
+      'components.IdentityMappingPackControls.clear':
+        'Bersihkan berkas yang dipilih',
+      'components.IdentityMappingPackControls.description':
+        'Ekspor atau pulihkan kecocokan judul pribadi Anda untuk judul dari Trakt, AniList, Simkl, MDBList, Plex, Jellyfin, dan Emby.',
+      'components.IdentityMappingPackControls.export': 'Ekspor kecocokan judul',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Kecocokan judul Anda tidak dapat diekspor. Coba lagi.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} berisi {count} kecocokan judul.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'File pencocokan judul harus berukuran 5 MiB atau lebih kecil.',
+      'components.IdentityMappingPackControls.import': 'Impor judul cocok',
+      'components.IdentityMappingPackControls.importDescription':
+        'Impor menambahkan kecocokan baru dan memperbarui kecocokan dengan item penyedia yang sama. Semua kecocokan yang diimpor tetap bersifat pribadi di akun Anda.',
+      'components.IdentityMappingPackControls.importFailed':
+        'Paket pencocokan judul tidak dapat diimpor. Periksa file dan coba lagi.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Pilih paket pencocokan judul SeerrNG',
+      'components.IdentityMappingPackControls.imported':
+        'Diimpor {imported}, diperbarui {updated}, dan {unchanged} dibiarkan tanpa perubahan.',
+      'components.IdentityMappingPackControls.importing': 'Mengimpor…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Pilih file JSON pencocokan judul SeerrNG yang didukung.',
+      'components.IdentityMappingPackControls.privacy':
+        'Paket berisi ID butir penyedia dan katalog yang cocok saja. Kredensial akun tidak pernah disertakan.',
+      'components.IdentityMappingPackControls.title': 'Kecocokan judul pribadi',
     },
   },
   {
@@ -23756,6 +24796,111 @@ export const localeData = [
         '前シーズン視聴の必須化',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         '有効にすると、このルールはすべてのユーザーに適用されます。無効の場合、ユーザーはプロフィール → TVシーズンルールから承認をリクエストし、自分のアカウントで有効にできます。無効にしても承認は削除されません。後続シーズンのリクエストには、直前の通常シーズンの全エピソードの視聴が必要です。スペシャルは対象外です。再生状況は、リクエスト者の紐付けられた Plex、Jellyfin、または Emby アカウントに対して確認されます。管理者およびリクエストマネージャーはルールをオーバーライドできます。',
+      'library.accounts': '接続されたアカウントを管理する',
+      'library.all': 'すべてのタイトル',
+      'library.allTypes': '映画・シリーズ',
+      'library.completed': '完了しました',
+      'library.completedState': '完了しました',
+      'library.disconnected':
+        'リンクされたアカウントで追跡アカウントを接続して、ライブラリを閲覧できます。',
+      'library.dropped': 'ドロップ',
+      'library.empty': 'タイトルは、この棚にマッチしません。',
+      'library.failed':
+        'ライブラリをロードできません。 プロバイダーの接続を確認し、もう一度お試しください。',
+      'library.in-progress': '進行状況',
+      'library.limit':
+        'このページは安全限界に達しました。 提供元アプリで閲覧したり、次へ続けてください。',
+      'library.loading': 'ライブラリの読み込み',
+      'library.mediaType': 'メディアの種類',
+      'library.movies': '映画',
+      'library.next': '次のページ',
+      'library.page': 'ページ {page}',
+      'library.planning': '時計の企画',
+      'library.previous': '前のページ',
+      'library.provider': '図書館のソース',
+      'library.rated': '評価される',
+      'library.rating': 'あなたの評価: {rating}/10',
+      'library.repair': 'このライブラリで正確なIDのマッチを見つける',
+      'library.repairComplete': 'ライブラリスキャンが完了しました。',
+      'library.repairContinue': 'スキャンを続ける',
+      'library.repairDescription':
+        'ユニークなIMDbまたはTVDBマッチの全てのページをスキャンします。 確認されたマッチは、あなたのプライベートタイトルマッチに保存されます。 クリアな一致のないタイトルは、手動マッチングのために利用可能なままです。',
+      'library.repairFailed': 'ページでスキャンを停止 {page}. 続行できます。',
+      'library.repairLimit':
+        'プライベートのタイトルマッチ限界に達しました。 後で正確なマッチは保存されません。',
+      'library.repairPaused': 'ページのパスをスキャンする {page}.',
+      'library.repairRunning': 'スキャンページ {page}…',
+      'library.repairStop': 'このバッチの後に停止',
+      'library.repairStopping': 'このバッチの後に停止...',
+      'library.repairSummary':
+        'スキャン {scanned} タイトル、見つかった {matched} 正確なマッチと保存 {saved} プライベートタイトルマッチ。',
+      'library.repairTruncated':
+        'プロバイダーライブラリは、SeerrNG の 500 ページのスキャン制限に達しました。 プロバイダアプリで閲覧を続ける',
+      'library.retry': '再試行',
+      'library.series': 'シリーズ',
+      'library.shelf': 'パンフレット',
+      'library.title': '私の図書館',
+      'library.total': '{count}/{total} エピソード 見ました',
+      'library.unmapped':
+        '一部のタイトルは、カタログの一致が確認されるまで、元のプロバイダのアイデンティティを保持します。',
+      'library.unwatched': '見ていない',
+      'library.unwatchedState': '見ていない',
+      'library.watched': 'ウォッチ',
+      'library.watchedState': '注目のエピソード',
+      'library.watching': 'ウォッチング',
+      'components.IdentityMappingControls.change': 'タイトルの対応付けを変更',
+      'components.IdentityMappingControls.match': 'カタログのタイトルと照合',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'カタログのメディア種別',
+      'components.IdentityMappingControls.movie': '映画',
+      'components.IdentityMappingControls.noResults':
+        '一致するタイトルが見つかりませんでした。',
+      'components.IdentityMappingControls.reset':
+        'タイトルの対応付けをリセット',
+      'components.IdentityMappingControls.resetFailed':
+        '対応付けをリセットできませんでした。もう一度お試しください。',
+      'components.IdentityMappingControls.resetSaved':
+        'タイトルの対応付けをリセットしました。',
+      'components.IdentityMappingControls.saveFailed':
+        '対応付けを保存できませんでした。もう一度お試しください。',
+      'components.IdentityMappingControls.saved':
+        'タイトルの対応付けを保存しました。',
+      'components.IdentityMappingControls.searchFailed':
+        'カタログの検索に失敗しました。もう一度お試しください。',
+      'components.IdentityMappingControls.searchHint':
+        '2文字以上入力してください。',
+      'components.IdentityMappingControls.searchLabel': 'SeerrNGカタログを検索',
+      'components.IdentityMappingControls.searching': '検索中…',
+      'components.IdentityMappingControls.series': 'シリーズ',
+      'components.IdentityMappingControls.useMatch': 'この一致候補を使用する',
+      'components.IdentityMappingPackControls.clear':
+        '選択したファイルをクリアする',
+      'components.IdentityMappingPackControls.description':
+        'Trakt、AniList、Simkl、MDBList、Plex、Jellyfin、Embyのタイトルに対する非公開の照合結果をエクスポートまたは復元します。',
+      'components.IdentityMappingPackControls.export':
+        'タイトル照合結果をエクスポート',
+      'components.IdentityMappingPackControls.exportFailed':
+        'タイトルの照合結果をエクスポートできませんでした。もう一度お試しください。',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} にはタイトルの照合結果が {count} 件含まれています。',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'タイトル照合ファイルは5 MiB以下でなければなりません。',
+      'components.IdentityMappingPackControls.import':
+        'タイトル照合結果をインポート',
+      'components.IdentityMappingPackControls.importDescription':
+        'インポートすると、新しいタイトル照合結果が追加され、同じプロバイダー項目の照合結果が更新されます。インポートされた照合結果はすべてアカウント内で非公開のままです。',
+      'components.IdentityMappingPackControls.importFailed':
+        'タイトル照合パックをインポートできませんでした。ファイルを確認して、もう一度お試しください。',
+      'components.IdentityMappingPackControls.importLabel':
+        'SeerrNGのタイトル照合パックを選択',
+      'components.IdentityMappingPackControls.imported':
+        'インポート済み: {imported} 件、更新済み: {updated} 件、変更なし: {unchanged} 件。',
+      'components.IdentityMappingPackControls.importing': 'インポート中…',
+      'components.IdentityMappingPackControls.invalidFile':
+        '対応しているSeerrNGタイトル照合JSONファイルを選択',
+      'components.IdentityMappingPackControls.privacy':
+        'パックには、プロバイダのアイテムIDとカタログのマッチのみが含まれています。 アカウントの資格情報は含まれていません。',
+      'components.IdentityMappingPackControls.title': '個人用タイトル照合',
     },
   },
   {
@@ -25107,6 +26252,108 @@ export const localeData = [
         '이전 시즌 시청 필수',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         '활성화되면 이 규칙은 모든 사람에게 적용됩니다. 그렇지 않으면, 사용자는 프로필 → TV 시즌 규칙에서 승인을 요청한 후 자신의 계정에 대해 활성화할 수 있습니다. 비활성화해도 그들의 승인이 제거되지 않습니다. 후속 시즌 요청에는 이전 정규 시즌의 모든 에피소드를 시청해야 합니다. 스페셜은 제외되며, 재생은 요청자의 연결된 Plex, Jellyfin 또는 Emby 계정에 대해 확인됩니다. 관리자와 요청 관리자는 규칙을 무시할 수 있습니다.',
+      'library.accounts': '연결된 계정 관리',
+      'library.all': '모든 제목',
+      'library.allTypes': '영화 및 시리즈',
+      'library.completed': '완료됨',
+      'library.completedState': '완료됨',
+      'library.disconnected':
+        'Linked 계정의 추적 계정을 연결하여 라이브러리를 검색합니다.',
+      'library.dropped': '중단됨',
+      'library.empty': '이 선반과 일치하는 제목 없음.',
+      'library.failed':
+        '당신의 도서관은 적재될 수 없습니다. 공급자 연결을 확인하고 다시 시도하십시오.',
+      'library.in-progress': '진행 중',
+      'library.limit':
+        '이 페이지는 안전 한도에 도달했습니다. Continue with Next if available, 또는 공급자 앱에서 검색 완료.',
+      'library.loading': '당신의 도서관을로드 ...',
+      'library.mediaType': '미디어 유형',
+      'library.movies': '영화',
+      'library.next': '다음 페이지',
+      'library.page': '- 연혁 {page}',
+      'library.planning': '시계 계획',
+      'library.previous': '이전 페이지',
+      'library.provider': '자료실',
+      'library.rated': '정격 출력',
+      'library.rating': '당신의 평가: {rating}/10',
+      'library.repair': '이 도서관에서 정확한 ID 일치 찾기',
+      'library.repairComplete': '라이브러리 스캔 완료.',
+      'library.repairContinue': '계속 스캔',
+      'library.repairDescription':
+        '독특한 IMDb 또는 TVDB 경기에 대한 모든 페이지를 스캔합니다. 확인된 일치는 개인 제목 일치에 저장됩니다; 명확한 정확한 일치 없이 제목은 수동 일치를 위해 유효합니다.',
+      'library.repairFailed':
+        '스캔은 페이지에 중지 {page}. 거기에서 계속할 수 있습니다.',
+      'library.repairLimit':
+        '개인 타이틀 매치 제한이 도달했습니다. 정확한 일치는 저장되지 않았습니다.',
+      'library.repairPaused': '페이지에 paused 스캔 {page}.',
+      'library.repairRunning': '스캔 페이지 {page}…',
+      'library.repairStop': '이 배치 후에 정지',
+      'library.repairStopping': '이 배치 후 중지 ...',
+      'library.repairSummary':
+        '분류되지 않음 {scanned} 제목, 발견 {matched} 정확한 경기 및 저장 {saved} 개인 제목 일치.',
+      'library.repairTruncated':
+        '공급자 도서관은 SeerrNG의 500 페이지 스캔 제한에 도달했습니다. 공급자 앱에서 계속 탐색.',
+      'library.retry': '다시 시도',
+      'library.series': '시리즈',
+      'library.shelf': '제품 정보',
+      'library.title': '내 도서관',
+      'library.total': '{count}/{total} 에피소드 watched',
+      'library.unmapped':
+        '일부 타이틀은 카탈로그 일치가 확인 될 때까지 원래의 공급자 정체성을 유지합니다.',
+      'library.unwatched': '기타 제품',
+      'library.unwatchedState': '기타 제품',
+      'library.watched': '관련 상품',
+      'library.watchedState': '관련 동영상',
+      'library.watching': '시청 중',
+      'components.IdentityMappingControls.change': '제목 일치 항목 변경',
+      'components.IdentityMappingControls.match': '카탈로그 제목과 일치시키기',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        '카탈로그 미디어 유형',
+      'components.IdentityMappingControls.movie': '영화',
+      'components.IdentityMappingControls.noResults':
+        '일치하는 제목이 없습니다.',
+      'components.IdentityMappingControls.reset': '제목 일치 항목 재설정',
+      'components.IdentityMappingControls.resetFailed':
+        '일치 항목을 재설정할 수 없습니다. 다시 시도하세요.',
+      'components.IdentityMappingControls.resetSaved':
+        '제목 일치 항목이 재설정되었습니다.',
+      'components.IdentityMappingControls.saveFailed':
+        '일치 항목을 저장할 수 없습니다. 다시 시도하세요.',
+      'components.IdentityMappingControls.saved':
+        '제목 일치 항목이 저장되었습니다.',
+      'components.IdentityMappingControls.searchFailed':
+        '카탈로그 검색에 실패했습니다. 다시 시도하세요.',
+      'components.IdentityMappingControls.searchHint':
+        '적어도 두 문자를 입력하십시오.',
+      'components.IdentityMappingControls.searchLabel': 'SeerrNG 카탈로그 검색',
+      'components.IdentityMappingControls.searching': '검색 중…',
+      'components.IdentityMappingControls.series': '시리즈',
+      'components.IdentityMappingControls.useMatch': '이 일치 항목 사용',
+      'components.IdentityMappingPackControls.clear': '선택한 파일 지우기',
+      'components.IdentityMappingPackControls.description':
+        'Trakt, AniList, Simkl, MDBList, Plex, Jellyfin, Emby 타이틀의 비공개 매칭을 내보내거나 복원합니다.',
+      'components.IdentityMappingPackControls.export': '제목 매칭 내보내기',
+      'components.IdentityMappingPackControls.exportFailed':
+        '제목 매칭을 내보내지 못했습니다. 다시 시도하세요.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name}에 제목 매칭 결과 {count}개가 들어 있습니다.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        '제목 매칭 파일은 5 MiB 이하여야 합니다.',
+      'components.IdentityMappingPackControls.import': '제목 매칭 가져오기',
+      'components.IdentityMappingPackControls.importDescription':
+        '가져오기는 새 제목 매칭을 추가하고 동일한 제공자 항목과 연결된 매칭을 업데이트합니다. 가져온 매칭은 모두 계정에서 비공개로 유지됩니다.',
+      'components.IdentityMappingPackControls.importFailed':
+        '제목 매칭 팩을 가져오지 못했습니다. 파일을 확인하고 다시 시도하세요.',
+      'components.IdentityMappingPackControls.importLabel':
+        'SeerrNG 제목 매칭 팩 선택',
+      'components.IdentityMappingPackControls.imported':
+        '{imported}를 가져오고, {updated}를 업데이트하고, {unchanged}를 변경하지 않고 그대로 두었습니다.',
+      'components.IdentityMappingPackControls.importing': '불러오는 중…',
+      'components.IdentityMappingPackControls.invalidFile':
+        '지원되는 SeerrNG 제목 매칭 JSON 파일 선택',
+      'components.IdentityMappingPackControls.privacy':
+        '팩에는 제공자 항목 ID와 카탈로그 매칭만 포함됩니다. 계정 인증 정보는 절대 포함되지 않습니다.',
+      'components.IdentityMappingPackControls.title': '개인 제목 매칭',
     },
   },
   {
@@ -28351,6 +29598,117 @@ export const localeData = [
         'Exigir que a Temporada Anterior Seja Assistida',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Quando ativado, esta regra se aplica a todos. Caso contrário, os usuários podem solicitar aprovação em Perfil → Regra de Temporada de TV e ativá-la para sua própria conta. Desativá-la não remove a aprovação deles. Solicitações de temporadas posteriores exigem que todos os episódios da temporada regular anterior tenham sido assistidos. Especiais são excluídos; a reprodução é verificada contra a conta Plex, Jellyfin ou Emby vinculada do solicitante. Administradores e gerentes de solicitações podem ignorar a regra.',
+      'library.accounts': 'Gerencie contas conectadas',
+      'library.all': 'Todos os títulos',
+      'library.allTypes': 'Filmes e séries',
+      'library.completed': 'Concluído',
+      'library.completedState': 'Concluído',
+      'library.disconnected':
+        'Conecte uma conta de rastreamento em Contas Vinculadas para navegar em sua biblioteca.',
+      'library.dropped': 'Caiu.',
+      'library.empty': 'Nenhum título combina com esta prateleira.',
+      'library.failed':
+        'Sua biblioteca não podia ser carregada. Verifique a conexão do provedor e tente novamente.',
+      'library.in-progress': 'Em progresso.',
+      'library.limit':
+        'Esta página atingiu um limite de segurança. Continue com Next se estiver disponível, ou termine de navegar no aplicativo do provedor.',
+      'library.loading': 'Carregando sua biblioteca...',
+      'library.mediaType': 'Tipo de mídia',
+      'library.movies': 'Filmes',
+      'library.next': 'Próxima página',
+      'library.page': 'Página {page}',
+      'library.planning': 'Planejando assistir',
+      'library.previous': 'Página anterior',
+      'library.provider': 'Fonte da biblioteca',
+      'library.rated': 'Avaliado',
+      'library.rating': 'Sua avaliação: {rating}/10',
+      'library.repair': 'Encontre identidade exata nesta biblioteca.',
+      'library.repairComplete': 'Varredura completa.',
+      'library.repairContinue': 'Continue a varredura.',
+      'library.repairDescription':
+        'Procure em todas as páginas por correspondências únicas de IMDb ou TVDB. As partidas confirmadas são salvas em suas partidas de título particular, títulos sem uma combinação exata clara permanecem disponíveis para correspondência manual.',
+      'library.repairFailed':
+        'A varredura parou na página. {page}Pode continuar daí.',
+      'library.repairLimit':
+        'Seu limite de título privado foi alcançado. Mais tarde não foram salvos.',
+      'library.repairPaused': 'A varredura parou na página. {page}.',
+      'library.repairRunning': 'Página de digitalização {page}…',
+      'library.repairStop': 'Pare depois deste lote.',
+      'library.repairStopping': 'Parando depois deste lote...',
+      'library.repairSummary':
+        'Escaneado {scanned} títulos, encontrados {matched} Exatamente, e salvo. {saved} Jogos de título privado.',
+      'library.repairTruncated':
+        'A biblioteca de provedores atingiu o limite de varredura de 500 páginas da SeerrNG. Continue navegando no aplicativo provedor.',
+      'library.retry': 'Tentar novamente',
+      'library.series': 'Séries',
+      'library.shelf': 'Prateleira',
+      'library.title': 'Minha biblioteca.',
+      'library.total': '{count}/{total} Episódios assistidos',
+      'library.unmapped':
+        'Alguns títulos mantêm sua identidade original até que uma combinação de catálogo seja confirmada.',
+      'library.unwatched': 'Não vigiado',
+      'library.unwatchedState': 'Não vigiado',
+      'library.watched': 'Observado',
+      'library.watchedState': 'Vi episódios.',
+      'library.watching': 'Observando.',
+      'components.IdentityMappingControls.change':
+        'Alterar correspondência de título',
+      'components.IdentityMappingControls.match':
+        'Associar ao título do catálogo',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Tipo de mídia do catálogo',
+      'components.IdentityMappingControls.movie': 'Filme',
+      'components.IdentityMappingControls.noResults':
+        'Nenhum título correspondente foi encontrado.',
+      'components.IdentityMappingControls.reset':
+        'Redefinir correspondência de título',
+      'components.IdentityMappingControls.resetFailed':
+        'Não foi possível redefinir a correspondência. Tente novamente.',
+      'components.IdentityMappingControls.resetSaved':
+        'A correspondência do título foi redefinida.',
+      'components.IdentityMappingControls.saveFailed':
+        'Não foi possível salvar a correspondência. Tente novamente.',
+      'components.IdentityMappingControls.saved':
+        'A correspondência de título foi salva.',
+      'components.IdentityMappingControls.searchFailed':
+        'A busca no catálogo falhou. Tente de novo.',
+      'components.IdentityMappingControls.searchHint':
+        'Digite pelo menos dois caracteres.',
+      'components.IdentityMappingControls.searchLabel':
+        'Procurar catálogo SeerrNG',
+      'components.IdentityMappingControls.searching': 'Procurando...',
+      'components.IdentityMappingControls.series': 'Séries',
+      'components.IdentityMappingControls.useMatch':
+        'Usar esta correspondência',
+      'components.IdentityMappingPackControls.clear':
+        'Limpar arquivo selecionado',
+      'components.IdentityMappingPackControls.description':
+        'Exporte ou restaure suas correspondências privadas de títulos do Trakt, AniList, Simkl, MDBList, Plex, Jellyfin e Emby.',
+      'components.IdentityMappingPackControls.export':
+        'Exportar correspondências de títulos',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Não foi possível exportar suas correspondências de títulos. Tente novamente.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} contém {count} correspondências de títulos.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'O arquivo de correspondências de títulos deve ter no máximo 5 MiB.',
+      'components.IdentityMappingPackControls.import':
+        'Importar correspondências de títulos',
+      'components.IdentityMappingPackControls.importDescription':
+        'A importação adiciona novas correspondências e atualiza as que têm o mesmo item do provedor. Todas as correspondências importadas permanecem privadas na sua conta.',
+      'components.IdentityMappingPackControls.importFailed':
+        'Não foi possível importar o pacote de correspondências de títulos. Verifique o arquivo e tente novamente.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Escolha um pacote SeerrNG de correspondências de títulos.',
+      'components.IdentityMappingPackControls.imported':
+        'Importadas: {imported}, atualizadas: {updated}; sem alterações: {unchanged}.',
+      'components.IdentityMappingPackControls.importing': 'Importando…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Escolha um arquivo JSON de correspondência de título SeerrNG compatível.',
+      'components.IdentityMappingPackControls.privacy':
+        'Os pacotes contêm apenas IDs de itens dos provedores e correspondências no catálogo. As credenciais da conta nunca são incluídas.',
+      'components.IdentityMappingPackControls.title':
+        'Correspondências de títulos pessoais',
     },
   },
   {
@@ -33636,6 +34994,99 @@ export const localeData = [
         '要求观看上一季',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         '启用后，此规则适用于所有人。否则，用户可以从个人资料 → 电视季规则请求批准，然后为其自己的账户启用。关闭不会移除他们的批准。后续季度的请求要求上一常规季的所有剧集均已观看。特别篇除外；播放情况将针对请求者关联的 Plex、Jellyfin 或 Emby 账户进行检查。管理员和请求管理员可以覆盖此规则。',
+      'library.accounts': '管理连接的账户',
+      'library.all': '所有标题',
+      'library.allTypes': '电影和系列',
+      'library.completed': '已完成',
+      'library.completedState': '已完成',
+      'library.disconnected': '连接链接账户下的跟踪账户以浏览其库 。',
+      'library.dropped': '已丢弃',
+      'library.empty': '没有标题匹配此架 。',
+      'library.failed': '您的库无法装入 。 检查提供者连接并再次尝试 。',
+      'library.in-progress': '进行中',
+      'library.limit':
+        '此页面达到了安全限制 。 如果有的话, 继续使用 Next, 或者在您的提供者应用程序中完成浏览 。',
+      'library.loading': '正在装入您的库...',
+      'library.mediaType': '媒体类型',
+      'library.movies': '电影',
+      'library.next': '下一页',
+      'library.page': '页次 {page}',
+      'library.planning': '计划观看',
+      'library.previous': '上一页',
+      'library.provider': '图书馆来源',
+      'library.rated': '费率',
+      'library.rating': '您的评分为: {rating}/10',
+      'library.repair': '在这个库中查找精确的ID匹配',
+      'library.repairComplete': '图书馆扫描完成。',
+      'library.repairContinue': '继续扫描',
+      'library.repairDescription':
+        '扫描每个页面以获取独特的IMDb或TVDB匹配. 确认的匹配将被保存到您的私人标题匹配中; 没有明确准确匹配的标题仍然可用手动匹配 。',
+      'library.repairFailed': '扫描停止于页面 {page}你可以继续在那里。',
+      'library.repairLimit':
+        '您的私人头衔竞争限制已经达到。 后来的精确匹配没有保存 。',
+      'library.repairPaused': '扫描已暂停页面 {page}.',
+      'library.repairRunning': '扫描页面 {page}…',
+      'library.repairStop': '在这批之后停止',
+      'library.repairStopping': '在这批之后停止...',
+      'library.repairSummary':
+        '扫描 {scanned} 标题,查找 {matched} 准确匹配并保存 {saved} 私人头衔匹配 。',
+      'library.repairTruncated':
+        '提供商库达到了SeerrNG的500页扫描限制. 继续浏览提供者的应用程序 。',
+      'library.retry': '重试',
+      'library.series': '剧集',
+      'library.shelf': '大陆架',
+      'library.title': '我的图书馆',
+      'library.total': '已观看 {count}/{total} 集',
+      'library.unmapped': '一些标题保留其原始提供者身份,直到目录匹配得到确认.',
+      'library.unwatched': '未观察',
+      'library.unwatchedState': '未观察',
+      'library.watched': '监视',
+      'library.watchedState': '观看的剧集',
+      'library.watching': '观看',
+      'components.IdentityMappingControls.change': '更改匹配的标题',
+      'components.IdentityMappingControls.match': '匹配目录中的标题',
+      'components.IdentityMappingControls.mediaTypeLabel': '目录内容类型',
+      'components.IdentityMappingControls.movie': '电影',
+      'components.IdentityMappingControls.noResults': '未找到匹配的标题。',
+      'components.IdentityMappingControls.reset': '重置标题匹配项',
+      'components.IdentityMappingControls.resetFailed':
+        '无法重置匹配项。请重试。',
+      'components.IdentityMappingControls.resetSaved': '标题匹配项已重置。',
+      'components.IdentityMappingControls.saveFailed':
+        '无法保存匹配项。请重试。',
+      'components.IdentityMappingControls.saved': '标题匹配项已保存。',
+      'components.IdentityMappingControls.searchFailed':
+        '目录搜索失败。请重试。',
+      'components.IdentityMappingControls.searchHint': '输入至少两个字符。',
+      'components.IdentityMappingControls.searchLabel': '搜索 SeerrNG 目录',
+      'components.IdentityMappingControls.searching': '正在搜索中...',
+      'components.IdentityMappingControls.series': '剧集',
+      'components.IdentityMappingControls.useMatch': '使用此匹配结果',
+      'components.IdentityMappingPackControls.clear': '清除选中的文件',
+      'components.IdentityMappingPackControls.description':
+        '导出或恢复您为 Trakt、AniList、Simkl、MDBList、Plex、Jellyfin 和 Emby 标题建立的私人匹配项。',
+      'components.IdentityMappingPackControls.export': '导出标题匹配项',
+      'components.IdentityMappingPackControls.exportFailed':
+        '无法导出您的标题匹配项。请重试。',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} 包含 {count} 条标题匹配记录。',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        '标题匹配文件不得超过 5 MiB。',
+      'components.IdentityMappingPackControls.import': '导入标题匹配项',
+      'components.IdentityMappingPackControls.importDescription':
+        '导入会添加新的标题匹配项，并更新具有相同服务项目的匹配项。所有导入的匹配项都仅对您的账户可见。',
+      'components.IdentityMappingPackControls.importFailed':
+        '无法导入标题匹配包 。 检查文件再试一次',
+      'components.IdentityMappingPackControls.importLabel':
+        '选择一个 SeerrNG 标题匹配包',
+      'components.IdentityMappingPackControls.imported':
+        '已导入 {imported} 项，已更新 {updated} 项，{unchanged} 项未更改。',
+      'components.IdentityMappingPackControls.importing': '导入中…',
+      'components.IdentityMappingPackControls.invalidFile':
+        '选择受支持的 SeerrNG 标题匹配 JSON 文件。',
+      'components.IdentityMappingPackControls.privacy':
+        '包装只包含提供者项目ID和目录匹配. 账户证书从未包括在内。',
+      'components.IdentityMappingPackControls.title': '个人标题匹配项',
     },
   },
   {
@@ -34952,6 +36403,99 @@ export const localeData = [
         '要求前季已觀看',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         '啟用時，此規則適用於所有人。否則，使用者可從「個人檔案 → 影集季規則」請求核准，然後為其帳戶開啟。關閉不會移除其核准。後續季的請求要求前一個常規季的所有集數已觀看。特別篇除外；播放狀態將針對請求者連結的 Plex、Jellyfin 或 Emby 帳戶進行檢查。管理員和請求管理員可覆蓋此規則。',
+      'library.accounts': '管理連接帳號',
+      'library.all': '所有標題',
+      'library.allTypes': '電影和系列',
+      'library.completed': '已完成',
+      'library.completedState': '已完成',
+      'library.disconnected': '連接 Linked 帳號下的追蹤帳號以瀏覽其文庫 。',
+      'library.dropped': '已丟棄',
+      'library.empty': '沒有標題符合此架 。',
+      'library.failed': '您的文庫無法載入 。 檢查提供商的連線, 再試一次 。',
+      'library.in-progress': '進行中',
+      'library.limit':
+        '此頁面達到安全限制 。 如果有的話, 繼續使用 Next, 或是完成您的提供者應用程式的瀏覽 。',
+      'library.loading': '正在載入您的文庫...',
+      'library.mediaType': '媒體類型',
+      'library.movies': '電影',
+      'library.next': '下一頁',
+      'library.page': '页 次 {page}',
+      'library.planning': '計劃看',
+      'library.previous': '前一頁',
+      'library.provider': '圖書庫來源',
+      'library.rated': '比率',
+      'library.rating': '你的評分: {rating}/10',
+      'library.repair': '在此函式庫中尋找精确的ID匹配',
+      'library.repairComplete': '文庫掃瞄完成 。',
+      'library.repairContinue': '繼續掃瞄',
+      'library.repairDescription':
+        '掃描每一頁獨特的 IMDb 或 TVDB 匹配 。 已確認的匹配被儲存到您的私人標題匹配中; 沒有明确精确匹配的標題仍然可用於手動匹配 。',
+      'library.repairFailed': '掃描停止於頁面 {page}你可以從那裡繼續',
+      'library.repairLimit':
+        '您的私人冠權比賽已達限值 。 之後的精确匹配沒有儲存 。',
+      'library.repairPaused': '掃描暫停於頁面 {page}.',
+      'library.repairRunning': '掃描頁面 {page}…',
+      'library.repairStop': '此批後停止',
+      'library.repairStopping': '此批次后停止...',
+      'library.repairSummary':
+        '已掃描 {scanned} 找到 {matched} 完全匹配,并保存 {saved} 私人標題匹配 。',
+      'library.repairTruncated':
+        '提供者庫達到了 SeerrNG 的 500 頁掃描限制。繼續在提供者應用程式中瀏覽。',
+      'library.retry': '重試',
+      'library.series': '影集',
+      'library.shelf': '大陆架',
+      'library.title': '我的圖書館',
+      'library.total': '{count}/{total} 收看的片段',
+      'library.unmapped': '部分標題保留其原始提供者身份直到目錄匹配得到確認 。',
+      'library.unwatched': '未觀察',
+      'library.unwatchedState': '未觀察',
+      'library.watched': '看好了',
+      'library.watchedState': '收看的片段',
+      'library.watching': '看',
+      'components.IdentityMappingControls.change': '變更配對的標題',
+      'components.IdentityMappingControls.match': '比對目錄中的標題',
+      'components.IdentityMappingControls.mediaTypeLabel': '目錄內容類型',
+      'components.IdentityMappingControls.movie': '電影',
+      'components.IdentityMappingControls.noResults': '找不到相符的標題。',
+      'components.IdentityMappingControls.reset': '重設標題配對',
+      'components.IdentityMappingControls.resetFailed':
+        '無法重設配對項目。請再試一次。',
+      'components.IdentityMappingControls.resetSaved': '標題配對已重設。',
+      'components.IdentityMappingControls.saveFailed':
+        '無法儲存配對項目。請再試一次。',
+      'components.IdentityMappingControls.saved': '標題配對已儲存。',
+      'components.IdentityMappingControls.searchFailed':
+        '目錄搜尋失敗。請再試一次。',
+      'components.IdentityMappingControls.searchHint': '至少輸入兩個字元 。',
+      'components.IdentityMappingControls.searchLabel': '搜尋 SeerrNG 目錄',
+      'components.IdentityMappingControls.searching': '正在搜尋…',
+      'components.IdentityMappingControls.series': '影集',
+      'components.IdentityMappingControls.useMatch': '使用此比對結果',
+      'components.IdentityMappingPackControls.clear': '清除選取的檔案',
+      'components.IdentityMappingPackControls.description':
+        '匯出或還原您為 Trakt、AniList、Simkl、MDBList、Plex、Jellyfin 和 Emby 標題建立的個人比對項目。',
+      'components.IdentityMappingPackControls.export': '匯出標題比對項',
+      'components.IdentityMappingPackControls.exportFailed':
+        '無法匯出您的標題比對結果，請再試一次。',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} 包含 {count} 筆標題比對結果。',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        '標題比對檔案不得超過 5 MiB。',
+      'components.IdentityMappingPackControls.import': '匯入標題比對項',
+      'components.IdentityMappingPackControls.importDescription':
+        '匯入會新增標題比對項目，並更新具有相同服務項目的比對項目。所有匯入的比對項目都只對您的帳戶可見。',
+      'components.IdentityMappingPackControls.importFailed':
+        '無法匯入標題比對套件。請檢查檔案後再試一次。',
+      'components.IdentityMappingPackControls.importLabel':
+        '選擇 SeerrNG 標題比對套件',
+      'components.IdentityMappingPackControls.imported':
+        '已匯入 {imported} 項、已更新 {updated} 項，{unchanged} 項維持不變。',
+      'components.IdentityMappingPackControls.importing': '匯入中…',
+      'components.IdentityMappingPackControls.invalidFile':
+        '選擇受支援的 SeerrNG 標題比對 JSON 檔案。',
+      'components.IdentityMappingPackControls.privacy':
+        '包中只包含提供者項目ID和目錄匹配 。 帳號憑證從未包含 。',
+      'components.IdentityMappingPackControls.title': '個人標題比對項',
     },
   },
   {
@@ -36348,6 +37892,115 @@ export const localeData = [
         'Yêu cầu phải xem xong mùa trước',
       'components.Settings.SettingsMain.tvSeasonWatchGateEnabledTip':
         'Khi bật, quy tắc này áp dụng cho tất cả mọi người. Nếu không, người dùng có thể yêu cầu phê duyệt từ Hồ sơ → Quy tắc mùa TV, sau đó bật nó cho tài khoản của họ. Tắt nó sẽ không xóa quyền phê duyệt của họ. Các yêu cầu cho mùa sau yêu cầu tất cả các tập của mùa thường trước đó phải được xem. Các tập đặc biệt bị loại trừ; việc phát được kiểm tra đối với tài khoản Plex, Jellyfin, hoặc Emby liên kết của người yêu cầu. Quản trị viên và quản lý yêu cầu có thể vượt qua quy tắc.',
+      'library.accounts': 'Quản lý tài khoản đã kết nối',
+      'library.all': 'Mọi tiêu đề',
+      'library.allTypes': 'Phim ảnh và loạt',
+      'library.completed': 'Đã hoàn tất',
+      'library.completedState': 'Đã hoàn tất',
+      'library.disconnected':
+        'Kết nối một tài khoản theo dõi với Tài khoản Liên kết để duyệt thư viện của nó.',
+      'library.dropped': 'Bỏ',
+      'library.empty': 'Không có tựa đề nào khớp với kệ sách này.',
+      'library.failed':
+        'Không thể tải thư viện của bạn. Kiểm tra kết nối nhà cung cấp và thử lại.',
+      'library.in-progress': 'Đang tiến hành',
+      'library.limit':
+        'Trang này đạt đến giới hạn an toàn. Tiếp tục với ứng dụng kế tiếp nếu có, hoặc hoàn tất duyệt trong ứng dụng nhà cung cấp.',
+      'library.loading': 'Đang nạp thư viện của bạn...',
+      'library.mediaType': 'Loại nội dung',
+      'library.movies': 'Phim',
+      'library.next': 'Trang kế',
+      'library.page': 'Trang {page}',
+      'library.planning': 'Lên kế hoạch xem',
+      'library.previous': 'Trang trước',
+      'library.provider': 'Nguồn thư viện',
+      'library.rated': 'Đánh giá',
+      'library.rating': 'Đánh giá: {rating}/10',
+      'library.repair': 'Tìm khớp chính xác trên thư viện này',
+      'library.repairComplete': 'Quét thư viện hoàn tất.',
+      'library.repairContinue': 'Tiếp tục quét',
+      'library.repairDescription':
+        'Quét tất cả các trang cho các que diêm IMDb hay TVDB độc đáo. Các khớp đã xác nhận được lưu vào các đối tượng khớp tựa đề riêng của bạn; tiêu đề không khớp rõ ràng vẫn còn tồn tại cho khớp thủ công.',
+      'library.repairFailed':
+        'Máy quét dừng lại ở trang {page}Anh có thể tiếp tục từ đó.',
+      'library.repairLimit':
+        'Đã đạt giới hạn đối sánh tựa đề riêng. Các kết quả khớp chính xác xuất hiện sau đó sẽ không được lưu.',
+      'library.repairPaused': 'Quét tạm dừng tại trang {page}.',
+      'library.repairRunning': 'Đang quét trang {page}…',
+      'library.repairStop': 'Dừng lại sau mẻ này',
+      'library.repairStopping': 'Dừng lại sau mẻ này...',
+      'library.repairSummary':
+        'Đã quét {scanned} tựa đề, tìm thấy {matched} kết quả khớp chính xác và lưu {saved} kết quả đối sánh tựa đề riêng.',
+      'library.repairTruncated':
+        'Thư viện nhà cung cấp đã đạt đến giới hạn quét 500 trang của SeerrNG. Tiếp tục duyệt trong ứng dụng nhà cung cấp.',
+      'library.retry': 'Thử lại',
+      'library.series': 'Loạt phim',
+      'library.shelf': 'Nửa',
+      'library.title': 'Thư viện của tôi',
+      'library.total': '{count}/{total} Comment',
+      'library.unmapped':
+        'Một số tựa đề giữ được danh tính nhà cung cấp ban đầu cho đến khi một trận đấu danh mục được xác nhận.',
+      'library.unwatched': 'Không canh gác',
+      'library.unwatchedState': 'Không canh gác',
+      'library.watched': 'Xem',
+      'library.watchedState': 'Xem tập',
+      'library.watching': 'Xem',
+      'components.IdentityMappingControls.change':
+        'Thay đổi kết quả khớp tiêu đề',
+      'components.IdentityMappingControls.match':
+        'Ghép với tiêu đề trong danh mục',
+      'components.IdentityMappingControls.mediaTypeLabel':
+        'Loại nội dung trong danh mục',
+      'components.IdentityMappingControls.movie': 'Phim',
+      'components.IdentityMappingControls.noResults':
+        'Không tìm thấy tựa đề nào khớp cả.',
+      'components.IdentityMappingControls.reset':
+        'Đặt lại kết quả khớp tiêu đề',
+      'components.IdentityMappingControls.resetFailed':
+        'Không thể đặt lại kết quả đối chiếu. Vui lòng thử lại.',
+      'components.IdentityMappingControls.resetSaved':
+        'Đã đặt lại kết quả đối chiếu tiêu đề.',
+      'components.IdentityMappingControls.saveFailed':
+        'Không thể lưu kết quả đối chiếu. Vui lòng thử lại.',
+      'components.IdentityMappingControls.saved':
+        'Đã lưu kết quả đối chiếu tiêu đề.',
+      'components.IdentityMappingControls.searchFailed':
+        'Tìm kiếm trong danh mục không thành công. Vui lòng thử lại.',
+      'components.IdentityMappingControls.searchHint':
+        'Nhập ít nhất hai ký tự.',
+      'components.IdentityMappingControls.searchLabel':
+        'Tìm kiếm danh mục SeerrNG',
+      'components.IdentityMappingControls.searching': 'Đang tìm kiếm...',
+      'components.IdentityMappingControls.series': 'Loạt phim',
+      'components.IdentityMappingControls.useMatch': 'Dùng kết quả khớp này',
+      'components.IdentityMappingPackControls.clear': 'Xoá tập tin đã chọn',
+      'components.IdentityMappingPackControls.description':
+        'Xuất hoặc khôi phục các kết quả đối sánh tiêu đề riêng tư của bạn cho Trakt, AniList, Simkl, MDBList, Plex, Jellyfin và Emby.',
+      'components.IdentityMappingPackControls.export':
+        'Xuất các kết quả đối sánh tiêu đề',
+      'components.IdentityMappingPackControls.exportFailed':
+        'Không thể xuất các kết quả đối sánh tựa đề. Hãy thử lại.',
+      'components.IdentityMappingPackControls.fileSummary':
+        '{name} chứa {count} kết quả đối sánh tiêu đề.',
+      'components.IdentityMappingPackControls.fileTooLarge':
+        'Tệp chứa các kết quả đối sánh tiêu đề không được vượt quá 5 MiB.',
+      'components.IdentityMappingPackControls.import':
+        'Nhập các kết quả đối sánh tiêu đề',
+      'components.IdentityMappingPackControls.importDescription':
+        'Việc nhập sẽ thêm các kết quả đối sánh mới và cập nhật các kết quả có cùng mục nhà cung cấp. Tất cả kết quả được nhập vẫn riêng tư trong tài khoản của bạn.',
+      'components.IdentityMappingPackControls.importFailed':
+        'Không thể nhập gói đối sánh tiêu đề. Kiểm tra tệp và thử lại.',
+      'components.IdentityMappingPackControls.importLabel':
+        'Chọn gói đối sánh tiêu đề SeerrNG.',
+      'components.IdentityMappingPackControls.imported':
+        'Đã nhập {imported}, cập nhật {updated} và giữ nguyên {unchanged}.',
+      'components.IdentityMappingPackControls.importing': 'Đang nhập…',
+      'components.IdentityMappingPackControls.invalidFile':
+        'Chọn một tệp JSON đối sánh tiêu đề SeerrNG được hỗ trợ.',
+      'components.IdentityMappingPackControls.privacy':
+        'Các gói chỉ chứa ID mục của nhà cung cấp và kết quả đối sánh trong danh mục. Thông tin đăng nhập tài khoản không bao giờ được đưa vào.',
+      'components.IdentityMappingPackControls.title':
+        'Đối sánh tiêu đề cá nhân',
     },
   },
 ] as const;
