@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const route = (path: string) => `${testMount}/${path.replace(/^\//, '')}`;
+const apiPath = (pathname: string) =>
+  pathname.slice(pathname.indexOf('/api/v1') + '/api/v1'.length);
+
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_MY_MEDIA_LOCALE ?? ''
 )
@@ -58,9 +63,7 @@ test('My Media follows the saved locale across its library controls', async ({
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = apiPath(new URL(route.request().url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Fixture User', permissions: 32 },
@@ -97,7 +100,7 @@ test('My Media follows the saved locale across its library controls', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./library');
+  await page.goto(route('library'));
   await expect(
     page.getByRole('heading', { name: translated.title })
   ).toBeVisible();
@@ -147,9 +150,7 @@ test('My Media localizes connected-account recovery messages', async ({
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = apiPath(new URL(route.request().url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/user/1/settings/main')
@@ -160,7 +161,7 @@ test('My Media localizes connected-account recovery messages', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./library');
+  await page.goto(route('library'));
   await expect(
     page.getByRole('heading', { name: translated.title })
   ).toBeVisible();

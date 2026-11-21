@@ -5214,6 +5214,13 @@ Arabic. Baseline and candidate renders were compared at desktop and phone sizes
 for French and Arabic; layout geometry and horizontal fit remain stable. The
 screenshots and Playwright results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-localized/`.
-Live tracking-provider effects, production Express `/lumen/` verification for
-My Media, delegated library-sharing behavior if that capability exists in
-native SeerrNG, and matched native visual acceptance remain open.
+The rebuilt embedded bundle also passes all 44 My Media and localization cases
+on an isolated Express static `/lumen/` mount, with fixture API responses. The
+matching `/lumen/` route helper and API-prefix parsing were added to both
+browser specs. The HTML and hashed assets served from `public/lumen` were the
+fresh build from current Lumen source. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-bundled-final-results/`.
+This does not exercise the full authenticated production server middleware or
+live tracking-provider effects. Delegated library-sharing behavior (if that
+capability exists in native SeerrNG) and matched native visual acceptance also
+remain open.

@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const route = (path: string) => `${testMount}/${path.replace(/^\//, '')}`;
+const apiPath = (pathname: string) =>
+  pathname.slice(pathname.indexOf('/api/v1') + '/api/v1'.length);
+
 test('My Media retains provider cursors and leaves unmapped items unlinked', async ({
   page,
 }) => {
@@ -7,7 +12,7 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = apiPath(url.pathname);
     if (path === '/integrations/discovery/library/plex') {
       requests.push(url.searchParams);
       const next = url.searchParams.get('cursor') === '37';
@@ -49,7 +54,7 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
     });
   });
 
-  await page.goto('./me');
+  await page.goto(route('me'));
   await page.getByRole('link', { name: 'Open My Media' }).click();
   await expect(page.getByRole('heading', { name: 'My Media' })).toBeVisible();
   await expect(
@@ -82,7 +87,9 @@ test('My Media retains provider cursors and leaves unmapped items unlinked', asy
   await expect(
     page.getByRole('combobox', { name: 'Shelf', exact: true })
   ).toHaveValue('watched');
-  await page.goto('./library?source=anilist&shelf=rated&libraryId=unknown');
+  await page.goto(
+    route('library?source=anilist&shelf=rated&libraryId=unknown')
+  );
   await expect(
     page.getByRole('combobox', { name: 'Library source' })
   ).toHaveValue('plex');
@@ -113,7 +120,7 @@ test('provider library scans keep filter scope while paging and resume after a p
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = apiPath(url.pathname);
     if (path === '/integrations/discovery/library/trakt/repair') {
       expect(request.method()).toBe('POST');
       scans.push(request.postDataJSON());
@@ -159,7 +166,7 @@ test('provider library scans keep filter scope while paging and resume after a p
             : {},
     });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await page
     .getByRole('combobox', { name: 'Media type' })
     .selectOption('movie');
@@ -196,7 +203,7 @@ test('My Media exports private packs and refreshes the current shelf after impor
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const req = route.request();
-    const path = new URL(req.url()).pathname.slice('/api/v1'.length);
+    const path = apiPath(new URL(req.url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 2, displayName: 'Reader', permissions: 32 },
@@ -231,7 +238,7 @@ test('My Media exports private packs and refreshes the current shelf after impor
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await expect(page.getByText('Private Match', { exact: true })).toBeVisible();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export title matches' }).click();
@@ -261,9 +268,7 @@ test('My Media offers account linking and reads new connections on return', asyn
   let connected = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = apiPath(new URL(route.request().url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
     if (path === '/user/2/settings/linked-accounts')
@@ -294,7 +299,7 @@ test('My Media offers account linking and reads new connections on return', asyn
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await page
     .getByRole('link', { name: 'Manage connected accounts', exact: true })
     .click();
@@ -317,9 +322,7 @@ test('My Media recovers from malformed connected accounts and shelf responses', 
   let shelfReads = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = apiPath(new URL(route.request().url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
     if (path === '/integrations/discovery/accounts')
@@ -348,7 +351,7 @@ test('My Media recovers from malformed connected accounts and shelf responses', 
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   const error = page.getByRole('alert');
   await expect(error).toContainText('Invalid connected accounts response.');
   await error.getByRole('button', { name: 'Retry' }).click();
@@ -368,7 +371,7 @@ test('My Media saves and resets a private catalog match', async ({ page }) => {
   await page.route('**/api/v1/**', (route) => {
     const req = route.request();
     const url = new URL(req.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = apiPath(url.pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32 } });
     if (path === '/integrations/discovery/accounts')
@@ -418,7 +421,7 @@ test('My Media saves and resets a private catalog match', async ({ page }) => {
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await page
     .getByRole('button', { name: 'Match catalog title', exact: true })
     .click();
@@ -447,7 +450,7 @@ test('My Media gates provider tracking and recovers a confirmed update without r
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    const path = apiPath(new URL(request.url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32 } });
     if (path === '/integrations/discovery/accounts')
@@ -505,7 +508,7 @@ test('My Media gates provider tracking and recovers a confirmed update without r
       return route.fulfill({ status: 404, json: {} });
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await expect(page.getByRole('link', { name: 'Tracked Movie' })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Update Tracking' })
@@ -537,7 +540,7 @@ test('My Media tracks and removes a selected provider episode', async ({
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = apiPath(url.pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32 } });
     if (path === '/integrations/discovery/accounts')
@@ -602,7 +605,7 @@ test('My Media tracks and removes a selected provider episode', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await page.getByRole('button', { name: 'Update Tracking' }).click();
   await page.getByRole('button', { name: 'Track Individual Episodes' }).click();
   await page
@@ -638,9 +641,7 @@ test('My Media opens reconnection for an expired provider account', async ({
 }) => {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = apiPath(new URL(route.request().url()).pathname);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 2, permissions: 32 } });
     if (path === '/user/2/settings/linked-accounts')
@@ -664,7 +665,7 @@ test('My Media opens reconnection for an expired provider account', async ({
       });
     return route.fulfill({ json: {} });
   });
-  await page.goto('./library');
+  await page.goto(route('library'));
   await page.getByRole('link', { name: 'Reconnect Provider' }).click();
   await expect(page).toHaveURL(/linked-accounts\?reconnect=trakt$/);
   await expect(
