@@ -5137,3 +5137,7 @@ checks the category notice, and confirms no trending or person metadata request
 is sent across all four browser viewport projects. The complete admin-options
 browser file passes with 359 tests and one existing skip on the same viewport
 matrix. Both standalone Lumen and packaged `/lumen/` production builds succeed.
+TMDB lists, movie/series association graphs, and TV franchises now use the same
+pre-mount category boundary; list cards also omit any disabled media type when
+only one of Movies or Series is enabled. Their direct routes are included in
+the all-off no-query fixture.

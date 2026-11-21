@@ -258,11 +258,20 @@ function App() {
           />
           <Route path="/trending" element={<MediaCategoryRoute categories={['movie', 'tv']}><Trending /></MediaCategoryRoute>} />
           <Route
-            path="/associations/:mediaType/:id"
-            element={<Associations />}
+            path="/associations/movie/:id"
+            element={<MediaCategoryRoute categories={['movie']}><Associations /></MediaCategoryRoute>}
           />
-          <Route path="/list/:id" element={<TmdbList />} />
-          <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
+          <Route
+            path="/associations/tv/:id"
+            element={<MediaCategoryRoute categories={['tv']}><Associations /></MediaCategoryRoute>}
+          />
+          <Route path="/associations/:mediaType/:id" element={<Associations />} />
+          <Route
+            path="/list/:id"
+            element={<MediaCategoryRoute categories={['movie', 'tv']}><TmdbList /></MediaCategoryRoute>}
+          />
+          <Route path="/franchise/tv/:id" element={<MediaCategoryRoute categories={['tv']}><Franchise /></MediaCategoryRoute>} />
+          <Route path="/franchise/anime/:id" element={<Franchise />} />
           <Route
             path="/movies/genres"
             element={<MediaCategoryRoute categories={['movie']}><GenreDirectory kind="movie" /></MediaCategoryRoute>}

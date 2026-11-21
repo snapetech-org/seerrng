@@ -197,7 +197,7 @@ test('disabled core categories block their direct routes before catalog requests
     if (!request.url().includes('/api/v1/')) return;
     const path = testApiPath(request.url());
     if (
-      /^\/(discover\/(movies|tv|books|genreslider|trending)|movie\/|tv\/|person\/|book\/|book-series|media)/.test(
+      /^\/(discover\/(movies|tv|books|list|genreslider|trending)|movie\/|tv\/|person\/|association\/|franchise\/|book\/|book-series|media)/.test(
         path
       )
     )
@@ -244,7 +244,14 @@ test('disabled core categories block their direct routes before catalog requests
       });
     }
   }
-  for (const path of ['/trending', '/person/1']) {
+  for (const path of [
+    '/trending',
+    '/person/1',
+    '/list/1',
+    '/associations/movie/1',
+    '/associations/tv/1',
+    '/franchise/tv/1',
+  ]) {
     await page.goto(testAppPath(path));
     await expect(
       page.getByText('This category is turned off for your account.')
