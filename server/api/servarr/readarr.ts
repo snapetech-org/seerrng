@@ -198,6 +198,11 @@ export interface ReadarrBookLookupResult {
   audioSeconds?: number;
   durationSeconds?: number;
   narrators?: string[];
+  /**
+   * ChaptarrNG: a public cover URL from another edition, set when the monitored
+   * edition has no art of its own. Display only; `images` stays authoritative.
+   */
+  remoteCover?: string;
   author?: {
     foreignAuthorId?: string;
     authorName?: string;

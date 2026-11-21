@@ -56,6 +56,50 @@ describe('Bookshelf catalog identities', () => {
     });
   });
 
+  it('uses the remote cover when the monitored edition has no art', () => {
+    const fallback =
+      'https://m.media-amazon.com/images/I/51qfZAq2J4L._SL500_.jpg';
+    expect(
+      mapBookshelfBook(
+        {
+          title: 'The Eye of the Bedlam Bride',
+          foreignBookId: 'hc:818989',
+          images: [],
+          remoteCover: fallback,
+        },
+        1
+      ).posterPath
+    ).toBe(fallback);
+
+    // The book's own cover wins over the remote cover.
+    expect(
+      mapBookshelfBook(
+        {
+          title: 'The Eye of the Bedlam Bride',
+          foreignBookId: 'hc:818989',
+          images: [
+            { coverType: 'cover', remoteUrl: 'https://covers.example/own.jpg' },
+          ],
+          remoteCover: fallback,
+        },
+        1
+      ).posterPath
+    ).toBe('https://covers.example/own.jpg');
+
+    // Local ChaptarrNG paths and stock placeholders are not covers.
+    for (const remoteCover of [
+      '/MediaCover/Books/2879/cover.jpg?v=1',
+      'https://m.media-amazon.com/images/I/01RmK+J4pJL._SL500_.gif',
+    ]) {
+      expect(
+        mapBookshelfBook(
+          { title: 'Untitled', foreignBookId: 'hc:1', images: [], remoteCover },
+          1
+        ).posterPath
+      ).toBeUndefined();
+    }
+  });
+
   it('maps Readarr-style nested ratings, popularity and full release dates', () => {
     const book = mapBookshelfBook(
       {
