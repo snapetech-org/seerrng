@@ -5152,12 +5152,26 @@ media filters, skips a direct disabled-category query, and filters mixed API
 responses by account categories. The direct-scope and mixed-results tests each
 pass on all four viewport projects; desktop enabled/disabled captures were
 reviewed at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/calendar-visual/`.
-Watchlists now filter by the signed-in account’s categories and omit disabled
-media filter options. The regression passes on all four viewports; desktop
-enabled and disabled captures were reviewed at
+Discover Watchlists now filter by server and signed-in account categories and
+omit disabled media filter options. Personal Watchlists retain saved items
+when a category is disabled globally while still honoring explicit per-account
+category restrictions. Delegated Watchlists show the target-scoped API results
+without filtering them with the viewer's settings. The regression
+passes on all four viewports; desktop enabled and disabled captures were
+reviewed at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/watchlist-category-visual-rerun/`.
 My Media now hides movie or series library items disabled for the signed-in
 account, omits disabled tracking filters, and waits for category settings before
 requesting library pages. The four-viewport regression passes; desktop captures
 are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/library-category-visual/`.
+
+Delegated Watchlists also load without waiting on the viewer's media-category
+probes. A new regression confirmed that a target movie previously disappeared
+for an authorized manager whose own Movies category was disabled; the target
+item now renders and the type filter remains available. The full
+Watchlist browser suite passes 40/40 across desktop, iPhone, Android, and tablet;
+the per-account category regression passes 4/4. Matched baseline/candidate
+renders at those viewports show unchanged layout, with the previously missing
+row visible in the candidate. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/delegated-watchlist-categories/`.

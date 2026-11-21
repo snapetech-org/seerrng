@@ -262,12 +262,16 @@ export default function Watchlist({
     : discover
       ? t('lumen.watchlist.discoverTitle', 'Discover Watchlist')
       : t('lumen.watchlist.title', 'Watchlist');
-  const categoryEnabled = (type: keyof typeof MEDIA_LABELS) =>
-    !extras.ready
-      ? false
-      : type === 'book'
-        ? extras.categoryEnabled('ebook') || extras.categoryEnabled('audiobook')
-        : extras.categoryEnabled(type);
+  const categoryEnabled = (type: keyof typeof MEDIA_LABELS) => {
+    if (targetUserId !== undefined) return true;
+    if (!(discover ? extras.ready : extras.accountReady)) return false;
+    const isEnabled = discover
+      ? extras.categoryEnabled
+      : extras.accountCategoryEnabled;
+    return type === 'book'
+      ? isEnabled('ebook') || isEnabled('audiobook')
+      : isEnabled(type);
+  };
   const mediaOptions = Object.entries(MEDIA_LABELS).filter(([type]) =>
     categoryEnabled(type as keyof typeof MEDIA_LABELS)
   );
@@ -298,7 +302,11 @@ export default function Watchlist({
   const filterKey = query.toString();
   query.set('page', String(page));
   const base = discover ? '/discover' : `/user/${targetUserId ?? user.id}`;
-  const path = extras.ready ? `${base}/watchlist?${query}` : null;
+  const path =
+    targetUserId !== undefined ||
+    (discover ? extras.ready : extras.accountReady)
+      ? `${base}/watchlist?${query}`
+      : null;
 
   return (
     <>
