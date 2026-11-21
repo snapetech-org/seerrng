@@ -458,6 +458,64 @@ export const localeData = [
         'ولم يتم التحقق إلا من خدمات الاقتناء العشرين الأولى.',
       'downloads.unknownImport': 'النتيجة غير المعروفة',
       'downloads.unknownReject': 'النتيجة غير معروفة',
+      'components.IndexerSearch.accessDenied':
+        'تحتاج إلى صلاحية إدارة الطلبات للبحث في مواقع الفهرسة.',
+      'components.IndexerSearch.categories': 'فئات مواقع الفهرسة',
+      'components.IndexerSearch.category': 'فئة وسائط الإعلام',
+      'components.IndexerSearch.categoryAdult': 'للبالغين',
+      'components.IndexerSearch.categoryAudiobook': 'الكتب السمعية',
+      'components.IndexerSearch.categoryComic': 'قصص مصورة',
+      'components.IndexerSearch.categoryEbook': 'كتب',
+      'components.IndexerSearch.categoryGame': 'ألعاب PC',
+      'components.IndexerSearch.categoryMagazine': 'مجلات',
+      'components.IndexerSearch.categoryModern': 'ألعاب ROM الحديثة',
+      'components.IndexerSearch.categoryMovie': 'أفلام',
+      'components.IndexerSearch.categoryMusic': 'الموسيقى',
+      'components.IndexerSearch.categoryRetro': 'ROMs الرجعية',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'افتح إعدادات Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'تعذر على Prowlarr إرسال هذا الإصدار. شغّل بحثًا جديدًا وحاول مرة أخرى.',
+      'components.IndexerSearch.grabs': 'عدد التنزيلات',
+      'components.IndexerSearch.intro':
+        'ابحث عن إصدارات في مواقع الفهرسة لديك على Prowlarr ضمن جميع فئات الوسائط في SeerrNG.',
+      'components.IndexerSearch.leechers': 'المستخدمون الذين ينزّلون',
+      'components.IndexerSearch.loadFailed': 'تعذر تحميل تكوين بحث Prowlarr.',
+      'components.IndexerSearch.loadMore': 'تحميل مزيد من النتائج',
+      'components.IndexerSearch.loadingMore': 'جاري التحميل…',
+      'components.IndexerSearch.manualMode':
+        'نتائج البحث منفصلة عن طلبات SeerrNG. يمكنك إرسال نتيجة إلى عميل تنزيل مُعدّ في Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr غير متصل.',
+      'components.IndexerSearch.noConnectionHelp':
+        'اطلب من مسؤول ربط Prowlarr ضمن الإعدادات > الخدمات.',
+      'components.IndexerSearch.noResults': 'لم تتطابق الإطلاقات مع هذا البحث',
+      'components.IndexerSearch.noResultsHelp':
+        'تحقق من مرشحات الفئات والمفهرسات المفعّلة في Prowlarr. نتائج البحث لا تضمن أن التطبيق يستطيع استيراد إصدار.',
+      'components.IndexerSearch.openResult': 'افتح تفاصيل المفهرس',
+      'components.IndexerSearch.protocol': 'البروتوكول',
+      'components.IndexerSearch.published': 'تاريخ النشر',
+      'components.IndexerSearch.query': 'مصطلحات البحث',
+      'components.IndexerSearch.queryPlaceholder':
+        'العنوان أو المؤلف أو الألبوم أو العدد أو اسم اللعبة',
+      'components.IndexerSearch.requestStillUsesManager':
+        'إرسال نتيجة لا يغيّر طلب SeerrNG. يتولى Prowlarr إرسال النتيجة إلى عميل التنزيل المُعدّ لديه.',
+      'components.IndexerSearch.resultCount':
+        'أعاد Prowlarr عدد {count} من الإصدارات.',
+      'components.IndexerSearch.search': 'ابحث في مواقع الفهرسة',
+      'components.IndexerSearch.searchFailed':
+        'فشل البحث في Prowlarr. تحقق من الاتصال وحاول مرة أخرى.',
+      'components.IndexerSearch.searching': 'جارٍ البحث في مواقع الفهرسة…',
+      'components.IndexerSearch.seeders': 'عدد الموزعين',
+      'components.IndexerSearch.sendToDownloader': 'إرسال إلى المُحمِّل',
+      'components.IndexerSearch.sendingToDownloader': 'جارٍ الإرسال…',
+      'components.IndexerSearch.sentToDownloader':
+        'تم الإرسال إلى عميل التحميل المُهيأ لدى Prowlarr.',
+      'components.IndexerSearch.size': 'الحجم',
+      'components.IndexerSearch.title': 'البحث عن المفهرسات',
+      'components.IndexerSearch.tooManySearches':
+        'حد البحث وصل انتظر دقيقة قبل البحث مرة أخرى.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'ولا توجد فهرس قابلة للتفتيش. يمكن الحصول على مؤشر في Prowlarr أو تعديل مرشحات الفئة.',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1313,6 +1371,12 @@ export const localeData = [
       'lumen.downloads.actionFailed':
         'تعذّر تأكيد الإجراء: {message} راجع التحذير الحالي قبل إعادة المحاولة.',
       'lumen.downloads.previewLoading': 'جارٍ تحميل معاينة الملفات…',
+      'lumen.indexerSearch.noCategories':
+        'لا تتوفر لهذا الحساب فئات وسائط مفعّلة.',
+      'lumen.indexerSearch.resultsFound':
+        'النتائج التي أعادها Prowlarr: {count}.',
+      'lumen.indexerSearch.handoffUnconfirmed':
+        'تعذّر التأكد من إرسال النتيجة. تحقّق من عميل التنزيل قبل البحث أو إعادة المحاولة.',
     },
   },
   {
@@ -2258,6 +2322,66 @@ export const localeData = [
         'Nur die ersten 20 Akquisitionsleistungen wurden überprüft.',
       'downloads.unknownImport': 'Einfuhrergebnis unbekannt',
       'downloads.unknownReject': 'Ablehnungsergebnis unbekannt',
+      'components.IndexerSearch.accessDenied':
+        'Sie benötigen die Berechtigung zum Verwalten von Anfragen, um Indexer zu durchsuchen.',
+      'components.IndexerSearch.categories': 'Indexer-Kategorien',
+      'components.IndexerSearch.category': 'Medienkategorie',
+      'components.IndexerSearch.categoryAdult': 'Erwachsene',
+      'components.IndexerSearch.categoryAudiobook': 'Hörbücher',
+      'components.IndexerSearch.categoryComic': 'Comics',
+      'components.IndexerSearch.categoryEbook': 'Bücher',
+      'components.IndexerSearch.categoryGame': 'PC-Spiele',
+      'components.IndexerSearch.categoryMagazine': 'Magazine',
+      'components.IndexerSearch.categoryModern': 'Moderne ROM',
+      'components.IndexerSearch.categoryMovie': 'Filme',
+      'components.IndexerSearch.categoryMusic': 'Musik',
+      'components.IndexerSearch.categoryRetro': 'Retro-ROMs',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Prowlarr-Einstellungen öffnen',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr konnte dieses Release nicht senden. Starten Sie eine neue Suche und versuchen Sie es erneut.',
+      'components.IndexerSearch.grabs': 'Downloads',
+      'components.IndexerSearch.intro':
+        'Suchen Sie mit Ihren Prowlarr-Indexern nach Releases aus allen SeerrNG-Medienkategorien.',
+      'components.IndexerSearch.leechers': 'Leecher',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr Suchkonfiguration konnte nicht geladen werden.',
+      'components.IndexerSearch.loadMore': 'Mehr Ergebnisse laden',
+      'components.IndexerSearch.loadingMore': 'Lade…',
+      'components.IndexerSearch.manualMode':
+        'Suchergebnisse stehen unabhängig von SeerrNG-Anfragen zur Verfügung. Sie können ein Ergebnis an einen in Prowlarr eingerichteten Download-Client senden.',
+      'components.IndexerSearch.noConnection': 'Prowlarr ist nicht verbunden.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Bitten Sie einen Administrator, Prowlarr unter Einstellungen > Dienste zu verbinden.',
+      'components.IndexerSearch.noResults':
+        'Keine Releases passten zu dieser Suche.',
+      'components.IndexerSearch.noResultsHelp':
+        'Überprüfen Sie die Kategoriefilter und aktivierten Indexer in Prowlarr. Die Suchergebnisse bestätigen nicht, dass eine App ein Release importieren kann.',
+      'components.IndexerSearch.openResult': 'Indexer-Details öffnen',
+      'components.IndexerSearch.protocol': 'Protokoll',
+      'components.IndexerSearch.published': 'Veröffentlicht',
+      'components.IndexerSearch.query': 'Suchbegriffe',
+      'components.IndexerSearch.queryPlaceholder':
+        'Titel, Autor, Album, Ausgabe oder Spielname',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Das Senden eines Ergebnisses ändert keine SeerrNG-Anfrage. Prowlarr übergibt das Ergebnis an den dort konfigurierten Download-Client.',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr hat {count} Releases zurückgegeben.',
+      'components.IndexerSearch.search': 'Indexer durchsuchen',
+      'components.IndexerSearch.searchFailed':
+        'Die Prowlarr-Suche ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+      'components.IndexerSearch.searching': 'Suche in Indexern…',
+      'components.IndexerSearch.seeders': 'Seeder',
+      'components.IndexerSearch.sendToDownloader': 'An Downloader senden',
+      'components.IndexerSearch.sendingToDownloader': 'Wird gesendet…',
+      'components.IndexerSearch.sentToDownloader':
+        'An den konfigurierten Download-Client von Prowlarr gesendet.',
+      'components.IndexerSearch.size': 'Größe',
+      'components.IndexerSearch.title': 'Indexer-Suche',
+      'components.IndexerSearch.tooManySearches':
+        'Suchlimit erreicht. Warten Sie eine Minute, bevor Sie erneut suchen.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'Es sind keine aktivierten durchsuchbaren Indexer verfügbar. Aktivieren Sie einen Indexer in Prowlarr oder passen Sie die Kategoriefilter an.',
     },
   },
   {
@@ -2734,6 +2858,65 @@ export const localeData = [
         'Only the first 20 acquisition services were checked.',
       'downloads.unknownImport': 'Import outcome unknown',
       'downloads.unknownReject': 'Rejection outcome unknown',
+      'components.IndexerSearch.accessDenied':
+        'You need Manage Requests permission to search indexers.',
+      'components.IndexerSearch.categories': 'Indexer categories',
+      'components.IndexerSearch.category': 'Media category',
+      'components.IndexerSearch.categoryAdult': 'Adult',
+      'components.IndexerSearch.categoryAudiobook': 'Audiobooks',
+      'components.IndexerSearch.categoryComic': 'Comics',
+      'components.IndexerSearch.categoryEbook': 'Books',
+      'components.IndexerSearch.categoryGame': 'PC games',
+      'components.IndexerSearch.categoryMagazine': 'Magazines',
+      'components.IndexerSearch.categoryModern': 'Modern ROMs',
+      'components.IndexerSearch.categoryMovie': 'Movies',
+      'components.IndexerSearch.categoryMusic': 'Music',
+      'components.IndexerSearch.categoryRetro': 'Retro ROMs',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Open Prowlarr settings',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr could not send this release. Run a new search and try again.',
+      'components.IndexerSearch.grabs': 'Grabs',
+      'components.IndexerSearch.intro':
+        'Search releases in your Prowlarr indexers across every SeerrNG media category.',
+      'components.IndexerSearch.leechers': 'Leechers',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr search configuration could not be loaded.',
+      'components.IndexerSearch.loadMore': 'Load more results',
+      'components.IndexerSearch.loadingMore': 'Loading…',
+      'components.IndexerSearch.manualMode':
+        'Search results are separate from SeerrNG requests. You can send a result to a download client configured in Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr is not connected.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Ask an administrator to connect Prowlarr under Settings > Services.',
+      'components.IndexerSearch.noResults': 'No releases matched this search.',
+      'components.IndexerSearch.noResultsHelp':
+        'Check the category filters and enabled indexers in Prowlarr. Search results do not confirm that an app can import a release.',
+      'components.IndexerSearch.openResult': 'Open indexer details',
+      'components.IndexerSearch.protocol': 'Protocol',
+      'components.IndexerSearch.published': 'Published',
+      'components.IndexerSearch.query': 'Search terms',
+      'components.IndexerSearch.queryPlaceholder':
+        'Title, author, album, issue, or game name',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Sending a result does not change a SeerrNG request. Prowlarr handles the handoff to its configured download client.',
+      'components.IndexerSearch.resultCount':
+        '{count} releases returned by Prowlarr.',
+      'components.IndexerSearch.search': 'Search indexers',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr search failed. Check the connection and try again.',
+      'components.IndexerSearch.searching': 'Searching indexers…',
+      'components.IndexerSearch.seeders': 'Seeders',
+      'components.IndexerSearch.sendToDownloader': 'Send to downloader',
+      'components.IndexerSearch.sendingToDownloader': 'Sending…',
+      'components.IndexerSearch.sentToDownloader':
+        'Sent to Prowlarr’s configured download client.',
+      'components.IndexerSearch.size': 'Size',
+      'components.IndexerSearch.title': 'Indexer Search',
+      'components.IndexerSearch.tooManySearches':
+        'Search limit reached. Wait a minute before searching again.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'No enabled searchable indexers are available. Enable an indexer in Prowlarr or adjust the category filters.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3539,6 +3722,12 @@ export const localeData = [
       'lumen.downloads.actionFailed':
         'Could not confirm the action: {message} Check the current warning before retrying.',
       'lumen.downloads.previewLoading': 'Loading file preview…',
+      'lumen.indexerSearch.noCategories':
+        'No enabled media categories are available to this account.',
+      'lumen.indexerSearch.resultsFound':
+        'Results returned by Prowlarr: {count}.',
+      'lumen.indexerSearch.handoffUnconfirmed':
+        'Handoff could not be confirmed. Check the client before searching and trying again.',
     },
   },
   {
@@ -4116,6 +4305,67 @@ export const localeData = [
         'Sólo se revisaron los primeros 20 servicios de adquisición.',
       'downloads.unknownImport': 'Resultado de la importación desconocido',
       'downloads.unknownReject': 'Resultado desconocido',
+      'components.IndexerSearch.accessDenied':
+        'Necesitas el permiso para administrar solicitudes para buscar indexadores.',
+      'components.IndexerSearch.categories': 'Categorías de indexadores',
+      'components.IndexerSearch.category': 'Categoría multimedia',
+      'components.IndexerSearch.categoryAdult': 'Adulto',
+      'components.IndexerSearch.categoryAudiobook': 'Audiolibros',
+      'components.IndexerSearch.categoryComic': 'Cómics',
+      'components.IndexerSearch.categoryEbook': 'Libros',
+      'components.IndexerSearch.categoryGame': 'Juegos de PC',
+      'components.IndexerSearch.categoryMagazine': 'Revistas',
+      'components.IndexerSearch.categoryModern': 'ROM modernas',
+      'components.IndexerSearch.categoryMovie': 'Películas',
+      'components.IndexerSearch.categoryMusic': 'Música',
+      'components.IndexerSearch.categoryRetro': 'ROMs retro',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure':
+        'Abrir la configuración de Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr no pudo enviar esta liberación. Ejecuta una nueva búsqueda e inténtalo de nuevo.',
+      'components.IndexerSearch.grabs': 'Descargas',
+      'components.IndexerSearch.intro':
+        'Busca lanzamientos en tus indexadores de Prowlarr para todas las categorías de contenido de SeerrNG.',
+      'components.IndexerSearch.leechers': 'Leechers',
+      'components.IndexerSearch.loadFailed':
+        'No se pudo cargar la configuración de búsqueda de Prowlarr.',
+      'components.IndexerSearch.loadMore': 'Cargar más resultados',
+      'components.IndexerSearch.loadingMore': 'Cargando…',
+      'components.IndexerSearch.manualMode':
+        'Los resultados de búsqueda son independientes de las solicitudes de SeerrNG. Puedes enviar un resultado a un cliente de descargas configurado en Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr no está conectado.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Pídele a un administrador que conecte Prowlarr en Ajustes > Servicios.',
+      'components.IndexerSearch.noResults':
+        'No hay lanzamientos que coincidan con esta búsqueda.',
+      'components.IndexerSearch.noResultsHelp':
+        'Compruebe los filtros de categoría e indexadores habilitados en Prowlarr. Los resultados de la búsqueda no confirman que una aplicación puede importar una liberación.',
+      'components.IndexerSearch.openResult': 'Abrir detalles del indexador',
+      'components.IndexerSearch.protocol': 'Protocolo',
+      'components.IndexerSearch.published': 'Fecha de publicación',
+      'components.IndexerSearch.query': 'Términos de búsqueda',
+      'components.IndexerSearch.queryPlaceholder':
+        'Título, autor, álbum, edición o nombre del juego',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Enviar un resultado no cambia la solicitud de SeerrNG. Prowlarr gestiona la transferencia a su cliente de descargas configurado.',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr devolvió {count} lanzamientos.',
+      'components.IndexerSearch.search': 'Buscar en indexadores',
+      'components.IndexerSearch.searchFailed':
+        'La búsqueda en Prowlarr falló. Revisa la conexión e inténtalo de nuevo.',
+      'components.IndexerSearch.searching': 'Buscando indexadores...',
+      'components.IndexerSearch.seeders': 'Seeders',
+      'components.IndexerSearch.sendToDownloader': 'Enviar al descargador',
+      'components.IndexerSearch.sendingToDownloader': 'Enviando…',
+      'components.IndexerSearch.sentToDownloader':
+        'Enviado al cliente de descarga configurado de Prowlarr.',
+      'components.IndexerSearch.size': 'Tamaño',
+      'components.IndexerSearch.title': 'Búsqueda de indexadores',
+      'components.IndexerSearch.tooManySearches':
+        'Se alcanzó el límite de búsquedas. Espera un minuto antes de volver a buscar.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'No se dispone de indexadores de búsqueda habilitados. Activar un indexador en Prowlarr o ajustar los filtros de categoría.',
     },
   },
   {
@@ -4593,6 +4843,66 @@ export const localeData = [
         'Sólo se revisaron los primeros 20 servicios de adquisición.',
       'downloads.unknownImport': 'Resultado de la importación desconocido',
       'downloads.unknownReject': 'Resultado desconocido',
+      'components.IndexerSearch.accessDenied':
+        'Necesita administrar solicitudes de permiso para buscar indexadores.',
+      'components.IndexerSearch.categories': 'Categorías del índice',
+      'components.IndexerSearch.category': 'Categoría multimedia',
+      'components.IndexerSearch.categoryAdult': 'Adulto',
+      'components.IndexerSearch.categoryAudiobook': 'Audiolibros',
+      'components.IndexerSearch.categoryComic': 'Cómics',
+      'components.IndexerSearch.categoryEbook': 'Libros',
+      'components.IndexerSearch.categoryGame': 'PC juegos',
+      'components.IndexerSearch.categoryMagazine': 'Revistas',
+      'components.IndexerSearch.categoryModern': 'Modernos ROMs',
+      'components.IndexerSearch.categoryMovie': 'Películas',
+      'components.IndexerSearch.categoryMusic': 'Música',
+      'components.IndexerSearch.categoryRetro': 'ROM retro',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Configuración Open Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr no pudo enviar esta liberación. Ejecuta una nueva búsqueda e inténtalo de nuevo.',
+      'components.IndexerSearch.grabs': 'Tomas',
+      'components.IndexerSearch.intro':
+        'Las versiones de búsqueda en sus índices Prowlarr en cada categoría de medios SeerrNG.',
+      'components.IndexerSearch.leechers': 'sanguijuelas',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr no se puede cargar la configuración de búsqueda.',
+      'components.IndexerSearch.loadMore': 'Cargar más resultados',
+      'components.IndexerSearch.loadingMore': 'Cargando…',
+      'components.IndexerSearch.manualMode':
+        'Esta es una búsqueda directa de Prowlarr para la inspección. SeerrNG no toma estos resultados aquí; solicitudes aprobadas y seguimiento de adquisiciones permanecen con el administrador de medios configurado o proveedor de software.',
+      'components.IndexerSearch.noConnection': 'Prowlarr no está conectado.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Pídale a un administrador que conecte Prowlarr bajo Configuración Servicios.',
+      'components.IndexerSearch.noResults':
+        'No hay versiones que coincidan con esta búsqueda.',
+      'components.IndexerSearch.noResultsHelp':
+        'Compruebe los filtros de categoría e indexadores habilitados en Prowlarr. Los resultados de la búsqueda no confirman que una aplicación puede importar una liberación.',
+      'components.IndexerSearch.openResult': 'Datos de índice abierto',
+      'components.IndexerSearch.protocol': 'Protocolo',
+      'components.IndexerSearch.published': 'Publicado',
+      'components.IndexerSearch.query': 'Términos de búsqueda',
+      'components.IndexerSearch.queryPlaceholder':
+        'Título, autor, álbum, edición o nombre del juego',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Esta búsqueda no cambia su solicitud ni envía una descarga a un cliente.',
+      'components.IndexerSearch.resultCount':
+        '{count} comunicados devueltos por Prowlarr.',
+      'components.IndexerSearch.search': 'Índices de búsqueda',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr la búsqueda falló. Revise la conexión e intente de nuevo.',
+      'components.IndexerSearch.searching': 'Buscando indexadores...',
+      'components.IndexerSearch.seeders': 'Sembradoras',
+      'components.IndexerSearch.sendToDownloader': 'Enviar al descargador',
+      'components.IndexerSearch.sendingToDownloader': 'Enviando…',
+      'components.IndexerSearch.sentToDownloader':
+        'Enviado al cliente de descarga configurado de Prowlarr.',
+      'components.IndexerSearch.size': 'Tamaño',
+      'components.IndexerSearch.title': 'Búsqueda de indexadores',
+      'components.IndexerSearch.tooManySearches':
+        'Plazo de búsqueda alcanzado. Espera un minuto antes de volver a buscar.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'No se dispone de indexadores de búsqueda habilitados. Activar un indexador en Prowlarr o ajustar los filtros de categoría.',
     },
   },
   {
@@ -5291,6 +5601,68 @@ export const localeData = [
         "Seuls les 20 premiers services d'acquisition ont été vérifiés.",
       'downloads.unknownImport': "Résultat d'importation inconnu",
       'downloads.unknownReject': 'Résultat du rejet inconnu',
+      'components.IndexerSearch.accessDenied':
+        'Vous avez besoin de la permission de gérer les demandes pour rechercher des indexeurs.',
+      'components.IndexerSearch.categories': "Catégories d'indexeurs",
+      'components.IndexerSearch.category': 'Catégorie médias',
+      'components.IndexerSearch.categoryAdult': 'Adulte',
+      'components.IndexerSearch.categoryAudiobook': 'Livres audio',
+      'components.IndexerSearch.categoryComic': 'BD',
+      'components.IndexerSearch.categoryEbook': 'Livres',
+      'components.IndexerSearch.categoryGame': 'Jeux PC',
+      'components.IndexerSearch.categoryMagazine': 'Revues',
+      'components.IndexerSearch.categoryModern': 'ROM modernes',
+      'components.IndexerSearch.categoryMovie': 'Films',
+      'components.IndexerSearch.categoryMusic': 'Musique',
+      'components.IndexerSearch.categoryRetro': 'ROM rétrospectifs',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Ouvrir les paramètres Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        "Prowlarr n'a pas pu envoyer cette sortie. Lancez une nouvelle recherche et réessayez.",
+      'components.IndexerSearch.grabs': 'Téléchargements',
+      'components.IndexerSearch.intro':
+        'Recherchez des sorties dans vos indexeurs Prowlarr, dans toutes les catégories de médias de SeerrNG.',
+      'components.IndexerSearch.leechers': 'Lechers',
+      'components.IndexerSearch.loadFailed':
+        'La configuration de recherche Prowlarr ne pouvait pas être chargée.',
+      'components.IndexerSearch.loadMore': 'Charger plus de résultats',
+      'components.IndexerSearch.loadingMore': 'Chargement…',
+      'components.IndexerSearch.manualMode':
+        'Les résultats de recherche sont indépendants des demandes SeerrNG. Vous pouvez envoyer un résultat à un client de téléchargement configuré dans Prowlarr.',
+      'components.IndexerSearch.noConnection': "Prowlarr n'est pas connecté.",
+      'components.IndexerSearch.noConnectionHelp':
+        'Demandez à un administrateur de connecter Prowlarr sous Paramètres > Services.',
+      'components.IndexerSearch.noResults':
+        'Aucune sortie ne correspond à cette recherche.',
+      'components.IndexerSearch.noResultsHelp':
+        'Vérifiez les filtres de catégorie et les indexeurs activés dans Prowlarr. Les résultats de recherche ne garantissent pas qu’une application puisse importer une sortie.',
+      'components.IndexerSearch.openResult': "Ouvrir les détails de l'indexeur",
+      'components.IndexerSearch.protocol': 'Protocole',
+      'components.IndexerSearch.published': 'Date de publication',
+      'components.IndexerSearch.query': 'Termes de recherche',
+      'components.IndexerSearch.queryPlaceholder':
+        'Titre, auteur, album, numéro ou nom du jeu',
+      'components.IndexerSearch.requestStillUsesManager':
+        'L’envoi d’un résultat ne modifie pas une demande SeerrNG. Prowlarr le transmet au client de téléchargement configuré.',
+      'components.IndexerSearch.resultCount':
+        '{count} les sorties retournées par Prowlarr.',
+      'components.IndexerSearch.search': 'Rechercher dans les indexeurs',
+      'components.IndexerSearch.searchFailed':
+        'La recherche Prowlarr a échoué. Vérifiez la connexion et réessayez.',
+      'components.IndexerSearch.searching':
+        'Recherche en cours dans les indexeurs…',
+      'components.IndexerSearch.seeders': 'Sources',
+      'components.IndexerSearch.sendToDownloader':
+        'Envoyer vers le téléchargeur',
+      'components.IndexerSearch.sendingToDownloader': 'Envoi en cours…',
+      'components.IndexerSearch.sentToDownloader':
+        'Envoyé au client de téléchargement configuré par Prowlarr.',
+      'components.IndexerSearch.size': 'Taille',
+      'components.IndexerSearch.title': 'Recherche d’indexeurs',
+      'components.IndexerSearch.tooManySearches':
+        'Limite de recherche atteinte. Attendez une minute avant de chercher à nouveau.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        "Aucun indexable de recherche activé n'est disponible. Activer un indexeur dans Prowlarr ou ajuster les filtres de catégorie.",
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -6230,6 +6602,12 @@ export const localeData = [
       'lumen.downloads.actionFailed':
         'Impossible de confirmer l’action : {message} Consultez l’avertissement actuel avant de réessayer.',
       'lumen.downloads.previewLoading': 'Chargement de l’aperçu des fichiers…',
+      'lumen.indexerSearch.noCategories':
+        'Aucune catégorie de média activée n’est disponible pour ce compte.',
+      'lumen.indexerSearch.resultsFound':
+        'Résultats retournés par Prowlarr : {count}.',
+      'lumen.indexerSearch.handoffUnconfirmed':
+        'Le résultat a peut-être été envoyé. Vérifiez le client avant de rechercher ou de réessayer.',
     },
   },
   {
@@ -6840,6 +7218,66 @@ export const localeData = [
       'downloads.truncated': 'केवल पहले 20 अधिग्रहण सेवाओं की जांच की गई थी।',
       'downloads.unknownImport': 'अज्ञात परिणाम आयात करें',
       'downloads.unknownReject': 'अस्वीकृति परिणाम अज्ञात',
+      'components.IndexerSearch.accessDenied':
+        'इंडेक्सर खोजने के लिए आपके पास अनुरोध प्रबंधन की अनुमति होनी चाहिए।',
+      'components.IndexerSearch.categories': 'इंडेक्सर श्रेणियां',
+      'components.IndexerSearch.category': 'मीडिया श्रेणी',
+      'components.IndexerSearch.categoryAdult': 'वयस्क',
+      'components.IndexerSearch.categoryAudiobook': 'ऑडियोबुक',
+      'components.IndexerSearch.categoryComic': 'कॉमिक्स',
+      'components.IndexerSearch.categoryEbook': 'पुस्तकें',
+      'components.IndexerSearch.categoryGame': 'PC गेम्स',
+      'components.IndexerSearch.categoryMagazine': 'पत्रिकाएँ',
+      'components.IndexerSearch.categoryModern': 'आधुनिक रोम',
+      'components.IndexerSearch.categoryMovie': 'फ़िल्में',
+      'components.IndexerSearch.categoryMusic': 'संगीत',
+      'components.IndexerSearch.categoryRetro': 'रेट्रो रोम',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Prowlarr की सेटिंग खोलें',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr इस रिलीज़ को भेज नहीं सका। नई खोज चलाएँ और फिर कोशिश करें।',
+      'components.IndexerSearch.grabs': 'डाउनलोड संख्या',
+      'components.IndexerSearch.intro':
+        'SeerrNG की हर मीडिया श्रेणी में अपने Prowlarr इंडेक्सर पर रिलीज़ खोजें।',
+      'components.IndexerSearch.leechers': 'लीचर',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr खोज विन्यास लोड नहीं किया जा सकता है।',
+      'components.IndexerSearch.loadMore': 'अधिक परिणाम लोड करें',
+      'components.IndexerSearch.loadingMore': 'लोड हो रहा है…',
+      'components.IndexerSearch.manualMode':
+        'खोज परिणाम SeerrNG अनुरोधों से अलग हैं। आप किसी परिणाम को Prowlarr में कॉन्फ़िगर किए गए डाउनलोड क्लाइंट को भेज सकते हैं।',
+      'components.IndexerSearch.noConnection': 'Prowlarr कनेक्ट नहीं है।',
+      'components.IndexerSearch.noConnectionHelp':
+        'Prowlarr को सेटिंग्स> सेवाओं के तहत जोड़ने के लिए एक प्रशासक से पूछें।',
+      'components.IndexerSearch.noResults':
+        'इस खोज से मेल खाने वाली कोई रिलीज़ नहीं मिली।',
+      'components.IndexerSearch.noResultsHelp':
+        'Prowlarr में श्रेणी फ़िल्टर और चालू इंडेक्सर जाँचें। खोज परिणाम यह सुनिश्चित नहीं करते कि कोई ऐप रिलीज़ आयात कर सकता है।',
+      'components.IndexerSearch.openResult': 'इंडेक्सर का विवरण खोलें',
+      'components.IndexerSearch.protocol': 'प्रोटोकॉल',
+      'components.IndexerSearch.published': 'प्रकाशित',
+      'components.IndexerSearch.query': 'खोज शब्द',
+      'components.IndexerSearch.queryPlaceholder':
+        'शीर्षक, लेखक, एल्बम, अंक, या खेल का नाम',
+      'components.IndexerSearch.requestStillUsesManager':
+        'किसी परिणाम को भेजने से SeerrNG अनुरोध नहीं बदलता। Prowlarr उसे अपने कॉन्फ़िगर किए गए डाउनलोड क्लाइंट को भेजता है।',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr ने {count} रिलीज़ लौटाईं।',
+      'components.IndexerSearch.search': 'इंडेक्सरों में खोजें',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr खोज विफल हो गया। कनेक्शन की जाँच करें और फिर से प्रयास करें।',
+      'components.IndexerSearch.searching': 'इंडेक्सरों में खोजा जा रहा है…',
+      'components.IndexerSearch.seeders': 'सीडर्स',
+      'components.IndexerSearch.sendToDownloader': 'डाउनलोडर में भेजें',
+      'components.IndexerSearch.sendingToDownloader': 'भेजा जा रहा है…',
+      'components.IndexerSearch.sentToDownloader':
+        'Prowlarr के कॉन्फ़िगर किए गए डाउनलोड क्लाइंट में भेज दिया गया।',
+      'components.IndexerSearch.size': 'आकार',
+      'components.IndexerSearch.title': 'इंडेक्सर खोज',
+      'components.IndexerSearch.tooManySearches':
+        'खोज सीमा तक पहुंच गई। फिर से खोज करने से पहले एक मिनट की प्रतीक्षा करें।',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'कोई सक्षम खोज अनुक्रमणिका उपलब्ध नहीं हैं। Prowlarr में एक इंडेक्सर को सक्षम करें या श्रेणी फिल्टर को समायोजित करें।',
     },
   },
   {
@@ -7436,6 +7874,66 @@ export const localeData = [
         'Hanya 20 pertama layanan akuisisi yang diperiksa.',
       'downloads.unknownImport': 'Impor hasil tidak diketahui',
       'downloads.unknownReject': 'Hasil penolakan tidak diketahui',
+      'components.IndexerSearch.accessDenied':
+        'Anda perlu izin Manage Requests untuk mencari indexers.',
+      'components.IndexerSearch.categories': 'Kategori pengindeks',
+      'components.IndexerSearch.category': 'Kategori media',
+      'components.IndexerSearch.categoryAdult': 'Dewasa',
+      'components.IndexerSearch.categoryAudiobook': 'Buku audio',
+      'components.IndexerSearch.categoryComic': 'Komik',
+      'components.IndexerSearch.categoryEbook': 'Buku',
+      'components.IndexerSearch.categoryGame': 'Permainan PC',
+      'components.IndexerSearch.categoryMagazine': 'Majalah',
+      'components.IndexerSearch.categoryModern': 'ROM Modern',
+      'components.IndexerSearch.categoryMovie': 'Film',
+      'components.IndexerSearch.categoryMusic': 'Musik',
+      'components.IndexerSearch.categoryRetro': 'Retro ROM',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Buka pengaturan Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr tidak dapat mengirim rilis ini. Jalankan pencarian baru dan coba lagi.',
+      'components.IndexerSearch.grabs': 'Unduhan',
+      'components.IndexerSearch.intro':
+        'Cari rilis di pengindeks Prowlarr Anda di setiap kategori media SeerrNG.',
+      'components.IndexerSearch.leechers': 'Pengunduh',
+      'components.IndexerSearch.loadFailed':
+        'Konfigurasi pencarian Prowlarr tidak dapat dimuat.',
+      'components.IndexerSearch.loadMore': 'Muat lebih banyak hasil',
+      'components.IndexerSearch.loadingMore': 'Memuat…',
+      'components.IndexerSearch.manualMode':
+        'Hasil pencarian terpisah dari permintaan SeerrNG. Anda dapat mengirim hasil ke klien unduhan yang dikonfigurasi di Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr tidak terhubung.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Tanyakan administrator untuk menghubungkan Prowlarr di bawah Pengaturan > Services.',
+      'components.IndexerSearch.noResults':
+        'Tidak ada rilis yang cocok dengan pencarian ini.',
+      'components.IndexerSearch.noResultsHelp':
+        'Periksa filter kategori dan indexer yang diaktifkan di Prowlarr. Hasil pencarian tidak menjamin bahwa aplikasi dapat mengimpor rilis.',
+      'components.IndexerSearch.openResult': 'Buka rincian pengindeks',
+      'components.IndexerSearch.protocol': 'Protokol',
+      'components.IndexerSearch.published': 'Diterbitkan',
+      'components.IndexerSearch.query': 'Istilah pencarian',
+      'components.IndexerSearch.queryPlaceholder':
+        'Judul, penulis, album, edisi, atau nama game',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Mengirim hasil tidak mengubah permintaan SeerrNG. Prowlarr meneruskan hasil tersebut ke klien unduhan yang dikonfigurasi.',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr mengembalikan {count} rilis.',
+      'components.IndexerSearch.search': 'Cari pengindeks',
+      'components.IndexerSearch.searchFailed':
+        'Pencarian Prowlarr gagal. Periksa koneksi dan coba lagi.',
+      'components.IndexerSearch.searching': 'Mencari di indexer…',
+      'components.IndexerSearch.seeders': 'Seeder',
+      'components.IndexerSearch.sendToDownloader': 'Kirim ke downloader',
+      'components.IndexerSearch.sendingToDownloader': 'Mengirim…',
+      'components.IndexerSearch.sentToDownloader':
+        'Dikirim ke klien unduhan yang dikonfigurasi oleh Prowlarr.',
+      'components.IndexerSearch.size': 'Ukuran',
+      'components.IndexerSearch.title': 'Pencarian Indexer',
+      'components.IndexerSearch.tooManySearches':
+        'Batas pencarian tercapai. Tunggu sebentar sebelum mencari lagi.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'Tak tersedia indexers yang dapat dicari. Aktifkan pengindexer dalam Prowlarr atau atur penyaring kategori.',
     },
   },
   {
@@ -8021,6 +8519,67 @@ export const localeData = [
       'downloads.truncated': '買収サービスが最初の20件のみチェックされました。',
       'downloads.unknownImport': 'インポート結果 不明',
       'downloads.unknownReject': '拒絶反応結果',
+      'components.IndexerSearch.accessDenied':
+        'インデクサーを検索するには、リクエスト管理権限が必要です。',
+      'components.IndexerSearch.categories': 'インデクサーカテゴリ',
+      'components.IndexerSearch.category': 'メディアカテゴリ',
+      'components.IndexerSearch.categoryAdult': 'アダルト',
+      'components.IndexerSearch.categoryAudiobook': 'オーディオブック',
+      'components.IndexerSearch.categoryComic': 'コミック',
+      'components.IndexerSearch.categoryEbook': '本',
+      'components.IndexerSearch.categoryGame': 'PCゲーム',
+      'components.IndexerSearch.categoryMagazine': '雑誌',
+      'components.IndexerSearch.categoryModern': '現代ROMs',
+      'components.IndexerSearch.categoryMovie': '映画',
+      'components.IndexerSearch.categoryMusic': 'ミュージック',
+      'components.IndexerSearch.categoryRetro': 'レトロROMs',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Prowlarr の設定を開く',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr はこのリリースを送信できませんでした。新しい検索を実行して再試行してください。',
+      'components.IndexerSearch.grabs': 'ダウンロード数',
+      'components.IndexerSearch.intro':
+        'すべてのSeerrNGメディアカテゴリで、Prowlarrのインデクサーからリリースを検索します。',
+      'components.IndexerSearch.leechers': 'リーチャーズ',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr検索設定はロードできませんでした。',
+      'components.IndexerSearch.loadMore': 'より多くの結果を読み込む',
+      'components.IndexerSearch.loadingMore': 'ロード中…',
+      'components.IndexerSearch.manualMode':
+        '検索結果はSeerrNGのリクエストとは別扱いです。結果をProwlarrで設定したダウンロードクライアントに送信できます。',
+      'components.IndexerSearch.noConnection':
+        'Prowlarr は接続されていません。',
+      'components.IndexerSearch.noConnectionHelp':
+        '[設定] > [サービス] で Prowlarr を接続する管理者に依頼します。',
+      'components.IndexerSearch.noResults':
+        'この検索に一致するリリースはありません。',
+      'components.IndexerSearch.noResultsHelp':
+        'Prowlarrでカテゴリフィルターと有効なインデクサーを確認してください。検索結果があっても、アプリがリリースをインポートできるとは限りません。',
+      'components.IndexerSearch.openResult': 'インデクサーの詳細を開く',
+      'components.IndexerSearch.protocol': 'プロトコル',
+      'components.IndexerSearch.published': '公開日',
+      'components.IndexerSearch.query': '検索語',
+      'components.IndexerSearch.queryPlaceholder':
+        'タイトル、著者、アルバム、号数、ゲーム名',
+      'components.IndexerSearch.requestStillUsesManager':
+        '結果を送信してもSeerrNGのリクエストは変更されません。Prowlarrが設定済みのダウンロードクライアントへ引き渡します。',
+      'components.IndexerSearch.resultCount':
+        'Prowlarrから{count}件のリリースが返されました。',
+      'components.IndexerSearch.search': 'インデクサーを検索',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr検索が失敗しました。 接続を確認してもう一度お試しください。',
+      'components.IndexerSearch.searching': 'インデクサーを検索中…',
+      'components.IndexerSearch.seeders': 'シーダー数',
+      'components.IndexerSearch.sendToDownloader': 'ダウンローダーに送信',
+      'components.IndexerSearch.sendingToDownloader': '送信中…',
+      'components.IndexerSearch.sentToDownloader':
+        'Prowlarrの構成済みダウンロードクライアントに送信しました。',
+      'components.IndexerSearch.size': 'サイズ',
+      'components.IndexerSearch.title': 'インデクサー検索',
+      'components.IndexerSearch.tooManySearches':
+        '検索上限に達しました。再検索する前に1分お待ちください。',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        '有効な検索インデックスは使用できません。 Prowlarr のインディケーターを有効にするか、カテゴリフィルタを調整します。',
     },
   },
   {
@@ -8472,6 +9031,67 @@ export const localeData = [
       'downloads.truncated': '첫 20개의 인수 서비스만 확인되었습니다.',
       'downloads.unknownImport': '수입 outcome 알 수없는',
       'downloads.unknownReject': '거절 outcome 알 수없는',
+      'components.IndexerSearch.accessDenied':
+        '인덱서를 검색하려면 요청 관리 권한이 필요합니다.',
+      'components.IndexerSearch.categories': 'Indexer 카테고리',
+      'components.IndexerSearch.category': '미디어 범주',
+      'components.IndexerSearch.categoryAdult': '성인',
+      'components.IndexerSearch.categoryAudiobook': '오디오북',
+      'components.IndexerSearch.categoryComic': '만화',
+      'components.IndexerSearch.categoryEbook': '책',
+      'components.IndexerSearch.categoryGame': 'PC 게임',
+      'components.IndexerSearch.categoryMagazine': '잡지',
+      'components.IndexerSearch.categoryModern': '현대 ROMs',
+      'components.IndexerSearch.categoryMovie': '영화',
+      'components.IndexerSearch.categoryMusic': '·',
+      'components.IndexerSearch.categoryRetro': '레트로 ROM',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Prowlarr 설정 열기',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr가 이 릴리스를 전송할 수 없습니다. 새 검색을 실행하고 다시 시도해 주세요.',
+      'components.IndexerSearch.grabs': '다운로드 수',
+      'components.IndexerSearch.intro':
+        '모든 SeerrNG 미디어 카테고리에서 Prowlarr Indexers의 릴리스를 검색합니다.',
+      'components.IndexerSearch.leechers': '다운로더 수',
+      'components.IndexerSearch.loadFailed':
+        'Prowlarr 검색 구성을로드 할 수 없습니다.',
+      'components.IndexerSearch.loadMore': '결과 더 불러오기',
+      'components.IndexerSearch.loadingMore': '불러오는 중…',
+      'components.IndexerSearch.manualMode':
+        '검색 결과는 SeerrNG 요청과 별개입니다. 결과를 Prowlarr에 설정된 다운로드 클라이언트로 보낼 수 있습니다.',
+      'components.IndexerSearch.noConnection':
+        'Prowlarr에 연결되어 있지 않습니다.',
+      'components.IndexerSearch.noConnectionHelp':
+        '관리자에게 설정 > 서비스에서 Prowlarr을 연결하십시오.',
+      'components.IndexerSearch.noResults':
+        '이 검색과 일치하는 릴리스가 없습니다.',
+      'components.IndexerSearch.noResultsHelp':
+        'Prowlarr에서 카테고리 필터와 활성 인덱서를 확인하세요. 검색 결과가 앱에서 릴리스를 가져올 수 있음을 보장하지는 않습니다.',
+      'components.IndexerSearch.openResult': '인덱서 세부 정보 열기',
+      'components.IndexerSearch.protocol': '프로토콜',
+      'components.IndexerSearch.published': '게시됨',
+      'components.IndexerSearch.query': '검색어',
+      'components.IndexerSearch.queryPlaceholder':
+        '제목, 저자, 앨범, 호, 또는 게임 이름',
+      'components.IndexerSearch.requestStillUsesManager':
+        '결과를 보내도 SeerrNG 요청은 변경되지 않습니다. Prowlarr가 설정된 다운로드 클라이언트로 결과를 전달합니다.',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr에서 릴리스 {count}개를 반환했습니다.',
+      'components.IndexerSearch.search': '인덱서 검색',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr 검색에 실패했습니다. 연결을 확인하고 다시 시도하세요.',
+      'components.IndexerSearch.searching': '인덱서 검색 중…',
+      'components.IndexerSearch.seeders': '시더',
+      'components.IndexerSearch.sendToDownloader': '다운로더로 전송',
+      'components.IndexerSearch.sendingToDownloader': '전송 중…',
+      'components.IndexerSearch.sentToDownloader':
+        'Prowlarr의 설정된 다운로드 클라이언트로 전송되었습니다.',
+      'components.IndexerSearch.size': '크기',
+      'components.IndexerSearch.title': '인덱서 검색',
+      'components.IndexerSearch.tooManySearches':
+        '검색 횟수 제한에 도달했습니다. 다시 검색하기 전에 1분 기다려 주세요.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'Searchable Indexers를 사용할 수 없습니다. Prowlarr의 인덱스를 사용하거나 카테고리 필터를 조정할 수 있습니다.',
     },
   },
   {
@@ -9342,6 +9962,66 @@ export const localeData = [
         'Apenas os primeiros 20 serviços de aquisição foram verificados.',
       'downloads.unknownImport': 'Resultado da importação desconhecido',
       'downloads.unknownReject': 'Resultado de rejeição desconhecido.',
+      'components.IndexerSearch.accessDenied':
+        'Você precisa de permissão para controlar os pedidos para procurar indexadores.',
+      'components.IndexerSearch.categories': 'Categorias de indexadores',
+      'components.IndexerSearch.category': 'Categoria de mídia',
+      'components.IndexerSearch.categoryAdult': 'Adulto',
+      'components.IndexerSearch.categoryAudiobook': 'Audiolivros',
+      'components.IndexerSearch.categoryComic': 'Quadrinhos',
+      'components.IndexerSearch.categoryEbook': 'Livros',
+      'components.IndexerSearch.categoryGame': 'Jogos de PC',
+      'components.IndexerSearch.categoryMagazine': 'Revistas',
+      'components.IndexerSearch.categoryModern': 'ROMs modernos',
+      'components.IndexerSearch.categoryMovie': 'Filmes',
+      'components.IndexerSearch.categoryMusic': 'Música',
+      'components.IndexerSearch.categoryRetro': 'ROMs retrô',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Abrir configurações Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'O Prowlarr não conseguiu enviar este lançamento. Faça uma nova busca e tente novamente.',
+      'components.IndexerSearch.grabs': 'Downloads',
+      'components.IndexerSearch.intro':
+        'Procure lançamentos em seus indexadores Prowlarr em todas as categorias de mídia SeerrNG.',
+      'components.IndexerSearch.leechers': 'Leechers.',
+      'components.IndexerSearch.loadFailed':
+        'A configuração de pesquisa Prowlarr não pôde ser carregada.',
+      'components.IndexerSearch.loadMore': 'Carregue mais resultados.',
+      'components.IndexerSearch.loadingMore': 'Carregando…',
+      'components.IndexerSearch.manualMode':
+        'Os resultados da busca são separados das solicitações do SeerrNG. Você pode enviar um resultado para um cliente de download configurado no Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr não está conectado.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Peça a um administrador para conectar Prowlarr em Configurações > Serviços.',
+      'components.IndexerSearch.noResults':
+        'Nenhum lançamento corresponde a esta busca.',
+      'components.IndexerSearch.noResultsHelp':
+        'Verifique os filtros de categoria e indexadores habilitados em Prowlarr. Os resultados da pesquisa não confirmam que um aplicativo pode importar um lançamento.',
+      'components.IndexerSearch.openResult': 'Abra detalhes do indexador.',
+      'components.IndexerSearch.protocol': 'Protocolo',
+      'components.IndexerSearch.published': 'Publicado',
+      'components.IndexerSearch.query': 'Termos de busca',
+      'components.IndexerSearch.queryPlaceholder':
+        'Título, autor, álbum, edição ou nome do jogo',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Enviar um resultado não altera uma solicitação do SeerrNG. O Prowlarr encaminha o resultado ao cliente de download configurado.',
+      'components.IndexerSearch.resultCount':
+        'O Prowlarr retornou {count} lançamentos.',
+      'components.IndexerSearch.search': 'Buscar indexadores',
+      'components.IndexerSearch.searchFailed':
+        'A pesquisa Prowlarr falhou. Verifique a conexão e tente novamente.',
+      'components.IndexerSearch.searching': 'Procurando nos indexadores…',
+      'components.IndexerSearch.seeders': 'Seeders',
+      'components.IndexerSearch.sendToDownloader': 'Enviar para o downloader',
+      'components.IndexerSearch.sendingToDownloader': 'Enviando…',
+      'components.IndexerSearch.sentToDownloader':
+        'Enviado para o cliente de download configurado do Prowlarr.',
+      'components.IndexerSearch.size': 'Tamanho',
+      'components.IndexerSearch.title': 'Busca de indexadores',
+      'components.IndexerSearch.tooManySearches':
+        'Limite de busca alcançado. Espere um minuto antes de procurar novamente.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'Nenhum indexador habilitado está disponível. Active um indexador no Prowlarr ou ajuste os filtros de categoria.',
     },
   },
   {
@@ -10608,6 +11288,64 @@ export const localeData = [
       'downloads.truncated': '只有前20项采购服务得到检查。',
       'downloads.unknownImport': '导入结果未知',
       'downloads.unknownReject': '拒绝结果未知',
+      'components.IndexerSearch.accessDenied':
+        '您需要具备请求管理权限才能搜索索引器。',
+      'components.IndexerSearch.categories': '索引器类别',
+      'components.IndexerSearch.category': '媒体类别',
+      'components.IndexerSearch.categoryAdult': '成人',
+      'components.IndexerSearch.categoryAudiobook': '音频',
+      'components.IndexerSearch.categoryComic': '漫画',
+      'components.IndexerSearch.categoryEbook': '书籍',
+      'components.IndexerSearch.categoryGame': '个人电脑游戏',
+      'components.IndexerSearch.categoryMagazine': '杂志',
+      'components.IndexerSearch.categoryModern': '现代光盘',
+      'components.IndexerSearch.categoryMovie': '电影',
+      'components.IndexerSearch.categoryMusic': '音乐',
+      'components.IndexerSearch.categoryRetro': '反光光盘',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': '打开 Prowlarr 设置',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr 无法发送此资源。请重新搜索并再次尝试。',
+      'components.IndexerSearch.grabs': '下载次数',
+      'components.IndexerSearch.intro':
+        '在 SeerrNG 的所有媒体类别中搜索 Prowlarr 索引器上的发布资源。',
+      'components.IndexerSearch.leechers': '下载者',
+      'components.IndexerSearch.loadFailed': '无法加载 Prowlarr 搜索配置。',
+      'components.IndexerSearch.loadMore': '加载更多结果',
+      'components.IndexerSearch.loadingMore': '载入中…',
+      'components.IndexerSearch.manualMode':
+        '搜索结果与 SeerrNG 请求相互独立。您可以将某条结果发送到在 Prowlarr 中配置的下载客户端。',
+      'components.IndexerSearch.noConnection': 'Prowlarr 未连接。',
+      'components.IndexerSearch.noConnectionHelp':
+        '请管理员在设置 > 服务下连接 Prowlarr 。',
+      'components.IndexerSearch.noResults': '没有与此搜索匹配的发布资源。',
+      'components.IndexerSearch.noResultsHelp':
+        '请检查 Prowlarr 中的类别筛选条件和已启用的索引器。搜索结果并不保证应用能够导入相应资源。',
+      'components.IndexerSearch.openResult': '打开索引器详情',
+      'components.IndexerSearch.protocol': '协议',
+      'components.IndexerSearch.published': '发布日期',
+      'components.IndexerSearch.query': '搜索词',
+      'components.IndexerSearch.queryPlaceholder':
+        '标题、作者、专辑、期号或游戏名称',
+      'components.IndexerSearch.requestStillUsesManager':
+        '发送结果不会更改 SeerrNG 请求。Prowlarr 会将该结果转交给已配置的下载客户端。',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr 返回了 {count} 个发布资源。',
+      'components.IndexerSearch.search': '搜索索引器',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr 搜索失败。检查连接并重试。',
+      'components.IndexerSearch.searching': '正在搜索索引器...',
+      'components.IndexerSearch.seeders': '种子',
+      'components.IndexerSearch.sendToDownloader': '发送到下载器',
+      'components.IndexerSearch.sendingToDownloader': '正在发送…',
+      'components.IndexerSearch.sentToDownloader':
+        '已发送至 Prowlarr 配置的下载客户端。',
+      'components.IndexerSearch.size': '大小',
+      'components.IndexerSearch.title': '索引器搜索',
+      'components.IndexerSearch.tooManySearches':
+        '已达到搜索次数限制。请等待一分钟后再搜索。',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        '没有可用的可搜索索引器 。 启用 Prowlarr 中的索引器或调整分类过滤器。',
     },
   },
   {
@@ -11051,6 +11789,64 @@ export const localeData = [
       'downloads.truncated': '只有前20家收购公司被查。',
       'downloads.unknownImport': '匯入結果未知',
       'downloads.unknownReject': '拒絕結果未知',
+      'components.IndexerSearch.accessDenied':
+        '您需要具備請求管理權限才能搜尋索引器。',
+      'components.IndexerSearch.categories': '索引器類別',
+      'components.IndexerSearch.category': '媒體類別',
+      'components.IndexerSearch.categoryAdult': '成人',
+      'components.IndexerSearch.categoryAudiobook': '音效簿',
+      'components.IndexerSearch.categoryComic': '漫畫',
+      'components.IndexerSearch.categoryEbook': '書籍',
+      'components.IndexerSearch.categoryGame': 'PC 遊戲',
+      'components.IndexerSearch.categoryMagazine': '雜誌',
+      'components.IndexerSearch.categoryModern': '現代 ROM',
+      'components.IndexerSearch.categoryMovie': '電影',
+      'components.IndexerSearch.categoryMusic': '音樂',
+      'components.IndexerSearch.categoryRetro': '反轉 ROM',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': '開啟 Prowlarr 設定',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr 無法傳送此搜尋結果。請重新搜尋並再試一次。',
+      'components.IndexerSearch.grabs': '下載次數',
+      'components.IndexerSearch.intro':
+        '在 SeerrNG 的所有媒體類別中搜尋 Prowlarr 索引器上的發布資源。',
+      'components.IndexerSearch.leechers': '下載者',
+      'components.IndexerSearch.loadFailed': '無法載入 Prowlarr 搜尋設定 。',
+      'components.IndexerSearch.loadMore': '載入更多結果',
+      'components.IndexerSearch.loadingMore': '載入中…',
+      'components.IndexerSearch.manualMode':
+        '搜尋結果與 SeerrNG 請求各自獨立。您可以將某筆結果傳送到 Prowlarr 中設定的下載用戶端。',
+      'components.IndexerSearch.noConnection': '未連線到 Prowlarr。',
+      'components.IndexerSearch.noConnectionHelp':
+        '請管理員前往「設定 > 服務」連接 Prowlarr。',
+      'components.IndexerSearch.noResults': '沒有符合此搜尋的發布資源。',
+      'components.IndexerSearch.noResultsHelp':
+        '請檢查 Prowlarr 中的類別篩選條件和已啟用的索引器。搜尋結果不保證應用程式能匯入相應項目。',
+      'components.IndexerSearch.openResult': '開啟索引器細節',
+      'components.IndexerSearch.protocol': '協定',
+      'components.IndexerSearch.published': '發布日期',
+      'components.IndexerSearch.query': '搜尋詞',
+      'components.IndexerSearch.queryPlaceholder':
+        '標題、作者、專輯、期號或遊戲名稱',
+      'components.IndexerSearch.requestStillUsesManager':
+        '傳送結果不會變更 SeerrNG 請求。Prowlarr 會將結果交給已設定的下載用戶端。',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr 已傳回 {count} 個發布項目。',
+      'components.IndexerSearch.search': '搜尋索引器',
+      'components.IndexerSearch.searchFailed':
+        'Prowlarr 搜尋失敗。請檢查連線後再試一次。',
+      'components.IndexerSearch.searching': '正在搜尋索引器...',
+      'components.IndexerSearch.seeders': '種子數',
+      'components.IndexerSearch.sendToDownloader': '傳送至下載器',
+      'components.IndexerSearch.sendingToDownloader': '傳送中…',
+      'components.IndexerSearch.sentToDownloader':
+        '已傳送至 Prowlarr 設定的下載用戶端。',
+      'components.IndexerSearch.size': '大小',
+      'components.IndexerSearch.title': '索引器搜尋',
+      'components.IndexerSearch.tooManySearches':
+        '已達搜尋次數上限。請等候一分鐘後再搜尋。',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        '沒有可用的可搜尋索引器 。 開啟 Prowlarr 中的索引器或調整類別的過程 。',
     },
   },
   {
@@ -11523,6 +12319,67 @@ export const localeData = [
         'Chỉ có 20 dịch vụ thu thập đầu tiên được kiểm tra.',
       'downloads.unknownImport': 'Nhập kết quả không rõ',
       'downloads.unknownReject': 'Không rõ kết quả từ chối',
+      'components.IndexerSearch.accessDenied':
+        'Bạn cần quyền Quản lý yêu cầu để tìm kiếm trên các trình lập chỉ mục.',
+      'components.IndexerSearch.categories': 'Danh mục các trình lập chỉ mục',
+      'components.IndexerSearch.category': 'Loại phương tiện',
+      'components.IndexerSearch.categoryAdult': 'Người lớn',
+      'components.IndexerSearch.categoryAudiobook': 'Sổ tay âm thanh',
+      'components.IndexerSearch.categoryComic': 'Truyện tranh',
+      'components.IndexerSearch.categoryEbook': 'Sách',
+      'components.IndexerSearch.categoryGame': 'Trò chơi máy tính',
+      'components.IndexerSearch.categoryMagazine': 'Tạp chí',
+      'components.IndexerSearch.categoryModern': 'ROM hiện đại',
+      'components.IndexerSearch.categoryMovie': 'Phim',
+      'components.IndexerSearch.categoryMusic': 'Âm nhạc',
+      'components.IndexerSearch.categoryRetro': 'ROM cổ điển',
+      'components.IndexerSearch.categoryTv': 'TV',
+      'components.IndexerSearch.configure': 'Mở cài đặt Prowlarr',
+      'components.IndexerSearch.downloaderFailed':
+        'Prowlarr không thể gửi bản phát hành này. Hãy chạy tìm kiếm mới và thử lại.',
+      'components.IndexerSearch.grabs': 'Lượt tải',
+      'components.IndexerSearch.intro':
+        'Tìm kiếm các bản phát hành trên trình lập chỉ mục Prowlarr trong mọi danh mục phương tiện của SeerrNG.',
+      'components.IndexerSearch.leechers': 'Người tải xuống',
+      'components.IndexerSearch.loadFailed':
+        'Không thể tải cấu hình tìm kiếm Prowlarr.',
+      'components.IndexerSearch.loadMore': 'Tải thêm kết quả',
+      'components.IndexerSearch.loadingMore': 'Đang tải…',
+      'components.IndexerSearch.manualMode':
+        'Kết quả tìm kiếm tách biệt với các yêu cầu trong SeerrNG. Bạn có thể gửi một kết quả đến ứng dụng khách tải xuống đã cấu hình trong Prowlarr.',
+      'components.IndexerSearch.noConnection': 'Prowlarr chưa được kết nối.',
+      'components.IndexerSearch.noConnectionHelp':
+        'Yêu cầu nhà quản trị kết nối Prowlarr trong Thiết lập > Dịch vụ.',
+      'components.IndexerSearch.noResults':
+        'Không có bản phát hành khớp với tìm kiếm này.',
+      'components.IndexerSearch.noResultsHelp':
+        'Kiểm tra bộ lọc danh mục và các trình lập chỉ mục đang bật trong Prowlarr. Kết quả tìm kiếm không đảm bảo ứng dụng có thể nhập bản phát hành.',
+      'components.IndexerSearch.openResult': 'Mở chi tiết trình lập chỉ mục',
+      'components.IndexerSearch.protocol': 'Giao thức',
+      'components.IndexerSearch.published': 'Ngày phát hành',
+      'components.IndexerSearch.query': 'Từ khóa tìm kiếm',
+      'components.IndexerSearch.queryPlaceholder':
+        'Tựa đề, tác giả, album nhạc, số phát hành hoặc tên trò chơi',
+      'components.IndexerSearch.requestStillUsesManager':
+        'Việc gửi một kết quả không làm thay đổi yêu cầu SeerrNG. Prowlarr sẽ chuyển kết quả đó đến ứng dụng khách tải xuống đã cấu hình.',
+      'components.IndexerSearch.resultCount':
+        'Prowlarr đã trả về {count} bản phát hành.',
+      'components.IndexerSearch.search': 'Tìm kiếm các trình lập chỉ mục',
+      'components.IndexerSearch.searchFailed':
+        'Tìm kiếm Prowlarr không thành công. Hãy kiểm tra kết nối và thử lại.',
+      'components.IndexerSearch.searching':
+        'Đang tìm kiếm trên các trình lập chỉ mục…',
+      'components.IndexerSearch.seeders': 'Người chia sẻ',
+      'components.IndexerSearch.sendToDownloader': 'Gửi xuống trình tải xuống',
+      'components.IndexerSearch.sendingToDownloader': 'Đang gửi…',
+      'components.IndexerSearch.sentToDownloader':
+        'Đã gửi đến máy khách tải xuống được cấu hình của Prowlarr.',
+      'components.IndexerSearch.size': 'Cỡ',
+      'components.IndexerSearch.title': 'Tìm kiếm indexer',
+      'components.IndexerSearch.tooManySearches':
+        'Đã đạt giới hạn tìm kiếm. Chờ một phút rồi tìm kiếm lại.',
+      'components.SettingsProwlarr.noSearchableIndexers':
+        'Không có mục lục có khả năng tìm kiếm. Bật mục lục trong Prowlarr hoặc điều chỉnh bộ lọc phân loại.',
     },
   },
 ] as const;

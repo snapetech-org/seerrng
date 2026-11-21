@@ -484,6 +484,22 @@ existing page header, search, toolbar, and list roles. Mobile visual acceptance,
 comparison against rendered native workflows, and an end-to-end live service
 check remain open.
 
+The screen now reads SeerrNG's native `components.IndexerSearch.*` catalog for
+the full search flow, result metadata, category names, and handoff feedback.
+French and Arabic overrides cover the no-category state, result count, and
+uncertain handoff warning; other supported locales use their native catalog
+where available and English fallback otherwise. Search filtering, query
+prefills, pagination, permissions, and one-use handoff behavior are unchanged.
+The Indexer Search suite passes 28 cases in standalone Lumen and 28 against the
+production `/lumen/` Express mount, across desktop, iPhone, Android, and tablet.
+Saved-locale French and Arabic flows each pass on all four viewports in both
+deployments. Pre-change and candidate fixture renders were compared at 1440 ×
+900 and iPhone 13 (390 CSS pixels); translated text fits the existing page and
+result rows without horizontal overflow. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-localization-20261120/`.
+Live Prowlarr effects, independent linguistic review, and native-matched visual
+acceptance remain open.
+
 The same Manage Requests permission now exposes a Search Prowlarr shortcut in
 movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
 The shortcut prefills the media category and title without submitting a search.

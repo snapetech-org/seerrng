@@ -3,21 +3,22 @@ import { useSearchParams } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const PATH = '/indexer-search';
-const LABELS: Record<string, string> = {
-  movie: 'Movies',
-  tv: 'TV',
-  music: 'Music',
-  ebook: 'Books',
-  audiobook: 'Audiobooks',
-  comic: 'Comics',
-  magazine: 'Magazines',
-  adult: 'Adult',
-  retro: 'Retro ROMs',
-  modern: 'Modern ROMs',
-  game: 'PC Games',
-  sports: 'Sports',
+const CATEGORIES: Record<string, { id: string; fallback: string }> = {
+  movie: { id: 'categoryMovie', fallback: 'Movies' },
+  tv: { id: 'categoryTv', fallback: 'TV' },
+  music: { id: 'categoryMusic', fallback: 'Music' },
+  ebook: { id: 'categoryEbook', fallback: 'Books' },
+  audiobook: { id: 'categoryAudiobook', fallback: 'Audiobooks' },
+  comic: { id: 'categoryComic', fallback: 'Comics' },
+  magazine: { id: 'categoryMagazine', fallback: 'Magazines' },
+  adult: { id: 'categoryAdult', fallback: 'Adult' },
+  retro: { id: 'categoryRetro', fallback: 'Retro ROMs' },
+  modern: { id: 'categoryModern', fallback: 'Modern ROMs' },
+  game: { id: 'categoryGame', fallback: 'PC Games' },
+  sports: { id: 'categorySports', fallback: 'Sports' },
 };
 interface Configuration {
   configured: boolean;
@@ -69,11 +70,15 @@ function ReleaseRow({
   showDetails,
   state,
   send,
+  locale,
+  t,
 }: {
   release: Release;
   showDetails: boolean;
   state?: Handoff;
   send: () => void;
+  locale: string;
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
   const info = showDetails ? detailsUrl(release.infoUrl) : undefined;
   const date = release.publishDate ? new Date(release.publishDate) : null;
@@ -86,13 +91,19 @@ function ReleaseRow({
             release.protocol,
             release.size === null
               ? null
-              : `${(release.size / 1024 ** 2).toLocaleString(undefined, { maximumFractionDigits: 1 })} MB`,
+              : `${(release.size / 1024 ** 2).toLocaleString(locale, { maximumFractionDigits: 1 })} MB`,
             date && Number.isFinite(date.valueOf())
-              ? date.toLocaleDateString()
+              ? date.toLocaleDateString(locale)
               : null,
-            release.seeders === null ? null : `${release.seeders} seeders`,
-            release.leechers === null ? null : `${release.leechers} leechers`,
-            release.grabs === null ? null : `${release.grabs} grabs`,
+            release.seeders === null
+              ? null
+              : `${release.seeders.toLocaleString(locale)} ${t('components.IndexerSearch.seeders', 'Seeders')}`,
+            release.leechers === null
+              ? null
+              : `${release.leechers.toLocaleString(locale)} ${t('components.IndexerSearch.leechers', 'Leechers')}`,
+            release.grabs === null
+              ? null
+              : `${release.grabs.toLocaleString(locale)} ${t('components.IndexerSearch.grabs', 'Grabs')}`,
           ]
             .filter(Boolean)
             .join(' · ')}
@@ -103,13 +114,18 @@ function ReleaseRow({
         )}
         {state === 'sent' && (
           <small role="status">
-            Sent to Prowlarr’s configured download client.
+            {t(
+              'components.IndexerSearch.sentToDownloader',
+              'Sent to Prowlarr’s configured download client.'
+            )}
           </small>
         )}
         {state === 'failed' && (
           <small role="alert">
-            Handoff could not be confirmed. Check the client before searching
-            and trying again.
+            {t(
+              'lumen.indexerSearch.handoffUnconfirmed',
+              'Handoff could not be confirmed. Check the client before searching and trying again.'
+            )}
           </small>
         )}
       </div>
@@ -121,25 +137,33 @@ function ReleaseRow({
             target="_blank"
             rel="noreferrer"
           >
-            Open Indexer Details
+            {t('components.IndexerSearch.openResult', 'Open indexer details')}
           </a>
         )}
         {release.grabId && !state && (
           <button className="btn btn-tonal btn-sm" onClick={send}>
-            Send to Downloader
+            {t(
+              'components.IndexerSearch.sendToDownloader',
+              'Send to downloader'
+            )}
           </button>
         )}
-        {state === 'sending' && <small role="status">Sending…</small>}
+        {state === 'sending' && (
+          <small role="status">
+            {t('components.IndexerSearch.sendingToDownloader', 'Sending…')}
+          </small>
+        )}
       </div>
     </li>
   );
 }
 
 function SearchForm({ configuration }: { configuration: Configuration }) {
+  const { locale, t } = useLumenLocale();
   const [params] = useSearchParams();
   const categories = configuration.categories.filter(
     ({ category, enabled, categoryIds }) =>
-      Object.hasOwn(LABELS, category) &&
+      Object.hasOwn(CATEGORIES, category) &&
       enabled &&
       categoryIds.some((id) => Number.isSafeInteger(id) && id > 0)
   );
@@ -182,10 +206,19 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
     } catch (err) {
       setError(
         err instanceof ApiError && err.status === 429
-          ? 'Search limit reached. Wait a minute and try again.'
+          ? t(
+              'components.IndexerSearch.tooManySearches',
+              'Search limit reached. Wait a minute before searching again.'
+            )
           : err instanceof ApiError && err.status === 409
-            ? 'Prowlarr has no available indexers for this media category.'
-            : 'Indexer search failed. Try again.'
+            ? t(
+                'components.SettingsProwlarr.noSearchableIndexers',
+                'No enabled searchable indexers are available. Enable an indexer in Prowlarr or adjust the category filters.'
+              )
+            : t(
+                'components.IndexerSearch.searchFailed',
+                'Prowlarr search failed. Check the connection and try again.'
+              )
       );
     } finally {
       searchingRef.current = false;
@@ -212,22 +245,44 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
 
   if (!configuration.configured)
     return (
-      <p className="note">
-        Ask an administrator to connect Prowlarr in service settings.
-      </p>
+      <div className="note">
+        <p>
+          {t(
+            'components.IndexerSearch.noConnection',
+            'Prowlarr is not connected.'
+          )}
+        </p>
+        <p>
+          {t(
+            'components.IndexerSearch.noConnectionHelp',
+            'Ask an administrator to connect Prowlarr under Settings > Services.'
+          )}
+        </p>
+      </div>
     );
   if (!selected)
     return (
-      <p className="note">
-        No configured media categories are available to this account.
-      </p>
+      <div className="note">
+        <p>
+          {t(
+            'lumen.indexerSearch.noCategories',
+            'No enabled media categories are available to this account.'
+          )}
+        </p>
+      </div>
     );
 
   return (
     <>
       <p className="note">
-        Search Prowlarr for releases and send them to its configured download
-        client. SeerrNG requests are managed separately.
+        {t(
+          'components.IndexerSearch.intro',
+          'Search releases in your Prowlarr indexers across every SeerrNG media category.'
+        )}{' '}
+        {t(
+          'components.IndexerSearch.manualMode',
+          'Search results are separate from SeerrNG requests. You can send a result to a download client configured in Prowlarr.'
+        )}
       </p>
       <form
         className="toolbar"
@@ -238,22 +293,31 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
       >
         <label className="sel">
           <select
-            aria-label="Media Category"
+            aria-label={t(
+              'components.IndexerSearch.category',
+              'Media category'
+            )}
             value={selected}
             onChange={(event) => setCategory(event.target.value)}
           >
             {categories.map((item) => (
               <option key={item.category} value={item.category}>
-                {LABELS[item.category]}
+                {t(
+                  `components.IndexerSearch.${CATEGORIES[item.category].id}`,
+                  CATEGORIES[item.category].fallback
+                )}
               </option>
             ))}
           </select>
         </label>
         <label className="search">
           <input
-            aria-label="Search Terms"
+            aria-label={t('components.IndexerSearch.query', 'Search terms')}
             type="search"
-            placeholder="Title, author or album"
+            placeholder={t(
+              'components.IndexerSearch.queryPlaceholder',
+              'Title, author, album, issue, or game name'
+            )}
             maxLength={256}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -263,7 +327,7 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
           className="btn btn-tonal btn-sm"
           disabled={searching || query.trim().length < 2}
         >
-          Search Indexers
+          {t('components.IndexerSearch.search', 'Search indexers')}
         </button>
       </form>
       {error && (
@@ -273,14 +337,23 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
       )}
       {searching && (
         <p className="note" role="status">
-          Searching indexers…
+          {t('components.IndexerSearch.searching', 'Searching indexers…')}
         </p>
       )}
       {submitted && (
         <p className="note" role="status">
           {results.length
-            ? `${results.length} ${results.length === 1 ? 'release' : 'releases'} for “${submitted.query}” in ${LABELS[submitted.category]}.`
-            : 'No releases matched this search.'}
+            ? t(
+                'lumen.indexerSearch.resultsFound',
+                'Results returned by Prowlarr: {count}.',
+                {
+                  count: results.length,
+                }
+              )
+            : t(
+                'components.IndexerSearch.noResults',
+                'No releases matched this search.'
+              )}
         </p>
       )}
       {!!results.length && (
@@ -291,6 +364,8 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
               release={release}
               showDetails={configuration.showIndexerDetails}
               state={release.grabId ? handoffs[release.grabId] : undefined}
+              locale={locale}
+              t={t}
               send={() => {
                 if (release.grabId) void send(release.grabId);
               }}
@@ -305,7 +380,7 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
             disabled={searching}
             onClick={() => void search(submitted, nextOffset)}
           >
-            Load More Results
+            {t('components.IndexerSearch.loadMore', 'Load more results')}
           </button>
         </div>
       )}
@@ -314,6 +389,7 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
 }
 
 export default function IndexerSearch({ allowed }: { allowed: boolean }) {
+  const { t } = useLumenLocale();
   const { data, error, reload } = useApi<Configuration>(
     allowed ? PATH + '/configuration' : null
   );
@@ -321,17 +397,24 @@ export default function IndexerSearch({ allowed }: { allowed: boolean }) {
   return (
     <>
       <header className="ph">
-        <h1>Indexer Search</h1>
+        <h1>{t('components.IndexerSearch.title', 'Indexer Search')}</h1>
       </header>
       {!allowed && (
         <p className="note">
-          You need Manage Requests permission to search indexers.
+          {t(
+            'components.IndexerSearch.accessDenied',
+            'You need Manage Requests permission to search indexers.'
+          )}
         </p>
       )}
-      <ServiceNote error={error} what="indexer configuration" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('components.IndexerSearch.categories', 'Indexer categories')}
+        retry={reload}
+      />
       {allowed && !data && !error && (
         <p className="note" role="status">
-          Loading indexer configuration…
+          {t('components.IndexerSearch.loadingMore', 'Loading…')}
         </p>
       )}
       {allowed && data && (

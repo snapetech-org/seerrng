@@ -669,7 +669,10 @@
     "lumen.downloads.previewFailed": "Could not preview these files.",
     "lumen.downloads.searchFailed": "Could not search this service library.",
     "lumen.downloads.actionFailed": "Could not confirm the action: {message} Check the current warning before retrying.",
-    "lumen.downloads.previewLoading": "Loading file preview…"
+    "lumen.downloads.previewLoading": "Loading file preview…",
+    "lumen.indexerSearch.noCategories": "No enabled media categories are available to this account.",
+    "lumen.indexerSearch.resultsFound": "Results returned by Prowlarr: {count}.",
+    "lumen.indexerSearch.handoffUnconfirmed": "Handoff could not be confirmed. Check the client before searching and trying again."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -1411,7 +1414,10 @@
     "lumen.downloads.previewFailed": "Impossible de prévisualiser ces fichiers.",
     "lumen.downloads.searchFailed": "Impossible de rechercher dans la bibliothèque de ce service.",
     "lumen.downloads.actionFailed": "Impossible de confirmer l’action : {message} Consultez l’avertissement actuel avant de réessayer.",
-    "lumen.downloads.previewLoading": "Chargement de l’aperçu des fichiers…"
+    "lumen.downloads.previewLoading": "Chargement de l’aperçu des fichiers…",
+    "lumen.indexerSearch.noCategories": "Aucune catégorie de média activée n’est disponible pour ce compte.",
+    "lumen.indexerSearch.resultsFound": "Résultats retournés par Prowlarr : {count}.",
+    "lumen.indexerSearch.handoffUnconfirmed": "Le résultat a peut-être été envoyé. Vérifiez le client avant de rechercher ou de réessayer."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -2153,6 +2159,9 @@
     "lumen.downloads.previewFailed": "تعذّر معاينة هذه الملفات.",
     "lumen.downloads.searchFailed": "تعذّر البحث في مكتبة هذه الخدمة.",
     "lumen.downloads.actionFailed": "تعذّر تأكيد الإجراء: {message} راجع التحذير الحالي قبل إعادة المحاولة.",
-    "lumen.downloads.previewLoading": "جارٍ تحميل معاينة الملفات…"
+    "lumen.downloads.previewLoading": "جارٍ تحميل معاينة الملفات…",
+    "lumen.indexerSearch.noCategories": "لا تتوفر لهذا الحساب فئات وسائط مفعّلة.",
+    "lumen.indexerSearch.resultsFound": "النتائج التي أعادها Prowlarr: {count}.",
+    "lumen.indexerSearch.handoffUnconfirmed": "تعذّر التأكد من إرسال النتيجة. تحقّق من عميل التنزيل قبل البحث أو إعادة المحاولة."
   }
 }
