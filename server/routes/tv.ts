@@ -357,10 +357,12 @@ tvRoutes.get('/:id/cover', async (req, res) => {
   }
 
   const mediaId = parseOptionalPositiveInt(req.query.mediaId, 1_000_000_000);
+  // The OpenAPI validator turns is4k into a boolean; accept the raw text too.
+  const is4kQuery: unknown = req.query.is4k;
   const is4k =
-    req.query.is4k === 'true'
+    is4kQuery === true || is4kQuery === 'true'
       ? true
-      : req.query.is4k === 'false'
+      : is4kQuery === false || is4kQuery === 'false'
         ? false
         : undefined;
 
