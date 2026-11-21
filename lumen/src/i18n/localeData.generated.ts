@@ -727,6 +727,113 @@ export const localeData = [
         'أُنقذت أوضاع الفئة',
       'components.Settings.SettingsCategories.saveFailure':
         'تعذّر حفظ إعدادات الفئات.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'أفهم أن جلسات تسجيل الدخول عبر HTTP قد تُعترض على الشبكة.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'الشبكات المسموح بها للمسؤولين',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'أدخل ما يصل إلى 100 عنوان IPv4 أو IPv6 أو شبكة فرعية CIDR، واحدًا في كل سطر (بإجمالي 4096 حرفًا)، مثل 192.168.0.0/16 أو 100.64.0.0/10. يجب أن يظل عنوان العميل الذي يحفظ القائمة المعدّلة مسموحًا به.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'عندما يكون SeerrNG خلف وكيل عكسي، فعّل خيار الوثوق بالوكيل العكسي وتأكد من أن الوكيل يستبدل قيمة X-Forwarded-For. قيّد الوصول المباشر إلى SeerrNG حتى لا يتمكن العملاء من تزوير العنوان المستخدم في هذا الفحص.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'يجب على المستخدمين الذين لديهم صلاحية المسؤول تسجيل الدخول من إحدى هذه الشبكات واستخدام جلسات المتصفح الحالية من شبكة مسموح بها. ويمكن للمستخدمين العاديين مواصلة تسجيل الدخول عن بُعد. لا تتغير عمليات التكامل باستخدام مفاتيح API.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'السماح بجلسات المتصفح الموثقة عبر HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'لا يُستخدم إلا عندما يُثق بأجهزة الشبكة المحلية لا يمكن أن تُثبت وكالة الاستخبارات المحلية أي شخص يُراقبُ الإتّصالَ يُمْكِنُ أَنْ يَسْرقَ كعكةَ الدورةَ.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout': 'مهلة طلب API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'الحد الأقصى للوقت (بالثواني) لانتظار الاستجابات من الخدمات الخارجية مثل Radarr أو Sonarr أو Lidarr أو Bookshelf. اضبط على 0 لعدم وجود مهلة.',
+      'components.Settings.SettingsNetwork.caFile': 'ملف سلسلة CA (اختياري)',
+      'components.Settings.SettingsNetwork.certificateFile': 'ملف الشهادة',
+      'components.Settings.SettingsNetwork.csrfProtection': 'تفعيل حماية CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'رفض طلبات المتصفح العابرة للمواقع التي تغيّر حالة النظام (يتطلب HTTPS).',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'أبقِ هذا ممكنًا لأمان جلسة المتصفح. قم بتعطيله فقط عندما يتعين على عميل API خارجي موثوق به تقديم طلبات كتابة ولا يمكنه إرسال رموز CSRF المميزة.',
+      'components.Settings.SettingsNetwork.dnsCache': 'ذاكرة DNS المؤقتة',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'الحد الأقصى لعمر ذاكرة DNS المؤقتة (TTL)',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'الحد الأدنى لعمر ذاكرة DNS المؤقتة (TTL)',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'لا تُفعّل هذا الإعداد إذا كنت تواجه مشاكل في البحث عن DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'تفعيل تخزين عمليات بحث DNS مؤقتاً لتحسين الأداء وتجنب استدعاءات API غير ضرورية',
+      'components.Settings.SettingsNetwork.docs': 'الوثائق',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'وتتجاوز المتغيرات البيئية ظروف النقل: {variables}- إزالة هذه المتغيرات قبل استخدام هذه الضوابط.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'إجبار حل IPv4 أولاً',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'إجبار Seerr على حل عناوين IPv4 أولاً بدلاً من IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'منفذ HTTPS',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'منفذ الاستماع لاتصالات HTTPS. يجب أن يختلف عن منفذ HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'ملف خاص',
+      'components.Settings.SettingsNetwork.network': 'الشبكة',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'يُنصح باستخدام إعدادات الشبكة من حاوية/نظامك بدلاً من هذه الإعدادات. راجع {docs} للمزيد من المعلومات.',
+      'components.Settings.SettingsNetwork.networksettings': 'إعدادات الشبكة',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'ضبط إعدادات الشبكة لنسخة Seerr الخاصة بك.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'استخدام الطرق المرئية داخل SeerrNG عملية ملفات شهادات المتحركة في الحاوية؛ والمفاتيح الخاصة لا يتم تحميلها من خلال هذا الشكل.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'العناوين المستثناة من البروكسي',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'استخدم "," كفاصل، و"*." كحرف بدل للنطاقات الفرعية',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'تجاوز البروكسي للعناوين المحلية',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'بروكسي HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'إرسال جميع طلبات HTTP/HTTPS الصادرة عبر خادم بروكسي (المضيف/المنفذ). لا يُفعّل هذا HTTPS أو SSL أو تكوين الشهادات.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'اسم مضيف البروكسي',
+      'components.Settings.SettingsNetwork.proxyPassword': 'كلمة سر البروكسي',
+      'components.Settings.SettingsNetwork.proxyPort': 'منفذ البروكسي',
+      'components.Settings.SettingsNetwork.proxySsl': 'استخدام SSL للبروكسي',
+      'components.Settings.SettingsNetwork.proxyUser': 'اسم مستخدم البروكسي',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'إعادة التوجيه HTTP إلى HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'إتركْ هذا خارج بينما يَتأكّدُ مِنْ HTTPS URL. وسيعرض برنامج HTTP تعليمات للارتقاء بدلا من تقديم التطبيق.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'تقييد تسجيل دخول المسؤولين بالشبكات الموثوقة',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'إظهار إشعار الشهادة عند تسجيل الدخول',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'إظهار إشعار بصمة الشهادة المقدمة في صفحات تسجيل الدخول والإعداد.',
+      'components.Settings.SettingsNetwork.tlsDisabled': 'معطّل',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'أسماء المضيفين وعناوين IP لشهادة HTTPS ذاتية التوقيع',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'أسماء وعناوين مفصَّلة جواً مدرجة في الشهادة المتولدة ومقبولة من قبل HTTP مستمع شهادات مُقدّمة تستخدم شبكاتها الخاصة',
+      'components.Settings.SettingsNetwork.tlsMode': 'وضع HTTPS المدمج',
+      'components.Settings.SettingsNetwork.tlsProvided': 'شهادة مقدمة',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'احتفظ بالخيار SeerrNGتحقق HTTPSثم تمكين HTTP أعيد توجيهه إذا ما رغب',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'HTTPS محلي بشهادة موقعة ذاتيًا',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'حدث خطأ ما أثناء حفظ الإعدادات.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'تم حفظ الإعدادات بنجاح!',
+      'components.Settings.SettingsNetwork.transportSecurity': 'أمن النقل',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'اختر كيفية حماية Seerr لجلسات تسجيل الدخول للمتصفح. تتطلب تغييرات المستمع إعادة تشغيل الخادم.',
+      'components.Settings.SettingsNetwork.trustProxy': 'تفعيل دعم البروكسي',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'يتم التمكين عندما يقوم وكيل عكسي موثوق به أمام SeerrNG بتعيين X-Forwarded-For. سوف يثق SeerrNG في قفزة وكيل واحدة لتحديد عناوين IP للعميل. أبقِ هذا متوقفًا إذا كان بإمكان العملاء الاتصال مباشرة، لأنه يمكنهم صياغة الرؤوس المعاد توجيهها.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'أدخل شبكة واحدة مسموحًا بها على الأقل للمسؤولين.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'يجب توفير قيمة مهلة صالحة',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'يجب تقديم حد أقصى صالح لـ TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'يجب تقديم حد أدنى صالح لـ TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'يجب تقديم رقم منفذ صالح',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1779,6 +1886,29 @@ export const localeData = [
         'أدخل اسم مضيف أو عنوان IP صالحًا.',
       'lumen.adminConnectionHosts.duplicateName':
         'يجب أن تكون أسماء المضيفين المحفوظة فريدة.',
+      'lumen.adminNetwork.outboundProxy': 'الوكيل الصادر',
+      'lumen.adminNetwork.passwordHelp':
+        'اتركه فارغًا للاحتفاظ بكلمة المرور المحفوظة.',
+      'lumen.adminNetwork.clearProxyPassword': 'مسح كلمة مرور الوكيل المحفوظة',
+      'lumen.adminNetwork.ackRequired':
+        'أقرّ بأن جلسات تسجيل الدخول عبر HTTP قد تُعترض قبل تفعيل تسجيل الدخول عبر HTTP.',
+      'lumen.adminNetwork.tlsUnavailable':
+        'لا تتوفر عناصر التحكم بالنقل حتى تحميل إعدادات وقت التشغيل.',
+      'lumen.adminNetwork.saved':
+        'تم حفظ إعدادات الشبكة. أعد تشغيل SeerrNG لتطبيق التغييرات التي تؤثر في بدء تشغيل الخادم.',
+      'lumen.adminNetwork.save': 'حفظ إعدادات الشبكة',
+      'lumen.adminNetwork.loading': 'جارٍ تحميل إعدادات الشبكة…',
+      'lumen.adminNetwork.whatNetwork': 'إعدادات الشبكة',
+      'lumen.adminNetwork.whatTransport': 'حالة النقل',
+      'lumen.adminNetwork.retry': 'إعادة المحاولة',
+      'lumen.adminNetwork.loadFailure': 'تعذّر تحميل إعدادات الشبكة',
+      'lumen.adminNetwork.loadTransportFailure': 'تعذّر تحميل حالة النقل',
+      'lumen.adminNetwork.currentIpRequired':
+        'أضف عنوان IP الحالي إلى الشبكات المسموح بها قبل تفعيل هذا التقييد أو تغييره.',
+      'lumen.adminNetwork.differentHttpsPort':
+        'يجب أن يختلف منفذ HTTPS عن منفذ HTTP.',
+      'lumen.adminNetwork.proxyRequired':
+        'أدخل اسم مضيف الوكيل ومنفذه قبل تفعيل الوكيل.',
     },
   },
   {
@@ -1943,6 +2073,65 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Общо заявки',
       'components.Settings.SettingsAbout.uptodate': 'Актуална версия',
       'components.Settings.SettingsAbout.version': 'Версия',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Време за изчакване на API заявка (Timeout)',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Задайте максималното време (в секунди) за изчакване на отговор от външни услуги. Задайте 0 за без ограничение.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Активиране на CSRF защита',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS кеш',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Максимален TTL на DNS кеша',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Минимален TTL на DNS кеша',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'НЕ активирайте, ако изпитвате проблеми с DNS заявките',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Активирайте кеширането на DNS заявки, за да оптимизирате производителността',
+      'components.Settings.SettingsNetwork.docs': 'документация',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Приоритетно използване на IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Принуждава Seerr да търси първо IPv4 адреси вместо IPv6',
+      'components.Settings.SettingsNetwork.network': 'Мрежа',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Мрежовите параметри от вашия контейнер/система трябва да се използват вместо тези настройки. Вижте {docs} за повече информация.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Мрежови настройки',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Конфигурирайте мрежовите настройки и прокси опциите за Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Игнорирани адреси от проксито',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Използвайте ',' като разделител и '*.' като заместващ символ за поддомейни",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Заобикаляне на проксито за локални адреси',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) Прокси',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Насочва ВСИЧКИ изходящи HTTP/HTTPS заявки през конфигурирания прокси сървър (хост/порт). НЕ активира HTTPS или SSL конфигурация.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Име на прокси хост',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Парола за прокси',
+      'components.Settings.SettingsNetwork.proxyPort': 'Порт за прокси',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Използване на SSL за прокси',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Потребителско име за прокси',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Нещо се обърка при запазването на настройките.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Настройките са запазени успешно!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Активиране на поддръжка за прокси',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Позволява на Seerr правилно да регистрира IP адреси на клиенти, когато е зад обратно прокси (reverse proxy)',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Трябва да предоставите валидно време за изчакване',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Трябва да предоставите валиден максимален TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Трябва да предоставите валиден минимален TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Трябва да предоставите валиден порт',
     },
   },
   {
@@ -2095,6 +2284,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Sol·licituds totals',
       'components.Settings.SettingsAbout.uptodate': 'Actualitzat',
       'components.Settings.SettingsAbout.version': 'Versió',
+      'components.Settings.SettingsNetwork.docs': 'documentació',
+      'components.Settings.SettingsNetwork.network': 'Plataforma',
     },
   },
   {
@@ -2257,6 +2448,63 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Celkem žádostí',
       'components.Settings.SettingsAbout.uptodate': 'Aktuální',
       'components.Settings.SettingsAbout.version': 'Verze',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Časový limit požadavku API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maximální doba (v sekundách) čekání na odpovědi od externích služeb, jako jsou Radarr nebo Sonarr. Nastavte na 0, pokud nechcete časový limit.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Povolit ochranu CSRF',
+      'components.Settings.SettingsNetwork.dnsCache': 'Mezipaměť DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Maximální TTL mezipaměti DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Minimální TTL mezipaměti DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Toto NEPOVOLUJTE, pokud máte problémy s vyhledáváním DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Povolit ukládání do mezipaměti vyhledávání DNS pro optimalizaci výkonu a zabránění zbytečným voláním API',
+      'components.Settings.SettingsNetwork.docs': 'dokumentace',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Vynutit nejprve překlad na IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Vynutit, aby Seerr nejprve překládal adresy na IPv4 namísto IPv6',
+      'components.Settings.SettingsNetwork.network': 'Síť',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Měly by být použity parametry sítě z vašeho kontejneru nebo systému namísto těchto nastavení. Více informací naleznete v {docs}.',
+      'components.Settings.SettingsNetwork.networksettings': 'Nastavení sítě',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Konfigurovat nastavení sítě pro vaši instanci Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Adresy ignorované proxy serverem',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'Použijte použijte „,“ jako oddělovač a „*.“ jako zástupný znak pro subdomény',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Obejít proxy pro místní adresy',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Odesílat VŠECHNY odchozí požadavky HTTP a HTTPS přes proxy server (hostitel/port). NEPOVOLUJE konfiguraci HTTPS, SSL ani certifikátů.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Název hostitele proxy',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Heslo proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Port proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Použít SSL pro proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Uživatelské jméno proxy',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Při ukládání nastavení se něco pokazilo.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Nastavení byla úspěšně uložena!',
+      'components.Settings.SettingsNetwork.trustProxy': 'Povolit podporu proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Povolit, aby Seerr správně registroval IP adresy klientů za proxy serverem',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Musíte zadat platnou hodnotu časového limitu',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Musíte zadat platné maximální TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Musíte zadat platné minimální TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Musíte zadat platný port',
     },
   },
   {
@@ -2412,6 +2660,63 @@ export const localeData = [
         'Samlet antal anmodninger',
       'components.Settings.SettingsAbout.uptodate': 'Opdateret',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Timeout for API-anmodning',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maksimal tid (i sekunder) at vente på svar fra eksterne tjenester som Radarr/Sonarr. Sæt til 0 for ingen timeout.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Aktivér CSRF-beskyttelse',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS-cache Maksimal TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Minimum TTL for DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Aktivér IKKE dette, hvis du oplever problemer med DNS-opslag',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Aktivér caching af DNS-opslag for at optimere ydeevnen og undgå unødvendige API-kald',
+      'components.Settings.SettingsNetwork.docs': 'dokumentationen',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Tving IPv4-løsning først',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Tving Seerr til at løse IPv4-adresser først i stedet for IPv6',
+      'components.Settings.SettingsNetwork.network': 'Netværk',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Netværksparametre fra din container/system bør bruges i stedet for disse indstillinger. Se {docs} for mere information.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Netværksindstillinger',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Konfigurér netværksindstillinger for din Seerr-instans.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Proxy-ignorerede adresser',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Brug ',' som separator og '*.' som jokertegn for underdomæner",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Omgå proxy for lokale adresser',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S)-proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Send ALLE udgående HTTP-/HTTPS-forespørgsler gennem en proxyserver (vært/port). Aktiverer IKKE HTTPS, SSL eller certifikatkonfiguration.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy-værtsnavn',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy-adgangskode',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxyport',
+      'components.Settings.SettingsNetwork.proxySsl': 'Brug SSL til proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy-brugernavn',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Noget gik galt under lagring af indstillingerne.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Indstillinger gemt!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Aktivér proxy-understøttelse',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Tillad Seerr at registrere klient-IP-adresser korrekt bag en proxy',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Du skal angive en gyldig timeout-værdi',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Du skal angive en gyldig maksimum-TLL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Du skal angive en gyldig minimum-TLL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Du skal angive en gyldig port',
     },
   },
   {
@@ -3192,6 +3497,122 @@ export const localeData = [
         'Kategorieeinstellungen gespeichert.',
       'components.Settings.SettingsCategories.saveFailure':
         'Kategorieeinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Ich verstehe, dass HTTP-Anmeldesitzungen im Netzwerk abgefangen werden können.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Zulässige Administratornetzwerke',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Geben Sie bis zu 100 IPv4- oder IPv6-Adressen oder CIDR-Subnetze ein, jeweils eines pro Zeile (insgesamt 4096 Zeichen), zum Beispiel 192.168.0.0/16 oder 100.64.0.0/10. Die Adresse des Clients, der eine geänderte Liste speichert, muss weiterhin zugelassen sein.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Wenn SeerrNG hinter einem Reverse-Proxy läuft, aktiviere die Einstellung, dem Reverse-Proxy zu vertrauen, und stelle sicher, dass der Proxy X-Forwarded-For überschreibt. Beschränke den direkten Zugriff auf SeerrNG, damit Clients die für diese Prüfung verwendete Adresse nicht fälschen können.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Benutzer mit Administratorberechtigung müssen sich aus einem dieser Netzwerke anmelden und bestehende Browsersitzungen aus einem zugelassenen Netzwerk verwenden. Reguläre Benutzer können sich weiterhin aus der Ferne anmelden. API-Schlüssel-Integrationen bleiben unverändert.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'authentifizierte Browsersitzungen über HTTP ermöglichen',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Nur verwenden, wenn vertrauenswürdige LAN-Geräte die lokale CA nicht installieren können. Jeder, der die Verbindung beobachtet, könnte das Session-Cookie stehlen.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API-Anfrage-Timeout',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maximale Zeit (in Sekunden), die auf Antworten von externen Diensten wie Radarr, Sonarr, Lidarr oder Bookshelf gewartet werden soll. Für keine Zeitüberschreitung auf 0 setzen.',
+      'components.Settings.SettingsNetwork.caFile':
+        'CA-Kettendatei (fakultativ)',
+      'components.Settings.SettingsNetwork.certificateFile': 'Zertifikatsdatei',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Aktiviere CSRF-Schutz',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Ablehnung von standortübergreifenden, den Zustand ändernden Browseranforderungen (erfordert HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Halten Sie dies für die Sicherheit der Browsersitzung aktiviert. Deaktivieren Sie es nur, wenn ein vertrauenswürdiger externer API-Client Schreibanfragen stellen muss und keine CSRF-Token senden kann.',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-Cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Cache Maximale TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS Cache Minimale TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Aktiviere diese Option NICHT, wenn Probleme mit DNS-Lookups bestehen',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Zwischenspeicherung von DNS-Abfragen aktivieren, um die Leistung zu optimieren und unnötige API-Aufrufe zu vermeiden',
+      'components.Settings.SettingsNetwork.docs': 'Dokumentation',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Transporteinstellungen werden von Umgebungsvariablen überschrieben: {variables}. Entfernen Sie diese Variablen, bevor Sie diese Steuerelemente verwenden.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Erzwinge IPv4-Auflösung zuerst',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Erzwinge, dass Seerr zuerst IPv4-Adressen anstelle von IPv6 auflöst',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS-Port',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'Der HTTPS-Listener-Port muss sich vom HTTP-Port unterscheiden.',
+      'components.Settings.SettingsNetwork.keyFile':
+        'Datei des privaten Schlüssels',
+      'components.Settings.SettingsNetwork.network': 'Netzwerk',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Netzwerkparameter des Containers bzw. Systems sollten statt dieser Einstellungen verwendet werden. Weitere Informationen in den {docs}.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Netzwerkeinstellungen',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Konfiguriere die Netzwerkeinstellungen deiner Seerr-Instanz.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Verwenden Sie Pfade, die im SeerrNG-Prozess sichtbar sind. Binden Sie Zertifikatsdateien in den Container ein; private Schlüssel werden über dieses Formular niemals hochgeladen.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Vom Proxy ignorierte Adressen',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Verwende ',' als Trennzeichen und '*.' als Platzhalter für Subdomains",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proxy für lokale Adressen umgehen',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S)-Proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Leitet den GESAMTEN ausgehenden HTTP/HTTPS-Datenverkehr über einen Proxy-Server (Host/Port). Aktiviert KEIN HTTPS, SSL oder Zertifikatkonfiguration.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy-Hostname',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy-Passwort',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy-Port',
+      'components.Settings.SettingsNetwork.proxySsl': 'Benutze SSL für Proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy-Benutzername',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'HTTP auf HTTPS umleiten',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Lassen Sie diese Option deaktiviert, während Sie die HTTPS-URL überprüfen. HTTP zeigt dann einen Upgrade-Hinweis an, statt die App bereitzustellen.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Administrator-Anmeldung auf vertrauenswürdige Netzwerke beschränken',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Zertifikatshinweis beim Login anzeigen',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Zeigt den Hinweis zum Fingerabdruck des bereitgestellten Zertifikats auf den Login- und Einrichtungsseiten an.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Deaktiviert (direkte HTTP-Anmeldung oder Verwendung eines Reverse Proxys)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Selbstsignierte HTTPS-Hostnamen und IP-Adressen',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Durch Kommas getrennte Namen und Adressen werden in das generierte Zertifikat aufgenommen und vom HTTP-Listener akzeptiert. Bereitgestellte Zertifikate verwenden ihre eigenen SANs.',
+      'components.Settings.SettingsNetwork.tlsMode': 'Eingebauter HTTPS-Modus',
+      'components.Settings.SettingsNetwork.tlsProvided':
+        'Bereitgestelltes Zertifikat',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Speichern Sie die Auswahl, starten Sie SeerrNG neu, verifizieren Sie HTTPS und aktivieren Sie dann die HTTP-Weiterleitung, falls gewünscht.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'Selbstsigniertes lokales HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Beim Speichern der Einstellungen ist ein Fehler aufgetreten.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Einstellungen erfolgreich gespeichert!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Browser-Transportsicherheit',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Wählen Sie, wie Seerr Browser-Login-Sitzungen schützt. Änderungen am Listener erfordern einen Server-Neustart.',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Reverse-Proxy vertrauen',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Aktivieren Sie diese Option, wenn ein vertrauenswürdiger Reverse-Proxy vor SeerrNG X-Forwarded-For festlegt. SeerrNG vertraut einem Proxy-Hop zur Identifizierung von Client-IP-Adressen. Lassen Sie dies deaktiviert, wenn Clients eine direkte Verbindung herstellen können, da sie weitergeleitete Header fälschen könnten.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Geben Sie mindestens ein zugelassenes Administratornetzwerk ein.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Sie müssen einen gültigen Timeout-Wert angeben.',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Es muss eine gültige maximale TTL angegeben werden',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Es muss eine gültige minimale TTL angegeben werden',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Es muss ein gültiger Port eingetragen werden',
     },
   },
   {
@@ -3947,6 +4368,116 @@ export const localeData = [
         'Category settings saved.',
       'components.Settings.SettingsCategories.saveFailure':
         'Category settings could not be saved.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'I understand that HTTP login sessions can be intercepted on the network.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Allowed Administrator Networks',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Enter up to 100 IPv4 or IPv6 addresses or CIDR subnets, one per line (4096 characters total), such as 192.168.0.0/16 or 100.64.0.0/10. The client saving a changed list must remain allowed.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'When SeerrNG is behind a reverse proxy, enable Trust Reverse Proxy and ensure the proxy overwrites X-Forwarded-For. Restrict direct access to SeerrNG so clients cannot forge the address used for this check.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Users with administrator permission must sign in from one of these networks and use existing browser sessions from an allowed network. Regular users can continue to sign in remotely. API-key integrations are unchanged.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Allow authenticated browser sessions over HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Use only when trusted LAN devices cannot install the local CA. Anyone observing the connection could steal the session cookie.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API Request Timeout',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maximum time (in seconds) to wait for responses from external services like Radarr, Sonarr, Lidarr, or Bookshelf. Set to 0 for no timeout.',
+      'components.Settings.SettingsNetwork.caFile': 'CA chain file (optional)',
+      'components.Settings.SettingsNetwork.certificateFile': 'Certificate file',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Enable CSRF Protection',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Reject cross-site state-changing browser requests (requires HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Keep this enabled for browser-session security. Disable it only when a trusted external API client must make write requests and cannot send CSRF tokens.',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS Cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Cache Maximum TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS Cache Minimum TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Do NOT enable this if you are experiencing issues with DNS lookups',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Enable caching of DNS lookups to optimize performance and avoid making unnecessary API calls',
+      'components.Settings.SettingsNetwork.docs': 'documentation',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Transport settings are overridden by environment variables: {variables}. Remove those variables before using these controls.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Force IPv4 Resolution First',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Force Seerr to resolve IPv4 addresses first instead of IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS Port',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'The HTTPS listener port. It must differ from the HTTP port.',
+      'components.Settings.SettingsNetwork.keyFile': 'Private key file',
+      'components.Settings.SettingsNetwork.network': 'Network',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Network parameters from your container/system should be used instead of these settings. See the {docs} for more information.',
+      'components.Settings.SettingsNetwork.networksettings': 'Network Settings',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configure network settings for your Seerr instance.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Use paths visible inside the SeerrNG process. Mount certificate files into the container; private keys are never uploaded through this form.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Proxy Ignored Addresses',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Use ',' as a separator, and '*.' as a wildcard for subdomains",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Bypass Proxy for Local Addresses',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) Proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Send ALL outgoing HTTP/HTTPS requests through a proxy server (host/port). Does NOT enable HTTPS, SSL, or certificate configuration.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy Hostname',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy Password',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy Port',
+      'components.Settings.SettingsNetwork.proxySsl': 'Use SSL For Proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy Username',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Redirect HTTP to HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Leave this off while verifying the HTTPS URL. HTTP will show an upgrade instruction instead of serving the app.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Restrict Administrator Sign-In to Trusted Networks',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Show Certificate Notice on Login',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Show the provided-certificate fingerprint notice on login and setup pages.',
+      'components.Settings.SettingsNetwork.tlsDisabled': 'Disabled',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Self-signed HTTPS hostnames and IP addresses',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Comma-separated names and addresses included in the generated certificate and accepted by the HTTP listener. Provided certificates use their own SANs.',
+      'components.Settings.SettingsNetwork.tlsMode': 'Built-in HTTPS mode',
+      'components.Settings.SettingsNetwork.tlsProvided': 'Provided certificate',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Save the choice, restart SeerrNG, verify HTTPS, then enable the HTTP redirect if desired.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'Self-signed local HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Something went wrong while saving settings.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Settings saved successfully!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Browser Transport Security',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Choose how Seerr protects browser login sessions. Listener changes require a server restart.',
+      'components.Settings.SettingsNetwork.trustProxy': 'Trust Reverse Proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Enable when one trusted reverse proxy in front of SeerrNG sets X-Forwarded-For. SeerrNG will trust one proxy hop to identify client IP addresses. Keep this off if clients can connect directly, because they could forge forwarded headers.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Enter at least one allowed administrator network.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'You must provide a valid timeout value',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'You must provide a valid maximum TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'You must provide a valid minimum TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'You must provide a valid port',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4952,6 +5483,30 @@ export const localeData = [
         'Enter a valid saved hostname or IP address.',
       'lumen.adminConnectionHosts.duplicateName':
         'Saved host names must be unique.',
+      'lumen.adminNetwork.outboundProxy': 'Outbound Proxy',
+      'lumen.adminNetwork.passwordHelp':
+        'Leave blank to keep the saved password.',
+      'lumen.adminNetwork.clearProxyPassword': 'Clear Saved Proxy Password',
+      'lumen.adminNetwork.ackRequired':
+        'Confirm that HTTP login sessions can be intercepted before enabling sign-in over HTTP.',
+      'lumen.adminNetwork.tlsUnavailable':
+        'Transport controls are unavailable until runtime settings load.',
+      'lumen.adminNetwork.saved':
+        'Network settings saved. Restart SeerrNG to apply changes that affect server startup.',
+      'lumen.adminNetwork.save': 'Save Network Settings',
+      'lumen.adminNetwork.loading': 'Loading network settings…',
+      'lumen.adminNetwork.whatNetwork': 'network settings',
+      'lumen.adminNetwork.whatTransport': 'transport status',
+      'lumen.adminNetwork.retry': 'Retry',
+      'lumen.adminNetwork.loadFailure': 'Could not load network settings',
+      'lumen.adminNetwork.loadTransportFailure':
+        'Could not load transport status',
+      'lumen.adminNetwork.currentIpRequired':
+        'Include your current client IP in the allowed networks before enabling or changing this restriction.',
+      'lumen.adminNetwork.differentHttpsPort':
+        'The HTTPS port must differ from the HTTP port.',
+      'lumen.adminNetwork.proxyRequired':
+        'Enter a proxy hostname and port before enabling the proxy.',
     },
   },
   {
@@ -5861,6 +6416,124 @@ export const localeData = [
         'Ajustes de categoría guardados.',
       'components.Settings.SettingsCategories.saveFailure':
         'No se puede guardar la configuración de la categoría.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Entiendo que las sesiones de inicio de sesión HTTP pueden ser interceptadas en la red.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Redes permitidas para administradores',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Introduce hasta 100 direcciones IPv4 o IPv6 o subredes CIDR, una por línea (4096 caracteres en total), como 192.168.0.0/16 o 100.64.0.0/10. La dirección del cliente que guarde una lista modificada debe seguir estando permitida.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Cuando SeerrNG está detrás de un proxy inverso, activa la opción para confiar en el proxy inverso y asegúrate de que el proxy sobrescriba X-Forwarded-For. Restringe el acceso directo a SeerrNG para que los clientes no puedan falsificar la dirección utilizada para esta comprobación.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Los usuarios con permisos de administrador deben iniciar sesión desde una de estas redes y usar las sesiones de navegador existentes desde una red permitida. Los usuarios habituales pueden seguir iniciando sesión de forma remota. Las integraciones con claves de API no cambian.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Permitir sesiones de navegador autenticadas sobre HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Utilice sólo cuando los dispositivos LAN de confianza no pueden instalar el CA local. Cualquiera que observe la conexión podría robar la cookie de sesión.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API Solicitud de tiempo',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Tiempo máximo (en segundos) para esperar respuestas de servicios externos como Radarr, Sonarr, Lidarr o Bookshelf. Listo para 0 sin tiempo.',
+      'components.Settings.SettingsNetwork.caFile': 'CA chain file (opcional)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Archivo de certificado',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Habilitar la protección de CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Rechazar las solicitudes de navegador intercambiadas de estado (requiere HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Mantenga esto habilitado para seguridad del navegador. Desactivarlo sólo cuando un cliente de API externo de confianza debe hacer solicitudes de escritura y no puede enviar fichas CSRF.',
+      'components.Settings.SettingsNetwork.dnsCache': 'Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Cache Máximo TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS Caché Mínimo TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NO active esto si usted está experimentando problemas con las búsquedas DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Activar el caché de las búsquedas DNS para optimizar el rendimiento y evitar hacer llamadas API innecesarias',
+      'components.Settings.SettingsNetwork.docs': 'documentación',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Los ajustes de transporte están anulados por variables ambientales: {variables}. Eliminar esas variables antes de usar estos controles.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Resolución IPv4 Primera',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Seerr de fuerza para resolver las direcciones IPv4 primero en lugar de IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS Puerto',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'El puerto de escucha HTTPS. Debe ser diferente del puerto HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'Archivo clave privado',
+      'components.Settings.SettingsNetwork.network': 'Red',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Los parámetros de red de su contenedor/sistema deben utilizarse en lugar de estos ajustes. Ver el {docs} para más información.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Configuración de redes',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configurar la configuración de red para su instancia Seerr.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Use caminos visibles dentro del proceso de SeerrNG. Los archivos de certificado de montaje en el contenedor; las llaves privadas nunca se suben a través de este formulario.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Direcciones de proxy ignoradas',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'Utilize "," como separador y "*." como comodín para subdominios',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proxy bypass para direcciones locales',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Enviar TODAS las solicitudes de HTTP/HTTPS salientes a través de un servidor proxy (host/port). NO permite la configuración de HTTPS, SSL o certificado.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Nombre de host proxy',
+      'components.Settings.SettingsNetwork.proxyPassword':
+        'Contraseña del proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Puerto del proxy',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Utilizar SSL para el proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Nombre de usuario del proxy',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Redirect HTTP a HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Deja esto mientras verifica la URL HTTPS. HTTP mostrará una instrucción de actualización en lugar de servir la aplicación.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Restringir el inicio de sesión de administradores a redes de confianza',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Mostrar aviso de certificado en el inicio de sesión',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Mostrar el aviso de huella digital del certificado proporcionado en las páginas de inicio de sesión y configuración.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Discapacitados (señal HTTP directo o usa un proxy inverso)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Nombres de host HTTPS y direcciones IP firmadas',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Nombres y direcciones separados por comma incluidos en el certificado generado y aceptados por el oyente HTTP. Los certificados proporcionados utilizan sus propios SANs.',
+      'components.Settings.SettingsNetwork.tlsMode': 'Modo HTTPS incorporado',
+      'components.Settings.SettingsNetwork.tlsProvided': 'Certificado previsto',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Guardar la opción, reiniciar SeerrNG, verificar HTTPS, y luego habilitar la redireccion HTTP si se desea.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'HTTPS local autofirmado',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Algo ha fallado al guardar los ajustes.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        '¡Ajustes guardados con éxito!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Seguridad del transporte del navegador',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Elija cómo Seerr protege las sesiones de inicio de sesión del navegador. Los cambios de escucha requieren un reinicio del servidor.',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Habilitar soporte para proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Activar cuando uno confía en el proxy inverso delante de SeerrNG establece X-Forwarded-For. SeerrNG confiará en un hop proxy para identificar direcciones IP cliente. Mantenga esto fuera si los clientes pueden conectarse directamente, porque podrían forjar los encabezados.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Introduce al menos una red permitida para administradores.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Debe proveer un valor valido para la expiración',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Usted debe proporcionar un TTL máximo válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Usted debe proporcionar un mínimo válido TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Usted debe proporcionar un puerto válido',
     },
   },
   {
@@ -6630,6 +7303,123 @@ export const localeData = [
         'Ajustes de categoría guardados.',
       'components.Settings.SettingsCategories.saveFailure':
         'No se puede guardar la configuración de la categoría.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Entiendo que las sesiones de inicio de sesión HTTP pueden ser interceptadas en la red.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Redes permitidas para administradores',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Introduce hasta 100 direcciones IPv4 o IPv6 o subredes CIDR, una por línea (4096 caracteres en total), como 192.168.0.0/16 o 100.64.0.0/10. La dirección del cliente que guarde una lista modificada debe seguir estando permitida.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Cuando SeerrNG está detrás de un proxy inverso, activa la opción para confiar en el proxy inverso y asegúrate de que el proxy sobrescriba X-Forwarded-For. Restringe el acceso directo a SeerrNG para que los clientes no puedan falsificar la dirección utilizada para esta comprobación.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Los usuarios con permisos de administrador deben iniciar sesión desde una de estas redes y usar las sesiones de navegador existentes desde una red permitida. Los usuarios habituales pueden seguir iniciando sesión de forma remota. Las integraciones con claves de API no cambian.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Permitir sesiones de navegador autenticadas sobre HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Utilice sólo cuando los dispositivos LAN de confianza no pueden instalar el CA local. Cualquiera que observe la conexión podría robar la cookie de sesión.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API Solicitud de tiempo',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Tiempo máximo (en segundos) para esperar respuestas de servicios externos como Radarr, Sonarr, Lidarr o Bookshelf. Listo para 0 sin tiempo.',
+      'components.Settings.SettingsNetwork.caFile': 'CA chain file (opcional)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Archivo de certificado',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Protección del CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Rechazar las solicitudes de navegador intercambiadas de estado (requiere HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Mantenga esto habilitado para seguridad del navegador. Desactivarlo sólo cuando un cliente de API externo de confianza debe hacer solicitudes de escritura y no puede enviar fichas CSRF.',
+      'components.Settings.SettingsNetwork.dnsCache': 'Caché DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Cache Máximo TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS Caché Mínimo TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NO active esto si usted está experimentando problemas con las búsquedas DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Activar el caché de las búsquedas DNS para optimizar el rendimiento y evitar hacer llamadas API innecesarias',
+      'components.Settings.SettingsNetwork.docs': 'documentación',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Los ajustes de transporte están anulados por variables ambientales: {variables}. Eliminar esas variables antes de usar estos controles.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Resolución IPv4 Primera',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Seerr de fuerza para resolver las direcciones IPv4 primero en lugar de IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS Puerto',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'El puerto de escucha HTTPS. Debe ser diferente del puerto HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'Archivo clave privado',
+      'components.Settings.SettingsNetwork.network': 'Red',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Los parámetros de red de su contenedor/sistema deben utilizarse en lugar de estos ajustes. Ver el {docs} para más información.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Configuración de redes',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configurar la configuración de red para su instancia Seerr.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Use caminos visibles dentro del proceso de SeerrNG. Los archivos de certificado de montaje en el contenedor; las llaves privadas nunca se suben a través de este formulario.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Direcciones de proxy ignoradas',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Use ',' como separador, y '*. como un comodín para subdominios",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proxy bypass para direcciones locales',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Enviar TODAS las solicitudes de HTTP/HTTPS salientes a través de un servidor proxy (host/port). NO permite la configuración de HTTPS, SSL o certificado.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Nombre de host del proxy',
+      'components.Settings.SettingsNetwork.proxyPassword':
+        'Contraseña de proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Puerto Proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Use SSL for Proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Nombre de usuario proxy',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Redirect HTTP a HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Deja esto mientras verifica la URL HTTPS. HTTP mostrará una instrucción de actualización en lugar de servir la aplicación.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Restringir el inicio de sesión de administradores a redes de confianza',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Mostrar aviso de certificado en el inicio de sesión',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Mostrar el aviso de huella digital del certificado proporcionado en las páginas de inicio de sesión y configuración.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Discapacitados (señal HTTP directo o usa un proxy inverso)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Nombres de host HTTPS y direcciones IP firmadas',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Nombres y direcciones separados por comma incluidos en el certificado generado y aceptados por el oyente HTTP. Los certificados proporcionados utilizan sus propios SANs.',
+      'components.Settings.SettingsNetwork.tlsMode': 'Modo HTTPS incorporado',
+      'components.Settings.SettingsNetwork.tlsProvided': 'Certificado previsto',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Guardar la opción, reiniciar SeerrNG, verificar HTTPS, y luego habilitar la redireccion HTTP si se desea.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'HTTPS local autofirmado',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Algo salió mal mientras guardaba la configuración.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Ajustes guardados con éxito!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Seguridad del transporte del navegador',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Elija cómo Seerr protege las sesiones de inicio de sesión del navegador. Los cambios de escucha requieren un reinicio del servidor.',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Confiar en el proxy inverso',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Activar cuando uno confía en el proxy inverso delante de SeerrNG establece X-Forwarded-For. SeerrNG confiará en un hop proxy para identificar direcciones IP cliente. Mantenga esto fuera si los clientes pueden conectarse directamente, porque podrían forjar los encabezados.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Introduce al menos una red permitida para administradores.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Usted debe proporcionar un valor de timeout válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Usted debe proporcionar un TTL máximo válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Usted debe proporcionar un mínimo válido TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Usted debe proporcionar un puerto válido',
     },
   },
   {
@@ -6789,6 +7579,61 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Taotlusi kokku',
       'components.Settings.SettingsAbout.uptodate': 'Ajakohane',
       'components.Settings.SettingsAbout.version': 'Versioon',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API-päringu aegumine',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maksimaalne aeg (sekundites), mida oodatakse välistelt teenustelt (nt Radarr/Sonarr) vastuse saamiseks. Määra 0, kui soovid aegumise keelata.',
+      'components.Settings.SettingsNetwork.csrfProtection': 'Luba CSRF-kaitse',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-puhver',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS-puhvri maksimaalne TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS-puhvri minimaalne TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'ÄRA luba seda, kui sul on probleeme DNS-päringutega',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Luba DNS-päringute puhverdamine, et optimeerida jõudlust ja vältida asjatuid API-päringuid',
+      'components.Settings.SettingsNetwork.docs': 'dokumentatsioon',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Eelista IPv4 lahendamist',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Sunni Seerr lahendama esmalt IPv4-aadresse IPv6-aadresside asemel',
+      'components.Settings.SettingsNetwork.network': 'Võrk',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Nende seadete asemel tuleks eelistada konteineri või operatsioonisüsteemi võrguparameetreid. Vaata lisateavet {docs} alt.',
+      'components.Settings.SettingsNetwork.networksettings': 'Võrguseaded',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Seadista oma Seerri eksemplari võrguseadeid.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Proksi eiratavad aadressid',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'Kasuta eraldajana koma (,) ning alamdomeenide tähistamiseks metamärki (*.)',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Ära kasuta proksit kohalike aadresside puhul',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S)-proksi',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Saada KÕIK väljuvad HTTP/HTTPS päringud läbi proksiserveri (host/port). See EI lülita sisse HTTPS-i, SSL-i ega sertifikaatide seadistust.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proksi hostinimi',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proksi parool',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proksi port',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Kasuta proksi jaoks SSL-i',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proksi kasutajanimi',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Seadete salvestamisel läks midagi valesti.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Seaded on edukalt salvestatud!',
+      'components.Settings.SettingsNetwork.trustProxy': 'Luba proksi tugi',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Võimaldab Seerril tuvastada kliendi korrektse IP-aadressi, kui süsteem asub proksi taga',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Pead sisestama kehtiva aegumise väärtuse',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Pead sisestama kehtiva maksimaalse TTL-i',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Pead sisestama kehtiva minimaalse TTL-i',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Pead sisestama kehtiva pordinumbri',
     },
   },
   {
@@ -6913,6 +7758,15 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Pyyntöjä yhteensä',
       'components.Settings.SettingsAbout.uptodate': 'Ajan tasalla',
       'components.Settings.SettingsAbout.version': 'Versio',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS välimuisti',
+      'components.Settings.SettingsNetwork.network': 'Verkko',
+      'components.Settings.SettingsNetwork.networksettings': 'Verkkoasetukset',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Asetukset tallennettu!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Ota tuki välityspalvelimelle käyttöön',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Sallii Seerr:in rekisteröidä välityspalvelimen takana olevien asiakkaiden IP:t oikein',
     },
   },
   {
@@ -7696,6 +8550,124 @@ export const localeData = [
         'Paramètres de catégorie enregistrés.',
       'components.Settings.SettingsCategories.saveFailure':
         'Les paramètres de catégorie ne peuvent pas être enregistrés.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Je comprends que les sessions de connexion HTTP peuvent être interceptées sur le réseau.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Réseaux autorisés pour les administrateurs',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Saisissez jusqu’à 100 adresses IPv4 ou IPv6 ou sous-réseaux CIDR, à raison d’une entrée par ligne (4096 caractères au total), par exemple 192.168.0.0/16 ou 100.64.0.0/10. L’adresse du client qui enregistre une liste modifiée doit toujours être autorisée.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Si SeerrNG se trouve derrière un proxy inverse, activez l’option « Faire confiance au proxy inverse » et assurez-vous que le proxy remplace X-Forwarded-For. Limitez l’accès direct à SeerrNG afin que les clients ne puissent pas falsifier l’adresse utilisée pour cette vérification.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Les utilisateurs disposant des droits d’administrateur doivent se connecter depuis l’un de ces réseaux et utiliser les sessions de navigateur existantes depuis un réseau autorisé. Les utilisateurs ordinaires peuvent continuer à se connecter à distance. Les intégrations par clé API ne changent pas.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Permettre des sessions de navigateur authentifiées sur HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Utilisez seulement lorsque les appareils LAN de confiance ne peuvent pas installer la CA locale. Quiconque observe la connexion pourrait voler le cookie de session.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        "Délai d'expiration des requêtes API",
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        "Temps maximum (en secondes) d'attente des réponses des services externes tels que Radarr, Sonarr, Lidarr ou Bookshelf. Réglé sur 0 pour aucun délai d'attente.",
+      'components.Settings.SettingsNetwork.caFile':
+        'Fichier chaîne CA (facultatif)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Fichier de certificat',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Activer la protection CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        "Rejeter les requêtes de changement d'état du site (exige HTTPS)",
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        "Gardez ceci activé pour la sécurité de session du navigateur. Désactiver uniquement lorsqu'un client d'API externe de confiance doit faire des requêtes écrites et ne peut pas envoyer des jetons CSRF.",
+      'components.Settings.SettingsNetwork.dnsCache': 'Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'TTL maximum du cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'TTL minimum du cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        "N'activez PAS ceci si vous rencontrez des problèmes avec la résolution DNS",
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Activer la mise en cache des résolutions DNS pour optimiser les performances et éviter les appels API inutiles',
+      'components.Settings.SettingsNetwork.docs': 'la documentation',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        "Les paramètres de transport sont dépassés par les variables d'environnement: {variables}. Supprimez ces variables avant d'utiliser ces contrôles.",
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Forcer la résolution IPv4 en premier',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        "Forcer Seerr à résoudre d'abord les adresses IPv4 au lieu d'IPv6",
+      'components.Settings.SettingsNetwork.httpsPort': 'Port HTTPS',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        "Le port de l'auditeur HTTPS. Elle doit différer du port HTTP.",
+      'components.Settings.SettingsNetwork.keyFile': 'Fichier clé privé',
+      'components.Settings.SettingsNetwork.network': 'Réseau',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        "Les paramètres réseau de votre conteneur/système doivent être utilisés à la place de ces paramètres. Consultez la {docs} pour plus d'informations.",
+      'components.Settings.SettingsNetwork.networksettings':
+        'Paramètres réseau',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configurez les paramètres réseau de votre instance Seerr.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        "Utilisez les chemins visibles à l'intérieur du processus SeerrNG. Monter les fichiers de certificat dans le conteneur; les clés privées ne sont jamais téléchargées via ce formulaire.",
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Adresses ignorées par le proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Utilisez ',' comme séparateur et '*' comme wildcard pour les sous-domaines",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Contourner le proxy pour les adresses locales',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        "Envoyer TOUTES les requêtes HTTP/HTTPS sortantes via un serveur proxy (hôte/port). N'active PAS la configuration HTTPS, SSL ou des certificats.",
+      'components.Settings.SettingsNetwork.proxyHostname':
+        "Nom d'hôte du proxy",
+      'components.Settings.SettingsNetwork.proxyPassword':
+        'Mot de passe du proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Port du proxy',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Utiliser SSL pour le proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        "Nom d'utilisateur du proxy",
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Rediriger HTTP vers HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        "Laissez cela en dehors de la vérification de l'URL HTTPS. HTTP affichera une instruction de mise à jour au lieu de servir l'application.",
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Limiter la connexion des administrateurs aux réseaux de confiance',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        "Afficher l'avertissement de certificat à la connexion",
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        "Afficher l'avertissement d'empreinte de certificat fourni sur les pages de connexion et de configuration.",
+      'components.Settings.SettingsNetwork.tlsDisabled': 'Désactivé',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Noms d’hôte et adresses IP pour le HTTPS autosigné',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        "Noms et adresses séparés par des virgules inclus dans le certificat généré et acceptés par l'auditeur HTTP. A condition que les certificats utilisent leurs propres SAN.",
+      'components.Settings.SettingsNetwork.tlsMode': 'Mode HTTPS intégré',
+      'components.Settings.SettingsNetwork.tlsProvided': 'Certificat fourni',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Enregistrer le choix, redémarrer SeerrNG, vérifier HTTPS, puis activer la redirection HTTP si désiré.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'HTTPS local avec certificat autosigné',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        "Une erreur s'est produite lors de l'enregistrement des paramètres.",
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Les paramètres ont été enregistrés !',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Sécurité du transport des navigateurs',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        "Choisissez comment Seerr protège les sessions de connexion du navigateur. Les modifications d'écoute nécessitent un redémarrage du serveur.",
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Activer la prise en charge du proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        "Activer lorsqu'un proxy inverse de confiance devant SeerrNG définit X-Forwarded-For. SeerrNG fera confiance à un saut de proxy pour identifier les adresses IP des clients. Gardez cette option désactivée si les clients peuvent se connecter directement, car ils pourraient falsifier des en-têtes transférés.",
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Saisissez au moins un réseau autorisé pour les administrateurs.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        "Vous devez saisir une valeur de délai d'expiration valide",
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Vous devez fournir un TTL maximum valide',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Vous devez fournir un TTL minimum valide',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Vous devez fournir un port valide',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -8850,6 +9822,32 @@ export const localeData = [
         'Saisissez un nom d’hôte ou une adresse IP valide.',
       'lumen.adminConnectionHosts.duplicateName':
         'Les noms des hôtes enregistrés doivent être uniques.',
+      'lumen.adminNetwork.outboundProxy': 'Proxy sortant',
+      'lumen.adminNetwork.passwordHelp':
+        'Laissez ce champ vide pour conserver le mot de passe enregistré.',
+      'lumen.adminNetwork.clearProxyPassword':
+        'Effacer le mot de passe du proxy enregistré',
+      'lumen.adminNetwork.ackRequired':
+        'Confirmez que les sessions de connexion HTTP peuvent être interceptées avant d’activer la connexion en HTTP.',
+      'lumen.adminNetwork.tlsUnavailable':
+        'Les contrôles de transport sont indisponibles tant que les paramètres d’exécution ne sont pas chargés.',
+      'lumen.adminNetwork.saved':
+        'Paramètres réseau enregistrés. Redémarrez SeerrNG pour appliquer les modifications qui affectent le démarrage du serveur.',
+      'lumen.adminNetwork.save': 'Enregistrer les paramètres réseau',
+      'lumen.adminNetwork.loading': 'Chargement des paramètres réseau…',
+      'lumen.adminNetwork.whatNetwork': 'les paramètres réseau',
+      'lumen.adminNetwork.whatTransport': 'l’état du transport',
+      'lumen.adminNetwork.retry': 'Réessayer',
+      'lumen.adminNetwork.loadFailure':
+        'Impossible de charger les paramètres réseau',
+      'lumen.adminNetwork.loadTransportFailure':
+        'Impossible de charger l’état du transport',
+      'lumen.adminNetwork.currentIpRequired':
+        'Ajoutez l’adresse IP actuelle aux réseaux autorisés avant d’activer ou de modifier cette restriction.',
+      'lumen.adminNetwork.differentHttpsPort':
+        'Le port HTTPS doit être différent du port HTTP.',
+      'lumen.adminNetwork.proxyRequired':
+        'Saisissez le nom d’hôte et le port du proxy avant de l’activer.',
     },
   },
   {
@@ -9026,6 +10024,7 @@ export const localeData = [
       'components.PermissionEdit.viewrecent': 'צפייה בנוסף לאחרונה',
       'components.PermissionEdit.viewrequests': 'צפייה בבקשות',
       'components.IssueDetails.allepisodes': 'כל הפרקים',
+      'components.Settings.SettingsNetwork.proxyHostname': 'שם מארח Proxy',
     },
   },
   {
@@ -9770,6 +10769,121 @@ export const localeData = [
         'श्रेणी सेटिंग्स बचाया।',
       'components.Settings.SettingsCategories.saveFailure':
         'श्रेणी सेटिंग्स को बचाया नहीं जा सकता।',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'मैं समझता हूँ कि लॉग इन सत्रों को HTTP पर अवरोधित किया जा सकता है।',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'अनुमत व्यवस्थापक नेटवर्क',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'प्रति पंक्ति एक IPv4 या IPv6 पता या CIDR सबनेट दर्ज करें; अधिकतम 100 प्रविष्टियाँ (कुल 4096 वर्ण), जैसे 192.168.0.0/16 या 100.64.0.0/10। सूची में बदलाव सहेजने वाले क्लाइंट का पता भी अनुमत नेटवर्क में बना रहना चाहिए।',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'यदि SeerrNG रिवर्स प्रॉक्सी के पीछे है, तो रिवर्स प्रॉक्सी पर भरोसा करने वाली सेटिंग सक्षम करें और सुनिश्चित करें कि प्रॉक्सी X-Forwarded-For को अधिलेखित करे। SeerrNG तक सीधे पहुँच सीमित करें, ताकि क्लाइंट इस जाँच में उपयोग होने वाले पते को जाली न बना सकें।',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'व्यवस्थापक अनुमति वाले उपयोगकर्ताओं को इन नेटवर्कों में से किसी एक से साइन इन करना होगा और मौजूदा ब्राउज़र सत्रों का उपयोग अनुमत नेटवर्क से करना होगा। सामान्य उपयोगकर्ता दूर से साइन इन करना जारी रख सकते हैं। API कुंजी एकीकरण अप्रभावित रहेंगे।',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'HTTP पर सत्यापित ब्राउज़र सत्र की अनुमति दें',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'केवल तभी उपयोग करें जब विश्वसनीय लैन डिवाइस स्थानीय सीए स्थापित नहीं कर सकते। किसी को भी कनेक्शन का अवलोकन सत्र कुकी चोरी कर सकता है।',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API अनुरोध टाइमआउट',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Radarr, Sonarr, Lidarr, या बुकशेल्फ़ जैसी बाहरी सेवाओं से प्रतिक्रियाओं की प्रतीक्षा करने का अधिकतम समय (सेकंड में)। बिना किसी टाइमआउट के 0 पर सेट करें।',
+      'components.Settings.SettingsNetwork.caFile':
+        'सीए श्रृंखला फ़ाइल (वैकल्पिक)',
+      'components.Settings.SettingsNetwork.certificateFile': 'प्रमाणपत्र',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'सीएसआरएफ संरक्षण सक्षम करें',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'क्रॉस-साइट स्टेट चेंजिंग ब्राउजर अनुरोधों को अस्वीकार करें HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'इसे ब्राउज़र-सेक्शन सुरक्षा के लिए सक्षम रखें। जब एक विश्वसनीय बाहरी API ग्राहक को लिखित अनुरोध करना चाहिए और सीएसआरएफ टोकन नहीं भेज सकते।',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS कैश',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS कैश अधिकतम TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS कैश न्यूनतम TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'यदि आप DNS लुकअप के साथ मुद्दों का सामना कर रहे हैं तो यह सक्षम नहीं है',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'प्रदर्शन को अनुकूलित करने और अनावश्यक बनाने से बचने के लिए DNS लुकअप की कैशिंग सक्षम करें API कॉल',
+      'components.Settings.SettingsNetwork.docs': 'दस्तावेज़ीकरण',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'परिवहन सेटिंग्स पर्यावरण चर द्वारा ओवरराइड कर रहे हैं: {variables}इन नियंत्रणों का उपयोग करने से पहले उन चरों को हटा दें।',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'फोर्स IPv4 रिज़ॉल्यूशन फर्स्ट',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'IPv6 के बजाय पहले IPv4 पतों को हल करने के लिए Seerr को बाध्य करें',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS पोर्ट',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'HTTPS श्रोता बंदरगाह। यह HTTP पोर्ट से भिन्न होना चाहिए।',
+      'components.Settings.SettingsNetwork.keyFile': 'निजी कुंजी फ़ाइल',
+      'components.Settings.SettingsNetwork.network': 'नेटवर्क',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'अपने कंटेनर / सिस्टम से नेटवर्क पैरामीटर इन सेटिंग्स के बजाय इस्तेमाल किया जाना चाहिए। देखें {docs} अधिक जानकारी के लिए।',
+      'components.Settings.SettingsNetwork.networksettings': 'नेटवर्क सेटिंग्स',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'अपने Seerr उदाहरण के लिए नेटवर्क सेटिंग्स कॉन्फ़िगर करें।',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'SeerrNG प्रक्रिया के अंदर दिखाई देने वाले पथों का उपयोग करें। कंटेनर में माउंट प्रमाणपत्र फाइलें; इस फॉर्म के माध्यम से निजी कुंजी कभी अपलोड नहीं की जाती है।',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'प्रॉक्सी पहचान पता',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "एक विभाजक के रूप में ',' का उपयोग करें, और '*' सबडोमेन के लिए एक वाइल्डकार्ड के रूप में",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'स्थानीय पते के लिए बायपास प्रॉक्सी',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) प्रॉक्सी',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'सभी आउटगोइंग भेजें HTTP/HTTPS एक प्रॉक्सी सर्वर (होस्ट/पोर्ट) के माध्यम से अनुरोध करता है। सक्षम नहीं है HTTPS, SSL, या प्रमाणपत्र विन्यास।',
+      'components.Settings.SettingsNetwork.proxyHostname': 'प्रॉक्सी होस्टनाम',
+      'components.Settings.SettingsNetwork.proxyPassword': 'प्रॉक्सी पासवर्ड',
+      'components.Settings.SettingsNetwork.proxyPort': 'प्रॉक्सी पोर्ट',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'प्रॉक्सी के लिए SSL का उपयोग करें',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'प्रॉक्सी उपयोगकर्ता नाम',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'रीडायरेक्ट HTTP to HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'सत्यापित करते समय इसे छोड़ दें HTTPS URL. HTTP एप्लिकेशन की सेवा करने के बजाय अपग्रेड निर्देश दिखाएंगे।',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'व्यवस्थापक साइन-इन को विश्वसनीय नेटवर्क तक सीमित करें',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'लॉगिन पर प्रमाणपत्र सूचना दिखाएं',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'लॉगिन और सेटअप पृष्ठों पर प्रदान किए गए प्रमाणपत्र की फिंगरप्रिंट सूचना दिखाएं।',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'अक्षम (प्रत्यक्ष HTTP साइन-इन या रिवर्स प्रॉक्सी का उपयोग करें)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'स्वयं हस्ताक्षरित HTTPS होस्टनाम और आईपी पते',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Comma-separated नाम और पते उत्पन्न प्रमाण पत्र में शामिल किया गया और HTTP श्रोता द्वारा स्वीकार किया। प्रदान प्रमाणपत्र अपने स्वयं के सैन्स का उपयोग करते हैं।',
+      'components.Settings.SettingsNetwork.tlsMode': 'अंतर्निहित HTTPS मोड',
+      'components.Settings.SettingsNetwork.tlsProvided': 'प्रमाण पत्र',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'विकल्प सहेजें, SeerrNG को पुनरारंभ करें, HTTPS सत्यापित करें, फिर यदि वांछित हो तो HTTP को पुनर्निर्देशित करें।',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'स्वत: हस्ताक्षरित स्थानीय HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'सेटिंग्स को सहेजते समय कुछ गलत हो गया।',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'सेटिंग्स सफलतापूर्वक बचाया!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'ब्राउज़र परिवहन सुरक्षा',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'कैसे चुनें Seerr ब्राउज़र लॉगिन सत्र की रक्षा करता है। श्रोता परिवर्तन एक सर्वर पुनरारंभ की आवश्यकता है।',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'ट्रस्ट रिवर्स प्रॉक्सी',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'जब एक SeerrNG सेट X-Forwarded-For के सामने रिवर्स प्रॉक्सी पर भरोसा करता है तो सक्षम करें। SeerrNG ग्राहक आईपी पते की पहचान करने के लिए एक प्रॉक्सी हॉप पर भरोसा करेगा। अगर ग्राहक सीधे कनेक्ट कर सकते हैं तो इसे बंद रखें, क्योंकि वे आगे के हेडर को फोर्ज कर सकते हैं।',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'कम से कम एक अनुमत व्यवस्थापक नेटवर्क दर्ज करें।',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'आपको एक वैध टाइमआउट मान प्रदान करना होगा',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'आपको एक वैध अधिकतम टीटीएल प्रदान करना होगा',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'आपको एक वैध न्यूनतम टीटीएल प्रदान करना होगा',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'आपको एक वैध पोर्ट प्रदान करना होगा',
     },
   },
   {
@@ -9931,6 +11045,63 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Összes kérés',
       'components.Settings.SettingsAbout.uptodate': 'Naprakész',
       'components.Settings.SettingsAbout.version': 'Verzió',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API‑kérés időtúllépés',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'A maximális várakozási idő (másodpercben) a külső szolgáltatások – például a Radarr vagy a Sonarr – válaszára. Állítsa 0-ra, ha nem szeretne időkorlátot.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'CSRF védelem bekapcsolása',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-gyorsítótár',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS-gyorsítótár maximális TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS-gyorsítótár minimális TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NE kapcsolja be ezt a funkciót, ha problémái vannak a DNS-feloldással',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'A DNS-feloldás gyorsítótárazásának bekapcsolása a teljesítmény optimalizálása és a felesleges API-hívások elkerülése érdekében',
+      'components.Settings.SettingsNetwork.docs': 'dokumentáció',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Elsőként az IPv4 feloldás kikényszerítése',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Kényszerítse a Seerr-t, hogy először az IPv4-címeket oldja fel IPv6 helyett',
+      'components.Settings.SettingsNetwork.network': 'Hálózat',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'A konténer/rendszer hálózati paramétereit kell használni ezek helyett a beállítások helyett. További információkért lásd a {docs} dokumentumot.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Hálózati beállítások',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'A Seerr példányának hálózati beállításainak konfigurálása.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Proxy által figyelmen kívül hagyott címek',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'Használja a „,” szimbólumot elválasztónak, és a „*.” szimbólumot helyettesítő karakterként az aldomainekhez',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proxy megkerülése helyi címek esetében',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Az összes kimenő HTTP/HTTPS kérés egy proxy szerveren (host/port) keresztül legyen továbbítva. Nem engedélyezi a HTTPS-, SSL- vagy tanúsítványbeállításokat.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy hosztnév',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy jelszó',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy port',
+      'components.Settings.SettingsNetwork.proxySsl': 'SSL használata proxyhoz',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy felhasználónév',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Hiba történt a beállítások mentése közben.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'A beállítások mentése sikeresen megtörtént!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Proxy támogatás engedélyezése',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Lehetővé teszi a Seerr számára, hogy helyesen regisztrálja a proxy mögötti ügyfél IP-címeket',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Érvényes időkorlát‑értéket kell megadnia',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Érvényes maximális TTL‑értéket kell megadnia',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Érvényes minimális TTL‑értéket kell megadnia',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Érvényes portot kell megadnia',
     },
   },
   {
@@ -10691,6 +11862,124 @@ export const localeData = [
         'Pengaturan kategori disimpan.',
       'components.Settings.SettingsCategories.saveFailure':
         'Pengaturan kategori tidak dapat disimpan.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Saya mengerti bahwa sesi login HTTP dapat dicegat pada jaringan.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Jaringan yang diizinkan untuk administrator',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Masukkan hingga 100 alamat IPv4 atau IPv6 atau subnet CIDR, satu per baris (total 4096 karakter), seperti 192.168.0.0/16 atau 100.64.0.0/10. Alamat klien yang menyimpan daftar yang diubah harus tetap diizinkan.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Jika SeerrNG berada di belakang reverse proxy, aktifkan opsi untuk memercayai reverse proxy dan pastikan proxy menimpa X-Forwarded-For. Batasi akses langsung ke SeerrNG agar klien tidak dapat memalsukan alamat yang digunakan untuk pemeriksaan ini.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Pengguna dengan izin administrator harus masuk dari salah satu jaringan ini dan menggunakan sesi browser yang sudah ada dari jaringan yang diizinkan. Pengguna biasa tetap dapat masuk dari jarak jauh. Integrasi kunci API tidak berubah.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Ijinkan sesi peramban terotentikasi melalui HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Gunakan hanya ketika perangkat LAN terpercaya tidak dapat menginstal CA lokal. Siapa pun mengamati koneksi bisa mencuri cookie sesi.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Tenggat Permintaan API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Waktu maksimum (dalam detik) untuk menunggu respons dari layanan eksternal seperti Radarr, Sonarr, Lidarr, atau Bookshelf. Setel ke 0 tanpa batas waktu.',
+      'components.Settings.SettingsNetwork.caFile':
+        'Berkas rantai CA (opsional)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Berkas sertifikat',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Aktifkan Perlindungan CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Tolak permintaan peramban status situs-berubah (membutuhkan HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Simpan ini untuk keamanan browser- sesi. Nonaktifkan hanya ketika klien API eksternal yang terpercaya harus membuat permintaan tulis dan tidak dapat mengirim token CSRF.',
+      'components.Settings.SettingsNetwork.dnsCache': 'Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Cache Maksimum TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'TTL Minimum Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'JANGAN mengaktifkan ini jika Anda mengalami masalah dengan pencarian DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Aktifkan caching dari pencarian DNS untuk mengoptimasi kinerja dan hindari membuat panggilan API yang tidak perlu',
+      'components.Settings.SettingsNetwork.docs': 'dokumentasi',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Pengaturan transportasi ditimpa oleh variabel lingkungan: {variables}. Hapus variabel tersebut sebelum menggunakan kontrol ini.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Paksa Resolusi IPv4 Pertama',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Paksa Seerr untuk menyelesaikan alamat IPv4 pertama daripada IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'Port HTTPS',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'Port pendengar HTTPS. Ini harus berbeda dari pelabuhan HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'Berkas kunci privat',
+      'components.Settings.SettingsNetwork.network': 'Jaringan',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Parameter jaringan dari wadah / sistem anda seharusnya digunakan daripada pengaturan ini. Lihat {docs} untuk informasi lebih lanjut.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Pengaturan Jaringan',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Atur pengaturan jaringan bagi instansi Seerr Anda.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Gunakan jalur yang terlihat di dalam proses SeerrNG. Pasang file sertifikat ke dalam wadah; kunci pribadi tidak pernah diunggah melalui formulir ini.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Alamat yang Diabaikan Proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Gunakan ',' sebagai pemisah, dan '*.' sebagai wildcard untuk subdomains",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proksi Bypass bagi Alamat Lokal',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proksi HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Kirim semua permintaan HTTP / HTTPS keluar melalui server proxy (host / port). TIDAK mengaktifkan HTTPS, SSL, atau konfigurasi sertifikat.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Nama Proxy Hostname',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Sandi Proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Port Proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Gunakan SSL Untuk Proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Nama Pengguna Proxy',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Ubah HTTP ke HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Tinggalkan ini ketika memverifikasi URL HTTPS. HTTP akan menampilkan instruksi peningkatan daripada melayani aplikasi.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Batasi login administrator ke jaringan tepercaya',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Tampilkan Pemberitahuan Sertifikat saat Login',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Tampilkan pemberitahuan sidik jari sertifikat yang disediakan di halaman login dan pengaturan.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Dinonaktifkan (tanda HTTP langsung atau gunakan proksi terbalik)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Nama host HTTPS dan alamat IP yang ditandatangani sendiri',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Nama yang dipisah dan alamat yang disertakan dalam sertifikat yang dihasilkan dan diterima oleh pendengar HTTP. Menyediakan sertifikat menggunakan SANs mereka sendiri.',
+      'components.Settings.SettingsNetwork.tlsMode':
+        'Bangun - dalam mode HTTPS',
+      'components.Settings.SettingsNetwork.tlsProvided':
+        'Disediakan sertifikat',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Simpan pilihan, jalankan ulang SeerrNG, verifikasi HTTPS, lalu aktifkan redirect HTTP bila diinginkan.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'self-signed lokal HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Ada yang tidak beres ketika menyimpan pengaturan.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Pengaturan berhasil disimpan!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Keamanan Transportasi Peramban',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Pilih bagaimana Seerr melindungi sesi login peramban. Pendengar perubahan membutuhkan sebuah server restart.',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Percayai Proksi Terbalik',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Aktifkan ketika satu proxy terbalik tepercaya di depan SeerrNG menyetel X-Forwarded-For. SeerrNG akan mempercayai satu proxy hop untuk mengidentifikasi alamat klien IP. Jangan lakukan ini jika klien dapat terhubung secara langsung, karena mereka dapat memalsukan header yang diteruskan.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Masukkan setidaknya satu jaringan yang diizinkan untuk administrator.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Anda harus memberikan nilai timeout yang valid',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Anda harus memberikan TTL maksimum yang valid',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Anda harus memberikan TTL minimum yang valid',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Anda mesti memberikan port yang valid',
     },
   },
   {
@@ -10854,6 +12143,63 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Totale richieste',
       'components.Settings.SettingsAbout.uptodate': 'Aggiornato',
       'components.Settings.SettingsAbout.version': 'Versione',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Richiesta API scaduta',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Tempo massimo (in secondi) di attesa per la risposta dai servizi esterni come Radarr e Sonarr. Impostato a 0 significa che la richiesta non scade mai.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Abilita Protezione CSRF',
+      'components.Settings.SettingsNetwork.dnsCache': 'Memoria DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'TTL massimo della memoria DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'TTL minimo della memoria DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NON abilitare questo se stai avendo problemi con le richieste DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Abilita la memorizzazione delle richieste DNS per ottimizzare le performance ed evitare richieste API non necessarie',
+      'components.Settings.SettingsNetwork.docs': 'documentazione',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Forza prima la risoluzione IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Forza Seerr a risolvere prima gli indirizzi IPv4 invece di quelli IPv6',
+      'components.Settings.SettingsNetwork.network': 'Rete',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'È necessario utilizzare i parametri di rete del proprio container/sistema anziché queste impostazioni. Per ulteriori informazioni, consultare i {docs}.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Impostazioni di Rete',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configura le impostazioni di rete per la tua istanza Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Indirizzi Proxy Ignorati',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        'Utilizza “,” come separatore e “*.” come carattere jolly per i sottodomini',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Bypassare il Proxy per gli Indirizzi Locali',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Manda TUTTE le richieste HTTP/HTTPS attraverso un server proxy (host/porta). Questo NON abilita HTTPS, SSL o la configurazione dei certificati.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Nome Host Proxy',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Password del Proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Porta del Proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Usa SSL per il Proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Username del Proxy',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Si è verificato un errore durante il salvataggio delle impostazioni.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Impostazioni salvate con successo!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Abilita Supporto Proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Consenti a Seerr di registrare correttamente gli indirizzi IP dei client dietro un proxy',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Devi fornire un valore di attesa massima valido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Devi fornire un TTL massimo valido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Devi fornire un valore TTL minimo valido',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'È necessario fornire una porta valida',
     },
   },
   {
@@ -11609,6 +12955,119 @@ export const localeData = [
         '保存されたカテゴリ設定。',
       'components.Settings.SettingsCategories.saveFailure':
         'カテゴリーの設定は保存できません。',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'HTTP のログインセッションがネットワーク上で傍受できることを理解しています。',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        '管理者に許可するネットワーク',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'IPv4 または IPv6 アドレス、あるいは CIDR サブネットを1行に1件ずつ、最大100件まで入力してください（合計4096文字）。例: 192.168.0.0/16、100.64.0.0/10。変更後のリストを保存するクライアントのアドレスも、引き続き許可されている必要があります。',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'SeerrNG がリバースプロキシの背後にある場合は、「リバースプロキシを信頼する」設定を有効にし、プロキシが X-Forwarded-For を上書きするようにしてください。この確認に使うアドレスをクライアントが偽装できないよう、SeerrNG への直接アクセスを制限してください。',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        '管理者権限を持つユーザーは、これらのネットワークのいずれかからサインインし、許可されたネットワークから既存のブラウザーセッションを使用する必要があります。通常のユーザーは引き続きリモートからサインインできます。API キー連携に変更はありません。',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'HTTP上で認証されたブラウザセッションを許可する',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        '信頼できる LAN デバイスがローカル CA をインストールできない場合にのみ使用してください。 誰もが接続を観察すると、セッションクッキーを盗むことができます。',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'APIリクエストタイムアウト',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Radarr、Sonarr、Lidarr、Bookshelf などの外部サービスからの応答を待機する最大時間 (秒単位)。タイムアウトなしの場合は 0 に設定します。',
+      'components.Settings.SettingsNetwork.caFile':
+        'CAチェーンファイル(オプション)',
+      'components.Settings.SettingsNetwork.certificateFile': '証明書ファイル',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'CSRF保護を有効にする',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'ブラウザのリクエストを交換するクロスサイト状態を取り出す(HTTPSが必要)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'ブラウザセッションのセキュリティのために有効にしてください。 信頼できる外部 API クライアントが書き込みリクエストを行わなければならず、CSRF トークンを送信できない場合にのみ無効化できます。',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNSキャッシュ',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNSキャッシュの最大TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNSキャッシュの最小TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'DNSルックアップで問題が発生している場合はこれを有効にしないでください',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'DNSルックアップのキャッシュを有効にしてパフォーマンスを最適化し、不要な API 呼び出しを回避します',
+      'components.Settings.SettingsNetwork.docs': 'ドキュメント',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        '環境変数によってトランスポートの設定は上書きされます: {variables}. これらの制御を使用する前に、それらの変数を削除します。',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'IPv4解決を最初に強制する',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'SeerrがIPv6ではなくIPv4アドレスを最初に解決するように強制する',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPSポート',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'HTTPS のリスナー ポート。 HTTPポートとは違います。',
+      'components.Settings.SettingsNetwork.keyFile': '秘密鍵ファイル',
+      'components.Settings.SettingsNetwork.network': 'ネットワーク',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'これらの設定ではなく、コンテナ/システム側のネットワークパラメータを使用してください。詳細は{docs}を参照してください。',
+      'components.Settings.SettingsNetwork.networksettings': 'ネットワーク設定',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Seerrインスタンスのネットワーク設定を構成します。',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'SeerrNG プロセス内で表示されるパスを使用します。 証明書ファイルをコンテナにマウントします。秘密鍵は、このフォームを通じてアップロードされません。',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'プロキシで無視されるアドレス',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        '区切り文字として「,」と「*.」を使用します。サブドメインのワイルドカードとして',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'ローカルアドレスのバイパスプロキシ',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) プロキシ',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'すべての送信HTTP/HTTPSリクエストをプロキシサーバー（ホスト/ポート）経由で送信します。HTTPS、SSL、または証明書の設定は有効になりません。',
+      'components.Settings.SettingsNetwork.proxyHostname': 'プロキシのホスト名',
+      'components.Settings.SettingsNetwork.proxyPassword': 'プロキシパスワード',
+      'components.Settings.SettingsNetwork.proxyPort': 'プロキシポート',
+      'components.Settings.SettingsNetwork.proxySsl': 'プロキシにSSLを使用する',
+      'components.Settings.SettingsNetwork.proxyUser': 'プロキシのユーザー名',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'HTTP を HTTPS にリダイレクト',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'HTTPS URL の検証中にこれをオフにします。 HTTP は、アプリの代わりにアップグレードの指示を表示します。',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        '管理者のサインインを信頼できるネットワークに制限する',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'ログイン時に証明書通知を表示',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'ログインページとセットアップページで、提供された証明書のフィンガープリント通知を表示します。',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        '無効 (HTTP のサインインを指示するか、リバースプロキシを使用する)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        '自己署名された HTTPS のホスト名および IP アドレス',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        '生成された証明書に含まれているコンマ区切りの名前とアドレスとHTTPリスナーによって受け入れられます。 認定証明書は、独自のSANを使用します。',
+      'components.Settings.SettingsNetwork.tlsMode': '内蔵 HTTPS モード',
+      'components.Settings.SettingsNetwork.tlsProvided': '証明された証明書',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        '選択を保存し、SeerrNG を再起動し、HTTPS を検証し、必要に応じて HTTP リダイレクトを有効にします。',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'セルフサイン局 HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        '設定の保存中に問題が発生しました。',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        '設定が保存されました！',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'ブラウザの輸送セキュリティ',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Seerrのブラウザーログインセッションを保護する方法を選択してください。リスナー設定を変更するにはサーバーの再起動が必要です。',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'プロキシサポートを有効にする',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'SeerrNG の前にある 1 つの信頼できるリバース プロキシが X-Forwarded-For を設定する場合に有効になります。 SeerrNG は、1 つのプロキシ ホップを信頼してクライアント IP アドレスを識別します。クライアントが直接接続できる場合は、転送ヘッダーが偽造される可能性があるため、これをオフにしてください。',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        '許可する管理者ネットワークを1つ以上入力してください。',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        '有効なタイムアウト値を指定してください',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        '有効な最大TTLを指定してください',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        '有効な最小TTLを指定してください',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        '有効なポートを指定してください',
     },
   },
   {
@@ -12330,6 +13789,115 @@ export const localeData = [
       'components.Settings.SettingsCategories.saveSuccess': '범주 설정 저장.',
       'components.Settings.SettingsCategories.saveFailure':
         '범주 설정은 저장할 수 없습니다.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'HTTP 로그인 세션이 네트워크에서 가로채질 수 있음을 이해합니다.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        '관리자에게 허용된 네트워크',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'IPv4 또는 IPv6 주소나 CIDR 서브넷을 한 줄에 하나씩 최대 100개까지 입력하세요(총 4096자). 예: 192.168.0.0/16 또는 100.64.0.0/10. 목록 변경 사항을 저장하는 클라이언트의 주소도 계속 허용된 상태여야 합니다.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'SeerrNG가 리버스 프록시 뒤에 있다면 역방향 프록시 신뢰 설정을 활성화하고 프록시가 X-Forwarded-For를 덮어쓰는지 확인하세요. 클라이언트가 이 검사에 사용되는 주소를 위조하지 못하도록 SeerrNG에 대한 직접 접근을 제한하세요.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        '관리자 권한이 있는 사용자는 이 네트워크 중 하나에서 로그인해야 하며 허용된 네트워크에서 기존 브라우저 세션을 사용해야 합니다. 일반 사용자는 계속 원격으로 로그인할 수 있습니다. API 키 연동에는 변경 사항이 없습니다.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'HTTP를 통한 인증된 브라우저 세션 허용',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        '신뢰할 수 있는 LAN 기기만 로컬 CA를 설치할 수 없습니다. 연결 관찰 누구나 세션 쿠키를 훔칠 수 있습니다.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API 요청 Timeout',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        '최대 시간 (초에서) Radarr, Sonarr, Lidarr, 또는 Bookshelf와 같은 외부 서비스에서 응답을 기다립니다. 타임아웃 없이 0으로 설정합니다.',
+      'components.Settings.SettingsNetwork.caFile': '(선택) CA 사슬 파일',
+      'components.Settings.SettingsNetwork.certificateFile': '인증서 파일',
+      'components.Settings.SettingsNetwork.csrfProtection': 'CSRF 보호',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        '크로스 사이트 국가 변경 브라우저 요청을 거부 (HTTPS 필요)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        '브라우저의 보안을 유지하십시오. 신뢰할 수있는 외부 API 클라이언트가 요청을 작성하고 CSRF 토큰을 보낼 때만 비활성화하십시오.',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS 캐시',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS 캐시 최대 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS 캐시 최소 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'DNS 조회 문제를 경험하는 경우 이것을 활성화하지 마십시오.',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        '성능 최적화 및 불필요한 API 호출을 방지하기 위해 DNS 검색 활성화',
+      'components.Settings.SettingsNetwork.docs': '선적 서류 비치',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        '교통 설정은 환경 변수에 의해 overridden: {variables}. 이 컨트롤을 사용하기 전에 그 변수를 제거하십시오.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        '힘 IPv4 해결책 첫째로',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'IPv4 주소 대신 IPv6를 해결하는 힘 Seerr',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS 포트',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'HTTPS 리스너 포트. HTTP 포트와는 다릅니다.',
+      'components.Settings.SettingsNetwork.keyFile': '개인 키 파일',
+      'components.Settings.SettingsNetwork.network': '네트워크',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        '이러한 설정 대신 컨테이너/시스템의 네트워크 매개변수를 사용해야 합니다. 자세한 내용은 {docs}를 참조하세요.',
+      'components.Settings.SettingsNetwork.networksettings': 'Network 설정',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Seerr 인스턴스의 네트워크 설정 구성.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'SeerrNG 프로세스 안에서 볼 수 있는 경로를 사용합니다. 컨테이너에 인증서 파일을 마운트; 개인 키는이 양식을 통해 업로드되지 않습니다.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        '프록시 무시 주소',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "',' 구분으로, '*.' 를 subdomains의 와일드카드로 사용합니다.",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        '로컬 주소에 대한 우회 프록시',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) 프록시',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        '프록시 서버(host/port)를 통해 HTTP/HTTPS 요청을 전송합니다. HTTPS, SSL 또는 인증서 구성을 사용하지 않습니다.',
+      'components.Settings.SettingsNetwork.proxyHostname': '프록시 호스트명',
+      'components.Settings.SettingsNetwork.proxyPassword': '비밀번호',
+      'components.Settings.SettingsNetwork.proxyPort': '프록시 포트',
+      'components.Settings.SettingsNetwork.proxySsl': '프록시용 SSL 사용',
+      'components.Settings.SettingsNetwork.proxyUser': '프록시 Username',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'HTTP를 HTTPS로',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'HTTPS URL을 확인하는 동안이 꺼짐. HTTP는 앱 제공 대신 업그레이드 명령을 표시합니다.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        '관리자 로그인을 신뢰할 수 있는 네트워크로 제한',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        '로그인 시 인증서 공지 표시',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        '로그인 및 설정 페이지에서 제공된 인증서 지문 공지를 표시합니다.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Disabled (direct HTTP sign-in 또는 역 프록시 사용)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        '자체 서명된 HTTPS 호스트 이름 및 IP 주소',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        '생성 된 인증서에 포함 된 Comma-separated 이름 및 주소 및 HTTP 청취자에 의해 허용. 인증서는 자신의 SAN을 사용합니다.',
+      'components.Settings.SettingsNetwork.tlsMode': '내장 HTTPS 모드',
+      'components.Settings.SettingsNetwork.tlsProvided': '인증 획득',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        '선택 저장, 다시 시작 SeerrNG, HTTPS를 확인, 다음 HTTP 리디렉션을 활성화.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        '셀프 위탁 지역 HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        '설정 저장 중에 뭔가 잘못되었습니다.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        '성공적으로 저장된 설정!',
+      'components.Settings.SettingsNetwork.transportSecurity': '비밀번호',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Seerr가 브라우저 로그인 세션을 보호하는 방법을 선택하세요. 리스너를 변경하려면 서버를 다시 시작해야 합니다.',
+      'components.Settings.SettingsNetwork.trustProxy': '신뢰 역 프록시',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'SeerrNG 세트 X-Forwarded-For의 앞에 1개의 믿을 수 있는 반전 프록시가 있을 때 가능하게 하십시오. SeerrNG는 클라이언트 IP 주소를 식별하기 위해 하나의 프록시 hop를 신뢰합니다. 클라이언트가 직접 연결할 수 있는 경우에 이것을, 그들이 포위한 우두머리를 강제할 수 있기 때문에 유지하십시오.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        '관리자에게 허용할 네트워크를 하나 이상 입력하세요.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        '유효한 timeout 값을 제공해야 합니다.',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        '유효한 최대 TTL을 제공해야 합니다.',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        '유효한 최소 TTL을 제공해야 합니다.',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        '유효한 포트를 제공해야 합니다.',
     },
   },
   {
@@ -12706,6 +14274,64 @@ export const localeData = [
         'Totaal aantal aanvragen',
       'components.Settings.SettingsAbout.uptodate': 'Bijgewerkt',
       'components.Settings.SettingsAbout.version': 'Versie',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Timeout api-verzoek',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maximale wachttijd (in seconden) voor reacties van externe services zoals Radarr/Sonarr. Stel in op 0 voor geen time-out.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'CSRF-bescherming inschakelen',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Maximale TTL DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Minimale TTL DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Schakel dit NIET in als je problemen ondervindt met DNS-lookups',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Schakel het cachen van DNS-zoekopdrachten in om de prestaties te optimaliseren en onnodige API-verzoeken te voorkomen',
+      'components.Settings.SettingsNetwork.docs': 'documentatie',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Eerst IPv4 herleiden forceren',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Dwing Seerr om eerst IPv4-addressen te herleiden, in plaats van IPv6',
+      'components.Settings.SettingsNetwork.network': 'Netwerk',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Gebruik de netwerkparameters van je container/systeem in plaats van deze instellingen. Zie de {docs} voor meer informatie.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Netwerkinstellingen',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configureer de netwerkinstellingen van je Seerr-instantie.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Adressen genegeerd door proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Gebruik ',' als scheidingsteken en '*.' als joker voor subdomeinen",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Proxy omzeilen voor lokale adressen',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S)-proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Stuur ALLE uitgaande HTTP/HTTPS-verzoeken via een proxyserver (host/poort). Schakelt GEEN HTTPS-, SSL- of certificaatconfiguratie in.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy-hostnaam',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy-wachtwoord',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy-poort',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'SSL gebruiken voor proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy-gebruikersnaam',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Er is iets misgegaan bij het opslaan van de instellingen.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Instellingen opgeslagen!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Proxy-ondersteuning inschakelen',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Stelt Seerr in staat om IP-adressen van clënten achter een proxy juist te registreren',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'U moet een geldige time-outwaarde opgeven',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'U moet een geldige maximale TTL-waarde opgeven',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'U moet een geldige minimale TTL-waarde opgeven',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Je dient een geldige poort op te geven',
     },
   },
   {
@@ -12869,6 +14495,62 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Łączna liczba próśb',
       'components.Settings.SettingsAbout.uptodate': 'Aktualne',
       'components.Settings.SettingsAbout.version': 'Wersja',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Limit czasu żądania API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maksymalny czas (w sekundach) oczekiwania na odpowiedzi z usług zewnętrznych, takich jak Radarr/Sonarr. Ustaw 0, aby wyłączyć limit czasu.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Włącz ochronę CSRF',
+      'components.Settings.SettingsNetwork.dnsCache': 'Pamięć podręczna DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Maksymalny TTL pamięci podręcznej DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Minimalny TTL pamięci podręcznej DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NIE włączaj tego, jeśli występują problemy z zapytaniami DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Włącz buforowanie zapytań DNS, aby zoptymalizować wydajność i uniknąć zbędnych wywołań API',
+      'components.Settings.SettingsNetwork.docs': 'dokumentacja',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Wymuś najpierw rozwiązywanie IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Wymuś, aby Seerr najpierw rozwiązywał adresy IPv4 zamiast IPv6',
+      'components.Settings.SettingsNetwork.network': 'Sieć',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Zamiast tych ustawień należy używać parametrów sieciowych z kontenera/systemu. Więcej informacji znajdziesz w {docs}.',
+      'components.Settings.SettingsNetwork.networksettings': 'Ustawienia sieci',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Skonfiguruj ustawienia sieci dla swojej instancji Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Adresy pomijane przez proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Użyj ',' jako separatora i '*.' jako symbolu wieloznacznego dla subdomen",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Pomijaj proxy dla adresów lokalnych',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Wysyłaj WSZYSTKIE wychodzące żądania HTTP/HTTPS przez serwer proxy (host/port). To NIE włącza HTTPS, SSL ani konfiguracji certyfikatów.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Nazwa hosta proxy',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Hasło proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Port proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Użyj SSL dla proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Nazwa użytkownika proxy',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Coś poszło nie tak podczas zapisywania ustawień.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Ustawienia zapisano pomyślnie!',
+      'components.Settings.SettingsNetwork.trustProxy': 'Włącz obsługę proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Pozwól Seerr poprawnie rejestrować adresy IP klientów za proxy',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Musisz podać prawidłową wartość limitu czasu',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Musisz podać prawidłowy maksymalny TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Musisz podać prawidłowy minimalny TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Musisz podać prawidłowy port',
     },
   },
   {
@@ -13637,6 +15319,123 @@ export const localeData = [
         'Configurações de categoria salvas.',
       'components.Settings.SettingsCategories.saveFailure':
         'As configurações de categoria não puderam ser salvas.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Entendo que sessões de login HTTP podem ser interceptadas na rede.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Redes permitidas para administradores',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Insira até 100 endereços IPv4 ou IPv6 ou sub-redes CIDR, um por linha (4096 caracteres no total), como 192.168.0.0/16 ou 100.64.0.0/10. O endereço do cliente que salvar uma lista alterada ainda precisa estar permitido.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Quando o SeerrNG estiver atrás de um proxy reverso, ative a opção para confiar no proxy reverso e certifique-se de que o proxy sobrescreva X-Forwarded-For. Restrinja o acesso direto ao SeerrNG para que os clientes não possam falsificar o endereço usado nesta verificação.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Usuários com permissão de administrador precisam entrar a partir de uma dessas redes e usar as sessões de navegador existentes a partir de uma rede permitida. Usuários comuns ainda podem entrar remotamente. As integrações com chaves de API não são afetadas.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Permitir sessões autenticadas do navegador sobre HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Use apenas quando dispositivos de LAN confiáveis não podem instalar o CA local. Qualquer um que observe a conexão pode roubar o biscoito da sessão.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Tempo limite da solicitação da API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Tempo máximo (em segundos) para aguardar respostas de serviços externos como Radarr, Sonarr, Lidarr ou Bookshelf. Defina como 0 para nenhum tempo limite.',
+      'components.Settings.SettingsNetwork.caFile':
+        'Arquivo de cadeia CA (opcional)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Arquivo de certificado',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Habilitar Proteção CSRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Rejeitar pedidos de mudança de estado do site (requer HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Mantenha isso ativado para segurança do navegador. Desative-o apenas quando um cliente de API externo confiável deve fazer pedidos de escrita e não pode enviar fichas CSRF.',
+      'components.Settings.SettingsNetwork.dnsCache': 'Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'TTL máximo do cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'TTL máximo do cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NÃO habilite esta opção se estiver enfrentando problemas com as pesquisas de DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Habilite o armazenamento em cache de pesquisas de DNS para otimizar o desempenho e evitar chamadas de API desnecessárias',
+      'components.Settings.SettingsNetwork.docs': 'documentação',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'As configurações de transporte são substituídas por variáveis ambientais: {variables}Remova essas variáveis antes de usar esses controles.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Forçar a resolução de IPv4 primeiro',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Forçar o Seerr a resolver primeiro os endereços IPv4 em vez dos IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'Porta HTTPS',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'A porta do ouvinte HTTPS. Deve ser diferente da porta HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'Arquivo de chave privada',
+      'components.Settings.SettingsNetwork.network': 'Rede',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Os parâmetros de rede do seu contêiner/sistema devem ser usados em vez dessas configurações. Consulte a {docs} para obter mais informações.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Configurações de Rede',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configure as definições de rede para a sua instância do Seerr.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Use caminhos visíveis dentro do processo SeerrNG. Monte arquivos de certificados no contêiner, chaves privadas nunca são enviadas através deste formulário.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Endereços ignorados pelo proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Use ',' como separador e '*.' como caractere curinga para subdomínios",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Ignorar proxy para endereços locais',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Envia TODAS as solicitações HTTP/HTTPS de saída por meio de um servidor proxy (host/porta). NÃO habilita HTTPS, SSL ou configuração de certificado.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Nome do host do proxy',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Senha do Proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Porta do Proxy',
+      'components.Settings.SettingsNetwork.proxySsl': 'Use SSL para proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Nome do Proxy',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Redirecionar HTTP para HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Deixe isso fora enquanto verifica o URL HTTPS. HTTP mostrará uma instrução de atualização em vez de servir o aplicativo.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Restringir o login de administradores a redes confiáveis',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Mostrar Aviso de Certificado no Login',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Mostrar o aviso de impressão digital do certificado fornecido nas páginas de login e configuração.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Desativado (inscrição HTTP direta ou usar um proxy reverso)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Nomes de host e endereços IP auto-assinados HTTPS',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Nomes e endereços separados por vírgulas incluídos no certificado gerado e aceitos pelo ouvinte HTTP. Desde que os certificados usem seus próprios sans.',
+      'components.Settings.SettingsNetwork.tlsMode': 'Modo HTTPS incorporado',
+      'components.Settings.SettingsNetwork.tlsProvided':
+        'Certificado fornecido',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Salve a escolha, reinicie o SeerrNG, verifique HTTPS, então habilite o redirecionamento HTTP se desejado.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned':
+        'Auto-assinado HTTPS local',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Ocorreu um erro ao salvar as configurações.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Configurações salvas com sucesso!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Segurança de Transporte do Navegador',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Escolha como o Seerr protege as sessões de login do navegador. Mudanças no ouvinte requerem um servidor reiniciado.',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Habilitar suporte a proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Habilite quando um proxy reverso confiável na frente de SeerrNG definir X-Forwarded-For. SeerrNG confiará em um salto de proxy para identificar endereços IP de clientes. Mantenha isso desativado se os clientes puderem se conectar diretamente, pois eles poderão falsificar cabeçalhos encaminhados.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Insira pelo menos uma rede permitida para administradores.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Você deve fornecer um valor de tempo limite válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Você deve fornecer um TTL máximo válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Você deve fornecer um TTL mínimo válido',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Você deve fornecer uma porta válida',
     },
   },
   {
@@ -13800,6 +15599,67 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Todos os Pedidos',
       'components.Settings.SettingsAbout.uptodate': 'Atualizado',
       'components.Settings.SettingsAbout.version': 'Versão',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Tempo limite da solicitação da API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Tempo máximo (em segundos) para aguardar respostas de serviços externos como o Radarr/Sonarr. Defina como 0 para nenhum tempo limite.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Ativar proteção CSRF',
+      'components.Settings.SettingsNetwork.dnsCache': 'Cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'TTL máximo de cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'TTL mínimo de cache DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'NÃO ative esta opção se estiver a ter problemas com pesquisas DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Ativar cache de pesquisas DNS para otimizar o desempenho e evitar chamadas API desnecessárias',
+      'components.Settings.SettingsNetwork.docs': 'documentação',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Forçar resolução IPv4 primeiro',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Forçar o Seerr a resolver endereços IPv4 primeiro em vez de IPv6',
+      'components.Settings.SettingsNetwork.network': 'Rede',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Os parâmetros de rede do seu contentor/sistema devem ser utilizados em vez destas definições. Consulte a {docs} para mais informações.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Definições de rede',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Configure as definições de rede da sua instância Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Endereços ignorados pelo proxy',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Utilize ',' como separador e '*.' como caractere universal para subdomínios",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Ignorar proxy para endereços locais',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Enviar TODOS os pedidos HTTP/HTTPS de saída através de um servidor proxy (anfitrião/porta). NÃO ativa configuração HTTPS, SSL ou de certificados.',
+      'components.Settings.SettingsNetwork.proxyHostname':
+        'Nome de anfitrião do proxy',
+      'components.Settings.SettingsNetwork.proxyPassword':
+        'Palavra-passe do proxy',
+      'components.Settings.SettingsNetwork.proxyPort': 'Porta do proxy',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Utilizar SSL para o proxy',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Nome de utilizador do proxy',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Ocorreu um erro ao guardar as definições.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Definições guardadas com sucesso!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Ativar suporte de proxy',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Permitir que o Seerr registe corretamente os endereços IP dos clientes atrás de um proxy',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Deve fornecer um valor de tempo limite válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Deve fornecer um TTL máximo válido',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Deve fornecer um TTL mínimo válido',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Deve fornecer uma porta válida',
     },
   },
   {
@@ -14065,6 +15925,65 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Всего запросов',
       'components.Settings.SettingsAbout.uptodate': 'Актуальная',
       'components.Settings.SettingsAbout.version': 'Версия',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Таймаут API запроса',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Максимальное время (в секундах) ожидания ответа от внешних сервисов, таких как Radarr/Sonarr. Установите в 0 для отключения.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Включить CSRF защиту',
+      'components.Settings.SettingsNetwork.dnsCache': 'Кеш DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Максимальный TTL кеша DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Минимальный TTL кеша DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Не включайте, если испытываете проблемы с DNS запросами',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Включает кеширование DNS запросов, чтобы оптимизировать производительность и избежать ненужных вызовов API',
+      'components.Settings.SettingsNetwork.docs': 'документация',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Принудительно использовать сначала IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Seerr будет принудительно использовать сначала IPv4 адреса вместо IPv6',
+      'components.Settings.SettingsNetwork.network': 'Сеть',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Вместо этих настроек нужно использовать сетевые параметры из вашего контейнера/системы. Для дополнительной информации прочитайте {docs}.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Сетевые настройки',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Установите сетевые настройки для вашего экземпляра Seerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Адреса, игнорируемые прокси',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Используйте ',' в качестве разделителя. '*.' - для указания всех поддоменов",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Не использовать прокси для локальных адресов',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) прокси',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Отправляет ВСЕ исходящие HTTP/HTTPS запросы через прокси-сервер (host/port). НЕ ВКЛЮЧАЕТ HTTPS, SSL или конфигурацию сертификатов.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Имя хоста прокси',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Пароль от прокси',
+      'components.Settings.SettingsNetwork.proxyPort': 'Порт прокси',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Использовать SSL для прокси',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Имя пользователя от прокси',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Что-то пошло не так при сохранении настроек.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Настройки успешно сохранены!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Включить поддержку прокси',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Позволяет Seerr корректно определять IP адреса клиентов за прокси',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Необходимо ввести корректное значение таймаута',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Необходимо ввести корректный максимальный TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Необходимо ввести корректный минимальный TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Нужно указать корректный порт',
     },
   },
   {
@@ -14451,6 +16370,61 @@ export const localeData = [
         'Totalt antal förfrågningar',
       'components.Settings.SettingsAbout.uptodate': 'Uppdaterad',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Tidsgräns för API-förfrågningar',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Maximal tid (i sekunder) att vänta på svar från externa tjänster som Radarr och Sonarr. Ange 0 för ingen tidsgräns.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Aktivera CSRF-skydd',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Max TTL för DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Min TTL för DNS-cache',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Aktivera INTE detta om du upplever problem med DNS-uppslag',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Aktivera cachelagring av DNS-uppslag för att optimera prestanda och undvika onödiga API-anrop',
+      'components.Settings.SettingsNetwork.docs': 'dokumentation',
+      'components.Settings.SettingsNetwork.forceIpv4First': 'Tvinga IPv4 först',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Tvinga Seerr att använda IPv4-adresser först, istället för IPv6',
+      'components.Settings.SettingsNetwork.network': 'Nätverk',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Nätverksparametrar från container/system bör användas istället för dessa inställningar. Se {docs} för mer information.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Nätverksinställningar',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Konfigurera nätverksinställningar för din Seerr-instans.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Adresser som ignoreras av proxyn',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Använd ',' som avgränsare och '*.' som jokertecken för subdomäner",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Kringgå proxy för lokala adresser',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S)-proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Skicka ALLA utgående HTTP-/HTTPS-förfrågningar via en proxyserver (värd/port). Detta aktiverar INTE HTTPS, SSL eller certifikatkonfiguration.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy-värdnamn',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy-lösenord',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy-port',
+      'components.Settings.SettingsNetwork.proxySsl': 'Använd SSL för proxy',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy-användarnamn',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Något gick fel när inställningarna skulle sparas.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Inställningarna sparade!',
+      'components.Settings.SettingsNetwork.trustProxy': 'Aktivera proxystöd',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Tillåt Seerr att korrekt registrera klienters IP-adresser när Seerr körs bakom en proxy',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Du måste ange ett giltigt värde för tidsgränsen',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Du måste ange ett giltigt maximalt TTL-värde',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Du måste ange ett giltigt minimalt TTL-värde',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Du måste ange en giltig port',
     },
   },
   {
@@ -14609,6 +16583,62 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Toplam Talepler',
       'components.Settings.SettingsAbout.uptodate': 'Güncel',
       'components.Settings.SettingsAbout.version': 'Sürüm',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'API İstek Zaman Aşımı',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Radarr/Sonarr gibi harici hizmetlerden yanıt beklemek için maksimum süre (saniye). Zaman aşımı olmaması için 0 girin.',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'CSRF Korumasını Etkinleştir',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS Önbelleği',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS Önbelleği Maksimum TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS Önbelleği Minimum TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'DNS aramalarında sorun yaşıyorsanız bunu ETKİNLEŞTİRMEYİN',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Performansı optimize etmek ve gereksiz API çağrılarını önlemek için DNS aramalarının önbelleğe alınmasını etkinleştir',
+      'components.Settings.SettingsNetwork.docs': 'belgeler',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Önce IPv4 Çözümlemesini Zorla',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        "Seerr'ı IPv6 yerine önce IPv4 adreslerini çözümlemeye zorla",
+      'components.Settings.SettingsNetwork.network': 'Ağ',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        "Bu ayarlar yerine kapsayıcınızdaki/sisteminizden gelen ağ parametreleri kullanılmalıdır. Daha fazla bilgi için {docs}'a bakın.",
+      'components.Settings.SettingsNetwork.networksettings': 'Ağ Ayarları',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Seerr örneğiniz için ağ ayarlarını yapılandırın.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        "Proxy'den Muaf Adresler",
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Ayırıcı olarak ',' ve alt alan adları için joker karakter olarak '*.' kullanın",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        "Yerel Adresler için Proxy'yi Atla",
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) Proxy',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Tüm giden HTTP/HTTPS isteklerini bir proxy sunucusu üzerinden gönder (host/port). HTTPS, SSL veya sertifika yapılandırmasını etkinleştirmez.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Proxy Sunucu Adı',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Proxy Şifresi',
+      'components.Settings.SettingsNetwork.proxyPort': 'Proxy Portu',
+      'components.Settings.SettingsNetwork.proxySsl': 'Proxy için SSL Kullan',
+      'components.Settings.SettingsNetwork.proxyUser': 'Proxy Kullanıcı Adı',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Ayarlar kaydedilirken bir sorun oluştu.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Ayarlar başarıyla kaydedildi!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Proxy Desteğini Etkinleştir',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        "Seerr'ın bir proxy arkasındaki istemci IP adreslerini doğru şekilde kaydetmesine izin ver",
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Geçerli bir zaman aşımı değeri girmelisiniz',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Geçerli bir maksimum TTL girmelisiniz',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Geçerli bir minimum TTL girmelisiniz',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Geçerli bir port girmelisiniz',
     },
   },
   {
@@ -14770,6 +16800,53 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Усього запитів',
       'components.Settings.SettingsAbout.uptodate': 'Актуальна',
       'components.Settings.SettingsAbout.version': 'Версія',
+      'components.Settings.SettingsNetwork.csrfProtection':
+        'Увімкнути захист CSRF',
+      'components.Settings.SettingsNetwork.dnsCache': 'Кеш DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Максимальний TTL кешу DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Мінімальний TTL кешу DNS',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'НЕ вмикайте це, якщо у вас виникають проблеми з DNS-пошуком',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Увімкнути кешування DNS-запитів для оптимізації продуктивності та уникнення непотрібних API-викликів',
+      'components.Settings.SettingsNetwork.docs': 'документація',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Примусово спершу резолвити IPv4',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Змусити Jellyseerr спершу резолвити адреси IPv4 замість IPv6',
+      'components.Settings.SettingsNetwork.network': 'Мережа',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Параметри мережі з вашого контейнера/системи слід використовувати замість цих налаштувань. Дивіться {docs} для отримання додаткової інформації.',
+      'components.Settings.SettingsNetwork.networksettings':
+        'Налаштування мережі',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Налаштуйте параметри мережі для вашого екземпляра Jellyseerr.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Ігноровані адреси проксі',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Використовуйте ',' як роздільник та '*.' як шаблон для піддоменів",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Обхід проксі для локальних адрес',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) проксі',
+      'components.Settings.SettingsNetwork.proxyHostname': "Ім'я хоста проксі",
+      'components.Settings.SettingsNetwork.proxyPassword': 'Пароль проксі',
+      'components.Settings.SettingsNetwork.proxyPort': 'Порт проксі',
+      'components.Settings.SettingsNetwork.proxySsl':
+        'Використовувати SSL для проксі',
+      'components.Settings.SettingsNetwork.proxyUser':
+        "Ім'я користувача проксі",
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Під час збереження налаштувань сталася помилка.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Налаштування успішно збережено!',
+      'components.Settings.SettingsNetwork.trustProxy':
+        'Увімкнути підтримку проксі',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Дозволити Jellyseerr правильно реєструвати IP-адреси клієнтів за проксі',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Ви повинні вказати дійсний порт',
     },
   },
   {
@@ -15476,6 +17553,111 @@ export const localeData = [
       'components.Settings.SettingsCategories.saveSuccess': '类别设置已保存 。',
       'components.Settings.SettingsCategories.saveFailure':
         '无法保存分类设置 。',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        '我知道HTTP登录会话 可以在网络上截获',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        '允许管理员使用的网络',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        '每行输入一个 IPv4 或 IPv6 地址或 CIDR 子网，最多 100 条（共 4096 个字符），例如 192.168.0.0/16 或 100.64.0.0/10。保存修改后的列表时，客户端地址仍必须在允许范围内。',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        '如果 SeerrNG 位于反向代理之后，请启用“信任反向代理”选项，并确保代理会覆盖 X-Forwarded-For。限制对 SeerrNG 的直接访问，防止客户端伪造用于此检查的地址。',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        '具有管理员权限的用户必须从其中一个网络登录，并且只能从允许的网络使用现有浏览器会话。普通用户仍可远程登录。API 密钥集成不受影响。',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        '允许通过 HTTP 认证浏览器会话',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        '仅在信任的局域网设备无法安装本地 CA 时使用. 任何观察连接的人都可能偷会话饼干.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout': 'API 请求超时',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        '最多等待外部服务回复的时间( 秒) Radarr, Sonarr, Lidarr,或 Bookshelf。设置为 0 , 不超时 。',
+      'components.Settings.SettingsNetwork.caFile': 'CA 链文件( 可选)',
+      'components.Settings.SettingsNetwork.certificateFile': '证书文件',
+      'components.Settings.SettingsNetwork.csrfProtection': '启用 CSRF 保护',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        '拒绝跨站点状态变化浏览器请求( 需要 HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        '为浏览器- 会话安全保留此功能 。 只有在信任的外部 API 客户端必须提出写请求且不能发送 CSRF 令牌时才能禁用 。',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS 缓存',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS 缓存最大 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS 缓存最小 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        '如果您在 DNS 搜索中遇到问题, 请不要启用此功能',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        '启用缓存 DNS 搜索以优化性能并避免不必要的 API 调用',
+      'components.Settings.SettingsNetwork.docs': '文档',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        '运输设置被环境变量覆盖: {variables}在使用这些控件之前删除这些变量。',
+      'components.Settings.SettingsNetwork.forceIpv4First': '强制IPv4优先解析',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        '强制 Seerr 首先解决 IPv4 地址而不是 IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS 端口',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'HTTPS 听器端口. 它必须与HTTP端口不同.',
+      'components.Settings.SettingsNetwork.keyFile': '私密密钥文件',
+      'components.Settings.SettingsNetwork.network': '网络',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        '应该使用来自容器/系统的网络参数，而不是这些设置。有关更多信息，请参阅{docs}。',
+      'components.Settings.SettingsNetwork.networksettings': '网络设置',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        '配置您的网络设置 Seerr 举个例子。',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        '使用 SeerrNG 进程内可见的路径 。 将证书文件挂载到容器中; 私人密钥永远不会通过此表单上传 。',
+      'components.Settings.SettingsNetwork.proxyBypassFilter': '忽略的代理地址',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        '使用“,”和“*”作为分隔符。“*”作为子域的通配符',
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        '代理绕过本地地址',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) 代理',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        '通过代理服务器(host/port)发送所有正在发送的HTTP/HTTPS请求. 不启用 HTTPS 、 SSL 或证书配置 。',
+      'components.Settings.SettingsNetwork.proxyHostname': '代理主机名',
+      'components.Settings.SettingsNetwork.proxyPassword': '代理密码',
+      'components.Settings.SettingsNetwork.proxyPort': '代理端口',
+      'components.Settings.SettingsNetwork.proxySsl': '使用 SSL 进行代理',
+      'components.Settings.SettingsNetwork.proxyUser': '代理用户名',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        '将 HTTP 重定向到 HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        '在验证 HTTPS URL 时留下此选项 。 HTTP将显示一个升级指令,而不是为应用程序服务.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        '将管理员登录限制为受信任的网络',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        '在登录时显示证书通知',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        '在登录和设置页面显示提供的证书指纹通知。',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        '禁用( 直接 HTTP 签名或使用反向代理)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        '自签名的 HTTPS 主机名和 IP 地址',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        '包含在生成证书中的逗号分隔名称和地址,并被HTTP收听器接受. 提供证书使用自己的SAN。',
+      'components.Settings.SettingsNetwork.tlsMode': '内建的 HTTPS 模式',
+      'components.Settings.SettingsNetwork.tlsProvided': '提供证书',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        '保存选择, 重新启动 SeerrNG, 校验 HTTPS, 然后在需要时启用 HTTP 重定向 。',
+      'components.Settings.SettingsNetwork.tlsSelfSigned': '自签名本地 HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        '在保存设置时出错了。',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        '设置保存成功！',
+      'components.Settings.SettingsNetwork.transportSecurity': '浏览器运输安全',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        '选择 Seerr 如何保护浏览器登录会话 。 听器更改需要服务器重启 。',
+      'components.Settings.SettingsNetwork.trustProxy': '启用代理支持',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        '当一个信任的反向代理在前方时启用 SeerrNG 设置 X 前导。 SeerrNG 将信任一个代理 hop来识别客户端 IP 地址 。 如果客户端可以直接连接, 请保持此功能, 因为他们可以伪造转发信头 。',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        '请输入至少一个允许管理员使用的网络。',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        '您必须提供有效的超时值',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        '您必须提供有效的最大 TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        '您必须提供有效的最小 TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        '您必须提供有效端口',
     },
   },
   {
@@ -16181,6 +18363,112 @@ export const localeData = [
       'components.Settings.SettingsCategories.saveSuccess': '已儲存分類設定 。',
       'components.Settings.SettingsCategories.saveFailure':
         '分類設定無法儲存 。',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        '我知道HTTP登入會議可以在網路上截取',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        '允許管理員使用的網路',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        '每行輸入一個 IPv4 或 IPv6 位址或 CIDR 子網，最多 100 筆（總計 4096 個字元），例如 192.168.0.0/16 或 100.64.0.0/10。儲存修改後清單的用戶端位址仍必須位於允許範圍內。',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        '如果 SeerrNG 位於反向代理之後，請啟用「信任反向代理」選項，並確保代理會覆寫 X-Forwarded-For。限制對 SeerrNG 的直接存取，避免用戶端偽造此檢查所使用的位址。',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        '具有管理員權限的使用者必須從其中一個網路登入，並從允許的網路使用現有瀏覽器工作階段。一般使用者仍可遠端登入。API 金鑰整合不受影響。',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        '允許在 HTTP 上驗證瀏覽器工作階段',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        '只在信任的 LAN 裝置不能安裝本地 CA 時使用 。 任何觀察這個聯系的人 都可能偷走會議曲奇',
+      'components.Settings.SettingsNetwork.apiRequestTimeout': 'API 要求超時',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        '等待 Radarr、Sonarr、Lidarr 或 Bookshelf 等外部服務回應的最長時間（秒）。設為 0 表示不逾時。',
+      'components.Settings.SettingsNetwork.caFile': 'CA 鏈檔( 可選擇的)',
+      'components.Settings.SettingsNetwork.certificateFile': '憑證檔案',
+      'components.Settings.SettingsNetwork.csrfProtection': '開啟 CSRF 保護',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        '拒絕跨站點變更狀態瀏覽器要求( 需要 HTTPS )',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        '保留此功能供瀏覽器片段安全 。 只有在信任的外部 API 用戶端必須提出寫入要求且不能發送 CSRF 令牌時才能禁用 。',
+      'components.Settings.SettingsNetwork.dnsCache': 'DNS 快取',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'DNS 快取最大 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'DNS 缓存最小 TTL',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        '如果您在 DNS 檢查中遇到問題, 不要開啟此功能',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        '開啟對 DNS 搜尋的缓存以优化性能, 避免不必要 API 呼叫',
+      'components.Settings.SettingsNetwork.docs': '文件',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        '傳輸設定被環境變數覆蓋: {variables}。在使用這些控件前移除這些變數。',
+      'components.Settings.SettingsNetwork.forceIpv4First': '強制 IPv4 先解析',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        '強迫Seerr先解析 IPv4 位址而不是 IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'HTTPS 端口',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'HTTPS 听器端口 。 它必須與 HTTP 端口不同 。',
+      'components.Settings.SettingsNetwork.keyFile': '私密金鑰檔案',
+      'components.Settings.SettingsNetwork.network': '網路',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        '您的容器/ 系統的網路參數應用於這些設定值 。 看 {docs} 更多信息。',
+      'components.Settings.SettingsNetwork.networksettings': '網路設定',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        '設定您的 Seerr 實體的網路設定值 。',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        '使用 SeerrNG 進程內可見的路徑。將憑證檔案掛載到容器中；私鑰永遠不會透過此表單上傳。',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        '代理被忽略的地址',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "使用 ',' 作為分隔符, '*.' 作為子域的通配符",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        '本地地址的副路徑代理',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'HTTP(S) 代理',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        '透過代理伺服器( host/ port) 傳送所有送出 HTTP/ HTTPS 的請求 。 不啟用 HTTPS 、 SSL 或憑證設定 。',
+      'components.Settings.SettingsNetwork.proxyHostname': '代理主機名稱',
+      'components.Settings.SettingsNetwork.proxyPassword': '代理密碼',
+      'components.Settings.SettingsNetwork.proxyPort': '代理端口',
+      'components.Settings.SettingsNetwork.proxySsl': '代理伺服器使用 SSL',
+      'components.Settings.SettingsNetwork.proxyUser': '代理使用者名稱',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        '將 HTTP 重定向到 HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        '檢查 HTTPS URL 時留下它 。 HTTP 會顯示升級指令而不是服務應用程式 。',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        '將管理員登入限制於信任的網路',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        '登入時顯示憑證通知',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        '在登入和設定頁面顯示提供的憑證指紋通知。',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        '已禁用( 直接 HTTP 簽署或使用反向代理)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        '自簽的 HTTPS 主機名稱和 IP 位址',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        '逗號分隔名和地址包含在產生的憑證中, 并被 HTTP 收聽者接受 。 提供憑證使用自己的 SAN 。',
+      'components.Settings.SettingsNetwork.tlsMode': '內建的 HTTPS 模式',
+      'components.Settings.SettingsNetwork.tlsProvided': '提供憑證',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        '儲存選擇，重新啟動 SeerrNG，驗證 HTTPS，然後根據需要啟用 HTTP 重新導向。',
+      'components.Settings.SettingsNetwork.tlsSelfSigned': '自簽本地 HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        '儲存設定值時出錯 。',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        '設定已成功儲存 !',
+      'components.Settings.SettingsNetwork.transportSecurity': '瀏覽器傳輸安全',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        '選擇 Seerr 如何保護瀏覽器登入會議 。 听者變更需要重新啟動伺服器 。',
+      'components.Settings.SettingsNetwork.trustProxy': '信任反向代理',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        '當 SeerrNG 前方的單一受信任反向代理設定 X-Forwarded-For 時啟用。SeerrNG 會透過一層代理取得用戶端 IP 位址。若用戶端可直接連線，請關閉此選項，避免用戶端偽造轉送標頭。',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        '請至少輸入一個允許管理員使用的網路。',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        '您必須提供有效的逾時值',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        '您必須提供有效的最大 TTL',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        '您必須提供有效的最小 TTL',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        '您必須提供有效的端口',
     },
   },
   {
@@ -16937,6 +19225,119 @@ export const localeData = [
         'Thiết lập phân loại đã lưu.',
       'components.Settings.SettingsCategories.saveFailure':
         'Không thể lưu thiết lập phân loại.',
+      'components.Settings.SettingsNetwork.acknowledgeHttpRisk':
+        'Tôi biết các phiên chạy đăng nhập HTTP có thể bị chặn lại trên mạng.',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworks':
+        'Mạng được phép cho quản trị viên',
+      'components.Settings.SettingsNetwork.administratorSignInAllowedNetworksTip':
+        'Nhập tối đa 100 địa chỉ IPv4 hoặc IPv6 hoặc mạng con CIDR, mỗi dòng một mục (tổng cộng 4096 ký tự), chẳng hạn 192.168.0.0/16 hoặc 100.64.0.0/10. Địa chỉ của máy khách lưu danh sách đã thay đổi vẫn phải được cho phép.',
+      'components.Settings.SettingsNetwork.administratorSignInProxyWarning':
+        'Khi SeerrNG nằm sau proxy ngược, hãy bật tùy chọn tin cậy proxy ngược và bảo đảm proxy ghi đè X-Forwarded-For. Hạn chế truy cập trực tiếp vào SeerrNG để máy khách không thể giả mạo địa chỉ dùng cho bước kiểm tra này.',
+      'components.Settings.SettingsNetwork.administratorSignInRestrictionTip':
+        'Người dùng có quyền quản trị phải đăng nhập từ một trong các mạng này và sử dụng phiên trình duyệt hiện có từ một mạng được phép. Người dùng thông thường vẫn có thể đăng nhập từ xa. Các tích hợp bằng khóa API không thay đổi.',
+      'components.Settings.SettingsNetwork.allowHttpAuth':
+        'Cho phép trình duyệt xác thực qua HTTP',
+      'components.Settings.SettingsNetwork.allowHttpAuthTip':
+        'Chỉ khi thiết bị LAN đáng tin cậy thì không thể cài đặt CA cục bộ. Bất cứ ai quan sát kết nối có thể ăn cắp cookie phiên chạy.',
+      'components.Settings.SettingsNetwork.apiRequestTimeout':
+        'Hết thời gian yêu cầu API',
+      'components.Settings.SettingsNetwork.apiRequestTimeoutTip':
+        'Thời gian tối đa (tính bằng giây) để chờ phản hồi từ các dịch vụ bên ngoài như Radarr, Sonarr, Lidarr hoặc Bookshelf. Đặt thành 0 để không có thời gian chờ.',
+      'components.Settings.SettingsNetwork.caFile':
+        'Tập tin chuỗi CA (tùy chọn)',
+      'components.Settings.SettingsNetwork.certificateFile':
+        'Tập tin chứng nhận',
+      'components.Settings.SettingsNetwork.csrfProtection': 'Bật bảo vệ CNRF',
+      'components.Settings.SettingsNetwork.csrfProtectionDescription':
+        'Từ chối yêu cầu duyệt thay đổi dấu chấm phẩy (đang hỏi HTTPS)',
+      'components.Settings.SettingsNetwork.csrfProtectionWarning':
+        'Hãy bật tính năng này để bảo mật phiên trình duyệt. Chỉ tắt tính năng này khi ứng dụng khách API bên ngoài đáng tin cậy phải thực hiện yêu cầu ghi và không thể gửi mã thông báo CSRF.',
+      'components.Settings.SettingsNetwork.dnsCache': 'Bộ nhớ tạm DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMaxTtl':
+        'Bộ nhớ tạm tối đa DNS',
+      'components.Settings.SettingsNetwork.dnsCacheForceMinTtl':
+        'Bộ nhớ tạm DNS tối thiểu',
+      'components.Settings.SettingsNetwork.dnsCacheHoverTip':
+        'Không bật tùy chọn này nếu bạn gặp vấn đề với Tra cứu DNS',
+      'components.Settings.SettingsNetwork.dnsCacheTip':
+        'Bật bộ nhớ đệm tra cứu DNS để tối ưu hóa hiệu suất và tránh thực hiện các lệnh gọi API không cần thiết',
+      'components.Settings.SettingsNetwork.docs': 'Tài liệu',
+      'components.Settings.SettingsNetwork.environmentOverride':
+        'Thiết lập giao thông bị đè nén bởi biến môi trường: {variables}Hãy gỡ bỏ những biến này trước khi dùng những điều khiển này.',
+      'components.Settings.SettingsNetwork.forceIpv4First':
+        'Buộc độ phân giải IP4 trước',
+      'components.Settings.SettingsNetwork.forceIpv4FirstTip':
+        'Buộc Seerr phải giải quyết địa chỉ IPv4 trước thay vì IPv6',
+      'components.Settings.SettingsNetwork.httpsPort': 'Cổng HTTPS',
+      'components.Settings.SettingsNetwork.httpsPortTip':
+        'Cổng nghe HTTPS. Nó phải khác với cổng HTTP.',
+      'components.Settings.SettingsNetwork.keyFile': 'Tập tin khoá riêng',
+      'components.Settings.SettingsNetwork.network': 'Mạng',
+      'components.Settings.SettingsNetwork.networkDisclaimer':
+        'Các tham số mạng từ hộp/ hệ thống nên được dùng thay cho những thiết lập này. Xem {docs} để biết thêm thông tin.',
+      'components.Settings.SettingsNetwork.networksettings': 'Thiết lập mạng',
+      'components.Settings.SettingsNetwork.networksettingsDescription':
+        'Cấu hình thiết lập mạng cho tiến trình Seerr.',
+      'components.Settings.SettingsNetwork.providedFileTip':
+        'Sử dụng các đường dẫn hiển thị bên trong tiến trình SeerrNG. Gắn tập tin chứng nhận vào container; phím riêng không bao giờ được tải lên qua mẫu này.',
+      'components.Settings.SettingsNetwork.proxyBypassFilter':
+        'Địa chỉ ủy nhiệm bị bỏ qua',
+      'components.Settings.SettingsNetwork.proxyBypassFilterTip':
+        "Dùng ',' làm dấu định giới, và '*.' như một thẻ dại cho subdomais",
+      'components.Settings.SettingsNetwork.proxyBypassLocalAddresses':
+        'Bỏ qua ủy nhiệm cho địa chỉ cục bộ',
+      'components.Settings.SettingsNetwork.proxyEnabled': 'Proxy HTTP(S)',
+      'components.Settings.SettingsNetwork.proxyEnabledTip':
+        'Chuyển tất cả yêu cầu HTTP/HTTPS gửi đi qua máy chủ proxy (host/port). Thao tác này không bật HTTPS, SSL hoặc cấu hình chứng chỉ.',
+      'components.Settings.SettingsNetwork.proxyHostname': 'Tên máy ủy nhiệm',
+      'components.Settings.SettingsNetwork.proxyPassword': 'Mật khẩu ủy nhiệm',
+      'components.Settings.SettingsNetwork.proxyPort': 'Cổng ủy nhiệm',
+      'components.Settings.SettingsNetwork.proxySsl': 'Dùng SSL để ủy nhiệm',
+      'components.Settings.SettingsNetwork.proxyUser':
+        'Tên người dùng ủy nhiệm',
+      'components.Settings.SettingsNetwork.redirectHttpToHttps':
+        'Chuyển đổi thư mục HTTP sang HTTPS',
+      'components.Settings.SettingsNetwork.redirectHttpToHttpsTip':
+        'Để lại cái này trong khi kiểm tra URL HTTPS. HTTP sẽ hiển thị một hướng dẫn nâng cấp thay vì phục vụ ứng dụng.',
+      'components.Settings.SettingsNetwork.restrictAdministratorSignInToNetworks':
+        'Giới hạn đăng nhập quản trị viên vào các mạng đáng tin cậy',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNotice':
+        'Hiển thị thông báo chứng chỉ khi đăng nhập',
+      'components.Settings.SettingsNetwork.showProvidedCertificateNoticeTip':
+        'Hiển thị thông báo dấu vân tay chứng chỉ được cung cấp trên trang đăng nhập và cài đặt.',
+      'components.Settings.SettingsNetwork.tlsDisabled':
+        'Đã tắt (di chuyển dấu hiệu HTTP sang hay dùng ủy nhiệm ngược)',
+      'components.Settings.SettingsNetwork.tlsHosts':
+        'Tên máy HTTPS tự ký và địa chỉ IP',
+      'components.Settings.SettingsNetwork.tlsHostsTip':
+        'Tên và địa chỉ được phân loại bao gồm trong chứng nhận tạo ra và được chấp nhận bởi thính giả HTTP. Cung cấp giấy chứng nhận sử dụng riêng của họ SANs.',
+      'components.Settings.SettingsNetwork.tlsMode':
+        'Chế độ HTTPS được xây dựng',
+      'components.Settings.SettingsNetwork.tlsProvided': 'Chứng nhận cung cấp',
+      'components.Settings.SettingsNetwork.tlsSaveRestart':
+        'Lưu sự lựa chọn, khởi chạy lại SeerrNG, xác nhận HTTPS, rồi bật chuyển tiếp HTTP nếu muốn.',
+      'components.Settings.SettingsNetwork.tlsSelfSigned': 'Vùng HTTPS',
+      'components.Settings.SettingsNetwork.toastSettingsFailure':
+        'Có gì đó không ổn trong khi lưu lại thiết lập.',
+      'components.Settings.SettingsNetwork.toastSettingsSuccess':
+        'Thiết lập đã được lưu thành công!',
+      'components.Settings.SettingsNetwork.transportSecurity':
+        'Bảo mật giao thông với trình duyệt',
+      'components.Settings.SettingsNetwork.transportSecurityDescription':
+        'Chọn cách Seerr bảo vệ các phiên chạy đăng nhập của trình duyệt. Thay đổi lắng nghe cần thiết máy phục vụ khởi chạy lại.',
+      'components.Settings.SettingsNetwork.trustProxy': 'Ủy nhiệm & Ngược',
+      'components.Settings.SettingsNetwork.trustProxyTip':
+        'Bật khi một ủy nhiệm đảo ngược đáng tin ở phía trước SeerrNG đặt X-Forwarded-For. SeerrNG sẽ tin tưởng vào một bước nhảy ủy nhiệm để xác định địa chỉ IP khách hàng. Giữ kín nếu khách hàng có thể kết nối trực tiếp, bởi vì họ có thể làm giả đầu mối.',
+      'components.Settings.SettingsNetwork.validationAdministratorSignInNetworksRequired':
+        'Nhập ít nhất một mạng được phép cho quản trị viên.',
+      'components.Settings.SettingsNetwork.validationApiRequestTimeout':
+        'Bạn phải cung cấp giá trị thời hạn hợp lệ',
+      'components.Settings.SettingsNetwork.validationDnsCacheMaxTtl':
+        'Bạn phải cung cấp một TTL hợp lệ',
+      'components.Settings.SettingsNetwork.validationDnsCacheMinTtl':
+        'Bạn phải cung cấp một TTL hợp lệ',
+      'components.Settings.SettingsNetwork.validationProxyPort':
+        'Bạn phải cung cấp một cổng hợp lệ',
     },
   },
 ] as const;

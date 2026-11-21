@@ -6,7 +6,12 @@ async function fixtures(page: Page, permissions = 2, overrides: string[] = []) {
   const settings = {
     apiRequestTimeout: 10000,
     dnsCache: { enabled: true, forceMinTtl: 0, forceMaxTtl: -1 },
-    proxy: { enabled: false, password: '[REDACTED]' },
+    proxy: {
+      enabled: true,
+      hostname: 'proxy.local',
+      port: 8080,
+      password: '[REDACTED]',
+    },
     tls: {
       mode: 'disabled',
       httpsPort: 5056,
@@ -59,17 +64,20 @@ test('network settings send only edited values and recover from a rejected save'
   await expect(
     page.getByRole('heading', { name: 'Network Settings' })
   ).toBeVisible();
-  await expect(page.getByLabel('New Proxy Password')).toHaveValue('');
-  await page.getByLabel('API Request Timeout (seconds)').fill('3.125');
-  await page.getByLabel('Minimum TTL (seconds)').fill('60');
-  await page.getByLabel('Built-in HTTPS').selectOption('self-signed');
-  await expect(page.getByLabel('Allow Sign-In over HTTP')).not.toBeChecked();
-  await expect(page.getByLabel('Allow Sign-In over HTTP')).toBeDisabled();
+  await expect(
+    page.getByRole('textbox', { name: 'Proxy Password' })
+  ).toHaveValue('');
+  await page.getByLabel('API Request Timeout').fill('3.125');
+  await page.getByLabel('DNS Cache Minimum TTL').fill('60');
+  await page.getByLabel('Built-in HTTPS mode').selectOption('self-signed');
+  await expect(
+    page.getByLabel('Allow authenticated browser sessions over HTTP')
+  ).toHaveCount(0);
 
   const save = page.getByRole('button', { name: 'Save Network Settings' });
   await save.click();
   await expect(page.getByText('Check the network settings.')).toBeVisible();
-  await expect(page.getByLabel('Minimum TTL (seconds)')).toHaveValue('60');
+  await expect(page.getByLabel('DNS Cache Minimum TTL')).toHaveValue('60');
   await save.click();
   await expect(page.getByText(/Network settings saved/)).toBeVisible();
   await expect(save).toBeDisabled();
@@ -96,11 +104,11 @@ test('transport environment overrides prevent Lumen edits', async ({
   await page.goto('/admin/network');
   await expect(
     page.getByText(
-      /Environment variables override transport settings.*TLS_MODE/
+      /Transport settings are overridden by environment variables: TLS_MODE/
     )
   ).toBeVisible();
-  await expect(page.getByLabel('Built-in HTTPS')).toBeDisabled();
-  await expect(page.getByLabel('Enable DNS Cache')).toBeEnabled();
+  await expect(page.getByLabel('Built-in HTTPS mode')).toBeDisabled();
+  await expect(page.getByRole('checkbox', { name: 'DNS Cache' })).toBeEnabled();
 });
 
 test('non-administrators cannot open network settings', async ({ page }) => {

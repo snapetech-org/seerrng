@@ -2460,6 +2460,30 @@ baseline/candidate captures were compared at matching desktop and iPhone
 viewports; the responsive fields and controls fit without horizontal overflow.
 Evidence is retained at `seerrng-admin-connection-hosts-localization-20261120`.
 
+### Network Settings
+
+The Lumen Network Settings page now follows the saved French and Arabic
+locales for its network, DNS, proxy, and browser transport controls, help,
+warnings, save feedback, and relevant validation errors. DNS TTLs, proxy
+details, administrator network lists, and TLS fields appear only when their
+parent setting requires them. Enabling browser sign-in over HTTP requires an
+explicit risk acknowledgement; switching to HTTPS clears that acknowledgement
+and the HTTP sign-in setting. Client-side validation checks proxy ports and
+non-empty administrator network lists, while the server remains authoritative
+for the current-client-IP restriction. Environment overrides still disable
+the built-in TLS controls.
+
+Twelve standalone and twelve production `/lumen/` browser cases passed across
+desktop (1440 × 900), iPhone (390 × 844), Android (412 × 915), and tablet
+(834 × 1194), covering French, Arabic, and English. Fixtures verified field
+visibility, isolated save payloads, failed-save recovery, HTTP risk
+acknowledgement, TLS-mode transitions, proxy and DNS controls, and rejection
+of an administrator network list that excludes the current client. Matched
+English baseline and candidate captures were reviewed at all four viewport
+sizes; no horizontal overflow or unrelated layout changes were found. Live
+TLS restarts and network enforcement were not exercised. Evidence is retained
+at `seerrng-admin-network-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with
