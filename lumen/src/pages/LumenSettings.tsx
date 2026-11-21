@@ -59,7 +59,7 @@ function Lock({
         checked={!locked}
         onChange={(e) => onChange(!e.target.checked)}
       />
-      {t('lumen.admin.allowChange', 'Let people change it')}
+      {t('lumen.adminSettings.allowChange', 'Let people change it')}
     </label>
   );
 }
@@ -969,6 +969,7 @@ export default function LumenSettings() {
         </div>
         <textarea
           className="cfg-json"
+          dir="ltr"
           readOnly
           value={json}
           aria-label="lumen-config.json"

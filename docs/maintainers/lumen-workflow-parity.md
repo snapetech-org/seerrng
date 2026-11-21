@@ -5434,7 +5434,13 @@ navigation title, so localizing Lumen settings cannot replace the heading in
 the native administration directory. Regression coverage passes for the
 standalone and bundled builds: 60 navigation cases per build and 12 settings
 cases per build across English, French, and Arabic and desktop, iPhone, Android,
-and tablet viewports.
+and tablet viewports. The lock label now uses the isolated settings namespace,
+and the read-only JSON preview declares left-to-right direction in Arabic. French
+desktop and Arabic iPhone captures were inspected; the Arabic preview punctuation
+now renders in code order. Matching English baseline/candidate captures for You,
+Discover, Administration, and Lumen Settings are pixel-identical at desktop and
+iPhone sizes. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-navigation-audit-20261121/`.
 
 ### Qualify account workflows at the bundled mount
 

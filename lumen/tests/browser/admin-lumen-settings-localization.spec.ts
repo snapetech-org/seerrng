@@ -33,6 +33,7 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'Theme',
       logoShape: 'Logo shape',
       quickRequest: 'Quick request on posters',
+      allowChange: 'Let people change it',
       saveSuccess: 'Saved. Everyone gets it the next time they open Lumen.',
     },
     fr: {
@@ -46,6 +47,7 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'Thème',
       logoShape: 'Forme du logo',
       quickRequest: 'Demande rapide sur les affiches',
+      allowChange: 'Autoriser les utilisateurs à le modifier',
       saveSuccess:
         'Enregistré. Le changement s’appliquera à la prochaine ouverture de Lumen.',
     },
@@ -60,6 +62,7 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'السمة',
       logoShape: 'شكل الشعار',
       quickRequest: 'طلب سريع على الملصقات',
+      allowChange: 'السماح للمستخدمين بتغييره',
       saveSuccess:
         'تم الحفظ. ستظهر الإعدادات للجميع عند فتح Lumen في المرة التالية.',
     },
@@ -136,6 +139,12 @@ test('Lumen administration settings follow locale and retain config behavior', a
     page.getByText(expected.quickRequest, { exact: true })
   ).toBeVisible();
   await expect(page.getByText(expected.theme, { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(expected.allowChange, { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.locator('textarea[aria-label="lumen-config.json"]')
+  ).toHaveAttribute('dir', 'ltr');
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
