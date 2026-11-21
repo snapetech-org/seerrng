@@ -171,7 +171,14 @@ and requires a confirmation that states the request will remain. The action
 uses the existing `/media/:id/file` route and preserves 4K and book-format
 scope. Browser fixtures verify the confirmation boundary, exact removal route,
 and continued request row. Live service removal remains unverified; native
-visual comparison is still open.
+visual comparison is still open. The shared confirmation owner was compared
+before and after at desktop (1440 × 900) and iPhone (390 × 844) with the same
+request and dialog state. The previous `.pk-head` grid squeezed the title and
+body into a narrow column; the shared full-width header restores readable line
+wrapping and keeps both confirmation actions visible. The checked consumer was
+the managed-copy confirmation; other `ConfirmSheet` consumers remain outside
+this visual comparison. Captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tvdb-mapping-20261121/`.
 
 The native TV request dialog now retries season metadata that fails during the
 parallel provider pass, one missing season at a time. This handles providers
