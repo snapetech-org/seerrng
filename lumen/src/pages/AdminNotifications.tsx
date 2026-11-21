@@ -6,6 +6,7 @@ import { EventChoices } from '../components/NotificationEventChoices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -799,21 +800,27 @@ function AgentSection({ channel }: { channel: Channel }) {
 
 export default function AdminNotifications() {
   const { channel } = useParams();
+  const { t } = useLumenLocale();
+  const message = (key: string, fallback: string) =>
+    t(`lumen.adminNotifications.${key}`, fallback);
   const selected = channels.find((item) => item === channel);
   return (
     <>
       <header className="ph">
-        <h1>Instance Notifications</h1>
+        <h1>{message('title', 'Instance Notifications')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+            {message('backToAccount', 'Back to Account')}
           </Link>
         </div>
       </header>
-      <nav className="toolbar" aria-label="Notification Channels">
+      <nav
+        className="toolbar"
+        aria-label={message('channels', 'Notification Channels')}
+      >
         {channel && (
           <Link className="btn btn-quiet btn-sm" to="/admin/notifications">
-            All Channels
+            {message('allChannels', 'All Channels')}
           </Link>
         )}
         {channels.map((item) => (
@@ -835,7 +842,7 @@ export default function AdminNotifications() {
         <AgentSection key={selected} channel={selected} />
       ) : channel ? (
         <p className="note" role="alert">
-          Unknown notification channel.
+          {message('unknownChannel', 'Unknown notification channel.')}
         </p>
       ) : (
         channels.map((item) => <AgentSection key={item} channel={item} />)

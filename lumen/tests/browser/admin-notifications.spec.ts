@@ -116,6 +116,23 @@ test('messaging channels preserve credentials and independent event masks', asyn
       available: 'المحتوى المطلوب متاح',
     },
   }[baseline ? 'en' : locale];
+  const shellLabels = {
+    en: {
+      title: 'Instance Notifications',
+      account: 'Back to Account',
+      channels: 'Notification Channels',
+    },
+    fr: {
+      title: 'Notifications de l’instance',
+      account: 'Retour au compte',
+      channels: 'Canaux de notification',
+    },
+    ar: {
+      title: 'إشعارات المثيل',
+      account: 'العودة إلى الحساب',
+      channels: 'قنوات الإشعارات',
+    },
+  }[baseline ? 'en' : locale];
   const saved: { path: string; body: unknown }[] = [];
   const agents = {
     telegram: {
@@ -171,6 +188,15 @@ test('messaging channels preserve credentials and independent event masks', asyn
     return route.fulfill({ json: body });
   });
   await page.goto('/admin/notifications');
+  await expect(
+    page.getByRole('heading', { name: shellLabels.title, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: shellLabels.account, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('navigation', { name: shellLabels.channels })
+  ).toBeVisible();
   const telegram = page.locator('#telegram');
   await expect(telegram.getByLabel('Bot Token', { exact: true })).toHaveValue(
     ''

@@ -140,8 +140,17 @@ headings; localizing those controls remains open. Evidence is retained at
 
 Shared notification event selectors on the administration and user notification
 pages now use SeerrNG's localized English, French, and Arabic event labels. The
-administrator channel forms and page headings remain English-only; this shared
-control does not close the administrator notification-page localization gap. Browser fixtures
+administrator notification page shell now also localizes its heading, account
+return link, channel navigation label, and channel fallback actions in English,
+French, and Arabic. Four viewport cases pass for each non-English locale, while
+the existing channel fixture still verifies independent event masks, credential
+redaction, save behavior, and no horizontal overflow. Administrator
+provider-specific fields, options, feedback, and validation messages remain
+English-only, so this does not close the notification-page localization gap.
+French desktop and Arabic phone candidate captures were compared with the
+English baseline at 1440 and 390 CSS pixels; no clipping or horizontal overflow
+was introduced. The mobile navigation continues to cover part of the tall
+configuration page as before. Browser fixtures
 confirmed the same event masks and save behavior at desktop, phone, Android, and
 tablet sizes. French and Arabic baseline/candidate captures were compared at
 1440, 390, 412, and 834 CSS pixels; the existing form geometry is preserved and
