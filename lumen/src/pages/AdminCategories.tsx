@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
@@ -10,6 +10,7 @@ import InstanceAgeGate, {
 import MediaCategorySwitches from '../components/MediaCategorySwitches';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -30,6 +31,7 @@ function CategoryForm({
   field: 'enabledMediaCategories' | 'defaultEnabledMediaCategories';
   onSaved?: () => void;
 }) {
+  const { t } = useLumenLocale();
   const defaults = field === 'defaultEnabledMediaCategories';
   const [categories, setCategories] = useState(initial);
   const [draft, setDraft] = useState<Record<string, boolean>>({});
@@ -56,18 +58,40 @@ function CategoryForm({
       forget('/settings/public');
       const saved = result[field];
       if (!saved || changes.some(([key, value]) => saved[key] !== value)) {
-        setFailure('Could not confirm the saved categories.');
+        setFailure(
+          t(
+            'lumen.adminCategories.confirmFailure',
+            'Could not confirm the saved categories.'
+          )
+        );
         return;
       }
       setCategories(saved);
       setDraft({});
       onSaved?.();
       setNotice(
-        defaults ? 'Default categories saved.' : 'Category settings saved.'
+        defaults
+          ? t(
+              'lumen.adminCategories.defaultCategoriesSaved',
+              'Default categories saved.'
+            )
+          : t(
+              'components.Settings.SettingsCategories.saveSuccess',
+              'Category settings saved.'
+            )
       );
     } catch (error) {
       if (generation === sessionGeneration()) {
-        setFailure(friendlyError(error, 'Could not save category settings.'));
+        setFailure(
+          friendlyError(
+            error,
+            t(
+              'components.Settings.SettingsCategories.saveFailure',
+              'Could not save category settings.'
+            ),
+            t
+          )
+        );
       }
     } finally {
       pending.current = false;
@@ -86,6 +110,7 @@ function CategoryForm({
         values={{ ...categories, ...draft }}
         disabled={busy}
         disableUnavailable
+        showDescriptions={!defaults}
         onChange={(key, enabled) => {
           setNotice('');
           setFailure('');
@@ -99,8 +124,10 @@ function CategoryForm({
       />
       {!defaults && (draft.adult ?? categories.adult) && (
         <p className="note">
-          Adult discovery requires a configured Whisparr v3 service and account
-          permission. Restricted accounts cannot access it.
+          {t(
+            'lumen.adminCategories.adultEnabledNote',
+            'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.'
+          )}
         </p>
       )}
       {failure && (
@@ -118,7 +145,12 @@ function CategoryForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !changes.length}
         >
-          {defaults ? 'Save Default Categories' : 'Save Categories'}
+          {defaults
+            ? t(
+                'lumen.adminCategories.saveDefaultCategories',
+                'Save Default Categories'
+              )
+            : t('lumen.adminCategories.saveCategories', 'Save Categories')}
         </button>
       </div>
     </form>
@@ -129,7 +161,14 @@ export default function AdminCategories({
   inSetup = false,
   onAvailableCategoriesSaved,
 }: { inSetup?: boolean; onAvailableCategoriesSaved?: () => void } = {}) {
-  const { data, error, reload } = useApi<CategorySettings>(path);
+  const { t } = useLumenLocale();
+  const formatError = useCallback(
+    (error: unknown, fallback: string) => friendlyError(error, fallback, t),
+    [t]
+  );
+  const { data, error, reload } = useApi<CategorySettings>(path, {
+    formatError,
+  });
 
   const { hash } = useLocation();
   const defaultCategoriesReady = !!data?.defaultEnabledMediaCategories;
@@ -144,23 +183,45 @@ export default function AdminCategories({
     <>
       {!inSetup && (
         <header className="ph">
-          <h1>Media Categories</h1>
+          <h1>
+            {t(
+              'components.Settings.SettingsCategories.title',
+              'Media Categories'
+            )}
+          </h1>
           <div className="toolbar">
             <Link className="btn btn-quiet btn-sm" to="/me">
-              Back to Account
+              {t('lumen.adminCategories.backToAccount', 'Back to Account')}
             </Link>
           </div>
         </header>
       )}
-      <Section title="Available Categories">
+      <Section
+        title={t(
+          'components.Settings.SettingsCategories.groupTitle',
+          'Available Categories'
+        )}
+      >
         <p className="note">
-          Disabled categories are hidden from discovery and block new requests.
-          Existing requests and download history remain available.
+          {t(
+            'components.Settings.SettingsCategories.description',
+            'Disabled categories are hidden from discovery and block new requests. Existing requests and download history remain available.'
+          )}
         </p>
-        <ServiceNote error={error} what="media categories" retry={reload} />
+        <p className="note">
+          {t(
+            'components.Settings.SettingsCategories.groupDescription',
+            'These switches control category availability across SeerrNG.'
+          )}
+        </p>
+        <ServiceNote
+          error={error}
+          what={t('lumen.adminCategories.categoriesWhat', 'media categories')}
+          retry={reload}
+        />
         {!data && !error && (
           <p className="note" role="status">
-            Loading media categories…
+            {t('lumen.adminCategories.loading', 'Loading media categories…')}
           </p>
         )}
         {data?.enabledMediaCategories ? (
@@ -170,14 +231,29 @@ export default function AdminCategories({
             onSaved={onAvailableCategoriesSaved}
           />
         ) : (
-          data && <p className="note">Category settings are unavailable.</p>
+          data && (
+            <p className="note">
+              {t(
+                'lumen.adminCategories.unavailable',
+                'Category settings are unavailable.'
+              )}
+            </p>
+          )
         )}
       </Section>
       {data?.defaultEnabledMediaCategories && (
-        <Section title="Default User Categories" id="default-user-categories">
+        <Section
+          title={t(
+            'lumen.adminCategories.defaultUserCategories',
+            'Default User Categories'
+          )}
+          id="default-user-categories"
+        >
           <p className="note">
-            These choices apply to accounts that inherit the defaults.
-            Instance-wide category restrictions still apply.
+            {t(
+              'lumen.adminCategories.defaultsDescription',
+              'These choices apply to accounts that inherit the defaults. Instance-wide category restrictions still apply.'
+            )}
           </p>
           <CategoryForm
             initial={data.defaultEnabledMediaCategories}

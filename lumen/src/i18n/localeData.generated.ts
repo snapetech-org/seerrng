@@ -662,6 +662,71 @@ export const localeData = [
         'تعذّر التحقق من التحديثات',
       'components.Settings.SettingsAbout.uptodate': 'مُحدّث',
       'components.Settings.SettingsAbout.version': 'النسخة',
+      'components.Settings.SettingsCategories.title': 'فئات الوسائط',
+      'components.Settings.SettingsCategories.description':
+        'اختر الفئات التي يمكن للجميع استعراضها وطلبها. تُخفى الفئات المعطّلة من التنقل والاكتشاف، وتُمنع الطلبات الجديدة. تظل الطلبات الحالية وسجل تنزيلاتها متاحين في حالة الطلب.',
+      'components.Settings.SettingsCategories.groupTitle': 'الفئات المتاحة',
+      'components.Settings.SettingsCategories.groupDescription':
+        'تحدد مفاتيح التبديل هذه الفئات المتاحة في SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'أفلام',
+      'components.Settings.SettingsCategories.tv': 'مسلسلات',
+      'components.Settings.SettingsCategories.music': 'الموسيقى',
+      'components.Settings.SettingsCategories.ebook': 'كتب',
+      'components.Settings.SettingsCategories.audiobook': 'الكتب السمعية',
+      'components.Settings.SettingsCategories.comic': 'قصص مصورة',
+      'components.Settings.SettingsCategories.magazine': 'مجلات',
+      'components.Settings.SettingsCategories.adult': 'للبالغين',
+      'components.Settings.SettingsCategories.retro': 'برامج المحاكاة القديمة',
+      'components.Settings.SettingsCategories.modern': 'برامج المحاكاة الحديثة',
+      'components.Settings.SettingsCategories.game': 'ألعاب الكمبيوتر',
+      'components.Settings.SettingsCategories.movieDescription':
+        'السماح باستكشاف الأفلام وطلبها.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'السماح باستكشاف المسلسلات وطلبها.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'السماح باستكشاف الموسيقى وطلبها.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'السماح باستكشاف الكتب وطلبها.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'السماح باستكشاف الكتب الصوتية وطلبها.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'السماح باستكشاف القصص المصورة وطلبها.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'السماح باستكشاف المجلات وطلبها.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'السماح باستكشاف محتوى البالغين وطلبه. يتطلب ذلك إعداد خدمة Whisparr v3 ومنح الإذن الخاص بالبالغين للحساب.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'السماح باستكشاف ألعاب المحاكاة القديمة وملفات ROM وطلبها.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'السماح باستكشاف ألعاب المحاكاة الحديثة وملفات ROM وطلبها.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'السماح باستكشاف ألعاب الكمبيوتر وطلبها.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'المحتوى البالغ مرئي للجميع الذين لديهم وصول',
+      'components.Settings.SettingsCategories.adultWarning':
+        'إذا شاركت هذه النسخة مع العائلة أو عرّضتها عبر وكيل عكسي، يمكن لأي شخص ممنوح صلاحية طلب البالغين رؤية ما تتصفحه وتطلبه. علّم حسابات العائلة كمقيّدة أدناه، أو تحت صلاحيات كل مستخدم، حتى لا يروا محتوى البالغين أبداً.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'بوابة العمر',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'لا يمكن للحسابات المقيّدة استعراض محتوى البالغين أو طلبه. وتُخفى على مستوى الخادم الأفلام والمسلسلات والموسيقى والكتب والقصص المصوّرة والعناوين المصنّفة للبالغين. يعتمد التصفية على التصنيفات والوسوم التي يوفّرها مزودو البيانات، وقد تقل فعاليتها عند غياب البيانات الوصفية.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'تقييد الحسابات افتراضيًا',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'الحسابات التي لا تحتوي على إعداد صريح تكون مقيدة. المسؤولون معفون من ذلك.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'أعلى تقييم للأفلام',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'لا يمكن للحسابات المقيدة رؤية الأفلام التي تتجاوز تقييمها هذا الحد.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'أعلى تقييم للمسلسلات',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'لا يمكن للحسابات المقيدة رؤية المسلسلات التي تتجاوز تقييمها هذا الحد.',
+      'components.Settings.SettingsCategories.ageGateCountry': 'بلد التصنيف',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'رمز الدولة المكون من حرفين الذي تُستخدم تصنيفاته، على سبيل المثال US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'أُنقذت أوضاع الفئة',
+      'components.Settings.SettingsCategories.saveFailure':
+        'تعذّر حفظ إعدادات الفئات.',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1647,6 +1712,39 @@ export const localeData = [
       'lumen.adminAbout.releaseHistory.loading': 'جارٍ تحميل الإصدارات…',
       'lumen.adminAbout.developmentBuild':
         'يعمل هذا الخادم بإصدار مخصص للتطوير.',
+      'lumen.adminCategories.backToAccount': 'العودة إلى الحساب',
+      'lumen.adminCategories.categoriesWhat': 'فئات الوسائط',
+      'lumen.adminCategories.loading': 'جارٍ تحميل فئات الوسائط…',
+      'lumen.adminCategories.unavailable': 'إعدادات الفئات غير متاحة.',
+      'lumen.adminCategories.saveCategories': 'حفظ الفئات',
+      'lumen.adminCategories.saveDefaultCategories': 'حفظ الفئات الافتراضية',
+      'lumen.adminCategories.defaultUserCategories':
+        'الفئات الافتراضية للمستخدمين',
+      'lumen.adminCategories.defaultsDescription':
+        'تُطبّق هذه الاختيارات على الحسابات التي ترث الإعدادات الافتراضية. وتظل قيود الفئات على مستوى الخادم سارية.',
+      'lumen.adminCategories.defaultCategoriesSaved':
+        'تم حفظ الفئات الافتراضية.',
+      'lumen.adminCategories.confirmFailure': 'لم يؤكد الخادم حفظ الفئات.',
+      'lumen.adminCategories.ageGateConfirmFailure':
+        'لم يؤكد الخادم حفظ إعدادات بوابة العمر.',
+      'lumen.adminCategories.ageGateSaved': 'تم حفظ إعدادات بوابة العمر.',
+      'lumen.adminCategories.ageGateSaveFailure':
+        'تعذر حفظ إعدادات بوابة العمر.',
+      'lumen.adminCategories.saveAgeGate': 'حفظ بوابة العمر',
+      'lumen.adminCategories.adultEnabledNote':
+        'يتطلب استكشاف محتوى البالغين إعداد خدمة Whisparr v3 ومنح الحساب الإذن المناسب. لا يمكن للحسابات المقيّدة الوصول إليه.',
+      'lumen.mediaCategory.sports': 'الرياضة',
+      'lumen.error.sessionEnded': 'انتهت جلستك. سجّل الدخول مجددًا.',
+      'lumen.error.noPermission': 'ليس لديك إذن لتنفيذ هذا الإجراء.',
+      'lumen.error.timeout': 'استغرق الخادم وقتًا طويلًا في الرد. حاول مجددًا.',
+      'lumen.error.rateLimited':
+        'عدد الطلبات كبير جدًا. انتظر دقيقة ثم حاول مجددًا.',
+      'lumen.error.serverProblem':
+        'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+      'lumen.error.offline':
+        'أنت غير متصل بالإنترنت. تحقق من اتصالك ثم حاول مجددًا.',
+      'lumen.error.serverUnreachable':
+        'تعذر الوصول إلى الخادم. تحقق من اتصالك ثم حاول مجددًا.',
     },
   },
   {
@@ -2993,6 +3091,73 @@ export const localeData = [
         'Updates konnten nicht geprüft werden',
       'components.Settings.SettingsAbout.uptodate': 'Auf dem neuesten Stand',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsCategories.title': 'Medienkategorien',
+      'components.Settings.SettingsCategories.description':
+        'Wählen Sie aus, welche Kategorien jeder durchsuchen und anfordern kann. Deaktivierte Kategorien verschwinden aus Navigation und Entdeckung, und neue Anfragen werden blockiert. Bestehende Anfragen und Download-Historie bleiben im Request Status verfügbar.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Verfügbare Kategorien',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Diese Switches kontrollieren die Verfügbarkeit der Kategorie in SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Filme',
+      'components.Settings.SettingsCategories.tv': 'Serien',
+      'components.Settings.SettingsCategories.music': 'Musik',
+      'components.Settings.SettingsCategories.ebook': 'Bücher',
+      'components.Settings.SettingsCategories.audiobook': 'Hörbücher',
+      'components.Settings.SettingsCategories.comic': 'Comics',
+      'components.Settings.SettingsCategories.magazine': 'Magazine',
+      'components.Settings.SettingsCategories.adult': 'Erwachsene',
+      'components.Settings.SettingsCategories.retro': 'Retro-Emulation',
+      'components.Settings.SettingsCategories.modern': 'Emulation (modern)',
+      'components.Settings.SettingsCategories.game': 'PC-Spiele',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Ermöglichen Sie die Entdeckung von Filmen und Anfragen.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Ermöglichen Sie Serienentdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Erlauben Sie Musik Entdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Ermöglichen Sie Buchentdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Ermöglichen Sie die Suche und Anfragen von Hörbüchern.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Erlauben Sie Comic-Entdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Ermöglichen Sie die Entdeckung von Zeitschriften und Anfragen.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Erlaube die Entdeckung und Anfrage von Inhalten für Erwachsene. Erfordert einen konfigurierten Whisparr v3-Dienst und eine benutzerbezogene Berechtigung für Erwachsene.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Ermöglichen Sie Retro-ROM-Erkennung und -Anfragen.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Erlauben Sie moderne Emulation ROM Entdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Ermöglichen Sie PC-Spiel Entdeckung und Anfragen.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Erwachseneninhalte sind für alle mit Zugriff sichtbar',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Wenn du diese Instanz mit der Familie teilst oder sie über einen Reverse Proxy zugänglich machst, kann jeder, dem die Berechtigung „Erwachsene anfordern“ erteilt wurde, sehen, was du durchsuchst und anforderst. Markiere Familienkonten unten oder in den Berechtigungen jedes Benutzers als eingeschränkt, damit sie keine Inhalte für Erwachsene sehen.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Alterskontrolle',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Eingeschränkte Konten können keine Erwachseneninhalte sehen oder anfordern; reife Filme, Serien, Musik, Bücher, Comics und getaggte Titel werden serverseitig ausgeblendet. Die Filterung verwendet Einstufungen und Tags der Anbieter und ist bei Titeln ohne Metadaten best-effort.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Konten standardmäßig einschränken',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Konten ohne explizite Einstellung werden eingeschränkt. Administratoren sind ausgenommen.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Höchste Filmeinstufung',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Eingeschränkte Konten können keine Filme sehen, die über dieser Einstufung liegen.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Höchste Serieneinstufung',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Eingeschränkte Konten können keine Serien sehen, die über dieser Einstufung liegen.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'Land der Einstufung',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Zweibuchstaben-Ländercode, dessen Einstufungen verwendet werden, z. B. US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Kategorieeinstellungen gespeichert.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'Kategorieeinstellungen konnten nicht gespeichert werden.',
     },
   },
   {
@@ -3682,6 +3847,72 @@ export const localeData = [
         'Could not check for updates',
       'components.Settings.SettingsAbout.uptodate': 'Up to Date',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsCategories.title': 'Media Categories',
+      'components.Settings.SettingsCategories.description':
+        'Choose which categories everyone can browse and request. Disabled categories disappear from navigation and discovery, and new requests are blocked. Existing requests and download history stay available in Request Status.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Available Categories',
+      'components.Settings.SettingsCategories.groupDescription':
+        'These switches control category availability across SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Movies',
+      'components.Settings.SettingsCategories.tv': 'Series',
+      'components.Settings.SettingsCategories.music': 'Music',
+      'components.Settings.SettingsCategories.ebook': 'Books',
+      'components.Settings.SettingsCategories.audiobook': 'Audiobooks',
+      'components.Settings.SettingsCategories.comic': 'Comics',
+      'components.Settings.SettingsCategories.magazine': 'Magazines',
+      'components.Settings.SettingsCategories.adult': 'Adult',
+      'components.Settings.SettingsCategories.retro': 'Emulation (Retro)',
+      'components.Settings.SettingsCategories.modern': 'Emulation (Modern)',
+      'components.Settings.SettingsCategories.game': 'PC Games',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Allow movie discovery and requests.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Allow series discovery and requests.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Allow music discovery and requests.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Allow book discovery and requests.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Allow audiobook discovery and requests.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Allow comic discovery and requests.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Allow magazine discovery and requests.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Allow adult-scene discovery and requests. Requires a configured Whisparr v3 service and adult-specific user permission.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Allow retro ROM discovery and requests.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Allow modern emulation ROM discovery and requests.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Allow PC game discovery and requests.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Adult content is visible to everyone with access',
+      'components.Settings.SettingsCategories.adultWarning':
+        'If you share this instance with family or expose it through a reverse proxy, anyone granted Request Adult can see what you browse and request. Flag family accounts as restricted below, or under each user’s Permissions, so they never see Adult content.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Age Gate',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Restricted accounts cannot see or request Adult content, and mature movies, series, music, books, comics, and tagged titles are hidden server-side. Filtering uses provider ratings and tags and is best-effort for titles without metadata.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Restrict accounts by default',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Accounts without an explicit setting are restricted. Administrators are exempt.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Highest movie rating',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Restricted accounts cannot see movies rated above this.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Highest series rating',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Restricted accounts cannot see series rated above this.',
+      'components.Settings.SettingsCategories.ageGateCountry': 'Rating country',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Two-letter country code whose ratings are used, for example US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Category settings saved.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'Category settings could not be saved.',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -4619,6 +4850,39 @@ export const localeData = [
       'lumen.adminAbout.releaseHistory.loading': 'Loading releases…',
       'lumen.adminAbout.developmentBuild':
         'This server is running a development build.',
+      'lumen.adminCategories.backToAccount': 'Back to Account',
+      'lumen.adminCategories.categoriesWhat': 'media categories',
+      'lumen.adminCategories.loading': 'Loading media categories…',
+      'lumen.adminCategories.unavailable': 'Category settings are unavailable.',
+      'lumen.adminCategories.saveCategories': 'Save Categories',
+      'lumen.adminCategories.saveDefaultCategories': 'Save Default Categories',
+      'lumen.adminCategories.defaultUserCategories': 'Default User Categories',
+      'lumen.adminCategories.defaultsDescription':
+        'These choices apply to accounts that inherit the defaults. Instance-wide category restrictions still apply.',
+      'lumen.adminCategories.defaultCategoriesSaved':
+        'Default categories saved.',
+      'lumen.adminCategories.confirmFailure':
+        'The server did not confirm the saved categories.',
+      'lumen.adminCategories.ageGateConfirmFailure':
+        'The server did not confirm the saved Age Gate settings.',
+      'lumen.adminCategories.ageGateSaved': 'Age Gate settings saved.',
+      'lumen.adminCategories.ageGateSaveFailure':
+        'Could not save Age Gate settings.',
+      'lumen.adminCategories.saveAgeGate': 'Save Age Gate',
+      'lumen.adminCategories.adultEnabledNote':
+        'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.',
+      'lumen.mediaCategory.sports': 'Sports',
+      'lumen.error.sessionEnded': 'Your session ended. Sign in again.',
+      'lumen.error.noPermission': 'You don’t have permission to do that.',
+      'lumen.error.timeout': 'The server took too long to answer. Try again.',
+      'lumen.error.rateLimited':
+        'Too many requests. Wait a minute and try again.',
+      'lumen.error.serverProblem':
+        'The server had a problem. Try again in a moment.',
+      'lumen.error.offline':
+        'You’re offline. Check your connection and try again.',
+      'lumen.error.serverUnreachable':
+        'Couldn’t reach the server. Check your connection and try again.',
     },
   },
   {
@@ -5461,6 +5725,73 @@ export const localeData = [
         'No se pudo verificar actualizaciones',
       'components.Settings.SettingsAbout.uptodate': 'Actualizado',
       'components.Settings.SettingsAbout.version': 'Versión',
+      'components.Settings.SettingsCategories.title': 'Categorías de Medios',
+      'components.Settings.SettingsCategories.description':
+        'Elija qué categorías todos pueden navegar y solicitar. Las categorías de personas discapacitadas desaparecen de la navegación y el descubrimiento, y se bloquean nuevas solicitudes. Existing requests and download history stay available in Request Status.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Categorías disponibles',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Estos interruptores controlan la disponibilidad de la categoría en SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Películas',
+      'components.Settings.SettingsCategories.tv': 'Serie',
+      'components.Settings.SettingsCategories.music': 'Música',
+      'components.Settings.SettingsCategories.ebook': 'Libros',
+      'components.Settings.SettingsCategories.audiobook': 'Audiolibros',
+      'components.Settings.SettingsCategories.comic': 'Cómics',
+      'components.Settings.SettingsCategories.magazine': 'Revistas',
+      'components.Settings.SettingsCategories.adult': 'Adulto',
+      'components.Settings.SettingsCategories.retro': 'Emulación (Retro)',
+      'components.Settings.SettingsCategories.modern': 'Emulación (Modern)',
+      'components.Settings.SettingsCategories.game': 'Juegos de PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Permitir descubrimiento de películas y peticiones.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Permitir el descubrimiento de series y solicitudes.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Permitir el descubrimiento y las peticiones de música.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Permitir el descubrimiento de libros y solicitudes.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Permitir el descubrimiento y las solicitudes de audiolibros.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Permitir el descubrimiento cómico y las peticiones.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Permitir el descubrimiento de revistas y solicitudes.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Permite el descubrimiento y las solicitudes de escenas para adultos. Requiere un servicio Whisparr v3 configurado y un permiso de usuario específico para adultos.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Permitir retro ROM descubrimiento y solicitudes.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Permitir la emulación moderna ROM descubrimiento y peticiones.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Permitir el descubrimiento y las solicitudes de PC juego.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'El contenido para adultos es visible para todos los que tengan acceso',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Si compartes esta instancia con la familia o la expones a través de un proxy inverso, cualquier persona con el permiso Solicitar Adulto puede ver lo que exploras y solicitas. Marca las cuentas familiares como restringidas a continuación, o en los Permisos de cada usuario, para que nunca vean contenido para adultos.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Control de edad',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Las cuentas restringidas no pueden ver ni solicitar contenido para adultos, y las películas, series, música, libros, cómics y títulos etiquetados maduros se ocultan a nivel de servidor. La filtración utiliza clasificaciones y etiquetas de proveedores y es de mejor esfuerzo para títulos sin metadatos.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Restringir cuentas por defecto',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Las cuentas sin una configuración explícita están restringidas. Los administradores están exentos.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Clasificación máxima de películas',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Las cuentas restringidas no pueden ver películas con una clasificación superior a esta.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Clasificación máxima de series',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Las cuentas restringidas no pueden ver series con una clasificación superior a esta.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'País de clasificación',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Código de país de dos letras cuyas clasificaciones se utilizan, por ejemplo US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Ajustes de categoría guardados.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'No se puede guardar la configuración de la categoría.',
     },
   },
   {
@@ -6163,6 +6494,73 @@ export const localeData = [
         'No se pudo verificar actualizaciones',
       'components.Settings.SettingsAbout.uptodate': 'Actualizado',
       'components.Settings.SettingsAbout.version': 'Versión',
+      'components.Settings.SettingsCategories.title': 'Categorías de Medios',
+      'components.Settings.SettingsCategories.description':
+        'Elija qué categorías todos pueden navegar y solicitar. Las categorías de personas discapacitadas desaparecen de la navegación y el descubrimiento, y se bloquean nuevas solicitudes. Existing requests and download history stay available in Request Status.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Categorías disponibles',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Estos interruptores controlan la disponibilidad de la categoría en SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Películas',
+      'components.Settings.SettingsCategories.tv': 'Serie',
+      'components.Settings.SettingsCategories.music': 'Música',
+      'components.Settings.SettingsCategories.ebook': 'Libros',
+      'components.Settings.SettingsCategories.audiobook': 'Audiolibros',
+      'components.Settings.SettingsCategories.comic': 'Cómics',
+      'components.Settings.SettingsCategories.magazine': 'Revistas',
+      'components.Settings.SettingsCategories.adult': 'Adulto',
+      'components.Settings.SettingsCategories.retro': 'Emulación (Retro)',
+      'components.Settings.SettingsCategories.modern': 'Emulación (Modern)',
+      'components.Settings.SettingsCategories.game': 'Juegos de PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Permitir descubrimiento de películas y peticiones.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Permitir el descubrimiento de series y solicitudes.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Permitir el descubrimiento y las peticiones de música.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Permitir el descubrimiento de libros y solicitudes.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Permitir el descubrimiento y las solicitudes de audiolibros.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Permitir el descubrimiento cómico y las peticiones.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Permitir el descubrimiento de revistas y solicitudes.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Permite el descubrimiento y las solicitudes de escenas para adultos. Requiere un servicio Whisparr v3 configurado y un permiso de usuario específico para adultos.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Permitir retro ROM descubrimiento y solicitudes.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Permitir la emulación moderna ROM descubrimiento y peticiones.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Permitir el descubrimiento y las solicitudes de PC juego.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'El contenido para adultos es visible para todos los que tengan acceso',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Si compartes esta instancia con la familia o la expones a través de un proxy inverso, cualquier persona con el permiso Solicitar Adulto puede ver lo que exploras y solicitas. Marca las cuentas familiares como restringidas a continuación, o en los Permisos de cada usuario, para que nunca vean contenido para adultos.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Control de edad',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Las cuentas restringidas no pueden ver ni solicitar contenido para adultos, y las películas, series, música, libros, cómics y títulos etiquetados maduros se ocultan a nivel de servidor. La filtración utiliza clasificaciones y etiquetas de proveedores y es de mejor esfuerzo para títulos sin metadatos.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Restringir cuentas por defecto',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Las cuentas sin una configuración explícita están restringidas. Los administradores están exentos.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Clasificación máxima de películas',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Las cuentas restringidas no pueden ver películas con una clasificación superior a esta.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Clasificación máxima de series',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Las cuentas restringidas no pueden ver series con una clasificación superior a esta.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'País de clasificación',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Código de país de dos letras cuyas clasificaciones se utilizan, por ejemplo US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Ajustes de categoría guardados.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'No se puede guardar la configuración de la categoría.',
     },
   },
   {
@@ -7160,6 +7558,75 @@ export const localeData = [
         'Impossible de vérifier les mises à jour',
       'components.Settings.SettingsAbout.uptodate': 'À jour',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsCategories.title': 'Catégories de médias',
+      'components.Settings.SettingsCategories.description':
+        'Choisissez les catégories que chacun peut découvrir et demander. Les catégories désactivées disparaissent de la navigation et de la découverte, et les nouvelles demandes sont bloquées. Les demandes existantes et leur historique de téléchargement restent accessibles dans le suivi des demandes.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Catégories disponibles',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Ces interrupteurs définissent les catégories disponibles dans SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Films',
+      'components.Settings.SettingsCategories.tv': 'Séries',
+      'components.Settings.SettingsCategories.music': 'Musique',
+      'components.Settings.SettingsCategories.ebook': 'Livres',
+      'components.Settings.SettingsCategories.audiobook': 'Livres audio',
+      'components.Settings.SettingsCategories.comic': 'BD',
+      'components.Settings.SettingsCategories.magazine': 'Revues',
+      'components.Settings.SettingsCategories.adult': 'Adulte',
+      'components.Settings.SettingsCategories.retro':
+        'Logiciels rétro (émulation)',
+      'components.Settings.SettingsCategories.modern':
+        'Logiciels modernes (émulation)',
+      'components.Settings.SettingsCategories.game': 'Jeux PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Permettre la découverte et les demandes de films.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Permettre la découverte et les demandes de séries.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Permettre la découverte et les demandes de musique.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Permettre la découverte et les demandes de livres numériques.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Permettre la découverte et les demandes de livres audio.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Permettre la découverte et les demandes de bandes dessinées.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Permettre la découverte et les demandes de magazines.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Autoriser la découverte et les demandes de contenus pour adultes. Nécessite un service Whisparr v3 configuré et l’autorisation spécifique du compte.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Permettre la découverte et les demandes de jeux rétro et de ROMs.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Permettre la découverte et les demandes de jeux modernes et de ROMs.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Permettre la découverte et les demandes de jeux PC.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Les contenus pour adultes sont visibles par toute personne ayant accès',
+      'components.Settings.SettingsCategories.adultWarning':
+        "Si vous partagez cette instance avec votre famille ou l'exposez via un proxy inversé, toute personne autorisée à Demander Adulte peut voir ce que vous parcourez et demandez. Marquez les comptes familiaux comme restreints ci-dessous, ou dans les Autorisations de chaque utilisateur, pour qu'ils ne voient jamais de contenu pour adultes.",
+      'components.Settings.SettingsCategories.ageGateTitle': "Contrôle d'âge",
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Les comptes restreints ne peuvent ni consulter ni demander de contenus pour adultes. Les films, séries, musiques, livres, bandes dessinées et titres étiquetés comme matures sont masqués côté serveur. Le filtrage s’appuie sur les classifications et les étiquettes des fournisseurs; son efficacité dépend des métadonnées disponibles.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Restreindre les comptes par défaut',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Les comptes sans paramètre explicite sont restreints. Les administrateurs sont exemptés.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Classification maximale des films',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Les comptes restreints ne peuvent pas voir les films classés au-dessus de ce seuil.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Classification maximale des séries',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Les comptes restreints ne peuvent pas voir les séries classées au-dessus de ce seuil.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'Pays de classification',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Code pays à deux lettres dont les classifications sont utilisées, par exemple US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Paramètres de catégorie enregistrés.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'Les paramètres de catégorie ne peuvent pas être enregistrés.',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -8239,6 +8706,45 @@ export const localeData = [
       'lumen.adminAbout.releaseHistory.loading': 'Chargement des versions…',
       'lumen.adminAbout.developmentBuild':
         'Ce serveur utilise une version de développement.',
+      'lumen.adminCategories.backToAccount': 'Retour au compte',
+      'lumen.adminCategories.categoriesWhat': 'les catégories de médias',
+      'lumen.adminCategories.loading': 'Chargement des catégories de médias…',
+      'lumen.adminCategories.unavailable':
+        'Les paramètres des catégories ne sont pas disponibles.',
+      'lumen.adminCategories.saveCategories': 'Enregistrer les catégories',
+      'lumen.adminCategories.saveDefaultCategories':
+        'Enregistrer les catégories par défaut',
+      'lumen.adminCategories.defaultUserCategories':
+        'Catégories utilisateur par défaut',
+      'lumen.adminCategories.defaultsDescription':
+        'Ces choix s’appliquent aux comptes qui héritent des paramètres par défaut. Les restrictions de catégories de l’instance s’appliquent toujours.',
+      'lumen.adminCategories.defaultCategoriesSaved':
+        'Catégories par défaut enregistrées.',
+      'lumen.adminCategories.confirmFailure':
+        'Le serveur n’a pas confirmé l’enregistrement des catégories.',
+      'lumen.adminCategories.ageGateConfirmFailure':
+        'Le serveur n’a pas confirmé l’enregistrement des paramètres du contrôle d’âge.',
+      'lumen.adminCategories.ageGateSaved':
+        'Paramètres du contrôle d’âge enregistrés.',
+      'lumen.adminCategories.ageGateSaveFailure':
+        'Impossible d’enregistrer les paramètres du contrôle d’âge.',
+      'lumen.adminCategories.saveAgeGate': 'Enregistrer le contrôle d’âge',
+      'lumen.adminCategories.adultEnabledNote':
+        'La découverte de contenus pour adultes nécessite un service Whisparr v3 configuré et l’autorisation correspondante du compte. Les comptes restreints n’y ont pas accès.',
+      'lumen.mediaCategory.sports': 'Sports',
+      'lumen.error.sessionEnded': 'Votre session a expiré. Reconnectez-vous.',
+      'lumen.error.noPermission':
+        'Vous n’êtes pas autorisé à effectuer cette action.',
+      'lumen.error.timeout':
+        'Le serveur a mis trop de temps à répondre. Réessayez.',
+      'lumen.error.rateLimited':
+        'Trop de demandes. Attendez une minute, puis réessayez.',
+      'lumen.error.serverProblem':
+        'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      'lumen.error.offline':
+        'Vous êtes hors ligne. Vérifiez votre connexion, puis réessayez.',
+      'lumen.error.serverUnreachable':
+        'Impossible de joindre le serveur. Vérifiez votre connexion, puis réessayez.',
     },
   },
   {
@@ -9094,6 +9600,71 @@ export const localeData = [
         'अपडेट की जांच नहीं की जा सकी',
       'components.Settings.SettingsAbout.uptodate': 'तारीख तक',
       'components.Settings.SettingsAbout.version': 'संस्करण',
+      'components.Settings.SettingsCategories.title': 'मीडिया श्रेणियाँ',
+      'components.Settings.SettingsCategories.description':
+        'किस श्रेणी में हर कोई ब्राउज़ और अनुरोध कर सकता है। विकलांग श्रेणियां नेविगेशन और खोज से गायब हो जाती हैं, और नए अनुरोध अवरुद्ध होते हैं। मौजूदा अनुरोध और डाउनलोड इतिहास अनुरोध स्थिति में उपलब्ध है।',
+      'components.Settings.SettingsCategories.groupTitle': 'उपलब्ध श्रेणियाँ',
+      'components.Settings.SettingsCategories.groupDescription':
+        'इन स्विचों में नियंत्रण श्रेणी की उपलब्धता SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'फ़िल्में',
+      'components.Settings.SettingsCategories.tv': 'श्रृंखला',
+      'components.Settings.SettingsCategories.music': 'संगीत',
+      'components.Settings.SettingsCategories.ebook': 'पुस्तकें',
+      'components.Settings.SettingsCategories.audiobook': 'ऑडियोबुक',
+      'components.Settings.SettingsCategories.comic': 'कॉमिक्स',
+      'components.Settings.SettingsCategories.magazine': 'पत्रिकाएँ',
+      'components.Settings.SettingsCategories.adult': 'वयस्क',
+      'components.Settings.SettingsCategories.retro': 'अनुकरण (रेट्रो)',
+      'components.Settings.SettingsCategories.modern': 'अनुकरण (आधुनिक)',
+      'components.Settings.SettingsCategories.game': 'पीसी गेम',
+      'components.Settings.SettingsCategories.movieDescription':
+        'फिल्म खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.tvDescription':
+        'श्रृंखला खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.musicDescription':
+        'संगीत खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'पुस्तक खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'ऑडियोबुक खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.comicDescription':
+        'कॉमिक खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'पत्रिका खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.adultDescription':
+        'वयस्क-सीन खोज और अनुरोधों की अनुमति दें। इसके लिए एक कॉन्फ़िगर किया गया Whisparr v3 सेवा और वयस्क-विशिष्ट उपयोगकर्ता अनुमति आवश्यक है।',
+      'components.Settings.SettingsCategories.retroDescription':
+        'रेट्रो रॉम खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.modernDescription':
+        'आधुनिक अनुकरण ROM खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.gameDescription':
+        'पीसी गेम खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'वयस्क सामग्री सभी को दिखाई देती है जिन्हें पहुंच है',
+      'components.Settings.SettingsCategories.adultWarning':
+        'यदि आप इस इंस्टेंस को परिवार के साथ साझा करते हैं या इसे रिवर्स प्रॉक्सी के माध्यम से प्रकट करते हैं, तो Request Adult की अनुमति प्राप्त किसी भी व्यक्ति को आपकी ब्राउज़िंग और अनुरोध देखने में सक्षम हो सकते हैं। नीचे या प्रत्येक उपयोगकर्ता की Permissions के तहत परिवार के खातों को restricted के रूप में चिह्नित करें, ताकि वे कभी भी वयस्क सामग्री न देखें।',
+      'components.Settings.SettingsCategories.ageGateTitle': 'आयु प्रवेश',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'प्रतिबंधित खाते वयस्क सामग्री, और परिपक्व फिल्मों, सीरीज़, संगीत, पुस्तकों, कॉमिक्स और टैग किए गए शीर्षकों को देख या अनुरोध नहीं कर सकते हैं, और ये सर्वर-साइड पर छिपाए जाते हैं। फ़िल्टरिंग प्रदाता रेटिंग और टैग का उपयोग करती है और मेटाडेटा के बिना शीर्षकों के लिए सर्वोत्तम प्रयास है।',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'डिफ़ॉल्ट रूप से खातों को प्रतिबंधित करें',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'जिन खातों में स्पष्ट सेटिंग नहीं है, उन्हें प्रतिबंधित किया जाता है। प्रशासकों को छूट दी जाती है।',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'उच्चतम फिल्म रेटिंग',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'प्रतिबंधित खाते इससे ऊपर रेटिंग वाली फिल्में नहीं देख सकते।',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'उच्चतम सीरीज़ रेटिंग',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'प्रतिबंधित खाते इससे ऊपर रेटिंग वाली सीरीज़ नहीं देख सकते।',
+      'components.Settings.SettingsCategories.ageGateCountry': 'रेटिंग देश',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'दो अक्षरों का देश कोड जिसकी रेटिंग का उपयोग किया जाता है, उदाहरण के लिए US।',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'श्रेणी सेटिंग्स बचाया।',
+      'components.Settings.SettingsCategories.saveFailure':
+        'श्रेणी सेटिंग्स को बचाया नहीं जा सकता।',
     },
   },
   {
@@ -9949,6 +10520,72 @@ export const localeData = [
         'Gagal memeriksa pembaruan',
       'components.Settings.SettingsAbout.uptodate': 'Sampai Tanggal',
       'components.Settings.SettingsAbout.version': 'Versi',
+      'components.Settings.SettingsCategories.title': 'Kategori Media',
+      'components.Settings.SettingsCategories.description':
+        'Pilih kategori mana yang dapat diramban dan permintaan setiap orang. Kategori dinonaktifkan menghilang dari navigasi dan penemuan, dan permintaan baru diblokir. Permintaan yang telah ada dan unduh riwayat tetap tersedia dalam Status Permintaan.',
+      'components.Settings.SettingsCategories.groupTitle': 'Kategori Tersedia',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Sakelar ini mengontrol ketersediaan kategori di SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Film',
+      'components.Settings.SettingsCategories.tv': 'Serial',
+      'components.Settings.SettingsCategories.music': 'Musik',
+      'components.Settings.SettingsCategories.ebook': 'Buku',
+      'components.Settings.SettingsCategories.audiobook': 'Buku audio',
+      'components.Settings.SettingsCategories.comic': 'Komik',
+      'components.Settings.SettingsCategories.magazine': 'Majalah',
+      'components.Settings.SettingsCategories.adult': 'Dewasa',
+      'components.Settings.SettingsCategories.retro': 'Emulasi (Retro)',
+      'components.Settings.SettingsCategories.modern': 'Emulasi (Modern)',
+      'components.Settings.SettingsCategories.game': 'Game PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Izinkan penemuan film dan permintaan.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Ijinkan serangkaian penemuan dan permintaan.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Ijinkan penemuan musik dan permintaan.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Izinkan penemuan buku dan permintaan.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Izinkan audiobook penemuan dan permintaan.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Memungkinkan penemuan komik dan permintaan.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Izinkan penemuan dan permintaan majalah.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Izinkan penemuan dan permintaan scene dewasa. Memerlukan layanan Whisparr v3 yang dikonfigurasi dan izin pengguna khusus dewasa.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Ijinkan retro penemuan dan permintaan ROM.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Ijinkan penemuan dan permintaan ROM emulasi modern.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Ijinkan PC game penemuan dan permintaan.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Konten dewasa terlihat oleh semua orang yang memiliki akses',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Jika Anda membagikan instans ini dengan keluarga atau memaparkannya melalui proxy terbalik, siapa pun yang diberi izin Permintaan Dewasa dapat melihat apa yang Anda jelajahi dan minta. Tandai akun keluarga sebagai terbatas di bawah, atau di bawah Izin masing-masing pengguna, agar mereka tidak pernah melihat konten Dewasa.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Pembatasan Usia',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Akun yang dibatasi tidak dapat melihat atau meminta konten Dewasa, dan film, serial, musik, buku, komik, serta judul bertag yang matang disembunyikan di sisi server. Penyaringan menggunakan penilaian penyedia dan tag, dan bersifat terbaik untuk judul tanpa metadata.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Batasi akun secara default',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Akun tanpa pengaturan eksplisit akan dibatasi. Administrator dikecualikan.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Penilaian film tertinggi',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Akun yang dibatasi tidak dapat melihat film dengan penilaian di atas ini.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Penilaian serial tertinggi',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Akun yang dibatasi tidak dapat melihat serial dengan penilaian di atas ini.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'Negara penilaian',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Kode negara dua huruf yang penilaiannya digunakan, misalnya US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Pengaturan kategori disimpan.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'Pengaturan kategori tidak dapat disimpan.',
     },
   },
   {
@@ -10799,6 +11436,74 @@ export const localeData = [
         '更新を確認できませんでした',
       'components.Settings.SettingsAbout.uptodate': '最新',
       'components.Settings.SettingsAbout.version': 'バージョン',
+      'components.Settings.SettingsCategories.title': 'メディアカテゴリ',
+      'components.Settings.SettingsCategories.description':
+        '誰もがリクエストを閲覧できるカテゴリを選択します。 無効なカテゴリはナビゲーションや発見から消え、新しいリクエストはブロックされます。 リクエストの送信とダウンロード履歴はリクエストステータスでご利用いただけます。',
+      'components.Settings.SettingsCategories.groupTitle': '利用可能なカテゴリ',
+      'components.Settings.SettingsCategories.groupDescription':
+        'これらのスイッチは、SeerrNG 間でのカテゴリの可用性を制御します。',
+      'components.Settings.SettingsCategories.movie': '映画',
+      'components.Settings.SettingsCategories.tv': 'シリーズ',
+      'components.Settings.SettingsCategories.music': 'ミュージック',
+      'components.Settings.SettingsCategories.ebook': '本',
+      'components.Settings.SettingsCategories.audiobook': 'オーディオブック',
+      'components.Settings.SettingsCategories.comic': 'コミック',
+      'components.Settings.SettingsCategories.magazine': '雑誌',
+      'components.Settings.SettingsCategories.adult': 'アダルト',
+      'components.Settings.SettingsCategories.retro':
+        'エミュレーション(リトロ)',
+      'components.Settings.SettingsCategories.modern':
+        'エミュレーション(モダン)',
+      'components.Settings.SettingsCategories.game': 'PCゲーム',
+      'components.Settings.SettingsCategories.movieDescription':
+        '映画の発見や要求を許可します。',
+      'components.Settings.SettingsCategories.tvDescription':
+        'シリーズの発見と要求を許可します。',
+      'components.Settings.SettingsCategories.musicDescription':
+        '音楽の発見と要求を許可します。',
+      'components.Settings.SettingsCategories.ebookDescription':
+        '書籍の発見と要求を許可します。',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'オーディオブックの発見と要求を許可します。',
+      'components.Settings.SettingsCategories.comicDescription':
+        '漫画の発見と要求を許可します。',
+      'components.Settings.SettingsCategories.magazineDescription':
+        '雑誌の発見や要求を許可します。',
+      'components.Settings.SettingsCategories.adultDescription':
+        'アダルトシーン（成人向けメディア）の発見とリクエストを許可します。設定済みの Whisparr v3 サービスと、アダルト専用のユーザー権限が必要です。',
+      'components.Settings.SettingsCategories.retroDescription':
+        'レトロROMの発見と要求を許可します。',
+      'components.Settings.SettingsCategories.modernDescription':
+        '現代のエミュレーションROMの発見と要求を許可します。',
+      'components.Settings.SettingsCategories.gameDescription':
+        'PCゲームの発見と要求を許可します。',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        '成人向けコンテンツはアクセス権限を持つすべてのユーザーに表示されます',
+      'components.Settings.SettingsCategories.adultWarning':
+        'このインスタンスを家族と共有したり、リバースプロキシ経由で公開したりする場合、「アダルトのリクエスト」が許可されたユーザーは、あなたが閲覧・リクエストした内容を確認できます。アダルトコンテンツが表示されないように、以下の設定または各ユーザーの権限で、家族アカウントを制限としてマークしてください。',
+      'components.Settings.SettingsCategories.ageGateTitle': '年齢制限',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        '制限されたアカウントは成人向けコンテンツや、成熟度の高い映画、シリーズ、音楽、書籍、コミック、タグ付けされたタイトルを表示・リクエストできません。サーバーサイドで非表示になります。フィルタリングはプロバイダーのレーティングとタグを使用し、メタデータのないタイトルについてはベストエフォートで適用されます。',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'デフォルトでアカウントを制限する',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        '明示的な設定がないアカウントは制限されます。管理者は対象外です。',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        '映画の最高レーティング',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        '制限されたアカウントは、このレーティングを超える映画を表示できません。',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'シリーズの最高レーティング',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        '制限されたアカウントは、このレーティングを超えるシリーズを表示できません。',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'レーティング対象国',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'レーティングに使用する2文字の国コード（例: US）。',
+      'components.Settings.SettingsCategories.saveSuccess':
+        '保存されたカテゴリ設定。',
+      'components.Settings.SettingsCategories.saveFailure':
+        'カテゴリーの設定は保存できません。',
     },
   },
   {
@@ -11457,6 +12162,69 @@ export const localeData = [
         '업데이트를 확인할 수 없습니다',
       'components.Settings.SettingsAbout.uptodate': '최신',
       'components.Settings.SettingsAbout.version': '버전',
+      'components.Settings.SettingsCategories.title': '미디어 카테고리',
+      'components.Settings.SettingsCategories.description':
+        '모든 카테고리를 선택하여 검색 및 요청할 수 있습니다. 장애인 범주는 탐색 및 발견에서 사라지고, 새로운 요청은 차단됩니다. 사전 요청 및 다운로드 기록은 Request Status에서 확인할 수 있습니다.',
+      'components.Settings.SettingsCategories.groupTitle': '제품 분류',
+      'components.Settings.SettingsCategories.groupDescription':
+        '이 스위치 컨트롤 범주 사용 가능 SeerrNG.',
+      'components.Settings.SettingsCategories.movie': '영화',
+      'components.Settings.SettingsCategories.tv': '시리즈',
+      'components.Settings.SettingsCategories.music': '·',
+      'components.Settings.SettingsCategories.ebook': '책',
+      'components.Settings.SettingsCategories.audiobook': '오디오북',
+      'components.Settings.SettingsCategories.comic': '만화',
+      'components.Settings.SettingsCategories.magazine': '잡지',
+      'components.Settings.SettingsCategories.adult': '성인',
+      'components.Settings.SettingsCategories.retro': '에뮬레이션 (Retro)',
+      'components.Settings.SettingsCategories.modern': '에뮬레이션 (Modern)',
+      'components.Settings.SettingsCategories.game': 'PC 게임',
+      'components.Settings.SettingsCategories.movieDescription':
+        '영화 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.tvDescription':
+        '시리즈 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.musicDescription':
+        '음악 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        '책 발견 및 요청을 허용.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'audiobook discovery 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.comicDescription':
+        '만화 발견 및 요청을 허용.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        '잡지 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.adultDescription':
+        '성인 장면 검색 및 요청을 허용합니다. 구성된 Whisparr v3 서비스 및 성인 전용 사용자 권한이 필요합니다.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'retro ROM 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.modernDescription':
+        '현대 에뮬레이션 ROM 발견 및 요청을 허용.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'PC 게임 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        '성인 콘텐츠는 접근 권한이 있는 모든 사람에게 표시됩니다',
+      'components.Settings.SettingsCategories.adultWarning':
+        "이 인스턴스를 가족과 공유하거나 리버스 프록시를 통해 노출하는 경우, '성인 요청' 권한이 부여된 사람은 사용자가 검색하고 요청하는 내용을 볼 수 있습니다. 성인 콘텐츠가 표시되지 않도록 아래에서 또는 각 사용자의 권한에서 가족 계정을 제한된 상태로 표시하세요.",
+      'components.Settings.SettingsCategories.ageGateTitle': '연령 제한',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        '제한된 계정은 성인 콘텐츠, 성인 영화, 시리즈, 음악, 책, 만화 및 태그가 지정된 제목을 볼 수 없으며 요청할 수도 없습니다. 필터링은 제공자 등급과 태그를 사용하며, 메타데이터가 없는 제목의 경우 최선의 노력을 다합니다.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        '기본적으로 계정 제한',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        '명시적인 설정이 없는 계정은 제한됩니다. 관리자는 예외입니다.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        '최고 영화 등급',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        '제한된 계정은 이 등급보다 높은 영화를 볼 수 없습니다.',
+      'components.Settings.SettingsCategories.ageGateTvMax': '최고 시리즈 등급',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        '제한된 계정은 이 등급보다 높은 시리즈를 볼 수 없습니다.',
+      'components.Settings.SettingsCategories.ageGateCountry': '등급 국가',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        '등급에 사용되는 2글자 국가 코드입니다. 예: US.',
+      'components.Settings.SettingsCategories.saveSuccess': '범주 설정 저장.',
+      'components.Settings.SettingsCategories.saveFailure':
+        '범주 설정은 저장할 수 없습니다.',
     },
   },
   {
@@ -12696,6 +13464,74 @@ export const localeData = [
         'Não foi possível verificar atualizações',
       'components.Settings.SettingsAbout.uptodate': 'Atualizado',
       'components.Settings.SettingsAbout.version': 'Versão',
+      'components.Settings.SettingsCategories.title': 'Categorias de mídia',
+      'components.Settings.SettingsCategories.description':
+        'Escolha quais categorias todos podem procurar e solicitar. Categorias deficientes desaparecem da navegação e descoberta, e novos pedidos estão bloqueados. Pedidos existentes e histórico de download ficam disponíveis no Status de Pedido.',
+      'components.Settings.SettingsCategories.groupTitle':
+        'Categorias Disponíveis',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Estes interruptores controlam a disponibilidade da categoria em SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Filmes',
+      'components.Settings.SettingsCategories.tv': 'Séries',
+      'components.Settings.SettingsCategories.music': 'Música',
+      'components.Settings.SettingsCategories.ebook': 'Livros',
+      'components.Settings.SettingsCategories.audiobook': 'Audiolivros',
+      'components.Settings.SettingsCategories.comic': 'Quadrinhos',
+      'components.Settings.SettingsCategories.magazine': 'Revistas',
+      'components.Settings.SettingsCategories.adult': 'Adulto',
+      'components.Settings.SettingsCategories.retro': 'Emulação (Retro)',
+      'components.Settings.SettingsCategories.modern': 'Emulação (Moderna)',
+      'components.Settings.SettingsCategories.game': 'Jogos para PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Permitir a descoberta do filme e pedidos.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Permita uma série de descobertas e pedidos.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Permita a descoberta da música e pedidos.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Permita a descoberta do livro e pedidos.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Permitir a descoberta do audiolivro e pedidos.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Permita a descoberta em quadrinhos e pedidos.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Permita a descoberta da revista e pedidos.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Permitir descoberta e solicitações de cenas adultas. Requer um serviço Whisparr v3 configurado e permissão de usuário específica para adultos.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Permitir a descoberta retro ROM e pedidos.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Permita a descoberta moderna da ROM e pedidos.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Permita a descoberta de jogos e pedidos.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Conteúdo adulto é visível para todos com acesso',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Se você compartilhar esta instância com a família ou expô-la por meio de um proxy reverso, qualquer pessoa com a permissão Solicitar Adulto poderá ver o que você navega e solicita. Marque as contas da família como restritas abaixo ou nas Permissões de cada usuário, para que nunca vejam conteúdo Adulto.',
+      'components.Settings.SettingsCategories.ageGateTitle':
+        'Restrição por Idade',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Contas restritas não podem ver ou solicitar conteúdo Adulto, e filmes, séries, músicas, livros, quadrinhos e títulos marcados como maduros são ocultados no servidor. A filtragem usa classificações e tags dos provedores e é feita da melhor forma possível para títulos sem metadados.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Restringir contas por padrão',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Contas sem configuração explícita são restritas. Administradores estão isentos.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Classificação máxima de filmes',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Contas restritas não podem ver filmes com classificação acima desta.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Classificação máxima de séries',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Contas restritas não podem ver séries com classificação acima desta.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'País de classificação',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Código de país de duas letras cujas classificações são usadas, por exemplo US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Configurações de categoria salvas.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'As configurações de categoria não puderam ser salvas.',
     },
   },
   {
@@ -14474,6 +15310,67 @@ export const localeData = [
         '无法检查更新',
       'components.Settings.SettingsAbout.uptodate': '最新',
       'components.Settings.SettingsAbout.version': '软件版本',
+      'components.Settings.SettingsCategories.title': '媒体类别',
+      'components.Settings.SettingsCategories.description':
+        '选择可以浏览和请求的类别 。 已停用类别从导航和发现中消失,新请求被屏蔽. 现有请求和下载历史保留在请求状态中。',
+      'components.Settings.SettingsCategories.groupTitle': '可用类别',
+      'components.Settings.SettingsCategories.groupDescription':
+        '这些开关控制类别的可用性横跨 SeerrNG.',
+      'components.Settings.SettingsCategories.movie': '电影',
+      'components.Settings.SettingsCategories.tv': '剧集',
+      'components.Settings.SettingsCategories.music': '音乐',
+      'components.Settings.SettingsCategories.ebook': '书籍',
+      'components.Settings.SettingsCategories.audiobook': '音频',
+      'components.Settings.SettingsCategories.comic': '漫画',
+      'components.Settings.SettingsCategories.magazine': '杂志',
+      'components.Settings.SettingsCategories.adult': '成人',
+      'components.Settings.SettingsCategories.retro': '模拟( 回顾)',
+      'components.Settings.SettingsCategories.modern': '模拟(现代)',
+      'components.Settings.SettingsCategories.game': 'PC 游戏',
+      'components.Settings.SettingsCategories.movieDescription':
+        '允许电影的发现和请求。',
+      'components.Settings.SettingsCategories.tvDescription':
+        '允许系列发现和请求.',
+      'components.Settings.SettingsCategories.musicDescription':
+        '允许音乐发现和请求.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        '允许书籍的发现和请求.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        '允许音频书的发现和请求.',
+      'components.Settings.SettingsCategories.comicDescription':
+        '允许漫画发现和请求.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        '允许杂志发现和请求.',
+      'components.Settings.SettingsCategories.adultDescription':
+        '允许发现并请求成人场景内容。需要已配置的 Whisparr v3 服务以及针对成人的特定用户权限。',
+      'components.Settings.SettingsCategories.retroDescription':
+        '允许反光ROM发现和请求.',
+      'components.Settings.SettingsCategories.modernDescription':
+        '允许现代模拟ROM的发现和请求.',
+      'components.Settings.SettingsCategories.gameDescription':
+        '允许PC游戏的发现和请求.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        '成人内容对所有拥有访问权限的人可见',
+      'components.Settings.SettingsCategories.adultWarning':
+        '如果您与家人共享此实例，或通过反向代理将其暴露，任何被授予“请求成人内容”权限的人都能看到您浏览和请求的内容。请在下方或每个用户的“权限”中将家庭账户标记为受限，以确保他们永远看不到成人内容。',
+      'components.Settings.SettingsCategories.ageGateTitle': '年龄限制',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        '受限账户无法查看或请求成人内容，且成熟的电影、剧集、音乐、书籍、漫画及带标签的标题将在服务器端隐藏。过滤使用提供商评级和标签，对于没有元数据的标题，过滤效果为尽力而为。',
+      'components.Settings.SettingsCategories.ageGateDefault': '默认限制账户',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        '未明确设置限制的账户将被限制。管理员除外。',
+      'components.Settings.SettingsCategories.ageGateMovieMax': '最高电影评级',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        '受限账户无法查看高于此评级的电影。',
+      'components.Settings.SettingsCategories.ageGateTvMax': '最高剧集评级',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        '受限账户无法查看高于此评级的剧集。',
+      'components.Settings.SettingsCategories.ageGateCountry': '评级国家',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        '用于评级的两位字母国家代码，例如 US。',
+      'components.Settings.SettingsCategories.saveSuccess': '类别设置已保存 。',
+      'components.Settings.SettingsCategories.saveFailure':
+        '无法保存分类设置 。',
     },
   },
   {
@@ -15118,6 +16015,67 @@ export const localeData = [
         '無法檢查更新',
       'components.Settings.SettingsAbout.uptodate': '最新',
       'components.Settings.SettingsAbout.version': '軟體版本',
+      'components.Settings.SettingsCategories.title': '媒體類別',
+      'components.Settings.SettingsCategories.description':
+        '選擇每個人可以瀏覽和要求的類別 。 已關閉的分類從導航與發現中消失, 新的要求被封鎖 。 已有的要求和下載歷史保留在要求狀態中 。',
+      'components.Settings.SettingsCategories.groupTitle': '可用的分類',
+      'components.Settings.SettingsCategories.groupDescription':
+        '這些 SeerrNG 的開關控制類別可用性 。',
+      'components.Settings.SettingsCategories.movie': '電影',
+      'components.Settings.SettingsCategories.tv': '影集',
+      'components.Settings.SettingsCategories.music': '音樂',
+      'components.Settings.SettingsCategories.ebook': '書籍',
+      'components.Settings.SettingsCategories.audiobook': '音效簿',
+      'components.Settings.SettingsCategories.comic': '漫畫',
+      'components.Settings.SettingsCategories.magazine': '雜誌',
+      'components.Settings.SettingsCategories.adult': '成人',
+      'components.Settings.SettingsCategories.retro': '模擬( 逆轉 )',
+      'components.Settings.SettingsCategories.modern': '模擬( 现代)',
+      'components.Settings.SettingsCategories.game': 'PC 遊戲',
+      'components.Settings.SettingsCategories.movieDescription':
+        '允許電影發現和要求',
+      'components.Settings.SettingsCategories.tvDescription':
+        '允許系列發現與要求 。',
+      'components.Settings.SettingsCategories.musicDescription':
+        '允許音樂發現與要求 。',
+      'components.Settings.SettingsCategories.ebookDescription':
+        '允許查閱書本和要求',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        '允許音效書的發現和要求 。',
+      'components.Settings.SettingsCategories.comicDescription':
+        '允許漫畫發現和要求。',
+      'components.Settings.SettingsCategories.magazineDescription':
+        '允許雜誌發現和要求。',
+      'components.Settings.SettingsCategories.adultDescription':
+        '允許成人場景的發現與請求。需要已設定的 Whisparr v3 服務以及特定的成人使用者權限。',
+      'components.Settings.SettingsCategories.retroDescription':
+        '允許反轉 ROM 發現與要求 。',
+      'components.Settings.SettingsCategories.modernDescription':
+        '允許現代模擬 ROM 發現與要求 。',
+      'components.Settings.SettingsCategories.gameDescription':
+        '允許 PC 遊戲發現與要求 。',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        '成人內容對所有有存取權限的人可見',
+      'components.Settings.SettingsCategories.adultWarning':
+        '如果您與家人共用此執行個體，或透過反向代理公開它，任何被授予「請求成人內容」權限的人都可以看到您瀏覽和請求的內容。請在下方或每個使用者的「權限」中將家庭帳戶標記為受限，以確保他們永遠看不到成人內容。',
+      'components.Settings.SettingsCategories.ageGateTitle': '年齡限制',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        '受限帳戶無法查看或請求成人內容，且成熟的電影、影集、音樂、書籍、漫畫及標籤標題將在伺服器端隱藏。過濾使用供應商評級和標籤，對於沒有元數據的標題，過濾為盡力而為。',
+      'components.Settings.SettingsCategories.ageGateDefault': '預設限制帳戶',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        '未明確設定限制的帳戶將被限制。管理員不受此限制。',
+      'components.Settings.SettingsCategories.ageGateMovieMax': '最高電影評級',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        '受限帳戶無法查看評級高於此的電影。',
+      'components.Settings.SettingsCategories.ageGateTvMax': '最高影集評級',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        '受限帳戶無法查看評級高於此的影集。',
+      'components.Settings.SettingsCategories.ageGateCountry': '評級國家',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        '使用該國評級的兩字國家代碼，例如 US。',
+      'components.Settings.SettingsCategories.saveSuccess': '已儲存分類設定 。',
+      'components.Settings.SettingsCategories.saveFailure':
+        '分類設定無法儲存 。',
     },
   },
   {
@@ -15808,6 +16766,72 @@ export const localeData = [
         'Không thể kiểm tra bản cập nhật',
       'components.Settings.SettingsAbout.uptodate': 'Cập nhật đầy đủ',
       'components.Settings.SettingsAbout.version': 'Phiên bản',
+      'components.Settings.SettingsCategories.title': 'Loại',
+      'components.Settings.SettingsCategories.description':
+        'Chọn phân loại nào mọi người có thể duyệt và yêu cầu. Các loại bị tắt biến mất khỏi việc định vị và khám phá, và các yêu cầu mới bị chặn. Yêu cầu tồn tại và tải về lịch sử trong trạng thái yêu cầu.',
+      'components.Settings.SettingsCategories.groupTitle': 'Loại',
+      'components.Settings.SettingsCategories.groupDescription':
+        'Những công tắc điều khiển phân loại có sẵn qua SeerrNG.',
+      'components.Settings.SettingsCategories.movie': 'Phim',
+      'components.Settings.SettingsCategories.tv': 'Loạt phim',
+      'components.Settings.SettingsCategories.music': 'Âm nhạc',
+      'components.Settings.SettingsCategories.ebook': 'Sách',
+      'components.Settings.SettingsCategories.audiobook': 'Sổ tay âm thanh',
+      'components.Settings.SettingsCategories.comic': 'Truyện tranh',
+      'components.Settings.SettingsCategories.magazine': 'Tạp chí',
+      'components.Settings.SettingsCategories.adult': 'Người lớn',
+      'components.Settings.SettingsCategories.retro': 'Mô phỏng',
+      'components.Settings.SettingsCategories.modern': 'Mô phỏng (Modern)',
+      'components.Settings.SettingsCategories.game': 'Trò chơi PC',
+      'components.Settings.SettingsCategories.movieDescription':
+        'Cho phép phát hiện và yêu cầu phim ảnh.',
+      'components.Settings.SettingsCategories.tvDescription':
+        'Cho phép phát hiện và yêu cầu loạt.',
+      'components.Settings.SettingsCategories.musicDescription':
+        'Cho phép phát hiện và yêu cầu âm nhạc.',
+      'components.Settings.SettingsCategories.ebookDescription':
+        'Cho phép khám phá sách và yêu cầu.',
+      'components.Settings.SettingsCategories.audiobookDescription':
+        'Cho phép phát hiện và yêu cầu âm thanh.',
+      'components.Settings.SettingsCategories.comicDescription':
+        'Cho phép phát hiện và yêu cầu truyện tranh.',
+      'components.Settings.SettingsCategories.magazineDescription':
+        'Cho phép phát hiện và yêu cầu tạp chí.',
+      'components.Settings.SettingsCategories.adultDescription':
+        'Cho phép khám phá và yêu cầu nội dung người lớn. Yêu cầu dịch vụ Whisparr v3 đã cấu hình và quyền người dùng cụ thể cho nội dung người lớn.',
+      'components.Settings.SettingsCategories.retroDescription':
+        'Cho phép phát hiện và yêu cầu ROM ngược.',
+      'components.Settings.SettingsCategories.modernDescription':
+        'Cho phép phát hiện và yêu cầu ROM hiện đại.',
+      'components.Settings.SettingsCategories.gameDescription':
+        'Cho phép phát hiện và yêu cầu trò chơi PC.',
+      'components.Settings.SettingsCategories.adultWarningTitle':
+        'Nội dung người lớn hiển thị cho tất cả người có quyền truy cập',
+      'components.Settings.SettingsCategories.adultWarning':
+        'Nếu bạn chia sẻ phiên bản này với gia đình hoặc phơi bày nó thông qua proxy ngược, bất kỳ ai được cấp quyền Yêu cầu Người lớn đều có thể xem những gì bạn duyệt và yêu cầu. Đánh dấu các tài khoản gia đình là bị hạn chế bên dưới, hoặc trong Quyền của từng người dùng, để họ không bao giờ thấy nội dung Người lớn.',
+      'components.Settings.SettingsCategories.ageGateTitle': 'Cổng tuổi',
+      'components.Settings.SettingsCategories.ageGateDescription':
+        'Tài khoản bị hạn chế không thể xem hoặc yêu cầu nội dung Người lớn, và các phim, series, nhạc, sách, truyện tranh, và tiêu đề có thẻ bị ẩn ở phía máy chủ. Lọc sử dụng xếp hạng và thẻ từ nhà cung cấp và là nỗ lực tốt nhất cho các tiêu đề không có dữ liệu mô tả.',
+      'components.Settings.SettingsCategories.ageGateDefault':
+        'Hạn chế tài khoản theo mặc định',
+      'components.Settings.SettingsCategories.ageGateDefaultDescription':
+        'Các tài khoản không có cài đặt rõ ràng sẽ bị hạn chế. Quản trị viên được miễn.',
+      'components.Settings.SettingsCategories.ageGateMovieMax':
+        'Xếp hạng phim cao nhất',
+      'components.Settings.SettingsCategories.ageGateMovieMaxDescription':
+        'Tài khoản bị hạn chế không thể xem phim có xếp hạng cao hơn mức này.',
+      'components.Settings.SettingsCategories.ageGateTvMax':
+        'Xếp hạng series cao nhất',
+      'components.Settings.SettingsCategories.ageGateTvMaxDescription':
+        'Tài khoản bị hạn chế không thể xem series có xếp hạng cao hơn mức này.',
+      'components.Settings.SettingsCategories.ageGateCountry':
+        'Quốc gia xếp hạng',
+      'components.Settings.SettingsCategories.ageGateCountryDescription':
+        'Mã quốc gia hai chữ cái dùng để áp dụng xếp hạng, ví dụ US.',
+      'components.Settings.SettingsCategories.saveSuccess':
+        'Thiết lập phân loại đã lưu.',
+      'components.Settings.SettingsCategories.saveFailure':
+        'Không thể lưu thiết lập phân loại.',
     },
   },
 ] as const;

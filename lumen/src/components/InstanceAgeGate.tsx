@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
@@ -24,6 +25,7 @@ export default function InstanceAgeGate({
 }: {
   initial: AgeGateSettings;
 }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -74,15 +76,31 @@ export default function InstanceAgeGate({
         !result.ageGate ||
         changed.some((key) => result.ageGate?.[key] !== values[key])
       ) {
-        setFailure('Could not confirm the saved Age Gate settings.');
+        setFailure(
+          t(
+            'lumen.adminCategories.ageGateConfirmFailure',
+            'Could not confirm the saved Age Gate settings.'
+          )
+        );
         return;
       }
       setSaved(result.ageGate);
       setDraft(result.ageGate);
-      setNotice('Age Gate settings saved.');
+      setNotice(
+        t('lumen.adminCategories.ageGateSaved', 'Age Gate settings saved.')
+      );
     } catch (error) {
       if (generation === sessionGeneration()) {
-        setFailure(friendlyError(error, 'Could not save Age Gate settings.'));
+        setFailure(
+          friendlyError(
+            error,
+            t(
+              'lumen.adminCategories.ageGateSaveFailure',
+              'Could not save Age Gate settings.'
+            ),
+            t
+          )
+        );
       }
     } finally {
       pending.current = false;
@@ -91,11 +109,17 @@ export default function InstanceAgeGate({
   }
 
   return (
-    <Section title="Age Gate">
+    <Section
+      title={t(
+        'components.Settings.SettingsCategories.ageGateTitle',
+        'Age Gate'
+      )}
+    >
       <p className="note">
-        Restricted accounts cannot access Adult content. SeerrNG also filters
-        mature titles using available ratings and tags. Administrators are
-        exempt.
+        {t(
+          'components.Settings.SettingsCategories.ageGateDescription',
+          'Restricted accounts cannot see or request Adult content, and mature titles are hidden server-side using available ratings and tags.'
+        )}
       </p>
       <form
         onSubmit={(event) => {
@@ -106,14 +130,25 @@ export default function InstanceAgeGate({
         <div className="setlist">
           <label className="set cfg-row">
             <span>
-              <b>Restrict Accounts by Default</b>
+              <b>
+                {t(
+                  'components.Settings.SettingsCategories.ageGateDefault',
+                  'Restrict Accounts by Default'
+                )}
+              </b>
               <small>
-                Applies to accounts without an explicit restriction setting.
+                {t(
+                  'components.Settings.SettingsCategories.ageGateDefaultDescription',
+                  'Applies to accounts without an explicit restriction setting. Administrators are exempt.'
+                )}
               </small>
             </span>
             <input
               type="checkbox"
-              aria-label="Restrict Accounts by Default"
+              aria-label={t(
+                'components.Settings.SettingsCategories.ageGateDefault',
+                'Restrict Accounts by Default'
+              )}
               checked={draft.defaultRestricted}
               disabled={busy}
               onChange={(event) =>
@@ -123,10 +158,18 @@ export default function InstanceAgeGate({
           </label>
           {limits.map(([key, label, options]) => (
             <label className="set cfg-row" key={key}>
-              <b>{label}</b>
+              <b>
+                {t(
+                  `components.Settings.SettingsCategories.${key === 'maxMovieCertification' ? 'ageGateMovieMax' : 'ageGateTvMax'}`,
+                  label
+                )}
+              </b>
               <select
                 className="cfg-input"
-                aria-label={label}
+                aria-label={t(
+                  `components.Settings.SettingsCategories.${key === 'maxMovieCertification' ? 'ageGateMovieMax' : 'ageGateTvMax'}`,
+                  label
+                )}
                 disabled={busy}
                 value={draft[key]}
                 onChange={(event) => change(key, event.target.value)}
@@ -139,12 +182,25 @@ export default function InstanceAgeGate({
           ))}
           <label className="set cfg-row">
             <span>
-              <b>Rating Country</b>
-              <small>Enter a two-letter country code such as US.</small>
+              <b>
+                {t(
+                  'components.Settings.SettingsCategories.ageGateCountry',
+                  'Rating Country'
+                )}
+              </b>
+              <small>
+                {t(
+                  'components.Settings.SettingsCategories.ageGateCountryDescription',
+                  'Enter a two-letter country code such as US.'
+                )}
+              </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Rating Country"
+              aria-label={t(
+                'components.Settings.SettingsCategories.ageGateCountry',
+                'Rating Country'
+              )}
               maxLength={2}
               disabled={busy}
               value={draft.certificationCountry}
@@ -169,7 +225,7 @@ export default function InstanceAgeGate({
             className="btn btn-primary btn-sm"
             disabled={busy || !changed.length || !validCountry}
           >
-            Save Age Gate
+            {t('lumen.adminCategories.saveAgeGate', 'Save Age Gate')}
           </button>
         </div>
       </form>

@@ -27,10 +27,20 @@ import { onSessionReset, sessionGeneration } from './sessionState';
 
 const PUBLIC_PATH = '/settings/public';
 
+type UseApiOptions = {
+  currentPathOnly?: boolean;
+  keepDuringRefresh?: boolean;
+  formatError?: (error: unknown, fallback: string) => string;
+};
+
 // A saved answer shows at once; a fresh one isn't asked for again (see apiCache.ts).
 export function useApi<T>(
   path: string | null,
-  { currentPathOnly = false, keepDuringRefresh = false } = {}
+  {
+    currentPathOnly = false,
+    keepDuringRefresh = false,
+    formatError = friendlyError,
+  }: UseApiOptions = {}
 ) {
   const [responsePath, setResponsePath] = useState(path);
   const lastRequestedPath = useRef<string | null>(null);
@@ -72,14 +82,14 @@ export function useApi<T>(
             if (force) forget(path);
             setData(null);
           }
-          setError(friendlyError(e, 'Failed to load'));
+          setError(formatError(e, 'Failed to load'));
           setApiError(e instanceof ApiError ? e : undefined);
         }
       });
     return () => {
       live = false;
     };
-  }, [path, trigger, keepDuringRefresh]);
+  }, [path, trigger, keepDuringRefresh, formatError]);
   const reload = useCallback(() => {
     if (path) forget(path);
     setTrigger({});

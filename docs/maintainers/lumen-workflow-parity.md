@@ -2477,6 +2477,20 @@ covered changed-only default saves, reload readback, separate category drafts,
 and Age Gate recovery. Live inheritance and matched native visual acceptance
 remain open.
 
+Media Categories and Age Gate now use the saved French and Arabic locales for
+category names and descriptions, instance and inherited-default guidance,
+rating fields, validation, errors, and save confirmations. The category rows
+retain their shared control owner, and the adult policy note remains distinct
+from the row label. Eight standalone and eight production `/lumen/` browser
+cases passed across desktop (1440 × 900), iPhone (390 × 844), Android
+(412 × 915), and tablet (834 × 1194). Fixtures verified isolated writes,
+readback, failed-save recovery, and Age Gate country validation. Three existing
+English category and Age Gate regression cases also passed. French and Arabic
+baseline/candidate screenshots were compared at matching viewports; no
+horizontal overflow or new control geometry changes were found. Live policy
+inheritance and independent linguistic review remain open. Evidence is
+retained at `seerrng-admin-categories-localization-20261120`.
+
 General Settings now edits inherited request limits and quota windows
 for each server quota category. Saves send only changed fields for the
 selected category and preserve drafts for other categories. TypeScript,
