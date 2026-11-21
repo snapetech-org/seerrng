@@ -64,7 +64,8 @@ export default function PlaylistImport() {
           t(
             'lumen.playlist.disconnectFailure',
             'Spotify could not be disconnected.'
-          )
+          ),
+          (id, fallback) => t(id, fallback)
         )
       );
     } finally {
@@ -105,7 +106,8 @@ export default function PlaylistImport() {
           t(
             'lumen.playlist.resolveFailure',
             'The playlist could not be resolved.'
-          )
+          ),
+          (id, fallback) => t(id, fallback)
         )
       );
     } finally {
@@ -151,7 +153,8 @@ export default function PlaylistImport() {
               t(
                 'lumen.playlist.requestFailure',
                 'Could not submit this request.'
-              )
+              ),
+              (id, fallback) => t(id, fallback)
             ),
           }));
         }
@@ -214,12 +217,12 @@ export default function PlaylistImport() {
           void preview();
         }}
       >
-        <label className="sel">
-          <span className="lbl">
+        <label className="cfg-row">
+          <span>
             {t('lumen.playlist.urlLabel', 'Spotify or YouTube Playlist URL')}
           </span>
           <input
-            className="cfg-json"
+            className="cfg-input"
             type="url"
             maxLength={2048}
             value={url}

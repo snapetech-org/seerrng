@@ -5267,6 +5267,55 @@ test('Playlist Import reviews matches and retries only failed requests', async (
   page,
 }) => {
   await fixtures(page);
+  const locale = ['fr', 'ar'].includes(process.env.LUMEN_PLAYLIST_LOCALE ?? '')
+    ? (process.env.LUMEN_PLAYLIST_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      title: 'Import Playlist',
+      url: 'Spotify or YouTube Playlist URL',
+      preview: 'Preview Matches',
+      matched: 'Matched',
+      unmatched: 'Unmatched',
+      album: 'Request Album',
+      track: 'Request Track',
+      selected: (count: number) => `Request Selected (${count})`,
+      requested: 'Requested',
+      failure: 'The server had a problem. Try again in a moment.',
+    },
+    fr: {
+      title: 'Importer une playlist',
+      url: 'URL de playlist Spotify ou YouTube',
+      preview: 'Aperçu des correspondances',
+      matched: 'Correspondance trouvée',
+      unmatched: 'Sans correspondance',
+      album: 'Demander l’album',
+      track: 'Demander le titre',
+      selected: (count: number) => `Demander la sélection (${count})`,
+      requested: 'Demandé',
+      failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    },
+    ar: {
+      title: 'استيراد قائمة تشغيل',
+      url: 'رابط قائمة تشغيل Spotify أو YouTube',
+      preview: 'معاينة التطابقات',
+      matched: 'متطابق',
+      unmatched: 'غير متطابق',
+      album: 'طلب الألبوم',
+      track: 'طلب المقطع',
+      selected: (count: number) => `طلب المحدد (${count})`,
+      requested: 'تم الطلب',
+      failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    },
+  }[locale];
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
   const submitted: unknown[] = [];
   let trackAttempts = 0;
   await page.route('**/api/v1/playlist/spotify/status', (route) =>
@@ -5306,32 +5355,40 @@ test('Playlist Import reviews matches and retries only failed requests', async (
         route.request().url().endsWith('/track-requests') &&
         ++trackAttempts === 1
       ) {
-        return route.fulfill({
-          status: 503,
-          json: { message: 'Track service temporarily unavailable.' },
-        });
+        return route.fulfill({ status: 503, json: {} });
       }
       return route.fulfill({ json: {} });
     }
   );
-  await page.goto('/music/playlist-import');
+  await page.goto(testAppPath('/music/playlist-import'));
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   await page
-    .getByLabel('Spotify or YouTube Playlist URL')
+    .getByLabel(copy.url)
     .fill('https://www.youtube.com/playlist?list=fixture');
-  await page.getByRole('button', { name: 'Preview Matches' }).click();
-  await page.getByRole('checkbox', { name: 'Request Album' }).check();
-  await page.getByRole('checkbox', { name: 'Request Track' }).check();
+  await page.getByRole('button', { name: copy.preview }).click();
+  await expect(page.getByText(copy.matched, { exact: true })).toBeVisible();
+  await expect(page.getByText(copy.unmatched, { exact: true })).toBeVisible();
+  if (process.env.LUMEN_PLAYLIST_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_PLAYLIST_CAPTURE}-${locale}-${test.info().project.name}-preview.png`,
+      fullPage: true,
+    });
+  }
+  await page.getByRole('checkbox', { name: copy.album }).check();
+  await page.getByRole('checkbox', { name: copy.track }).check();
   expect(submitted).toEqual([]);
-  await page.getByRole('button', { name: 'Request Selected (2)' }).click();
-  await expect(page.getByRole('alert')).toContainText(
-    'Track service temporarily unavailable.'
-  );
-  await expect(page.getByText('Requested', { exact: true })).toHaveCount(1);
-  await expect(
-    page.getByRole('checkbox', { name: 'Request Track' })
-  ).toBeChecked();
-  await page.getByRole('button', { name: 'Request Selected (1)' }).click();
-  await expect(page.getByText('Requested', { exact: true })).toHaveCount(2);
+  await page.getByRole('button', { name: copy.selected(2) }).click();
+  await expect(page.getByRole('alert')).toContainText(copy.failure);
+  if (process.env.LUMEN_PLAYLIST_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_PLAYLIST_CAPTURE}-${locale}-${test.info().project.name}-retry.png`,
+      fullPage: true,
+    });
+  }
+  await expect(page.getByText(copy.requested, { exact: true })).toHaveCount(1);
+  await expect(page.getByRole('checkbox', { name: copy.track })).toBeChecked();
+  await page.getByRole('button', { name: copy.selected(1) }).click();
+  await expect(page.getByText(copy.requested, { exact: true })).toHaveCount(2);
   await expect(page.getByRole('alert')).toHaveCount(0);
   expect(submitted).toEqual([
     { mediaType: 'music', mediaId: 'album-id' },
@@ -5401,7 +5458,7 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
     connected = false;
     return route.fulfill({ status: 204 });
   });
-  await page.goto('/music/playlist-import?playlist=connected');
+  await page.goto(testAppPath('/music/playlist-import?playlist=connected'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   expect(
     await page.evaluate(
@@ -5413,7 +5470,7 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
     page.getByRole('link', { name: copy.reconnect })
   ).toHaveAttribute(
     'href',
-    '/api/v1/playlist/spotify/connect?frontend=companion'
+    `/api/v1/playlist/spotify/connect?frontend=${process.env.LUMEN_TEST_MOUNT === '/lumen' ? 'bundled' : 'companion'}`
   );
   await page.getByRole('button', { name: copy.disconnect }).click();
   await expect(
@@ -5422,7 +5479,9 @@ test('Playlist Import reflects Spotify callback and disconnects the account', as
   await expect(
     page.getByRole('link', { name: copy.connect, exact: true })
   ).toBeVisible();
-  await expect(page).toHaveURL(/\/music\/playlist-import$/);
+  expect(new URL(page.url()).pathname).toBe(
+    testAppPath('/music/playlist-import')
+  );
 });
 
 test('Track Requests can browse history beyond the first page', async ({

@@ -5570,7 +5570,16 @@ Arabic. The locale affects display only: OAuth callback URL, playlist resolver,
 matched-album and unmatched-track request payloads, and permission checks are
 unchanged. Browser coverage exercises the Spotify callback and disconnect
 round-trip at desktop, iPhone, Android, and tablet sizes for each supported
-locale. Full preview/selection submission is already covered by the existing
-English workflow test. Live Spotify authorization and playlist provider
-behavior remain unverified; French/Arabic matching and submission states and
-matched baseline screenshots remain to be qualified.
+locale. The preview/selection/retry flow now runs in English, French, and Arabic
+at desktop, iPhone, Android, and tablet sizes. It verifies localized
+matched/unmatched states and failure recovery, retries only the failed track,
+and asserts the unchanged matched-album and unmatched-track request payloads.
+The Spotify callback/disconnect flow and preview/selection/retry flow pass 24
+cases each across standalone and embedded production builds (48 cases total),
+including the embedded OAuth callback destination. Preview and failure-state
+visual evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-playlist-localization-20261121/`;
+the states were inspected at desktop and iPhone sizes in all three locales.
+Geometry was compared against the pre-fix baseline at matching desktop and
+iPhone viewports; the Arabic URL label no longer overlaps the URL field. Live
+Spotify authorization and playlist provider behavior remain unverified.
