@@ -724,6 +724,10 @@ and have no horizontal overflow. Native date placeholders remain browser
 locale-controlled. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
+### Browse localization regression restored
+
+A later Browse-filter consolidation removed the locale hook and replaced translated labels with English fallbacks, despite the localization ledger above remaining marked complete. This increment restores the locale hook on the consolidated movie and series screens, including range controls, filter headings, page guidance, dynamic language and country names, service feedback, retry actions, and empty/capped result states. The existing query parameters and filter submission behavior are unchanged. The browser spec now matches the consolidated single-panel interaction and verifies English, French, and Arabic across desktop, iPhone, Android, and tablet in standalone and embedded `/lumen/` deployments (48 browser cases). Fresh French desktop and Arabic phone captures were reviewed alongside the English baseline at the same viewport; RTL and no-overflow assertions pass. Evidence is retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-restore-20261121/`.
+
 ### Bounded Browse availability paging
 
 Movie and series availability views that require local filtering now report the

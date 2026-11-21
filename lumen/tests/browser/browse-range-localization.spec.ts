@@ -110,13 +110,15 @@ test('movie and series range filters follow the account locale', async ({
             'يشمل الطلب المسلسل كاملًا.'
           )
     );
+    await page
+      .getByText(
+        wording('More Filters', 'Plus de filtres', 'عوامل تصفية إضافية'),
+        { exact: true }
+      )
+      .click();
     await expect(
       page.getByRole('form', {
-        name: wording(
-          'Filter by Title',
-          'Filtrer par titre',
-          'التصفية حسب العنوان'
-        ),
+        name: wording('More Filters', 'Plus de filtres', 'عوامل تصفية إضافية'),
       })
     ).toBeVisible();
     await expect(
@@ -285,9 +287,8 @@ test('movie and series range filters follow the account locale', async ({
     }
     const ranges = [
       {
-        en: 'Release Date Filter',
-        fr: 'Filtre de date de sortie',
-        ar: 'عامل تصفية تاريخ الإصدار',
+        kind: 'dates',
+        group: ['Release Dates', 'les dates de sortie', 'تواريخ الإصدار'],
         low: [
           'Released On or After',
           'Sortie à partir du',
@@ -298,24 +299,16 @@ test('movie and series range filters follow the account locale', async ({
           'Sortie au plus tard le',
           'تاريخ الإصدار في أو قبل',
         ],
-        apply: [
-          'Apply Release Dates',
-          'Appliquer les dates de sortie',
-          'تطبيق تواريخ الإصدار',
-        ],
       },
       {
-        en: 'TMDB Rating Filter',
-        fr: 'Filtre de note TMDB',
-        ar: 'عامل تصفية تقييم TMDB',
+        kind: 'rating',
+        group: ['Rating', 'la note', 'التقييم'],
         low: ['Minimum Rating', 'Note minimale', 'الحد الأدنى للتقييم'],
         high: ['Maximum Rating', 'Note maximale', 'الحد الأقصى للتقييم'],
-        apply: ['Apply Rating', 'Appliquer la note', 'تطبيق التقييم'],
       },
       {
-        en: 'Runtime Filter',
-        fr: 'Filtre de durée',
-        ar: 'عامل تصفية مدة التشغيل',
+        kind: 'runtime',
+        group: ['Runtime', 'la durée', 'مدة التشغيل'],
         low: [
           'Minimum Runtime (Minutes)',
           'Durée minimale (minutes)',
@@ -326,12 +319,10 @@ test('movie and series range filters follow the account locale', async ({
           'Durée maximale (minutes)',
           'الحد الأقصى لمدة التشغيل (بالدقائق)',
         ],
-        apply: ['Apply Runtime', 'Appliquer la durée', 'تطبيق مدة التشغيل'],
       },
       {
-        en: 'TMDB Vote Count Filter',
-        fr: 'Filtre du nombre de votes TMDB',
-        ar: 'عامل تصفية عدد أصوات TMDB',
+        kind: 'votes',
+        group: ['Vote Count', 'le nombre de votes', 'عدد الأصوات'],
         low: [
           'Minimum Votes',
           'Nombre minimal de votes',
@@ -342,35 +333,21 @@ test('movie and series range filters follow the account locale', async ({
           'Nombre maximal de votes',
           'الحد الأقصى للأصوات',
         ],
-        apply: [
-          'Apply Vote Count',
-          'Appliquer le nombre de votes',
-          'تطبيق عدد الأصوات',
-        ],
       },
     ];
 
     for (const range of ranges) {
-      const form = page.getByRole('form', {
-        name: wording(range.en, range.fr, range.ar),
+      const form = page.getByRole('group', {
+        name: wording(...(range.group as [string, string, string])),
       });
       await expect(form).toBeVisible();
       await expect(
-        form.getByText(wording(...(range.low as [string, string, string])), {
-          exact: true,
-        })
+        form.getByLabel(wording(...(range.low as [string, string, string])))
       ).toBeVisible();
       await expect(
-        form.getByText(wording(...(range.high as [string, string, string])), {
-          exact: true,
-        })
+        form.getByLabel(wording(...(range.high as [string, string, string])))
       ).toBeVisible();
-      await expect(
-        form.getByRole('button', {
-          name: wording(...(range.apply as [string, string, string])),
-        })
-      ).toBeVisible();
-      if (range.en === 'Release Date Filter') {
+      if (range.kind === 'dates') {
         const low = form.locator('input[type="date"]').nth(0);
         const high = form.locator('input[type="date"]').nth(1);
         await low.fill('2026-12-01');
@@ -386,22 +363,24 @@ test('movie and series range filters follow the account locale', async ({
           )
         ).toBeVisible();
         await expect(
-          form.getByRole('button', {
-            name: wording(...(range.apply as [string, string, string])),
+          page.getByRole('button', {
+            name: wording(
+              'Apply Filters',
+              'Appliquer les filtres',
+              'تطبيق عوامل التصفية'
+            ),
           })
         ).toBeDisabled();
         await high.fill('2027-01-01');
-        await form
+        await page
           .getByRole('button', {
             name: wording(
-              'Clear Release Dates',
-              'Effacer les dates de sortie',
-              'مسح تواريخ الإصدار'
+              'Apply Filters',
+              'Appliquer les filtres',
+              'تطبيق عوامل التصفية'
             ),
           })
           .click();
-        await expect(low).toHaveValue('');
-        await expect(high).toHaveValue('');
       }
     }
     if (!baseline && locale === 'ar')
@@ -469,4 +448,75 @@ test('movie and series range filters follow the account locale', async ({
       ).toBeVisible();
     }
   }
+});
+
+test('Browse and genre loading errors follow the account locale', async ({
+  page,
+}, info) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_BROWSE_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_BROWSE_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const wording = (en: string, fr: string, ar: string) =>
+    locale === 'en' ? en : locale === 'fr' ? fr : ar;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { enable4k: true } });
+    if (path === '/discover/movies' || path === '/genres/movie')
+      return route.fulfill({
+        status: 500,
+        json: { message: 'Fixture failure' },
+      });
+    return route.fulfill({ json: [] });
+  });
+
+  await page.goto(testAppPath('/movies'));
+  await expect(
+    page.getByText(
+      wording(
+        'Couldn’t load movies',
+        'Impossible de charger films',
+        'تعذّر تحميل الأفلام'
+      ),
+      { exact: true }
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', {
+      name: wording('Retry', 'Réessayer', 'إعادة المحاولة'),
+    })
+  ).toBeVisible();
+
+  await page.goto(testAppPath('/movies/genres'));
+  await expect(
+    page.getByText(
+      wording(
+        'Couldn’t load genres',
+        'Impossible de charger genres',
+        'تعذّر تحميل الأنواع'
+      ),
+      { exact: true }
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', {
+      name: wording('Retry', 'Réessayer', 'إعادة المحاولة'),
+    })
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+  if (info.project.name === 'desktop' || info.project.name === 'iphone')
+    await page.screenshot({ animations: 'disabled' });
 });

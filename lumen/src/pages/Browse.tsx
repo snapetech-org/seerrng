@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type Genre, type TitleResult } from '../api';
 import { useAuth } from '../auth';
@@ -19,6 +19,7 @@ import {
 } from '../discoveryVisibility';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePaged, type PublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { serverName } from '../mediaServer';
@@ -57,6 +58,7 @@ function integerBound(value: string | null) {
 
 const RANGE_FILTERS = {
   dates: {
+    key: 'dates',
     name: 'Release Dates',
     label: 'Release Date Filter',
     low: 'Released On or After',
@@ -65,6 +67,7 @@ const RANGE_FILTERS = {
     input: { type: 'date' },
   },
   rating: {
+    key: 'rating',
     name: 'Rating',
     label: 'TMDB Rating Filter',
     low: 'Minimum Rating',
@@ -73,6 +76,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '10', step: '0.1' },
   },
   runtime: {
+    key: 'runtime',
     name: 'Runtime',
     label: 'Runtime Filter',
     low: 'Minimum Runtime (Minutes)',
@@ -81,6 +85,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '999999999', step: '1' },
   },
   votes: {
+    key: 'votes',
     name: 'Vote Count',
     label: 'TMDB Vote Count Filter',
     low: 'Minimum Votes',
@@ -91,9 +96,9 @@ const RANGE_FILTERS = {
 };
 
 const ADVANCED_RANGES = [
-  ['dates', 'Release Date'],
+  ['dates', 'Release Dates'],
   ['rating', 'TMDB Rating'],
-  ['runtime', 'Runtime (Minutes)'],
+  ['runtime', 'Runtime'],
   ['votes', 'Vote Count'],
 ] as const;
 type AdvancedRange = (typeof ADVANCED_RANGES)[number][0];
@@ -114,7 +119,15 @@ function AdvancedFilters({
   apply: (values: AdvancedValues) => void;
   children: ReactNode;
 }) {
+  const { t } = useLumenLocale();
   const [draft, setDraft] = useState(values);
+  const message = (
+    kind: AdvancedRange,
+    field: 'name' | 'label' | 'low' | 'high'
+  ) => {
+    const filter = RANGE_FILTERS[kind];
+    return t(`lumen.browse.range.${filter.key}.${field}`, filter[field]);
+  };
   const reversed = (kind: AdvancedRange) => {
     const [low, high] = draft[kind];
     return (
@@ -127,7 +140,7 @@ function AdvancedFilters({
   return (
     <form
       className="adv-form"
-      aria-label="More Filters"
+      aria-label={t('lumen.browse.moreFilters', 'More Filters')}
       onSubmit={(event) => {
         event.preventDefault();
         if (blocked) return;
@@ -141,7 +154,7 @@ function AdvancedFilters({
     >
       <div className="field-grid">
         <label className="field">
-          <span className="lbl">Title</span>
+          <span className="lbl">{t('lumen.browse.title', 'Title')}</span>
           <input
             className="cfg-input"
             name="search"
@@ -154,28 +167,30 @@ function AdvancedFilters({
           />
         </label>
         {children}
-        {ADVANCED_RANGES.map(([kind, label]) => {
+        {ADVANCED_RANGES.map(([kind]) => {
           const filter = RANGE_FILTERS[kind];
           const [low, high] = draft[kind];
           return (
             <fieldset className="field" key={kind}>
-              <legend className="lbl">{label}</legend>
+              <legend className="lbl">{message(kind, 'name')}</legend>
               <div className="range-inputs">
                 <input
                   className="cfg-input"
-                  aria-label={filter.low}
-                  placeholder="From"
+                  aria-label={message(kind, 'low')}
+                  placeholder={t('lumen.browse.range.from', 'From')}
                   {...filter.input}
                   value={low}
                   onChange={(event) =>
                     setDraft({ ...draft, [kind]: [event.target.value, high] })
                   }
                 />
-                <span aria-hidden="true">to</span>
+                <span aria-hidden="true">
+                  {t('lumen.browse.range.to', 'to')}
+                </span>
                 <input
                   className="cfg-input"
-                  aria-label={filter.high}
-                  placeholder="To"
+                  aria-label={message(kind, 'high')}
+                  placeholder={t('lumen.browse.range.toPlaceholder', 'To')}
                   {...filter.input}
                   value={high}
                   onChange={(event) =>
@@ -185,13 +200,18 @@ function AdvancedFilters({
               </div>
               {reversed(kind) && (
                 <small role="alert">
-                  The lower bound must be at or below the upper bound.
+                  {t(
+                    'lumen.browse.range.invalidOrder',
+                    'The lower bound must be at or below the upper bound.'
+                  )}
                 </small>
               )}
               {kind === 'dates' && invalidSavedDate && !reversed(kind) && (
                 <small role="alert">
-                  The saved date filter contains an invalid date. Enter a valid
-                  date or clear the filter.
+                  {t(
+                    'lumen.browse.range.invalidSavedDate',
+                    'The saved date filter contains an invalid date. Enter a valid date or clear the filter.'
+                  )}
                 </small>
               )}
             </fieldset>
@@ -200,7 +220,7 @@ function AdvancedFilters({
       </div>
       <div className="toolbar">
         <button className="btn btn-primary btn-sm" disabled={blocked}>
-          Apply Filters
+          {t('lumen.browse.applyFilters', 'Apply Filters')}
         </button>
       </div>
     </form>
@@ -266,6 +286,27 @@ const commonSorts = [
   ['vote_count.asc', 'Fewest Votes'],
 ] as const;
 
+const sortOptionMessages: Record<string, string> = {
+  'popularity.desc': 'popular',
+  'popularity.asc': 'leastPopular',
+  'vote_average.desc': 'topRated',
+  'vote_average.asc': 'lowestRated',
+  'vote_count.desc': 'mostVotes',
+  'vote_count.asc': 'fewestVotes',
+  'primary_release_date.desc': 'newest',
+  'primary_release_date.asc': 'oldest',
+  'release_date.desc': 'latestReleaseDate',
+  'release_date.asc': 'earliestReleaseDate',
+  'first_air_date.desc': 'newest',
+  'first_air_date.asc': 'oldest',
+  'original_title.asc': 'titleAZ',
+  'original_title.desc': 'titleZA',
+  'original_name.asc': 'titleAZ',
+  'original_name.desc': 'titleZA',
+  'revenue.desc': 'highestRevenue',
+  'revenue.asc': 'lowestRevenue',
+};
+
 const SORTS = {
   movie: [
     ...commonSorts,
@@ -320,6 +361,7 @@ function normalizeNativeFilters(params: URLSearchParams) {
 }
 
 export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t } = useLumenLocale();
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
   const artwork = useApi<Genre[]>(`/discover/genreslider/${kind}`);
   const backdrops = new Map(
@@ -329,13 +371,29 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
   return (
     <>
       <header className="ph">
-        <h1>{kind === 'movie' ? 'Movie Genres' : 'Series Genres'}</h1>
+        <h1>
+          {kind === 'movie'
+            ? t('lumen.browse.movieGenreHeading', 'Movie Genres')
+            : t('lumen.browse.seriesGenreHeading', 'Series Genres')}
+        </h1>
       </header>
-      <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
+      <ServiceNote
+        error={genres.error}
+        what={t('lumen.browse.genres', 'genres')}
+        title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+          what: t('lumen.browse.genres', 'genres'),
+        })}
+        retryLabel={t('lumen.account.retry', 'Retry')}
+        retry={genres.reload}
+      />
       {Boolean(genres.data?.length) && (
         <ServiceNote
           error={artwork.error}
-          what="genre artwork"
+          what={t('lumen.browse.genreArtwork', 'genre artwork')}
+          title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+            what: t('lumen.browse.genreArtwork', 'genre artwork'),
+          })}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={artwork.reload}
         />
       )}
@@ -349,7 +407,9 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
             }))}
           />
         ) : (
-          <p className="note">No genres found.</p>
+          <p className="note">
+            {t('lumen.browse.noGenres', 'No genres found.')}
+          </p>
         )
       ) : (
         !genres.error && <div className="detail-loading" aria-busy="true" />
@@ -360,6 +420,7 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
 
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t, locale } = useLumenLocale();
   const [params, setP] = useSearchParams();
   const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
@@ -458,6 +519,24 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
+  const languageNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'language' }),
+    [locale]
+  );
+  const countryNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'region' }),
+    [locale]
+  );
+  const displayName = (
+    names: Intl.DisplayNames,
+    code: string,
+    fallback: string
+  ) => {
+    const localized = names.of(code);
+    return localized && localized.toLowerCase() !== code.toLowerCase()
+      ? localized
+      : fallback;
+  };
   const ratingOptions = [
     'NR',
     ...(kind === 'movie' ? movieCertifications : tvCertifications),
@@ -670,7 +749,51 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       'watchProviders',
       'studio',
     ].some((param) => p.has(param)) || !!(start || end);
-  const word = kind === 'movie' ? 'Movies' : 'Series';
+  const word =
+    kind === 'movie'
+      ? t('lumen.browse.movieHeading', 'Movies')
+      : t('lumen.browse.seriesHeading', 'Series');
+  const searchHint =
+    kind === 'movie'
+      ? t('lumen.browse.searchMovies', 'Search movies…')
+      : t('lumen.browse.searchSeries', 'Search series…');
+  const movieRequestHint = !prefs.hoverRequest
+    ? t('lumen.browse.subtitle.openPoster', 'Open a poster to request it.')
+    : CAN_HOVER
+      ? asks
+        ? t(
+            'lumen.browse.subtitle.hoverRequest',
+            'Hover a poster to request it.'
+          )
+        : t(
+            'lumen.browse.subtitle.hoverOneClick',
+            'Hover a poster to request in one click.'
+          )
+      : asks
+        ? t(
+            'lumen.browse.subtitle.tapRequest',
+            'Tap + on a poster to request it.'
+          )
+        : t(
+            'lumen.browse.subtitle.tapOneTap',
+            'Tap + on a poster to request in one tap.'
+          );
+  const subtitle =
+    kind === 'movie'
+      ? `${movieRequestHint} ${t(
+          'lumen.browse.subtitle.serverAvailability',
+          'Everything on {server} has a green check.',
+          { server: serverName() }
+        )}`
+      : prefs.wholeSeriesDefault
+        ? t(
+            'lumen.browse.subtitle.wholeSeries',
+            'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
+          )
+        : t(
+            'lumen.browse.subtitle.selectedSeasons',
+            'Pick the seasons you want on each show’s page.'
+          );
   const followedGenre =
     !excludeGenre && picked.length === 1
       ? genres.find(({ id }) => String(id) === picked[0])
@@ -693,16 +816,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">
-          {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? (asks ? 'Hover a poster to request it.' : 'Hover a poster to request in one click.') : asks ? 'Tap + on a poster to request it.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
-            : prefs.wholeSeriesDefault
-              ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
-              : 'Pick the seasons you want on each show’s page.'}
-        </p>
+        <p className="sub">{subtitle}</p>
         <Link className="search search-ph" to={`/search?f=${kind}`}>
           <Icon name="search" />
-          <span className="ph-text">Search {word.toLowerCase()}…</span>
+          <span className="ph-text">{searchHint}</span>
         </Link>
       </header>
       <div className="toolbar">
@@ -711,7 +828,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedGenre && (
               <FollowButton
                 key={`genre:${kind}:${followedGenre.id}`}
-                label={`Follow ${followedGenre.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedGenre.name,
+                })}
                 subject={{
                   kind: 'tmdb-genre',
                   subjectKey: `tmdb:genre:${kind}:${followedGenre.id}`,
@@ -725,7 +844,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedStudio && (
               <FollowButton
                 key={`studio:${followedStudio.id}`}
-                label={`Follow ${followedStudio.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedStudio.name,
+                })}
                 subject={{
                   kind: 'tmdb-studio',
                   subjectKey: `tmdb:studio:${followedStudio.id}`,
@@ -737,7 +858,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedNetwork && (
               <FollowButton
                 key={`network:${followedNetwork.id}`}
-                label={`Follow ${followedNetwork.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedNetwork.name,
+                })}
                 subject={{
                   kind: 'tmdb-network',
                   subjectKey: `tmdb:network:${followedNetwork.id}`,
@@ -748,11 +871,25 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             )}
           </>
         )}
-        <div className="seg" role="group" aria-label="Availability">
+        <div
+          className="seg"
+          role="group"
+          aria-label={t('lumen.browse.availability', 'Availability')}
+        >
           {[
-            ['all', 'All'],
-            ['have', `On ${serverName()}`],
-            ['not', `Not on ${serverName()}`],
+            ['all', t('lumen.browse.all', 'All')],
+            [
+              'have',
+              t('lumen.browse.onServer', 'On {server}', {
+                server: serverName(),
+              }),
+            ],
+            [
+              'not',
+              t('lumen.browse.notOnServer', 'Not on {server}', {
+                server: serverName(),
+              }),
+            ],
           ].map(([v, t]) => (
             <button
               key={v}
@@ -765,25 +902,35 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         </div>
         {qualityEnabled && (show === 'have' || show === 'not') && (
           <label className="sel">
-            <span className="lbl">Availability Quality</span>
+            <span className="lbl">
+              {t('lumen.browse.availabilityQuality', 'Availability Quality')}
+            </span>
             <select
-              aria-label="Availability Quality"
+              aria-label={t(
+                'lumen.browse.availabilityQuality',
+                'Availability Quality'
+              )}
               value={quality}
               onChange={(event) =>
                 upd('quality', event.target.value === '4k' ? '4k' : '')
               }
             >
-              <option value="hd">HD</option>
-              <option value="4k">4K</option>
+              <option value="hd">{t('lumen.browse.hd', 'HD')}</option>
+              <option value="4k">{t('lumen.browse.4k', '4K')}</option>
             </select>
           </label>
         )}
         <label className="sel">
-          <span className="lbl">Sort</span>
+          <span className="lbl">{t('lumen.browse.sort', 'Sort')}</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
-            {SORTS[kind].map(([v, t]) => (
+            {SORTS[kind].map(([v, label]) => (
               <option key={v} value={v}>
-                {libraryFirst && v === 'popularity.desc' ? 'Library Order' : t}
+                {libraryFirst && v === 'popularity.desc'
+                  ? t('lumen.browse.libraryOrder', 'Library Order')
+                  : t(
+                      `lumen.browse.sortOption.${sortOptionMessages[v]}`,
+                      label
+                    )}
               </option>
             ))}
           </select>
@@ -810,13 +957,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         />
         {kind === 'tv' && (
           <label className="sel">
-            <span className="lbl">Network</span>
+            <span className="lbl">{t('lumen.browse.network', 'Network')}</span>
             <select
-              aria-label="Network"
+              aria-label={t('lumen.browse.network', 'Network')}
               value={network}
               onChange={(event) => upd('network', event.target.value)}
             >
-              <option value="">Any Network</option>
+              <option value="">
+                {t('lumen.browse.anyNetwork', 'Any Network')}
+              </option>
               {network && !knownNetwork && (
                 <option value={network}>{networkLabel}</option>
               )}
@@ -834,7 +983,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             type="button"
             onClick={() => upd('network', '')}
           >
-            Clear Network {networkLabel}
+            {t('lumen.browse.clearNetwork', 'Clear Network {name}', {
+              name: networkLabel,
+            })}
           </button>
         )}
         {studio && (
@@ -848,7 +999,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Studio {studioLabel}
+            {t('lumen.browse.clearStudio', 'Clear Studio {name}', {
+              name: studioLabel,
+            })}
           </button>
         )}
         {studio && (
@@ -858,7 +1011,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             aria-pressed={excludeStudio}
             onClick={() => upd('excludeStudio', excludeStudio ? '' : 'true')}
           >
-            Exclude Studio
+            {t('lumen.browse.excludeStudio', 'Exclude Studio')}
           </button>
         )}
         {(keywords || excludeKeywords) && (
@@ -872,15 +1025,17 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Subject Tag
+            {t('lumen.browse.clearSubjectTags', 'Clear Subject Tags')}
           </button>
         )}
         {kind === 'tv' && (
           <>
             <label className="sel">
-              <span className="lbl">Series Status</span>
+              <span className="lbl">
+                {t('lumen.browse.seriesStatus', 'Series Status')}
+              </span>
               <select
-                aria-label="Series Status"
+                aria-label={t('lumen.browse.seriesStatus', 'Series Status')}
                 value={status}
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
@@ -893,10 +1048,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Any Status</option>
+                <option value="">
+                  {t('lumen.browse.anyStatus', 'Any Status')}
+                </option>
                 {SERIES_STATUSES.map((label, index) => (
                   <option key={label} value={index}>
-                    {label}
+                    {t(`lumen.browse.seriesStatusOption.${index}`, label)}
                   </option>
                 ))}
               </select>
@@ -908,24 +1065,24 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               aria-pressed={!!status && excludeStatus}
               onClick={() => upd('excludeStatus', excludeStatus ? '' : 'true')}
             >
-              Exclude Status
+              {t('lumen.browse.excludeStatus', 'Exclude Status')}
             </button>
           </>
         )}
         <button
           className="btn btn-quiet btn-sm filters-clear"
-          aria-label="Clear Discovery Filters"
+          aria-label={t('lumen.browse.clearFilters', 'Clear Discovery Filters')}
           type="button"
           aria-disabled={!hasFilters}
           onClick={() => {
             if (hasFilters) clearFilters();
           }}
         >
-          Clear Filters
+          {t('lumen.browse.clearFilters', 'Clear Discovery Filters')}
         </button>
       </div>
       <details className="adv more-filters" open={moreFilters || undefined}>
-        <summary>More Filters</summary>
+        <summary>{t('lumen.browse.moreFilters', 'More Filters')}</summary>
         <div className="filter-grid">
           <AdvancedFilters
             key={[
@@ -968,7 +1125,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             }}
           >
             <label className="field">
-              <span className="lbl">Content Rating</span>
+              <span className="lbl">
+                {t('lumen.browse.contentRating', 'Content Rating')}
+              </span>
               <select
                 className="cfg-select"
                 value={certificationRange ? 'range' : certification}
@@ -989,11 +1148,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Any Rating</option>
+                <option value="">
+                  {t('lumen.browse.anyRating', 'Any Rating')}
+                </option>
                 {certificationRange && (
                   <option value="range" disabled>
-                    {certificationFilters.certificationGte || 'Any'} to{' '}
-                    {certificationFilters.certificationLte || 'Any'}
+                    {t('lumen.browse.ratingRange', '{low} to {high}', {
+                      low:
+                        certificationFilters.certificationGte ||
+                        t('lumen.browse.any', 'Any'),
+                      high:
+                        certificationFilters.certificationLte ||
+                        t('lumen.browse.any', 'Any'),
+                    })}
                   </option>
                 )}
                 {certification &&
@@ -1022,10 +1189,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               </select>
             </label>
             <label className="field">
-              <span className="lbl">Original Language</span>
+              <span className="lbl">
+                {t('lumen.browse.originalLanguage', 'Original Language')}
+              </span>
               <select
                 className="cfg-select"
-                aria-label="Original Language"
+                aria-label={t(
+                  'lumen.browse.originalLanguage',
+                  'Original Language'
+                )}
                 value={language}
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
@@ -1035,8 +1207,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Use Saved Default</option>
-                <option value="all">All Languages</option>
+                <option value="">
+                  {t('lumen.browse.useSavedDefault', 'Use Saved Default')}
+                </option>
+                <option value="all">
+                  {t('lumen.browse.allLanguages', 'All Languages')}
+                </option>
                 {language &&
                   language !== 'all' &&
                   !languageOptions.some(
@@ -1044,38 +1220,49 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   ) && <option value={language}>{language}</option>}
                 {languageOptions.map(({ iso_639_1, english_name }) => (
                   <option key={iso_639_1} value={iso_639_1}>
-                    {english_name}
+                    {displayName(languageNames, iso_639_1, english_name)}
                   </option>
                 ))}
               </select>
             </label>
             <label className="field">
-              <span className="lbl">Country of Origin</span>
+              <span className="lbl">
+                {t('lumen.browse.countryOfOrigin', 'Country of Origin')}
+              </span>
               <select
                 className="cfg-select"
-                aria-label="Country of Origin"
+                aria-label={t(
+                  'lumen.browse.countryOfOrigin',
+                  'Country of Origin'
+                )}
                 value={country}
                 onChange={(event) => upd('country', event.target.value)}
               >
-                <option value="">Any Country</option>
+                <option value="">
+                  {t('lumen.browse.anyCountry', 'Any Country')}
+                </option>
                 {country &&
                   !countryOptions.some(
                     ({ iso_3166_1 }) => iso_3166_1 === country
                   ) && <option value={country}>{country}</option>}
                 {countryOptions.map(({ iso_3166_1, english_name }) => (
                   <option key={iso_3166_1} value={iso_3166_1}>
-                    {english_name}
+                    {displayName(countryNames, iso_3166_1, english_name)}
                   </option>
                 ))}
               </select>
             </label>
           </AdvancedFilters>
-          <div className="toolbar" role="group" aria-label="Browse By">
+          <div
+            className="toolbar"
+            role="group"
+            aria-label={t('lumen.browse.browseBy', 'Browse By')}
+          >
             <Link
               className="chip"
               to={kind === 'movie' ? '/movies/genres' : '/series/genres'}
             >
-              Browse Genres
+              {t('lumen.browse.browseGenres', 'Browse Genres')}
             </Link>
             {kind === 'movie' && (
               <button
@@ -1084,7 +1271,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                 aria-expanded={showStudios}
                 onClick={() => setShowStudios(!showStudios)}
               >
-                Production Studios
+                {t('lumen.browse.productionStudios', 'Production Studios')}
               </button>
             )}
             <button
@@ -1093,7 +1280,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               aria-expanded={showProviders}
               onClick={() => setShowProviders(!showProviders)}
             >
-              Streaming Services
+              {t('lumen.browse.streamingServices', 'Streaming Services')}
               {providers.length ? ` (${providers.length})` : ''}
             </button>
             <button
@@ -1102,12 +1289,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               aria-expanded={showTags}
               onClick={() => setShowTags(!showTags)}
             >
-              Subject Tags
+              {t('lumen.browse.subjectTags', 'Subject Tags')}
             </button>
           </div>
           {showProviders && regionPending && (
             <p className="note" role="status">
-              Loading streaming region…
+              {t(
+                'lumen.browse.loadingStreamingRegion',
+                'Loading streaming region…'
+              )}
             </p>
           )}
           {showProviders && !regionPending && (
@@ -1151,12 +1341,20 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           )}
           <ServiceNote
             error={languages.error}
-            what="original languages"
+            what={t('lumen.browse.originalLanguages', 'original languages')}
+            title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+              what: t('lumen.browse.originalLanguages', 'original languages'),
+            })}
+            retryLabel={t('lumen.account.retry', 'Retry')}
             retry={languages.reload}
           />
           <ServiceNote
             error={countries.error}
-            what="countries"
+            what={t('lumen.browse.countries', 'countries')}
+            title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+              what: t('lumen.browse.countries', 'countries'),
+            })}
+            retryLabel={t('lumen.account.retry', 'Retry')}
             retry={countries.reload}
           />
           {kind === 'movie' && showStudios && (
@@ -1168,24 +1366,37 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         <ServiceNote
           error={list.error}
           what={word.toLowerCase()}
+          title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+            what: word.toLowerCase(),
+          })}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={list.retry}
         />
       )}
       {checkingQuality && (
         <ServiceNote
           error={settings.error}
-          what="availability settings"
+          what={t('lumen.browse.availabilitySettings', 'availability settings')}
+          title={t('lumen.browse.loadFailed', 'Couldn’t load {what}', {
+            what: t(
+              'lumen.browse.availabilitySettings',
+              'availability settings'
+            ),
+          })}
+          retryLabel={t('lumen.account.retry', 'Retry')}
           retry={settings.reload}
         />
       )}
       {unavailableQuality && (
         <div className="empty">
-          <b>4K discovery is unavailable</b>
+          <b>
+            {t('lumen.browse.4kUnavailable', '4K discovery is unavailable')}
+          </b>
           <button
             className="btn btn-tonal btn-sm"
             onClick={() => upd('quality', '')}
           >
-            Show HD Results
+            {t('lumen.browse.showHdResults', 'Show HD Results')}
           </button>
         </div>
       )}
@@ -1197,7 +1408,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         !list.loading &&
         !capped && (
           <div className="empty">
-            <b>Nothing here</b>Try changing your filters.
+            <b>{t('lumen.browse.nothingHere', 'Nothing here')}</b>
+            {t('lumen.browse.tryFilters', 'Try changing your filters.')}
           </div>
         )}
       {(list.loading || (checkingQuality && !settings.error)) &&
@@ -1210,9 +1422,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       </div>
       {capped && !list.loading && (
         <div className="empty">
-          <b>{items.length ? 'That’s all so far' : 'None found yet'}</b>
-          Checked the {(list.page * 20).toLocaleString()} most popular{' '}
-          {word.toLowerCase()}.
+          <b>
+            {items.length
+              ? t('lumen.browse.allSoFar', 'That’s all so far')
+              : t('lumen.browse.noneFoundYet', 'None found yet')}
+          </b>
+          {t(
+            'lumen.browse.checkedPopular',
+            'Checked the {count} most popular {media}.',
+            {
+              count: (list.page * 20).toLocaleString(locale),
+              media: word.toLowerCase(),
+            }
+          )}
           <button
             className="btn btn-tonal btn-sm"
             style={{ marginTop: 10 }}
@@ -1220,7 +1442,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setLook({ key: filterKey, page: list.page, found: items.length })
             }
           >
-            Look further
+            {t('lumen.browse.lookFurther', 'Look further')}
           </button>
         </div>
       )}
