@@ -23,6 +23,23 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. Signed-out Lumen login and password recovery now follow the browser's supported locale in French and Arabic. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. The admin Lumen settings page uses the signed-in locale for Discover row headings and row labels. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
+### Global Search localization
+
+Global Search now localizes its category scopes, search prompts, sort controls,
+recent and trending headings, result sections, empty and failure states, and
+pagination in English, French, and Arabic. The same supported query parameters,
+provider result grouping, and page navigation remain in place. The failed-search
+panel uses localized title and Retry labels.
+
+The browser fixture passes 12 cases per deployment across desktop, iPhone,
+Android, and tablet (English, French, and Arabic); standalone production and the
+bundled `/lumen/` mount both pass. English baseline/candidate captures match
+pixel-for-pixel at desktop and iPhone sizes. French desktop and Arabic iPhone
+were inspected, with no page-level horizontal overflow. Search API behavior,
+live provider catalogs, and independent linguistic review remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261121/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load

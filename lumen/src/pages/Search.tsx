@@ -80,6 +80,18 @@ type SearchReply = {
   page: SearchPage;
 };
 type Scope = keyof typeof SCOPES;
+const scopeMessageKeys: Record<Scope, string> = {
+  all: 'all',
+  movie: 'movie',
+  tv: 'tv',
+  ebook: 'ebook',
+  audio: 'audio',
+  comic: 'comic',
+  author: 'author',
+  music: 'music',
+  magazine: 'magazine',
+  sports: 'sports',
+};
 const searchTitleCollator = new Intl.Collator(undefined, {
   numeric: true,
   sensitivity: 'base',
@@ -245,6 +257,8 @@ function SearchResults({
   setP: ReturnType<typeof useSearchParams>[1];
 }) {
   const { t } = useLumenLocale();
+  const scopeName = (scope: Scope) =>
+    t(`lumen.search.scope.${scopeMessageKeys[scope]}`, SCOPES[scope]);
   const { prefs } = usePrefs();
   const [q, setQ] = useState(p.get('q') || '');
   const requestedScope = p.get('f') ?? '';
@@ -409,7 +423,7 @@ function SearchResults({
     const reusable = retryReply.current;
     retryReply.current = null;
     setSearching(true);
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       const wantBooks =
         categorySettingsReady &&
         prefs.showBooks &&
@@ -435,7 +449,7 @@ function SearchResults({
       let error: string | null = null;
       let catalogueUnavailable = false;
       const failure = (e: unknown) => {
-        error = friendlyError(e, 'Search failed');
+        error = friendlyError(e, t('lumen.search.failed', 'Search failed'));
         return null;
       };
       const comicsAsk = wantComics
@@ -534,13 +548,18 @@ function SearchResults({
       setComics(foundComics);
       setSearchError(
         error ??
-          (tr?.partial ? 'A search provider did not respond. Try again.' : null)
+          (tr?.partial
+            ? t(
+                'lumen.search.providerFailed',
+                'A search provider did not respond. Try again.'
+              )
+            : null)
       );
       setSearching(false);
     }, 300);
     return () => {
       live = false;
-      clearTimeout(t);
+      clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -562,6 +581,7 @@ function SearchResults({
     audiobookEnabled,
     bookEnabled,
     scopeEnabled[f],
+    t,
   ]);
 
   const setParam = (k: string, v: string) => {
@@ -582,17 +602,38 @@ function SearchResults({
     f === 'all'
       ? prefs.showBooks
         ? comicsOn
-          ? 'Movies, series, books, manga…'
-          : 'Movies, series, books, narrators…'
+          ? t(
+              'lumen.search.placeholder.allBooksManga',
+              'Movies, series, books, manga…'
+            )
+          : t(
+              'lumen.search.placeholder.allBooksNarrators',
+              'Movies, series, books, narrators…'
+            )
         : comicsOn
-          ? 'Movies, series, comics…'
-          : 'Movies and series…'
+          ? t(
+              'lumen.search.placeholder.allVideoComics',
+              'Movies, series, comics…'
+            )
+          : t('lumen.search.placeholder.allVideo', 'Movies and series…')
       : f === 'comic'
-        ? 'Search comics and manga…'
-        : `Search ${SCOPES[f].toLowerCase()}…`;
+        ? t('lumen.search.placeholder.comics', 'Search comics and manga…')
+        : t('lumen.search.placeholder.scope', 'Search {scope}…', {
+            scope: scopeName(f).toLowerCase(),
+          });
   const sortOptions = searchSortOptions.filter(
     ({ scopes }) => !scopes || scopes.includes(f)
   );
+  const sortFieldMessage = (field: keyof typeof searchSortKeys) =>
+    t(
+      `lumen.search.sortGroup.${field}`,
+      field[0].toUpperCase() + field.slice(1)
+    );
+  const sortMessage = (
+    field: keyof typeof searchSortKeys,
+    order: 'asc' | 'desc',
+    fallback: string
+  ) => t(`lumen.search.sort.${field}.${order}`, fallback);
   const activeSort = sortOptions.find(({ field }) => field === p.get('sort'));
   const sortField = activeSort?.field;
   const requestedOrder = p.get('order');
@@ -650,8 +691,14 @@ function SearchResults({
       <header className="ph">
         <div className="ph-row">
           <div>
-            {f !== 'all' && <div className="eyebrow">In {SCOPES[f]}</div>}
-            <h1>Search</h1>
+            {f !== 'all' && (
+              <div className="eyebrow">
+                {t('lumen.search.inScope', 'In {scope}', {
+                  scope: scopeName(f),
+                })}
+              </div>
+            )}
+            <h1>{t('lumen.search.heading', 'Search')}</h1>
           </div>
         </div>
         {/* phones only: on desktop the top search bar is the search box (the mockup hides this one) */}
@@ -683,7 +730,11 @@ function SearchResults({
             }}
           />
         </label>
-        <div className="chips" role="group" aria-label="Search in">
+        <div
+          className="chips"
+          role="group"
+          aria-label={t('lumen.search.searchIn', 'Search in')}
+        >
           {scopes.map((s) => (
             <button
               key={s}
@@ -691,7 +742,7 @@ function SearchResults({
               aria-pressed={f === s}
               onClick={() => setParam('f', s)}
             >
-              {SCOPES[s]}
+              {scopeName(s)}
             </button>
           ))}
           {extras.list.some(({ key }) => key === 'game') && (
@@ -701,14 +752,16 @@ function SearchResults({
                 '/software' + (term0 ? '?q=' + encodeURIComponent(term0) : '')
               }
             >
-              Software
+              {t('lumen.search.software', 'Software')}
             </Link>
           )}
         </div>
         {hasSearch && (
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Sort Results</span>
+              <span className="lbl">
+                {t('lumen.search.sortResults', 'Sort Results')}
+              </span>
               <select
                 value={sortField ? `${sortField}:${sortOrder}` : ''}
                 onChange={(event) => {
@@ -721,14 +774,17 @@ function SearchResults({
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Best Match</option>
+                <option value="">
+                  {t('lumen.search.bestMatch', 'Best Match')}
+                </option>
                 {sortOptions.map(({ field, asc, desc }) => (
-                  <optgroup
-                    key={field}
-                    label={field[0].toUpperCase() + field.slice(1)}
-                  >
-                    <option value={`${field}:asc`}>{asc}</option>
-                    <option value={`${field}:desc`}>{desc}</option>
+                  <optgroup key={field} label={sortFieldMessage(field)}>
+                    <option value={`${field}:asc`}>
+                      {sortMessage(field, 'asc', asc)}
+                    </option>
+                    <option value={`${field}:desc`}>
+                      {sortMessage(field, 'desc', desc)}
+                    </option>
                   </optgroup>
                 ))}
               </select>
@@ -751,7 +807,7 @@ function SearchResults({
                 setP(next, { replace: true });
               }}
             >
-              Clear Discovery Filters
+              {t('lumen.search.clearFilters', 'Clear Discovery Filters')}
             </button>
           </div>
         )}
@@ -768,10 +824,10 @@ function SearchResults({
       </header>
       {!hasSearch && !!recent.length && (
         <Section
-          title="Recent searches"
+          title={t('lumen.search.recent', 'Recent searches')}
           action={
             <button className="link" onClick={forget}>
-              Clear
+              {t('lumen.search.clear', 'Clear')}
             </button>
           }
         >
@@ -793,19 +849,23 @@ function SearchResults({
         </Section>
       )}
       {!hasSearch && (
-        <Section title="Browse">
+        <Section title={t('lumen.search.browse', 'Browse')}>
           <div className="chips wrap">
             {(
               [
-                ['/movies', 'Movies', movieEnabled],
-                ['/series', 'Series', tvEnabled],
-                ['/books', 'Books', prefs.showBooks && ebookEnabled],
+                ['/movies', scopeName('movie'), movieEnabled],
+                ['/series', scopeName('tv'), tvEnabled],
+                ['/books', scopeName('ebook'), prefs.showBooks && ebookEnabled],
                 [
                   '/audiobooks',
-                  'Audiobooks',
+                  scopeName('audio'),
                   prefs.showBooks && audiobookEnabled,
                 ],
-                ['/soon', 'Coming soon', movieEnabled],
+                [
+                  '/soon',
+                  t('lumen.search.comingSoon', 'Coming soon'),
+                  movieEnabled,
+                ],
               ] as const
             )
               .filter((x) => x[2])
@@ -823,7 +883,7 @@ function SearchResults({
         </Section>
       )}
       {!hasSearch && !!trendingTitles?.length && (
-        <Section title="Trending this week">
+        <Section title={t('lumen.search.trending', 'Trending this week')}>
           <div className="grid">
             {trendingTitles.slice(0, 12).map((m) => (
               <TitleCard key={m.mediaType + m.id} it={m} />
@@ -833,13 +893,15 @@ function SearchResults({
       )}
       {searching && (
         <p className="note searching" role="status">
-          Searching…
+          {t('lumen.search.searching', 'Searching…')}
         </p>
       )}
       {!searching && (
         <ServiceNote
           error={searchError}
           what={nothing ? 'search results' : 'some search results'}
+          title={t('lumen.search.failed', 'Search failed')}
+          retryLabel={t('lumen.search.retry', 'Retry')}
           retry={() => {
             retryReply.current = lastReply.current;
             setAttempt((n) => n + 1);
@@ -855,8 +917,19 @@ function SearchResults({
                   'This category is turned off for your account.'
                 )
               : term0
-                ? `No ${f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “${term0}”`
-                : 'No titles match these discovery filters.'}
+                ? f === 'all'
+                  ? t('lumen.search.noMatches', 'No matches for “{term}”', {
+                      term: term0,
+                    })
+                  : t(
+                      'lumen.search.noScopeMatches',
+                      'No {scope} for “{term}”',
+                      { scope: scopeName(f).toLowerCase(), term: term0 }
+                    )
+                : t(
+                    'lumen.search.noDiscoveryResults',
+                    'No titles match these discovery filters.'
+                  )}
           </b>
           {f !== 'all' ? (
             <button
@@ -864,18 +937,21 @@ function SearchResults({
               style={{ marginTop: 12 }}
               onClick={() => setParam('f', 'all')}
             >
-              Search everything
+              {t('lumen.search.searchEverything', 'Search everything')}
             </button>
           ) : (
-            'Try fewer words, an author or a narrator.'
+            t(
+              'lumen.search.tryFewerWords',
+              'Try fewer words, an author or a narrator.'
+            )
           )}
         </div>
       )}
       {showSeries && seriesTerm === term0 && (
         <Section
-          title="Book Series"
+          title={t('lumen.search.bookSeries', 'Book Series')}
           link={[
-            'View All Series Results',
+            t('lumen.search.viewAllSeries', 'View All Series Results'),
             '/book-series?' +
               new URLSearchParams({
                 query: term0,
@@ -893,7 +969,7 @@ function SearchResults({
         }}
       >
         {!!movies.length && (
-          <Section title="Movies">
+          <Section title={t('lumen.search.section.movies', 'Movies')}>
             <div className="grid">
               {movies.map((m) => (
                 <TitleCard key={m.id} it={m} />
@@ -902,7 +978,7 @@ function SearchResults({
           </Section>
         )}
         {!!collections.length && (
-          <Section title="Collections">
+          <Section title={t('lumen.search.section.collections', 'Collections')}>
             <div className="grid">
               {collections.map((collection) => (
                 <CollectionCard key={collection.id} collection={collection} />
@@ -911,7 +987,7 @@ function SearchResults({
           </Section>
         )}
         {!!shows.length && (
-          <Section title="Series">
+          <Section title={t('lumen.search.section.series', 'Series')}>
             <div className="grid">
               {shows.map((m) => (
                 <TitleCard key={m.id} it={m} />
@@ -920,7 +996,7 @@ function SearchResults({
           </Section>
         )}
         {!!people.length && (
-          <Section title="People">
+          <Section title={t('lumen.search.section.people', 'People')}>
             <div className="grid">
               {people.map((person) => (
                 <PersonCard key={person.id} person={person} />
@@ -929,7 +1005,7 @@ function SearchResults({
           </Section>
         )}
         {!!albums.length && (
-          <Section title="Albums">
+          <Section title={t('lumen.search.section.albums', 'Albums')}>
             <div className="sqg grid">
               {albums.map((album) => (
                 <AlbumCard key={album.id} a={album} />
@@ -938,7 +1014,7 @@ function SearchResults({
           </Section>
         )}
         {!!artists.length && (
-          <Section title="Artists">
+          <Section title={t('lumen.search.section.artists', 'Artists')}>
             <div className="chips wrap">
               {artists.map(({ id, name }) => (
                 <Link
@@ -953,7 +1029,7 @@ function SearchResults({
           </Section>
         )}
         {!!authors.length && (
-          <Section title="Authors">
+          <Section title={t('lumen.search.section.authors', 'Authors')}>
             <div className="chips wrap">
               {authors.map(({ id, name }) => (
                 <Link
@@ -971,10 +1047,13 @@ function SearchResults({
           <Section
             title={
               f === 'audio'
-                ? 'Audiobooks'
+                ? t('lumen.search.section.audiobooks', 'Audiobooks')
                 : f === 'ebook'
-                  ? 'Books'
-                  : 'Books & audiobooks'
+                  ? t('lumen.search.section.books', 'Books')
+                  : t(
+                      'lumen.search.section.booksAndAudiobooks',
+                      'Books & audiobooks'
+                    )
             }
           >
             <div className={`grid ${f === 'audio' ? 'sqg' : ''}`}>
@@ -985,7 +1064,7 @@ function SearchResults({
           </Section>
         )}
         {!!leagues.length && (
-          <Section title="Leagues">
+          <Section title={t('lumen.search.section.leagues', 'Leagues')}>
             <div className="sqg grid">
               {leagues.map((league) => (
                 <LeagueCard key={league.id} league={league} />
@@ -994,7 +1073,7 @@ function SearchResults({
           </Section>
         )}
         {!!magazines.length && (
-          <Section title="Magazines">
+          <Section title={t('lumen.search.section.magazines', 'Magazines')}>
             <div className="grid">
               {magazines.map((magazine) => (
                 <MagazineCard key={magazine.id} magazine={magazine} />
@@ -1003,7 +1082,9 @@ function SearchResults({
           </Section>
         )}
         {!!comicCards.length && (
-          <Section title="Comics & manga">
+          <Section
+            title={t('lumen.search.section.comicsManga', 'Comics & manga')}
+          >
             <div className="comic-grid grid">
               {comicCards.map((w) => (
                 <ComicCard key={w.id} w={w} />
@@ -1013,16 +1094,21 @@ function SearchResults({
         )}
       </div>
       {hasSearch && (resultPage > 1 || totalPages > 1) && (
-        <nav className="toolbar" aria-label="Search Result Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.search.resultPages', 'Search Result Pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             type="button"
             disabled={searching || resultPage <= 1}
             onClick={() => moveResultPage(resultPage - 1)}
           >
-            Previous Page
+            {t('lumen.search.previousPage', 'Previous Page')}
           </button>
-          <span className="note">Page {resultPage}</span>
+          <span className="note">
+            {t('lumen.search.page', 'Page {page}', { page: resultPage })}
+          </span>
           <button
             className="btn btn-quiet btn-sm"
             type="button"
@@ -1033,7 +1119,7 @@ function SearchResults({
             }
             onClick={() => moveResultPage(resultPage + 1)}
           >
-            Next Page
+            {t('lumen.search.nextPage', 'Next Page')}
           </button>
         </nav>
       )}
