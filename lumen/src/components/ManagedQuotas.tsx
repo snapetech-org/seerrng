@@ -2,12 +2,14 @@ import { useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { quotaCategories as categories } from '../quotaCategories';
 import { ServiceNote } from './extra';
 
 type Category = keyof typeof categories;
 
 export default function ManagedQuotas({ id }: { id: number }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/main`;
   const { data, error, reload } = useApi<Record<string, number | null>>(path);
   const [category, setCategory] = useState<Category>('movie');
@@ -21,11 +23,25 @@ export default function ManagedQuotas({ id }: { id: number }) {
   const globalLimit = data?.[global + 'Limit'] ?? 0;
   const globalDays = data?.[global + 'Days'] ?? 0;
   const quotaWindow = globalDays
-    ? `per ${globalDays} ${globalDays === 1 ? 'day' : 'days'}`
-    : 'across all time';
+    ? t(
+        globalDays === 1
+          ? 'lumen.managedQuotas.perDay'
+          : 'lumen.managedQuotas.perDays',
+        globalDays === 1 ? 'per {count} day' : 'per {count} days',
+        { count: globalDays }
+      )
+    : t('lumen.managedQuotas.allTime', 'across all time');
   const serverDefault = globalLimit
-    ? `${globalLimit} ${globalLimit === 1 ? 'request' : 'requests'} ${quotaWindow}`
-    : 'unlimited requests';
+    ? t(
+        globalLimit === 1
+          ? 'lumen.managedQuotas.requestWindow'
+          : 'lumen.managedQuotas.requestsWindow',
+        globalLimit === 1
+          ? '{count} request {window}'
+          : '{count} requests {window}',
+        { count: globalLimit, window: quotaWindow }
+      )
+    : t('lumen.managedQuotas.unlimited', 'unlimited requests');
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,7 +50,12 @@ export default function ManagedQuotas({ id }: { id: number }) {
     const limit = fields.get('limit');
     const days = fields.get('days');
     if ((limit === '') !== (days === '')) {
-      setFailure('Enter both values or clear both to use the server default.');
+      setFailure(
+        t(
+          'lumen.managedQuotas.bothValues',
+          'Enter both values or clear both to use the server default.'
+        )
+      );
       return;
     }
     working.current = true;
@@ -49,10 +70,19 @@ export default function ManagedQuotas({ id }: { id: number }) {
           [daysKey]: days === '' ? null : Number(days),
         }),
       });
-      setMessage('Request quota saved.');
+      setMessage(t('lumen.managedQuotas.saved', 'Request quota saved.'));
       reload();
     } catch (failure) {
-      setFailure(friendlyError(failure, 'Could not save the request quota.'));
+      setFailure(
+        friendlyError(
+          failure,
+          t(
+            'lumen.managedQuotas.saveFailure',
+            'Could not save the request quota.'
+          ),
+          t
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -61,10 +91,14 @@ export default function ManagedQuotas({ id }: { id: number }) {
 
   return (
     <div>
-      <ServiceNote error={error} what="request quotas" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.managedQuotas.what', 'request quotas')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading request quotas…
+          {t('lumen.managedQuotas.loading', 'Loading request quotas…')}
         </p>
       )}
       {failure && (
@@ -80,11 +114,16 @@ export default function ManagedQuotas({ id }: { id: number }) {
       {data && (
         <>
           <p className="note">
-            Leave both fields blank to use the server default.
+            {t(
+              'lumen.managedQuotas.description',
+              'Leave both fields blank to use the server default.'
+            )}
           </p>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Media Type</span>
+              <span className="lbl">
+                {t('lumen.managedQuotas.mediaType', 'Media Type')}
+              </span>
               <select
                 value={category}
                 disabled={busy}
@@ -94,18 +133,27 @@ export default function ManagedQuotas({ id }: { id: number }) {
                   setMessage('');
                 }}
               >
-                {Object.entries(categories).map(([value, name]) => (
+                {Object.entries(categories).map(([value]) => (
                   <option key={value} value={value}>
-                    {name}
+                    {t(
+                      `lumen.managedQuotas.category.${value}`,
+                      categories[value as Category]
+                    )}
                   </option>
                 ))}
               </select>
             </label>
           </div>
-          <small>Server default {serverDefault}</small>
+          <small>
+            {t('lumen.managedQuotas.serverDefault', 'Server default: {value}', {
+              value: serverDefault,
+            })}
+          </small>
           <form className="toolbar" key={category} onSubmit={save}>
             <label className="sel">
-              <span className="lbl">Request Limit</span>
+              <span className="lbl">
+                {t('lumen.managedQuotas.limit', 'Request Limit')}
+              </span>
               <input
                 className="cfg-json"
                 type="number"
@@ -117,7 +165,9 @@ export default function ManagedQuotas({ id }: { id: number }) {
               />
             </label>
             <label className="sel">
-              <span className="lbl">Quota Days</span>
+              <span className="lbl">
+                {t('lumen.managedQuotas.days', 'Quota Days')}
+              </span>
               <input
                 className="cfg-json"
                 type="number"
@@ -129,7 +179,7 @@ export default function ManagedQuotas({ id }: { id: number }) {
               />
             </label>
             <button className="btn btn-tonal btn-sm" disabled={busy}>
-              Save Quota
+              {t('lumen.managedQuotas.save', 'Save Quota')}
             </button>
           </form>
         </>

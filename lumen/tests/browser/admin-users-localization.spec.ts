@@ -32,6 +32,36 @@ const labels = {
     tvPending: 'Waiting for approval',
     episodeQueue: 'Episode Queue',
     tvRequestAccess: 'TV Request Access',
+    setLocalPassword: 'Set Local Password',
+    passwordMismatch: 'Enter matching passwords of at least 8 characters.',
+    passwordFailure: 'The server had a problem. Try again in a moment.',
+    passwordSaved: 'Local password saved.',
+    newPassword: 'New Local Password',
+    confirmPassword: 'Confirm New Local Password',
+    savePassword: 'Save Local Password',
+    signInLinks: 'Sign-in Links',
+    createSignInLink: 'Create Sign-in Link',
+    signInActive: 'Active',
+    revokeLink: 'Revoke Link',
+    revoked: 'Sign-in link revoked.',
+    noLinks: 'No sign-in links yet.',
+    newLink: 'New sign-in link',
+    revokedStatus: 'Revoked',
+    mediaCategories: 'Media Categories',
+    categoryMovie: 'Movies',
+    saveCategories: 'Save Categories',
+    categoriesSaved: 'Media categories saved.',
+    maturityLimits: 'Maturity Limits',
+    movieRatingLimit: 'Movie Rating Limit',
+    saveMaturity: 'Save Maturity Limits',
+    maturitySaved: 'Maturity limits saved.',
+    requestQuotas: 'Request Quotas',
+    quotaLimit: 'Request Limit',
+    quotaDays: 'Quota Days',
+    bothQuotaValues:
+      'Enter both values or clear both to use the server default.',
+    saveQuota: 'Save Quota',
+    quotaSaved: 'Request quota saved.',
   },
   fr: {
     title: 'Utilisateurs',
@@ -64,6 +94,38 @@ const labels = {
     tvPending: 'En attente d’approbation',
     episodeQueue: 'File d’attente des épisodes',
     tvRequestAccess: 'Accès aux demandes TV',
+    setLocalPassword: 'Définir un mot de passe local',
+    passwordMismatch:
+      'Saisissez deux mots de passe identiques d’au moins 8 caractères.',
+    passwordFailure:
+      'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    passwordSaved: 'Mot de passe local enregistré.',
+    newPassword: 'Nouveau mot de passe local',
+    confirmPassword: 'Confirmez le nouveau mot de passe local',
+    savePassword: 'Enregistrer le mot de passe local',
+    signInLinks: 'Liens de connexion',
+    createSignInLink: 'Créer un lien de connexion',
+    signInActive: 'Actif',
+    revokeLink: 'Révoquer le lien',
+    revoked: 'Lien de connexion révoqué.',
+    noLinks: 'Aucun lien de connexion pour le moment.',
+    newLink: 'Nouveau lien de connexion',
+    revokedStatus: 'Révoqué',
+    mediaCategories: 'Catégories de médias',
+    categoryMovie: 'Films',
+    saveCategories: 'Enregistrer les catégories',
+    categoriesSaved: 'Catégories de médias enregistrées.',
+    maturityLimits: 'Limites de classification',
+    movieRatingLimit: 'Limite de classification des films',
+    saveMaturity: 'Enregistrer les limites de classification',
+    maturitySaved: 'Limites de classification enregistrées.',
+    requestQuotas: 'Quotas de demandes',
+    quotaLimit: 'Limite de demandes',
+    quotaDays: 'Durée du quota en jours',
+    bothQuotaValues:
+      'Saisissez les deux valeurs ou effacez-les pour utiliser la valeur par défaut du serveur.',
+    saveQuota: 'Enregistrer le quota',
+    quotaSaved: 'Quota de demandes enregistré.',
   },
   ar: {
     title: 'المستخدمون',
@@ -95,6 +157,36 @@ const labels = {
     tvPending: 'بانتظار الموافقة',
     episodeQueue: 'قائمة انتظار الحلقات',
     tvRequestAccess: 'الوصول إلى طلبات التلفزيون',
+    setLocalPassword: 'تعيين كلمة مرور محلية',
+    passwordMismatch: 'أدخل كلمتي مرور متطابقتين لا تقل كل منهما عن 8 أحرف.',
+    passwordFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    passwordSaved: 'تم حفظ كلمة المرور المحلية.',
+    newPassword: 'كلمة المرور المحلية الجديدة',
+    confirmPassword: 'تأكيد كلمة المرور المحلية الجديدة',
+    savePassword: 'حفظ كلمة المرور المحلية',
+    signInLinks: 'روابط تسجيل الدخول',
+    createSignInLink: 'إنشاء رابط تسجيل دخول',
+    signInActive: 'نشط',
+    revokeLink: 'إبطال الرابط',
+    revoked: 'تم إبطال رابط تسجيل الدخول.',
+    noLinks: 'لا توجد روابط تسجيل دخول بعد.',
+    newLink: 'رابط تسجيل الدخول الجديد',
+    revokedStatus: 'مُبطل',
+    mediaCategories: 'فئات الوسائط',
+    categoryMovie: 'أفلام',
+    saveCategories: 'حفظ الفئات',
+    categoriesSaved: 'تم حفظ فئات الوسائط.',
+    maturityLimits: 'حدود التصنيف العمري',
+    movieRatingLimit: 'حد تصنيف الأفلام',
+    saveMaturity: 'حفظ حدود التصنيف العمري',
+    maturitySaved: 'تم حفظ حدود التصنيف العمري.',
+    requestQuotas: 'حصص الطلبات',
+    quotaLimit: 'حد الطلبات',
+    quotaDays: 'أيام الحصة',
+    bothQuotaValues:
+      'أدخل القيمتين أو امسحهما لاستخدام الإعداد الافتراضي للخادم.',
+    saveQuota: 'حفظ الحصة',
+    quotaSaved: 'تم حفظ حصة الطلبات.',
   },
 } as const;
 const english = labels.en;
@@ -106,6 +198,12 @@ test('user directory and local-account creation use the saved locale and retain 
   const copy =
     process.env.LUMEN_ADMIN_USERS_BASELINE === 'true' ? english : translated;
   let failOnce = true;
+  let passwordFailOnce = true;
+  const links: {
+    id: number;
+    expiresAt: string;
+    status: 'active' | 'revoked';
+  }[] = [];
   const creates: Record<string, unknown>[] = [];
 
   await page.route('**/api/v1/**', async (route) => {
@@ -155,6 +253,58 @@ test('user directory and local-account creation use the saved locale and retain 
           requestedAt: null,
         },
       });
+    if (path === '/user/2/settings/main') {
+      if (request.method() === 'POST')
+        return route.fulfill({ status: 204, body: '' });
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: { movie: true, tv: true },
+          usesDefaultEnabledMediaCategories: false,
+          showIndexerDetails: true,
+          defaultShowIndexerDetails: true,
+          usesDefaultShowIndexerDetails: true,
+          globalMovieQuotaLimit: 5,
+          globalMovieQuotaDays: 7,
+        },
+      });
+    }
+    if (path === '/user/2/settings/maturity') {
+      if (request.method() === 'POST')
+        return route.fulfill({ status: 204, body: '' });
+      return route.fulfill({
+        json: { movieMaturityRatingLimit: null, tvMaturityRatingLimit: null },
+      });
+    }
+    if (path === '/user/2/settings/password' && request.method() === 'POST') {
+      if (passwordFailOnce) {
+        passwordFailOnce = false;
+        return route.fulfill({ status: 503, json: { message: 'unavailable' } });
+      }
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/settings/login-links' && request.method() === 'GET')
+      return route.fulfill({ json: links });
+    if (path === '/settings/login-links' && request.method() === 'POST') {
+      const link = {
+        id: 7,
+        token: 'single-use-token',
+        expiresAt: '2027-01-02T00:00:00.000Z',
+        status: 'active' as const,
+      };
+      links.push({
+        id: link.id,
+        expiresAt: link.expiresAt,
+        status: link.status,
+      });
+      return route.fulfill({ json: link });
+    }
+    if (
+      path === '/settings/login-links/7/revoke' &&
+      request.method() === 'POST'
+    ) {
+      links[0].status = 'revoked';
+      return route.fulfill({ status: 204, body: '' });
+    }
     return route.fulfill({ json: {} });
   });
 
@@ -196,6 +346,96 @@ test('user directory and local-account creation use the saved locale and retain 
     .getByRole('button', { name: copy.tvRequestAccess, exact: true })
     .click();
   await expect(page.getByText(copy.tvPending, { exact: true })).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.signInLinks, exact: true })
+    .click();
+  await expect(page.getByText(copy.noLinks, { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: copy.createSignInLink }).click();
+  await expect(page.getByLabel(copy.newLink)).toHaveValue(/loginToken=/);
+  await expect(
+    page.getByText(copy.signInActive, { exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: copy.revokeLink }).click();
+  await expect(page.getByText(copy.revoked, { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(copy.revokedStatus, { exact: true })
+  ).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.setLocalPassword, exact: true })
+    .click();
+  await page
+    .getByRole('textbox', { name: copy.newPassword, exact: true })
+    .fill('safe-password-123');
+  await page
+    .getByRole('textbox', { name: copy.confirmPassword, exact: true })
+    .fill('different-password');
+  await page.getByRole('button', { name: copy.savePassword }).click();
+  await expect(page.getByRole('alert')).toHaveText(copy.passwordMismatch);
+  await page
+    .getByRole('textbox', { name: copy.confirmPassword, exact: true })
+    .fill('safe-password-123');
+  await page.getByRole('button', { name: copy.savePassword }).click();
+  await expect(page.getByRole('alert')).toHaveText(copy.passwordFailure);
+  await page.getByRole('button', { name: copy.savePassword }).click();
+  await expect(
+    page.getByText(copy.passwordSaved, { exact: true })
+  ).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.mediaCategories, exact: true })
+    .click();
+  await expect(
+    page.getByRole('checkbox', { name: translated.categoryMovie, exact: true })
+  ).toBeVisible();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-media-categories-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page
+    .getByRole('checkbox', { name: translated.categoryMovie, exact: true })
+    .uncheck();
+  await page
+    .getByRole('button', { name: copy.saveCategories, exact: true })
+    .click();
+  await expect(
+    page.getByText(copy.categoriesSaved, { exact: true })
+  ).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.maturityLimits, exact: true })
+    .click();
+  await expect(page.getByLabel(copy.movieRatingLimit)).toBeVisible();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-maturity-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page.getByLabel(copy.movieRatingLimit).selectOption('PG');
+  await page
+    .getByRole('button', { name: copy.saveMaturity, exact: true })
+    .click();
+  await expect(
+    page.getByText(copy.maturitySaved, { exact: true })
+  ).toBeVisible();
+
+  await page
+    .getByRole('button', { name: copy.requestQuotas, exact: true })
+    .click();
+  await expect(page.getByLabel(copy.quotaLimit)).toBeVisible();
+  if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-quotas-${page.viewportSize()!.width}.png`,
+    });
+  }
+  await page.getByLabel(copy.quotaLimit).fill('4');
+  await page.getByRole('button', { name: copy.saveQuota, exact: true }).click();
+  await expect(page.getByRole('alert')).toHaveText(copy.bothQuotaValues);
+  await page.getByLabel(copy.quotaDays).fill('7');
+  await page.getByRole('button', { name: copy.saveQuota, exact: true }).click();
+  await expect(page.getByText(copy.quotaSaved, { exact: true })).toBeVisible();
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
     await page.screenshot({
       path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-tv-access-${page.viewportSize()!.width}.png`,
@@ -228,7 +468,7 @@ test('user directory and local-account creation use the saved locale and retain 
     .getByRole('textbox', { name: copy.email })
     .fill('new@example.test');
   await page
-    .getByRole('textbox', { name: copy.password })
+    .getByRole('textbox', { name: copy.password, exact: true })
     .fill('safe-password-123');
   const create = page.getByRole('button', {
     name: copy.createUser,

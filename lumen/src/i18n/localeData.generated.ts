@@ -2187,6 +2187,93 @@ export const localeData = [
       'lumen.managedTvAccess.requested': 'طُلب في {date}',
       'lumen.managedTvAccess.refresh': 'تحديث الوصول',
       'lumen.managedTvAccess.review': 'مراجعة طلبات الوصول إلى التلفاز',
+      'lumen.managedPassword.mismatch':
+        'أدخل كلمتي مرور متطابقتين لا تقل كل منهما عن 8 أحرف.',
+      'lumen.managedPassword.saved': 'تم حفظ كلمة المرور المحلية.',
+      'lumen.managedPassword.saveFailure': 'تعذر حفظ كلمة المرور المحلية.',
+      'lumen.managedPassword.description':
+        'عيّن كلمة مرور جديدة لتسجيل دخول {name} المحلي إلى SeerrNG.',
+      'lumen.managedPassword.newPassword': 'كلمة المرور المحلية الجديدة',
+      'lumen.managedPassword.confirmPassword':
+        'تأكيد كلمة المرور المحلية الجديدة',
+      'lumen.managedPassword.save': 'حفظ كلمة المرور المحلية',
+      'lumen.managedLoginLinks.revoked': 'تم إبطال رابط تسجيل الدخول.',
+      'lumen.managedLoginLinks.updateFailure': 'تعذر تحديث روابط تسجيل الدخول.',
+      'lumen.managedLoginLinks.copied': 'تم نسخ رابط تسجيل الدخول.',
+      'lumen.managedLoginLinks.copyFallback': 'حدّد الرابط وانسخه من الحقل.',
+      'lumen.managedLoginLinks.title': 'روابط تسجيل دخول لمرة واحدة',
+      'lumen.managedLoginLinks.description':
+        'تنتهي صلاحية كل رابط بعد 30 دقيقة أو استخدامه مرة واحدة.',
+      'lumen.managedLoginLinks.create': 'إنشاء رابط تسجيل دخول',
+      'lumen.managedLoginLinks.newLink': 'رابط تسجيل الدخول الجديد',
+      'lumen.managedLoginLinks.copy': 'نسخ الرابط',
+      'lumen.managedLoginLinks.what': 'روابط تسجيل الدخول',
+      'lumen.managedLoginLinks.loading': 'جارٍ تحميل روابط تسجيل الدخول…',
+      'lumen.managedLoginLinks.empty': 'لا توجد روابط تسجيل دخول بعد.',
+      'lumen.managedLoginLinks.status.active': 'نشط',
+      'lumen.managedLoginLinks.status.used': 'مستخدم',
+      'lumen.managedLoginLinks.status.revoked': 'مُبطل',
+      'lumen.managedLoginLinks.status.expired': 'منتهي الصلاحية',
+      'lumen.managedLoginLinks.expires': 'تنتهي صلاحيته في {date}',
+      'lumen.managedLoginLinks.revoke': 'إبطال الرابط',
+      'lumen.managedMaturity.saved': 'تم حفظ حدود التصنيف العمري.',
+      'lumen.managedMaturity.saveFailure': 'تعذر حفظ حدود التصنيف العمري.',
+      'lumen.managedMaturity.what': 'حدود التصنيف العمري',
+      'lumen.managedMaturity.loading': 'جارٍ تحميل حدود التصنيف العمري…',
+      'lumen.managedMaturity.description':
+        'ينطبق الحد على التصفح والطلبات. تُحظر العناوين التي ليس لها تصنيف أمريكي معروف عند تعيين حد.',
+      'lumen.managedMaturity.movieMaturityRatingLimit': 'حد تصنيف الأفلام',
+      'lumen.managedMaturity.tvMaturityRatingLimit': 'حد تصنيف المسلسلات',
+      'lumen.managedMaturity.noLimit': 'بلا حد',
+      'lumen.managedMaturity.save': 'حفظ حدود التصنيف العمري',
+      'lumen.managedMediaCategories.saved': 'تم حفظ فئات الوسائط.',
+      'lumen.managedMediaCategories.indexerSaved':
+        'تم حفظ إعدادات ظهور أدوات الفهرسة.',
+      'lumen.managedMediaCategories.saveFailure': 'تعذر حفظ فئات الوسائط.',
+      'lumen.managedMediaCategories.indexerFailure':
+        'تعذر حفظ إعدادات ظهور أدوات الفهرسة.',
+      'lumen.managedMediaCategories.what': 'فئات الوسائط',
+      'lumen.managedMediaCategories.loading': 'جارٍ تحميل فئات الوسائط…',
+      'lumen.managedMediaCategories.serverDefaults':
+        'يستخدم الإعدادات الافتراضية للخادم.',
+      'lumen.managedMediaCategories.accountOverrides':
+        'يستخدم إعدادات الحساب المخصصة.',
+      'lumen.managedMediaCategories.save': 'حفظ الفئات',
+      'lumen.managedMediaCategories.restore':
+        'استعادة الإعدادات الافتراضية للخادم',
+      'lumen.managedMediaCategories.indexerDisabled':
+        'عطّل الخادم تفاصيل أدوات الفهرسة.',
+      'lumen.managedMediaCategories.indexerDetails': 'تفاصيل أدوات الفهرسة',
+      'lumen.managedMediaCategories.useDefault':
+        'استخدام إعداد الخادم الافتراضي',
+      'lumen.managedMediaCategories.show': 'إظهار',
+      'lumen.managedMediaCategories.hide': 'إخفاء',
+      'lumen.managedQuotas.perDay': 'لكل {count} يوم',
+      'lumen.managedQuotas.perDays': 'لكل {count} أيام',
+      'lumen.managedQuotas.allTime': 'طوال الوقت',
+      'lumen.managedQuotas.requestWindow': '{count} طلب {window}',
+      'lumen.managedQuotas.requestsWindow': '{count} طلبات {window}',
+      'lumen.managedQuotas.unlimited': 'طلبات غير محدودة',
+      'lumen.managedQuotas.bothValues':
+        'أدخل القيمتين أو امسحهما لاستخدام الإعداد الافتراضي للخادم.',
+      'lumen.managedQuotas.saved': 'تم حفظ حصة الطلبات.',
+      'lumen.managedQuotas.saveFailure': 'تعذر حفظ حصة الطلبات.',
+      'lumen.managedQuotas.what': 'حصص الطلبات',
+      'lumen.managedQuotas.loading': 'جارٍ تحميل حصص الطلبات…',
+      'lumen.managedQuotas.description':
+        'اترك الحقلين فارغين لاستخدام الإعداد الافتراضي للخادم.',
+      'lumen.managedQuotas.mediaType': 'نوع الوسائط',
+      'lumen.managedQuotas.serverDefault': 'الإعداد الافتراضي للخادم: {value}',
+      'lumen.managedQuotas.limit': 'حد الطلبات',
+      'lumen.managedQuotas.days': 'أيام الحصة',
+      'lumen.managedQuotas.save': 'حفظ الحصة',
+      'lumen.managedQuotas.category.movie': 'أفلام',
+      'lumen.managedQuotas.category.tv': 'مسلسلات',
+      'lumen.managedQuotas.category.music': 'موسيقى',
+      'lumen.managedQuotas.category.book': 'كتب',
+      'lumen.managedQuotas.category.comic': 'قصص مصورة',
+      'lumen.managedQuotas.category.magazine': 'مجلات',
+      'lumen.managedQuotas.category.software': 'برامج',
     },
   },
   {
@@ -6113,6 +6200,91 @@ export const localeData = [
       'lumen.managedTvAccess.requested': 'Requested {date}',
       'lumen.managedTvAccess.refresh': 'Refresh Access',
       'lumen.managedTvAccess.review': 'Review TV Access Requests',
+      'lumen.managedPassword.mismatch':
+        'Enter matching passwords of at least 8 characters.',
+      'lumen.managedPassword.saved': 'Local password saved.',
+      'lumen.managedPassword.saveFailure': 'Could not save the local password.',
+      'lumen.managedPassword.description':
+        'Set a new password for {name}’s SeerrNG local login.',
+      'lumen.managedPassword.newPassword': 'New Local Password',
+      'lumen.managedPassword.confirmPassword': 'Confirm New Local Password',
+      'lumen.managedPassword.save': 'Save Local Password',
+      'lumen.managedLoginLinks.revoked': 'Sign-in link revoked.',
+      'lumen.managedLoginLinks.updateFailure':
+        'Could not update sign-in links.',
+      'lumen.managedLoginLinks.copied': 'Sign-in link copied.',
+      'lumen.managedLoginLinks.copyFallback':
+        'Select and copy the link from the field.',
+      'lumen.managedLoginLinks.title': 'One-Time Sign-in Links',
+      'lumen.managedLoginLinks.description':
+        'Each link expires after 30 minutes or one use.',
+      'lumen.managedLoginLinks.create': 'Create Sign-in Link',
+      'lumen.managedLoginLinks.newLink': 'New sign-in link',
+      'lumen.managedLoginLinks.copy': 'Copy Link',
+      'lumen.managedLoginLinks.what': 'sign-in links',
+      'lumen.managedLoginLinks.loading': 'Loading sign-in links…',
+      'lumen.managedLoginLinks.empty': 'No sign-in links yet.',
+      'lumen.managedLoginLinks.status.active': 'Active',
+      'lumen.managedLoginLinks.status.used': 'Used',
+      'lumen.managedLoginLinks.status.revoked': 'Revoked',
+      'lumen.managedLoginLinks.status.expired': 'Expired',
+      'lumen.managedLoginLinks.expires': 'Expires {date}',
+      'lumen.managedLoginLinks.revoke': 'Revoke Link',
+      'lumen.managedMaturity.saved': 'Maturity limits saved.',
+      'lumen.managedMaturity.saveFailure': 'Could not save maturity limits.',
+      'lumen.managedMaturity.what': 'maturity limits',
+      'lumen.managedMaturity.loading': 'Loading maturity limits…',
+      'lumen.managedMaturity.description':
+        'A limit applies to browsing and requests. Titles without a recognized US rating are blocked when a limit is set.',
+      'lumen.managedMaturity.movieMaturityRatingLimit': 'Movie Rating Limit',
+      'lumen.managedMaturity.tvMaturityRatingLimit': 'Series Rating Limit',
+      'lumen.managedMaturity.noLimit': 'No Limit',
+      'lumen.managedMaturity.save': 'Save Maturity Limits',
+      'lumen.managedMediaCategories.saved': 'Media categories saved.',
+      'lumen.managedMediaCategories.indexerSaved': 'Indexer visibility saved.',
+      'lumen.managedMediaCategories.saveFailure':
+        'Could not save media categories.',
+      'lumen.managedMediaCategories.indexerFailure':
+        'Could not save indexer visibility.',
+      'lumen.managedMediaCategories.what': 'media categories',
+      'lumen.managedMediaCategories.loading': 'Loading media categories…',
+      'lumen.managedMediaCategories.serverDefaults': 'Using server defaults.',
+      'lumen.managedMediaCategories.accountOverrides':
+        'Using account overrides.',
+      'lumen.managedMediaCategories.save': 'Save Categories',
+      'lumen.managedMediaCategories.restore': 'Restore Server Defaults',
+      'lumen.managedMediaCategories.indexerDisabled':
+        'Indexer details are disabled by the server.',
+      'lumen.managedMediaCategories.indexerDetails': 'Indexer Details',
+      'lumen.managedMediaCategories.useDefault': 'Use Server Default',
+      'lumen.managedMediaCategories.show': 'Show',
+      'lumen.managedMediaCategories.hide': 'Hide',
+      'lumen.managedQuotas.perDay': 'per {count} day',
+      'lumen.managedQuotas.perDays': 'per {count} days',
+      'lumen.managedQuotas.allTime': 'across all time',
+      'lumen.managedQuotas.requestWindow': '{count} request {window}',
+      'lumen.managedQuotas.requestsWindow': '{count} requests {window}',
+      'lumen.managedQuotas.unlimited': 'unlimited requests',
+      'lumen.managedQuotas.bothValues':
+        'Enter both values or clear both to use the server default.',
+      'lumen.managedQuotas.saved': 'Request quota saved.',
+      'lumen.managedQuotas.saveFailure': 'Could not save the request quota.',
+      'lumen.managedQuotas.what': 'request quotas',
+      'lumen.managedQuotas.loading': 'Loading request quotas…',
+      'lumen.managedQuotas.description':
+        'Leave both fields blank to use the server default.',
+      'lumen.managedQuotas.mediaType': 'Media Type',
+      'lumen.managedQuotas.serverDefault': 'Server default: {value}',
+      'lumen.managedQuotas.limit': 'Request Limit',
+      'lumen.managedQuotas.days': 'Quota Days',
+      'lumen.managedQuotas.save': 'Save Quota',
+      'lumen.managedQuotas.category.movie': 'Movies',
+      'lumen.managedQuotas.category.tv': 'Series',
+      'lumen.managedQuotas.category.music': 'Music',
+      'lumen.managedQuotas.category.book': 'Books',
+      'lumen.managedQuotas.category.comic': 'Comics',
+      'lumen.managedQuotas.category.magazine': 'Magazines',
+      'lumen.managedQuotas.category.software': 'Software',
     },
   },
   {
@@ -10857,6 +11029,106 @@ export const localeData = [
       'lumen.managedTvAccess.requested': 'Demandé le {date}',
       'lumen.managedTvAccess.refresh': 'Actualiser l’accès',
       'lumen.managedTvAccess.review': 'Examiner les demandes d’accès TV',
+      'lumen.managedPassword.mismatch':
+        'Saisissez deux mots de passe identiques d’au moins 8 caractères.',
+      'lumen.managedPassword.saved': 'Mot de passe local enregistré.',
+      'lumen.managedPassword.saveFailure':
+        'Impossible d’enregistrer le mot de passe local.',
+      'lumen.managedPassword.description':
+        'Définissez un nouveau mot de passe pour la connexion locale SeerrNG de {name}.',
+      'lumen.managedPassword.newPassword': 'Nouveau mot de passe local',
+      'lumen.managedPassword.confirmPassword':
+        'Confirmez le nouveau mot de passe local',
+      'lumen.managedPassword.save': 'Enregistrer le mot de passe local',
+      'lumen.managedLoginLinks.revoked': 'Lien de connexion révoqué.',
+      'lumen.managedLoginLinks.updateFailure':
+        'Impossible de mettre à jour les liens de connexion.',
+      'lumen.managedLoginLinks.copied': 'Lien de connexion copié.',
+      'lumen.managedLoginLinks.copyFallback':
+        'Sélectionnez et copiez le lien dans le champ.',
+      'lumen.managedLoginLinks.title': 'Liens de connexion à usage unique',
+      'lumen.managedLoginLinks.description':
+        'Chaque lien expire après 30 minutes ou une utilisation.',
+      'lumen.managedLoginLinks.create': 'Créer un lien de connexion',
+      'lumen.managedLoginLinks.newLink': 'Nouveau lien de connexion',
+      'lumen.managedLoginLinks.copy': 'Copier le lien',
+      'lumen.managedLoginLinks.what': 'liens de connexion',
+      'lumen.managedLoginLinks.loading': 'Chargement des liens de connexion…',
+      'lumen.managedLoginLinks.empty':
+        'Aucun lien de connexion pour le moment.',
+      'lumen.managedLoginLinks.status.active': 'Actif',
+      'lumen.managedLoginLinks.status.used': 'Utilisé',
+      'lumen.managedLoginLinks.status.revoked': 'Révoqué',
+      'lumen.managedLoginLinks.status.expired': 'Expiré',
+      'lumen.managedLoginLinks.expires': 'Expire le {date}',
+      'lumen.managedLoginLinks.revoke': 'Révoquer le lien',
+      'lumen.managedMaturity.saved': 'Limites de classification enregistrées.',
+      'lumen.managedMaturity.saveFailure':
+        'Impossible d’enregistrer les limites de classification.',
+      'lumen.managedMaturity.what': 'limites de classification',
+      'lumen.managedMaturity.loading':
+        'Chargement des limites de classification…',
+      'lumen.managedMaturity.description':
+        'Une limite s’applique à la navigation et aux demandes. Les titres sans classification américaine reconnue sont bloqués lorsqu’une limite est définie.',
+      'lumen.managedMaturity.movieMaturityRatingLimit':
+        'Limite de classification des films',
+      'lumen.managedMaturity.tvMaturityRatingLimit':
+        'Limite de classification des séries',
+      'lumen.managedMaturity.noLimit': 'Aucune limite',
+      'lumen.managedMaturity.save': 'Enregistrer les limites de classification',
+      'lumen.managedMediaCategories.saved':
+        'Catégories de médias enregistrées.',
+      'lumen.managedMediaCategories.indexerSaved':
+        'Visibilité des indexeurs enregistrée.',
+      'lumen.managedMediaCategories.saveFailure':
+        'Impossible d’enregistrer les catégories de médias.',
+      'lumen.managedMediaCategories.indexerFailure':
+        'Impossible d’enregistrer la visibilité des indexeurs.',
+      'lumen.managedMediaCategories.what': 'catégories de médias',
+      'lumen.managedMediaCategories.loading':
+        'Chargement des catégories de médias…',
+      'lumen.managedMediaCategories.serverDefaults':
+        'Utilisation des valeurs par défaut du serveur.',
+      'lumen.managedMediaCategories.accountOverrides':
+        'Utilisation des paramètres personnalisés du compte.',
+      'lumen.managedMediaCategories.save': 'Enregistrer les catégories',
+      'lumen.managedMediaCategories.restore':
+        'Restaurer les valeurs par défaut du serveur',
+      'lumen.managedMediaCategories.indexerDisabled':
+        'Les détails des indexeurs sont désactivés par le serveur.',
+      'lumen.managedMediaCategories.indexerDetails': 'Détails des indexeurs',
+      'lumen.managedMediaCategories.useDefault':
+        'Utiliser la valeur par défaut du serveur',
+      'lumen.managedMediaCategories.show': 'Afficher',
+      'lumen.managedMediaCategories.hide': 'Masquer',
+      'lumen.managedQuotas.perDay': 'par {count} jour',
+      'lumen.managedQuotas.perDays': 'par {count} jours',
+      'lumen.managedQuotas.allTime': 'sur toute la période',
+      'lumen.managedQuotas.requestWindow': '{count} demande {window}',
+      'lumen.managedQuotas.requestsWindow': '{count} demandes {window}',
+      'lumen.managedQuotas.unlimited': 'demandes illimitées',
+      'lumen.managedQuotas.bothValues':
+        'Saisissez les deux valeurs ou effacez-les pour utiliser la valeur par défaut du serveur.',
+      'lumen.managedQuotas.saved': 'Quota de demandes enregistré.',
+      'lumen.managedQuotas.saveFailure':
+        'Impossible d’enregistrer le quota de demandes.',
+      'lumen.managedQuotas.what': 'quotas de demandes',
+      'lumen.managedQuotas.loading': 'Chargement des quotas de demandes…',
+      'lumen.managedQuotas.description':
+        'Laissez les deux champs vides pour utiliser la valeur par défaut du serveur.',
+      'lumen.managedQuotas.mediaType': 'Type de média',
+      'lumen.managedQuotas.serverDefault':
+        'Valeur par défaut du serveur : {value}',
+      'lumen.managedQuotas.limit': 'Limite de demandes',
+      'lumen.managedQuotas.days': 'Durée du quota en jours',
+      'lumen.managedQuotas.save': 'Enregistrer le quota',
+      'lumen.managedQuotas.category.movie': 'Films',
+      'lumen.managedQuotas.category.tv': 'Séries',
+      'lumen.managedQuotas.category.music': 'Musique',
+      'lumen.managedQuotas.category.book': 'Livres',
+      'lumen.managedQuotas.category.comic': 'Bandes dessinées',
+      'lumen.managedQuotas.category.magazine': 'Magazines',
+      'lumen.managedQuotas.category.software': 'Logiciels',
     },
   },
   {

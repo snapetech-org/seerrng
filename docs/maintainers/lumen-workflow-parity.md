@@ -57,7 +57,7 @@ submit and retry, and overflow. Twelve existing create/profile regression
 cases also passed. Matching French and Arabic baseline/candidate captures of
 `/admin/users` and the local-account form were inspected at 1440 × 900 and
 390 × 844; existing list and form geometry remains, with longer labels wrapping
-inside the same row layout. Import-provider and managed-user subpanels remain
+inside the same row layout. Provider import and linked-account subpanels remain
 partly English; live directory and provider-import verification remain open.
 Evidence is retained at
 `seerrng-admin-users-localization-20261120`.
@@ -75,6 +75,19 @@ navigation continues to cover part of the tall row as it did before. Other
 managed-user panels and provider import remain partly English. Evidence is
 retained at `seerrng-admin-users-localization-20261120/baseline-panels-*` and
 `seerrng-admin-users-localization-20261120/candidate-*`.
+
+Managed local passwords, one-time sign-in links, maturity limits, media
+categories, and request quotas now use the same locale. Their fixtures exercise
+password mismatch and failed-save retry, one-time link creation and revocation,
+category persistence, maturity-limit persistence, and quota validation and
+save. Twelve standalone and twelve bundled `/lumen/` cases passed across
+desktop, iPhone, Android, and tablet. French and Arabic baseline/candidate
+states for categories, maturity,
+and quotas were inspected at 1440 × 900 and 390 × 844. Longer labels wrap
+within the existing controls; the existing fixed mobile navigation still
+overlaps lower content in the tall user row. Linked-account management and
+provider import are the remaining managed-user display gaps. Evidence is
+retained at `seerrng-admin-users-localization-20261120/admin-settings-*`.
 
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
