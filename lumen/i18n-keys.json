@@ -2962,5 +2962,21 @@
   "lumen.detail.seasonOrder",
   "lumen.detail.ignoreQuota",
   "lumen.detail.requestTags",
-  "lumen.detail.advancedOptions"
+  "lumen.detail.advancedOptions",
+  "lumen.detail.trailer",
+  "lumen.detail.showFewerCredits",
+  "lumen.detail.showAllCredits",
+  "lumen.detail.starring",
+  "lumen.detail.crew",
+  "lumen.detail.noCredits",
+  "lumen.detail.openFullCast",
+  "lumen.detail.openFullCrew",
+  "lumen.detail.subjectTags",
+  "lumen.detail.showSubjectTags",
+  "lumen.detail.noSubjectTags",
+  "lumen.detail.keepOpen",
+  "lumen.detail.creditPreference",
+  "lumen.detail.subjectTagPreference",
+  "lumen.detail.confirmPinFailure",
+  "lumen.detail.savePinFailure"
 ]

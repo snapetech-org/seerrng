@@ -1,0 +1,1 @@
+Lumen movie and TV details now localize shared cast and crew disclosures, subject-tag controls, saved disclosure actions, preference recovery messages, and trailer buttons in English, French, and Arabic. Cast expansion, tag visibility, and saved disclosure behavior are unchanged.

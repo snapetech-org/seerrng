@@ -8,6 +8,11 @@ const locales = [
     server: 'Server',
     quality: 'Quality',
     folder: 'Folder',
+    cast: 'Starring',
+    showAll: 'Show All 11 Credits',
+    showFewer: 'Show Fewer Credits',
+    subjectTags: 'Subject Tags',
+    showTags: 'Show Subject Tags',
   },
   {
     tag: 'fr',
@@ -15,6 +20,11 @@ const locales = [
     server: 'Serveur',
     quality: 'Qualité',
     folder: 'Dossier',
+    cast: 'Avec',
+    showAll: 'Afficher les 11 crédits',
+    showFewer: 'Afficher moins de crédits',
+    subjectTags: 'Mots-clés',
+    showTags: 'Afficher les mots-clés',
   },
   {
     tag: 'ar',
@@ -22,6 +32,11 @@ const locales = [
     server: 'الخادم',
     quality: 'الجودة',
     folder: 'المجلد',
+    cast: 'بطولة',
+    showAll: 'عرض كل الاعتمادات (11)',
+    showFewer: 'عرض اعتمادات أقل',
+    subjectTags: 'الوسوم',
+    showTags: 'عرض الوسوم',
   },
 ];
 
@@ -51,6 +66,15 @@ for (const locale of locales) {
             overview: 'A fixture.',
             genres: [],
             mediaInfo: {},
+            credits: {
+              cast: Array.from({ length: 11 }, (_, index) => ({
+                id: index + 1,
+                name: `Actor ${index + 1}`,
+                character: `Role ${index + 1}`,
+              })),
+              crew: [{ id: 20, name: 'Director', job: 'Director' }],
+            },
+            keywords: [{ id: 16, name: 'Drama' }],
           },
         });
       if (path === '/service/radarr')
@@ -72,6 +96,29 @@ for (const locale of locales) {
     await expect(page.getByLabel(locale.server)).toBeVisible();
     await expect(page.getByLabel(locale.quality)).toBeVisible();
     await expect(page.getByLabel(locale.folder)).toBeVisible();
+    await page.getByText(locale.cast, { exact: true }).click();
+    const expandCredits = page.getByRole('button', {
+      name: locale.showAll,
+      exact: true,
+    });
+    await expandCredits.click();
+    await expect(
+      page.getByRole('button', { name: locale.showFewer, exact: true })
+    ).toHaveAttribute('aria-expanded', 'true');
+    await expect(
+      page.getByText(locale.subjectTags, { exact: true })
+    ).toBeVisible();
+    await page.getByText(locale.subjectTags, { exact: true }).click();
+    const dramaTag = page.getByRole('link', { name: 'Drama', exact: true });
+    await expect(dramaTag).toBeVisible();
+    const tagsToggle = page.getByRole('button', {
+      name: locale.showTags,
+      exact: true,
+    });
+    await tagsToggle.click();
+    await expect(dramaTag).toBeHidden();
+    await tagsToggle.click();
+    await expect(dramaTag).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('lang', locale.tag);
     if (process.env.LUMEN_CAPTURE_DIR) {
       await page.screenshot({

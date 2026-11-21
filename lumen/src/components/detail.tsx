@@ -40,6 +40,7 @@ export const fmtHrs = (sec?: number | null) =>
   !sec ? '' : fmtRun(Math.round(sec / 60));
 
 export function TrailerButton({ href }: { href: string }) {
+  const { t } = useLumenLocale();
   return (
     <a
       className="btn btn-quiet"
@@ -48,7 +49,7 @@ export function TrailerButton({ href }: { href: string }) {
       rel="noopener noreferrer"
     >
       <Icon name="play" />
-      Trailer
+      {t('lumen.detail.trailer', 'Trailer')}
     </a>
   );
 }
@@ -77,6 +78,7 @@ export function People({
   list: Person[];
   full?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const listId = useId();
   const [expanded, setExpanded] = useState(false);
   const visible = full || expanded ? list : list.slice(0, 10);
@@ -128,8 +130,10 @@ export function People({
             onClick={() => setExpanded(!expanded)}
           >
             {expanded
-              ? 'Show Fewer Credits'
-              : `Show All ${list.length} Credits`}
+              ? t('lumen.detail.showFewerCredits', 'Show Fewer Credits')
+              : t('lumen.detail.showAllCredits', 'Show All {count} Credits', {
+                  count: list.length,
+                })}
           </button>
         </div>
       )}
@@ -146,6 +150,7 @@ export function CreditsDisclosure({
   credit: 'cast' | 'crew';
   people?: Person[];
 }) {
+  const { t } = useLumenLocale();
   const { hash } = useLocation();
   const { id } = useParams();
   if (!people?.length && hash !== `#${credit}`) return null;
@@ -154,13 +159,23 @@ export function CreditsDisclosure({
     <VideoDisclosure
       media={media}
       panel={credit}
-      label={credit === 'cast' ? 'Starring' : 'Crew'}
+      label={
+        credit === 'cast'
+          ? t('lumen.detail.starring', 'Starring')
+          : t('lumen.detail.crew', 'Crew')
+      }
     >
-      {people?.length ? <People list={people} /> : <p>No credits available.</p>}
+      {people?.length ? (
+        <People list={people} />
+      ) : (
+        <p>{t('lumen.detail.noCredits', 'No credits available.')}</p>
+      )}
       {id && !!people?.length && (
         <div className="toolbar">
           <Link className="chip" to={`/${media}/${id}/${credit}`}>
-            {credit === 'cast' ? 'Open Full Cast' : 'Open Full Crew'}
+            {credit === 'cast'
+              ? t('lumen.detail.openFullCast', 'Open Full Cast')
+              : t('lumen.detail.openFullCrew', 'Open Full Crew')}
           </Link>
         </div>
       )}
@@ -175,6 +190,7 @@ export function SubjectTagsDisclosure({
   media: 'movie' | 'tv';
   tags?: SubjectTag[];
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const contentId = useId();
   const storageKey = `seerr.subjectTagVisibility:${user?.id ?? 'anonymous'}`;
@@ -197,7 +213,11 @@ export function SubjectTagsDisclosure({
   }
 
   return (
-    <VideoDisclosure media={media} panel="subjectTags" label="Subject Tags">
+    <VideoDisclosure
+      media={media}
+      panel="subjectTags"
+      label={t('lumen.detail.subjectTags', 'Subject Tags')}
+    >
       {tags?.length ? (
         <>
           <div className="toolbar">
@@ -208,7 +228,7 @@ export function SubjectTagsDisclosure({
               aria-controls={contentId}
               onClick={toggleVisibility}
             >
-              Show Subject Tags
+              {t('lumen.detail.showSubjectTags', 'Show Subject Tags')}
             </button>
           </div>
           <div id={contentId} hidden={!visible}>
@@ -226,7 +246,9 @@ export function SubjectTagsDisclosure({
           </div>
         </>
       ) : (
-        <p className="note">No subject tags.</p>
+        <p className="note">
+          {t('lumen.detail.noSubjectTags', 'No subject tags.')}
+        </p>
       )}
     </VideoDisclosure>
   );
@@ -243,6 +265,7 @@ function VideoDisclosure({
   label: string;
   children: ReactNode;
 }) {
+  const { t } = useLumenLocale();
   const { user, refresh } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
@@ -267,7 +290,10 @@ function VideoDisclosure({
   const pinned =
     user?.settings?.detailDisclosurePins?.[media]?.[panel] ??
     (media === 'movie' && legacy[panel] === true);
-  const preference = panel === 'subjectTags' ? 'subject tag' : 'credit';
+  const preference =
+    panel === 'subjectTags'
+      ? t('lumen.detail.subjectTagPreference', 'subject tag')
+      : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
     if (!user || pending.current) return;
@@ -281,13 +307,25 @@ function VideoDisclosure({
       );
       if (generation !== sessionGeneration()) return;
       if (result[panel] !== !pinned) {
-        toast(`Could not confirm the saved ${preference} preference.`);
+        toast(
+          t(
+            'lumen.detail.confirmPinFailure',
+            'Could not confirm the saved {preference} preference.',
+            { preference }
+          )
+        );
         return;
       }
       await refresh();
     } catch {
       if (generation === sessionGeneration())
-        toast(`Could not save the ${preference} preference. Try again.`);
+        toast(
+          t(
+            'lumen.detail.savePinFailure',
+            'Could not save the {preference} preference. Try again.',
+            { preference }
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -310,7 +348,7 @@ function VideoDisclosure({
             disabled={busy}
             onClick={() => void togglePin()}
           >
-            Keep {label} Open
+            {t('lumen.detail.keepOpen', 'Keep {label} Open', { label })}
           </button>
         </div>
       )}
