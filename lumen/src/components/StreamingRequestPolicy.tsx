@@ -3,6 +3,7 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 
@@ -24,6 +25,7 @@ const defaults: Policy = {
 };
 
 function PolicyForm({ initial }: { initial: Policy }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -61,16 +63,27 @@ function PolicyForm({ initial }: { initial: Policy }) {
         )
       ) {
         throw new Error(
-          'Could not confirm the saved streaming request policy.'
+          t(
+            'lumen.streamingPolicy.confirmFailure',
+            'Could not confirm the saved streaming request policy.'
+          )
         );
       }
       setSaved(updated);
       setDraft(updated);
       forget(endpoint);
-      setNotice('Streaming request policy saved.');
+      setNotice(
+        t('lumen.streamingPolicy.saved', 'Streaming request policy saved.')
+      );
     } catch (error) {
       setFailure(
-        friendlyError(error, 'Could not save streaming request policy.')
+        friendlyError(
+          error,
+          t(
+            'lumen.streamingPolicy.saveFailure',
+            'Could not save streaming request policy.'
+          )
+        )
       );
     } finally {
       pending.current = false;
@@ -83,14 +96,25 @@ function PolicyForm({ initial }: { initial: Policy }) {
       <div className="setlist">
         <label className="set cfg-row">
           <span>
-            <b>Enable Streaming Request Policy</b>
+            <b>
+              {t(
+                'lumen.streamingPolicy.enabled',
+                'Enable Streaming Request Policy'
+              )}
+            </b>
             <small>
-              Apply an action based on the requester’s streaming subscriptions.
+              {t(
+                'lumen.streamingPolicy.description',
+                'Apply an action based on the requester’s streaming subscriptions.'
+              )}
             </small>
           </span>
           <input
             type="checkbox"
-            aria-label="Enable Streaming Request Policy"
+            aria-label={t(
+              'lumen.streamingPolicy.enabled',
+              'Enable Streaming Request Policy'
+            )}
             checked={draft.enabled}
             disabled={busy}
             onChange={(event) => change('enabled', event.target.checked)}
@@ -99,7 +123,7 @@ function PolicyForm({ initial }: { initial: Policy }) {
         {draft.enabled && (
           <>
             <label className="set cfg-row">
-              <b>When the title is</b>
+              <b>{t('lumen.streamingPolicy.when', 'When the title is')}</b>
               <select
                 className="cfg-input"
                 value={draft.condition}
@@ -109,15 +133,21 @@ function PolicyForm({ initial }: { initial: Policy }) {
                 }
               >
                 <option value="available">
-                  Available on their subscriptions
+                  {t(
+                    'lumen.streamingPolicy.available',
+                    'Available on their subscriptions'
+                  )}
                 </option>
                 <option value="unavailable">
-                  Unavailable on their subscriptions
+                  {t(
+                    'lumen.streamingPolicy.unavailable',
+                    'Unavailable on their subscriptions'
+                  )}
                 </option>
               </select>
             </label>
             <label className="set cfg-row">
-              <b>Request action</b>
+              <b>{t('lumen.streamingPolicy.action', 'Request action')}</b>
               <select
                 className="cfg-input"
                 value={draft.action}
@@ -126,14 +156,25 @@ function PolicyForm({ initial }: { initial: Policy }) {
                   change('action', event.target.value as Policy['action'])
                 }
               >
-                <option value="reject">Reject</option>
-                <option value="pending">Require approval</option>
-                <option value="approve">Approve</option>
+                <option value="reject">
+                  {t('lumen.streamingPolicy.reject', 'Reject')}
+                </option>
+                <option value="pending">
+                  {t('lumen.streamingPolicy.pending', 'Require approval')}
+                </option>
+                <option value="approve">
+                  {t('lumen.streamingPolicy.approve', 'Approve')}
+                </option>
               </select>
             </label>
             {draft.action === 'reject' && (
               <label className="set cfg-row">
-                <b>Rejection message</b>
+                <b>
+                  {t(
+                    'lumen.streamingPolicy.rejectionMessage',
+                    'Rejection message'
+                  )}
+                </b>
                 <textarea
                   className="cfg-json"
                   rows={3}
@@ -147,7 +188,12 @@ function PolicyForm({ initial }: { initial: Policy }) {
               </label>
             )}
             <label className="set cfg-row">
-              <b>Allow per-user overrides</b>
+              <b>
+                {t(
+                  'lumen.streamingPolicy.allowOverride',
+                  'Allow per-user overrides'
+                )}
+              </b>
               <input
                 type="checkbox"
                 checked={draft.allowUserOverride}
@@ -162,7 +208,7 @@ function PolicyForm({ initial }: { initial: Policy }) {
       </div>
       <div className="toolbar">
         <button className="btn btn-tonal btn-sm" disabled={busy || !changed}>
-          Save Streaming Request Policy
+          {t('lumen.streamingPolicy.save', 'Save Streaming Request Policy')}
         </button>
       </div>
       {notice && (
@@ -180,12 +226,15 @@ function PolicyForm({ initial }: { initial: Policy }) {
 }
 
 export default function StreamingRequestPolicy() {
+  const { t } = useLumenLocale();
   const settings = useApi<{ streamingRequestPolicy?: Policy }>(endpoint);
   return (
-    <Section title="Streaming Request Policy">
+    <Section
+      title={t('lumen.streamingPolicy.title', 'Streaming Request Policy')}
+    >
       <ServiceNote
         error={settings.error}
-        what="streaming request policy"
+        what={t('lumen.streamingPolicy.what', 'streaming request policy')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -195,7 +244,10 @@ export default function StreamingRequestPolicy() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading streaming request policy…
+            {t(
+              'lumen.streamingPolicy.loading',
+              'Loading streaming request policy…'
+            )}
           </p>
         )
       )}

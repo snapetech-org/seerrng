@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
@@ -189,12 +189,32 @@ function ProfileForm({
   onSaved: () => void;
 }) {
   const { refresh, user } = useAuth();
-  const { setLocale: setLumenLocale, t } = useLumenLocale();
+  const { locale, setLocale: setLumenLocale, t } = useLumenLocale();
   const languages =
     useApi<{ iso_639_1: string; english_name: string }[]>('/languages');
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
-    .sort((left, right) => left.english_name.localeCompare(right.english_name));
+    .filter(({ english_name }) => typeof english_name === 'string');
+  const languageNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'language' }),
+    [locale]
+  );
+  const localizedLanguageOptions = useMemo(
+    () =>
+      languageOptions
+        .map(({ iso_639_1, english_name }) => {
+          const localized = languageNames.of(iso_639_1);
+          return {
+            iso_639_1,
+            name:
+              localized && localized.toLowerCase() !== iso_639_1.toLowerCase()
+                ? localized
+                : english_name,
+          };
+        })
+        .sort((left, right) => left.name.localeCompare(right.name, locale)),
+    [languageOptions, languageNames, locale]
+  );
   const [saved, setSaved] = useState(() => profileDraft(profile));
   const [draft, setDraft] = useState(saved);
   const [busy, setBusy] = useState(false);
@@ -505,9 +525,9 @@ function ProfileForm({
                   !languageOptions.some(
                     ({ iso_639_1 }) => iso_639_1 === value
                   ) && <option value={value}>{value}</option>}
-                {languageOptions.map(({ iso_639_1, english_name }) => (
+                {localizedLanguageOptions.map(({ iso_639_1, name }) => (
                   <option key={iso_639_1} value={iso_639_1}>
-                    {english_name}
+                    {name}
                   </option>
                 ))}
               </select>

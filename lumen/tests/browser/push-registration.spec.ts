@@ -131,7 +131,7 @@ for (const permission of ['granted', 'denied'] as const) {
 
     await page.goto(appPath('/me/account/notifications'));
     await expect(
-      page.getByRole('heading', { name: 'Registered Browser Devices' })
+      page.getByRole('heading', { name: 'Manage Devices' })
     ).toBeVisible();
     await page.getByRole('button', { name: 'Register This Browser' }).click();
 

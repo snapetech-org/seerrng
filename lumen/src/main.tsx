@@ -1,4 +1,4 @@
-import { lazy, StrictMode, Suspense, useEffect } from 'react';
+import { lazy, StrictMode, Suspense, useEffect, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
@@ -10,11 +10,14 @@ import {
   useParams,
 } from 'react-router-dom';
 import { AuthProvider, isAdministrator, useAuth } from './auth';
+import { ExtraGate } from './components/extra';
+import { MediaCategoryRoute } from './components/MediaCategoryRoute';
 import { PageBoundary } from './components/PageBoundary';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
 import { canManageDownloads } from './downloadPermissions';
+import type { Extra } from './extras';
 import { usePublicSettings } from './hooks';
 import { LumenLocaleProvider, useLumenLocale } from './i18n';
 import { canSearchIndexers } from './indexerPermissions';
@@ -117,6 +120,27 @@ const Blocklist = lazy(() => import('./pages/Blocklist'));
 const Issues = lazy(() => import('./pages/Issues'));
 const Downloads = lazy(() => import('./pages/Downloads'));
 
+function ExtraRoute({
+  category,
+  children,
+}: {
+  category: Extra;
+  children: ReactNode;
+}) {
+  return <ExtraGate k={category}>{children}</ExtraGate>;
+}
+
+function CuratedCollectionRoute() {
+  const { kind } = useParams();
+  if (kind === 'music')
+    return (
+      <ExtraRoute category="music">
+        <CuratedCollection />
+      </ExtraRoute>
+    );
+  return <CuratedCollection />;
+}
+
 function UserRequestsBookmark() {
   const { requesterId = '' } = useParams();
   const { search } = useLocation();
@@ -146,6 +170,23 @@ function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
       </button>
     </div>
   );
+}
+
+function AssociationRoute() {
+  const { mediaType } = useParams();
+  if (mediaType === 'movie')
+    return (
+      <MediaCategoryRoute categories={['movie']}>
+        <Associations />
+      </MediaCategoryRoute>
+    );
+  if (mediaType === 'tv')
+    return (
+      <MediaCategoryRoute categories={['tv']}>
+        <Associations />
+      </MediaCategoryRoute>
+    );
+  return <Associations />;
 }
 
 function App() {
@@ -209,29 +250,53 @@ function App() {
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/share" element={<Share />} />
-          <Route path="/identify" element={<SongIdentify />} />
-          <Route path="/music/playlist-import" element={<PlaylistImport />} />
-          <Route path="/track-requests" element={<TrackRequests />} />
-          <Route path="/trending" element={<Trending />} />
           <Route
-            path="/associations/:mediaType/:id"
-            element={<Associations />}
+            path="/identify"
+            element={
+              <ExtraRoute category="music">
+                <SongIdentify />
+              </ExtraRoute>
+            }
           />
-          <Route path="/list/:id" element={<TmdbList />} />
-          <Route path="/franchise/:mediaType/:id" element={<Franchise />} />
+          <Route
+            path="/music/playlist-import"
+            element={
+              <ExtraRoute category="music">
+                <PlaylistImport />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/track-requests"
+            element={
+              <ExtraRoute category="music">
+                <TrackRequests />
+              </ExtraRoute>
+            }
+          />
+          <Route path="/trending" element={<MediaCategoryRoute categories={['movie', 'tv']}><Trending /></MediaCategoryRoute>} />
+          <Route path="/associations/:mediaType/:id" element={<AssociationRoute />} />
+          <Route
+            path="/list/:id"
+            element={<MediaCategoryRoute categories={['movie', 'tv']}><TmdbList /></MediaCategoryRoute>}
+          />
+          <Route path="/franchise/tv/:id" element={<MediaCategoryRoute categories={['tv']}><Franchise /></MediaCategoryRoute>} />
+          <Route path="/franchise/anime/:id" element={<Franchise />} />
           <Route
             path="/movies/genres"
-            element={<GenreDirectory kind="movie" />}
+            element={<MediaCategoryRoute categories={['movie']}><GenreDirectory kind="movie" /></MediaCategoryRoute>}
           />
-          <Route path="/series/genres" element={<GenreDirectory kind="tv" />} />
-          <Route path="/movies" element={<Browse key="movie" kind="movie" />} />
+          <Route path="/series/genres" element={<MediaCategoryRoute categories={['tv']}><GenreDirectory kind="tv" /></MediaCategoryRoute>} />
+          <Route path="/movies" element={<MediaCategoryRoute categories={['movie']}><Browse key="movie" kind="movie" /></MediaCategoryRoute>} />
           <Route
             path="/author/:id"
             element={
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookGrouping kind="author" />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookGrouping kind="author" />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -241,7 +306,9 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookSeriesSearch />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesSearch />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -251,7 +318,9 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookSeriesCatalog />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesCatalog />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -261,54 +330,119 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <BookGrouping kind="series" />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookGrouping kind="series" />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
-          <Route path="/series" element={<Browse key="tv" kind="tv" />} />
+          <Route path="/series" element={<MediaCategoryRoute categories={['tv']}><Browse key="tv" kind="tv" /></MediaCategoryRoute>} />
           <Route
             path="/books/recommendations"
-            element={<BookRecommendations />}
+            element={<MediaCategoryRoute categories="book-recommendations"><BookRecommendations /></MediaCategoryRoute>}
           />
-          <Route path="/books" element={<Books key="ebook" format="ebook" />} />
+          <Route path="/books" element={<MediaCategoryRoute categories={['ebook']}><Books key="ebook" format="ebook" /></MediaCategoryRoute>} />
           <Route
             path="/audiobooks"
-            element={<Books key="audiobook" format="audiobook" />}
+            element={<MediaCategoryRoute categories={['audiobook']}><Books key="audiobook" format="audiobook" /></MediaCategoryRoute>}
           />
-          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/movie/:id" element={<MediaCategoryRoute categories={['movie']}><MovieDetail /></MediaCategoryRoute>} />
           <Route
             path="/movie/:id/similar"
-            element={<RelatedVideo media="movie" relation="similar" />}
+            element={<MediaCategoryRoute categories={['movie']}><RelatedVideo media="movie" relation="similar" /></MediaCategoryRoute>}
           />
           <Route
             path="/movie/:id/recommendations"
-            element={<RelatedVideo media="movie" relation="recommendations" />}
+            element={<MediaCategoryRoute categories={['movie']}><RelatedVideo media="movie" relation="recommendations" /></MediaCategoryRoute>}
           />
-          <Route path="/person/:id" element={<PersonDetail />} />
-          <Route path="/tv/:id" element={<TvDetail />} />
+          <Route path="/person/:id" element={<MediaCategoryRoute categories={['movie', 'tv']}><PersonDetail /></MediaCategoryRoute>} />
+          <Route path="/tv/:id" element={<MediaCategoryRoute categories={['tv']}><TvDetail /></MediaCategoryRoute>} />
           <Route
             path="/tv/:id/similar"
-            element={<RelatedVideo media="tv" relation="similar" />}
+            element={<MediaCategoryRoute categories={['tv']}><RelatedVideo media="tv" relation="similar" /></MediaCategoryRoute>}
           />
           <Route
             path="/tv/:id/recommendations"
-            element={<RelatedVideo media="tv" relation="recommendations" />}
+            element={<MediaCategoryRoute categories={['tv']}><RelatedVideo media="tv" relation="recommendations" /></MediaCategoryRoute>}
           />
           <Route
             path="/movie/:id/:credit"
-            element={<VideoCredits media="movie" />}
+            element={<MediaCategoryRoute categories={['movie']}><VideoCredits media="movie" /></MediaCategoryRoute>}
           />
-          <Route path="/tv/:id/:credit" element={<VideoCredits media="tv" />} />
-          <Route path="/book/:id" element={<BookDetail />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/music/collectors" element={<Collectors />} />
-          <Route path="/music/:id" element={<AlbumDetail />} />
-          <Route path="/artist/:id" element={<Artist />} />
-          <Route path="/comics" element={<Comics />} />
-          <Route path="/comic/:id" element={<ComicDetail />} />
-          <Route path="/magazines" element={<Magazines />} />
-          <Route path="/magazine/:title" element={<MagazineDetail />} />
-          <Route path="/games" element={<Games />} />
+          <Route path="/tv/:id/:credit" element={<MediaCategoryRoute categories={['tv']}><VideoCredits media="tv" /></MediaCategoryRoute>} />
+          <Route path="/book/:id" element={<MediaCategoryRoute categories="book-detail"><BookDetail /></MediaCategoryRoute>} />
+          <Route
+            path="/music"
+            element={
+              <ExtraRoute category="music">
+                <Music />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/collectors"
+            element={
+              <ExtraRoute category="music">
+                <Collectors />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/:id"
+            element={
+              <ExtraRoute category="music">
+                <AlbumDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/artist/:id"
+            element={
+              <ExtraRoute category="music">
+                <Artist />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/comics"
+            element={
+              <ExtraRoute category="comic">
+                <Comics />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/comic/:id"
+            element={
+              <ExtraRoute category="comic">
+                <ComicDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/magazines"
+            element={
+              <ExtraRoute category="magazine">
+                <Magazines />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/magazine/:title"
+            element={
+              <ExtraRoute category="magazine">
+                <MagazineDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/games"
+            element={
+              <ExtraRoute category="game">
+                <Games />
+              </ExtraRoute>
+            }
+          />
           <Route
             path="/games/discovery"
             element={
@@ -319,19 +453,77 @@ function App() {
                   </p>
                 }
               >
-                <GameDiscovery />
+                <ExtraRoute category="game">
+                  <GameDiscovery />
+                </ExtraRoute>
               </Suspense>
             }
           />
-          <Route path="/software" element={<SoftwareBookmark />} />
-          <Route path="/patches" element={<Patches />} />
-          <Route path="/patches/:id" element={<PatchDetail />} />
+          <Route
+            path="/software"
+            element={
+              <ExtraRoute category="game">
+                <SoftwareBookmark />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/patches"
+            element={
+              <ExtraRoute category="game">
+                <Patches />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/patches/:id"
+            element={
+              <ExtraRoute category="game">
+                <PatchDetail />
+              </ExtraRoute>
+            }
+          />
           <Route path="/game-library" element={<GameLibrary />} />
-          <Route path="/game/:category/:id" element={<GameDetail />} />
-          <Route path="/sports" element={<Sports />} />
-          <Route path="/sportarr/:id" element={<LeagueDetail />} />
-          <Route path="/adult" element={<Adult />} />
-          <Route path="/adult/:id" element={<SceneDetail />} />
+          <Route
+            path="/game/:category/:id"
+            element={
+              <ExtraRoute category="game">
+                <GameDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/sports"
+            element={
+              <ExtraRoute category="sports">
+                <Sports />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/sportarr/:id"
+            element={
+              <ExtraRoute category="sports">
+                <LeagueDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/adult"
+            element={
+              <ExtraRoute category="adult">
+                <Adult />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/adult/:id"
+            element={
+              <ExtraRoute category="adult">
+                <SceneDetail />
+              </ExtraRoute>
+            }
+          />
           <Route path="/search" element={<Search />} />
           <Route path="/household/:id" element={<HouseholdProfile />} />
           <Route path="/requests" element={<Requests />} />
@@ -345,7 +537,9 @@ function App() {
                   </p>
                 }
               >
-                <BookSeriesRequests />
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookSeriesRequests />
+                </MediaCategoryRoute>
               </Suspense>
             }
           />
@@ -417,7 +611,7 @@ function App() {
               <Suspense
                 fallback={<div className="detail-loading" aria-busy="true" />}
               >
-                <CuratedCollection />
+                <CuratedCollectionRoute />
               </Suspense>
             }
           />
@@ -478,7 +672,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/soon" element={<Soon />} />
+          <Route path="/soon" element={<MediaCategoryRoute categories={['movie']}><Soon /></MediaCategoryRoute>} />
           <Route path="/me" element={<Me />} />
           <Route
             path="/me/account"

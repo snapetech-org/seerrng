@@ -19,7 +19,7 @@ import {
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
-import { statusOf } from '../components/cards';
+import { StatLabel, statusOf } from '../components/cards';
 import {
   ActionBar,
   canManageRequests,
@@ -461,7 +461,7 @@ export default function BookDetail() {
     ) : s && s.k !== 'ok' ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s.ico} />
-        {s.word}
+        <StatLabel s={s} />
       </button>
     ) : (
       <button className="btn btn-primary" disabled={busy} onClick={request}>
@@ -529,7 +529,7 @@ export default function BookDetail() {
         <div className="dstatus">
           {s && (
             <Pill k={s.k} icon={s.ico}>
-              {s.word}
+              <StatLabel s={s} />
             </Pill>
           )}
           <IndexerSearchLink

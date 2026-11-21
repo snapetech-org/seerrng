@@ -42,7 +42,7 @@ test('request history renders within the selected locale and viewport', async ({
   )
     ? (process.env.LUMEN_REQUEST_HISTORY_LOCALE as 'en' | 'fr' | 'ar')
     : 'en';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   const expected = (english: string, french: string, arabic: string) =>
     candidate
       ? locale === 'ar'

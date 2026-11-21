@@ -2,6 +2,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import type { Paged, TitleResult } from '../api';
 import { GridSkeleton, TitleCard } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 
 interface PublicListPage extends Paged<TitleResult> {
@@ -19,7 +20,15 @@ export default function TmdbList() {
   const { data, error, reload } = useApi<PublicListPage>(
     validId ? `/discover/list/${id}?page=${page}` : null
   );
+  const extras = useExtras();
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
   const current = data?.page === page ? data : null;
+  const results = current?.results.filter(
+    (item) =>
+      (item.mediaType === 'movie' && movieEnabled) ||
+      (item.mediaType === 'tv' && tvEnabled)
+  );
 
   function move(next: number) {
     setParams(next === 1 ? {} : { page: String(next) });
@@ -44,12 +53,10 @@ export default function TmdbList() {
       )}
       <ServiceNote error={error} what="TMDB list" retry={reload} />
       {validId && !current && !error && <GridSkeleton />}
-      {current?.results.length === 0 && (
-        <p className="note">No titles on this page.</p>
-      )}
-      {!!current?.results.length && (
+      {results?.length === 0 && <p className="note">No titles on this page.</p>}
+      {!!results?.length && (
         <div className="grid">
-          {current.results.map((item) => (
+          {results.map((item) => (
             <TitleCard key={`${item.mediaType}:${item.id}`} it={item} />
           ))}
         </div>

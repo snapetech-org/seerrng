@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 
 export function StudioFilter({
@@ -9,6 +10,7 @@ export function StudioFilter({
   studio: string;
   select: (id: string) => void;
 }) {
+  const { t } = useLumenLocale();
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -23,7 +25,9 @@ export function StudioFilter({
         }}
       >
         <label className="sel">
-          <span className="lbl">Find Production Studios</span>
+          <span className="lbl">
+            {t('lumen.studioFilter.searchLabel', 'Find Production Studios')}
+          </span>
           <input
             className="cfg-input"
             type="search"
@@ -33,7 +37,7 @@ export function StudioFilter({
           />
         </label>
         <button className="btn btn-tonal btn-sm" disabled={!input.trim()}>
-          Find Studios
+          {t('lumen.studioFilter.search', 'Find Studios')}
         </button>
       </form>
       {query && (
@@ -67,6 +71,7 @@ function StudioResults({
     results: { id: number; name: string }[];
     total_pages: number;
   }>(`/search/company?query=${encodeURIComponent(query)}&page=${page}`);
+  const { t } = useLumenLocale();
   const studios = (results.data?.results ?? []).filter(
     ({ id }) => Number.isSafeInteger(id) && id > 0 && id <= 1_000_000_000
   );
@@ -75,19 +80,25 @@ function StudioResults({
     <>
       <ServiceNote
         error={results.error}
-        what="production studios"
+        what={t('lumen.studioFilter.what', 'production studios')}
         retry={results.reload}
       />
       {!results.data && !results.error && (
         <p className="note" role="status">
-          Finding production studios…
+          {t('lumen.studioFilter.loading', 'Finding production studios…')}
         </p>
       )}
       {results.data && !studios.length && (
-        <p className="note">No matching production studios.</p>
+        <p className="note">
+          {t('lumen.studioFilter.empty', 'No matching production studios.')}
+        </p>
       )}
       {!!studios.length && (
-        <div className="toolbar" role="group" aria-label="Studio Results">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t('lumen.studioFilter.results', 'Studio Results')}
+        >
           {studios.map(({ id, name }) => (
             <button
               className="chip"
@@ -102,14 +113,18 @@ function StudioResults({
         </div>
       )}
       {(page > 1 || total > 1) && (
-        <div className="toolbar" role="group" aria-label="Studio Pages">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t('lumen.studioFilter.pages', 'Studio Pages')}
+        >
           <button
             className="btn btn-tonal btn-sm"
             type="button"
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
           >
-            Previous Studio Page
+            {t('lumen.studioFilter.previous', 'Previous Studio Page')}
           </button>
           <button
             className="btn btn-tonal btn-sm"
@@ -117,7 +132,7 @@ function StudioResults({
             disabled={page >= total}
             onClick={() => setPage(page + 1)}
           >
-            Next Studio Page
+            {t('lumen.studioFilter.next', 'Next Studio Page')}
           </button>
         </div>
       )}

@@ -6,6 +6,7 @@ import { Section } from '../components/cards';
 import { useToast } from '../components/toast';
 import { isCompanionBrandingPath, parseCompanionConfig } from '../configImport';
 import { embedded, lumenAdminUrl } from '../deployment';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { logoShapeOf, mediaServer, type LogoShape } from '../mediaServer';
 import {
@@ -21,12 +22,19 @@ import {
 // next load. Lumen has no database: its nginx saves the file into a mounted /lumen-data folder
 // (deploy/lumen-config.js). Without that folder the file is downloaded and mounted by hand.
 const SWITCHES = [
-  ['hoverRequest', 'Quick request on posters'],
-  ['wholeSeriesDefault', 'Request whole series by default'],
-  ['requestOptions', 'Admins choose server and folder on quick requests'],
-  ['narratorChoice', 'Choose audiobook narrators'],
-  ['showBooks', 'Show books and audiobooks'],
+  ['hoverRequest', 'quickRequest'],
+  ['wholeSeriesDefault', 'wholeSeries'],
+  ['requestOptions', 'requestOptions'],
+  ['narratorChoice', 'narrators'],
+  ['showBooks', 'books'],
 ] as const;
+const switchFallback: Record<(typeof SWITCHES)[number][1], string> = {
+  quickRequest: 'Quick request on posters',
+  wholeSeries: 'Request whole series by default',
+  requestOptions: 'Admins choose server and folder on quick requests',
+  narrators: 'Choose audiobook narrators',
+  books: 'Show books and audiobooks',
+};
 type Switch = (typeof SWITCHES)[number][0];
 type Edit = (c: AdminConfig) => AdminConfig;
 
@@ -42,6 +50,7 @@ function Lock({
   locked: boolean;
   onChange: (locked: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
   return (
     <label className="cfg-lock">
       <input
@@ -49,7 +58,7 @@ function Lock({
         checked={!locked}
         onChange={(e) => onChange(!e.target.checked)}
       />
-      Let people change it
+      {t('lumen.adminSettings.allowChange', 'Let people change it')}
     </label>
   );
 }
@@ -65,6 +74,9 @@ function Row({
   locked: boolean;
   onChange: (on: boolean, locked: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
+  const admin = (key: string, fallback: string) =>
+    t(`lumen.adminSettings.${key}`, fallback);
   const value = `${on ? 'on' : 'off'}${locked ? '-locked' : ''}`;
   return (
     <label className="set cfg-row">
@@ -80,10 +92,14 @@ function Row({
           onChange(v.startsWith('on'), v.endsWith('-locked'));
         }}
       >
-        <option value="on">On (people can turn it off)</option>
-        <option value="off">Off (people can turn it on)</option>
-        <option value="on-locked">Always on</option>
-        <option value="off-locked">Always off</option>
+        <option value="on">
+          {admin('onCanChange', 'On (people can turn it off)')}
+        </option>
+        <option value="off">
+          {admin('offCanChange', 'Off (people can turn it on)')}
+        </option>
+        <option value="on-locked">{admin('alwaysOn', 'Always on')}</option>
+        <option value="off-locked">{admin('alwaysOff', 'Always off')}</option>
       </select>
     </label>
   );
@@ -100,9 +116,16 @@ function Upload({
   uploading: 'logo' | 'icon' | null;
   onFile: (kind: 'logo' | 'icon', file: File) => void;
 }) {
+  const { t } = useLumenLocale();
+  const admin = (key: string, fallback: string) =>
+    t(`lumen.adminSettings.${key}`, fallback);
+  const label =
+    kind === 'logo' ? admin('logo', 'Logo') : admin('tabIcon', 'Tab icon');
   return ready ? (
     <label className="btn btn-tonal btn-sm cfg-upload">
-      {uploading === kind ? 'Uploading…' : 'Upload'}
+      {uploading === kind
+        ? admin('uploading', 'Uploading…')
+        : admin('upload', 'Upload')}
       <input
         type="file"
         className="sr"
@@ -111,7 +134,10 @@ function Upload({
             ? 'image/png,image/jpeg,image/webp'
             : 'image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon'
         }
-        aria-label={kind === 'logo' ? 'Upload logo' : 'Upload tab icon'}
+        aria-label={admin(
+          kind === 'logo' ? 'uploadLogo' : 'uploadTabIcon',
+          `Upload ${label.toLowerCase()}`
+        )}
         disabled={!!uploading}
         onChange={(e) => {
           const f = e.target.files?.[0];
@@ -124,9 +150,12 @@ function Upload({
     <button
       className="btn btn-tonal btn-sm"
       disabled
-      title="Upload needs writable storage and the current settings. See the message above."
+      title={admin(
+        'uploadUnavailable',
+        'Upload needs writable storage and the current settings. See the message above.'
+      )}
     >
-      Upload
+      {admin('upload', 'Upload')}
     </button>
   );
 }
@@ -136,6 +165,12 @@ const clone = (c: AdminConfig): AdminConfig =>
 
 export default function LumenSettings() {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
+  const admin = (
+    key: string,
+    fallback: string,
+    values?: Record<string, string | number>
+  ) => t(`lumen.adminSettings.${key}`, fallback, values);
   const { adminConfig, adminConfigState, retryAdminConfig, adminSaved } =
     usePrefs();
   const toast = useToast();
@@ -231,7 +266,12 @@ export default function LumenSettings() {
   const json = useMemo(() => JSON.stringify(cfg, null, 2) + '\n', [cfg]);
   const importConfig = async (file: File) => {
     if (file.size > 64 * 1024) {
-      toast('Choose a Lumen configuration file of up to 64 KiB.');
+      toast(
+        admin(
+          'importTooLarge',
+          'Choose a Lumen configuration file of up to 64 KiB.'
+        )
+      );
       return;
     }
     setImporting(true);
@@ -244,10 +284,17 @@ export default function LumenSettings() {
       setCfg(() => imported);
       setMissingBranding(missing);
       setImportDraft(true);
-      toast('Configuration loaded into your draft. Review it before saving.');
+      toast(
+        admin(
+          'importLoaded',
+          'Configuration loaded into your draft. Review it before saving.'
+        )
+      );
     } catch (error) {
       toast(
-        error instanceof Error ? error.message : 'Could not read the file.'
+        error instanceof Error
+          ? error.message
+          : admin('fileReadFailed', 'Could not read the file.')
       );
     } finally {
       setImporting(false);
@@ -283,9 +330,16 @@ export default function LumenSettings() {
       setImportDraft(false);
       edits.current = edits.current.slice(sent);
       adminSaved(JSON.parse(json));
-      toast('Saved. Everyone gets it the next time they open Lumen.');
+      toast(
+        admin(
+          'saveSuccess',
+          'Saved. Everyone gets it the next time they open Lumen.'
+        )
+      );
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Couldn’t save');
+      toast(
+        e instanceof Error ? e.message : admin('saveFailed', 'Couldn’t save')
+      );
     } finally {
       setSaving(false);
     }
@@ -297,7 +351,7 @@ export default function LumenSettings() {
   const upload = async (kind: 'logo' | 'icon', file: File) => {
     if (!loaded) return;
     if (file.size > 2 * 1024 * 1024) {
-      toast('Choose an image of up to 2 MB.');
+      toast(admin('imageTooLarge', 'Choose an image of up to 2 MB.'));
       return;
     }
     setUploading(kind);
@@ -319,7 +373,7 @@ export default function LumenSettings() {
         setMissingBranding((previous) =>
           previous.filter((item) => item !== kind)
         );
-        toast('Image added to your draft.');
+        toast(admin('imageDraftAdded', 'Image added to your draft.'));
         return;
       }
       const saved: AdminConfig = {
@@ -331,10 +385,19 @@ export default function LumenSettings() {
       setBrand(kind, d.url);
       adminSaved(saved);
       toast(
-        `${kind === 'logo' ? 'Logo' : 'Tab icon'} uploaded and saved for everyone.`
+        admin('imageSaveSuccess', '{asset} uploaded and saved for everyone.', {
+          asset:
+            kind === 'logo'
+              ? admin('logo', 'Logo')
+              : admin('tabIcon', 'Tab icon'),
+        })
       );
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Couldn’t upload');
+      toast(
+        e instanceof Error
+          ? e.message
+          : admin('uploadFailed', 'Couldn’t upload')
+      );
     } finally {
       setUploading(null);
     }
@@ -351,14 +414,18 @@ export default function LumenSettings() {
   const copy = () =>
     navigator.clipboard
       ?.writeText(json)
-      .then(() => toast('Copied lumen-config.json'))
-      .catch(() => toast('Couldn’t copy. Select the text below instead.'));
+      .then(() => toast(admin('copied', 'Copied lumen-config.json')))
+      .catch(() =>
+        toast(
+          admin('copyFailed', 'Couldn’t copy. Select the text below instead.')
+        )
+      );
 
   if (!isAdmin)
     return (
       <div className="empty">
-        <b>Admins only</b>
-        These settings change Lumen for everyone.
+        <b>{admin('adminsOnly', 'Admins only')}</b>
+        {admin('adminsOnlyHelp', 'These settings change Lumen for everyone.')}
       </div>
     );
 
@@ -368,25 +435,29 @@ export default function LumenSettings() {
         <div className="ph-row">
           <div>
             <Link className="btn btn-quiet btn-sm" to="/me">
-              <Icon name="chevL" size="sm" /> You
+              <Icon name="chevL" size="sm" /> {admin('you', 'You')}
             </Link>
-            <h1>Lumen settings for everyone</h1>
+            <h1>{admin('title', 'Lumen settings for everyone')}</h1>
           </div>
         </div>
         <p className="sub">
           {saveState?.canSave ? (
             <>
-              Pick what everyone gets, then select <b>Save for everyone</b>.
+              {admin('introReady', 'Pick what everyone gets, then select')}{' '}
+              <b>{admin('saveForEveryone', 'Save for everyone')}</b>.
             </>
           ) : (
             <>
-              Save and Upload need writable storage. You can still download your
-              settings.
+              {admin(
+                'introReadOnly',
+                'Save and Upload need writable storage. You can still download your settings.'
+              )}
             </>
           )}{' '}
-          People see the change the next time they open Lumen. “Always on” and
-          “Always off” can’t be changed on anyone’s You page; the others are
-          just where everyone starts.
+          {admin(
+            'introApply',
+            'People see the change the next time they open Lumen. “Always on” and “Always off” can’t be changed on anyone’s You page; the others are just where everyone starts.'
+          )}
         </p>
       </header>
 
@@ -395,49 +466,77 @@ export default function LumenSettings() {
           <p>
             {embedded
               ? (saveState.message ??
-                'Included Lumen cannot save its settings. Check that SeerrNG’s config volume is writable.')
+                admin(
+                  'storageIncluded',
+                  'Included Lumen cannot save its settings. Check that SeerrNG’s config volume is writable.'
+                ))
               : saveState.folder === 'readonly'
-                ? `Lumen cannot write to /lumen-data. Mount it read-write and give its host folder to UID:GID ${saveState.uid ?? 'the container user'}:${saveState.gid ?? 'the container group'}.`
+                ? admin(
+                    'storageReadOnly',
+                    'Lumen cannot write to /lumen-data. Mount it read-write and give its host folder to UID:GID {uid}:{gid}.',
+                    {
+                      uid: saveState.uid ?? 'the container user',
+                      gid: saveState.gid ?? 'the container group',
+                    }
+                  )
                 : saveState.folder === 'missing'
-                  ? 'Mount a writable host folder at /lumen-data to enable Save and Upload.'
-                  : 'Could not check Lumen storage. Check the container logs, then try again.'}
+                  ? admin(
+                      'storageMissing',
+                      'Mount a writable host folder at /lumen-data to enable Save and Upload.'
+                    )
+                  : admin(
+                      'storageUnknown',
+                      'Could not check Lumen storage. Check the container logs, then try again.'
+                    )}
           </p>
           {embedded && saveState.uid != null && saveState.gid != null && (
             <p>
-              SeerrNG runs as UID {saveState.uid} and GID {saveState.gid}.
+              {admin(
+                'containerIdentity',
+                'SeerrNG runs as UID {uid} and GID {gid}.',
+                { uid: saveState.uid, gid: saveState.gid }
+              )}
             </p>
           )}
           <button
             className="btn btn-tonal btn-sm"
             onClick={() => setStorageCheck((n) => n + 1)}
           >
-            Check storage again
+            {admin('checkStorage', 'Check storage again')}
           </button>
           {!embedded && (
             <p>
-              Compose: put <code>user: "1000:1000"</code> beside{' '}
-              <code>environment:</code>, with the same indentation. It is not an
-              environment variable.
+              {admin('composePrefix', 'Compose: put')}{' '}
+              <code>user: "1000:1000"</code> {admin('composeMiddle', 'beside')}{' '}
+              <code>environment:</code>
+              {admin(
+                'composeSuffix',
+                ', with the same indentation. It is not an environment variable.'
+              )}
             </p>
           )}
-          <p>Your draft stays here while you check.</p>
+          <p>
+            {admin('draftRetained', 'Your draft stays here while you check.')}
+          </p>
         </div>
       )}
 
       {adminConfigState === 'failed' ? (
         <div className="note" role="alert">
           <p>
-            Couldn’t load the current settings, so Save and Upload are off: they
-            would replace settings this page hasn’t seen.
+            {admin(
+              'loadFailed',
+              'Couldn’t load the current settings, so Save and Upload are off: they would replace settings this page hasn’t seen.'
+            )}
           </p>
           <button className="btn btn-tonal btn-sm" onClick={retryAdminConfig}>
-            Try again
+            {admin('tryAgain', 'Try again')}
           </button>
         </div>
       ) : (
         adminConfigState === 'loading' && (
           <div className="note" role="status">
-            <p>Loading the current settings…</p>
+            <p>{admin('loading', 'Loading the current settings…')}</p>
           </div>
         )
       )}
@@ -456,22 +555,27 @@ export default function LumenSettings() {
         </div>
       </Section>
 
-      <Section title="Sign-in and media server">
+      <Section title={admin('signInSection', 'Sign-in and media server')}>
         <div className="setlist">
           <label className="set cfg-row">
             <span>
-              <b>Media server</b>
+              <b>{admin('mediaServer', 'Media server')}</b>
               <small>
-                Names in every label and the sign-in button. SeerrNG reports{' '}
-                {mediaServer().source === 'seerrng'
-                  ? mediaServer().product
-                  : 'its own server'}
-                .
+                {admin(
+                  'mediaServerHelp',
+                  'Names in every label and the sign-in button. SeerrNG reports {server}.',
+                  {
+                    server:
+                      mediaServer().source === 'seerrng'
+                        ? mediaServer().product
+                        : 'its own server',
+                  }
+                )}{' '}
               </small>
             </span>
             <select
               className="cfg-select"
-              aria-label="Media server"
+              aria-label={admin('mediaServer', 'Media server')}
               value={cfg.mediaServer || 'auto'}
               onChange={(e) =>
                 setTop(
@@ -480,7 +584,9 @@ export default function LumenSettings() {
                 )
               }
             >
-              <option value="auto">Follow SeerrNG</option>
+              <option value="auto">
+                {admin('followSeerr', 'Follow SeerrNG')}
+              </option>
               <option value="plex">Plex</option>
               <option value="jellyfin">Jellyfin</option>
               <option value="emby">Emby</option>
@@ -488,15 +594,18 @@ export default function LumenSettings() {
           </label>
           <label className="set cfg-row">
             <span>
-              <b>Media server name</b>
+              <b>{admin('mediaServerName', 'Media server name')}</b>
               <small>
-                Replaces “{mediaServer().product}” everywhere: “On …”, “Watch on
-                …”, filters and sign-in. Leave empty to keep it.
+                {admin(
+                  'mediaServerNameHelp',
+                  'Replaces “{product}” everywhere: “On …”, “Watch on …”, filters and sign-in. Leave empty to keep it.',
+                  { product: mediaServer().product }
+                )}
               </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Media server name"
+              aria-label={admin('mediaServerName', 'Media server name')}
               placeholder={mediaServer().product}
               value={(cfg.mediaServerName as string) || ''}
               onChange={(e) => setTop('mediaServerName', e.target.value)}
@@ -504,16 +613,17 @@ export default function LumenSettings() {
           </label>
           <label className="set cfg-row">
             <span>
-              <b>Sign-in page</b>
+              <b>{admin('signInPage', 'Sign-in page')}</b>
               <small>
-                Jellyfin and Emby: show the username and password boxes straight
-                away, without naming the media server. With buttons, each device
-                opens the way it last signed in.
+                {admin(
+                  'signInHelp',
+                  'Jellyfin and Emby: show the username and password boxes straight away, without naming the media server. With buttons, each device opens the way it last signed in.'
+                )}
               </small>
             </span>
             <select
               className="cfg-select"
-              aria-label="Sign-in page"
+              aria-label={admin('signInPage', 'Sign-in page')}
               value={cfg.loginStyle || 'buttons'}
               onChange={(e) =>
                 setTop(
@@ -522,18 +632,27 @@ export default function LumenSettings() {
                 )
               }
             >
-              <option value="buttons">Buttons (Continue with …)</option>
-              <option value="form">Username and password form</option>
+              <option value="buttons">
+                {admin('signInButtons', 'Buttons (Continue with …)')}
+              </option>
+              <option value="form">
+                {admin('signInForm', 'Username and password form')}
+              </option>
             </select>
           </label>
           <label className="set cfg-row">
             <span>
-              <b>Full SeerrNG address</b>
-              <small>Where “Open full SeerrNG” goes</small>
+              <b>{admin('fullSeerrAddress', 'Full SeerrNG address')}</b>
+              <small>
+                {admin(
+                  'fullSeerrAddressHelp',
+                  'Where “Open full SeerrNG” goes'
+                )}
+              </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Full SeerrNG address"
+              aria-label={admin('fullSeerrAddress', 'Full SeerrNG address')}
               placeholder="https://seerr.example.com"
               value={(cfg.seerrPublicUrl as string) || ''}
               onChange={(e) => setTop('seerrPublicUrl', e.target.value)}
@@ -541,12 +660,20 @@ export default function LumenSettings() {
           </label>
           <label className="set cfg-row">
             <span>
-              <b>Audiobookshelf address</b>
-              <small>Where “Listen in Audiobookshelf” goes</small>
+              <b>{admin('audiobookshelfAddress', 'Audiobookshelf address')}</b>
+              <small>
+                {admin(
+                  'audiobookshelfAddressHelp',
+                  'Where “Listen in Audiobookshelf” goes'
+                )}
+              </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Audiobookshelf address"
+              aria-label={admin(
+                'audiobookshelfAddress',
+                'Audiobookshelf address'
+              )}
               placeholder="https://books.example.com"
               value={(cfg.audiobookshelfUrl as string) || ''}
               onChange={(e) => setTop('audiobookshelfUrl', e.target.value)}
@@ -554,15 +681,17 @@ export default function LumenSettings() {
           </label>
           <label className="set cfg-row">
             <span>
-              <b>Kavita address</b>
+              <b>{admin('kavitaAddress', 'Kavita address')}</b>
               <small>
-                Where “Read in Kavita” goes. Leave empty to use SeerrNG’s Kavita
-                address
+                {admin(
+                  'kavitaAddressHelp',
+                  'Where “Read in Kavita” goes. Leave empty to use SeerrNG’s Kavita address'
+                )}
               </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Kavita address"
+              aria-label={admin('kavitaAddress', 'Kavita address')}
               placeholder="https://manga.example.com"
               value={(cfg.kavitaUrl as string) || ''}
               onChange={(e) => setTop('kavitaUrl', e.target.value)}
@@ -571,28 +700,37 @@ export default function LumenSettings() {
         </div>
       </Section>
 
-      <Section title="Logo and tab icon">
+      <Section title={admin('brandingSection', 'Logo and tab icon')}>
         {missingBranding.length > 0 && (
           <p className="note" role="status">
-            Upload the companion{' '}
+            {admin('missingBrandingPrefix', 'Upload the companion')}{' '}
             {missingBranding
-              .map((kind) => (kind === 'icon' ? 'tab icon' : 'logo'))
+              .map((kind) =>
+                kind === 'icon'
+                  ? admin('tabIcon', 'tab icon')
+                  : admin('logo', 'logo')
+              )
               .join(' and ')}{' '}
-            as PNG, JPEG, or WebP before saving.
+            {admin(
+              'missingBrandingSuffix',
+              'as PNG, JPEG, or WebP before saving.'
+            )}
           </p>
         )}
         <div className="setlist">
           <label className="set cfg-row">
             <span>
-              <b>Name</b>
+              <b>{admin('name', 'Name')}</b>
               <small>
-                Next to the logo and in the browser tab. Leave empty to hide the
-                text.
+                {admin(
+                  'nameHelp',
+                  'Next to the logo and in the browser tab. Leave empty to hide the text.'
+                )}
               </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Name"
+              aria-label={admin('name', 'Name')}
               placeholder="SeerrNG"
               value={cfg.branding?.name ?? ''}
               onChange={(e) => setBrand('name', e.target.value)}
@@ -600,16 +738,22 @@ export default function LumenSettings() {
           </label>
           <div className="set cfg-row">
             <span>
-              <b>Logo</b>
+              <b>{admin('logo', 'Logo')}</b>
               <small>
                 {saveState?.canSave
-                  ? 'Square image: upload one, or an address such as /branding/logo.png or https://…'
-                  : 'Square image, e.g. /branding/logo.png (mount a branding folder) or an https address'}
+                  ? admin(
+                      'logoUploadHelp',
+                      'Square image: upload one, or an address such as /branding/logo.png or https://…'
+                    )
+                  : admin(
+                      'logoManualHelp',
+                      'Square image, e.g. /branding/logo.png (mount a branding folder) or an https address'
+                    )}
               </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Logo address"
+              aria-label={admin('logoAddress', 'Logo address')}
               placeholder="/branding/logo.png"
               value={cfg.branding?.logo ?? ''}
               onChange={(e) => setBrand('logo', e.target.value)}
@@ -623,18 +767,27 @@ export default function LumenSettings() {
           </div>
           <div className="set cfg-row">
             <span>
-              <b>Tab icon</b>
+              <b>{admin('tabIcon', 'Tab icon')}</b>
               <small>
                 {saveState?.canSave
                   ? embedded
-                    ? 'Square PNG, JPEG or WebP: upload one, or use an image address'
-                    : 'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
-                  : 'PNG or SVG, e.g. /branding/icon.png'}
+                    ? admin(
+                        'iconUploadEmbedded',
+                        'Square PNG, JPEG or WebP: upload one, or use an image address'
+                      )
+                    : admin(
+                        'iconUploadCompanion',
+                        'Square PNG or SVG: upload one, or an address such as /branding/icon.png'
+                      )
+                  : admin(
+                      'iconManualHelp',
+                      'PNG or SVG, e.g. /branding/icon.png'
+                    )}
               </small>
             </span>
             <input
               className="cfg-input"
-              aria-label="Tab icon address"
+              aria-label={admin('tabIconAddress', 'Tab icon address')}
               placeholder="/branding/icon.png"
               value={cfg.branding?.icon ?? ''}
               onChange={(e) => setBrand('icon', e.target.value)}
@@ -651,18 +804,24 @@ export default function LumenSettings() {
           </div>
           <div className="set cfg-row">
             <span>
-              <b>Logo shape</b>
+              <b>{admin('logoShape', 'Logo shape')}</b>
               <small>
-                How the logo is framed next to the name. “As uploaded” keeps the
-                file as it is: transparent, uncropped and as wide as it is.
+                {admin(
+                  'logoShapeHelp',
+                  'How the logo is framed next to the name. “As uploaded” keeps the file as it is: transparent, uncropped and as wide as it is.'
+                )}
               </small>
             </span>
-            <div className="seg" role="group" aria-label="Logo shape">
+            <div
+              className="seg"
+              role="group"
+              aria-label={admin('logoShape', 'Logo shape')}
+            >
               {(
                 [
-                  ['rounded', 'Rounded square'],
-                  ['circle', 'Circle'],
-                  ['raw', 'As uploaded'],
+                  ['rounded', 'roundedSquare'],
+                  ['circle', 'circle'],
+                  ['raw', 'asUploaded'],
                 ] as [LogoShape, string][]
               ).map(([v, t]) => (
                 <button
@@ -671,7 +830,14 @@ export default function LumenSettings() {
                   aria-pressed={shape === v}
                   onClick={() => setBrand('logoShape', v)}
                 >
-                  {t}
+                  {admin(
+                    `shape.${t}`,
+                    t === 'roundedSquare'
+                      ? 'Rounded square'
+                      : t === 'circle'
+                        ? 'Circle'
+                        : 'As uploaded'
+                  )}
                 </button>
               ))}
             </div>
@@ -679,9 +845,12 @@ export default function LumenSettings() {
           {(cfg.branding?.logo || cfg.branding?.name !== undefined) && (
             <div className="set cfg-row">
               <span>
-                <b>Preview</b>
+                <b>{admin('preview', 'Preview')}</b>
               </span>
-              <span className="brand cfg-preview" aria-label="Logo preview">
+              <span
+                className="brand cfg-preview"
+                aria-label={admin('logoPreview', 'Logo preview')}
+              >
                 {cfg.branding?.logo ? (
                   <img
                     className={`mark mark-img mark-${shape}`}
@@ -700,23 +869,28 @@ export default function LumenSettings() {
         </div>
       </Section>
 
-      <Section title="Defaults for everyone">
+      <Section title={admin('defaultsSection', 'Defaults for everyone')}>
         <div className="setlist">
-          {SWITCHES.map(([k, t]) => (
-            <Row key={k} title={t} on={defaults[k as Switch]} {...row(k)} />
+          {SWITCHES.map(([k, key]) => (
+            <Row
+              key={k}
+              title={admin(`switch.${key}`, switchFallback[key])}
+              on={defaults[k as Switch]}
+              {...row(k)}
+            />
           ))}
           <div className="set cfg-row">
             <span>
-              <b>Theme</b>
+              <b>{admin('theme', 'Theme')}</b>
             </span>
             <select
               className="cfg-select"
               value={defaults.theme}
               onChange={(e) => setDefault('theme', e.target.value)}
             >
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-              <option value="system">Device</option>
+              <option value="dark">{admin('dark', 'Dark')}</option>
+              <option value="light">{admin('light', 'Light')}</option>
+              <option value="system">{admin('device', 'Device')}</option>
             </select>
             <Lock
               locked={locked.has('theme')}
@@ -726,12 +900,18 @@ export default function LumenSettings() {
         </div>
       </Section>
 
-      <Section title="Discover rows">
+      <Section title={t('lumen.me.discoverRows', 'Discover rows')}>
         <div className="setlist">
           {(Object.keys(DISCOVER_ROWS) as DiscoverRow[]).map((r) => (
             <Row
               key={r}
-              title={discoverRowLabel(r)}
+              title={t(
+                r === 'newOnPlex'
+                  ? 'lumen.me.row.newOnServer'
+                  : `lumen.me.row.${r}`,
+                discoverRowLabel(r),
+                r === 'newOnPlex' ? { server: mediaServer().name } : undefined
+              )}
               on={rows[r]}
               {...row(`rows.${r}`)}
             />
@@ -753,31 +933,41 @@ export default function LumenSettings() {
             }
             title={
               !saveState?.canSave
-                ? 'Saving needs writable storage. See the storage message above.'
+                ? admin(
+                    'saveStorageTitle',
+                    'Saving needs writable storage. See the storage message above.'
+                  )
                 : !loaded
-                  ? 'Saving waits for the current settings. See the message above.'
+                  ? admin(
+                      'saveLoadTitle',
+                      'Saving waits for the current settings. See the message above.'
+                    )
                   : undefined
             }
           >
-            {saving ? 'Saving…' : 'Save for everyone'}
+            {saving
+              ? admin('saving', 'Saving…')
+              : admin('saveForEveryone', 'Save for everyone')}
           </button>
           <button
             className={`btn ${saveState?.canSave ? 'btn-tonal' : 'btn-primary'}`}
             onClick={download}
           >
-            Download lumen-config.json
+            {admin('download', 'Download lumen-config.json')}
           </button>
           <button className="btn btn-tonal" onClick={copy}>
-            Copy
+            {admin('copy', 'Copy')}
           </button>
           {embedded && (
             <label className="btn btn-tonal cfg-upload">
-              {importing ? 'Reading…' : 'Import lumen-config.json'}
+              {importing
+                ? admin('reading', 'Reading…')
+                : admin('import', 'Import lumen-config.json')}
               <input
                 type="file"
                 className="sr"
                 accept=".json,application/json"
-                aria-label="Import lumen-config.json"
+                aria-label={admin('import', 'Import lumen-config.json')}
                 disabled={!loaded || saving || importing || !!uploading}
                 onChange={(event) => {
                   const file = event.target.files?.[0];
@@ -790,6 +980,7 @@ export default function LumenSettings() {
         </div>
         <textarea
           className="cfg-json"
+          dir="ltr"
           readOnly
           value={json}
           aria-label="lumen-config.json"

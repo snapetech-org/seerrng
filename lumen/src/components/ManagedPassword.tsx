@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 
 export default function ManagedPassword({
   id,
@@ -9,6 +10,7 @@ export default function ManagedPassword({
   id: number;
   name: string;
 }) {
+  const { t } = useLumenLocale();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -26,7 +28,12 @@ export default function ManagedPassword({
       newPassword.length < 8 ||
       newPassword !== fields.get('confirmPassword')
     ) {
-      setError('Enter matching passwords of at least 8 characters.');
+      setError(
+        t(
+          'lumen.managedPassword.mismatch',
+          'Enter matching passwords of at least 8 characters.'
+        )
+      );
       return;
     }
     working.current = true;
@@ -41,9 +48,18 @@ export default function ManagedPassword({
         'empty'
       );
       form.reset();
-      setNotice('Local password saved.');
+      setNotice(t('lumen.managedPassword.saved', 'Local password saved.'));
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not save the local password.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.managedPassword.saveFailure',
+            'Could not save the local password.'
+          ),
+          t
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -53,7 +69,11 @@ export default function ManagedPassword({
   return (
     <div>
       <p className="note">
-        Set a new password for {name}’s SeerrNG local login.
+        {t(
+          'lumen.managedPassword.description',
+          'Set a new password for {name}’s SeerrNG local login.',
+          { name }
+        )}
       </p>
       {error && (
         <p className="note" role="alert">
@@ -67,7 +87,9 @@ export default function ManagedPassword({
       )}
       <form className="toolbar" onSubmit={save}>
         <label className="sel">
-          <span className="lbl">New Local Password</span>
+          <span className="lbl">
+            {t('lumen.managedPassword.newPassword', 'New Local Password')}
+          </span>
           <input
             className="cfg-json"
             name="newPassword"
@@ -80,7 +102,12 @@ export default function ManagedPassword({
           />
         </label>
         <label className="sel">
-          <span className="lbl">Confirm New Local Password</span>
+          <span className="lbl">
+            {t(
+              'lumen.managedPassword.confirmPassword',
+              'Confirm New Local Password'
+            )}
+          </span>
           <input
             className="cfg-json"
             name="confirmPassword"
@@ -93,7 +120,7 @@ export default function ManagedPassword({
           />
         </label>
         <button className="btn btn-tonal btn-sm" disabled={busy}>
-          Save Local Password
+          {t('lumen.managedPassword.save', 'Save Local Password')}
         </button>
       </form>
     </div>

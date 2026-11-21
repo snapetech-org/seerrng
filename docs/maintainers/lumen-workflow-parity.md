@@ -13,15 +13,69 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
-| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls now sync through the authenticated SeerrNG user settings API. | Finish per-category provider gating, filter and paging edges, empty/error states, and native-matched visual acceptance. Verify remaining live provider data separately. |
+| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. Discover shell labels, shelf headings, empty/error/retry states, recent-media dates, and card title-view actions follow English, French, and Arabic locale in standalone and bundled deployments. Trending localizes its media/time filters and load/empty states and retains API filters after retry. | Finish remaining filter and paging edges, other route localization, native-matched visual acceptance, and verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
-| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. | Complete remaining cross-provider mutations, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
-| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar, Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify full filter/source parity, real multi-user playback and provider results, and native-matched and bundled acceptance. |
-| Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
+| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. My Media supports account recovery, private identity mapping packs, tracking updates, and resumable scans. Delegated Watchlists and ambiguous combined-list ownership are covered. | Verify live provider mutations, determine whether a separate delegated library-sharing workflow exists in native SeerrNG, and complete native-matched/bundled acceptance. |
+| Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Its copy and release details are localized for English, French, and Arabic in standalone and bundled deployments. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
+| Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request history and lifecycle, title/edition identity, progress, permission-aware retry, explicit Sonarr season mapping, managed-copy cleanup that preserves history, and supported 4K paths. Lumen’s TV request state covers exact season and episode selection, quota approval, destination-specific settings, and fixture-covered season-metadata retry with selection preservation. The large-series failure in the tester screenshot remains unconfirmed against a live provider. Role fixtures cover own-request scope, read-only household visibility, manager moderation of a foreign request, owner cancellation, category-authorized retry, season mapping, and managed-copy removal in standalone and bundled deployments. | Compare each media category independently; verify live season metadata, live service handoff, and matched native visuals. Request-role evidence is in `requests-pages.spec.ts`, `request-status.spec.ts`, and `request-retry-coverage.spec.ts`; fixtures do not establish live server/provider behavior. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
-| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Cover remaining media types and action eligibility; verify mobile native-matched visuals and bundled deployments. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; the shell/account headings have an initial translated message slice. Signed-out Lumen login and password recovery now follow the browser's supported locale in French and Arabic. TV Request Settings now reuses SeerrNG translations for the policy, review queue, and Episode Queue controls. | Translate remaining Lumen routes and account fields; complete the full settings role matrix and failure recovery; qualify provider authorization, persistence/readback, and bundled visuals. |
-| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. | Audit each route's permission, validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
+| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Verify mobile native-matched visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, and personal-notification copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Translate the remaining account subroutes and fields; finish failure recovery and role/state matrices; verify real authorization, provider persistence/readback, and native-matched visuals. |
+| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
+
+### Global Search localization
+
+Global Search now localizes its category scopes, search prompts, sort controls,
+recent and trending headings, result sections, empty and failure states, and
+pagination in English, French, and Arabic. The same supported query parameters,
+provider result grouping, and page navigation remain in place. The failed-search
+panel uses localized title and Retry labels.
+
+The browser fixture passes 12 cases per deployment across desktop, iPhone,
+Android, and tablet (English, French, and Arabic); standalone production and the
+bundled `/lumen/` mount both pass. English baseline/candidate captures match
+pixel-for-pixel at desktop and iPhone sizes. French desktop and Arabic iPhone
+were inspected, with no page-level horizontal overflow. Search API behavior,
+live provider catalogs, and independent linguistic review remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261121/`.
+
+### Lumen administrator settings localization
+
+The Lumen-specific administrator settings screen now localizes its own
+headings, settings labels, descriptions, options, storage guidance, recovery
+actions, upload/save controls, and completion feedback in English, French, and
+Arabic. The existing request policy component remains embedded in the page and
+continues to use its existing SeerrNG message translations. Settings values,
+file format, permission checks, save endpoint, and upload behavior are
+unchanged.
+
+Twelve standalone and twelve bundled `/lumen/` browser cases pass over desktop,
+iPhone, Android, and tablet. They verify translated labels, no horizontal
+overflow, draft editing, and the existing save payload and success feedback.
+English baseline/candidate screenshots match pixel-for-pixel at 1440 CSS px
+and 390 CSS px. French desktop and Arabic iPhone were inspected. Live storage
+permissions, actual file saves/uploads, and independent linguistic review
+remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-settings-localization-20261121/`.
+
+### Account language choices
+
+The account's preferred media-language selectors now display API language
+codes in the saved interface locale and sort by those localized names. Their
+option values remain the same ISO language codes used by SeerrNG. This affects
+the global, movie, series, music, and book preferences without changing their
+save payload.
+
+The browser fixture verifies localized English, French, and Arabic language
+names and unchanged option values over desktop, iPhone, Android, and tablet in
+standalone and bundled deployments (12 cases per deployment). French baseline
+and candidate full-page captures match in size at 1440 and 390 CSS pixels; the
+only changed pixels are the selected language label. French iPhone and Arabic
+desktop renders were inspected, with no page-level horizontal overflow. The
+fixture uses a small mocked language list; live catalog coverage and
+independent linguistic review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-language-options-20261121/`.
 
 ### Account-synced Lumen preferences
 
@@ -42,6 +96,137 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### Shared media status labels
+
+The shared poster, request, detail and category status displays now translate
+the common library and request states using the signed-in account locale.
+This includes server availability, partial availability, shared availability,
+queued and downloading progress, request state, blocklist state, and library
+counts. The underlying status selection and media-server availability rules
+are unchanged.
+
+Status fixtures pass in English, French and Arabic across desktop, iPhone,
+Android and tablet. Baseline/candidate captures for the same account, title and
+viewport confirm unchanged geometry and no horizontal overflow; Arabic keeps
+RTL direction. Live provider states and independent linguistic review remain
+open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/status-localization/`.
+
+### Watchlist display localization
+
+Lumen Watchlist, Discover Watchlist, and delegated user-watchlist screens now
+localize their headings, filters, media and sort choices, pagination, removal
+actions, empty/loading copy, and generic removal failures in English, French,
+and Arabic. Arabic retains RTL direction. Filtering, ownership, safe removal,
+and combined Plex/SeerrNG list behavior are unchanged. Browser fixtures pass for
+the populated list and a failed removal across desktop, iPhone, Android, and
+tablet; 36 existing Watchlist regression cases pass across the same viewports.
+English, French, and Arabic baseline/candidate captures were compared at 1440
+and 390 CSS pixels; geometry is unchanged and the Arabic screen has no
+horizontal overflow. Other Lumen locales use the English fallback, and live
+provider and independent linguistic review remain open. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/watchlist-localization/`.
+
+### User administration display
+
+The Lumen user directory now localizes its heading, search and sorting controls,
+account roles, request counts, management actions, pagination, delete
+confirmation, local-account creation, and basic profile editing in English,
+French, and Arabic. Failed local-account creation retains the entered values
+for retry. Directory and profile load failures use the active locale's shared
+error messages.
+
+Twelve standalone and twelve bundled-asset `/lumen/` browser cases passed over
+all four viewport projects. They cover the directory, account creation, failed
+submit and retry, and overflow. Twelve existing create/profile regression
+cases also passed. Matching French and Arabic baseline/candidate captures of
+`/admin/users` and the local-account form were inspected at 1440 × 900 and
+390 × 844; existing list and form geometry remains, with longer labels wrapping
+inside the same row layout. Live directory, provider import, and linked-account
+verification against an actual SeerrNG instance remain open.
+Evidence is retained at
+`seerrng-admin-users-localization-20261120`.
+
+Managed per-user Episode Queue defaults and TV request-access state now also
+follow the saved English, French, or Arabic locale. This covers load and save
+feedback, the confirmation sheet, request-access status, and review and refresh
+actions without changing the settings API, authorization, or save behavior.
+The expanded directory fixtures verify the selected queue value,
+confirmation/cancel path, access status, and RTL direction across desktop,
+iPhone, Android, and tablet. Twelve standalone production cases passed;
+French and Arabic baselines and candidates were compared at 1440 × 900 and
+390 × 844. Longer labels wrap within the existing user row. The sticky mobile
+navigation continues to cover part of the tall row as it did before. Evidence is
+retained at `seerrng-admin-users-localization-20261120/baseline-panels-*` and
+`seerrng-admin-users-localization-20261120/candidate-*`.
+
+Managed local passwords, one-time sign-in links, maturity limits, media
+categories, and request quotas now use the same locale. Their fixtures exercise
+password mismatch and failed-save retry, one-time link creation and revocation,
+category persistence, maturity-limit persistence, and quota validation and
+save. Twelve standalone and twelve bundled `/lumen/` cases passed across
+desktop, iPhone, Android, and tablet. French and Arabic baseline/candidate
+states for categories, maturity,
+and quotas were inspected at 1440 × 900 and 390 × 844. Longer labels wrap
+within the existing controls; the existing fixed mobile navigation still
+overlaps lower content in the tall user row. Evidence is retained at
+`seerrng-admin-users-localization-20261120/admin-settings-*`.
+
+Media-server user import and linked-account management now also follow the
+saved locale. Fixtures verify synchronized user import selection, failed import
+retry, successful import, unlink confirmation and cancel, failed unlink retry,
+and successful unlink. Twelve standalone and twelve bundled `/lumen/` cases
+passed across desktop, iPhone, Android, and tablet. French and Arabic
+baseline/candidate renders were inspected at 1440 × 900 and 390 × 844; the
+existing user-row layout wraps longer labels without horizontal overflow.
+Actual provider import and unlink effects remain unverified against a live
+SeerrNG instance. The user notification settings panel reuses the separate
+Notification Settings route. That route was localized in `1eea80e33` and has
+English, French, and Arabic coverage for channel preferences, public-key save
+and removal, Telegram settings, browser-device removal, RTL direction, and
+overflow across desktop, iPhone, Android, and tablet. The French and Arabic
+four-viewport cases were rerun against the current standalone build and passed
+8/8. The delegated notification panel uses the same forms. The separate
+administrator notification page still has English-only channel forms and
+headings; localizing those controls remains open. Evidence is retained at
+`seerrng-admin-users-localization-20261120/managed-account-*` and in
+`user-notifications-localization.spec.ts`.
+
+Shared notification event selectors on the administration and user notification
+pages now use SeerrNG's localized English, French, and Arabic event labels. The
+administrator notification page now localizes its shell, channel forms,
+provider-specific fields and options, validation and feedback, and recoverable
+load failures. It uses SeerrNG's message catalog for native channel copy and
+Lumen translations for channel actions and recovery controls in English,
+French, and Arabic. English channel settings, save/test behavior, and
+independent event masks pass at desktop, iPhone, Android, and tablet sizes.
+French and Arabic provider-label and form checks pass, as do recoverable
+load-error/retry checks in all three locales across all four viewports. The
+tests cover every channel's provider labels and verify a failed email-settings
+request recovers through Retry without looping or losing the form. Existing
+form geometry and no-horizontal-overflow checks pass; the fixed mobile
+navigation still overlaps part of the tall configuration page. Actual provider
+save/readback and delivery remain unverified against a live SeerrNG instance.
+The focused admin notifications browser suite is in
+`lumen/tests/browser/admin-notifications.spec.ts`. Visual captures are retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-notifications-20261121/`;
+the English baseline and French/Arabic candidate renders were compared at 1440,
+834, 412, and 390 CSS pixels.
+
+The shared mobile tab bar now yields while users scroll down through long pages,
+so it no longer covers form actions or search controls. It returns on upward
+scroll, at the top or page end, and remains available while keyboard focus is
+inside it. The existing bar geometry and initial state are unchanged. Browser
+fixtures passed on iPhone, Android, and tablet; desktop skipped because it has no
+mobile tab bar. Baseline and candidate `/admin/users` Create Local User screens
+were compared at 390, 412, and 834 CSS pixels, with initial-state geometry
+unchanged; the hidden-on-scroll state was inspected at 390 and 834. Evidence is
+retained in `seerrng-lumen-mobile-navigation-20261121/baseline/`,
+`candidate/admin-users-*`, and `candidate/results-rerun/`. The shared behavior
+also passes on a long My Media screen across the same mobile projects; visible
+and hidden iPhone and tablet renders were inspected after the CSS transition
+completed. Those captures are in `candidate/library/`.
+
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select
@@ -53,6 +238,75 @@ desktop, iPhone, Android, and tablet, including missing-audiobook versus
 available-ebook, authoritative Available membership, format-specific downloads,
 TV season selection, cancellation, and approval. Other request-audit items in
 the table remain open.
+
+Request ownership and delegated-action fixtures were extended and qualified
+in standalone and bundled deployments. Across `request-status.spec.ts`,
+`request-retry-coverage.spec.ts`, and `requests-pages.spec.ts`, 164 browser
+cases pass per deployment on desktop, iPhone, Android, and tablet. They verify
+that personal viewers see only their own requests, read-only request viewers
+can inspect but not act on household requests, managers can moderate another
+user's focused request, owners can cancel their pending request, retries
+respect ownership and category permission, and management-only mapping and
+managed-copy actions stay restricted. The Requests-page fixture now handles
+the production `/lumen/` API prefix and routes. This closes fixture coverage of
+those role edges; it does not prove live server authorization or provider
+effects.
+
+Managers can now recover failed TV requests with `tvdb_id_unresolved` or
+`tvdb_season_mismatch` by selecting the exact Sonarr series and mapping every
+active requested TMDB season to a unique TVDB or Sonarr-order season. Lumen
+uses SeerrNG's existing lookup and official-season endpoints, then submits the
+same strict mapping payload to the existing retry endpoint; server permission,
+request-state, service and mapping validation remain authoritative. The action
+is hidden for non-managers and unsupported failures. Browser fixtures verify
+the manager flow, exact payload, and non-manager visibility across desktop,
+iPhone, Android and tablet. Live Sonarr/TVDB responses and visual comparison
+against native SeerrNG remain open.
+
+Request managers can also remove an eligible managed copy from its configured
+service without deleting its SeerrNG request or history. Lumen shows this
+separately from deleting the request, only when SeerrNG returns `canRemove`,
+and requires a confirmation that states the request will remain. The action
+uses the existing `/media/:id/file` route and preserves 4K and book-format
+scope. Browser fixtures verify the confirmation boundary, exact removal route,
+and continued request row. The expanded matrix also checks exact `is4k=true`
+video scope and `audiobook`, `both`, ebook-only, and audiobook-only book
+queries. Fixtures mirror `canRemove` on ordinary manager rows and the separate
+status wrapper used by timeline filters. All 40 retry, mapping, and removal
+cases pass across desktop, iPhone, Android, and tablet. Live service removal
+remains unverified; native
+visual comparison is still open. The shared confirmation owner was compared
+before and after at desktop (1440 × 900) and iPhone (390 × 844) with the same
+request and dialog state. The previous `.pk-head` grid squeezed the title and
+body into a narrow column; the shared full-width header restores readable line
+wrapping and keeps both confirmation actions visible. The checked consumer was
+the managed-copy confirmation; other `ConfirmSheet` consumers remain outside
+this visual comparison. Captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tvdb-mapping-20261121/`.
+
+The native TV request dialog now retries season metadata that fails during the
+parallel provider pass, one missing season at a time. This handles providers
+that reject concurrent season lookups while keeping the work bounded by the
+requested season count and preserving the user's selection until every season
+is available. A 15-season API fixture forces concurrency failures and verifies
+that the serial recovery returns all seasons; route and request-tree fixtures
+pass. The native full-app Playwright workflow also passes for a 13-season
+series at 390 and 1440 CSS pixels: a partial first batch recovers the missing
+seasons, the user selects an episode, and the submitted request retains the
+exact season and episode. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-20261121/native-large-series/`.
+This fixture proves the partial-response and request-selection path, not the
+live provider outage shown in the user's screenshot. Live-provider confirmation
+remains open, and this server-side fix does not complete Lumen's separate
+series-selection parity audit.
+
+Season details with an empty but valid `episodes` array now count as loaded
+metadata instead of being dropped and retried as failed. This prevents a
+zero-episode season from leaving the entire request tree in the red load-error
+state. The server route test verifies that it preserves the empty season, and
+the request-tree test verifies that this response completes loading without
+changing selections. Both focused suites pass, including the 29-season batching
+case. Actual provider responses remain to be confirmed in a live instance.
 
 Discover previously issued its default-on catalog requests before the
 asynchronous Lumen configuration loaded, even when an administrator had disabled
@@ -77,6 +331,33 @@ desktop, iPhone, Android, and tablet widths. The same native link and chip
 owners remain in place; candidate renders were checked against English-label
 baselines with no clipping or horizontal overflow. Independent linguistic
 review and full-production-mount verification remain open.
+
+Discover's remaining visible shell copy now uses the account locale, including
+the search prompt, quick links, shelf headings, section links, empty and failed
+states, retry actions, recent-media dates, and the shared card title-view
+control. The shared title control is also checked on Movies, a second consumer.
+English, French, and Arabic browser fixtures cover success, empty, failure,
+retry, dates, and both title-control states at desktop, iPhone, Android, and
+tablet sizes against standalone production and the Express `/lumen/` mount.
+Matched baseline/candidate captures show unchanged geometry and no new clipping
+or overflow. This is fixture-based UI evidence; provider results and independent
+linguistic review remain open. Evidence is retained at
+`seerrng-lumen-discover-localization-20261121` in task scratch.
+
+The administrator's Lumen settings page now uses the same translated Discover
+row labels as personal settings. English, French, and Arabic standalone and
+bundled browser cases pass on desktop, iPhone, Android, and tablet. Matched
+before/after captures show the same layout and no clipping from translated row
+labels; broader settings-page localization and visual review remain open.
+
+The Trending route now translates its title, media and time-window filters,
+empty/error states, retry action, and pagination label. English, French, and
+Arabic standalone and bundled fixtures verify failure recovery and that the
+selected movie/week filters reach the API on desktop, iPhone, Android, and
+tablet. Baseline and candidate captures at matching states show no new
+clipping; deeper pagination and provider-result parity remain open. Evidence
+is retained in task scratch at
+`seerrng-lumen-discover-localization-20261121`.
 
 ## Delivery and verification
 
@@ -347,22 +628,126 @@ The eight-case calendar suite passes on desktop, iPhone, Android, and tablet in 
 The calendar title, filter labels and choices, release type, availability,
 episode scope, partial/error/empty states, and date-change copy now follow the
 saved English, French, or Arabic locale. Dates use the saved locale as well.
-Twelve localization cases passed on desktop, iPhone, Android, and tablet; the
+Twenty-four localization cases passed across desktop, iPhone, Android, and
+tablet in standalone and bundled `/lumen/` deployments. The first bundled run
+found that the browser spec opened `/calendar` instead of `/lumen/calendar`;
+the mount-aware path fix is in `calendar-localization.spec.ts`. The
 existing eight-case calendar suite still passes. English/French desktop
 screenshots and French iPhone plus Arabic desktop/iPhone renders were reviewed
 against the same fixtures; there is no overflow or geometry change. The native
 month input's displayed month name remains controlled by the browser's UI
 locale, and live-provider plus matched-native visual checks remain open.
 
+Lumen's Release Calendar now includes the same explanation of supported release
+categories as native SeerrNG. English, French, and Arabic use the Lumen locale
+overrides. Twelve browser cases verify the localized description and existing
+calendar states across desktop, iPhone, Android, and tablet. French desktop and
+iPhone plus Arabic desktop and iPhone baseline/candidate screenshots were
+inspected; the description wraps without horizontal overflow and Arabic keeps
+RTL direction. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-admin-users-localization-20261120/calendar-description/`.
+Production `/lumen/` rendering and native-matched visual comparison remain open.
+
+### Movie and series range-filter localization
+
+Movie and series Browse range controls now use the saved Lumen locale for
+release-date, rating, runtime, and vote-count labels, their Apply/Clear actions,
+and invalid-range/date feedback. English, French, and Arabic are covered. The
+browser spec passes 12 cases across desktop, iPhone, Android, and tablet in
+standalone and embedded `/lumen/` deployments. For `/movies` and `/series`, the
+empty range-filter state and the reversed-date validation state were checked.
+The embedded English baseline built from `78f372fcd` was compared with the
+current English, French, and Arabic candidates at 390 × 844 and 1440 × 900.
+Translated controls wrap within the existing layout, with no horizontal
+overflow or CSS/geometry change. The native date input's placeholder remains
+controlled by the browser locale. Other Browse controls and route copy remain
+untranslated and are still open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-ranges-20261121/`.
+
+### Movie and series Browse chrome localization
+
+The shared movie and series Browse screen now localizes title search labels,
+availability controls, filter clearing, sort label, no-results copy, capped
+catalog copy, the 4K-unavailable fallback, and genre-directory empty state in
+English, French, and Arabic. Existing filter parameters and request behavior
+are unchanged. Browser fixtures cover `/movies` and `/series`, including a
+successful empty catalog response, range validation, and reset. Twenty-four
+cases pass across desktop, iPhone, Android, and tablet in standalone and
+bundled `/lumen/` deployments. Matched 1440 × 900 and 390 × 844 baseline and
+candidate screens were inspected; English geometry is unchanged, translations
+wrap within existing controls, Arabic keeps RTL, and no horizontal overflow was
+found. Dynamic language/country names and page guidance were localized in the
+follow-up Browse page-copy increment. Other non-filter Browse copy remains
+open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
+### Movie and series Browse filter localization
+
+The remaining movie and series filter labels and shared filter controls now
+follow the saved English, French, or Arabic locale: network and series status,
+production studios, streaming-provider selection, subject tags, genre matching,
+content rating, original language, and the complete sort choices. The shared
+GenrePicker keeps caller-provided labels for Music release types while
+localizing its selection and match controls. Browser fixtures verify the movie
+and series filter interactions in all three locales on desktop, iPhone,
+Android, and tablet, in standalone and embedded `/lumen/` deployments (24
+cases). Additional desktop checks cover the shared genre picker on Books,
+Music, and Comics in both deployments (6 cases). Existing query parameters,
+include/exclude values, and filter application behavior are unchanged. Matched
+English baseline and candidate screens at 1440 × 900 and 390 × 844 were
+compared; French and Arabic were inspected at the same sizes. Translated labels
+fit the existing controls and no horizontal overflow was found. Remaining
+non-filter Browse copy remains open. Page heading, subtitle,
+search-hint, genre-directory heading, and dynamic language/country name
+localization are covered by the following increment. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
+### Movie and series Browse page-copy localization
+
+Movie and series page headings, search hints, request guidance, and genre
+directory headings now follow the saved English, French, or Arabic locale.
+Original-language and country options use locale-aware `Intl.DisplayNames`
+with their existing provider labels as a fallback for unknown codes. Follow
+actions also use localized verbs. Browser coverage verifies both routes and
+genre directories, their dynamic language and country names, and the existing
+filter flows in all three locales, across desktop, iPhone, Android, and tablet,
+in standalone and embedded `/lumen/` deployments (24 cases). The English
+1440 × 900 and phone captures are pixel-identical to the prior approved Browse
+baseline; French and Arabic desktop/phone renders were inspected, retain RTL,
+and have no horizontal overflow. Native date placeholders remain browser
+locale-controlled. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
+### Bounded Browse availability paging
+
+Movie and series availability views that require local filtering now report the
+number of catalog entries checked using the saved account locale. Their
+existing five-page scan cap remains intact; the localized Look Further action
+advances the cap by another five pages. A browser regression returns an empty
+provider catalog, verifies the exact five-page initial bound, resumes at page
+six, and proves the next stop occurs at page ten. English, French, and Arabic
+fixtures pass across desktop, iPhone, Android, and tablet, in standalone and
+embedded `/lumen/` deployments (24 cases). This verifies client paging against
+fixtures, not live provider latency or server rate-limit behavior. Screenshots
+show the English capped state pixel-identical to baseline commit `a40c10922`
+at desktop and iPhone viewports; French and Arabic desktop and phone states
+were inspected, including the long result summary and continuation button.
+Results and screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
 ### My Media browse increment
 
 Lumen serves `/library` in both deployments and exposes My Media in desktop
 navigation and under You. It lists libraries from connected Plex, Jellyfin,
 Emby, Trakt, AniList, and Simkl accounts, preserves server cursors, and opens
-only confirmed catalog identities. Linking accounts, identity repair
-and mapping packs, provider tracking writes, and library sharing remain open.
-The dedicated personal and delegated Watchlist flows now pass in standalone and
-bundled browser suites. Narrow and bundled visual acceptance remains open.
+only confirmed catalog identities. Linked-account return/recovery, identity
+repair and private mapping packs, provider tracking writes, episode progress,
+and resumable scans have fixture-backed coverage. Personal and delegated
+Watchlists preserve combined-list ownership and have standalone and bundled
+fixture coverage. The native route audit has not yet established whether a
+separate delegated library-sharing workflow exists; household Games sharing is
+a separate workflow. Live provider effects and matched native/bundled visual
+acceptance remain open.
 
 Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
 Plex connection. It selected the first visible library, linked the matched
@@ -418,9 +803,18 @@ identities.
 Baseline and candidate movie poster renders were captured at matching viewport
 sizes and route state in
 `/mnt/disks/scratch/codex-task-scratch/lumen-poster-watchlist.i6lPym/`.
-Live provider effects and native-matched visual acceptance remain open. The
-complete watchlist suite now passes under both standalone Lumen and the
-production Express `/lumen/` mount.
+The shared Watchlist action now uses translated native button labels, localized
+accessible names, and locale-aware success and recovery messages on poster and
+detail actions. English, French, and Arabic browser fixtures verify the locale,
+RTL direction, and exact add/remove labels and feedback. The full 28-case poster
+action matrix passes across desktop, iPhone, Android, and tablet; the localized
+movie add/remove case passes for French and Arabic on all four viewports. The
+same locale matrix was captured in standalone Lumen at 1440, 834, 412, and 390
+CSS pixels; Arabic toast copy fits above the mobile tabs. French and Arabic
+custom feedback currently fall back to English in other Lumen locales. Live
+provider effects and native-matched visual acceptance remain open. The complete
+watchlist suite now passes under both standalone Lumen and the production
+Express `/lumen/` mount.
 
 Comic poster actions are available only when the browse result provides a
 supported edition identity; the comic detail action remains covered separately.
@@ -967,6 +1361,16 @@ permission, another requester, and the TVDB season mismatch. All eight cases
 pass on desktop, iPhone, Android and tablet in standalone and bundled Lumen.
 4K-specific quality permission and live service recovery remain open.
 
+The large-series episode picker now has bundled-mount qualification as well as
+its standalone regression. A 15-season series was opened from an episode deep
+link; the first season-metadata response failed, Retry loaded that season, and
+the selected episode remained in scope. The full TV request-state browser file
+passes 60/60 across desktop, iPhone, Android, and tablet on the freshly rebuilt
+embedded asset at an isolated Express static `/lumen/` mount. API responses are
+fixtures, so live TV metadata, authenticated middleware, and matched native
+visual acceptance remain open. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/tv-request-state-bundled-results/`.
+
 ### Request history increment
 
 Lumen request rows open the latest lifecycle events and current stage from
@@ -1337,6 +1741,21 @@ local browser only when its account, worker and endpoint match.
 An isolated test verified that disabling one browser does not unsubscribe a
 different endpoint, another account's worker or the native worker. Secure
 browser interaction, mobile installation and live delivery remain open.
+
+### Personal notification localization increment
+
+The personal notification route and registered browser-device controls now
+follow the account locale. SeerrNG's notification catalog supplies translated
+channel fields, event labels, validation and save/removal feedback; Lumen's
+English, French and Arabic overrides cover its browser-device guidance and
+status messages. Save operations continue to write only the selected channel,
+and device removal remains confirmed and scoped to the signed-in account.
+
+Fixtures verify email event-only saves, OpenPGP key save/removal, Telegram
+forum-topic saves and browser-device deletion in desktop, iPhone, Android and
+tablet profiles. French and Arabic baseline/candidate screenshots cover the
+same widths. Live provider delivery, real secure-browser subscriptions,
+bundled `/lumen/` rendering and native visual comparison remain open.
 
 ### Personal discovery preferences increment
 
@@ -2220,6 +2639,16 @@ native visual comparison remain open.
 
 ### Administrator system logs
 
+The route boundary now has a matrix fixture for all 39 administrator
+destinations. Standard users do not see the administrator entry, and direct
+navigation redirects them to `/me`; administrators retain the route and can
+reach SeerrNG Administration from the desktop sidebar or the mobile You page.
+The administrator home screen exposes a link for every settings route in the
+matrix, and the index has no horizontal overflow. The matrix passes in desktop,
+iPhone, Android, and tablet viewport projects. It verifies Lumen's client
+routing boundary; server-side API authorization and
+each settings page's feature-specific permissions remain separate checks.
+
 The Account administration section opens System Logs inside Lumen.
 Administrators can search and filter logs, page through results, inspect
 structured data, copy an entry, and opt into live refresh. Log responses
@@ -2525,6 +2954,62 @@ Automatic Blocklist, Streaming Request Policy, and Shared Discovery Title
 Matches tools remain separate localization and workflow-parity work. Evidence
 is retained at `seerrng-admin-discovery-localization-20261120`.
 
+### Automatic Blocklist
+
+The Automatic Blocklist settings and shared keyword-search results now follow
+the saved English, French, and Arabic locale, including genre labels, search,
+page limits, paging feedback, and save confirmation. Keyword results are shared
+with Discover filters and request override rules, so their labels use the same
+translations at those entry points. Invalid keyword IDs and page limits still
+block saving, selected keywords carry across result pages, and failed saves
+retain the draft for retry. A long French save label was shortened after the
+phone-width check caught horizontal overflow.
+
+Twelve standalone and twelve production-asset `/lumen/` browser cases passed
+across desktop, iPhone, Android, and tablet projects. The existing Discovery
+administration regression suite passed 12 cases. English baseline/candidate
+captures were rendered at matching sizes and reviewed at desktop and phone
+widths; the underlying controls and spacing were unchanged. Live keyword and
+genre provider results remain unverified. Evidence is retained at
+`seerrng-admin-blocklist-localization-20261120`.
+
+### Streaming Request Policy
+
+The Discovery administration policy editor now localizes its enable switch,
+subscription conditions, request actions, rejection message, per-user override,
+loading state, and save feedback in English, French, and Arabic. Conditional
+fields continue to match the selected action, and saving still requires a
+server readback that matches the draft. The browser fixtures cover disabled
+and enabled states, rejection-message visibility, changed values, failed-save
+retention, and successful retry.
+
+Twelve standalone and twelve production-asset `/lumen/` cases passed across the
+four viewport projects. The Discovery administration and movie-request policy
+regression suites passed 20 cases. English baseline and candidate captures were
+rendered at matching desktop, phone, Android, and tablet sizes and reviewed at
+desktop and phone widths. Live user-subscription decisions remain unverified.
+Evidence is retained at
+`seerrng-streaming-policy-localization-20261120`.
+
+The Discovery Regions and Languages form and Shared Discovery Title Matches
+panel now use English, French, and Arabic messages for their labels, choices,
+instructions, validation, confirmation, and save feedback. Region saves retain
+the selected draft after a service failure; shared pack publication can be
+retried without reselecting the file or repeating the account-wide acknowledgement.
+Shared pack deletion still requires its explicit confirmation.
+
+Twelve standalone and twelve bundled-asset browser cases passed across desktop,
+iPhone, Android, and tablet projects, covering all three locales, failed-save
+retry, pack publication retry, deletion, and horizontal overflow. French and
+Arabic baseline/candidate captures for `/admin/discovery` were compared at
+matching 1440 × 900 desktop and 390 × 844 iPhone viewports. Text wraps
+naturally with the existing controls and spacing; the fixed mobile navigation
+continues to overlay the lower viewport while scrolling, as it did in baseline.
+Live `/regions` and `/languages` provider results, independent translation
+review, and the full Express production `/lumen/` mount remain unverified.
+Evidence is retained at
+`seerrng-discovery-child-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with
@@ -2719,6 +3204,11 @@ iPhone, Android, and tablet, including the hidden state for viewers without
 request access and the mobile link's clearance above the fixed tabs. Baseline
 and candidate captures are retained under
 `/mnt/disks/scratch/codex-task-scratch/lumen-issue-reporters/swipe-navigation/`.
+
+A separate four-viewport regression check now verifies that the administrator's
+global disable switch removes Swipe from both the desktop sidebar and the You
+page even for a requester. This fixture covers standalone Lumen; the existing
+permission matrix also runs against the production bundled deployment.
 
 The production build and four browser checks passed with synthetic movie
 recommendations across desktop, iPhone 13, Pixel 7, and iPad Pro 11. The checks
@@ -4746,3 +5236,221 @@ page renders at 1440 × 900 were inspected; the existing shared layout and
 controls remain in use, and all three locales fit the viewport. Evidence is
 retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-validation-44600171238/recordings-fullpage-candidate/`.
+
+### General application settings localization
+
+The Application panel on `/admin/general` now follows the signed-in Lumen
+locale for its title, interface and availability choices, login controls,
+help text, validation, loading state, and save feedback in English, French,
+and Arabic. Existing interface routing and sign-in safeguards remain the
+same. The load-error formatter is stable across renders so `useApi` does not
+re-fetch settings on every render. Browser fixtures cover failed-save
+retention and retry, the changed-field payload, locale direction, and overflow
+at desktop, iPhone, Android, and tablet sizes. French desktop and Arabic phone
+captures were compared with the English baseline; existing panel geometry is
+retained. Other locales use English fallback. This change covers only the
+Application panel; instance request policy, quotas, and permissions still need
+their own localization and workflow parity review. Live settings save/readback against SeerrNG and independent
+linguistic review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
+
+
+The Spotify credentials panel on `/admin/general` now localizes its heading,
+credential fields, setup guidance, saved-secret hint, removal control, and save
+feedback in English, French, and Arabic. Existing behavior still keeps the
+secret write-only after saving and submits only changed values. The browser
+fixture verifies the localized controls and the exact client ID/secret payload
+across desktop, iPhone, Android, and tablet. French desktop and Arabic phone
+candidate renders show the added guidance inside the existing field rows;
+Arabic shows the same fixed navigation overlap present in the English baseline.
+Live Spotify authorization and credential readback remain unverified, and the
+upstream Arabic Spotify labels have not had independent linguistic review.
+
+
+The Download Copies panel now localizes its path-mapping editor, setup guidance,
+JSON validation, save feedback, and section title in English, French, and Arabic.
+It retains the 100-entry bound, exact mapping payload, read-only-root guidance,
+and only reports success after the API confirms the saved list. Browser fixtures
+verify valid save and malformed JSON rejection without an API write across
+desktop, iPhone, Android, and tablet; all 12 locale/viewport cases pass with no
+horizontal overflow. The French mobile save label was shortened after the first
+comparison exposed a 39-pixel overflow. English baseline and English/French/Arabic
+candidate captures at 1440, 834, 412, and 390 CSS pixels were inspected; existing
+field ownership and panel geometry are retained. Arabic still has the shared fixed
+navigation overlap visible in the English baseline. Live filesystem mapping and
+file-download behavior remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
+
+Instance Request Settings now localizes its policy choices, descriptions, loading
+state, save action, and save feedback in English, French, and Arabic. It retains
+the existing `/settings/public` read and `/settings/main` write contract. Browser
+fixtures verify the changed-flag payload and confirmed save across desktop,
+iPhone, Android, and tablet. Live server persistence and independent linguistic
+review remain open.
+
+The Application API Key panel now localizes reveal/hide, copy, regeneration,
+confirmation, and feedback in English, French, and Arabic. Existing key
+replacement behavior and immediate invalidation are preserved. Browser fixtures
+cover reveal, cancel, regeneration, and the masked replacement state at desktop,
+iPhone, Android, and tablet sizes. Clipboard permission and live integration
+rotation remain unverified.
+
+Default Request Quotas now localizes its guidance, category choices, fields,
+links, save action, and feedback in English, French, and Arabic. The existing
+partial update payload, 10,000 limit, and save confirmation remain intact.
+Browser fixtures verify an exact movie quota update across desktop, iPhone,
+Android, and tablet, and the screenshots were checked for overflow. Live quota
+persistence remains unverified.
+
+Default User Permissions now localizes its heading, guidance, administrator
+warning, edit action, confirmation, and save feedback in English, French, and
+Arabic. Permission names use SeerrNG’s French and Arabic catalog entries along
+with the existing Lumen translations for app-specific permissions. The browser
+fixture verifies that a default permission is removed only after confirmation
+and that the exact bitmask is saved across desktop, iPhone, Android, and tablet.
+The French desktop
+and Arabic phone captures were checked; Arabic retains the existing fixed
+navigation overlap seen in the baseline. Live permission persistence remains
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
+
+The Administration search now includes direct shortcuts to Default User
+Permissions and Default User Categories. English, French, and Arabic browser
+fixtures verify the localized search results, destinations, and automatically
+expanded permissions editor across desktop, iPhone, Android, and tablet; all
+twelve locale and viewport cases passed. Search-result captures are retained
+alongside the General Settings evidence.
+
+Administration search also opens the Outbound Proxy password field directly.
+The field is an explicit fragment target, displays no saved secret, and retains
+the existing blank-means-keep behavior. Its browser fixture verifies the exact
+destination, visible field, and safety hint across desktop, iPhone, Android,
+and tablet. The full-page captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/admin-menu-candidate/`.
+
+Optional media routes wait for public and signed-in account category settings
+before mounting page components. When the per-user setting disables a category,
+the existing category notice appears without starting catalog or detail
+requests. Fixtures turn categories on globally and off for the user, then open
+22 direct routes across music, comics, magazines, games, sports and adult media;
+none issues a category data request. All four viewport projects pass. SeerrNG
+continues to enforce category permissions on every API request.
+
+The same pre-mount category boundary now covers core Movies, Series, Ebooks,
+and Audiobooks browse and detail routes, including author and book-series
+search/catalog/request workflows plus the selected format for book details and
+recommendations. The primary desktop and phone navigation also
+omits categories disabled either globally or for the signed-in account. The
+browser fixture visits 18 direct routes with the categories disabled and
+checks that no catalog requests run; all four viewport projects are required for
+acceptance. Mixed-media routes such as Discover and global Search retain their
+cross-category results and filters rather than being hidden wholesale.
+Discover now applies those same per-account categories to its shortcut chips,
+movie/series/book shelves, genre and upcoming rows, and recent-media detail
+lookups. When both movie and TV are off, the combined trending and recent rows
+do not query their catalogs. The same fixture verifies that disabled-category
+Discover performs no category catalog or detail requests. French and Arabic
+disabled notices pass across all four viewport projects with RTL and overflow
+checks; screenshots and test results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/core-category-routes/`.
+Search scope chips and browse shortcuts also follow the signed-in category
+settings. Direct links carrying a disabled movie or book scope show the
+localized category notice and make no title-search or catalog request; mixed
+trending results are filtered to the categories the user can access. The
+Search regression passes on desktop, iPhone, Android, and tablet, with evidence
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/search-category-routes/`.
+Trending and person-detail destinations also wait for enabled movie or series
+categories before loading. The all-off fixture now visits both destinations,
+checks the category notice, and confirms no trending or person metadata request
+is sent across all four browser viewport projects. The complete admin-options
+browser file passes with 383 cases passed and one existing skip on the same viewport
+matrix. Both standalone Lumen and packaged `/lumen/` production builds succeed.
+TMDB lists, movie/series association graphs, and TV franchises now use the same
+pre-mount category boundary; list cards also omit any disabled media type when
+only one of Movies or Series is enabled. Their direct routes are included in
+the all-off no-query fixture. Association results also omit disabled movie or
+series edges while retaining allowed edges; a mixed-result fixture verifies
+this when only Movies is enabled across all four viewport projects. The focused
+association test passes 4/4. Person filmography similarly hides disabled media
+types, and the movie bulk-request shortcut follows the account category switch;
+the focused person test passes 4/4. The bundled `/lumen/` production build
+succeeds. The movie-only Coming Soon page also waits for Movies to be enabled;
+the all-off route fixture covers its no-query behavior. Calendar removes disabled
+media filters, skips a direct disabled-category query, and filters mixed API
+responses by account categories. The direct-scope and mixed-results tests each
+pass on all four viewport projects; desktop enabled/disabled captures were
+reviewed at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/calendar-visual/`.
+Discover Watchlists now filter by server and signed-in account categories and
+omit disabled media filter options. Personal Watchlists retain saved items
+when a category is disabled globally while still honoring explicit per-account
+category restrictions. Delegated Watchlists show the target-scoped API results
+without filtering them with the viewer's settings. The regression
+passes on all four viewports; desktop enabled and disabled captures were
+reviewed at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/watchlist-category-visual-rerun/`.
+My Media now hides movie or series library items disabled for the signed-in
+account, omits disabled tracking filters, and waits for category settings before
+requesting library pages. The four-viewport regression passes; desktop captures
+are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/library-category-visual/`.
+
+Delegated Watchlists also load without waiting on the viewer's media-category
+probes. A new regression confirmed that a target movie previously disappeared
+for an authorized manager whose own Movies category was disabled; the target
+item now renders and the type filter remains available. The full
+Watchlist browser suite passes 40/40 across desktop, iPhone, Android, and tablet;
+the per-account category regression passes 4/4. Both suites also pass against
+the production Express `/lumen/` mount. Matched baseline/candidate renders at
+those viewports show unchanged layout, with the previously missing row visible
+in the candidate. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/delegated-watchlist-categories/`.
+
+My Media now uses the SeerrNG locale catalog for its library filters, provider
+states, identity matching, and private-pack controls, and Lumen's English,
+French, and Arabic translations for its added scan and tracking workflows.
+Connected-account recovery headings and malformed-response messages are also
+localized. The browser suite passes 44/44 across desktop, iPhone, Android, and
+tablet; the locale and recovery assertions also pass 8/8 each for French and
+Arabic. Baseline and candidate renders were compared at desktop and phone sizes
+for French and Arabic; layout geometry and horizontal fit remain stable. The
+screenshots and Playwright results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-localized/`.
+The rebuilt embedded bundle also passes all 44 My Media and localization cases
+on an isolated Express static `/lumen/` mount, with fixture API responses. The
+matching `/lumen/` route helper and API-prefix parsing were added to both
+browser specs. The HTML and hashed assets served from `public/lumen` were the
+fresh build from current Lumen source. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-bundled-final-results/`.
+This does not exercise the full authenticated production server middleware or
+live tracking-provider effects. Delegated library-sharing behavior (if that
+capability exists in native SeerrNG) and matched native visual acceptance also
+remain open.
+
+### Keep Lumen settings messages separate from native administration
+
+The Lumen settings page now uses its own `lumen.adminSettings.*` message
+namespace. The shared `lumen.admin.title` key remains the SeerrNG Administration
+navigation title, so localizing Lumen settings cannot replace the heading in
+the native administration directory. Regression coverage passes for the
+standalone and bundled builds: 60 navigation cases per build and 12 settings
+cases per build across English, French, and Arabic and desktop, iPhone, Android,
+and tablet viewports. The lock label now uses the isolated settings namespace,
+and the read-only JSON preview declares left-to-right direction in Arabic. French
+desktop and Arabic iPhone captures were inspected; the Arabic preview punctuation
+now renders in code order. Matching English baseline/candidate captures for You,
+Discover, Administration, and Lumen Settings are pixel-identical at desktop and
+iPhone sizes. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-navigation-audit-20261121/`.
+
+### Qualify account workflows at the bundled mount
+
+The saved-locale account test now brings the mobile tab bar back into view before
+checking its localized links; the bar correctly yields while a long settings form
+is scrolled. Client Tokens, Linked Accounts, and personal Notifications browser
+fixtures now prepend the `/lumen/` mount and normalize mounted API paths, so the
+same tests exercise the packaged frontend instead of accidentally opening
+unmounted root routes. The combined profile, locale, linked-account, token, and
+notification suite passes all 88 cases on both standalone and bundled builds
+across desktop, iPhone, Android, and tablet projects. All writes are fixture
+responses; real account persistence and provider mutations remain separately
+unverified.

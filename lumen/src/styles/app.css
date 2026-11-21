@@ -56,6 +56,11 @@
     transform 0.3s var(--ease),
     opacity 0.3s;
 }
+.tabbar[data-hidden] {
+  transform: translate(-50%, calc(100% + 14px));
+  opacity: 0;
+  pointer-events: none;
+}
 :root[data-sidebar-gradient] :is(.tabbar, .side) {
   background-image: linear-gradient(
     to bottom,

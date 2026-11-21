@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { ServiceNote } from './extra';
 
@@ -12,6 +13,7 @@ const fields = [
 type Policy = Record<(typeof fields)[number][0], string | null>;
 
 export default function ManagedMaturity({ id }: { id: number }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/maturity`;
   const { data, error, reload } = useApi<Policy>(path);
   const [draft, setDraft] = useState<Partial<Policy>>({});
@@ -30,10 +32,19 @@ export default function ManagedMaturity({ id }: { id: number }) {
     try {
       await api(path, { method: 'POST', body: JSON.stringify(draft) });
       setDraft({});
-      setNotice('Maturity limits saved.');
+      setNotice(t('lumen.managedMaturity.saved', 'Maturity limits saved.'));
       reload();
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not save maturity limits.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.managedMaturity.saveFailure',
+            'Could not save maturity limits.'
+          ),
+          t
+        )
+      );
     } finally {
       setBusy(false);
       working.current = false;
@@ -42,10 +53,14 @@ export default function ManagedMaturity({ id }: { id: number }) {
 
   return (
     <div>
-      <ServiceNote error={error} what="maturity limits" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.managedMaturity.what', 'maturity limits')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading maturity limits…
+          {t('lumen.managedMaturity.loading', 'Loading maturity limits…')}
         </p>
       )}
       {failure && (
@@ -61,13 +76,17 @@ export default function ManagedMaturity({ id }: { id: number }) {
       {data && (
         <>
           <p className="note">
-            A limit applies to browsing and requests. Titles without a
-            recognized US rating are blocked when a limit is set.
+            {t(
+              'lumen.managedMaturity.description',
+              'A limit applies to browsing and requests. Titles without a recognized US rating are blocked when a limit is set.'
+            )}
           </p>
           <form className="toolbar" onSubmit={save}>
             {fields.map(([key, label, ratings]) => (
               <label className="sel" key={key}>
-                <span className="lbl">{label}</span>
+                <span className="lbl">
+                  {t(`lumen.managedMaturity.${key}`, label)}
+                </span>
                 <select
                   disabled={busy}
                   value={
@@ -84,7 +103,9 @@ export default function ManagedMaturity({ id }: { id: number }) {
                     });
                   }}
                 >
-                  <option value="">No Limit</option>
+                  <option value="">
+                    {t('lumen.managedMaturity.noLimit', 'No Limit')}
+                  </option>
                   {ratings.map((rating) => (
                     <option key={rating}>{rating}</option>
                   ))}
@@ -95,7 +116,7 @@ export default function ManagedMaturity({ id }: { id: number }) {
               className="btn btn-tonal btn-sm"
               disabled={busy || !Object.keys(draft).length}
             >
-              Save Maturity Limits
+              {t('lumen.managedMaturity.save', 'Save Maturity Limits')}
             </button>
           </form>
         </>

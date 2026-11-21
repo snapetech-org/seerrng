@@ -63,18 +63,22 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     ''
   );
   await page.getByRole('button', { name: 'Send Email Test' }).click();
-  await expect(page.getByText('Test notification sent.')).toBeVisible();
+  await expect(page.getByText('Email test notification sent!')).toBeVisible();
   expect(writes[0]).toEqual({
     path: 'email/test',
     body: { ...email, enabled: true },
   });
-  await page.getByLabel('Use the Public Logo').check();
+  await page
+    .getByLabel('Use public Seerr logo instead of instance logo')
+    .check();
   const save = page.getByRole('button', { name: 'Save Email' });
   await save.click();
   await expect(page.getByRole('alert')).toHaveText(
-    'Could not save notification settings. Try again.'
+    'Email notification settings failed to save.'
   );
-  await expect(page.getByLabel('Use the Public Logo')).toBeChecked();
+  await expect(
+    page.getByLabel('Use public Seerr logo instead of instance logo')
+  ).toBeChecked();
   await save.click();
   await expect(page.getByText('Notification settings saved.')).toBeVisible();
   await page
@@ -103,9 +107,190 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   }
 });
 
+test('notification settings load failures use localized recovery and retry', async ({
+  page,
+}) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE ?? ''
+  )
+    ? process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE!
+    : 'en';
+  const copy = {
+    en: {
+      title: 'Couldn’t load Email settings.',
+      error: 'The server had a problem. Try again in a moment.',
+      retry: 'Retry',
+      sender: 'Sender Name',
+    },
+    fr: {
+      title: 'Impossible de charger les paramètres de Email.',
+      error: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      retry: 'Réessayer',
+      sender: "Nom de l'expéditeur",
+    },
+    ar: {
+      title: 'تعذر تحميل إعدادات Email.',
+      error: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+      retry: 'إعادة المحاولة',
+      sender: 'اسم المرسل',
+    },
+  }[locale];
+  let emailReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/settings/main'))
+      return route.fulfill({ json: { locale } });
+    if (
+      request.method() === 'GET' &&
+      path.endsWith('/settings/notifications/email')
+    ) {
+      emailReads += 1;
+      if (emailReads === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Service Unavailable' },
+        });
+      return route.fulfill({
+        json: { enabled: false, embedPoster: false, options: {} },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto('/admin/notifications/email');
+  const error = page.getByRole('alert');
+  await expect(error.getByText(copy.title, { exact: true })).toBeVisible();
+  await expect(error.getByText(copy.error, { exact: true })).toBeVisible();
+  await expect(error.getByRole('button', { name: copy.retry })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute(
+    'dir',
+    locale === 'ar' ? 'rtl' : 'ltr'
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    )
+    .toBe(true);
+  if (process.env.LUMEN_ADMIN_NOTIFICATION_ERROR_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_NOTIFICATION_ERROR_CAPTURE_DIR}/${locale}-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+  await error.getByRole('button', { name: copy.retry }).click();
+  await expect(page.locator('#email').getByLabel(copy.sender)).toBeVisible();
+  expect(emailReads).toBe(2);
+});
+
 test('messaging channels preserve credentials and independent event masks', async ({
   page,
 }, info) => {
+  const requestedLocale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE ?? ''
+  )
+    ? process.env.LUMEN_ADMIN_NOTIFICATION_LOCALE!
+    : 'en';
+  const baseline = process.env.LUMEN_ADMIN_NOTIFICATION_BASELINE === '1';
+  const locale = requestedLocale;
+  const eventLabels = {
+    en: { approved: 'Request approved', available: 'Media available' },
+    fr: { approved: 'Demande validée', available: 'Média demandé disponible' },
+    ar: {
+      approved: 'تمت الموافقة على الطلب',
+      available: 'المحتوى المطلوب متاح',
+    },
+  }[baseline ? 'en' : locale];
+  const shellLabels = {
+    en: {
+      title: 'Instance Notifications',
+      account: 'Back to Account',
+      channels: 'Notification Channels',
+    },
+    fr: {
+      title: 'Notifications de l’instance',
+      account: 'Retour au compte',
+      channels: 'Canaux de notification',
+    },
+    ar: {
+      title: 'إشعارات المثيل',
+      account: 'العودة إلى الحساب',
+      channels: 'قنوات الإشعارات',
+    },
+  }[baseline ? 'en' : locale];
+  const controlLabels = {
+    en: {
+      enable: 'Enable Agent',
+      botToken: 'Bot Authorization Token',
+      thread: 'Thread/Topic ID',
+      silent: 'Send Silently',
+      channelTag: 'Channel Tag',
+      sound: 'Notification Sound',
+      saveTelegram: 'Save Telegram',
+      savePushbullet: 'Save Pushbullet',
+      savePushover: 'Save Pushover',
+    },
+    fr: {
+      enable: 'Activer l’agent de notification',
+      botToken: "Jeton d'autorisation du bot",
+      thread: 'ID du fil de discussion',
+      silent: 'Envoyer silencieusement',
+      channelTag: 'Étiquette de canal',
+      sound: 'Son de notification',
+      saveTelegram: 'Enregistrer Telegram',
+      savePushbullet: 'Enregistrer Pushbullet',
+      savePushover: 'Enregistrer Pushover',
+    },
+    ar: {
+      enable: 'تفعيل خدمة الإشعارات',
+      botToken: 'رمز تفويض البوت',
+      thread: 'معرّف الخيط/الموضوع',
+      silent: 'أرسل بشكل صامت',
+      channelTag: 'علامة القناة',
+      sound: 'صوت التنبيه',
+      saveTelegram: 'حفظ Telegram',
+      savePushbullet: 'حفظ Pushbullet',
+      savePushover: 'حفظ Pushover',
+    },
+  }[baseline ? 'en' : locale];
+  const providerFieldLabels = {
+    en: {
+      email: 'Sender Name',
+      gotify: 'Server URL',
+      ntfy: 'Topic',
+      apprise: 'Configuration Key',
+      discord: 'Webhook URL',
+      slack: 'Webhook URL',
+      webhook: 'JSON Payload',
+      webpush: 'Enable Agent',
+    },
+    fr: {
+      email: "Nom de l'expéditeur",
+      gotify: 'URL du serveur',
+      ntfy: 'Sujet',
+      apprise: 'Nom de la configuration',
+      discord: 'URL du webhook',
+      slack: 'URL du webhook',
+      webhook: 'Données utiles JSON',
+      webpush: 'Activer l’agent de notification',
+    },
+    ar: {
+      email: 'اسم المرسل',
+      gotify: 'عنوان URL للخادم',
+      ntfy: 'الموضوع',
+      apprise: 'اسم الإعداد',
+      discord: 'خطاف الويب URL',
+      slack: 'عنوان URL لخطاف الويب',
+      webhook: 'حمولة JSON',
+      webpush: 'تفعيل خدمة الإشعارات',
+    },
+  }[baseline ? 'en' : locale];
   const saved: { path: string; body: unknown }[] = [];
   const agents = {
     telegram: {
@@ -145,6 +330,8 @@ test('messaging channels preserve credentials and independent event masks', asyn
     const path = new URL(request.url()).pathname;
     if (path.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/settings/main'))
+      return route.fulfill({ json: { locale } });
     if (path.endsWith('/pushover/sounds'))
       return route.fulfill({ json: [{ name: 'bell', description: 'Bell' }] });
     const channel = path.split('/').at(-1)! as keyof typeof agents;
@@ -160,38 +347,62 @@ test('messaging channels preserve credentials and independent event masks', asyn
   });
   await page.goto('/admin/notifications/telegram');
   const telegram = page.locator('#telegram');
-  await expect(telegram.getByLabel('Bot Token', { exact: true })).toHaveValue(
-    ''
-  );
-  await telegram.getByLabel('Enable Notifications').check();
   await expect(
-    telegram.getByRole('button', { name: 'Save Telegram' })
+    telegram.getByLabel(controlLabels.botToken, { exact: true })
+  ).toHaveValue('');
+  await telegram.getByLabel(controlLabels.enable).check();
+  await expect(
+    telegram.getByRole('button', { name: controlLabels.saveTelegram })
   ).toBeDisabled();
-  await telegram.getByLabel('Request approved').check();
-  await telegram.getByLabel('Message Thread ID').fill('42');
-  await telegram.getByLabel('Send Silently').check();
-  await telegram.getByRole('button', { name: 'Save Telegram' }).click();
+  await telegram.getByLabel(eventLabels.approved, { exact: true }).check();
+  await telegram.getByLabel(controlLabels.thread).fill('42');
+  await telegram.getByLabel(controlLabels.silent).check();
+  await telegram
+    .getByRole('button', { name: controlLabels.saveTelegram })
+    .click();
   await expect(
-    telegram.getByText('Notification settings saved.')
+    telegram.getByText(
+      {
+        en: 'Telegram notification settings saved successfully!',
+        fr: 'Paramètres de notification Telegram enregistrés !',
+        ar: 'تم حفظ إعدادات التليقرام بنجاح!',
+      }[locale]
+    )
   ).toBeVisible();
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await telegram.screenshot({ path: info.outputPath('telegram.png') });
 
   await page.goto('/admin/notifications/pushbullet');
   const pushbullet = page.locator('#pushbullet');
-  await pushbullet.getByLabel('Channel Tag').fill('household');
-  await pushbullet.getByLabel('Media available').check();
-  await pushbullet.getByRole('button', { name: 'Save Pushbullet' }).click();
+  await pushbullet.getByLabel(controlLabels.channelTag).fill('household');
+  await pushbullet.getByLabel(eventLabels.available, { exact: true }).check();
+  await pushbullet
+    .getByRole('button', { name: controlLabels.savePushbullet })
+    .click();
   await expect(
-    pushbullet.getByText('Notification settings saved.')
+    pushbullet.getByText(
+      {
+        en: 'Pushbullet notification settings saved successfully!',
+        fr: 'Paramètres de notification Pushbullet enregistrés !',
+        ar: 'تم حفظ إعدادات إشعارات Pushbullet بنجاح!',
+      }[locale]
+    )
   ).toBeVisible();
 
   await page.goto('/admin/notifications/pushover');
   const pushover = page.locator('#pushover');
-  await pushover.getByLabel('Notification Sound').selectOption('bell');
-  await pushover.getByRole('button', { name: 'Save Pushover' }).click();
+  await pushover.getByLabel(controlLabels.sound).selectOption('bell');
+  await pushover
+    .getByRole('button', { name: controlLabels.savePushover })
+    .click();
   await expect(
-    pushover.getByText('Notification settings saved.')
+    pushover.getByText(
+      {
+        en: 'Pushover notification settings saved successfully!',
+        fr: 'Paramètres de notification Pushover enregistrés !',
+        ar: 'تم حفظ إعدادات تنبيه Pushover!',
+      }[locale]
+    )
   ).toBeVisible();
   expect(saved).toEqual([
     {
@@ -292,19 +503,19 @@ test('server notification channels save and test with their own options', async 
 
   await page.goto('/admin/notifications/gotify');
   const gotify = page.locator('#gotify');
-  await expect(gotify.getByLabel('Access Token', { exact: true })).toHaveValue(
-    ''
-  );
+  await expect(
+    gotify.getByLabel('Application Token', { exact: true })
+  ).toHaveValue('');
   await gotify.getByLabel('Priority').fill('10');
   await gotify.getByRole('button', { name: 'Save Gotify' }).click();
-  await expect(gotify.getByText('Notification settings saved.')).toBeVisible();
+  await expect(
+    gotify.getByText('Gotify notification settings saved successfully!')
+  ).toBeVisible();
 
   await page.goto('/admin/notifications/ntfy');
   const ntfy = page.locator('#ntfy');
   await ntfy.getByLabel('Authentication').selectOption('token');
-  await expect(ntfy.getByLabel('Access Token', { exact: true })).toHaveValue(
-    ''
-  );
+  await expect(ntfy.getByLabel('Token', { exact: true })).toHaveValue('');
   await ntfy.getByLabel('Tags').fill('bell,house');
   await ntfy.getByRole('button', { name: 'Send ntfy Test' }).click();
   await expect(ntfy.getByText('Test notification sent.')).toBeVisible();
@@ -320,7 +531,9 @@ test('server notification channels save and test with their own options', async 
   await apprise.getByLabel('Configuration Key').fill('new-house');
   await apprise.getByLabel('Tag', { exact: true }).fill('films');
   await apprise.getByRole('button', { name: 'Save Apprise' }).click();
-  await expect(apprise.getByText('Notification settings saved.')).toBeVisible();
+  await expect(
+    apprise.getByText('Apprise notification settings saved successfully.')
+  ).toBeVisible();
 
   expect(calls).toEqual([
     { path: 'gotify', options: { ...agents.gotify, priority: 10 } },
@@ -399,25 +612,31 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
   );
   await discord.getByLabel('Thread ID').fill('123456789');
   await discord.getByRole('button', { name: 'Send Discord Test' }).click();
-  await expect(discord.getByText('Test notification sent.')).toBeVisible();
+  await expect(
+    discord.getByText('Discord test notification sent!')
+  ).toBeVisible();
   await discord.getByRole('button', { name: 'Save Discord' }).click();
-  await expect(discord.getByText('Notification settings saved.')).toBeVisible();
+  await expect(
+    discord.getByText('Discord notification settings saved successfully!')
+  ).toBeVisible();
 
   await page.goto('/admin/notifications/slack');
   const slack = page.locator('#slack');
-  await slack.getByLabel('Enable Request Approval Actions').check();
+  await slack.getByLabel('Enable request approval actions').check();
   const save = slack.getByRole('button', { name: 'Save Slack' });
   await expect(save).toBeDisabled();
   await expect(
-    slack.getByLabel('Slack Signing Secret', { exact: true })
+    slack.getByLabel('Slack signing secret', { exact: true })
   ).toHaveValue('');
-  await slack.getByLabel('Slack Workspace ID').fill('T12345678');
+  await slack.getByLabel('Slack workspace ID').fill('T12345678');
   await slack
-    .getByLabel('Request Manager Mappings')
+    .getByLabel('Request manager mappings')
     .fill('U12345678=42\nU87654321=43');
   await slack.getByLabel('Request awaiting approval').check();
   await save.click();
-  await expect(slack.getByText('Notification settings saved.')).toBeVisible();
+  await expect(
+    slack.getByText('Slack notification settings saved successfully!')
+  ).toBeVisible();
 
   const discordPayload = {
     enabled: false,
@@ -511,9 +730,13 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
   await section.getByLabel('Header 2 Value').fill('fixture-value');
   await section.getByLabel('Support URL Variables').check();
   await send.click();
-  await expect(section.getByText('Test notification sent.')).toBeVisible();
+  await expect(
+    section.getByText('Webhook test notification sent!')
+  ).toBeVisible();
   await save.click();
-  await expect(section.getByText('Notification settings saved.')).toBeVisible();
+  await expect(
+    section.getByText('Webhook notification settings saved successfully!')
+  ).toBeVisible();
   await expect(payload).toHaveValue(
     '{"message":"{{message}}","title":"Québec"}'
   );

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
 
@@ -12,6 +13,7 @@ export default function ManagedEpisodeQueue({
   id: number;
   name: string;
 }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/episode-queue`;
   const queue = useApi<{ defaultEpisodeCount: number }>(path, {
     keepDuringRefresh: true,
@@ -35,12 +37,21 @@ export default function ManagedEpisodeQueue({
         method: 'POST',
         body: JSON.stringify({ defaultEpisodeCount: count }),
       });
-      setNotice('Episode Queue default saved.');
+      setNotice(
+        t('lumen.managedEpisodeQueue.saved', 'Episode Queue default saved.')
+      );
       setDraft(undefined);
       queue.reload();
     } catch (failure) {
       setError(
-        friendlyError(failure, 'Could not save the Episode Queue default.')
+        friendlyError(
+          failure,
+          t(
+            'lumen.managedEpisodeQueue.saveFailure',
+            'Could not save the Episode Queue default.'
+          ),
+          t
+        )
       );
     } finally {
       working.current = false;
@@ -53,12 +64,12 @@ export default function ManagedEpisodeQueue({
     <div>
       <ServiceNote
         error={queue.error}
-        what="Episode Queue default"
+        what={t('lumen.managedEpisodeQueue.title', 'Episode Queue default')}
         retry={queue.reload}
       />
       {!queue.data && !queue.error && (
         <p className="note" role="status">
-          Loading Episode Queue…
+          {t('lumen.managedEpisodeQueue.loading', 'Loading Episode Queue…')}
         </p>
       )}
       {error && (
@@ -74,7 +85,9 @@ export default function ManagedEpisodeQueue({
       {queue.data && (
         <div className="toolbar">
           <label className="sel">
-            <span className="lbl">Episodes Ahead</span>
+            <span className="lbl">
+              {t('lumen.managedEpisodeQueue.episodesAhead', 'Episodes Ahead')}
+            </span>
             <select
               value={count}
               disabled={busy}
@@ -83,7 +96,9 @@ export default function ManagedEpisodeQueue({
                 setNotice('');
               }}
             >
-              <option value={0}>Off</option>
+              <option value={0}>
+                {t('lumen.managedEpisodeQueue.off', 'Off')}
+              </option>
               {[1, 2, 3, 4, 5].map((value) => (
                 <option key={value} value={value}>
                   {value}
@@ -96,16 +111,23 @@ export default function ManagedEpisodeQueue({
             disabled={busy || count === queue.data.defaultEpisodeCount}
             onClick={() => setConfirm(true)}
           >
-            Save Default
+            {t('lumen.managedEpisodeQueue.saveDefault', 'Save Default')}
           </button>
         </div>
       )}
       {confirm && (
         <ConfirmSheet
-          title={`Save Episode Queue default for ${name}?`}
-          body="This applies to existing and future interactive TV requests. Episodes already requested stay in place."
-          confirm="Save Default"
-          cancel="Go Back"
+          title={t(
+            'lumen.managedEpisodeQueue.confirmTitle',
+            'Save Episode Queue default for {name}?',
+            { name }
+          )}
+          body={t(
+            'lumen.managedEpisodeQueue.confirmBody',
+            'This applies to existing and future interactive TV requests. Episodes already requested stay in place.'
+          )}
+          confirm={t('lumen.managedEpisodeQueue.saveDefault', 'Save Default')}
+          cancel={t('lumen.managedEpisodeQueue.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void save()}
           onClose={() => {

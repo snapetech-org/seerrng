@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from '../api';
 import { forget } from '../apiCache';
 import { useApi, type PublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
@@ -9,7 +10,22 @@ import { ServiceNote } from './extra';
 
 const publicPath = '/settings/public';
 
-const policies = [
+type PolicyKey =
+  | 'personMovieBulkRequestsEnabled'
+  | 'enable4k'
+  | 'partialRequestsEnabled'
+  | 'enableSpecialEpisodes'
+  | 'trackEpisodeAvailability'
+  | 'tvSeasonWatchGateEnabled';
+type Policy = {
+  key: PolicyKey;
+  label: string;
+  description: string;
+  messageKey?: string;
+  descriptionKey?: string;
+};
+
+const policies: Policy[] = [
   {
     key: 'personMovieBulkRequestsEnabled',
     label: 'Bulk Movie Requests From Person Pages',
@@ -25,18 +41,27 @@ const policies = [
   {
     key: 'partialRequestsEnabled',
     label: 'Allow Partial Series Requests',
+    messageKey: 'lumen.adminGeneral.requestSettings.partialRequestsEnabled',
     description: 'Let users request individual seasons of a series.',
+    descriptionKey:
+      'lumen.adminGeneral.requestSettings.partialRequestsEnabledHelp',
   },
   {
     key: 'enableSpecialEpisodes',
     label: 'Allow Special Episode Requests',
+    messageKey: 'lumen.adminGeneral.requestSettings.enableSpecialEpisodes',
     description: 'Include specials when users select seasons to request.',
+    descriptionKey:
+      'lumen.adminGeneral.requestSettings.enableSpecialEpisodesHelp',
   },
   {
     key: 'trackEpisodeAvailability',
     label: 'Track Individual Episode Availability',
+    messageKey: 'lumen.adminGeneral.requestSettings.trackEpisodeAvailability',
     description:
       'Record episode files during Sonarr, Plex, Jellyfin, and Emby scans. Sonarr tracking requires TheTVDB. Match library episode numbering to the selected metadata provider.',
+    descriptionKey:
+      'lumen.adminGeneral.requestSettings.trackEpisodeAvailabilityHelp',
   },
   {
     key: 'tvSeasonWatchGateEnabled',
@@ -44,8 +69,8 @@ const policies = [
     description:
       'Require the previous regular season to be watched before requesting later seasons. SeerrNG checks the requester’s linked media server.',
   },
-] as const;
-type Policies = Record<(typeof policies)[number]['key'], boolean>;
+];
+type Policies = Record<PolicyKey, boolean>;
 
 function RequestSettingsForm({
   initial,
@@ -54,6 +79,7 @@ function RequestSettingsForm({
   initial: Policies;
   anchorReady: boolean;
 }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const changed = policies.filter(({ key }) => draft[key] !== saved[key]);
@@ -86,17 +112,33 @@ function RequestSettingsForm({
       invalidatePublicSettings();
       forget(publicPath);
       if (changed.some(({ key }) => result[key] !== draft[key])) {
-        setFailure('Could not confirm the saved request setting. Try again.');
+        setFailure(
+          t(
+            'lumen.adminGeneral.requestSettings.confirmFailure',
+            'Could not confirm the saved request setting. Try again.'
+          )
+        );
         return;
       }
       setSaved(draft);
-      setNotice('Instance request settings saved.');
+      setNotice(
+        t(
+          'lumen.adminGeneral.requestSettings.saved',
+          'Instance request settings saved.'
+        )
+      );
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
           error instanceof ApiError && error.status === 403
-            ? 'Administrator permission is required to save these settings.'
-            : 'Could not save the instance request setting. Try again.'
+            ? t(
+                'lumen.error.noPermission',
+                'You do not have permission to do that.'
+              )
+            : t(
+                'lumen.adminGeneral.requestSettings.saveFailure',
+                'Could not save the instance request setting. Try again.'
+              )
         );
     } finally {
       pending.current = false;
@@ -112,29 +154,45 @@ function RequestSettingsForm({
       }}
     >
       <div className="setlist">
-        {policies.map(({ key, label, description }) => (
-          <label
-            className="set cfg-row"
-            key={key}
-            id={key === 'enable4k' ? key : undefined}
-          >
-            <span>
-              <b>{label}</b>
-              <small>{description}</small>
-            </span>
-            <input
-              type="checkbox"
-              aria-label={label}
-              checked={draft[key]}
-              disabled={busy}
-              onChange={(event) => {
-                setDraft({ ...draft, [key]: event.target.checked });
-                setNotice('');
-                setFailure('');
-              }}
-            />
-          </label>
-        ))}
+        {policies.map(
+          ({ key, label, description, messageKey, descriptionKey }) => (
+            <label
+              className="set cfg-row"
+              key={key}
+              id={key === 'enable4k' ? key : undefined}
+            >
+              <span>
+                <b>
+                  {t(
+                    messageKey ?? `components.Settings.SettingsMain.${key}`,
+                    label
+                  )}
+                </b>
+                <small>
+                  {t(
+                    descriptionKey ??
+                      `components.Settings.SettingsMain.${key}Tip`,
+                    description
+                  )}
+                </small>
+              </span>
+              <input
+                type="checkbox"
+                aria-label={t(
+                  messageKey ?? `components.Settings.SettingsMain.${key}`,
+                  label
+                )}
+                checked={draft[key]}
+                disabled={busy}
+                onChange={(event) => {
+                  setDraft({ ...draft, [key]: event.target.checked });
+                  setNotice('');
+                  setFailure('');
+                }}
+              />
+            </label>
+          )
+        )}
       </div>
       {failure && (
         <p className="note" role="alert">
@@ -151,7 +209,10 @@ function RequestSettingsForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !changed.length}
         >
-          Save Instance Request Settings
+          {t(
+            'lumen.adminGeneral.requestSettings.saveButton',
+            'Save Instance Request Settings'
+          )}
         </button>
       </div>
     </form>
@@ -163,9 +224,15 @@ export function InstanceRequestSettings({
 }: {
   anchorReady?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const settings = useApi<PublicSettings>(publicPath);
   return (
-    <Section title="Instance Request Settings">
+    <Section
+      title={t(
+        'lumen.adminGeneral.requestSettings.title',
+        'Instance Request Settings'
+      )}
+    >
       <ServiceNote
         error={settings.error}
         what="instance request settings"
@@ -190,7 +257,10 @@ export function InstanceRequestSettings({
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading instance request settings…
+            {t(
+              'lumen.adminGeneral.requestSettings.loading',
+              'Loading instance request settings…'
+            )}
           </p>
         )
       )}

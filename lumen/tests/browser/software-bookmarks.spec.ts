@@ -304,7 +304,7 @@ for (const mode of ['edition', 'missing-selected'] as const) {
       .click();
     await expect(
       page
-        .getByRole('dialog', { name: 'Software request history' })
+        .getByRole('dialog', { name: 'History' })
         .getByText(
           mode === 'edition'
             ? 'Complete Edition · Deluxe Edition'

@@ -124,7 +124,7 @@ describe('GET /tv/:id/seasons', () => {
   );
   validatedApp.use('/api/v1/tv', tvRoutes);
 
-  it('returns successful seasons through the OpenAPI route after a provider failure', async () => {
+  it('recovers seasons rejected by concurrent provider lookups', async () => {
     const settings = getSettings();
     const priorProvider = settings.metadataSettings.tv;
     settings.metadataSettings.tv = MetadataProviderType.TMDB;
@@ -136,6 +136,7 @@ describe('GET /tv/:id/seasons', () => {
     let showLookups = 0;
     let activeSeasons = 0;
     let maxActiveSeasons = 0;
+    const seasonAttempts = new Map<number, number>();
     mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
       if (url === '/tv/1413') {
         showLookups++;
@@ -145,11 +146,15 @@ describe('GET /tv/:id/seasons', () => {
         };
       }
       const number = Number(url.split('/').at(-1));
+      seasonAttempts.set(number, (seasonAttempts.get(number) ?? 0) + 1);
       activeSeasons++;
       maxActiveSeasons = Math.max(maxActiveSeasons, activeSeasons);
+      const concurrent = activeSeasons > 1;
       await new Promise<void>((resolve) => setImmediate(resolve));
       activeSeasons--;
-      if (number === 2) throw new Error('Season fixture unavailable');
+      if (concurrent) {
+        throw new Error('Provider throttled concurrent season lookups');
+      }
       return {
         id: 100 + number,
         season_number: number,
@@ -161,22 +166,63 @@ describe('GET /tv/:id/seasons', () => {
     try {
       const response = await request(validatedApp)
         .get('/api/v1/tv/1413/seasons')
-        .query({ seasonNumbers: '0,1,2,3,4,4' });
+        .query({
+          seasonNumbers: `${Array.from({ length: 15 }, (_, index) => index).join(',')},14`,
+        });
       assert.strictEqual(response.status, 200, JSON.stringify(response.body));
       assert.deepStrictEqual(
         response.body.map(
           (season: { seasonNumber: number }) => season.seasonNumber
         ),
-        [0, 1, 3, 4]
+        Array.from({ length: 15 }, (_, index) => index)
       );
       assert.strictEqual(showLookups, 1);
       assert.strictEqual(maxActiveSeasons, 3);
+      assert.strictEqual(seasonAttempts.size, 15);
+      assert([...seasonAttempts.values()].every((attempts) => attempts <= 2));
+      assert([...seasonAttempts.values()].some((attempts) => attempts === 2));
 
       const invalid = await request(validatedApp)
         .get('/api/v1/tv/1413/seasons')
         .query({ seasonNumbers: '1,10001' });
       assert.strictEqual(invalid.status, 400);
       assert.strictEqual(showLookups, 1);
+    } finally {
+      settings.metadataSettings.tv = priorProvider;
+    }
+  });
+
+  it('returns valid season metadata when the provider reports no episodes', async () => {
+    const settings = getSettings();
+    const priorProvider = settings.metadataSettings.tv;
+    settings.metadataSettings.tv = MetadataProviderType.TMDB;
+    const mockGet = mock.method as (
+      object: object,
+      key: string,
+      callback: (url: string) => Promise<unknown>
+    ) => unknown;
+    mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
+      if (url === '/tv/1413')
+        return {
+          id: 1413,
+          videos: { results: [] },
+        };
+      if (url === '/tv/1413/season/14')
+        return {
+          id: 114,
+          season_number: 14,
+          episodes: [],
+        };
+      throw new Error(`Unexpected TMDB request: ${url}`);
+    });
+    try {
+      const response = await request(validatedApp)
+        .get('/api/v1/tv/1413/seasons')
+        .query({ seasonNumbers: '14' });
+      assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+      assert.strictEqual(response.body.length, 1);
+      assert.strictEqual(response.body[0].seasonNumber, 14);
+      assert.deepStrictEqual(response.body[0].episodes, []);
     } finally {
       settings.metadataSettings.tv = priorProvider;
     }

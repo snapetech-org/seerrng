@@ -20,7 +20,7 @@ test('Blocklist localizes filters, entries, removal, and feedback', async ({
   )
     ? (process.env.LUMEN_BLOCKLIST_LOCALE as 'en' | 'fr' | 'ar')
     : 'fr';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   let entryExists = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {

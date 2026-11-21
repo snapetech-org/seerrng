@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
-import { MoreOnScroll, Section, type Stat } from '../components/cards';
+import {
+  MoreOnScroll,
+  Section,
+  StatLabel,
+  type Stat,
+} from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
@@ -393,7 +398,7 @@ function LeagueRequestSheet({
       )}
       {status && (
         <p className="note" role="status">
-          {status.word}
+          <StatLabel s={status} />
         </p>
       )}
       {unavailable && (
@@ -453,7 +458,7 @@ export function LeagueDetail() {
       </button>
     ) : s || requested === id ? (
       <button className="btn btn-tonal" disabled>
-        {s?.word ?? 'Requested'}
+        <StatLabel s={s ?? { word: 'Requested' }} />
       </button>
     ) : null;
   return (

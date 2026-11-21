@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api, ApiError, type TvDetails } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { ConfirmSheet } from './ConfirmSheet';
 import { type MappingCandidate, videoHref } from './IdentityMapping';
@@ -48,6 +49,7 @@ export default function LibraryTracking({
   provider: Provider;
   updated: () => void;
 }) {
+  const { t } = useLumenLocale();
   const aniList = provider === 'anilist';
   const aniListId = Number(item.sourceId);
   const target = aniList
@@ -78,7 +80,7 @@ export default function LibraryTracking({
   const tvError =
     tv.error ||
     (tv.data && !Array.isArray(tv.data.seasons)
-      ? 'Invalid seasons response.'
+      ? t('lumen.myMedia.tracking.invalidSeasons', 'Invalid seasons response.')
       : null);
   const season =
     seasons.find(({ seasonNumber }) => seasonNumber === chosenSeason)
@@ -102,7 +104,10 @@ export default function LibraryTracking({
   const episodesError =
     seasonDetails.error ||
     (seasonDetails.data && !Array.isArray(seasonDetails.data.episodes)
-      ? 'Invalid episodes response.'
+      ? t(
+          'lumen.myMedia.tracking.invalidEpisodes',
+          'Invalid episodes response.'
+        )
       : null);
   const episode =
     episodes.find(({ episodeNumber }) => episodeNumber === chosenEpisode)
@@ -125,7 +130,10 @@ export default function LibraryTracking({
     (watch.data &&
     (!Array.isArray(watch.data.episodes) ||
       typeof watch.data.available !== 'boolean')
-      ? 'Invalid provider watch status response.'
+      ? t(
+          'lumen.myMedia.tracking.invalidStatus',
+          'Invalid provider watch status response.'
+        )
       : null);
   const episodeWatched =
     !watchError && watch.data?.available
@@ -178,7 +186,13 @@ export default function LibraryTracking({
             writeError.status < 500
           ) {
             setFailure(
-              friendlyError(writeError, 'The tracking update was rejected.')
+              friendlyError(
+                writeError,
+                t(
+                  'lumen.myMedia.tracking.rejected',
+                  'The tracking update was rejected.'
+                )
+              )
             );
             return;
           }
@@ -188,22 +202,33 @@ export default function LibraryTracking({
       if (generation !== sessionGeneration()) return;
       if (result.state === 'succeeded') {
         attempts.current.delete(signature);
-        setNotice('Provider tracking updated.');
+        setNotice(
+          t('lumen.myMedia.tracking.updated', 'Provider tracking updated.')
+        );
         if (change.episode) watch.reload();
         updated();
       } else if (result.state === 'pending') {
         setFailure(
-          'The provider is still processing the update. Check your account before retrying.'
+          t(
+            'lumen.myMedia.tracking.pending',
+            'The provider is still processing the update. Check your account before retrying.'
+          )
         );
       } else {
         setFailure(
-          'The provider did not confirm the update. Check your account before retrying.'
+          t(
+            'lumen.myMedia.tracking.notConfirmed',
+            'The provider did not confirm the update. Check your account before retrying.'
+          )
         );
       }
     } catch {
       if (generation === sessionGeneration())
         setFailure(
-          'Could not confirm the tracking update. Check your account before retrying.'
+          t(
+            'lumen.myMedia.tracking.confirmFailed',
+            'Could not confirm the tracking update. Check your account before retrying.'
+          )
         );
     } finally {
       active.current = false;
@@ -231,7 +256,7 @@ export default function LibraryTracking({
         disabled={busy}
         onClick={() => setOpen(!open)}
       >
-        Update Tracking
+        {t('lumen.myMedia.tracking.update', 'Update Tracking')}
       </button>
       {open && (
         <div className="toolbar">
@@ -245,10 +270,14 @@ export default function LibraryTracking({
               else void apply(change);
             }}
           >
-            {watched ? 'Mark Unwatched' : 'Mark Watched'}
+            {watched
+              ? t('lumen.myMedia.tracking.markUnwatched', 'Mark Unwatched')
+              : t('lumen.myMedia.tracking.markWatched', 'Mark Watched')}
           </button>
           <label className="sel">
-            <span className="lbl">Rating (0–10)</span>
+            <span className="lbl">
+              {t('lumen.myMedia.tracking.rating', 'Rating (0–10)')}
+            </span>
             <input
               type="number"
               min={0}
@@ -267,12 +296,17 @@ export default function LibraryTracking({
               void apply({ action: 'rating', value: Number(rating) })
             }
           >
-            Save Rating
+            {t('lumen.myMedia.tracking.saveRating', 'Save Rating')}
           </button>
           {aniList && (
             <>
               <label className="sel">
-                <span className="lbl">Episodes Watched</span>
+                <span className="lbl">
+                  {t(
+                    'lumen.myMedia.tracking.episodesWatched',
+                    'Episodes Watched'
+                  )}
+                </span>
                 <input
                   type="number"
                   min={0}
@@ -290,7 +324,7 @@ export default function LibraryTracking({
                   void apply({ action: 'progress', value: Number(progress) })
                 }
               >
-                Save Progress
+                {t('lumen.myMedia.tracking.saveProgress', 'Save Progress')}
               </button>
             </>
           )}
@@ -302,7 +336,10 @@ export default function LibraryTracking({
               aria-expanded={episodeOpen}
               onClick={() => setEpisodeOpen(!episodeOpen)}
             >
-              Track Individual Episodes
+              {t(
+                'lumen.myMedia.tracking.individualEpisodes',
+                'Track Individual Episodes'
+              )}
             </button>
           )}
         </div>
@@ -311,39 +348,69 @@ export default function LibraryTracking({
         <>
           <ServiceNote
             error={tvError}
-            what="series seasons"
+            what={t('lumen.myMedia.tracking.seriesSeasons', 'series seasons')}
+            title={t('lumen.myMedia.couldNotLoad', 'Could not load {what}', {
+              what: t('lumen.myMedia.tracking.seriesSeasons', 'series seasons'),
+            })}
             retry={tv.reload}
           />
           <ServiceNote
             error={episodesError}
-            what="season episodes"
+            what={t('lumen.myMedia.tracking.seasonEpisodes', 'season episodes')}
+            title={t('lumen.myMedia.couldNotLoad', 'Could not load {what}', {
+              what: t(
+                'lumen.myMedia.tracking.seasonEpisodes',
+                'season episodes'
+              ),
+            })}
             retry={seasonDetails.reload}
           />
           <ServiceNote
             error={watchError}
-            what="provider episode status"
+            what={t(
+              'lumen.myMedia.tracking.providerEpisodeStatus',
+              'provider episode status'
+            )}
+            title={t('lumen.myMedia.couldNotLoad', 'Could not load {what}', {
+              what: t(
+                'lumen.myMedia.tracking.providerEpisodeStatus',
+                'provider episode status'
+              ),
+            })}
             retry={watch.reload}
           />
           {!tv.data && !tvError && (
             <p className="note" role="status">
-              Loading seasons…
+              {t('lumen.myMedia.tracking.loadingSeasons', 'Loading seasons…')}
             </p>
           )}
           {tv.data && !tvError && !seasons.length && (
-            <p className="note">No seasons are available.</p>
+            <p className="note">
+              {t(
+                'lumen.myMedia.tracking.noSeasons',
+                'No seasons are available.'
+              )}
+            </p>
           )}
           {season !== undefined && !seasonDetails.data && !episodesError && (
             <p className="note" role="status">
-              Loading episodes…
+              {t('lumen.myMedia.tracking.loadingEpisodes', 'Loading episodes…')}
             </p>
           )}
           {seasonDetails.data && !episodesError && !episodes.length && (
-            <p className="note">No episodes are available.</p>
+            <p className="note">
+              {t(
+                'lumen.myMedia.tracking.noEpisodes',
+                'No episodes are available.'
+              )}
+            </p>
           )}
           <div className="toolbar">
             {season !== undefined && (
               <label className="sel">
-                <span className="lbl">Tracking Season</span>
+                <span className="lbl">
+                  {t('lumen.myMedia.tracking.season', 'Tracking Season')}
+                </span>
                 <select
                   value={season}
                   disabled={busy}
@@ -362,7 +429,9 @@ export default function LibraryTracking({
             )}
             {episode !== undefined && (
               <label className="sel">
-                <span className="lbl">Tracking Episode</span>
+                <span className="lbl">
+                  {t('lumen.myMedia.tracking.episode', 'Tracking Episode')}
+                </span>
                 <select
                   value={episode}
                   disabled={busy}
@@ -395,7 +464,10 @@ export default function LibraryTracking({
                         })
                       }
                     >
-                      Mark Episode Watched
+                      {t(
+                        'lumen.myMedia.tracking.markEpisodeWatched',
+                        'Mark Episode Watched'
+                      )}
                     </button>
                   )}
                   {episodeWatched !== false && (
@@ -411,7 +483,10 @@ export default function LibraryTracking({
                         })
                       }
                     >
-                      Mark Episode Unwatched
+                      {t(
+                        'lumen.myMedia.tracking.markEpisodeUnwatched',
+                        'Mark Episode Unwatched'
+                      )}
                     </button>
                   )}
                 </>
@@ -420,12 +495,21 @@ export default function LibraryTracking({
           {episode !== undefined && (
             <p className="note" role="status">
               {episodeWatched === true
-                ? 'Watched on provider.'
+                ? t('lumen.myMedia.tracking.watched', 'Watched on provider.')
                 : episodeWatched === false
-                  ? 'Unwatched on provider.'
+                  ? t(
+                      'lumen.myMedia.tracking.unwatched',
+                      'Unwatched on provider.'
+                    )
                   : watch.data || watch.error
-                    ? 'Watch status unavailable.'
-                    : 'Loading provider episode status…'}
+                    ? t(
+                        'lumen.myMedia.tracking.unavailable',
+                        'Watch status unavailable.'
+                      )
+                    : t(
+                        'lumen.myMedia.tracking.loadingStatus',
+                        'Loading provider episode status…'
+                      )}
             </p>
           )}
         </>
@@ -444,18 +528,43 @@ export default function LibraryTracking({
         <ConfirmSheet
           title={
             confirm.episode
-              ? 'Mark Episode Unwatched?'
+              ? t(
+                  'lumen.myMedia.tracking.episodeConfirmTitle',
+                  'Mark Episode Unwatched?'
+                )
               : confirm.value
-                ? 'Mark Watched?'
-                : 'Mark Unwatched?'
+                ? t(
+                    'lumen.myMedia.tracking.watchedConfirmTitle',
+                    'Mark Watched?'
+                  )
+                : t(
+                    'lumen.myMedia.tracking.unwatchedConfirmTitle',
+                    'Mark Unwatched?'
+                  )
           }
           body={
             confirm.episode
-              ? `Remove watched status for ${item.title}, season ${confirm.episode.season}, episode ${confirm.episode.episode}?`
-              : `Update watched status for ${item.title} on your tracking account?`
+              ? t(
+                  'lumen.myMedia.tracking.episodeConfirmBody',
+                  'Remove watched status for {title}, season {season}, episode {episode}?',
+                  {
+                    title: item.title,
+                    season: confirm.episode.season,
+                    episode: confirm.episode.episode,
+                  }
+                )
+              : t(
+                  'lumen.myMedia.tracking.confirmBody',
+                  'Update watched status for {title} on your tracking account?',
+                  { title: item.title }
+                )
           }
-          confirm={confirm.value ? 'Mark Watched' : 'Mark Unwatched'}
-          cancel="Cancel"
+          confirm={
+            confirm.value
+              ? t('lumen.myMedia.tracking.markWatched', 'Mark Watched')
+              : t('lumen.myMedia.tracking.markUnwatched', 'Mark Unwatched')
+          }
+          cancel={t('lumen.myMedia.tracking.cancel', 'Cancel')}
           onConfirm={() => void apply(confirm)}
           onClose={() => setConfirm(undefined)}
         />

@@ -18,6 +18,10 @@ const paged = (results: unknown[]) => ({
   totalResults: results.length,
   results,
 });
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
 
 async function fixtures(
   page: Page,
@@ -39,7 +43,7 @@ async function fixtures(
   );
   await page.route('**/api/v1/**', async (route) => {
     const req = route.request();
-    const path = new URL(req.url()).pathname.slice(7);
+    const path = testApiPath(req.url());
     if (req.method() === 'POST')
       posts.push({ path, body: req.postDataJSON() ?? {} });
     let status = 200;
@@ -155,6 +159,592 @@ test('Everyone reports a failed load and retries instead of claiming there are n
   ).toBeVisible();
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
+
+test('disabled core categories block their direct routes before catalog requests', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {
+          movie: true,
+          tv: true,
+          ebook: true,
+          audiobook: true,
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          movie: false,
+          tv: false,
+          ebook: false,
+          audiobook: false,
+        },
+      },
+    })
+  );
+  const catalogRequests: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    const path = testApiPath(request.url());
+    if (
+      /^\/(discover\/(movies|tv|books|list|upcoming|genreslider|trending)|movie\/|tv\/|person\/|association\/|franchise\/|book\/|book-series|media)/.test(
+        path
+      )
+    )
+      catalogRequests.push(path);
+  });
+
+  await page.goto(testAppPath('/'));
+  await expect(page.locator('.navchips')).toBeVisible();
+  for (const path of ['/movies', '/series', '/books', '/audiobooks']) {
+    await expect(page.locator(`.navchips a[href="${path}"]`)).toHaveCount(0);
+  }
+
+  for (const [path, label] of [
+    ['/movies', 'Movies'],
+    ['/movies/genres', 'Movies'],
+    ['/movie/1', 'Movies'],
+    ['/movie/1/similar', 'Movies'],
+    ['/series', 'Series'],
+    ['/series/genres', 'Series'],
+    ['/tv/1', 'Series'],
+    ['/tv/1/recommendations', 'Series'],
+    ['/books', 'Books'],
+    ['/audiobooks', 'Audiobooks'],
+    ['/book/1', 'Books'],
+    ['/book/1?f=audio', 'Audiobooks'],
+    ['/books/recommendations?format=audiobook', 'Audiobooks'],
+    ['/author/1', 'Books or Audiobooks'],
+    ['/book-series', 'Books or Audiobooks'],
+    ['/book-series/catalog', 'Books or Audiobooks'],
+    ['/book-series/1', 'Books or Audiobooks'],
+    ['/book-series/requests', 'Books or Audiobooks'],
+  ]) {
+    await page.goto(testAppPath(path));
+    await expect(
+      page.locator('main').getByText(label, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText('This category is turned off for your account.')
+    ).toBeVisible();
+    if (path === '/movies') {
+      await page.screenshot({
+        path: info.outputPath('disabled-movie-category.png'),
+        fullPage: true,
+      });
+    }
+  }
+  for (const path of [
+    '/trending',
+    '/person/1',
+    '/soon',
+    '/list/1',
+    '/associations/movie/1',
+    '/associations/tv/1',
+    '/franchise/tv/1',
+  ]) {
+    await page.goto(testAppPath(path));
+    await expect(
+      page.getByText('This category is turned off for your account.')
+    ).toBeVisible();
+  }
+  for (const label of ['Movies', 'Series', 'Books', 'Audiobooks']) {
+    await expect(
+      page
+        .getByRole('navigation', { name: 'Main' })
+        .getByRole('link', { name: label })
+    ).toHaveCount(0);
+  }
+  expect(catalogRequests).toEqual([]);
+});
+
+test('Search hides disabled scopes and does not query their catalogs', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {
+          movie: true,
+          tv: true,
+          ebook: true,
+          audiobook: true,
+          comic: true,
+          music: true,
+          magazine: true,
+          sports: true,
+          game: true,
+          adult: true,
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          movie: false,
+          tv: true,
+          ebook: false,
+          audiobook: true,
+          comic: true,
+          music: true,
+          magazine: true,
+          sports: true,
+          game: true,
+          adult: true,
+        },
+      },
+    })
+  );
+  const categoryQueries: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    const path = testApiPath(request.url());
+    if (/^\/(discover\/(trending|movies|tv|books)|search)/.test(path))
+      categoryQueries.push(path);
+  });
+
+  await page.goto('/search');
+  await expect(page.getByRole('group', { name: 'Search in' })).toBeVisible();
+  for (const label of ['Movies', 'Books']) {
+    await expect(
+      page
+        .getByRole('group', { name: 'Search in' })
+        .getByRole('button', { name: label, exact: true })
+    ).toHaveCount(0);
+  }
+  for (const label of ['Series', 'Audiobooks']) {
+    await expect(
+      page
+        .getByRole('group', { name: 'Search in' })
+        .getByRole('button', { name: label, exact: true })
+    ).toBeVisible();
+  }
+  await page.goto('/search?q=night&f=movie');
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  await page.goto('/search?q=night&f=ebook');
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  expect(categoryQueries).not.toContain('/discover/movies');
+  expect(categoryQueries).not.toContain('/discover/books');
+  expect(categoryQueries).not.toContain('/search');
+  expect(categoryQueries).toContain('/discover/trending');
+});
+
+test('associations hide disabled movie and series edge types', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: true, tv: false } },
+    })
+  );
+  await page.route('**/api/v1/association/movie/1**', (route) =>
+    route.fulfill({
+      json: {
+        root: { title: 'Root Movie' },
+        edges: [
+          {
+            type: 'recommended',
+            reason: 'movie edge',
+            node: { id: 2, mediaType: 'movie', title: 'Movie Only' },
+          },
+          {
+            type: 'recommended',
+            reason: 'series edge',
+            node: { id: 3, mediaType: 'tv', title: 'Series Only' },
+          },
+        ],
+      },
+    })
+  );
+  await page.goto(testAppPath('/associations/movie/1'));
+  await expect(page.getByRole('link', { name: 'Movie Only' })).toBeVisible();
+  await expect(page.getByText('Series Only')).toHaveCount(0);
+});
+
+test('person credits and movie request shortcut follow enabled categories', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        personMovieBulkRequestsEnabled: true,
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: true, tv: false } },
+    })
+  );
+  await page.route('**/api/v1/person/1', (route) =>
+    route.fulfill({
+      json: { id: 1, name: 'Credit Actor', knownForDepartment: 'Acting' },
+    })
+  );
+  await page.route('**/api/v1/person/1/combined_credits', (route) =>
+    route.fulfill({
+      json: {
+        cast: [
+          {
+            ...movie(2, 'Movie Credit'),
+            character: 'Lead',
+          },
+          {
+            id: 3,
+            name: 'Series Credit',
+            mediaType: 'tv',
+            firstAirDate: '2020-01-01',
+            voteAverage: 7,
+            voteCount: 10,
+          },
+        ],
+        crew: [],
+      },
+    })
+  );
+  await page.goto(testAppPath('/person/1'));
+  await expect(page.getByRole('link', { name: 'Movie Credit' })).toBeVisible();
+  await expect(page.getByText('Series Credit')).toHaveCount(0);
+  await expect(page.getByRole('option', { name: 'Series' })).toHaveCount(0);
+});
+
+test('calendar hides disabled media filters and skips a disabled direct scope', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/calendar**', (route) =>
+    route.fulfill({
+      json: { partialSources: [], truncated: false, results: [] },
+    })
+  );
+  const calendarRequests: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    if (testApiPath(request.url()).startsWith('/calendar'))
+      calendarRequests.push(request.url());
+  });
+  await page.goto(testAppPath('/calendar'));
+  await expect(
+    page.getByText('No releases match this month and scope.')
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('calendar-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  calendarRequests.length = 0;
+  await page.goto(testAppPath('/calendar?mediaType=movie'));
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Movies' })).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('calendar-disabled-candidate.png'),
+    fullPage: true,
+  });
+  expect(calendarRequests).toEqual([]);
+});
+
+test('calendar mixed results omit the account-disabled media type', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: false, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/calendar**', (route) =>
+    route.fulfill({
+      json: {
+        partialSources: [],
+        truncated: false,
+        results: [
+          {
+            id: 'movie:1',
+            title: 'Disabled Movie Release',
+            startsAt: '2026-11-25T00:00:00.000Z',
+            allDay: true,
+            dateType: 'digital',
+            mediaType: 'movie',
+            available: false,
+            is4k: false,
+            tmdbId: 1,
+          },
+          {
+            id: 'tv:2',
+            title: 'Enabled Series Release',
+            startsAt: '2026-11-26T00:00:00.000Z',
+            allDay: true,
+            dateType: 'air',
+            mediaType: 'tv',
+            available: false,
+            is4k: false,
+            tmdbId: 2,
+          },
+        ],
+      },
+    })
+  );
+  await page.goto(testAppPath('/calendar'));
+  await expect(page.getByText('Enabled Series Release')).toBeVisible();
+  await expect(page.getByText('Disabled Movie Release')).toHaveCount(0);
+});
+
+test('trending filters disabled movies and movie collections', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: false, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/discover/trending**', (route) =>
+    route.fulfill({
+      json: paged([
+        movie(301, 'Disabled Movie'),
+        {
+          id: 302,
+          title: 'Enabled Series',
+          name: 'Enabled Series',
+          mediaType: 'tv',
+          firstAirDate: '2020-01-01',
+        },
+        {
+          id: 303,
+          title: 'Disabled Movie Collection',
+          mediaType: 'collection',
+        },
+      ]),
+    })
+  );
+  await page.goto(testAppPath('/trending'));
+  await expect(
+    page.getByRole('link', { name: 'Enabled Series' })
+  ).toBeVisible();
+  await expect(page.getByText('Disabled Movie')).toHaveCount(0);
+  await expect(page.getByText('Disabled Movie Collection')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Movies', exact: true })
+  ).toHaveCount(0);
+});
+
+test('watchlist filters categories disabled for the signed-in account', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/user/1/watchlist**', (route) =>
+    route.fulfill({
+      json: {
+        results: [
+          {
+            source: 'plex',
+            id: 1,
+            ratingKey: 'movie-1',
+            mediaType: 'movie',
+            title: 'Hidden Movie',
+            tmdbId: 1,
+          },
+          {
+            source: 'plex',
+            id: 2,
+            ratingKey: 'tv-2',
+            mediaType: 'tv',
+            title: 'Visible Series',
+            tmdbId: 2,
+          },
+        ],
+        totalPages: 1,
+        filtersSupported: true,
+      },
+    })
+  );
+  await page.goto(testAppPath('/watchlist'));
+  await expect(page.getByText('Hidden Movie')).toBeVisible();
+  await expect(page.getByText('Visible Series')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('watchlist-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  await page.goto(testAppPath('/watchlist'));
+  await expect(page.getByText('Hidden Movie')).toHaveCount(0);
+  await expect(page.getByText('Visible Series')).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Movies' })).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('watchlist-disabled-candidate.png'),
+    fullPage: true,
+  });
+});
+
+test('My Media hides movies disabled for the signed-in account', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  let movieEnabled = true;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: movieEnabled, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/integrations/discovery/accounts', (route) =>
+    route.fulfill({
+      json: {
+        accounts: [],
+        mediaServer: { provider: 'plex', connected: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/integrations/discovery/library/plex**', (route) =>
+    route.fulfill({
+      json: {
+        allowWrites: false,
+        items: [
+          { id: 'movie-1', title: 'Hidden Library Movie', mediaType: 'movie' },
+          { id: 'tv-2', title: 'Visible Library Series', mediaType: 'tv' },
+        ],
+        libraries: [{ id: 'library-1', name: 'Main Library' }],
+        hasMore: false,
+        missingMappings: 0,
+        truncated: false,
+      },
+    })
+  );
+  await page.goto(testAppPath('/library?source=plex'));
+  await expect(page.getByText('Hidden Library Movie')).toBeVisible();
+  await expect(page.getByText('Visible Library Series')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('library-enabled-baseline.png'),
+    fullPage: true,
+  });
+  movieEnabled = false;
+  await page.goto(testAppPath('/library?source=plex'));
+  await expect(page.getByText('Visible Library Series')).toBeVisible();
+  await expect(page.getByText('Hidden Library Movie')).toHaveCount(0);
+  await page.screenshot({
+    path: info.outputPath('library-disabled-candidate.png'),
+    fullPage: true,
+  });
+});
+
+for (const [locale, message] of [
+  ['fr', 'Cette catégorie est désactivée pour votre compte.'],
+  ['ar', 'هذه الفئة متوقفة لحسابك.'],
+]) {
+  test(`disabled core category notice follows the ${locale} account locale`, async ({
+    page,
+  }, info) => {
+    await fixtures(page);
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({
+        json: { locale, enabledMediaCategories: { movie: false } },
+      })
+    );
+    await page.goto(testAppPath('/movies'));
+    await expect(page.getByText(message)).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: info.outputPath(`disabled-category-${locale}.png`),
+      fullPage: true,
+    });
+  });
+}
 
 for (const theme of ['light', 'dark'] as const) {
   test(`review settings, destination sheet and family sign-in in ${theme}`, async ({
@@ -300,6 +890,93 @@ test('malformed category probe storage does not break navigation', async ({
     .poll(() => page.evaluate(() => sessionStorage.getItem('lumen-probes:1')))
     .not.toBe('null');
   expect(errors).toEqual([]);
+});
+
+test('disabled personal categories do not mount optional catalog pages or fetch their data', async ({
+  page,
+}) => {
+  const catalogReads: string[] = [];
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: {
+          music: true,
+          comic: true,
+          magazine: true,
+          game: true,
+          retro: true,
+          modern: true,
+          sports: true,
+          adult: true,
+        },
+        musicEnabled: true,
+        comicsEnabled: true,
+        magazinesEnabled: true,
+        softwareEnabled: true,
+        romarrEnabled: true,
+        sportsEnabled: true,
+        adultEnabled: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          music: false,
+          comic: false,
+          magazine: false,
+          game: false,
+          retro: false,
+          modern: false,
+          sports: false,
+          adult: false,
+        },
+      },
+    })
+  );
+  await page.route(
+    /\/api\/v1\/(?:discover\/(?:music|comics|magazines|sports)|adult\/|request\/software\/catalog)/,
+    (route) => {
+      const path = new URL(route.request().url()).pathname.slice(
+        '/api/v1'.length
+      );
+      catalogReads.push(path);
+      return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
+    }
+  );
+
+  for (const [path, heading] of [
+    ['/music', 'Music'],
+    ['/music/playlist-import', 'Music'],
+    ['/music/collectors', 'Music'],
+    ['/music/1', 'Music'],
+    ['/collections/music/example', 'Music'],
+    ['/artist/1', 'Music'],
+    ['/identify', 'Music'],
+    ['/track-requests', 'Music'],
+    ['/comics', 'Comics/Manga'],
+    ['/comic/1', 'Comics/Manga'],
+    ['/magazines', 'Magazines'],
+    ['/magazine/Example', 'Magazines'],
+    ['/games', 'Games'],
+    ['/games/discovery', 'Games'],
+    ['/game/retro/1', 'Games'],
+    ['/patches', 'Games'],
+    ['/patches/example', 'Games'],
+    ['/software?category=retro&game=1', 'Games'],
+    ['/sports', 'Sports'],
+    ['/sportarr/1', 'Sports'],
+    ['/adult', 'Adult'],
+    ['/adult/1', 'Adult'],
+  ]) {
+    await page.goto(testAppPath(path));
+    await expect(page.getByRole('heading', { name: heading })).toBeVisible();
+    await expect(page.getByText('is turned off on this server')).toBeVisible();
+  }
+  expect(catalogReads).toEqual([]);
 });
 
 test('late category probes remain scoped to the account that started them', async ({
@@ -1272,7 +1949,7 @@ test('admins see everyone’s requests and approve or decline them', async ({
   await row.scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('quota-review-list.png') });
   await row.getByRole('button', { name: 'History' }).click();
-  const history = page.getByRole('dialog', { name: 'Request history' });
+  const history = page.getByRole('dialog', { name: 'History' });
   await expect(history.getByText('Over Quota', { exact: true })).toBeVisible();
   await settleVisuals(page);
   await page.screenshot({ path: info.outputPath('quota-review-history.png') });

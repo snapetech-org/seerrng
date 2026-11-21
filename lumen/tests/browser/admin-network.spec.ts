@@ -97,6 +97,33 @@ test('network settings send only edited values and recover from a rejected save'
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
 
+test('administration search opens the saved proxy password control safely', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.goto('/admin');
+  await page
+    .getByRole('searchbox', { name: 'Search Settings' })
+    .fill('proxy password');
+  const link = page.getByRole('link', {
+    name: 'Open Proxy Password',
+    exact: true,
+  });
+  await expect(link).toHaveAttribute('href', '/admin/network#proxy.password');
+  await link.click();
+  await expect(page).toHaveURL(/\/admin\/network#proxy\.password$/);
+  const password = page.getByRole('textbox', { name: 'Proxy Password' });
+  await expect(password).toBeInViewport();
+  await expect(password).toHaveValue('');
+  await expect(
+    page.getByText('Leave blank to keep the saved password.')
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('proxy-password-shortcut.png'),
+    fullPage: true,
+  });
+});
+
 test('transport environment overrides prevent Lumen edits', async ({
   page,
 }) => {

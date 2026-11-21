@@ -15,7 +15,7 @@ test('system logs follow the saved locale and keep search and copy usable', asyn
   const copy = {
     en: [
       'System Logs',
-      'Search Logs',
+      'Search logs',
       'Severity',
       'Page Size',
       'Search',
@@ -110,7 +110,7 @@ test('system logs follow the saved locale and keep search and copy usable', asyn
   });
   await page.goto(appPath('/admin/logs'));
   const labels = baseline
-    ? ['System Logs', 'Search Logs', 'Severity', 'Page Size', 'Search']
+    ? ['System Logs', 'Search logs', 'Severity', 'Page Size', 'Search']
     : copy.slice(0, 5);
   await expect(
     page.getByRole('heading', { name: labels[0], exact: true })

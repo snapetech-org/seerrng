@@ -212,7 +212,7 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
   )
     ? (process.env.LUMEN_DOWNLOADS_LOCALE as 'en' | 'fr' | 'ar')
     : 'en';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   const labels = {
     en: {
       title: 'Download Inbox',
@@ -343,7 +343,7 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
     page.getByText('Fixture Download', { exact: true })
   ).toBeVisible();
   await expect(
-    page.getByText(expected('status', 'Needs Attention'), { exact: true })
+    page.getByText(expected('status', 'Needs attention'), { exact: true })
   ).toBeVisible();
   await expect(
     page.getByRole('button', { name: expected('preview', 'Preview Files') })

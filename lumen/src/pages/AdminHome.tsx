@@ -238,6 +238,21 @@ const shortcuts = [
     'limit limits quotas',
   ],
   [
+    'Default User Permissions',
+    '/admin/general#default-user-permissions',
+    'permissions roles grants access defaults',
+  ],
+  [
+    'Default User Categories',
+    '/admin/categories#default-user-categories',
+    'categories media defaults account',
+  ],
+  [
+    'Proxy Password',
+    '/admin/network#proxy.password',
+    'outbound proxy credentials secret password',
+  ],
+  [
     'Prowlarr Settings',
     '/admin/prowlarr',
     'indexer search nzbhydra2 nzb hydra2',

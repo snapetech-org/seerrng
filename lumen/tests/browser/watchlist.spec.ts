@@ -98,6 +98,59 @@ test('a user manager without watchlist authority cannot load another user’s wa
   expect(requested).toBe(false);
 });
 
+test('delegated Watchlist does not filter target results by viewer categories', async ({
+  page,
+}, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path === '/auth/me') {
+      return route.fulfill({
+        json: { id: 1, displayName: 'Administrator', permissions: 2 },
+      });
+    }
+    if (path === '/settings/public') {
+      return route.fulfill({
+        json: { enabledMediaCategories: { movie: true, tv: true } },
+      });
+    }
+    if (path === '/user/1/settings/main') {
+      return route.fulfill({
+        json: { enabledMediaCategories: { movie: false, tv: true } },
+      });
+    }
+    if (path === '/user/19/watchlist') {
+      return route.fulfill({
+        json: {
+          filtersSupported: true,
+          totalPages: 1,
+          results: [
+            {
+              id: 20,
+              ratingKey: 'local20',
+              tmdbId: 20,
+              title: 'Target Movie',
+              mediaType: 'movie',
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(testAppPath('/watchlist/user/19'));
+  await expect(
+    page.getByRole('heading', { name: 'User Watchlist' })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('delegated-watchlist-categories.png'),
+    fullPage: true,
+  });
+  await expect(page.getByRole('link', { name: 'Target Movie' })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Movies' })).toHaveCount(1);
+});
+
 for (const combined of [false, true]) {
   test(`personal Watchlist handles ${combined ? 'combined Plex' : 'local'} results`, async ({
     page,

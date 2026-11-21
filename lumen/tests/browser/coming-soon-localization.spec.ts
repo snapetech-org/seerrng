@@ -20,7 +20,7 @@ test('Coming Soon localizes its feed and preserves movie request submission', as
   )
     ? (process.env.LUMEN_SOON_LOCALE as 'en' | 'fr' | 'ar')
     : 'en';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   let submitted: unknown;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>

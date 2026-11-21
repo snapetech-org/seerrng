@@ -4,6 +4,7 @@ import { bookDetailPath, videoDetailPath } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 
@@ -120,8 +121,9 @@ function releaseHref(item: Release) {
   }
 }
 
-function CalendarResults({ path }: { path: string }) {
+function CalendarResults({ path }: { path: string | null }) {
   const { locale, t } = useLumenLocale();
+  const extras = useExtras();
   const {
     data: response,
     error: loadError,
@@ -130,7 +132,20 @@ function CalendarResults({ path }: { path: string }) {
   const [limit, setLimit] = useState(PAGE_SIZE);
   const data =
     Array.isArray(response?.results) && Array.isArray(response?.partialSources)
-      ? response
+      ? {
+          ...response,
+          results: response.results.filter((release) => {
+            const category =
+              release.mediaType === 'book'
+                ? release.bookFormat === 'audiobook'
+                  ? 'audiobook'
+                  : 'ebook'
+                : release.mediaType === 'software'
+                  ? (release.softwareCategory ?? 'game')
+                  : release.mediaType;
+            return extras.categoryEnabled(category);
+          }),
+        }
       : null;
   const error =
     loadError ||
@@ -314,6 +329,7 @@ function CalendarResults({ path }: { path: string }) {
 export default function Calendar() {
   const { locale, t } = useLumenLocale();
   const { user } = useAuth();
+  const extras = useExtras();
   const admin = isAdministrator(user?.permissions);
   const canSeeAll = canViewAllRequests(user?.permissions);
   const [params, setParams] = useSearchParams();
@@ -327,6 +343,28 @@ export default function Calendar() {
   const scope = canSeeAll && params.get('scope') === 'all' ? 'all' : 'mine';
   const medium =
     MEDIA.find(([value]) => value === params.get('mediaType'))?.[0] ?? '';
+  const categoryForMedium = (value: string) =>
+    value === 'book'
+      ? extras.categoryEnabled('ebook') || extras.categoryEnabled('audiobook')
+      : value === 'software'
+        ? extras.categoryEnabled('game') ||
+          extras.categoryEnabled('retro') ||
+          extras.categoryEnabled('modern')
+        : value
+          ? extras.categoryEnabled(value)
+          : [
+              'movie',
+              'tv',
+              'music',
+              'comic',
+              'magazine',
+              'ebook',
+              'audiobook',
+              'game',
+              'retro',
+              'modern',
+            ].some((category) => extras.categoryEnabled(category));
+  const mediumEnabled = categoryForMedium(medium);
   const unmonitored = admin && params.get('includeUnmonitored') === 'true';
   function update(key: string, value: string) {
     const next = new URLSearchParams(params);
@@ -343,13 +381,19 @@ export default function Calendar() {
     includeUnmonitored: String(unmonitored),
   });
   if (medium) query.set('mediaType', medium);
-  const path = `/calendar?${query}`;
+  const path = extras.ready && mediumEnabled ? `/calendar?${query}` : null;
 
   return (
     <>
       <header className="ph">
         <h1>{t('lumen.calendar.title', 'Release Calendar')}</h1>
       </header>
+      <p className="note">
+        {t(
+          'lumen.calendar.description',
+          'Upcoming movie, series, music, book, comic, magazine, PC game, and emulation releases from your acquisition services.'
+        )}
+      </p>
       <div
         className="toolbar"
         aria-label={t('lumen.calendar.filters', 'Calendar Filters')}
@@ -410,14 +454,16 @@ export default function Calendar() {
             {t('lumen.calendar.mediaType', 'Media Type')}
           </span>
           <select
-            value={medium}
+            value={mediumEnabled ? medium : ''}
             onChange={(event) => update('mediaType', event.target.value)}
           >
-            {MEDIA.map(([value, key]) => (
-              <option key={value} value={value}>
-                {t(`lumen.calendar.media.${key}`, key)}
-              </option>
-            ))}
+            {MEDIA.filter(([value]) => !value || categoryForMedium(value)).map(
+              ([value, key]) => (
+                <option key={value} value={value}>
+                  {t(`lumen.calendar.media.${key}`, key)}
+                </option>
+              )
+            )}
           </select>
         </label>
         {admin && (
@@ -436,7 +482,16 @@ export default function Calendar() {
           </label>
         )}
       </div>
-      <CalendarResults key={path} path={path} />
+      {mediumEnabled ? (
+        <CalendarResults key={path} path={path} />
+      ) : (
+        <p className="note" role="status">
+          {t(
+            'lumen.category.disabledForAccount',
+            'This category is turned off for your account.'
+          )}
+        </p>
+      )}
     </>
   );
 }

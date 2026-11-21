@@ -1,4 +1,11 @@
-import { lazy, Suspense, useRef, useState, type FormEvent } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useRef,
+  useState,
+  type FormEvent,
+} from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { isAdministrator, useAuth } from '../auth';
@@ -18,6 +25,7 @@ import ManagedQuotas from '../components/ManagedQuotas';
 import ManagedTvAccess from '../components/ManagedTvAccess';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canViewUserWatchlist } from './Watchlist';
 
 const UserNotifications = lazy(() =>
@@ -56,6 +64,7 @@ function CreateLocalUser({
   onCreated: (name: string) => void;
   onClose: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [emailSetup, setEmailSetup] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -69,7 +78,7 @@ function CreateLocalUser({
     const email = String(fields.get('email') ?? '').trim();
     const password = String(fields.get('password') ?? '');
     if (!username) {
-      setError('Enter a username.');
+      setError(t('lumen.adminUsers.usernameRequired', 'Enter a username.'));
       return;
     }
     working.current = true;
@@ -86,7 +95,13 @@ function CreateLocalUser({
       });
       onCreated(username);
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not create the account.'));
+      setError(
+        friendlyError(
+          failure,
+          t('lumen.adminUsers.createFailure', 'Could not create the account.'),
+          t
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -94,11 +109,11 @@ function CreateLocalUser({
   }
 
   return (
-    <Section title="Create Local User">
+    <Section title={t('lumen.adminUsers.createLocalUser', 'Create Local User')}>
       <form onSubmit={create} autoComplete="off">
         <div className="setlist">
           <label className="set">
-            <span>Username</span>
+            <span>{t('lumen.adminUsers.username', 'Username')}</span>
             <input
               className="cfg-json"
               name="username"
@@ -108,7 +123,7 @@ function CreateLocalUser({
             />
           </label>
           <label className="set">
-            <span>Email</span>
+            <span>{t('lumen.adminUsers.email', 'Email')}</span>
             <input
               className="cfg-json"
               name="email"
@@ -119,7 +134,12 @@ function CreateLocalUser({
             />
           </label>
           <label className="set">
-            <span>Email a password setup link</span>
+            <span>
+              {t(
+                'lumen.adminUsers.emailSetupLink',
+                'Email a password setup link'
+              )}
+            </span>
             <input
               type="checkbox"
               checked={emailSetup}
@@ -129,7 +149,7 @@ function CreateLocalUser({
           </label>
           {!emailSetup && (
             <label className="set">
-              <span>Password</span>
+              <span>{t('lumen.adminUsers.password', 'Password')}</span>
               <input
                 className="cfg-json"
                 name="password"
@@ -145,7 +165,10 @@ function CreateLocalUser({
         </div>
         {emailSetup && (
           <p className="note">
-            Setup links require an application URL and email notifications.
+            {t(
+              'lumen.adminUsers.setupLinkRequirement',
+              'Setup links require an application URL and email notifications.'
+            )}
           </p>
         )}
         {error && (
@@ -155,7 +178,9 @@ function CreateLocalUser({
         )}
         <div className="toolbar">
           <button className="btn btn-tonal btn-sm" disabled={busy}>
-            {busy ? 'Creating…' : 'Create User'}
+            {busy
+              ? t('lumen.adminUsers.creating', 'Creating…')
+              : t('lumen.adminUsers.createUser', 'Create User')}
           </button>
           <button
             className="btn btn-quiet btn-sm"
@@ -163,7 +188,7 @@ function CreateLocalUser({
             disabled={busy}
             onClick={onClose}
           >
-            Cancel
+            {t('lumen.adminUsers.cancel', 'Cancel')}
           </button>
         </div>
       </form>
@@ -180,10 +205,16 @@ function EditProfile({
   canEditEmail: boolean;
   onSaved: () => void;
 }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/main`;
-  const profile = useApi<{ username?: string | null; email?: string | null }>(
-    path
+  const formatError = useCallback(
+    (error: unknown, fallback: string) => friendlyError(error, fallback, t),
+    [t]
   );
+  const profile = useApi<{
+    username?: string | null;
+    email?: string | null;
+  }>(path, { formatError });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -198,14 +229,16 @@ function EditProfile({
     const update: { username?: string; email?: string } = {};
     if (username !== (profile.data.username ?? '')) {
       if (!username) {
-        setError('Enter a username.');
+        setError(t('lumen.adminUsers.usernameRequired', 'Enter a username.'));
         return;
       }
       update.username = username;
     }
     if (canEditEmail && email !== (profile.data.email ?? '')) {
       if (!email) {
-        setError('Enter an email address.');
+        setError(
+          t('lumen.adminUsers.emailRequired', 'Enter an email address.')
+        );
         return;
       }
       update.email = email;
@@ -217,11 +250,20 @@ function EditProfile({
     setNotice('');
     try {
       await api(path, { method: 'POST', body: JSON.stringify(update) });
-      setNotice('Profile saved.');
+      setNotice(t('lumen.adminUsers.profileSaved', 'Profile saved.'));
       profile.reload();
       onSaved();
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not save the profile.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.adminUsers.profileSaveFailure',
+            'Could not save the profile.'
+          ),
+          t
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -232,12 +274,12 @@ function EditProfile({
     <div>
       <ServiceNote
         error={profile.error}
-        what="profile"
+        what={t('lumen.adminUsers.profile', 'profile')}
         retry={profile.reload}
       />
       {!profile.data && !profile.error && (
         <p className="note" role="status">
-          Loading profile…
+          {t('lumen.adminUsers.profileLoading', 'Loading profile…')}
         </p>
       )}
       {error && (
@@ -253,7 +295,9 @@ function EditProfile({
       {profile.data && (
         <form className="toolbar" onSubmit={save}>
           <label className="sel">
-            <span className="lbl">Username</span>
+            <span className="lbl">
+              {t('lumen.adminUsers.username', 'Username')}
+            </span>
             <input
               className="cfg-json"
               name="username"
@@ -265,7 +309,9 @@ function EditProfile({
           </label>
           {canEditEmail && (
             <label className="sel">
-              <span className="lbl">Email</span>
+              <span className="lbl">
+                {t('lumen.adminUsers.email', 'Email')}
+              </span>
               <input
                 className="cfg-json"
                 name="email"
@@ -278,7 +324,7 @@ function EditProfile({
             </label>
           )}
           <button className="btn btn-tonal btn-sm" disabled={busy}>
-            Save Profile
+            {t('lumen.adminUsers.saveProfile', 'Save Profile')}
           </button>
         </form>
       )}
@@ -287,12 +333,17 @@ function EditProfile({
 }
 
 export default function AdminUsers() {
+  const { t } = useLumenLocale();
   const { userId, panel } = useParams();
   const target =
     userId && /^[1-9]\d{0,9}$/.test(userId) && Number(userId) <= 1_000_000_000
       ? Number(userId)
       : undefined;
   const { user: actor, signOut } = useAuth();
+  const formatError = useCallback(
+    (error: unknown, fallback: string) => friendlyError(error, fallback, t),
+    [t]
+  );
   const serverType = usePublicSettings()?.mediaServerType;
   const provider =
     serverType === 1
@@ -360,6 +411,7 @@ export default function AdminUsers() {
   }>(userId && !target ? null : `/user?${query}`, {
     currentPathOnly: true,
     keepDuringRefresh: true,
+    formatError,
   });
 
   function update(key: string, value: string) {
@@ -412,13 +464,23 @@ export default function AdminUsers() {
     try {
       await api(`/user/${remove.id}`, { method: 'DELETE' }, 'empty');
       setRemove(undefined);
-      setNotice(`Deleted ${remove.displayName}.`);
+      setNotice(
+        t('lumen.adminUsers.deleted', 'Deleted {name}.', {
+          name: remove.displayName,
+        })
+      );
       if (remove.id === actor?.id) await signOut();
       else if (page > 1 && data?.results.length === 1)
         update('page', page === 2 ? '' : String(page - 1));
       else reload();
     } catch (failure) {
-      setRemoveError(friendlyError(failure, 'Could not delete the account.'));
+      setRemoveError(
+        friendlyError(
+          failure,
+          t('lumen.adminUsers.deleteFailure', 'Could not delete the account.'),
+          t
+        )
+      );
       setRemove(undefined);
       reload();
     } finally {
@@ -430,7 +492,7 @@ export default function AdminUsers() {
   return (
     <>
       <header className="ph">
-        <h1>Users</h1>
+        <h1>{t('lumen.adminUsers.title', 'Users')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
@@ -438,18 +500,20 @@ export default function AdminUsers() {
         </Link>
         {userId && (
           <Link className="btn btn-quiet btn-sm" to="/admin/users">
-            All Users
+            {t('lumen.adminUsers.allUsers', 'All Users')}
           </Link>
         )}
         <button className="btn btn-quiet btn-sm" onClick={reload}>
-          Refresh
+          {t('lumen.adminUsers.refresh', 'Refresh')}
         </button>
         {canImport && !importing && (
           <button
             className="btn btn-quiet btn-sm"
             onClick={() => setImporting(true)}
           >
-            Import {provider} Users
+            {t('lumen.adminUsers.importUsers', 'Import {provider} Users', {
+              provider,
+            })}
           </button>
         )}
         {!creating && (
@@ -460,7 +524,7 @@ export default function AdminUsers() {
               setCreating(true);
             }}
           >
-            Create Local User
+            {t('lumen.adminUsers.createLocalUser', 'Create Local User')}
           </button>
         )}
       </div>
@@ -476,7 +540,9 @@ export default function AdminUsers() {
         <CreateLocalUser
           onCreated={(name) => {
             setCreating(false);
-            setNotice(`Created ${name}.`);
+            setNotice(
+              t('lumen.adminUsers.created', 'Created {name}.', { name })
+            );
             reload();
           }}
           onClose={() => setCreating(false)}
@@ -518,39 +584,57 @@ export default function AdminUsers() {
             <button className="btn btn-tonal btn-sm">Search</button>
           </span>
           <label className="sel">
-            <span className="lbl">Sort By</span>
+            <span className="lbl">
+              {t('lumen.adminUsers.sortBy', 'Sort By')}
+            </span>
             <select
               value={sort}
               onChange={(event) => update('sort', event.target.value)}
             >
               {Object.entries(sorts).map(([value, label]) => (
                 <option key={value} value={value}>
-                  {label}
+                  {t(`lumen.adminUsers.sort.${value}`, label)}
                 </option>
               ))}
             </select>
           </label>
           <label className="sel">
-            <span className="lbl">Sort Direction</span>
+            <span className="lbl">
+              {t('lumen.adminUsers.sortDirection', 'Sort Direction')}
+            </span>
             <select
               value={direction}
               onChange={(event) => update('direction', event.target.value)}
             >
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
+              <option value="asc">
+                {t('lumen.adminUsers.ascending', 'Ascending')}
+              </option>
+              <option value="desc">
+                {t('lumen.adminUsers.descending', 'Descending')}
+              </option>
             </select>
           </label>
         </form>
       )}
-      <ServiceNote error={error} what="users" retry={reload} />
-      {userId && !target && <p className="note">Invalid user ID.</p>}
+      <ServiceNote
+        error={error}
+        what={t('lumen.adminUsers.users', 'users')}
+        retry={reload}
+      />
+      {userId && !target && (
+        <p className="note">
+          {t('lumen.adminUsers.invalidUserId', 'Invalid user ID.')}
+        </p>
+      )}
       {(!userId || target) && !data && !error && (
         <p className="note" role="status">
-          Loading users…
+          {t('lumen.adminUsers.loading', 'Loading users…')}
         </p>
       )}
       {data?.results.length === 0 && (
-        <p className="note">No users match this search.</p>
+        <p className="note">
+          {t('lumen.adminUsers.empty', 'No users match this search.')}
+        </p>
       )}
       {!!data?.results.length && (
         <ul className="setlist">
@@ -569,33 +653,51 @@ export default function AdminUsers() {
                 <div>
                   <small>
                     {user.id === 1
-                      ? 'Owner'
+                      ? t('lumen.adminUsers.role.owner', 'Owner')
                       : (user.permissions & 2) !== 0
-                        ? 'Administrator'
+                        ? t(
+                            'lumen.adminUsers.role.administrator',
+                            'Administrator'
+                          )
                         : (user.permissions & 8) !== 0
-                          ? 'User Manager'
-                          : 'Member'}
+                          ? t(
+                              'lumen.adminUsers.role.userManager',
+                              'User Manager'
+                            )
+                          : t('lumen.adminUsers.role.member', 'Member')}
                   </small>
                   {user.requestCount !== undefined && (
-                    <small>{user.requestCount.toLocaleString()} requests</small>
+                    <small>
+                      {t('lumen.adminUsers.requestCount', '{count} requests', {
+                        count: user.requestCount.toLocaleString(),
+                      })}
+                    </small>
                   )}
                 </div>
                 {actor && canViewUserWatchlist(actor.permissions) && (
                   <Link
                     className="btn btn-quiet btn-sm"
                     to={`/watchlist/user/${user.id}`}
-                    aria-label={`View Watchlist for ${user.displayName}`}
+                    aria-label={t(
+                      'lumen.adminUsers.viewWatchlist',
+                      'View Watchlist for {name}',
+                      { name: user.displayName }
+                    )}
                   >
-                    Watchlist
+                    {t('lumen.adminUsers.watchlist', 'Watchlist')}
                   </Link>
                 )}
                 {canViewAllRequests(actor?.permissions) && (
                   <Link
                     className="btn btn-quiet btn-sm"
                     to={`/requests?requestedBy=${user.id}`}
-                    aria-label={`View Requests for ${user.displayName}`}
+                    aria-label={t(
+                      'lumen.adminUsers.viewRequests',
+                      'View Requests for {name}',
+                      { name: user.displayName }
+                    )}
                   >
-                    Requests
+                    {t('lumen.adminUsers.requests', 'Requests')}
                   </Link>
                 )}
                 {userId ? (
@@ -941,24 +1043,29 @@ export default function AdminUsers() {
             disabled={page <= 1}
             onClick={() => update('page', page === 2 ? '' : String(page - 1))}
           >
-            Previous Page
+            {t('lumen.adminUsers.previousPage', 'Previous Page')}
           </button>
-          <span>Page {page}</span>
+          <span>{t('lumen.adminUsers.page', 'Page {page}', { page })}</span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={!data || page >= Math.min(9999, data.pageInfo.pages)}
             onClick={() => update('page', String(page + 1))}
           >
-            Next Page
+            {t('lumen.adminUsers.nextPage', 'Next Page')}
           </button>
         </div>
       )}
       {remove && (
         <ConfirmSheet
-          title={`Delete ${remove.displayName}?`}
-          body="This permanently deletes the account and its request history."
-          confirm="Delete User"
-          cancel="Keep User"
+          title={t('lumen.adminUsers.deleteTitle', 'Delete {name}?', {
+            name: remove.displayName,
+          })}
+          body={t(
+            'lumen.adminUsers.deleteWarning',
+            'This permanently deletes the account and its request history.'
+          )}
+          confirm={t('lumen.adminUsers.deleteUser', 'Delete User')}
+          cancel={t('lumen.adminUsers.keepUser', 'Keep User')}
           busy={removing}
           onConfirm={() => void deleteUser()}
           onClose={() => {

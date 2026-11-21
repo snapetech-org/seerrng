@@ -5,21 +5,23 @@ import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
-import { useApi, usePublicSettings } from '../hooks';
+import { useExtras } from '../extras';
+import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const MEDIA_LABELS = {
-  movie: 'Movies',
-  tv: 'Series',
-  music: 'Music',
-  book: 'Books',
-  comic: 'Comics',
-  magazine: 'Magazines',
-};
+  movie: ['lumen.watchlist.movies', 'Movies'],
+  tv: ['lumen.watchlist.series', 'Series'],
+  music: ['lumen.watchlist.music', 'Music'],
+  book: ['lumen.watchlist.books', 'Books'],
+  comic: ['lumen.watchlist.comics', 'Comics'],
+  magazine: ['lumen.watchlist.magazines', 'Magazines'],
+} as const;
 const SORT_LABELS = {
-  'added-desc': 'Recently Added',
-  'title-asc': 'Title (A to Z)',
-  'title-desc': 'Title (Z to A)',
-};
+  'added-desc': ['lumen.watchlist.recentlyAdded', 'Recently Added'],
+  'title-asc': ['lumen.watchlist.titleAZ', 'Title (A to Z)'],
+  'title-desc': ['lumen.watchlist.titleZA', 'Title (Z to A)'],
+} as const;
 interface WatchlistItem {
   source?: 'local' | 'plex';
   id: number;
@@ -60,7 +62,7 @@ function WatchlistPage({
   setFiltersSupported,
   canRemove,
 }: {
-  path: string;
+  path: string | null;
   label: string;
   mediaTypes: string[];
   page: number;
@@ -73,6 +75,7 @@ function WatchlistPage({
   const [removing, setRemoving] = useState<string>();
   const pending = useRef(false);
   const toast = useToast();
+  const { t } = useLumenLocale();
 
   useEffect(() => {
     if (data) setFiltersSupported(data.filtersSupported);
@@ -104,7 +107,13 @@ function WatchlistPage({
       if (data?.filtersSupported) setRemoved((previous) => [...previous, key]);
       refresh();
     } catch (error) {
-      toast(friendlyError(error, 'Couldn’t remove this title'));
+      toast(
+        friendlyError(
+          error,
+          t('lumen.watchlist.removeFailure', 'Couldn’t remove this title'),
+          (id, fallback) => t(id, fallback)
+        )
+      );
     } finally {
       pending.current = false;
       setRemoving(undefined);
@@ -122,10 +131,14 @@ function WatchlistPage({
       <ServiceNote error={error} what={label.toLowerCase()} retry={reload} />
       {!data && !error && (
         <p className="note" role="status">
-          Loading {label}…
+          {t('lumen.watchlist.loading', 'Loading {label}…', { label })}
         </p>
       )}
-      {rows?.length === 0 && <p className="note">No titles on this page.</p>}
+      {rows?.length === 0 && (
+        <p className="note">
+          {t('lumen.watchlist.noTitles', 'No titles on this page.')}
+        </p>
+      )}
       {!!rows?.length && (
         <ul className="setlist">
           {rows.map((item) => {
@@ -143,19 +156,28 @@ function WatchlistPage({
                   ) : (
                     <b>{item.title}</b>
                   )}
-                  <small>{MEDIA_LABELS[item.mediaType]}</small>
+                  <small>
+                    {t(
+                      MEDIA_LABELS[item.mediaType][0],
+                      MEDIA_LABELS[item.mediaType][1]
+                    )}
+                  </small>
                 </div>
                 {id && canRemoveItem(item) && (
                   <button
                     className="btn btn-quiet btn-sm"
                     type="button"
-                    aria-label={`Remove ${item.title} from Watchlist`}
+                    aria-label={t(
+                      'lumen.watchlist.removeTitle',
+                      'Remove {title} from Watchlist',
+                      { title: item.title }
+                    )}
                     disabled={Boolean(removing)}
                     onClick={() => void remove(item, id)}
                   >
                     {removing === `${item.mediaType}:${id}`
-                      ? 'Removing…'
-                      : 'Remove'}
+                      ? t('lumen.watchlist.removing', 'Removing…')
+                      : t('lumen.watchlist.remove', 'Remove')}
                   </button>
                 )}
               </li>
@@ -164,15 +186,20 @@ function WatchlistPage({
         </ul>
       )}
       {(page > 1 || (data?.totalPages ?? 0) > 1) && (
-        <nav className="toolbar" aria-label="Watchlist Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.watchlist.pages', 'Watchlist pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             disabled={page <= 1 || Boolean(removing)}
             onClick={() => movePage(page - 1)}
           >
-            Previous Page
+            {t('lumen.watchlist.previous', 'Previous Page')}
           </button>
-          <span className="note">Page {page}</span>
+          <span className="note">
+            {t('lumen.watchlist.page', 'Page {page}', { page })}
+          </span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={
@@ -180,7 +207,7 @@ function WatchlistPage({
             }
             onClick={() => movePage(page + 1)}
           >
-            Next Page
+            {t('lumen.watchlist.next', 'Next Page')}
           </button>
         </nav>
       )}
@@ -191,6 +218,7 @@ function WatchlistPage({
 export function UserWatchlist() {
   const { userId } = useParams();
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const target = userId && /^[1-9]\d{0,9}$/.test(userId) ? Number(userId) : 0;
 
   if (
@@ -201,8 +229,10 @@ export function UserWatchlist() {
   ) {
     return (
       <header className="ph">
-        <h1>User Watchlist</h1>
-        <p className="note">This watchlist is unavailable.</p>
+        <h1>{t('lumen.watchlist.userTitle', 'User Watchlist')}</h1>
+        <p className="note">
+          {t('lumen.watchlist.unavailable', 'This watchlist is unavailable.')}
+        </p>
       </header>
     );
   }
@@ -218,7 +248,8 @@ export default function Watchlist({
   targetUserId?: number;
 }) {
   const { user } = useAuth();
-  const settings = usePublicSettings();
+  const extras = useExtras();
+  const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const [filtersSupported, setFiltersSupported] = useState<boolean>();
   if (!user) return null;
@@ -227,15 +258,22 @@ export default function Watchlist({
   const media = params.get('mediaType') ?? '';
   const sort = params.get('sortBy') ?? '';
   const label = targetUserId
-    ? 'User Watchlist'
+    ? t('lumen.watchlist.userTitle', 'User Watchlist')
     : discover
-      ? 'Discover Watchlist'
-      : 'Watchlist';
-  const categories = discover ? settings?.enabledMediaCategories : undefined;
+      ? t('lumen.watchlist.discoverTitle', 'Discover Watchlist')
+      : t('lumen.watchlist.title', 'Watchlist');
+  const categoryEnabled = (type: keyof typeof MEDIA_LABELS) => {
+    if (targetUserId !== undefined) return true;
+    if (!(discover ? extras.ready : extras.accountReady)) return false;
+    const isEnabled = discover
+      ? extras.categoryEnabled
+      : extras.accountCategoryEnabled;
+    return type === 'book'
+      ? isEnabled('ebook') || isEnabled('audiobook')
+      : isEnabled(type);
+  };
   const mediaOptions = Object.entries(MEDIA_LABELS).filter(([type]) =>
-    type === 'book'
-      ? categories?.ebook !== false || categories?.audiobook !== false
-      : categories?.[type] !== false
+    categoryEnabled(type as keyof typeof MEDIA_LABELS)
   );
   const mediaTypes = mediaOptions.map(([type]) => type);
   const requestedPage = Number(params.get('page'));
@@ -264,7 +302,11 @@ export default function Watchlist({
   const filterKey = query.toString();
   query.set('page', String(page));
   const base = discover ? '/discover' : `/user/${targetUserId ?? user.id}`;
-  const path = `${base}/watchlist?${query}`;
+  const path =
+    targetUserId !== undefined ||
+    (discover ? extras.ready : extras.accountReady)
+      ? `${base}/watchlist?${query}`
+      : null;
 
   return (
     <>
@@ -274,7 +316,7 @@ export default function Watchlist({
           (user.permissions & (2 | 8)) !== 0 && (
             <div className="toolbar">
               <Link className="chip" to={`/admin/users/${targetUserId}`}>
-                Back to User
+                {t('lumen.watchlist.backToUser', 'Back to User')}
               </Link>
             </div>
           )
@@ -284,22 +326,26 @@ export default function Watchlist({
               className="chip"
               to={discover ? '/watchlist' : '/watchlist/discover'}
             >
-              {discover ? 'Personal Watchlist' : 'Discover Watchlist'}
+              {discover
+                ? t('lumen.watchlist.personalTitle', 'Personal Watchlist')
+                : t('lumen.watchlist.discoverTitle', 'Discover Watchlist')}
             </Link>
           </div>
         )}
       </header>
       {filtersSupported === false && (
         <p className="note">
-          Plex and SeerrNG items share this list. Filters are unavailable in
-          this view.
+          {t(
+            'lumen.watchlist.filtersUnavailable',
+            'Plex and SeerrNG items share this list. Filters are unavailable in this view.'
+          )}
         </p>
       )}
       {filtersSupported && (
         <form
           key={filterKey}
           className="toolbar"
-          aria-label="Watchlist Filters"
+          aria-label={t('lumen.watchlist.filters', 'Watchlist filters')}
           onSubmit={apply}
           onReset={() => {
             setParams(new URLSearchParams());
@@ -309,45 +355,56 @@ export default function Watchlist({
             <input
               type="search"
               name="search"
-              aria-label="Search Titles"
-              placeholder="Search titles…"
+              aria-label={t('lumen.watchlist.search', 'Search titles')}
+              placeholder={t(
+                'lumen.watchlist.searchPlaceholder',
+                'Search titles…'
+              )}
               defaultValue={search}
               maxLength={100}
             />
           </label>
           <label className="sel">
-            <span className="lbl">Media Type</span>
+            <span className="lbl">
+              {t('lumen.watchlist.mediaType', 'Media Type')}
+            </span>
             <select
               name="mediaType"
               defaultValue={mediaTypes.includes(media) ? media : ''}
             >
-              <option value="">All Types</option>
+              <option value="">
+                {t('lumen.watchlist.allTypes', 'All Types')}
+              </option>
               {mediaOptions.map(([value, label]) => (
                 <option key={value} value={value}>
-                  {label}
+                  {t(label[0], label[1])}
                 </option>
               ))}
             </select>
           </label>
           <label className="sel">
-            <span className="lbl">Sort By</span>
+            <span className="lbl">
+              {t('lumen.watchlist.sortBy', 'Sort By')}
+            </span>
             <select
               name="sortBy"
               defaultValue={Object.hasOwn(SORT_LABELS, sort) ? sort : ''}
             >
-              <option value="">Added Order</option>
+              <option value="">
+                {t('lumen.watchlist.addedOrder', 'Added Order')}
+              </option>
               {Object.entries(SORT_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
-                  {label}
+                  {t(label[0], label[1])}
                 </option>
               ))}
             </select>
           </label>
           <button className="btn btn-tonal btn-sm" type="submit">
-            Apply Filters
+            {t('lumen.watchlist.apply', 'Apply Filters')}
           </button>
           <button className="btn btn-quiet btn-sm" type="reset">
-            Clear Filters
+            {t('lumen.watchlist.clear', 'Clear Filters')}
           </button>
         </form>
       )}

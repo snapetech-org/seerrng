@@ -1,0 +1,1 @@
+Lumen now localizes managed local-password, one-time sign-in link, maturity-limit, media-category, and request-quota controls in English, French, and Arabic. Save validation, retry feedback, and permission behavior remain unchanged.

@@ -53,21 +53,29 @@ export const canSeeRecent = (permissions?: number) =>
 type Fresh = ReturnType<typeof recentMediaTitles>;
 // A new key avoids reusing a previously cached, incomplete one-item row.
 const NEW_ROW = RECENT_ROW_CACHE_KEY;
-function useNewOnPlex(enabled: boolean) {
-  const [items, setItems] = useState<Fresh | null>(
-    () => (enabled && cached<Fresh>(NEW_ROW)) || null
-  );
+function useNewOnPlex(
+  enabled: boolean,
+  categories: { movie: boolean; tv: boolean }
+) {
+  const filterCategories = (items: Fresh) =>
+    items.filter(
+      (item) => categories[item.mediaType === 'tv' ? 'tv' : 'movie']
+    );
+  const [items, setItems] = useState<Fresh | null>(() => {
+    const saved = enabled && cached<Fresh>(NEW_ROW);
+    return saved ? filterCategories(saved) : null;
+  });
   useEffect(() => {
     if (!enabled) return;
     const saved = cached<Fresh>(NEW_ROW);
-    if (saved) setItems(saved);
+    if (saved) setItems(filterCategories(saved));
     if (saved && isFresh(NEW_ROW)) return;
     let live = true;
     const generation = sessionGeneration();
     (async () => {
       const page = await cachedApi<{ results: MediaRow[] }>(RECENT_MEDIA_QUERY);
       const row = await enrichRecentMediaTitles(
-        recentMediaTitles(page.results),
+        filterCategories(recentMediaTitles(page.results)),
         (title) => cachedApi<TitleResult>(`/${title.mediaType}/${title.id}`)
       );
       if (generation === sessionGeneration()) remember(NEW_ROW, row);
@@ -76,70 +84,109 @@ function useNewOnPlex(enabled: boolean) {
     return () => {
       live = false;
     };
-  }, [enabled]);
-  return items;
+  }, [enabled, categories.movie, categories.tv]);
+  return items ? filterCategories(items) : null;
 }
 
 // a row that failed says so instead of loading forever
 // a row that failed for a passing reason (rate limit, outage) can be asked again
-const RowError = ({ retry }: { retry: () => void }) => (
-  <div className="empty">
-    <span>Couldn’t load this row</span>
-    <button className="btn btn-tonal btn-sm" onClick={retry}>
-      Retry
-    </button>
-  </div>
-);
+const RowError = ({ retry }: { retry: () => void }) => {
+  const { t } = useLumenLocale();
+  return (
+    <div className="empty">
+      <span>{t('components.Persius.failed')}</span>
+      <button className="btn btn-tonal btn-sm" onClick={retry}>
+        {t('components.Persius.retry')}
+      </button>
+    </div>
+  );
+};
 
-const CHIPS: [IconName, string, string][] = [
-  ['film', 'Movies', '/movies'],
-  ['tv', 'Series', '/series'],
-  ['book', 'Books', '/books'],
-  ['headphones', 'Audiobooks', '/audiobooks'],
-  ['cal', 'Coming soon', '/soon'],
-  ['list', 'Provider Discovery', '/providers'],
-  ['list', 'Share', '/share'],
+const CHIPS: [IconName, string, string, string][] = [
+  ['film', 'components.Persius.movies', 'Movies', '/movies'],
+  ['tv', 'components.Persius.series', 'Series', '/series'],
+  ['book', 'components.Persius.books', 'Books', '/books'],
+  ['headphones', 'components.Persius.audiobooks', 'Audiobooks', '/audiobooks'],
+  ['cal', 'components.Persius.comingSoon', 'Coming soon', '/soon'],
+  ['list', 'i18n.providerDiscovery', 'Provider Discovery', '/providers'],
+  ['list', 'components.Layout.Sidebar.share', 'Share', '/share'],
 ];
 
 export default function Discover() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { prefs, adminConfigState } = usePrefs();
+  const extras = useExtras();
+  const categorySettingsReady = extras.ready;
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
+  const ebookEnabled = extras.categoryEnabled('ebook');
+  const audiobookEnabled = extras.categoryEnabled('audiobook');
   // Admin defaults arrive asynchronously. Do not mount optional shelves or
   // spend catalog requests on default-on rows before those defaults are known.
   const preferencesReady = adminConfigState !== 'loading';
   const on = prefs.rows;
   const books_ = prefs.showBooks;
   const trending = useApi<Paged<VideoSearchResult>>(
-    preferencesReady && on.hero ? '/discover/trending' : null
+    preferencesReady &&
+      categorySettingsReady &&
+      on.hero &&
+      (movieEnabled || tvEnabled)
+      ? '/discover/trending'
+      : null
   );
   const movies = useApi<Paged<TitleResult>>(
-    preferencesReady && on.trendingMovies ? '/discover/movies' : null
+    preferencesReady &&
+      categorySettingsReady &&
+      movieEnabled &&
+      on.trendingMovies
+      ? '/discover/movies'
+      : null
   );
   const series = useApi<Paged<TitleResult>>(
-    preferencesReady && on.popularSeries ? '/discover/tv' : null
+    preferencesReady && categorySettingsReady && tvEnabled && on.popularSeries
+      ? '/discover/tv'
+      : null
   );
   const audio = useApi<Paged<BookResult>>(
-    preferencesReady && books_ && on.audiobooks
+    preferencesReady &&
+      categorySettingsReady &&
+      audiobookEnabled &&
+      books_ &&
+      on.audiobooks
       ? '/discover/books?format=audiobook'
       : null
   );
   const books = useApi<Paged<BookResult>>(
-    preferencesReady && books_ && on.books
+    preferencesReady &&
+      categorySettingsReady &&
+      ebookEnabled &&
+      books_ &&
+      on.books
       ? '/discover/books?format=ebook'
       : null
   );
   const soon = useApi<Paged<TitleResult>>(
-    preferencesReady && on.comingSoon ? '/discover/movies/upcoming' : null
+    preferencesReady && categorySettingsReady && movieEnabled && on.comingSoon
+      ? '/discover/movies/upcoming'
+      : null
   );
   const genres = useApi<Genre[]>(
-    preferencesReady && on.genres ? '/discover/genreslider/movie' : null
+    preferencesReady && categorySettingsReady && movieEnabled && on.genres
+      ? '/discover/genreslider/movie'
+      : null
   );
   const { user } = useAuth();
   const shareAvailable = useShareAvailable(user?.permissions);
   const recentAllowed = canSeeRecent(user?.permissions);
-  const fresh = useNewOnPlex(preferencesReady && on.newOnPlex && recentAllowed);
-  const extras = useExtras();
+  const fresh = useNewOnPlex(
+    preferencesReady &&
+      categorySettingsReady &&
+      on.newOnPlex &&
+      recentAllowed &&
+      (movieEnabled || tvEnabled),
+    { movie: movieEnabled, tv: tvEnabled }
+  );
 
   const settings = usePublicSettings();
   const visibility = discoveryVisibility(settings, user?.permissions);
@@ -151,11 +198,12 @@ export default function Discover() {
     .filter(
       (r): r is TitleResult =>
         Boolean(r.backdropPath) &&
-        (r.mediaType === 'movie' || r.mediaType === 'tv')
+        ((r.mediaType === 'movie' && movieEnabled) ||
+          (r.mediaType === 'tv' && tvEnabled))
     )
     .filter(visible)
     .slice(0, 6);
-  const today = new Date().toLocaleDateString(undefined, {
+  const today = new Date().toLocaleDateString(locale, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -172,7 +220,7 @@ export default function Discover() {
         <div className="ph-row">
           <div>
             <div className="eyebrow">{today}</div>
-            <h1>Discover</h1>
+            <h1>{t('components.Persius.discover')}</h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
@@ -180,20 +228,20 @@ export default function Discover() {
           <Icon name="search" />
           <span className="ph-text">
             {books_
-              ? 'Movies, series, books, narrators…'
-              : 'Movies and series…'}
+              ? t('components.Persius.searchAll')
+              : t('lumen.discover.searchVideo', undefined)}
           </span>
         </Link>
-        {preferencesReady && (
+        {preferencesReady && categorySettingsReady && (
           <div className="chips navchips">
             {CHIPS.filter(
-              ([, , h]) =>
+              ([, , , h]) =>
                 (books_ || (h !== '/books' && h !== '/audiobooks')) &&
                 (h !== '/share' || shareAvailable)
             ).map(([i, t, h]) => (
               <Link key={h} className="chip" to={h}>
                 <Icon name={i} />
-                {t}
+                {t(message, fallback)}
               </Link>
             ))}
             {extras.list.map((e) => (
@@ -206,44 +254,60 @@ export default function Discover() {
         )}
       </header>
 
-      {preferencesReady && on.hero && (
-        <Section title="Popular right now" link={['See all', '/trending']}>
-          {hero.length ? (
-            <Rail className="feat-rail" restoreId="featured">
-              {hero.map((it, i) => (
-                <FeatCard
-                  key={it.mediaType + it.id}
-                  it={it}
-                  eyebrow={
-                    i === 0
-                      ? 'Trending this week'
-                      : it.mediaType === 'tv'
-                        ? 'Popular series'
-                        : 'Trending'
-                  }
-                  lazy={i > 1}
-                />
-              ))}
-            </Rail>
-          ) : trending.error ? (
-            <div className="empty">
-              <span>Couldn’t load popular titles</span>
-              <button
-                className="btn btn-tonal btn-sm"
-                onClick={trending.reload}
-              >
-                Retry
-              </button>
-            </div>
-          ) : trending.data ? (
-            <div className="empty">No popular titles available</div>
-          ) : (
-            <RailSkeleton n={3} />
-          )}
-        </Section>
+      {extras.error && (
+        <ServiceNote
+          error={extras.error}
+          what="media category settings"
+          retry={extras.retry}
+        />
       )}
 
       {preferencesReady &&
+        categorySettingsReady &&
+        on.hero &&
+        (movieEnabled || tvEnabled) && (
+          <Section
+            title={t('components.Persius.popularNow')}
+            link={[t('components.Persius.seeAll'), '/trending']}
+          >
+            {hero.length ? (
+              <Rail className="feat-rail" restoreId="featured">
+                {hero.map((it, i) => (
+                  <FeatCard
+                    key={it.mediaType + it.id}
+                    it={it}
+                    eyebrow={
+                      i === 0
+                        ? t('lumen.discover.trendingThisWeek')
+                        : it.mediaType === 'tv'
+                          ? t('components.Persius.popularSeries')
+                          : t('lumen.discover.trending')
+                    }
+                    lazy={i > 1}
+                  />
+                ))}
+              </Rail>
+            ) : trending.error ? (
+              <div className="empty">
+                <span>{t('components.Persius.failed')}</span>
+                <button
+                  className="btn btn-tonal btn-sm"
+                  onClick={trending.reload}
+                >
+                  {t('components.Persius.retry')}
+                </button>
+              </div>
+            ) : trending.data ? (
+              <div className="empty">{t('lumen.discover.noPopularTitles')}</div>
+            ) : (
+              <RailSkeleton n={3} />
+            )}
+          </Section>
+        )}
+
+      {preferencesReady &&
+        categorySettingsReady &&
+        (movieEnabled || tvEnabled) &&
         on.newOnPlex &&
         recentAllowed &&
         fresh?.length !== 0 && (
@@ -259,7 +323,9 @@ export default function Discover() {
                     it={m}
                     meta={
                       m.added
-                        ? 'Added ' + shortDate(m.added.slice(0, 10))
+                        ? t('lumen.discover.added', undefined, {
+                            date: shortDate(m.added.slice(0, 10), true, locale),
+                          })
                         : undefined
                     }
                   />
@@ -305,6 +371,8 @@ export default function Discover() {
 
       {preferencesReady &&
         books_ &&
+        categorySettingsReady &&
+        audiobookEnabled &&
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
           <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
@@ -324,6 +392,8 @@ export default function Discover() {
 
       {preferencesReady &&
         books_ &&
+        categorySettingsReady &&
+        ebookEnabled &&
         on.books &&
         !empty(books.data ? ebookCards : undefined) && (
           <Section title="Popular books" link={['See all', '/books']}>
@@ -364,18 +434,28 @@ export default function Discover() {
         </Section>
       )}
 
-      {preferencesReady && (
+      {preferencesReady && categorySettingsReady && (
         <ConfiguredDiscoverShelves
-          showBooks={books_}
+          showBooks={books_ && (ebookEnabled || audiobookEnabled)}
           showMusic={extras.list.some((entry) => entry.key === 'music')}
+          enabledCategories={{
+            movie: movieEnabled,
+            tv: tvEnabled,
+            ebook: ebookEnabled,
+            audiobook: audiobookEnabled,
+          }}
         />
       )}
 
-      {preferencesReady && on.genres && genres.data && (
-        <Section title="Browse by genre">
-          <GenreTiles genres={genres.data.slice(0, 12)} browse="/movies" />
-        </Section>
-      )}
+      {preferencesReady &&
+        categorySettingsReady &&
+        movieEnabled &&
+        on.genres &&
+        genres.data && (
+          <Section title={t('lumen.discover.browseByGenre')}>
+            <GenreTiles genres={genres.data.slice(0, 12)} browse="/movies" />
+          </Section>
+        )}
     </>
   );
 }

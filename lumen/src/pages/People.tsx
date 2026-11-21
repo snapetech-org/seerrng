@@ -9,6 +9,7 @@ import { canRequestMovies } from '../components/detail';
 import { ExtraCard, ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
 import { useToast } from '../components/toast';
+import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi, usePublicSettings } from '../hooks';
 import { Icon } from '../icons';
@@ -67,13 +68,17 @@ function creditTitles(
   credits: PersonCredit[],
   filter: string,
   sort: string,
-  role: 'character' | 'job'
+  role: 'character' | 'job',
+  movieEnabled: boolean,
+  tvEnabled: boolean
 ) {
   const titles = new Map<string, { title: VideoCredit; roles: Set<string> }>();
   for (const credit of credits) {
     const { mediaType, id } = credit;
     if (
       (mediaType !== 'movie' && mediaType !== 'tv') ||
+      (mediaType === 'movie' && !movieEnabled) ||
+      (mediaType === 'tv' && !tvEnabled) ||
       (filter !== 'all' && filter !== mediaType)
     )
       continue;
@@ -126,20 +131,38 @@ function creditTitles(
 function Filmography({
   credits,
   acting,
+  movieEnabled,
+  tvEnabled,
 }: {
   credits: PersonCredits;
   acting: boolean;
+  movieEnabled: boolean;
+  tvEnabled: boolean;
 }) {
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('voteCount.desc');
   const groups = [
     {
       label: 'Cast',
-      entries: creditTitles(credits.cast ?? [], filter, sort, 'character'),
+      entries: creditTitles(
+        credits.cast ?? [],
+        filter,
+        sort,
+        'character',
+        movieEnabled,
+        tvEnabled
+      ),
     },
     {
       label: 'Crew',
-      entries: creditTitles(credits.crew ?? [], filter, sort, 'job'),
+      entries: creditTitles(
+        credits.crew ?? [],
+        filter,
+        sort,
+        'job',
+        movieEnabled,
+        tvEnabled
+      ),
     },
   ];
   if (!acting) groups.reverse();
@@ -153,8 +176,8 @@ function Filmography({
             onChange={(event) => setFilter(event.target.value)}
           >
             <option value="all">All</option>
-            <option value="movie">Movies</option>
-            <option value="tv">Series</option>
+            {movieEnabled && <option value="movie">Movies</option>}
+            {tvEnabled && <option value="tv">Series</option>}
           </select>
         </label>
         <label className="sel">
@@ -323,6 +346,9 @@ function RequestPersonMovies({
 export default function PersonDetail() {
   const { id: rawId } = useParams();
   const { user } = useAuth();
+  const extras = useExtras();
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
   const settings = usePublicSettings();
   const id = Number(rawId);
   const path =
@@ -373,7 +399,7 @@ export default function PersonDetail() {
             )}
         </div>
         {settings?.personMovieBulkRequestsEnabled === true &&
-          settings.enabledMediaCategories?.movie !== false &&
+          movieEnabled &&
           canRequestMovies(user?.permissions) &&
           person.data?.id === id &&
           !!movieIds.length && (
@@ -432,6 +458,8 @@ export default function PersonDetail() {
           key={id}
           credits={credits.data}
           acting={person.data?.knownForDepartment === 'Acting'}
+          movieEnabled={movieEnabled}
+          tvEnabled={tvEnabled}
         />
       )}
     </>

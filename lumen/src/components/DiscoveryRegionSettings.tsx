@@ -3,6 +3,7 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
@@ -30,6 +31,7 @@ type Region = { iso_3166_1: string; english_name: string };
 type Language = { iso_639_1: string; english_name: string };
 
 function SettingsForm({ initial }: { initial: Values }) {
+  const { t } = useLumenLocale();
   const regions = useApi<Region[]>('/regions');
   const languages = useApi<Language[]>('/languages');
   const [saved, setSaved] = useState(initial);
@@ -76,16 +78,30 @@ function SettingsForm({ initial }: { initial: Values }) {
         body: JSON.stringify(Object.fromEntries(changes)),
       });
       if (changes.some(([key, value]) => result[key] !== value))
-        throw new Error('Could not confirm the saved discovery settings.');
+        throw new Error(
+          t(
+            'lumen.discoveryRegions.confirmFailure',
+            'Could not confirm the saved discovery settings.'
+          )
+        );
       setSaved(result);
       setDraft(result);
       invalidatePublicSettings();
       forget('/settings/public');
       forget(endpoint);
-      setNotice('Discovery region settings saved.');
+      setNotice(
+        t('lumen.discoveryRegions.saved', 'Discovery region settings saved.')
+      );
     } catch (error) {
       setFailure(
-        friendlyError(error, 'Could not save discovery region settings.')
+        friendlyError(
+          error,
+          t(
+            'lumen.discoveryRegions.saveFailure',
+            'Could not save discovery region settings.'
+          ),
+          t
+        )
       );
     } finally {
       pending.current = false;
@@ -97,12 +113,12 @@ function SettingsForm({ initial }: { initial: Values }) {
     <form onSubmit={(event) => void save(event)}>
       <ServiceNote
         error={regions.error}
-        what="regions"
+        what={t('lumen.discoveryRegions.regions', 'regions')}
         retry={regions.reload}
       />
       <ServiceNote
         error={languages.error}
-        what="languages"
+        what={t('lumen.discoveryRegions.languages', 'languages')}
         retry={languages.reload}
       />
       <div className="setlist">
@@ -112,10 +128,10 @@ function SettingsForm({ initial }: { initial: Values }) {
           const previous = saved[key];
           return (
             <label className="set cfg-row" key={key}>
-              <b>{label}</b>
+              <b>{t(`lumen.discoveryRegions.field.${key}`, label)}</b>
               <select
                 className="cfg-input"
-                aria-label={label}
+                aria-label={t(`lumen.discoveryRegions.field.${key}`, label)}
                 value={value}
                 disabled={busy || !list.length}
                 onChange={(event) => {
@@ -127,7 +143,12 @@ function SettingsForm({ initial }: { initial: Values }) {
                   setFailure('');
                 }}
               >
-                <option value="">Any {kind}</option>
+                <option value="">
+                  {t(
+                    `lumen.discoveryRegions.any.${kind}`,
+                    kind === 'region' ? 'Any region' : 'Any language'
+                  )}
+                </option>
                 {previous && !list.some(([code]) => code === previous) && (
                   <option value={previous}>{previous}</option>
                 )}
@@ -142,10 +163,10 @@ function SettingsForm({ initial }: { initial: Values }) {
         })}
         {visibility.map(([key, label]) => (
           <label className="set cfg-row" key={key}>
-            <b>{label}</b>
+            <b>{t(`lumen.discoveryRegions.visibility.${key}`, label)}</b>
             <input
               type="checkbox"
-              aria-label={label}
+              aria-label={t(`lumen.discoveryRegions.visibility.${key}`, label)}
               checked={draft[key] === true}
               disabled={busy}
               onChange={(event) => {
@@ -163,7 +184,7 @@ function SettingsForm({ initial }: { initial: Values }) {
           className="btn btn-tonal btn-sm"
           disabled={busy || !changes.length}
         >
-          Save Discovery Region Settings
+          {t('lumen.discoveryRegions.save', 'Save Discovery Region Settings')}
         </button>
       </div>
       {notice && (
@@ -181,12 +202,18 @@ function SettingsForm({ initial }: { initial: Values }) {
 }
 
 export default function DiscoveryRegionSettings() {
+  const { t } = useLumenLocale();
   const settings = useApi<Values>(endpoint);
   return (
-    <Section title="Discovery Regions and Languages">
+    <Section
+      title={t(
+        'lumen.discoveryRegions.title',
+        'Discovery Regions and Languages'
+      )}
+    >
       <ServiceNote
         error={settings.error}
-        what="discovery region settings"
+        what={t('lumen.discoveryRegions.settings', 'discovery region settings')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -194,7 +221,10 @@ export default function DiscoveryRegionSettings() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading discovery region settings…
+            {t(
+              'lumen.discoveryRegions.loading',
+              'Loading discovery region settings…'
+            )}
           </p>
         )
       )}

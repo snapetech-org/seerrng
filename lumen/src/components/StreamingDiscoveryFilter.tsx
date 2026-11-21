@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 
 interface Provider {
@@ -20,6 +21,7 @@ export function StreamingDiscoveryFilter({
   exclude: boolean;
   apply: (region: string, providers: string[], exclude: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
   const [draftRegion, setRegion] = useState(region);
   const [draftProviders, setProviders] = useState(providers);
   const [draftExclude, setExclude] = useState(exclude);
@@ -40,7 +42,7 @@ export function StreamingDiscoveryFilter({
   }
   return (
     <form
-      aria-label="Streaming Service Filter"
+      aria-label={t('lumen.streamingFilter.form', 'Streaming Service Filter')}
       onSubmit={(event) => {
         event.preventDefault();
         if (validRegion && draftProviders.length <= 50)
@@ -49,7 +51,9 @@ export function StreamingDiscoveryFilter({
     >
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Streaming Region</span>
+          <span className="lbl">
+            {t('lumen.streamingFilter.region', 'Streaming Region')}
+          </span>
           <input
             className="cfg-input"
             value={draftRegion}
@@ -63,13 +67,19 @@ export function StreamingDiscoveryFilter({
           />
         </label>
         <label className="sel">
-          <span className="lbl">Provider Match</span>
+          <span className="lbl">
+            {t('lumen.streamingFilter.match', 'Provider Match')}
+          </span>
           <select
             value={draftExclude ? 'exclude' : 'include'}
             onChange={(event) => setExclude(event.target.value === 'exclude')}
           >
-            <option value="include">Include</option>
-            <option value="exclude">Exclude</option>
+            <option value="include">
+              {t('lumen.streamingFilter.include', 'Include')}
+            </option>
+            <option value="exclude">
+              {t('lumen.streamingFilter.exclude', 'Exclude')}
+            </option>
           </select>
         </label>
         <button
@@ -78,7 +88,7 @@ export function StreamingDiscoveryFilter({
             !validRegion || !draftProviders.length || draftProviders.length > 50
           }
         >
-          Apply Streaming Filter
+          {t('lumen.streamingFilter.apply', 'Apply Streaming Filter')}
         </button>
         {!!providers.length && (
           <button
@@ -86,7 +96,7 @@ export function StreamingDiscoveryFilter({
             type="button"
             onClick={() => apply(region, [], false)}
           >
-            Clear Streaming Filter
+            {t('lumen.streamingFilter.clear', 'Clear Streaming Filter')}
           </button>
         )}
       </div>
@@ -124,12 +134,12 @@ export function StreamingDiscoveryFilter({
       </div>
       {validRegion && !catalog.data && !catalog.error && (
         <p className="note" role="status">
-          Loading streaming services…
+          {t('lumen.streamingFilter.loading', 'Loading streaming services…')}
         </p>
       )}
       <ServiceNote
         error={catalog.error}
-        what="streaming services"
+        what={t('lumen.streamingFilter.servicesLower', 'streaming services')}
         retry={catalog.reload}
       />
     </form>

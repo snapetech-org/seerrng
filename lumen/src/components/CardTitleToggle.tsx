@@ -3,6 +3,7 @@ import { type CardTitleKind, type CardTitleMode } from '../api';
 import { forget } from '../apiCache';
 import { useAuth } from '../auth';
 import { cardTitleModes, saveCardTitleModes } from '../cardTitleModes';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { useToast } from './toast';
 
@@ -15,11 +16,16 @@ export function CardTitleToggle({
   row?: boolean;
 }) {
   const { user, refresh } = useAuth();
+  const { t } = useLumenLocale();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const modes = cardTitleModes(user?.settings);
   const always = kinds.every((kind) => modes[kind] === 'always');
+  const titleView = t('lumen.cards.titleView');
+  const titleAction = t(
+    always ? 'lumen.cards.titleViewOnHover' : 'lumen.cards.titleViewAlways'
+  );
   if (!user || !kinds.length) return null;
   const path = `/user/${user.id}/settings/card-text`;
 
@@ -83,12 +89,15 @@ export function CardTitleToggle({
     <button
       type="button"
       className="chip"
-      aria-label="Title View: Always show poster titles"
+      aria-label={t('lumen.cards.titleViewAction', undefined, {
+        view: titleView,
+        action: titleAction,
+      })}
       aria-pressed={always}
       disabled={busy}
       onClick={() => void toggle()}
     >
-      Title View
+      {titleView}
     </button>
   );
 }

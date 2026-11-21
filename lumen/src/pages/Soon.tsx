@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { requestMovie, requestSeries, tmdbImg, type TitleResult } from '../api';
 import { useAuth, useMediaServerName } from '../auth';
-import { statusOf } from '../components/cards';
+import { StatLabel, statusOf } from '../components/cards';
 import { canManageRequests, Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import {
@@ -281,7 +281,7 @@ export default function Soon() {
                       {s ? (
                         visible && (
                           <Pill k={visible.k} icon={visible.ico}>
-                            {visible.word}
+                            <StatLabel s={visible} />
                           </Pill>
                         )
                       ) : (

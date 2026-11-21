@@ -201,7 +201,7 @@ for (const permissions of [2, 24, 16, 32, 16384, 134217728]) {
       await expect(page).toHaveURL(
         appPath('/requests?requestedBy=19&requestId=3')
       );
-      const history = page.getByRole('dialog', { name: 'Request history' });
+      const history = page.getByRole('dialog', { name: 'History' });
       await expect(
         history.getByRole('link', { name: 'Open Title' })
       ).toHaveAttribute('href', appHref('movie/24?quality=4k', baseURL));

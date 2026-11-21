@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
 
@@ -25,6 +26,7 @@ export default function LibraryRepair({
   mediaType?: string;
   reload: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [nextPage, setNextPage] = useState(1);
   const [totals, setTotals] = useState({ scanned: 0, matched: 0, saved: 0 });
   const [running, setRunning] = useState(false);
@@ -49,7 +51,9 @@ export default function LibraryRepair({
     let page = nextPage;
     try {
       while (active() && !stop.current) {
-        setStatus(`Scanning page ${page}…`);
+        setStatus(
+          t('library.repairRunning', 'Scanning page {page}…', { page })
+        );
         const batch = await api<Batch>(path, {
           method: 'POST',
           body: JSON.stringify({
@@ -69,7 +73,12 @@ export default function LibraryRepair({
             batch.nextPage <= page ||
             batch.nextPage > 500)
         )
-          throw new Error('The library scan returned an invalid next page.');
+          throw new Error(
+            t(
+              'lumen.myMedia.scanInvalidNext',
+              'The library scan returned an invalid next page.'
+            )
+          );
         setTotals((previous) => ({
           scanned: previous.scanned + batch.scanned,
           matched: previous.matched + batch.matched,
@@ -80,10 +89,16 @@ export default function LibraryRepair({
           setNextPage(1);
           setStatus(
             batch.limitReached
-              ? 'The library scan reached the saved match limit.'
+              ? t(
+                  'library.repairLimit',
+                  'Your private title-match limit was reached. Later exact matches were not saved.'
+                )
               : batch.truncated
-                ? 'The library scan reached the page limit.'
-                : 'Library scan complete.'
+                ? t(
+                    'library.repairTruncated',
+                    'The provider library reached SeerrNG’s 500-page scan limit. Continue browsing in the provider app.'
+                  )
+                : t('library.repairComplete', 'Library scan complete.')
           );
           return;
         }
@@ -100,12 +115,21 @@ export default function LibraryRepair({
             controller.signal.addEventListener('abort', finish, { once: true });
           });
       }
-      if (active()) setStatus(`Scan paused at page ${page}.`);
+      if (active())
+        setStatus(
+          t('library.repairPaused', 'Scan paused at page {page}.', { page })
+        );
     } catch (reason) {
       if (active()) {
         setStatus('');
         setError(
-          friendlyError(reason, 'Could not scan the library. Try again.')
+          friendlyError(
+            reason,
+            t(
+              'lumen.myMedia.scanFailed',
+              'Could not scan the library. Try again.'
+            )
+          )
         );
       }
     } finally {
@@ -118,15 +142,24 @@ export default function LibraryRepair({
   }
 
   return (
-    <Section title="Find Catalog Matches">
-      <p className="note">Scan this shelf for exact catalog IDs.</p>
+    <Section
+      title={t('library.repair', 'Find exact ID matches across this library')}
+    >
+      <p className="note">
+        {t(
+          'library.repairDescription',
+          'Scan every page for unique IMDb or TVDB matches. Confirmed matches are saved to your private title matches; titles without a clear exact match remain available for manual matching.'
+        )}
+      </p>
       <div className="toolbar">
         <button
           className="btn btn-tonal btn-sm"
           disabled={running}
           onClick={() => void scan()}
         >
-          {nextPage === 1 ? 'Scan Library' : 'Continue Scan'}
+          {nextPage === 1
+            ? t('lumen.myMedia.scan', 'Scan Library')
+            : t('library.repairContinue', 'Continue scan')}
         </button>
         {running && (
           <button
@@ -137,7 +170,9 @@ export default function LibraryRepair({
               setStopping(true);
             }}
           >
-            {stopping ? 'Stopping…' : 'Stop After This Batch'}
+            {stopping
+              ? t('library.repairStopping', 'Stopping after this batch…')
+              : t('library.repairStop', 'Stop after this batch')}
           </button>
         )}
       </div>
@@ -153,8 +188,11 @@ export default function LibraryRepair({
       )}
       {(totals.scanned > 0 || totals.saved > 0) && (
         <p className="note">
-          Scanned {totals.scanned} titles. Found {totals.matched} matches and
-          saved {totals.saved}.
+          {t(
+            'library.repairSummary',
+            'Scanned {scanned} titles, found {matched} exact matches, and saved {saved} private title matches.',
+            totals
+          )}
         </p>
       )}
     </Section>

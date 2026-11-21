@@ -1,5 +1,8 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+
 async function capture(page: Page, info: TestInfo) {
   if (
     !process.env.LUMEN_VISUAL_CAPTURE_DIR ||
@@ -20,7 +23,7 @@ test('Release Calendar localizes filters, states, and release details', async ({
   )
     ? (process.env.LUMEN_CALENDAR_LOCALE as 'en' | 'fr' | 'ar')
     : 'en';
-  const candidate = process.env.LUMEN_CAPTURE_MODE === 'candidate';
+  const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname
@@ -56,7 +59,7 @@ test('Release Calendar localizes filters, states, and release details', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/calendar?month=2026-11');
+  await page.goto(testAppPath('/calendar?month=2026-11'));
   const text = (english: string, french: string, arabic: string) =>
     candidate
       ? locale === 'ar'
@@ -74,6 +77,17 @@ test('Release Calendar localizes filters, states, and release details', async ({
       ),
     })
   ).toBeVisible();
+  if (process.env.LUMEN_CALENDAR_EXPECT_DESCRIPTION !== '0')
+    await expect(
+      page.getByText(
+        text(
+          'Upcoming movie, series, music, book, comic, magazine, PC game, and emulation releases from your acquisition services.',
+          'Prochaines sorties de films, séries, musique, livres, BD, magazines, jeux PC et émulation depuis vos services connectés.',
+          'الإصدارات القادمة للأفلام والمسلسلات والموسيقى والكتب والقصص المصورة والمجلات وألعاب الكمبيوتر والمحاكاة من خدماتك المتصلة.'
+        ),
+        { exact: true }
+      )
+    ).toBeVisible();
   await expect(
     page.getByRole('combobox', {
       name: text('Media Type', 'Type de média', 'نوع الوسائط'),

@@ -1,0 +1,1 @@
+Lumen now localizes managed per-user Episode Queue defaults and TV request-access status and actions in English, French, and Arabic. Queue saving keeps its existing confirmation, retry, and persistence behavior. The change does not alter user permissions or the SeerrNG settings API.

@@ -2,10 +2,12 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import MediaCategorySwitches from './MediaCategorySwitches';
 
 export default function ManagedMediaCategories({ id }: { id: number }) {
+  const { t } = useLumenLocale();
   const path = `/user/${id}/settings/main`;
   const { data, error, reload } = useApi<{
     enabledMediaCategories: Record<string, boolean>;
@@ -39,8 +41,11 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
       if (categoriesChanged) setDraft({});
       setNotice(
         categoriesChanged
-          ? 'Media categories saved.'
-          : 'Indexer visibility saved.'
+          ? t('lumen.managedMediaCategories.saved', 'Media categories saved.')
+          : t(
+              'lumen.managedMediaCategories.indexerSaved',
+              'Indexer visibility saved.'
+            )
       );
       reload();
     } catch (error) {
@@ -48,8 +53,15 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
         friendlyError(
           error,
           categoriesChanged
-            ? 'Could not save media categories.'
-            : 'Could not save indexer visibility.'
+            ? t(
+                'lumen.managedMediaCategories.saveFailure',
+                'Could not save media categories.'
+              )
+            : t(
+                'lumen.managedMediaCategories.indexerFailure',
+                'Could not save indexer visibility.'
+              ),
+          t
         )
       );
     } finally {
@@ -60,10 +72,17 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
 
   return (
     <div>
-      <ServiceNote error={error} what="media categories" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.managedMediaCategories.what', 'media categories')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading media categories…
+          {t(
+            'lumen.managedMediaCategories.loading',
+            'Loading media categories…'
+          )}
         </p>
       )}
       {failure && (
@@ -80,8 +99,14 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
         <>
           <p className="note">
             {data.usesDefaultEnabledMediaCategories
-              ? 'Using server defaults.'
-              : 'Using account overrides.'}
+              ? t(
+                  'lumen.managedMediaCategories.serverDefaults',
+                  'Using server defaults.'
+                )
+              : t(
+                  'lumen.managedMediaCategories.accountOverrides',
+                  'Using account overrides.'
+                )}
           </p>
           <MediaCategorySwitches
             values={{ ...data.enabledMediaCategories, ...draft }}
@@ -103,23 +128,36 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
               disabled={busy || !Object.keys(draft).length}
               onClick={() => void save({ enabledMediaCategories: draft })}
             >
-              Save Categories
+              {t('lumen.managedMediaCategories.save', 'Save Categories')}
             </button>
             <button
               className="btn btn-quiet btn-sm"
               disabled={busy || data.usesDefaultEnabledMediaCategories}
               onClick={() => void save({ enabledMediaCategories: null })}
             >
-              Restore Server Defaults
+              {t(
+                'lumen.managedMediaCategories.restore',
+                'Restore Server Defaults'
+              )}
             </button>
           </div>
           {data.defaultShowIndexerDetails === false && (
-            <p className="note">Indexer details are disabled by the server.</p>
+            <p className="note">
+              {t(
+                'lumen.managedMediaCategories.indexerDisabled',
+                'Indexer details are disabled by the server.'
+              )}
+            </p>
           )}
           {data.defaultShowIndexerDetails === true && (
             <div className="toolbar">
               <label className="sel">
-                <span className="lbl">Indexer Details</span>
+                <span className="lbl">
+                  {t(
+                    'lumen.managedMediaCategories.indexerDetails',
+                    'Indexer Details'
+                  )}
+                </span>
                 <select
                   value={
                     data.usesDefaultShowIndexerDetails
@@ -137,9 +175,18 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
                     });
                   }}
                 >
-                  <option value="default">Use Server Default</option>
-                  <option value="show">Show</option>
-                  <option value="hide">Hide</option>
+                  <option value="default">
+                    {t(
+                      'lumen.managedMediaCategories.useDefault',
+                      'Use Server Default'
+                    )}
+                  </option>
+                  <option value="show">
+                    {t('lumen.managedMediaCategories.show', 'Show')}
+                  </option>
+                  <option value="hide">
+                    {t('lumen.managedMediaCategories.hide', 'Hide')}
+                  </option>
                 </select>
               </label>
             </div>

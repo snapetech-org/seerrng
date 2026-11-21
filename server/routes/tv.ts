@@ -357,10 +357,12 @@ tvRoutes.get('/:id/cover', async (req, res) => {
   }
 
   const mediaId = parseOptionalPositiveInt(req.query.mediaId, 1_000_000_000);
+  // The OpenAPI validator turns is4k into a boolean; accept the raw text too.
+  const is4kQuery: unknown = req.query.is4k;
   const is4k =
-    req.query.is4k === 'true'
+    is4kQuery === true || is4kQuery === 'true'
       ? true
-      : req.query.is4k === 'false'
+      : is4kQuery === false || is4kQuery === 'false'
         ? false
         : undefined;
 
@@ -445,7 +447,7 @@ const getRequestSeason = async (
     if (
       season.season_number === seasonNumber &&
       season.id > 0 &&
-      season.episodes.length > 0
+      Array.isArray(season.episodes)
     ) {
       return season;
     }
@@ -468,7 +470,7 @@ const getRequestSeason = async (
     });
     return season.season_number === seasonNumber &&
       season.id > 0 &&
-      season.episodes.length > 0
+      Array.isArray(season.episodes)
       ? season
       : undefined;
   } catch (error) {
@@ -524,8 +526,11 @@ tvRoutes.get(
 
       // The request tree already has library availability from the series
       // response. Keep episode metadata independent of linked library lookups.
+      const requestedSeasonNumbers = [
+        ...new Set(seasonNumbers.filter((number) => number !== undefined)),
+      ];
       const seasons = await mapWithConcurrency(
-        [...new Set(seasonNumbers.filter((number) => number !== undefined))],
+        requestedSeasonNumbers,
         3,
         async (seasonNumber) => {
           try {
@@ -548,6 +553,41 @@ tvRoutes.get(
           }
         }
       );
+      const loadedSeasonNumbers = new Set(
+        seasons.flatMap((season) => (season ? [season.seasonNumber] : []))
+      );
+      const missingSeasonNumbers = requestedSeasonNumbers.filter(
+        (seasonNumber) => !loadedSeasonNumbers.has(seasonNumber)
+      );
+      if (missingSeasonNumbers.length > 0) {
+        // Retry only missing seasons serially. Some metadata providers reject
+        // concurrent season lookups even when the individual requests succeed.
+        const recoveredSeasons = await mapWithConcurrency(
+          missingSeasonNumbers,
+          1,
+          async (seasonNumber) => {
+            try {
+              const season = await getRequestSeason(
+                metadata.provider,
+                tvId,
+                seasonNumber,
+                language
+              );
+              return season ? mapSeasonWithEpisodes(season) : undefined;
+            } catch (error) {
+              logger.debug('Serial season recovery failed', {
+                label: 'API',
+                tvId,
+                seasonNumber,
+                errorMessage:
+                  error instanceof Error ? error.message : String(error),
+              });
+              return undefined;
+            }
+          }
+        );
+        seasons.push(...recoveredSeasons);
+      }
       return res
         .status(200)
         .json(seasons.filter((season) => season !== undefined));

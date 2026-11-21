@@ -349,6 +349,26 @@ it('loads a 29-season series in six bounded requests without changing the starti
   }
 });
 
+it('counts a valid season with no episodes as loaded metadata', async () => {
+  const visibleSeasons = [
+    { seasonNumber: 1, episodeCount: 0 },
+  ] as TvDetails['seasons'];
+  swr.get.mockResolvedValueOnce({
+    data: [{ seasonNumber: 1, episodes: [] }],
+  });
+  const ui = await setup([], {}, { visibleSeasons });
+  try {
+    swr.data = await swr.fetcher!();
+    await ui.render();
+    expect(swr.data).toEqual([{ seasonNumber: 1, episodes: [] }]);
+    expect(swr.get).toHaveBeenCalledTimes(1);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
+  } finally {
+    await ui.close();
+    swr.get.mockReset();
+  }
+});
+
 it('retries only missing seasons from a partial large-series response', async () => {
   const visibleSeasons = Array.from({ length: 13 }, (_, seasonNumber) => ({
     ...seasons[1],

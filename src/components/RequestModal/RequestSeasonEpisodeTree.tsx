@@ -110,8 +110,7 @@ const RequestSeasonEpisodeTree = ({
             const received = response.data.filter(
               (season) =>
                 pending.includes(season.seasonNumber) &&
-                Array.isArray(season.episodes) &&
-                season.episodes.length > 0
+                Array.isArray(season.episodes)
             );
             loaded.push(...received);
             pending = pending.filter(

@@ -107,6 +107,9 @@ export default function Shell({ children }: { children: ReactNode }) {
   const swipeSettings = useApi<PublicSettings>('/settings/public', {
     keepDuringRefresh: true,
   });
+  const personalCategories = useApi<{
+    enabledMediaCategories?: Record<string, boolean>;
+  }>(user ? `/user/${user.id}/settings/main` : null);
   const swipeEnabled = swipeSettings.data?.swipeEnabled;
   const refreshPublicSettings = swipeSettings.refresh;
   useEffect(() => {
@@ -118,6 +121,20 @@ export default function Shell({ children }: { children: ReactNode }) {
       );
   }, [refreshPublicSettings]);
   const isBook = (h: string) => h === '/books' || h === '/audiobooks';
+  const navCategory: Record<string, string> = {
+    '/movies': 'movie',
+    '/series': 'tv',
+    '/books': 'ebook',
+    '/audiobooks': 'audiobook',
+  };
+  const categoryVisible = (h: string) => {
+    const key = navCategory[h];
+    return (
+      !key ||
+      (swipeSettings.data?.enabledMediaCategories?.[key] !== false &&
+        personalCategories.data?.enabledMediaCategories?.[key] !== false)
+    );
+  };
   const loc = useLocation();
   const showBlocklist = useBlocklistNavigation();
   const managesRequests = canManageRequests(user?.permissions);
@@ -210,16 +227,32 @@ export default function Shell({ children }: { children: ReactNode }) {
   const back = useBack();
   const entry = useRef(loc.key);
   const topbar = useRef<HTMLDivElement>(null);
+  const [tabsHidden, setTabsHidden] = useState(false);
   entry.current = loc.key;
   useEffect(() => {
     history.scrollRestoration = 'manual';
     let raf = 0;
+    let directionAnchor = window.scrollY;
     const save = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const offset = window.scrollY;
         scrollSpots.set(entry.current, offset);
         topbar.current?.toggleAttribute('data-scrolled', offset > 0);
+        const delta = offset - directionAnchor;
+        const atBottom =
+          offset + window.innerHeight >=
+          document.documentElement.scrollHeight - 2;
+        const focusInTabs = document
+          .querySelector('.tabbar')
+          ?.contains(document.activeElement);
+        if (detail || offset <= 16 || atBottom || delta <= -6 || focusInTabs) {
+          setTabsHidden(false);
+          directionAnchor = offset;
+        } else if (offset > 48 && delta >= 12) {
+          setTabsHidden(true);
+          directionAnchor = offset;
+        }
       });
     };
     window.addEventListener('scroll', save, { passive: true });
@@ -227,7 +260,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       window.removeEventListener('scroll', save);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [detail]);
   const lastPath = useRef(loc.pathname);
   useEffect(() => {
     const moved = lastPath.current !== loc.pathname;
@@ -299,20 +332,20 @@ export default function Shell({ children }: { children: ReactNode }) {
           >
             <BrandMark />
           </Link>
-          {SIDE.filter(([h]) => prefs.showBooks || !isBook(h)).map(
-            ([h, i, message, fallback]) => (
-              <NavLink
-                key={h}
-                to={h}
-                end={h === '/'}
-                onClick={toTop(h)}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                <Icon name={i} />
-                {t(message, fallback)}
-              </NavLink>
-            )
-          )}
+          {SIDE.filter(
+            ([h]) => (prefs.showBooks || !isBook(h)) && categoryVisible(h)
+          ).map(([h, i, message, fallback]) => (
+            <NavLink
+              key={h}
+              to={h}
+              end={h === '/'}
+              onClick={toTop(h)}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              <Icon name={i} />
+              {t(message, fallback)}
+            </NavLink>
+          ))}
           {/* music, comics, games and the rest: only the ones this server has turned on */}
           {extras.list.map((e) => (
             <NavLink
@@ -506,29 +539,35 @@ export default function Shell({ children }: { children: ReactNode }) {
           <Icon name="chevL" />
         </button>
       )}
-      <nav className="tabbar" aria-label="Tabs">
-        {TABS.filter(([h]) => prefs.showBooks || !isBook(h)).map(
-          ([h, i, message, fallback]) => (
-            <NavLink
-              key={h}
-              className="tab"
-              to={h}
-              end={h === '/'}
-              onClick={toTop(h)}
-            >
-              <Icon name={i} />
-              {t(message, fallback)}
-              {h === '/requests' && pendingRequests > 0 && (
-                <span
-                  className="badge"
-                  aria-label={`${pendingRequests} pending requests`}
-                >
-                  {pendingRequests}
-                </span>
-              )}
-            </NavLink>
-          )
-        )}
+      <nav
+        className="tabbar"
+        aria-label="Tabs"
+        aria-hidden={tabsHidden || undefined}
+        data-hidden={tabsHidden || undefined}
+        inert={tabsHidden}
+      >
+        {TABS.filter(
+          ([h]) => (prefs.showBooks || !isBook(h)) && categoryVisible(h)
+        ).map(([h, i, message, fallback]) => (
+          <NavLink
+            key={h}
+            className="tab"
+            to={h}
+            end={h === '/'}
+            onClick={toTop(h)}
+          >
+            <Icon name={i} />
+            {t(message, fallback)}
+            {h === '/requests' && pendingRequests > 0 && (
+              <span
+                className="badge"
+                aria-label={`${pendingRequests} pending requests`}
+              >
+                {pendingRequests}
+              </span>
+            )}
+          </NavLink>
+        ))}
       </nav>
     </>
   );

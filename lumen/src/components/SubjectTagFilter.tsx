@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { type SubjectTag } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 
 export function SubjectTagFilter({
@@ -12,6 +13,7 @@ export function SubjectTagFilter({
   excluded: string[];
   apply: (included: string[], excluded: string[]) => void;
 }) {
+  const { t } = useLumenLocale();
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -48,7 +50,9 @@ export function SubjectTagFilter({
         }}
       >
         <label className="sel">
-          <span className="lbl">Find Subject Tags</span>
+          <span className="lbl">
+            {t('lumen.subjectTags.searchLabel', 'Find Subject Tags')}
+          </span>
           <input
             className="cfg-input"
             type="search"
@@ -58,20 +62,29 @@ export function SubjectTagFilter({
           />
         </label>
         <button className="btn btn-tonal btn-sm" disabled={!input.trim()}>
-          Find Tags
+          {t('lumen.subjectTags.search', 'Find Tags')}
         </button>
         <label className="sel">
-          <span className="lbl">Tag Match</span>
+          <span className="lbl">
+            {t('lumen.subjectTags.match', 'Tag Match')}
+          </span>
           <select
             value={exclude ? 'exclude' : 'include'}
             onChange={(event) => setExclude(event.target.value === 'exclude')}
           >
-            <option value="include">Include</option>
-            <option value="exclude">Exclude</option>
+            <option value="include">
+              {t('lumen.subjectTags.include', 'Include')}
+            </option>
+            <option value="exclude">
+              {t('lumen.subjectTags.exclude', 'Exclude')}
+            </option>
           </select>
         </label>
       </form>
-      <div className="toolbar" aria-label="Selected Subject Tags">
+      <div
+        className="toolbar"
+        aria-label={t('lumen.subjectTags.selected', 'Selected Subject Tags')}
+      >
         {included.map((id) => (
           <button
             className="chip"
@@ -84,7 +97,9 @@ export function SubjectTagFilter({
               )
             }
           >
-            Remove included {names[id] ?? `tag #${id}`}
+            {t('lumen.subjectTags.removeIncluded', 'Remove included {name}', {
+              name: names[id] ?? `tag #${id}`,
+            })}
           </button>
         ))}
         {excluded.map((id) => (
@@ -99,7 +114,9 @@ export function SubjectTagFilter({
               )
             }
           >
-            Remove excluded {names[id] ?? `tag #${id}`}
+            {t('lumen.subjectTags.removeExcluded', 'Remove excluded {name}', {
+              name: names[id] ?? `tag #${id}`,
+            })}
           </button>
         ))}
       </div>
@@ -134,6 +151,7 @@ export function KeywordResults({
   limit?: number;
   disabled?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const suffix = page > 1 ? `&page=${page}` : '';
   const results = useApi<{ results: SubjectTag[]; total_pages: number }>(
     `/search/keyword?query=${encodeURIComponent(query)}${suffix}`
@@ -146,19 +164,25 @@ export function KeywordResults({
     <>
       <ServiceNote
         error={results.error}
-        what="subject tags"
+        what={t('lumen.keywordResults.what', 'subject tags')}
         retry={results.reload}
       />
       {!results.data && !results.error && (
         <p className="note" role="status">
-          Finding subject tags…
+          {t('lumen.keywordResults.loading', 'Finding subject tags…')}
         </p>
       )}
       {results.data && !tags.length && (
-        <p className="note">No matching subject tags.</p>
+        <p className="note">
+          {t('lumen.keywordResults.empty', 'No matching subject tags.')}
+        </p>
       )}
       {!!tags.length && (
-        <div className="toolbar" role="group" aria-label="Subject Tag Results">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t('lumen.keywordResults.results', 'Subject Tag Results')}
+        >
           {tags.map((tag) => (
             <button
               className="chip"
@@ -177,18 +201,24 @@ export function KeywordResults({
         </div>
       )}
       {(page > 1 || total > 1) && (
-        <div className="toolbar" role="group" aria-label="Subject Tag Pages">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t('lumen.keywordResults.pages', 'Subject Tag Pages')}
+        >
           <button
             className="btn btn-tonal btn-sm"
             type="button"
             disabled={disabled || page === 1}
             onClick={() => setPage(page - 1)}
           >
-            Previous Tag Page
+            {t('lumen.keywordResults.previous', 'Previous Tag Page')}
           </button>
           <span className="note" role="status">
-            Tag page {page}
-            {results.data ? ` of ${total}` : ''}
+            {t('lumen.keywordResults.page', 'Tag page {page}', { page })}
+            {results.data
+              ? t('lumen.keywordResults.pageTotal', ' of {total}', { total })
+              : ''}
           </span>
           <button
             className="btn btn-tonal btn-sm"
@@ -196,7 +226,7 @@ export function KeywordResults({
             disabled={disabled || page >= total}
             onClick={() => setPage(page + 1)}
           >
-            Next Tag Page
+            {t('lumen.keywordResults.next', 'Next Tag Page')}
           </button>
         </div>
       )}

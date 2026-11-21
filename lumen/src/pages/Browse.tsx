@@ -19,6 +19,7 @@ import {
 } from '../discoveryVisibility';
 import { canViewFollowing } from '../followPermissions';
 import { CAN_HOVER, useApi, usePaged, type PublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { movieCertifications, tvCertifications } from '../maturityRatings';
 import { serverName } from '../mediaServer';
@@ -57,6 +58,7 @@ function integerBound(value: string | null) {
 
 const RANGE_FILTERS = {
   dates: {
+    key: 'dates',
     name: 'Release Dates',
     label: 'Release Date Filter',
     low: 'Released On or After',
@@ -65,6 +67,7 @@ const RANGE_FILTERS = {
     input: { type: 'date' },
   },
   rating: {
+    key: 'rating',
     name: 'Rating',
     label: 'TMDB Rating Filter',
     low: 'Minimum Rating',
@@ -73,6 +76,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '10', step: '0.1' },
   },
   runtime: {
+    key: 'runtime',
     name: 'Runtime',
     label: 'Runtime Filter',
     low: 'Minimum Runtime (Minutes)',
@@ -81,6 +85,7 @@ const RANGE_FILTERS = {
     input: { type: 'number', min: '0', max: '999999999', step: '1' },
   },
   votes: {
+    key: 'votes',
     name: 'Vote Count',
     label: 'TMDB Vote Count Filter',
     low: 'Minimum Votes',
@@ -266,6 +271,27 @@ const commonSorts = [
   ['vote_count.asc', 'Fewest Votes'],
 ] as const;
 
+const sortOptionMessages: Record<string, string> = {
+  'popularity.desc': 'popular',
+  'popularity.asc': 'leastPopular',
+  'vote_average.desc': 'topRated',
+  'vote_average.asc': 'lowestRated',
+  'vote_count.desc': 'mostVotes',
+  'vote_count.asc': 'fewestVotes',
+  'primary_release_date.desc': 'newest',
+  'primary_release_date.asc': 'oldest',
+  'release_date.desc': 'latestReleaseDate',
+  'release_date.asc': 'earliestReleaseDate',
+  'first_air_date.desc': 'newest',
+  'first_air_date.asc': 'oldest',
+  'original_title.asc': 'titleAZ',
+  'original_title.desc': 'titleZA',
+  'original_name.asc': 'titleAZ',
+  'original_name.desc': 'titleZA',
+  'revenue.desc': 'highestRevenue',
+  'revenue.asc': 'lowestRevenue',
+};
+
 const SORTS = {
   movie: [
     ...commonSorts,
@@ -320,6 +346,7 @@ function normalizeNativeFilters(params: URLSearchParams) {
 }
 
 export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t } = useLumenLocale();
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
   const artwork = useApi<Genre[]>(`/discover/genreslider/${kind}`);
   const backdrops = new Map(
@@ -329,7 +356,11 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
   return (
     <>
       <header className="ph">
-        <h1>{kind === 'movie' ? 'Movie Genres' : 'Series Genres'}</h1>
+        <h1>
+          {kind === 'movie'
+            ? t('lumen.browse.movieGenreHeading', 'Movie Genres')
+            : t('lumen.browse.seriesGenreHeading', 'Series Genres')}
+        </h1>
       </header>
       <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
       {Boolean(genres.data?.length) && (
@@ -349,7 +380,9 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
             }))}
           />
         ) : (
-          <p className="note">No genres found.</p>
+          <p className="note">
+            {t('lumen.browse.noGenres', 'No genres found.')}
+          </p>
         )
       ) : (
         !genres.error && <div className="detail-loading" aria-busy="true" />
@@ -360,6 +393,7 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
 
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t, locale } = useLumenLocale();
   const [params, setP] = useSearchParams();
   const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
@@ -458,6 +492,24 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const languageOptions = (Array.isArray(languages.data) ? languages.data : [])
     .filter(({ iso_639_1 }) => /^[a-z]{2}$/.test(iso_639_1))
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
+  const languageNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'language' }),
+    [locale]
+  );
+  const countryNames = useMemo(
+    () => new Intl.DisplayNames([locale], { type: 'region' }),
+    [locale]
+  );
+  const displayName = (
+    names: Intl.DisplayNames,
+    code: string,
+    fallback: string
+  ) => {
+    const localized = names.of(code);
+    return localized && localized.toLowerCase() !== code.toLowerCase()
+      ? localized
+      : fallback;
+  };
   const ratingOptions = [
     'NR',
     ...(kind === 'movie' ? movieCertifications : tvCertifications),
@@ -693,16 +745,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
-        <p className="sub">
-          {kind === 'movie'
-            ? `${!prefs.hoverRequest ? 'Open a poster to request it.' : CAN_HOVER ? (asks ? 'Hover a poster to request it.' : 'Hover a poster to request in one click.') : asks ? 'Tap + on a poster to request it.' : 'Tap + on a poster to request in one tap.'} Everything on ${serverName()} has a green check.`
-            : prefs.wholeSeriesDefault
-              ? 'Requesting gets the whole show. Only want some? Untick seasons on the show’s page.'
-              : 'Pick the seasons you want on each show’s page.'}
-        </p>
+        <p className="sub">{subtitle}</p>
         <Link className="search search-ph" to={`/search?f=${kind}`}>
           <Icon name="search" />
-          <span className="ph-text">Search {word.toLowerCase()}…</span>
+          <span className="ph-text">{searchHint}</span>
         </Link>
       </header>
       <div className="toolbar">
@@ -711,7 +757,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedGenre && (
               <FollowButton
                 key={`genre:${kind}:${followedGenre.id}`}
-                label={`Follow ${followedGenre.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedGenre.name,
+                })}
                 subject={{
                   kind: 'tmdb-genre',
                   subjectKey: `tmdb:genre:${kind}:${followedGenre.id}`,
@@ -725,7 +773,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedStudio && (
               <FollowButton
                 key={`studio:${followedStudio.id}`}
-                label={`Follow ${followedStudio.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedStudio.name,
+                })}
                 subject={{
                   kind: 'tmdb-studio',
                   subjectKey: `tmdb:studio:${followedStudio.id}`,
@@ -737,7 +787,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             {followedNetwork && (
               <FollowButton
                 key={`network:${followedNetwork.id}`}
-                label={`Follow ${followedNetwork.name}`}
+                label={t('lumen.browse.follow', 'Follow {name}', {
+                  name: followedNetwork.name,
+                })}
                 subject={{
                   kind: 'tmdb-network',
                   subjectKey: `tmdb:network:${followedNetwork.id}`,
@@ -810,13 +862,15 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         />
         {kind === 'tv' && (
           <label className="sel">
-            <span className="lbl">Network</span>
+            <span className="lbl">{t('lumen.browse.network', 'Network')}</span>
             <select
-              aria-label="Network"
+              aria-label={t('lumen.browse.network', 'Network')}
               value={network}
               onChange={(event) => upd('network', event.target.value)}
             >
-              <option value="">Any Network</option>
+              <option value="">
+                {t('lumen.browse.anyNetwork', 'Any Network')}
+              </option>
               {network && !knownNetwork && (
                 <option value={network}>{networkLabel}</option>
               )}
@@ -834,7 +888,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             type="button"
             onClick={() => upd('network', '')}
           >
-            Clear Network {networkLabel}
+            {t('lumen.browse.clearNetwork', 'Clear Network {name}', {
+              name: networkLabel,
+            })}
           </button>
         )}
         {studio && (
@@ -848,7 +904,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Studio {studioLabel}
+            {t('lumen.browse.clearStudio', 'Clear Studio {name}', {
+              name: studioLabel,
+            })}
           </button>
         )}
         {studio && (
@@ -858,7 +916,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             aria-pressed={excludeStudio}
             onClick={() => upd('excludeStudio', excludeStudio ? '' : 'true')}
           >
-            Exclude Studio
+            {t('lumen.browse.excludeStudio', 'Exclude Studio')}
           </button>
         )}
         {(keywords || excludeKeywords) && (
@@ -872,15 +930,17 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setP(next, { replace: true });
             }}
           >
-            Clear Subject Tag
+            {t('lumen.browse.clearSubjectTags', 'Clear Subject Tags')}
           </button>
         )}
         {kind === 'tv' && (
           <>
             <label className="sel">
-              <span className="lbl">Series Status</span>
+              <span className="lbl">
+                {t('lumen.browse.seriesStatus', 'Series Status')}
+              </span>
               <select
-                aria-label="Series Status"
+                aria-label={t('lumen.browse.seriesStatus', 'Series Status')}
                 value={status}
                 onChange={(event) => {
                   const next = new URLSearchParams(p);
@@ -893,10 +953,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
                   setP(next, { replace: true });
                 }}
               >
-                <option value="">Any Status</option>
+                <option value="">
+                  {t('lumen.browse.anyStatus', 'Any Status')}
+                </option>
                 {SERIES_STATUSES.map((label, index) => (
                   <option key={label} value={index}>
-                    {label}
+                    {t(`lumen.browse.seriesStatusOption.${index}`, label)}
                   </option>
                 ))}
               </select>
@@ -908,7 +970,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               aria-pressed={!!status && excludeStatus}
               onClick={() => upd('excludeStatus', excludeStatus ? '' : 'true')}
             >
-              Exclude Status
+              {t('lumen.browse.excludeStatus', 'Exclude Status')}
             </button>
           </>
         )}
@@ -1180,12 +1242,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       )}
       {unavailableQuality && (
         <div className="empty">
-          <b>4K discovery is unavailable</b>
+          <b>
+            {t('lumen.browse.4kUnavailable', '4K discovery is unavailable')}
+          </b>
           <button
             className="btn btn-tonal btn-sm"
             onClick={() => upd('quality', '')}
           >
-            Show HD Results
+            {t('lumen.browse.showHdResults', 'Show HD Results')}
           </button>
         </div>
       )}
@@ -1197,7 +1261,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         !list.loading &&
         !capped && (
           <div className="empty">
-            <b>Nothing here</b>Try changing your filters.
+            <b>{t('lumen.browse.nothingHere', 'Nothing here')}</b>
+            {t('lumen.browse.tryFilters', 'Try changing your filters.')}
           </div>
         )}
       {(list.loading || (checkingQuality && !settings.error)) &&
@@ -1210,9 +1275,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       </div>
       {capped && !list.loading && (
         <div className="empty">
-          <b>{items.length ? 'That’s all so far' : 'None found yet'}</b>
-          Checked the {(list.page * 20).toLocaleString()} most popular{' '}
-          {word.toLowerCase()}.
+          <b>
+            {items.length
+              ? t('lumen.browse.allSoFar', 'That’s all so far')
+              : t('lumen.browse.noneFoundYet', 'None found yet')}
+          </b>
+          {t(
+            'lumen.browse.checkedPopular',
+            'Checked the {count} most popular {media}.',
+            {
+              count: (list.page * 20).toLocaleString(locale),
+              media: word.toLowerCase(),
+            }
+          )}
           <button
             className="btn btn-tonal btn-sm"
             style={{ marginTop: 10 }}
@@ -1220,7 +1295,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setLook({ key: filterKey, page: list.page, found: items.length })
             }
           >
-            Look further
+            {t('lumen.browse.lookFurther', 'Look further')}
           </button>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
 
@@ -12,6 +13,7 @@ export default function PersonalIdentityPacks({
 }: {
   onImported: () => void;
 }) {
+  const { t } = useLumenLocale();
   const input = useRef<HTMLInputElement>(null);
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -54,7 +56,12 @@ export default function PersonalIdentityPacks({
       async () => {
         try {
           if (file.size > 5 * 1024 * 1024)
-            throw new Error('The title-match file must be 5 MiB or smaller.');
+            throw new Error(
+              t(
+                'components.IdentityMappingPackControls.fileTooLarge',
+                'The title-match file must be 5 MiB or smaller.'
+              )
+            );
           const contents = await file.text();
           const pack = JSON.parse(contents);
           if (
@@ -66,21 +73,30 @@ export default function PersonalIdentityPacks({
             pack.entries.length > 10_000
           )
             throw new Error(
-              'Choose a supported personal title-match JSON file.'
+              t(
+                'components.IdentityMappingPackControls.invalidFile',
+                'Choose a supported SeerrNG title-match JSON file.'
+              )
             );
           return { name: file.name, contents, count: pack.entries.length };
         } catch (error) {
           clear();
           if (error instanceof SyntaxError)
             throw new Error(
-              'Choose a supported personal title-match JSON file.',
+              t(
+                'components.IdentityMappingPackControls.invalidFile',
+                'Choose a supported SeerrNG title-match JSON file.'
+              ),
               { cause: error }
             );
           throw error;
         }
       },
       setDraft,
-      'Could not read the title-match file.'
+      t(
+        'components.IdentityMappingPackControls.importFailed',
+        'The title-match pack could not be imported. Check the file and try again.'
+      )
     );
   }
 
@@ -96,11 +112,18 @@ export default function PersonalIdentityPacks({
       ({ imported, updated, unchanged }) => {
         clear();
         setNotice(
-          `Imported ${imported}, updated ${updated}, and left ${unchanged} unchanged.`
+          t(
+            'components.IdentityMappingPackControls.imported',
+            'Imported {imported}, updated {updated}, and left {unchanged} unchanged.',
+            { imported, updated, unchanged }
+          )
         );
         onImported();
       },
-      'Could not import the title-match file.'
+      t(
+        'components.IdentityMappingPackControls.importFailed',
+        'The title-match pack could not be imported. Check the file and try again.'
+      )
     );
   }
 
@@ -121,23 +144,42 @@ export default function PersonalIdentityPacks({
         link.remove();
         window.setTimeout(() => URL.revokeObjectURL(href), 1000);
       },
-      'Could not export your title matches.'
+      t(
+        'components.IdentityMappingPackControls.exportFailed',
+        'Your title matches could not be exported. Try again.'
+      )
     );
   }
 
   return (
-    <Section title="Personal Title Matches">
-      <p className="note">Back up or restore your private catalog matches.</p>
+    <Section
+      title={t(
+        'components.IdentityMappingPackControls.title',
+        'Personal title matches'
+      )}
+    >
+      <p className="note">
+        {t(
+          'components.IdentityMappingPackControls.description',
+          'Export or restore your private matches for provider titles.'
+        )}
+      </p>
       <div className="toolbar">
         <button
           className="btn btn-tonal btn-sm"
           disabled={busy}
           onClick={() => void exportPack()}
         >
-          Export Title Matches
+          {t(
+            'components.IdentityMappingPackControls.export',
+            'Export title matches'
+          )}
         </button>
         <label className="btn btn-tonal btn-sm cfg-upload">
-          Choose Personal Pack
+          {t(
+            'components.IdentityMappingPackControls.importLabel',
+            'Choose a SeerrNG title-match pack'
+          )}
           <input
             ref={input}
             type="file"
@@ -151,9 +193,15 @@ export default function PersonalIdentityPacks({
       {draft && (
         <>
           <p className="note">
-            {draft.name} contains {draft.count}{' '}
-            {draft.count === 1 ? 'title match' : 'title matches'}. Import
-            updates any existing matches for the same provider items.
+            {t(
+              'components.IdentityMappingPackControls.fileSummary',
+              '{name} contains {count} title matches.',
+              { name: draft.name, count: draft.count }
+            )}{' '}
+            {t(
+              'components.IdentityMappingPackControls.importDescription',
+              'Import adds new matches and updates matches with the same provider item. All imported matches remain private to your account.'
+            )}
           </p>
           <div className="toolbar">
             <button
@@ -161,7 +209,10 @@ export default function PersonalIdentityPacks({
               disabled={busy}
               onClick={() => void importPack()}
             >
-              Import Title Matches
+              {t(
+                'components.IdentityMappingPackControls.import',
+                'Import title matches'
+              )}
             </button>
             <button
               className="btn btn-quiet btn-sm"
@@ -171,7 +222,10 @@ export default function PersonalIdentityPacks({
                 setFailure('');
               }}
             >
-              Clear Selected File
+              {t(
+                'components.IdentityMappingPackControls.clear',
+                'Clear selected file'
+              )}
             </button>
           </div>
         </>

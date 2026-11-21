@@ -13,7 +13,13 @@ import { usePublicSettings } from '../hooks';
 import { Icon, type IconName } from '../icons';
 import type { ManagedMediaType } from '../mediaIdentity';
 import { usePrefs } from '../settings';
-import { Glyph, statusOf, useCardTitleMode, type Stat } from './cards';
+import {
+  Glyph,
+  StatLabel,
+  statusOf,
+  useCardTitleMode,
+  type Stat,
+} from './cards';
 import { Pill } from './detail';
 import { Avatar, fullSeerrUrl } from './Shell';
 import { useToast } from './toast';
@@ -270,14 +276,14 @@ export function RequestButton({
     return (
       <button className="btn btn-tonal" disabled>
         <Icon name="check" />
-        {stat.word}
+        <StatLabel s={stat} />
       </button>
     );
   if (stat || done)
     return (
       <button className="btn btn-tonal" disabled>
         <Icon name={stat?.ico || 'clock'} />
-        {stat?.word || 'Requested'}
+        <StatLabel s={stat ?? { word: 'Requested' }} />
       </button>
     );
   const go = async () => {
@@ -303,7 +309,7 @@ export function RequestButton({
 export const StatPill = ({ s }: { s: Stat }) =>
   s ? (
     <Pill k={s.k} icon={s.ico}>
-      {s.word}
+      <StatLabel s={s} />
     </Pill>
   ) : null;
 

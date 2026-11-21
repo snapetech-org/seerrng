@@ -244,10 +244,14 @@ export function useExtras() {
   }, [key, !!pub, userSettled]);
   return {
     ready: !!pub && userSettled,
+    accountReady: userSettled,
     // SeerrNG's settings couldn't be read: the pages that wait for them offer Retry
     error: pub ? null : settings.error,
     retry: settings.reload,
     enabled,
+    // raw server/account category visibility, independent of connected services
+    categoryEnabled: (category: string) => on[category] !== false,
+    accountCategoryEnabled: (category: string) => own?.[category] !== false,
     // until the checks answer, list none (so Games doesn't load a dead category first)
     games: !enabled('game')
       ? games

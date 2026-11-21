@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 
 interface Credentials {
@@ -14,6 +15,7 @@ export default function SpotifyCredentials({
 }: {
   initial: Credentials;
 }) {
+  const { t } = useLumenLocale();
   const [savedId, setSavedId] = useState(initial.spotifyClientId ?? '');
   const [clientId, setClientId] = useState(savedId);
   const [hasSecret, setHasSecret] = useState(
@@ -59,7 +61,12 @@ export default function SpotifyCredentials({
         (secretChange !== undefined &&
           Boolean(result.spotifyClientSecret) !== Boolean(secretChange))
       ) {
-        throw new Error('Could not confirm saved Spotify credentials.');
+        throw new Error(
+          t(
+            'lumen.adminGeneral.spotify.confirmFailure',
+            'Could not confirm saved Spotify credentials.'
+          )
+        );
       }
       forget('/settings/main');
       forget('/playlist/spotify/status');
@@ -68,9 +75,20 @@ export default function SpotifyCredentials({
       setHasSecret(Boolean(result.spotifyClientSecret));
       setSecret('');
       setRemoveSecret(false);
-      setFeedback('Spotify credentials saved.');
+      setFeedback(
+        t('lumen.adminGeneral.spotify.saved', 'Spotify credentials saved.')
+      );
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not save Spotify credentials.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.adminGeneral.spotify.saveFailure',
+            'Could not save Spotify credentials.'
+          ),
+          (id, fallback) => t(id, fallback)
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -78,12 +96,36 @@ export default function SpotifyCredentials({
   }
 
   return (
-    <Section title="Spotify Playlist Import" id="spotifyClientId">
+    <Section
+      title={t('lumen.adminGeneral.spotify.title', 'Spotify Playlist Import')}
+      id="spotifyClientId"
+    >
       <form onSubmit={(event) => void save(event)}>
         <div className="setlist">
-          <label className="set cfg-row">
-            <b>Spotify Client ID</b>
+          <label
+            className="set cfg-row"
+            htmlFor="spotify-client-id"
+            aria-label={t(
+              'components.Settings.SettingsMain.spotifyClientId',
+              'Spotify Client ID'
+            )}
+          >
+            <span>
+              <b>
+                {t(
+                  'components.Settings.SettingsMain.spotifyClientId',
+                  'Spotify Client ID'
+                )}
+              </b>
+              <small>
+                {t(
+                  'lumen.adminGeneral.spotify.clientIdHelp',
+                  'Create an application in the Spotify Developer Dashboard and copy its client ID.'
+                )}
+              </small>
+            </span>
             <input
+              id="spotify-client-id"
               className="cfg-input"
               value={clientId}
               maxLength={512}
@@ -91,14 +133,38 @@ export default function SpotifyCredentials({
               onChange={(event) => setClientId(event.target.value)}
             />
           </label>
-          <label className="set cfg-row">
+          <label
+            className="set cfg-row"
+            htmlFor="spotify-client-secret"
+            aria-label={t(
+              'components.Settings.SettingsMain.spotifyClientSecret',
+              'Spotify Client Secret'
+            )}
+          >
             <span>
-              <b>Spotify Client Secret</b>
+              <b>
+                {t(
+                  'components.Settings.SettingsMain.spotifyClientSecret',
+                  'Spotify Client Secret'
+                )}
+              </b>
+              <small>
+                {t(
+                  'lumen.adminGeneral.spotify.clientSecretHelp',
+                  'The Spotify client secret is stored in SeerrNG and never shown in full after saving.'
+                )}
+              </small>
               {hasSecret && (
-                <small>A secret is saved. Leave blank to keep it.</small>
+                <small>
+                  {t(
+                    'lumen.adminGeneral.spotify.secretSaved',
+                    'A secret is saved. Leave blank to keep it.'
+                  )}
+                </small>
               )}
             </span>
             <input
+              id="spotify-client-secret"
               className="cfg-input"
               type="password"
               autoComplete="new-password"
@@ -110,7 +176,12 @@ export default function SpotifyCredentials({
           </label>
           {hasSecret && (
             <label className="set cfg-row">
-              <b>Remove saved Spotify secret</b>
+              <b>
+                {t(
+                  'lumen.adminGeneral.spotify.removeSecret',
+                  'Remove saved Spotify secret'
+                )}
+              </b>
               <input
                 type="checkbox"
                 checked={removeSecret}
@@ -122,7 +193,10 @@ export default function SpotifyCredentials({
         </div>
         <div className="toolbar">
           <button className="btn btn-tonal btn-sm" disabled={busy || !dirty}>
-            Save Spotify Credentials
+            {t(
+              'lumen.adminGeneral.spotify.saveButton',
+              'Save Spotify Credentials'
+            )}
           </button>
         </div>
         {feedback && (
