@@ -40,6 +40,25 @@ live provider catalogs, and independent linguistic review remain unverified.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261121/`.
 
+### Lumen administrator settings localization
+
+The Lumen-specific administrator settings screen now localizes its own
+headings, settings labels, descriptions, options, storage guidance, recovery
+actions, upload/save controls, and completion feedback in English, French, and
+Arabic. The existing request policy component remains embedded in the page and
+continues to use its existing SeerrNG message translations. Settings values,
+file format, permission checks, save endpoint, and upload behavior are
+unchanged.
+
+Twelve standalone and twelve bundled `/lumen/` browser cases pass over desktop,
+iPhone, Android, and tablet. They verify translated labels, no horizontal
+overflow, draft editing, and the existing save payload and success feedback.
+English baseline/candidate screenshots match pixel-for-pixel at 1440 CSS px
+and 390 CSS px. French desktop and Arabic iPhone were inspected. Live storage
+permissions, actual file saves/uploads, and independent linguistic review
+remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-settings-localization-20261121/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load
