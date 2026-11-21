@@ -60,14 +60,15 @@ export default function Trending() {
     usePublicSettings(),
     user?.permissions
   );
-  const items = list.items.filter(
-    (item) =>
-      item.mediaType === 'collection' ||
-      item.mediaType === 'person' ||
-      (item.mediaType === 'movie' && movieEnabled) ||
-      (item.mediaType === 'tv' && tvEnabled) ||
-      showDiscoveryTitle(item, visibility)
-  );
+  const items = list.items.filter((item) => {
+    if (item.mediaType === 'collection') return movieEnabled;
+    if (item.mediaType === 'person') return true;
+    if (item.mediaType === 'movie')
+      return movieEnabled && showDiscoveryTitle(item, visibility);
+    if (item.mediaType === 'tv')
+      return tvEnabled && showDiscoveryTitle(item, visibility);
+    return showDiscoveryTitle(item, visibility);
+  });
   const empty = items.length === 0;
   const filtered = items.length < list.items.length;
   function select(key: string, value: string) {

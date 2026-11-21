@@ -546,6 +546,53 @@ test('calendar mixed results omit the account-disabled media type', async ({
   await expect(page.getByText('Disabled Movie Release')).toHaveCount(0);
 });
 
+test('trending filters disabled movies and movie collections', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { movie: false, tv: true } },
+    })
+  );
+  await page.route('**/api/v1/discover/trending**', (route) =>
+    route.fulfill({
+      json: paged([
+        movie(301, 'Disabled Movie'),
+        {
+          id: 302,
+          title: 'Enabled Series',
+          name: 'Enabled Series',
+          mediaType: 'tv',
+          firstAirDate: '2020-01-01',
+        },
+        {
+          id: 303,
+          title: 'Disabled Movie Collection',
+          mediaType: 'collection',
+        },
+      ]),
+    })
+  );
+  await page.goto(testAppPath('/trending'));
+  await expect(
+    page.getByRole('link', { name: 'Enabled Series' })
+  ).toBeVisible();
+  await expect(page.getByText('Disabled Movie')).toHaveCount(0);
+  await expect(page.getByText('Disabled Movie Collection')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Movies', exact: true })
+  ).toHaveCount(0);
+});
+
 test('watchlist filters categories disabled for the signed-in account', async ({
   page,
 }, info) => {
