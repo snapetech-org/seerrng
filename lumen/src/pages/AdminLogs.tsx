@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface LogEntry {
   timestamp: string;
@@ -12,12 +13,7 @@ interface LogEntry {
   data?: Record<string, unknown>;
 }
 
-const levels = [
-  ['debug', 'Debug and above'],
-  ['info', 'Info and above'],
-  ['warn', 'Warnings and errors'],
-  ['error', 'Errors only'],
-];
+const levels = ['debug', 'info', 'warn', 'error'] as const;
 const MAX_LOG_OFFSET = 100_000;
 const pageSizes = [10, 25, 50, 100];
 
@@ -29,13 +25,14 @@ export default function AdminLogs() {
 }
 
 function LogViewer({ storageKey }: { storageKey: string }) {
+  const { t } = useLumenLocale();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [{ level, take }, setDisplay] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
       return {
-        level: levels.find(([value]) => value === saved?.level)?.[0] ?? 'info',
+        level: levels.find((value) => value === saved?.level) ?? 'info',
         take: pageSizes.find((value) => value === saved?.take) ?? 25,
       };
     } catch {
@@ -107,23 +104,30 @@ function LogViewer({ storageKey }: { storageKey: string }) {
       await navigator.clipboard.writeText(
         `${entry.timestamp} [${entry.level}]${entry.label ? `[${entry.label}]` : ''}: ${entry.message}${entry.data ? `\n${JSON.stringify(entry.data, null, 2)}` : ''}`
       );
-      setCopyStatus('Log entry copied.');
+      setCopyStatus(
+        t(
+          'components.Settings.SettingsLogs.copiedLogMessage',
+          'Copied log message to clipboard.'
+        )
+      );
     } catch {
-      setCopyStatus('Could not copy the log entry.');
+      setCopyStatus(
+        t('lumen.adminLogs.copyFailure', 'Could not copy the log entry.')
+      );
     }
   }
 
   return (
     <>
       <header className="ph">
-        <h1>System Logs</h1>
+        <h1>{t('lumen.adminLogs.title', 'System Logs')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+          {t('lumen.adminLogs.backToAccount', 'Back to Account')}
         </Link>
         <button className="btn btn-tonal btn-sm" onClick={reload}>
-          Refresh
+          {t('lumen.adminLogs.refresh', 'Refresh')}
         </button>
         <label>
           <input
@@ -131,7 +135,7 @@ function LogViewer({ storageKey }: { storageKey: string }) {
             checked={live}
             onChange={(event) => setLive(event.target.checked)}
           />{' '}
-          Live Refresh
+          {t('lumen.adminLogs.liveRefresh', 'Live Refresh')}
         </label>
       </div>
       <form
@@ -143,7 +147,9 @@ function LogViewer({ storageKey }: { storageKey: string }) {
         }}
       >
         <label className="sel">
-          <span className="lbl">Search Logs</span>
+          <span className="lbl">
+            {t('components.Settings.SettingsLogs.searchLogs', 'Search Logs')}
+          </span>
           <input
             className="cfg-json"
             value={input}
@@ -151,9 +157,13 @@ function LogViewer({ storageKey }: { storageKey: string }) {
             onChange={(event) => setInput(event.target.value)}
           />
         </label>
-        <button className="btn btn-quiet btn-sm">Search</button>
+        <button className="btn btn-quiet btn-sm">
+          {t('lumen.adminLogs.search', 'Search')}
+        </button>
         <label className="sel">
-          <span className="lbl">Severity</span>
+          <span className="lbl">
+            {t('components.Settings.SettingsLogs.level', 'Severity')}
+          </span>
           <select
             value={level}
             onChange={(event) => {
@@ -161,15 +171,17 @@ function LogViewer({ storageKey }: { storageKey: string }) {
               setPage(1, true);
             }}
           >
-            {levels.map(([value, label]) => (
+            {levels.map((value) => (
               <option value={value} key={value}>
-                {label}
+                {t(`lumen.adminLogs.level.${value}`, value)}
               </option>
             ))}
           </select>
         </label>
         <label className="sel">
-          <span className="lbl">Page Size</span>
+          <span className="lbl">
+            {t('lumen.adminLogs.pageSize', 'Page Size')}
+          </span>
           <select
             value={take}
             onChange={(event) => {
@@ -183,7 +195,11 @@ function LogViewer({ storageKey }: { storageKey: string }) {
           </select>
         </label>
       </form>
-      <ServiceNote error={error} what="system logs" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.adminLogs.systemLogs', 'system logs')}
+        retry={reload}
+      />
       {copyStatus && (
         <p className="note" role="status">
           {copyStatus}
@@ -191,11 +207,13 @@ function LogViewer({ storageKey }: { storageKey: string }) {
       )}
       {!data && !error && (
         <p className="note" role="status">
-          Loading system logs…
+          {t('lumen.adminLogs.loading', 'Loading system logs…')}
         </p>
       )}
       {entries?.length === 0 && (
-        <p className="note">No logs match these filters.</p>
+        <p className="note">
+          {t('lumen.adminLogs.noResults', 'No logs match these filters.')}
+        </p>
       )}
       {!!entries?.length && (
         <ul className="setlist">
@@ -210,7 +228,12 @@ function LogViewer({ storageKey }: { storageKey: string }) {
                 </small>
                 {details && (
                   <details>
-                    <summary>Details</summary>
+                    <summary>
+                      {t(
+                        'components.Settings.SettingsLogs.logDetails',
+                        'Details'
+                      )}
+                    </summary>
                     <small>{details}</small>
                   </details>
                 )}
@@ -219,7 +242,10 @@ function LogViewer({ storageKey }: { storageKey: string }) {
                 className="btn btn-quiet btn-sm"
                 onClick={() => void copy(entry)}
               >
-                Copy Entry
+                {t(
+                  'components.Settings.SettingsLogs.copyToClipboard',
+                  'Copy Entry'
+                )}
               </button>
             </li>
           ))}
@@ -232,15 +258,15 @@ function LogViewer({ storageKey }: { storageKey: string }) {
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
           >
-            Previous Page
+            {t('lumen.adminLogs.previousPage', 'Previous Page')}
           </button>
-          <span>Page {page}</span>
+          <span>{t('lumen.adminLogs.page', 'Page {page}', { page })}</span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={!data || page >= Math.min(data.pageInfo.pages, lastPage)}
             onClick={() => setPage(page + 1)}
           >
-            Next Page
+            {t('lumen.adminLogs.nextPage', 'Next Page')}
           </button>
         </div>
       )}

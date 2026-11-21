@@ -512,6 +512,21 @@ Request payloads, saved-key retention, test-only draft submission, empty
 assignments, and cleared limits remain covered. Live Prowlarr behavior,
 independent linguistic review, and native-matched visuals remain open.
 
+Administrator System Logs now follow the saved account locale for search,
+severity, paging, refresh, details, copy feedback, loading, empty, and error
+states. SeerrNG's existing translated log catalog supplies common labels, with
+English, French, and Arabic Lumen messages for the remaining controls and
+severity descriptions. This change also fixes saved severity restoration: the
+selected full level value is retained instead of its first character. The 12
+existing log behavior cases and eight locale cases pass in standalone and
+bundled Lumen across desktop, iPhone, Android, and tablet. French and Arabic
+before/after captures were inspected at desktop and iPhone widths; existing
+layout and navigation owners remain unchanged and all tested widths avoid
+horizontal overflow. Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-logs-localization-20261120/`.
+Live log-service behavior, independent linguistic review, and native-matched
+visual acceptance remain open.
+
 The same Manage Requests permission now exposes a Search Prowlarr shortcut in
 movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
 The shortcut prefills the media category and title without submitting a search.

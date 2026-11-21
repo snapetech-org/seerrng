@@ -5485,7 +5485,7 @@ test('System Logs keeps the same entry expanded when a newer log arrives', async
   );
   await page.goto(testAppPath('/admin/logs'));
   const row = page.getByRole('listitem').filter({ hasText: 'Original entry' });
-  await row.getByText('Details', { exact: true }).click();
+  await row.getByText('Log Details', { exact: true }).click();
   await expect(row.getByText('{"value":1}', { exact: true })).toBeVisible();
   refresh = true;
   await page.getByRole('button', { name: 'Refresh', exact: true }).click();
@@ -5535,7 +5535,7 @@ test('System Logs filters server entries and excludes non-admins', async ({
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect(page.getByText('Filtered result')).toBeVisible();
   await expect(page).toHaveURL(/\/admin\/logs$/);
-  await page.getByText('Details', { exact: true }).click();
+  await page.getByText('Log Details', { exact: true }).click();
   await expect(page.getByText('{"attempts":2}', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
     'Filtered result'
