@@ -296,6 +296,7 @@ function normalizeNativeFilters(params: URLSearchParams) {
 }
 
 export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t } = useLumenLocale();
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
   const artwork = useApi<Genre[]>(`/discover/genreslider/${kind}`);
   const backdrops = new Map(
@@ -325,7 +326,9 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
             }))}
           />
         ) : (
-          <p className="note">No genres found.</p>
+          <p className="note">
+            {t('lumen.browse.noGenres', 'No genres found.')}
+          </p>
         )
       ) : (
         !genres.error && <div className="detail-loading" aria-busy="true" />
@@ -336,6 +339,7 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
 
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
+  const { t } = useLumenLocale();
   const [params, setP] = useSearchParams();
   const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
@@ -664,7 +668,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       <form
         key={`${kind}:${search}:${filterReset}`}
         className="toolbar"
-        aria-label="Filter by Title"
+        aria-label={t('lumen.browse.filterByTitle', 'Filter by Title')}
         onSubmit={(event) => {
           event.preventDefault();
           const value = String(
@@ -677,7 +681,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         }}
       >
         <label className="sel">
-          <span className="lbl">Title</span>
+          <span className="lbl">{t('lumen.browse.title', 'Title')}</span>
           <input
             className="cfg-input"
             name="search"
@@ -686,7 +690,9 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             defaultValue={search}
           />
         </label>
-        <button className="btn btn-tonal btn-sm">Apply Title</button>
+        <button className="btn btn-tonal btn-sm">
+          {t('lumen.browse.applyTitle', 'Apply Title')}
+        </button>
       </form>
       <div className="toolbar">
         {canViewFollowing(user?.permissions) && (
@@ -739,7 +745,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             if (hasFilters) clearFilters();
           }}
         >
-          Clear Discovery Filters
+          {t('lumen.browse.clearFilters', 'Clear Discovery Filters')}
         </button>
         {kind === 'tv' && (
           <label className="sel">
@@ -819,11 +825,25 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             Clear Subject Tag
           </button>
         )}
-        <div className="seg" role="group" aria-label="Availability">
+        <div
+          className="seg"
+          role="group"
+          aria-label={t('lumen.browse.availability', 'Availability')}
+        >
           {[
-            ['all', 'All'],
-            ['have', `On ${serverName()}`],
-            ['not', `Not on ${serverName()}`],
+            ['all', t('lumen.browse.all', 'All')],
+            [
+              'have',
+              t('lumen.browse.onServer', 'On {server}', {
+                server: serverName(),
+              }),
+            ],
+            [
+              'not',
+              t('lumen.browse.notOnServer', 'Not on {server}', {
+                server: serverName(),
+              }),
+            ],
           ].map(([v, t]) => (
             <button
               key={v}
@@ -850,7 +870,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           </label>
         )}
         <label className="sel">
-          <span className="lbl">Sort</span>
+          <span className="lbl">{t('lumen.browse.sort', 'Sort')}</span>
           <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
             {SORTS[kind].map(([v, t]) => (
               <option key={v} value={v}>
@@ -1166,12 +1186,14 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       )}
       {unavailableQuality && (
         <div className="empty">
-          <b>4K discovery is unavailable</b>
+          <b>
+            {t('lumen.browse.4kUnavailable', '4K discovery is unavailable')}
+          </b>
           <button
             className="btn btn-tonal btn-sm"
             onClick={() => upd('quality', '')}
           >
-            Show HD Results
+            {t('lumen.browse.showHdResults', 'Show HD Results')}
           </button>
         </div>
       )}
@@ -1183,7 +1205,8 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         !list.loading &&
         !capped && (
           <div className="empty">
-            <b>Nothing here</b>Try changing your filters.
+            <b>{t('lumen.browse.nothingHere', 'Nothing here')}</b>
+            {t('lumen.browse.tryFilters', 'Try changing your filters.')}
           </div>
         )}
       {(list.loading || (checkingQuality && !settings.error)) &&
@@ -1196,9 +1219,19 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       </div>
       {capped && !list.loading && (
         <div className="empty">
-          <b>{items.length ? 'That’s all so far' : 'None found yet'}</b>
-          Checked the {(list.page * 20).toLocaleString()} most popular{' '}
-          {word.toLowerCase()}.
+          <b>
+            {items.length
+              ? t('lumen.browse.allSoFar', 'That’s all so far')
+              : t('lumen.browse.noneFoundYet', 'None found yet')}
+          </b>
+          {t(
+            'lumen.browse.checkedPopular',
+            'Checked the {count} most popular {media}.',
+            {
+              count: (list.page * 20).toLocaleString(),
+              media: word.toLowerCase(),
+            }
+          )}
           <button
             className="btn btn-tonal btn-sm"
             style={{ marginTop: 10 }}
@@ -1206,7 +1239,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
               setLook({ key: filterKey, page: list.page, found: items.length })
             }
           >
-            Look further
+            {t('lumen.browse.lookFurther', 'Look further')}
           </button>
         </div>
       )}

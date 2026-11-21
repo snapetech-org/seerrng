@@ -610,6 +610,22 @@ controlled by the browser locale. Other Browse controls and route copy remain
 untranslated and are still open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-ranges-20261121/`.
 
+### Movie and series Browse chrome localization
+
+The shared movie and series Browse screen now localizes title search labels,
+availability controls, filter clearing, sort label, no-results copy, capped
+catalog copy, the 4K-unavailable fallback, and genre-directory empty state in
+English, French, and Arabic. Existing filter parameters and request behavior
+are unchanged. Browser fixtures cover `/movies` and `/series`, including a
+successful empty catalog response, range validation, and reset. Twenty-four
+cases pass across desktop, iPhone, Android, and tablet in standalone and
+bundled `/lumen/` deployments. Matched 1440 × 900 and 390 × 844 baseline and
+candidate screens were inspected; English geometry is unchanged, translations
+wrap within existing controls, Arabic keeps RTL, and no horizontal overflow was
+found. Dynamic language/country names and the rest of Browse controls remain
+open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
+
 ### My Media browse increment
 
 Lumen serves `/library` in both deployments and exposes My Media in desktop

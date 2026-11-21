@@ -32,6 +32,10 @@ test('movie and series range filters follow the account locale', async ({
       return route.fulfill({ json: { locale } });
     if (path === '/settings/public')
       return route.fulfill({ json: { enable4k: true } });
+    if (path === '/discover/movies' || path === '/discover/tv')
+      return route.fulfill({
+        json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+      });
     return route.fulfill({ json: [] });
   });
 
@@ -39,6 +43,46 @@ test('movie and series range filters follow the account locale', async ({
     baseline || locale === 'en' ? en : locale === 'fr' ? fr : ar;
   for (const kind of ['movie', 'tv'] as const) {
     await page.goto(testAppPath(kind === 'movie' ? '/movies' : '/series'));
+    await expect(
+      page.getByRole('form', {
+        name: wording(
+          'Filter by Title',
+          'Filtrer par titre',
+          'التصفية حسب العنوان'
+        ),
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        wording(
+          'Clear Discovery Filters',
+          'Effacer les filtres de découverte',
+          'مسح عوامل تصفية الاستكشاف'
+        ),
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(
+      page.getByRole('group', {
+        name: wording('Availability', 'Disponibilité', 'التوفر'),
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(wording('Sort', 'Trier', 'الترتيب'), { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        wording('Nothing here', 'Aucun résultat', 'لا توجد نتائج هنا'),
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(page.locator('.empty')).toContainText(
+      wording(
+        'Try changing your filters.',
+        'Essayez de modifier vos filtres.',
+        'جرّب تغيير عوامل التصفية.'
+      )
+    );
     const ranges = [
       {
         en: 'Release Date Filter',
