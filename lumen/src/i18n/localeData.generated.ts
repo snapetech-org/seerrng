@@ -516,6 +516,96 @@ export const localeData = [
         'حد البحث وصل انتظر دقيقة قبل البحث مرة أخرى.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'ولا توجد فهرس قابلة للتفتيش. يمكن الحصول على مؤشر في Prowlarr أو تعديل مرشحات الفئة.',
+      'components.SettingsProwlarr.addDetectedMatches': 'تطابق مكتشف{count})',
+      'components.SettingsProwlarr.address': 'اسم المضيف',
+      'components.SettingsProwlarr.adult': 'للبالغين',
+      'components.SettingsProwlarr.apiKey': 'مفتاح API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'تم توفير المفتاح دع هذا فارغاً ليستمر باستخدامه',
+      'components.SettingsProwlarr.audiobook': 'الكتب السمعية',
+      'components.SettingsProwlarr.basePath': 'طريق القاعدة',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'اختر فئات Prowlarr المرسلة مع كل بحث. تستخدم الإعدادات الافتراضية فئات Newznab/Torznab القياسية؛ اختبر الاتصال لرؤية الفئات المخصصة المعلن عنها بواسطة المفهرسين الممكّنين.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'اختيار فئة واحدة على الأقل.',
+      'components.SettingsProwlarr.categoryMappingTitle': 'مرشحات الفئة',
+      'components.SettingsProwlarr.clearApiKey': 'إزالة مفتاح API المحفوظ',
+      'components.SettingsProwlarr.comic': 'قصص مصورة',
+      'components.SettingsProwlarr.connected': 'متصل Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'وتشمل العدات فهرسات مُمكَّنة وقابلة للبحث تُعلن عن تقديم الدعم لفئة مختارة على الأقل. وهي تظهر التغطية البحثية، وليس الامتصاصات أو الواردات الناجحة.',
+      'components.SettingsProwlarr.coverageTitle': 'التغطية بالأرقام القياسية',
+      'components.SettingsProwlarr.description':
+        'تماسك Prowlarr على سبيل المثال مرة واحدة لإجراء بحث يدوي مدرك للفئة عبر المؤشرات التي تديرها هناك',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'تُطابَق الفئات المخصّصة المقترحة استنادًا إلى الأسماء التي يعلنها مزودو الخدمة. راجعها قبل الحفظ؛ فهذا لا يغيّر Prowlarr ولا يرسل أوامر تنزيل.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'قبلت Prowlarr اتصال API للإدارة. تختبر هذه النتائج كل مفهرس قابل للبحث بشكل منفصل؛ معطل - حتى تأتي التواريخ من Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'فشل',
+      'components.SettingsProwlarr.diagnosticOk': 'متصل',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'نتائج الربط بالأرقام القياسية',
+      'components.SettingsProwlarr.disabledUntil': 'المعاقون حتى {date}',
+      'components.SettingsProwlarr.ebook': 'كتب',
+      'components.SettingsProwlarr.game': 'ألعاب PC',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'اختر فهارس Prowlarr المفعّلة التي يجري البحث فيها لكل نوع من الوسائط. استخدم Ctrl مع النقر على Windows/Linux أو Command مع النقر على macOS لتحديد عدة فهارس. يؤدي ترك الاختيار فارغًا إلى تعطيل البحث لهذا النوع.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'الفهارس الخاصة بـ {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'تعيينات الفهارس حسب نوع الوسائط',
+      'components.SettingsProwlarr.indexerCount': 'المفهرسات: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'يمكن للمستخدمين فتح تفاصيل الفهرس من نتائج البحث.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'أسماء الفهارس وروابط التفاصيل مخفية عن المستخدمين.',
+      'components.SettingsProwlarr.indexerNotSearchable': '(غير قابل للبحث)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'حدود البحث',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'حدد عدد عمليات البحث لكل مستخدم في الدقيقة إجمالاً ولكل فهرس مختار.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'تم حفظ Prowlarr، لكن مخزون المفهرس الخاص به غير متوفر.',
+      'components.SettingsProwlarr.keepApiKey': 'الحفاظ على حفظ مفتاح API',
+      'components.SettingsProwlarr.loadFailed': 'تعذّر تحميل إعدادات Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'مجلات',
+      'components.SettingsProwlarr.modern': 'ألعاب ROM الحديثة',
+      'components.SettingsProwlarr.movie': 'أفلام',
+      'components.SettingsProwlarr.music': 'الموسيقى',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'لم يتم تكوين أي مفهرسات Prowlarr حتى الآن.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'اختبر اتصال Prowlarr لتحميل فهارسه وتعيينها حسب الفئة.',
+      'components.SettingsProwlarr.port': 'المنفذ',
+      'components.SettingsProwlarr.recentFailure': 'الفشل الأخير: {date}',
+      'components.SettingsProwlarr.retro': 'ROMs الرجعية',
+      'components.SettingsProwlarr.save': 'احفظ إعدادات Prowlarr',
+      'components.SettingsProwlarr.saveFailed': 'تعذّر حفظ إعدادات Prowlarr.',
+      'components.SettingsProwlarr.saved': 'تم حفظ إعدادات Prowlarr.',
+      'components.SettingsProwlarr.saving': 'جاري الحفظ…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'أدخل عدداً صحيحاً من 1 إلى 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'الحد الأقصى لعمليات البحث لكل مستخدم في الدقيقة على {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'الحد الأقصى لعمليات البحث لكل مستخدم في الدقيقة',
+      'components.SettingsProwlarr.selectedCategories': '{count} فئات مختارة',
+      'components.SettingsProwlarr.selectedIndexers': 'تم اختيار {count} فهارس',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'السماح بعرض أسماء الفهارس وتفاصيلها في نتائج البحث',
+      'components.SettingsProwlarr.sports': 'الرياضة',
+      'components.SettingsProwlarr.supportNote':
+        'يرتبط هذا الإعداد بـ Prowlarr فقط. NZBHydra2 غير مدعوم حالياً هنا.',
+      'components.SettingsProwlarr.test': 'الاتصال بالاختبارات وتغطية التفتيش',
+      'components.SettingsProwlarr.testFailed':
+        'فشل اتصال Prowlarr. تحقق من العنوان ومفتاح API.',
+      'components.SettingsProwlarr.testHint':
+        'بدأت عمليات البحث من استعلام SeerrNG Prowlarr مباشرة. لا تزال الطلبات التي تمت الموافقة عليها تمر عبر مدير الوسائط أو موفر البرامج الذي تم تكوينه، والذي يمتلك عملية الاستحواذ والتتبع.',
+      'components.SettingsProwlarr.testing': 'جارٍ التحقق من Prowlarr...',
+      'components.SettingsProwlarr.title': 'مفهارس Prowlarr',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} البحث والتمكين {total} تم تشكيلها',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'الاستخدام SSL',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1377,6 +1467,26 @@ export const localeData = [
         'النتائج التي أعادها Prowlarr: {count}.',
       'lumen.indexerSearch.handoffUnconfirmed':
         'تعذّر التأكد من إرسال النتيجة. تحقّق من عميل التنزيل قبل البحث أو إعادة المحاولة.',
+      'lumen.adminProwlarr.connectionHeading': 'الاتصال',
+      'lumen.adminProwlarr.availableCategories': 'فئات Prowlarr المتاحة',
+      'lumen.adminProwlarr.categoryIdsLabel': 'معرّفات فئات {category}',
+      'lumen.adminProwlarr.assignedCount': '{category} · {count} مُعيّن',
+      'lumen.adminProwlarr.searchLimitLabel': 'حدّ البحث لـ {indexer}',
+      'lumen.adminProwlarr.coverageSummary':
+        'عدد المفهرسات القابلة للبحث والمفعّلة {enabled} من {total}.',
+      'lumen.adminProwlarr.version': 'الإصدار {version}.',
+      'lumen.adminProwlarr.disabled': 'معطّل',
+      'lumen.adminProwlarr.searchEnabled': 'البحث مفعّل',
+      'lumen.adminProwlarr.searchUnavailable': 'البحث غير متاح',
+      'lumen.adminProwlarr.indexer': 'المفهرس {id}',
+      'lumen.adminProwlarr.connectionTested': 'تم اختبار اتصال Prowlarr.',
+      'lumen.adminProwlarr.invalidSettings':
+        'تحقّق من المنفذ وحدود البحث ومعرّفات الفئات وتعيينات المفهرسات.',
+      'lumen.adminProwlarr.loadingIndexers': 'جارٍ تحميل المفهرسات…',
+      'lumen.adminProwlarr.backToYou': 'العودة إلى أنت',
+      'lumen.adminProwlarr.loadingSettings': 'جارٍ تحميل إعدادات Prowlarr…',
+      'lumen.adminProwlarr.indexerCount': 'عدد المفهرسات: {count}',
+      'lumen.adminProwlarr.savedApiKeyPlaceholder': 'مفتاح محفوظ',
     },
   },
   {
@@ -2382,6 +2492,109 @@ export const localeData = [
         'Suchlimit erreicht. Warten Sie eine Minute, bevor Sie erneut suchen.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'Es sind keine aktivierten durchsuchbaren Indexer verfügbar. Aktivieren Sie einen Indexer in Prowlarr oder passen Sie die Kategoriefilter an.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Erkannte Übereinstimmungen ({count}) hinzufügen',
+      'components.SettingsProwlarr.address': 'Hostname',
+      'components.SettingsProwlarr.adult': 'Erwachsene',
+      'components.SettingsProwlarr.apiKey': 'API-Schlüssel',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Ein Schlüssel ist gespeichert. Lassen Sie dieses Feld leer, um ihn weiter zu verwenden.',
+      'components.SettingsProwlarr.audiobook': 'Hörbücher',
+      'components.SettingsProwlarr.basePath': 'Basispfad',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Wählen Sie die Prowlarr-Kategorien aus, die mit jeder Suche gesendet werden. Standardmäßig werden Newznab-/Torznab-Kategorien verwendet. Testen Sie die Verbindung, um benutzerdefinierte Kategorien zu sehen, die von aktivierten Indexern gemeldet werden.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Wählen Sie mindestens eine Kategorie aus.',
+      'components.SettingsProwlarr.categoryMappingTitle': 'Kategoriefilter',
+      'components.SettingsProwlarr.clearApiKey':
+        'Gespeicherten API-Schlüssel entfernen',
+      'components.SettingsProwlarr.comic': 'Comics',
+      'components.SettingsProwlarr.connected':
+        'Verbunden mit Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Die Anzahl umfasst aktivierte, durchsuchbare Indexer, die mindestens eine ausgewählte Kategorie unterstützen. Sie zeigt die Suchabdeckung, nicht erfolgreiche Downloads oder Importe.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Indexer-Abdeckung nach Medium',
+      'components.SettingsProwlarr.description':
+        'Optional können Sie Prowlarr verbinden, um kategoriebewusste manuelle Suchen direkt in SeerrNG auszuführen. Genehmigte Anfragen laufen weiterhin über Ihre konfigurierten Medienmanager und Softwareanbieter, die Erwerb und Nachverfolgung übernehmen.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Vorgeschlagene benutzerdefinierte Kategorien werden anhand der von den Indexern gemeldeten Namen zugeordnet. Prüfen Sie sie vor dem Speichern. Dadurch wird Prowlarr nicht geändert und es werden keine Downloads gestartet.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr hat die Management-API-Verbindung akzeptiert. Diese Ergebnisse testen jeden aktivierten, durchsuchbaren Indexer einzeln. Die Angaben „Deaktiviert bis“ stammen von Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Fehlgeschlagen',
+      'components.SettingsProwlarr.diagnosticOk': 'Verbunden',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Indexer-Verbindungsergebnisse',
+      'components.SettingsProwlarr.disabledUntil': 'Deaktiviert bis {date}',
+      'components.SettingsProwlarr.ebook': 'Bücher',
+      'components.SettingsProwlarr.game': 'PC-Spiele',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Wählen Sie aus, welche aktiven Prowlarr-Indexer für jeden Medientyp durchsucht werden. Verwenden Sie Strg-Klick unter Windows/Linux oder Befehls-Klick unter macOS, um mehrere Indexer auszuwählen. Eine leere Auswahl deaktiviert die Suche für diesen Typ.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexer für {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Indexer-Zuweisungen nach Medientyp',
+      'components.SettingsProwlarr.indexerCount': 'Indexer: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Benutzer können Indexer-Details aus den Suchergebnissen öffnen.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Indexernamen und Detaillinks werden vor Benutzern verborgen.',
+      'components.SettingsProwlarr.indexerNotSearchable':
+        '(nicht durchsuchbar)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Suchlimits',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Beschränken Sie die Suchanfragen pro Benutzer pro Minute insgesamt und für jeden ausgewählten Indexer.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr wurde gespeichert, aber sein Indexer-Inventar ist nicht verfügbar.',
+      'components.SettingsProwlarr.keepApiKey':
+        'Gespeicherten API-Schlüssel beibehalten',
+      'components.SettingsProwlarr.loadFailed':
+        'Prowlarr-Einstellungen konnten nicht geladen werden.',
+      'components.SettingsProwlarr.magazine': 'Magazine',
+      'components.SettingsProwlarr.modern': 'Moderne ROMs',
+      'components.SettingsProwlarr.movie': 'Filme',
+      'components.SettingsProwlarr.music': 'Musik',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Es sind noch keine Prowlarr-Indexer konfiguriert.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Testen Sie die Prowlarr-Verbindung, um deren Indexer zu laden und sie nach Kategorie zuzuweisen.',
+      'components.SettingsProwlarr.port': 'Port',
+      'components.SettingsProwlarr.recentFailure':
+        'Zuletzt gescheitert: {date}',
+      'components.SettingsProwlarr.retro': 'Retro-ROMs',
+      'components.SettingsProwlarr.save': 'Prowlarr Einstellungen speichern',
+      'components.SettingsProwlarr.saveFailed':
+        'Prowlarr-Einstellungen konnten nicht gespeichert werden.',
+      'components.SettingsProwlarr.saved':
+        'Prowlarr-Einstellungen gespeichert.',
+      'components.SettingsProwlarr.saving': 'Speichern…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Geben Sie eine ganze Zahl von 1 bis 60 ein.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Maximale Suchanfragen pro Benutzer pro Minute auf {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Maximale Suchanfragen pro Benutzer pro Minute',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} Kategorien ausgewählt',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} Indexer ausgewählt',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Indexernamen und Details in Suchergebnissen zulassen',
+      'components.SettingsProwlarr.sports': 'Sport',
+      'components.SettingsProwlarr.supportNote':
+        'Diese Einstellung verbindet sich nur mit Prowlarr. NZBHydra2 wird hier derzeit nicht unterstützt.',
+      'components.SettingsProwlarr.test':
+        'Verbindung testen und Abdeckung prüfen',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr-Verbindung fehlgeschlagen. Überprüfen Sie die Adresse und den API-Schlüssel.',
+      'components.SettingsProwlarr.testHint':
+        'Suchanfragen aus SeerrNG werden direkt an Prowlarr gesendet. Genehmigte Anfragen laufen weiterhin über den konfigurierten Medienmanager oder Softwareanbieter, der Erwerb und Nachverfolgung übernimmt.',
+      'components.SettingsProwlarr.testing': 'Prowlarr überprüfen...',
+      'components.SettingsProwlarr.title': 'Prowlarr-Indexer',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} von {total} konfigurierten Indexern sind aktiviert und durchsuchbar',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'SSL verwenden',
     },
   },
   {
@@ -2917,6 +3130,103 @@ export const localeData = [
         'Search limit reached. Wait a minute before searching again.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'No enabled searchable indexers are available. Enable an indexer in Prowlarr or adjust the category filters.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Add detected matches ({count})',
+      'components.SettingsProwlarr.address': 'Hostname',
+      'components.SettingsProwlarr.adult': 'Adult',
+      'components.SettingsProwlarr.apiKey': 'API key',
+      'components.SettingsProwlarr.apiKeySaved':
+        'A key is saved. Leave this blank to keep using it.',
+      'components.SettingsProwlarr.audiobook': 'Audiobooks',
+      'components.SettingsProwlarr.basePath': 'Base path',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Choose the Prowlarr categories sent with each search. Defaults use standard Newznab/Torznab categories; test the connection to see custom categories advertised by enabled indexers.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Select at least one category.',
+      'components.SettingsProwlarr.categoryMappingTitle': 'Category filters',
+      'components.SettingsProwlarr.clearApiKey': 'Remove saved API key',
+      'components.SettingsProwlarr.comic': 'Comics',
+      'components.SettingsProwlarr.connected':
+        'Connected to Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Counts include enabled, searchable indexers that advertise support for at least one selected category. They show search coverage, not successful grabs or imports.',
+      'components.SettingsProwlarr.coverageTitle': 'Indexer coverage by medium',
+      'components.SettingsProwlarr.description':
+        'Optional: connect Prowlarr to run category-aware manual searches from SeerrNG. Approved requests continue through your configured media managers and software providers.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Suggested custom categories are matched by their advertised names. Review them before saving; this does not change Prowlarr or send downloads.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr accepted the management API connection. These results test each enabled searchable indexer separately; disabled-until dates come from Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Failed',
+      'components.SettingsProwlarr.diagnosticOk': 'Connected',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Indexer connection results',
+      'components.SettingsProwlarr.disabledUntil': 'Disabled until {date}',
+      'components.SettingsProwlarr.ebook': 'Books',
+      'components.SettingsProwlarr.game': 'PC games',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Choose which enabled Prowlarr indexers are searched for each media type. Use Ctrl-click on Windows/Linux or Command-click on macOS to select multiple indexers. An empty selection disables search for that type.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexers for {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Indexer Assignments by Media Type',
+      'components.SettingsProwlarr.indexerCount': 'Indexers: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Users can open indexer details from search results.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Indexer names and detail links are hidden from users.',
+      'components.SettingsProwlarr.indexerNotSearchable': '(not searchable)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Search limits',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Limit each user’s searches per minute overall and for each selected indexer.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr is saved, but its indexer inventory is unavailable.',
+      'components.SettingsProwlarr.keepApiKey': 'Keep saved API key',
+      'components.SettingsProwlarr.loadFailed':
+        'Prowlarr settings could not be loaded.',
+      'components.SettingsProwlarr.magazine': 'Magazines',
+      'components.SettingsProwlarr.modern': 'Modern ROMs',
+      'components.SettingsProwlarr.movie': 'Movies',
+      'components.SettingsProwlarr.music': 'Music',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'No Prowlarr indexers are configured yet.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Test the Prowlarr connection to load its indexers and assign them by category.',
+      'components.SettingsProwlarr.port': 'Port',
+      'components.SettingsProwlarr.recentFailure': 'Recent failure: {date}',
+      'components.SettingsProwlarr.retro': 'Retro ROMs',
+      'components.SettingsProwlarr.save': 'Save Prowlarr settings',
+      'components.SettingsProwlarr.saveFailed':
+        'Prowlarr settings could not be saved.',
+      'components.SettingsProwlarr.saved': 'Prowlarr settings saved.',
+      'components.SettingsProwlarr.saving': 'Saving…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Enter a whole number from 1 to 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Maximum searches per user per minute on {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Maximum searches per user per minute',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} categories selected',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexers selected',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Allow indexer names and details in search results',
+      'components.SettingsProwlarr.sports': 'Sports',
+      'components.SettingsProwlarr.supportNote':
+        'This setting connects to Prowlarr only. NZBHydra2 is not currently supported here.',
+      'components.SettingsProwlarr.test':
+        'Test connection and inspect coverage',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr connection failed. Check the address and API key.',
+      'components.SettingsProwlarr.testHint':
+        'Searches started from SeerrNG query Prowlarr directly. Approved requests still go through their configured media manager or software provider, which owns acquisition and tracking.',
+      'components.SettingsProwlarr.testing': 'Checking Prowlarr…',
+      'components.SettingsProwlarr.title': 'Prowlarr indexers',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} searchable and enabled of {total} configured',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Use SSL',
       'lumen.nav.administration': 'Administration',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.seerrAdministration': 'SeerrNG Administration',
@@ -3728,6 +4038,27 @@ export const localeData = [
         'Results returned by Prowlarr: {count}.',
       'lumen.indexerSearch.handoffUnconfirmed':
         'Handoff could not be confirmed. Check the client before searching and trying again.',
+      'lumen.adminProwlarr.connectionHeading': 'Connection',
+      'lumen.adminProwlarr.availableCategories':
+        'Available Prowlarr Categories',
+      'lumen.adminProwlarr.categoryIdsLabel': '{category} Category IDs',
+      'lumen.adminProwlarr.assignedCount': '{category} · {count} assigned',
+      'lumen.adminProwlarr.searchLimitLabel': '{indexer} Search Limit',
+      'lumen.adminProwlarr.coverageSummary':
+        '{enabled} searchable indexers of {total}.',
+      'lumen.adminProwlarr.version': 'Version {version}.',
+      'lumen.adminProwlarr.disabled': 'Disabled',
+      'lumen.adminProwlarr.searchEnabled': 'Search Enabled',
+      'lumen.adminProwlarr.searchUnavailable': 'Search Unavailable',
+      'lumen.adminProwlarr.indexer': 'Indexer {id}',
+      'lumen.adminProwlarr.connectionTested': 'Prowlarr connection tested.',
+      'lumen.adminProwlarr.invalidSettings':
+        'Check the port, search limits, category IDs and indexer assignments.',
+      'lumen.adminProwlarr.loadingIndexers': 'Loading indexers…',
+      'lumen.adminProwlarr.backToYou': 'Back to Account',
+      'lumen.adminProwlarr.loadingSettings': 'Loading Prowlarr settings…',
+      'lumen.adminProwlarr.indexerCount': '{count} indexers',
+      'lumen.adminProwlarr.savedApiKeyPlaceholder': 'Saved key',
     },
   },
   {
@@ -4366,6 +4697,110 @@ export const localeData = [
         'Se alcanzó el límite de búsquedas. Espera un minuto antes de volver a buscar.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'No se dispone de indexadores de búsqueda habilitados. Activar un indexador en Prowlarr o ajustar los filtros de categoría.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Agregar coincidencias detectadas ({count})',
+      'components.SettingsProwlarr.address': 'Nombre de host',
+      'components.SettingsProwlarr.adult': 'Adulto',
+      'components.SettingsProwlarr.apiKey': 'Clave de API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Se salva una llave. Deja esto en blanco para seguir usándolo.',
+      'components.SettingsProwlarr.audiobook': 'Audiolibros',
+      'components.SettingsProwlarr.basePath': 'Vía base',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Elige las categorías Prowlarr enviadas con cada búsqueda. Los defectos usan las categorías estándar Newznab/Torznab; prueba la conexión para ver las categorías personalizadas anunciadas por los indexadores habilitados.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Seleccione al menos una categoría.',
+      'components.SettingsProwlarr.categoryMappingTitle':
+        'Filtros de categoría',
+      'components.SettingsProwlarr.clearApiKey':
+        'Quitar la clave de API guardada',
+      'components.SettingsProwlarr.comic': 'Cómics',
+      'components.SettingsProwlarr.connected':
+        'Conectado a Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Los condes incluyen indexadores habilitados y de búsqueda que anuncian soporte para al menos una categoría seleccionada. Muestran cobertura de búsqueda, no tomas exitosas o importaciones.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Cobertura de índice por medio',
+      'components.SettingsProwlarr.description':
+        'Conecte su instancia Prowlarr una vez para ejecutar búsquedas manuales de categoría-conozca a través de los indexadores que ya maneja allí.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Las categorías personalizadas sugeridas se ajustan a sus nombres anunciados. Revise antes de guardar; esto no cambia Prowlarr o envía descargas.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr aceptó la conexión API de gestión. Estos resultados prueban cada indexador permitido de búsqueda por separado; las fechas inhabilitables provienen de Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Fallido',
+      'components.SettingsProwlarr.diagnosticOk': 'Conectado',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Resultados de conexión de indexador',
+      'components.SettingsProwlarr.disabledUntil': 'Discapacitados {date}',
+      'components.SettingsProwlarr.ebook': 'Libros',
+      'components.SettingsProwlarr.game': 'PC juegos',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Selecciona qué indexadores de Prowlarr habilitados se buscarán para cada tipo de medio. Usa Ctrl+clic en Windows/Linux o Command+clic en macOS para seleccionar varios indexadores. Una selección vacía deshabilita la búsqueda para ese tipo.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexadores para {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Asignación de indexadores por tipo de medio',
+      'components.SettingsProwlarr.indexerCount':
+        'Indexadores: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Los usuarios pueden abrir los detalles del indexador desde los resultados de búsqueda.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Los nombres de los indexadores y los enlaces de detalles están ocultos para los usuarios.',
+      'components.SettingsProwlarr.indexerNotSearchable':
+        '(no se puede buscar)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Límites de búsqueda',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Limita las búsquedas por minuto de cada usuario en total y para cada indexador seleccionado.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr se guarda, pero su inventario de indexadores no está disponible.',
+      'components.SettingsProwlarr.keepApiKey':
+        'Mantenga la clave de API guardada',
+      'components.SettingsProwlarr.loadFailed':
+        'No se pudo cargar la configuración de Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'Revistas',
+      'components.SettingsProwlarr.modern': 'Modernos ROMs',
+      'components.SettingsProwlarr.movie': 'Películas',
+      'components.SettingsProwlarr.music': 'Música',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Aún no se configuran índices Prowlarr.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Prueba la conexión de Prowlarr para cargar sus indexadores y asignarlos por categoría.',
+      'components.SettingsProwlarr.port': 'Puerto',
+      'components.SettingsProwlarr.recentFailure': 'Fallo reciente: {date}',
+      'components.SettingsProwlarr.retro': 'ROMs retro',
+      'components.SettingsProwlarr.save': 'Guardar configuración de Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'No se pudo guardar la configuración de Prowlarr.',
+      'components.SettingsProwlarr.saved':
+        'Configuración de Prowlarr guardada.',
+      'components.SettingsProwlarr.saving': 'Guardando…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Introduce un número entero de 1 a 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Búsquedas máximas por usuario y minuto en {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Búsquedas máximas por usuario y minuto',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} categorías seleccionadas',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexadores seleccionados',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Permitir nombres y detalles de indexadores en los resultados de búsqueda',
+      'components.SettingsProwlarr.sports': 'Deportes',
+      'components.SettingsProwlarr.supportNote':
+        'Esta configuración se conecta solo a Prowlarr. NZBHydra2 no se admite actualmente aquí.',
+      'components.SettingsProwlarr.test':
+        'Prueba de conexión e inspección de cobertura',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr La conexión falló. Compruebe la dirección y API llave.',
+      'components.SettingsProwlarr.testHint':
+        'Las búsquedas comenzaron desde la consulta SeerrNG Prowlarr directamente. Las solicitudes aprobadas todavía pasan por su gestor de medios configurado o proveedor de software, que posee adquisición y seguimiento.',
+      'components.SettingsProwlarr.testing': 'Revisando Prowlarr...',
+      'components.SettingsProwlarr.title': 'Prowlarr indexadores',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} búsqueda y habilitación de {total} configurado',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Uso SSL',
     },
   },
   {
@@ -4903,6 +5338,110 @@ export const localeData = [
         'Plazo de búsqueda alcanzado. Espera un minuto antes de volver a buscar.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'No se dispone de indexadores de búsqueda habilitados. Activar un indexador en Prowlarr o ajustar los filtros de categoría.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Agregar coincidencias detectadas ({count})',
+      'components.SettingsProwlarr.address': 'Nombre de host',
+      'components.SettingsProwlarr.adult': 'Adulto',
+      'components.SettingsProwlarr.apiKey': 'Clave de API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Se salva una llave. Deja esto en blanco para seguir usándolo.',
+      'components.SettingsProwlarr.audiobook': 'Audiolibros',
+      'components.SettingsProwlarr.basePath': 'Vía base',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Elige las categorías Prowlarr enviadas con cada búsqueda. Los defectos usan las categorías estándar Newznab/Torznab; prueba la conexión para ver las categorías personalizadas anunciadas por los indexadores habilitados.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Seleccione al menos una categoría.',
+      'components.SettingsProwlarr.categoryMappingTitle':
+        'Filtros de categoría',
+      'components.SettingsProwlarr.clearApiKey':
+        'Quitar la clave de API guardada',
+      'components.SettingsProwlarr.comic': 'Cómics',
+      'components.SettingsProwlarr.connected':
+        'Conectado a Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Los condes incluyen indexadores habilitados y de búsqueda que anuncian soporte para al menos una categoría seleccionada. Muestran cobertura de búsqueda, no tomas exitosas o importaciones.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Cobertura de índice por medio',
+      'components.SettingsProwlarr.description':
+        'Conecte su instancia Prowlarr una vez para ejecutar búsquedas manuales de categoría-conozca a través de los indexadores que ya maneja allí.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Las categorías personalizadas sugeridas se ajustan a sus nombres anunciados. Revise antes de guardar; esto no cambia Prowlarr o envía descargas.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr aceptó la conexión API de gestión. Estos resultados prueban cada indexador permitido de búsqueda por separado; las fechas inhabilitables provienen de Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Fallido',
+      'components.SettingsProwlarr.diagnosticOk': 'Conectado',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Resultados de conexión de indexador',
+      'components.SettingsProwlarr.disabledUntil': 'Discapacitados {date}',
+      'components.SettingsProwlarr.ebook': 'Libros',
+      'components.SettingsProwlarr.game': 'PC juegos',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Selecciona qué indexadores de Prowlarr habilitados se buscarán para cada tipo de medio. Usa Ctrl+clic en Windows/Linux o Command+clic en macOS para seleccionar varios indexadores. Una selección vacía deshabilita la búsqueda para ese tipo.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexadores para {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Asignación de indexadores por tipo de medio',
+      'components.SettingsProwlarr.indexerCount':
+        'Indexadores: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Los usuarios pueden abrir los detalles del indexador desde los resultados de búsqueda.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Los nombres de los indexadores y los enlaces de detalles están ocultos para los usuarios.',
+      'components.SettingsProwlarr.indexerNotSearchable':
+        '(no se puede buscar)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Límites de búsqueda',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Limita las búsquedas por minuto de cada usuario en total y para cada indexador seleccionado.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr se guarda, pero su inventario de indexadores no está disponible.',
+      'components.SettingsProwlarr.keepApiKey':
+        'Mantenga la clave de API guardada',
+      'components.SettingsProwlarr.loadFailed':
+        'No se pudo cargar la configuración de Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'Revistas',
+      'components.SettingsProwlarr.modern': 'Modernos ROMs',
+      'components.SettingsProwlarr.movie': 'Películas',
+      'components.SettingsProwlarr.music': 'Música',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Aún no se configuran índices Prowlarr.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Prueba la conexión de Prowlarr para cargar sus indexadores y asignarlos por categoría.',
+      'components.SettingsProwlarr.port': 'Puerto',
+      'components.SettingsProwlarr.recentFailure': 'Fallo reciente: {date}',
+      'components.SettingsProwlarr.retro': 'ROM retro',
+      'components.SettingsProwlarr.save': 'Guardar configuración de Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'No se pudo guardar la configuración de Prowlarr.',
+      'components.SettingsProwlarr.saved':
+        'Configuración de Prowlarr guardada.',
+      'components.SettingsProwlarr.saving': 'Guardando…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Introduce un número entero de 1 a 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Búsquedas máximas por usuario y minuto en {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Búsquedas máximas por usuario y minuto',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} categorías seleccionadas',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexadores seleccionados',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Permitir nombres y detalles de indexadores en los resultados de búsqueda',
+      'components.SettingsProwlarr.sports': 'Deportes',
+      'components.SettingsProwlarr.supportNote':
+        'Esta configuración se conecta solo a Prowlarr. NZBHydra2 no se admite actualmente aquí.',
+      'components.SettingsProwlarr.test':
+        'Prueba de conexión e inspección de cobertura',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr La conexión falló. Compruebe la dirección y API llave.',
+      'components.SettingsProwlarr.testHint':
+        'Las búsquedas comenzaron desde la consulta SeerrNG Prowlarr directamente. Las solicitudes aprobadas todavía pasan por su gestor de medios configurado o proveedor de software, que posee adquisición y seguimiento.',
+      'components.SettingsProwlarr.testing': 'Revisando Prowlarr...',
+      'components.SettingsProwlarr.title': 'Prowlarr indexadores',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} búsqueda y habilitación de {total} configurado',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Usar SSL',
     },
   },
   {
@@ -5663,6 +6202,106 @@ export const localeData = [
         'Limite de recherche atteinte. Attendez une minute avant de chercher à nouveau.',
       'components.SettingsProwlarr.noSearchableIndexers':
         "Aucun indexable de recherche activé n'est disponible. Activer un indexeur dans Prowlarr ou ajuster les filtres de catégorie.",
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Ajouter les correspondances détectées ({count})',
+      'components.SettingsProwlarr.address': "Nom d'hôte",
+      'components.SettingsProwlarr.adult': 'Adulte',
+      'components.SettingsProwlarr.apiKey': 'Clé API',
+      'components.SettingsProwlarr.apiKeySaved':
+        "Une clé est sauvée. Laissez ce blanc pour continuer à l'utiliser.",
+      'components.SettingsProwlarr.audiobook': 'Livres audio',
+      'components.SettingsProwlarr.basePath': 'Emplacement de base',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Choisissez les catégories Prowlarr envoyées à chaque recherche. Les par défaut utilisent les catégories standard Newznab/Torznab; testez la connexion pour voir les catégories personnalisées annoncées par les indexeurs activés.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Sélectionnez au moins une catégorie.',
+      'components.SettingsProwlarr.categoryMappingTitle':
+        'Filtres de catégorie',
+      'components.SettingsProwlarr.clearApiKey':
+        "Supprimer la clé d'API enregistrée",
+      'components.SettingsProwlarr.comic': 'BD',
+      'components.SettingsProwlarr.connected': 'Connecté à Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Les chiffres comprennent les indexeurs consultables et activés qui annoncent le support pour au moins une catégorie sélectionnée. Ils montrent la couverture de la recherche, pas réussi prises ou importations.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Couverture des indexeurs par moyenne',
+      'components.SettingsProwlarr.description':
+        'Connectez votre instance Prowlarr une fois pour lancer des recherches manuelles de catégorie à travers les indexeurs que vous y gérez déjà.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        "Les catégories personnalisées suggérées sont assorties de leurs noms annoncés. Consultez-les avant d'enregistrer; cela ne change pas Prowlarr ou d'envoyer des téléchargements.",
+      'components.SettingsProwlarr.diagnosticDescription':
+        "Prowlarr a accepté la connexion API de gestion. Ces résultats testent séparément chaque indexeur consultable activé; les dates désactivées jusqu'à ce que les dates viennent de Prowlarr.",
+      'components.SettingsProwlarr.diagnosticFailed': 'Échec',
+      'components.SettingsProwlarr.diagnosticOk': 'Connecté',
+      'components.SettingsProwlarr.diagnosticTitle':
+        "Résultats de la connexion de l'indexeur",
+      'components.SettingsProwlarr.disabledUntil': "Handicapé jusqu'à {date}",
+      'components.SettingsProwlarr.ebook': 'Livres',
+      'components.SettingsProwlarr.game': 'Jeux PC',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Choisissez les indexeurs Prowlarr activés à interroger pour chaque type de média. Utilisez Ctrl-clic sur Windows/Linux ou Command-clic sur macOS pour sélectionner plusieurs indexeurs. Une sélection vide désactive la recherche pour ce type.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexeurs pour {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        "Assignations d'indexeurs par type de média",
+      'components.SettingsProwlarr.indexerCount': 'Indexeurs : {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Les utilisateurs peuvent ouvrir les détails des indexeurs depuis les résultats de recherche.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        "Les noms d'indexeurs et les liens de détails sont masqués aux utilisateurs.",
+      'components.SettingsProwlarr.indexerNotSearchable': '(non interrogeable)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Limites de recherche',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Limitez les recherches par utilisateur par minute, au total et pour chaque indexeur sélectionné.',
+      'components.SettingsProwlarr.inventoryFailed':
+        "Prowlarr est enregistré, mais son inventaire d'indexeur n'est pas disponible.",
+      'components.SettingsProwlarr.keepApiKey':
+        "Conserver la clé d'API enregistrée",
+      'components.SettingsProwlarr.loadFailed':
+        'Impossible de charger les paramètres de Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'Revues',
+      'components.SettingsProwlarr.modern': 'ROM modernes',
+      'components.SettingsProwlarr.movie': 'Films',
+      'components.SettingsProwlarr.music': 'Musique',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        "Aucun indexeur Prowlarr n'est encore configuré.",
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Testez la connexion Prowlarr pour charger ses indexeurs et les assigner par catégorie.',
+      'components.SettingsProwlarr.port': 'Port',
+      'components.SettingsProwlarr.recentFailure': 'Récent échec: {date}',
+      'components.SettingsProwlarr.retro': 'ROM rétrospectifs',
+      'components.SettingsProwlarr.save': 'Enregistrer les paramètres Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'Impossible d’enregistrer les paramètres de Prowlarr.',
+      'components.SettingsProwlarr.saved': 'Paramètres Prowlarr enregistrés.',
+      'components.SettingsProwlarr.saving': 'Sauver...',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Saisissez un nombre entier compris entre 1 et 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Nombre maximum de recherches par utilisateur et par minute sur {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Nombre maximum de recherches par utilisateur et par minute',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} catégories sélectionnées',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexeurs sélectionnés',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Autoriser les noms et détails des indexeurs dans les résultats de recherche',
+      'components.SettingsProwlarr.sports': 'Sports',
+      'components.SettingsProwlarr.supportNote':
+        "Ce paramètre se connecte uniquement à Prowlarr. NZBHydra2 n'est pas actuellement pris en charge ici.",
+      'components.SettingsProwlarr.test':
+        'Tester la connexion et inspecter la couverture',
+      'components.SettingsProwlarr.testFailed':
+        "La connexion Prowlarr a échoué. Vérifiez l'adresse et la clé API.",
+      'components.SettingsProwlarr.testHint':
+        "Les recherches ont commencé directement depuis la requête SeerrNG Prowlarr. Les demandes approuvées passent toujours par leur gestionnaire multimédia ou fournisseur de logiciels configurés, qui possède l'acquisition et le suivi.",
+      'components.SettingsProwlarr.testing': 'Vérification Prowlarr...',
+      'components.SettingsProwlarr.title': 'Indexeurs Prowlarr',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} recherche et activé de {total} configuré',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Utiliser SSL',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -6608,6 +7247,29 @@ export const localeData = [
         'Résultats retournés par Prowlarr : {count}.',
       'lumen.indexerSearch.handoffUnconfirmed':
         'Le résultat a peut-être été envoyé. Vérifiez le client avant de rechercher ou de réessayer.',
+      'lumen.adminProwlarr.connectionHeading': 'Connexion',
+      'lumen.adminProwlarr.availableCategories':
+        'Catégories Prowlarr disponibles',
+      'lumen.adminProwlarr.categoryIdsLabel': 'ID de catégorie {category}',
+      'lumen.adminProwlarr.assignedCount': '{category} · {count} attribué(s)',
+      'lumen.adminProwlarr.searchLimitLabel':
+        'Limite de recherche pour {indexer}',
+      'lumen.adminProwlarr.coverageSummary':
+        '{enabled} indexeurs avec recherche activée sur {total}.',
+      'lumen.adminProwlarr.version': 'Version {version}.',
+      'lumen.adminProwlarr.disabled': 'Désactivé',
+      'lumen.adminProwlarr.searchEnabled': 'Recherche activée',
+      'lumen.adminProwlarr.searchUnavailable': 'Recherche indisponible',
+      'lumen.adminProwlarr.indexer': 'Indexeur {id}',
+      'lumen.adminProwlarr.connectionTested': 'Connexion Prowlarr testée.',
+      'lumen.adminProwlarr.invalidSettings':
+        'Vérifiez le port, les limites de recherche, les ID de catégorie et les attributions d’indexeurs.',
+      'lumen.adminProwlarr.loadingIndexers': 'Chargement des indexeurs…',
+      'lumen.adminProwlarr.backToYou': 'Retour à Vous',
+      'lumen.adminProwlarr.loadingSettings':
+        'Chargement des paramètres Prowlarr…',
+      'lumen.adminProwlarr.indexerCount': '{count} indexeurs',
+      'lumen.adminProwlarr.savedApiKeyPlaceholder': 'Clé enregistrée',
     },
   },
   {
@@ -7278,6 +7940,99 @@ export const localeData = [
         'खोज सीमा तक पहुंच गई। फिर से खोज करने से पहले एक मिनट की प्रतीक्षा करें।',
       'components.SettingsProwlarr.noSearchableIndexers':
         'कोई सक्षम खोज अनुक्रमणिका उपलब्ध नहीं हैं। Prowlarr में एक इंडेक्सर को सक्षम करें या श्रेणी फिल्टर को समायोजित करें।',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'मैचों का पता चला{count})',
+      'components.SettingsProwlarr.address': 'होस्टनाम',
+      'components.SettingsProwlarr.adult': 'अल्ड',
+      'components.SettingsProwlarr.apiKey': 'API कुंजी',
+      'components.SettingsProwlarr.apiKeySaved':
+        'एक कुंजी बचाई जाती है। इसका उपयोग करने के लिए इस खाली को छोड़ दें।',
+      'components.SettingsProwlarr.audiobook': 'ऑडियोबुक',
+      'components.SettingsProwlarr.basePath': 'बेस पथ',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'प्रत्येक खोज के साथ भेजे गए Prowlarr श्रेणियां चुनें। डिफ़ॉल्ट मानक Newznab/Torznab श्रेणियों का उपयोग करते हैं; सक्षम सूचकांकों द्वारा विज्ञापित कस्टम श्रेणियों को देखने के लिए कनेक्शन का परीक्षण करें।',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'कम से कम एक श्रेणी का चयन करें।',
+      'components.SettingsProwlarr.categoryMappingTitle': 'श्रेणी फिल्टर',
+      'components.SettingsProwlarr.clearApiKey': 'बचाया API कुंजी निकालें',
+      'components.SettingsProwlarr.comic': 'कॉमिक्स',
+      'components.SettingsProwlarr.connected': 'Prowlarr से कनेक्ट {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'गिनती में सक्षम, खोज योग्य इंडेक्सर शामिल हैं जो कम से कम एक चयनित श्रेणी के लिए समर्थन का विज्ञापन करते हैं। वे खोज कवरेज दिखाते हैं, सफल हड़प या आयात नहीं करते हैं।',
+      'components.SettingsProwlarr.coverageTitle': 'मध्यम से इंडेक्सर कवरेज',
+      'components.SettingsProwlarr.description':
+        'एक बार अपने Prowlarr उदाहरण को कनेक्ट करने के लिए, आप पहले से ही वहाँ प्रबंधन सूचकांकों भर में श्रेणी-aware मैनुअल खोजों को चलाने के लिए।',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'सुझाए गए कस्टम श्रेणियां उनके विज्ञापित नामों से मेल खाती हैं। उन्हें बचाने से पहले की समीक्षा करें; यह नहीं बदलता है Prowlarr या डाउनलोड भेजना।',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr प्रबंधन स्वीकार किया API कनेक्शन। ये परिणाम प्रत्येक सक्षम खोज अनुक्रमक को अलग से परीक्षण करते हैं; विकलांग-उद्देश्य तिथियों से आती है Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'विफल',
+      'components.SettingsProwlarr.diagnosticOk': 'कनेक्ट',
+      'components.SettingsProwlarr.diagnosticTitle': 'इंडेक्सर कनेक्शन परिणाम',
+      'components.SettingsProwlarr.disabledUntil': 'जब तक अक्षम {date}',
+      'components.SettingsProwlarr.ebook': 'पुस्तकें',
+      'components.SettingsProwlarr.game': 'PC गेम्स',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'प्रत्येक मीडिया प्रकार के लिए किन सक्षम Prowlarr इंडेक्सर खोजे जाने चाहिए, यह चुनें। Windows/Linux पर Ctrl-क्लिक या macOS पर Command-क्लिक करके कई इंडेक्सर चुनें। खाली चयन उस प्रकार के लिए खोज को निष्क्रिय कर देता है।',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        '{category} के लिए इंडेक्सर',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'मीडिया प्रकार के अनुसार इंडेक्सर असाइनमेंट',
+      'components.SettingsProwlarr.indexerCount': 'इंडेक्सर: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'उपयोगकर्ता खोज परिणामों से इंडेक्सर विवरण खोल सकते हैं।',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'उपयोगकर्ताओं से इंडेक्सर नाम और विवरण लिंक छिपाए गए हैं।',
+      'components.SettingsProwlarr.indexerNotSearchable': '(खोज योग्य नहीं)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'खोज सीमाएँ',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'प्रत्येक उपयोगकर्ता की प्रति मिनट कुल खोजों और प्रत्येक चयनित इंडेक्सर के लिए खोजों को सीमित करें।',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr बचाया जाता है, लेकिन इसकी अनुक्रमणिका सूची अनुपलब्ध है।',
+      'components.SettingsProwlarr.keepApiKey': 'बचाना API कुंजी',
+      'components.SettingsProwlarr.loadFailed':
+        'Prowlarr सेटिंग लोड नहीं की जा सकीं।',
+      'components.SettingsProwlarr.magazine': 'पत्रिकाएँ',
+      'components.SettingsProwlarr.modern': 'आधुनिक रोम',
+      'components.SettingsProwlarr.movie': 'फ़िल्में',
+      'components.SettingsProwlarr.music': 'संगीत',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'अभी तक कोई Prowlarr इंडेक्सर्स कॉन्फ़िगर नहीं किया गया है।',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'इसके इंडेक्सर लोड करने और उन्हें श्रेणी के अनुसार असाइन करने के लिए Prowlarr कनेक्शन का परीक्षण करें।',
+      'components.SettingsProwlarr.port': 'पोर्ट',
+      'components.SettingsProwlarr.recentFailure': 'हाल की विफलता: {date}',
+      'components.SettingsProwlarr.retro': 'रेट्रो रोम',
+      'components.SettingsProwlarr.save': 'Prowlarr सेटिंग्स सहेजें',
+      'components.SettingsProwlarr.saveFailed':
+        'Prowlarr सेटिंग सेव नहीं की जा सकीं।',
+      'components.SettingsProwlarr.saved': 'Prowlarr सेटिंग सेव हो गईं।',
+      'components.SettingsProwlarr.saving': 'सहेजा जा रहा है…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        '1 से 60 तक एक पूर्ण संख्या दर्ज करें।',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        '{indexer} पर प्रति उपयोगकर्ता प्रति मिनट अधिकतम खोजें',
+      'components.SettingsProwlarr.searchesPerUser':
+        'प्रति उपयोगकर्ता प्रति मिनट अधिकतम खोजें',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} चयनित श्रेणियों',
+      'components.SettingsProwlarr.selectedIndexers': '{count} इंडेक्सर चयनित',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'खोज परिणामों में इंडेक्सर नाम और विवरण की अनुमति दें',
+      'components.SettingsProwlarr.sports': 'खेल',
+      'components.SettingsProwlarr.supportNote':
+        'यह सेटिंग केवल Prowlarr से कनेक्ट होती है। NZBHydra2 यहाँ वर्तमान में समर्थित नहीं है।',
+      'components.SettingsProwlarr.test': 'परीक्षण कनेक्शन और निरीक्षण कवरेज',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr कनेक्शन विफल रहा। पता और API कुंजी की जाँच करें।',
+      'components.SettingsProwlarr.testHint':
+        'खोज सीधे SeerrNG क्वेरी Prowlarr से शुरू हुई। स्वीकृत अनुरोध अभी भी अपने विन्यस्त मीडिया मैनेजर या सॉफ्टवेयर प्रदाता के माध्यम से जाते हैं, जो अधिग्रहण और ट्रैकिंग का मालिक है।',
+      'components.SettingsProwlarr.testing': 'Prowlarr जाँच ...',
+      'components.SettingsProwlarr.title': 'Prowlarr सूचकांक',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} खोजे जाने योग्य और सक्षम {total} विन्यास',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'SSL का उपयोग करें',
     },
   },
   {
@@ -7934,6 +8689,107 @@ export const localeData = [
         'Batas pencarian tercapai. Tunggu sebentar sebelum mencari lagi.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'Tak tersedia indexers yang dapat dicari. Aktifkan pengindexer dalam Prowlarr atau atur penyaring kategori.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Tambah kecocokan yang terdeteksi ({count})',
+      'components.SettingsProwlarr.address': 'Nama host',
+      'components.SettingsProwlarr.adult': 'Dewasa',
+      'components.SettingsProwlarr.apiKey': 'Kunci API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Sebuah kunci disimpan. Tinggalkan ini kosong untuk tetap menggunakannya.',
+      'components.SettingsProwlarr.audiobook': 'Buku audio',
+      'components.SettingsProwlarr.basePath': 'Lokasi dasar',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Pilih kategori Prowlarr yang dikirim dengan setiap pencarian. Baku memakai kategori standar Newznab / Torznab; uji koneksi untuk melihat kategori gubahan yang diiklankan oleh pengindeksan aktif.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Pilih paling tidak satu kategori.',
+      'components.SettingsProwlarr.categoryMappingTitle': 'Filter kategori',
+      'components.SettingsProwlarr.clearApiKey':
+        'Hapus kunci API yang disimpan',
+      'components.SettingsProwlarr.comic': 'Komik',
+      'components.SettingsProwlarr.connected':
+        'Terhubung ke Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Menghitung termasuk difungsikan, indeks yang dapat dicari yang mengiklankan dukungan bagi paling tidak satu kategori yang dipilih. Mereka menunjukkan cakupan pencarian, tidak berhasil meraih atau mengimpor.',
+      'components.SettingsProwlarr.coverageTitle': 'Lipan indeks oleh medium',
+      'components.SettingsProwlarr.description':
+        'Hubungkan contoh Prowlarr Anda sekali untuk menjalankan pencarian manual-sadar di seluruh indexers Anda sudah mengelola sana.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Disarankan kategori gubahan yang cocok dengan nama yang diiklankan. Ulas mereka sebelum menyimpan; ini tidak mengubah Prowlarr atau mengirim pengunduhan.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr menerima koneksi API manajemen. Hasil tes ini setiap difungsikan indexer yang dapat dicari secara terpisah; dinonaktifkan-sampai tanggal berasal dari Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Gagal',
+      'components.SettingsProwlarr.diagnosticOk': 'Terhubung',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Hasil sambungan pengindeks',
+      'components.SettingsProwlarr.disabledUntil':
+        'Dinonaktifkan sampai {date}',
+      'components.SettingsProwlarr.ebook': 'Buku',
+      'components.SettingsProwlarr.game': 'Permainan PC',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Pilih indexer Prowlarr yang diaktifkan untuk dicari untuk setiap jenis media. Gunakan Ctrl-klik di Windows/Linux atau Command-klik di macOS untuk memilih beberapa indexer. Pilihan kosong akan menonaktifkan pencarian untuk jenis tersebut.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexer untuk {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Penugasan Indexer per Jenis Media',
+      'components.SettingsProwlarr.indexerCount': 'Indikator: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Pengguna dapat membuka detail indexer dari hasil pencarian.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Nama indexer dan tautan detail disembunyikan dari pengguna.',
+      'components.SettingsProwlarr.indexerNotSearchable':
+        '(tidak dapat dicari)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Batas pencarian',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Batasi pencarian setiap pengguna per menit secara keseluruhan dan untuk setiap indexer yang dipilih.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr disimpan, tetapi inventaris indexer tidak tersedia.',
+      'components.SettingsProwlarr.keepApiKey':
+        'Simpan kunci API yang disimpan',
+      'components.SettingsProwlarr.loadFailed':
+        'Pengaturan Prowlarr tidak dapat dimuat.',
+      'components.SettingsProwlarr.magazine': 'Majalah',
+      'components.SettingsProwlarr.modern': 'ROM Modern',
+      'components.SettingsProwlarr.movie': 'Film',
+      'components.SettingsProwlarr.music': 'Musik',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Tidak ada indexers Prowlarr yang dikonfigurasi belum.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Uji koneksi Prowlarr untuk memuat indexernya dan menugaskannya per kategori.',
+      'components.SettingsProwlarr.port': 'Port',
+      'components.SettingsProwlarr.recentFailure':
+        'Kegagalan baru-baru ini: {date}',
+      'components.SettingsProwlarr.retro': 'Retro ROM',
+      'components.SettingsProwlarr.save': 'Simpan pengaturan Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'Pengaturan Prowlarr tidak dapat disimpan.',
+      'components.SettingsProwlarr.saved':
+        'Pengaturan Prowlarr berhasil disimpan.',
+      'components.SettingsProwlarr.saving': 'Menyimpan…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Masukkan bilangan bulat dari 1 hingga 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Pencarian maksimum per pengguna per menit di {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Pencarian maksimum per pengguna per menit',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} kategori yang dipilih',
+      'components.SettingsProwlarr.selectedIndexers': '{count} indexer dipilih',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Izinkan nama dan detail indexer dalam hasil pencarian',
+      'components.SettingsProwlarr.sports': 'Olahraga',
+      'components.SettingsProwlarr.supportNote':
+        'Pengaturan ini hanya terhubung ke Prowlarr. NZBHydra2 saat ini tidak didukung di sini.',
+      'components.SettingsProwlarr.test': 'Uji koneksi dan pemeriksaan cakupan',
+      'components.SettingsProwlarr.testFailed':
+        'Koneksi Prowlarr gagal. Periksa alamat dan tombol API.',
+      'components.SettingsProwlarr.testHint':
+        'Pencarian dimulai dari permintaan SeerrNG Prowlarr secara langsung. Permintaan yang disetujui masih melalui manajer media atau penyedia perangkat lunak yang dikonfigurasi, yang memiliki akuisisi dan pelacakan.',
+      'components.SettingsProwlarr.testing': 'Memeriksa Prowlarr...',
+      'components.SettingsProwlarr.title': 'Pengindeks Prowlarr',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} dapat dicari dan diaktifkan dari {total} dikonfigurasi',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Gunakan SSL',
     },
   },
   {
@@ -8580,6 +9436,105 @@ export const localeData = [
         '検索上限に達しました。再検索する前に1分お待ちください。',
       'components.SettingsProwlarr.noSearchableIndexers':
         '有効な検索インデックスは使用できません。 Prowlarr のインディケーターを有効にするか、カテゴリフィルタを調整します。',
+      'components.SettingsProwlarr.addDetectedMatches':
+        '検出されたマッチを追加 ({count})',
+      'components.SettingsProwlarr.address': 'ホスト名',
+      'components.SettingsProwlarr.adult': 'アダルト',
+      'components.SettingsProwlarr.apiKey': 'APIキー',
+      'components.SettingsProwlarr.apiKeySaved':
+        'キーは保存されます。 ご使用いただくためにこの空白のままにしてください。',
+      'components.SettingsProwlarr.audiobook': 'オーディオブック',
+      'components.SettingsProwlarr.basePath': 'ベースパス',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'それぞれの検索で送信されたProwlarrのカテゴリを選択します。 デフォルトでは、標準のNewznab/Torznabカテゴリを使用します。 接続をテストして、有効なインデックス作成者によって宣伝されたカスタムカテゴリを確認します。',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        '少なくとも1つのカテゴリを選択します。',
+      'components.SettingsProwlarr.categoryMappingTitle':
+        'カテゴリー フィルター',
+      'components.SettingsProwlarr.clearApiKey':
+        '保存された API キーを削除します。',
+      'components.SettingsProwlarr.comic': 'コミック',
+      'components.SettingsProwlarr.connected': 'Prowlarr に接続 {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'カウントには、少なくとも1つの選択したカテゴリのサポートを宣伝する有効で検索可能なインデックスが含まれます。 検索カバレッジを表示, 成功したつかみやインポートではなく、.',
+      'components.SettingsProwlarr.coverageTitle':
+        '媒体によるインデックスカバレッジ',
+      'components.SettingsProwlarr.description':
+        'Prowlarrインスタンスを一度接続して、既に管理しているインディケーターを横断してカテゴリのマニュアル検索を実行します。',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        '提案されたカスタムカテゴリは、宣伝された名前で一致しています。 保存する前にそれらを確認; これは、Prowlarrを変更したり、ダウンロードを送信しません。',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr は管理 API 接続を承諾しました。 これらの結果は、各有効な検索インデックスを別々にテストします。無効な期限は、Prowlarrから来ています。',
+      'components.SettingsProwlarr.diagnosticFailed': '失敗',
+      'components.SettingsProwlarr.diagnosticOk': 'コネクテッド',
+      'components.SettingsProwlarr.diagnosticTitle': 'インデックス接続結果',
+      'components.SettingsProwlarr.disabledUntil': '無効になるまで {date}',
+      'components.SettingsProwlarr.ebook': '本',
+      'components.SettingsProwlarr.game': 'PCゲーム',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        '各メディアタイプに対して、どの有効な Prowlarr インデクサーを検索対象にするかを選択します。複数のインデクサーを選択するには、Windows/Linux では Ctrl キー、macOS では Command キーを押しながらクリックしてください。選択が空の場合、そのタイプの検索は無効になります。',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        '{category} のインデクサー',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'メディアタイプ別のインデクサー割り当て',
+      'components.SettingsProwlarr.indexerCount':
+        'インデクサー: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'ユーザーは検索結果からインデクサーの詳細を開くことができます。',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'インデクサー名と詳細リンクはユーザーから非表示になります。',
+      'components.SettingsProwlarr.indexerNotSearchable': '（検索不可）',
+      'components.SettingsProwlarr.indexerSearchLimits': '検索制限',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'ユーザーごとの1分間の総検索数と、選択した各インデクサーごとの検索数を制限します。',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr は保存されますが、そのインデックスは使用できません。',
+      'components.SettingsProwlarr.keepApiKey': '保存された API キーを保持する',
+      'components.SettingsProwlarr.loadFailed':
+        'Prowlarr の設定を読み込めませんでした。',
+      'components.SettingsProwlarr.magazine': '雑誌',
+      'components.SettingsProwlarr.modern': '現代ROMs',
+      'components.SettingsProwlarr.movie': '映画',
+      'components.SettingsProwlarr.music': 'ミュージック',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Prowlarr のインデックスがまだ設定されていない。',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Prowlarr の接続をテストしてインデクサーを読み込み、カテゴリ別に割り当ててください。',
+      'components.SettingsProwlarr.port': 'ポート',
+      'components.SettingsProwlarr.recentFailure': '最近の失敗: {date}',
+      'components.SettingsProwlarr.retro': 'レトロROMs',
+      'components.SettingsProwlarr.save': 'Prowlarrの設定を保存',
+      'components.SettingsProwlarr.saveFailed':
+        'Prowlarr の設定を保存できませんでした。',
+      'components.SettingsProwlarr.saved': 'Prowlarr の設定を保存しました。',
+      'components.SettingsProwlarr.saving': '保存中…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        '1から60までの整数を入力してください。',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        '{indexer} でのユーザーごとの1分間最大検索数',
+      'components.SettingsProwlarr.searchesPerUser':
+        'ユーザーごとの1分間最大検索数',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} 選択したカテゴリ',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} 個のインデクサーを選択済み',
+      'components.SettingsProwlarr.showIndexerDetails':
+        '検索結果にインデクサー名と詳細を表示する',
+      'components.SettingsProwlarr.sports': 'スポーツ',
+      'components.SettingsProwlarr.supportNote':
+        'この設定は Prowlarr への接続のみに対応しています。NZBHydra2 は現在ここではサポートされていません。',
+      'components.SettingsProwlarr.test':
+        '接続をテストし、カバレッジを点検して下さい',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr接続が失敗しました。 アドレスと API キーを確認します。',
+      'components.SettingsProwlarr.testHint':
+        '直接SeerrNGクエリProwlarrから検索が開始されました。 承認されたリクエストは、その構成されたメディアマネージャーまたはソフトウェアプロバイダーを経由して、取得と追跡を所有しています。',
+      'components.SettingsProwlarr.testing': 'Prowlarrをチェック...',
+      'components.SettingsProwlarr.title': 'Prowlarr インデックス',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} 検索可能で有効 {total} 仕様',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'SSLの利用',
     },
   },
   {
@@ -9092,6 +10047,98 @@ export const localeData = [
         '검색 횟수 제한에 도달했습니다. 다시 검색하기 전에 1분 기다려 주세요.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'Searchable Indexers를 사용할 수 없습니다. Prowlarr의 인덱스를 사용하거나 카테고리 필터를 조정할 수 있습니다.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        '발견된 일치를 추가하십시오 ({count})',
+      'components.SettingsProwlarr.address': '호스트 이름',
+      'components.SettingsProwlarr.adult': '성인',
+      'components.SettingsProwlarr.apiKey': 'API 키',
+      'components.SettingsProwlarr.apiKeySaved':
+        '키가 저장됩니다. 그것을 사용 하 여 유지 하는이 빈을 남겨.',
+      'components.SettingsProwlarr.audiobook': '오디오북',
+      'components.SettingsProwlarr.basePath': '기본 경로',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        '각 검색으로 전송되는 Prowlarr 범주를 선택하십시오. 기본값은 표준 Newznab/Torznab 범주를 사용; 활성화 된 인덱스로 광고 된 사용자 정의 카테고리를 볼 수있는 연결을 테스트.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        '적어도 하나의 범주를 선택하십시오.',
+      'components.SettingsProwlarr.categoryMappingTitle': '범주 필터',
+      'components.SettingsProwlarr.clearApiKey': '저장된 API 키 제거',
+      'components.SettingsProwlarr.comic': '만화',
+      'components.SettingsProwlarr.connected': 'Prowlarr에 연결 {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        '카운트는 적어도 하나의 선택 카테고리에 대한 지원을 광고하는 활성화, 검색 가능한 인덱스를 포함합니다. 그들은 검색 범위를 보여, 성공적인 잡아 또는 수입.',
+      'components.SettingsProwlarr.coverageTitle': 'Indexer 적용',
+      'components.SettingsProwlarr.description':
+        'Prowlarr 인스턴스를 한 번 연결하여 인덱스를 통해 범주 인식 설명서를 검색합니다.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        '제안 된 사용자 정의 카테고리는 광고 된 이름과 일치합니다. 저장하기 전에 그들을 검토; 이것은 Prowlarr을 변경하거나 다운로드를 보내지 않습니다.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr은 관리 API 연결을 허용했습니다. 이 결과 테스트 각 활성화 검색 가능한 인덱스 개별적으로; 장애인 날짜는 Prowlarr에서 온다.',
+      'components.SettingsProwlarr.diagnosticFailed': '실패',
+      'components.SettingsProwlarr.diagnosticOk': '연결하기',
+      'components.SettingsProwlarr.diagnosticTitle': 'Indexer 연결 결과',
+      'components.SettingsProwlarr.disabledUntil': '까지 {date}',
+      'components.SettingsProwlarr.ebook': '책',
+      'components.SettingsProwlarr.game': 'PC 게임',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        '각 미디어 유형에 대해 검색할 활성화된 Prowlarr 인덱서를 선택하세요. Windows/Linux에서는 Ctrl+클릭, macOS에서는 Command+클릭으로 여러 인덱서를 선택할 수 있습니다. 선택이 비어 있으면 해당 유형의 검색이 비활성화됩니다.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        '{category} 인덱서',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        '미디어 유형별 인덱서 할당',
+      'components.SettingsProwlarr.indexerCount': '인덱스: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        '사용자가 검색 결과에서 인덱서 세부 정보를 열 수 있습니다.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        '인덱서 이름과 세부 정보 링크가 사용자에게 숨겨집니다.',
+      'components.SettingsProwlarr.indexerNotSearchable': '(검색 불가)',
+      'components.SettingsProwlarr.indexerSearchLimits': '검색 제한',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        '사용자별 분당 전체 검색 횟수와 선택된 각 인덱서별 검색 횟수를 제한합니다.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr은 저장되지만 인덱스 재고는 사용할 수 없습니다.',
+      'components.SettingsProwlarr.keepApiKey': '저장된 API 열쇠',
+      'components.SettingsProwlarr.loadFailed':
+        'Prowlarr 설정을 불러오지 못했습니다.',
+      'components.SettingsProwlarr.magazine': '잡지',
+      'components.SettingsProwlarr.modern': '현대 ROMs',
+      'components.SettingsProwlarr.movie': '영화',
+      'components.SettingsProwlarr.music': '·',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Prowlarr 인덱서는 아직 구성되지 않습니다.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Prowlarr 연결을 테스트하여 인덱서를 불러오고 범주별로 할당하세요.',
+      'components.SettingsProwlarr.port': '포트',
+      'components.SettingsProwlarr.recentFailure': '최근 실패: {date}',
+      'components.SettingsProwlarr.retro': '레트로 ROM',
+      'components.SettingsProwlarr.save': 'Prowlarr 설정 저장',
+      'components.SettingsProwlarr.saveFailed':
+        'Prowlarr 설정을 저장하지 못했습니다.',
+      'components.SettingsProwlarr.saved': 'Prowlarr 설정을 저장했습니다.',
+      'components.SettingsProwlarr.saving': '저장 중…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        '1에서 60 사이의 정수를 입력하세요.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        '{indexer}에서 사용자별 분당 최대 검색 횟수',
+      'components.SettingsProwlarr.searchesPerUser':
+        '사용자별 분당 최대 검색 횟수',
+      'components.SettingsProwlarr.selectedCategories': '{count} 카테고리 선택',
+      'components.SettingsProwlarr.selectedIndexers': '{count}개 인덱서 선택됨',
+      'components.SettingsProwlarr.showIndexerDetails':
+        '검색 결과에 인덱서 이름과 세부 정보 표시 허용',
+      'components.SettingsProwlarr.sports': '·',
+      'components.SettingsProwlarr.supportNote':
+        '이 설정은 Prowlarr에만 연결됩니다. NZBHydra2는 현재 여기서 지원되지 않습니다.',
+      'components.SettingsProwlarr.test': '시험 연결 및 검사 적용',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr 연결 실패. 주소 및 API 키 확인.',
+      'components.SettingsProwlarr.testHint':
+        'Searches 시작 부터 SeerrNG query Prowlarr 직접. 승인 된 요청은 여전히 자신의 구성 된 미디어 관리자 또는 소프트웨어 공급자를 통해 이동, 이는 인수 및 추적을 소유.',
+      'components.SettingsProwlarr.testing': 'Prowlarr 확인 중…',
+      'components.SettingsProwlarr.title': 'Prowlarr 지수',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} 검색 및 활성화 {total} 설치하기',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'SSL 사용',
     },
   },
   {
@@ -10022,6 +11069,106 @@ export const localeData = [
         'Limite de busca alcançado. Espere um minuto antes de procurar novamente.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'Nenhum indexador habilitado está disponível. Active um indexador no Prowlarr ou ajuste os filtros de categoria.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Adicione correspondências detectadas.{count})',
+      'components.SettingsProwlarr.address': 'Nome do Host',
+      'components.SettingsProwlarr.adult': 'Adulto',
+      'components.SettingsProwlarr.apiKey': 'Chave da API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Uma chave está salva. Deixe isso em branco para continuar usando.',
+      'components.SettingsProwlarr.audiobook': 'Audiolivros',
+      'components.SettingsProwlarr.basePath': 'Caminho de base',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Escolha as categorias Prowlarr enviadas com cada busca. Os padrões usam categorias padrão de Newznab/Torznab; testam a conexão para ver categorias personalizadas anunciadas por indexadores habilitados.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Selecione pelo menos uma categoria.',
+      'components.SettingsProwlarr.categoryMappingTitle':
+        'Filtros de categoria',
+      'components.SettingsProwlarr.clearApiKey': 'Remover chave de API salva',
+      'components.SettingsProwlarr.comic': 'Quadrinhos',
+      'components.SettingsProwlarr.connected': 'Ligado a Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Contagens incluem indexadores habilitados e pesquisáveis que anunciam suporte para pelo menos uma categoria selecionada. Eles mostram cobertura de busca, não captura bem sucedida ou importações.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Cobertura do indexador por meio',
+      'components.SettingsProwlarr.description':
+        'Conecte sua instância Prowlarr uma vez para fazer buscas manuais de categoria nos indexadores que você já gerencia lá.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Categorias personalizadas sugeridas são combinadas pelos nomes anunciados. Revise-os antes de salvar, isso não muda Prowlarr ou envia downloads.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr aceitou a conexão da API de gerenciamento. Esses resultados testam cada indexador habilitado separadamente, desativados até as datas chegarem de Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Falhou',
+      'components.SettingsProwlarr.diagnosticOk': 'Conectado',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Resultado da conexão do indexador',
+      'components.SettingsProwlarr.disabledUntil': 'Deficiente até {date}',
+      'components.SettingsProwlarr.ebook': 'Livros',
+      'components.SettingsProwlarr.game': 'Jogos de PC',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Escolha quais indexers do Prowlarr habilitados serão pesquisados para cada tipo de mídia. Use Ctrl+clique no Windows/Linux ou Command+clique no macOS para selecionar vários indexers. Uma seleção vazia desativa a pesquisa para esse tipo.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexers para {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Atribuições de Indexers por Tipo de Mídia',
+      'components.SettingsProwlarr.indexerCount':
+        'Indicadores: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Os usuários podem abrir os detalhes do indexer a partir dos resultados da pesquisa.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Os nomes dos indexers e os links de detalhes estão ocultos para os usuários.',
+      'components.SettingsProwlarr.indexerNotSearchable': '(não pesquisável)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Limites de pesquisa',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Limite as pesquisas de cada usuário por minuto no total e para cada indexer selecionado.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr está salvo, mas seu inventário não está disponível.',
+      'components.SettingsProwlarr.keepApiKey':
+        'Mantenha a chave da API salva.',
+      'components.SettingsProwlarr.loadFailed':
+        'Não foi possível carregar as configurações do Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'Revistas',
+      'components.SettingsProwlarr.modern': 'ROMs modernos',
+      'components.SettingsProwlarr.movie': 'Filmes',
+      'components.SettingsProwlarr.music': 'Música',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Nenhum indexador Prowlarr ainda está configurado.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Teste a conexão com o Prowlarr para carregar seus indexers e atribuí-los por categoria.',
+      'components.SettingsProwlarr.port': 'Porta',
+      'components.SettingsProwlarr.recentFailure': 'Falha recente: {date}',
+      'components.SettingsProwlarr.retro': 'ROMs retrô',
+      'components.SettingsProwlarr.save': 'Salvar configurações Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'Não foi possível salvar as configurações do Prowlarr.',
+      'components.SettingsProwlarr.saved': 'Configurações do Prowlarr salvas.',
+      'components.SettingsProwlarr.saving': 'Salvando…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Insira um número inteiro de 1 a 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Máximo de pesquisas por usuário por minuto no {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Máximo de pesquisas por usuário por minuto',
+      'components.SettingsProwlarr.selectedCategories':
+        '{count} Categorias selecionadas',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexers selecionados',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Permitir nomes e detalhes dos indexers nos resultados da pesquisa',
+      'components.SettingsProwlarr.sports': 'Esportes',
+      'components.SettingsProwlarr.supportNote':
+        'Esta configuração se conecta apenas ao Prowlarr. O NZBHydra2 não é suportado aqui no momento.',
+      'components.SettingsProwlarr.test':
+        'Conexão de teste e inspeção de cobertura',
+      'components.SettingsProwlarr.testFailed':
+        'A conexão Prowlarr falhou. Verifique o endereço e a chave API.',
+      'components.SettingsProwlarr.testHint':
+        'As buscas começaram na SeerrNG Consulta Prowlarr diretamente. Pedidos aprovados ainda passam pelo gerente de mídia configurado ou provedor de software, que possui aquisição e rastreamento.',
+      'components.SettingsProwlarr.testing': 'Checando Prowlarr...',
+      'components.SettingsProwlarr.title': 'Indices Prowlarr',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} pesquisável e habilitado de {total} configurado',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Usar SSL',
     },
   },
   {
@@ -11346,6 +12493,95 @@ export const localeData = [
         '已达到搜索次数限制。请等待一分钟后再搜索。',
       'components.SettingsProwlarr.noSearchableIndexers':
         '没有可用的可搜索索引器 。 启用 Prowlarr 中的索引器或调整分类过滤器。',
+      'components.SettingsProwlarr.addDetectedMatches':
+        '添加检测到的匹配( E){count})',
+      'components.SettingsProwlarr.address': '主机名',
+      'components.SettingsProwlarr.adult': '成人',
+      'components.SettingsProwlarr.apiKey': 'API 密钥',
+      'components.SettingsProwlarr.apiKeySaved':
+        '键已保存 。 留下这个空白 继续使用它。',
+      'components.SettingsProwlarr.audiobook': '音频',
+      'components.SettingsProwlarr.basePath': '基础路径',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        '选择 Prowlarr 与每次搜索一起发送的类别。 默认使用标准 Newznab/ Torznab 分类; 测试连接, 查看启用索引器广告的自定义分类 。',
+      'components.SettingsProwlarr.categoryMappingEmpty': '选择至少一个类别。',
+      'components.SettingsProwlarr.categoryMappingTitle': '类别过滤器',
+      'components.SettingsProwlarr.clearApiKey': '删除已保存的 API 密钥',
+      'components.SettingsProwlarr.comic': '漫画',
+      'components.SettingsProwlarr.connected': '连接到 Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        '计数包括启用的,可搜索的索引器,为至少一个选定的类别发布支持广告. 它们显示搜索范围,没有成功抓取或进口.',
+      'components.SettingsProwlarr.coverageTitle': '按媒介分列的指数覆盖率',
+      'components.SettingsProwlarr.description':
+        '连接您的 Prowlarr 实例一次, 以在您已经管理的索引器上进行有类别意识的手动搜索 。',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        '建议的定制类别与其公布的名称相匹配。 保存前审查它们;这不会改变Prowlarr或发送下载.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr接受了管理API连接. 这些结果测试分别启用可搜索索引器; 禁用至日期来自 Prowlarr 。',
+      'components.SettingsProwlarr.diagnosticFailed': '失败',
+      'components.SettingsProwlarr.diagnosticOk': '已连接',
+      'components.SettingsProwlarr.diagnosticTitle': '索引连接结果',
+      'components.SettingsProwlarr.disabledUntil': '禁用至 {date}',
+      'components.SettingsProwlarr.ebook': '书籍',
+      'components.SettingsProwlarr.game': '个人电脑游戏',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        '选择针对每种媒体类型搜索哪些已启用的 Prowlarr 索引器。在 Windows/Linux 上使用 Ctrl+点击，或在 macOS 上使用 Command+点击来选择多个索引器。空选择将禁用该类型的搜索。',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        '{category} 的索引器',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        '按媒体类型分配索引器',
+      'components.SettingsProwlarr.indexerCount': '指数:{count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        '用户可以从搜索结果中打开索引器详情。',
+      'components.SettingsProwlarr.indexerNameHidden':
+        '索引器名称和详情链接对用户隐藏。',
+      'components.SettingsProwlarr.indexerNotSearchable': '（不可搜索）',
+      'components.SettingsProwlarr.indexerSearchLimits': '搜索限制',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        '限制每个用户每分钟的整体搜索次数以及每个选定索引器的搜索次数。',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr 已保存,但是其索引器目录尚未提供。',
+      'components.SettingsProwlarr.keepApiKey': '保留保存的 API 密钥',
+      'components.SettingsProwlarr.loadFailed': '无法加载 Prowlarr 设置。',
+      'components.SettingsProwlarr.magazine': '杂志',
+      'components.SettingsProwlarr.modern': '现代光盘',
+      'components.SettingsProwlarr.movie': '电影',
+      'components.SettingsProwlarr.music': '音乐',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        '没有 Prowlarr 索引器已经配置 。',
+      'components.SettingsProwlarr.noIndexerInventory':
+        '测试 Prowlarr 连接以加载其索引器并按类别分配。',
+      'components.SettingsProwlarr.port': '端口',
+      'components.SettingsProwlarr.recentFailure': '最近失败 : {date}',
+      'components.SettingsProwlarr.retro': '反光光盘',
+      'components.SettingsProwlarr.save': '保存 Prowlarr 设置',
+      'components.SettingsProwlarr.saveFailed': '无法保存 Prowlarr 设置。',
+      'components.SettingsProwlarr.saved': 'Prowlarr 设置已保存。',
+      'components.SettingsProwlarr.saving': '正在保存...',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        '请输入 1 到 60 之间的整数。',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        '每个用户每分钟在 {indexer} 上的最大搜索次数',
+      'components.SettingsProwlarr.searchesPerUser':
+        '每个用户每分钟的最大搜索次数',
+      'components.SettingsProwlarr.selectedCategories': '{count} 选定类别',
+      'components.SettingsProwlarr.selectedIndexers': '已选择 {count} 个索引器',
+      'components.SettingsProwlarr.showIndexerDetails':
+        '允许在搜索结果中显示索引器名称和详情',
+      'components.SettingsProwlarr.sports': '体育',
+      'components.SettingsProwlarr.supportNote':
+        '此设置仅连接到 Prowlarr。此处目前不支持 NZBHydra2。',
+      'components.SettingsProwlarr.test': '测试连接和检查覆盖范围',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr 连接失败。检查地址和 API 密钥。',
+      'components.SettingsProwlarr.testHint':
+        '搜索直接从 SeerrNG 查询 Prowlarr 开始 。 批准的请求仍然通过他们配置的媒体管理器或软件供应商进行,后者拥有采购和跟踪权。',
+      'components.SettingsProwlarr.testing': '检查中 Prowlarr…',
+      'components.SettingsProwlarr.title': 'Prowlarr 索引',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} 可搜索并启用 {total} 配置',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': '使用 SSL',
     },
   },
   {
@@ -11847,6 +13083,95 @@ export const localeData = [
         '已達搜尋次數上限。請等候一分鐘後再搜尋。',
       'components.SettingsProwlarr.noSearchableIndexers':
         '沒有可用的可搜尋索引器 。 開啟 Prowlarr 中的索引器或調整類別的過程 。',
+      'components.SettingsProwlarr.addDetectedMatches':
+        '新增檢測到的匹配( E){count})',
+      'components.SettingsProwlarr.address': '主機名稱',
+      'components.SettingsProwlarr.adult': '成人',
+      'components.SettingsProwlarr.apiKey': 'API 金鑰',
+      'components.SettingsProwlarr.apiKeySaved':
+        '已儲存金鑰 。 留下這個空白繼續使用它。',
+      'components.SettingsProwlarr.audiobook': '音效簿',
+      'components.SettingsProwlarr.basePath': '基本路徑',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        '选择 Prowlarr 与每次搜索一起发送的类别。 默认使用标准 Newznab/ Torznab 分类; 测试连接, 查看启用索引器广告的自定义分类 。',
+      'components.SettingsProwlarr.categoryMappingEmpty': '選擇至少一個類別 。',
+      'components.SettingsProwlarr.categoryMappingTitle': '分類过滤器',
+      'components.SettingsProwlarr.clearApiKey': '移除已儲存的 API 金鑰',
+      'components.SettingsProwlarr.comic': '漫畫',
+      'components.SettingsProwlarr.connected': '已連接到 Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        '數目包括啟動的、可搜尋的索引器, 以廣告至少一個選取的類別的支援 。 它們顯示搜索範圍, 而不是成功抓取或匯入 。',
+      'components.SettingsProwlarr.coverageTitle': '按媒體分列的索引覆盖率',
+      'components.SettingsProwlarr.description':
+        '將您的 Prowlarr 實體連接一次, 以在您已經管理過的索引器上進行手動的分類搜尋 。',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        '所推荐的自訂類別都符合其公示的名字。 儲存前檢查它們; 這不會改變 Prowlarr 或者傳送下載 。',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr 接受管理 API 連接 。 這些結果測試每一個都開啟了可搜尋索引器; 禁用至日期來自 Prowlarr 。',
+      'components.SettingsProwlarr.diagnosticFailed': '失敗',
+      'components.SettingsProwlarr.diagnosticOk': '已連接',
+      'components.SettingsProwlarr.diagnosticTitle': '索引器連接結果',
+      'components.SettingsProwlarr.disabledUntil': '禁用至 {date}',
+      'components.SettingsProwlarr.ebook': '書籍',
+      'components.SettingsProwlarr.game': 'PC 遊戲',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        '選擇要為每種媒體類型搜尋的已啟用 Prowlarr 索引器。在 Windows/Linux 上按住 Ctrl 點選，或在 macOS 上按住 Command 點選以選擇多個索引器。未選擇任何項目將停用該類型的搜尋。',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        '{category} 的索引器',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        '依媒體類型分配索引器',
+      'components.SettingsProwlarr.indexerCount': '指數:{count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        '使用者可從搜尋結果開啟索引器詳細資訊。',
+      'components.SettingsProwlarr.indexerNameHidden':
+        '索引器名稱和詳細資訊連結對使用者隱藏。',
+      'components.SettingsProwlarr.indexerNotSearchable': '（無法搜尋）',
+      'components.SettingsProwlarr.indexerSearchLimits': '搜尋限制',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        '限制每位使用者每分鐘的總搜尋次數，以及每個已選索引器的搜尋次數。',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr 已儲存, 但是其索引器目錄尚未提供 。',
+      'components.SettingsProwlarr.keepApiKey': '保留保存的 API 金鑰',
+      'components.SettingsProwlarr.loadFailed': '無法載入 Prowlarr 設定。',
+      'components.SettingsProwlarr.magazine': '雜誌',
+      'components.SettingsProwlarr.modern': '現代 ROM',
+      'components.SettingsProwlarr.movie': '電影',
+      'components.SettingsProwlarr.music': '音樂',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        '尚未設定 Prowlarr 索引器 。',
+      'components.SettingsProwlarr.noIndexerInventory':
+        '測試 Prowlarr 連線以載入其索引器，並依類別進行分配。',
+      'components.SettingsProwlarr.port': '通訊埠',
+      'components.SettingsProwlarr.recentFailure': '最近失敗 : {date}',
+      'components.SettingsProwlarr.retro': '反轉 ROM',
+      'components.SettingsProwlarr.save': '保存 Prowlarr 设置',
+      'components.SettingsProwlarr.saveFailed': '無法儲存 Prowlarr 設定。',
+      'components.SettingsProwlarr.saved': 'Prowlarr 設定已儲存。',
+      'components.SettingsProwlarr.saving': '儲存中…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        '請輸入 1 到 60 之間的整數。',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        '每位使用者在 {indexer} 上每分鐘的最大搜尋次數',
+      'components.SettingsProwlarr.searchesPerUser':
+        '每位使用者每分鐘的最大搜尋次數',
+      'components.SettingsProwlarr.selectedCategories': '{count} 選擇的類別',
+      'components.SettingsProwlarr.selectedIndexers': '已選擇 {count} 個索引器',
+      'components.SettingsProwlarr.showIndexerDetails':
+        '允許在搜尋結果中顯示索引器名稱和詳細資訊',
+      'components.SettingsProwlarr.sports': '体育',
+      'components.SettingsProwlarr.supportNote':
+        '此設定僅連線至 Prowlarr。目前在此處不支援 NZBHydra2。',
+      'components.SettingsProwlarr.test': '測試連接和檢查覆盖范围',
+      'components.SettingsProwlarr.testFailed':
+        'Prowlarr 連線失敗。請檢查位址和 API 金鑰。',
+      'components.SettingsProwlarr.testHint':
+        '搜尋直接從 SeerrNG 查詢 Prowlarr 開始 。 經許可的請求仍通過他們所設定的媒體管理員或軟體提供商,',
+      'components.SettingsProwlarr.testing': '检查中 Prowlarr…',
+      'components.SettingsProwlarr.title': 'Prowlarr 索引',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} 可搜尋且已啟用 {total} 配置',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': '使用安全通訊協定（SSL）',
     },
   },
   {
@@ -12380,6 +13705,104 @@ export const localeData = [
         'Đã đạt giới hạn tìm kiếm. Chờ một phút rồi tìm kiếm lại.',
       'components.SettingsProwlarr.noSearchableIndexers':
         'Không có mục lục có khả năng tìm kiếm. Bật mục lục trong Prowlarr hoặc điều chỉnh bộ lọc phân loại.',
+      'components.SettingsProwlarr.addDetectedMatches':
+        'Thêm các khớp phát hiện ({count})',
+      'components.SettingsProwlarr.address': 'Tên máy',
+      'components.SettingsProwlarr.adult': 'Người lớn',
+      'components.SettingsProwlarr.apiKey': 'Phím API',
+      'components.SettingsProwlarr.apiKeySaved':
+        'Một chìa khóa đã được lưu giữ. Để nó trống không để tiếp tục sử dụng.',
+      'components.SettingsProwlarr.audiobook': 'Sổ tay âm thanh',
+      'components.SettingsProwlarr.basePath': 'Đường dẫn cơ bản',
+      'components.SettingsProwlarr.categoryMappingDescription':
+        'Chọn phân loại Prowlarr được gửi với mỗi tìm kiếm. Mặc định dùng phân loại Newznab/Torznab chuẩn; thử ra kết nối để xem quảng cáo phân loại tự chọn bởi những người có khả năng làm chỉ mục.',
+      'components.SettingsProwlarr.categoryMappingEmpty':
+        'Chọn ít nhất một loại.',
+      'components.SettingsProwlarr.categoryMappingTitle': 'Lọc phân loại',
+      'components.SettingsProwlarr.clearApiKey': 'Đã lưu API Khóa',
+      'components.SettingsProwlarr.comic': 'Truyện tranh',
+      'components.SettingsProwlarr.connected':
+        'Đã kết nối tới Prowlarr {version}.',
+      'components.SettingsProwlarr.coverageDescription':
+        'Số đếm bao gồm những người chỉ mục tìm kiếm có khả năng hỗ trợ ít nhất một loại được chọn. Chúng hiển thị các bản tin tìm kiếm, không thành công trong việc lấy hay nhập khẩu.',
+      'components.SettingsProwlarr.coverageTitle':
+        'Mức độ bao phủ của người lập chỉ mục theo phương tiện',
+      'components.SettingsProwlarr.description':
+        'Kết nối ví dụ Prowlarr của bạn một lần để chạy sổ tay đánh dấu phân loại tìm kiếm qua các chỉ mục bạn đã quản lý ở đó.',
+      'components.SettingsProwlarr.detectedMatchesHelp':
+        'Các danh mục tùy chỉnh được đề xuất được khớp với tên được quảng cáo của chúng. Xem lại chúng trước khi lưu; điều này không thay đổi Prowlarr hoặc gửi các bản tải xuống.',
+      'components.SettingsProwlarr.diagnosticDescription':
+        'Prowlarr đã chấp nhận kết nối API quản lý. Các kết quả này kiểm tra riêng từng bộ chỉ mục có thể tìm kiếm được kích hoạt; bị vô hiệu hóa cho đến khi ngày đến từ Prowlarr.',
+      'components.SettingsProwlarr.diagnosticFailed': 'Thất bại',
+      'components.SettingsProwlarr.diagnosticOk': 'Đã kết nối',
+      'components.SettingsProwlarr.diagnosticTitle':
+        'Kết quả kết nối bộ chỉ mục',
+      'components.SettingsProwlarr.disabledUntil': 'Tắt cho đến {date}',
+      'components.SettingsProwlarr.ebook': 'Sách',
+      'components.SettingsProwlarr.game': 'Trò chơi máy tính',
+      'components.SettingsProwlarr.indexerAssignmentDescription':
+        'Chọn các indexer Prowlarr đang được bật để tìm kiếm cho từng loại phương tiện. Sử dụng Ctrl-click trên Windows/Linux hoặc Command-click trên macOS để chọn nhiều indexer. Việc không chọn gì sẽ tắt tìm kiếm cho loại đó.',
+      'components.SettingsProwlarr.indexerAssignmentSelectLabel':
+        'Indexer cho {category}',
+      'components.SettingsProwlarr.indexerAssignmentTitle':
+        'Gán Indexer theo Loại Phương Tiện',
+      'components.SettingsProwlarr.indexerCount': 'Chỉ số: {count, number}',
+      'components.SettingsProwlarr.indexerDetailsVisible':
+        'Người dùng có thể mở chi tiết indexer từ kết quả tìm kiếm.',
+      'components.SettingsProwlarr.indexerNameHidden':
+        'Tên indexer và liên kết chi tiết được ẩn khỏi người dùng.',
+      'components.SettingsProwlarr.indexerNotSearchable':
+        '(không thể tìm kiếm)',
+      'components.SettingsProwlarr.indexerSearchLimits': 'Giới hạn tìm kiếm',
+      'components.SettingsProwlarr.indexerSearchLimitsDescription':
+        'Hạn chế số lần tìm kiếm của mỗi người dùng mỗi phút tổng thể và cho từng indexer được chọn.',
+      'components.SettingsProwlarr.inventoryFailed':
+        'Prowlarr đã được lưu nhưng kho lưu trữ chỉ mục của nó không khả dụng.',
+      'components.SettingsProwlarr.keepApiKey': 'Giữ giữ phím API',
+      'components.SettingsProwlarr.loadFailed':
+        'Không thể tải cài đặt Prowlarr.',
+      'components.SettingsProwlarr.magazine': 'Tạp chí',
+      'components.SettingsProwlarr.modern': 'ROM hiện đại',
+      'components.SettingsProwlarr.movie': 'Phim',
+      'components.SettingsProwlarr.music': 'Âm nhạc',
+      'components.SettingsProwlarr.noConfiguredIndexers':
+        'Chưa có bộ chỉ mục Prowlarr nào được định cấu hình.',
+      'components.SettingsProwlarr.noIndexerInventory':
+        'Kiểm tra kết nối Prowlarr để tải các indexer của nó và gán chúng theo danh mục.',
+      'components.SettingsProwlarr.port': 'Cổng',
+      'components.SettingsProwlarr.recentFailure': 'Lỗi gần đây: {date}',
+      'components.SettingsProwlarr.retro': 'ROM cổ điển',
+      'components.SettingsProwlarr.save': 'Lưu cài đặt Prowlarr',
+      'components.SettingsProwlarr.saveFailed':
+        'Không thể lưu cài đặt Prowlarr.',
+      'components.SettingsProwlarr.saved': 'Đã lưu cài đặt Prowlarr.',
+      'components.SettingsProwlarr.saving': 'Đang lưu…',
+      'components.SettingsProwlarr.searchLimitInvalid':
+        'Nhập một số nguyên từ 1 đến 60.',
+      'components.SettingsProwlarr.searchesPerIndexer':
+        'Số lần tìm kiếm tối đa mỗi người dùng mỗi phút trên {indexer}',
+      'components.SettingsProwlarr.searchesPerUser':
+        'Số lần tìm kiếm tối đa mỗi người dùng mỗi phút',
+      'components.SettingsProwlarr.selectedCategories': '{count} phân loại',
+      'components.SettingsProwlarr.selectedIndexers':
+        '{count} indexer đã được chọn',
+      'components.SettingsProwlarr.showIndexerDetails':
+        'Cho phép hiển thị tên và chi tiết indexer trong kết quả tìm kiếm',
+      'components.SettingsProwlarr.sports': 'Thể thao',
+      'components.SettingsProwlarr.supportNote':
+        'Cài đặt này chỉ kết nối với Prowlarr. NZBHydra2 hiện chưa được hỗ trợ ở đây.',
+      'components.SettingsProwlarr.test':
+        'Kiểm tra kết nối và kiểm tra vùng phủ sóng',
+      'components.SettingsProwlarr.testFailed':
+        'Kết nối Prowlarr không thành công. Kiểm tra địa chỉ và khóa API.',
+      'components.SettingsProwlarr.testHint':
+        'Tìm kiếm bắt đầu từ truy vấn SeerrNG Prowlarr trực tiếp. Các yêu cầu được phê duyệt vẫn phải thông qua trình quản lý phương tiện hoặc nhà cung cấp phần mềm đã định cấu hình của họ, công ty sở hữu chức năng thu thập và theo dõi.',
+      'components.SettingsProwlarr.testing': 'Đang kiểm tra Prowlarr…',
+      'components.SettingsProwlarr.title': 'Bộ chỉ mục Prowlarr',
+      'components.SettingsProwlarr.totalIndexers':
+        '{enabled} Name {total} Cấu hình',
+      'components.SettingsProwlarr.tv': 'TV',
+      'components.SettingsProwlarr.useSsl': 'Dùng SSL',
     },
   },
 ] as const;

@@ -500,6 +500,18 @@ result rows without horizontal overflow. Evidence is retained in
 Live Prowlarr effects, independent linguistic review, and native-matched visual
 acceptance remain open.
 
+Lumen's administrator Prowlarr settings and diagnostics now also use SeerrNG's
+`components.SettingsProwlarr.*` locale catalog. The connection form, saved API
+key controls, category mappings, per-category indexer assignments, search
+limits, connection coverage, diagnostics, and save/test feedback follow the
+account's saved locale. English, French, and Arabic are checked across desktop,
+iPhone, Android, and tablet. The three Prowlarr browser workflows pass 12 cases
+in standalone and bundled Lumen; matched before/after and candidate captures are retained
+in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-prowlarr-localization-20261120/`.
+Request payloads, saved-key retention, test-only draft submission, empty
+assignments, and cleared limits remain covered. Live Prowlarr behavior,
+independent linguistic review, and native-matched visuals remain open.
+
 The same Manage Requests permission now exposes a Search Prowlarr shortcut in
 movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
 The shortcut prefills the media category and title without submitting a search.

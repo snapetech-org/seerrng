@@ -6,6 +6,7 @@ import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const path = '/settings/prowlarr';
@@ -46,11 +47,40 @@ interface Coverage {
 }
 
 const fields = [
-  ['hostname', 'Hostname', 'text'],
-  ['port', 'Port', 'number'],
-  ['baseUrl', 'Base Path', 'text'],
-  ['searchLimitPerUserPerMinute', 'Searches per User per Minute', 'number'],
+  ['hostname', 'address', 'Hostname', 'text'],
+  ['port', 'port', 'Port', 'number'],
+  ['baseUrl', 'basePath', 'Base Path', 'text'],
+  [
+    'searchLimitPerUserPerMinute',
+    'searchesPerUser',
+    'Searches per User per Minute',
+    'number',
+  ],
 ] as const;
+
+const categoryMessageIds: Record<string, string> = {
+  movie: 'movie',
+  tv: 'tv',
+  ebook: 'ebook',
+  audiobook: 'audiobook',
+  comic: 'comic',
+  magazine: 'magazine',
+  music: 'music',
+  adult: 'adult',
+  retro: 'retro',
+  modern: 'modern',
+  game: 'game',
+  sports: 'sports',
+};
+
+function categoryLabel(
+  category: string,
+  fallback: string,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const id = categoryMessageIds[category];
+  return id ? t(`components.SettingsProwlarr.${id}`, fallback) : fallback;
+}
 
 function formSettings(settings: Settings) {
   return {
@@ -80,14 +110,34 @@ function formSettings(settings: Settings) {
 }
 
 function Diagnostics({ coverage }: { coverage: Coverage }) {
+  const { locale, t } = useLumenLocale();
   if (coverage.configured === false)
-    return <p className="note">Prowlarr is unconfigured.</p>;
+    return (
+      <p className="note">
+        {t(
+          'components.SettingsProwlarr.noConfiguredIndexers',
+          'No Prowlarr indexers are configured yet.'
+        )}
+      </p>
+    );
   return (
     <>
       <p className="note">
-        {coverage.version ? `Version ${coverage.version}. ` : ''}
-        {coverage.enabledSearchableIndexers ?? 0} searchable indexers of{' '}
-        {coverage.totalIndexers ?? 0}.
+        {coverage.version
+          ? t('lumen.adminProwlarr.version', 'Version {version}.', {
+              version: coverage.version,
+            }) + ' '
+          : ''}
+        {t(
+          'lumen.adminProwlarr.coverageSummary',
+          '{enabled} searchable indexers of {total}.',
+          {
+            enabled: (coverage.enabledSearchableIndexers ?? 0).toLocaleString(
+              locale
+            ),
+            total: (coverage.totalIndexers ?? 0).toLocaleString(locale),
+          }
+        )}
       </p>
       <div className="setlist">
         {coverage.indexers?.map((indexer) => {
@@ -100,16 +150,25 @@ function Diagnostics({ coverage }: { coverage: Coverage }) {
                 <b>{indexer.name}</b>
                 <small>
                   {!indexer.enabled
-                    ? 'Disabled'
+                    ? t('lumen.adminProwlarr.disabled', 'Disabled')
                     : indexer.supportsSearch
-                      ? 'Search Enabled'
-                      : 'Search Unavailable'}
+                      ? t('lumen.adminProwlarr.searchEnabled', 'Search enabled')
+                      : t(
+                          'lumen.adminProwlarr.searchUnavailable',
+                          'Search unavailable'
+                        )}
                 </small>
                 {diagnostic && (
                   <small>
                     {diagnostic.success
-                      ? 'Connection Passed'
-                      : 'Connection Failed'}
+                      ? t(
+                          'components.SettingsProwlarr.diagnosticOk',
+                          'Connected'
+                        )
+                      : t(
+                          'components.SettingsProwlarr.diagnosticFailed',
+                          'Failed'
+                        )}
                     {diagnostic.status ? ` (HTTP ${diagnostic.status})` : ''}
                     {diagnostic.error ? ` · ${diagnostic.error}` : ''}
                   </small>
@@ -143,6 +202,7 @@ function validLimit(value: string) {
 }
 
 function ConnectionForm({ initial }: { initial: Settings }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(() => formSettings(initial));
   const [result, setResult] = useState<Coverage>();
@@ -265,7 +325,12 @@ function ConnectionForm({ initial }: { initial: Settings }) {
         });
         if (generation !== sessionGeneration()) return;
         setResult(tested);
-        setNotice('Prowlarr connection tested.');
+        setNotice(
+          t(
+            'lumen.adminProwlarr.connectionTested',
+            'Prowlarr connection tested.'
+          )
+        );
       } else {
         const updated = await api<Settings>(path, { method: 'PUT', body });
         if (generation !== sessionGeneration()) return;
@@ -273,15 +338,23 @@ function ConnectionForm({ initial }: { initial: Settings }) {
         setDraft(formSettings(updated));
         setResult(undefined);
         coverage.reload();
-        setNotice('Prowlarr settings saved.');
+        setNotice(
+          t('components.SettingsProwlarr.saved', 'Prowlarr settings saved.')
+        );
       }
     } catch {
       if (generation === sessionGeneration()) {
         setResult(undefined);
         setFailure(
           test
-            ? 'Could not test Prowlarr. Check its address and API key.'
-            : 'Could not save Prowlarr settings. Try again.'
+            ? t(
+                'components.SettingsProwlarr.testFailed',
+                'Prowlarr connection failed. Check the address and API key.'
+              )
+            : t(
+                'components.SettingsProwlarr.saveFailed',
+                'Prowlarr settings could not be saved.'
+              )
         );
       }
     } finally {
@@ -292,7 +365,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
 
   return (
     <>
-      <Section title="Connection">
+      <Section title={t('lumen.adminProwlarr.connectionHeading', 'Connection')}>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -304,9 +377,11 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               disabled={busy}
               onSelect={(hostname) => change({ hostname })}
             />
-            {fields.map(([key, label, type]) => (
+            {fields.map(([key, messageId, fallback, type]) => (
               <label key={key} className="set cfg-row">
-                <span>{label}</span>
+                <span>
+                  {t(`components.SettingsProwlarr.${messageId}`, fallback)}
+                </span>
                 <input
                   className="cfg-input"
                   type={type}
@@ -317,12 +392,19 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               </label>
             ))}
             <label className="set cfg-row">
-              <span>API Key</span>
+              <span>{t('components.SettingsProwlarr.apiKey', 'API key')}</span>
               <input
                 className="cfg-input"
                 type="password"
                 autoComplete="new-password"
-                placeholder={saved.apiKeyConfigured ? 'Saved key' : undefined}
+                placeholder={
+                  saved.apiKeyConfigured
+                    ? t(
+                        'lumen.adminProwlarr.savedApiKeyPlaceholder',
+                        'Saved key'
+                      )
+                    : undefined
+                }
                 value={draft.apiKey}
                 disabled={busy || draft.clearApiKey}
                 onChange={(event) => change({ apiKey: event.target.value })}
@@ -330,7 +412,12 @@ function ConnectionForm({ initial }: { initial: Settings }) {
             </label>
             {saved.apiKeyConfigured && (
               <label className="set cfg-row">
-                <span>Clear Saved API Key</span>
+                <span>
+                  {t(
+                    'components.SettingsProwlarr.clearApiKey',
+                    'Remove saved API key'
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   disabled={busy}
@@ -343,10 +430,13 @@ function ConnectionForm({ initial }: { initial: Settings }) {
             )}
             {(
               [
-                ['useSsl', 'Use HTTPS'],
+                ['useSsl', t('components.SettingsProwlarr.useSsl', 'Use SSL')],
                 [
                   'showIndexerDetails',
-                  'Show Indexer Details in Search Results',
+                  t(
+                    'components.SettingsProwlarr.showIndexerDetails',
+                    'Allow indexer names and details in search results'
+                  ),
                 ],
               ] as const
             ).map(([key, label]) => (
@@ -361,13 +451,26 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               </label>
             ))}
           </div>
-          <Section title="Category Mappings">
+          <Section
+            title={t(
+              'components.SettingsProwlarr.categoryMappingTitle',
+              'Category filters'
+            )}
+          >
             <p className="note">
-              Enter comma-separated Prowlarr category IDs for each media type.
+              {t(
+                'components.SettingsProwlarr.categoryMappingDescription',
+                'Choose the Prowlarr categories sent with each search.'
+              )}
             </p>
             {!!inventory?.categoryCatalog?.length && (
               <details className="adv">
-                <summary>Available Prowlarr Categories</summary>
+                <summary>
+                  {t(
+                    'lumen.adminProwlarr.availableCategories',
+                    'Available Prowlarr categories'
+                  )}
+                </summary>
                 <div className="setlist">
                   {inventory.categoryCatalog.map(
                     ({ id, name, indexerCount }) => (
@@ -375,7 +478,13 @@ function ConnectionForm({ initial }: { initial: Settings }) {
                         <b>
                           {id} · {name}
                         </b>
-                        <small>{indexerCount} indexers</small>
+                        <small>
+                          {t(
+                            'components.SettingsProwlarr.indexerCount',
+                            'Indexers: {count}',
+                            { count: indexerCount }
+                          )}
+                        </small>
                       </div>
                     )
                   )}
@@ -385,7 +494,15 @@ function ConnectionForm({ initial }: { initial: Settings }) {
             <div className="setlist">
               {Object.entries(mediaCategoryLabels).map(([key, label]) => (
                 <label className="set cfg-row" key={key}>
-                  <span>{label} Category IDs</span>
+                  <span>
+                    {t(
+                      'lumen.adminProwlarr.categoryIdsLabel',
+                      '{category} Category IDs',
+                      {
+                        category: categoryLabel(key, label, t),
+                      }
+                    )}
+                  </span>
                   <input
                     className="cfg-input"
                     disabled={busy}
@@ -403,10 +520,17 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               ))}
             </div>
           </Section>
-          <Section title="Indexer Assignments">
+          <Section
+            title={t(
+              'components.SettingsProwlarr.indexerAssignmentTitle',
+              'Indexer Assignments by Media Type'
+            )}
+          >
             <p className="note">
-              Choose which indexers can search each media type. With no saved
-              assignment, all enabled searchable indexers are used.
+              {t(
+                'components.SettingsProwlarr.indexerAssignmentDescription',
+                'Choose which enabled Prowlarr indexers are searched for each media type.'
+              )}
             </p>
             {Object.entries(mediaCategoryLabels).map(([key, label]) => {
               const chosen =
@@ -426,17 +550,33 @@ function ConnectionForm({ initial }: { initial: Settings }) {
                   }}
                 >
                   <summary>
-                    {label} · {chosen.length} assigned
+                    {t(
+                      'lumen.adminProwlarr.assignedCount',
+                      '{category} · {count} assigned',
+                      {
+                        category: categoryLabel(key, label, t),
+                        count: chosen.length,
+                      }
+                    )}
                   </summary>
                   {openAssignments[key] && (
                     <div
                       className="setlist"
                       role="group"
-                      aria-label={`${label} Indexers`}
+                      aria-label={t(
+                        'components.SettingsProwlarr.indexerAssignmentSelectLabel',
+                        'Indexers for {category}',
+                        { category: categoryLabel(key, label, t) }
+                      )}
                     >
                       {ids.map((id) => (
                         <label className="set cfg-row" key={id}>
-                          <span>{names.get(id) ?? `Indexer ${id}`}</span>
+                          <span>
+                            {names.get(id) ??
+                              t('lumen.adminProwlarr.indexer', 'Indexer {id}', {
+                                id,
+                              })}
+                          </span>
                           <input
                             type="checkbox"
                             checked={chosen.includes(id)}
@@ -465,15 +605,34 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               </p>
             )}
           </Section>
-          <Section title="Per-Indexer Search Limits">
+          <Section
+            title={t(
+              'components.SettingsProwlarr.indexerSearchLimits',
+              'Search limits'
+            )}
+          >
             <p className="note">
-              Leave a limit blank to use the default. Overrides accept 1–60
-              searches per user per minute.
+              {t(
+                'components.SettingsProwlarr.indexerSearchLimitsDescription',
+                'Limit each user’s searches per minute overall and for each selected indexer.'
+              )}
             </p>
             <div className="setlist">
               {limitIds.map((id) => (
                 <label className="set cfg-row" key={id}>
-                  <span>{names.get(id) ?? `Indexer ${id}`} Search Limit</span>
+                  <span>
+                    {t(
+                      'lumen.adminProwlarr.searchLimitLabel',
+                      '{indexer} Search Limit',
+                      {
+                        indexer:
+                          names.get(id) ??
+                          t('lumen.adminProwlarr.indexer', 'Indexer {id}', {
+                            id,
+                          }),
+                      }
+                    )}
+                  </span>
                   <input
                     className="cfg-input"
                     type="number"
@@ -495,8 +654,10 @@ function ConnectionForm({ initial }: { initial: Settings }) {
           </Section>
           {!valid && (
             <p className="note">
-              Check the port, search limits, category IDs and indexer
-              assignments.
+              {t(
+                'lumen.adminProwlarr.invalidSettings',
+                'Check the port, search limits, category IDs and indexer assignments.'
+              )}
             </p>
           )}
           {failure && (
@@ -514,7 +675,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               className="btn btn-primary btn-sm"
               disabled={busy || !dirty || !valid}
             >
-              Save Prowlarr
+              {t('components.SettingsProwlarr.save', 'Save Prowlarr settings')}
             </button>
             <button
               className="btn btn-quiet btn-sm"
@@ -522,27 +683,38 @@ function ConnectionForm({ initial }: { initial: Settings }) {
               disabled={busy || !canTest}
               onClick={() => void submit(true)}
             >
-              Test Prowlarr Connection
+              {t(
+                'components.SettingsProwlarr.test',
+                'Test connection and inspect coverage'
+              )}
             </button>
           </div>
         </form>
       </Section>
-      <Section title="Indexer Diagnostics">
+      <Section
+        title={t(
+          'components.SettingsProwlarr.diagnosticTitle',
+          'Indexer connection results'
+        )}
+      >
         <ServiceNote
           error={coverage.error}
-          what="Prowlarr inventory"
+          what={t('components.SettingsProwlarr.title', 'Prowlarr indexers')}
           retry={coverage.reload}
         />
         {result || coverage.data ? (
           <Diagnostics coverage={(result ?? coverage.data)!} />
         ) : !saved.apiKeyConfigured || !saved.hostname ? (
           <p className="note">
-            Save a connection or run a test to load indexers.
+            {t(
+              'components.SettingsProwlarr.noIndexerInventory',
+              'Test the Prowlarr connection to load its indexers and assign them by category.'
+            )}
           </p>
         ) : (
           !coverage.error && (
             <p className="note" role="status">
-              Loading indexers…
+              {t('lumen.adminProwlarr.loadingIndexers', 'Loading indexers…')}
             </p>
           )
         )}
@@ -554,22 +726,23 @@ function ConnectionForm({ initial }: { initial: Settings }) {
 export default function AdminProwlarr({
   inSetup = false,
 }: { inSetup?: boolean } = {}) {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   return (
     <>
       {!inSetup && (
         <header className="ph">
-          <h1>Prowlarr Settings</h1>
+          <h1>{t('components.SettingsProwlarr.title', 'Prowlarr indexers')}</h1>
           <div className="toolbar">
             <Link className="btn btn-quiet btn-sm" to="/me">
-              Back to Account
+              {t('lumen.adminProwlarr.backToYou', 'Back to You')}
             </Link>
           </div>
         </header>
       )}
       <ServiceNote
         error={settings.error}
-        what="Prowlarr settings"
+        what={t('components.SettingsProwlarr.title', 'Prowlarr indexers')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -577,7 +750,10 @@ export default function AdminProwlarr({
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading Prowlarr settings…
+            {t(
+              'lumen.adminProwlarr.loadingSettings',
+              'Loading Prowlarr settings…'
+            )}
           </p>
         )
       )}
