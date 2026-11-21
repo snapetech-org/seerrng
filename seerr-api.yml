@@ -25316,7 +25316,19 @@ paths:
             example: 337401
         - in: query
           name: mediaId
-          required: true
+          description: Saved media row. Library listings send serviceId, externalServiceId and is4k instead.
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: serviceId
+          description: Radarr server ID from a library listing.
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: externalServiceId
+          description: Movie ID inside that Radarr server.
           schema:
             type: integer
             minimum: 1
