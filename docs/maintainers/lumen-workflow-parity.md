@@ -59,6 +59,24 @@ permissions, actual file saves/uploads, and independent linguistic review
 remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-settings-localization-20261121/`.
 
+### Account language choices
+
+The account's preferred media-language selectors now display API language
+codes in the saved interface locale and sort by those localized names. Their
+option values remain the same ISO language codes used by SeerrNG. This affects
+the global, movie, series, music, and book preferences without changing their
+save payload.
+
+The browser fixture verifies localized English, French, and Arabic language
+names and unchanged option values over desktop, iPhone, Android, and tablet in
+standalone and bundled deployments (12 cases per deployment). French baseline
+and candidate full-page captures match in size at 1440 and 390 CSS pixels; the
+only changed pixels are the selected language label. French iPhone and Arabic
+desktop renders were inspected, with no page-level horizontal overflow. The
+fixture uses a small mocked language list; live catalog coverage and
+independent linguistic review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-language-options-20261121/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load
