@@ -254,6 +254,88 @@ test('disabled core categories block their direct routes before catalog requests
   expect(catalogRequests).toEqual([]);
 });
 
+test('Search hides disabled scopes and does not query their catalogs', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'Seerr',
+        mediaServerType: 2,
+        mediaServerLogin: true,
+        localLogin: true,
+        enabledMediaCategories: {
+          movie: true,
+          tv: true,
+          ebook: true,
+          audiobook: true,
+          comic: true,
+          music: true,
+          magazine: true,
+          sports: true,
+          game: true,
+          adult: true,
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: {
+        enabledMediaCategories: {
+          movie: false,
+          tv: true,
+          ebook: false,
+          audiobook: true,
+          comic: true,
+          music: true,
+          magazine: true,
+          sports: true,
+          game: true,
+          adult: true,
+        },
+      },
+    })
+  );
+  const categoryQueries: string[] = [];
+  page.on('request', (request) => {
+    if (!request.url().includes('/api/v1/')) return;
+    const path = testApiPath(request.url());
+    if (/^\/(discover\/(trending|movies|tv|books)|search)/.test(path))
+      categoryQueries.push(path);
+  });
+
+  await page.goto('/search');
+  await expect(page.getByRole('group', { name: 'Search in' })).toBeVisible();
+  for (const label of ['Movies', 'Books']) {
+    await expect(
+      page
+        .getByRole('group', { name: 'Search in' })
+        .getByRole('button', { name: label, exact: true })
+    ).toHaveCount(0);
+  }
+  for (const label of ['Series', 'Audiobooks']) {
+    await expect(
+      page
+        .getByRole('group', { name: 'Search in' })
+        .getByRole('button', { name: label, exact: true })
+    ).toBeVisible();
+  }
+  await page.goto('/search?q=night&f=movie');
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  await page.goto('/search?q=night&f=ebook');
+  await expect(
+    page.getByText('This category is turned off for your account.')
+  ).toBeVisible();
+  expect(categoryQueries).not.toContain('/discover/movies');
+  expect(categoryQueries).not.toContain('/discover/books');
+  expect(categoryQueries).not.toContain('/search');
+  expect(categoryQueries).toContain('/discover/trending');
+});
+
 for (const [locale, message] of [
   ['fr', 'Cette catégorie est désactivée pour votre compte.'],
   ['ar', 'هذه الفئة متوقفة لحسابك.'],

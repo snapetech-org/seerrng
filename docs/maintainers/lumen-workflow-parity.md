@@ -5125,3 +5125,9 @@ Discover performs no category catalog or detail requests. French and Arabic
 disabled notices pass across all four viewport projects with RTL and overflow
 checks; screenshots and test results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/core-category-routes/`.
+Search scope chips and browse shortcuts also follow the signed-in category
+settings. Direct links carrying a disabled movie or book scope show the
+localized category notice and make no title-search or catalog request; mixed
+trending results are filtered to the categories the user can access. The
+Search regression passes on desktop, iPhone, Android, and tablet, with evidence
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/search-category-routes/`.

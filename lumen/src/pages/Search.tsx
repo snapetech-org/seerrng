@@ -34,6 +34,7 @@ import {
   type Magazine,
 } from '../extras';
 import { cachedApi, useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import {
   clearRecentSearches,
@@ -243,6 +244,7 @@ function SearchResults({
   p: URLSearchParams;
   setP: ReturnType<typeof useSearchParams>[1];
 }) {
+  const { t } = useLumenLocale();
   const { prefs } = usePrefs();
   const [q, setQ] = useState(p.get('q') || '');
   const requestedScope = p.get('f') ?? '';
@@ -263,6 +265,11 @@ function SearchResults({
   // a new key per history entry, even when Enter pushes the same URL typing already showed
   const entryKey = useLocation().key;
   const extras = useExtras();
+  const categorySettingsReady = extras.ready;
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
+  const ebookEnabled = extras.categoryEnabled('ebook');
+  const audiobookEnabled = extras.categoryEnabled('audiobook');
   // comics join the search once the category is on and its catalogue answers
   const comicsOn = extras.list.some((e) => e.key === 'comic');
   const musicOn = extras.list.some((e) => e.key === 'music');
@@ -270,12 +277,15 @@ function SearchResults({
   const sportsOn = extras.list.some((e) => e.key === 'sports');
   const term0 = (p.get('q') || '').trim();
   const publicSettings = usePublicSettings();
+  const bookEnabled = ebookEnabled || audiobookEnabled;
   const seriesFormat =
     f === 'ebook' ? 'ebook' : f === 'audio' ? 'audiobook' : undefined;
   const resultPage = searchResultPage(p);
   const showSeries =
     resultPage === 1 &&
     prefs.showBooks &&
+    categorySettingsReady &&
+    bookEnabled &&
     publicSettings?.booksEnabled === true &&
     (f === 'all' || seriesFormat !== undefined) &&
     term0.length >= 2 &&
@@ -292,8 +302,38 @@ function SearchResults({
   const hasMusicFilters = f === 'music' && activeMusicSearchFilters(p);
   const hasDiscoveryFilters = hasVideoFilters || hasMusicFilters;
   const hasSearch = !!term0 || hasDiscoveryFilters;
+  const scopeEnabled: Record<Scope, boolean> = {
+    all:
+      movieEnabled ||
+      tvEnabled ||
+      (prefs.showBooks && (ebookEnabled || audiobookEnabled)) ||
+      comicsOn ||
+      musicOn ||
+      magazinesOn ||
+      sportsOn,
+    movie: movieEnabled,
+    tv: tvEnabled,
+    ebook: ebookEnabled,
+    audio: audiobookEnabled,
+    comic: extras.categoryEnabled('comic'),
+    author: bookEnabled,
+    music: extras.categoryEnabled('music'),
+    magazine: extras.categoryEnabled('magazine'),
+    sports: extras.categoryEnabled('sports'),
+  };
+  const disabledScope =
+    categorySettingsReady && f !== 'all' && !scopeEnabled[f] && !!term0;
   const wantsTitles =
     hasSearch &&
+    categorySettingsReady &&
+    scopeEnabled[f] &&
+    (f !== 'all' ||
+      movieEnabled ||
+      tvEnabled ||
+      (prefs.showBooks && bookEnabled) ||
+      musicOn ||
+      magazinesOn ||
+      sportsOn) &&
     (f === 'all' ||
       f === 'movie' ||
       f === 'tv' ||
@@ -303,8 +343,15 @@ function SearchResults({
       f === 'sports');
   // nothing typed yet: something to tap instead of an empty screen
   const trending = useApi<Paged<VideoSearchResult>>(
-    hasSearch ? null : '/discover/trending'
+    !hasSearch && categorySettingsReady && (movieEnabled || tvEnabled)
+      ? '/discover/trending'
+      : null
   ).data;
+  const trendingTitles = trending?.results.filter(
+    (result): result is TitleResult =>
+      (result.mediaType === 'movie' && movieEnabled) ||
+      (result.mediaType === 'tv' && tvEnabled)
+  );
   // a search is remembered when it's finished (Enter, or a result opened), not on every keystroke,
   // so slow typing on a phone doesn't fill the list with "the off", "the offi"…
   const remember = (t: string) => {
@@ -329,6 +376,7 @@ function SearchResults({
   const scopes = (Object.keys(SCOPES) as Scope[]).filter(
     (s) =>
       (prefs.showBooks || (s !== 'ebook' && s !== 'audio' && s !== 'author')) &&
+      (scopeEnabled[s] || s === 'all') &&
       (comicsOn || s !== 'comic' || f === 'comic') &&
       (musicOn || s !== 'music' || f === 'music') &&
       (magazinesOn || s !== 'magazine' || f === 'magazine') &&
@@ -363,12 +411,27 @@ function SearchResults({
     setSearching(true);
     const t = setTimeout(async () => {
       const wantBooks =
-        prefs.showBooks && (f === 'all' || f === 'ebook' || f === 'audio');
+        categorySettingsReady &&
+        prefs.showBooks &&
+        (f === 'all'
+          ? ebookEnabled || audiobookEnabled
+          : f === 'ebook'
+            ? ebookEnabled
+            : f === 'audio' && audiobookEnabled);
       // one card per work, editions inside (AniList finds the manga)
-      const wantComics = (comicsOn && f === 'all') || f === 'comic';
+      const wantComics =
+        categorySettingsReady &&
+        scopeEnabled.comic &&
+        ((comicsOn && f === 'all') || f === 'comic');
       const format = f === 'audio' ? 'audiobook' : 'ebook';
       // All searches both catalogues; the chips narrow to one
-      const formats = f === 'all' ? ['ebook', 'audiobook'] : [format];
+      const formats =
+        f === 'all'
+          ? [
+              ...(ebookEnabled ? ['ebook'] : []),
+              ...(audiobookEnabled ? ['audiobook'] : []),
+            ]
+          : [format];
       let error: string | null = null;
       let catalogueUnavailable = false;
       const failure = (e: unknown) => {
@@ -411,6 +474,11 @@ function SearchResults({
         response && resultPage <= response.totalPages ? response.results : [];
       const foundComics = resultsOnPage(cr);
       const foundTitles = resultsOnPage(tr).filter(({ mediaType }) => {
+        if (mediaType === 'movie' && !movieEnabled) return false;
+        if (mediaType === 'tv' && !tvEnabled) return false;
+        if (mediaType === 'collection' && !movieEnabled) return false;
+        if (mediaType === 'person' && !movieEnabled && !tvEnabled) return false;
+        if (mediaType === 'author' && !bookEnabled) return false;
         if (f === 'music')
           return mediaType === 'album' || mediaType === 'artist';
         if (f === 'author' || f === 'tv' || f === 'magazine' || f === 'sports')
@@ -487,6 +555,13 @@ function SearchResults({
     comicsOn,
     musicOn,
     magazinesOn,
+    categorySettingsReady,
+    movieEnabled,
+    tvEnabled,
+    ebookEnabled,
+    audiobookEnabled,
+    bookEnabled,
+    scopeEnabled[f],
   ]);
 
   const setParam = (k: string, v: string) => {
@@ -722,11 +797,15 @@ function SearchResults({
           <div className="chips wrap">
             {(
               [
-                ['/movies', 'Movies', true],
-                ['/series', 'Series', true],
-                ['/books', 'Books', prefs.showBooks],
-                ['/audiobooks', 'Audiobooks', prefs.showBooks],
-                ['/soon', 'Coming soon', true],
+                ['/movies', 'Movies', movieEnabled],
+                ['/series', 'Series', tvEnabled],
+                ['/books', 'Books', prefs.showBooks && ebookEnabled],
+                [
+                  '/audiobooks',
+                  'Audiobooks',
+                  prefs.showBooks && audiobookEnabled,
+                ],
+                ['/soon', 'Coming soon', movieEnabled],
               ] as const
             )
               .filter((x) => x[2])
@@ -743,18 +822,12 @@ function SearchResults({
           </div>
         </Section>
       )}
-      {!hasSearch && !!trending?.results.length && (
+      {!hasSearch && !!trendingTitles?.length && (
         <Section title="Trending this week">
           <div className="grid">
-            {trending.results
-              .filter(
-                (r): r is TitleResult =>
-                  r.mediaType === 'movie' || r.mediaType === 'tv'
-              )
-              .slice(0, 12)
-              .map((m) => (
-                <TitleCard key={m.mediaType + m.id} it={m} />
-              ))}
+            {trendingTitles.slice(0, 12).map((m) => (
+              <TitleCard key={m.mediaType + m.id} it={m} />
+            ))}
           </div>
         </Section>
       )}
@@ -776,9 +849,14 @@ function SearchResults({
       {nothing && !searching && !searchError && (
         <div className="empty">
           <b>
-            {term0
-              ? `No ${f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “${term0}”`
-              : 'No titles match these discovery filters.'}
+            {disabledScope
+              ? t(
+                  'lumen.category.disabledForAccount',
+                  'This category is turned off for your account.'
+                )
+              : term0
+                ? `No ${f === 'all' ? 'matches' : SCOPES[f].toLowerCase()} for “${term0}”`
+                : 'No titles match these discovery filters.'}
           </b>
           {f !== 'all' ? (
             <button
