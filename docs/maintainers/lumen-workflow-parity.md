@@ -788,6 +788,21 @@ the previous detail captures at matching viewports; the longer labels reflow
 the action row naturally without horizontal overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-detail-localization-20261121/`.
 
+### Shared detail action localization
+
+The shared Prowlarr search, Associations, and Blocklist actions now localize
+their labels across all detail-page consumers in English, French, and Arabic.
+Blocklist confirmation, retry, and success/failure feedback copy is included;
+request identities, permissions, mutation payloads, and routes are unchanged.
+Browser verification passed the album/artist flow in both standalone and
+Express-mounted production builds across three locales and four viewports (24
+cases), five Blocklist permission and identity cases, and ten existing
+Indexer Search and Associations cases. Matching French desktop and Arabic
+phone captures were compared with the preceding detail renders. They retain
+the established layout, with natural wrapping of longer action labels and no
+horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-actions-20261121/`.
+
 ### Movie and series Browse page-copy localization
 
 Movie and series page headings, search hints, request guidance, and genre
