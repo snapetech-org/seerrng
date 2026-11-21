@@ -1,5 +1,5 @@
 ---
-category: improved
+category: changed
 audience: users
 area: lumen
 action: none
